@@ -40,7 +40,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementFormNameComparator;
 import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
@@ -60,19 +59,19 @@ public class GenerateReportAttributeAction
     private LocalDataElementService localDataElementService;
 
     @Override
-    protected void executeGenerateOutputFile( ExportReport exportReport, Period period )
+    protected void executeGenerateOutputFile( ExportReport exportReport )
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
         ExportReportAttribute exportReportInstance = (ExportReportAttribute) exportReport;
 
-        this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
+        this.installReadTemplateFile( exportReportInstance, organisationUnit );
 
         DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         Collection<ExportItem> exportReportItems = null;
-        
+
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
@@ -81,7 +80,7 @@ public class GenerateReportAttributeAction
 
             this.generateOutPutFile( defaultOptionCombo, exportReportInstance, exportReportItems, organisationUnit,
                 sheet );
-            
+
             this.recalculatingFormula( sheet );
         }
 
@@ -145,7 +144,7 @@ public class GenerateReportAttributeAction
                     {
                         int id = Integer.parseInt( exportItem.getExpression().split( "@" )[0].replace( "[", "" ) );
                         String value = exportItem.getExpression().split( "@" )[1].replace( "]", "" );
-                        
+
                         for ( DataElement de : dataElements )
                         {
                             if ( localDataElementService.getDataElementCount( de.getId(), id, value ) > 0 )

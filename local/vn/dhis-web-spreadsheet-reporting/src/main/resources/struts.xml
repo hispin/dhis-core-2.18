@@ -766,19 +766,19 @@
 		<action name="generateExportReport"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateExcelReportFlowAction">
 			<result name="ATTRIBUTE" type="redirect">
-				generateReportAttribute.action</result>
+				generateReportAttribute.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="CATEGORY" type="redirect">
-				generateReportCategory.action</result>
+				generateReportCategory.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="CATEGORY_VERTICAL" type="redirect">
-				generateReportVerticalCategory.action</result>
+				generateReportVerticalCategory.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="NORMAL" type="redirect">
-				generateReportNormal.action</result>
+				generateReportNormal.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				generateReportOrgGroupListing.action?showSubItem=${showSubItem}</result>
+				generateReportOrgGroupListing.action?generateByDataSet=${generateByDataSet}&amp;showSubItem=${showSubItem}</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
-				generateReportPeriodColumnListing.action</result>
+				generateReportPeriodColumnListing.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="MULTI" type="redirect">
-				generateMultiReport.action</result>
+				generateMultiReport.action?generateByDataSet=${generateByDataSet}</result>
 		</action>
 
 		<action name="generateReportAttribute"
@@ -933,19 +933,19 @@
 		<action name="previewExportReport"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateExcelReportFlowAction">
 			<result name="ATTRIBUTE" type="redirect">
-				generatePreviewAttribute.action</result>
+				generatePreviewAttribute.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="CATEGORY" type="redirect">
-				generatePreviewCategory.action</result>
+				generatePreviewCategory.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="CATEGORY_VERTICAL" type="redirect">
-				generatePreviewVerticalCategory.action</result>
+				generatePreviewVerticalCategory.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="NORMAL" type="redirect">
-				generatePreviewNormal.action</result>
+				generatePreviewNormal.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				generatePreviewOrgGroupListing.action?showSubItem=${showSubItem}</result>
+				generatePreviewOrgGroupListing.action?generateByDataSet=${generateByDataSet}&amp;showSubItem=${showSubItem}</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
-				generatePreviewPeriodColumnListing.action</result>
+				generatePreviewPeriodColumnListing.action?generateByDataSet=${generateByDataSet}</result>
 			<result name="MULTI" type="redirect">
-				generatePreviewMultiReport.action</result>
+				generatePreviewMultiReport.action?generateByDataSet=${generateByDataSet}</result>
 		</action>
 
 		<action name="generatePreviewAttribute"
@@ -1323,6 +1323,7 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<result name="input" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_IMPORTING</param>
 		</action>
 
 		<action name="uploadExcelImport"
@@ -1345,7 +1346,7 @@
 			<param name="stylesheets">
 				style/style.css,
 				style/previewStyle.css</param>
-			<param name="requiredAuthorities">F_EXCEL_IMPORT_DATA</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORTING</param>
 		</action>
 
 		<action name="getPeriodsByImportReport"
@@ -1360,7 +1361,8 @@
 			class="org.hisp.dhis.reportsheet.importreport.action.OpenImportReportAssociationsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/importReportAssociation.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>			
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_REPORT_ASSOCIATION</param>
 		</action>
 
 		<!--  function - Prewiew Data  flow from excel file  -->
@@ -1403,7 +1405,7 @@
 				/dhis-web-spreadsheet-reporting/responseExportReportPreview.vm
 			</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>		
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
 
 		<!--WORKING HERE-->
@@ -1417,6 +1419,7 @@
 				importDataOrganizationGroup.action</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generateExportReportPeriodColumnListingAjax.action</result>
+			<param name="requiredAuthorities">F_EXCEL_IMPORTING</param>
 		</action>
 
 		<action name="importDataNormal"
@@ -1425,6 +1428,7 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="importDataCategory"
@@ -1433,6 +1437,7 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="importDataOrganizationGroup"
@@ -1441,6 +1446,17 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="rollbackImporting"
+			class="org.hisp.dhis.reportsheet.importing.action.RollbackImportingAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORTING</param>
 		</action>
 		
 		<!-- Period Column -->

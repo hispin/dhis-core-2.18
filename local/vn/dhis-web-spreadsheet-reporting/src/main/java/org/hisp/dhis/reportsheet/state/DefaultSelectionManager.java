@@ -29,6 +29,9 @@ package org.hisp.dhis.reportsheet.state;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.hisp.dhis.datavalue.DataValue;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -54,6 +57,10 @@ public class DefaultSelectionManager
     private static final String SESSION_KEY_LIST_OBJECT = "SESSION_KEY_LIST_OBJECT";
 
     private static final String SESSION_KEY_LIST_ORDERED_GROUP = "SESSION_KEY_LIST_ORDERED_GROUP";
+
+    private static final String SESSION_KEY_OLD_DATA_VALUE_LIST = "SESSION_KEY_OLD_DATA_VALUE_LIST";
+
+    private static final String SESSION_KEY_NEW_DATA_VALUE_LIST = "SESSION_KEY_NEW_DATA_VALUE_LIST";
 
     public String getDownloadFilePath()
     {
@@ -127,7 +134,7 @@ public class DefaultSelectionManager
         getSession().put( SESSION_KEY_LIST_OBJECT, objects );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<Integer> getOrderedGroupList()
     {
         return (List<Integer>) getSession().get( SESSION_KEY_LIST_ORDERED_GROUP );
@@ -148,5 +155,29 @@ public class DefaultSelectionManager
     public void setSelectedPeriodIndex( String periodIndex )
     {
         getSession().put( SESSION_KEY_SELECTED_PERIOD_ID, periodIndex );
+    }
+
+    @SuppressWarnings("unchecked")
+    public Set<DataValue> getNewDataValueList()
+    {
+        return (Set<DataValue>) getSession().get( SESSION_KEY_NEW_DATA_VALUE_LIST );
+    }
+
+    @SuppressWarnings("unchecked")
+    public Set<DataValue> getOldDataValueList()
+    {
+        return (Set<DataValue>) getSession().get( SESSION_KEY_OLD_DATA_VALUE_LIST );
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setNewDataValueList( Set<DataValue> dataValues )
+    {
+        getSession().put( SESSION_KEY_NEW_DATA_VALUE_LIST, dataValues );
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setOldDataValueList( Set<DataValue> dataValues )
+    {
+        getSession().put( SESSION_KEY_OLD_DATA_VALUE_LIST, dataValues );
     }
 }

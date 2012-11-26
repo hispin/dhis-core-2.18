@@ -37,11 +37,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
-import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 
@@ -80,7 +79,7 @@ public class GenerateAdvancedReportCategoryAction
     // -------------------------------------------------------------------------
 
     @Override
-    protected void executeGenerateOutputFile( ExportReport exportReport, Period period )
+    protected void executeGenerateOutputFile( ExportReport exportReport )
         throws Exception
     {
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
@@ -88,7 +87,7 @@ public class GenerateAdvancedReportCategoryAction
 
         ExportReportCategory exportReportInstance = (ExportReportCategory) exportReport;
 
-        this.installReadTemplateFile( exportReportInstance, period, organisationUnitGroup );
+        this.installReadTemplateFile( exportReportInstance, organisationUnitGroup );
 
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {

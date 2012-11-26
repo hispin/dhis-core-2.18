@@ -27,6 +27,9 @@
 package org.hisp.dhis.reportsheet.state;
 
 import java.util.List;
+import java.util.Set;
+
+import org.hisp.dhis.datavalue.DataValue;
 
 /**
  * @author Tran Thanh Tri
@@ -41,28 +44,36 @@ public interface SelectionManager
     public String getUploadFilePath();
 
     public void setUploadFilePath( String path );
-    
+
     public void setSelectedReportId( Integer id );
-    
+
     public Integer getSelectedReportId();
-    
+
     public String getRenameFilePath();
 
     public void setRenameFilePath( String path );
-    
+
     public String getSelectedPeriodIndex();
-    
+
     public void setSelectedPeriodIndex( String periodIndex );
-    
+
     public void setBookmarkType( String type );
-    
+
     public String getBookmarkType();
-    
+
     public String[] getListObject();
-    
+
     public void setListObject( String[] objects );
-    
+
     public List<Integer> getOrderedGroupList();
 
     public void setOrderedGroupList( List<Integer> objects );
+
+    public Set<DataValue> getOldDataValueList();
+
+    public void setOldDataValueList( Set<DataValue> dataValues );
+
+    public Set<DataValue> getNewDataValueList();
+
+    public void setNewDataValueList( Set<DataValue> dataValues );
 }

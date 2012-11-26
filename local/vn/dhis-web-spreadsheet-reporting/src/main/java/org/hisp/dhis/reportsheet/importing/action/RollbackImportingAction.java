@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet.exporting;
+package org.hisp.dhis.reportsheet.importing.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -26,14 +26,12 @@ package org.hisp.dhis.reportsheet.exporting;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hisp.dhis.dataelement.LocalDataElementService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reportsheet.CategoryOptionAssociationService;
-import org.hisp.dhis.reportsheet.ExportReport;
+import java.util.Set;
+
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -42,64 +40,41 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public abstract class AbstractGenerateMultiExcelReportSupport
-    extends GenerateExcelReportGeneric
+
+public class RollbackImportingAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependency
-    // -------------------------------------------------------------------------
+    @Autowired
+    private SelectionManager selectionManager;
 
     @Autowired
-    protected OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    protected CategoryOptionAssociationService categoryOptionAssociationService;
-
-    @Autowired
-    protected LocalDataElementService localDataElementService;
+    private DataValueService dataValueService;
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
-        throws Exception
     {
-        statementManager.initialise();
+        Set<DataValue> oldDataValues = selectionManager.getOldDataValueList();
+        Set<DataValue> newDataValues = selectionManager.getNewDataValueList();
 
-        selectedPeriod = PeriodType.createPeriodExternalId( selectionManager.getSelectedPeriodIndex() );
-
-        this.installPeriod();
-
-        List<ExportReport> reports = new ArrayList<ExportReport>();
-
-        for ( String id : selectionManager.getListObject() )
+        if ( oldDataValues != null )
         {
-            reports.add( exportReportService.getExportReport( Integer.parseInt( id ) ) );
+            for ( DataValue dv : oldDataValues )
+            {
+                dataValueService.updateDataValue( dv );
+            }
         }
 
-        executeGenerateOutputFile( reports );
-
-        this.complete();
-
-        statementManager.destroy();
+        if ( newDataValues != null )
+        {
+            for ( DataValue dv : newDataValues )
+            {
+                dataValueService.deleteDataValue( dv );
+            }
+        }
 
         return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Overriding abstract method(s)
-    // -------------------------------------------------------------------------
-
-    /**
-     * The process method which must be implemented by subclasses.
-     * 
-     * @param period
-     * @param reports
-     * @param organisationUnit
-     */
-    protected abstract void executeGenerateOutputFile( List<ExportReport> reports )
-        throws Exception;
 }
