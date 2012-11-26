@@ -222,7 +222,9 @@ public class HibernateProgramStageInstanceStore
                     deKeys.add( deKey );
                 }
             }
-        }
+        } 
+        
+        grid.addHeader( new GridHeader( "Complete", true, true ) );
 
         // ---------------------------------------------------------------------
         // Get SQL and build grid
@@ -250,8 +252,8 @@ public class HibernateProgramStageInstanceStore
     public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         String sql = "delete from programstageinstance where programstageid=" + programStage.getId()
-            + " and organisationunitid=" + organisationUnit.getId()
-            + " and programstageinstanceid not in " + "(select pdv.programstageinstanceid from patientdatavalue pdv )";
+            + " and organisationunitid=" + organisationUnit.getId() + " and programstageinstanceid not in "
+            + "(select pdv.programstageinstanceid from patientdatavalue pdv )";
         jdbcTemplate.execute( sql );
     }
 
@@ -381,7 +383,7 @@ public class HibernateProgramStageInstanceStore
                     sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid="
                         + column.getIdentifier() + ") as identifier_" + column.getIdentifier() + ",";
                 }
-                
+
                 if ( column.hasQuery() )
                 {
                     where += operator + "lower(identifier_" + column.getIdentifier() + ") " + column.getQuery() + " ";
@@ -439,8 +441,7 @@ public class HibernateProgramStageInstanceStore
             }
         }
 
-        sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
-
+        sql += " psi.completed "; 
         sql += "from programstageinstance psi ";
         sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
         sql += "left join patient p on (pi.patientid=p.patientid) ";
@@ -462,11 +463,11 @@ public class HibernateProgramStageInstanceStore
         {
             sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";
         }
-        if( completed!= null )
+        if ( completed != null )
         {
-            sql += "and psi.completed="+ completed + " ";
+            sql += "and psi.completed=" + completed + " ";
         }
-        
+
         sql += "order by ";
 
         for ( int i = level; i <= maxLevel; i++ )
