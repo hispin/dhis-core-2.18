@@ -28,6 +28,7 @@ package org.hisp.dhis.reportsheet.importing;
  */
 
 import java.util.Date;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -130,7 +131,8 @@ public abstract class ImportDataGeneric
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    protected void addDataValue( OrganisationUnit unit, Period period, String expression, String value )
+    protected void addDataValue( OrganisationUnit unit, Period period, String expression, String value,
+        Set<DataValue> oldList, Set<DataValue> newList )
     {
         value = value.replaceAll( "\\.", "" ).replace( ",", "." );
 
@@ -149,9 +151,13 @@ public abstract class ImportDataGeneric
         {
             dataValue = new DataValue( dataElement, period, unit, value, storedBy, new Date(), null, optionCombo );
             dataValueService.addDataValue( dataValue );
+
+            newList.add( dataValue );
         }
         else
         {
+            oldList.add( dataValue );
+
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );

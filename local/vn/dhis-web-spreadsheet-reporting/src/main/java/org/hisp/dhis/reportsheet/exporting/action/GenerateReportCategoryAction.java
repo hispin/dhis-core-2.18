@@ -33,7 +33,6 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
 import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 import org.hisp.dhis.reportsheet.ExportItem;
@@ -58,14 +57,14 @@ public class GenerateReportCategoryAction
     private DataElementGroupOrderService dataElementGroupOrderService;
 
     @Override
-    protected void executeGenerateOutputFile( ExportReport exportReport, Period period )
+    protected void executeGenerateOutputFile( ExportReport exportReport )
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
         ExportReportCategory exportReportInstance = (ExportReportCategory) exportReport;
 
-        this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
+        this.installReadTemplateFile( exportReportInstance, organisationUnit );
 
         Collection<ExportItem> exportReportItems = null;
         List<DataElementGroupOrder> orderedGroups = null;

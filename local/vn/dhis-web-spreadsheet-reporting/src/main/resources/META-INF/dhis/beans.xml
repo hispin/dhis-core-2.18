@@ -594,6 +594,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="exportReportService"
 			ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="dataSetService"
+			ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="dataSetRegistrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
 		<property name="reportLocationManager"
@@ -1203,6 +1209,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--  function - Import data - ORGANISATION UNIT  -->
 	<bean id="org.hisp.dhis.reportsheet.importing.action.ImportDataOrganizationGroupAction"
 		class="org.hisp.dhis.reportsheet.importing.action.ImportDataOrganizationGroupAction" scope="prototype"/>
+	
+	<!--  function - Rollback Import data  -->	
+	<bean id="org.hisp.dhis.reportsheet.importing.action.RollbackImportingAction"
+		class="org.hisp.dhis.reportsheet.importing.action.RollbackImportingAction" scope="prototype"/>
 
 	<!-- Period Column -->
 

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.impl;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -539,5 +539,10 @@ public class DefaultExportReportService
         periodTypeName = null;
 
         return idMap;
+    }
+
+    public ExportReport getExportReportByDataSet( DataSet dataSet )
+    {
+        return i18n( i18nService, exportReportStore.getExportReportByDataSet( dataSet ) );
     }
 }

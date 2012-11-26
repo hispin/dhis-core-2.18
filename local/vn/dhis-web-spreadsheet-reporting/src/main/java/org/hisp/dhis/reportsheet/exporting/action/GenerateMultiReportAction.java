@@ -47,7 +47,6 @@ import org.hisp.dhis.dataelement.DataElementFormNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
@@ -72,14 +71,14 @@ public class GenerateMultiReportAction
     private static final String PREFIX_FORMULA_SUM = "SUM(";
 
     @Override
-    protected void executeGenerateOutputFile( List<ExportReport> reports, Period period )
+    protected void executeGenerateOutputFile( List<ExportReport> reports )
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
         DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         Collection<ExportItem> exportItems = null;
 
-        this.installReadTemplateFile( reports.get( 0 ), period, organisationUnit );
+        this.installReadTemplateFile( reports.get( 0 ), organisationUnit );
 
         for ( ExportReport report : reports )
         {

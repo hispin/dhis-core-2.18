@@ -34,7 +34,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
@@ -55,14 +54,14 @@ public class GenerateReportVerticalCategoryAction
     private OptionComboAssociationService optionComboAssociationService;
 
     @Override
-    protected void executeGenerateOutputFile( ExportReport exportReport, Period period )
+    protected void executeGenerateOutputFile( ExportReport exportReport )
         throws Exception
     {
         OrganisationUnit unit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
         ExportReportVerticalCategory exportReportInstance = (ExportReportVerticalCategory) exportReport;
 
-        this.installReadTemplateFile( exportReportInstance, period, unit );
+        this.installReadTemplateFile( exportReportInstance, unit );
 
         Collection<ExportItem> exportReportItems = null;
 
