@@ -110,24 +110,8 @@ public class OptionServiceTest
     {
         int idA = optionService.saveOptionSet( optionSetA );
         
-        List<String> options = optionService.getOptions( idA, "OptA", 10 );
+        List<String> options = optionService.getOptions( idA, "OptA1", 10 );
         
-        assertEquals( 2, options.size() );
-        
-        options = optionService.getOptions( idA, "OptA1", 10 );
-
         assertEquals( 1, options.size() );
-
-        options = optionService.getOptions( idA, "OptA1", null );
-
-        assertEquals( 1, options.size() );
-
-        options = optionService.getOptions( idA, "Opt", null );
-
-        assertEquals( 4, options.size() );
-        
-        options = optionService.getOptions( idA, "Opt", 3 );
-
-        assertEquals( 3, options.size() );
     }
 }
