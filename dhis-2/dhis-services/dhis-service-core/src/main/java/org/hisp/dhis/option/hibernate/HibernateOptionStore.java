@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.option.OptionStore;
@@ -62,38 +63,21 @@ public class HibernateOptionStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public List<String> getOptions( int optionSetId, String key, Integer max )
     {
-        //TODO Should ideally be cached and go through Hibernate
-        
-        String sql = 
-            "select optionvalue from optionset os " +
-            "inner join optionsetmembers as om on os.optionsetid=om.optionsetid " +
-            "where os.optionsetid=" + optionSetId;
-        
-        if ( key != null )
+        String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId ";
+        if( key != null )
         {
-            sql += " and lower(om.optionvalue) like lower('%" + key + "%')";
+            hql += " and lower(option) like lower('%" + key + "%') ";
         }
         
-        sql += " order by sort_order";
-
-        if ( max != null )
-        {
-            sql += " limit " + max;
-        }
+        hql += " order by index(option)";
+        Query query = getQuery( hql );
+        query.setInteger( "optionSetId", optionSetId );
+        query.setMaxResults( max );
         
-        List<String> optionValues = new ArrayList<String>();
-        
-        optionValues = jdbcTemplate.query( sql, new RowMapper<String>()
-        {
-            public String mapRow( ResultSet rs, int rowNum ) throws SQLException
-            {
-                return rs.getString( 1 );
-            }
-        } );
-        
-        return optionValues;
+        return query.list();
     }
 }
