@@ -173,6 +173,30 @@ public class TextUtils
         
         return null;
     }
+
+    /**
+     * Transforms a collection of strings into a comma delimited string, where
+     * each component get single-quoted.
+     * 
+     * @param elements the collection of Integers
+     * @return a comma delimited String.
+     */
+    public static String getQuotedCommaDelimitedString( Collection<String> elements )
+    {
+        if ( elements != null && elements.size() > 0 )
+        {
+            final StringBuffer buffer = new StringBuffer();        
+        
+            for ( String element : elements )
+            {
+                buffer.append( "'" ).append( element.toString() ).append( "', " );
+            }
+            
+            return buffer.substring( 0, buffer.length() - ", ".length() );
+        }
+        
+        return null;
+    }
     
     /**
      * Returns null if the given string is not null and contains no charachters,
