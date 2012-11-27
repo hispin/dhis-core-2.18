@@ -83,12 +83,19 @@ function validatePreviewReport( isAdvanced )
 
 function previewExportReport()
 {
-	jQuery.get( "previewExportReport.action", { showSubItem: !isChecked( 'showSubItem' ) }, previewExportReportReceived );
+	jQuery.get( "previewExportReport.action",
+	{
+		showSubItem: !isChecked( 'showSubItem' ),
+		generateByDefault: getFieldValue( 'generateByDefault' )
+	}, previewExportReportReceived );
 }
 
 function previewAdvandReport() 
 {	
-	jQuery.get( "previewAdvancedExportReport.action", { organisationGroupId: getFieldValue( 'availableOrgunitGroups' ) }, previewExportReportReceived );
+	jQuery.get( "previewAdvancedExportReport.action",
+	{
+		organisationGroupId: getFieldValue( 'availableOrgunitGroups' )
+	}, previewExportReportReceived );
 }
 
 function previewExportReportReceived( parentElement ) 

@@ -40,6 +40,7 @@ import org.hisp.dhis.reportsheet.importing.ViewDataGeneric;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.importitem.ImportReport;
 import org.hisp.dhis.reportsheet.preview.action.XMLStructureResponseImport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -53,12 +54,8 @@ public class ViewDataOrganizationGroupAction
     // Dependency
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -95,7 +92,7 @@ public class ViewDataOrganizationGroupAction
         List<ImportItem> importItemsSource, List<ImportItem> importItemsDest )
     {
         int row = 0;
-        
+
         for ( OrganisationUnitGroup organisationUnitGroup : importReport.getOrganisationUnitGroups() )
         {
             List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits(
@@ -103,8 +100,8 @@ public class ViewDataOrganizationGroupAction
 
             Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
-            row ++;
-            
+            row++;
+
             for ( OrganisationUnit o : organisationUnits )
             {
                 for ( ImportItem importItem : importItemsSource )
@@ -119,7 +116,7 @@ public class ViewDataOrganizationGroupAction
                     importItemsDest.add( item );
                 }
 
-                row ++;
+                row++;
             }
         }
     }

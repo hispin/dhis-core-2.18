@@ -26,7 +26,13 @@ function importData()
 			periodId: byId('period').value
 		}, function( json ) {
 			unLockScreen();
-			showSuccessMessage( json.message );
+			
+			if ( json.response == "success" )
+			{
+				showSuccessMessage( json.message + " " + importItemIds.length + " " + i18n_data_value, 5000 );
+			} else {
+				showErrorMessage( json.message, 5000 );
+			}
 		});
 	}
 	else showWarningMessage( i18n_choose_import_item );

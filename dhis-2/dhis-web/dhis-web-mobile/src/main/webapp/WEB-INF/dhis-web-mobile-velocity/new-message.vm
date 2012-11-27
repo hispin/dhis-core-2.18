@@ -84,12 +84,12 @@
         var searchField = $('form[role="search"] input:text');
         var clearSearchButton = $('form[role="search"]').find('a[data-icon="delete"]');
 
-        var clearSearchFn = clearSearchButton.data('events')['click'][0];
+        var clearSearchFn = $._data(clearSearchButton[0], ('events'))['click'][0];
         clearSearchButton.unbind('click');
         clearSearchButton.bind('click', displaySelected );
         clearSearchButton.bind('click', clearSearchFn );
 
-        var fn1 = searchField.data('events')['keyup'][1];
+        var fn1 = $._data(searchField[0], ('events'))['keyup'][1];
         searchField.unbind('keyup');
 
         searchField.bind('keyup', function () {

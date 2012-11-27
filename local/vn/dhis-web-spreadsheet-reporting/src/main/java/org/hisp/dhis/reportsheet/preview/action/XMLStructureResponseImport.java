@@ -43,7 +43,9 @@ import java.util.Locale;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -249,14 +251,52 @@ public class XMLStructureResponseImport
 
     private void readingDetailsFormattedCell( Sheet sheet, Cell objCell )
     {
+        // The format information
         CellStyle format = objCell.getCellStyle();
 
         if ( format != null )
         {
-            xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'" );
-            xml.append( " width='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
-            xml.append( " border='" + format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight()
-                + format.getBorderTop() + "'/>" );
+            xml.append( "<format a='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            xml.append( " b='"
+                + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop())
+                + "'" );
+
+            Font font = WORKBOOK.getFontAt( format.getFontIndex() );
+
+            if ( font != null )
+            {
+                xml.append( "><font s='" + font.getFontHeightInPoints() + "'" );
+                xml.append( " b='" + (font.getBoldweight() == Font.BOLDWEIGHT_BOLD ? "1" : "0") + "'" );
+                xml.append( " i='" + font.getItalic() + "'" );
+                xml.append( " c='" + getSimilarColor( font.getColor() ) + "'" );
+                xml.append( "/>" );
+
+                xml.append( "</format>" );
+            }
+            else
+            {
+                xml.append( "/>" );
+            }
         }
+    }
+
+    private String getSimilarColor( short index )
+    {
+        if ( IndexedColors.BLUE.getIndex() == index )
+        {
+            return "blue";
+        }
+
+        if ( IndexedColors.DARK_BLUE.getIndex() == index )
+        {
+            return "darkblue";
+        }
+
+        if ( IndexedColors.BROWN.getIndex() == index )
+        {
+            return "brown";
+        }
+
+        return "";
     }
 }
