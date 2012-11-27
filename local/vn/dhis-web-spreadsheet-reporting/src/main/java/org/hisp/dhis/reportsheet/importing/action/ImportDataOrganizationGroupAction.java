@@ -56,7 +56,7 @@ public class ImportDataOrganizationGroupAction
         for ( int i = 0; i < importItemIds.length; i++ )
         {
             OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( importItemIds[i]
-                .split( "-" )[0] ) );
+                .split( "_" )[0] ) );
 
             addDataValue( o, period, importItemIds[i].split( "_" )[1], importItemIds[i].split( "_" )[2], oldDataValues,
                 newDataValues );

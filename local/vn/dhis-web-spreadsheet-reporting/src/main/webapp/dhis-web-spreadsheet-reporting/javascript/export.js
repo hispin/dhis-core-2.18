@@ -79,6 +79,8 @@ function changeExportType( _this )
 
 function reportSelected( _periodType )
 {
+	setFieldValue( 'selectedPeriodId2', "" );
+
 	if ( _periodType )
 	{
 		currentPeriodTypeName = _periodType;
