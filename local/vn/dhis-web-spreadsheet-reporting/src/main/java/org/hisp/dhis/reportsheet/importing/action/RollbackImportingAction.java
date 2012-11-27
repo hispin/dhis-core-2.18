@@ -27,14 +27,14 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.reportsheet.action.ActionSupport;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
@@ -42,7 +42,7 @@ import com.opensymphony.xwork2.Action;
  */
 
 public class RollbackImportingAction
-    implements Action
+    extends ActionSupport
 {
     @Autowired
     private SelectionManager selectionManager;
@@ -56,24 +56,47 @@ public class RollbackImportingAction
 
     public String execute()
     {
+        message = "";
+        
         Set<DataValue> oldDataValues = selectionManager.getOldDataValueList();
         Set<DataValue> newDataValues = selectionManager.getNewDataValueList();
 
-        if ( oldDataValues != null )
+        int i = 0;
+
+        if ( oldDataValues != null && !oldDataValues.isEmpty() )
         {
             for ( DataValue dv : oldDataValues )
             {
                 dataValueService.updateDataValue( dv );
+
+                i++;
             }
+            
+            selectionManager.setOldDataValueList( new HashSet<DataValue>() );
+
+            message = i18n.getString( "old_value" ) + ": " + i + "/" + oldDataValues.size() + " "
+                + i18n.getString( "reverted" ) + "<br/>";
         }
 
-        if ( newDataValues != null )
+        i = 0;
+
+        if ( newDataValues != null && !newDataValues.isEmpty() )
         {
             for ( DataValue dv : newDataValues )
             {
                 dataValueService.deleteDataValue( dv );
+
+                i++;
             }
+
+            selectionManager.setNewDataValueList( new HashSet<DataValue>() );
+            
+            message = i18n.getString( "new_value" ) + ": " + i + "/" + oldDataValues.size() + " "
+                + i18n.getString( "deleted" );
         }
+        
+        oldDataValues = null;
+        newDataValues = null;
 
         return SUCCESS;
     }
