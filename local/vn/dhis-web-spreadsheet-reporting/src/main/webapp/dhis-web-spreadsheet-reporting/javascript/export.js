@@ -14,6 +14,8 @@ var currentPeriodTypeName = '';
 // The current selected orgunit name
 var currentOrgunitName = '';
 
+var defaultForm = false;
+
 // Functions
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
@@ -116,7 +118,12 @@ function reportSelected( _periodType )
 					hideById( 'showSubItemTR' );
 					showById( 'orderedGroupLabelTR' );
 					showById( 'orderedGroupSelectTR' );
-					byId( 'exportReportDiv' ).style.height = '410px';
+					byId( 'exportReportDiv' ).style.height = (defaultForm ? '210px' : '410px' );
+					
+					if ( defaultForm )
+					{
+						byId( 'exportReportDiv' ).style.width = '435px';
+					}
 				} );
 			}
 			else if ( currentReportTypeName == "O" )
@@ -125,13 +132,13 @@ function reportSelected( _periodType )
 				showById( "periodCol" );
 				hideById( 'orderedGroupLabelTR' );
 				hideById( 'orderedGroupSelectTR' );
-				byId( 'exportReportDiv' ).style.height = '320px';
+				byId( 'exportReportDiv' ).style.height = (defaultForm ? '120px' : '320px');
 			} else {
 				showById( "periodCol" );
 				hideById( 'showSubItemTR' );
 				hideById( 'orderedGroupLabelTR' );
 				hideById( 'orderedGroupSelectTR' );
-				byId( 'exportReportDiv' ).style.height = '300px';
+				byId( 'exportReportDiv' ).style.height = (defaultForm ? '100px' : '300px');
 			}
 		}
 	}
@@ -187,6 +194,8 @@ function getRelativePeriods( value )
 			setFieldValue( 'selectedPeriodId2', submitDateId );
 		}
 	}
+	
+	hideById( "previewDiv" );
 }
 
 function getNextPeriod()

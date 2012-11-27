@@ -116,16 +116,17 @@ function previewExportReportReceived( parentElement )
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
 	var _sHTML		= [];
+	var _sHTMLBUTTONS = htmlPrintDownloadFunc.slice(0);
 
 	if ( isImport )
 	{
-		htmlPrintDownloadFunc.push( "</div>" );
+		_sHTMLBUTTONS.push( "</div>" );
 	}
 	else {
-		htmlPrintDownloadFunc.push( "&nbsp;&nbsp;<a href='downloadFile.action' title='Download'><img src='images/download.png'/></a></div>" );
+		_sHTMLBUTTONS.push( "&nbsp;&nbsp;<a href='downloadFile.action' title='Download'><img src='images/download.png'/></a></div>" );
 	}
 	
-	var tabsHTML 	= [ htmlPrintDownloadFunc.join('') + '<div id="tabs"><ul>' ];
+	var tabsHTML 	= [ _sHTMLBUTTONS.join('') + '<div id="tabs"><ul>' ];
 
 	for (var s = 0 ; s < _sheets.length ; s ++)
 	{
@@ -207,12 +208,12 @@ function previewExportReportReceived( parentElement )
 	}
 
 	tabsHTML.push( '</ul>', _sHTML.join(''), '</div>' );
-	tabsHTML.push( htmlPrintDownloadFunc.join('') );
+	tabsHTML.push( _sHTMLBUTTONS.join('') );
 
 	jQuery( '#previewDiv' ).html( tabsHTML.join('') );
 	jQuery( '#tabs' ).tabs({ collapsible : true });
-	enable( 'printExcelReportButton' );
 	applyStyleIntoPreview();
+	showById( "previewDiv" );
 	unLockScreen();
 }
 
