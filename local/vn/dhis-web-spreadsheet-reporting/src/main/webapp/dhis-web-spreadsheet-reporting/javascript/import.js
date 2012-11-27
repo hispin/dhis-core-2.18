@@ -138,8 +138,8 @@ function validateUploadExcelImportByXML(){
 	);
 }
 	
-function uploadExcelImport(){
-	
+function uploadExcelImport()
+{	
 	jQuery( "#upload" ).upload( 'uploadExcelImport.action',
 		{ 'draft': true },
 		function( data, e ) {
@@ -151,4 +151,15 @@ function uploadExcelImport(){
 			}
 		}
 	);
+}
+
+function rollbackImporting()
+{
+	jQuery.get( "rollbackImporting.action", {}, function( json ) {
+		if ( json.response && json.response == "success" ) {
+			showSuccessMessage( json.message );
+		} else {
+			showWarningMessage( i18n_no_value_rollbacked );
+		}
+	} );
 }

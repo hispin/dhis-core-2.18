@@ -5,9 +5,10 @@
 
 <h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
 <ul>
-	<li><a href="viewDataEntryStatus.action">$i18n.getString( "view_data_status" )</a></li>
+	<li><a href="../dhis-web-reporting/displayViewDataCompletenessForm.action">$i18n.getString( "view_data_status" )</a></li>
 	<li><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></li>
 	<!--
+	<li><a href="viewDataEntryStatus.action">$i18n.getString( "view_data_status" )</a></li>
 	<li><a href="viewJCharts.action">$i18n.getString( "chart" )&nbsp;</a></li>
 	<li><a href="selectAdvancedExportForm.action">$i18n.getString( "generate_advanced_report" )&nbsp;</a></li>
 	<li><a href="dataSetCompletedReports.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>	
