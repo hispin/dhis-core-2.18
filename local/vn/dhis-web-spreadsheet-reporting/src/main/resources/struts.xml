@@ -1342,7 +1342,8 @@
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
 				javascript/preview.js,
-				javascript/import.js</param>
+				javascript/import.js,
+				javascript/jQuery/jquery.jqprint.0.3.js</param>
 			<param name="stylesheets">
 				style/style.css,
 				style/previewStyle.css</param>

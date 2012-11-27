@@ -16,8 +16,7 @@ htmlStyle.push( "</style>" );
 
 htmlPrintDownloadFunc = [ "<div align='right'>" ];
 htmlPrintDownloadFunc.push(	"<a href='javascript:printExportReport();' title='Print'>" );
-htmlPrintDownloadFunc.push( "<img src='../images/printer.png'/></a>&nbsp;&nbsp;" );
-htmlPrintDownloadFunc.push( "<a href='downloadFile.action' title='Download'><img src='images/download.png'/></a></div>" );
+htmlPrintDownloadFunc.push( "<img src='../images/printer.png'/></a>" );
 
 // ----------------------------------------------------------------------
 // Methods
@@ -117,6 +116,15 @@ function previewExportReportReceived( parentElement )
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
 	var _sHTML		= [];
+
+	if ( isImport )
+	{
+		htmlPrintDownloadFunc.push( "</div>" );
+	}
+	else {
+		htmlPrintDownloadFunc.push( "&nbsp;&nbsp;<a href='downloadFile.action' title='Download'><img src='images/download.png'/></a></div>" );
+	}
+	
 	var tabsHTML 	= [ htmlPrintDownloadFunc.join('') + '<div id="tabs"><ul>' ];
 
 	for (var s = 0 ; s < _sheets.length ; s ++)

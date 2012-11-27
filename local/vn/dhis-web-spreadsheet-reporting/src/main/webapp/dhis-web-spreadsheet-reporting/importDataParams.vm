@@ -32,8 +32,8 @@
 		<td>					
 			<select name="period" id="period" style="min-width:20em;" type="text" #if(!$!fileExcel || !$!organisationUnit) disabled #end>
 			</select>
-			<input type="button" value="&lt;&lt;" id="lastYear" name="lastYear" onclick="getPreviousPeriod();"  #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
-			<input type="button" value="&gt;&gt;" id="nextYear" name="nextYear" onclick="getNextPeriod()" #if(!$!fileExcel || !$!organisationUnit) disabled #end />
+			<input type="button" value="&lt;&lt;" id="lastYear" name="lastYear" onclick="getImportingPeriod( 'previousPeriodsGeneric.action' );"  #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
+			<input type="button" value="&gt;&gt;" id="nextYear" name="nextYear" onclick="getImportingPeriod( 'nextPeriodsGeneric.action' )" #if(!$!fileExcel || !$!organisationUnit) disabled #end />
 		</td>
 	</tr>
 	<tr>
@@ -46,7 +46,7 @@
 <input type="button" onClick="javascript: getPreviewImportData();" style="width:100px" value="$i18n.getString('preview')" #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
 <input type="button" onClick="javascript: selectAllData( this );" style="width:100px" value="$i18n.getString('select_all')" #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
 <input type="button" onClick="javascript: importData();" style="width:100px" value="$i18n.getString('import')" #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
-<input type="button" onClick="javascript: rollbackImporting();" style="width:100px" value="$i18n.getString('roll_back_import')" #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
+<input type="button" onClick="javascript: rollbackImporting();" style="width:150px" value="$i18n.getString('roll_back_import')" #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
 
 <br/><br/>
 
