@@ -105,6 +105,18 @@ function getPeriodsByImportReport( importReportId ) {
 	} );
 }
 
+function getImportingPeriod( url )
+{
+	var periodList = jQuery( '#period' );
+	periodList.empty();
+	
+	jQuery.get( url, {}, function ( json ) {
+		for ( var i = 0 ; i < json.periods.length ; i ++ ) {
+			periodList.append( '<option value="' + i + '">' + json.periods[i].name + '</option>' );
+		}
+	} );
+}
+
 function validateUploadExcelImportByJSON() {
 
 	jQuery( "#upload" ).upload( 'validateUploadExcelImport.action',
