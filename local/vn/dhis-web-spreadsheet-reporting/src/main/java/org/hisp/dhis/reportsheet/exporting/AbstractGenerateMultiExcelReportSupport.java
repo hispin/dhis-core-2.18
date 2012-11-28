@@ -26,8 +26,13 @@ package org.hisp.dhis.reportsheet.exporting;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.PATTERN_DECIMAL_FORMAT1;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.applyPatternDecimalFormat;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.resetDecimalFormatByLocale;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -80,6 +85,9 @@ public abstract class AbstractGenerateMultiExcelReportSupport
             reports.add( exportReportService.getExportReport( Integer.parseInt( id ) ) );
         }
 
+        resetDecimalFormatByLocale( Locale.GERMAN );
+        applyPatternDecimalFormat( PATTERN_DECIMAL_FORMAT1 );
+        
         executeGenerateOutputFile( reports );
 
         this.complete();

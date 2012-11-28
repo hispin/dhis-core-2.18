@@ -27,6 +27,9 @@ package org.hisp.dhis.reportsheet.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.getFormattedNumber;
+import static org.apache.poi.ss.usermodel.ErrorConstants.getText;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +51,6 @@ import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.ErrorConstants;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
@@ -179,7 +181,7 @@ public class ExcelUtils
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
-                value = ErrorConstants.getText( cellPOI.getErrorCellValue() );
+                value = getText( cellPOI.getErrorCellValue() );
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
@@ -228,17 +230,17 @@ public class ExcelUtils
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
-                value = ErrorConstants.getText( cellPOI.getErrorCellValue() );
+                value = getText( cellPOI.getErrorCellValue() );
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
                 try
                 {
-                    value = NumberUtils.getFormattedNumber( dataFormatter.formatCellValue( cellPOI, evaluator ) );
+                    value = getFormattedNumber( dataFormatter.formatCellValue( cellPOI, evaluator ) );
                 }
                 catch ( Exception ex )
                 {
-                    value = ErrorConstants.getText( cellPOI.getErrorCellValue() );
+                    value = getText( cellPOI.getErrorCellValue() );
                 }
                 break;
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
@@ -248,7 +250,7 @@ public class ExcelUtils
                 }
                 else
                 {
-                    value = NumberUtils.getFormattedNumber( dataFormatter.formatCellValue( cellPOI ) );
+                    value = getFormattedNumber( dataFormatter.formatCellValue( cellPOI ) );
                 }
                 break;
 
@@ -341,7 +343,8 @@ public class ExcelUtils
                 }
                 else
                 {
-                    cellPOI.setCellValue( Double.parseDouble( value ) );
+                    // cellPOI.setCellValue( Double.parseDouble( value ) );
+                    cellPOI.setCellValue( getFormattedNumber( value ) );
                 }
             }
         }
@@ -384,7 +387,8 @@ public class ExcelUtils
                 }
                 else
                 {
-                    cellPOI.setCellValue( Double.parseDouble( value ) );
+                    // cellPOI.setCellValue( Double.parseDouble( value ) );
+                    cellPOI.setCellValue( getFormattedNumber( value ) );
                 }
             }
         }
@@ -439,7 +443,7 @@ public class ExcelUtils
             org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.createCell( column - 1 );
             cellPOI.setCellStyle( cellStyle );
             cellPOI.setCellFormula( formula );
-            
+
             evaluator.evaluateFormulaCell( cellPOI );
         }
     }
