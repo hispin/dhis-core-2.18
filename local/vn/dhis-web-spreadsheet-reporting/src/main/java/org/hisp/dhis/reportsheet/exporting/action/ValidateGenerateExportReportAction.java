@@ -165,7 +165,7 @@ public class ValidateGenerateExportReportAction
                 return ERROR;
             }
 
-            exportReportIds[0] = exportReport.getId() + "";
+            exportReportIds = new String[] { exportReport.getId() + "" };
         }
 
         if ( exportReportIds == null || exportReportIds.length == 0 )
@@ -214,7 +214,6 @@ public class ValidateGenerateExportReportAction
             // {
             // return ERROR;
             // }
-
             /** Validate for whether data set completed or not * */
             // Period period = PeriodType.createPeriodExternalId( periodIndex );
             //

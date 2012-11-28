@@ -280,6 +280,11 @@ public class GenerateExcelReportGeneric
         return generateByDataSet;
     }
 
+    public void setGenerateByDataSet( boolean generateByDataSet )
+    {
+        this.generateByDataSet = generateByDataSet;
+    }
+
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
@@ -724,5 +729,4 @@ public class GenerateExcelReportGeneric
 
         selectionManager.setDownloadFilePath( outputReportFile.getPath() );
     }
-
 }
