@@ -82,7 +82,7 @@ public class GenerateExcelReportFlowAction
 
     private Boolean generateByDataSet;
 
-    public boolean getGenerateByDataSet()
+    public boolean isGenerateByDataSet()
     {
         return (generateByDataSet == null) ? false : generateByDataSet;
     }

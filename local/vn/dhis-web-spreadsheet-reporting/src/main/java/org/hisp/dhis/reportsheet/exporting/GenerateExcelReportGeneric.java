@@ -275,7 +275,7 @@ public class GenerateExcelReportGeneric
         return inputStream;
     }
 
-    public boolean getGenerateByDataSet()
+    public boolean isGenerateByDataSet()
     {
         return generateByDataSet;
     }

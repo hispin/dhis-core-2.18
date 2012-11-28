@@ -57,7 +57,7 @@ public class RollbackImportingAction
     public String execute()
     {
         message = "";
-        
+
         Set<DataValue> oldDataValues = selectionManager.getOldDataValueList();
         Set<DataValue> newDataValues = selectionManager.getNewDataValueList();
 
@@ -71,7 +71,7 @@ public class RollbackImportingAction
 
                 i++;
             }
-            
+
             selectionManager.setOldDataValueList( new HashSet<DataValue>() );
 
             message = i18n.getString( "old_value" ) + ": " + i + "/" + oldDataValues.size() + " "
@@ -90,11 +90,11 @@ public class RollbackImportingAction
             }
 
             selectionManager.setNewDataValueList( new HashSet<DataValue>() );
-            
-            message = i18n.getString( "new_value" ) + ": " + i + "/" + oldDataValues.size() + " "
+
+            message += i18n.getString( "new_value" ) + ": " + i + "/" + newDataValues.size() + " "
                 + i18n.getString( "deleted" );
         }
-        
+
         oldDataValues = null;
         newDataValues = null;
 
