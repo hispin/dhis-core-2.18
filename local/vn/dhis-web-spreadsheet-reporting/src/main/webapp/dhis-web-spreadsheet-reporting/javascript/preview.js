@@ -5,6 +5,7 @@
 spreadsheetTreePath = '../dhis-web-spreadsheet-reporting/';
  
 isImport = false;
+generateByDataSet = false;
 idTemp = null;
 importlist = null;
 importItemIds = new Array();
@@ -87,7 +88,7 @@ function previewExportReport()
 	jQuery.get( spreadsheetTreePath + "previewExportReport.action",
 	{
 		showSubItem: !isChecked( 'showSubItem' ),
-		generateByDefault: getFieldValue( 'generateByDefault' )
+		generateByDataSet: generateByDataSet
 	}, previewExportReportReceived );
 }
 
