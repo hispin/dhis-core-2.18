@@ -80,16 +80,16 @@ public class GenerateExcelReportFlowAction
         this.showSubItem = showSubItem;
     }
 
-    private Boolean generateByDefault;
+    private Boolean generateByDataSet;
 
-    public boolean getGenerateByDefault()
+    public boolean getGenerateByDataSet()
     {
-        return (generateByDefault == null) ? false : generateByDefault;
+        return (generateByDataSet == null) ? false : generateByDataSet;
     }
 
-    public void setGenerateByDefault( Boolean generateByDefault )
+    public void setGenerateByDataSet( Boolean generateByDataSet )
     {
-        this.generateByDefault = generateByDefault;
+        this.generateByDataSet = generateByDataSet;
     }
 
     // -------------------------------------------------------------------------
