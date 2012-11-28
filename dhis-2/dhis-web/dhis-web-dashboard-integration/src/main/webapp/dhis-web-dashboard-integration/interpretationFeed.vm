@@ -59,7 +59,7 @@
 	                <span class="grey">${format.formatDate( $comment.created )}</span>
 	            </div>
 		        <div class="interpretationText">
-		            ${comment.text}
+		            $!dhisTextUtils.htmlify( ${comment.text} )
 		        </div>
             </div>
 	        #end
