@@ -223,11 +223,7 @@ public class DefaultReportService
 
     public void deleteReport( Report report )
     {
-        if ( report != null )
-        {   
-            periodService.deleteRelativePeriods( report.getRelatives() );
-            reportStore.delete( report );
-        }
+        reportStore.delete( report );
     }
 
     public Collection<Report> getAllReports()
