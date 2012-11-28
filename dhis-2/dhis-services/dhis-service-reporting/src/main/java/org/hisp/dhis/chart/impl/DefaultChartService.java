@@ -92,6 +92,7 @@ import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -470,6 +471,21 @@ public class DefaultChartService
     }
 
     /**
+     * Returns a stacked bar renderer.
+     */
+    private StackedBarRenderer getStackedBarRenderer()
+    {
+        StackedBarRenderer renderer = new StackedBarRenderer();
+        
+        for ( int i = 0; i < colors.length; i++ )
+        {
+            renderer.setSeriesPaint( i, colors[i] );
+        }
+
+        return renderer;
+    }
+    
+    /**
      * Returns a horizontal line marker for the given x value and label.
      */
     private Marker getMarker( Double value, String label )
@@ -593,6 +609,7 @@ public class DefaultChartService
         plot.setBackgroundPaint( Color.WHITE );
         plot.setOutlinePaint( Color.WHITE );
         plot.setOrientation( horizontal ? PlotOrientation.HORIZONTAL : PlotOrientation.VERTICAL );
+        plot.setRenderer( getStackedBarRenderer() );
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
