@@ -589,6 +589,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>norway</value>
         <value>paraguay</value>
         <value>philippines</value>
+        <value>pepfar</value>
         <value>peru</value>
         <value>rwanda</value>
         <value>senegal</value>
