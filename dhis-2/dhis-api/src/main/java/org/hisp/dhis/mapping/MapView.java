@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -71,11 +72,11 @@ public class MapView
 
     public static final String LEGEND_TYPE_AUTOMATIC = "automatic";
     public static final String LEGEND_TYPE_PREDEFINED = "predefined";
-    
+
     private static final long serialVersionUID = 1866358818802275436L;
 
     private String layer;
-    
+
     private String valueType;
 
     private IndicatorGroup indicatorGroup;
@@ -91,7 +92,7 @@ public class MapView
     private OrganisationUnit parentOrganisationUnit;
 
     private OrganisationUnitLevel organisationUnitLevel;
-    
+
     private String legendType;
 
     private Integer method;
@@ -109,13 +110,13 @@ public class MapView
     private Integer radiusHigh;
 
     private Double opacity;
-    
+
     private OrganisationUnitGroupSet organisationUnitGroupSet;
-    
+
     private Integer areaRadius;
 
     private transient String parentGraph;
-    
+
     private transient int parentLevel;
 
     public MapView()
@@ -158,7 +159,7 @@ public class MapView
     {
         return indicator != null ? indicator.getName() : dataElement != null ? dataElement.getName() : uid;
     }
-    
+
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
@@ -249,6 +250,11 @@ public class MapView
     public PeriodType getPeriodType()
     {
         return period != null ? period.getPeriodType() : null;
+    }
+
+    public void setPeriodType( PeriodType periodType )
+    {
+        // ignore
     }
 
     @JsonProperty
