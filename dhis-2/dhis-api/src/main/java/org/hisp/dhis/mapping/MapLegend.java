@@ -103,7 +103,7 @@ public class MapLegend
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Double getStartValue()
     {
@@ -116,7 +116,7 @@ public class MapLegend
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Double getEndValue()
     {
@@ -129,7 +129,7 @@ public class MapLegend
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getColor()
     {
@@ -142,7 +142,7 @@ public class MapLegend
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getImage()
     {

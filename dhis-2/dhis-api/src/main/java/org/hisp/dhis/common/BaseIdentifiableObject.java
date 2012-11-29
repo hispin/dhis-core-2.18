@@ -146,7 +146,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, BasicView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public String getCode()
     {
@@ -159,7 +159,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, BasicView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
@@ -172,7 +172,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, BasicView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public Date getLastUpdated()
     {
@@ -216,7 +216,7 @@ public class BaseIdentifiableObject
         {
             return true;
         }
-        
+
         if ( o == null || getClass() != o.getClass() ) return false;
 
         BaseIdentifiableObject that = (BaseIdentifiableObject) o;
@@ -230,12 +230,12 @@ public class BaseIdentifiableObject
         {
             return false;
         }
-        
+
         if ( name != null ? !name.equals( that.name ) : that.name != null )
         {
             return false;
         }
-        
+
         return true;
     }
 
