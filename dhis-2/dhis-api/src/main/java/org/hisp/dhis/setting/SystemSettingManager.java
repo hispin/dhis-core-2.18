@@ -82,6 +82,7 @@ public interface SystemSettingManager
     final int DEFAULT_ORGUNITGROUPSET_AGG_LEVEL = 3;    
     final String DEFAULT_GOOGLE_MAPS_API_KEY = "ABQIAAAAut6AhySExnYIXm5s2OFIkxRKNzJ-_9njnryRTbvC6CtrS4sRvRREWnxwlZUa630pLuPf3nD9i4fq9w";
     final String DEFAULT_START_MODULE = "dhis-web-dashboard-integration";
+    final String DEFAULT_APPLICATION_TITLE = "District Health Information Software 2";
     
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";

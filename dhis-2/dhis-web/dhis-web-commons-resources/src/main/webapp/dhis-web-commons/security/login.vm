@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>DHIS 2</title>        
+        <title>$encoder.htmlEncode( $applicationTitle )</title>        
         <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
