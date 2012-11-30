@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html#if( $offline && $offline == "true" ) manifest="../dhis-web-commons/cacheManifest.action"#end>
   <head>
-    <title>DHIS 2</title>
+    <title>$encoder.htmlEncode( $applicationTitle )</title>
 	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css" />
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}" />
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css" />
@@ -115,11 +115,7 @@
 	  </div>
 	  
       <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
-        #if ( $applicationTitle )
-          $encoder.htmlEncode( $applicationTitle )
-        #else
-          District Health Information Software 2
-        #end
+        $encoder.htmlEncode( $applicationTitle )
       </span>
       
       <span id="showLeftBar">
