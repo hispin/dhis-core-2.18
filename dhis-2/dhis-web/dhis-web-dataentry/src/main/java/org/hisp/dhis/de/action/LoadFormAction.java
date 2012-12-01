@@ -309,19 +309,24 @@ public class LoadFormAction
         if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 ) // for multiOrg, we only support section forms
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( multiOrganisationUnit );
+            List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
+
+            for ( OrganisationUnit child : organisationUnit.getChildren() )
+            {
+                if ( child.getDataSets().contains( dataSet ) )
+                {
+                    organisationUnitChildren.add( child );
+                }
+            }
+
+            Collections.sort( organisationUnitChildren, IdentifiableObjectNameComparator.INSTANCE );
 
             if ( organisationUnit.getDataSets().contains( dataSet ) )
             {
                 organisationUnits.add( organisationUnit );
             }
 
-            for ( OrganisationUnit child : organisationUnit.getChildren() )
-            {
-                if ( child.getDataSets().contains( dataSet ) )
-                {
-                    organisationUnits.add( child );
-                }
-            }
+            organisationUnits.addAll( organisationUnitChildren );
 
             getSectionForm( dataElements, dataSet );
             displayMode = "multiorg_section";
