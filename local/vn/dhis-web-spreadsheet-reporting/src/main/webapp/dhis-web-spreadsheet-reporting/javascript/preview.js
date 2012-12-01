@@ -85,11 +85,13 @@ function validatePreviewReport( isAdvanced )
 
 function previewExportReport()
 {
-	jQuery.get( spreadsheetTreePath + "previewExportReport.action",
-	{
-		showSubItem: !isChecked( 'showSubItem' ),
-		generateByDataSet: generateByDataSet
-	}, previewExportReportReceived );
+	$.ajax({
+		cache: false,
+		url: spreadsheetTreePath + "previewExportReport.action",
+		dataType: 'xml',
+		data: 'showSubItem=' + !isChecked( 'showSubItem' ) + '&generateByDataSet=' + generateByDataSet + '&_=[TIMESTAMP]',
+		success: previewExportReportReceived
+	});
 }
 
 function previewAdvandReport() 
@@ -126,7 +128,7 @@ function previewExportReportReceived( parentElement )
 		_sHTMLBUTTONS.push( "</div>" );
 	}
 	else {
-		_sHTMLBUTTONS.push( "&nbsp;&nbsp;<a href='../dhis-web-spreadsheet-reporting/downloadFile.action' title='Download'><img src='images/download.png'/></a></div>" );
+		_sHTMLBUTTONS.push( "&nbsp;&nbsp;<a href='../dhis-web-spreadsheet-reporting/downloadFile.action' title='Download'><img src='../dhis-web-spreadsheet-reporting/images/download.png'/></a></div>" );
 	}
 	
 	var tabsHTML 	= [ _sHTMLBUTTONS.join('') + '<div id="tabs"><ul>' ];

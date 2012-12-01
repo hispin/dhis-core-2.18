@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.importing;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@ package org.hisp.dhis.reportsheet.importing;
  */
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -113,7 +114,13 @@ public abstract class ImportDataGeneric
         {
             Period period = periodGenericManager.getSelectedPeriod();
 
-            executeToImport( organisationUnit, period, importItemIds );
+            Set<DataValue> oldDataValues = new HashSet<DataValue>();
+            Set<DataValue> newDataValues = new HashSet<DataValue>();
+
+            executeToImport( organisationUnit, period, importItemIds, oldDataValues, newDataValues );
+
+            selectionManager.setOldDataValueList( oldDataValues );
+            selectionManager.setNewDataValueList( newDataValues );
         }
 
         message = i18n.getString( "import_successfully" );
@@ -125,7 +132,8 @@ public abstract class ImportDataGeneric
     // Abstract method
     // -------------------------------------------------------------------------
 
-    public abstract void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds );
+    public abstract void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds,
+        Set<DataValue> oldDataValues, Set<DataValue> newDataValues );
 
     // -------------------------------------------------------------------------
     // Supportive methods
@@ -134,7 +142,7 @@ public abstract class ImportDataGeneric
     protected void addDataValue( OrganisationUnit unit, Period period, String expression, String value,
         Set<DataValue> oldList, Set<DataValue> newList )
     {
-        value = value.replaceAll( "\\.", "" ).replace( ",", "." );
+        //value = value.replaceAll( "\\.", "" ).replace( ",", "." );
 
         DataElementOperand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
 
@@ -156,7 +164,9 @@ public abstract class ImportDataGeneric
         }
         else
         {
-            oldList.add( dataValue );
+            DataValue backedUpDataValue = new DataValue( dataElement, period, unit, dataValue.getValue(), optionCombo );
+
+            oldList.add( backedUpDataValue );
 
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );

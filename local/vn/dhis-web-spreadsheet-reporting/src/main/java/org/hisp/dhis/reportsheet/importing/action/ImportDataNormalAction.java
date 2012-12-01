@@ -27,7 +27,6 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.datavalue.DataValue;
@@ -47,18 +46,13 @@ public class ImportDataNormalAction
     // Override the abstract method
     // -------------------------------------------------------------------------
 
-    public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds )
+    public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds,
+        Set<DataValue> oldDataValues, Set<DataValue> newDataValues )
     {
-        Set<DataValue> oldDataValues = new HashSet<DataValue>();
-        Set<DataValue> newDataValues = new HashSet<DataValue>();
-
         for ( int i = 0; i < importItemIds.length; i++ )
         {
             addDataValue( organisationUnit, period, importItemIds[i].split( "_" )[0], importItemIds[i].split( "_" )[1],
                 oldDataValues, newDataValues );
         }
-
-        selectionManager.setOldDataValueList( oldDataValues );
-        selectionManager.setNewDataValueList( newDataValues );
     }
 }
