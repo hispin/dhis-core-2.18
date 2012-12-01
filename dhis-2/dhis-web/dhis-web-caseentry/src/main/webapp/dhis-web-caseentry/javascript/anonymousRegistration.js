@@ -371,7 +371,7 @@ function showUpdateEvent( programStageInstanceId )
 {
 	hideById('dataEntryMenu');
 	showById('eventActionMenu');
-	jQuery("[name=eventActionLink]").show();
+	jQuery("[name=eventActionLink]").hide();
 	hideById('selectDiv');
     hideById('searchDiv');
     hideById('listDiv');
