@@ -287,11 +287,12 @@ function generateExportReport() {
 		
 	jQuery.postJSON( 'generateExportReport.action',
 	{
-		showSubItem: !isChecked( 'showSubItem' )	
+		showSubItem: !isChecked( 'showSubItem' ),
+		generateByDataSet: generateByDataSet
 	},
 	function ( json ) {
 		if ( json.response == "success" ) {
-			window.location = "downloadFile.action";		
+			window.location = "downloadFile.action";
 			unLockScreen();
 		}
 	});
