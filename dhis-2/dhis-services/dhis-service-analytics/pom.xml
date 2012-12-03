@@ -52,11 +52,6 @@
       <groupId>org.amplecode</groupId>
       <artifactId>quick</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.whalin</groupId>
-      <artifactId>Memcached-Java-Client</artifactId>
-      <version>3.0.1</version>
-    </dependency>
     
   </dependencies>
   <properties>
