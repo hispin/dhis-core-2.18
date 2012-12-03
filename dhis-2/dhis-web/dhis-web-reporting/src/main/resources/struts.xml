@@ -290,6 +290,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
       <param name="periodType">Weekly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="monthlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -297,6 +298,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
       <param name="periodType">Monthly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="quarterlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -304,6 +306,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
       <param name="periodType">Quarterly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="yearlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -311,6 +314,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
       <param name="periodType">Yearly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="weeklyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -318,6 +322,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">INDICATORVALUE</param>
       <param name="periodType">Weekly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="monthlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -325,6 +330,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">INDICATORVALUE</param>
       <param name="periodType">Monthly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="quarterlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -332,6 +338,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">INDICATORVALUE</param>
       <param name="periodType">Quarterly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="yearlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
@@ -339,6 +346,7 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">INDICATORVALUE</param>
       <param name="periodType">Yearly</param>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 
     <action name="exportMetaData" class="org.hisp.dhis.reporting.exp.MetaDataExportAction">
@@ -348,6 +356,7 @@
         <param name="contentDisposition">filename="${fileName}"</param>
         <param name="bufferSize">10240</param>
       </result>
+      <param name="requiredAuthorities">F_MYDATAMART_VIEW</param>
     </action>
 	
   </package>
