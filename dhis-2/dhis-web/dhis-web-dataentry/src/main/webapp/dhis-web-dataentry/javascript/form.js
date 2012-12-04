@@ -1387,7 +1387,7 @@ function displayValidationDialog( data, height )
     $( '#validationDiv' ).dialog( {
         modal: true,
         title: 'Validation',
-        width: 870,
+        width: 920,
         height: height
     } );
 }
