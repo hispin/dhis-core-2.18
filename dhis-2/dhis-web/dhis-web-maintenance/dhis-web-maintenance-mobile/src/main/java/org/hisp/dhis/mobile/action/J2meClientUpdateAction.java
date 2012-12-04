@@ -31,10 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.api.mobile.PatientMobileSettingService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientMobileSetting;
-
 
 import com.opensymphony.xwork2.Action;
 
