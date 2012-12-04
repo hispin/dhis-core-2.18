@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.mobile.action;
 
-import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
 
 import com.opensymphony.xwork2.Action;

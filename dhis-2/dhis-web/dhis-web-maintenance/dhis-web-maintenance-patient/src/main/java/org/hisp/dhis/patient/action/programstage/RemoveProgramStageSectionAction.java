@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.programstage;
 
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
-import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,13 +44,6 @@ public class RemoveProgramStageSectionAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
     private ProgramStageSectionService programStageSectionService;
 
     public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
@@ -62,13 +54,6 @@ public class RemoveProgramStageSectionAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-    private Integer programStageId;
-
-    public void setProgramStageId( Integer programStageId )
-    {
-        this.programStageId = programStageId;
-    }
 
     private Integer id;
 
