@@ -68,8 +68,6 @@ import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultResourceTableService.java 5459 2008-06-26 01:12:03Z
- *          larshelg $
  */
 public class DefaultResourceTableService
     implements ResourceTableService
