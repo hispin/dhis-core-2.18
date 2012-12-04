@@ -480,6 +480,7 @@ public class DefaultChartService
         for ( int i = 0; i < colors.length; i++ )
         {
             renderer.setSeriesPaint( i, colors[i] );
+            renderer.setShadowVisible( false );
         }
 
         return renderer;
@@ -653,6 +654,8 @@ public class DefaultChartService
         piePlot.setSimpleLabels( true );
         piePlot.setIgnoreZeroValues( true );
         piePlot.setIgnoreNullValues( true );
+        piePlot.setShadowXOffset( 0d );
+        piePlot.setShadowYOffset( 0d );
 
         for ( int i = 0; i < dataSets[0].getColumnCount(); i++ )
         {
