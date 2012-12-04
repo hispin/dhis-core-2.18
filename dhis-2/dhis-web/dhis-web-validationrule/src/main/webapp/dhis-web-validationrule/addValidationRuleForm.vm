@@ -6,11 +6,11 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td style="width:120px"><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name"></td>
 	</tr>
 	<tr>
-		<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) )</label></td>
+		<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) ($encoder.htmlEncode( $i18n.getString( "visible_in_validation_violations" ) ))</label></td>
 		<td><textarea name="description"></textarea></td>
 	</tr>
 	<tr>

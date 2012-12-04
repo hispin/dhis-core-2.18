@@ -5,13 +5,11 @@
 #if( $results.size() > 0)
     <table class="listTable" width="100%">
         <tr>
-            <th style="width:110px">$i18n.getString( "validation_rule" )</th>                
+            <th>$i18n.getString( "validation_rule" )</th>                
             <th>$i18n.getString( "expression" )</th>
-            <th>$i18n.getString( "description" )</th>
-            <th>$i18n.getString( "value" )</th>
-            <th>$i18n.getString( "operator" )</th>
-            <th>$i18n.getString( "value" )</th>
-            <th>$i18n.getString( "description" )</th>
+            <th style="width:65px">$i18n.getString( "left_side" )</th>
+            <th style="width:65px">$i18n.getString( "operator" )</th>
+            <th style="width:65px">$i18n.getString( "right_side" )</th>
         </tr>
         #set( $mark = false )   
         #foreach( $result in $results )
@@ -19,13 +17,11 @@
             #set ( $leftFormula = $leftsideFormulaMap.get( $id ) )
             #set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
             <tr>
-                <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $result.validationRule.name )</td>
+                <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $result.validationRule.getDescriptionNameFallback() )</td>
                 <td#alternate( $mark )>$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $i18n.getString( $result.validationRule.operator.mathematicalOperator ) ) $!encoder.htmlEncode( $rightFormula )</td>
-                <td#alternate( $mark )>$!encoder.htmlEncode( $result.validationRule.leftSide.description )</td>
                 <td#alternate( $mark )>$result.leftsideValue</td>
                 <td#alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $result.validationRule.operator.mathematicalOperator ) )</td>
                 <td#alternate( $mark )>$result.rightsideValue</td>
-                <td#alternate( $mark )>$!encoder.htmlEncode( $result.validationRule.rightSide.description )</td>
             </tr>
         #if( $mark )
             #set( $mark = false )

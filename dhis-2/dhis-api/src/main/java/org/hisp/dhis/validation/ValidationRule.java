@@ -131,6 +131,10 @@ public class ValidationRule
         return "[" + name + "]";
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // ------------------------------------------------------------------------- 
+
     public void clearExpressions()
     {
         this.leftSide = null;
@@ -147,6 +151,11 @@ public class ValidationRule
     {
         groups.remove( validationRuleGroup );
         validationRuleGroup.getMembers().remove( this );
+    }
+    
+    public String getDescriptionNameFallback()
+    {
+        return description != null && !description.trim().isEmpty() ? description : name;
     }
 
     // -------------------------------------------------------------------------
