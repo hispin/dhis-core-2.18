@@ -27,9 +27,7 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 
@@ -48,6 +46,7 @@ public class DeleteRelationshipAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
     private int relationshipTypeId;
 
     public int getRelationshipTypeId()
@@ -75,6 +74,7 @@ public class DeleteRelationshipAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private RelationshipService relationshipService;
 
     public void setRelationshipService( RelationshipService relationshipService )
@@ -104,5 +104,4 @@ public class DeleteRelationshipAction
 
         return REDIRECT;
     }
-
 }

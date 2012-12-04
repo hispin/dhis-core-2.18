@@ -124,16 +124,13 @@ public class HibernateUserStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<User> getUsersByName( String name)
+    public Collection<User> getUsersByName( String name )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
             Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
         
-        return criteria.list();
-       
+        return criteria.list();  
     }
-
-
 }

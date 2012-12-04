@@ -28,14 +28,11 @@
 package org.hisp.dhis.light.singleevent.action;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.option.OptionSet;
-import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 

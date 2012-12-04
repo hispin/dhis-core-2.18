@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.light.utils.NamebasedUtils;
@@ -52,8 +53,6 @@ import com.opensymphony.xwork2.Action;
 public class GetProgramStageFormAction
     implements Action
 {
-    private static final String REDIRECT = "redirect";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

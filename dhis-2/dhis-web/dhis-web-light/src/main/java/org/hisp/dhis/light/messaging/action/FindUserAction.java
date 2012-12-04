@@ -72,8 +72,6 @@ public class FindUserAction
     {
         this.userId = userId;
     }
-    
-
 
     @Override
     public String execute()
@@ -89,16 +87,16 @@ public class FindUserAction
                 keyword = keys[0] + "  " + keys[1];
             }
         }
-        users = userService.getUsersByName(keyword);
         
-        
-        if(users.size() == 1){
+        users = userService.getUsersByName( keyword );
+
+        if ( users.size() == 1 )
+        {
             User user = users.iterator().next();
             userId = user.getId();
             return REDIRECT;
         }
-  
+
         return SUCCESS;
     }
-
 }

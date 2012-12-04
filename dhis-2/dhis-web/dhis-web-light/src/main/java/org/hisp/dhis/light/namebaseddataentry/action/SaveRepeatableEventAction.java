@@ -35,6 +35,7 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+
 import com.opensymphony.xwork2.Action;
 
 public class SaveRepeatableEventAction
@@ -161,8 +162,6 @@ public class SaveRepeatableEventAction
     public String execute()
         throws Exception
     {
-        ProgramStageInstance currentStageInstance = programStageInstanceService
-            .getProgramStageInstance( currentProgramStageInstanceId );
         DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
