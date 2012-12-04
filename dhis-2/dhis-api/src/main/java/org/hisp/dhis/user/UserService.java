@@ -373,4 +373,8 @@ public interface UserService
      * @param user the user.
      */
     void removeUserSettings( User user );
+    
+    
+    Collection<User> getUsersByName(String name);
+    
 }

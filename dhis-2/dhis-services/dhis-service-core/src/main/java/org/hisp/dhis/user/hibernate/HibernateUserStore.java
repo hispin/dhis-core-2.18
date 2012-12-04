@@ -27,8 +27,10 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import java.util.Collection;
 import java.util.Iterator;
+
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -39,12 +41,16 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 
+
 /**
  * @author Nguyen Hong Duc
  */
 public class HibernateUserStore
-    extends HibernateIdentifiableObjectStore<User> implements UserStore
+    extends HibernateIdentifiableObjectStore<User>
+    implements UserStore
 {
+  
+    
     // -------------------------------------------------------------------------
     // UserStore implementation
     // -------------------------------------------------------------------------
@@ -65,7 +71,8 @@ public class HibernateUserStore
     public Collection<User> getBetweenByName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
-        criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ), Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
+        criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
+            Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
@@ -107,11 +114,26 @@ public class HibernateUserStore
 
         return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", orgunits ).list();
     }
-    
+
     public void removeUserSettings( User user )
     {
         String hql = "delete from UserSetting us where us.user = :user";
-        
+
         getQuery( hql ).setEntity( "user", user ).executeUpdate();
     }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<User> getUsersByName( String name)
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
+            Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
+        criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
+        
+        return criteria.list();
+       
+    }
+
+
 }
