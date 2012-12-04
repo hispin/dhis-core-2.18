@@ -33,6 +33,7 @@ import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,6 +54,7 @@ public class ResourceTableController
     private ResourceTableService resourceTableService;
         
     @RequestMapping( value = "/analytics", method = RequestMethod.PUT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void analytics( HttpServletResponse response )
     {
         analyticsTableService.update();
@@ -61,6 +63,7 @@ public class ResourceTableController
     }
     
     @RequestMapping( method = RequestMethod.PUT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void resourceTables( HttpServletResponse response )
     {
         resourceTableService.generateCategoryOptionComboNames();
