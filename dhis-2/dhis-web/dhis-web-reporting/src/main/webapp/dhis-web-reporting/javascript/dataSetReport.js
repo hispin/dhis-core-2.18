@@ -152,18 +152,21 @@ function hideCriteria()
 function showContent()
 {
 	$( "#content" ).show( "fast" );
+	$( ".downloadButton" ).show();
+	$( "#interpretationArea" ).autogrow();
 }
 
 function hideContent()
 {
 	$( "#content" ).hide( "fast" );
+	$( ".downloadButton" ).hide();
 }
 
 //------------------------------------------------------------------------------
 // Share
 //------------------------------------------------------------------------------
 
-function viewShareForm()
+function viewShareForm() // Not in use
 {
 	$( "#shareForm" ).dialog( {
 		modal : true,
@@ -190,8 +193,7 @@ function shareInterpretation()
 	    	type: "POST",
 	    	contentType: "text/html",
 	    	data: text,
-	    	success: function() {
-	    		$( "#shareForm" ).dialog( "close" );
+	    	success: function() {	    		
 	    		$( "#interpretationArea" ).val( "" );
 	    		setHeaderDelayMessage( i18n_interpretation_was_shared );
 	    	}    	
