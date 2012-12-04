@@ -147,6 +147,13 @@ public class UpdateDataSetAction
         this.notificationRecipients = notificationRecipients;
     }
 
+    private boolean notifyCompletingUser;
+
+    public void setNotifyCompletingUser( boolean notifyCompletingUser )
+    {
+        this.notifyCompletingUser = notifyCompletingUser;
+    }
+
     private boolean skipAggregation;
 
     public void setSkipAggregation( boolean skipAggregation )
@@ -262,6 +269,7 @@ public class UpdateDataSetAction
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
+        dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setSkipOffline( skipOffline );
         dataSet.setNotificationRecipients( userGroupService.getUserGroup( notificationRecipients ) );
 
