@@ -27,13 +27,13 @@
 
 package org.hisp.dhis.light.singleevent.action;
 
-import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -48,6 +48,8 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.util.SessionUtils;
+
+import com.opensymphony.xwork2.Action;
 
 public class GetSingleEventFormAction
     implements Action
