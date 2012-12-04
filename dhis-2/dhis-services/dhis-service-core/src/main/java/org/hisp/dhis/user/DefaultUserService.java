@@ -252,6 +252,9 @@ public class DefaultUserService
     {
         return userStore.getUsersByPhoneNumber( phoneNumber );
     }
+    public Collection<User> getUsersByName(String name){
+        return userStore.getUsersByName(name);
+    }
 
     public Collection<User> getUsersWithoutOrganisationUnit()
     {

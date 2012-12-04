@@ -561,5 +561,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.messaging.action.FindUserAction"
+		class="org.hisp.dhis.light.messaging.action.FindUserAction">
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	</bean>
 
 </beans>

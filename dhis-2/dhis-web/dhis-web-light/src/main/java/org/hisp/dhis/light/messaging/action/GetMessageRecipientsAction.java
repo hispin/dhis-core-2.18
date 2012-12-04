@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.light.messaging.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,52 +27,47 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import com.opensymphony.xwork2.Action;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Nguyen Hong Duc
+ * @author Le Hong Em <em.hispvietnam@gmail.com>
  */
-public interface UserStore
-    extends GenericIdentifiableObjectStore<User>
+public class GetMessageRecipientsAction
+    implements Action
 {
-    String ID = UserStore.class.getName();
 
-    /**
-     * Returns a Collection of the Users which are not associated with any
-     * OrganisationUnits.
-     * 
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersWithoutOrganisationUnit();
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    /**
-     * Returns a Collection of the Users which are associated with
-     * OrganisationUnits.
-     * 
-     * @param orgunits a Collection of the organization units.
-     * 
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits );
+    @Autowired
+    private UserService userService;
 
-    /**
-     * Returns a Collection of Users which are having given Phone number.
-     * 
-     * @param phoneNumber
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByPhoneNumber( String phoneNumber );
+    private Integer userId;
 
-    /**
-     * Removes all user settings associated with the given user.
-     * 
-     * @param user the user.
-     */
-    void removeUserSettings( User user );
+    public void setUserId( Integer userId )
+    {
+        this.userId = userId;
+    }
 
-    Collection<User> getUsersByName( String name );
+    private User user;
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        user = userService.getUser( userId );
+
+        return SUCCESS;
+    }
 
 }

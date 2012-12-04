@@ -275,5 +275,6 @@ public class DefaultMessageService
         {
             messageSender.sendMessage( subject, text, sender, users, false );
         }
-    }
+    }   
+        
 }

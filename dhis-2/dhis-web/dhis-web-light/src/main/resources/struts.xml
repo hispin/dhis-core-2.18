@@ -460,6 +460,25 @@
         class="org.hisp.dhis.light.message.action.SendFeedbackAction">
       <result name="success" type="redirect">/light/index.action</result>
     </action>
+    
+    <action name="searchUser"
+        class="org.hisp.dhis.light.messaging.action.FindUserAction">
+    <result name="redirect" type="redirect">showUserList.action?userId=${userId}</result>
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/messages.vm</param>
+    </action>
+    
+    
+    <action name="showUserList"
+        class="org.hisp.dhis.light.messaging.action.GetMessageRecipientsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/sendMessageOnMobile.vm</param>
+    </action>
+    
+    <action name="sendMessage"
+        class="org.hisp.dhis.light.messaging.action.SendMessagesAction">
+      <result name="success" type="redirect">/light/messages.action</result>
+    </action>
 
     <!-- Anonymous -->
     <action name="anonymous"
@@ -482,6 +501,8 @@
       <param name="page">/dhis-web-light/anonymous/anonymousProgramForm.vm</param>
 	  <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
+    
+    
     
   </package>
 </struts>
