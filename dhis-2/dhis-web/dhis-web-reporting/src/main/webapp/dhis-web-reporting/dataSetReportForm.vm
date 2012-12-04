@@ -1,7 +1,6 @@
 <script type="text/javascript">
     jQuery(document).ready(function() {        
-	    jQuery( "#interpretationArea" ).autogrow();
-	  	
+	    	  	
 	  	#if( $render == true )
 	    var dataSetReport = {
 	        dataSet: "${ds}",
@@ -66,6 +65,8 @@ div.inputSection {
 
 <div id="control">
 <input type="button" value='$i18n.getString( "data" )' style="width:120px" onclick="showCriteria()" />
+<input type="button" class="downloadButton" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportDataSetReport( 'xls' )" style="width:140px; display:none;">
+<input type="button" class="downloadButton" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportDataSetReport( 'pdf' )" style="width:140px; display:none;">
 </div>
 
 <div id="criteria" class="inputCriteria" style="width:360px;height:450px;">
@@ -111,10 +112,5 @@ div.inputSection {
 </div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
-
-<div id="shareForm">
-<textarea id="interpretationArea" class="interpretationArea" placeholder="$i18n.getString( 'write_your_interpretation' )"></textarea>
-<input type="button" class="interpretationButton" value="$i18n.getString( 'share' )" onclick="shareInterpretation( '${uid}', '$!{ou}' )">
-</div>
 
 <div id="content"></div>
