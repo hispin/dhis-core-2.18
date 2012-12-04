@@ -168,27 +168,41 @@ public class DefaultMessageService
     {
         DataSet dataSet = registration.getDataSet();
         
-        if ( dataSet == null || dataSet.getNotificationRecipients() == null || dataSet.getNotificationRecipients().getMembers().isEmpty() )
+        if ( dataSet == null )
         {
             return 0;
         }
-        
+
         UserGroup userGroup = dataSet.getNotificationRecipients();
         
         User sender = currentUserService.getCurrentUser();
 
+        Set<User> recipients = new HashSet<User>();
+        
+        if ( userGroup != null )
+        {
+            recipients.addAll( userGroup.getMembers() );
+        }
+
+        if ( dataSet.isNotifyCompletingUser() )
+        {
+            recipients.add( sender );
+        }
+        
+        if ( recipients.isEmpty() )
+        {
+            return 0;
+        }
+        
         String text = new VelocityManager().render( registration, COMPLETE_TEMPLATE );
 
         MessageConversation conversation = new MessageConversation( COMPLETE_SUBJECT, sender );
 
         conversation.addMessage( new Message( text, null, sender ) );
         
-        for ( User user : userGroup.getMembers() )
+        for ( User user : recipients )
         {
-            if ( user.getUserCredentials().getAllDataSets().contains( dataSet ) )
-            {
-                conversation.addUserMessage( new UserMessage( user ) );
-            }
+            conversation.addUserMessage( new UserMessage( user ) );
         }
 
         if ( !conversation.getUserMessages().isEmpty() )

@@ -136,7 +136,7 @@ public class DataSet
     private int expiryDays;
     
     /**
-     * Property indicating whether aggregation should be skipped.
+     * Indicating whether aggregation should be skipped.
      */
     private boolean skipAggregation;
     
@@ -144,6 +144,11 @@ public class DataSet
      * User group which will receive notifications when data set is marked complete.
      */
     private UserGroup notificationRecipients;
+    
+    /**
+     * Indicating whether the user completing this data set should be sent a notification.
+     */
+    private boolean notifyCompletingUser;
 
     // -------------------------------------------------------------------------
     // Form properties
@@ -568,6 +573,19 @@ public class DataSet
     public void setNotificationRecipients( UserGroup notificationRecipients )
     {
         this.notificationRecipients = notificationRecipients;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isNotifyCompletingUser()
+    {
+        return notifyCompletingUser;
+    }
+
+    public void setNotifyCompletingUser( boolean notifyCompletingUser )
+    {
+        this.notifyCompletingUser = notifyCompletingUser;
     }
 
     @JsonProperty

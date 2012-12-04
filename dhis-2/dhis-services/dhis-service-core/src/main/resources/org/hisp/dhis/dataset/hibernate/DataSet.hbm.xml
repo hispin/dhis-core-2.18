@@ -69,6 +69,8 @@
 	
 	<many-to-one name="notificationRecipients" class="org.hisp.dhis.user.UserGroup"
 	   foreign-key="fk_dataset_notificationrecipients" />
+	   
+	<property name="notifyCompletingUser" />
 
 	<!-- Form properties -->
 

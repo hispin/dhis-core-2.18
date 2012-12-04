@@ -205,9 +205,7 @@ public class RegisterCompleteDataSetAction
 
             registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
-            boolean notify = dataSet != null && dataSet.getNotificationRecipients() != null;
-
-            registrationService.saveCompleteDataSetRegistration( registration, notify );
+            registrationService.saveCompleteDataSetRegistration( registration, true );
 
             log.info( "DataSet registered as complete: " + registration );
         }

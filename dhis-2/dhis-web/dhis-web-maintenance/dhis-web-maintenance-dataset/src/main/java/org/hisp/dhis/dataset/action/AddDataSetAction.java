@@ -135,6 +135,13 @@ public class AddDataSetAction
     {
         this.notificationRecipients = notificationRecipients;
     }
+    
+    private boolean notifyCompletingUser;
+
+    public void setNotifyCompletingUser( boolean notifyCompletingUser )
+    {
+        this.notifyCompletingUser = notifyCompletingUser;
+    }
 
     private boolean skipAggregation;
 
@@ -234,6 +241,7 @@ public class AddDataSetAction
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
+        dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setSkipOffline( skipOffline );
         
         dataSetService.addDataSet( dataSet );
