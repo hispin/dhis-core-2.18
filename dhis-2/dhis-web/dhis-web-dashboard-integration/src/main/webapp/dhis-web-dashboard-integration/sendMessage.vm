@@ -40,7 +40,7 @@ jQuery(function() {
 
 #if( !${recipient} )
 <tr>
-<td style="width:80px" rowspan="2">$i18n.getString( "recipients" )</td>
+<td style="width:80px">$i18n.getString( "to_org_unit" )</td>
 <td>
 #organisationUnitSelectionTree( true true false )
 </td>
@@ -48,10 +48,13 @@ jQuery(function() {
 #end
 
 <tr>
+<td style="width:80px">$i18n.getString( "to_user" )</td>
 <td>
 <input type="hidden" name="recipients" id="recipients" style="width:545px; padding:4px; border:1px solid grey;"/>
 </td>
 </tr>
+
+<tr><td colspan="2" style="height:1px"></td></tr>
 
 <tr>
 <td>$i18n.getString( "subject" )</td>
