@@ -5,8 +5,15 @@ $( document ).ready( function()
 	
 	$( document ).click( hideSearch );
 
+	$( "#searchField" ).focus( function() {
+		$( "#searchDiv" ).css( "border-color", "#999" );
+	} ).blur( function() {
+		$( "#searchDiv" ).css( "border-color", "#ccc" );
+	} );
+
+	$( "#searchField" ).focus();
 	$( "#searchField" ).keyup( search );
-		
+	
 	var viewportWidth = parseInt( $( window ).width() );
 	var linkWidth = parseInt( 338 );
 	var chartWidth = parseInt( 325 );
