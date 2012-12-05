@@ -853,7 +853,7 @@ function resetActiveEvent( programInstanceId )
 		jQuery('#tr2_' + programInstanceId).html("");
 		jQuery('#tr2_' + programInstanceId).attr("onClick", "");
 		
-		hideById('entryForm');
+		//hideById('entryForm');
 		hideById('executionDateTB');
 		hideById('inputCriteriaDiv');
 	}
