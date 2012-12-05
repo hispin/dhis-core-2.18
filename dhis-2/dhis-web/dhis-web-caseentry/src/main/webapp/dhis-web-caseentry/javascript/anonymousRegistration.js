@@ -246,19 +246,19 @@ function searchEvents( listAll )
 	hideById('listDiv');
 	
 	var params = '';
+	jQuery( '#displayInReports option' ).each( function( i, item ){
+		var input = jQuery( item );
+		params += '&searchingValues=de_' + input.val() + '_false_';
+	});
 	
 	if(listAll){	
-		params  = 'startDate=';
+		params += '&startDate=';
 		params += '&endDate=';
-		jQuery( '#displayInReports option' ).each( function( i, item ){
-			var input = jQuery( item );
-			params += '&searchingValues=de_' + input.val() + '_false_';
-		});
 	}
 	else{
 		var value = '';
 		var searchingValue = '';
-		params  = '&startDate=' + getFieldValue('startDate');
+		params += '&startDate=' + getFieldValue('startDate');
 		params += '&endDate=' + getFieldValue('endDate');
 		if(byId("incompleted").checked)
 		{
@@ -472,7 +472,7 @@ function completedAndAddNewEvent()
 
 function removeEmptyEvents()
 {	
-	var result = window.confirm( i18n_confirm_delete );
+	var result = window.confirm( i18n_confirm_remove_empty_events );
     
     if ( result )
     {
