@@ -1,17 +1,3 @@
-<script>
-	jQuery(document).ready(	function(){
-		#if($organisationUnit)
-			enable('listPatientBtn');
-			enable('addPatientBtn');
-			enable('advancedSearchBtn');
-			enable('searchObjectId');
-		#else
-			disable('listPatientBtn');
-			disable('addPatientBtn');
-			disable('advancedSearchBtn');
-		#end
-	});
-</script>
 <h3 id='mainLinkLbl'>$i18n.getString( "patient_management" ) #openHelp( "patient" )</a></h3>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
@@ -132,7 +118,14 @@
 		showById('searchDiv');
 	#end
 	
-	enable('addPatientBtn');
-	enable('listPatientBtn');
-	
+	#if($organisationUnit)
+		enable('listPatientBtn');
+		enable('addPatientBtn');
+		enable('advancedSearchBtn');
+		enable('searchObjectId');
+	#else
+		disable('listPatientBtn');
+		disable('addPatientBtn');
+		disable('advancedSearchBtn');
+	#end
 </script>
