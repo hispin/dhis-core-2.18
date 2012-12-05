@@ -8,7 +8,7 @@ $( document ).ready( function()
 	$( "#searchField" ).focus( function() {
 		$( "#searchDiv" ).css( "border-color", "#999" );
 	} ).blur( function() {
-		$( "#searchDiv" ).css( "border-color", "#ccc" );
+		$( "#searchDiv" ).css( "border-color", "#bbb" );
 	} );
 
 	$( "#searchField" ).focus();
