@@ -28,17 +28,95 @@ package org.hisp.dhis.api.controller.organisationunit;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = OrganisationUnitController.RESOURCE_PATH )
+@RequestMapping(value = OrganisationUnitController.RESOURCE_PATH)
 public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
     public static final String RESOURCE_PATH = "/organisationUnits";
+
+    @Override
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        OrganisationUnit entity = getEntity( uid );
+
+        if ( entity == null )
+        {
+            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
+            return null;
+        }
+
+        if ( options.getOptions().containsKey( "level" ) )
+        {
+            int level = -1;
+
+            try
+            {
+                level = Integer.parseInt( options.getOptions().get( "level" ) );
+            }
+            catch ( Exception e )
+            {
+                level = entity.getOrganisationUnitLevel();
+            }
+
+            if ( level == entity.getOrganisationUnitLevel() )
+            {
+                model.addAttribute( "model", entity );
+            }
+            else if ( level < entity.getOrganisationUnitLevel() )
+            {
+                while ( level < entity.getOrganisationUnitLevel() )
+                {
+                    entity = entity.getParent();
+                }
+
+                model.addAttribute( "model", entity );
+            }
+            else
+            {
+                // TODO
+                // System.err.println( "GET CHILDREN" );
+                model.addAttribute( "model", entity );
+            }
+        }
+        else
+        {
+            model.addAttribute( "model", entity );
+        }
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( entity );
+        }
+
+        postProcessEntity( entity );
+        postProcessEntity( entity, parameters );
+
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() );
+    }
+
 }
