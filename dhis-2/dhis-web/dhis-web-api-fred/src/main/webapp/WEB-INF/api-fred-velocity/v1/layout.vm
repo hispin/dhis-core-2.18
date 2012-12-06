@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>FRED Facility API v1 (DHIS2)</title>
+    <title>FRED Facility API v1.0 (DHIS2)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="$baseUrl/dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.8.2"></script>
@@ -33,7 +33,7 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <a class="brand" href="#">FRED Facility API v1</a>
+            <a class="brand" href="#">FRED Facility API v1.0</a>
 
             <div class="nav-collapse collapse">
                 <ul class="nav">

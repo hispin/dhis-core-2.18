@@ -67,6 +67,10 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
+    <url-pattern>/api-fred/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>OpenSessionInViewFilter</filter-name>
     <url-pattern>/mobile/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
