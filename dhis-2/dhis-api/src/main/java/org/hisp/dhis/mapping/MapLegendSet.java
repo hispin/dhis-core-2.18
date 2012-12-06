@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * @author Jan Henrik Overland
  */
-@JacksonXmlRootElement( localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement(localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE)
 public class MapLegendSet
     extends BaseIdentifiableObject
 {
@@ -75,7 +75,7 @@ public class MapLegendSet
     @Override
     public int hashCode()
     {
-        return name.hashCode();
+        return name == null ? 0 : name.hashCode();
     }
 
     @Override
@@ -115,8 +115,8 @@ public class MapLegendSet
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getSymbolizer()
     {
         return symbolizer;
@@ -129,9 +129,9 @@ public class MapLegendSet
 
     @JsonProperty
     // @JsonDeserialize( using = JacksonMapLegendsDeserializer.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "mapLegends", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "mapLegend", namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "mapLegends", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty(localName = "mapLegend", namespace = Dxf2Namespace.NAMESPACE)
     public Set<MapLegend> getMapLegends()
     {
         return mapLegends;

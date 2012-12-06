@@ -72,7 +72,7 @@ public class MapLegend
     @Override
     public int hashCode()
     {
-        return name.hashCode();
+        return name == null ? 0 : name.hashCode();
     }
 
     @Override
