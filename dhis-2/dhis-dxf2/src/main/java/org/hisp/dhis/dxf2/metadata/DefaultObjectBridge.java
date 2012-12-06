@@ -262,13 +262,28 @@ public class DefaultObjectBridge
         {
             return objects.iterator().next();
         }
-        else if ( objects.size() > 1 )
-        {
-            log.debug( "Multiple objects found for " + object + ", object discarded, returning null." );
-        }
         else
         {
-            log.debug( "No object found for " + object + ", returning null." );
+            String objectName = null;
+
+            try
+            {
+                // several of our domain objects build toString based on several properties, which is not checked for
+                // null, which means that a NPE is very likely.
+                objectName = object.toString();
+            }
+            catch ( NullPointerException ignored )
+            {
+            }
+
+            if ( objects.size() > 1 )
+            {
+                log.debug( "Multiple objects found for " + objectName + ", object discarded, returning null." );
+            }
+            else
+            {
+                log.debug( "No object found for " + objectName + ", returning null." );
+            }
         }
 
         return null;
