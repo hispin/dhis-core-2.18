@@ -1,7 +1,7 @@
 <script>
     $(function () {
-        $(".activateButton").click(function () {
-            if (confirm("Are you sure you want to activate this facility?")) {
+        $('.activateButton').click(function () {
+            if (confirm('Are you sure you want to activate this facility?')) {
                 var id = $(this).parent().parent().find('.facility-id').text();
 
                 $.ajax({
@@ -14,8 +14,8 @@
             }
         });
 
-        $(".deactivateButton").click(function () {
-            if (confirm("Are you sure you want to de-activate this facility?")) {
+        $('.deactivateButton').click(function () {
+            if (confirm('Are you sure you want to de-activate this facility?')) {
                 var id = $(this).parent().parent().find('.facility-id').text();
 
                 $.ajax({
@@ -30,6 +30,12 @@
     });
 </script>
 
+<style>
+    .table > tbody > tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
 <div class="btn-group pull-right">
     <a href="facilities.json" class="btn btn-small btn-info" style="margin-bottom: 5px;">
         <span class="icon-white icon-download-alt"> </span> JSON
@@ -42,7 +48,7 @@
     -->
 </div>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <thead>
     <tr>
         <th>ID</th>
@@ -56,7 +62,7 @@
     #foreach( $facility in $entity.facilities )
     <tr>
         <td class="facility-id" style="width: 1px;">$facility.id</td>
-        <td class="facility-name">$facility.name</td>
+        <td class="facility-name"><a href="facilities/$facility.id">$facility.name</a></td>
         <td class="facility-active" style="width: 1px;">
             #if( $facility.active )
                 <button style="width: 44px;" class="deactivateButton btn btn-mini btn-success"><span class="icon-white icon-ok-circle"> </span> </button>
