@@ -37,12 +37,13 @@
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li #if( $pageName == "home" )class="active"#end><a href="../"><span class="icon-home"></span>Home</a></li>
+                    <li #if( $pageName == "home" )class="active"#end><a href="../"><span class="icon-home"> </span> Home</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 
 <div class="container-fluid">
     <div class="row-fluid">
