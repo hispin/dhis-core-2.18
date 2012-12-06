@@ -45,7 +45,7 @@ public class FredController
     @RequestMapping( value = { "", "/" }, method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE, MediaType.TEXT_XML_VALUE } )
     public String home( Model model )
     {
-        model.addAttribute( "baseUrl", "../.." );
+        model.addAttribute( "baseUrl", ".." );
         model.addAttribute( "pageName", "home" );
         model.addAttribute( "page", FredController.PREFIX + "/index.vm" );
 
