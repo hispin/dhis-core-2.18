@@ -187,7 +187,7 @@ public class DefaultImportService
 
     private <T> Importer<T> findImporterClass( List<?> clazzes )
     {
-        if ( !clazzes.isEmpty() )
+        if ( !clazzes.isEmpty() && clazzes.get( 0 ) != null )
         {
             return findImporterClass( clazzes.get( 0 ).getClass() );
         }
@@ -197,11 +197,14 @@ public class DefaultImportService
 
     private <T> Importer<T> findImporterClass( Class<?> clazz )
     {
-        for ( Importer<T> i : importerClasses )
+        if ( clazz != null )
         {
-            if ( i.canHandle( clazz ) )
+            for ( Importer<T> i : importerClasses )
             {
-                return i;
+                if ( i.canHandle( clazz ) )
+                {
+                    return i;
+                }
             }
         }
 
@@ -210,7 +213,7 @@ public class DefaultImportService
 
     private <T> ImportTypeSummary doImport( List<T> objects, ImportOptions importOptions )
     {
-        if ( !objects.isEmpty() )
+        if ( !objects.isEmpty() && objects.get( 0 ) != null )
         {
             Importer<T> importer = findImporterClass( objects );
 

@@ -27,6 +27,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -544,9 +545,9 @@ public class OrganisationUnit
     {
         StringBuilder builder = new StringBuilder();
 
-        List<OrganisationUnit> anchestors = getAncestors();
+        List<OrganisationUnit> ancestors = getAncestors();
 
-        for ( OrganisationUnit unit : anchestors )
+        for ( OrganisationUnit unit : ancestors )
         {
             builder.append( "/" ).append( unit.getUid() );
         }

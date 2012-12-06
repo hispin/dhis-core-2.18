@@ -42,12 +42,15 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Abyot Aselefew
  */
-@JacksonXmlRootElement( localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement(localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE)
 public class DataElementCategoryOptionCombo
     extends BaseNameableObject
 {
@@ -76,7 +79,7 @@ public class DataElementCategoryOptionCombo
     // -------------------------------------------------------------------------
 
     private transient String name;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -159,7 +162,12 @@ public class DataElementCategoryOptionCombo
 
         while ( iterator.hasNext() )
         {
-            builder.append( iterator.next().toString() );
+            DataElementCategoryOption dataElementCategoryOption = iterator.next();
+
+            if ( dataElementCategoryOption != null )
+            {
+                builder.append( dataElementCategoryOption.toString() );
+            }
 
             if ( iterator.hasNext() )
             {
@@ -275,18 +283,29 @@ public class DataElementCategoryOptionCombo
         {
             return name;
         }
-        
+
         StringBuilder name = new StringBuilder();
 
         if ( categoryOptions != null && categoryOptions.size() > 0 )
         {
-            Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
+            name.append( "(" );
 
-            name.append( "(" ).append( iterator.next().getDisplayName() );
+            Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
+            DataElementCategoryOption dataElementCategoryOption = iterator.next();
+
+            if ( dataElementCategoryOption != null )
+            {
+                name.append( dataElementCategoryOption.getDisplayName() );
+            }
 
             while ( iterator.hasNext() )
             {
-                name.append( ", " ).append( iterator.next().getDisplayName() );
+                DataElementCategoryOption categoryOption = iterator.next();
+
+                if ( categoryOption != null )
+                {
+                    name.append( ", " ).append( categoryOption.getDisplayName() );
+                }
             }
 
             name.append( ")" );
@@ -316,7 +335,7 @@ public class DataElementCategoryOptionCombo
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public DataElementCategoryCombo getCategoryCombo()
     {
@@ -329,10 +348,10 @@ public class DataElementCategoryOptionCombo
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "categoryOption", namespace = Dxf2Namespace.NAMESPACE )
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "categoryOptions", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty(localName = "categoryOption", namespace = Dxf2Namespace.NAMESPACE)
     public Set<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
