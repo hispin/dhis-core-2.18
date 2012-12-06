@@ -1317,7 +1317,10 @@ function saveEnrollment()
 			var dueDate = json.dueDate;
 			var type = jQuery('#enrollmentDiv [id=programId] option:selected').attr('programType');
 			
-			var activedRow = "<tr id='tr1_" + programInstanceId 
+			var activedRow = "";
+			if(programStageInstanceId != '')
+			{
+				activedRow = "<tr id='tr1_" + programInstanceId 
 							+ "' type='" + type +"'"
 							+ " programStageInstanceId='" + programStageInstanceId + "'>"
 							+ " <td id='td_" + programInstanceId + "'>"
@@ -1326,10 +1329,21 @@ function saveEnrollment()
 							+ programName + " (" + enrollmentDate + ")</span></a></td>"
 							+ "</tr>";
 			
-			activedRow += "<tr id='tr2_" + programInstanceId +"'"+
-						+ " onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + ")' style='cursor:pointer;'>"
-						+ "<td colspan='2'><a>&#8226; " + programStageName + " (" + dueDate + ")</a></td></tr>";
-
+				activedRow += "<tr id='tr2_" + programInstanceId +"'"+
+							+ " onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + ")' style='cursor:pointer;'>"
+							+ "<td colspan='2'><a>&#8226; " + programStageName + " (" + dueDate + ")</a></td></tr>";
+			}
+			else
+			{
+				activedRow = "<tr id='tr1_" + programInstanceId 
+							+ "' type='" + type +"'>"
+							+ " <td id='td_" + programInstanceId + "'>"
+							+ " <a href='javascript:loadActiveProgramStageRecords(" + programInstanceId + ")'>"
+							+ "<span id='infor_" + programInstanceId + "' class='selected bold'>" 
+							+ programName + " (" + enrollmentDate + ")</span></a></td>"
+							+ "</tr>";			
+			}
+			
 			jQuery('#activeTB' ).prepend(activedRow);
 			jQuery('#enrollmentDiv').dialog("close");
 			saveIdentifierAndAttribute( patientId, programId,'identifierAndAttributeDiv' );
