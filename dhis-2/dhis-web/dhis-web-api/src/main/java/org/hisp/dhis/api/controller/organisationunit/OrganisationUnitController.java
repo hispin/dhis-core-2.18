@@ -89,6 +89,11 @@ public class OrganisationUnitController
                 level = entity.getOrganisationUnitLevel();
             }
 
+            if ( level < 1 || level > organisationUnitService.getNumberOfOrganisationalLevels() )
+            {
+                level = entity.getOrganisationUnitLevel();
+            }
+
             if ( level == entity.getOrganisationUnitLevel() )
             {
                 model.addAttribute( "model", entity );
