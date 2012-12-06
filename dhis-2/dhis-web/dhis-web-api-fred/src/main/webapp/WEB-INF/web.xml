@@ -2,15 +2,11 @@
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
   "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
-  <display-name>DHIS 2</display-name>
+  <display-name>DHIS Web Api Stable</display-name>
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath*:/META-INF/dhis/beans.xml</param-value>
-  </context-param>
-  <context-param>
-    <param-name>automaticAccessType</param-name>
-    <param-value>databaseAdmin</param-value>
   </context-param>
 
   <filter>
@@ -18,7 +14,7 @@
     <filter-class>org.hisp.dhis.servlet.filter.HttpRedirectFilter</filter-class>
     <init-param>
       <param-name>redirectPath</param-name>
-      <param-value>dhis-web-commons-about/redirect.action</param-value>
+      <param-value>api-fred</param-value>
     </init-param>
   </filter>
   <filter>
@@ -33,12 +29,9 @@
     <filter-name>Struts</filter-name>
     <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
   </filter>
-
   <filter>
     <filter-name>encoding-filter</filter-name>
-    <filter-class>
-      org.springframework.web.filter.CharacterEncodingFilter
-    </filter-class>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <init-param>
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
@@ -67,7 +60,7 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
-    <url-pattern>/mobile/*</url-pattern>
+    <url-pattern>/api-fred/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
@@ -86,26 +79,6 @@
   </listener>
 
   <servlet>
-    <servlet-name>webapi</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath*:/META-INF/dhis/servlet.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet>
-    <servlet-name>mobile</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath*:/META-INF/dhis/mobile.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet>
     <servlet-name>webapi-fred</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
@@ -115,31 +88,7 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-  <!-- Mobile -->
-
-  <servlet-mapping>
-    <servlet-name>mobile</servlet-name>
-    <url-pattern>/mobile</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>mobile</servlet-name>
-    <url-pattern>/mobile/*</url-pattern>
-  </servlet-mapping>
-
-  <!-- Web-API -->
-
-  <servlet-mapping>
-    <servlet-name>webapi</servlet-name>
-    <url-pattern>/api</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>webapi</servlet-name>
-    <url-pattern>/api/*</url-pattern>
-  </servlet-mapping>
-
-  <!-- FRED Web-API -->
+  <!-- Web API -->
 
   <servlet-mapping>
     <servlet-name>webapi-fred</servlet-name>
@@ -151,10 +100,4 @@
     <url-pattern>/api-fred/*</url-pattern>
   </servlet-mapping>
 
-  <!-- Error page -->
-
-  <error-page>
-    <exception-type>java.lang.Throwable</exception-type>
-    <location>/error.html</location>
-  </error-page>
 </web-app>
