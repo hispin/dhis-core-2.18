@@ -22,10 +22,10 @@
 	    </div>
 	    <div class="interpretationChart">
 	    #if( $ip.chartInterpretation )
+	        <a href="../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}">
 	        <img style="cursor:pointer" 
-	             src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=530&height=300" 
-	             onclick="javascript:window.location.href='../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}'"
-	             title="$i18n.getString( 'click_to_view_in_data_visualizer' )">
+	             src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=530&height=300"	             
+	             title="$i18n.getString( 'click_to_view_in_data_visualizer' )"></a>
 	    #elseif( $ip.mapInterpretation )
 	        <a class="bold" 
 	           title="$i18n.getString( 'click_to_view_in_gis' )" 
