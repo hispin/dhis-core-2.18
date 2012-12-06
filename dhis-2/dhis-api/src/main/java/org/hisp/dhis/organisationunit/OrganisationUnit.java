@@ -514,7 +514,7 @@ public class OrganisationUnit
     }
 
     @JsonProperty( "level" )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( localName = "level", isAttribute = true )
     public int getOrganisationUnitLevel()
     {
         int currentLevel = 1;
