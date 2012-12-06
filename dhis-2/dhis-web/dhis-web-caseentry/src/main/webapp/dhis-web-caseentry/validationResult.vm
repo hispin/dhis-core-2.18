@@ -26,14 +26,12 @@
 			</thead>
 			#set( $mark = false )	    
 			<tbody>
-				#set($validate = "")
 				#foreach( $result in $programValidationResults )
 					<tr #alternate( $mark )>	    
 						#set ( $id = $result.programValidation.id )
 						#set ( $leftFormula = $leftsideFormulaMap.get( $id ) )
 						#set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
 						<tr>
-							<input type="hidden" name='validateFormulas' value="$result.programValidation.leftSide $result.programValidation.rightSide" name="$!encoder.htmlEncode($result.programValidation.name)">
 							#set($leftsideValue = "NULL")
 							#if($result.leftsideValue) #set($leftsideValue = $result.leftsideValue) #end
 							#set($rightsideValue = "NULL")

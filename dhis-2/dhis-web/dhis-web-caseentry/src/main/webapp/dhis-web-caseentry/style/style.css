@@ -182,7 +182,13 @@ input.move-button
 
 input.optionset[type="text"]
 {
-	width:222px; 
+	width:235px; 
+}
+
+
+input.date-field[type="text"]
+{
+	width:235px; 
 }
 
 div.provided-elsewhere
