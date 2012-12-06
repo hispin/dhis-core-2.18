@@ -31,7 +31,10 @@ import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -42,6 +45,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +58,9 @@ public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
     public static final String RESOURCE_PATH = "/organisationUnits";
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
@@ -96,9 +104,13 @@ public class OrganisationUnitController
             }
             else
             {
-                // TODO
-                // System.err.println( "GET CHILDREN" );
-                model.addAttribute( "model", entity );
+                List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>(
+                    organisationUnitService.getOrganisationUnitsAtLevel( level, entity ) );
+
+                MetaData metaData = new MetaData();
+                metaData.setOrganisationUnits( entities );
+
+                model.addAttribute( "model", metaData );
             }
         }
         else
