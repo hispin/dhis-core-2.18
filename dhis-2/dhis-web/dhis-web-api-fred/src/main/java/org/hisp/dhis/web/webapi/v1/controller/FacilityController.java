@@ -27,6 +27,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -67,7 +68,8 @@ public class FacilityController
     {
         Facilities facilities = new Facilities();
 
-        Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
+        List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        Collections.sort( allOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( OrganisationUnit organisationUnit : allOrganisationUnits )
         {
@@ -101,6 +103,7 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
+    @RequestMapping( value = "/{id}", method = RequestMethod.POST )
     public ResponseEntity<Void> createFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
@@ -110,6 +113,7 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
     public ResponseEntity<Void> updateFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
@@ -119,9 +123,46 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
+    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     public ResponseEntity<Void> deleteFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
+    }
+
+    //--------------------------------------------------------------------------
+    // EXTRA WEB METHODS
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = "/activate/{id}", method = RequestMethod.POST )
+    public ResponseEntity<Void> activateFacility( @PathVariable String id )
+    {
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+
+        if ( organisationUnit != null )
+        {
+            organisationUnit.setActive( true );
+            organisationUnitService.updateOrganisationUnit( organisationUnit );
+
+            return new ResponseEntity<Void>( HttpStatus.OK );
+        }
+
+        return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
+    }
+
+    @RequestMapping( value = "/deactivate/{id}", method = RequestMethod.POST )
+    public ResponseEntity<Void> deactivateFacility( @PathVariable String id )
+    {
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+
+        if ( organisationUnit != null )
+        {
+            organisationUnit.setActive( false );
+            organisationUnitService.updateOrganisationUnit( organisationUnit );
+
+            return new ResponseEntity<Void>( HttpStatus.OK );
+        }
+
+        return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
     }
 
     //--------------------------------------------------------------------------

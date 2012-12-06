@@ -1,8 +1,51 @@
+<script>
+    $(function () {
+        $(".activateButton").click(function () {
+            if (confirm("Are you sure you want to activate this facility?")) {
+                var id = $(this).parent().parent().find('.facility-id').text();
+
+                $.ajax({
+                    url: 'facilities/activate/' + id,
+                    type: 'POST',
+                    async: false
+                }).complete(function () {
+                    window.location.reload();
+                });
+            }
+        });
+
+        $(".deactivateButton").click(function () {
+            if (confirm("Are you sure you want to de-activate this facility?")) {
+                var id = $(this).parent().parent().find('.facility-id').text();
+
+                $.ajax({
+                    url: 'facilities/deactivate/' + id,
+                    type: 'POST',
+                    async: false
+                }).complete(function () {
+                    window.location.reload();
+                });
+            }
+        });
+    });
+</script>
+
+<div class="btn-group pull-right">
+    <a href="facilities.json" class="btn btn-small btn-info" style="margin-bottom: 5px;">
+        <span class="icon-white icon-download-alt"> </span> JSON
+    </a>
+
+    <!-- future feature
+    <button id="mapFacilities" disabled="disabled" class="btn btn-small btn-info" style="margin-bottom: 5px;">
+        <span class="icon-white icon-map-marker"> </span> Show in map
+    </button>
+    -->
+</div>
 
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
-        <th>#</th>
+        <th>ID</th>
         <th>Name</th>
         <th>Active</th>
         <th>Actions</th>
@@ -12,10 +55,22 @@
     <tbody>
     #foreach( $facility in $entity.facilities )
     <tr>
-        <td>$facility.id</td>
-        <td>$facility.name</td>
-        <td>$facility.active</td>
-        <td>[ ACTIONS ]</td>
+        <td class="facility-id" style="width: 1px;">$facility.id</td>
+        <td class="facility-name">$facility.name</td>
+        <td class="facility-active" style="width: 1px;">
+            #if( $facility.active )
+                <button style="width: 44px;" class="deactivateButton btn btn-mini btn-success"><span class="icon-white icon-ok-circle"> </span> </button>
+            #else
+                <button style="width: 44px;" class="activateButton btn btn-mini btn-inverse"><span class="icon-white icon-ban-circle"> </span> </button>
+            #end
+        </td>
+
+        <td class="facility-actions" style="width: 1px;">
+            <div class="btn-group">
+                <button disabled="disabled" style="width: 42px;" class="editButton btn btn-mini btn-info"><span class="icon-white icon-edit"> </span> </button>
+                <button disabled="disabled" style="width: 42px;" class="deleteButton btn btn-mini btn-danger"><span class="icon-white icon-trash"> </span> </button>
+            </div>
+        </td>
     </tr>
     #end
     </tbody>
