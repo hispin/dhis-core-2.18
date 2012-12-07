@@ -34,7 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
-import org.hisp.dhis.web.webapi.v1.utils.OrganisationUnitToFacilityConverter;
+import org.hisp.dhis.web.webapi.v1.utils.ToFacilityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
@@ -66,7 +66,7 @@ public class FacilityController
     @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
     private OrganisationUnitService organisationUnitService;
 
-    private Converter<OrganisationUnit, Facility> convertToFacility = new OrganisationUnitToFacilityConverter();
+    private static Converter<OrganisationUnit, Facility> toFacility = new ToFacilityConverter();
 
     //--------------------------------------------------------------------------
     // GET HTML
@@ -82,7 +82,8 @@ public class FacilityController
 
         for ( OrganisationUnit organisationUnit : allOrganisationUnits )
         {
-            Facility facility = convertToFacility.convert( organisationUnit );
+            Facility facility = toFacility.convert( organisationUnit );
+
             facilities.getFacilities().add( facility );
         }
 
@@ -98,7 +99,8 @@ public class FacilityController
     public String readFacility( Model model, @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
-        Facility facility = convertToFacility.convert( organisationUnit );
+
+        Facility facility = toFacility.convert( organisationUnit );
 
         model.addAttribute( "entity", facility );
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );

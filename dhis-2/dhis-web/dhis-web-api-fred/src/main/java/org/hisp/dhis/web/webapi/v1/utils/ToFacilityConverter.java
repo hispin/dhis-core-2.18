@@ -43,7 +43,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class OrganisationUnitToFacilityConverter implements Converter<OrganisationUnit, Facility>
+public class ToFacilityConverter implements Converter<OrganisationUnit, Facility>
 {
     @Override
     public Facility convert( OrganisationUnit organisationUnit )
