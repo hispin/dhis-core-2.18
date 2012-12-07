@@ -27,35 +27,44 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.validation.ConstraintViolation;
+import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-service-controller-" + FredController.PREFIX )
-@RequestMapping( FacilityServiceController.RESOURCE_PATH )
+@Controller(value = "facility-service-controller-" + FredController.PREFIX)
+@RequestMapping(FacilityServiceController.RESOURCE_PATH)
 public class FacilityServiceController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facility-service";
 
     @Autowired
-    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
+    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     //--------------------------------------------------------------------------
     // EXTRA WEB METHODS
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}/activate", method = RequestMethod.POST )
+    @RequestMapping(value = "/{id}/activate", method = RequestMethod.POST)
     public ResponseEntity<Void> activateFacility( @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -71,7 +80,7 @@ public class FacilityServiceController
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
     }
 
-    @RequestMapping( value = "/{id}/deactivate", method = RequestMethod.POST )
+    @RequestMapping(value = "/{id}/deactivate", method = RequestMethod.POST)
     public ResponseEntity<Void> deactivateFacility( @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -85,5 +94,22 @@ public class FacilityServiceController
         }
 
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
+    }
+
+    @RequestMapping( value = "/validate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    public ResponseEntity<String> validateFacility( @RequestBody Facility facility ) throws IOException
+    {
+        Set<ConstraintViolation<Facility>> constraintViolations = ValidationUtils.validate( facility );
+
+        String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
+
+        if ( constraintViolations.isEmpty() )
+        {
+            return new ResponseEntity<String>( json, HttpStatus.OK );
+        }
+        else
+        {
+            return new ResponseEntity<String>( json, HttpStatus.NOT_ACCEPTABLE );
+        }
     }
 }

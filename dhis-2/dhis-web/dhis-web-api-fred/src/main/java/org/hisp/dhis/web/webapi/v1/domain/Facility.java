@@ -27,6 +27,9 @@ package org.hisp.dhis.web.webapi.v1.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -35,24 +38,32 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
+    @NotNull
+    @Length( min = 11, max = 11 )
     private String id;
 
     // Name of the facility
+    @NotNull
+    @Length( min = 2, max = 160 )
     private String name;
 
     // Active = true/false indicates whether the facility is active or not
+    @NotNull
     private Boolean active;
 
     // URL link to the unique ID API resource for the facility
     private String url;
 
     // ISO 8601 timestamp, including timezone, of when the facility was created
+    @NotNull
     private Date createdAt;
 
     // ISO 8601 timestamp, including timezone, of when the facility was last updated
+    @NotNull
     private Date updatedAt;
 
     // Geo-location represented by latitude and longitude coordinates in that order
+    @NotNull
     private List<Double> coordinates = new ArrayList<Double>();
 
     // External Facility Identifiers
@@ -153,5 +164,21 @@ public class Facility
     public void setProperties( Map<String, Object> properties )
     {
         this.properties = properties;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Facility{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", active=" + active +
+            ", url='" + url + '\'' +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            ", coordinates=" + coordinates +
+            ", identifiers=" + identifiers +
+            ", properties=" + properties +
+            '}';
     }
 }
