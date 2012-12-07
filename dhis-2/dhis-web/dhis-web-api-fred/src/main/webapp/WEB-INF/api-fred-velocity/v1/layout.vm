@@ -6,16 +6,16 @@
     <title>FRED Facility API v1.0 (DHIS2)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="$baseUrl/dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.8.2"></script>
-    <script src="$baseUrl/api-fred-resources/js/bootstrap.min.js?v=2.2.1"></script>
+    <script src="$baseUrl/../../dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.8.2"></script>
+    <script src="$baseUrl/../../api-fred-resources/js/bootstrap.min.js?v=2.2.1"></script>
 
-    <link href="$baseUrl/api-fred-resources/css//bootstrap.min.css?v2.2.1" rel="stylesheet">
+    <link href="$baseUrl/../../api-fred-resources/css//bootstrap.min.css?v2.2.1" rel="stylesheet">
     <style>
         body {
             padding-top : 60px;
         }
     </style>
-    <link href="$baseUrl/api-fred-resources/css/bootstrap-responsive.min.css?v2.2.1" rel="stylesheet">
+    <link href="$baseUrl/../../api-fred-resources/css/bootstrap-responsive.min.css?v2.2.1" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
@@ -33,12 +33,12 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <a class="brand" href="../v1">FRED Facility API v1.0</a>
+            <a class="brand" href="$baseUrl">FRED Facility API v1.0</a>
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li #if( $pageName == "home" )class="active"#end><a href="../"><span class="icon-home"> </span> Home</a></li>
-                    <li #if( $pageName == "facilities" )class="active"#end><a href="v1/facilities"><span class="icon-search"> </span> Facilities</a></li>
+                    <li #if( $pageName == "home" )class="active"#end><a href="$baseUrl"><span class="icon-home"> </span> Home</a></li>
+                    <li #if( $pageName == "facilities" )class="active"#end><a href="$baseUrl/facilities/"><span class="icon-search"> </span> Facilities</a></li>
                 </ul>
             </div>
         </div>

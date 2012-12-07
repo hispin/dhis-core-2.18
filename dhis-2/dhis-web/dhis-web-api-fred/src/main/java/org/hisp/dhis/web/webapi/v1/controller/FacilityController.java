@@ -37,6 +37,7 @@ import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,24 +48,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.*;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-controller-" + FredController.PREFIX )
-@RequestMapping( FacilityController.RESOURCE_PATH )
+@Controller(value = "facility-controller-" + FredController.PREFIX)
+@RequestMapping(FacilityController.RESOURCE_PATH)
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
 
     @Autowired
-    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
+    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     //--------------------------------------------------------------------------
     // GET HTML
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String readFacilities( Model model )
     {
         Facilities facilities = new Facilities();
@@ -79,21 +82,21 @@ public class FacilityController
         }
 
         model.addAttribute( "entity", facilities );
-        model.addAttribute( "baseUrl", "../.." );
+        model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
         model.addAttribute( "pageName", "facilities" );
         model.addAttribute( "page", FredController.PREFIX + "/facilities.vm" );
 
         return FredController.PREFIX + "/layout";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String readFacility( Model model, @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
         Facility facility = convertToFacility( organisationUnit );
 
         model.addAttribute( "entity", facility );
-        model.addAttribute( "baseUrl", "../../.." );
+        model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
         model.addAttribute( "pageName", "facility" );
         model.addAttribute( "page", FredController.PREFIX + "/facility.vm" );
 
@@ -104,7 +107,7 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.POST )
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<Void> createFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
@@ -114,7 +117,7 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
@@ -124,7 +127,7 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -151,6 +154,7 @@ public class FacilityController
         facility.setActive( organisationUnit.isActive() );
         facility.setCreatedAt( organisationUnit.getLastUpdated() );
         facility.setUpdatedAt( organisationUnit.getLastUpdated() );
+        facility.setUrl( linkTo( FacilityController.class ).slash( facility.getId() ).toString() );
 
         if ( organisationUnit.getFeatureType() != null && organisationUnit.getFeatureType().equalsIgnoreCase( "POINT" )
             && organisationUnit.getCoordinates() != null )
