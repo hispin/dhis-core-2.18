@@ -27,7 +27,6 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
@@ -109,7 +108,7 @@ public class FacilityServiceController
         }
         else
         {
-            return new ResponseEntity<String>( json, HttpStatus.NOT_ACCEPTABLE );
+            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 }
