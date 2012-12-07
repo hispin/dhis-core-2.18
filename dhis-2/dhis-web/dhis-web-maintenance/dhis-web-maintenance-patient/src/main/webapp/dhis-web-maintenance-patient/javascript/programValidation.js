@@ -216,3 +216,9 @@ function checkNotEmpty( field, message )
 
     return true;
 }
+
+function clearSearchText()
+{
+	setFieldValue('filter', '');
+	filterList( '', 'dataElementId' )
+}
