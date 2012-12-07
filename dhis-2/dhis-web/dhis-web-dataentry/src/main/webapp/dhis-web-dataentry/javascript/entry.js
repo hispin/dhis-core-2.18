@@ -259,7 +259,7 @@ function ValueSaver( dataElementId, optionComboId, organisationUnitId, periodId,
         'optionComboId' : optionComboId,
         'organisationUnitId' : organisationUnitId,
         'periodId' : periodId,
-        'value' : value,
+        'value' : value
     };
 
     this.save = function()

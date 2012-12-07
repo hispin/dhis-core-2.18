@@ -876,7 +876,7 @@ function datePicker( id )
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
-        yearRange: '-100:+100',
+        yearRange: '-100:+100'
 	});
 	jQuery( "#" + id ).attr("readonly", true );
 	s = jQuery("#" + id );		
