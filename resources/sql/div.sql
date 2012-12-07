@@ -70,7 +70,7 @@ left join _organisationunitgroupsetstructure ougs on ous.organisationunitid=ougs
 where ous.level=5
 order by province, county, district, ou.name;
 
--- Compare user roles
+-- Compare user roles (lists what is in the first role but not in the second)
 
 select authority from userroleauthorities where userroleid=33706 and authority not in (select authority from userroleauthorities where userroleid=21504);
 
