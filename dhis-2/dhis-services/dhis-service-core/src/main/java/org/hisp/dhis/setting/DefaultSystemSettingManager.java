@@ -155,6 +155,6 @@ public class DefaultSystemSettingManager
     
     public boolean emailEnabled()
     {
-        return getEmailHostName() != null && getEmailPassword() != null && getEmailUsername() != null;
+        return getEmailHostName() != null;
     }
 }

@@ -55,8 +55,8 @@ public class EmailMessageSender
     implements MessageSender
 {
     private static final Log log = LogFactory.getLog( EmailMessageSender.class );
-    
     private static final int SMTP_PORT = 587;
+    private static final int LOCAL_SMTP_PORT = 25;
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
     private static final String FROM_NAME = "DHIS2 Message [No reply]";
     private static final String SUBJECT_PREFIX = "[DHIS2] ";
@@ -150,10 +150,18 @@ public class EmailMessageSender
     {
         Email email = new SimpleEmail();
         email.setHostName( hostName );
-        email.setSmtpPort( SMTP_PORT );
-        email.setAuthenticator( new DefaultAuthenticator( username, password ) );
-        email.setTLS( true );
         email.setFrom( FROM_ADDRESS, FROM_NAME );
+
+        if (hostName.equals( "localhost"))
+        {
+            email.setSmtpPort( LOCAL_SMTP_PORT );
+        }
+        else
+        {
+            email.setSmtpPort( SMTP_PORT );
+            email.setAuthenticator( new DefaultAuthenticator( username, password ) );
+            email.setTLS( true );
+        }
         
         return email;
     }
