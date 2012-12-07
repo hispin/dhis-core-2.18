@@ -267,9 +267,9 @@ public class GenerateTabularReportAction
             for ( Integer orgunitId : orgunitIds )
             {
                 OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-                orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
-                    selectedOrgunit.getId() ) );
-                orgunitIds.remove( orgunitId );
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
+                    orgunitId) );
+                organisationUnits.remove( selectedOrgunit );
             }
         }
         else
