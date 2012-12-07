@@ -132,6 +132,10 @@ public class DefaultProgramExpressionService
         {
             value = format.formatDate( programStageInstance.getDueDate() );
         }
+        if( ProgramExpression.REPORT_DATE.equals( programExpression.getExpression()))
+        {
+            value = format.formatDate( programStageInstance.getExecutionDate() );
+        }
         else
         {
         StringBuffer description = new StringBuffer();

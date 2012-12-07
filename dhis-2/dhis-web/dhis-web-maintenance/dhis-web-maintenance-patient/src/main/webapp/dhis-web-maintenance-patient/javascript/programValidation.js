@@ -82,6 +82,8 @@ function getLeftPrgramStageDataElements()
 	jQuery.getJSON( "getPatientDataElements.action", {
 		programStageId:programStageId
 	}, function(json){
+		jQuery( '#dataElementId').append( '<option value="DUE_DATE">' + i18n_due_date + '</option>' );
+		jQuery( '#dataElementId').append( '<option value="REPORT_DATE">' + i18n_report_date + '</option>' );
 		for ( i in json.dataElements ) {
 			var id = '[DE:' + programStageId + '.' + json.dataElements[i].id + ']';
 			jQuery( '#dataElementId').append( '<option value="' + id + '">' + json.dataElements[i].name + '</option>' );
@@ -100,6 +102,8 @@ function getRightPrgramStageDataElements()
 	jQuery.getJSON( "getPatientDataElements.action", {
 		programStageId:programStageId
 	}, function(json){
+		jQuery( '#dataElementId').append( '<option value="DUE_DATE">' + i18n_due_date + '</option>' );
+		jQuery( '#dataElementId').append( '<option value="REPORT_DATE">' + i18n_report_date + '</option>' );
 		for ( i in json.dataElements ) {
 			var id = '[DE:' + programStageId + '.' + json.dataElements[i].id + ']';
 			jQuery( '#rightSideDE').append( '<option value="' + id + '">' + json.dataElements[i].name + '</option>' );

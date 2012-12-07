@@ -48,6 +48,8 @@ public class ProgramExpression
     
 
     public static final String DUE_DATE = "DUE_DATE";
+    
+    public static final String REPORT_DATE = "REPORT_DATE";
 
     public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";
     
