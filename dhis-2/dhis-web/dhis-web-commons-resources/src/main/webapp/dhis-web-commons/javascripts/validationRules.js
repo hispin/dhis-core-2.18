@@ -442,12 +442,6 @@ var validationRules = {
 	"emailSettings" : {
 		"smtpHostName" : {
 			"required" : true
-		},
-		"smtpUsername" : {
-			"required" : true
-		},
-		"smtpPassword" : {
-			"required" : true
 		}
 	},
 	"SMSConfig" : {
