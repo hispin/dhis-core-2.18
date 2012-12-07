@@ -29,6 +29,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
@@ -124,40 +125,13 @@ public class FacilityController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-    public ResponseEntity<Void> deleteFacility()
-    {
-        return new ResponseEntity<Void>( HttpStatus.OK );
-    }
-
-    //--------------------------------------------------------------------------
-    // EXTRA WEB METHODS
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( value = "/activate/{id}", method = RequestMethod.POST )
-    public ResponseEntity<Void> activateFacility( @PathVariable String id )
+    public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
         if ( organisationUnit != null )
         {
-            organisationUnit.setActive( true );
-            organisationUnitService.updateOrganisationUnit( organisationUnit );
-
-            return new ResponseEntity<Void>( HttpStatus.OK );
-        }
-
-        return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
-    }
-
-    @RequestMapping( value = "/deactivate/{id}", method = RequestMethod.POST )
-    public ResponseEntity<Void> deactivateFacility( @PathVariable String id )
-    {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
-
-        if ( organisationUnit != null )
-        {
-            organisationUnit.setActive( false );
-            organisationUnitService.updateOrganisationUnit( organisationUnit );
+            organisationUnitService.deleteOrganisationUnit( organisationUnit );
 
             return new ResponseEntity<Void>( HttpStatus.OK );
         }
@@ -173,7 +147,7 @@ public class FacilityController
     {
         Facility facility = new Facility();
         facility.setId( organisationUnit.getUid() );
-        facility.setName( organisationUnit.getName() );
+        facility.setName( organisationUnit.getDisplayName() );
         facility.setActive( organisationUnit.isActive() );
         facility.setCreatedAt( organisationUnit.getLastUpdated() );
         facility.setUpdatedAt( organisationUnit.getLastUpdated() );
@@ -215,4 +189,16 @@ public class FacilityController
 
         return facility;
     }
+
+    //--------------------------------------------------------------------------
+    // EXCEPTION HANDLERS
+    //--------------------------------------------------------------------------
+
+/*
+    @ExceptionHandler( Exception.class )
+    public ResponseEntity<String> exceptionHandler( Exception ex )
+    {
+        return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
+    }
+*/
 }

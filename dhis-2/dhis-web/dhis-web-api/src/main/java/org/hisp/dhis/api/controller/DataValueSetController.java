@@ -54,7 +54,7 @@ import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
 
 @Controller
-@RequestMapping( value = DataValueSetController.RESOURCE_PATH )
+@RequestMapping(value = DataValueSetController.RESOURCE_PATH)
 public class DataValueSetController
 {
     public static final String RESOURCE_PATH = "/dataValueSets";
@@ -67,7 +67,7 @@ public class DataValueSetController
     @Autowired
     private IntegrationService integrationService;
 
-    @RequestMapping( method = RequestMethod.GET, produces = { "text/html", "text/plain" } )
+    @RequestMapping(method = RequestMethod.GET, produces = { "text/html", "text/plain" })
     public String getDataValueSets( Model model ) throws Exception
     {
         DataValueSets dataValueSets = new DataValueSets();
@@ -78,7 +78,7 @@ public class DataValueSetController
         return "dataValueSets";
     }
 
-    @RequestMapping( method = RequestMethod.GET, produces = "application/xml" )
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     public void getDataValueSet( @RequestParam String dataSet, @RequestParam String period,
         @RequestParam String orgUnit, HttpServletResponse response ) throws IOException
     {
@@ -88,8 +88,8 @@ public class DataValueSetController
         dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
     public void postDxf2DataValueSet( ImportOptions importOptions,
         HttpServletResponse response, InputStream in, Model model ) throws IOException
     {
@@ -101,8 +101,8 @@ public class DataValueSetController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
     public void postJsonDataValueSet( ImportOptions importOptions,
         HttpServletResponse response, InputStream in, Model model ) throws IOException
     {
@@ -114,8 +114,8 @@ public class DataValueSetController
         JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/sdmx+xml" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/sdmx+xml")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
     public void postSDMXDataValueSet( ImportOptions importOptions,
         HttpServletResponse response, InputStream in, Model model ) throws IOException
     {
@@ -127,11 +127,10 @@ public class DataValueSetController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @ExceptionHandler( IllegalArgumentException.class )
+    @ExceptionHandler(IllegalArgumentException.class)
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
         throws IOException
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 }
-                                                

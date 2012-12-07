@@ -12,7 +12,7 @@
     <link href="$baseUrl/api-fred-resources/css//bootstrap.min.css?v2.2.1" rel="stylesheet">
     <style>
         body {
-            padding-top: 60px;
+            padding-top : 60px;
         }
     </style>
     <link href="$baseUrl/api-fred-resources/css/bootstrap-responsive.min.css?v2.2.1" rel="stylesheet">
@@ -33,30 +33,21 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <a class="brand" href="#">FRED Facility API v1.0</a>
+            <a class="brand" href="../v1">FRED Facility API v1.0</a>
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li #if( $pageName == "home" )class="active"#end><a href="../"><span class="icon-home"> </span> Home</a></li>
+                    <li #if( $pageName == "facilities" )class="active"#end><a href="v1/facilities"><span class="icon-search"> </span> Facilities</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span3">
-            <div class="well sidebar-nav">
-                <ul class="nav nav-list">
-                    <li class="nav-header">Resources</li>
-                    <li #if( $pageName == "facilities" )class="active"#end><a href="v1/facilities">Facilities</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="span9">
+        <div class="span12">
             #parse( $page )
         </div>
     </div>
