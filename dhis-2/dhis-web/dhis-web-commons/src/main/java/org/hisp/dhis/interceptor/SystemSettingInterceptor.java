@@ -38,6 +38,8 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 
 import static org.hisp.dhis.setting.SystemSettingManager.*;
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 /**
  * @author Lars Helge Overland
  */
@@ -93,6 +95,8 @@ public class SystemSettingInterceptor
         map.put( KEY_MULTI_ORGANISATION_UNIT_FORMS, systemSettingManager.getSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, false ) );
         map.put( KEY_ACCOUNT_RECOVERY, systemSettingManager.getSystemSetting( KEY_ACCOUNT_RECOVERY, false ) );
         map.put( KEY_CONFIGURATION, configurationService.getConfiguration() );
+        
+        map.put( SYSPROP_PORTAL, defaultIfEmpty( System.getProperty( SYSPROP_PORTAL ), String.valueOf( false ) ) );
         
         invocation.getStack().push( map );
         

@@ -85,7 +85,9 @@ public interface SystemSettingManager
     final String DEFAULT_APPLICATION_TITLE = "District Health Information Software 2";
     
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
-    final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";
+    final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";    
+    
+    final String SYSPROP_PORTAL = "runningAsPortal";
     
     final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>() { {
         add( MonthlyPeriodType.NAME ); 
