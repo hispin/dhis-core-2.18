@@ -33,9 +33,10 @@
 	           $encoder.htmlEncode( $ip.map.name )</a>
 	    #elseif( $ip.reportTableInterpretation )
 	        #if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end
+	        #if( $ip.period )#set( $pe = "&pe=" + $ip.period.isoDate )#else#set( $pe = "" )#end
 	        <a class="bold"
 	           title="$i18n.getString( 'click_to_view_report_table' )" 
-	           href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}&pe=${format.formatDate( $ip.created )}${ou}">
+	           href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}${pe}${ou}">
 	           $encoder.htmlEncode( $ip.reportTable.name )</a>
 	    #elseif( $ip.dataSetReportInterpretation )
 	        <a class="bold"
