@@ -344,7 +344,7 @@ public class DefaultReportTableService
         final String subtitle = StringUtils.trimToEmpty( reportTable.getParentOrganisationUnitName() ) + SPACE
             + StringUtils.trimToEmpty( reportTable.getReportingPeriodName() );
 
-        final Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
+        final Grid grid = new ListGrid().setTitle( reportTable.getName() + " - " + subtitle );
 
         final Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable );
 
