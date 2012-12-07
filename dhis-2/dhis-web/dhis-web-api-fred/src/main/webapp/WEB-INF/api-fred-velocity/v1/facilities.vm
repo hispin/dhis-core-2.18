@@ -64,7 +64,7 @@
         #foreach( $facility in $entity.facilities )
         <tr>
             <td class="facility-id" style="width: 1px;">$facility.id</td>
-            <td class="facility-name"><a href="facilities/$facility.id">$facility.name</a></td>
+            <td class="facility-name"><a href="$facility.url">$facility.name</a></td>
             <td class="facility-active" style="width: 1px;">
                 #if( $facility.active )
                     <button style="width: 44px;" class="deactivateButton btn btn-mini btn-success">

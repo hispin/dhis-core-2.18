@@ -33,6 +33,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -42,10 +44,10 @@ public class FredController
 {
     public static final String PREFIX = "v1";
 
-    @RequestMapping( value = { "", "/" }, method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE, MediaType.TEXT_XML_VALUE } )
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE, MediaType.TEXT_XML_VALUE } )
     public String home( Model model )
     {
-        model.addAttribute( "baseUrl", ".." );
+        model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
         model.addAttribute( "pageName", "home" );
         model.addAttribute( "page", FredController.PREFIX + "/index.vm" );
 
