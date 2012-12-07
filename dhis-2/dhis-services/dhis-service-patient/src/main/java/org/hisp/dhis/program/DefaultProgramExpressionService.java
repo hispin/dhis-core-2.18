@@ -128,39 +128,39 @@ public class DefaultProgramExpressionService
         ProgramStageInstance programStageInstance, I18nFormat format )
     {
         String value = "";
-        if( ProgramExpression.DUE_DATE.equals( programExpression.getExpression()))
+        if ( ProgramExpression.DUE_DATE.equals( programExpression.getExpression() ) )
         {
             value = format.formatDate( programStageInstance.getDueDate() );
         }
-        if( ProgramExpression.REPORT_DATE.equals( programExpression.getExpression()))
+        else if ( ProgramExpression.REPORT_DATE.equals( programExpression.getExpression() ) )
         {
             value = format.formatDate( programStageInstance.getExecutionDate() );
         }
         else
         {
-        StringBuffer description = new StringBuffer();
+            StringBuffer description = new StringBuffer();
 
-        Pattern pattern = Pattern.compile( regExp );
-        Matcher matcher = pattern.matcher( programExpression.getExpression() );
-        while ( matcher.find() )
-        {
-            String match = matcher.group();
-
-            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
-
-            if ( dataValue == null )
+            Pattern pattern = Pattern.compile( regExp );
+            Matcher matcher = pattern.matcher( programExpression.getExpression() );
+            while ( matcher.find() )
             {
-                return null;
+                String match = matcher.group();
+
+                PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
+
+                if ( dataValue == null )
+                {
+                    return null;
+                }
+
+                matcher.appendReplacement( description, dataValue.getValue() );
             }
 
-            matcher.appendReplacement( description, dataValue.getValue() );
-        }
-
-        matcher.appendTail( description );
-        value = description.toString();
+            matcher.appendTail( description );
+            value = description.toString();
         }
         return value;
-        
+
     }
 
     @Override
