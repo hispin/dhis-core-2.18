@@ -44,7 +44,7 @@
 					<span id="exp-expressionInfo" generated="true" class="error"></span>
 				</td>
 				<td valign="top">
-					<input type="text" id="filter" name="filter" style="width:240px" placeholder="$i18n.getString('filter')" onkeyup="filterList( this.value, 'dataElementId' )" {>
+					<input type="text" id="filter" name="filter" style="width:240px" placeholder="$i18n.getString('filter')" onkeyup="filterList( this.value, 'dataElementId' )" >
 					<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:80px"><br/>
 					<select id="dataElementId" name="dataElementId" size="8" ondblclick="insertText( 'expression', this.value )" style="height:120px"></select>
 				</td>
