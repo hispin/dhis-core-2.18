@@ -29,15 +29,15 @@ package org.hisp.dhis.web.webapi.v1.controller;
 
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
-import org.hisp.dhis.web.webapi.v1.utils.GeoUtils;
+import org.hisp.dhis.web.webapi.v1.utils.OrganisationUnitToFacilityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,28 +47,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "facility-controller-" + FredController.PREFIX)
-@RequestMapping(FacilityController.RESOURCE_PATH)
+@Controller( value = "facility-controller-" + FredController.PREFIX )
+@RequestMapping( FacilityController.RESOURCE_PATH )
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
 
     @Autowired
-    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
+    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
     private OrganisationUnitService organisationUnitService;
+
+    private Converter<OrganisationUnit, Facility> convertToFacility = new OrganisationUnitToFacilityConverter();
 
     //--------------------------------------------------------------------------
     // GET HTML
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping( value = "", method = RequestMethod.GET )
     public String readFacilities( Model model )
     {
         Facilities facilities = new Facilities();
@@ -78,7 +82,7 @@ public class FacilityController
 
         for ( OrganisationUnit organisationUnit : allOrganisationUnits )
         {
-            Facility facility = convertToFacility( organisationUnit );
+            Facility facility = convertToFacility.convert( organisationUnit );
             facilities.getFacilities().add( facility );
         }
 
@@ -90,11 +94,11 @@ public class FacilityController
         return FredController.PREFIX + "/layout";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     public String readFacility( Model model, @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
-        Facility facility = convertToFacility( organisationUnit );
+        Facility facility = convertToFacility.convert( organisationUnit );
 
         model.addAttribute( "entity", facility );
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
@@ -108,7 +112,7 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping( value = "/{id}", method = RequestMethod.POST )
     public ResponseEntity<Void> createFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
@@ -118,7 +122,7 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
     public ResponseEntity<Void> updateFacility()
     {
         return new ResponseEntity<Void>( HttpStatus.OK );
@@ -128,7 +132,7 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -141,58 +145,6 @@ public class FacilityController
         }
 
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
-    }
-
-    //--------------------------------------------------------------------------
-    // HELPERS
-    //--------------------------------------------------------------------------
-
-    private Facility convertToFacility( OrganisationUnit organisationUnit )
-    {
-        Facility facility = new Facility();
-        facility.setId( organisationUnit.getUid() );
-        facility.setName( organisationUnit.getDisplayName() );
-        facility.setActive( organisationUnit.isActive() );
-        facility.setCreatedAt( organisationUnit.getLastUpdated() );
-        facility.setUpdatedAt( organisationUnit.getLastUpdated() );
-        facility.setUrl( linkTo( FacilityController.class ).slash( facility.getId() ).toString() );
-
-        if ( organisationUnit.getFeatureType() != null && organisationUnit.getFeatureType().equalsIgnoreCase( "POINT" )
-            && organisationUnit.getCoordinates() != null )
-        {
-            GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( organisationUnit.getCoordinates() );
-            facility.getCoordinates().add( coordinates.lat );
-            facility.getCoordinates().add( coordinates.lng );
-        }
-
-        if ( organisationUnit.getParent() != null )
-        {
-            facility.getProperties().put( "parent", organisationUnit.getParent().getUid() );
-        }
-
-        if ( organisationUnit.getCode() != null )
-        {
-            Map<String, String> codeMap = new HashMap<String, String>();
-            codeMap.put( "agency", "DHIS2" );
-            codeMap.put( "context", "DHIS2_CODE" );
-            codeMap.put( "id", organisationUnit.getCode() );
-
-            facility.getIdentifiers().add( codeMap );
-        }
-
-        if ( !organisationUnit.getDataSets().isEmpty() )
-        {
-            List<String> dataSets = new ArrayList<String>();
-
-            for ( DataSet dataSet : organisationUnit.getDataSets() )
-            {
-                dataSets.add( dataSet.getUid() );
-            }
-
-            facility.getProperties().put( "dataSets", dataSets );
-        }
-
-        return facility;
     }
 
     //--------------------------------------------------------------------------
