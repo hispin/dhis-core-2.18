@@ -33,12 +33,12 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <a class="brand" href="$baseUrl">FRED Facility API v1.0</a>
+            <a class="brand" href="$baseUrl">FRED API v1.0</a>
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li #if( $pageName == "home" )class="active"#end><a href="$baseUrl"><span class="icon-home"> </span> Home</a></li>
-                    <li #if( $pageName == "facilities" )class="active"#end><a href="$baseUrl/facilities/"><span class="icon-search"> </span> Facilities</a></li>
+                    <li #if( $pageName == "facilities" )class="active"#end><a href="$baseUrl/facilities"><span class="icon-search"> </span> Facilities</a></li>
                 </ul>
             </div>
         </div>
