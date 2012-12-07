@@ -8,7 +8,7 @@ var i18n_share_your_interpretation = '$encoder.jsEscape( $i18n.getString( "share
 var i18n_interpretation_was_shared = '$encoder.jsEscape( $i18n.getString( "interpretation_was_shared" ), "'")';
 </script>
 
-<div>
+<div style="margin-bottom:10px">
 <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportReport( 'xls', '$!{uid}', '$!{pe}', '$!{ou}' )" style="width:140px">
 <input type="button" value="$i18n.getString( 'get_report_as_csv' )" onclick="exportReport( 'csv', '$!{uid}', '$!{pe}', '$!{ou}' )" style="width:140px">
 <input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportReport( 'pdf', '$!{uid}', '$!{pe}', '$!{ou}' )" style="width:140px">
@@ -18,9 +18,9 @@ var i18n_interpretation_was_shared = '$encoder.jsEscape( $i18n.getString( "inter
 <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:140px">
 </div>
 
-#parse( "dhis-web-commons/ajax/htmlGrid.vm" )
-
 <div id="shareForm">
-<textarea id="interpretationArea" class="interpretationArea" placeholder="$i18n.getString( 'write_your_interpretation' )"></textarea>
-<input type="button" class="interpretationButton" value="$i18n.getString( 'share' )" onclick="shareInterpretation( '${uid}', '$!{ou}' )">
+<textarea id="interpretationArea" class="interpretationArea" placeholder="$i18n.getString( 'write_your_interpretation' )"></textarea><br>
+<input type="button" value="$i18n.getString( 'share' )" onclick="shareInterpretation( '${uid}', '$!{ou}' )" style="width:120px">
 </div>
+
+#parse( "dhis-web-commons/ajax/htmlGrid.vm" )
