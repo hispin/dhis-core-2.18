@@ -102,7 +102,6 @@ function shareInterpretation( uid, ou )
 	    	contentType: "text/html",
 	    	data: text,
 	    	success: function() {
-	    		$( "#shareForm" ).dialog( "close" );
 	    		$( "#interpretationArea" ).val( "" );
 	    		setHeaderDelayMessage( i18n_interpretation_was_shared );
 	    	}    	
