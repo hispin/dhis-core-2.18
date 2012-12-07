@@ -67,7 +67,7 @@ public class Interpretation
     
     private DataSet dataSet;
     
-    private Period period; // Applicable to data set report
+    private Period period; // Applicable to report table and data set report
     
     private OrganisationUnit organisationUnit; // Applicable to report table and data set report
     
@@ -103,9 +103,10 @@ public class Interpretation
         this.created = new Date();
     }
     
-    public Interpretation( ReportTable reportTable, OrganisationUnit organisationUnit, String text )
+    public Interpretation( ReportTable reportTable, Period period, OrganisationUnit organisationUnit, String text )
     {
         this.reportTable = reportTable;
+        this.period = period;
         this.organisationUnit = organisationUnit;
         this.text = text;
         this.created = new Date();

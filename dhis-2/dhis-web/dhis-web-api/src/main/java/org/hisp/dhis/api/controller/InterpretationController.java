@@ -157,6 +157,7 @@ public class InterpretationController
     @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareReportTableInterpretation( 
         @PathVariable( "uid" ) String reportTableUid, 
+        @RequestParam( value = "pe", required = false ) String isoPeriod,
         @RequestParam( value = "ou", required = false ) String orgUnitUid, 
         @RequestBody String text, HttpServletResponse response ) throws IOException
     {
@@ -167,7 +168,9 @@ public class InterpretationController
             ContextUtils.conflictResponse( response, "Report table identifier not valid: " + reportTableUid );
             return;
         }
-        
+
+        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
+                
         OrganisationUnit orgUnit = null;
         
         if ( orgUnitUid != null )
@@ -181,7 +184,7 @@ public class InterpretationController
             }
         }
         
-        Interpretation interpretation = new Interpretation( reportTable, orgUnit, text );
+        Interpretation interpretation = new Interpretation( reportTable, period, orgUnit, text );
         
         interpretationService.saveInterpretation( interpretation );
 
