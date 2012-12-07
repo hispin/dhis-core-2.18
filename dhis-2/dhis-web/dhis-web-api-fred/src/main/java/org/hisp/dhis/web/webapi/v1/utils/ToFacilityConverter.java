@@ -32,6 +32,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.controller.FacilityController;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Component
 public class ToFacilityConverter implements Converter<OrganisationUnit, Facility>
 {
     @Override
