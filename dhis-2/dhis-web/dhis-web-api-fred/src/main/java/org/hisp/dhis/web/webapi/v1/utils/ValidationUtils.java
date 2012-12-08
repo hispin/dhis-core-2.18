@@ -56,6 +56,11 @@ public class ValidationUtils
         return validator.validate( object );
     }
 
+    public static <T> Set<ConstraintViolation<T>> validate( T object, Class<?>... groups )
+    {
+        return validator.validate( object, groups );
+    }
+
     public static <T> String constraintViolationsToJson( Set<ConstraintViolation<T>> constraintViolations ) throws IOException
     {
         Map<String, String> constraintViolationsMap = new HashMap<String, String>();
