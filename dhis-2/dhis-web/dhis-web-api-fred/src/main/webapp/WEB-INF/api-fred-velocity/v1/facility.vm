@@ -29,7 +29,7 @@
 
 <div class="container-fluid">
     <div class="span4">
-        <div style="height: 320px;" id="mapTarget" class="img-polaroid"></div>
+        <div style="height: 320px;" id="mapTarget"></div>
     </div>
 
     <div class="span4">
