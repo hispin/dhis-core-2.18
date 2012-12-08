@@ -28,8 +28,11 @@ package org.hisp.dhis.web.webapi.v1.domain;
  */
 
 import org.hibernate.validator.constraints.Length;
+import org.hisp.dhis.web.webapi.v1.utils.validationgroups.Create;
+import org.hisp.dhis.web.webapi.v1.utils.validationgroups.Update;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.*;
 
 /**
@@ -38,32 +41,33 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
-    @NotNull
-    @Length( min = 11, max = 11 )
+    @Length( min = 11, max = 11, groups = { Create.class, Update.class } )
+    @NotNull( groups = { Update.class } )
+    @Null( groups = { Create.class } )
     private String id;
 
     // Name of the facility
-    @NotNull
-    @Length( min = 2, max = 160 )
+    @Length( min = 2, max = 160, groups = { Create.class, Update.class } )
+    @NotNull( groups = { Create.class, Update.class } )
     private String name;
 
     // Active = true/false indicates whether the facility is active or not
-    @NotNull
+    @NotNull( groups = { Create.class, Update.class } )
     private Boolean active;
 
     // URL link to the unique ID API resource for the facility
     private String url;
 
     // ISO 8601 timestamp, including timezone, of when the facility was created
-    @NotNull
+    @Null( groups = { Create.class, Update.class } )
     private Date createdAt;
 
     // ISO 8601 timestamp, including timezone, of when the facility was last updated
-    @NotNull
+    @Null( groups = { Create.class, Update.class } )
     private Date updatedAt;
 
     // Geo-location represented by latitude and longitude coordinates in that order
-    @NotNull
+    @NotNull( groups = { Create.class, Update.class } )
     private List<Double> coordinates = new ArrayList<Double>();
 
     // External Facility Identifiers
