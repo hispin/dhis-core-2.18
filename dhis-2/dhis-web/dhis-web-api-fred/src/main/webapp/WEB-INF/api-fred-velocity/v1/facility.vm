@@ -34,9 +34,9 @@
 
         $('#facilityForm').submit(function (e) {
             e.preventDefault();
+            $('#facilitySubmit').attr('disabled', true).text('Saving');
 
             $.get('$baseUrl/facilities/${entity.id}.json').success(function (data) {
-
                 delete data.createdAt;
                 delete data.updatedAt;
                 delete data.url;
@@ -57,8 +57,11 @@
                     dataType: 'json'
                 }).success(function (data) {
                     console.log("save success!", data);
+                    updateMap([lat, lng]);
+                    $('#facilitySubmit').removeAttr('disabled').text('Save');
                 }).error(function (data) {
                     console.log("could not update!", data);
+                    $('#facilitySubmit').removeAttr('disabled').text('Save');
                 });
             });
         });
@@ -98,7 +101,7 @@
                 <input #if(!$canEdit)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
             </fieldset>
 
-            <button #if(!$canEdit)disabled#end type="submit" class="btn btn-info">Update</button>
+            <button #if(!$canEdit)disabled#end type="submit" id="facilitySubmit" class="btn btn-info">Save</button>
         </form>
     </div>
 
