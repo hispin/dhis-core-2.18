@@ -58,6 +58,15 @@ public class IdObjectExistsValidator implements ConstraintValidator<Identifiable
     {
         IdentifiableObject identifiableObject = identifiableObjectManager.get( identifiableObjectClass, value );
 
-        return identifiableObject != null;
+        boolean isValid = identifiableObject != null;
+
+        if ( !isValid )
+        {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate( String.format( "No object found with ID %s.", value ) )
+                .addConstraintViolation();
+        }
+
+        return isValid;
     }
 }
