@@ -36,14 +36,35 @@ import java.util.List;
  */
 final public class GeoUtils
 {
+    public static enum CoordinateOrder
+    {
+        COORDINATE_LATLNG,
+        COORDINATE_LNGLAT
+    }
+
     public static class Coordinates
     {
         public Double lat = 0.0d;
 
         public Double lng = 0.0d;
+
+        @Override
+        public String toString()
+        {
+            return "Coordinates{" +
+                "lat=" + lat +
+                ", lng=" + lng +
+                '}';
+        }
     }
 
+    // helper for most common case, our internal lnglat to latlng
     public static Coordinates parseCoordinates( String coordinatesString )
+    {
+        return parseCoordinates( coordinatesString, CoordinateOrder.COORDINATE_LNGLAT, CoordinateOrder.COORDINATE_LATLNG );
+    }
+
+    public static Coordinates parseCoordinates( String coordinatesString, CoordinateOrder from, CoordinateOrder to )
     {
         Coordinates coordinates = new Coordinates();
 
@@ -51,8 +72,32 @@ final public class GeoUtils
         {
             List list = new ObjectMapper().readValue( coordinatesString, List.class );
 
-            coordinates.lat = convertToDouble( list.get( 1 ) );
-            coordinates.lng = convertToDouble( list.get( 0 ) );
+            if ( from == CoordinateOrder.COORDINATE_LATLNG )
+            {
+                if ( to == CoordinateOrder.COORDINATE_LATLNG )
+                {
+                    coordinates.lat = convertToDouble( list.get( 0 ) );
+                    coordinates.lng = convertToDouble( list.get( 1 ) );
+                }
+                else if ( to == CoordinateOrder.COORDINATE_LNGLAT )
+                {
+                    coordinates.lat = convertToDouble( list.get( 1 ) );
+                    coordinates.lng = convertToDouble( list.get( 0 ) );
+                }
+            }
+            else if ( from == CoordinateOrder.COORDINATE_LNGLAT )
+            {
+                if ( to == CoordinateOrder.COORDINATE_LATLNG )
+                {
+                    coordinates.lat = convertToDouble( list.get( 0 ) );
+                    coordinates.lng = convertToDouble( list.get( 1 ) );
+                }
+                else if ( to == CoordinateOrder.COORDINATE_LNGLAT )
+                {
+                    coordinates.lat = convertToDouble( list.get( 0 ) );
+                    coordinates.lng = convertToDouble( list.get( 1 ) );
+                }
+            }
         }
         catch ( Exception ignored )
         {

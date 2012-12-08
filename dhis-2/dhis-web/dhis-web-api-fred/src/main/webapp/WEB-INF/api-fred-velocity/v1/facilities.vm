@@ -53,9 +53,7 @@
 <table class="table table-bordered table-striped table-condensed">
     <thead>
     <tr>
-        <th>ID</th>
         <th>Name</th>
-        <th>Active</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -63,26 +61,20 @@
     <tbody>
         #foreach( $facility in $entity.facilities )
         <tr>
-            <td class="facility-id" style="width: 1px;">$facility.id</td>
             <td class="facility-name"><a href="$facility.url">$facility.name</a></td>
-            <td class="facility-active" style="width: 1px;">
-                #if( $facility.active )
-                    <button style="width: 44px;" class="deactivateButton btn btn-mini btn-success">
-                        <span class="icon-white icon-ok-circle"> </span>
-                    </button>
-                #else
-                    <button style="width: 44px;" class="activateButton btn btn-mini btn-inverse">
-                        <span class="icon-white icon-ban-circle"> </span>
-                    </button>
-                #end
-            </td>
 
             <td class="facility-actions" style="width: 1px;">
                 <div class="btn-group">
-                    <button disabled="disabled" style="width: 42px;" class="editButton btn btn-mini btn-info">
-                        <span class="icon-white icon-edit"> </span>
-                    </button>
-                    <button disabled="disabled" style="width: 42px;" class="deleteButton btn btn-mini btn-danger">
+                    #if( $facility.active )
+                        <button style="width: 44px;" class="deactivateButton btn btn-mini btn-success" title="Deactivate Facility">
+                            <span class="icon-white icon-ok-circle"> </span>
+                        </button>
+                    #else
+                        <button style="width: 44px;" class="activateButton btn btn-mini btn-inverse" title="Activate Facility">
+                            <span class="icon-white icon-ban-circle"> </span>
+                        </button>
+                    #end
+                    <button disabled="disabled" style="width: 42px;" class="deleteButton btn btn-mini btn-danger" title="Delete Facility">
                         <span class="icon-white icon-trash"> </span>
                     </button>
                 </div>
