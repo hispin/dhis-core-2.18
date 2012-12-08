@@ -75,10 +75,13 @@ public class ToOrganisationUnitConverter implements Converter<Facility, Organisa
 
         Collection<String> dataSets = (Collection<String>) facility.getProperties().get( "dataSets" );
 
-        for ( String uid : dataSets )
+        if ( dataSets != null )
         {
-            DataSet dataSet = dataSetService.getDataSet( uid );
-            organisationUnit.getDataSets().add( dataSet );
+            for ( String uid : dataSets )
+            {
+                DataSet dataSet = dataSetService.getDataSet( uid );
+                organisationUnit.getDataSets().add( dataSet );
+            }
         }
 
         organisationUnit.setFeatureType( OrganisationUnit.FEATURETYPE_POINT );
