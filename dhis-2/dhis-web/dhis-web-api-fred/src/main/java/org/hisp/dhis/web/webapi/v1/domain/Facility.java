@@ -44,8 +44,8 @@ public class Facility
 {
     // Internal system identifier
     @Length( min = 11, max = 11, groups = { Create.class, Update.class } )
-    @NotNull( groups = { Update.class } )
-    @Null( groups = { Create.class } )
+    @NotNull( groups = Update.class )
+    @Null( groups = Create.class )
     @IdentifiableObjectExists( value = OrganisationUnit.class, groups = Update.class )
     private String id;
 
