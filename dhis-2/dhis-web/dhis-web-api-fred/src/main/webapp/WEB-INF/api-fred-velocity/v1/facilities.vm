@@ -1,3 +1,6 @@
+<script src="//maps.google.com/maps/api/js?sensor=false"></script>
+<script src="$baseUrl/../../api-fred-resources/js/markerclusterer.min.js"></script>
+
 <script>
     $(function () {
         $('.activateButton').click(function () {
@@ -27,6 +30,59 @@
                 });
             }
         });
+
+        var facilities = [
+            #foreach( $facility in $entity.facilities )
+            {
+                name: "$facility.name",
+                coordinates: "$facility.coordinates"
+            },
+            #end
+        ];
+
+        $('#mapLink').click(function() {
+            var markers = [];
+
+            var lats = 0.0;
+            var lngs = 0.0;
+            var n = 0;
+
+            $.each(facilities, function (idx, item) {
+                if (item.coordinates !== undefined && JSON.parse(item.coordinates).length > 0) {
+                    var coords = JSON.parse(item.coordinates);
+                    var latlng = new google.maps.LatLng(coords[0], coords[1]);
+                    var name = item.name;
+
+                    lats += coords[0];
+                    lngs += coords[1];
+                    n += 1;
+
+                    var marker = new google.maps.Marker({
+                        position: latlng,
+                        title: name
+                    });
+
+                    markers.push(marker);
+                }
+            });
+
+            lats = lats / n;
+            lngs = lngs / n;
+
+            // var latlng = new google.maps.LatLng(9.0131, -12.9487);
+            var latlng = new google.maps.LatLng(lats, lngs);
+
+            var options = {
+                zoom: 8,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+
+            var map = new google.maps.Map(document.getElementById('mapTarget'), options);
+
+            var markerCluster = new MarkerClusterer(map, markers, {
+            });
+        });
     });
 </script>
 
@@ -47,7 +103,7 @@
 <div class='tabbable'>
     <ul class='nav nav-tabs'>
         <li class='active'><a href='#listTab' data-toggle='tab'><span class='icon-list-alt'> </span> List</a></li>
-        <li><a href='#mapTab' data-toggle='tab'><span class='icon-globe'> </span> Map</a></li>
+        <li><a id='mapLink' href='#mapTab' data-toggle='tab'><span class='icon-globe'> </span> Map</a></li>
     </ul>
 
     <div class='tab-content'>

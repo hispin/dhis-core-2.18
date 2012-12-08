@@ -38,7 +38,7 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li #if( $pageName == "home" )class="active"#end><a href="$baseUrl"><span class="icon-home"> </span> Home</a></li>
-                    <li #if( $pageName == "facilities" )class="active"#end><a href="$baseUrl/facilities"><span class="icon-list-alt"> </span> Facilities</a></li>
+                    <li #if( $pageName == "facilities" )class="active"#end><a href="$baseUrl/facilities"><span class="icon-leaf"> </span> Facilities</a></li>
                 </ul>
             </div>
         </div>
