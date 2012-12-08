@@ -1,1 +1,66 @@
-FACILITY
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script>
+    $(function () {
+        var coordinates = JSON.parse("$entity.coordinates");
+
+        if (coordinates.length > 0) {
+            $('#facilityLatitude').val(coordinates[0]);
+            $('#facilityLongitude').val(coordinates[1]);
+
+            var latlng = new google.maps.LatLng(coordinates[0], coordinates[1]);
+
+            var options = {
+                zoom: 12,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+
+            var map = new google.maps.Map(document.getElementById("mapTarget"), options);
+
+            var marker = new google.maps.Marker({
+                position: latlng,
+                map: map,
+                title: "$entity.name"
+            });
+        }
+    });
+</script>
+
+<div class="container-fluid">
+    <div class="span4">
+        <div style="height: 320px;" id="mapTarget" class="img-polaroid"></div>
+    </div>
+
+    <div class="span4">
+        <form id="facilityForm">
+            #set( $inputSize = "span12")
+
+            <fieldset>
+                <legend>Facility</legend>
+
+                <label for="facilityID">ID</label>
+                <input id="facilityID" disabled="disabled" type="text" class="$inputSize" value="$entity.id"/>
+
+                <label for="facilityName">Name</label>
+                <input #if(true)disabled#end id="facilityName" type="text" class="$inputSize" value="$entity.name"/>
+
+                <label for="facilityActive">Active</label>
+
+                <select id="facilityActive" #if(true)disabled#end class="$inputSize">
+                    <option value="true" #if($entity.active)selected#end>Yes</option>
+                    <option value="false" #if(!$entity.active)selected#end>No</option>
+                </select>
+
+                <label for="facilityLatitude">Latitude</label>
+                <input #if(true)disabled#end id="facilityLatitude" type="text" class="$inputSize" value=""/>
+
+                <label for="facilityLongitude">Longitude</label>
+                <input #if(true)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
+            </fieldset>
+
+            <button #if(true)disabled#end type="submit" class="btn btn-info">Update</button>
+        </form>
+    </div>
+</div>
+
