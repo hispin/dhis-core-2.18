@@ -2,7 +2,7 @@
     $(function () {
         $('.activateButton').click(function () {
             if (confirm('Are you sure you want to activate this facility?')) {
-                var id = $(this).parent().parent().find('.facility-id').text();
+                var id = $(this).parent().parent().parent().data('facility-id');
 
                 $.ajax({
                     url: 'facility-service/' + id + '/activate',
@@ -16,7 +16,7 @@
 
         $('.deactivateButton').click(function () {
             if (confirm('Are you sure you want to de-activate this facility?')) {
-                var id = $(this).parent().parent().find('.facility-id').text();
+                var id = $(this).parent().parent().parent().data('facility-id');
 
                 $.ajax({
                     url: 'facility-service/' + id + '/deactivate',
@@ -38,33 +38,33 @@
 */
 </style>
 
-<div class="btn-group pull-right">
-    <a href="facilities.json" class="btn btn-small btn-info" style="margin-bottom: 5px;">
-        <span class="icon-white icon-download-alt"> </span> JSON
+<div class='btn-group pull-right'>
+    <a href='facilities.json' class='btn btn-small btn-info' style='margin-bottom: 5px;'>
+        <span class='icon-white icon-download-alt'> </span> JSON
     </a>
 </div>
 
-<div class="tabbable">
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#listTab" data-toggle="tab"><span class="icon-list-alt"> </span> List</a></li>
-    <li><a href="#mapTab" data-toggle="tab"><span class="icon-globe"> </span> Map</a></li>
-  </ul>
+<div class='tabbable'>
+    <ul class='nav nav-tabs'>
+        <li class='active'><a href='#listTab' data-toggle='tab'><span class='icon-list-alt'> </span> List</a></li>
+        <li><a href='#mapTab' data-toggle='tab'><span class='icon-globe'> </span> Map</a></li>
+    </ul>
 
-  <div class="tab-content">
+    <div class='tab-content'>
 
-    <div class="tab-pane active" id="listTab">
-        #listContent()
+        <div class='tab-pane active' id='listTab'>
+            #listContent()
+        </div>
+
+        <div class='tab-pane' id='mapTab'>
+            #mapContent()
+        </div>
     </div>
-
-    <div class="tab-pane" id="mapTab">
-        #mapContent()
-    </div>
-  </div>
 
 </div>
 
 #macro( listContent )
-<table class="table table-bordered table-striped table-condensed">
+<table class='table table-bordered table-striped table-condensed'>
     <thead>
     <tr>
         <th>Name</th>
@@ -74,22 +74,22 @@
 
     <tbody>
         #foreach( $facility in $entity.facilities )
-        <tr>
-            <td class="facility-name"><a href="$facility.url">$facility.name</a></td>
+        <tr data-facility-id='$facility.id'>
+            <td class='facility-name'><a href='$facility.url'>$facility.name</a></td>
 
-            <td class="facility-actions" style="width: 1px;">
-                <div class="btn-group">
+            <td class='facility-actions' style='width: 1px;'>
+                <div class='btn-group'>
                     #if( $facility.active )
-                        <button style="width: 44px;" class="deactivateButton btn btn-mini btn-success" title="Deactivate Facility">
-                            <span class="icon-white icon-ok-circle"> </span>
+                        <button style='width: 44px;' class='deactivateButton btn btn-mini btn-success' title='Deactivate Facility'>
+                            <span class='icon-white icon-ok-circle'> </span>
                         </button>
                     #else
-                        <button style="width: 44px;" class="activateButton btn btn-mini btn-inverse" title="Activate Facility">
-                            <span class="icon-white icon-ban-circle"> </span>
+                        <button style='width: 44px;' class='activateButton btn btn-mini btn-inverse' title='Activate Facility'>
+                            <span class='icon-white icon-ban-circle'> </span>
                         </button>
                     #end
-                    <button disabled="disabled" style="width: 42px;" class="deleteButton btn btn-mini btn-danger" title="Delete Facility">
-                        <span class="icon-white icon-trash"> </span>
+                    <button disabled='disabled' style='width: 42px;' class='deleteButton btn btn-mini btn-danger' title='Delete Facility'>
+                        <span class='icon-white icon-trash'> </span>
                     </button>
                 </div>
             </td>
@@ -100,7 +100,7 @@
 #end
 
 #macro( mapContent )
-<div class="span12 well" style="padding: 4px;">
-    <div style="height: 680px;" id="mapTarget"></div>
+<div class='span12 well' style='padding: 4px;'>
+    <div style='height: 680px;' id='mapTarget'></div>
 </div>
 #end
