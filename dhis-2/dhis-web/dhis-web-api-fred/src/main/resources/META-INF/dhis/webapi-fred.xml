@@ -15,6 +15,7 @@
     <property name="converters">
       <set>
         <ref bean="toFacilityConverter" />
+        <ref bean="toOrganisationUnitConverter" />
       </set>
     </property>
   </bean>

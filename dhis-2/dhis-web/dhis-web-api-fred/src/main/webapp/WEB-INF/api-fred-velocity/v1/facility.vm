@@ -1,6 +1,24 @@
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="//maps.google.com/maps/api/js?sensor=false"></script>
 
 <script>
+    function updateMap(coordinates) {
+        var latlng = new google.maps.LatLng(coordinates[0], coordinates[1]);
+
+        var options = {
+            zoom: 12,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+
+        var map = new google.maps.Map(document.getElementById('mapTarget'), options);
+
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            title: '$entity.name'
+        });
+    }
+
     $(function () {
         var coordinates = JSON.parse("$entity.coordinates");
 
@@ -8,33 +26,54 @@
             $('#facilityLatitude').val(coordinates[0]);
             $('#facilityLongitude').val(coordinates[1]);
 
-            var latlng = new google.maps.LatLng(coordinates[0], coordinates[1]);
-
-            var options = {
-                zoom: 12,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.HYBRID
-            };
-
-            var map = new google.maps.Map(document.getElementById("mapTarget"), options);
-
-            var marker = new google.maps.Marker({
-                position: latlng,
-                map: map,
-                title: "$entity.name"
-            });
+            updateMap(coordinates);
+        } else {
+            $('#mapTarget').html('<div style="text-align: center;">No coordinates provided.</div>')
+                .parent().addClass('hidden-phone');
         }
+
+        $('#facilityForm').submit(function (e) {
+            e.preventDefault();
+
+            $.get('$baseUrl/facilities/${entity.id}.json').success(function (data) {
+
+                delete data.createdAt;
+                delete data.updatedAt;
+                delete data.url;
+
+                data.name = $('#facilityName').val();
+                data.active = JSON.parse($('#facilityActive').val());
+
+                var lat = $('#facilityLatitude').val();
+                var lng = $('#facilityLongitude').val();
+
+                data.coordinates = [ lat, lng ];
+
+                $.ajax({
+                    url: '$baseUrl/facilities/${entity.id}',
+                    contentType: 'application/json; charset=UTF-8',
+                    type: 'PUT',
+                    data: JSON.stringify(data),
+                    dataType: 'json'
+                }).success(function (data) {
+                    console.log("save success!", data);
+                }).error(function (data) {
+                    console.log("could not update!", data);
+                });
+            });
+        });
     });
 </script>
 
 <div class="container-fluid">
-    <div class="span4">
+    <div class="span5 well" style="padding: 4px;">
         <div style="height: 320px;" id="mapTarget"></div>
     </div>
 
-    <div class="span4">
+    <div class="span6">
         <form id="facilityForm">
             #set( $inputSize = "span12")
+            #set( $canEdit = true )
 
             <fieldset>
                 <legend>Facility</legend>
@@ -43,24 +82,30 @@
                 <input id="facilityID" disabled="disabled" type="text" class="$inputSize" value="$entity.id"/>
 
                 <label for="facilityName">Name</label>
-                <input #if(true)disabled#end id="facilityName" type="text" class="$inputSize" value="$entity.name"/>
+                <input #if(!$canEdit)disabled#end id="facilityName" type="text" class="$inputSize" value="$entity.name"/>
 
                 <label for="facilityActive">Active</label>
 
-                <select id="facilityActive" #if(true)disabled#end class="$inputSize">
+                <select id="facilityActive" #if(!$canEdit)disabled#end class="$inputSize">
                     <option value="true" #if($entity.active)selected#end>Yes</option>
                     <option value="false" #if(!$entity.active)selected#end>No</option>
                 </select>
 
                 <label for="facilityLatitude">Latitude</label>
-                <input #if(true)disabled#end id="facilityLatitude" type="text" class="$inputSize" value=""/>
+                <input #if(!$canEdit)disabled#end id="facilityLatitude" type="text" class="$inputSize" value=""/>
 
                 <label for="facilityLongitude">Longitude</label>
-                <input #if(true)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
+                <input #if(!$canEdit)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
             </fieldset>
 
-            <button #if(true)disabled#end type="submit" class="btn btn-info">Update</button>
+            <button #if(!$canEdit)disabled#end type="submit" class="btn btn-info">Update</button>
         </form>
+    </div>
+
+    <div class="span1">
+        <button disabled="disabled" style="width: 42px;" class="deleteButton btn btn-mini btn-danger pull-right" title="Delete Facility">
+            <span class="icon-white icon-trash"> </span>
+        </button>
     </div>
 </div>
 

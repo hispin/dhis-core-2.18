@@ -34,21 +34,25 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
+import org.hisp.dhis.web.webapi.v1.validation.group.UpdateSequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -68,6 +72,9 @@ public class FacilityController
     @Autowired
     @Qualifier( "conversionService" )
     private ConversionService conversionService;
+
+    @Autowired
+    private Validator validator;
 
     //--------------------------------------------------------------------------
     // GET HTML
@@ -115,20 +122,65 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.POST )
-    public ResponseEntity<Void> createFacility()
+    @RequestMapping( value = "", method = RequestMethod.POST )
+    public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws IOException
     {
-        return new ResponseEntity<Void>( HttpStatus.OK );
+        OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
+
+        return new ResponseEntity<String>( "ok", HttpStatus.OK );
+
+        /*
+        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, CreateSequence.class );
+
+        String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
+
+        if ( constraintViolations.isEmpty() )
+        {
+            return new ResponseEntity<String>( json, HttpStatus.OK );
+        }
+        else
+        {
+            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
+        }
+        */
     }
 
     //--------------------------------------------------------------------------
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
-    public ResponseEntity<Void> updateFacility()
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
+    public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility ) throws IOException
     {
-        return new ResponseEntity<Void>( HttpStatus.OK );
+        facility.setId( id );
+        OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
+
+        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, UpdateSequence.class );
+
+        String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
+
+        if ( constraintViolations.isEmpty() )
+        {
+            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
+
+            ou.setName( organisationUnit.getName() );
+            ou.setShortName( organisationUnit.getShortName() );
+
+            ou.setFeatureType( organisationUnit.getFeatureType() );
+            ou.setCoordinates( organisationUnit.getCoordinates() );
+            ou.setDataSets( organisationUnit.getDataSets() );
+            ou.setParent( organisationUnit.getParent() );
+
+            ou.setActive( organisationUnit.isActive() );
+
+            organisationUnitService.updateOrganisationUnit( ou );
+
+            return new ResponseEntity<String>( json, HttpStatus.OK );
+        }
+        else
+        {
+            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
+        }
     }
 
     //--------------------------------------------------------------------------

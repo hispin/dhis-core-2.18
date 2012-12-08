@@ -389,7 +389,9 @@ public class DataSet
     @Override
     public String toString()
     {
-        return "[" + name + "]";
+        return "DataSet{" +
+            "name=" + name +
+            '}';
     }
 
     // -------------------------------------------------------------------------
