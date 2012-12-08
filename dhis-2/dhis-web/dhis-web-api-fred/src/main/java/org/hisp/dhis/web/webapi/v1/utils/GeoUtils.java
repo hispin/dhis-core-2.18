@@ -81,21 +81,21 @@ final public class GeoUtils
                 }
                 else if ( to == CoordinateOrder.COORDINATE_LNGLAT )
                 {
-                    coordinates.lat = convertToDouble( list.get( 1 ) );
-                    coordinates.lng = convertToDouble( list.get( 0 ) );
+                    coordinates.lat = convertToDouble( list.get( 0 ) );
+                    coordinates.lng = convertToDouble( list.get( 1 ) );
                 }
             }
             else if ( from == CoordinateOrder.COORDINATE_LNGLAT )
             {
                 if ( to == CoordinateOrder.COORDINATE_LATLNG )
                 {
-                    coordinates.lat = convertToDouble( list.get( 0 ) );
-                    coordinates.lng = convertToDouble( list.get( 1 ) );
+                    coordinates.lat = convertToDouble( list.get( 1 ) );
+                    coordinates.lng = convertToDouble( list.get( 0 ) );
                 }
                 else if ( to == CoordinateOrder.COORDINATE_LNGLAT )
                 {
-                    coordinates.lat = convertToDouble( list.get( 0 ) );
-                    coordinates.lng = convertToDouble( list.get( 1 ) );
+                    coordinates.lat = convertToDouble( list.get( 1 ) );
+                    coordinates.lng = convertToDouble( list.get( 0 ) );
                 }
             }
         }
