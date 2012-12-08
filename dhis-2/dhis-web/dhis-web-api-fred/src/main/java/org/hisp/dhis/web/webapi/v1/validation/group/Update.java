@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils.validationgroups;
+package org.hisp.dhis.web.webapi.v1.validation.group;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

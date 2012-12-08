@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.webapi.v1.validation.constraint;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,28 +27,37 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.IdentifiableObjectExists;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.validation.ConstraintViolation;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ValidationUtils
+public class IdObjectExistsValidator implements ConstraintValidator<IdentifiableObjectExists, String>
 {
-    public static <T> String constraintViolationsToJson( Set<ConstraintViolation<T>> constraintViolations ) throws IOException
+    @Autowired
+    @Qualifier( "org.hisp.dhis.common.IdentifiableObjectManager" )
+    private IdentifiableObjectManager identifiableObjectManager;
+
+    private Class<? extends IdentifiableObject> identifiableObjectClass;
+
+    @Override
+    public void initialize( IdentifiableObjectExists constraintAnnotation )
     {
-        Map<String, String> constraintViolationsMap = new HashMap<String, String>();
+        identifiableObjectClass = constraintAnnotation.value();
+    }
 
-        for ( ConstraintViolation constraintViolation : constraintViolations )
-        {
-            constraintViolationsMap.put( constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage() );
-        }
+    @Override
+    public boolean isValid( String value, ConstraintValidatorContext context )
+    {
+        IdentifiableObject identifiableObject = identifiableObjectManager.get( identifiableObjectClass, value );
 
-        return new ObjectMapper().writeValueAsString( constraintViolationsMap );
+        return identifiableObject != null;
     }
 }

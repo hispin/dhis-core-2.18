@@ -11,7 +11,7 @@
   <context:component-scan base-package="org.hisp.dhis.web.webapi" />
   <context:annotation-config />
 
-  <bean id="fredConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+  <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
     <property name="converters">
       <set>
         <ref bean="toFacilityConverter" />
@@ -19,7 +19,9 @@
     </property>
   </bean>
 
-  <mvc:annotation-driven conversion-service="fredConversionService" />
+  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+  <mvc:annotation-driven conversion-service="conversionService" validator="validator" />
 
   <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
     <property name="resourceLoaderPath" value="/WEB-INF/api-fred-velocity/" />

@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.webapi.v1.validation.constraint.annotation;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,28 +27,30 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.IdObjectExistsValidator;
 
-import javax.validation.ConstraintViolation;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ValidationUtils
+
+@Target( { ElementType.METHOD, ElementType.FIELD } )
+@Retention( RetentionPolicy.RUNTIME )
+@Constraint( validatedBy = IdObjectExistsValidator.class )
+public @interface IdentifiableObjectExists
 {
-    public static <T> String constraintViolationsToJson( Set<ConstraintViolation<T>> constraintViolations ) throws IOException
-    {
-        Map<String, String> constraintViolationsMap = new HashMap<String, String>();
+    String message() default "No object found with that ID.";
 
-        for ( ConstraintViolation constraintViolation : constraintViolations )
-        {
-            constraintViolationsMap.put( constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage() );
-        }
+    Class<?>[] groups() default { };
 
-        return new ObjectMapper().writeValueAsString( constraintViolationsMap );
-    }
+    Class<? extends Payload>[] payload() default { };
+
+    Class<? extends IdentifiableObject> value();
 }
