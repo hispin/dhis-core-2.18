@@ -36,62 +36,30 @@ import org.junit.Test;
 public class GeoUtilsTest
 {
     @Test
-    public void latToLat()
+    public void fromLatLng()
     {
         Double lat = 1.0d;
         Double lng = 2.0d;
 
         String coordinatesString = String.format( "[%f, %f]", lat, lng );
 
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG,
-            GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
+        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
 
         Assert.assertEquals( lat, coordinates.lat );
         Assert.assertEquals( lng, coordinates.lng );
     }
 
     @Test
-    public void lngToLng()
+    public void fromLngLat()
     {
         Double lat = 1.0d;
         Double lng = 2.0d;
 
         String coordinatesString = String.format( "[%f, %f]", lng, lat );
 
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT,
-            GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
-
-        Assert.assertEquals( lng, coordinates.lng );
-        Assert.assertEquals( lat, coordinates.lat );
-    }
-
-    @Test
-    public void latToLng()
-    {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
-
-        String coordinatesString = String.format( "[%f, %f]", lat, lng );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG,
-            GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
+        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
 
         Assert.assertEquals( lat, coordinates.lat );
         Assert.assertEquals( lng, coordinates.lng );
-    }
-
-    @Test
-    public void lngToLat()
-    {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
-
-        String coordinatesString = String.format( "[%f, %f]", lng, lat );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT,
-            GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
-
-        Assert.assertEquals( lng, coordinates.lng );
-        Assert.assertEquals( lat, coordinates.lat );
     }
 }

@@ -61,10 +61,10 @@ final public class GeoUtils
     // helper for most common case, our internal lnglat to latlng
     public static Coordinates parseCoordinates( String coordinatesString )
     {
-        return parseCoordinates( coordinatesString, CoordinateOrder.COORDINATE_LNGLAT, CoordinateOrder.COORDINATE_LATLNG );
+        return parseCoordinates( coordinatesString, CoordinateOrder.COORDINATE_LNGLAT );
     }
 
-    public static Coordinates parseCoordinates( String coordinatesString, CoordinateOrder from, CoordinateOrder to )
+    public static Coordinates parseCoordinates( String coordinatesString, CoordinateOrder from )
     {
         Coordinates coordinates = new Coordinates();
 
@@ -74,29 +74,13 @@ final public class GeoUtils
 
             if ( from == CoordinateOrder.COORDINATE_LATLNG )
             {
-                if ( to == CoordinateOrder.COORDINATE_LATLNG )
-                {
-                    coordinates.lat = convertToDouble( list.get( 0 ) );
-                    coordinates.lng = convertToDouble( list.get( 1 ) );
-                }
-                else if ( to == CoordinateOrder.COORDINATE_LNGLAT )
-                {
-                    coordinates.lat = convertToDouble( list.get( 0 ) );
-                    coordinates.lng = convertToDouble( list.get( 1 ) );
-                }
+                coordinates.lat = convertToDouble( list.get( 0 ) );
+                coordinates.lng = convertToDouble( list.get( 1 ) );
             }
             else if ( from == CoordinateOrder.COORDINATE_LNGLAT )
             {
-                if ( to == CoordinateOrder.COORDINATE_LATLNG )
-                {
-                    coordinates.lat = convertToDouble( list.get( 1 ) );
-                    coordinates.lng = convertToDouble( list.get( 0 ) );
-                }
-                else if ( to == CoordinateOrder.COORDINATE_LNGLAT )
-                {
-                    coordinates.lat = convertToDouble( list.get( 1 ) );
-                    coordinates.lng = convertToDouble( list.get( 0 ) );
-                }
+                coordinates.lat = convertToDouble( list.get( 1 ) );
+                coordinates.lng = convertToDouble( list.get( 0 ) );
             }
         }
         catch ( Exception ignored )
