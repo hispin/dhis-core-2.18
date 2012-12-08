@@ -51,8 +51,8 @@ final public class GeoUtils
         {
             List list = new ObjectMapper().readValue( coordinatesString, List.class );
 
-            coordinates.lat = convertToDouble( list.get( 0 ) );
-            coordinates.lng = convertToDouble( list.get( 1 ) );
+            coordinates.lat = convertToDouble( list.get( 1 ) );
+            coordinates.lng = convertToDouble( list.get( 0 ) );
         }
         catch ( Exception ignored )
         {
