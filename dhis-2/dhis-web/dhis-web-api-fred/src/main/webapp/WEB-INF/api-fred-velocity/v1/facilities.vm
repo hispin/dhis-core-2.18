@@ -2,6 +2,9 @@
 <script src="$baseUrl/../../api-fred-resources/js/markerclusterer.min.js"></script>
 
 <script>
+    var markers = [];
+    var infoWindows = [];
+
     $(function () {
         $('.activateButton').click(function () {
             if (confirm('Are you sure you want to activate this facility?')) {
@@ -34,6 +37,7 @@
         var facilities = [
             #foreach( $facility in $entity.facilities )
             {
+                id: "$facility.id",
                 name: "$facility.name",
                 coordinates: "$facility.coordinates"
             },
@@ -41,7 +45,6 @@
         ];
 
         $('#mapLink').click(function() {
-            var markers = [];
 
             var lats = 0.0;
             var lngs = 0.0;
@@ -52,6 +55,9 @@
                     var coords = JSON.parse(item.coordinates);
                     var latlng = new google.maps.LatLng(coords[0], coords[1]);
                     var name = item.name;
+                    var id = item.id;
+
+                    console.log(id);
 
                     lats += coords[0];
                     lngs += coords[1];
@@ -63,13 +69,18 @@
                     });
 
                     markers.push(marker);
+
+                    var infoWindow= new google.maps.InfoWindow({
+                        content: "<div><a href='$baseUrl/facilities/" + id + "'>More information</a></div>"
+                    });
+
+                    infoWindows.push(infoWindow);
                 }
             });
 
             lats = lats / n;
             lngs = lngs / n;
 
-            // var latlng = new google.maps.LatLng(9.0131, -12.9487);
             var latlng = new google.maps.LatLng(lats, lngs);
 
             var options = {
@@ -80,8 +91,13 @@
 
             var map = new google.maps.Map(document.getElementById('mapTarget'), options);
 
-            var markerCluster = new MarkerClusterer(map, markers, {
+            $.each(markers, function (idx, item) {
+                google.maps.event.addListener(item, 'click', function() {
+                    infoWindows[idx].open(map, item);
+                });
             });
+
+            var markerCluster = new MarkerClusterer(map, markers);
         });
     });
 </script>
