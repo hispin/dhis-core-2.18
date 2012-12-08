@@ -42,14 +42,28 @@
     <a href="facilities.json" class="btn btn-small btn-info" style="margin-bottom: 5px;">
         <span class="icon-white icon-download-alt"> </span> JSON
     </a>
-
-    <!-- future feature
-    <button id="mapFacilities" disabled="disabled" class="btn btn-small btn-info" style="margin-bottom: 5px;">
-        <span class="icon-white icon-map-marker"> </span> Show in map
-    </button>
-    -->
 </div>
 
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#listTab" data-toggle="tab"><span class="icon-list-alt"> </span> List</a></li>
+    <li><a href="#mapTab" data-toggle="tab"><span class="icon-globe"> </span> Map</a></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="listTab">
+        #listContent()
+    </div>
+
+    <div class="tab-pane" id="mapTab">
+        #mapContent()
+    </div>
+  </div>
+
+</div>
+
+#macro( listContent )
 <table class="table table-bordered table-striped table-condensed">
     <thead>
     <tr>
@@ -83,3 +97,10 @@
         #end
     </tbody>
 </table>
+#end
+
+#macro( mapContent )
+<div class="span12 well" style="padding: 4px;">
+    <div style="height: 680px;" id="mapTarget"></div>
+</div>
+#end

@@ -56,7 +56,7 @@ public class GeoUtilsTest
         Double lat = 1.0d;
         Double lng = 2.0d;
 
-        String coordinatesString = String.format( "[%f, %f]", lat, lng );
+        String coordinatesString = String.format( "[%f, %f]", lng, lat );
 
         GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT,
             GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
@@ -76,8 +76,8 @@ public class GeoUtilsTest
         GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG,
             GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
 
-        Assert.assertEquals( lat, coordinates.lng );
-        Assert.assertEquals( lng, coordinates.lat );
+        Assert.assertEquals( lat, coordinates.lat );
+        Assert.assertEquals( lng, coordinates.lng );
     }
 
     @Test
@@ -91,7 +91,7 @@ public class GeoUtilsTest
         GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT,
             GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
 
-        Assert.assertEquals( lng, coordinates.lat );
-        Assert.assertEquals( lat, coordinates.lng );
+        Assert.assertEquals( lng, coordinates.lng );
+        Assert.assertEquals( lat, coordinates.lat );
     }
 }
