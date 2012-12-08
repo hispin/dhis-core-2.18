@@ -31,8 +31,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
-import org.hisp.dhis.web.webapi.v1.validation.group.Create;
-import org.hisp.dhis.web.webapi.v1.validation.group.Update;
+import org.hisp.dhis.web.webapi.v1.validation.group.CreateSequence;
+import org.hisp.dhis.web.webapi.v1.validation.group.UpdateSequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -104,7 +104,7 @@ public class FacilityServiceController
     @RequestMapping( value = "/validate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<String> validateFacilityForCreate( @RequestBody Facility facility ) throws IOException
     {
-        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Create.class );
+        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, CreateSequence.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
@@ -121,7 +121,7 @@ public class FacilityServiceController
     @RequestMapping( value = "/validate", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<String> validateFacilityForUpdate( @RequestBody Facility facility ) throws IOException
     {
-        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Update.class );
+        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, UpdateSequence.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 

@@ -30,7 +30,7 @@ package org.hisp.dhis.web.webapi.v1.domain;
 import org.hibernate.validator.constraints.Length;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.IdentifiableObjectExists;
-import org.hisp.dhis.web.webapi.v1.validation.group.Create;
+import org.hisp.dhis.web.webapi.v1.validation.group.Standard;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
 import javax.validation.constraints.NotNull;
@@ -43,34 +43,34 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
-    @Length( min = 11, max = 11, groups = { Create.class, Update.class } )
-    @NotNull( groups = Update.class )
-    @Null( groups = Create.class )
+    @Length( min = 11, max = 11, groups = Standard.Length.class )
+    @NotNull( groups = Standard.NotNull.class )
+    @Null( groups = Standard.Null.class )
     @IdentifiableObjectExists( value = OrganisationUnit.class, groups = Update.class )
     private String id;
 
     // Name of the facility
-    @Length( min = 2, max = 160, groups = { Create.class, Update.class } )
-    @NotNull( groups = { Create.class, Update.class } )
+    @Length( min = 2, max = 160 )
+    @NotNull
     private String name;
 
     // Active = true/false indicates whether the facility is active or not
-    @NotNull( groups = { Create.class, Update.class } )
+    @NotNull
     private Boolean active;
 
     // URL link to the unique ID API resource for the facility
     private String url;
 
     // ISO 8601 timestamp, including timezone, of when the facility was created
-    @Null( groups = { Create.class, Update.class } )
+    @Null
     private Date createdAt;
 
     // ISO 8601 timestamp, including timezone, of when the facility was last updated
-    @Null( groups = { Create.class, Update.class } )
+    @Null
     private Date updatedAt;
 
     // Geo-location represented by latitude and longitude coordinates in that order
-    @NotNull( groups = { Create.class, Update.class } )
+    @NotNull
     private List<Double> coordinates = new ArrayList<Double>();
 
     // External Facility Identifiers
