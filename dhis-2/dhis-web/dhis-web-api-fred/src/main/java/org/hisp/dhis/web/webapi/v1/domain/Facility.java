@@ -28,8 +28,10 @@ package org.hisp.dhis.web.webapi.v1.domain;
  */
 
 import org.hibernate.validator.constraints.Length;
-import org.hisp.dhis.web.webapi.v1.utils.validationgroups.Create;
-import org.hisp.dhis.web.webapi.v1.utils.validationgroups.Update;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.IdentifiableObjectExists;
+import org.hisp.dhis.web.webapi.v1.validation.group.Create;
+import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -44,6 +46,7 @@ public class Facility
     @Length( min = 11, max = 11, groups = { Create.class, Update.class } )
     @NotNull( groups = { Update.class } )
     @Null( groups = { Create.class } )
+    @IdentifiableObjectExists( value = OrganisationUnit.class, groups = Update.class )
     private String id;
 
     // Name of the facility

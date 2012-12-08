@@ -66,7 +66,7 @@ public class FacilityController
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    @Qualifier( "fredConversionService" )
+    @Qualifier( "conversionService" )
     private ConversionService conversionService;
 
     //--------------------------------------------------------------------------
