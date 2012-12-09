@@ -82,6 +82,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( metaData );
         }
 
+        postProcessEntities( entityList );
+        postProcessEntities( entityList, parameters );
+
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
@@ -101,6 +104,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             WebUtils.generateLinks( metaData );
         }
+
+        postProcessEntities( entityList );
+        postProcessEntities( entityList, parameters );
 
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
@@ -216,11 +222,30 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // Hooks
     //--------------------------------------------------------------------------
 
+
+    /**
+     * Override to process entities after it has been retrieved from
+     * storage and before it is returned to the view. Entities is null-safe.
+     */
+    protected void postProcessEntities( List<T> entityList, Map<String, String> parameters )
+    {
+
+    }
+
+    /**
+     * Override to process entities after it has been retrieved from
+     * storage and before it is returned to the view. Entities is null-safe.
+     */
+    protected void postProcessEntities( List<T> entityList )
+    {
+
+    }
+
     /**
      * Override to process a single entity after it has been retrieved from
      * storage and before it is returned to the view. Entity is null-safe.
      */
-    public void postProcessEntity( T entity ) throws Exception
+    protected void postProcessEntity( T entity ) throws Exception
     {
     }
 
@@ -228,7 +253,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      * Override to process a single entity after it has been retrieved from
      * storage and before it is returned to the view. Entity is null-safe.
      */
-    public void postProcessEntity( T entity, Map<String, String> parameters ) throws Exception
+    protected void postProcessEntity( T entity, Map<String, String> parameters ) throws Exception
     {
     }
 
