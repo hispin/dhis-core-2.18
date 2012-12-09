@@ -50,7 +50,7 @@ public class Facility
     private String id;
 
     // Name of the facility
-    @Length( min = 2, max = 160 )
+    @Length(min = 2, max = 160)
     @NotNull
     private String name;
 
