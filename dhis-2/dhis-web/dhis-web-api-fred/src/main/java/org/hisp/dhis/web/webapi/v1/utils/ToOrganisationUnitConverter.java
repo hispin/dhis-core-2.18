@@ -86,9 +86,15 @@ public class ToOrganisationUnitConverter implements Converter<Facility, Organisa
 
         organisationUnit.setFeatureType( OrganisationUnit.FEATURETYPE_POINT );
 
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( facility.getCoordinates().toString() );
-
-        organisationUnit.setCoordinates( String.format( "[%f, %f]", coordinates.lng, coordinates.lat ) );
+        try
+        {
+            GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( facility.getCoordinates().toString() );
+            organisationUnit.setCoordinates( String.format( "[%f, %f]", coordinates.lng, coordinates.lat ) );
+        }
+        catch ( NumberFormatException err )
+        {
+            organisationUnit.setCoordinates( "" );
+        }
 
         return organisationUnit;
     }

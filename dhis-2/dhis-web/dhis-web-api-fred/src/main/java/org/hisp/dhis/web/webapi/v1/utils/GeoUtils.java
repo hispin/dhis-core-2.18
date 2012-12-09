@@ -27,8 +27,11 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -44,9 +47,9 @@ final public class GeoUtils
 
     public static class Coordinates
     {
-        public Double lat = 0.0d;
+        public Double lat;
 
-        public Double lng = 0.0d;
+        public Double lng;
 
         @Override
         public String toString()
@@ -83,14 +86,20 @@ final public class GeoUtils
                 coordinates.lng = convertToDouble( list.get( 0 ) );
             }
         }
-        catch ( Exception ignored )
+        catch ( JsonMappingException ignored )
+        {
+        }
+        catch ( JsonParseException ignored )
+        {
+        }
+        catch ( IOException ignored )
         {
         }
 
         return coordinates;
     }
 
-    private static Double convertToDouble( Object object )
+    private static Double convertToDouble( Object object ) throws NumberFormatException
     {
         Double d = 0.0d;
 
@@ -102,6 +111,10 @@ final public class GeoUtils
         {
             Integer lng = (Integer) object;
             d = Double.valueOf( lng );
+        }
+        else
+        {
+            throw new NumberFormatException();
         }
 
         return d;

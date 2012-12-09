@@ -61,10 +61,16 @@ public class ToFacilityConverter implements Converter<OrganisationUnit, Facility
         if ( organisationUnit.getFeatureType() != null && organisationUnit.getFeatureType().equalsIgnoreCase( "POINT" )
             && organisationUnit.getCoordinates() != null )
         {
-            GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( organisationUnit.getCoordinates() );
+            try
+            {
+                GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( organisationUnit.getCoordinates() );
 
-            facility.getCoordinates().add( coordinates.lng );
-            facility.getCoordinates().add( coordinates.lat );
+                facility.getCoordinates().add( coordinates.lng );
+                facility.getCoordinates().add( coordinates.lat );
+            }
+            catch ( NumberFormatException ignored )
+            {
+            }
         }
 
         if ( organisationUnit.getParent() != null )

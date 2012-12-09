@@ -27,6 +27,7 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -43,7 +44,8 @@ public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
     public ObjectMapper getObject() throws Exception
     {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.getSerializationConfig().disable( SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS );
+        objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
+        objectMapper.configure( SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false );
         objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
 
         return objectMapper;
@@ -61,4 +63,3 @@ public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
         return true;
     }
 }
-
