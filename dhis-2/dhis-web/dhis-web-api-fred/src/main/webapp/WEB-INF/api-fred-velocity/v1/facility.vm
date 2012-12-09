@@ -13,7 +13,11 @@
         var options = {
             zoom: 12,
             center: latlng,
-            mapTypeId: google.maps.MapTypeId.HYBRID
+            disableDefaultUI: true,
+            mapTypeControl: true,
+            panControl: true,
+            zoomControl: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         var map = new google.maps.Map(document.getElementById('mapTarget'), options);
