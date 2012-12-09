@@ -28,7 +28,7 @@ package org.hisp.dhis.web.webapi.v1.validation.constraint.annotation;
  */
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.web.webapi.v1.validation.constraint.IdObjectExistsValidator;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.UidReferenceValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -42,8 +42,8 @@ import java.lang.annotation.Target;
  */
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = IdObjectExistsValidator.class)
-public @interface IdentifiableObjectExists
+@Constraint(validatedBy = UidReferenceValidator.class)
+public @interface ValidUidReference
 {
     String message() default "No object found with that ID.";
 
