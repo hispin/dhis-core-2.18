@@ -32,6 +32,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.domain.Identifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
@@ -46,11 +47,11 @@ import java.util.Collection;
 public class ToOrganisationUnitConverter implements Converter<Facility, OrganisationUnit>
 {
     @Autowired
-    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
+    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    @Qualifier("org.hisp.dhis.dataset.DataSetService")
+    @Qualifier( "org.hisp.dhis.dataset.DataSetService" )
     private DataSetService dataSetService;
 
     @Override
@@ -81,6 +82,19 @@ public class ToOrganisationUnitConverter implements Converter<Facility, Organisa
             {
                 DataSet dataSet = dataSetService.getDataSet( uid );
                 organisationUnit.getDataSets().add( dataSet );
+            }
+        }
+
+        if ( facility.getIdentifiers() != null )
+        {
+            for ( Identifier identifier : facility.getIdentifiers() )
+            {
+                // for now, this is the only known identifier
+                if ( identifier.getAgency().equalsIgnoreCase( Identifier.DHIS2_AGENCY )
+                    && identifier.getContext().equalsIgnoreCase( Identifier.DHIS2_CODE_CONTEXT ) )
+                {
+                    organisationUnit.setCode( identifier.getId() );
+                }
             }
         }
 

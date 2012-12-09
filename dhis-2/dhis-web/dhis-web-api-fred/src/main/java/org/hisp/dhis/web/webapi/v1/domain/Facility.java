@@ -30,6 +30,7 @@ package org.hisp.dhis.web.webapi.v1.domain;
 import org.hibernate.validator.constraints.Length;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.IdentifiableObjectExists;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
 import org.hisp.dhis.web.webapi.v1.validation.group.Standard;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
@@ -74,9 +75,10 @@ public class Facility
     private List<Double> coordinates = new ArrayList<Double>();
 
     // External Facility Identifiers
-    private List<Map<String, String>> identifiers = new ArrayList<Map<String, String>>();
+    private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     // Implementation specific custom properties
+    @ValidProperties
     private Map<String, Object> properties = new HashMap<String, Object>();
 
     public Facility()
@@ -153,12 +155,12 @@ public class Facility
         this.coordinates = coordinates;
     }
 
-    public List<Map<String, String>> getIdentifiers()
+    public List<Identifier> getIdentifiers()
     {
         return identifiers;
     }
 
-    public void setIdentifiers( List<Map<String, String>> identifiers )
+    public void setIdentifiers( List<Identifier> identifiers )
     {
         this.identifiers = identifiers;
     }

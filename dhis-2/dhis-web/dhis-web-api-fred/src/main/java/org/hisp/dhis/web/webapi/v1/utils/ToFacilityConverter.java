@@ -31,13 +31,12 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.controller.FacilityController;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.domain.Identifier;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -80,23 +79,23 @@ public class ToFacilityConverter implements Converter<OrganisationUnit, Facility
 
         if ( organisationUnit.getCode() != null )
         {
-            Map<String, String> codeMap = new HashMap<String, String>();
-            codeMap.put( "agency", "DHIS2" );
-            codeMap.put( "context", "DHIS2_CODE" );
-            codeMap.put( "id", organisationUnit.getCode() );
+            Identifier identifier = new Identifier();
+            identifier.setAgency( "DHIS2" );
+            identifier.setContext( "DHIS2_CODE" );
+            identifier.setId( organisationUnit.getCode() );
 
-            facility.getIdentifiers().add( codeMap );
+            facility.getIdentifiers().add( identifier );
         }
 
-        if ( !organisationUnit.getDataSets().isEmpty() )
+        List<String> dataSets = new ArrayList<String>();
+
+        for ( DataSet dataSet : organisationUnit.getDataSets() )
         {
-            List<String> dataSets = new ArrayList<String>();
+            dataSets.add( dataSet.getUid() );
+        }
 
-            for ( DataSet dataSet : organisationUnit.getDataSets() )
-            {
-                dataSets.add( dataSet.getUid() );
-            }
-
+        if ( !dataSets.isEmpty() )
+        {
             facility.getProperties().put( "dataSets", dataSets );
         }
 
