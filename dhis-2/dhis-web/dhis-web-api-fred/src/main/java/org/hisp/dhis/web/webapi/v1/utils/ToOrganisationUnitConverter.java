@@ -46,11 +46,11 @@ import java.util.Collection;
 public class ToOrganisationUnitConverter implements Converter<Facility, OrganisationUnit>
 {
     @Autowired
-    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
+    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    @Qualifier( "org.hisp.dhis.dataset.DataSetService" )
+    @Qualifier("org.hisp.dhis.dataset.DataSetService")
     private DataSetService dataSetService;
 
     @Override
@@ -86,8 +86,7 @@ public class ToOrganisationUnitConverter implements Converter<Facility, Organisa
 
         organisationUnit.setFeatureType( OrganisationUnit.FEATURETYPE_POINT );
 
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates(
-            facility.getCoordinates().toString(), GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
+        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( facility.getCoordinates().toString() );
 
         organisationUnit.setCoordinates( String.format( "[%f, %f]", coordinates.lng, coordinates.lat ) );
 
