@@ -29,8 +29,8 @@ package org.hisp.dhis.web.webapi.v1.domain;
 
 import org.hibernate.validator.constraints.Length;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.IdentifiableObjectExists;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidUidReference;
 import org.hisp.dhis.web.webapi.v1.validation.group.Standard;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
@@ -44,15 +44,15 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
-    @Length( min = 11, max = 11, groups = Standard.Length.class )
-    @NotNull( groups = Standard.NotNull.class )
     @Null( groups = Standard.Null.class )
-    @IdentifiableObjectExists( value = OrganisationUnit.class, groups = Update.class )
+    @NotNull( groups = Standard.NotNull.class )
+    @Length( min = 11, max = 11, groups = Standard.Length.class )
+    @ValidUidReference( value = OrganisationUnit.class, groups = Update.class )
     private String id;
 
     // Name of the facility
-    @Length(min = 2, max = 160)
     @NotNull
+    @Length( min = 2, max = 160 )
     private String name;
 
     // Active = true/false indicates whether the facility is active or not

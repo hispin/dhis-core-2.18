@@ -29,7 +29,7 @@ package org.hisp.dhis.web.webapi.v1.validation.constraint;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.IdentifiableObjectExists;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidUidReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -39,7 +39,7 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class IdObjectExistsValidator implements ConstraintValidator<IdentifiableObjectExists, String>
+public class UidReferenceValidator implements ConstraintValidator<ValidUidReference, String>
 {
     @Autowired
     @Qualifier( "org.hisp.dhis.common.IdentifiableObjectManager" )
@@ -48,7 +48,7 @@ public class IdObjectExistsValidator implements ConstraintValidator<Identifiable
     private Class<? extends IdentifiableObject> identifiableObjectClass;
 
     @Override
-    public void initialize( IdentifiableObjectExists constraintAnnotation )
+    public void initialize( ValidUidReference constraintAnnotation )
     {
         identifiableObjectClass = constraintAnnotation.value();
     }
