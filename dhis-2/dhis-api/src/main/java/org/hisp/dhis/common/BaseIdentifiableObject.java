@@ -134,7 +134,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty( value = "id" )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( localName = "id", isAttribute = true )
     public String getUid()
     {
         return uid;
