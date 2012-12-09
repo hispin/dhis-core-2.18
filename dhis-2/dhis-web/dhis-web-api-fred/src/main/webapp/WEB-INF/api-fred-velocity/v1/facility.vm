@@ -2,6 +2,12 @@
 
 <script>
     function updateMap(coordinates) {
+        if(!coordinates[0] || !coordinates[1])
+        {
+            noCoordinatesProvided();
+            return;
+        }
+
         var latlng = new google.maps.LatLng(coordinates[1], coordinates[0]);
 
         var options = {
@@ -15,8 +21,13 @@
         var marker = new google.maps.Marker({
             position: latlng,
             map: map,
-            title: '$entity.name'
+            title: '$esc.escapeEcmaScript($entity.name)'
         });
+    }
+
+    function noCoordinatesProvided() {
+        $( '#mapTarget' ).html( '<div style="text-align: center;">No coordinates provided.</div>' )
+                .parent().addClass( 'hidden-phone' );
     }
 
     $(function () {
@@ -28,8 +39,7 @@
 
             updateMap(coordinates);
         } else {
-            $('#mapTarget').html('<div style="text-align: center;">No coordinates provided.</div>')
-                .parent().addClass('hidden-phone');
+            noCoordinatesProvided();
         }
 
         $('#facilityForm').submit(function (e) {
@@ -49,6 +59,8 @@
 
                 data.coordinates = [ lng, lat ];
 
+                console.log(data.coordinates);
+
                 $.ajax({
                     url: '$baseUrl/facilities/${entity.id}',
                     contentType: 'application/json; charset=UTF-8',
@@ -56,11 +68,10 @@
                     data: JSON.stringify(data),
                     dataType: 'json'
                 }).success(function (data) {
-                    console.log("save success!", data);
                     updateMap([lng, lat]);
+
                     $('#facilitySubmit').removeAttr('disabled').text('Save');
                 }).error(function (data) {
-                    console.log("could not update!", data);
                     $('#facilitySubmit').removeAttr('disabled').text('Save');
                 });
             });
@@ -85,7 +96,7 @@
                 <input id="facilityID" disabled="disabled" type="text" class="$inputSize" value="$entity.id"/>
 
                 <label for="facilityName">Name</label>
-                <input #if(!$canEdit)disabled#end id="facilityName" type="text" class="$inputSize" value="$entity.name"/>
+                <input #if(!$canEdit)disabled#end id="facilityName" type="text" class="$inputSize" value="$esc.escapeHtml4($entity.name)"/>
 
                 <label for="facilityActive">Active</label>
 

@@ -8,7 +8,7 @@
         #foreach( $facility in $entity.facilities )
         {
             id: "$facility.id",
-            name: "$facility.name",
+            name: "$esc.escapeEcmaScript($facility.name)",
             coordinates: "$facility.coordinates"
         },
         #end
@@ -168,7 +168,7 @@
     <tbody>
         #foreach( $facility in $entity.facilities )
         <tr data-facility-id='$facility.id'>
-            <td class='facility-name'><a href='$facility.url'>$facility.name</a></td>
+            <td class='facility-name'><a href='$facility.url'>$esc.escapeHtml4($facility.name)</a></td>
 
             <td class='facility-actions' style='width: 1px;'>
                 <div class='btn-group'>

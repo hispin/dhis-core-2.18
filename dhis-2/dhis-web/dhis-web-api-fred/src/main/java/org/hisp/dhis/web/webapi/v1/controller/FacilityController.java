@@ -27,6 +27,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -59,18 +60,18 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-controller-" + FredController.PREFIX )
-@RequestMapping( FacilityController.RESOURCE_PATH )
+@Controller(value = "facility-controller-" + FredController.PREFIX)
+@RequestMapping(FacilityController.RESOURCE_PATH)
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
 
     @Autowired
-    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
+    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    @Qualifier( "conversionService" )
+    @Qualifier("conversionService")
     private ConversionService conversionService;
 
     @Autowired
@@ -80,7 +81,7 @@ public class FacilityController
     // GET HTML
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String readFacilities( Model model )
     {
         Facilities facilities = new Facilities();
@@ -95,6 +96,7 @@ public class FacilityController
             facilities.getFacilities().add( facility );
         }
 
+        model.addAttribute( "esc", StringEscapeUtils.class );
         model.addAttribute( "entity", facilities );
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
         model.addAttribute( "pageName", "facilities" );
@@ -103,13 +105,14 @@ public class FacilityController
         return FredController.PREFIX + "/layout";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String readFacility( Model model, @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
         Facility facility = conversionService.convert( organisationUnit, Facility.class );
 
+        model.addAttribute( "esc", StringEscapeUtils.class );
         model.addAttribute( "entity", facility );
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
         model.addAttribute( "pageName", "facility" );
@@ -122,7 +125,7 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.POST )
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws IOException
     {
         OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
@@ -149,7 +152,7 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility ) throws IOException
     {
         facility.setId( id );
@@ -187,7 +190,7 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -206,7 +209,7 @@ public class FacilityController
     // EXCEPTION HANDLERS
     //--------------------------------------------------------------------------
 
-    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
+    @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
     public ResponseEntity<String> exceptionHandler( Exception ex )
     {
         return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
