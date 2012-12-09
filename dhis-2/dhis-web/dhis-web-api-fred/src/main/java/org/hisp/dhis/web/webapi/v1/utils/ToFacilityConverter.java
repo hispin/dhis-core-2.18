@@ -80,8 +80,8 @@ public class ToFacilityConverter implements Converter<OrganisationUnit, Facility
         if ( organisationUnit.getCode() != null )
         {
             Identifier identifier = new Identifier();
-            identifier.setAgency( "DHIS2" );
-            identifier.setContext( "DHIS2_CODE" );
+            identifier.setAgency( Identifier.DHIS2_AGENCY );
+            identifier.setContext( Identifier.DHIS2_CODE_CONTEXT );
             identifier.setId( organisationUnit.getCode() );
 
             facility.getIdentifiers().add( identifier );
