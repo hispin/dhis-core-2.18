@@ -28,12 +28,15 @@ package org.hisp.dhis.api.controller.organisationunit;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,15 +48,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = OrganisationUnitController.RESOURCE_PATH)
+@RequestMapping( value = OrganisationUnitController.RESOURCE_PATH )
 public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
@@ -61,6 +62,39 @@ public class OrganisationUnitController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+
+    @Override
+    protected List<OrganisationUnit> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<OrganisationUnit> entityList;
+
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( options.getOptions().containsKey( "levelSorted" ) && Boolean.parseBoolean( options.getOptions().get( "levelSorted" ) ) )
+        {
+            entityList = new ArrayList<OrganisationUnit>( manager.getAll( getEntityClass() ) );
+            Collections.sort( entityList, new OrganisationUnitByLevelComparator() );
+        }
+        else if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<OrganisationUnit>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+        }
+        else
+        {
+            entityList = new ArrayList<OrganisationUnit>( manager.getAllSorted( getEntityClass() ) );
+        }
+
+        return entityList;
+    }
 
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
