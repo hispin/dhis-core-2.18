@@ -1,9 +1,106 @@
-<script src="//maps.google.com/maps/api/js?sensor=false"></script>
-<script src="$baseUrl/../../api-fred-resources/js/markerclusterer.min.js"></script>
+<style>
+    #mapTarget img {
+        max-width : none;
+    }
+
+    #mapTarget label {
+        width   : auto;
+        display : inline;
+    }
+</style>
 
 <script>
     var markers = [];
-    var infoWindows = [];
+    var infoWindow;
+    var map;
+
+    var facilities = [
+        #foreach( $facility in $entity.facilities )
+        {
+            id: "$facility.id",
+            name: "$facility.name",
+            coordinates: "$facility.coordinates"
+        },
+        #end
+    ];
+
+    function loadMapsScript() {
+        if (!map) {
+            $.getScript('//maps.googleapis.com/maps/api/js?sensor=false&callback=mapsLoaded');
+        } else {
+            $('#mapTarget').resize();
+        }
+    }
+
+    function mapsLoaded() {
+        $.getScript('$baseUrl/../../api-fred-resources/js/markerclusterer.min.js').success(initialize);
+    }
+
+    function initialize()
+    {
+        markers = [];
+        infoWindows = [];
+
+        var lats = 0.0;
+        var lngs = 0.0;
+        var n = 0;
+
+        $.each(facilities, function (idx, item) {
+            if (item.coordinates !== undefined && JSON.parse(item.coordinates).length > 0) {
+                var coords = JSON.parse(item.coordinates);
+                var latlng = new google.maps.LatLng(coords[0], coords[1]);
+                var name = item.name;
+                var id = item.id;
+
+                lats += coords[0];
+                lngs += coords[1];
+                n += 1;
+
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    title: name
+                });
+
+                markers.push(marker);
+
+                var infoWindow= new google.maps.InfoWindow({
+                    content: "<div>" + "<b>" + name + "</b><br/>" + coords[0] + "<br/>" + coords[1] +
+                            "<br/><br/><a href='$baseUrl/facilities/" + id + "'>More information</a></div>"
+                });
+
+                infoWindows.push(infoWindow);
+            }
+        });
+
+        lats = lats / n;
+        lngs = lngs / n;
+
+        var latlng = new google.maps.LatLng(lats, lngs);
+
+        var options = {
+            zoom: 8,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+
+        map = new google.maps.Map(document.getElementById('mapTarget'), options);
+
+        $.each(markers, function (idx, item) {
+            google.maps.event.addListener(item, 'click', function() {
+                if(!infoWindow)
+                {
+                    infoWindow = new google.maps.InfoWindow();
+                }
+
+                infoWindow.setContent( infoWindows[idx].getContent());
+                infoWindow.open(map, item);
+            });
+        });
+
+        var markerCluster = new MarkerClusterer(map, markers);
+
+        google.maps.event.trigger(map, 'resize')
+    }
 
     $(function () {
         $('.activateButton').click(function () {
@@ -34,70 +131,8 @@
             }
         });
 
-        var facilities = [
-            #foreach( $facility in $entity.facilities )
-            {
-                id: "$facility.id",
-                name: "$facility.name",
-                coordinates: "$facility.coordinates"
-            },
-            #end
-        ];
-
-        $('#mapLink').click(function() {
-
-            var lats = 0.0;
-            var lngs = 0.0;
-            var n = 0;
-
-            $.each(facilities, function (idx, item) {
-                if (item.coordinates !== undefined && JSON.parse(item.coordinates).length > 0) {
-                    var coords = JSON.parse(item.coordinates);
-                    var latlng = new google.maps.LatLng(coords[0], coords[1]);
-                    var name = item.name;
-                    var id = item.id;
-
-                    console.log(id);
-
-                    lats += coords[0];
-                    lngs += coords[1];
-                    n += 1;
-
-                    var marker = new google.maps.Marker({
-                        position: latlng,
-                        title: name
-                    });
-
-                    markers.push(marker);
-
-                    var infoWindow= new google.maps.InfoWindow({
-                        content: "<div><a href='$baseUrl/facilities/" + id + "'>More information</a></div>"
-                    });
-
-                    infoWindows.push(infoWindow);
-                }
-            });
-
-            lats = lats / n;
-            lngs = lngs / n;
-
-            var latlng = new google.maps.LatLng(lats, lngs);
-
-            var options = {
-                zoom: 8,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.HYBRID
-            };
-
-            var map = new google.maps.Map(document.getElementById('mapTarget'), options);
-
-            $.each(markers, function (idx, item) {
-                google.maps.event.addListener(item, 'click', function() {
-                    infoWindows[idx].open(map, item);
-                });
-            });
-
-            var markerCluster = new MarkerClusterer(map, markers);
+        $('#mapLink').on('show', function () {
+            loadMapsScript();
         });
     });
 </script>
@@ -118,7 +153,7 @@
 
 <div class='tabbable'>
     <ul class='nav nav-tabs'>
-        <li class='active'><a href='#listTab' data-toggle='tab'><span class='icon-list-alt'> </span> List</a></li>
+        <li class='active'><a id='listLink' href='#listTab' data-toggle='tab'><span class='icon-list-alt'> </span> List</a></li>
         <li><a id='mapLink' href='#mapTab' data-toggle='tab'><span class='icon-globe'> </span> Map</a></li>
     </ul>
 
@@ -172,7 +207,7 @@
 #end
 
 #macro( mapContent )
-<div class='span12 well' style='padding: 4px;'>
+<div id="mapDiv" class='span12 well' style='padding: 4px;'>
     <div style='height: 680px;' id='mapTarget'></div>
 </div>
 #end
