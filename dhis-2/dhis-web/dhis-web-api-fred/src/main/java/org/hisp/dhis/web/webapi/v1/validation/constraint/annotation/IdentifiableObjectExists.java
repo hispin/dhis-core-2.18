@@ -40,10 +40,9 @@ import java.lang.annotation.Target;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-
-@Target( { ElementType.METHOD, ElementType.FIELD } )
-@Retention( RetentionPolicy.RUNTIME )
-@Constraint( validatedBy = IdObjectExistsValidator.class )
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = IdObjectExistsValidator.class)
 public @interface IdentifiableObjectExists
 {
     String message() default "No object found with that ID.";
