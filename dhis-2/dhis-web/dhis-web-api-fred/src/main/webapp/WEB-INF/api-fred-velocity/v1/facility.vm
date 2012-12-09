@@ -2,7 +2,7 @@
 
 <script>
     function updateMap(coordinates) {
-        var latlng = new google.maps.LatLng(coordinates[0], coordinates[1]);
+        var latlng = new google.maps.LatLng(coordinates[1], coordinates[0]);
 
         var options = {
             zoom: 12,
@@ -23,8 +23,8 @@
         var coordinates = JSON.parse("$entity.coordinates");
 
         if (coordinates.length > 0) {
-            $('#facilityLatitude').val(coordinates[0]);
-            $('#facilityLongitude').val(coordinates[1]);
+            $('#facilityLatitude').val(coordinates[1]);
+            $('#facilityLongitude').val(coordinates[0]);
 
             updateMap(coordinates);
         } else {
@@ -47,7 +47,7 @@
                 var lat = $('#facilityLatitude').val();
                 var lng = $('#facilityLongitude').val();
 
-                data.coordinates = [ lat, lng ];
+                data.coordinates = [ lng, lat ];
 
                 $.ajax({
                     url: '$baseUrl/facilities/${entity.id}',
@@ -57,7 +57,7 @@
                     dataType: 'json'
                 }).success(function (data) {
                     console.log("save success!", data);
-                    updateMap([lat, lng]);
+                    updateMap([lng, lat]);
                     $('#facilitySubmit').removeAttr('disabled').text('Save');
                 }).error(function (data) {
                     console.log("could not update!", data);

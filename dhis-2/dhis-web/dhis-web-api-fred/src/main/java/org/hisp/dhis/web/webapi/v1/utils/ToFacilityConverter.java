@@ -63,8 +63,8 @@ public class ToFacilityConverter implements Converter<OrganisationUnit, Facility
         {
             GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( organisationUnit.getCoordinates() );
 
-            facility.getCoordinates().add( coordinates.lat );
             facility.getCoordinates().add( coordinates.lng );
+            facility.getCoordinates().add( coordinates.lat );
         }
 
         if ( organisationUnit.getParent() != null )
