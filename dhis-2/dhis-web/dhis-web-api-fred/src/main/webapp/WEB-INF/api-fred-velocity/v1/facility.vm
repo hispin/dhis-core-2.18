@@ -14,10 +14,12 @@
             zoom: 12,
             center: latlng,
             disableDefaultUI: true,
-            mapTypeControl: true,
-            panControl: true,
             zoomControl: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeControl: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControlOptions: {
+              style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+            }
         };
 
         var map = new google.maps.Map(document.getElementById('mapTarget'), options);
