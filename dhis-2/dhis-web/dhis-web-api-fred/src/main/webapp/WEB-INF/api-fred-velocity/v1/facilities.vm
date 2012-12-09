@@ -27,8 +27,6 @@
     function loadMapsScript() {
         if (!map) {
             $.getScript('//maps.googleapis.com/maps/api/js?sensor=false&callback=mapsLoaded');
-        } else {
-            $('#mapTarget').resize();
         }
     }
 
@@ -98,8 +96,6 @@
         });
 
         var markerCluster = new MarkerClusterer(map, markers);
-
-        google.maps.event.trigger(map, 'resize')
     }
 
     $(function () {
