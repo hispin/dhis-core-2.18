@@ -70,14 +70,21 @@ public class OrganisationUnitController
 
         Date lastUpdated = options.getLastUpdated();
 
-        if ( options.getOptions().containsKey( "levelSorted" ) && Boolean.parseBoolean( options.getOptions().get( "levelSorted" ) ) )
+        boolean levelSorted = options.getOptions().containsKey( "levelSorted" ) && Boolean.parseBoolean( options.getOptions().get( "levelSorted" ) );
+
+        if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+
+            if ( levelSorted )
+            {
+                Collections.sort( entityList, new OrganisationUnitByLevelComparator() );
+            }
+        }
+        else if ( levelSorted )
         {
             entityList = new ArrayList<OrganisationUnit>( manager.getAll( getEntityClass() ) );
             Collections.sort( entityList, new OrganisationUnitByLevelComparator() );
-        }
-        else if ( lastUpdated != null )
-        {
-            entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
         }
         else if ( options.hasPaging() )
         {
