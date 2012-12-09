@@ -30,16 +30,19 @@ package org.hisp.dhis.web.webapi.v1.controller;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
+import org.hisp.dhis.web.webapi.v1.validation.group.CreateSequence;
 import org.hisp.dhis.web.webapi.v1.validation.group.UpdateSequence;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -60,18 +63,19 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "facility-controller-" + FredController.PREFIX)
-@RequestMapping(FacilityController.RESOURCE_PATH)
+@Controller( value = "facility-controller-" + FredController.PREFIX )
+@RequestMapping( FacilityController.RESOURCE_PATH )
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
 
     @Autowired
-    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    @Qualifier("conversionService")
+    private DataSetService dataSetService;
+
+    @Autowired
     private ConversionService conversionService;
 
     @Autowired
@@ -81,7 +85,7 @@ public class FacilityController
     // GET HTML
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping( value = "", method = RequestMethod.GET )
     public String readFacilities( Model model )
     {
         Facilities facilities = new Facilities();
@@ -105,7 +109,7 @@ public class FacilityController
         return FredController.PREFIX + "/layout";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     public String readFacility( Model model, @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -125,34 +129,40 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping( value = "", method = RequestMethod.POST )
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws IOException
     {
-        OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
-
-        return new ResponseEntity<String>( "ok", HttpStatus.OK );
-
-        /*
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, CreateSequence.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
         if ( constraintViolations.isEmpty() )
         {
-            return new ResponseEntity<String>( json, HttpStatus.OK );
+            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
+            organisationUnitService.addOrganisationUnit( organisationUnit );
+
+            for ( DataSet dataSet : organisationUnit.getDataSets() )
+            {
+                dataSet.addOrganisationUnit( organisationUnit );
+                dataSetService.updateDataSet( dataSet );
+            }
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toUri() );
+
+            return new ResponseEntity<String>( json, headers, HttpStatus.CREATED );
         }
         else
         {
             return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
         }
-        */
     }
 
     //--------------------------------------------------------------------------
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility ) throws IOException
     {
         facility.setId( id );
@@ -190,7 +200,7 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -209,7 +219,7 @@ public class FacilityController
     // EXCEPTION HANDLERS
     //--------------------------------------------------------------------------
 
-    @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
+    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
     public ResponseEntity<String> exceptionHandler( Exception ex )
     {
         return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
