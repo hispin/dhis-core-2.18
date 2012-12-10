@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.AnalyticsTableService;
+import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
@@ -60,15 +61,19 @@ public class DefaultAnalyticsTableService
     @Async
     public Future<?> update()
     {
-        log.info( "Starting update..." );
+        Clock clock = new Clock().startClock().logTime( "Starting update..." );
         
         tableManager.dropTable();
+        clock.logTime( "Dropped analytics table" );
+        
         tableManager.createTable();
+        clock.logTime( "Created analytics table" );
+        
         tableManager.populateTable();
+        clock.logTime( "Populated analytics table" );
         
         createIndexes();
-        
-        log.info( "Update done" );
+        clock.logTime( "Created all indexes, update done" );
         
         return null;
     }

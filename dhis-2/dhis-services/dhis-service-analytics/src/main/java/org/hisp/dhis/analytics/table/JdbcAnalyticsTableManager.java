@@ -83,7 +83,7 @@ public class JdbcAnalyticsTableManager
   
     //TODO all data types
     //TODO create temp table then swap
-    //TODO shard on data year
+    //TODO shard on data quarter based on start date
     //TODO average aggregation operator data, pre-aggregate in time dimension, not in org unit dimension
     
     public void dropTable()
@@ -91,8 +91,6 @@ public class JdbcAnalyticsTableManager
         final String sql = "drop table " + TABLE_NAME;
         
         executeSilently( sql );
-        
-        log.info( "Dropped table: " + TABLE_NAME );
     }
     
     public void createTable()
@@ -109,8 +107,6 @@ public class JdbcAnalyticsTableManager
         log.info( "Create SQL: " + sql );
         
         executeSilently( sql );
-        
-        log.info( "Created table: " + TABLE_NAME );
     }
         
     @Async
@@ -133,6 +129,13 @@ public class JdbcAnalyticsTableManager
     
     public void populateTable()
     {
+        populateTable( "cast(dv.value as double precision)" , "int" );
+        
+        populateTable( "1 as value" , "bool" );
+    }
+    
+    private void populateTable( String valueExpression, String valueType )
+    {
         String insert = "insert into analytics (";
         
         for ( String[] col : getDimensionColumns() )
@@ -151,23 +154,20 @@ public class JdbcAnalyticsTableManager
         
         select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix
         
-        select += 
-            "cast(dv.value as double precision) " +
+        select += valueExpression + " " +
             "from datavalue dv " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _period_no_disaggregation_structure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
             "left join period pe on dv.periodid=pe.periodid " +
-            "where de.valuetype='int' and pe.startdate >= '2011-10-01'";
+            "where de.valuetype='" + valueType + "' and pe.startdate >= '2011-10-01'";
 
         final String sql = insert + select;
         
         log.info( "Populate SQL: "+ sql );
         
         jdbcTemplate.execute( sql );
-        
-        log.info( "Populated analytics table" );
     }
 
     public List<String[]> getDimensionColumns()
