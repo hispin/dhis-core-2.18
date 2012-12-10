@@ -32,6 +32,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidIdentifiers;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidUidReference;
+import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
 import javax.validation.constraints.NotNull;
@@ -74,7 +75,7 @@ public class Facility
     private List<Double> coordinates = new ArrayList<Double>();
 
     // External Facility Identifiers
-    @ValidIdentifiers
+    @ValidIdentifiers( groups = Create.class )
     private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     // Implementation specific custom properties

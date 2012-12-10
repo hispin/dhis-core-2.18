@@ -33,7 +33,6 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
@@ -50,7 +49,7 @@ public @interface ValidIdentifiers
 
     Class<? extends Payload>[] payload() default { };
 
-    @Target( { TYPE } )
+    @Target( { ElementType.TYPE, ElementType.METHOD, ElementType.FIELD } )
     @Retention( RUNTIME )
     @Documented
     public @interface List
