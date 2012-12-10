@@ -569,6 +569,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>ethiopia</value>
         <value>gambia</value>
         <value>ghana</value>
+        <value>global_fund</value>
         <value>guinea</value>
         <value>guinea_bissau</value>
         <value>india</value>
