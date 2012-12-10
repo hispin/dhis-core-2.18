@@ -169,6 +169,13 @@ public class AddProgramAction
         this.generateBydEnrollmentDate = generateBydEnrollmentDate;
     }
 
+    private Boolean ignoreOverdueEvents;
+
+    public void setIgnoreOverdueEvents( Boolean ignoreOverdueEvents )
+    {
+        this.ignoreOverdueEvents = ignoreOverdueEvents;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -178,8 +185,9 @@ public class AddProgramAction
     {
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
         displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
-        generateBydEnrollmentDate= (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
-        
+        generateBydEnrollmentDate = (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
+        ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
+
         Program program = new Program();
 
         program.setName( name );
@@ -191,7 +199,8 @@ public class AddProgramAction
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
-
+        program.setIgnoreOverdueEvents( ignoreOverdueEvents );
+        
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
         int index = 0;

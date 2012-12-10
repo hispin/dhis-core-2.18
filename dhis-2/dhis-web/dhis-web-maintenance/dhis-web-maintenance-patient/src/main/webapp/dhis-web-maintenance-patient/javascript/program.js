@@ -26,6 +26,9 @@ function showProgramDetails( programId )
 		var generatedByEnrollmentDate = ( json.program.generatedByEnrollmentDate == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'generatedByEnrollmentDateField', generatedByEnrollmentDate );   	
 		
+		var ignoreOverdueEvents = ( json.program.ignoreOverdueEvents == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'ignoreOverdueEventsField', ignoreOverdueEvents );   	
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

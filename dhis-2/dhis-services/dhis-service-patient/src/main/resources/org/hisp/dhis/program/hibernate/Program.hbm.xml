@@ -59,5 +59,7 @@
     
     <property name="generatedByEnrollmentDate" />
     
+    <property name="ignoreOverdueEvents" />
+    
   </class>
 </hibernate-mapping>
