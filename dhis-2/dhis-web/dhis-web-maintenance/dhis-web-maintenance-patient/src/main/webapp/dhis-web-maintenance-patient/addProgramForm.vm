@@ -43,6 +43,12 @@
 		</tr>
 		
 		<tr>
+			<td><label>$i18n.getString( "ignore_overdue_events" )</label></td>
+			<td><input style="margin: 0;"type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
+			<td></td>
+		</tr>
+		
+		<tr>
 			<th colspan="2">$i18n.getString( "form_details" )</th>
 		</tr>
 	

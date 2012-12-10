@@ -88,10 +88,12 @@ public class Program
     
     private Boolean generatedByEnrollmentDate;
 
+    private Boolean ignoreOverdueEvents;
+
     private List<PatientIdentifierType> patientIdentifierTypes;
 
     private List<PatientAttribute> patientAttributes;
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -342,6 +344,16 @@ public class Program
     public void setGeneratedByEnrollmentDate( Boolean generatedByEnrollmentDate )
     {
         this.generatedByEnrollmentDate = generatedByEnrollmentDate;
+    }
+    
+    public Boolean getIgnoreOverdueEvents()
+    {
+        return ignoreOverdueEvents;
+    }
+
+    public void setIgnoreOverdueEvents( Boolean ignoreOverdueEvents )
+    {
+        this.ignoreOverdueEvents = ignoreOverdueEvents;
     }
 
     public boolean isSingleEvent()
