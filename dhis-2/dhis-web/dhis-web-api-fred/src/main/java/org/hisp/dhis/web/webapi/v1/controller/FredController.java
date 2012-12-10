@@ -28,6 +28,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  */
 @Controller( value = "fred-controller-" + FredController.PREFIX )
 @RequestMapping( value = FredController.PREFIX )
+@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
 public class FredController
 {
     public static final String PREFIX = "v1";

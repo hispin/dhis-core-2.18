@@ -65,8 +65,6 @@
 
                 data.coordinates = [ lng, lat ];
 
-                console.log(data.coordinates);
-
                 $.ajax({
                     url: '$baseUrl/facilities/${entity.id}',
                     contentType: 'application/json; charset=UTF-8',
@@ -93,7 +91,6 @@
     <div class="span6">
         <form id="facilityForm">
             #set( $inputSize = "span12")
-            #set( $canEdit = true )
 
             <fieldset>
                 <legend>Facility</legend>
@@ -102,28 +99,28 @@
                 <input id="facilityID" disabled="disabled" type="text" class="$inputSize" value="$entity.id"/>
 
                 <label for="facilityName">Name</label>
-                <input #if(!$canEdit)disabled#end id="facilityName" type="text" class="$inputSize" value="$esc.escapeHtml4($entity.name)"/>
+                <input #if(!$canUpdate)disabled#end id="facilityName" type="text" class="$inputSize" value="$esc.escapeHtml4($entity.name)"/>
 
                 <label for="facilityActive">Active</label>
 
-                <select id="facilityActive" #if(!$canEdit)disabled#end class="$inputSize">
+                <select id="facilityActive" #if(!$canUpdate)disabled#end class="$inputSize">
                     <option value="true" #if($entity.active)selected#end>Yes</option>
                     <option value="false" #if(!$entity.active)selected#end>No</option>
                 </select>
 
                 <label for="facilityLatitude">Latitude</label>
-                <input #if(!$canEdit)disabled#end id="facilityLatitude" type="text" class="$inputSize" value=""/>
+                <input #if(!$canUpdate)disabled#end id="facilityLatitude" type="text" class="$inputSize" value=""/>
 
                 <label for="facilityLongitude">Longitude</label>
-                <input #if(!$canEdit)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
+                <input #if(!$canUpdate)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
             </fieldset>
 
-            <button #if(!$canEdit)disabled#end type="submit" id="facilitySubmit" class="btn btn-info">Save</button>
+            <button #if(!$canUpdate)disabled#end type="submit" id="facilitySubmit" class="btn btn-info">Save</button>
         </form>
     </div>
 
     <div class="span1">
-        <button disabled="disabled" style="width: 42px;" class="deleteButton btn btn-mini btn-danger pull-right" title="Delete Facility">
+        <button #if(true)disabled#end style="width: 42px;" class="deleteButton btn btn-mini btn-danger pull-right" title="Delete Facility">
             <span class="icon-white icon-trash"> </span>
         </button>
     </div>

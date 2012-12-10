@@ -34,10 +34,10 @@ import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,14 +53,14 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "facility-service-controller-" + FredController.PREFIX)
+@Controller( value = "facility-service-controller-" + FredController.PREFIX )
 @RequestMapping(FacilityServiceController.RESOURCE_PATH)
+@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
 public class FacilityServiceController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facility-service";
 
     @Autowired
-    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
@@ -70,7 +70,8 @@ public class FacilityServiceController
     // EXTRA WEB METHODS
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}/activate", method = RequestMethod.POST)
+    @RequestMapping( value = "/{id}/activate", method = RequestMethod.POST )
+    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<Void> activateFacility( @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -86,7 +87,8 @@ public class FacilityServiceController
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
     }
 
-    @RequestMapping(value = "/{id}/deactivate", method = RequestMethod.POST)
+    @RequestMapping( value = "/{id}/deactivate", method = RequestMethod.POST )
+    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<Void> deactivateFacility( @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );

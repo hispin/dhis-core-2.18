@@ -180,15 +180,15 @@
             <td class='facility-actions' style='width: 1px;'>
                 <div class='btn-group'>
                     #if( $facility.active )
-                        <button style='width: 44px;' class='deactivateButton btn btn-mini btn-success' title='Deactivate Facility'>
+                        <button #if(!$canUpdate)disabled#end style='width: 44px;' class='deactivateButton btn btn-mini btn-success' title='Deactivate Facility'>
                             <span class='icon-white icon-ok-circle'> </span>
                         </button>
                     #else
-                        <button style='width: 44px;' class='activateButton btn btn-mini btn-inverse' title='Activate Facility'>
+                        <button #if(!$canUpdate)disabled#end style='width: 44px;' class='activateButton btn btn-mini btn-inverse' title='Activate Facility'>
                             <span class='icon-white icon-ban-circle'> </span>
                         </button>
                     #end
-                    <button disabled='disabled' style='width: 42px;' class='deleteButton btn btn-mini btn-danger' title='Delete Facility'>
+                    <button #if(true)disabled#end disabled='disabled' style='width: 42px;' class='deleteButton btn btn-mini btn-danger' title='Delete Facility'>
                         <span class='icon-white icon-trash'> </span>
                     </button>
                 </div>
