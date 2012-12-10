@@ -38,8 +38,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
-import org.hisp.dhis.web.webapi.v1.validation.group.CreateSequence;
-import org.hisp.dhis.web.webapi.v1.validation.group.UpdateSequence;
+import org.hisp.dhis.web.webapi.v1.validation.group.Create;
+import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
@@ -52,6 +52,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,7 +133,7 @@ public class FacilityController
     @RequestMapping( value = "", method = RequestMethod.POST )
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws IOException
     {
-        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, CreateSequence.class );
+        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
@@ -168,7 +169,7 @@ public class FacilityController
         facility.setId( id );
         OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
 
-        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, UpdateSequence.class );
+        Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Update.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
