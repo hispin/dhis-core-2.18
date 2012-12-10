@@ -35,6 +35,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
@@ -46,6 +47,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +68,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  */
 @Controller( value = "facility-controller-" + FredController.PREFIX )
 @RequestMapping( FacilityController.RESOURCE_PATH )
+@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
@@ -75,6 +78,9 @@ public class FacilityController
 
     @Autowired
     private DataSetService dataSetService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @Autowired
     private ConversionService conversionService;
@@ -101,6 +107,8 @@ public class FacilityController
             facilities.getFacilities().add( facility );
         }
 
+        setAccessRights( model );
+
         model.addAttribute( "esc", StringEscapeUtils.class );
         model.addAttribute( "entity", facilities );
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
@@ -117,6 +125,8 @@ public class FacilityController
 
         Facility facility = conversionService.convert( organisationUnit, Facility.class );
 
+        setAccessRights( model );
+
         model.addAttribute( "esc", StringEscapeUtils.class );
         model.addAttribute( "entity", facility );
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
@@ -126,11 +136,22 @@ public class FacilityController
         return FredController.PREFIX + "/layout";
     }
 
+    private void setAccessRights( Model model )
+    {
+        Set<String> authorities = currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities();
+
+        model.addAttribute( "canCreate", authorities.contains( "F_FRED_CREATE" ) || currentUserService.currentUserIsSuper() );
+        model.addAttribute( "canRead", authorities.contains( "M-dhis-web-api-fred" ) || currentUserService.currentUserIsSuper() );
+        model.addAttribute( "canUpdate", authorities.contains( "F_FRED_UPDATE" ) || currentUserService.currentUserIsSuper() );
+        model.addAttribute( "canDelete", authorities.contains( "F_FRED_DELETE" ) || currentUserService.currentUserIsSuper() );
+    }
+
     //--------------------------------------------------------------------------
     // POST JSON
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.POST )
+    @PreAuthorize( "hasRole('F_FRED_CREATE') or hasRole('ALL')" )
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws IOException
     {
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
@@ -164,6 +185,7 @@ public class FacilityController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility ) throws IOException
     {
         facility.setId( id );
@@ -202,6 +224,7 @@ public class FacilityController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
