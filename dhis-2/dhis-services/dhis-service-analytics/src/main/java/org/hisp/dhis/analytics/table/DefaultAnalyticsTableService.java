@@ -63,9 +63,6 @@ public class DefaultAnalyticsTableService
     {
         Clock clock = new Clock().startClock().logTime( "Starting update..." );
         
-        tableManager.dropTable();
-        clock.logTime( "Dropped analytics table" );
-        
         tableManager.createTable();
         clock.logTime( "Created analytics table" );
         
@@ -74,6 +71,9 @@ public class DefaultAnalyticsTableService
         
         createIndexes();
         clock.logTime( "Created all indexes, update done" );
+        
+        tableManager.swapTable();
+        clock.logTime( "Swapped analytics table" );
         
         return null;
     }

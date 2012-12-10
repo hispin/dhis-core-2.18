@@ -32,14 +32,14 @@ import java.util.concurrent.Future;
 
 public interface AnalyticsTableManager
 {
-    void dropTable();
-    
     void createTable();
-    
-    void populateTable();    
 
     Future<?> createIndexesAsync( List<String> columns );
     
+    void swapTable();
+    
+    void populateTable();    
+
     /**
      * Returns a list of string arrays in where the first index holds the database
      * column name, the second index holds the database column type and the third

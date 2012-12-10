@@ -67,6 +67,7 @@ public class JdbcAnalyticsTableManager
     public static final String PREFIX_ORGUNITLEVEL = "idlevel";
     public static final String PREFIX_INDEX = "index_";
     public static final String TABLE_NAME = "analytics";
+    public static final String TABLE_NAME_TEMP = "analytics_temp";
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -81,41 +82,36 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
   
-    //TODO all data types
-    //TODO create temp table then swap
     //TODO shard on data quarter based on start date
     //TODO average aggregation operator data, pre-aggregate in time dimension, not in org unit dimension
-    
-    public void dropTable()
-    {
-        final String sql = "drop table " + TABLE_NAME;
         
-        executeSilently( sql );
-    }
-    
     public void createTable()
     {
-        String sql = "create table " + TABLE_NAME + " (";
+        final String sqlDrop = "drop table " + TABLE_NAME_TEMP;
+        
+        executeSilently( sqlDrop );
+        
+        String sqlCreate = "create table " + TABLE_NAME_TEMP + " (";
         
         for ( String[] col : getDimensionColumns() )
         {
-            sql += col[0] + " " + col[1] + ",";
+            sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sql += "value double precision)";
+        sqlCreate += "value double precision)";
         
-        log.info( "Create SQL: " + sql );
+        log.info( "Create SQL: " + sqlCreate );
         
-        executeSilently( sql );
+        executeSilently( sqlCreate );
     }
-        
+    
     @Async
     public Future<?> createIndexesAsync( List<String> columns )
     {
         for ( String column : columns )
         {        
             final String sql = "create index " + PREFIX_INDEX +
-                column + " on " + TABLE_NAME + " (" + column + ")";
+                column + " on " + TABLE_NAME_TEMP + " (" + column + ")";
                 
             executeSilently( sql );
             
@@ -125,6 +121,17 @@ public class JdbcAnalyticsTableManager
         log.info( "Indexes created" );
         
         return null;
+    }
+
+    public void swapTable()
+    {
+        final String sqlDrop = "drop table " + TABLE_NAME;
+        
+        executeSilently( sqlDrop );
+        
+        final String sqlAlter = "alter table " + TABLE_NAME_TEMP + " rename to " + TABLE_NAME;
+        
+        jdbcTemplate.execute( sqlAlter );
     }
     
     public void populateTable()
@@ -136,7 +143,7 @@ public class JdbcAnalyticsTableManager
     
     private void populateTable( String valueExpression, String valueType )
     {
-        String insert = "insert into analytics (";
+        String insert = "insert into " + TABLE_NAME_TEMP + " (";
         
         for ( String[] col : getDimensionColumns() )
         {
