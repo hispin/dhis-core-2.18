@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.validation.group;
+package org.hisp.dhis.web.webapi.v1.validation.constraint.annotation;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,13 +27,34 @@ package org.hisp.dhis.web.webapi.v1.validation.group;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.validation.GroupSequence;
-import javax.validation.groups.Default;
+import org.hisp.dhis.web.webapi.v1.validation.constraint.IdentifiersValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.*;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@GroupSequence( { Standard.NotNull.class, Standard.Length.class, Update.class, Default.class } )
-public interface UpdateSequence
+@Target( { ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE } )
+@Retention( RetentionPolicy.RUNTIME )
+@Constraint( validatedBy = IdentifiersValidator.class )
+public @interface ValidIdentifiers
 {
+    String message() default "Identifiers did not validate.";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
+
+    @Target( { TYPE } )
+    @Retention( RUNTIME )
+    @Documented
+    public @interface List
+    {
+        ValidIdentifiers[] value();
+    }
 }

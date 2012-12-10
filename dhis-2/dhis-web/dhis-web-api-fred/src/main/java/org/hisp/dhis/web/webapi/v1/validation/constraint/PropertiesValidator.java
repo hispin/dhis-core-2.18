@@ -62,6 +62,7 @@ public class PropertiesValidator implements ConstraintValidator<ValidProperties,
         {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate( String.format( "parent does not point to a valid facility." ) )
+                .addNode( "parent" )
                 .addConstraintViolation();
 
             returnValue = false;
@@ -73,6 +74,7 @@ public class PropertiesValidator implements ConstraintValidator<ValidProperties,
         {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate( String.format( "dataSets has one or more non-matching IDs." ) )
+                .addNode( "dataSets" )
                 .addConstraintViolation();
 
             returnValue = false;

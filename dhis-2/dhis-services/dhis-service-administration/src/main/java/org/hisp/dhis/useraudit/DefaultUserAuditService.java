@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Saptarshi Purkayastha
  * @author Lars Helge Overland
  */
-public class DefaultUserAuditService    
+public class DefaultUserAuditService
     implements UserAuditService
 {
     private static final Log log = LogFactory.getLog( DefaultUserAuditService.class );
