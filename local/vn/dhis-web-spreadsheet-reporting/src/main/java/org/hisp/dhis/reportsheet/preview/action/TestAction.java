@@ -51,7 +51,7 @@ public class TestAction
 
         try
         {
-            new AutoGenerateFormByTemplate( "d:\\template_file.xls", collectSheets );
+//            new AutoGenerateFormByTemplate( "d:\\template_file.xls", collectSheets );
         }
         catch ( Exception e )
         {

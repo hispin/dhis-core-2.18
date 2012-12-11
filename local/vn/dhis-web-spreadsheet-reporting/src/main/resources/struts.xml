@@ -1848,5 +1848,13 @@
 			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="autoGenerateFormByTemplate"
+			class="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormByTemplate">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
 	</package>
 </struts>

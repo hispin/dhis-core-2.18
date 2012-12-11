@@ -29,10 +29,11 @@ package org.hisp.dhis.reportsheet.preview.action;
 
 import static org.apache.commons.io.FilenameUtils.getExtension;
 
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -42,6 +43,22 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.reportsheet.ExportItem;
+import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportNormal;
+import org.hisp.dhis.reportsheet.ExportReportService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * Simple demo class which uses the api to present the contents of an excel 97
@@ -52,27 +69,49 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @version $Id$
  */
 
-public class AutoGenerateFormByTemplate
+public class AutoGenerateFormByTemplate implements Action
 {
-    /**
-     * The encoding to write
-     */
-    private StringBuffer xml = new StringBuffer( 200000 );
+    @Autowired
+    private DataElementService dataElementService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+     private DataEntryFormService dataEntryFormService;
+
+    @Autowired
+    private DataSetService dataSetService;
+
+    @Autowired
+    private ExportReportService exportReportService;
 
     /**
      * The workbook we are reading from a given file
      */
     private Workbook WORKBOOK;
 
+    public String execute()
+    {
+        Set<Integer> collectSheets = new HashSet<Integer>();
+        collectSheets.add( 1 );
+
+        try
+        {
+            autoGenerateFormByTemplate( "d:\\template_file.xls", collectSheets );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( e.getMessage() );
+        }
+
+        return SUCCESS;
+    }
+    
     // -------------------------------------------------------------------------
     // Get & Set methods
     // -------------------------------------------------------------------------
-
-    protected String getXml()
-    {
-        return xml.toString();
-    }
-
+    
     private void cleanUpForResponse()
     {
         System.gc();
@@ -89,20 +128,23 @@ public class AutoGenerateFormByTemplate
      * @exception java.io.IOException
      */
 
-    public AutoGenerateFormByTemplate( String pathFileName, Set<Integer> collectSheets )
+    private String excelFileName = "";
+
+    private void autoGenerateFormByTemplate( String pathFileName, Set<Integer> collectSheets )
         throws Exception
     {
         this.cleanUpForResponse();
 
-        System.out.println( "\npathFileName : " + pathFileName );
+        InputStream inputSteam = new FileInputStream( pathFileName );
+        excelFileName = new File( pathFileName ).getName();
 
         if ( getExtension( pathFileName ).equals( "xls" ) )
         {
-            this.WORKBOOK = new HSSFWorkbook( new FileInputStream( pathFileName ) );
+            this.WORKBOOK = new HSSFWorkbook( inputSteam );
         }
         else
         {
-            this.WORKBOOK = new XSSFWorkbook( new FileInputStream( pathFileName ) );
+            this.WORKBOOK = new XSSFWorkbook( inputSteam );
         }
 
         writeFormattedXML( collectSheets );
@@ -121,7 +163,7 @@ public class AutoGenerateFormByTemplate
     {
         for ( Integer sheet : collectSheets )
         {
-            createFormByComment2( sheet );
+            createFormByComment( sheet );
         }
     }
 
@@ -131,57 +173,88 @@ public class AutoGenerateFormByTemplate
 
     private void createFormByComment( int sheetNo )
     {
+        DataElementCategoryCombo catagoryCombo = categoryService.getDefaultDataElementCategoryOptionCombo()
+            .getCategoryCombo();
+        int catagoryOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        PeriodType periodType = PeriodType.getPeriodTypeByName( "Monthly" );
+        StringBuffer htmlCode = new StringBuffer();
         Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
-        Comment cmt = null;
-        String content = null;
 
-        for ( Row row : s )
-        {
-            for ( Cell cell : row )
-            {
-                {
-                    cmt = cell.getCellComment();
+        DataSet dataSet = new DataSet( excelFileName, excelFileName, periodType );
 
-                    if ( cmt != null )
-                    {
-                        content = cmt.getString().getString();
-                    }
-                }
-            }
-        }
-    }
+        // Generate report
+        ExportReport exportReport = new ExportReportNormal();
+        exportReport.setName( WORKBOOK.getSheetName( sheetNo - 1 ) );
+        exportReport.setExcelTemplateFile( excelFileName );
+        exportReport.setGroup( excelFileName );
+        exportReport.setCreatedBy( "DHIS-System" );
+        int reportId = exportReportService.addExportReport( exportReport );
 
-    private void createFormByComment2( int sheetNo )
-    {
-        Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
-        Comment cmt = null;
-
-        System.out.println( "\nsheet: " + s.getSheetName() );
-
-        // Create file
-        FileWriter fstream = null;
-        BufferedWriter out = null;
         try
         {
-            fstream = new FileWriter( "d:\\template_file.xls\\out.txt" );
-            out = new BufferedWriter( fstream );
-
             for ( Row row : s )
             {
                 for ( Cell cell : row )
                 {
-                    cmt = cell.getCellComment();
+                    Comment cmt = cell.getCellComment();
                     if ( cell.getCellComment() != null )
                     {
-                        out.write( "\n\n NOT_NULL comment: " + cell.getCellComment().getRow() + ","
-                            + cell.getCellComment().getColumn() );
-                        out.write( "\t value2: " + cell.getCellComment().getString() );
+                        String deName = cell.getStringCellValue();
+                        String[] indexes = cmt.getString().toString().split( "," );
+                        int rowIndex = cell.getRowIndex();
+
+                        for ( String index : indexes )
+                        {
+                            String name = deName + "(" + index + ")";
+                            int idx = Integer.parseInt( index ) - 1;
+                            
+                            // Generate dataElement
+                            DataElement dataElement = new DataElement( name );
+                            dataElement.setShortName( name );
+                            dataElement.setActive( true );
+                            dataElement.setDomainType( "aggregate" );
+                            dataElement.setType( DataElement.VALUE_TYPE_INT );
+                            dataElement.setNumberType( DataElement.VALUE_TYPE_INT );
+                            dataElement.setCategoryCombo( catagoryCombo );
+                            dataElement.setAggregationOperator( "sum" );
+                            dataElement.setZeroIsSignificant( false );
+                            int deId = dataElementService.addDataElement( dataElement );
+
+                            // Add the dataelement into the dataset
+                            dataSet.addDataElement( dataElement );
+
+                            // Put text field into the cell(rowIndex,idx)
+                            // htmlCode.append( str );
+
+                            // Generate report item
+                            ExportItem exportItem = new ExportItem();
+                            exportItem.setName( name );
+                            exportItem.setItemType( "dataelement" );
+                            exportItem.setRow( rowIndex );
+                            exportItem.setColumn( idx );
+                            exportItem.setExpression( "[" + deId + "." + catagoryOptionComboId + "]" );
+                            exportItem.setPeriodType( "selected_month" );
+                            exportItem.setSheetNo( (sheetNo) );
+                            exportItem.setExportReport( exportReportService.getExportReport( reportId ) );
+                            exportReportService.addExportItem( exportItem );
+
+                        }
                     }
                 }
             }
 
-            // Close the output stream
-            out.close();
+            DataEntryForm dataEntryForm = new DataEntryForm( "DataEntry form", htmlCode.toString() );
+            dataEntryFormService.addDataEntryForm( dataEntryForm );
+
+            dataSet.setDataEntryForm( dataEntryForm );
+            dataSetService.addDataSet( dataSet );
+
+            Set<DataSet> dataSets = new HashSet<DataSet>();
+            dataSets.add( dataSet );
+            
+            exportReport.setDataSets( dataSets );
+            exportReportService.updateExportReport( exportReport );
+
         }
         catch ( Exception e )
         {

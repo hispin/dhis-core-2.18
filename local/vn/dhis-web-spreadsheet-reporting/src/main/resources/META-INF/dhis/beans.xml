@@ -1532,4 +1532,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.preview.action.TestAction"
 		scope="prototype" />
 	
+	<bean id="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormByTemplate"
+		class="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormByTemplate"
+		scope="prototype">
+	</bean>
+	
 </beans>
