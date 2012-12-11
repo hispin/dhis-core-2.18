@@ -15,6 +15,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.action.SetAreaItemAction" class="org.hisp.dhis.dashboard.action.SetAreaItemAction"
