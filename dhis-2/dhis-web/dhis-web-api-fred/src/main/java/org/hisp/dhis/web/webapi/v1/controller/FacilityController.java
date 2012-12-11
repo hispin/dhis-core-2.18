@@ -50,16 +50,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -88,16 +89,69 @@ public class FacilityController
     @Autowired
     private Validator validator;
 
+    @InitBinder
+    protected void initBinder( WebDataBinder binder )
+    {
+        binder.registerCustomEditor( Date.class, new PropertyEditorSupport()
+        {
+            private SimpleDateFormat[] simpleDateFormats = new SimpleDateFormat[]{
+                new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
+                new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
+                new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
+                new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
+                new SimpleDateFormat( "yyyy-MM-dd" ),
+                new SimpleDateFormat( "yyyy-MM" ),
+                new SimpleDateFormat( "yyyy" )
+            };
+
+            @Override
+            public void setAsText( String value ) throws IllegalArgumentException
+            {
+                for ( SimpleDateFormat simpleDateFormat : simpleDateFormats )
+                {
+                    try
+                    {
+                        setValue( simpleDateFormat.parse( value ) );
+                        return;
+                    }
+                    catch ( ParseException ignored )
+                    {
+                    }
+                }
+
+                setValue( null );
+            }
+        } );
+    }
+
     //--------------------------------------------------------------------------
     // GET HTML
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    public String readFacilities( Model model )
+    public String readFacilities( Model model, @RequestParam( required = false ) Boolean active,
+        @RequestParam( value = "updatedSince", required = false ) Date lastUpdated )
     {
         Facilities facilities = new Facilities();
+        List<OrganisationUnit> allOrganisationUnits = null;
 
-        List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        if ( active == null && lastUpdated == null )
+        {
+            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        }
+        else if ( active == null )
+        {
+            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
+        }
+        else if ( lastUpdated == null )
+        {
+            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByStatus( active ) );
+        }
+        else
+        {
+            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByStatusLastUpdated( active, lastUpdated ) );
+        }
+
         Collections.sort( allOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( OrganisationUnit organisationUnit : allOrganisationUnits )

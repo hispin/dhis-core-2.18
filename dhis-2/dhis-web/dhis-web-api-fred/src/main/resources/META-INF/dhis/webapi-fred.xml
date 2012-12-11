@@ -24,6 +24,25 @@
     </property>
   </bean>
 
+  <!-- TODO: doesn't seem to work right now, will investigate later
+  <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+    <property name="converters">
+      <set>
+        <ref bean="toFacilityConverter" />
+        <ref bean="toOrganisationUnitConverter" />
+      </set>
+    </property>
+
+    <property name="formatterRegistrars">
+      <set>
+        <bean class="org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar">
+          <property name="useIsoFormat" value="true" />
+        </bean>
+      </set>
+    </property>
+  </bean>
+    -->
+
   <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
   <mvc:annotation-driven conversion-service="conversionService" validator="validator" />
