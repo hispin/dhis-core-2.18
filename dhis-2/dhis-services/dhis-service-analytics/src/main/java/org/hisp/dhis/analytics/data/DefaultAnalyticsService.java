@@ -28,37 +28,40 @@ package org.hisp.dhis.analytics.data;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
-import org.hisp.dhis.system.util.PaginatedList;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultAnalyticsService
     implements AnalyticsService
 {
+    //TODO select from correct shard
+    //TODO period aggregation for multiple period types
+    //TODO hierarchy aggregation for org units at multiple levels
+    //TODO indicator aggregation
+    
     @Autowired
     private AnalyticsManager analyticsManager;
     
-    public List<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, 
-        Collection<String> periodIds, Collection<Integer> organisationUnitIds ) throws Exception
+    public List<AggregatedDataValue> getAggregatedDataValueTotals( DataQueryParams params ) throws Exception
     {
         Timer t = new Timer().start();
         
-        List<List<Integer>> dePages = new PaginatedList<Integer>( dataElementIds ).setNumberOfPages( 4 ).getPages();
+        List<DataQueryParams> queries = QueryPlanner.planQuery( params, 6 );
         
         List<Future<List<AggregatedDataValue>>> futures = new ArrayList<Future<List<AggregatedDataValue>>>();
         
         List<AggregatedDataValue> values = new ArrayList<AggregatedDataValue>();
         
-        for ( List<Integer> dePage : dePages )
+        for ( DataQueryParams query : queries )
         {
-            futures.add( analyticsManager.getAggregatedDataValueTotals( values, dePage, periodIds, organisationUnitIds ) );
+            futures.add( analyticsManager.getAggregatedDataValueTotals( query ) );
         }
         
         for ( Future<List<AggregatedDataValue>> future : futures )

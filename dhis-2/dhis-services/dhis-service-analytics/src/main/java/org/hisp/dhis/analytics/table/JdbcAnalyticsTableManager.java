@@ -54,9 +54,13 @@ import org.springframework.scheduling.annotation.Async;
  * each organisation unit group set and organisation unit level. Also, columns
  * for dataelementid, periodid, organisationunitid, categoryoptioncomboid, value.
  * 
+ * The analytics table is horizontally partitioned. The partition key is the start 
+ * date of the  period of the data record. The table is partitioned according to 
+ * time span with one partition per calendar quarter.
+ * 
  * The data records in this table are not aggregated. Typically, queries will
  * aggregate in organisation unit hierarchy dimension, in the period/time dimension,
- * and the category dimensions, as well as org unit group set dimensions.
+ * and the category dimensions, as well as organisation unit group set dimensions.
  * 
  * @author Lars Helge Overland
  */
@@ -82,7 +86,6 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
   
-    //TODO shard on data quarter based on start date
     //TODO average aggregation operator data, pre-aggregate in time dimension, not in org unit dimension
     
     public void createTable( String tableName )

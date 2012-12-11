@@ -40,7 +40,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Test;
 
-public class ShardUtilsTest
+public class PartitionUtilsTest
 {
     @Test
     public void testGetTableNames()
@@ -49,7 +49,7 @@ public class ShardUtilsTest
         Date earliest = cal.set( 2000, 5, 4 ).time();
         Date latest = cal.set( 2001, 2, 10 ).time();
         
-        List<String> tables = ShardUtils.getTempTableNames( earliest, latest );
+        List<String> tables = PartitionUtils.getTempTableNames( earliest, latest );
         
         assertEquals( 4, tables.size() );
         assertTrue( tables.contains( TABLE_NAME_TEMP + "_2000Q2" ) );
@@ -61,11 +61,11 @@ public class ShardUtilsTest
     @Test
     public void testGetTable()
     {
-        assertEquals( TABLE_NAME + "_2000Q4", ShardUtils.getTable( "200011" ) );
-        assertEquals( TABLE_NAME + "_2000Q1", ShardUtils.getTable( "2000W02" ) );
-        assertEquals( TABLE_NAME + "_2000Q2", ShardUtils.getTable( "2000Q2" ) );
-        assertEquals( TABLE_NAME + "_2000Q3", ShardUtils.getTable( "2000S2" ) );
-        assertEquals( TABLE_NAME + "_2000Q1", ShardUtils.getTable( "2000" ) );
+        assertEquals( TABLE_NAME + "_2000Q4", PartitionUtils.getTable( "200011" ) );
+        assertEquals( TABLE_NAME + "_2000Q1", PartitionUtils.getTable( "2000W02" ) );
+        assertEquals( TABLE_NAME + "_2000Q2", PartitionUtils.getTable( "2000Q2" ) );
+        assertEquals( TABLE_NAME + "_2000Q3", PartitionUtils.getTable( "2000S2" ) );
+        assertEquals( TABLE_NAME + "_2000Q1", PartitionUtils.getTable( "2000" ) );
     }
     
     @Test
@@ -76,7 +76,7 @@ public class ShardUtilsTest
         Period q2 = new QuarterlyPeriodType().createPeriod( cal.set( 2000, 4, 1 ).time() );
         Period q4 = new QuarterlyPeriodType().createPeriod( cal.set( 2000, 10, 1 ).time() );
         
-        assertEquals( q2, ShardUtils.getPeriod( TABLE_NAME_TEMP + "_2000Q2" ) );
-        assertEquals( q4, ShardUtils.getPeriod( TABLE_NAME_TEMP + "_2000Q4" ) );
+        assertEquals( q2, PartitionUtils.getPeriod( TABLE_NAME_TEMP + "_2000Q2" ) );
+        assertEquals( q4, PartitionUtils.getPeriod( TABLE_NAME_TEMP + "_2000Q4" ) );
     }
 }

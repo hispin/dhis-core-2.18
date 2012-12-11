@@ -31,14 +31,16 @@ import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME_TEMP;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.system.util.ListMap;
 
-public class ShardUtils
+public class PartitionUtils
 {
     private static final QuarterlyPeriodType QUARTERLY = new QuarterlyPeriodType();
     
@@ -92,5 +94,17 @@ public class ShardUtils
         String isoPeriod = split[split.length - 1];
         
         return PeriodType.getPeriodFromIsoString( isoPeriod );
+    }
+    
+    public static ListMap<String, String> getTablePeriodMap( Collection<String> isoPeriods )
+    {
+        ListMap<String, String> map = new ListMap<String, String>();
+        
+        for ( String period : isoPeriods )
+        {
+            map.putValue( getTable( period ), period );
+        }
+        
+        return map;
     }
 }

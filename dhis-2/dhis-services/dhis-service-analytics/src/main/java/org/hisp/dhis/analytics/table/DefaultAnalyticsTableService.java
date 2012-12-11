@@ -67,7 +67,7 @@ public class DefaultAnalyticsTableService
         
         final Date earliest = tableManager.getEarliestData();
         final Date latest = tableManager.getLatestData();
-        final List<String> tables = ShardUtils.getTempTableNames( earliest, latest );        
+        final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest );        
         clock.logTime( "Checked data timespan" );
         
         //dropTables( tables ); //remove
@@ -116,7 +116,7 @@ public class DefaultAnalyticsTableService
             
             for ( String table : tablePage )
             {
-                Period period = ShardUtils.getPeriod( table );
+                Period period = PartitionUtils.getPeriod( table );
                 
                 futures.add( tableManager.populateTableAsync( table, period.getStartDate(), period.getEndDate() ) );
             }

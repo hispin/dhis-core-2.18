@@ -199,6 +199,13 @@ public interface OrganisationUnitService
     int getLevelOfOrganisationUnit( int id );
 
     /**
+     * Returns the level of the organisation unit with the given uid.
+     * 
+     * @return the level of the organisation unit with the given uid.
+     */
+    int getLevelOfOrganisationUnit( String uid );
+    
+    /**
      * Returns all OrganisationUnits which are part of the subtree of the
      * OrganisationUnit with the given identifer and have no children.
      *

@@ -27,7 +27,6 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -35,6 +34,5 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 
 public interface AnalyticsManager
 {
-    Future<List<AggregatedDataValue>> getAggregatedDataValueTotals( Collection<AggregatedDataValue> values, Collection<Integer> dataElementIds, 
-        Collection<String> periodIds, Collection<Integer> organisationUnitIds );
+    Future<List<AggregatedDataValue>> getAggregatedDataValueTotals(  DataQueryParams params );
 }
