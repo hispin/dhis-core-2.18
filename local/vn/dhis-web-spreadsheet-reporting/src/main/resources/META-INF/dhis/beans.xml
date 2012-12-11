@@ -1527,5 +1527,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction"
 		class="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction"
 		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.preview.action.TestAction"
+		class="org.hisp.dhis.reportsheet.preview.action.TestAction"
+		scope="prototype" />
 	
 </beans>
