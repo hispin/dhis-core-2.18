@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -35,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.AnalyticsTableService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.PaginatedList;
@@ -63,17 +65,29 @@ public class DefaultAnalyticsTableService
     {
         Clock clock = new Clock().startClock().logTime( "Starting update..." );
         
-        tableManager.createTable();
-        clock.logTime( "Created analytics table" );
+        final Date earliest = tableManager.getEarliestData();
+        final Date latest = tableManager.getLatestData();
+        final List<String> tables = ShardUtils.getTempTableNames( earliest, latest );        
+        clock.logTime( "Checked data timespan" );
         
-        tableManager.populateTable();
-        clock.logTime( "Populated analytics table" );
+        //dropTables( tables ); //remove
         
-        createIndexes();
-        clock.logTime( "Created all indexes, update done" );
+        createTables( tables );
+        clock.logTime( "Created analytics tables" );
         
-        tableManager.swapTable();
-        clock.logTime( "Swapped analytics table" );
+        populateTables( tables );
+        clock.logTime( "Populated analytics tables" );
+
+        pruneTables( tables );
+        clock.logTime( "Pruned analytics tables" );
+        
+        createIndexes( tables );
+        clock.logTime( "Created all indexes" );
+        
+        swapTables( tables );
+        clock.logTime( "Swapped analytics tables" );
+        
+        clock.logTime( "Analytics tables update done" );
         
         return null;
     }
@@ -82,21 +96,77 @@ public class DefaultAnalyticsTableService
     // Supportive methods
     // -------------------------------------------------------------------------
   
-    private void createIndexes()
+    private void createTables( List<String> tables )
+    {
+        for ( String table : tables )
+        {
+            tableManager.createTable( table );
+        }
+    }
+    
+    private void populateTables( List<String> tables )
+    {
+        int pageSize = Math.max( ( SystemUtils.getCpuCores() - 1 ), 1 );
+        
+        List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( pageSize ).getPages();
+        
+        for ( List<String> tablePage : tablePages )
+        {
+            List<Future<?>> futures = new ArrayList<Future<?>>();
+            
+            for ( String table : tablePage )
+            {
+                Period period = ShardUtils.getPeriod( table );
+                
+                futures.add( tableManager.populateTableAsync( table, period.getStartDate(), period.getEndDate() ) );
+            }
+            
+            ConcurrentUtils.waitForCompletion( futures );
+        }
+    }
+    
+    public void pruneTables( List<String> tables )
+    {
+        for ( String table : tables )
+        {
+            tableManager.pruneTable( table );
+        }
+    }
+    
+    private void createIndexes( List<String> tables )
     {
         int pages = Math.max( ( SystemUtils.getCpuCores() - 1 ), 1 );
         
         log.info( "No of pages: " + pages );
         
-        List<Future<?>> futures = new ArrayList<Future<?>>();
-
-        List<List<String>> columnPages = new PaginatedList<String>( tableManager.getDimensionColumnNames() ).setNumberOfPages( pages ).getPages();
-        
-        for ( List<String> columnPage : columnPages )
+        for ( String table : tables )
         {
-            futures.add( tableManager.createIndexesAsync( columnPage ) );
+            List<Future<?>> futures = new ArrayList<Future<?>>();
+    
+            List<List<String>> columnPages = new PaginatedList<String>( tableManager.getDimensionColumnNames() ).setNumberOfPages( pages ).getPages();
+            
+            for ( List<String> columnPage : columnPages )
+            {
+                futures.add( tableManager.createIndexesAsync( table, columnPage ) );
+            }
+            
+            ConcurrentUtils.waitForCompletion( futures );
         }
-        
-        ConcurrentUtils.waitForCompletion( futures );        
+    }
+    
+    private void swapTables( List<String> tables )
+    {
+        for ( String table : tables )
+        {
+            tableManager.swapTable( table );
+        }
+    }
+    
+    protected void dropTables( List<String> tables )
+    {
+        for ( String table : tables )
+        {
+            tableManager.dropTable( table );
+        }
     }
 }

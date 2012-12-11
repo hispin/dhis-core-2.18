@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics.table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -41,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -62,12 +64,10 @@ public class JdbcAnalyticsTableManager
     implements AnalyticsTableManager
 {
     private static final Log log = LogFactory.getLog( JdbcAnalyticsTableManager.class );
-    
+
     public static final String PREFIX_ORGUNITGROUPSET = "ougs_";
     public static final String PREFIX_ORGUNITLEVEL = "idlevel";
     public static final String PREFIX_INDEX = "index_";
-    public static final String TABLE_NAME = "analytics";
-    public static final String TABLE_NAME_TEMP = "analytics_temp";
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -84,14 +84,14 @@ public class JdbcAnalyticsTableManager
   
     //TODO shard on data quarter based on start date
     //TODO average aggregation operator data, pre-aggregate in time dimension, not in org unit dimension
-        
-    public void createTable()
+    
+    public void createTable( String tableName )
     {
-        final String sqlDrop = "drop table " + TABLE_NAME_TEMP;
+        final String sqlDrop = "drop table " + tableName;
         
         executeSilently( sqlDrop );
         
-        String sqlCreate = "create table " + TABLE_NAME_TEMP + " (";
+        String sqlCreate = "create table " + tableName + " (";
         
         for ( String[] col : getDimensionColumns() )
         {
@@ -106,16 +106,17 @@ public class JdbcAnalyticsTableManager
     }
     
     @Async
-    public Future<?> createIndexesAsync( List<String> columns )
+    public Future<?> createIndexesAsync( String tableName, List<String> columns )
     {
         for ( String column : columns )
         {        
-            final String sql = "create index " + PREFIX_INDEX +
-                column + " on " + TABLE_NAME_TEMP + " (" + column + ")";
+            final String index = PREFIX_INDEX + column + "_" + tableName;
+            
+            final String sql = "create index " + index + " on " + tableName + " (" + column + ")";
                 
             executeSilently( sql );
             
-            log.info( "Created index on column: " + column );
+            log.info( "Created index: " + index );
         }
         
         log.info( "Indexes created" );
@@ -123,27 +124,35 @@ public class JdbcAnalyticsTableManager
         return null;
     }
 
-    public void swapTable()
+    public void swapTable( String tableName )
     {
-        final String sqlDrop = "drop table " + TABLE_NAME;
+        final String realTable = tableName.replaceFirst( TABLE_TEMP_SUFFIX, "" );
+        
+        final String sqlDrop = "drop table " + realTable;
         
         executeSilently( sqlDrop );
         
-        final String sqlAlter = "alter table " + TABLE_NAME_TEMP + " rename to " + TABLE_NAME;
+        final String sqlAlter = "alter table " + tableName + " rename to " + realTable;
         
-        jdbcTemplate.execute( sqlAlter );
+        executeSilently( sqlAlter );
     }
     
-    public void populateTable()
+    @Async
+    public Future<?> populateTableAsync( String tableName, Date startDate, Date endDate )
     {
-        populateTable( "cast(dv.value as double precision)" , "int" );
+        populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", "int" );
         
-        populateTable( "1 as value" , "bool" );
+        populateTable( tableName, startDate, endDate, "1 as value" , "bool" );
+        
+        return null;
     }
     
-    private void populateTable( String valueExpression, String valueType )
+    private void populateTable( String tableName, Date startDate, Date endDate, String valueExpression, String valueType )
     {
-        String insert = "insert into " + TABLE_NAME_TEMP + " (";
+        final String start = DateUtils.getMediumDateString( startDate );
+        final String end = DateUtils.getMediumDateString( endDate );
+        
+        String insert = "insert into " + tableName + " (";
         
         for ( String[] col : getDimensionColumns() )
         {
@@ -168,7 +177,9 @@ public class JdbcAnalyticsTableManager
             "left join _period_no_disaggregation_structure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
             "left join period pe on dv.periodid=pe.periodid " +
-            "where de.valuetype='" + valueType + "' and pe.startdate >= '2011-10-01'";
+            "where de.valuetype='" + valueType + "' " +
+            "and pe.startdate >= '" + start + "' " +
+            "and pe.startdate <= '" + end + "'";
 
         final String sql = insert + select;
         
@@ -229,6 +240,48 @@ public class JdbcAnalyticsTableManager
         return columnNames;
     }
 
+    public Date getEarliestData()
+    {
+        final String sql = "select min(pe.startdate) from datavalue dv " +
+            "join period pe on dv.periodid=pe.periodid";
+        
+        return jdbcTemplate.queryForObject( sql, Date.class );
+    }
+
+    public Date getLatestData()
+    {
+        final String sql = "select max(pe.startdate) from datavalue dv " +
+            "join period pe on dv.periodid=pe.periodid";
+        
+        return jdbcTemplate.queryForObject( sql, Date.class );
+    }
+    
+    public void pruneTable( String tableName )
+    {
+        final String sqlCount = "select count(*) from " + tableName;
+        
+        log.info( "Count SQL: " + sqlCount );
+        
+        final boolean empty = jdbcTemplate.queryForInt( sqlCount ) == 0;
+        
+        if ( empty )
+        {
+            final String sqlDrop = "drop table " + tableName;
+            
+            executeSilently( sqlDrop );
+            
+            log.info( "Drop SQL: " + sqlDrop );
+        }
+    }
+    
+    public void dropTable( String tableName )
+    {
+        final String realTable = tableName.replaceFirst( TABLE_TEMP_SUFFIX, "" );
+        
+        executeSilently( "drop table " + tableName );
+        executeSilently( "drop table " + realTable );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
