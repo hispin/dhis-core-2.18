@@ -194,6 +194,7 @@ public class AddExportReportAction
         exportReport.setName( name );
         exportReport.setExcelTemplateFile( excel );
         exportReport.setGroup( group );
+        exportReport.setCreatedBy( currentUserService.getCurrentUsername() );
 
         if ( periodCol != null && periodRow != null )
         {
@@ -211,15 +212,6 @@ public class AddExportReportAction
         {
             exportReport.setDataSets( new HashSet<DataSet>( dataSetService.getDataSets( dataSetIds ) ) );
         }
-
-        String createdBy = currentUserService.getCurrentUsername();
-
-        if ( createdBy == null )
-        {
-            createdBy = "[unknown]";
-        }
-
-        exportReport.setCreatedBy( createdBy );
 
         exportReportService.addExportReport( exportReport );
 

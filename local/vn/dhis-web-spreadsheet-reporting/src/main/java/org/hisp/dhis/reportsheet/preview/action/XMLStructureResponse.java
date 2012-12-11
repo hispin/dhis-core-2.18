@@ -225,6 +225,7 @@ public class XMLStructureResponse
     // -------------------------------------------------------------------------
     // Get the merged cell's information
     // -------------------------------------------------------------------------
+
     private void writeXMLMergedDescription( Collection<Integer> collectSheets )
         throws IOException
     {
