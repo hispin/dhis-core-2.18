@@ -45,7 +45,7 @@ public class MessageResponseUtils
     {
         objectMapper = new ObjectMapper();
         objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
-        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_NULL );
+        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
     }
 
     public static String jsonMessage( String message ) throws IOException

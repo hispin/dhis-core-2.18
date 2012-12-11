@@ -28,7 +28,6 @@ package org.hisp.dhis.web.webapi.v1.domain;
  */
 
 import org.hibernate.validator.constraints.Length;
-import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidIdentifiers;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -43,14 +42,14 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
-    @NotNull( groups = Create.class )
-    @Null( groups = Update.class )
-    @Length( min = 11, max = 11 )
+    @Null( groups = Create.class )
+    @NotNull( groups = Update.class )
+    @Length(min = 11, max = 11)
     private String id;
 
     // Name of the facility
     @NotNull
-    @Length( min = 2, max = 160 )
+    @Length(min = 2, max = 160)
     private String name;
 
     // Active = true/false indicates whether the facility is active or not
@@ -58,15 +57,12 @@ public class Facility
     private Boolean active;
 
     // URL link to the unique ID API resource for the facility
-    @Null
     private String url;
 
     // ISO 8601 timestamp, including timezone, of when the facility was created
-    @Null
     private Date createdAt;
 
     // ISO 8601 timestamp, including timezone, of when the facility was last updated
-    @Null
     private Date updatedAt;
 
     // Geo-location represented by latitude and longitude coordinates in that order
@@ -74,7 +70,6 @@ public class Facility
     private List<Double> coordinates = new ArrayList<Double>();
 
     // External Facility Identifiers
-    @ValidIdentifiers( groups = Create.class )
     private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     // Implementation specific custom properties
