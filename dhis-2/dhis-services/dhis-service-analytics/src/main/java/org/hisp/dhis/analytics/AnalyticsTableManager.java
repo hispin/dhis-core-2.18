@@ -27,18 +27,49 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
 public interface AnalyticsTableManager
 {
-    void createTable();
-
-    Future<?> createIndexesAsync( List<String> columns );
+    public static final String TABLE_NAME = "analytics";
+    public static final String TABLE_TEMP_SUFFIX = "_temp";
+    public static final String TABLE_NAME_TEMP = TABLE_NAME + TABLE_TEMP_SUFFIX;
     
-    void swapTable();
+    /**
+     * Attempts to drop and then create analytics table.
+     * 
+     * @param tableName the table name.
+     */
+    void createTable( String tableName );
     
-    void populateTable();    
+    /**
+     * Creates single indexes on the given columns of the analytics table with
+     * the given name.
+     * 
+     * @param tableName the name of the table to create indexes on.
+     * @param columns the columns to create single indexes for.
+     */
+    Future<?> createIndexesAsync( String tableName, List<String> columns );
+    
+    /**
+     * Attempts to drop analytics table, then rename temporary table to analytics
+     * table.
+     * 
+     * @param tableName the name of the analytics table.
+     */
+    void swapTable( String tableName );
+    
+    /**
+     * Copies and denormalizes rows from data value table into analytics table.
+     * The data range is based on the start date of the data value row.
+     * 
+     * @param tableName the name of the analytics table.
+     * @param startDate the start date for the data value row start date
+     * @param endDate the end date for the data value row end date
+     */
+    Future<?> populateTableAsync( String tableName, Date startDate, Date endDate );    
 
     /**
      * Returns a list of string arrays in where the first index holds the database
@@ -51,4 +82,28 @@ public interface AnalyticsTableManager
      * Returns a list of database column names.
      */
     List<String> getDimensionColumnNames();
+
+    /**
+     * Retrieves the start date of the period of the earliest data value row.
+     */
+    Date getEarliestData();
+    
+    /**
+     * Retrieves the end date of the period of the latest data value row.
+     */
+    Date getLatestData();
+    
+    /**
+     * Checks whether the given table has no rows, if so drops the table.
+     * 
+     * @param tableName the name of the table to prune.
+     */
+    void pruneTable( String tableName );
+    
+    /**
+     * Drops the given table.
+     * 
+     * @param tableName the name of the table to drop.
+     */
+    void dropTable( String tableName );
 }
