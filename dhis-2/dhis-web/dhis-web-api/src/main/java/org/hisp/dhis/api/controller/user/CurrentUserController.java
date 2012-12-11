@@ -66,7 +66,7 @@ import java.util.Set;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = CurrentUserController.RESOURCE_PATH, method = RequestMethod.GET )
+@RequestMapping(value = CurrentUserController.RESOURCE_PATH, method = RequestMethod.GET)
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
@@ -99,7 +99,7 @@ public class CurrentUserController
     @Autowired
     private ContextUtils contextUtils;
 
-    @RequestMapping( produces = {"application/json", "text/*"} )
+    @RequestMapping(produces = { "application/json", "text/*" })
     public void getCurrentUser( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -113,7 +113,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), currentUser );
     }
 
-    @RequestMapping( value = "/inbox", produces = {"application/json", "text/*"} )
+    @RequestMapping(value = "/inbox", produces = { "application/json", "text/*" })
     public void getInbox( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -131,7 +131,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), inbox );
     }
 
-    @RequestMapping( value = "/dashboard", produces = {"application/json", "text/*"} )
+    @RequestMapping(value = "/dashboard", produces = { "application/json", "text/*" })
     public void getDashboard( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -149,7 +149,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), dashboard );
     }
 
-    @RequestMapping( value = "/user-account", produces = {"application/json", "text/*"} )
+    @RequestMapping(value = "/user-account", produces = { "application/json", "text/*" })
     public void getUserAccount( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -187,7 +187,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
     }
 
-    @RequestMapping( value = "/user-account", method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping(value = "/user-account", method = RequestMethod.POST, consumes = "application/json")
     public void postUserAccountJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         UserAccount userAccount = JacksonUtils.fromJson( request.getInputStream(), UserAccount.class );
@@ -224,9 +224,9 @@ public class CurrentUserController
         userService.updateUser( currentUser );
     }
 
-    @RequestMapping( value = "/recipients", produces = {"application/json", "text/*"} )
+    @RequestMapping(value = "/recipients", produces = { "application/json", "text/*" })
     public void recipientsJson( HttpServletResponse response,
-        @RequestParam( value = "filter" ) String filter ) throws IOException
+        @RequestParam(value = "filter") String filter ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -247,8 +247,22 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
+    @RequestMapping( value = "/assignedOrganisationUnits", produces = { "application/json", "text/*" } )
+    public void getAssignedOrganisationUnits( HttpServletResponse response ) throws IOException
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
+            return;
+        }
+
+        JacksonUtils.toJson( response.getOutputStream(), currentUser.getOrganisationUnits() );
+    }
+
     @SuppressWarnings( "unchecked" )
-    @RequestMapping( value = "/forms", produces = {"application/json", "text/*"} )
+    @RequestMapping( value = "/forms", produces = { "application/json", "text/*" } )
     public void getForms( HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
