@@ -60,6 +60,7 @@ public class EmailMessageSender
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
     private static final String FROM_NAME = "DHIS2 Message [No reply]";
     private static final String SUBJECT_PREFIX = "[DHIS2] ";
+    private static final String LOCALHOST = "localhost";
     private static final String LB = System.getProperty( "line.separator" );
 
     // -------------------------------------------------------------------------
@@ -152,7 +153,7 @@ public class EmailMessageSender
         email.setHostName( hostName );
         email.setFrom( FROM_ADDRESS, FROM_NAME );
 
-        if (hostName.equals( "localhost"))
+        if ( hostName.equals( LOCALHOST ) )
         {
             email.setSmtpPort( LOCAL_SMTP_PORT );
         }
@@ -162,7 +163,7 @@ public class EmailMessageSender
             email.setAuthenticator( new DefaultAuthenticator( username, password ) );
             email.setTLS( true );
         }
-        
+
         return email;
     }
 }
