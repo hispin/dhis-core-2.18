@@ -65,7 +65,7 @@ public abstract class ExportReport
 
     private String excelTemplateFile;
 
-    private String createdBy = "[unknown]";
+    private String createdBy = "[DHIS-System]";
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -73,6 +73,25 @@ public abstract class ExportReport
 
     public ExportReport()
     {
+        this.exportItems = new HashSet<ExportItem>();
+        this.organisationAssocitions = new HashSet<OrganisationUnit>();
+    }
+
+    public ExportReport( String name, String group, String excelTemplateFile )
+    {
+        this.name = name;
+        this.group = group;
+        this.excelTemplateFile = excelTemplateFile;
+        this.exportItems = new HashSet<ExportItem>();
+        this.organisationAssocitions = new HashSet<OrganisationUnit>();
+    }
+
+    public ExportReport( String name, String group, String excelTemplateFile, String createdBy )
+    {
+        this.name = name;
+        this.group = group;
+        this.excelTemplateFile = excelTemplateFile;
+        this.createdBy = (createdBy == null || createdBy.trim().isEmpty()) ? this.createdBy : createdBy;
         this.exportItems = new HashSet<ExportItem>();
         this.organisationAssocitions = new HashSet<OrganisationUnit>();
     }
@@ -385,6 +404,6 @@ public abstract class ExportReport
 
     public void setCreatedBy( String createdBy )
     {
-        this.createdBy = createdBy;
+        this.createdBy = (createdBy == null || createdBy.trim().isEmpty()) ? this.createdBy : createdBy;
     }
 }
