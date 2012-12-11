@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import org.hisp.dhis.common.GenericNameableObjectStore;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,6 +48,34 @@ public interface OrganisationUnitStore
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
+
+    /**
+     * Returns all OrganisationUnits by status.
+     *
+     * @param active Get active or inactive
+     * @return a collection of all OrganisationUnits, or an empty collection if
+     *         there are no OrganisationUnits.
+     */
+    Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean active );
+
+    /**
+     * Returns all OrganisationUnits by lastUpdated.
+     *
+     * @param lastUpdated OrganisationUnits from this date
+     * @return a collection of all OrganisationUnits, or an empty collection if
+     *         there are no OrganisationUnits.
+     */
+    Collection<OrganisationUnit> getAllOrganisationUnitsByLastUpdated( Date lastUpdated );
+
+    /**
+     * Returns all OrganisationUnits by status and lastUpdated.
+     *
+     * @param active Get active or inactive
+     * @param lastUpdated OrganisationUnits from this date
+     * @return a collection of all OrganisationUnits, or an empty collection if
+     *         there are no OrganisationUnits.
+     */
+    Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean active, Date lastUpdated );
 
     /**
      * Returns an OrganisationUnit with a given name. Case is ignored.
@@ -75,10 +104,10 @@ public interface OrganisationUnitStore
     /**
      * Returns all OrganisationUnit which names are like the given name, or which
      * code or uid are equal the given name, and are within the given groups.
-     * 
-     * @param query the query to match on name, code or uid.
+     *
+     * @param query  the query to match on name, code or uid.
      * @param groups the organisation unit groups.
-     * @param limit the limit of returned objects.
+     * @param limit  the limit of returned objects.
      * @return a collection of OrganisationUnits.
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query, Collection<OrganisationUnitGroup> groups, boolean limit );
