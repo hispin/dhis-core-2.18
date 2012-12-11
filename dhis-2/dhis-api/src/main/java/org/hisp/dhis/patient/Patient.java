@@ -114,26 +114,6 @@ public class Patient
     }
 
     // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public PatientIdentifier getPreferredPatientIdentifier()
-    {
-        if ( getIdentifiers() != null && getIdentifiers().size() > 0 )
-        {
-            for ( PatientIdentifier patientIdentifier : getIdentifiers() )
-            {
-                if ( patientIdentifier.getPreferred() )
-                {
-                    return patientIdentifier;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
 
