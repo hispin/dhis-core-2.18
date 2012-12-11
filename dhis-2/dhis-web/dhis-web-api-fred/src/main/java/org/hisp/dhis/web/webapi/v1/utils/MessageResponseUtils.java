@@ -29,37 +29,37 @@ package org.hisp.dhis.web.webapi.v1.utils;
 
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.stereotype.Component;
+import org.hisp.dhis.web.webapi.v1.domain.MessageResponse;
+
+import java.io.IOException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Component
-public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
+public class MessageResponseUtils
 {
-    @Override
-    public ObjectMapper getObject() throws Exception
+    private static ObjectMapper objectMapper;
+
+    static
     {
-        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
         objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
-        objectMapper.configure( SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false );
         objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_NULL );
-
-        return objectMapper;
     }
 
-    @Override
-    public Class<?> getObjectType()
+    public static String jsonMessage( String message ) throws IOException
     {
-        return ObjectMapper.class;
+        return messageToJson( new MessageResponse( message, null ) );
     }
 
-    @Override
-    public boolean isSingleton()
+    public static String jsonMessage( String message, String moreInfo ) throws IOException
     {
-        return true;
+        return messageToJson( new MessageResponse( message, moreInfo ) );
+    }
+
+    public static String messageToJson( MessageResponse messageResponse ) throws IOException
+    {
+        return objectMapper.writeValueAsString( messageResponse );
     }
 }

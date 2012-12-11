@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.utils.MessageResponseUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -133,7 +134,7 @@ public class FacilityController
         @RequestParam( value = "updatedSince", required = false ) Date lastUpdated )
     {
         Facilities facilities = new Facilities();
-        List<OrganisationUnit> allOrganisationUnits = null;
+        List<OrganisationUnit> allOrganisationUnits;
 
         if ( active == null && lastUpdated == null )
         {
@@ -212,8 +213,16 @@ public class FacilityController
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         if ( constraintViolations.isEmpty() )
         {
+            if ( organisationUnitService.getOrganisationUnit( facility.getId() ) != null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that ID already exists." ), headers, HttpStatus.CONFLICT );
+            }
+
             OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
             organisationUnitService.addOrganisationUnit( organisationUnit );
 
@@ -223,14 +232,13 @@ public class FacilityController
                 dataSetService.updateDataSet( dataSet );
             }
 
-            HttpHeaders headers = new HttpHeaders();
             headers.setLocation( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toUri() );
 
             return new ResponseEntity<String>( json, headers, HttpStatus.CREATED );
         }
         else
         {
-            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
+            return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 
@@ -249,6 +257,9 @@ public class FacilityController
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         if ( constraintViolations.isEmpty() )
         {
             OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
@@ -265,11 +276,11 @@ public class FacilityController
 
             organisationUnitService.updateOrganisationUnit( ou );
 
-            return new ResponseEntity<String>( json, HttpStatus.OK );
+            return new ResponseEntity<String>( json, headers, HttpStatus.OK );
         }
         else
         {
-            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
+            return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 

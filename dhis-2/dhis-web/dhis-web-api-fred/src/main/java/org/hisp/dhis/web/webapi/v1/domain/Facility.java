@@ -28,10 +28,8 @@ package org.hisp.dhis.web.webapi.v1.domain;
  */
 
 import org.hibernate.validator.constraints.Length;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidIdentifiers;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
-import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidUidReference;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
@@ -45,8 +43,9 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
+    @NotNull( groups = Create.class )
+    @Null( groups = Update.class )
     @Length( min = 11, max = 11 )
-    @ValidUidReference( value = OrganisationUnit.class, groups = Update.class )
     private String id;
 
     // Name of the facility

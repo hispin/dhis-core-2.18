@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.webapi.v1.domain;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,39 +27,45 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.stereotype.Component;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Component
-public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
+@JsonPropertyOrder( value = { "message", "moreInfo" } )
+public class MessageResponse
 {
-    @Override
-    public ObjectMapper getObject() throws Exception
-    {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
-        objectMapper.configure( SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false );
-        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_NULL );
+    private String message;
 
-        return objectMapper;
+    private String moreInfo;
+
+    public MessageResponse()
+    {
     }
 
-    @Override
-    public Class<?> getObjectType()
+    public MessageResponse( String message, String moreInfo )
     {
-        return ObjectMapper.class;
+        this.message = message;
+        this.moreInfo = moreInfo;
     }
 
-    @Override
-    public boolean isSingleton()
+    public String getMessage()
     {
-        return true;
+        return message;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+
+    public String getMoreInfo()
+    {
+        return moreInfo;
+    }
+
+    public void setMoreInfo( String moreInfo )
+    {
+        this.moreInfo = moreInfo;
     }
 }
