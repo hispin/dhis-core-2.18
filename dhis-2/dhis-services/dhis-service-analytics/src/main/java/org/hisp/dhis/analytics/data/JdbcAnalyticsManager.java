@@ -27,10 +27,8 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -38,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.analytics.AnalyticsManager;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
@@ -76,23 +75,18 @@ public class JdbcAnalyticsManager
     // Implementation
     // -------------------------------------------------------------------------
 
-    //TODO period aggregation for multiple period types
-    //TODO hierarchy aggregation for org units at multiple levels
-    //TODO indicator aggregation
-    
     @Async
-    public Future<List<AggregatedDataValue>> getAggregatedDataValueTotals( Collection<AggregatedDataValue> values, Collection<Integer> dataElementIds, 
-        Collection<String> periodIds, Collection<Integer> organisationUnitIds )
+    public Future<List<AggregatedDataValue>> getAggregatedDataValueTotals( DataQueryParams params )
     {
-        int level = organisationUnitService.getLevelOfOrganisationUnit( organisationUnitIds.iterator().next() );        
-        String periodType = PeriodType.getPeriodTypeFromIsoString( periodIds.iterator().next() ).getName().toLowerCase();
+        int level = organisationUnitService.getLevelOfOrganisationUnit( params.getOrganisationUnits().iterator().next() );        
+        String periodType = PeriodType.getPeriodTypeFromIsoString( params.getPeriods().iterator().next() ).getName().toLowerCase();
         
         final String sql = 
             "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, idlevel" + level + " as organisationunitid, SUM(value) as value " +
-            "FROM analytics " +
-            "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
-            "AND " + periodType + " IN ( " + getQuotedCommaDelimitedString( periodIds ) + " ) " +
-            "AND idlevel" + level + " IN ( " + getCommaDelimitedString( organisationUnitIds ) + " ) " +
+            "FROM " + params.getTableName() + " " +
+            "WHERE dataelementid IN ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
+            "AND " + periodType + " IN ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
+            "AND idlevel" + level + " IN ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
             "GROUP BY dataelementid, periodid, idlevel" + level;
                 
         log.info( sql );
