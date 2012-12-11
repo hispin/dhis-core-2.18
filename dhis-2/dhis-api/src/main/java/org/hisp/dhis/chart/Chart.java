@@ -363,6 +363,11 @@ public class Chart
         return 500;
     }
 
+    public boolean hasUserOrgUnit()
+    {
+        return userOrganisationUnit || userOrganisationUnitChildren;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
