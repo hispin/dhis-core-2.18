@@ -30,10 +30,13 @@ package org.hisp.dhis.web.webapi.v1.controller;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.utils.MessageResponseUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +56,7 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-service-controller-" + FredController.PREFIX )
+@Controller(value = "facility-service-controller-" + FredController.PREFIX)
 @RequestMapping(FacilityServiceController.RESOURCE_PATH)
 @PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
 public class FacilityServiceController
@@ -66,11 +69,14 @@ public class FacilityServiceController
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private ConversionService conversionService;
+
     //--------------------------------------------------------------------------
     // EXTRA WEB METHODS
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}/activate", method = RequestMethod.POST )
+    @RequestMapping(value = "/{id}/activate", method = RequestMethod.POST)
     @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<Void> activateFacility( @PathVariable String id )
     {
@@ -87,7 +93,7 @@ public class FacilityServiceController
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
     }
 
-    @RequestMapping( value = "/{id}/deactivate", method = RequestMethod.POST )
+    @RequestMapping(value = "/{id}/deactivate", method = RequestMethod.POST)
     @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<Void> deactivateFacility( @PathVariable String id )
     {
@@ -111,13 +117,31 @@ public class FacilityServiceController
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         if ( constraintViolations.isEmpty() )
         {
-            return new ResponseEntity<String>( json, HttpStatus.OK );
+            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
+
+            if ( organisationUnitService.getOrganisationUnit( organisationUnit.getUid() ) != null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that ID already exists." ), headers, HttpStatus.CONFLICT );
+            }
+            else if ( organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() ) != null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that name already exists." ), headers, HttpStatus.CONFLICT );
+            }
+            else if ( organisationUnit.getCode() != null && organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() ) != null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that code already exists." ), headers, HttpStatus.CONFLICT );
+            }
+
+            return new ResponseEntity<String>( json, headers, HttpStatus.OK );
         }
         else
         {
-            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
+            return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 
@@ -128,13 +152,45 @@ public class FacilityServiceController
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         if ( constraintViolations.isEmpty() )
         {
-            return new ResponseEntity<String>( json, HttpStatus.OK );
+            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
+            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
+
+            if ( ou == null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "No object with that identifier exists." ),
+                    headers, HttpStatus.NOT_FOUND );
+            }
+            else if ( !ou.getName().equals( organisationUnit.getName() ) )
+            {
+                OrganisationUnit ouByName = organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() );
+
+                if ( ouByName != null && !ou.getUid().equals( ouByName.getUid() ) )
+                {
+                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same name already exists." ),
+                        headers, HttpStatus.CONFLICT );
+                }
+            }
+            else if ( organisationUnit.getCode() != null )
+            {
+                OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() );
+
+                if ( ouByCode != null && !ou.getUid().equals( ouByCode.getUid() ) )
+                {
+                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same code already exists." ),
+                        headers, HttpStatus.CONFLICT );
+                }
+            }
+
+            return new ResponseEntity<String>( json, headers, HttpStatus.OK );
         }
         else
         {
-            return new ResponseEntity<String>( json, HttpStatus.UNPROCESSABLE_ENTITY );
+            return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
     }
 }

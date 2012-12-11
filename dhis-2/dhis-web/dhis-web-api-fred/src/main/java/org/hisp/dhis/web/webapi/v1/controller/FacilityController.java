@@ -218,12 +218,21 @@ public class FacilityController
 
         if ( constraintViolations.isEmpty() )
         {
-            if ( organisationUnitService.getOrganisationUnit( facility.getId() ) != null )
+            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
+
+            if ( organisationUnitService.getOrganisationUnit( organisationUnit.getUid() ) != null )
             {
                 return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that ID already exists." ), headers, HttpStatus.CONFLICT );
             }
+            else if ( organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() ) != null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that name already exists." ), headers, HttpStatus.CONFLICT );
+            }
+            else if ( organisationUnit.getCode() != null && organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() ) != null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that code already exists." ), headers, HttpStatus.CONFLICT );
+            }
 
-            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
             organisationUnitService.addOrganisationUnit( organisationUnit );
 
             for ( DataSet dataSet : organisationUnit.getDataSets() )
@@ -264,8 +273,35 @@ public class FacilityController
         {
             OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
 
+            if ( ou == null )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "No object with that identifier exists." ),
+                    headers, HttpStatus.NOT_FOUND );
+            }
+            else if ( !ou.getName().equals( organisationUnit.getName() ) )
+            {
+                OrganisationUnit ouByName = organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() );
+
+                if ( ouByName != null && !ou.getUid().equals( ouByName.getUid() ) )
+                {
+                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same name already exists." ),
+                        headers, HttpStatus.CONFLICT );
+                }
+            }
+            else if ( organisationUnit.getCode() != null )
+            {
+                OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() );
+
+                if ( ouByCode != null && !ou.getUid().equals( ouByCode.getUid() ) )
+                {
+                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same code already exists." ),
+                        headers, HttpStatus.CONFLICT );
+                }
+            }
+
             ou.setName( organisationUnit.getName() );
             ou.setShortName( organisationUnit.getShortName() );
+            ou.setCode( organisationUnit.getCode() );
 
             ou.setFeatureType( organisationUnit.getFeatureType() );
             ou.setCoordinates( organisationUnit.getCoordinates() );

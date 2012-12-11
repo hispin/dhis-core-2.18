@@ -27,7 +27,9 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
@@ -40,6 +42,15 @@ import java.util.Set;
  */
 public class ValidationUtils
 {
+    private static ObjectMapper objectMapper;
+
+    static
+    {
+        objectMapper = new ObjectMapper();
+        objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
+        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
+    }
+
     public static <T> String constraintViolationsToJson( Set<ConstraintViolation<T>> constraintViolations ) throws IOException
     {
         Map<String, String> constraintViolationsMap = new HashMap<String, String>();
@@ -49,6 +60,6 @@ public class ValidationUtils
             constraintViolationsMap.put( constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage() );
         }
 
-        return new ObjectMapper().writeValueAsString( constraintViolationsMap );
+        return objectMapper.writeValueAsString( constraintViolationsMap );
     }
 }
