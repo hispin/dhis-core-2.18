@@ -27,28 +27,19 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.OrganisationUnitStore;
+import org.hisp.dhis.organisationunit.*;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
 import org.springframework.jdbc.core.RowCallbackHandler;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * @author Kristian Nordal
@@ -61,25 +52,53 @@ public class HibernateOrganisationUnitStore
     // OrganisationUnit
     // -------------------------------------------------------------------------
 
+
     @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean active )
+    {
+        Query query = getQuery( "from OrganisationUnit o where o.active is :active" );
+        query.setParameter( "active", active );
+
+        return query.list();
+    }
+
+    @Override
+    public Collection<OrganisationUnit> getAllOrganisationUnitsByLastUpdated( Date lastUpdated )
+    {
+        return getByLastUpdated( lastUpdated );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean active, Date lastUpdated )
+    {
+        return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).add( Restrictions.eq( "active", active ) ).list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
         return (OrganisationUnit) getCriteria( Restrictions.eq( "name", name ).ignoreCase() ).uniqueResult();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
         return getQuery( "from OrganisationUnit o where o.parent is null" ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @Override
+    @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
         return getQuery( "from OrganisationUnit o where o.groups.size = 0" ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @Override
+    @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query,
         Collection<OrganisationUnitGroup> groups, boolean limit )
     {
@@ -110,7 +129,7 @@ public class HibernateOrganisationUnitStore
         }
 
         Query q = sessionFactory.getCurrentSession().createQuery( hql.toString() );
-        
+
         if ( query != null )
         {
             q.setString( "expression", "%" + query.toLowerCase() + "%" );
