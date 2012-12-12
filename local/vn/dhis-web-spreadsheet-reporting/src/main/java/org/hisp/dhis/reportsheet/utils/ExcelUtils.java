@@ -344,7 +344,7 @@ public class ExcelUtils
                 else
                 {
                     cellPOI.setCellValue( Double.parseDouble( value ) );
-                    //cellPOI.setCellValue( getFormattedNumber( value ) );
+                    // cellPOI.setCellValue( getFormattedNumber( value ) );
                 }
             }
         }
@@ -388,7 +388,7 @@ public class ExcelUtils
                 else
                 {
                     cellPOI.setCellValue( Double.parseDouble( value ) );
-                    //cellPOI.setCellValue( getFormattedNumber( value ) );
+                    // cellPOI.setCellValue( getFormattedNumber( value ) );
                 }
             }
         }

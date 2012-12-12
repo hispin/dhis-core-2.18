@@ -62,6 +62,11 @@ public class NumberUtils
 
     public static String getFormattedNumber( String input )
     {
+        if ( df == null )
+        {
+            return input;
+        }
+        
         try
         {
             return df.format( Double.parseDouble( input ) );
