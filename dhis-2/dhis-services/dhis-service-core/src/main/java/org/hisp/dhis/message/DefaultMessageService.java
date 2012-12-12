@@ -161,7 +161,7 @@ public class DefaultMessageService
 
         updateMessageConversation( conversation );
 
-        invokeMessageSenders( conversation.getSubject(), text, sender, conversation.getUsers() );
+        invokeMessageSenders( conversation.getSubject(), text, sender, new HashSet<User>( conversation.getUsers() ) );
     }
 
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
@@ -181,7 +181,7 @@ public class DefaultMessageService
         
         if ( userGroup != null )
         {
-            recipients.addAll( userGroup.getMembers() );
+            recipients.addAll( new HashSet<User>( userGroup.getMembers() ) );
         }
 
         if ( dataSet.isNotifyCompletingUser() )
@@ -209,7 +209,7 @@ public class DefaultMessageService
         {
             int id = saveMessageConversation( conversation );
             
-            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, conversation.getUsers() );
+            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, new HashSet<User>( conversation.getUsers() ) );
             
             return id;
         }
