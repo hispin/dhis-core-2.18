@@ -86,6 +86,7 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
   
+    //TODO use uid instead of id
     //TODO average aggregation operator data, pre-aggregate in time dimension, not in org unit dimension
     
     public void createTable( String tableName )

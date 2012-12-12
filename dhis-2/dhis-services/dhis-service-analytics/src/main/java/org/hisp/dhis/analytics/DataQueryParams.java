@@ -46,7 +46,7 @@ public class DataQueryParams
     public static final String DATAELEMENT_DIM_ID = "de";
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
-    
+        
     private List<String> indicators = new ArrayList<String>();
     
     private List<String> dataElements = new ArrayList<String>();
@@ -82,11 +82,11 @@ public class DataQueryParams
     
     public DataQueryParams( DataQueryParams params )
     {
-        this.indicators = new ArrayList<String>( params.getIndicators() );
-        this.dataElements = new ArrayList<String>( params.getDataElements() );
-        this.periods = new ArrayList<String>( params.getPeriods() );
-        this.organisationUnits = new ArrayList<String>( params.getOrganisationUnits() );
-        this.dimensions = new HashMap<String, List<String>>( params.getDimensions() );
+        this.indicators = params.getIndicators();
+        this.dataElements = params.getDataElements();
+        this.periods = params.getPeriods();
+        this.organisationUnits = params.getOrganisationUnits();
+        this.dimensions = params.getDimensions();
         this.categories = params.isCategories();
     }
 
@@ -100,13 +100,16 @@ public class DataQueryParams
         
         // TODO convert indicators to data elements
         
-        map.put( DATAELEMENT_DIM_ID, new ArrayList<String>( dataElements ) );
-        map.put( ORGUNIT_DIM_ID, new ArrayList<String>( organisationUnits ) );
-        map.put( PERIOD_DIM_ID, new ArrayList<String>( periods ) );
+        map.put( DATAELEMENT_DIM_ID, dataElements );
+        map.put( ORGUNIT_DIM_ID, organisationUnits );
+        map.put( PERIOD_DIM_ID, periods );
         
-        for ( String dimension : dimensions.keySet() )
+        if ( dimensions != null )
         {
-            map.put( dimension, dimensions.get( dimension ) );
+            for ( String dimension : dimensions.keySet() )
+            {
+                map.put( dimension, dimensions.get( dimension ) );
+            }
         }
         
         return map;
@@ -146,7 +149,7 @@ public class DataQueryParams
         {
             return organisationUnits;
         }
-        else if ( dimensions.containsKey( dimension ) )
+        else if ( dimensions != null && dimensions.containsKey( dimension ) )
         {
             return dimensions.get( dimension );
         }
