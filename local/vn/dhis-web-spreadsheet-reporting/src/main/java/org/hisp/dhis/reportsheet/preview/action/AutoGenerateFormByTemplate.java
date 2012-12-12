@@ -84,6 +84,7 @@ import com.opensymphony.xwork2.Action;
  * choice
  * 
  * @author Dang Duy Hieu
+ * @author Chau Thu Tran
  * @version $Id$
  */
 
@@ -160,9 +161,29 @@ public class AutoGenerateFormByTemplate
 
         try
         {
-            autoGenerateFormByTemplate( selectionManager.getUploadFilePath(), collectSheets );
+            this.cleanUp();
+
+            String pathFileName = selectionManager.getUploadFilePath();
+
+            InputStream inputSteam = new FileInputStream( pathFileName );
+            excelFileName = getName( pathFileName );
+            commonName = getBaseName( pathFileName );
+
+            if ( getExtension( pathFileName ).equals( "xls" ) )
+            {
+                this.WORKBOOK = new HSSFWorkbook( inputSteam );
+            }
+            else
+            {
+                this.WORKBOOK = new XSSFWorkbook( inputSteam );
+            }
+
+            this.evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
+
+            writeFormattedXML( collectSheets );
 
             xmlStructureResponse = xml.toString();
+
             xml = null;
         }
         catch ( Exception e )
@@ -183,38 +204,6 @@ public class AutoGenerateFormByTemplate
     }
 
     /**
-     * Constructor
-     * 
-     * @param w The workbook to interrogate
-     * @param enc The encoding used by the output stream. Null or unrecognized
-     *        values cause the encoding to default to UTF8
-     * @param f Indicates whether the generated XML document should contain the
-     *        cell format information
-     * @exception java.io.IOException
-     */
-
-    private void autoGenerateFormByTemplate( String pathFileName, Set<Integer> collectSheets )
-        throws Exception
-    {
-        this.cleanUp();
-
-        InputStream inputSteam = new FileInputStream( pathFileName );
-        excelFileName = getName( pathFileName );
-        commonName = getBaseName( pathFileName );
-
-        if ( getExtension( pathFileName ).equals( "xls" ) )
-        {
-            this.WORKBOOK = new HSSFWorkbook( inputSteam );
-        }
-        else
-        {
-            this.WORKBOOK = new XSSFWorkbook( inputSteam );
-        }
-
-        writeFormattedXML( collectSheets );
-    }
-
-    /**
      * Writes out the WORKBOOK data as XML, with formatting information
      * 
      * @param bDetailed
@@ -224,7 +213,7 @@ public class AutoGenerateFormByTemplate
 
     private void writeFormattedXML( Collection<Integer> collectSheets )
         throws Exception
-    {        
+    {
         this.writeXMLMergedDescription( collectSheets );
 
         xml.append( WORKBOOK_OPENTAG );
@@ -237,7 +226,7 @@ public class AutoGenerateFormByTemplate
     private void createFormByComment( int sheetNo, DataElementCategoryOptionCombo optionCombo )
     {
         PeriodType periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
-        
+
         // Create new DataSet
         DataSet dataSet = new DataSet( commonName, commonName, periodType );
 
@@ -261,13 +250,15 @@ public class AutoGenerateFormByTemplate
                 for ( Cell cell : row )
                 {
                     Comment cmt = cell.getCellComment();
+                    int rowIndex = cell.getRowIndex();
+                    int colIndex = cell.getColumnIndex();
 
                     if ( cmt != null )
                     {
+                        idxMap.clear();
                         String deName = cell.getStringCellValue();
-                        String[] indexes = cmt.getString().getString().split( "," );
 
-                        int rowIndex = cell.getRowIndex();
+                        String[] indexes = cmt.getString().toString().split( "," );
 
                         for ( String index : indexes )
                         {
@@ -308,32 +299,34 @@ public class AutoGenerateFormByTemplate
                         }
                     }
 
-                    xml.append( "<col no='" + cell.getColumnIndex() + "'>" );
-
-                    if ( idxMap.containsKey( cell.getColumnIndex() ) )
+                    if ( idxMap.containsKey( colIndex ) )
                     {
-                        xml.append( "<data><![CDATA[" + "<input id=\"" + idxMap.get( cell.getColumnIndex() ) + "-"
-                            + optionCombo.getId()
-                            + "-val\" style=\"width:7em;text-align:right\" title=\"\" value=\"\">" + "]]></data>" );
+                        xml.append( "<col no='" + colIndex + "'>" );
+
+                        xml.append( "<data><![CDATA[" + "<input name='entryfield' id='" + idxMap.get( colIndex ) + "-"
+                            + optionCombo.getId() + "-val']]></data>" );
+
+                        xml.append( "</col>" );
                     }
                     else if ( (cell.getCellStyle() != null || cell.getCellType() != Cell.CELL_TYPE_BLANK)
-                        && !s.isColumnHidden( cell.getColumnIndex() ) )
+                        && !s.isColumnHidden( colIndex ) )
                     {
+                        xml.append( "<col no='" + colIndex + "'>" );
+
                         xml.append( "<data><![CDATA["
-                            + readValueByPOI( row.getRowNum() + 1, cell.getColumnIndex() + 1, s, evaluatorFormula )
-                            + "]]></data>" );
+                            + readValueByPOI( row.getRowNum() + 1, colIndex + 1, s, evaluatorFormula ) + "]]></data>" );
 
                         this.readingDetailsFormattedCell( s, cell );
 
+                        xml.append( "</col>" );
                     }
-                    xml.append( "</col>" );
                 }
                 xml.append( "</row>" );
             }
             xml.append( "</sheet>" );
-            
+
             // Update DataSet
-            DataEntryForm dataEntryForm = new DataEntryForm( commonName );
+            DataEntryForm dataEntryForm = new DataEntryForm( commonName, "<p></p>" );
             dataEntryFormService.addDataEntryForm( dataEntryForm );
 
             dataSet.setDataEntryForm( dataEntryForm );
@@ -345,14 +338,16 @@ public class AutoGenerateFormByTemplate
 
             exportReport.setDataSets( dataSets );
             exportReportService.updateExportReport( exportReport );
-            
+
             xml.append( "<ds id='" + dataSetId + "' n='" + commonName + "'/>" );
 
         }
         catch ( Exception e )
         {
+            cleanUp();
+
             // Catch exception if any
-            System.err.println( "Error: " + e.getMessage() );
+            e.printStackTrace();
         }
     }
 
