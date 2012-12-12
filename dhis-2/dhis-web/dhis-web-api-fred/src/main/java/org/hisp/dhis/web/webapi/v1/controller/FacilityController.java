@@ -184,6 +184,11 @@ public class FacilityController
 
         model.addAttribute( "esc", StringEscapeUtils.class );
         model.addAttribute( "entity", facility );
+
+        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        model.addAttribute( "dataSets", dataSets );
+
         model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
         model.addAttribute( "pageName", "facility" );
         model.addAttribute( "page", FredController.PREFIX + "/facility.vm" );
@@ -302,15 +307,19 @@ public class FacilityController
             ou.setName( organisationUnit.getName() );
             ou.setShortName( organisationUnit.getShortName() );
             ou.setCode( organisationUnit.getCode() );
-
             ou.setFeatureType( organisationUnit.getFeatureType() );
             ou.setCoordinates( organisationUnit.getCoordinates() );
-            ou.setDataSets( organisationUnit.getDataSets() );
             ou.setParent( organisationUnit.getParent() );
-
             ou.setActive( organisationUnit.isActive() );
 
+            ou.removeAllDataSets();
             organisationUnitService.updateOrganisationUnit( ou );
+
+            for ( DataSet dataSet : organisationUnit.getDataSets() )
+            {
+                dataSet.addOrganisationUnit( ou );
+                dataSetService.updateDataSet( dataSet );
+            }
 
             return new ResponseEntity<String>( json, headers, HttpStatus.OK );
         }
