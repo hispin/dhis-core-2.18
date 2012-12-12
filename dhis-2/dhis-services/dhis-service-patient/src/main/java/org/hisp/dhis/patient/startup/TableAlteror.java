@@ -153,6 +153,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE programvalidation DROP COLUMN dateType" );
         
         executeSql( "UPDATE programstage SET validCompleteOnly=false WHERE validCompleteOnly is null" );
+        executeSql( "UPDATE program SET ignoreOverdueEvents=false WHERE ignoreOverdueEvents is null" );
+        executeSql( "UPDATE program SET displayGenerateEventBox=true WHERE displayGenerateEventBox is null" );
+        
     }
 
     // -------------------------------------------------------------------------

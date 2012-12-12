@@ -62,6 +62,9 @@ function showProgramStageDetails( programStageId )
 		var autoGenerateEvent = (json.programStage.autoGenerateEvent=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'autoGenerateEventField', autoGenerateEvent );  
 		
+		var displayGenerateEventBox = (json.programStage.displayGenerateEventBox=='true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'displayGenerateEventBoxField', displayGenerateEventBox );  
+		
 		var validCompleteOnly = (json.programStage.validCompleteOnly=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'validCompleteOnlyField', validCompleteOnly );  
 		
@@ -233,11 +236,12 @@ function repeatableOnChange()
 	if( checked )
 	{
 		enable('standardInterval');
+		enable('displayGenerateEventBox');
 	}
 	else
 	{
 		disable('standardInterval');
-		setFieldValue('standardInterval', '0');
+		disable('displayGenerateEventBox');
 	}
 }
 

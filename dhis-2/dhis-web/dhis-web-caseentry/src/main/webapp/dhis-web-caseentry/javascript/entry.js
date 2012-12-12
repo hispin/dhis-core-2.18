@@ -512,8 +512,9 @@ function runCompleteEvent( isCreateEvent )
 
 					disableCompletedButton(true);
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
+					var displayGenerateEventBox = jQuery('#entryFormContainer [name=displayGenerateEventBox]').val();
 					var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
-					if( irregular == 'true' )
+					if( irregular == 'true' && displayGenerateEventBox=="true" )
 					{
 						var programStageId = jQuery(".stage-object-selected").attr('psid');
 						showCreateNewEvent( programInstanceId, programStageId );

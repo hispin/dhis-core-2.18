@@ -48,5 +48,7 @@
     
     <property name="validCompleteOnly"/>
     
+    <property name="displayGenerateEventBox"/>
+    
   </class>
 </hibernate-mapping>
