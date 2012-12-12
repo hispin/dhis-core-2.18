@@ -39,7 +39,7 @@ import org.hisp.dhis.system.util.PaginatedList;
 public class QueryPlanner
 {
     /**
-     * Creates a list of DataParams.
+     * Creates a list of DataQueryParams.
      * 
      * @param params the data query params.
      * @param optimalQueries the number of optimal queries for the planner to return.
@@ -47,6 +47,8 @@ public class QueryPlanner
      */
     public static List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries )
     {
+        params = new DataQueryParams( params );
+        
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
         ListMap<String, String> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods() );
@@ -65,21 +67,23 @@ public class QueryPlanner
         }
         else
         {
-            int pages = optimalQueries / tablePeriodMap.size();
-            
-            String dimension = getPartitionDimension( params, pages );
-            
-            List<String> dimensionValues = params.getDimension( dimension );
-            
-            List<List<String>> valuePages = new PaginatedList<String>( dimensionValues ).setNumberOfPages( pages ).getPages();
-            
+            int pages = optimalQueries / tablePeriodMap.size(); // TODO individual no per table
+
             for ( String tableName : tablePeriodMap.keySet() )
             {
-                for ( List<String> values : valuePages )
+                params.setPeriods( tablePeriodMap.get( tableName ) );
+                
+                String dimension = getPartitionDimension( params, pages );
+                
+                List<String> partitionValues = params.getDimension( dimension );
+                
+                List<List<String>> partitionValuePages = new PaginatedList<String>( partitionValues ).setNumberOfPages( pages ).getPages();
+            
+                for ( List<String> valuePage : partitionValuePages )
                 {
                     DataQueryParams query = new DataQueryParams( params );
                     query.setPeriods( tablePeriodMap.get( tableName ) );
-                    query.setDimension( dimension, values );
+                    query.setDimension( dimension, valuePage );
                     query.setTableName( tableName );
                     queries.add( query );
                 }
@@ -89,7 +93,17 @@ public class QueryPlanner
         return queries;
     }
     
-    private static String getPartitionDimension( DataQueryParams params, int optimalQueries )
+    /**
+     * Gets the data dimension must suitable as partition key. Will first check
+     * if any of the dimensions have enough values to satisfy a optimal number of
+     * queries, and return that dimension if so. If not returns the dimension
+     * with the highest number of values. The order of the fixed dimensions are
+     * data element, organisation unit, period.
+     * 
+     * @param params the data query parameters.
+     * @param optimalQueries the optimal number of queries to create.
+     */
+    public static String getPartitionDimension( DataQueryParams params, int optimalQueries )
     {
         SortedMap<String, List<String>> map = params.getDimensionValuesMap();
         

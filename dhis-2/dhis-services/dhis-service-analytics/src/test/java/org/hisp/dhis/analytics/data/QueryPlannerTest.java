@@ -27,50 +27,42 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Future;
 
-import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.analytics.AnalyticsManager;
-import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.system.util.Timer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.Test;
 
-public class DefaultAnalyticsService
-    implements AnalyticsService
+import static org.hisp.dhis.analytics.DataQueryParams.*;
+import static org.junit.Assert.*;
+
+public class QueryPlannerTest
 {
-    //TODO select from correct partition
-    //TODO period aggregation for multiple period types
-    //TODO hierarchy aggregation for org units at multiple levels
-    //TODO indicator aggregation
-    
-    @Autowired
-    private AnalyticsManager analyticsManager;
-    
-    public List<AggregatedDataValue> getAggregatedDataValueTotals( DataQueryParams params ) throws Exception
+    @Test
+    public void getPartitionDimension()
     {
-        Timer t = new Timer().start();
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setOrganisationUnits( Arrays.asList( "a", "b", "c", "d", "e" ) );
+        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
         
-        List<DataQueryParams> queries = QueryPlanner.planQuery( params, 6 );
+        assertEquals( DATAELEMENT_DIM_ID, QueryPlanner.getPartitionDimension( params, 3 ) );
+        assertEquals( DATAELEMENT_DIM_ID, QueryPlanner.getPartitionDimension( params, 4 ) );
+        assertEquals( ORGUNIT_DIM_ID, QueryPlanner.getPartitionDimension( params, 5 ) );
+        assertEquals( PERIOD_DIM_ID, QueryPlanner.getPartitionDimension( params, 6 ) );
+        assertEquals( PERIOD_DIM_ID, QueryPlanner.getPartitionDimension( params, 7 ) );
+    }
+    
+    @Test
+    public void planQuery()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setOrganisationUnits( Arrays.asList( "a", "b", "c", "d", "e" ) );
+        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
         
-        List<Future<List<AggregatedDataValue>>> futures = new ArrayList<Future<List<AggregatedDataValue>>>();
+        List<DataQueryParams> queries = QueryPlanner.planQuery( params, 4 );
         
-        List<AggregatedDataValue> values = new ArrayList<AggregatedDataValue>();
-        
-        for ( DataQueryParams query : queries )
-        {
-            futures.add( analyticsManager.getAggregatedDataValueTotals( query ) );
-        }
-        
-        for ( Future<List<AggregatedDataValue>> future : futures )
-        {
-            values.addAll( future.get() );
-        }
-        
-        t.getTime( "Got aggregated values" );
-        
-        return values;
+        assertEquals( 4, queries.size() );
     }
 }

@@ -32,12 +32,14 @@ import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME_TEMP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.system.util.ListMap;
 import org.junit.Test;
 
 public class PartitionUtilsTest
@@ -77,5 +79,21 @@ public class PartitionUtilsTest
         
         assertEquals( p1, PartitionUtils.getPeriod( TABLE_NAME_TEMP + "_2000" ) );
         assertEquals( p2, PartitionUtils.getPeriod( TABLE_NAME_TEMP + "_2001" ) );
+    }
+    
+    @Test
+    public void testGetTablePeriodMap()
+    {        
+        ListMap<String, String> map = PartitionUtils.getTablePeriodMap( Arrays.asList( "2000S1", "2000S2", "2001S1", "2001S2", "2002S1" ) );
+        
+        assertEquals( 3, map.size() );
+        
+        assertTrue( map.keySet().contains( TABLE_NAME + "_2000" ) );
+        assertTrue( map.keySet().contains( TABLE_NAME + "_2001" ) );
+        assertTrue( map.keySet().contains( TABLE_NAME + "_2002" ) );
+        
+        assertEquals( 2, map.get( TABLE_NAME + "_2000" ).size() );
+        assertEquals( 2, map.get( TABLE_NAME + "_2001" ).size() );
+        assertEquals( 1, map.get( TABLE_NAME + "_2002" ).size() );
     }
 }
