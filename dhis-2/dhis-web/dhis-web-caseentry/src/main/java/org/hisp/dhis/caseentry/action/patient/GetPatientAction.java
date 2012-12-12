@@ -90,8 +90,6 @@ public class GetPatientAction
 
     private Patient patient;
 
-    private PatientIdentifier patientIdentifier;
-
     private Collection<Program> programs;
 
     private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
@@ -136,8 +134,6 @@ public class GetPatientAction
         // -------------------------------------------------------------------------
         // Get identifier-types && attributes
         // -------------------------------------------------------------------------
-
-        patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
 
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
@@ -332,11 +328,6 @@ public class GetPatientAction
     public Patient getPatient()
     {
         return patient;
-    }
-
-    public PatientIdentifier getPatientIdentifier()
-    {
-        return patientIdentifier;
     }
 
     public Collection<Program> getPrograms()

@@ -154,7 +154,9 @@ public class TableAlteror
         
         executeSql( "UPDATE programstage SET validCompleteOnly=false WHERE validCompleteOnly is null" );
         executeSql( "UPDATE program SET ignoreOverdueEvents=false WHERE ignoreOverdueEvents is null" );
-        executeSql( "UPDATE program SET displayGenerateEventBox=true WHERE displayGenerateEventBox is null" );
+        
+        executeSql( "UPDATE programstage SET displayGenerateEventBox=true WHERE displayGenerateEventBox is null" );
+        executeSql( "ALTER TABLE patientidentifier DROP COLUMN preferred");
         
     }
 
