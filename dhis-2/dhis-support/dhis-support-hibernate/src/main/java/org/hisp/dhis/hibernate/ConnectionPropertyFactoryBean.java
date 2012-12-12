@@ -28,7 +28,6 @@ package org.hisp.dhis.hibernate;
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
