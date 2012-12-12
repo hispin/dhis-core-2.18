@@ -191,6 +191,13 @@ public class UpdateProgramStageAction
         this.validCompleteOnly = validCompleteOnly;
     }
 
+    private Boolean displayGenerateEventBox;
+
+    public void setDisplayGenerateEventBox( Boolean displayGenerateEventBox )
+    {
+        this.displayGenerateEventBox = displayGenerateEventBox;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -202,6 +209,7 @@ public class UpdateProgramStageAction
         irregular = (irregular == null) ? false : irregular;
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
         validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
+        displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -211,6 +219,9 @@ public class UpdateProgramStageAction
         programStage.setReportDateDescription( reportDateDescription );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setIrregular( irregular );
+        programStage.setMinDaysFromStart( minDaysFromStart );
+        programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
+
         programStage.setAutoGenerateEvent( autoGenerateEvent );
         programStage.setValidCompleteOnly( validCompleteOnly );
 

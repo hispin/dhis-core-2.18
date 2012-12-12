@@ -198,6 +198,13 @@ public class AddProgramStageAction
         this.validCompleteOnly = validCompleteOnly;
     }
 
+    private Boolean displayGenerateEventBox;
+
+    public void setDisplayGenerateEventBox( Boolean displayGenerateEventBox )
+    {
+        this.displayGenerateEventBox = displayGenerateEventBox;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -209,7 +216,8 @@ public class AddProgramStageAction
         irregular = (irregular == null) ? false : irregular;
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
         validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
-        
+        displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
+
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
 
@@ -220,8 +228,10 @@ public class AddProgramStageAction
         programStage.setReportDateDescription( reportDateDescription );
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
-        programStage.setAutoGenerateEvent( autoGenerateEvent );
+        programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
+      
         programStage.setValidCompleteOnly( validCompleteOnly );
+        programStage.setAutoGenerateEvent( autoGenerateEvent );
 
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )

@@ -86,6 +86,8 @@ public class ProgramStage
 
     private Boolean validCompleteOnly = false;
     
+    private Boolean displayGenerateEventBox = true;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -262,6 +264,16 @@ public class ProgramStage
     public void setValidCompleteOnly( Boolean validCompleteOnly )
     {
         this.validCompleteOnly = validCompleteOnly;
+    }
+
+    public Boolean getDisplayGenerateEventBox()
+    {
+        return displayGenerateEventBox;
+    }
+
+    public void setDisplayGenerateEventBox( Boolean displayGenerateEventBox )
+    {
+        this.displayGenerateEventBox = displayGenerateEventBox;
     }
 
     public String getDataEntryType()
