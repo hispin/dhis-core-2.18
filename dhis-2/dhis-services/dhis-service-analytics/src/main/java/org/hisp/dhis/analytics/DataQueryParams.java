@@ -172,6 +172,13 @@ public class DataQueryParams
         
         return dimension;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "[in: " + indicators + ", de: " + dataElements + ", pe: " + periods
+            + ", ou: " + organisationUnits + "]";
+    }
         
     // -------------------------------------------------------------------------
     // Get and set methods
