@@ -37,12 +37,12 @@ import java.util.List;
 
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.ListMap;
 
 public class PartitionUtils
 {
-    private static final QuarterlyPeriodType QUARTERLY = new QuarterlyPeriodType();
+    private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
     
     private static final String SEP = "_";
 
@@ -55,7 +55,7 @@ public class PartitionUtils
         
         List<String> tables = new ArrayList<String>();
         
-        Period period = QUARTERLY.createPeriod( earliest );
+        Period period = PERIODTYPE.createPeriod( earliest );
         
         while ( period != null && period.getStartDate().before( latest ) )
         {
@@ -63,7 +63,7 @@ public class PartitionUtils
             
             tables.add( table );
             
-            period = QUARTERLY.getNextPeriod( period );
+            period = PERIODTYPE.getNextPeriod( period );
         }
         
         return tables;
@@ -78,7 +78,7 @@ public class PartitionUtils
             throw new IllegalArgumentException( "Illegal ISO period: " +  isoPeriod );
         }
         
-        Period quarter = QUARTERLY.createPeriod( period.getStartDate() );
+        Period quarter = PERIODTYPE.createPeriod( period.getStartDate() );
         
         return TABLE_NAME + SEP + quarter.getIsoDate();
     }
