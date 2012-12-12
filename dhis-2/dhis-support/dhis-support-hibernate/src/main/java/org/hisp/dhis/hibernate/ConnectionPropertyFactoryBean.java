@@ -27,6 +27,8 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
@@ -53,6 +55,13 @@ public class ConnectionPropertyFactoryBean
     {
         this.hibernateProperty = hibernateProperty;
     }
+    
+    private String defaultValue;
+
+    public void setDefaultValue( String defaultValue )
+    {
+        this.defaultValue = defaultValue;
+    }
 
     // -------------------------------------------------------------------------
     // FactoryBean implementation
@@ -61,7 +70,9 @@ public class ConnectionPropertyFactoryBean
     public String getObject()
         throws Exception
     {
-        return hibernateConfigurationProvider.getConfiguration().getProperty( hibernateProperty );
+        String value = hibernateConfigurationProvider.getConfiguration().getProperty( hibernateProperty );
+        
+        return StringUtils.defaultIfEmpty( value, defaultValue );
     }
 
     public Class<String> getObjectType()
