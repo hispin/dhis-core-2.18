@@ -65,6 +65,31 @@
 
                 data.coordinates = [ lng, lat ];
 
+                data.properties = {};
+                data.properties.parent = $( '#facilityDhis2Parent' ).val();
+
+                var dhis2Code = $( '#facilityDhis2Code' ).val();
+
+                if ( dhis2Code.length > 0 ) {
+                    data.identifiers = [
+                        {
+                            'agency': 'DHIS2',
+                            'context': 'DHIS2_CODE',
+                            'id': dhis2Code
+                        }
+                    ]
+                }
+
+                var facilityDhis2DataSets = $( '#facilityDhis2DataSets :selected' );
+
+                if ( facilityDhis2DataSets.length > 0 ) {
+                    data.properties.dataSets = [];
+
+                    $.each( facilityDhis2DataSets, function ( idx, item ) {
+                        data.properties.dataSets.push( $( item ).val() );
+                    } );
+                }
+
                 $.ajax({
                     url: '$baseUrl/facilities/${entity.id}',
                     contentType: 'application/json; charset=UTF-8',
@@ -102,7 +127,6 @@
                 <input #if(!$canUpdate)disabled#end id="facilityName" type="text" class="$inputSize" value="$esc.escapeHtml4($entity.name)"/>
 
                 <label for="facilityActive">Active</label>
-
                 <select id="facilityActive" #if(!$canUpdate)disabled#end class="$inputSize">
                     <option value="true" #if($entity.active)selected#end>Yes</option>
                     <option value="false" #if(!$entity.active)selected#end>No</option>
@@ -113,6 +137,34 @@
 
                 <label for="facilityLongitude">Longitude</label>
                 <input #if(!$canUpdate)disabled#end id="facilityLongitude" type="text" class="$inputSize" value=""/>
+
+                <fieldset>
+                    <legend>DHIS 2</legend>
+
+                    #foreach( $identifier in $entity.identifiers )
+                        #if( $identifier.context == "DHIS2_CODE" )
+                            #set( $dhis2Code = $identifier.id )
+                        #end
+                    #end
+
+                    <label for="facilityDhis2Code">Code</label>
+                    <input #if(!$canUpdate)disabled#end id="facilityDhis2Code" type="text" class="$inputSize" value="$!esc.escapeHtml4($dhis2Code)"/>
+
+                    #set( $dhis2Parent = $entity.properties.get('parent') )
+
+                    <label for="facilityDhis2Parent">Parent</label>
+                    <input #if(!$canUpdate)disabled#end id="facilityDhis2Parent" type="text" class="$inputSize" value="$!esc.escapeHtml4($dhis2Parent)"/>
+
+                    #set( $dhis2DataSets = $entity.properties.get('dataSets') )
+
+                    <label for="facilityDhis2DataSets">Data Sets</label>
+                    <select #if(!$canUpdate)disabled#end id="facilityDhis2DataSets" class="$inputSize" multiple="multiple">
+                    #foreach( $dataSet in $dataSets )
+                        <option value="$dataSet.uid" #if( $dhis2DataSets.contains( $dataSet.uid ))selected="selected"#end>$!esc.escapeHtml4($dataSet.name)</option>
+                    #end
+                    </select>
+
+                </fieldset>
             </fieldset>
 
             <button #if(!$canUpdate)disabled#end type="submit" id="facilitySubmit" class="btn btn-info">Save</button>
