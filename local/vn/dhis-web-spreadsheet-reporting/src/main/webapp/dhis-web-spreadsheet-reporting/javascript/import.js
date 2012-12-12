@@ -168,8 +168,8 @@ function uploadExcelImport()
 function rollbackImporting()
 {
 	jQuery.get( "rollbackImporting.action", {}, function( json ) {
-		if ( json.response && json.response == "success" ) {
-			showSuccessMessage( json.message );
+		if ( json.response && json.response == "success" && json.message != "" ) {
+			showSuccessMessage( json.message, 3500 );
 		} else {
 			showWarningMessage( i18n_no_value_rollbacked );
 		}

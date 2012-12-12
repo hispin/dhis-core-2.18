@@ -20,6 +20,11 @@
 	<li><a href="getImportingParams.action">$i18n.getString( "import" )&nbsp;</a></li>
 </ul>
 
+<h2><a href="showAutoGenerateForm.action">$i18n.getString( "auto_generate_form_by_template" )&nbsp;</a></h2>
+<ul>
+	<li><a href="showAutoGenerateForm.action">$i18n.getString( "auto_generate_form_by_template" )&nbsp;</a></li>
+</ul>
+
 <script type="text/javascript">
 	var i18n_deleted_file = '$encoder.jsEncode( $i18n.getString( "deleted_file" ) )';
 	var i18n_name = '$encoder.jsEncode( $i18n.getString( "name" ) )';
