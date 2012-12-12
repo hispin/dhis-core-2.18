@@ -1849,6 +1849,20 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+		<action name="showAutoGenerateForm"
+			class="org.hisp.dhis.reportsheet.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/showAutoGenerateForm.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_AUTO_GENERATE_FORM_BY_TEMPLATE</param>
+		</action>
+		
+		<action name="uploadExcelTemplateForGenerateForm"
+			class="org.hisp.dhis.reportsheet.filemanager.action.UploadExcelFileAction">
+			<result name="success" type="redirect">showAutoGenerateForm.action</result>
+			<interceptor-ref name="fileUploadStack" />
+		</action>
+		
 		<action name="autoGenerateFormByTemplate"
 			class="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormByTemplate">
 			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
