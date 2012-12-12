@@ -55,8 +55,8 @@
     <property name="jdbcUrl" ref="url" />
     <property name="user" ref="username" />
     <property name="password" ref="password" />
+    <property name="maxPoolSize" ref="maxPoolSize" />
     <property name="acquireIncrement" value="6" />
-    <property name="maxPoolSize" value="40" />
     <property name="maxIdleTime" value="7200" />
   </bean>
 
@@ -84,5 +84,11 @@
     <property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider" />
     <property name="hibernateProperty" value="hibernate.connection.password" />
   </bean>
-
+  
+  <bean id="maxPoolSize" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+    <property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider" />
+    <property name="hibernateProperty" value="hibernate.c3p0.max_size" />
+    <property name="defaultValue" value="40" />
+  </bean>
+  
 </beans>
