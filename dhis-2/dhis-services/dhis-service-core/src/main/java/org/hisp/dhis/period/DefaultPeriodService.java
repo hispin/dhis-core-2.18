@@ -76,12 +76,12 @@ public class DefaultPeriodService
 
     public void deletePeriod( Period period )
     {
-        periodStore.deletePeriod( period );
+        periodStore.delete( period );
     }
 
     public Period getPeriod( int id )
     {
-        return periodStore.getPeriod( id );
+        return periodStore.get( id );
     }
 
     public Period getPeriod( Date startDate, Date endDate, PeriodType periodType )
@@ -91,7 +91,7 @@ public class DefaultPeriodService
 
     public Collection<Period> getAllPeriods()
     {
-        return periodStore.getAllPeriods();
+        return periodStore.getAll();
     }
 
     public Collection<Period> getPeriods( final Collection<Integer> identifiers )

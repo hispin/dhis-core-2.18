@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -68,6 +69,8 @@ public interface IdentifiableObjectManager
     
     void delete( IdentifiableObject object );
 
+    <T extends IdentifiableObject> Set<Integer> convertToId( Class<T> clazz, Collection<String> uids );
+    
     <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property );
 
     <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property );

@@ -43,8 +43,6 @@ import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 /**
  * @author Lars Helge Overland
  */
