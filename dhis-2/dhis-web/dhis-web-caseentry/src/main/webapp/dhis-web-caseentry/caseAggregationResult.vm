@@ -17,8 +17,8 @@
 			#set( $periodDiv = $periodInfo + "-div")
 			#set( $key = $orgunit.id + '-' + $format.formatPeriod($period) )
 			
-			<h4>$format.formatPeriod( $period )
 			#if( $!mapDataValues.get( $key ) )
+				<h4>$format.formatPeriod( $period )
 				<img id='$periodButton' src="../images/down.png" onclick="toggleResult('$periodInfo');" style="cursor: pointer;"></h4>
 			
 				#set( $dataValues = $mapDataValues.get( $key ) ) 
