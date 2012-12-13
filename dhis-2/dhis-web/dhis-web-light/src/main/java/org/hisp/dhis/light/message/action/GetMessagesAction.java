@@ -27,12 +27,15 @@
 
 package org.hisp.dhis.light.message.action;
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.message.MessageService;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.message.UserMessage;
+import org.hisp.dhis.user.CurrentUserService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -51,6 +54,13 @@ public class GetMessagesAction
         this.messageService = messageService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -62,14 +72,33 @@ public class GetMessagesAction
         return conversations;
     }
 
+    private List<UserMessage> usermessages;
+
+    public List<UserMessage> getUsermessages()
+    {
+        return usermessages;
+    }
+
+    private Integer currentUserId;
+
+    public void setCurrentUserId( Integer currentUserId )
+    {
+        this.currentUserId = currentUserId;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         conversations = new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 10 ) );
+
+        currentUserId = currentUserService.getCurrentUser().getId();
+
+        usermessages = new ArrayList<UserMessage>( messageService.getLastRecipients( 0, 5, currentUserId ) );
 
         return SUCCESS;
     }

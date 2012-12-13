@@ -48,7 +48,7 @@ public class SendMessagesAction
 
     @Autowired
     private MessageService messageService;
-    
+
     @Autowired
     private UserService userService;
 

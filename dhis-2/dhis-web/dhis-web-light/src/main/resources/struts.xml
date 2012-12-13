@@ -479,6 +479,12 @@
         class="org.hisp.dhis.light.messaging.action.SendMessagesAction">
       <result name="success" type="redirect">/light/messages.action</result>
     </action>
+    
+    <action name="recipients"
+        class="org.hisp.dhis.light.messaging.action.GetLastRecipientsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/messages.vm</param>
+    </action>
 
     <!-- Anonymous -->
     <action name="anonymous"
