@@ -156,7 +156,7 @@ DV.conf = {
             organisationunitgroup: {
 				value: 'organisationunitgroup'
 			}
-        },        
+        },
         chart: {
             series: 'series',
             category: 'category',
@@ -311,23 +311,23 @@ Ext.require('Ext.ux.form.MultiSelect');
 Ext.onReady( function() {
     Ext.QuickTips.init();
     document.body.oncontextmenu = function(){return false;};
-    
+
     Ext.Ajax.request({
         url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.initialize,
         success: function(r) {
-            
+
     DV.init = DV.conf.init.ajax.jsonfy(r);
     DV.init.initialize = function() {
 		DV.cmp.dimension.indicator.panel.expand();
-		
+
 		DV.c = DV.chart.model;
         DV.util.combobox.filter.category();
-        
+
         DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.urlparam) || DV.conf.finals.cmd.init;
-		
+
         DV.exe.execute(DV.init.cmd);
     };
-    
+
     DV.util = {
         getCmp: function(q) {
             return DV.viewport.query(q)[0];
@@ -393,13 +393,13 @@ Ext.onReady( function() {
                 });
                 s.store.add(array);
                 this.filterAvailable(a, s);
-            },            
+            },
             unselect: function(a, s) {
                 var selected = s.getValue();
                 if (selected.length) {
                     Ext.Array.each(selected, function(item) {
                         s.store.remove(s.store.getAt(s.store.findExact('id', item)));
-                    });                    
+                    });
                     this.filterAvailable(a, s);
                 }
             },
@@ -415,7 +415,7 @@ Ext.onReady( function() {
                         if (r.data.id == r2.data.id) {
                             keep = false;
                         }
-                        
+
                     });
                     return keep;
                 });
@@ -471,7 +471,7 @@ Ext.onReady( function() {
                             s.storage[r.data.id] = {id: r.data.id, name: r.data.name, parent: s.parent};
                         }
                     });
-                }                        
+                }
             },
             loadFromStorage: function(s) {
                 var items = [];
@@ -638,12 +638,12 @@ Ext.onReady( function() {
 							a.push(rp + '=true');
 						}
 					}
-					
+
 					var array = DV.c.fixedperiod.records;
 					for (var i = 0; i < array.length; i++) {
 						a.push('p=' + array[i].id);
 					}
-										
+
 					return a;
 				}
 			},
@@ -725,7 +725,7 @@ Ext.onReady( function() {
 			interpretation: function(text) {
 				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
 				DV.cmp.statusbar.panel.update('<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.ok + '" style="padding:0 5px 0 0"/>' + text);
-			}				
+			}
 		},
         mask: {
             showMask: function(cmp, str) {
@@ -812,7 +812,7 @@ Ext.onReady( function() {
 									fill: '#fefefe',
 									stroke: '#aaa',
 									'stroke-width': 0.1
-								},									
+								},
 								even: {
 									opacity: 1,
 									fill: '#f1f1f1',
@@ -912,10 +912,10 @@ Ext.onReady( function() {
 						var colors = DV.conf.chart.theme.dv1.slice(0, DV.c.series.names.length);
 						if (DV.c.targetlinevalue || DV.c.baselinevalue) {
 							colors.push('#051a2e');
-						}					
+						}
 						if (DV.c.targetlinevalue) {
 							colors.push('#051a2e');
-						}					
+						}
 						if (DV.c.baselinevalue) {
 							colors.push('#051a2e');
 						}
@@ -1068,7 +1068,7 @@ Ext.onReady( function() {
                             x: 28,
                             y: 36
                         }
-                    ];                        
+                    ];
                 },
                 series: {
 					getTips: function() {
@@ -1105,21 +1105,21 @@ Ext.onReady( function() {
                         p = DV.conf.finals.dimension.period.value,
                         o = DV.conf.finals.dimension.organisationunit.value,
                         index = 0;
-                        
+
                     this.clearValue(v, cbc);
                     this.clearValue(v, cbf);
-                    
+
                     cbc.filterArray = [!(v === d), !(v === p), !(v === o)];
                     cbc.store.filterBy( function(r) {
                         return cbc.filterArray[index++];
                     });
-                    
+
                     if (!cbc.getValue() && cbf.getValue()) {
 						cbc.setValue(this.getAutoSelectOption(cbs.getValue(), cbf.getValue()));
                     }
-                    
+
                     this.filter();
-                },                
+                },
                 filter: function() {
                     var cbs = DV.cmp.settings.series,
                         cbc = DV.cmp.settings.category,
@@ -1129,18 +1129,18 @@ Ext.onReady( function() {
                         p = DV.conf.finals.dimension.period.value,
                         o = DV.conf.finals.dimension.organisationunit.value,
                         index = 0;
-                        
+
                     this.clearValue(v, cbf);
-                        
+
                     cbf.filterArray = Ext.Array.clone(cbc.filterArray);
                     cbf.filterArray[0] = cbf.filterArray[0] ? !(v === d) : false;
                     cbf.filterArray[1] = cbf.filterArray[1] ? !(v === p) : false;
                     cbf.filterArray[2] = cbf.filterArray[2] ? !(v === o) : false;
-                    
+
                     cbf.store.filterBy( function(r) {
                         return cbf.filterArray[index++];
-                    });                    
-                    
+                    });
+
                     if (!cbf.getValue()) {
 						cbf.setValue(this.getAutoSelectOption(cbs.getValue(), cbc.getValue()));
                     }
@@ -1175,20 +1175,20 @@ Ext.onReady( function() {
 				}
             },
             setAllFalse: function() {
-				var a = DV.cmp.dimension.relativeperiod.checkbox;				
+				var a = DV.cmp.dimension.relativeperiod.checkbox;
 				for (var i = 0; i < a.length; i++) {
 					a[i].setValue(false);
 				}
 			},
 			isAllFalse: function() {
-				var a = DV.cmp.dimension.relativeperiod.checkbox;				
+				var a = DV.cmp.dimension.relativeperiod.checkbox;
 				for (var i = 0; i < a.length; i++) {
 					if (a[i].getValue()) {
 						return false;
 					}
 				}
 				return true;
-			}				
+			}
         },
         toolbar: {
 			separator: {
@@ -1233,7 +1233,7 @@ Ext.onReady( function() {
 						period: DV.conf.util.jsonEncodeString(values[i][2]),
 						organisationunit: DV.conf.util.jsonEncodeString(values[i][3])
 					};
-					a.push(v);					
+					a.push(v);
                 }
                 return a;
             }
@@ -1242,21 +1242,21 @@ Ext.onReady( function() {
             favorite: {
                 create: function(fn, isupdate) {
                     DV.util.mask.showMask(DV.cmp.favorite.window, DV.i18n.saving + '...');
-                    
+
                     var p = DV.state.getParams();
                     p.name = DV.cmp.favorite.name.getValue();
-                    
+
                     if (isupdate) {
                         p.uid = DV.store.favorite.getAt(DV.store.favorite.findExact('name', p.name)).data.id;
                     }
-					
+
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     Ext.Ajax.request({
                         url: DV.conf.finals.ajax.path_visualizer + url,
                         method: 'POST',
                         params: p,
                         success: function(r) {
-                            DV.store.favorite.load({callback: function() {								
+                            DV.store.favorite.load({callback: function() {
 								var id = r.responseText;
 								var name = DV.store.favorite.getAt(DV.store.favorite.findExact('id', id)).data.name;
 								DV.c.currentFavorite = {
@@ -1314,12 +1314,12 @@ Ext.onReady( function() {
                                 }
                             }});
                         }
-                    }); 
+                    });
                 }
             }
         }
     };
-    
+
     DV.store = {
         dimension: function() {
             return Ext.create('Ext.data.Store', {
@@ -1488,19 +1488,19 @@ Ext.onReady( function() {
             Ext.Array.each(DV.chart.data, function(item) {
 				keys = Ext.Array.merge(keys, Ext.Object.getKeys(item));
             });
-            
+
             this.chart = Ext.create('Ext.data.Store', {
                 fields: keys,
                 data: DV.chart.data
             });
-            
+
             this.chart.range = keys.slice(0);
             for (var i = 0; i < this.chart.range.length; i++) {
                 if (this.chart.range[i] === DV.conf.finals.data.domain) {
                     this.chart.range.splice(i, 1);
                 }
             }
-            
+
             if (exe) {
                 DV.chart.getChart(true);
             }
@@ -1518,14 +1518,14 @@ Ext.onReady( function() {
                 ],
                 data: DV.value.values
             });
-            
+
             if (exe) {
                 DV.datatable.getDataTable(true);
             }
             else {
                 return this.datatable;
             }
-            
+
         },
         favorite: Ext.create('Ext.data.Store', {
             fields: ['id', 'name', 'lastUpdated', 'userId'],
@@ -1555,7 +1555,7 @@ Ext.onReady( function() {
             listeners: {
                 load: function(s) {
 					s.isloaded = !s.isloaded ? true : false;
-					
+
                     s.sortStore();
                     s.each(function(r) {
                         r.data.lastUpdated = r.data.lastUpdated.substr(0,16);
@@ -1566,11 +1566,11 @@ Ext.onReady( function() {
             }
         })
     };
-    
+
     DV.state = {
 		setChart: function(exe, id) {
 			DV.chart.reset();
-			
+
 			if (id) {
                 Ext.Ajax.request({
                     url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json?links=false&paging=false',
@@ -1579,70 +1579,75 @@ Ext.onReady( function() {
 						if (!this.validation.response(r)) {
 							return;
 						}
-						
+
 						var f = Ext.JSON.decode(r.responseText),
 							expand = true;
-						
+
 						if (!this.validation.favorite(f)) {
 							return;
 						}
-						
+
                         DV.c.type = f.type.toLowerCase();
                         DV.c.dimension.series = f.series.toLowerCase();
                         DV.c.dimension.category = f.category.toLowerCase();
                         DV.c.dimension.filter = f.filter.toLowerCase();
-                        
+
                         DV.c.indicator.records = [];
                         DV.c.dataelement.records = [];
                         DV.c.dataset.records = [];
                         DV.c.relativeperiod.rp = {};
                         DV.c.fixedperiod.records = [];
                         DV.c.organisationunit.records = [];
-                        
+
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
 								DV.c.indicator.records.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncodeString(f.indicators[i].name)});
-							}							
+							}
 							if (DV.init.cmd && expand) {
 								DV.cmp.dimension.indicator.panel.expand();
 								expand = false;
 							}
 						}
-						
+
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
 								DV.c.dataelement.records.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncodeString(f.dataElements[i].name)});
-							}						
+							}
 							if (DV.init.cmd && expand) {
 								DV.cmp.dimension.dataelement.panel.expand();
 								expand = false;
 							}
 						}
-						
+
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
 								DV.c.dataset.records.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
-							}						
+							}
 							if (DV.init.cmd && expand) {
 								DV.cmp.dimension.dataset.panel.expand();
 								expand = false;
 							}
 						}
-						
+
+						f.relativePeriods.reportingMonth = f.relativePeriods.lastMonth;
+						f.relativePeriods.reportingQuarter = f.relativePeriods.lastQuarter;
+						delete f.relativePeriods.lastMonth;
+						delete f.relativePeriods.lastQuarter;
+
 						DV.c.relativeperiod.rp = f.relativePeriods;
 						DV.c.relativeperiod.rewind = f.rewindRelativePeriods;
-						
+
 						if (f.periods) {
 							for (var i = 0; i < f.periods.length; i++) {
 								DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});
 							}
 						}
-						
+
 						for (var i = 0; i < f.organisationUnits.length; i++) {
 							DV.c.organisationunit.records.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncodeString(f.organisationUnits[i].name)});
 						}
 						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.id : null;
-						
+
                         DV.c.hidesubtitle = f.hideSubtitle;
                         DV.c.hidelegend = f.hideLegend;
                         DV.c.trendline = f.regression;
@@ -1655,12 +1660,12 @@ Ext.onReady( function() {
                         DV.c.targetlinelabel = f.targetLineLabel ? f.targetLineLabel : null;
                         DV.c.baselinevalue = f.baseLineValue ? parseFloat(f.baseLineValue) : null;
                         DV.c.baselinelabel = f.baseLineLabel ? f.baseLineLabel : null;
-                        
+
 						DV.c.currentFavorite = {
 							id: f.id,
 							name: f.name
 						};
-						
+
                         if (exe) {
 							this.extendChart(exe, id);
 						}
@@ -1682,7 +1687,7 @@ Ext.onReady( function() {
 				DV.c.organisationunit.records = DV.util.dimension.organisationunit.getRecords();
 				DV.c.organisationunit.groupsetid = DV.util.dimension.organisationunit.getGroupSetId();
 				this.setOptions();
-                        
+
 				if (exe) {
 					this.extendChart(exe);
 				}
@@ -1690,45 +1695,45 @@ Ext.onReady( function() {
 		},
 		extendChart: function(exe, id) {
 			DV.chart.warnings = [];
-			
+
 			if (!this.validation.dimensions()) {
 				return;
 			}
-			
+
 			DV.c.data = {};
 			DV.c.data.records = DV.util.dimension.data.getRecords();
 			DV.c.period.records = DV.util.dimension.period.getRecords();
-			
+
 			if (!this.validation.records.selection()) {
 				return;
 			}
-			
+
 			this.validation.records[DV.c.dimension.series]();
 			this.validation.records[DV.c.dimension.category]();
 			this.validation.records[DV.c.dimension.filter](true);
-			
+
 			DV.c.series = DV.c[DV.c.dimension.series];
 			DV.c.category = DV.c[DV.c.dimension.category];
 			DV.c.filter = DV.c[DV.c.dimension.filter];
-			
+
 			DV.c.series.dimension = DV.conf.finals.chart.series;
 			DV.c.category.dimension = DV.conf.finals.chart.category;
 			DV.c.filter.dimension = DV.conf.finals.chart.filter;
-			
+
 			DV.c.series.url = DV.util.dimension[DV.c.dimension.series].getUrl();
 			DV.c.category.url = DV.util.dimension[DV.c.dimension.category].getUrl();
 			DV.c.filter.url = DV.util.dimension[DV.c.dimension.filter].getUrl(true);
-			
+
 			DV.c.indicator.ids = DV.util.dimension.indicator.getIds();
 			DV.c.dataelement.ids = DV.util.dimension.dataelement.getIds();
 			DV.c.dataset.ids = DV.util.dimension.dataset.getIds();
 			DV.c.fixedperiod.ids = DV.util.dimension.fixedperiod.getIds();
 			DV.c.organisationunit.ids = DV.util.dimension.organisationunit.getIds();
-            
+
             if (id) {
 				this.setUI();
 			}
-			
+
             if (exe) {
                 DV.value.getValues(true);
             }
@@ -1792,7 +1797,7 @@ Ext.onReady( function() {
             return p;
         },
         setUI: function() {
-			DV.util.button.type.setValue(DV.c.type);			
+			DV.util.button.type.setValue(DV.c.type);
 			DV.cmp.favorite.hidesubtitle.setValue(DV.c.hidesubtitle);
 			DV.cmp.favorite.hidelegend.setValue(DV.c.hidelegend);
 			DV.cmp.favorite.trendline.setValue(DV.c.trendline);
@@ -1809,46 +1814,46 @@ Ext.onReady( function() {
 			DV.cmp.favorite.baselinevalue.setValue(DV.c.baselinevalue);
 			DV.cmp.favorite.baselinelabel.xable();
 			DV.cmp.favorite.baselinelabel.setValue(DV.c.baselinelabel);
-			
+
 			DV.cmp.settings.series.setValue(DV.conf.finals.dimension[DV.c.dimension.series].value);
-			DV.util.combobox.filter.category();                        
+			DV.util.combobox.filter.category();
 			DV.cmp.settings.category.setValue(DV.conf.finals.dimension[DV.c.dimension.category].value);
-			DV.util.combobox.filter.filter();                        
+			DV.util.combobox.filter.filter();
 			DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[DV.c.dimension.filter].value);
-			
+
 			DV.store.indicator.selected.removeAll();
 			if (DV.c.indicator.records) {
 				DV.store.indicator.selected.add(DV.c.indicator.records);
 				DV.util.store.addToStorage(DV.store.indicator.available, DV.c.indicator.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
 			}
-			
+
 			DV.store.dataelement.selected.removeAll();
 			if (DV.c.dataelement.records) {
 				DV.store.dataelement.selected.add(DV.c.dataelement.records);
 				DV.util.store.addToStorage(DV.store.dataelement.available, DV.c.dataelement.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
 			}
-												
+
 			DV.store.dataset.selected.removeAll();
 			if (DV.c.dataset.records) {
 				DV.store.dataset.selected.add(DV.c.dataset.records);
 				DV.util.store.addToStorage(DV.store.dataset.available, DV.c.dataset.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
 			}
-			
+
 			DV.util.checkbox.setRelativePeriods(DV.c.relativeperiod.rp);
 			DV.cmp.dimension.relativeperiod.rewind.setValue(DV.c.relativeperiod.rewind);
 			DV.cmp.dimension.relativeperiod.rewind.xable();
-			
+
 			DV.store.fixedperiod.selected.removeAll();
 			if (DV.c.fixedperiod.records) {
 				DV.store.fixedperiod.selected.add(DV.c.fixedperiod.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
 			}
-			
+
 			DV.cmp.dimension.organisationunit.treepanel.selectByIds(DV.c.organisationunit.ids);
-			
+
 			if (DV.c.organisationunit.groupsetid) {
 				if (DV.store.groupset.isloaded) {
 					DV.cmp.dimension.organisationunitgroup.panel.groupsets.setValue(DV.c.organisationunit.groupsetid);
@@ -1894,7 +1899,7 @@ Ext.onReady( function() {
 					else if (!DV.c.organisationunit.records.length) {
 						DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
 						return false;
-					}						
+					}
 					return true;
 				},
 				data: function(isFilter) {
@@ -1951,12 +1956,12 @@ Ext.onReady( function() {
 						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
 						DV.c.trendline = false;
 					}
-					
-					if (DV.c.category.names.length < 2) {					
+
+					if (DV.c.category.names.length < 2) {
 						warnings.push(DV.i18n.wm_required_categories);
 						DV.c.trendline = false;
 					}
-					
+
 					if (warnings.length) {
 						var text = DV.i18n.wm_trendline_deactivated + ' (';
 						for (var i = 0; i < warnings.length; i++) {
@@ -1979,12 +1984,12 @@ Ext.onReady( function() {
 						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
 						DV.c.targetlinevalue = null;
 					}
-					
+
 					if (DV.c.category.names.length < 2) {
 						warnings.push(DV.i18n.wm_required_categories);
 						DV.c.targetlinevalue = null;
 					}
-					
+
 					if (warnings.length) {
 						var text = DV.i18n.wm_targetline_deactivated + ' (';
 						for (var i = 0; i < warnings.length; i++) {
@@ -2007,12 +2012,12 @@ Ext.onReady( function() {
 						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
 						DV.c.baselinevalue = null;
 					}
-					
+
 					if (DV.c.category.names.length < 2) {
 						warnings.push(DV.i18n.wm_required_categories);
 						DV.c.baselinevalue = null;
 					}
-					
+
 					if (warnings.length) {
 						var text = DV.i18n.wm_baseline_deactivated + ' (';
 						for (var i = 0; i < warnings.length; i++) {
@@ -2039,7 +2044,7 @@ Ext.onReady( function() {
 				}
 				return true;
 			},
-			favorite: function(f) {				
+			favorite: function(f) {
 				if (!f.organisationUnits || !f.organisationUnits.length) {
 					console.log(DV.i18n.favorite_no_orgunits);
 					return false;
@@ -2056,22 +2061,28 @@ Ext.onReady( function() {
 			}
 		}
 	};
-    
+
     DV.value = {
         values: [],
         getValues: function(exe) {
             DV.util.mask.showMask(DV.cmp.region.center, DV.i18n.loading);
-            
+
             var params = [];
             params = params.concat(DV.c.data.url);
             params = params.concat(DV.c.period.url);
-            params = params.concat(DV.c.organisationunit.url);
-            
+
+            if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
+				params.push('ou=' + DV.init.user.ou.id);
+			}
+			else {
+				params = params.concat(DV.c.organisationunit.url);
+			}
+
             var baseurl = DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.data_get;
             Ext.Array.each(params, function(item) {
                 baseurl = Ext.String.urlAppend(baseurl, item);
             });
-            
+
             params = {
 				periodIsFilter: (DV.c.dimension.filter === DV.conf.finals.dimension.period.value),
 				userOrganisationUnit: DV.c.userorganisationunit,
@@ -2081,7 +2092,7 @@ Ext.onReady( function() {
 			if (DV.c.organisationunit.groupsetid) {
 				params.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
 			}
-			
+
             Ext.Ajax.request({
                 url: baseurl,
                 method: 'GET',
@@ -2089,33 +2100,33 @@ Ext.onReady( function() {
                 disableCaching: false,
                 success: function(r) {
 					r = Ext.JSON.decode(r.responseText);
-                    
+
                     if (!DV.state.validation.value(r)) {
 						return;
 					}
-					
+
                     DV.value.values = DV.util.value.jsonfy(r.v);
-                    
-					DV.c.data.names = [];					
+
+					DV.c.data.names = [];
 					for (var i = 0; i < DV.c.data.records.length; i++) {
 						DV.c.data.names.push(DV.c.data.records[i].name);
 					}
-					
+
 					DV.c.period.names = DV.conf.util.jsonEncodeArray(r.p);
 					DV.c.organisationunit.names = DV.conf.util.jsonEncodeArray(r.o);
-								
+
 					if (!DV.state.validation.categories()) {
 						return;
 					}
-            
+
 					DV.state.validation.trendline();
-					
+
 					DV.state.validation.targetline();
-					
+
 					DV.state.validation.baseline();
-            
+
 					DV.state.validation.render();
-							
+
                     if (exe) {
                         DV.chart.getData(true);
                     }
@@ -2126,7 +2137,7 @@ Ext.onReady( function() {
             });
         }
     };
-    
+
     DV.chart = {
 		model: {
 			type: DV.conf.finals.chart.column,
@@ -2185,7 +2196,7 @@ Ext.onReady( function() {
                 obj[DV.conf.finals.data.domain] = item;
                 DV.chart.data.push(obj);
             });
-            
+
             Ext.Array.each(DV.chart.data, function(item) {
                 for (var i = 0; i < DV.c.series.names.length; i++) {
                     item[DV.c.series.names[i]] = 0;
@@ -2202,7 +2213,7 @@ Ext.onReady( function() {
                     }
                 }
             });
-            
+
 			if (DV.c.trendline) {
 				DV.chart.trendline = [];
 				for (var i = 0; i < DV.c.series.names.length; i++) {
@@ -2234,7 +2245,7 @@ Ext.onReady( function() {
 					item[DV.conf.finals.data.baseline] = DV.c.baselinevalue;
 				});
 			}
-            
+
             if (exe) {
                 DV.store.getChartStore(true);
             }
@@ -2281,12 +2292,12 @@ Ext.onReady( function() {
 			if (DV.c.baselinevalue) {
 				series.push(DV.util.chart.def.series.getBaseLine());
 			}
-			
+
 			var axes = [];
 			var numeric = DV.util.chart.def.axis.getNumeric(stacked);
 			axes.push(numeric);
 			axes.push(DV.util.chart.def.axis.getCategory());
-			
+
 			DV.util.chart.def.series.setTheme();
 			this.chart = DV.util.chart.def.getChart(axes, series);
         },
@@ -2322,13 +2333,13 @@ Ext.onReady( function() {
 			if (DV.c.baselinevalue) {
 				series.push(DV.util.chart.bar.series.getBaseLine());
 			}
-			
+
 			var axes = [];
 			var numeric = DV.util.chart.bar.axis.getNumeric(stacked);
 			axes.push(numeric);
 			axes.push(DV.util.chart.bar.axis.getCategory());
-			
-			DV.util.chart.def.series.setTheme();			
+
+			DV.util.chart.def.series.setTheme();
 			this.chart = DV.util.chart.def.getChart(axes, series);
         },
         stackedbar: function() {
@@ -2349,12 +2360,12 @@ Ext.onReady( function() {
 			if (DV.c.baselinevalue) {
 				series.push(DV.util.chart.def.series.getBaseLine());
 			}
-			
+
 			var axes = [];
 			var numeric = DV.util.chart.def.axis.getNumeric();
 			axes.push(numeric);
 			axes.push(DV.util.chart.def.axis.getCategory());
-			
+
 			DV.util.chart.line.series.setTheme();
 			this.chart = DV.util.chart.def.getChart(axes, series);
         },
@@ -2369,12 +2380,12 @@ Ext.onReady( function() {
 					opacity: 0.65
 				}
 			});
-			
+
 			var axes = [];
 			var numeric = DV.util.chart.def.axis.getNumeric();
 			axes.push(numeric);
 			axes.push(DV.util.chart.def.axis.getCategory());
-			
+
 			DV.util.chart.line.series.setTheme();
 			this.chart = DV.util.chart.def.getChart(axes, series);
         },
@@ -2422,25 +2433,25 @@ Ext.onReady( function() {
         reload: function() {
             DV.cmp.region.center.removeAll(true);
             DV.cmp.region.center.add(this.chart);
-            
+
 			DV.util.mask.hideMask();
-            
+
             if (DV.chart.warnings.length) {
 				DV.util.notification.warning(this.getWarnings());
 			}
 			else {
 				DV.util.notification.ok();
 			}
-            
+
             if (DV.init.cmd !== DV.conf.finals.cmd.init) {
                 DV.store.getDataTableStore(true);
             }
-            
+
             DV.init.cmd = false;
 			DV.cmp.toolbar.share.xable();
         }
     };
-    
+
     DV.datatable = {
         datatable: null,
         getDataTable: function(exe) {
@@ -2472,7 +2483,7 @@ Ext.onReady( function() {
                 ],
                 store: DV.store.datatable
             });
-            
+
             if (exe) {
                 this.reload();
             }
@@ -2483,9 +2494,9 @@ Ext.onReady( function() {
         reload: function() {
             DV.cmp.region.east.removeAll(true);
             DV.cmp.region.east.add(this.datatable);
-        }            
+        }
     };
-    
+
     DV.exe = {
 		execute: function(cmd) {
 			if (cmd) {
@@ -2504,7 +2515,7 @@ Ext.onReady( function() {
 			DV.conf.init.example.setState();
 			DV.conf.init.example.setValues();
 			DV.chart.getData(true);
-		},			
+		},
 		update: function() {
 			DV.state.setChart(true);
 		},
@@ -2515,7 +2526,7 @@ Ext.onReady( function() {
 			DV.store.getDataTableStore(true);
 		}
     };
-        
+
     DV.viewport = Ext.create('Ext.container.Viewport', {
         layout: 'border',
         renderTo: Ext.getBody(),
@@ -2538,7 +2549,7 @@ Ext.onReady( function() {
                                 afterrender: function(b) {
                                     if (b.xtype === 'button') {
                                         DV.cmp.charttype.push(b);
-                                        
+
 										Ext.create('Ext.tip.ToolTip', {
 											target: b.getEl(),
 											html: b.tooltiptext,
@@ -2637,7 +2648,7 @@ Ext.onReady( function() {
                                         }
                                     }
                                 ]
-                            },                            
+                            },
                             {
                                 xtype: 'panel',
                                 bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
@@ -2672,7 +2683,7 @@ Ext.onReady( function() {
                                         }
                                     }
                                 ]
-                            },                            
+                            },
                             {
                                 xtype: 'panel',
                                 bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
@@ -2749,7 +2760,7 @@ Ext.onReady( function() {
 													listeners: {
 														load: function(s) {
 															s.add({id: 0, name: DV.i18n.all_indicator_groups, index: -1});
-															s.sort([																
+															s.sort([
 																{ property: 'index', direction: 'ASC' },
 																{ property: 'name', direction: 'ASC' }
 															]);
@@ -2760,7 +2771,7 @@ Ext.onReady( function() {
 													select: function(cb) {
 														var store = DV.store.indicator.available;
 														store.parent = cb.getValue();
-														
+
 														if (DV.util.store.containsParent(store)) {
 															DV.util.store.loadFromStorage(store);
 															DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
@@ -2827,7 +2838,7 @@ Ext.onReady( function() {
 																}, this);
 															}
 														}
-													},                                            
+													},
 													{
 														xtype: 'multiselect',
 														name: 'selectedIndicators',
@@ -2920,7 +2931,7 @@ Ext.onReady( function() {
 													listeners: {
 														load: function(s) {
 															s.add({id: 0, name: '[ All data element groups ]', index: -1});
-															s.sort([																
+															s.sort([
 																{ property: 'index', direction: 'ASC' },
 																{ property: 'name', direction: 'ASC' }
 															]);
@@ -2931,7 +2942,7 @@ Ext.onReady( function() {
 													select: function(cb) {
 														var store = DV.store.dataelement.available;
 														store.parent = cb.getValue();
-														
+
 														if (DV.util.store.containsParent(store)) {
 															DV.util.store.loadFromStorage(store);
 															DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
@@ -2948,7 +2959,7 @@ Ext.onReady( function() {
 														}
 													}
 												}
-											},                                    
+											},
 											{
 												xtype: 'panel',
 												layout: 'column',
@@ -2990,14 +3001,14 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																DV.cmp.dimension.dataelement.available = this;
-															},                                                                
+															},
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
 																	DV.util.multiselect.select(this, DV.cmp.dimension.dataelement.selected);
 																}, this);
 															}
 														}
-													}),                                            
+													}),
 													{
 														xtype: 'multiselect',
 														name: 'selectedDataElements',
@@ -3036,7 +3047,7 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																DV.cmp.dimension.dataelement.selected = this;
-															},          
+															},
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
 																	DV.util.multiselect.unselect(DV.cmp.dimension.dataelement.available, this);
@@ -3106,14 +3117,14 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																DV.cmp.dimension.dataset.available = this;
-															},                                                                
+															},
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
 																	DV.util.multiselect.select(this, DV.cmp.dimension.dataset.selected);
 																}, this);
 															}
 														}
-													}),                                            
+													}),
 													{
 														xtype: 'multiselect',
 														name: 'selectedDataSets',
@@ -3152,7 +3163,7 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																DV.cmp.dimension.dataset.selected = this;
-															},          
+															},
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
 																	DV.util.multiselect.unselect(DV.cmp.dimension.dataset.available, this);
@@ -3174,7 +3185,7 @@ Ext.onReady( function() {
 													DV.cmp.dimension.dataset.panel,
 													DV.conf.layout.west_fill_accordion_dataset
 												);
-												
+
 												if (!DV.store.dataset.available.isloaded) {
 													DV.store.dataset.available.load();
 												}
@@ -3414,16 +3425,16 @@ Ext.onReady( function() {
 														periodOffset: 0,
 														listeners: {
 															select: function() {
-																
+
 																var pt = new PeriodType(),
 																	periodType = this.getValue();
-																
+
 																var periods = pt.get(periodType).generatePeriods({
 																	offset: this.periodOffset,
 																	filterFuturePeriods: true,
 																	reversePeriods: true
 																});
-																
+
 																DV.store.fixedperiod.available.setIndex(periods);
 																DV.store.fixedperiod.available.loadData(periods);
 																DV.util.multiselect.filterAvailable(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
@@ -3459,7 +3470,7 @@ Ext.onReady( function() {
 												]
 											},
 											{
-															
+
 												xtype: 'panel',
 												layout: 'column',
 												bodyStyle: 'border-style:none',
@@ -3507,7 +3518,7 @@ Ext.onReady( function() {
 																}, this);
 															}
 														}
-													},                                            
+													},
 													{
 														xtype: 'multiselect',
 														name: 'selectedFixedPeriods',
@@ -3751,14 +3762,14 @@ Ext.onReady( function() {
 												selectByGroup: function(id) {
 													if (id) {
 														var url = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.organisationunit_getbygroup,
-															params = {id: id};															
+															params = {id: id};
 														this.select(url, params);
 													}
 												},
 												selectByLevel: function(level) {
 													if (level) {
 														var url = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.organisationunit_getbylevel,
-															params = {level: level};															
+															params = {level: level};
 														this.select(url, params);
 													}
 												},
@@ -3773,7 +3784,7 @@ Ext.onReady( function() {
 														}
 														this.select(url);
 													}
-												},														
+												},
 												store: Ext.create('Ext.data.TreeStore', {
 													proxy: {
 														type: 'ajax',
@@ -3809,7 +3820,7 @@ Ext.onReady( function() {
 													},
 													itemcontextmenu: function(v, r, h, i, e) {
 														v.getSelectionModel().select(r, false);
-														
+
 														if (v.menu) {
 															v.menu.destroy();
 														}
@@ -3833,7 +3844,7 @@ Ext.onReady( function() {
 														else {
 															return;
 														}
-														
+
 														v.menu.showAt(e.xy);
 													}
 												}
@@ -4117,13 +4128,13 @@ Ext.onReady( function() {
 								}
 							}
 						]
-					}					
+					}
 				],
                 listeners: {
                     added: function() {
                         DV.cmp.region.west = this;
                     },
-                    collapse: function() {                    
+                    collapse: function() {
                         this.collapsed = true;
                         DV.cmp.toolbar.resizewest.setText('>>>');
                     },
@@ -4486,7 +4497,7 @@ Ext.onReady( function() {
                                                                                                 {
                                                                                                     html: str,
                                                                                                     cls: 'dv-window-confirm-list'
-                                                                                                }                                                                                                    
+                                                                                                }
                                                                                             ],
                                                                                             bbar: {
 																								cls: 'dv-toolbar-bbar',
@@ -4508,7 +4519,7 @@ Ext.onReady( function() {
 																											DV.util.crud.favorite.del(function() {
 																												DV.cmp.favorite.name.setValue('');
 																												DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
-																											});                                                                                                        
+																											});
 																										}
 																									}
 																								]
@@ -4558,7 +4569,7 @@ Ext.onReady( function() {
 																				DV.cmp.favorite.label = this;
 																			}
 																		}
-																	},																
+																	},
 																	'->',
 																	{
 																		text: DV.i18n.save,
@@ -4593,7 +4604,7 @@ Ext.onReady( function() {
 																				}
 																				else {
 																					DV.cmp.favorite.label.setText('');
-																				}																				
+																				}
 																			}
 																			this.disable();
 																			return false;
@@ -4638,7 +4649,7 @@ Ext.onReady( function() {
 																										DV.util.crud.favorite.update(function() {
 																											DV.cmp.favorite.window.resetForm();
 																										});
-																										
+
 																									}
 																								}
 																							]
@@ -4652,7 +4663,7 @@ Ext.onReady( function() {
 																						DV.cmp.favorite.window.resetForm();
 																						DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
 																					});
-																				}                                                                                    
+																				}
 																			}
 																		},
 																		listeners: {
@@ -4664,7 +4675,7 @@ Ext.onReady( function() {
 																]
 															},
                                                             listeners: {
-                                                                show: function() {                                               
+                                                                show: function() {
                                                                     DV.cmp.favorite.save.xable();
                                                                     this.down('grid').setHeightInWindow(DV.store.favorite);
                                                                 },
@@ -4755,19 +4766,19 @@ Ext.onReady( function() {
                             menu: {},
                             execute: function(type) {
                                 var svg = document.getElementsByTagName('svg');
-                                
+
                                 if (svg.length < 1) {
 									DV.util.notification.error(DV.i18n.et_svg_browser, DV.i18n.em_svg_browser);
                                     return;
                                 }
-                                
+
                                 document.getElementById('titleField').value = DV.c.filter.names[0] || 'Example chart';
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
                                 document.getElementById('typeField').value = type;
-                                
+
                                 var exportForm = document.getElementById('exportForm');
                                 exportForm.action = '../exportImage.action';
-                                
+
                                 if (svg[0].parentNode.innerHTML && type) {
                                     exportForm.submit();
                                 }
@@ -4798,7 +4809,7 @@ Ext.onReady( function() {
                                                     b.execute(DV.conf.finals.image.pdf);
                                                 }
                                             }
-                                        ]                                            
+                                        ]
                                     });
                                 }
                             }
@@ -4831,7 +4842,7 @@ Ext.onReady( function() {
 									html: DV.i18n.save_load_favorite_before_sharing,
 									'anchor': 'bottom'
 								});
-							},								
+							},
 							handler: function() {
 								if (DV.cmp.share.window) {
 									DV.cmp.share.window.setTitle(this.getTitle());
@@ -4919,7 +4930,7 @@ Ext.onReady( function() {
 											}
 										}
 									}).show();
-									
+
 									document.body.oncontextmenu = true;
 								}
 							},
@@ -5004,7 +5015,7 @@ Ext.onReady( function() {
 							}
 						}
 					]
-				},					
+				},
                 listeners: {
                     added: function() {
                         DV.cmp.region.center = this;
@@ -5036,15 +5047,15 @@ Ext.onReady( function() {
             },
             resize: function(vp) {
                 DV.cmp.region.west.setWidth(DV.conf.layout.west_width);
-                
+
 				DV.util.viewport.resizeDimensions();
-                
+
                 if (DV.datatable.datatable) {
                     DV.datatable.datatable.setHeight(DV.util.viewport.getSize().y - DV.conf.layout.east_tbar_height);
                 }
             }
         }
     });
-    
+
     }});
 });
