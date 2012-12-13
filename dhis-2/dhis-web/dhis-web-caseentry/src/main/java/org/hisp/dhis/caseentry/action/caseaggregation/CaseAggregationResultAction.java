@@ -232,7 +232,7 @@ public class CaseAggregationResultAction
         // Get selected periods list
         // ---------------------------------------------------------------------
 
-        CalendarPeriodType periodType = (CalendarPeriodType) selectedDataSet.getPeriodType();
+        CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( selectedDataSet.getPeriodType().getName() );
 
         periods.addAll( periodType.generatePeriods( format.parseDate( startDate ), format.parseDate( endDate ) ) );
 
