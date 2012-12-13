@@ -27,6 +27,9 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
@@ -34,7 +37,10 @@ import org.hisp.dhis.web.webapi.v1.utils.MessageResponseUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,14 +57,18 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "facility-service-controller-" + FredController.PREFIX)
-@RequestMapping(FacilityServiceController.RESOURCE_PATH)
-@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
+@Controller( value = "facility-service-controller-" + FredController.PREFIX )
+@RequestMapping( FacilityServiceController.RESOURCE_PATH )
+@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
 public class FacilityServiceController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facility-service";
@@ -72,12 +82,16 @@ public class FacilityServiceController
     @Autowired
     private ConversionService conversionService;
 
+    @Autowired
+    @Qualifier( "objectMapperFactoryBean" )
+    private ObjectMapper objectMapper;
+
     //--------------------------------------------------------------------------
     // EXTRA WEB METHODS
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}/activate", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
+    @RequestMapping( value = "/{id}/activate", method = RequestMethod.POST )
+    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
     public ResponseEntity<Void> activateFacility( @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -93,8 +107,8 @@ public class FacilityServiceController
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
     }
 
-    @RequestMapping(value = "/{id}/deactivate", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
+    @RequestMapping( value = "/{id}/deactivate", method = RequestMethod.POST )
+    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
     public ResponseEntity<Void> deactivateFacility( @PathVariable String id )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -110,7 +124,7 @@ public class FacilityServiceController
         return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
     }
 
-    @RequestMapping(value = "/validate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping( value = "/validate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<String> validateFacilityForCreate( @RequestBody Facility facility ) throws IOException
     {
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
@@ -145,7 +159,7 @@ public class FacilityServiceController
         }
     }
 
-    @RequestMapping(value = "/validate", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping( value = "/validate", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<String> validateFacilityForUpdate( @RequestBody Facility facility ) throws IOException
     {
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Update.class );
@@ -192,5 +206,45 @@ public class FacilityServiceController
         {
             return new ResponseEntity<String>( json, headers, HttpStatus.UNPROCESSABLE_ENTITY );
         }
+    }
+
+    @RequestMapping( value = "/cql", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE )
+    public ResponseEntity<String> cqlRequest( @RequestBody String cqlString ) throws IOException, CQLException
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
+        if ( cqlString == null || cqlString.isEmpty() )
+        {
+            return new ResponseEntity<String>( "{}", headers, HttpStatus.OK );
+        }
+
+        Filter filter = CQL.toFilter( cqlString );
+
+        List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        List<Facility> facilities = new ArrayList<Facility>();
+
+        for ( OrganisationUnit organisationUnit : allOrganisationUnits )
+        {
+            if ( organisationUnit.getFeatureType() != null
+                && organisationUnit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT )
+                && organisationUnit.getCoordinates() != null && !organisationUnit.getCoordinates().isEmpty() )
+            {
+                SimpleFeature feature = conversionService.convert( organisationUnit, SimpleFeature.class );
+
+                if ( filter.evaluate( feature ) )
+                {
+                    Facility facility = conversionService.convert( organisationUnit, Facility.class );
+                    facilities.add( facility );
+                }
+            }
+        }
+
+        Map<String, Object> resultSet = new HashMap<String, Object>();
+        resultSet.put( "facilities", facilities );
+
+        String json = objectMapper.writeValueAsString( resultSet );
+
+        return new ResponseEntity<String>( json, headers, HttpStatus.OK );
     }
 }

@@ -823,7 +823,7 @@
       <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-render</artifactId>
-        <version>8.0-M4</version>
+        <version>${geotools.version}</version>
         <exclusions>
           <exclusion>
             <groupId>xalan</groupId>
@@ -838,7 +838,7 @@
       <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-epsg-wkt</artifactId>
-        <version>8.0-M4</version>
+        <version>${geotools.version}</version>
         <exclusions>
           <exclusion>
             <groupId>commons-pool</groupId>
@@ -910,5 +910,6 @@
     <jackson.version>2.1.1</jackson.version>
     <camel.version>2.10.2</camel.version>
     <slf4j.version>1.6.6</slf4j.version>
+    <geotools.version>8.4</geotools.version>
   </properties>
 </project>

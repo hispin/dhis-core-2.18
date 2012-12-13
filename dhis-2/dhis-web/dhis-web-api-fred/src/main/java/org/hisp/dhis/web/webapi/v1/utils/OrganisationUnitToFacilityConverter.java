@@ -51,7 +51,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class ToFacilityConverter implements Converter<OrganisationUnit, Facility>
+public class OrganisationUnitToFacilityConverter implements Converter<OrganisationUnit, Facility>
 {
     @Autowired
     private OrganisationUnitService organisationUnitService;

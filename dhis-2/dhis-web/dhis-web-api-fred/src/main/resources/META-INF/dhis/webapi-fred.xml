@@ -18,8 +18,10 @@
   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
     <property name="converters">
       <set>
-        <ref bean="toFacilityConverter" />
-        <ref bean="toOrganisationUnitConverter" />
+        <ref bean="facilityToOrganisationUnitConverter" />
+        <ref bean="facilityToSimpleFeature" />
+        <ref bean="organisationUnitToFacilityConverter" />
+        <ref bean="organisationUnitToSimpleFeature" />
       </set>
     </property>
   </bean>
