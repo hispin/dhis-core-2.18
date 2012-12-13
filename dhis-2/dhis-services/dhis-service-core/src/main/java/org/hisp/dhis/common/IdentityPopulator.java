@@ -147,5 +147,30 @@ public class IdentityPopulator
                 statement.close();
             }
         }
+        
+        createUidConstraints();
+    }
+    
+    private void createUidConstraints()
+    {
+        for ( String table : tables )
+        {
+            StatementHolder holder = statementManager.getHolder();
+            
+            try
+            {
+                final String sql = "ALTER TABLE " + table + " ADD CONSTRAINT " + table + "_uid_key UNIQUE(uid)";
+                holder.executeUpdate( sql, true );
+            }
+            catch ( Exception ex )
+            {
+                log.debug( "Could not create uid constraint on table " + table + 
+                    ", might already be created or column contains duplicates", ex );
+            }
+            finally
+            {
+                holder.close();
+            }
+        }
     }
 }

@@ -210,6 +210,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> getBetweenByStatus( boolean status, int first, int max )
     {
         Criteria criteria = getCriteria().add( Restrictions.eq( "active", status ) );
@@ -220,6 +221,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> getBetweenByLastUpdated( Date lastUpdated, int first, int max )
     {
         Criteria criteria = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) );
@@ -230,6 +232,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> getBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max )
     {
         Criteria criteria = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).add( Restrictions.eq( "active", status ) );
