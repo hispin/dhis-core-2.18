@@ -390,6 +390,13 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public List<T> getByCreated( Date created )
+    {
+        return getCriteria().add( Restrictions.ge( "created", created ) ).list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdatedSorted( Date lastUpdated )
     {
         return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).addOrder( Order.asc( "name" ) ).list();

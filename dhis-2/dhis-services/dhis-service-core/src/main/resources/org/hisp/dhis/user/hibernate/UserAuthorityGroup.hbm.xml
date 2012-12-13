@@ -3,7 +3,7 @@
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
   [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
->
+  >
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.user.UserAuthorityGroup" table="userrole">
@@ -17,7 +17,7 @@
 
     <set name="members" table="userrolemembers" inverse="true">
       <key column="userroleid" />
-      <many-to-many column="userid" class="org.hisp.dhis.user.UserCredentials"/>
+      <many-to-many column="userid" class="org.hisp.dhis.user.UserCredentials" />
     </set>
 
     <set name="authorities" table="userroleauthorities">

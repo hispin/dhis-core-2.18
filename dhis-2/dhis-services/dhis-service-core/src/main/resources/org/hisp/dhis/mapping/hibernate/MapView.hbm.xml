@@ -3,7 +3,7 @@
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
   [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
->
+  >
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.mapping.MapView" table="mapview">
@@ -11,10 +11,12 @@
     <id name="id" column="mapviewid">
       <generator class="native" />
     </id>
-    
+
     <property name="uid" column="uid" length="11" />
-    
-    <property name="lastUpdated" type="timestamp"/>
+
+    <property name="created" type="timestamp" />
+
+    <property name="lastUpdated" type="timestamp" />
 
     <property name="layer" />
 
@@ -56,12 +58,12 @@
     <property name="radiusLow" />
 
     <property name="radiusHigh" />
-    
+
     <property name="opacity" />
 
-    <many-to-one name="organisationUnitGroupSet" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" 
-        column="orgunitgroupsetid" foreign-key="fk_mapview_orgunitgroupsetid" />
-    
+    <many-to-one name="organisationUnitGroupSet" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet"
+      column="orgunitgroupsetid" foreign-key="fk_mapview_orgunitgroupsetid" />
+
     <property name="areaRadius" />
 
   </class>

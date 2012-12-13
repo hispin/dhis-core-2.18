@@ -34,7 +34,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -45,7 +49,7 @@ public class IdentityPopulator
 {
     private static final Log log = LogFactory.getLog( IdentityPopulator.class );
 
-    private static String[] tables = {"chart", "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
+    private static String[] tables = { "chart", "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
         "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel", "document",
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
@@ -107,23 +111,36 @@ public class IdentityPopulator
                     Timestamp now = new Timestamp( new Date().getTime() );
 
                     resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE lastUpdated IS NULL" );
+
                     while ( resultSet.next() )
                     {
                         ++count;
                         resultSet.updateTimestamp( "lastUpdated", now );
                         resultSet.updateRow();
                     }
+
+                    resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE created IS NULL" );
+
+                    while ( resultSet.next() )
+                    {
+                        ++count;
+                        resultSet.updateTimestamp( "created", resultSet.getTimestamp( "lastUpdated" ) );
+                        resultSet.updateRow();
+                    }
+
                     if ( count > 0 )
                     {
                         log.info( count + " timestamps updated on " + table );
                     }
 
-                } catch ( SQLException ex )
+                }
+                catch ( SQLException ex )
                 {
                     log.info( "Problem updating " + table + ": ", ex );
                 }
             }
-        } finally
+        }
+        finally
         {
             if ( statement != null )
             {
