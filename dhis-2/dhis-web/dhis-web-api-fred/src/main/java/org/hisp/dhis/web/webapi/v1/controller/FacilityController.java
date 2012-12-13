@@ -71,7 +71,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -198,7 +200,28 @@ public class FacilityController
             facility.setIdentifiers( null );
         }
 
-        if ( !strings.contains( "properties" ) )
+        if ( fields.indexOf( ':' ) >= 0 )
+        {
+            Map<String, Object> properties = facility.getProperties();
+            facility.setProperties( new HashMap<String, Object>() );
+
+            for ( String s : strings )
+            {
+                if ( s.contains( ":" ) )
+                {
+                    String[] split = s.split( ":" );
+
+                    if ( split.length > 1 )
+                    {
+                        if ( properties.containsKey( split[1] ) )
+                        {
+                            facility.getProperties().put( split[1], properties.get( split[1] ) );
+                        }
+                    }
+                }
+            }
+        }
+        else if ( !strings.contains( "properties" ) )
         {
             facility.setProperties( null );
         }
