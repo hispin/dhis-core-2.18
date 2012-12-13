@@ -44,7 +44,7 @@ import java.util.Collection;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class ToOrganisationUnitConverter implements Converter<Facility, OrganisationUnit>
+public class FacilityToOrganisationUnitConverter implements Converter<Facility, OrganisationUnit>
 {
     @Autowired
     @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
