@@ -27,12 +27,9 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
@@ -48,11 +45,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = MapViewController.RESOURCE_PATH )
+@RequestMapping(value = MapViewController.RESOURCE_PATH)
 public class MapViewController
     extends AbstractCrudController<MapView>
 {
@@ -70,7 +74,7 @@ public class MapViewController
     @Autowired
     private MapGenerationService mapGenerationService;
 
-    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
+    @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
     public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
         MapView mapView = mappingService.getMapView( uid );
@@ -78,11 +82,11 @@ public class MapViewController
         renderMapViewPng( mapView, response );
     }
 
-    @RequestMapping( value = { "/data", "/data.png" }, method = RequestMethod.GET )
+    @RequestMapping(value = { "/data", "/data.png" }, method = RequestMethod.GET)
     public void getMap( Model model,
-        @RequestParam( value = "in" ) String indicatorUid,
-        @RequestParam( value = "ou" ) String organisationUnitUid,
-        @RequestParam( value = "level", required = false ) Integer level,
+        @RequestParam(value = "in") String indicatorUid,
+        @RequestParam(value = "ou") String organisationUnitUid,
+        @RequestParam(value = "level", required = false) Integer level,
         HttpServletResponse response ) throws Exception
     {
         if ( level == null )
@@ -96,6 +100,25 @@ public class MapViewController
         MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
 
         renderMapViewPng( mapView, response );
+    }
+
+    @Override
+    protected List<MapView> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<MapView> entityList;
+
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<MapView>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+        }
+        else
+        {
+            entityList = new ArrayList<MapView>( manager.getAll( getEntityClass() ) );
+        }
+
+        return entityList;
     }
 
     //--------------------------------------------------------------------------
