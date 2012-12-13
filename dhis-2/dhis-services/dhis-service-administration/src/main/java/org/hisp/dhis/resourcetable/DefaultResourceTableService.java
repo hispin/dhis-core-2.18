@@ -426,7 +426,6 @@ public class DefaultResourceTableService
             final PeriodType periodType = dataElement.getPeriodType();
             
             values.add( String.valueOf( dataElement.getId() ) );
-            values.add( dataElement.getUid() );
             values.add( dataElement.getName() );
             values.add( periodType != null ? String.valueOf( periodType.getId() ) : null );
             values.add( periodType != null ? periodType.getName() : null );
