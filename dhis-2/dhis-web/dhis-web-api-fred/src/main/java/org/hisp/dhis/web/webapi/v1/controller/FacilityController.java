@@ -233,26 +233,63 @@ public class FacilityController
     public String readFacilities( Model model, @RequestParam( required = false ) Boolean active,
         @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
         @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields )
+        @RequestParam( value = "fields", required = false ) String fields,
+        @RequestParam( value = "limit", required = false ) Integer limit,
+        @RequestParam( value = "offset", required = false ) Integer offset )
     {
         Facilities facilities = new Facilities();
         List<OrganisationUnit> allOrganisationUnits;
 
+        if ( offset == null )
+        {
+            offset = 0;
+        }
+
         if ( active == null && lastUpdated == null )
         {
-            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+            if ( limit != null )
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetween( offset, limit ) );
+            }
+            else
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+            }
         }
         else if ( active == null )
         {
-            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
+            if ( limit != null )
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
+                    getOrganisationUnitsBetweenByLastUpdated( lastUpdated, offset, limit ) );
+            }
+            else
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
+            }
         }
         else if ( lastUpdated == null )
         {
-            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByStatus( active ) );
+            if ( limit != null )
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByStatus( active, offset, limit ) );
+            }
+            else
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByStatus( active ) );
+            }
         }
         else
         {
-            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByStatusLastUpdated( active, lastUpdated ) );
+            if ( limit != null )
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
+                    getOrganisationUnitsBetweenByStatusLastUpdated( active, lastUpdated, offset, limit ) );
+            }
+            else
+            {
+                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByStatusLastUpdated( active, lastUpdated ) );
+            }
         }
 
         Collections.sort( allOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
