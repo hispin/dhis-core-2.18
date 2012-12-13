@@ -86,19 +86,23 @@ public interface ProgramStageInstanceService
      */
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
+   int getProgramInstancesCount( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate );
+
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
 
-    Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns, Collection<Integer> organisationUnits, 
-        int level, Date startDate, Date endDate, boolean descOrder, Boolean completed, Integer min, Integer max );
+    Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
+        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
+        Boolean completed, Integer min, Integer max );
 
     int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Boolean completed, Date startDate, Date endDate );
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
-    
+
     void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
     void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
-    
+
     Collection<SchedulingProgramObject> getSendMesssageEvents();
 }

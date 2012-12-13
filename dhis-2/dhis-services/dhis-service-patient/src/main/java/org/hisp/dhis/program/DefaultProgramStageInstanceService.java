@@ -169,8 +169,8 @@ public class DefaultProgramStageInstanceService
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder, Boolean completed, Integer min,
-        Integer max )
+        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
+        Boolean completed, Integer min, Integer max )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
@@ -273,4 +273,12 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.getSendMesssageEvents();
     }
+
+    @Override
+    public int getProgramInstancesCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate )
+    {
+        return programStageInstanceStore.getCount( programStage, orgunitIds, startDate, endDate  );
+    }
+
 }
