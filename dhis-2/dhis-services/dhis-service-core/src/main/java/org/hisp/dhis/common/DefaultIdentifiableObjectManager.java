@@ -273,6 +273,26 @@ public class DefaultIdentifiableObjectManager
 
         return (Collection<T>) store.getByLastUpdatedSorted( lastUpdated );
     }
+
+    @Override
+    public <T extends IdentifiableObject> Set<Integer> convertToId( Class<T> clazz, Collection<String> uids )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+        
+        Set<Integer> ids = new HashSet<Integer>();
+        
+        for ( String uid : uids )
+        {
+            IdentifiableObject object = store.getByUid( uid );
+            
+            if ( object != null )
+            {
+                ids.add( object.getId() );
+            }
+        }
+        
+        return ids;
+    }
     
     @Override
     @SuppressWarnings( "unchecked" )
