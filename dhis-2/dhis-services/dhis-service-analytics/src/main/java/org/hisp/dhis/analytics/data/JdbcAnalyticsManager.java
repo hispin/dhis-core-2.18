@@ -27,11 +27,9 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
@@ -39,10 +37,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -76,9 +71,6 @@ public class JdbcAnalyticsManager
     @Autowired
     private ExpressionService expressionService;
     
-    @Autowired
-    private IdentifiableObjectManager idObjectManager;
-
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
@@ -90,15 +82,12 @@ public class JdbcAnalyticsManager
         
         String periodType = PeriodType.getPeriodTypeFromIsoString( params.getPeriods().iterator().next() ).getName().toLowerCase();
         
-        Set<Integer> de = idObjectManager.convertToId( DataElement.class, params.getDataElements() );
-        Set<Integer> ou = idObjectManager.convertToId( OrganisationUnit.class, params.getOrganisationUnits() );
-        
         final String sql = 
-            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, idlevel" + level + " as organisationunitid, SUM(value) as value " +
+            "SELECT dataelementid, 0 as categoryoptioncomboid, " + periodType + " as periodid, idlevel" + level + " as organisationunitid, SUM(value) as value " +
             "FROM " + params.getTableName() + " " +
-            "WHERE dataelementid IN ( " + getCommaDelimitedString( de ) + " ) " +
+            "WHERE dataelementid IN ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
             "AND " + periodType + " IN ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
-            "AND idlevel" + level + " IN ( " + getCommaDelimitedString( ou ) + " ) " +
+            "AND idlevel" + level + " IN ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
             "GROUP BY dataelementid, periodid, idlevel" + level;
                 
         log.info( sql );

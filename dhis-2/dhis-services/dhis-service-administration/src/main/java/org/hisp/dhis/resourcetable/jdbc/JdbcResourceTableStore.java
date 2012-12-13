@@ -86,8 +86,8 @@ public class JdbcResourceTableStore
         
         for ( int k = 1 ; k <= maxLevel; k++ )
         {
-            String levelName = "idlevel" + String.valueOf( k );
-            sql.append( ", " ).append ( levelName ).append (" INTEGER");
+            sql.append( ", " ).append( "idlevel" + k ).append (" INTEGER, " ).
+                append( "uidlevel" + k ).append( " CHARACTER(11)" );
         }
         
         sql.append( ");" );

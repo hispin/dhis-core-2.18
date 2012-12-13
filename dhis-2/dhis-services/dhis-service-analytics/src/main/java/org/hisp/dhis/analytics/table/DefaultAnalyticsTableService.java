@@ -70,7 +70,7 @@ public class DefaultAnalyticsTableService
         final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest );        
         clock.logTime( "Checked data timespan" );
         
-        //dropTables( tables ); //remove
+        //dropTables( tables );
         
         createTables( tables );
         clock.logTime( "Created analytics tables" );
