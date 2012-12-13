@@ -33,12 +33,12 @@ public interface IdentifiableObject
     extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>, Mergeable<IdentifiableObject>
 {
     final String[] I18N_PROPERTIES = { "name" };
-    
+
     enum IdentifiableProperty
     {
         ID, UID, NAME, CODE
     }
-    
+
     int getId();
 
     String getUid();
@@ -46,6 +46,8 @@ public interface IdentifiableObject
     String getName();
 
     String getCode();
+
+    Date getCreated();
 
     Date getLastUpdated();
 

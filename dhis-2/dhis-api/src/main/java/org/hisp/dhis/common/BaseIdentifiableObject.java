@@ -45,7 +45,7 @@ import java.util.Map;
 /**
  * @author Bob Jolliffe
  */
-@JacksonXmlRootElement( localName = "identifiableObject", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement(localName = "identifiableObject", namespace = Dxf2Namespace.NAMESPACE)
 public class BaseIdentifiableObject
     extends BaseLinkableObject
     implements IdentifiableObject
@@ -74,6 +74,11 @@ public class BaseIdentifiableObject
      * The name of this Object. Required and unique.
      */
     protected String name;
+
+    /**
+     * The date this object was created.
+     */
+    protected Date created;
 
     /**
      * The date this object was last updated.
@@ -105,6 +110,7 @@ public class BaseIdentifiableObject
         this.id = identifiableObject.getId();
         this.uid = identifiableObject.getUid();
         this.name = identifiableObject.getName();
+        this.created = identifiableObject.getCreated();
         this.lastUpdated = identifiableObject.getLastUpdated();
     }
 
@@ -133,8 +139,8 @@ public class BaseIdentifiableObject
         this.id = id;
     }
 
-    @JsonProperty( value = "id" )
-    @JacksonXmlProperty( localName = "id", isAttribute = true )
+    @JsonProperty(value = "id")
+    @JacksonXmlProperty(localName = "id", isAttribute = true)
     public String getUid()
     {
         return uid;
@@ -146,8 +152,8 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
-    @JacksonXmlProperty( isAttribute = true )
+    @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
+    @JacksonXmlProperty(isAttribute = true)
     public String getCode()
     {
         return code;
@@ -159,8 +165,8 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
-    @JacksonXmlProperty( isAttribute = true )
+    @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
+    @JacksonXmlProperty(isAttribute = true)
     public String getName()
     {
         return name;
@@ -174,6 +180,19 @@ public class BaseIdentifiableObject
     @JsonProperty
     @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( Date created )
+    {
+        this.created = created;
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
+    @JacksonXmlProperty(isAttribute = true)
     public Date getLastUpdated()
     {
         return lastUpdated;
@@ -253,7 +272,9 @@ public class BaseIdentifiableObject
             setUid( CodeGenerator.generateCode() );
         }
 
-        setLastUpdated( new Date() );
+        Date date = new Date();
+
+        setLastUpdated( date );
     }
 
     /**
@@ -318,8 +339,14 @@ public class BaseIdentifiableObject
     @Override
     public String toString()
     {
-        return "{" + "id=" + getId() + ", uid='" + getUid() + '\'' + ", code='" +
-            getCode() + '\'' + ", name='" + getName() + '\'' + ", lastUpdated=" + getLastUpdated() + "}";
+        return "IdentifiableObject{" +
+            "id=" + id +
+            ", uid='" + uid + '\'' +
+            ", code='" + code + '\'' +
+            ", name='" + name + '\'' +
+            ", created=" + created +
+            ", lastUpdated=" + lastUpdated +
+            '}';
     }
 
     @Override
