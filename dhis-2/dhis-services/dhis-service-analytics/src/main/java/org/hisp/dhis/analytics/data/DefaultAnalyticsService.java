@@ -41,7 +41,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DefaultAnalyticsService
     implements AnalyticsService
 {
-    //TODO select from correct partition
     //TODO period aggregation for multiple period types
     //TODO hierarchy aggregation for org units at multiple levels
     //TODO indicator aggregation
@@ -55,6 +54,8 @@ public class DefaultAnalyticsService
         
         List<DataQueryParams> queries = QueryPlanner.planQuery( params, 6 );
         
+        t.getTime( "Planned query" );
+        
         List<Future<List<AggregatedDataValue>>> futures = new ArrayList<Future<List<AggregatedDataValue>>>();
         
         List<AggregatedDataValue> values = new ArrayList<AggregatedDataValue>();
@@ -66,7 +67,12 @@ public class DefaultAnalyticsService
         
         for ( Future<List<AggregatedDataValue>> future : futures )
         {
-            values.addAll( future.get() );
+            List<AggregatedDataValue> taskValues = future.get();
+            
+            if ( taskValues != null )
+            {
+                values.addAll( taskValues );
+            }
         }
         
         t.getTime( "Got aggregated values" );
