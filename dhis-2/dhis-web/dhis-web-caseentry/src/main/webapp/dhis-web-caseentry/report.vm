@@ -1,15 +1,17 @@
-<table>
-	<tr>
-		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>$i18n.getString( "list_all_patients" )</td>
+<table class='contentProviderTable' style="width:600px;" >
+	<tr class="bold"> 
+		<td>$i18n.getString( "program_stage")</td>
+		<td align="center">$i18n.getString("number_of_completed_events")</td>
 	</tr>
+	#foreach($programStage in $program.programStages)
 	<tr>
-		<td class='text-column' >$i18n.getString( "total_result" )</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>
+		<td class='text-column'>$encoder.htmlEncode($programStage.name)</td>
+		<td align="center">$completedMap.get($programStage.id)</td>
+	</tr>
+	#end
+	<tr class="bold">
+		<td class='text-column'>$i18n.getString( "total_result" )</td>
+		<td align="center">
 			#if($!total)
 				$total
 			#else
@@ -18,6 +20,7 @@
 		</td>
 	</tr>
 </table>
+
 
 #if( $programInstances && $programInstances.size() > 0 )
 <p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>

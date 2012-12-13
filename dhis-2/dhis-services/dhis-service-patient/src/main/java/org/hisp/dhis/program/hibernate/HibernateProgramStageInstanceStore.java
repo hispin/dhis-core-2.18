@@ -34,8 +34,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -222,8 +224,8 @@ public class HibernateProgramStageInstanceStore
                     deKeys.add( deKey );
                 }
             }
-        } 
-        
+        }
+
         grid.addHeader( new GridHeader( "Complete", true, true ) );
 
         // ---------------------------------------------------------------------
@@ -342,6 +344,21 @@ public class HibernateProgramStageInstanceStore
         return schedulingProgramObjects;
     }
 
+    public int getCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate )
+    {
+        Criteria criteria = getCriteria( Restrictions.eq( "programStage", programStage ),
+            Restrictions.isNull( "programInstance.endDate" ),
+            Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.createAlias( "programInstance.patient", "patient" );
+        criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+        criteria.add( Restrictions.in( "regOrgunit.id", orgunitIds ) );
+        
+        Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -441,7 +458,7 @@ public class HibernateProgramStageInstanceStore
             }
         }
 
-        sql += " psi.completed "; 
+        sql += " psi.completed ";
         sql += "from programstageinstance psi ";
         sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
         sql += "left join patient p on (pi.patientid=p.patientid) ";

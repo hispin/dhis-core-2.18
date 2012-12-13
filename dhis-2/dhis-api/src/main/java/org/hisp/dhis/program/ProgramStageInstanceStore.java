@@ -53,38 +53,44 @@ public interface ProgramStageInstanceStore
     Collection<ProgramStageInstance> get( ProgramStage programStage );
 
     Collection<ProgramStageInstance> get( Date dueDate );
-    
+
     Collection<ProgramStageInstance> get( Date dueDate, Boolean completed );
 
     Collection<ProgramStageInstance> get( Date startDate, Date endDate );
-        
+
     Collection<ProgramStageInstance> get( Date startDate, Date endDate, Boolean completed );
 
     Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances );
 
-    /** Get all {@link ProgramStageInstance program stage instances} for unit.
+    /**
+     * Get all {@link ProgramStageInstance program stage instances} for unit.
+     * 
      * @param unit - the unit to get instances for.
      * @param after - optional date the instance should be on or after.
      * @param before - optional date the instance should be on or before.
-     * @param completed - optional flag to only get completed (<code>true</code>) or uncompleted (<code>false</code>) instances. 
+     * @param completed - optional flag to only get completed (<code>true</code>
+     *        ) or uncompleted (<code>false</code>) instances.
      * @return
      */
     public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
-    List<ProgramStageInstance> get( Patient patient, Boolean completed);
-    
-    List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
-    
+    List<ProgramStageInstance> get( Patient patient, Boolean completed );
+
+    List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate,
+        int min, int max );
+
     Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         Collection<Integer> orgUnits, List<TabularReportColumn> columns, int level, int maxLevel, Date startDate,
         Date endDate, boolean descOrder, Boolean completed, Integer min, Integer max );
-    
+
     int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate, Boolean completed  );
-    
+        Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate, Boolean completed );
+
     void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
     void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms );
-    
+
     Collection<SchedulingProgramObject> getSendMesssageEvents();
+
+    int getCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate);
 }
