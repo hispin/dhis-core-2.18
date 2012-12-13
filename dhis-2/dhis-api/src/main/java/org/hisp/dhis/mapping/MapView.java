@@ -55,7 +55,7 @@ import org.hisp.dhis.period.PeriodType;
 /**
  * @author Jan Henrik Overland
  */
-@JacksonXmlRootElement( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
 public class MapView
     extends BaseIdentifiableObject
 {
