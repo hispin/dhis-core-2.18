@@ -29,14 +29,21 @@ package org.hisp.dhis.web.webapi.v1.utils;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.web.webapi.v1.controller.FacilityController;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.domain.Identifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -46,6 +53,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @Component
 public class ToFacilityConverter implements Converter<OrganisationUnit, Facility>
 {
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
     @Override
     public Facility convert( OrganisationUnit organisationUnit )
     {
@@ -97,6 +107,25 @@ public class ToFacilityConverter implements Converter<OrganisationUnit, Facility
         if ( !dataSets.isEmpty() )
         {
             facility.getProperties().put( "dataSets", dataSets );
+        }
+
+        facility.getProperties().put( "level", organisationUnit.getOrganisationUnitLevel() );
+
+        List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+        Collections.sort( organisationUnitLevels, new OrganisationUnitLevelComparator() );
+
+        // TODO this probably belongs in "meta": {}
+        List<Map<String, Object>> hierarchy = new ArrayList<Map<String, Object>>();
+        facility.getProperties().put( "hierarchy", hierarchy );
+
+        for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
+        {
+            Map<String, Object> level = new HashMap<String, Object>();
+
+            level.put( "name", organisationUnitLevel.getName() );
+            level.put( "level", organisationUnitLevel.getLevel() );
+
+            hierarchy.add( level );
         }
 
         return facility;
