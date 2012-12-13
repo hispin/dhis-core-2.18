@@ -63,7 +63,7 @@ public class ToFacilityConverter implements Converter<OrganisationUnit, Facility
         facility.setId( organisationUnit.getUid() );
         facility.setName( organisationUnit.getDisplayName() );
         facility.setActive( organisationUnit.isActive() );
-        facility.setCreatedAt( organisationUnit.getLastUpdated() );
+        facility.setCreatedAt( organisationUnit.getCreated() );
         facility.setUpdatedAt( organisationUnit.getLastUpdated() );
         facility.setUrl( linkTo( FacilityController.class ).slash( facility.getId() ).toString() );
 
