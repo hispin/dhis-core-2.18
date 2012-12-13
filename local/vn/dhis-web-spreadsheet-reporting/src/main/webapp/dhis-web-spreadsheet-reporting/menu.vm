@@ -20,9 +20,9 @@
 	<li><a href="getImportingParams.action">$i18n.getString( "import" )&nbsp;</a></li>
 </ul>
 
-<h2><a href="showAutoGenerateForm.action">$i18n.getString( "auto_generate_form_by_template" )&nbsp;</a></h2>
+<h2><a href="showAutoGenerateForm.action">$i18n.getString( "automate" )&nbsp;</a></h2>
 <ul>
-	<li><a href="showAutoGenerateForm.action">$i18n.getString( "auto_generate_form_by_template" )&nbsp;</a></li>
+	<li><a href="showAutoGenerateForm.action">$i18n.getString( "generate_form" )&nbsp;</a></li>
 </ul>
 
 <script type="text/javascript">
