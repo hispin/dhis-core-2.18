@@ -20,6 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
+    	<h1 style="display:none">$encoder.htmlEncode( $applicationTitle )</h1>
         <div>       
         #if ( $keyFlag )
             <img id="flagArea" src="../flags/${keyFlagImage}">
