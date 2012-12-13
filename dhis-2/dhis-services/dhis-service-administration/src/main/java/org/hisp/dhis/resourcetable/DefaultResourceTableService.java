@@ -244,7 +244,7 @@ public class DefaultResourceTableService
                 DataElementGroup group = groupSet.getGroup( dataElement );
                 
                 values.add( group != null ? group.getName() : null );
-                values.add( group != null ? String.valueOf( group.getId() ) : null );
+                values.add( group != null ? group.getUid() : null );
             }
             
             batchHandler.addObject( values );
@@ -292,7 +292,7 @@ public class DefaultResourceTableService
                 IndicatorGroup group = groupSet.getGroup( indicator );
                 
                 values.add( group != null ? group.getName() : null );
-                values.add( group != null ? String.valueOf( group.getId() ) : null );
+                values.add( group != null ? group.getUid() : null );
             }
             
             batchHandler.addObject( values );
@@ -342,7 +342,7 @@ public class DefaultResourceTableService
                 OrganisationUnitGroup group = groupSet.getGroup( unit );
                 
                 values.add( group != null ? group.getName() : null );
-                values.add( group != null ? String.valueOf( group.getId() ) : null );
+                values.add( group != null ? group.getUid() : null );
             }
 
             batchHandler.addObject( values );
