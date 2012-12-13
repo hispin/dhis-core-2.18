@@ -31,12 +31,16 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -97,16 +101,17 @@ public class GetMessageAction
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         Assert.hasText( conversationId );
 
         MessageConversation conversation = messageService.getMessageConversation( conversationId );
-
+        
         subject = conversation.getSubject();
+        
         messages = new ArrayList<Message>( conversation.getMessages() );
         Collections.reverse( messages );
-
         conversation.markRead( currentUserService.getCurrentUser() );
         messageService.updateMessageConversation( conversation );
 

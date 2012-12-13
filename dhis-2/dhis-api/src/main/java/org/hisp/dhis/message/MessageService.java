@@ -75,4 +75,6 @@ public interface MessageService
     List<MessageConversation> getAllMessageConversations();
 
     void deleteMessages( User sender );
+
+    List<UserMessage> getLastRecipients( int first, int max, Integer currentUserId );
 }

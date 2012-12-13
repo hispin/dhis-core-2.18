@@ -37,23 +37,27 @@
 </ul>
 </p>
 
-
+<ul>
+<li>
+<a href="feedback.action">$i18n.getString("feedback")</a>
+</li>
+</ul>
 <h2>$i18n.getString( "last_recipients" )</h2>
 
+<p>
+<ul>
+#set( $max = 1)
+	#foreach( $usermessage in $usermessages )
+       
+           <li><a href="showUserList.action?userId=$usermessage.getId()">$usermessage.lastRecipientName</a></li>
+       #if ( $max == 5 )
+				#break
+			#end
+			#set( $max = $max+1 )
 
-<form method="POST" action="sendFeedback.action">
-<div class="header-box" align="center">
-	<h3 style="text-align: left;">$i18n.getString( "send_feedback" )</h3>
-    <p style="text-align: left;">
-        $i18n.getString( "subject" ) *<br />
-        <input type="text" maxlength="255" size="24" name="subject" />
-
-        $i18n.getString( "text" ) *<br />
-        <input type="text" maxlength="255" size="24" name="text" />
-        <input type="submit" style="width: 100%;" value="$i18n.getString("send")" />
-    </p>
-</div>
-</form>
+    #end
+</ul>
+</p>
 
 
 <div id="footer">

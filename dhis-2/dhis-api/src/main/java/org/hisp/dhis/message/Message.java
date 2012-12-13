@@ -76,6 +76,7 @@ public class Message
         this.text = text;
         this.metaData = metaData;
         this.sender = sender;
+
     }
 
     @Override
@@ -85,7 +86,7 @@ public class Message
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty
     public String getText()
     {
@@ -98,7 +99,7 @@ public class Message
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty
     public String getMetaData()
     {
@@ -112,7 +113,7 @@ public class Message
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty
     public User getSender()
     {

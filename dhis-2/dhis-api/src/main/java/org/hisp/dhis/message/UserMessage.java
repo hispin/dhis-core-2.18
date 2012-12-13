@@ -55,6 +55,37 @@ public class UserMessage
     private boolean read;
 
     private boolean followUp;
+    
+    private transient String lastRecipientSurname;
+
+    private transient String lastRecipientFirstname;
+    
+    
+
+    public String getLastRecipientSurname()
+    {
+        return lastRecipientSurname;
+    }
+
+    public void setLastRecipientSurname( String lastRecipientSurname )
+    {
+        this.lastRecipientSurname = lastRecipientSurname;
+    }
+
+    public String getLastRecipientFirstname()
+    {
+        return lastRecipientFirstname;
+    }
+
+    public void setLastRecipientFirstname( String lastRecipientFirstname )
+    {
+        this.lastRecipientFirstname = lastRecipientFirstname;
+    }
+    
+    public String getLastRecipientName()
+    {
+        return lastRecipientFirstname + " " + lastRecipientSurname;
+    }
 
     public UserMessage()
     {

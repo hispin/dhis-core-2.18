@@ -29,7 +29,6 @@ package org.hisp.dhis.api.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.springframework.beans.factory.annotation.Autowired;
