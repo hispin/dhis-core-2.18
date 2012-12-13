@@ -226,7 +226,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-
+System.out.println("\n\n ==== \n sql : " + sql );
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -868,8 +868,10 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT psi.programstageinstance ";
             from = "FROM programstageinstance psi ";
         }
+        
+        from +=  "inner join patient p on p.patientid=pi.patientid ";
 
-        sql += from + "WHERE executionDate<='" + startDate + "' and executionDate>='" + endDate + "' and "
+        sql += from + "WHERE executionDate>='" + startDate + "' and executionDate<='" + endDate + "' and "
             + propertyName;
 
         return sql;
