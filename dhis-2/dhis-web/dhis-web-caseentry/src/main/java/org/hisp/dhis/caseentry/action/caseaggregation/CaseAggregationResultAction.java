@@ -169,9 +169,9 @@ public class CaseAggregationResultAction
         return mapCaseAggCondition;
     }
 
-    private List<OrganisationUnit> orgunits = new ArrayList<OrganisationUnit>();
+    private Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
 
-    public List<OrganisationUnit> getOrgunits()
+    public Collection<OrganisationUnit> getOrgunits()
     {
         return orgunits;
     }
