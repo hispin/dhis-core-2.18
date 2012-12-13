@@ -48,6 +48,7 @@ import org.apache.poi.hssf.usermodel.HSSFEvaluationWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
+import org.apache.poi.ss.formula.FormulaType;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -615,7 +616,7 @@ public class ExcelUtils
     {
         try
         {
-            FormulaParser.parse( formula, evaluationWorkbook );
+            FormulaParser.parse( formula, evaluationWorkbook, FormulaType.CELL, -1 );
         }
         catch ( Exception e )
         {
@@ -624,6 +625,21 @@ public class ExcelUtils
 
         return true;
     }
+    
+    public static boolean isValidFormula( String formula, int formulaType, int sheetIndex )
+    {
+        try
+        {
+            FormulaParser.parse( formula, evaluationWorkbook, formulaType, sheetIndex );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
     // -------------------------------------------------------------------------
     // Supportive methods
