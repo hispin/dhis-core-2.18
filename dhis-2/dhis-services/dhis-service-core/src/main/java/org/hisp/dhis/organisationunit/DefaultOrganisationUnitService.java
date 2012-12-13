@@ -39,7 +39,17 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.VersionService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -152,9 +162,9 @@ public class DefaultOrganisationUnitService
     }
 
     @Override
-    public Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean active )
+    public Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean status )
     {
-        return organisationUnitStore.getAllOrganisationUnitsByStatus( active );
+        return organisationUnitStore.getAllOrganisationUnitsByStatus( status );
     }
 
     @Override
@@ -164,9 +174,9 @@ public class DefaultOrganisationUnitService
     }
 
     @Override
-    public Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean active, Date lastUpdated )
+    public Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean status, Date lastUpdated )
     {
-        return organisationUnitStore.getAllOrganisationUnitsByStatusLastUpdated( active, lastUpdated );
+        return organisationUnitStore.getAllOrganisationUnitsByStatusLastUpdated( status, lastUpdated );
     }
 
     public void searchOrganisationUnitByName( List<OrganisationUnit> orgUnits, String key )
@@ -548,6 +558,24 @@ public class DefaultOrganisationUnitService
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByName( String name, int first, int max )
     {
         return organisationUnitStore.getBetweenByName( name, first, max );
+    }
+
+    @Override
+    public Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatus( boolean status, int first, int max )
+    {
+        return organisationUnitStore.getBetweenByStatus( status, first, max );
+    }
+
+    @Override
+    public Collection<OrganisationUnit> getOrganisationUnitsBetweenByLastUpdated( Date lastUpdated, int first, int max )
+    {
+        return organisationUnitStore.getBetweenByLastUpdated( lastUpdated, first, max );
+    }
+
+    @Override
+    public Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max )
+    {
+        return organisationUnitStore.getBetweenByStatusLastUpdated( status, lastUpdated, first, max );
     }
 
     // -------------------------------------------------------------------------

@@ -70,7 +70,7 @@ public interface OrganisationUnitStore
     /**
      * Returns all OrganisationUnits by status and lastUpdated.
      *
-     * @param active Get active or inactive
+     * @param active      Get active or inactive
      * @param lastUpdated OrganisationUnits from this date
      * @return a collection of all OrganisationUnits, or an empty collection if
      *         there are no OrganisationUnits.
@@ -115,6 +115,42 @@ public interface OrganisationUnitStore
     Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
 
     Set<Integer> getOrganisationUnitIdsWithoutData();
+
+
+    /**
+     * Retrieves the objects determined by the given first result and max result
+     * which status is like the current status.
+     *
+     * @param status the name which result object names must be like.
+     * @param first  the first result object to return.
+     * @param max    the max number of result objects to return.
+     * @return collection of objects.
+     */
+    Collection<OrganisationUnit> getBetweenByStatus( boolean status, int first, int max );
+
+    /**
+     * Retrieves the objects determined by the given first result and max result
+     * which lastUpdated is larger or equal.
+     *
+     * @param lastUpdated the name which result object names must be like.
+     * @param first       the first result object to return.
+     * @param max         the max number of result objects to return.
+     * @return collection of objects.
+     */
+    Collection<OrganisationUnit> getBetweenByLastUpdated( Date lastUpdated, int first, int max );
+
+
+    /**
+     * Retrieves the objects determined by the given first result and max result
+     * which status is like the current status, and lastUpdated is larger or equal.
+     *
+     * @param status the name which result object names must be like.
+     * @param lastUpdated the name which result object names must be like.
+     * @param first       the first result object to return.
+     * @param max         the max number of result objects to return.
+     * @return collection of objects.
+     */
+    Collection<OrganisationUnit> getBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max );
 
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy

@@ -29,7 +29,11 @@ package org.hisp.dhis.organisationunit;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Defines methods for working with OrganisationUnits.
@@ -120,7 +124,7 @@ public interface OrganisationUnitService
      * @return a collection of all OrganisationUnits, or an empty collection if
      *         there are no OrganisationUnits.
      */
-    Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean active );
+    Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean status );
 
     /**
      * Returns all OrganisationUnits by lastUpdated.
@@ -134,12 +138,12 @@ public interface OrganisationUnitService
     /**
      * Returns all OrganisationUnits by status and lastUpdated.
      *
-     * @param active Get active or inactive
+     * @param active      Get active or inactive
      * @param lastUpdated OrganisationUnits from this date
      * @return a collection of all OrganisationUnits, or an empty collection if
      *         there are no OrganisationUnits.
      */
-    Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean active, Date lastUpdated );
+    Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean status, Date lastUpdated );
 
     /**
      * Returns all OrganisationUnits with corresponding name key based on the given list.
@@ -200,11 +204,11 @@ public interface OrganisationUnitService
 
     /**
      * Returns the level of the organisation unit with the given uid.
-     * 
+     *
      * @return the level of the organisation unit with the given uid.
      */
     int getLevelOfOrganisationUnit( String uid );
-    
+
     /**
      * Returns all OrganisationUnits which are part of the subtree of the
      * OrganisationUnit with the given identifer and have no children.
@@ -302,6 +306,12 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getOrganisationUnitsBetween( int first, int max );
 
     Collection<OrganisationUnit> getOrganisationUnitsBetweenByName( String name, int first, int max );
+
+    Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatus( boolean status, int first, int max );
+
+    Collection<OrganisationUnit> getOrganisationUnitsBetweenByLastUpdated( Date lastUpdated, int first, int max );
+
+    Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max );
 
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
