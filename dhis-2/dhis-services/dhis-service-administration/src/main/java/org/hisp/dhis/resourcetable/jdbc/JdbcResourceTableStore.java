@@ -216,7 +216,7 @@ public class JdbcResourceTableStore
         }
         
         final String sql = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_STRUCTURE + 
-            " ( dataelementid INTEGER NOT NULL PRIMARY KEY, dataelementname VARCHAR(250), periodtypeid INTEGER, periodtypename VARCHAR(250) )";
+            " ( dataelementid INTEGER NOT NULL PRIMARY KEY, uid CHARACTER(11), dataelementname VARCHAR(250), periodtypeid INTEGER, periodtypename VARCHAR(250) )";
         
         log.info( "Create data element structure SQL: " + sql );
         
