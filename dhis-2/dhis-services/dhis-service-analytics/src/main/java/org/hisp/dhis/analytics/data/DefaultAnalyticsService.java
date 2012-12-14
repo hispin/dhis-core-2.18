@@ -51,7 +51,7 @@ public class DefaultAnalyticsService
     //TODO period aggregation for multiple period types
     //TODO hierarchy aggregation for org units at multiple levels
     //TODO indicator aggregation
-    //TODO dimensional data analysis
+    //TODO category sub-totals and totals
     
     @Autowired
     private AnalyticsManager analyticsManager;
