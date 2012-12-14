@@ -282,7 +282,6 @@ div.link-area
   padding-top:3px;
   padding-bottom:3px;
   border-bottom:1px solid #cad5e5;
-  cursor:pointer;
 }
 
 div.event-dashboard
@@ -498,3 +497,10 @@ div.link-area-tracking
   width:60%;
   overflow:hidden;
 }
+
+.gridTable th, .gridTable td {
+    line-height: 170%;
+    text-align: center;
+    width: 150px;
+}
+

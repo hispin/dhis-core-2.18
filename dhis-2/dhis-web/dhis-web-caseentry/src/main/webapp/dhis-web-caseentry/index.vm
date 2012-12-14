@@ -27,6 +27,10 @@
 		#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
 	#end
 	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "statisticalProgramReportSelect" ) )
+		#introListImgItem( "statisticalProgramReportSelect.action" "statistical_program" "validationanalysis" )
+	#end
+	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "caseAggregationForm" ) )
 		#introListImgItem( "caseAggregationForm.action" "manual_person_aggregation" "caseaggregation" )
 	#end

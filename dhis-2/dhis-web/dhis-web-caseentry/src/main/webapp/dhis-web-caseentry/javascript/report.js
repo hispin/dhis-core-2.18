@@ -9,7 +9,7 @@ selection.setListenerFunction( organisationUnitSelected );
 function loadGeneratedReport()
 {
 	showLoader();
-
+	
 	jQuery( "#contentDiv" ).load( "generateReport.action",
 	{
 		programId: getFieldValue( 'programId' ),

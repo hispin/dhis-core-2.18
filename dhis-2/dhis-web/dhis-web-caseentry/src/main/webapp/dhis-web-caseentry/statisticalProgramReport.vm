@@ -1,0 +1,40 @@
+<h3>$encoder.htmlEncode($program.name) ( <span id="dateLbl"></span> )</h3>
+<h5>
+	$i18n.getString( "total_result" ): #if($!total) $total #else 0 #end
+</h5>
+
+<script>
+	setInnerHTML("dateLbl", getFieldValue("startDate") + " - " + getFieldValue("endDate") );
+</script>
+
+<table class='listTable gridTable'>
+	
+	#if($total>0)
+		<thead>
+			<tr> 
+				<th style="text-align:left">$i18n.getString( "program_stage")</th>
+				<th>$i18n.getString("events_completed")</th>
+				<th>$i18n.getString("percent")</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set( $mark = false ) 
+			#foreach($programStage in $program.programStages)
+				#set($completeEventsNo = $completedMap.get($programStage.id) )
+			<tr #alternate( $mark )>
+				<td style="text-align:left">$encoder.htmlEncode($programStage.name)</td>
+				<td>$completeEventsNo</td>
+				<td id="rate$programStage.id"></td>
+				<script>
+					var rate = ($completeEventsNo/$total * 100);
+					if(!isInt( rate )){
+						rate = rate.toFixed(2);
+					}
+					setInnerHTML("rate$programStage.id", rate + "%");
+				</script>
+			</tr>
+			#set( $mark = !$mark )
+			#end
+		</tbody>
+	#end
+</table>

@@ -323,12 +323,32 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/report.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/report.js</param>
+			<param name="requiredAuthorities">F_GENERATE_PROGRAM_SUMMARY_REPORT</param>
 		</action>
 
 		<action name="viewRecords"
 			class="org.hisp.dhis.caseentry.action.report.ViewRecordsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/records.vm</param>
+		</action>
+		
+		<action name="statisticalProgramReportSelect"
+			class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/statisticalProgramReportSelect.vm</param>
+			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/statisticalReport.js</param>
+			<param name="stylesheets">style/style.css</param>
+			<param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
+		</action>
+		
+		<action name="generateStatisticalProgramReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateStatisticalProgramReportAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/statisticalProgramReport.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/statisticalReport.js</param>
+			<param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
 		</action>
 		
 		<!-- i18n -->

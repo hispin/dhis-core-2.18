@@ -7,6 +7,9 @@
 	#if( $auth.hasAccess( "dhis-web-caseentry", "generateTabularReport" ) )
 		<li><a href="app/index.html"> $i18n.getString( "tabular_report" )&nbsp;</a></li> 
 	#end
+	#if( $auth.hasAccess( "dhis-web-caseentry", "statisticalProgramReportSelect" ) )
+		<li><a href="statisticalProgramReportSelect.action"> $i18n.getString( "statistical_program" )&nbsp;</a></li>
+	#end
 </ul>
 
 <br>
