@@ -184,7 +184,7 @@ public class JdbcAnalyticsTableManager
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
-            "left join _period_no_disaggregation_structure ps on dv.periodid=ps.periodid " +
+            "left join _period_no_disagg_structure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
             "left join categoryoptioncombo coc on dv.categoryoptioncomboid=coc.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
