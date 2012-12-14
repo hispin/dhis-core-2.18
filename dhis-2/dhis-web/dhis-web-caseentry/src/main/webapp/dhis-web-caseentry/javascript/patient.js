@@ -36,6 +36,7 @@ function listAllPatient()
 			listAll:true
 		},
 		function(){
+			setTableStyles();
 			statusSearching = 0;
 			showById('listPatientDiv');
 			jQuery('#loaderDiv').hide();
@@ -50,6 +51,7 @@ function advancedSearch( params )
 		type:"POST",
 		data: params,
 		success: function( html ){
+				setTableStyles();
 				statusSearching = 1;
 				setInnerHTML( 'listPatientDiv', html );
 				showById('listPatientDiv');

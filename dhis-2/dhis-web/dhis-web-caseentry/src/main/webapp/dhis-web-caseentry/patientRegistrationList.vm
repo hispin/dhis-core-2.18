@@ -71,9 +71,8 @@
           </thead>
 		  
           <tbody id="list">	
-		  #set( $mark = false )
           #foreach( $patient in $patients )
-          	<tr id="tr${patient.id}" #alternate($mark) >
+          	<tr id="tr${patient.id}">
 				
 				<td>
 					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
@@ -132,7 +131,6 @@
 				</td>
 				
 			</tr>
-			#set( $mark = !$mark)
     	#end
     	</tbody>
     
@@ -154,7 +152,8 @@
 
 #end
 <script type="text/javascript">
-	jQuery(document).ready(function(){	
+	jQuery(document).ready(function(){
+		setTableStyles();	
 		tableSorter( 'patientList' );
 	});
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';	
