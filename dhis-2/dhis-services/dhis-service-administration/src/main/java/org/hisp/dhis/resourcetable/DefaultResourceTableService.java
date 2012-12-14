@@ -153,23 +153,26 @@ public class DefaultResourceTableService
 
             for ( OrganisationUnit unit : units )
             {
-                List<Integer> structure = new ArrayList<Integer>();
+                List<String> structure = new ArrayList<String>();
 
-                structure.add( unit.getId() );
-                structure.add( level );
+                structure.add( String.valueOf( unit.getId() ) );
+                structure.add( String.valueOf( level ) );
 
                 Map<Integer, Integer> identifiers = new HashMap<Integer, Integer>();
+                Map<Integer, String> uids = new HashMap<Integer, String>();
 
                 for ( int j = level; j > 0; j-- )
                 {
                     identifiers.put( j, unit.getId() );
+                    uids.put( j, unit.getUid() );
 
                     unit = unit.getParent();
                 }
                
-                for (int k = 1 ; k <= maxLevel ; k ++ )
+                for ( int k = 1 ; k <= maxLevel ; k ++ )
                 {
-                    structure.add( identifiers.get( k ) );
+                    structure.add( identifiers.get( k ) != null ? String.valueOf( identifiers.get( k ) ) : null );
+                    structure.add( uids.get( k ) );
                 }
                 
                 batchHandler.addObject( structure );
