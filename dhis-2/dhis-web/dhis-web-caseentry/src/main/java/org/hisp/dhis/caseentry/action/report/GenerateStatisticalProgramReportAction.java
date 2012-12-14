@@ -38,7 +38,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -46,12 +45,14 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
+import com.opensymphony.xwork2.Action;
+
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ *
+ * @version GenerateStatisticalProgramReportAction.java 11:13:25 AM Dec 14, 2012 $
  */
-public class GenerateReportAction
-    extends ActionPagingSupport<ProgramInstance>
+public class GenerateStatisticalProgramReportAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -76,6 +77,13 @@ public class GenerateReportAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -158,6 +166,13 @@ public class GenerateReportAction
     {
         return total;
     }
+
+    private Map<Integer, Integer> completedMap = new HashMap<Integer, Integer>();
+
+    public Map<Integer, Integer> getCompletedMap()
+    {
+        return completedMap;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -204,13 +219,15 @@ public class GenerateReportAction
 
             total = programInstanceService.countProgramInstances( program, orgunitIds, sDate, eDate );
 
-            this.paging = createPaging( total );
-
-            programInstances = programInstanceService.getProgramInstances( program, orgunitIds, sDate, eDate,
-                paging.getStartPos(), paging.getPageSize() );
-
+            for ( ProgramStage programStage : program.getProgramStages() )
+            {
+                int completedNo = programStageInstanceService.getProgramInstancesCount( programStage, orgunitIds,
+                    sDate, eDate );
+                completedMap.put( programStage.getId(), completedNo );
+            }
         }
 
         return SUCCESS;
     }
 }
+
