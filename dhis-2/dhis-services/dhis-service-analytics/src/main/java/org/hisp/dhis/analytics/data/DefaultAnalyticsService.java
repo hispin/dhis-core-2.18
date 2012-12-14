@@ -28,13 +28,17 @@ package org.hisp.dhis.analytics.data;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
-import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,35 +53,57 @@ public class DefaultAnalyticsService
     @Autowired
     private AnalyticsManager analyticsManager;
     
-    public List<AggregatedDataValue> getAggregatedDataValueTotals( DataQueryParams params ) throws Exception
+    public Grid getAggregatedDataValueTotals( DataQueryParams params ) throws Exception
+    {
+        Map<String, Double> map = getAggregatedDataValueMap( params );
+        
+        Grid grid = new ListGrid();
+        
+        grid.addHeader( new GridHeader( "Data element", "de", String.class.getName(), false, true ) );
+        grid.addHeader( new GridHeader( "Category option combo", "coc", String.class.getName(), false, true ) );
+        grid.addHeader( new GridHeader( "Period", "de", String.class.getName(), false, true ) );
+        grid.addHeader( new GridHeader( "Organisation unit", "ou", String.class.getName(), false, true ) );
+        grid.addHeader( new GridHeader( "Value", "value", Double.class.getName(), false, false ) );
+        
+        for ( Map.Entry<String, Double> entry : map.entrySet() )
+        {
+            grid.addRow();
+            grid.addValues( entry.getKey().split( AnalyticsManager.SEP ) );
+            grid.addValue( entry.getValue() );
+        }
+        
+        return grid;
+    }
+    
+    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception
     {
         Timer t = new Timer().start();
-        
+
         List<DataQueryParams> queries = QueryPlanner.planQuery( params, 6 );
         
         t.getTime( "Planned query" );
         
-        List<Future<List<AggregatedDataValue>>> futures = new ArrayList<Future<List<AggregatedDataValue>>>();
+        List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
         
-        List<AggregatedDataValue> values = new ArrayList<AggregatedDataValue>();
+        Map<String, Double> map = new HashMap<String, Double>();
         
         for ( DataQueryParams query : queries )
         {
             futures.add( analyticsManager.getAggregatedDataValueTotals( query ) );
         }
         
-        for ( Future<List<AggregatedDataValue>> future : futures )
+        for ( Future<Map<String, Double>> future : futures )
         {
-            List<AggregatedDataValue> taskValues = future.get();
+            Map<String, Double> taskValues = future.get();
             
             if ( taskValues != null )
             {
-                values.addAll( taskValues );
+                map.putAll( taskValues );
             }
         }
         
         t.getTime( "Got aggregated values" );
         
-        return values;
+        return map;
     }
 }

@@ -29,6 +29,7 @@ package org.hisp.dhis.common;
 
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.jasperreports.engine.JRDataSource;
 
@@ -74,6 +75,11 @@ public interface Grid
     List<GridHeader> getHeaders();
     
     /**
+     * Returns map of meta-data.
+     */
+    Map<String, String> getMetaData();
+    
+    /**
      * Returns all visible headers, ie. headers which are not hidden.
      */
     List<GridHeader> getVisibleHeaders();
@@ -116,6 +122,14 @@ public interface Grid
      * @param value the value to add.
      */
     Grid addValue( Object value );
+    
+    /**
+     * Adds values in the given array to the end of the current row in the 
+     * specified order.
+     * 
+     * @param values the values to add.
+     */
+    Grid addValues( Object[] values );
     
     /**
      * Adds a number of empty values to the Grid at the current row.

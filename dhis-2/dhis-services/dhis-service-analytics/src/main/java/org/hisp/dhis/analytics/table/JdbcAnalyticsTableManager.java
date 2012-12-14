@@ -198,7 +198,7 @@ public class JdbcAnalyticsTableManager
      * 
      * 0 = column name
      * 1 = data type
-     * 2 = column alias and value
+     * 2 = column alias and name
      */
     public List<String[]> getDimensionColumns()
     {

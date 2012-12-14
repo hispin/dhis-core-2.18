@@ -27,11 +27,13 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Map;
 
-import org.hisp.dhis.aggregation.AggregatedDataValue;
+import org.hisp.dhis.common.Grid;
 
 public interface AnalyticsService
 {
-    List<AggregatedDataValue> getAggregatedDataValueTotals( DataQueryParams params ) throws Exception;
+    Grid getAggregatedDataValueTotals( DataQueryParams params ) throws Exception;
+    
+    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception;
 }
