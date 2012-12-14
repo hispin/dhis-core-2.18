@@ -1,37 +1,11 @@
 #set( $baseLayersSize = $baseLayers.size() )
 #set( $overlaysSize = $overlays.size() )
 #set( $rootNodesSize = $rootNodes.size() )
+#if($callback)$!{callback}
+(
+#end
 {
   "contextPath":"$!{contextPath}",
-  "mapView": { 
-    "id": "$!{mapView.id}",
-    "name": "$!encoder.jsonEncode( ${mapView.name} )",
-    "featureType": "$!encoder.jsonEncode( ${mapView.featureType} )",
-    "mapValueType": "$!encoder.jsonEncode( ${mapView.mapValueType} )",
-    "indicatorGroupId": "$!{mapView.indicatorGroup.id}",
-    "indicatorId": "$!{mapView.indicator.id}",
-    "dataElementGroupId": "$!{mapView.dataElementGroup.id}",
-    "dataElementId": "$!{mapView.dataElement.id}",
-    "periodTypeId": "$!encoder.jsonEncode( ${mapView.periodType.name} )",
-    "periodId": "$!{mapView.period.id}",
-    "parentOrganisationUnitId": "$!{mapView.parentOrganisationUnit.id}",
-    "parentOrganisationUnitName": "$!encoder.jsonEncode( ${mapView.parentOrganisationUnit.name} )",
-    "parentOrganisationUnitLevel": "$!{mapView.parentOrganisationUnit.level}",
-    "organisationUnitLevel": "$!{mapView.organisationUnitLevel.level}",
-    "organisationUnitLevelName": "$!{mapView.organisationUnitLevel.name}",
-    "mapLegendType": "$!encoder.jsonEncode( ${mapView.mapLegendType} )",
-    "method": "$!{mapView.method}",
-    "classes": "$!{mapView.classes}",
-    "bounds": "$!{mapView.bounds}",
-    "colorLow": "$!encoder.jsonEncode( ${mapView.colorLow} )",
-    "colorHigh": "$!encoder.jsonEncode( ${mapView.colorHigh} )",
-    "mapLegendSetId": "$!{mapView.mapLegendSet.id}",
-    "radiusLow": "$!{mapView.radiusLow}",
-    "radiusHigh": "$!{mapView.radiusHigh}",
-    "longitude": "$!encoder.jsonEncode( ${mapView.longitude} )",
-    "latitude": "$!encoder.jsonEncode( ${mapView.latitude} )",
-    "zoom": "$!{mapView.zoom}"
-  },
   "systemSettings": {
     "infrastructuralDataElementGroup": "$!{infrastructuralDataElementGroup.uid}",
     "infrastructuralPeriodType": "$!{infrastructuralPeriodType.name}"
@@ -66,3 +40,6 @@
 #end
   ]
 }
+#if($callback)
+)
+#end

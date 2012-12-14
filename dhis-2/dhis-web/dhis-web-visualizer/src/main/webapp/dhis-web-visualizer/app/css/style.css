@@ -13,7 +13,7 @@
  * Menu
  * Window
  * Textfield
- * 
+ *
 */
 
 /* General */
@@ -115,7 +115,7 @@ body {
 .dv-menugrid .x-grid-row-selected .x-grid-cell-last {
 	border: 0 none;
 }
-    
+
 .dv-menugrid .x-grid-row-over .x-grid-cell {
     border: 0 none;
     background-color: #e4e4e4;
@@ -249,6 +249,10 @@ body {
     background-image: -o-linear-gradient(top, #f1f1f1,#f5f5f5);
     background-image: -ms-linear-gradient(top, #f1f1f1,#f5f5f5);
     background-image: linear-gradient(top, #f1f1f1,#f5f5f5);
+}
+
+.dv-toolbar-btn-menu { /* Align menu */
+	margin-top: 5px;
 }
 
 /* Button */
@@ -471,7 +475,7 @@ body {
 
 /* Textfield */
 
-.dv-textfield .x-form-field, .dv-textfield-alt1 .x-form-field {  
+.dv-textfield .x-form-field, .dv-textfield-alt1 .x-form-field {
     height: 26px;
     padding-left: 4px;
     border-radius: 1px;

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title>DHIS2 GIS</title>
+    <title>DHIS2 GIS Plugin</title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -10,17 +10,24 @@
 	<link rel="stylesheet" type="text/css" href="styles/style.css" />
 </head>
 
-<body>
+<body style="margin:10px 0 0 30px">
 	<div id="layerItems"></div>
-	<div id="boundaryLegend"></div>
-	<div id="thematic2Legend"></div>
-	<div id="facilityLegend"></div>
-	<div id="symbolLegend"></div>
+	<div id="boundaryLegendmap1"></div>
+	<div id="thematic2Legendmap1"></div>
+	<div id="facilityLegendmap1"></div>
+	<div id="symbolLegendmap1"></div>
+	<div id="boundaryLegendmap2"></div>
+	<div id="thematic2Legendmap2"></div>
+	<div id="facilityLegendmap2"></div>
+	<div id="symbolLegendmap2"></div>
 
-	<form id="exportForm" method="post">
-        <input type="hidden" id="svgField" name="svg"/>
-        <input type="hidden" id="titleField" name="title"/>
-	</form>
+	<div style="font-size:20px !important; padding:10px">My map 1</div>
+	<div id="map1" style="width:700px; height:400px"></div>
+
+	<br/>
+
+	<div style="font-size:20px !important; padding:10px">My map 2</div>
+	<div id="map2" style="width:700px; height:400px"></div>
 
 	<script type="text/javascript">
 		var GIS = {};
@@ -39,11 +46,30 @@
 
     <script type="text/javascript" src="scripts/geoext/script/custom.js"></script>
 
-    <script type="text/javascript" src="../../dhis-web-commons/javascripts/periodTypeNoDep.js"></script>
-    <script type="text/javascript" src="i18n.action"></script>
-    <script type="text/javascript" src="scripts/core.js"></script>
     <script type="text/javascript" src="scripts/mapfish/MapFish.js"></script>
-    <script type="text/javascript" src="scripts/app.js"></script>
+
+    <script type="text/javascript" src="scripts/core.js"></script>
+    <script type="text/javascript" src="scripts/plugin.js"></script>
+
+	<script type="text/javascript">
+		Ext.onReady( function() {
+			var url = "http://localhost:8080/";
+
+			GIS.getMap({
+				url: url,
+				el: "map1",
+				id: "mBY3WW5q7td"
+			});
+
+			GIS.getMap({
+				url: url,
+				el: "map2",
+				id: "bhmHJ4ZCdCd"
+			});
+
+		});
+
+	</script>
 </body>
 
 </html>

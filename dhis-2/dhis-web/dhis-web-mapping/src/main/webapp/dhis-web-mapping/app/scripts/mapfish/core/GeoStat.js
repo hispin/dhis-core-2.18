@@ -59,7 +59,7 @@ mapfish.GeoStat = OpenLayers.Class({
         this.setUrl(this.url);
         this.legendDiv = Ext.get(options.legendDiv);
     },
- 
+
     setUrl: function(url) {
         this.url = url;
         if (this.url) {
@@ -70,6 +70,14 @@ mapfish.GeoStat = OpenLayers.Class({
 				failure: this.requestFailure
 			});
         }
+    },
+
+    getColors: function(low, high) {
+        var startColor = new mapfish.ColorRgb(),
+			endColor = new mapfish.ColorRgb()
+		startColor.setFromHex(low);
+		endColor.setFromHex(high);
+        return [startColor, endColor];
     },
 
     addOptions: function(newOptions) {
@@ -122,7 +130,9 @@ mapfish.GeoStat = OpenLayers.Class({
 mapfish.GeoStat.Distribution = OpenLayers.Class({
 
     labelGenerator: function(bin, binIndex, nbBins) {
-        return this.defaultLabelGenerator(bin, binIndex, nbBins);
+        var lower = parseFloat(bin.lowerBound).toFixed(1),
+			upper = parseFloat(bin.upperBound).toFixed(1);
+        return lower + ' - ' + upper + '&nbsp;&nbsp;' + '(' + bin.nbVal + ')';
     },
 
     values: null,
@@ -141,17 +151,11 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         this.maxVal = this.nbVal ? mapfish.Util.max(this.values) : 0;
     },
 
-    defaultLabelGenerator: function(bin, binIndex, nbBins) {
-        lower = parseFloat(bin.lowerBound).toFixed(1);
-        upper = parseFloat(bin.upperBound).toFixed(1);
-        return lower + ' - ' + upper + '&nbsp;&nbsp;' + '(' + bin.nbVal + ')';
-    },
-
     classifyWithBounds: function(bounds) {
         var bins = [];
         var binCount = [];
         var sortedValues = [];
-        
+
         for (var i = 0; i < this.values.length; i++) {
             sortedValues.push(this.values[i]);
         }
@@ -172,13 +176,13 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         }
 
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
-		
+
         for (var m = 0; m < nbBins; m++) {
             bins[m] = new mapfish.GeoStat.Bin(binCount[m], bounds[m], bounds[m + 1], m == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
             bins[m].label = labelGenerator(bins[m], m, nbBins);
         }
-        
+
         return new mapfish.GeoStat.Classification(bins);
     },
 
@@ -208,7 +212,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             }
             bounds.push(values[values.length - 1]);
         }
-        
+
         for (var j = 0; j < bounds.length; j++) {
             bounds[j] = parseFloat(bounds[j]);
         }
@@ -219,26 +223,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     sturgesRule: function() {
         return Math.floor(1 + 3.3 * Math.log(this.nbVal, 10));
     },
-	
-    classify: function(method, nbBins, bounds, that) {
-		if (that.tmpView.legendType === GIS.conf.finals.widget.legendtype_predefined) {
-			bounds = that.tmpView.extended.bounds;
 
-			if (bounds[0] > this.minVal) {
-				bounds.unshift(this.minVal);        
-                //if (this.widget == centroid) { this.widget.symbolizerInterpolation.unshift('blank');
-				that.tmpView.extended.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
-			}
-
-			if (bounds[bounds.length-1] < this.maxVal) {
-				bounds.push(this.maxVal);
-                //todo if (this.widget == centroid) { G.vars.activeWidget.symbolizerInterpolation.push('blank');
-				that.tmpView.extended.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
-			}
-			
-			method = mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
-		}
-        
+    classify: function(method, nbBins, bounds) {
         var classification = null;
         if (!nbBins) {
             nbBins = this.sturgesRule();
