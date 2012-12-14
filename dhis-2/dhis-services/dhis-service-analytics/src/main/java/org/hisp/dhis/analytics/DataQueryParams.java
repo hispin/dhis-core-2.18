@@ -44,6 +44,7 @@ public class DataQueryParams
 {
     public static final String INDICATOR_DIM_ID = "in";
     public static final String DATAELEMENT_DIM_ID = "de";
+    public static final String CATEGORYOPTIONCOMBO_DIM_ID = "coc";
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
         
@@ -98,8 +99,6 @@ public class DataQueryParams
     {
         SortedMap<String, List<String>> map = new TreeMap<String, List<String>>();
         
-        // TODO convert indicators to data elements
-        
         map.put( DATAELEMENT_DIM_ID, dataElements );
         map.put( ORGUNIT_DIM_ID, organisationUnits );
         map.put( PERIOD_DIM_ID, periods );
@@ -115,6 +114,24 @@ public class DataQueryParams
         return map;
     }
     
+    public List<String> getDimensionNames()
+    {
+        List<String> list = new ArrayList<String>();
+        
+        list.add( DATAELEMENT_DIM_ID );
+        list.add( CATEGORYOPTIONCOMBO_DIM_ID );
+        list.add( PERIOD_DIM_ID );
+        list.add( ORGUNIT_DIM_ID );
+        list.addAll( dimensions.keySet() );
+        
+        return list;
+    }
+    
+    public List<String> getDynamicDimensionNames()
+    {
+        return new ArrayList<String>( dimensions.keySet() );
+    }
+        
     public void setDimension( String dimension, List<String> values )
     {
         if ( DATAELEMENT_DIM_ID.equals( dimension ) )

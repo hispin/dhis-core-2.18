@@ -45,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DefaultAnalyticsService
     implements AnalyticsService
 {
+    private static final String VALUE_NAME = "value";
+    
     //TODO period aggregation for multiple period types
     //TODO hierarchy aggregation for org units at multiple levels
     //TODO indicator aggregation
@@ -59,11 +61,11 @@ public class DefaultAnalyticsService
         
         Grid grid = new ListGrid();
         
-        grid.addHeader( new GridHeader( "Data element", "de", String.class.getName(), false, true ) );
-        grid.addHeader( new GridHeader( "Category option combo", "coc", String.class.getName(), false, true ) );
-        grid.addHeader( new GridHeader( "Period", "de", String.class.getName(), false, true ) );
-        grid.addHeader( new GridHeader( "Organisation unit", "ou", String.class.getName(), false, true ) );
-        grid.addHeader( new GridHeader( "Value", "value", Double.class.getName(), false, false ) );
+        for ( String col : params.getDimensionNames() )
+        {
+            grid.addHeader( new GridHeader( col, false, true ) );
+            grid.addHeader( new GridHeader( VALUE_NAME, false, false ) );
+        }
         
         for ( Map.Entry<String, Double> entry : map.entrySet() )
         {
