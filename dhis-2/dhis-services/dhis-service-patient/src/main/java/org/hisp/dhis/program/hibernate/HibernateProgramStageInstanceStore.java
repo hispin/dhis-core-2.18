@@ -344,16 +344,40 @@ public class HibernateProgramStageInstanceStore
         return schedulingProgramObjects;
     }
 
-    public int getCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate )
+    public int getStatisticalProgramStageReport( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, int status )
     {
         Criteria criteria = getCriteria( Restrictions.eq( "programStage", programStage ),
-            Restrictions.isNull( "programInstance.endDate" ),
-            Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+            Restrictions.isNull( "programInstance.endDate" ) );
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.createAlias( "programInstance.patient", "patient" );
         criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
         criteria.add( Restrictions.in( "regOrgunit.id", orgunitIds ) );
-        
+
+        switch ( status )
+        {
+        case ProgramStageInstance.COMPLETED_STATUS:
+            criteria.add( Restrictions.eq( "completed", true ) );
+            criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+            break;
+        case ProgramStageInstance.VISITED_STATUS:
+            criteria.add( Restrictions.eq( "completed", false ) );
+            criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+            break;
+        case ProgramStageInstance.FUTURE_VISIT_STATUS:
+            criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+            criteria.add( Restrictions.isNull( "executionDate" ) );
+            criteria.add( Restrictions.ge( "dueDate", new Date() ) );
+            break;
+        case ProgramStageInstance.LATE_VISIT_STATUS:
+            criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+            criteria.add( Restrictions.isNull( "executionDate" ) );
+            criteria.add( Restrictions.lt( "dueDate", new Date() ) );
+            break;
+        default:
+            break;
+        }
+
         Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
@@ -501,4 +525,5 @@ public class HibernateProgramStageInstanceStore
 
         return sql;
     }
+
 }

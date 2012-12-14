@@ -92,5 +92,7 @@ public interface ProgramStageInstanceStore
 
     Collection<SchedulingProgramObject> getSendMesssageEvents();
 
-    int getCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate);
+    int getStatisticalProgramStageReport( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, int status );
+    
 }
