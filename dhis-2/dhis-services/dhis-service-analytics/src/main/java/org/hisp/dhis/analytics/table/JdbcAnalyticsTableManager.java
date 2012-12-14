@@ -86,7 +86,6 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
   
-    //TODO use uid instead of id
     //TODO average aggregation operator data, pre-aggregate in time dimension, not in org unit dimension
     
     public void createTable( String tableName )
@@ -231,8 +230,8 @@ public class JdbcAnalyticsTableManager
             columns.add( col );
         }
         
-        String[] de = { "dataelement", "character(11) not null", "de.uid" };
-        String[] co = { "categoryoptioncombo", "character(11) not null", "coc.uid" };
+        String[] de = { "de", "character(11) not null", "de.uid" };
+        String[] co = { "coc", "character(11) not null", "coc.uid" };
         
         columns.addAll( Arrays.asList( de, co ) );
         

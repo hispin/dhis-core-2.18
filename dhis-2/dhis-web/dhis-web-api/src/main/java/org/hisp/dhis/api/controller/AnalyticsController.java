@@ -37,6 +37,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,18 +55,33 @@ public class AnalyticsController
     private ContextUtils contextUtils;
     
     @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
-    public String get( InputStream in,
+    public String getJson( InputStream in,
         Model model,
         HttpServletResponse response ) throws Exception
     {
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO
+        
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
         
         Grid grid = analyticsService.getAggregatedDataValueTotals( params );
         
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );        
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO
         
         return "grid";
+    }
+
+    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/xml" } )
+    public void getXml( InputStream in,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE ); //TODO
+        
+        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+        
+        Grid grid = analyticsService.getAggregatedDataValueTotals( params );
+
+        GridUtils.toXml( grid, response.getOutputStream() );
     }
 }

@@ -39,6 +39,7 @@ public class TextUtils
     public static final TextUtils INSTANCE = new TextUtils();
     
     private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($|\\n|\\r|\\r\\n| )" );
+    private static final String DELIMITER = ", ";
     
     /**
      * Performs the htmlNewline(String) and htmlLinks(String) methods against
@@ -152,26 +153,60 @@ public class TextUtils
     }
 
     /**
-     * Transforms a collection of Integers into a comma delimited String.
+     * Transforms a collection of Integers into a comma delimited String. If the
+     * given collection of elements are null or is empty, an empty String is
+     * returned.
      * 
      * @param elements the collection of Integers
      * @return a comma delimited String.
      */
-    public static String getCommaDelimitedString( Collection<Integer> elements )
+    public static String getCommaDelimitedString( Collection<?> elements )
     {
-        if ( elements != null && elements.size() > 0 )
-        {
-            final StringBuffer buffer = new StringBuffer();        
+        final StringBuilder builder = new StringBuilder();
         
-            for ( Integer element : elements )
+        if ( elements != null && !elements.isEmpty() )
+        {
+            for ( Object element : elements )
             {
-                buffer.append( element.toString() ).append( ", " );
+                builder.append( element.toString() ).append( DELIMITER );
             }
             
-            return buffer.substring( 0, buffer.length() - ", ".length() );
+            return builder.substring( 0, builder.length() - DELIMITER.length() );
         }
         
-        return null;
+        return builder.toString();
+    }
+
+    /**
+     * Transforms a collection of Integers into a comma delimited String. If the
+     * given collection of elements are null or is empty, an empty String is
+     * returned.
+     * 
+     * @param delimitPrefix whether to prefix the string with a delimiter.
+     * @param delimitSuffix whether to suffix the string with a delimiter.
+     * @param elements the collection of Integers
+     * @return a comma delimited String.
+     */
+    public static String getCommaDelimitedString( Collection<?> elements, boolean delimitPrefix, boolean delimitSuffix )
+    {
+        final StringBuilder builder = new StringBuilder();
+        
+        if ( elements != null && !elements.isEmpty() )
+        {
+            if ( delimitPrefix )
+            {
+                builder.append( DELIMITER );
+            }
+            
+            builder.append( getCommaDelimitedString( elements ) );
+            
+            if ( delimitSuffix )
+            {
+                builder.append( DELIMITER );
+            }
+        }
+        
+        return builder.toString();
     }
 
     /**

@@ -27,9 +27,11 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -75,6 +77,8 @@ public class JdbcAnalyticsManager
     // Implementation
     // -------------------------------------------------------------------------
 
+    //TODO optimize when all options in dimensions are selected
+    
     @Async
     public Future<Map<String, Double>> getAggregatedDataValueTotals( DataQueryParams params )
     {
@@ -82,14 +86,28 @@ public class JdbcAnalyticsManager
         
         String periodType = PeriodType.getPeriodTypeFromIsoString( params.getPeriods().iterator().next() ).getName().toLowerCase();
         
-        final String sql = 
-            "SELECT dataelement, 0 as categoryoptioncombo, " + 
-            periodType + " as period, uidlevel" + level + " as organisationunit, SUM(value) as value " +
+        List<String> dimensions = params.getDimensionNames();        
+        List<String> extraDimensions = params.getDynamicDimensionNames();
+        
+        String sql = 
+            "SELECT " + dimensions.get( 0 ) + ", " + 
+            dimensions.get( 1 ) + ", " +
+            periodType + " as " + dimensions.get( 2 ) + ", " + 
+            "uidlevel" + level + " as " + dimensions.get( 3 ) + ", " +
+            getCommaDelimitedString( extraDimensions, false, true ) +
+            "SUM(value) as value " +
+            
             "FROM " + params.getTableName() + " " +
-            "WHERE dataelement IN ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
+            "WHERE " + dimensions.get( 0 ) + " IN ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
             "AND " + periodType + " IN ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
             "AND uidlevel" + level + " IN ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
-            "GROUP BY dataelement, " + periodType + ", uidlevel" + level;
+            getExtraDimensionQuery( params ) +
+        
+            "GROUP BY " + dimensions.get( 0 ) + ", " + 
+            dimensions.get( 1 ) + ", " +
+            periodType + ", " + 
+            "uidlevel" + level +
+            getCommaDelimitedString( extraDimensions, true, false );
 
         log.info( sql );
         
@@ -99,17 +117,38 @@ public class JdbcAnalyticsManager
         
         while ( rowSet.next() )
         {
-            String key = 
-                rowSet.getString( "dataelement" ) + SEP +
-                rowSet.getString( "categoryoptioncombo" ) + SEP +
-                rowSet.getString( "period" ) + SEP +
-                rowSet.getString( "organisationunit" );
+            StringBuilder key = new StringBuilder();
+            
+            for ( String dim : dimensions )
+            {
+                key.append( rowSet.getString( dim ) + SEP );
+            }
+            
+            key.deleteCharAt( key.length() - SEP.length() );
             
             Double value = rowSet.getDouble( "value" );
             
-            map.put( key, value );
+            map.put( key.toString(), value );
         }
         
         return new AsyncResult<Map<String, Double>>( map );
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String getExtraDimensionQuery( DataQueryParams params )
+    {
+        Map<String, List<String>> dimensionValues = params.getDimensions();
+        
+        String sql = "";
+        
+        for ( String dim : params.getDynamicDimensionNames() )
+        {
+            sql += "AND " + dim + " IN ( " + getQuotedCommaDelimitedString( dimensionValues.get( dim ) ) + " ) ";
+        }
+        
+        return sql;            
+    }    
 }
