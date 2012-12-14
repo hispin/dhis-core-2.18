@@ -77,7 +77,9 @@ public class AuthenticationListener
 
             WebAuthenticationDetails details = (WebAuthenticationDetails) event.getAuthentication().getDetails();
             
-            userAuditService.registerLoginSuccess( username, details.getRemoteAddress() );
+            String ip = details != null ? details.getRemoteAddress() : "";
+            
+            userAuditService.registerLoginSuccess( username, ip );
             
             userService.setLastLogin( username );
         }
