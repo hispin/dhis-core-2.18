@@ -259,7 +259,7 @@ public class ChartPluginController
 
             for ( Indicator indicator : indicators )
             {
-                chartValue.getData().add( indicator.getDisplayShortName() );
+                chartValue.getData().add( indicator.getName() );
             }
 
             Collection<AggregatedIndicatorValue> indicatorValues = useGroupSets ?
@@ -299,7 +299,7 @@ public class ChartPluginController
 
             for ( DataElement element : dataElements )
             {
-                chartValue.getData().add( element.getDisplayShortName() );
+                chartValue.getData().add( element.getName() );
             }
 
             Collection<AggregatedDataValue> dataValues = useGroupSets ?
@@ -344,7 +344,7 @@ public class ChartPluginController
             
             for ( DataSet dataSet : dataSets )
             {
-                chartValue.getData().add( dataSet.getDisplayShortName() );
+                chartValue.getData().add( dataSet.getName() );
             }
             
             Collection<DataSetCompletenessResult> dataSetValues = useGroupSets ?

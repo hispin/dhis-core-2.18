@@ -4723,7 +4723,7 @@ Ext.onReady( function() {
                                                     }
                                                 ],
                                                 setHeightInMenu: function(store) {
-                                                    var h = store.getCount() * 24,
+                                                    var h = store.getCount() * 23,
                                                         sh = DV.util.viewport.getSize().y * 0.6;
                                                     this.setHeight(h > sh ? sh : h);
                                                     this.doLayout();
@@ -4740,6 +4740,9 @@ Ext.onReady( function() {
                                             }
                                         ],
                                         listeners: {
+											afterrender: function() {
+												this.getEl().addCls('dv-toolbar-btn-menu');
+											},
                                             show: function() {
                                                 if (!DV.store.favorite.isloaded) {
                                                     DV.store.favorite.load({scope: this, callback: function() {
@@ -4809,7 +4812,12 @@ Ext.onReady( function() {
                                                     b.execute(DV.conf.finals.image.pdf);
                                                 }
                                             }
-                                        ]
+                                        ],
+                                        listeners: {
+											afterrender: function() {
+												this.getEl().addCls('dv-toolbar-btn-menu');
+											}
+										}
                                     });
                                 }
                             }
@@ -4844,95 +4852,94 @@ Ext.onReady( function() {
 								});
 							},
 							handler: function() {
-								if (DV.cmp.share.window) {
-									DV.cmp.share.window.setTitle(this.getTitle());
-									DV.cmp.share.window.show();
-								}
-								else {
-									DV.cmp.share.window = Ext.create('Ext.window.Window', {
-										title: this.getTitle(),
-										layout: 'fit',
-										iconCls: 'dv-window-title-interpretation',
-										width: 500,
-										bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
-										closeAction: 'hide',
-										resizable: true,
-										modal: true,
+								DV.cmp.share.window = Ext.create('Ext.window.Window', {
+									title: this.getTitle(),
+									layout: 'fit',
+									iconCls: 'dv-window-title-interpretation',
+									width: 500,
+									bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
+									resizable: true,
+									modal: true,
+									items: [
+										{
+											xtype: 'textarea',
+											cls: 'dv-textarea',
+											height: 130,
+											fieldStyle: 'padding-left: 4px; padding-top: 3px',
+											emptyText: DV.i18n.write_your_interpretation,
+											enableKeyEvents: true,
+											listeners: {
+												added: function() {
+													DV.cmp.share.textarea = this;
+												},
+												keyup: function() {
+													DV.cmp.share.button.xable();
+												}
+											}
+										},
+										{
+											xtype: 'panel',
+											html: '<b>Link: </b>' + DV.init.contextPath + '/dhis-web-visualizer/app/index.html?id=' + DV.c.currentFavorite.id,
+											style: 'padding-top: 9px; padding-bottom: 6px',
+											bodyStyle: 'border: 0 none'
+										}
+									],
+									bbar: {
+										cls: 'dv-toolbar-bbar',
+										defaults: {
+											height: 24
+										},
 										items: [
+											'->',
 											{
-												xtype: 'textarea',
-												cls: 'dv-textarea',
-												height: 130,
-												fieldStyle: 'padding-left: 4px; padding-top: 3px',
-												emptyText: DV.i18n.write_your_interpretation + '...',
-												enableKeyEvents: true,
+												text: DV.i18n.share,
+												disabled: true,
+												xable: function() {
+													if (DV.cmp.share.textarea.getValue()) {
+														this.enable();
+													}
+													else {
+														this.disable();
+													}
+												},
+												handler: function() {
+													if (DV.cmp.share.textarea.getValue() && DV.c.currentFavorite) {
+														Ext.Ajax.request({
+															url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.currentFavorite.id,
+															method: 'POST',
+															params: DV.cmp.share.textarea.getValue(),
+															headers: {'Content-Type': 'text/html'},
+															success: function() {
+																DV.cmp.share.textarea.reset();
+																DV.cmp.share.button.disable();
+																DV.cmp.share.window.hide();
+																DV.util.notification.interpretation(DV.i18n.interpretation_was_shared + '.');
+															}
+														});
+													}
+												},
 												listeners: {
 													added: function() {
-														DV.cmp.share.textarea = this;
-													},
-													keyup: function() {
-														DV.cmp.share.button.xable();
+														DV.cmp.share.button = this;
 													}
 												}
-											},
-											{
-												xtype: 'panel',
-												html: '<b>Link: </b>' + DV.init.contextPath + '/dhis-web-visualizer/app/index.html?id=' + DV.c.currentFavorite.id,
-												style: 'padding-top: 9px; padding-bottom: 6px',
-												bodyStyle: 'border: 0 none'
 											}
-										],
-										bbar: {
-											cls: 'dv-toolbar-bbar',
-											defaults: {
-												height: 24
-											},
-											items: [
-												'->',
-												{
-													text: DV.i18n.share,
-													disabled: true,
-													xable: function() {
-														if (DV.cmp.share.textarea.getValue()) {
-															this.enable();
-														}
-														else {
-															this.disable();
-														}
-													},
-													handler: function() {
-														if (DV.cmp.share.textarea.getValue() && DV.c.currentFavorite) {
-															Ext.Ajax.request({
-																url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.currentFavorite.id,
-																method: 'POST',
-																params: DV.cmp.share.textarea.getValue(),
-																headers: {'Content-Type': 'text/html'},
-																success: function() {
-																	DV.cmp.share.textarea.reset();
-																	DV.cmp.share.button.disable();
-																	DV.cmp.share.window.hide();
-																	DV.util.notification.interpretation(DV.i18n.interpretation_was_shared + '.');
-																}
-															});
-														}
-													},
-													listeners: {
-														added: function() {
-															DV.cmp.share.button = this;
-														}
-													}
-												}
-											]
+										]
+									},
+									listeners: {
+										show: function() {
+											this.setPosition(this.getPosition()[0], 100);
 										},
-										listeners: {
-											hide: function() {
-												document.body.oncontextmenu = function(){return false;};
-											}
+										hide: function() {
+											document.body.oncontextmenu = function(){return false;};
+										},
+										destroy: function() {
+											DV.cmp.share.window = null;
 										}
-									}).show();
+									}
+								}).show();
 
-									document.body.oncontextmenu = true;
-								}
+								document.body.oncontextmenu = true;
 							},
                             listeners: {
                                 added: function() {

@@ -23,34 +23,77 @@
 
 mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
 
-    colors: [
-        new mapfish.ColorRgb(120, 120, 0),
-        new mapfish.ColorRgb(255, 0, 0)
-    ],
-
+    colors: [new mapfish.ColorRgb(120, 120, 0), new mapfish.ColorRgb(255, 0, 0)],
     method: mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS,
-
     numClasses: 5,
-	
 	minSize: 3,
-	
 	maxSize: 20,
-	
 	minVal: null,
-	
 	maxVal: null,
-
     defaultSymbolizer: {'fillOpacity': 1},
-
     classification: null,
-
     colorInterpolation: null,
-    
-    widget: null,
+
+    gis: null,
+    view: null,
+    featureStore: Ext.create('Ext.data.Store', {
+		fields: ['id', 'name'],
+		features: [],
+		loadFeatures: function(features) {
+			if (features && features.length) {
+				var data = [];
+				for (var i = 0; i < features.length; i++) {
+					data.push([features[i].attributes.id, features[i].attributes.name]);
+				}
+				this.loadData(data);
+				this.sortStore();
+
+				this.features = features;
+			}
+			else {
+				this.removeAll();
+			}
+		},
+		sortStore: function() {
+			this.sort('name', 'ASC');
+		}
+	}),
 
     initialize: function(map, options) {
         mapfish.GeoStat.prototype.initialize.apply(this, arguments);
     },
+
+    getLoader: function() {
+		return GIS.core.LayerLoaderBoundary(this.gis, this.layer);
+	},
+
+	reset: function() {
+		this.layer.destroyFeatures();
+
+		if (this.layer.widget) {
+			this.layer.widget.reset();
+		}
+	},
+
+	extendView: function(view, config) {
+		view = view || this.view;
+
+		view.organisationUnitLevel = config.organisationUnitLevel || view.organisationUnitLevel;
+		view.parentOrganisationUnit = config.parentOrganisationUnit || view.parentOrganisationUnit;
+		view.parentLevel = config.parentLevel || view.parentLevel;
+		view.parentGraph = config.parentGraph || view.parentGraph;
+		view.opacity = config.opacity || view.opacity;
+
+		return view;
+	},
+
+	getLegendConfig: function() {
+		return;
+	},
+
+	getImageLegendConfig: function() {
+		return;
+	},
 
     updateOptions: function(newOptions) {
         var oldOptions = OpenLayers.Util.extend({}, this.options);
@@ -59,21 +102,11 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
             this.setClassification();
         }
     },
-    
+
     createColorInterpolation: function() {
-        var numColors = this.classification.bins.length,
-			tmpView = this.widget.tmpView;
-        
-        tmpView.extended.imageLegendConfig = [];
-			
+        var numColors = this.classification.bins.length;
+
 		this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
-            
-        for (var i = 0; i < this.classification.bins.length; i++) {
-            tmpView.extended.imageLegendConfig.push({
-                label: this.classification.bins[i].label.replace('&nbsp;&nbsp;', ' '),
-                color: this.colorInterpolation[i].toHexString()
-            });
-        }
     },
 
     setClassification: function() {
@@ -81,7 +114,7 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
         for (var i = 0; i < this.layer.features.length; i++) {
             values.push(this.layer.features[i].attributes[this.indicator]);
         }
-        
+
         var distOptions = {
             labelGenerator: this.options.labelGenerator
         };
@@ -93,8 +126,7 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
         this.classification = dist.classify(
             this.method,
             this.numClasses,
-            null,
-            this.widget
+            null
         );
 
         this.createColorInterpolation();
@@ -102,7 +134,7 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
 
     applyClassification: function(options) {
         this.updateOptions(options);
-        
+
 		var calculateRadius = OpenLayers.Function.bind(
 			function(feature) {
 				var value = feature.attributes[this.indicator];
@@ -112,9 +144,9 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
             },	this
 		);
 		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});
-    
+
         var boundsArray = this.classification.getBoundsArray();
-        var rules = new Array(boundsArray.length-1);        
+        var rules = new Array(boundsArray.length-1);
         for (var i = 0; i < boundsArray.length-1; i++) {
             var rule = new OpenLayers.Rule({
                 symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
@@ -133,51 +165,7 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
     },
 
     updateLegend: function() {
-        if (!this.legendDiv) {
-            return;
-        }
-        
-        var config = this.widget.getLegendConfig(),
-			element,
-			legendNames = this.widget.tmpView.extended.legendNames;
-			
-        this.legendDiv.update("");
-        
-        for (var key in config) {
-			if (config.hasOwnProperty(key)) {
-				element = document.createElement("div");
-				element.style.height = "14px";
-				element.innerHTML = config[key];
-				this.legendDiv.appendChild(element);
-				
-				element = document.createElement("div");
-				element.style.clear = "left";
-				this.legendDiv.appendChild(element);
-			}
-        }
-        
-        element = document.createElement("div");
-        element.style.width = "1px";
-        element.style.height = "5px";
-        this.legendDiv.appendChild(element);
-        
-		for (var i = 0; i < this.classification.bins.length; i++) {
-			var element = document.createElement("div");
-			element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-			element.style.width = "30px";
-			element.style.height = "15px";
-			element.style.cssFloat = "left";
-			element.style.marginRight = "8px";
-			this.legendDiv.appendChild(element);
 
-			element = document.createElement("div");
-			element.innerHTML = this.classification.bins[i].label;
-			this.legendDiv.appendChild(element);
-
-			element = document.createElement("div");
-			element.style.clear = "left";
-			this.legendDiv.appendChild(element);
-		}
     },
 
     CLASS_NAME: "mapfish.GeoStat.Boundary"

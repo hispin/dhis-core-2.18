@@ -1,13 +1,13 @@
 /* General
  * OpenLayers
- * 
+ *
  * Panel
  * Form
  * Button
  * Toolbar
  * Menu
  * Treepanel
- * Colorpicker 
+ * Colorpicker
  * Window
  * Grid
  * TextField
@@ -73,9 +73,9 @@ html * {
     color: #fff;
     width: 24px;
     height: 24px;
-    opacity: 0.85;
-    filter: alpha(opacity=85);
-	-ms-filter: "alpha(opacity=85)";
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+	-ms-filter: "alpha(opacity=75)";
     cursor: pointer;
     cursor: hand;
     text-align: center;
@@ -139,8 +139,8 @@ html * {
 
 /* GIS */
 
-/* Panel */	
-	
+/* Panel */
+
 .x-panel-header	{ /* Panel header */
 	height: 30px;
 	padding: 7px 4px 4px 7px;
@@ -238,8 +238,8 @@ html * {
 		.gis-toolbar-btn-menu .x-panel-body-default { /* Menu border */
 			border-radius: 2px;
 			border-color: #999;
-		}		
-		
+		}
+
 /* Menu */
 
 .x-menu-body { /* General menu */
@@ -257,7 +257,7 @@ html * {
 		padding-right: 8px;
 		padding-bottom: 6px;
 		padding-left: 30px;
-	}	
+	}
 	.x-menu-item-active .x-menu-item-link { /* Menu item hover */
 		background: #ddd;
 		border-color: #ddd;
@@ -271,21 +271,21 @@ html * {
 		border-bottom-left-radius: 2px;
 		border-bottom-right-radius: 2px;
 	}
-	
+
 	.gis-menu-item-icon-edit,
 	.gis-menu-item-icon-clear,
 	.gis-menu-item-icon-labels,
 	.gis-menu-item-icon-filter,
 	.gis-menu-item-icon-search,
-	
+
 	.gis-menu-item-icon-drill,
 	.gis-menu-item-icon-float,
 	.gis-menu-item-icon-information,
 	.gis-menu-item-icon-relocate,
-	
+
 	.gis-menu-item-icon-favorite {
 		left: 6px;
-	}	
+	}
 	.gis-menu-item-icon-edit {
 		background: url('../images/edit_16.png') no-repeat;
 	}
@@ -301,7 +301,7 @@ html * {
 	.gis-menu-item-icon-search {
 		background: url('../images/search_16.png') no-repeat;
 	}
-	
+
 	.gis-menu-item-icon-drill {
 		background: url('../images/drill_16.png') no-repeat;
 	}
@@ -314,11 +314,11 @@ html * {
 	.gis-menu-item-icon-relocate {
 		background: url('../images/relocate_16.png') no-repeat;
 	}
-	
+
 	.gis-menu-item-icon-favorite {
 		background: url('../images/favorite_16.png') no-repeat;
 	}
-	
+
 	.x-menu-item-separator {
 		height: 1px;
 	}
@@ -326,7 +326,7 @@ html * {
 		font-size: 10px !important;
 	}
 
-	
+
 /* Treepanel */
 
 .x-tree-panel .x-grid-row .x-grid-cell-inner { /* Tree font */
@@ -481,7 +481,7 @@ html * {
 }
 .gis-grid .x-grid-header-ct {
 	border-bottom-width: 1px !important;
-	border-bottom-color: #d0d0d0;	
+	border-bottom-color: #d0d0d0;
 }
 .gis-grid .x-grid-body {
 	border-top: 0 none !important;

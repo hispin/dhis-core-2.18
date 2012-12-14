@@ -22,8 +22,8 @@ Ext.define('Ext.ux.button.ColorButton', {
 	menu: {},
 	menuHandler: function() {},
 	initComponent: function() {
-		var that = this;			
-		this.defaultValue = this.value;			
+		var that = this;
+		this.defaultValue = this.value;
 		this.menu = Ext.create('Ext.menu.Menu', {
 			showSeparator: false,
 			items: {
@@ -47,250 +47,10 @@ Ext.define('Ext.ux.button.ColorButton', {
 	}
 });
 
-/* LayerItemPanel */
-
-Ext.define('Ext.ux.panel.LayerItemPanel', {
-	extend: 'Ext.panel.Panel',
-	alias: 'widget.layeritempanel',
-	layout: 'column',
-	layer: null,
-	checkbox: null,
-	numberField: null,
-	imageUrl: null,
-	text: null,
-	width: 184,
-	height: 22,
-	value: false,
-	opacity: 0.8,
-	getValue: function() {
-		return this.checkbox.getValue();
-	},
-	setValue: function(value, opacity) {
-		this.checkbox.setValue(value);
-		this.numberField.setDisabled(!value);
-		this.layer.setVisibility(value);
-		
-		if (opacity === 0) {
-			this.numberField.setValue(0);
-			this.setOpacity(0.01);
-		}
-		else if (opacity > 0) {
-			this.numberField.setValue(opacity * 100);
-			this.setOpacity(opacity);
-		}
-		else {
-			this.numberField.setValue(this.opacity * 100);
-			this.setOpacity(this.opacity);
-		}
-	},
-	getOpacity: function() {
-		return this.opacity;
-	},
-	setOpacity: function(opacity) {
-		this.opacity = opacity === 0 ? 0.01 : opacity;
-		this.layer.setLayerOpacity(this.opacity);
-	},
-	disableItem: function() {
-		this.checkbox.setValue(false);
-		this.numberField.disable();
-		this.layer.setVisibility(false);
-	},
-	updateItem: function(value) {
-		this.numberField.setDisabled(!value);
-		this.layer.setVisibility(value);
-	},
-	initComponent: function() {
-		var that = this,
-			image;
-		
-		this.checkbox = Ext.create('Ext.form.field.Checkbox', {
-			width: 14,
-			checked: this.value,
-			listeners: {
-				change: function(chb, value) {
-					if (value && that.layer.layerType === GIS.conf.finals.layer.type_base) {
-						var layers = GIS.util.map.getLayersByType(GIS.conf.finals.layer.type_base),
-							layer;
-						for (var i = 0; i < layers.length; i++) {
-							layer = layers[i];
-							if (layer !== that.layer) {
-								layer.item.checkbox.suppressChange = true;
-								layer.item.disableItem();
-							}
-						}
-					}
-					that.updateItem(value);
-					
-					GIS.cmp.downloadButton.xable();
-				}
-			}
-		});
-		
-		image = Ext.create('Ext.Img', {
-			width: 14,
-			height: 14,
-			src: this.imageUrl
-		});
-		
-		this.numberField = Ext.create('Ext.form.field.Number', {
-			cls: 'gis-numberfield',
-			width: 47,
-			height: 18,
-			minValue: 0,
-			maxValue: 100,
-			value: this.opacity * 100,
-			allowBlank: false,
-			disabled: this.numberFieldDisabled,
-			listeners: {
-				change: function() {
-					var value = this.getValue(),
-						opacity = value === 0 ? 0.01 : value/100;
-					
-					that.setOpacity(opacity);
-				}
-			}
-		});
-		
-		this.items = [
-			{
-				width: this.checkbox.width + 6,
-				items: this.checkbox
-			},
-			{
-				width: image.width + 5,
-				items: image,
-				bodyStyle: 'padding-top: 4px'
-			},
-			{
-				width: 98,
-				html: this.text,
-				bodyStyle: 'padding-top: 4px'
-			},
-			{
-				width: this.numberField.width,
-				items: this.numberField
-			}
-		];		
-		
-		this.layer.setOpacity(this.opacity);
-		
-		this.callParent();
-	}
-});
-
-/* CheckTextNumber */
-
-Ext.define('Ext.ux.panel.CheckTextNumber', {
-	extend: 'Ext.panel.Panel',
-	alias: 'widget.checktextnumber',
-	layout: 'column',
-	layer: null,
-	checkbox: null,
-	text: null,
-	numberField: null,
-	width: 184,
-	height: 22,
-	value: false,
-	number: 5,
-	getValue: function() {
-		return this.checkbox.getValue();
-	},
-	getNumber: function() {
-		return this.numberField.getValue();
-	},
-	setValue: function(value, number) {
-		if (value) {
-			this.checkbox.setValue(value);
-		}
-		if (number) {
-			this.numberField.setValue(number);
-		}
-	},
-	enable: function() {
-		this.numberField.enable();
-	},
-	disable: function() {
-		this.numberField.disable();
-	},
-	reset: function() {
-		this.checkbox.setValue(false);
-		this.numberField.setValue(this.number);
-		this.numberField.disable();
-	},
-	initComponent: function() {
-		var that = this;
-		
-		this.checkbox = Ext.create('Ext.form.field.Checkbox', {
-			width: 196,
-			boxLabel: this.text,
-			checked: this.value,
-			disabled: this.disabled,
-			listeners: {
-				change: function(chb, value) {
-					if (value) {
-						that.enable();
-					}
-					else {
-						that.disable();
-					}
-				}
-			}
-		});
-		
-		this.numberField = Ext.create('Ext.form.field.Number', {
-			cls: 'gis-numberfield',
-			fieldStyle: 'border-top-left-radius: 1px; border-bottom-left-radius: 1px',
-			style: 'padding-bottom: 3px',
-			width: 60,
-			height: 21,
-			minValue: 0,
-			maxValue: 10000,
-			value: this.number,
-			allowBlank: false,
-			disabled: true
-		});
-		
-		this.items = [
-			{
-				width: this.checkbox.width + 6,
-				items: this.checkbox
-			},
-			{
-				width: this.numberField.width,
-				items: this.numberField
-			}
-		];
-		
-		this.callParent();
-	}
-});
-
 /* MultiSelect */
 
 Ext.define("Ext.ux.layout.component.form.MultiSelect",{extend:"Ext.layout.component.field.Field",alias:["layout.multiselectfield"],type:"multiselectfield",defaultHeight:200,sizeBodyContents:function(a,b){var c=this;if(!Ext.isNumber(b)){b=c.defaultHeight}c.owner.panel.setSize(a,b)}});
 
-/*
-This file is part of Ext JS 4
-Copyright (c) 2011 Sencha Inc
-Contact: http://www.sencha.com/contact
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file. Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-*/
-/**
- * @class Ext.ux.form.MultiSelect
- * @extends Ext.form.field.Base
- * A control that allows selection and form submission of multiple list items.
- *
- * @history
- * 2008-06-19 bpm Original code contributed by Toby Stuart (with contributions from Robert Williams)
- * 2008-06-19 bpm Docs and demo code clean up
- *
- * @constructor
- * Create a new MultiSelect
- * @param {Object} config Configuration options
- * @xtype multiselect
- */
 Ext.define('Ext.ux.form.MultiSelect', {
     extend: 'Ext.form.field.Base',
     alternateClassName: 'Ext.ux.Multiselect',
@@ -419,7 +179,7 @@ Ext.define('Ext.ux.form.MultiSelect', {
         me.mon(selModel, {
             selectionChange: me.onSelectionChange,
             scope: me
-        });        
+        });
         panel = me.panel = Ext.create('Ext.panel.Panel', {
             title: me.listTitle,
             tbar: me.tbar,
