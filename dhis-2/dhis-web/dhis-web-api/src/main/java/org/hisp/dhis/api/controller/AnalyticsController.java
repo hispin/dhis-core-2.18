@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics;
+package org.hisp.dhis.api.controller;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,12 +27,45 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-import java.util.concurrent.Future;
+import java.io.InputStream;
 
-public interface AnalyticsManager
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+@RequestMapping( "/analytics" )
+public class AnalyticsController
 {
-    static final String SEP = "-";
+    @Autowired
+    private AnalyticsService analyticsService;
     
-    Future<Map<String, Double>> getAggregatedDataValueTotals(  DataQueryParams params );
+    @Autowired
+    private ContextUtils contextUtils;
+    
+    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+    public String get( InputStream in,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+        
+        Grid grid = analyticsService.getAggregatedDataValueTotals( params );
+        
+        model.addAttribute( "model", grid );
+        model.addAttribute( "viewClass", "detailed" );        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO
+        
+        return "grid";
+    }
 }
