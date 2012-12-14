@@ -63,7 +63,7 @@ public class CreateDataElementGroupSetTableStatement
         for ( DataElementGroupSet groupSet : groupSets )
         {
             statement += CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
-            statement += "dgs_" + groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
+            statement += groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         
         statement += "PRIMARY KEY ( dataelementid ) )";

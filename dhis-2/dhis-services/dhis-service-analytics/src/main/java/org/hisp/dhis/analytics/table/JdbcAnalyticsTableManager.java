@@ -37,6 +37,9 @@ import java.util.concurrent.Future;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
+import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -71,10 +74,13 @@ public class JdbcAnalyticsTableManager
 
     public static final String PREFIX_ORGUNITGROUPSET = "ougs_";
     public static final String PREFIX_ORGUNITLEVEL = "uidlevel";
-    public static final String PREFIX_INDEX = "index_";
+    public static final String PREFIX_INDEX = "in_";
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private DataElementService dataElementService;
     
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -113,7 +119,7 @@ public class JdbcAnalyticsTableManager
     {
         for ( String column : columns )
         {        
-            final String index = PREFIX_INDEX + column + "_" + tableName;
+            final String index = PREFIX_INDEX + column + "_" + tableName + "_" + CodeGenerator.generateCode();
             
             final String sql = "create index " + index + " on " + tableName + " (" + column + ")";
                 
@@ -175,6 +181,7 @@ public class JdbcAnalyticsTableManager
         
         select += valueExpression + " " +
             "from datavalue dv " +
+            "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _period_no_disaggregation_structure ps on dv.periodid=ps.periodid " +
@@ -203,16 +210,24 @@ public class JdbcAnalyticsTableManager
     {
         List<String[]> columns = new ArrayList<String[]>();
 
+        Collection<DataElementGroupSet> dataElementGroupSets =
+            dataElementService.getCompulsoryDataElementGroupSets();
+        
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets();
         
         Collection<OrganisationUnitLevel> levels =
             organisationUnitService.getOrganisationUnitLevels();
 
+        for ( DataElementGroupSet groupSet : dataElementGroupSets )
+        {
+            String[] col = { groupSet.getUid(), "character(11)", "degs." + groupSet.getUid() };
+            columns.add( col );
+        }
+        
         for ( OrganisationUnitGroupSet groupSet : orgUnitGroupSets )
         {
-            String column = PREFIX_ORGUNITGROUPSET + groupSet.getUid();
-            String[] col = { column, "character(11)", "ougs." + column };
+            String[] col = { groupSet.getUid(), "character(11)", "ougs." + groupSet.getUid() };
             columns.add( col );
         }
         

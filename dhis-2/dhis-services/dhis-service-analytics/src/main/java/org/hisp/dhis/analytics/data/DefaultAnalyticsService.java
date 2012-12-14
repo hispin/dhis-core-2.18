@@ -46,6 +46,7 @@ public class DefaultAnalyticsService
     implements AnalyticsService
 {
     private static final String VALUE_NAME = "value";
+    private static final String VALUE_HEADER_NAME = "Value";
     
     //TODO period aggregation for multiple period types
     //TODO hierarchy aggregation for org units at multiple levels
@@ -63,9 +64,10 @@ public class DefaultAnalyticsService
         
         for ( String col : params.getDimensionNames() )
         {
-            grid.addHeader( new GridHeader( col, false, true ) );
-            grid.addHeader( new GridHeader( VALUE_NAME, false, false ) );
+            grid.addHeader( new GridHeader( col, col, String.class.getName(), false, true ) );
         }
+        
+        grid.addHeader( new GridHeader( VALUE_NAME, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
         
         for ( Map.Entry<String, Double> entry : map.entrySet() )
         {
