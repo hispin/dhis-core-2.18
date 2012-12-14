@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
-  xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
-http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
   <!-- Store definitions -->
-  
+
   <bean id="smsCommandService" class="org.hisp.dhis.smscommand.DefaultSMSCommandService">
     <property name="smsCommandStore" ref="smsCommandStore" />
   </bean>
-  
-   <bean id="smsCommandStore" class="org.hisp.dhis.smscommand.HibernateSMSCommandStore">
-    <property name="sessionFactory" ref="sessionFactory" /> 
+
+  <bean id="smsCommandStore" class="org.hisp.dhis.smscommand.HibernateSMSCommandStore">
+    <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
@@ -29,7 +27,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.dataelement.DataElementStore" class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElement" />
     <property name="sessionFactory" ref="sessionFactory" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>
 
@@ -54,7 +52,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.datavalue.DataValueStore" class="org.hisp.dhis.datavalue.hibernate.HibernateDataValueStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.indicator.IndicatorStore" class="org.hisp.dhis.indicator.hibernate.HibernateIndicatorStore">
@@ -103,7 +101,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore" class="org.hisp.dhis.dataset.hibernate.HibernateCompleteDataSetRegistrationStore">
+  <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore"
+    class="org.hisp.dhis.dataset.hibernate.HibernateCompleteDataSetRegistrationStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
@@ -138,19 +137,22 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionStore" class="org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionStore"
+    class="org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOption" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboStore"
+    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryCombo" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore"
+    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
@@ -162,27 +164,31 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitLevelStore" class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitLevelStore">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitLevelStore"
+    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitLevelStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitLevel" />
     <property name="sessionFactory" ref="sessionFactory" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore" class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore"
+    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnit" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore" class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupStore">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"
+    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"
+    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
@@ -190,7 +196,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.dataanalysis.DataAnalysisStore" class="org.hisp.dhis.dataanalysis.jdbc.JdbcDataAnalysisStore">
     <property name="statementBuilder" ref="statementBuilder" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.datavalue.DataValueAuditStore" class="org.hisp.dhis.datavalue.hibernate.HibernateDataValueAuditStore">
@@ -200,12 +206,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.user.UserStore" class="org.hisp.dhis.user.hibernate.HibernateUserStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.user.User" />
-	<property name="cacheable" value="true" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserCredentialsStore" class="org.hisp.dhis.user.hibernate.HibernateUserCredentialsStore">
     <property name="sessionFactory" ref="sessionFactory" />
-	<property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
@@ -224,10 +230,11 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.aggregation.AggregatedDataValueStore" class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedDataValueStore">
     <property name="statementManager" ref="statementManager" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <bean id="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueStore" class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedOrgUnitDataValueStore">
+  <bean id="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueStore"
+    class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedOrgUnitDataValueStore">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
@@ -240,7 +247,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="clazz" value="org.hisp.dhis.message.MessageConversation" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
-    <property name="statementBuilder" ref="statementBuilder"/>
+    <property name="statementBuilder" ref="statementBuilder" />
     <property name="cacheable" value="true" />
   </bean>
 
@@ -296,26 +303,26 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapViewStore"
-      class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapView" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapLayerStore"
-      class="org.hisp.dhis.mapping.hibernate.HibernateMapLayerStore">
+    class="org.hisp.dhis.mapping.hibernate.HibernateMapLayerStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapLayer" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapLegendStore"
-      class="org.hisp.dhis.mapping.hibernate.HibernateMapLegendStore">
+    class="org.hisp.dhis.mapping.hibernate.HibernateMapLegendStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapLegend" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapLegendSetStore"
-      class="org.hisp.dhis.mapping.hibernate.HibernateMapLegendSetStore">
+    class="org.hisp.dhis.mapping.hibernate.HibernateMapLegendSetStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapLegendSet" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
@@ -368,7 +375,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" class="org.hisp.dhis.dataset.DefaultCompleteDataSetRegistrationService">
+  <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"
+    class="org.hisp.dhis.dataset.DefaultCompleteDataSetRegistrationService">
     <property name="completeDataSetRegistrationStore" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
@@ -399,8 +407,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
-	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
@@ -419,7 +427,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="versionService" ref="org.hisp.dhis.version.VersionService" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"
+    class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
     <property name="organisationUnitGroupStore" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore" />
     <property name="organisationUnitGroupSetStore" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
@@ -431,8 +440,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" class="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService">
     <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.DataAnalysisStore" />
-	<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
-	<property name="batchHandlerFactory" ref="batchHandlerFactory" />
+    <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
+    <property name="batchHandlerFactory" ref="batchHandlerFactory" />
   </bean>
 
   <bean id="org.hisp.dhis.dataanalysis.FollowupAnalysisService" class="org.hisp.dhis.dataanalysis.FollowupAnalysisService">
@@ -475,7 +484,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.user.UserService" class="org.hisp.dhis.user.DefaultUserService">
     <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-	<property name="userCredentialsStore" ref="org.hisp.dhis.user.UserCredentialsStore" />
+    <property name="userCredentialsStore" ref="org.hisp.dhis.user.UserCredentialsStore" />
     <property name="userAuthorityGroupStore" ref="org.hisp.dhis.user.UserAuthorityGroupStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
@@ -496,7 +505,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="aggregatedDataValueStore" ref="org.hisp.dhis.aggregation.AggregatedDataValueStore" />
   </bean>
 
-  <bean id="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService" class="org.hisp.dhis.aggregation.DefaultAggregatedOrgUnitDataValueService">
+  <bean id="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService"
+    class="org.hisp.dhis.aggregation.DefaultAggregatedOrgUnitDataValueService">
     <property name="aggregatedDataValueStore" ref="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueStore" />
   </bean>
 
@@ -507,8 +517,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="emailMessageSender" class="org.hisp.dhis.message.EmailMessageSender">
-	<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-	<property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.concept.ConceptService" class="org.hisp.dhis.concept.DefaultConceptService">
@@ -531,9 +541,9 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="attributeStore" ref="org.hisp.dhis.attribute.AttributeStore" />
     <property name="attributeValueStore" ref="org.hisp.dhis.attribute.AttributeValueStore" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.option.OptionService" class="org.hisp.dhis.option.DefaultOptionService">
-	<property name="optionStore" ref="org.hisp.dhis.option.OptionStore"/>
+    <property name="optionStore" ref="org.hisp.dhis.option.OptionStore" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MappingService" class="org.hisp.dhis.mapping.DefaultMappingService">
@@ -621,7 +631,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.setting.StyleManager" class="org.hisp.dhis.setting.DefaultStyleManager">
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="defaultStyle" value="light_blue" />
     <property name="styles">
       <map>
@@ -652,45 +662,45 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
       </map>
     </property>
   </bean>
-  
-  <bean id="org.hisp.dhis.common.IdentifiableObjectManager" class="org.hisp.dhis.common.DefaultIdentifiableObjectManager"/>  
+
+  <bean id="org.hisp.dhis.common.IdentifiableObjectManager" class="org.hisp.dhis.common.DefaultIdentifiableObjectManager" />
 
   <bean id="org.hisp.dhis.help.HelpManager" class="org.hisp.dhis.help.DefaultHelpManager" />
-  
+
   <!-- I18nService -->
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
     <property name="translationService" ref="org.hisp.dhis.translation.TranslationService" />
-	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-	<property name="locales">
-	<list>
-	  <value>af</value>
-	  <value>ar</value>
-	  <value>bi</value>
-	  <value>am</value>
-	  <value>de</value>
-	  <value>en</value>
-	  <value>es</value>
-	  <value>fa</value>
-	  <value>fr</value>
-	  <value>gu</value>
-	  <value>hi</value>
-	  <value>id</value>
-	  <value>it</value>
-	  <value>my</value>
-	  <value>nl</value>
-	  <value>no</value>
-	  <value>ps</value>
-	  <value>pt</value>
-	  <value>ru</value>
-	  <value>rw</value>
-	  <value>sw</value>
-	  <value>vi</value>
-	  <value>zh</value>
-	</list>
-	</property>
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+    <property name="locales">
+      <list>
+        <value>af</value>
+        <value>ar</value>
+        <value>bi</value>
+        <value>am</value>
+        <value>de</value>
+        <value>en</value>
+        <value>es</value>
+        <value>fa</value>
+        <value>fr</value>
+        <value>gu</value>
+        <value>hi</value>
+        <value>id</value>
+        <value>it</value>
+        <value>my</value>
+        <value>nl</value>
+        <value>no</value>
+        <value>ps</value>
+        <value>pt</value>
+        <value>ru</value>
+        <value>rw</value>
+        <value>sw</value>
+        <value>vi</value>
+        <value>zh</value>
+      </list>
+    </property>
   </bean>
-  
+
   <!-- Startup routine definitions -->
 
   <bean id="org.hisp.dhis.startup.TableAlteror" class="org.hisp.dhis.startup.TableAlteror">
@@ -707,7 +717,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="runlevel" value="1" />
     <property name="skipInTests" value="true" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.common.IdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
     <property name="statementManager" ref="statementManager" />
     <property name="name" value="IdentityPopulator" />
@@ -721,7 +731,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="runlevel" value="2" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" class="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator">
+  <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"
+    class="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
@@ -736,7 +747,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="runlevel" value="3" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <property name="runlevel" value="5" />
     <property name="skipInTests" value="true" />
@@ -776,23 +788,26 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.dataelement.DataElementDeletionHandler" class="org.hisp.dhis.dataelement.DataElementDeletionHandler">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" class="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" class="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
@@ -800,7 +815,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" class="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler">
+  <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler"
+    class="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler">
     <property name="completeDataSetRegistrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
@@ -834,7 +850,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
   </bean>
 
-  <bean id="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" class="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler">
+  <bean id="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler"
+    class="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler">
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
   </bean>
 
@@ -842,15 +859,18 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler" class="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
 
@@ -863,7 +883,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="org.hisp.dhis.user.UserGroupDeletionHandler" class="org.hisp.dhis.user.UserGroupDeletionHandler">
-	<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" class="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler">
@@ -876,35 +896,37 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.user.UserSettingDeletionHandler" class="org.hisp.dhis.user.UserSettingDeletionHandler">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-	<property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
 
   <bean id="org.hisp.dhis.configuration.ConfigurationDeletionHandler" class="org.hisp.dhis.configuration.ConfigurationDeletionHandler">
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.message.MessageConversationDeletionHandler" class="org.hisp.dhis.message.MessageConversationDeletionHandler">
-	<property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.translation.TranslationDeletionHandler" class="org.hisp.dhis.translation.TranslationDeletionHandler">
-	<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService"/>
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.attribute.AttributeValueDeletionHandler" class="org.hisp.dhis.attribute.AttributeValueDeletionHandler">
-	<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" class="org.hisp.dhis.mapping.MapLegendSetDeletionHandler">
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
@@ -912,7 +934,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.mapping.MapViewDeletionHandler" class="org.hisp.dhis.mapping.MapViewDeletionHandler">
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
-  
+
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -943,17 +965,17 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserDeletionHandler" />
-		  <ref local="org.hisp.dhis.user.UserGroupDeletionHandler" />
+          <ref local="org.hisp.dhis.user.UserGroupDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserCredentialsDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
-		  <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />
-		  <ref local="org.hisp.dhis.translation.TranslationDeletionHandler" />
-		  <ref local="org.hisp.dhis.attribute.AttributeValueDeletionHandler" />
-		  <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
+          <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />
+          <ref local="org.hisp.dhis.translation.TranslationDeletionHandler" />
+          <ref local="org.hisp.dhis.attribute.AttributeValueDeletionHandler" />
+          <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
           <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler" />
         </list>
       </list>
@@ -984,7 +1006,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
       <aop:before pointcut="execution( * org.hisp.dhis.attribute.AttributeService.delete*(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegend(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegendSet(..) )" method="intercept" />
-      <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapView(..) )" method="intercept" /> 
+      <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapView(..) )" method="intercept" />
     </aop:aspect>
 
     <!-- <aop:aspect ref="i18nTranslationInterceptor"> <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.get*(..) 

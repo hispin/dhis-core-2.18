@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
 	<bean id="org.hisp.dhis.mobile.caseentry.state.SelectedStateManager"
 		class="org.hisp.dhis.mobile.caseentry.state.DefaultSelectedStateManager">
@@ -59,10 +58,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.mobile.action.ShowSentSMSAction" class="org.hisp.dhis.mobile.action.ShowSentSMSAction"
 		scope="prototype">
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService"></property>
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService"></property>
+		<property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService"/>
+		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 	</bean>
 
 	<!-- Patient Mobile Settings -->
@@ -87,16 +84,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.mobile.action.MobileDataSetListAction"
 		class="org.hisp.dhis.mobile.action.MobileDataSetListAction" scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService" />
-		</property>
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mobile.action.UpdateMobileDataSetAction"
 		class="org.hisp.dhis.mobile.action.UpdateMobileDataSetAction" scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService" />
-		</property>
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<!-- SMS Service Configuration -->
