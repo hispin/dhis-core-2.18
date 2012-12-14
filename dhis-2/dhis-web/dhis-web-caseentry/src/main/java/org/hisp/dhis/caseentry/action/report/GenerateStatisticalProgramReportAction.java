@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -49,10 +51,12 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- *
- * @version GenerateStatisticalProgramReportAction.java 11:13:25 AM Dec 14, 2012 $
+ * 
+ * @version GenerateStatisticalProgramReportAction.java 11:13:25 AM Dec 14, 2012
+ *          $
  */
-public class GenerateStatisticalProgramReportAction implements Action
+public class GenerateStatisticalProgramReportAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -98,6 +102,13 @@ public class GenerateStatisticalProgramReportAction implements Action
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -167,13 +178,13 @@ public class GenerateStatisticalProgramReportAction implements Action
         return total;
     }
 
-    private Map<Integer, Integer> completedMap = new HashMap<Integer, Integer>();
+    private Grid grid;
 
-    public Map<Integer, Integer> getCompletedMap()
+    public Grid getGrid()
     {
-        return completedMap;
+        return grid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -213,21 +224,9 @@ public class GenerateStatisticalProgramReportAction implements Action
 
         if ( orgunitIds.size() > 0 )
         {
-            // ---------------------------------------------------------------------
-            // Program instances for the selected program
-            // ---------------------------------------------------------------------
-
-            total = programInstanceService.countProgramInstances( program, orgunitIds, sDate, eDate );
-
-            for ( ProgramStage programStage : program.getProgramStages() )
-            {
-                int completedNo = programStageInstanceService.getProgramInstancesCount( programStage, orgunitIds,
-                    sDate, eDate );
-                completedMap.put( programStage.getId(), completedNo );
-            }
+            grid = programStageInstanceService.getStatisticalReport( program, orgunitIds, sDate, eDate, i18n, format );
         }
 
         return SUCCESS;
     }
 }
-

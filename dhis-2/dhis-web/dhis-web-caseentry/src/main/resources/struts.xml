@@ -346,8 +346,7 @@
 		<action name="generateStatisticalProgramReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateStatisticalProgramReportAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/statisticalProgramReport.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/statisticalReport.js</param>
+			<param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
 			<param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
 		</action>
 		

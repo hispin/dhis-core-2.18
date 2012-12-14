@@ -86,9 +86,6 @@ public interface ProgramStageInstanceService
      */
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
-   int getProgramInstancesCount( ProgramStage programStage, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate );
-
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
 
     Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
@@ -105,4 +102,7 @@ public interface ProgramStageInstanceService
     void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
 
     Collection<SchedulingProgramObject> getSendMesssageEvents();
+    
+    Grid getStatisticalReport( Program program, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, I18n i18n, I18nFormat format );
 }

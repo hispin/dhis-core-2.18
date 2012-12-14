@@ -188,6 +188,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.DefaultProgramStageInstanceService">
 		<property name="programStageInstanceStore"
 			ref="org.hisp.dhis.program.ProgramStageInstanceStore" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="organisationUnitService"
