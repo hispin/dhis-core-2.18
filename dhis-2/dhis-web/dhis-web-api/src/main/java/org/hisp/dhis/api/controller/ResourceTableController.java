@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.resourcetable.ResourceTableService;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,9 @@ public class ResourceTableController
     @Autowired
     private ResourceTableService resourceTableService;
         
+    @Autowired
+    private SqlViewService sqlViewService;
+    
     @RequestMapping( value = "/analytics", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void analytics( HttpServletResponse response )
@@ -66,6 +70,8 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void resourceTables( HttpServletResponse response )
     {
+        sqlViewService.dropAllSqlViewTables();
+        
         resourceTableService.generateCategoryOptionComboNames();
         resourceTableService.generateCategoryTable();
         resourceTableService.generateDataElementGroupSetTable();
@@ -75,6 +81,8 @@ public class ResourceTableController
         resourceTableService.generateOrganisationUnitStructures();
         resourceTableService.generatePeriodTable( true );
         resourceTableService.generatePeriodTable( false );
+        
+        sqlViewService.createAllViewTables();
         
         ContextUtils.okResponse( response, "All resource tables updated" );
     }
