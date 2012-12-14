@@ -4,7 +4,6 @@
 
 <form id="updateProgramForm" name="updateProgramForm" action="updateProgram.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" >
   <input type="hidden" id="id" name="id" value="$program.id">
-  
   <table id="detailsList">
     <thead>
       <tr>
@@ -37,18 +36,6 @@
 		</tr>
 		
 		<tr>
-			<td><label>$i18n.getString( "events_generated_by_enrollment_date" )</label></td>
-			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type=='3' ) disabled #end ></td>
-			<td></td>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "ignore_overdue_events" )</label></td>
-			<td><input style="margin: 0;"type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true' #if($program.ignoreOverdueEvents=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>></td>
-			<td></td>
-		</tr>
-		
-		<tr>
 			<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,number:true}}"></td>
 			<td></td>
@@ -68,9 +55,22 @@
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
 		
+		
+		<tr>
+			<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
+			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type=='3' ) disabled #end ></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><label>$i18n.getString( "ignore_to_generate_overdue_events" )</label></td>
+			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true' #if($program.ignoreOverdueEvents=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
+			<td></td>
+		</tr>
+		
 		<tr>
 			<td><label>$i18n.getString( "show_incident_date" )</label></td>
-			<td><input style="margin: 0;"type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' #if( $program.type=='3' ) disabled #elseif($program.displayIncidentDate=='true') checked #end></td>
+			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' #if( $program.type=='3' ) disabled #elseif($program.displayIncidentDate=='true') checked #end></td>
 			<td></td>
 		</tr>
 		
