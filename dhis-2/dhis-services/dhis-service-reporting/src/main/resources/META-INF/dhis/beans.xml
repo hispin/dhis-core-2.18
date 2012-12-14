@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:aop="http://www.springframework.org/schema/aop"
-  xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
   <!-- ReportTable -->
 
   <bean id="org.hisp.dhis.reporttable.jdbc.ReportTableManager" class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+	  <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
@@ -77,18 +76,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="dataCompletenessServiceProvider" class="org.hisp.dhis.common.ServiceProvider">
     <property name="services">
       <map>
-        <entry>
-          <key>
-            <value>registration</value>
-          </key>
-          <ref bean="registrationDataCompletenessService" />
-        </entry>
-        <entry>
-          <key>
-            <value>compulsory</value>
-          </key>
-          <ref bean="compulsoryDataCompletenessService" />
-        </entry>
+        <entry key="registration" value-ref="registrationDataCompletenessService" />
+        <entry key="compulsory" value-ref="compulsoryDataCompletenessService" />
       </map>
     </property>
   </bean>
@@ -205,40 +194,22 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="contentProviders">
       <map>
-        <entry>
-          <key>
-            <value>report</value>
-          </key>
+        <entry key="report">
           <ref local="reportContentProvider" />
         </entry>
-        <entry>
-          <key>
-            <value>document</value>
-          </key>
+        <entry key="document">
           <ref local="documentContentProvider" />
         </entry>
-        <entry>
-          <key>
-            <value>report_table</value>
-          </key>
+        <entry key="report_table">
           <ref local="reportTableContentProvider" />
         </entry>
-        <entry>
-          <key>
-            <value>map_view</value>
-          </key>
+        <entry key="map_view">
           <ref local="mapViewContentProvider" />
         </entry>
-        <entry>
-          <key>
-            <value>rss_health</value>
-          </key>
+        <entry key="rss_health">
           <ref local="rssHealthContentProvider" />
         </entry>
-        <entry>
-          <key>
-            <value>rss_diseases</value>
-          </key>
+        <entry key="rss_diseases">
           <ref local="rssDiseasesContentProvider" />
         </entry>
       </map>

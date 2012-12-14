@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
   <bean id="org.hisp.dhis.reporting.action.NoAction" class="org.hisp.dhis.reporting.action.NoAction" />
-  
+
   <!-- Document -->
 
   <bean id="org.hisp.dhis.reporting.document.action.SaveDocumentAction" class="org.hisp.dhis.reporting.document.action.SaveDocumentAction"
@@ -40,7 +39,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
+
   <!-- Charts -->
 
   <bean id="org.hisp.dhis.reporting.chart.action.GenerateChartAction" class="org.hisp.dhis.reporting.chart.action.GenerateChartAction"
@@ -128,7 +127,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
-  
+
   <!-- Report -->
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
@@ -169,12 +168,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction" class="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction"
 	scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />	
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
+
   <!-- PivotTable -->
 
   <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
@@ -187,7 +186,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="pivotTableService" ref="org.hisp.dhis.pivottable.PivotTableService" />
   </bean>
-    
+
   <!-- DataSet Report -->
 
   <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction"
@@ -205,7 +204,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
-  	
+
   <!-- Data completeness -->
 
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
@@ -221,7 +220,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
-  
+
   <!-- Organisation Unit Distribution -->
 
   <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction"
@@ -242,16 +241,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
-  
+
   <!-- Data mart -->
-  
+
   <bean id="org.hisp.dhis.reporting.datamart.action.StartExportAction" class="org.hisp.dhis.reporting.datamart.action.StartExportAction"
 	scope="prototype">
 	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	<property name="scheduler" ref="scheduler"/>
 	<property name="dataMartTask" ref="dataMartLast12MonthsTask"/>
   </bean>
-  
+
   <!-- Export -->
 
   <bean id="org.hisp.dhis.reporting.exp.ExportDataMartAction" class="org.hisp.dhis.reporting.exp.ExportDataMartAction"
