@@ -217,10 +217,6 @@ public class DefaultMessageService
         if ( !conversation.getUserMessages().isEmpty() )
         {
             int id = saveMessageConversation( conversation );
-
-
-            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, conversation.getUsers() );
-
             
             invokeMessageSenders( COMPLETE_SUBJECT, text, sender, new HashSet<User>( conversation.getUsers() ) );
 
@@ -304,7 +300,7 @@ public class DefaultMessageService
     {
         for ( MessageSender messageSender : messageSenders )
         {
-            messageSender.sendMessage( subject, text, sender, users, false );
+            messageSender.sendMessage( subject, text, sender, new HashSet<User>( users ), false );
         }
     }
 
