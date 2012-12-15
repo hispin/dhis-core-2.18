@@ -30,6 +30,7 @@ package org.hisp.dhis.reportsheet.importing.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -75,7 +76,7 @@ public class ViewDataOrganizationGroupAction
             try
             {
                 xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
-                    importReportService.getAllSheet(), orgUnitListingImportItems, true ).getXml();
+                    new HashSet<Integer>( importReportService.getAllSheet() ), orgUnitListingImportItems ).getXml();
             }
             catch ( Exception e )
             {

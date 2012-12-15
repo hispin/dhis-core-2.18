@@ -1,7 +1,7 @@
-package org.hisp.dhis.reportsheet.importing.action;
+package org.hisp.dhis.reportsheet.preview.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,37 +27,62 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-
-import org.hisp.dhis.reportsheet.importitem.ImportItem;
-import org.hisp.dhis.reportsheet.importitem.ImportReport;
-import org.hisp.dhis.reportsheet.importing.ViewDataGeneric;
-import org.hisp.dhis.reportsheet.preview.action.XMLStructureResponseImport;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id
+ * @version $Id$
  */
 
-public class ViewDataNormalAction
-    extends ViewDataGeneric
+public class HSSFHtmlHelper
+    implements HtmlHelper
 {
-    // -------------------------------------------------------------------------
-    // Override abstract method
-    // -------------------------------------------------------------------------
+    private final HSSFWorkbook wb;
 
-    @Override
-    public void executeViewData( ImportReport importReport, List<ImportItem> importItems )
+    private final HSSFPalette colors;
+
+    private static final HSSFColor HSSF_AUTO_COLOR = new HSSFColor.AUTOMATIC();
+
+    public HSSFHtmlHelper( HSSFWorkbook wb )
     {
-        try
+        this.wb = wb;
+
+        colors = wb.getCustomPalette();
+    }
+
+    public String colorStyle( String type, CellStyle style )
+    {
+        if ( type == null || type.trim().isEmpty() )
         {
-            xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
-                new HashSet<Integer>( importReportService.getAllSheet() ), importItems ).getXml();
+            return EMPTY;
         }
-        catch ( Exception ex )
+
+        HSSFCellStyle cellStyle = (HSSFCellStyle) style;
+
+        short index = 0;
+
+        if ( type.equals( FOREGROUND_COLOR ) )
         {
-            throw new RuntimeException( "Error while previewing the imported value at normal", ex );
+            index = cellStyle.getFillForegroundColor();
         }
+        else
+        {
+            index = cellStyle.getFont( wb ).getColor();
+        }
+
+        HSSFColor color = colors.getColor( index );
+
+        if ( index == HSSF_AUTO_COLOR.getIndex() || color == null )
+        {
+            return EMPTY;
+        }
+
+        short[] rgb = color.getTriplet();
+
+        return "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
     }
 }

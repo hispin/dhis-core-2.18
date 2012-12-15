@@ -1,7 +1,7 @@
-package org.hisp.dhis.reportsheet.importing.action;
+package org.hisp.dhis.reportsheet.preview.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,37 +27,20 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-
-import org.hisp.dhis.reportsheet.importitem.ImportItem;
-import org.hisp.dhis.reportsheet.importitem.ImportReport;
-import org.hisp.dhis.reportsheet.importing.ViewDataGeneric;
-import org.hisp.dhis.reportsheet.preview.action.XMLStructureResponseImport;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id
- */
+ * @version $Id$
+ * */
 
-public class ViewDataNormalAction
-    extends ViewDataGeneric
+public interface HtmlHelper
 {
-    // -------------------------------------------------------------------------
-    // Override abstract method
-    // -------------------------------------------------------------------------
+    final String EMPTY = "";
+    
+    final String TEXT_COLOR = "tc";
 
-    @Override
-    public void executeViewData( ImportReport importReport, List<ImportItem> importItems )
-    {
-        try
-        {
-            xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
-                new HashSet<Integer>( importReportService.getAllSheet() ), importItems ).getXml();
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Error while previewing the imported value at normal", ex );
-        }
-    }
+    final String FOREGROUND_COLOR = "fgc";
+    
+    String colorStyle( String type, CellStyle style );
 }
