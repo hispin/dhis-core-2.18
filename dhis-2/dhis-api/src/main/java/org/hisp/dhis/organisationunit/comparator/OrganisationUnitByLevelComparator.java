@@ -40,6 +40,6 @@ public class OrganisationUnitByLevelComparator
     @Override
     public int compare( OrganisationUnit o1, OrganisationUnit o2 )
     {
-        return Integer.compare( o1.getOrganisationUnitLevel(), o2.getOrganisationUnitLevel() );
+        return new Integer( o1.getOrganisationUnitLevel() ).compareTo( o2.getOrganisationUnitLevel() );
     }
 }
