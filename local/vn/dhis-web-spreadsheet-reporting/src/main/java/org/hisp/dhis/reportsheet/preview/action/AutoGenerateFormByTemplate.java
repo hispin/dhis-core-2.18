@@ -35,15 +35,17 @@ import static org.hisp.dhis.dataelement.DataElement.DOMAIN_TYPE_AGGREGATE;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.hisp.dhis.reportsheet.ExportItem.PERIODTYPE.SELECTED_MONTH;
 import static org.hisp.dhis.reportsheet.ExportItem.TYPE.DATAELEMENT;
+import static org.hisp.dhis.reportsheet.preview.action.HtmlHelper.FOREGROUND_COLOR;
+import static org.hisp.dhis.reportsheet.preview.action.HtmlHelper.TEXT_COLOR;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertAlignmentString;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readValueByPOI;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,7 +55,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -73,6 +74,7 @@ import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportNormal;
 import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -93,6 +95,12 @@ public class AutoGenerateFormByTemplate
 {
     private static final String REPORT_EXCEL_GROUP = "BAO CAO THONG KE";
 
+    private static DataElementCategoryOptionCombo optionCombo = null;
+
+    private String excelFileName = "";
+
+    private String commonName = "";
+
     private static final String WORKBOOK_OPENTAG = "<workbook>";
 
     private static final String WORKBOOK_CLOSETAG = "</workbook>";
@@ -101,21 +109,19 @@ public class AutoGenerateFormByTemplate
 
     private static final String MERGEDCELL_CLOSETAG = "</MergedCells>";
 
-    private String excelFileName = "";
-
-    private String commonName = "";
-
     /**
      * The workbook we are reading from a given file
      */
-    private Workbook WORKBOOK;
+    protected Workbook WORKBOOK;
 
-    private FormulaEvaluator evaluatorFormula;
+    protected FormulaEvaluator evaluatorFormula;
+
+    protected HtmlHelper htmlHelper;
 
     /**
      * The encoding to write
      */
-    private StringBuffer xml = new StringBuffer( 200000 );
+    protected StringBuffer xml = new StringBuffer();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -156,31 +162,33 @@ public class AutoGenerateFormByTemplate
 
     public String execute()
     {
+        cleanUp();
+
         Set<Integer> collectSheets = new HashSet<Integer>();
         collectSheets.add( 1 );
 
         try
         {
-            this.cleanUp();
-
             String pathFileName = selectionManager.getUploadFilePath();
 
-            InputStream inputSteam = new FileInputStream( pathFileName );
             excelFileName = getName( pathFileName );
             commonName = getBaseName( pathFileName );
 
             if ( getExtension( pathFileName ).equals( "xls" ) )
             {
-                this.WORKBOOK = new HSSFWorkbook( inputSteam );
+                WORKBOOK = new HSSFWorkbook( new FileInputStream( pathFileName ) );
+                htmlHelper = new HSSFHtmlHelper( (HSSFWorkbook) WORKBOOK );
             }
             else
             {
-                this.WORKBOOK = new XSSFWorkbook( inputSteam );
+                WORKBOOK = new XSSFWorkbook( new FileInputStream( pathFileName ) );
+                htmlHelper = new XSSFHtmlHelper();
             }
 
-            this.evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
+            optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+            evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
 
-            writeFormattedXML( collectSheets );
+            printXML( collectSheets, null );
 
             xmlStructureResponse = xml.toString();
 
@@ -188,42 +196,30 @@ public class AutoGenerateFormByTemplate
         }
         catch ( Exception e )
         {
-            System.out.println( e.getMessage() );
+            e.printStackTrace();
+
+            cleanUp();
         }
 
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Sub-methods
-    // -------------------------------------------------------------------------
-
-    private void cleanUp()
-    {
-        System.gc();
-    }
-
-    /**
-     * Writes out the WORKBOOK data as XML, with formatting information
-     * 
-     * @param bDetailed
-     * 
-     * @throws Exception
-     */
-
-    private void writeFormattedXML( Collection<Integer> collectSheets )
+    private void printXML( Collection<Integer> collectSheets, List<ImportItem> importItems )
         throws Exception
     {
-        this.writeXMLMergedDescription( collectSheets );
+        printMergedInfo( collectSheets );
 
         xml.append( WORKBOOK_OPENTAG );
 
-        createFormByComment( 1, categoryService.getDefaultDataElementCategoryOptionCombo() );
+        for ( Integer sheet : collectSheets )
+        {
+            printData( sheet, importItems );
+        }
 
         xml.append( WORKBOOK_CLOSETAG );
     }
 
-    private void createFormByComment( int sheetNo, DataElementCategoryOptionCombo optionCombo )
+    private void printData( int sheetNo, List<ImportItem> importItems )
     {
         PeriodType periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
 
@@ -268,7 +264,7 @@ public class AutoGenerateFormByTemplate
                             // Generate DataElement
                             DataElement dataElement = new DataElement( name );
                             /** TAKE CARE OF SHORT_NAME IS TOO LONG */
-                            dataElement.setShortName( System.currentTimeMillis() + "" );
+                            dataElement.setShortName( name );
                             dataElement.setActive( true );
                             dataElement.setZeroIsSignificant( false );
                             dataElement.setDomainType( DOMAIN_TYPE_AGGREGATE );
@@ -303,8 +299,10 @@ public class AutoGenerateFormByTemplate
                     {
                         xml.append( "<col no='" + colIndex + "'>" );
 
-                        xml.append( "<data><![CDATA[" + "<input name='entryfield' id='" + idxMap.get( colIndex ) + "-"
-                            + optionCombo.getId() + "-val']]></data>" );
+                        xml.append( "<data><![CDATA[" + "<input id=\"" + idxMap.get( colIndex ) + "-"
+                            + optionCombo.getId() + "-val\" style=\"width:7em;text-align:center\" value=\"\" title=\"\" />]]></data>" );
+
+                        printFormatInfo( s, cell );
 
                         xml.append( "</col>" );
                     }
@@ -316,7 +314,7 @@ public class AutoGenerateFormByTemplate
                         xml.append( "<data><![CDATA["
                             + readValueByPOI( row.getRowNum() + 1, colIndex + 1, s, evaluatorFormula ) + "]]></data>" );
 
-                        this.readingDetailsFormattedCell( s, cell );
+                        printFormatInfo( s, cell );
 
                         xml.append( "</col>" );
                     }
@@ -346,16 +344,22 @@ public class AutoGenerateFormByTemplate
         {
             cleanUp();
 
-            // Catch exception if any
             e.printStackTrace();
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Get the merged cell's information
-    // -------------------------------------------------------------------------
+    /**
+     * Writes out the WORKBOOK data as XML, with formatting information
+     * 
+     * @throws Exception
+     */
 
-    private void readingDetailsFormattedCell( Sheet sheet, Cell objCell )
+    private void cleanUp()
+    {
+        System.gc();
+    }
+
+    private void printFormatInfo( Sheet sheet, Cell objCell )
     {
         // The format information
         CellStyle format = objCell.getCellStyle();
@@ -363,6 +367,7 @@ public class AutoGenerateFormByTemplate
         if ( format != null )
         {
             xml.append( "<format a='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            xml.append( " w='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
             xml.append( " b='"
                 + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop())
                 + "'" );
@@ -374,9 +379,10 @@ public class AutoGenerateFormByTemplate
                 xml.append( "><font s='" + font.getFontHeightInPoints() + "'" );
                 xml.append( " b='" + (font.getBoldweight() == Font.BOLDWEIGHT_BOLD ? "1" : "0") + "'" );
                 xml.append( " i='" + font.getItalic() + "'" );
-                xml.append( " c='" + getSimilarColor( font.getColor() ) + "'" );
-                xml.append( "/>" );
+                xml.append( " c='" + htmlHelper.colorStyle( TEXT_COLOR, format ) + "'/>" );
 
+                // The cell background information
+                xml.append( "<bg c='" + htmlHelper.colorStyle( FOREGROUND_COLOR, format ) + "'/>" );
                 xml.append( "</format>" );
             }
             else
@@ -386,7 +392,11 @@ public class AutoGenerateFormByTemplate
         }
     }
 
-    private void writeXMLMergedDescription( Collection<Integer> collectSheets )
+    // -------------------------------------------------------------------------
+    // Get the merged cell's information
+    // -------------------------------------------------------------------------
+
+    private void printMergedInfo( Collection<Integer> collectSheets )
         throws IOException
     {
         // Open the main Tag //
@@ -394,14 +404,14 @@ public class AutoGenerateFormByTemplate
 
         for ( Integer sheet : collectSheets )
         {
-            writeMergedInfoBySheetNo( sheet );
+            printMergedInfoBySheetNo( sheet );
         }
 
         // Close the main Tag //
         xml.append( MERGEDCELL_CLOSETAG );
     }
 
-    private void writeMergedInfoBySheetNo( int sheetNo )
+    private void printMergedInfoBySheetNo( int sheetNo )
     {
         Sheet sheet = WORKBOOK.getSheetAt( sheetNo - 1 );
         CellRangeAddress cellRangeAddress = null;
@@ -417,25 +427,5 @@ public class AutoGenerateFormByTemplate
                     + (cellRangeAddress.getLastColumn() - cellRangeAddress.getFirstColumn() + 1) + "</cell>" );
             }
         }
-    }
-
-    private String getSimilarColor( short index )
-    {
-        if ( IndexedColors.BLUE.getIndex() == index )
-        {
-            return "blue";
-        }
-
-        if ( IndexedColors.DARK_BLUE.getIndex() == index )
-        {
-            return "darkblue";
-        }
-
-        if ( IndexedColors.BROWN.getIndex() == index )
-        {
-            return "brown";
-        }
-
-        return "";
     }
 }
