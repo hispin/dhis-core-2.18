@@ -62,8 +62,12 @@ public class DHIS2LifecycleStrategy
         try
         {
             log.info( "Camel context started" );
-            if ( locationManager == null ) throw new LocationManagerException( "No locationManager configured" );
-
+            
+            if ( locationManager == null )
+            {
+                throw new LocationManagerException( "No locationManager configured" );
+            }
+            
             File rootsDir = new File( locationManager.getExternalDirectory().getAbsolutePath() + "/routes/" );
 
             if ( !rootsDir.exists() )
@@ -71,11 +75,13 @@ public class DHIS2LifecycleStrategy
                 rootsDir.mkdir();
             }
 
+            log.info( "Searching for routes in directory: " + rootsDir.getAbsolutePath() );
+            
             File[] routeFiles = rootsDir.listFiles();
+            
             for ( File routeFile : routeFiles )
             {
-                // load xml route
-                if ( routeFile.getName().endsWith( ".xml" ) )
+                if ( routeFile != null && routeFile.getName().endsWith( ".xml" ) )
                 {
                     InputStream is = null;
                     try
@@ -83,21 +89,24 @@ public class DHIS2LifecycleStrategy
                         is = new FileInputStream( routeFile );
                         RoutesDefinition routes = context.loadRoutesDefinition( is );
                         context.addRouteDefinitions( routes.getRoutes() );
-                    } catch ( Exception ex )
+                        log.info( "Loaded route from " + routeFile.getName() );
+                    }
+                    catch ( Exception ex )
                     {
                         log.info( "Unable to load routes from " + routeFile.getName() + " : " + ex.getMessage() );
-                    } finally
+                    }
+                    finally
                     {
                         IOUtils.closeQuietly( is );
                     }
                 }
             }
-        } catch ( LocationManagerException ex )
+        }
+        catch ( LocationManagerException ex )
         {
-            // no dhis2_home directory configured .. no routes to load ... that's ok
+            // no dhis2_home directory configured .. no routes to load ...
             log.info( "Not loading external routes from DHIS2_HOME" );
         }
-
     }
 
     @Override
@@ -171,7 +180,8 @@ public class DHIS2LifecycleStrategy
     }
 
     @Override
-    public void onThreadPoolAdd( CamelContext cc, ThreadPoolExecutor tpe, String string, String string1, String string2, String string3 )
+    public void onThreadPoolAdd( CamelContext cc, ThreadPoolExecutor tpe, String string, String string1,
+        String string2, String string3 )
     {
         log.debug( "Camel threadPool added" );
     }
