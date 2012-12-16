@@ -70,12 +70,6 @@ public class ExcelUtils
 
     private static FormulaParsingWorkbook evaluationWorkbook = HSSFEvaluationWorkbook.create( new HSSFWorkbook() );
 
-    private static final String PATTERN_FOR_ROW = "(\\d{1,})";
-
-    private static final String PATTERN_FOR_COLUMN = "([a-zA-Z])";
-
-    private static final String PATTERN_EXCELFORMULA = "(\\$?([a-zA-Z]{1,})\\$?(\\d{1,}!?))";
-
     private static final Integer NUMBER_OF_LETTER = new Integer( 26 );
 
     private static final Integer POI_CELLSTYLE_BLANK = new Integer( org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK );
@@ -91,6 +85,12 @@ public class ExcelUtils
     public static final String NUMBER = "NUMBER";
 
     public static final String EXTENSION_XLS = ".xls";
+
+    public static final String PATTERN_FOR_ROW = "(\\d{1,})";
+
+    public static final String PATTERN_FOR_COLUMN = "([a-zA-Z]{1,})";
+
+    public static final String PATTERN_EXCELFORMULA = "(\\$?([a-zA-Z]{1,})\\$?(\\d{1,}!?))";
 
     // -------------------------------------------------------------------------
     // JXL methods
@@ -625,7 +625,7 @@ public class ExcelUtils
 
         return true;
     }
-    
+
     public static boolean isValidFormula( String formula, int formulaType, int sheetIndex )
     {
         try
@@ -639,7 +639,6 @@ public class ExcelUtils
 
         return true;
     }
-
 
     // -------------------------------------------------------------------------
     // Supportive methods

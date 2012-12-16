@@ -35,9 +35,12 @@ import static org.hisp.dhis.dataelement.DataElement.DOMAIN_TYPE_AGGREGATE;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.hisp.dhis.reportsheet.ExportItem.PERIODTYPE.SELECTED_MONTH;
 import static org.hisp.dhis.reportsheet.ExportItem.TYPE.DATAELEMENT;
+import static org.hisp.dhis.reportsheet.ExportItem.TYPE.INDICATOR;
 import static org.hisp.dhis.reportsheet.preview.action.HtmlHelper.FOREGROUND_COLOR;
 import static org.hisp.dhis.reportsheet.preview.action.HtmlHelper.TEXT_COLOR;
+import static org.hisp.dhis.reportsheet.utils.ExcelUtils.PATTERN_EXCELFORMULA;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertAlignmentString;
+import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertColumnNameToNumber;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readValueByPOI;
 
 import java.io.FileInputStream;
@@ -48,6 +51,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -68,6 +73,12 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportsheet.ExportItem;
@@ -76,6 +87,8 @@ import org.hisp.dhis.reportsheet.ExportReportNormal;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -93,13 +106,7 @@ import com.opensymphony.xwork2.Action;
 public class AutoGenerateFormByTemplate
     implements Action
 {
-    private static final String REPORT_EXCEL_GROUP = "BAO CAO THONG KE";
-
-    private static DataElementCategoryOptionCombo optionCombo = null;
-
-    private String excelFileName = "";
-
-    private String commonName = "";
+    private static final String REPORT_EXCEL_GROUP = "BÁO CÁO KIỂM TRA BỆNH VIỆN";
 
     private static final String WORKBOOK_OPENTAG = "<workbook>";
 
@@ -108,6 +115,58 @@ public class AutoGenerateFormByTemplate
     private static final String MERGEDCELL_OPENTAG = "<MergedCells>";
 
     private static final String MERGEDCELL_CLOSETAG = "</MergedCells>";
+
+    private static final String DATAELEMENT_KEY = "de";
+
+    private static final String INDICATOR_KEY = "id";
+
+    private static final String INDICATOR_NAME = "CS ";
+
+    private static final String INDICATOR_TYPE_NAME = "Loại số";
+
+    private static final String DESCRIPTION = "Description";
+
+    private static final Pattern pattern = Pattern.compile( PATTERN_EXCELFORMULA );
+
+    private static final PeriodType periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+
+    private static DataElementCategoryOptionCombo optionCombo = null;
+
+    private static IndicatorType indicatorType = null;
+
+    private String excelFileName = "";
+
+    private String commonName = "";
+
+    private int exportReportId;
+
+    private int dataSetId;
+
+    private Map<String, Integer> deMap1 = new HashMap<String, Integer>();
+
+    private Map<String, String> deMap2 = new HashMap<String, String>();
+
+    private Map<String, Integer> idMap = new HashMap<String, Integer>();
+
+    private Set<Integer> vrList = new HashSet<Integer>();
+
+    private static final Map<String, String> operatorMap = new HashMap<String, String>()
+    {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+        {
+            put( "=", "equal_to" );
+            put( "!=", "not_equal_to" );
+            put( ">", "greater_than" );
+            put( ">=", "greater_than_or_equal_to" );
+            put( "<", "less_than" );
+            put( "<=", "less_than_or_equal_to" );
+            put( "cp", "compulsory_pair" );
+        }
+    };
 
     /**
      * The workbook we are reading from a given file
@@ -138,6 +197,15 @@ public class AutoGenerateFormByTemplate
 
     @Autowired
     private DataSetService dataSetService;
+
+    @Autowired
+    private IndicatorService indicatorService;
+
+    @Autowired
+    private ValidationRuleService validationRuleService;
+
+    @Autowired
+    private ExpressionService expressionService;
 
     @Autowired
     private ExportReportService exportReportService;
@@ -185,6 +253,22 @@ public class AutoGenerateFormByTemplate
                 htmlHelper = new XSSFHtmlHelper();
             }
 
+            for ( IndicatorType type : indicatorService.getAllIndicatorTypes() )
+            {
+                if ( type.getFactor() == 1 )
+                {
+                    indicatorType = type;
+                    break;
+                }
+            }
+
+            if ( indicatorType == null )
+            {
+                indicatorType = new IndicatorType( INDICATOR_TYPE_NAME, 1, true );
+
+                indicatorService.addIndicatorType( indicatorType );
+            }
+
             optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
             evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
 
@@ -221,27 +305,23 @@ public class AutoGenerateFormByTemplate
 
     private void printData( int sheetNo, List<ImportItem> importItems )
     {
-        PeriodType periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
-
-        // Create new DataSet
-        DataSet dataSet = new DataSet( commonName, commonName, periodType );
-
-        // Create new ExportReport
-        ExportReport exportReport = new ExportReportNormal( commonName, REPORT_EXCEL_GROUP, excelFileName, null );
-        exportReportService.addExportReport( exportReport );
-
-        Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
-
-        xml.append( "<sheet id='" + (sheetNo) + "'>" );
-        xml.append( "<name><![CDATA[" + s.getSheetName() + "]]></name>" );
-
         try
         {
+            // Create new DataSet
+            DataSet dataSet = new DataSet( commonName, commonName, periodType );
+
+            // Create new ExportReport
+            ExportReport exportReport = new ExportReportNormal( commonName, REPORT_EXCEL_GROUP, excelFileName, null );
+            exportReportId = exportReportService.addExportReport( exportReport );
+
+            Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
+
+            xml.append( "<sheet id='" + (sheetNo) + "'>" );
+            xml.append( "<name><![CDATA[" + s.getSheetName() + "]]></name>" );
+
             for ( Row row : s )
             {
                 xml.append( "<row index='" + row.getRowNum() + "'>" );
-
-                Map<Integer, Integer> idxMap = new HashMap<Integer, Integer>();
 
                 for ( Cell cell : row )
                 {
@@ -251,58 +331,152 @@ public class AutoGenerateFormByTemplate
 
                     if ( cmt != null )
                     {
-                        idxMap.clear();
-                        String deName = cell.getStringCellValue();
+                        String values[] = cmt.getString().toString().split( ":" );
 
-                        String[] indexes = cmt.getString().toString().split( "," );
-
-                        for ( String index : indexes )
+                        if ( values[0].equalsIgnoreCase( DATAELEMENT_KEY ) )
                         {
-                            String name = deName + " (" + index + ")";
-                            int idx = Integer.parseInt( index );
+                            String deName = cell.getStringCellValue();
+                            String[] colNames = values[1].split( "," );
 
-                            // Generate DataElement
-                            DataElement dataElement = new DataElement( name );
-                            /** TAKE CARE OF SHORT_NAME IS TOO LONG */
-                            dataElement.setShortName( name );
-                            dataElement.setActive( true );
-                            dataElement.setZeroIsSignificant( false );
-                            dataElement.setDomainType( DOMAIN_TYPE_AGGREGATE );
-                            dataElement.setType( VALUE_TYPE_INT );
-                            dataElement.setNumberType( VALUE_TYPE_INT );
-                            dataElement.setAggregationOperator( AGGREGATION_OPERATOR_SUM );
-                            dataElement.setCategoryCombo( optionCombo.getCategoryCombo() );
+                            for ( String colName : colNames )
+                            {
+                                int colIdx = convertColumnNameToNumber( colName );
+                                String name = deName + " (" + colIdx + ")";
 
-                            int deId = dataElementService.addDataElement( dataElement );
+                                // Generate DataElement
+                                DataElement dataElement = new DataElement( name );
+                                /** TAKE CARE OF SHORT_NAME IS TOO LONG */
+                                dataElement.setShortName( name );
+                                dataElement.setActive( true );
+                                dataElement.setZeroIsSignificant( false );
+                                dataElement.setDomainType( DOMAIN_TYPE_AGGREGATE );
+                                dataElement.setType( VALUE_TYPE_INT );
+                                dataElement.setNumberType( VALUE_TYPE_INT );
+                                dataElement.setAggregationOperator( AGGREGATION_OPERATOR_SUM );
+                                dataElement.setCategoryCombo( optionCombo.getCategoryCombo() );
 
-                            idxMap.put( idx - 1, deId );
+                                int deId = dataElementService.addDataElement( dataElement );
+
+                                deMap1.put( (colIdx - 1) + "#" + rowIndex, deId );
+                                deMap2.put( colName + (rowIndex + 1), "[" + deId + "." + optionCombo.getId() + "]");
+
+                                // Add the dataElement into the dataSet
+                                dataSet.addDataElement( dataElement );
+
+                                // Generate Report Item
+                                ExportItem exportItem = new ExportItem();
+                                exportItem.setName( name );
+                                exportItem.setItemType( DATAELEMENT );
+                                exportItem.setRow( rowIndex + 1 );
+                                exportItem.setColumn( colIdx );
+                                exportItem.setExpression( "[" + deId + "." + optionCombo.getId() + "]" );
+                                exportItem.setPeriodType( SELECTED_MONTH );
+                                exportItem.setSheetNo( sheetNo );
+                                exportItem.setExportReport( exportReport );
+
+                                exportReportService.addExportItem( exportItem );
+                            }
+                        }
+                        else if ( values[0].equalsIgnoreCase( INDICATOR_KEY ) )
+                        {
+                            String idName = INDICATOR_NAME + values[1];
+                            Integer colIdx = colIndex + 1;
+
+                            if ( values.length == 4 )
+                            {
+                                colIdx = convertColumnNameToNumber( values[3] );
+                            }
+                            else if ( values.length == 5 )
+                            {
+                                colIdx = convertColumnNameToNumber( values[3] );
+                                rowIndex = Integer.parseInt( values[4] ) - 1;
+                            }
+
+                            // Create Indicator
+                            Indicator indicator = new Indicator();
+                            indicator.setName( idName );
+                            indicator.setShortName( idName );
+                            indicator.setAnnualized( false );
+                            indicator.setIndicatorType( indicatorType );
+                            indicator.setNumerator( prepareExcelFormulaForAutoForm( values[2] ) );
+                            indicator.setNumeratorDescription( DESCRIPTION );
+                            indicator.setDenominator( 1 + "" );
+                            indicator.setDenominatorDescription( DESCRIPTION );
+
+                            int indicatorId = indicatorService.addIndicator( indicator );
+
+                            idMap.put( (colIdx - 1) + "#" + rowIndex, indicatorId );
 
                             // Add the dataElement into the dataSet
-                            dataSet.addDataElement( dataElement );
+                            dataSet.addIndicator( indicator );
 
                             // Generate Report Item
                             ExportItem exportItem = new ExportItem();
-                            exportItem.setName( name );
-                            exportItem.setItemType( DATAELEMENT );
+                            exportItem.setName( idName );
+                            exportItem.setItemType( INDICATOR );
                             exportItem.setRow( rowIndex + 1 );
-                            exportItem.setColumn( idx );
-                            exportItem.setExpression( "[" + deId + "." + optionCombo.getId() + "]" );
+                            exportItem.setColumn( colIdx );
+                            exportItem.setExpression( "[" + indicatorId + "]" );
                             exportItem.setPeriodType( SELECTED_MONTH );
                             exportItem.setSheetNo( sheetNo );
                             exportItem.setExportReport( exportReport );
 
                             exportReportService.addExportItem( exportItem );
                         }
+                        else
+                        {
+                            // Validation rules
+                            Expression leftSide = new Expression();
+
+                            leftSide.setExpression( prepareExcelFormulaForAutoForm( values[2] ) );
+                            leftSide.setDescription( DESCRIPTION );
+                            leftSide.setNullIfBlank( true );
+
+                            Expression rightSide = new Expression();
+
+                            rightSide.setExpression( prepareExcelFormulaForAutoForm( values[4] ) );
+                            rightSide.setDescription( DESCRIPTION );
+                            rightSide.setNullIfBlank( true );
+
+                            ValidationRule validationRule = new ValidationRule();
+
+                            validationRule.setName( values[1] );
+                            validationRule.setDescription( DESCRIPTION );
+                            validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
+                            validationRule.setOperator( Operator.valueOf( operatorMap.get( values[3] ) ) );
+                            validationRule.setLeftSide( leftSide );
+                            validationRule.setRightSide( rightSide );
+
+                            validationRule.setPeriodType( periodType );
+
+                            vrList.add( validationRuleService.saveValidationRule( validationRule ) );
+                        }
                     }
 
-                    if ( idxMap.containsKey( colIndex ) )
+                    String key = colIndex + "#" + rowIndex;
+
+                    if ( deMap1.containsKey( key ) )
                     {
                         xml.append( "<col no='" + colIndex + "'>" );
 
-                        xml.append( "<data><![CDATA[" + "<input id=\"" + idxMap.get( colIndex ) + "-"
-                            + optionCombo.getId() + "-val\" style=\"width:7em;text-align:center\" value=\"\" title=\"\" />]]></data>" );
+                        xml.append( "<data><![CDATA[<input id=\"" + deMap1.get( key ) + "-" + optionCombo.getId()
+                            + "-val\" style=\"width:7em;text-align:center\" value=\"\" title=\"\" />]]></data>" );
 
-                        printFormatInfo( s, cell );
+                        xml.append( printFormatInfo( s, cell ) );
+
+                        xml.append( "</col>" );
+                    }
+                    else if ( idMap.containsKey( key ) )
+                    {
+                        int indicatorId = idMap.get( key );
+
+                        xml.append( "<col no='" + colIndex + "'>" );
+
+                        xml.append( "<data><![CDATA[<input id=\"indicator" + indicatorId + "\"" );
+                        xml.append( " indicatorid=\"" + indicatorId + "\" name=\"indicator\" readonly=\"readonly\"" );
+                        xml.append( " style=\"width:7em;text-align:center;\" title=\"\" value=\"\" />]]></data>" );
+
+                        xml.append( printFormatInfo( s, cell ) );
 
                         xml.append( "</col>" );
                     }
@@ -314,7 +488,7 @@ public class AutoGenerateFormByTemplate
                         xml.append( "<data><![CDATA["
                             + readValueByPOI( row.getRowNum() + 1, colIndex + 1, s, evaluatorFormula ) + "]]></data>" );
 
-                        printFormatInfo( s, cell );
+                        xml.append( printFormatInfo( s, cell ) );
 
                         xml.append( "</col>" );
                     }
@@ -328,7 +502,7 @@ public class AutoGenerateFormByTemplate
             dataEntryFormService.addDataEntryForm( dataEntryForm );
 
             dataSet.setDataEntryForm( dataEntryForm );
-            int dataSetId = dataSetService.addDataSet( dataSet );
+            dataSetId = dataSetService.addDataSet( dataSet );
 
             // Update ExportReport
             Set<DataSet> dataSets = new HashSet<DataSet>();
@@ -339,12 +513,58 @@ public class AutoGenerateFormByTemplate
 
             xml.append( "<ds id='" + dataSetId + "' n='" + commonName + "'/>" );
 
+            for ( String key1 : idMap.keySet() )
+            {
+                Indicator indicator = indicatorService.getIndicator( idMap.get( key1 ) );
+                String expression = indicator.getNumerator();
+
+                for ( String key2 : deMap2.keySet() )
+                {
+                    expression = expression.replaceAll( "\\[" + key2 + "\\]", deMap2.get( key2 ) );
+                }
+
+                indicator.setNumerator( expression );
+                indicatorService.updateIndicator( indicator );
+            }
+
+            for ( Integer id : vrList )
+            {
+                ValidationRule vr = validationRuleService.getValidationRule( id );
+
+                Expression leftSide = vr.getLeftSide();
+                Expression rightSide = vr.getRightSide();
+
+                String leftExpression = leftSide.getExpression();
+                String rightExpression = rightSide.getExpression();
+
+                for ( String key2 : deMap2.keySet() )
+                {
+                    String operandId = deMap2.get( key2 );
+
+                    leftExpression = leftExpression.replaceAll( "\\[" + key2 + "\\]", operandId );
+                    rightExpression = rightExpression.replaceAll( "\\[" + key2 + "\\]", operandId );
+                }
+
+                leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftExpression ) );
+                leftSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftExpression ) );
+
+                rightSide
+                    .setDataElementsInExpression( expressionService.getDataElementsInExpression( rightExpression ) );
+                rightSide
+                    .setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightExpression ) );
+
+                vr.setLeftSide( leftSide );
+                vr.setRightSide( rightSide );
+
+                validationRuleService.updateValidationRule( vr );
+            }
         }
         catch ( Exception e )
         {
-            cleanUp();
-
             e.printStackTrace();
+
+            autoRollBack();
+            cleanUp();
         }
     }
 
@@ -359,16 +579,17 @@ public class AutoGenerateFormByTemplate
         System.gc();
     }
 
-    private void printFormatInfo( Sheet sheet, Cell objCell )
+    private String printFormatInfo( Sheet sheet, Cell objCell )
     {
         // The format information
         CellStyle format = objCell.getCellStyle();
+        StringBuffer sb = new StringBuffer();
 
         if ( format != null )
         {
-            xml.append( "<format a='" + convertAlignmentString( format.getAlignment() ) + "'" );
-            xml.append( " w='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
-            xml.append( " b='"
+            sb.append( "<format a='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            sb.append( " w='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
+            sb.append( " b='"
                 + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop())
                 + "'" );
 
@@ -376,20 +597,26 @@ public class AutoGenerateFormByTemplate
 
             if ( font != null )
             {
-                xml.append( "><font s='" + font.getFontHeightInPoints() + "'" );
-                xml.append( " b='" + (font.getBoldweight() == Font.BOLDWEIGHT_BOLD ? "1" : "0") + "'" );
-                xml.append( " i='" + font.getItalic() + "'" );
-                xml.append( " c='" + htmlHelper.colorStyle( TEXT_COLOR, format ) + "'/>" );
+                sb.append( "><font s='" + font.getFontHeightInPoints() + "'" );
+                sb.append( " b='" + (font.getBoldweight() == Font.BOLDWEIGHT_BOLD ? "1" : "0") + "'" );
+                sb.append( " i='" + font.getItalic() + "'" );
+                sb.append( " c='" + htmlHelper.colorStyle( TEXT_COLOR, format ) + "'/>" );
 
                 // The cell background information
-                xml.append( "<bg c='" + htmlHelper.colorStyle( FOREGROUND_COLOR, format ) + "'/>" );
-                xml.append( "</format>" );
+                sb.append( "<bg c='" + htmlHelper.colorStyle( FOREGROUND_COLOR, format ) + "'/>" );
+                sb.append( "</format>" );
             }
             else
             {
-                xml.append( "/>" );
+                sb.append( "/>" );
             }
         }
+        else
+        {
+            return "";
+        }
+
+        return sb.toString();
     }
 
     // -------------------------------------------------------------------------
@@ -428,4 +655,81 @@ public class AutoGenerateFormByTemplate
             }
         }
     }
+
+    private String prepareExcelFormulaForAutoForm( String formula )
+    {
+        Matcher matcher = pattern.matcher( formula );
+
+        StringBuffer buffer = new StringBuffer();
+
+        while ( matcher.find() )
+        {
+            String s = matcher.group().replaceAll( "\\s", "" );
+
+            if ( !s.endsWith( "!" ) )
+            {
+                s = "[" + s + "]";
+            }
+
+            matcher.appendReplacement( buffer, s );
+        }
+
+        matcher.appendTail( buffer );
+
+        return buffer.toString();
+    }
+
+    private void autoRollBack()
+    {
+        try
+        {
+            if ( exportReportId > 0 )
+            {
+                exportReportService.deleteExportReport( exportReportId );
+
+                exportReportId = 0;
+            }
+            if ( dataSetId > 0 )
+            {
+                dataSetService.deleteDataSet( dataSetService.getDataSet( dataSetId ) );
+
+                dataSetId = 0;
+            }
+
+            for ( String key : deMap1.keySet() )
+            {
+                dataElementService.deleteDataElement( dataElementService.getDataElement( deMap1.get( key ) ) );
+            }
+            for ( String key : idMap.keySet() )
+            {
+                indicatorService.deleteIndicator( indicatorService.getIndicator( idMap.get( key ) ) );
+            }
+            for ( Integer vrId : vrList )
+            {
+                validationRuleService.deleteValidationRule( validationRuleService.getValidationRule( vrId ) );
+            }
+
+            deMap1.clear();
+            deMap2.clear();
+            idMap.clear();
+            vrList.clear();
+        }
+        catch ( Exception e )
+        {
+            resetParams();
+
+            e.printStackTrace();
+        }
+    }
+
+    private void resetParams()
+    {
+        exportReportId = 0;
+        dataSetId = 0;
+        deMap1.clear();
+        deMap2.clear();
+        idMap.clear();
+        vrList.clear();
+    }
+
 }

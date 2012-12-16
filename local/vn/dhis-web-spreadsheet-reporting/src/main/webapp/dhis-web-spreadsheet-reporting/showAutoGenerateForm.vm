@@ -25,7 +25,6 @@
 <div id="previewDiv"></div>
 </body>
 
-
 <script type="text/javascript">
 	var i18n_auto_generate_form_completed = '$encoder.jsEscape( $i18n.getString("auto_generate_form_completed"), "'" )';
 </script>
