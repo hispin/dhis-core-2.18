@@ -36,6 +36,7 @@ import java.util.concurrent.Future;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.grid.ListGrid;
@@ -45,16 +46,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DefaultAnalyticsService
     implements AnalyticsService
 {
-    private static final String VALUE_NAME = "value";
     private static final String VALUE_HEADER_NAME = "Value";
     
     //TODO period aggregation for multiple period types
     //TODO hierarchy aggregation for org units at multiple levels
     //TODO indicator aggregation
     //TODO category sub-totals and totals
+    //TODO use data mart when query can be satisfied
+    //TODO create data mart for average, less-than yearly data elements
+    
+    //NOTE split on high-cardinality columns like data element and org unit, not period, improves performance
     
     @Autowired
     private AnalyticsManager analyticsManager;
+    
+    @Autowired
+    private QueryPlanner queryPlanner;
     
     public Grid getAggregatedDataValueTotals( DataQueryParams params ) throws Exception
     {
@@ -67,7 +74,7 @@ public class DefaultAnalyticsService
             grid.addHeader( new GridHeader( col, col, String.class.getName(), false, true ) );
         }
         
-        grid.addHeader( new GridHeader( VALUE_NAME, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
+        grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
         
         for ( Map.Entry<String, Double> entry : map.entrySet() )
         {
@@ -83,7 +90,7 @@ public class DefaultAnalyticsService
     {
         Timer t = new Timer().start();
 
-        List<DataQueryParams> queries = QueryPlanner.planQuery( params, 6 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 6 );
         
         t.getTime( "Planned query" );
         
