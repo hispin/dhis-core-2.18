@@ -1,7 +1,13 @@
-<h3 id="gridTitle">$!encoder.htmlEncode( $grid.title )</h3>
+<h6>
+	<a href="javascript:showCriteriaForm();">$i18n.getString("start")</a>
+	&raquo; <a href="javascript:showStatisticalReport();">$!encoder.htmlEncode( $grid.title )</a>
+	<a href="javascript:detailsReport();"><span id="programStageTitleLbl"></span></a>
+	<span id="patientNameLbl"></span>
+</h6>
+<p id="totalLbl" class="hidden"></p>
 
 <div id="reportTbl" name="reportTbl">
-	<h5 id="gridSubtitle">$!encoder.htmlEncode( $grid.subtitle )</h5>
+	<p id="totalLbl">$!encoder.htmlEncode( $grid.subtitle )</p>
 	<table class="listTable gridTable" width="150px;">
 		<thead>
 			<tr>
@@ -39,3 +45,5 @@
 </div>
 
 <div id='detailsDiv'></div>
+<div id="viewRecordsDiv"></div>
+

@@ -8,7 +8,6 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function generatedStatisticalProgramReport()
 {
-	hideById('backBtn');
 	hideById('statisticalReportDiv');
 	hideById('detailsDiv');
 	showLoader();
@@ -46,12 +45,13 @@ function statisticalProgramDetailsReport( programStageId, status, total )
 	{ 
 		setFieldValue('status',status);
 		setFieldValue('total',total);
-		var subTitle = getFieldValue("programStageName") 
-			+ " - " + getStatusString( status ) 
-			+ " - " + i18n_total_result + ": " + total;
-		setInnerHTML('gridSubtitleDetails', subTitle );
+		var programStageTitle = "&raquo; " + getStatusString( status ) 
+			+ " - " + getFieldValue("programStageName");
+		setInnerHTML('programStageTitleLbl', programStageTitle );
+		setInnerHTML('totalLbl', i18n_total_result + ": " + total );
+		showById('totalLbl');
+		showById('programStageTitleLbl');
 		showById( 'detailsDiv');
-		showById('backBtn');
 		hideLoader();
 	});
 }
@@ -67,34 +67,46 @@ function getStatusString( status )
 	}
 }
 
-function backOnClick()
-{
-	hideById('backBtn');
-	showById('reportTbl');
-	hideById('detailsDiv');
-}
-
 function loadDataEntry( programStageInstanceId ) 
 {
+	hideById("detailsDiv");
 	jQuery('#viewRecordsDiv' )
 		.load( 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId
 		,function(){
 			jQuery("#viewRecordsDiv :input" ).attr("disabled", true);
 			jQuery("#viewRecordsDiv :input" ).datepicker("destroy");
-			showById("reportTitle");
-			hideById("patientInforTB");
+			showById('patientNameLbl');
 			jQuery(".ui-combobox" ).hide();
+			showById("viewRecordsDiv");
 			hideById('inputCriteriaDiv');
-		})
-		.dialog({
-			title: i18n_reports,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 840,
-			height: 400
+			hideById('totalLbl');
 		});
 }
 
 function entryFormContainerOnReady(){}
+
+function showCriteriaForm()
+{
+	showById('reportForm');
+	hideById('statisticalReportDiv');
+}
+
+function showStatisticalReport()
+{
+	showById('reportTbl');
+	hideById('detailsDiv');
+	hideById('totalLbl');
+	hideById('viewRecordsDiv');
+	hideById('programStageTitleLbl');
+	hideById('patientNameLbl');
+	hideById('totalLbl');
+}
+
+function detailsReport()
+{
+	hideById('viewRecordsDiv');
+	showById('detailsDiv');
+	showById('totalLbl');
+	showById('programStageTitleLbl');
+	hideById('patientNameLbl');
+}
