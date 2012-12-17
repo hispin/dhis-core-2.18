@@ -1527,13 +1527,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction"
 		class="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction"
 		scope="prototype" />
-
-	<bean id="org.hisp.dhis.reportsheet.preview.action.TestAction"
-		class="org.hisp.dhis.reportsheet.preview.action.TestAction"
-		scope="prototype" />
 	
 	<bean id="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormByTemplate"
 		class="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormByTemplate"
+		scope="prototype">
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormRollBack"
+		class="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormRollBack"
 		scope="prototype">
 	</bean>
 	
