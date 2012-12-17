@@ -1841,13 +1841,6 @@
 			<result name="success" type="redirect">administration.action</result>
 			<param name="requiredAuthorities">F_MULTI_ORGANISATION_UNIT_ADD</param>
 		</action>
-
-		<action name="testAction"
-			class="org.hisp.dhis.reportsheet.preview.action.TestAction">
-			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
 		
 		<action name="showAutoGenerateForm"
 			class="org.hisp.dhis.reportsheet.action.NoAction">
@@ -1868,7 +1861,14 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-spreadsheet-reporting/responseExportReportPreview.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+				/dhis-web-spreadsheet-reporting/responseAutoGenerateFormError.vm</result>
+		</action>
+
+		<action name="autoGenerateFormRollback"
+			class="org.hisp.dhis.reportsheet.preview.action.AutoGenerateFormRollBack">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 	</package>

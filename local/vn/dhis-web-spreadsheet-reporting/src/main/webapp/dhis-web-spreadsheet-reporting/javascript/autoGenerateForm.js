@@ -35,7 +35,9 @@ function uploadExcelTemplateForGenerateForm()
 		{ 'draft': true, 'allowNewName': false },
 		function( data, e ) {
 			try {
-				window.location.reload();
+				if ( window.confirm( i18n_generate_form_confirm ) ) {
+					autoGenerateFormByTemplate();
+				} else return;
 			}
 			catch(e) {
 				alert(e);
@@ -62,7 +64,41 @@ function autoGenerateFormByTemplateReceived( parentElement )
 	
 	if ( type && type == 'error' )
 	{
-		showErrorMessage( parentElement.firstChild.nodeValue );
+		var dataElementTag 		= parentElement.getElementsByTagName( 'dataElements' )[0];
+		var indicatorTag		= parentElement.getElementsByTagName( 'indicators' )[0];
+		var validationRuleTag	= parentElement.getElementsByTagName( 'validationRules' )[0];
+
+		var dataElements 		= dataElementTag.getElementsByTagName( 'id' );
+		var indicators 			= dataElementTag.getElementsByTagName( 'id' );
+		var validationRules 	= dataElementTag.getElementsByTagName( 'id' );
+		
+		var reportId = getElementAttribute( parentElement, 'exportReport', 'id' );
+		var dataSetId = getElementAttribute( parentElement, 'dataSet', 'id' );
+		
+		var url = 'autoGenerateFormRollback.action?';
+		
+		for ( var i  = 0 ; i < dataElements.length ; i ++ )
+		{
+			url += 'dataElementIds=' + dataElements[i].firstChild.nodeValue + '&';
+		}
+		for ( var i  = 0 ; i < indicators.length ; i ++ )
+		{
+			url += 'indicatorIds=' + indicators[i].firstChild.nodeValue + '&';
+		}
+		for ( var i  = 0 ; i < validationRules.length ; i ++ )
+		{
+			url += 'validationRuleIds=' + validationRules[i].firstChild.nodeValue + '&';
+		}
+		
+		url += 'exportReportId=' + reportId + '&dataSetId=' + dataSetId;
+		
+		jQuery.post( url, {}, function( json ) {
+			if ( json.response == "success" ) {
+				showSuccessMessage( json.message, 7000 );
+			} else {
+				showErrorMessage( json.message, 5000 );
+			}
+		} );
 	}
 	else
 	{	
@@ -169,7 +205,7 @@ function autoGenerateFormByTemplateReceived( parentElement )
 		//showById( "previewDiv" );
 			
 		unLockScreen();
-		showSuccessMessage( i18n_auto_generate_form_completed );
+		showSuccessMessage( i18n_auto_generate_form_completed, 3000 );
 
 		if ( _sHTML.length > 0 )
 		{
