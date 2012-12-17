@@ -254,8 +254,6 @@ public class AutoGenerateFormByTemplate
 
     public String execute()
     {
-        cleanUp();
-
         Set<Integer> collectSheets = new HashSet<Integer>();
         collectSheets.add( 1 );
 
@@ -305,8 +303,6 @@ public class AutoGenerateFormByTemplate
         catch ( Exception e )
         {
             e.printStackTrace();
-
-            cleanUp();
 
             return ERROR;
         }
@@ -541,17 +537,6 @@ public class AutoGenerateFormByTemplate
         xml.append( "<ds id='" + dataSetId + "' n='" + commonName + "'/>" );
     }
 
-    /**
-     * Writes out the WORKBOOK data as XML, with formatting information
-     * 
-     * @throws Exception
-     */
-
-    private void cleanUp()
-    {
-        System.gc();
-    }
-
     private String printFormatInfo( Sheet sheet, Cell objCell )
     {
         // The format information
@@ -674,11 +659,8 @@ public class AutoGenerateFormByTemplate
         {
             ValidationRule vr = validationRuleService.getValidationRule( id );
 
-            Expression leftSide = vr.getLeftSide();
-            Expression rightSide = vr.getRightSide();
-
-            String leftExpression = leftSide.getExpression();
-            String rightExpression = rightSide.getExpression();
+            String leftExpression = vr.getLeftSide().getExpression();
+            String rightExpression = vr.getRightSide().getExpression();
 
             for ( String key2 : deMap2.keySet() )
             {
@@ -688,14 +670,13 @@ public class AutoGenerateFormByTemplate
                 rightExpression = rightExpression.replaceAll( "\\[" + key2 + "\\]", operandId );
             }
 
-            leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftExpression ) );
-            leftSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftExpression ) );
+            vr.getLeftSide().setExpression( leftExpression );
+            vr.getLeftSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( leftExpression ) );
+            vr.getLeftSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftExpression ) );
 
-            rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightExpression ) );
-            rightSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightExpression ) );
-
-            vr.setLeftSide( leftSide );
-            vr.setRightSide( rightSide );
+            vr.getRightSide().setExpression( rightExpression );
+            vr.getRightSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( rightExpression ) );
+            vr.getRightSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightExpression ) );
 
             validationRuleService.updateValidationRule( vr );
         }

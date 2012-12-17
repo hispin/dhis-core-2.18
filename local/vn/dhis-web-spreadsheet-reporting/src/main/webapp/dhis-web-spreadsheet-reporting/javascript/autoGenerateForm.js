@@ -69,14 +69,14 @@ function autoGenerateFormByTemplateReceived( parentElement )
 		var validationRuleTag	= parentElement.getElementsByTagName( 'validationRules' )[0];
 
 		var dataElements 		= dataElementTag.getElementsByTagName( 'id' );
-		var indicators 			= dataElementTag.getElementsByTagName( 'id' );
-		var validationRules 	= dataElementTag.getElementsByTagName( 'id' );
+		var indicators 			= indicatorTag.getElementsByTagName( 'id' );
+		var validationRules 	= validationRuleTag.getElementsByTagName( 'id' );
 		
 		var reportId = getElementAttribute( parentElement, 'exportReport', 'id' );
 		var dataSetId = getElementAttribute( parentElement, 'dataSet', 'id' );
 		
 		var url = 'autoGenerateFormRollback.action?';
-		
+
 		for ( var i  = 0 ; i < dataElements.length ; i ++ )
 		{
 			url += 'dataElementIds=' + dataElements[i].firstChild.nodeValue + '&';
@@ -94,7 +94,7 @@ function autoGenerateFormByTemplateReceived( parentElement )
 		
 		jQuery.post( url, {}, function( json ) {
 			if ( json.response == "success" ) {
-				showSuccessMessage( json.message, 7000 );
+				showSuccessMessage( json.message, 8000 );
 			} else {
 				showErrorMessage( json.message, 5000 );
 			}
