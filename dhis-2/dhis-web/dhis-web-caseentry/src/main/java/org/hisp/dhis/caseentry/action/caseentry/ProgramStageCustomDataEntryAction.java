@@ -40,8 +40,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
@@ -66,13 +64,6 @@ public class ProgramStageCustomDataEntryAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
-    }
-
-    private PatientIdentifierService patientIdentifierService;
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
     }
 
     private PatientDataValueService patientDataValueService;
@@ -135,13 +126,6 @@ public class ProgramStageCustomDataEntryAction
     public Patient getPatient()
     {
         return patient;
-    }
-
-    private PatientIdentifier patientIdentifier;
-
-    public PatientIdentifier getPatientIdentifier()
-    {
-        return patientIdentifier;
     }
 
     private Program program;
@@ -243,11 +227,6 @@ public class ProgramStageCustomDataEntryAction
         program = programStage.getProgram();
 
         patient = programStageInstance.getProgramInstance().getPatient();
-
-        if ( patient != null )
-        {
-            patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
-        }
 
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
