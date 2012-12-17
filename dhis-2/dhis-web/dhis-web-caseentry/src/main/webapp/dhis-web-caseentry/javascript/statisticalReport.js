@@ -73,3 +73,28 @@ function backOnClick()
 	showById('reportTbl');
 	hideById('detailsDiv');
 }
+
+function loadDataEntry( programStageInstanceId ) 
+{
+	jQuery('#viewRecordsDiv' )
+		.load( 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId
+		,function(){
+			jQuery("#viewRecordsDiv :input" ).attr("disabled", true);
+			jQuery("#viewRecordsDiv :input" ).datepicker("destroy");
+			showById("reportTitle");
+			hideById("patientInforTB");
+			jQuery(".ui-combobox" ).hide();
+			hideById('inputCriteriaDiv');
+		})
+		.dialog({
+			title: i18n_reports,
+			maximize: true, 
+			closable: true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 840,
+			height: 400
+		});
+}
+
+function entryFormContainerOnReady(){}
