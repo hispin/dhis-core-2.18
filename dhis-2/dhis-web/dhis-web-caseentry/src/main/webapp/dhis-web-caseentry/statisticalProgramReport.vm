@@ -2,7 +2,7 @@
 
 <div id="reportTbl" name="reportTbl">
 	<h5 id="gridSubtitle">$!encoder.htmlEncode( $grid.subtitle )</h5>
-	<table class="listTable gridTable">
+	<table class="listTable gridTable" width="150px;">
 		<thead>
 			<tr>
 				#foreach( $header in $grid.getVisibleHeaders() )

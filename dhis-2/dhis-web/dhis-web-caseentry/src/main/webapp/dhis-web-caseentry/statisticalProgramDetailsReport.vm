@@ -7,11 +7,10 @@
 </script>
 
 <input type="hidden" id="programStageName" name="programStageName" value="$!encoder.jsEncode($programStage.name)">
-<table>
+<table width="100%">
 	<tr>
 		<td>
 			<table class="listTable gridTable">
-				<colgroup>
 					 <col width="30"/>
 					 <col/>
 					 <col/>
@@ -19,16 +18,18 @@
 					 <col/>
 					 <col/>
 					 <col/>
-				</colgroup>
+				
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>$i18n.getString( "orgunit" )</th>	
 						<th>$i18n.getString('full_name')</th>
 						<th>$i18n.getString( "gender" )</th>
 						<th>$i18n.getString( "date_of_birth" )</th> 
 						<th>$i18n.getString( "age" )</th>
 						<th>$i18n.getString( "phone_number" )</th>
-						<th>$i18n.getString( "orgunit" )</th>	
+						<th>$i18n.getString( "due_date" )</th>
+						<th>$i18n.getString( "report_date" )</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,12 +40,18 @@
 							#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 							$nr
 						</td>
+						<td>$!encoder.htmlEncode($!patient.organisationUnit.name)</td>
 						<td>$!encoder.htmlEncode($patient.getFullName())</td>
 						<td>$i18n.getString($!patient.gender)</td>
 						<td>$format.formatDate( $!patient.birthDate)</td>
 						<td>$!patient.getAge()</td>
 						<td>$!patient.phoneNumber</td>
-						<td>$!encoder.htmlEncode($!patient.organisationUnit.name)</td>
+						<td>$format.formatDate($!programStageInstance.dueDate)</td>
+						<td>
+							#if($programStageInstance.executionDate)
+								<a href="javascript:loadDataEntry($programStageInstance.id)">$format.formatDate($programStageInstance.executionDate)</a>
+							#end
+						</td>
 					</tr>
 					#end
 				</tbody>
@@ -60,6 +67,8 @@
 		</td>
   </tr>
 </table>
+
+<div id="viewRecordsDiv"></div>
 
 <script>
 	jQuery(document).ready(function(){
