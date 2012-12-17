@@ -47,6 +47,7 @@ public class DataQueryParams
     public static final String CATEGORYOPTIONCOMBO_DIM_ID = "coc";
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
+    public static final String VALUE_ID = "value";
         
     private List<String> indicators = new ArrayList<String>();
     
@@ -59,9 +60,17 @@ public class DataQueryParams
     private Map<String, List<String>> dimensions = new HashMap<String, List<String>>();
     
     private boolean categories = false;
+
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
     
     private transient String tableName;
 
+    private transient String periodType;
+    
+    private transient int organisationUnitLevel;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -89,18 +98,26 @@ public class DataQueryParams
         this.organisationUnits = params.getOrganisationUnits();
         this.dimensions = params.getDimensions();
         this.categories = params.isCategories();
+        
+        this.tableName = params.getTableName();
+        this.periodType = params.getPeriodType();
+        this.organisationUnitLevel = params.getOrganisationUnitLevel();
     }
 
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Prioritizing to split on dimensions with high cardinality, which is typically 
+     * organisation unit and data element in that order.
+     */
     public SortedMap<String, List<String>> getDimensionValuesMap()
     {
         SortedMap<String, List<String>> map = new TreeMap<String, List<String>>();
-        
-        map.put( DATAELEMENT_DIM_ID, dataElements );
+
         map.put( ORGUNIT_DIM_ID, organisationUnits );
+        map.put( DATAELEMENT_DIM_ID, dataElements );
         map.put( PERIOD_DIM_ID, periods );
         
         if ( dimensions != null )
@@ -192,12 +209,114 @@ public class DataQueryParams
         
         return dimension;
     }
-    
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( categories ? 1231 : 1237);
+        result = prime * result + ( ( indicators == null ) ? 0 : indicators.hashCode() );
+        result = prime * result + ( ( dataElements == null ) ? 0 : dataElements.hashCode() );
+        result = prime * result + ( ( periods == null ) ? 0 : periods.hashCode() );
+        result = prime * result + ( ( organisationUnits == null ) ? 0 : organisationUnits.hashCode() );
+        result = prime * result + ( ( dimensions == null ) ? 0 : dimensions.hashCode() );
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        DataQueryParams other = (DataQueryParams) object;
+
+        if ( indicators == null )
+        {
+            if ( other.indicators != null )
+            {
+                return false;
+            }
+        }
+        else if ( !indicators.equals( other.indicators ) )
+        {
+            return false;
+        }
+        
+        if ( dataElements == null )
+        {
+            if ( other.dataElements != null )
+            {
+                return false;
+            }
+        }
+        else if ( !dataElements.equals( other.dataElements ) )
+        {
+            return false;
+        }
+
+        if ( periods == null )
+        {
+            if ( other.periods != null )
+            {
+                return false;
+            }
+        }
+        else if ( !periods.equals( other.periods ) )
+        {
+            return false;
+        }
+
+        if ( organisationUnits == null )
+        {
+            if ( other.organisationUnits != null )
+            {
+                return false;
+            }
+        }
+        else if ( !organisationUnits.equals( other.organisationUnits ) )
+        {
+            return false;
+        }
+        
+        if ( dimensions == null )
+        {
+            if ( other.dimensions != null )
+            {
+                return false;
+            }
+        }
+        else if ( !dimensions.equals( other.dimensions ) )
+        {
+            return false;
+        }
+        
+        if ( categories != other.categories )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
     @Override
     public String toString()
     {
         return "[in: " + indicators + ", de: " + dataElements + ", pe: " + periods
-            + ", ou: " + organisationUnits + "]";
+            + ", ou: " + organisationUnits + ", categories: " + categories + "]";
     }
         
     // -------------------------------------------------------------------------
@@ -278,5 +397,25 @@ public class DataQueryParams
     public void setTableName( String tableName )
     {
         this.tableName = tableName;
+    }
+
+    public String getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    public int getOrganisationUnitLevel()
+    {
+        return organisationUnitLevel;
+    }
+
+    public void setOrganisationUnitLevel( int organisationUnitLevel )
+    {
+        this.organisationUnitLevel = organisationUnitLevel;
     }
 }

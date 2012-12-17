@@ -190,7 +190,9 @@ public class JdbcAnalyticsTableManager
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype='" + valueType + "' " +
             "and pe.startdate >= '" + start + "' " +
-            "and pe.startdate <= '" + end + "'";
+            "and pe.startdate <= '" + end + "'" +
+            "and dv.value != ''" +
+            "and dv.value is not null";
 
         final String sql = insert + select;
         

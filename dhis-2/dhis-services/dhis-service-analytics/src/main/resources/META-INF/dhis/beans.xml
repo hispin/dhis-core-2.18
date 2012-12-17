@@ -6,5 +6,6 @@
   <bean id="org.hisp.dhis.analytics.AnalyticsTableService" class="org.hisp.dhis.analytics.table.DefaultAnalyticsTableService" />
   <bean id="org.hisp.dhis.analytics.AnalyticsManager" class="org.hisp.dhis.analytics.data.JdbcAnalyticsManager" />
   <bean id="org.hisp.dhis.analytics.AnalyticsService" class="org.hisp.dhis.analytics.data.DefaultAnalyticsService" />
+  <bean id="org.hisp.dhis.analytics.QueryPlanner" class="org.hisp.dhis.analytics.data.DefaultQueryPlanner" />
 
 </beans>

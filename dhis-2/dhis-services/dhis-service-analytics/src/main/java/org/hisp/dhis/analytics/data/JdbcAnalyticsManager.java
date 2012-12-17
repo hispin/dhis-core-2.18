@@ -39,10 +39,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -64,15 +60,6 @@ public class JdbcAnalyticsManager
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
-    
-    @Autowired
-    private PeriodService periodService;
-    
-    @Autowired
-    private ExpressionService expressionService;
-    
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
@@ -82,28 +69,26 @@ public class JdbcAnalyticsManager
     @Async
     public Future<Map<String, Double>> getAggregatedDataValueTotals( DataQueryParams params )
     {
-        int level = organisationUnitService.getLevelOfOrganisationUnit( params.getOrganisationUnits().iterator().next() );
-        
-        String periodType = PeriodType.getPeriodTypeFromIsoString( params.getPeriods().iterator().next() ).getName().toLowerCase();
-        
-        List<String> dimensions = params.getDimensionNames();        
+        int level = params.getOrganisationUnitLevel();
+        String periodType = params.getPeriodType();
+        List<String> dimensions = params.getDimensionNames();
         List<String> extraDimensions = params.getDynamicDimensionNames();
         
         String sql = 
-            "SELECT " + dimensions.get( 0 ) + ", " + 
+            "select " + dimensions.get( 0 ) + ", " + 
             dimensions.get( 1 ) + ", " +
             periodType + " as " + dimensions.get( 2 ) + ", " + 
             "uidlevel" + level + " as " + dimensions.get( 3 ) + ", " +
             getCommaDelimitedString( extraDimensions, false, true ) +
-            "SUM(value) as value " +
+            "sum(value) as value " +
             
-            "FROM " + params.getTableName() + " " +
-            "WHERE " + dimensions.get( 0 ) + " IN ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
-            "AND " + periodType + " IN ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
-            "AND uidlevel" + level + " IN ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
+            "from " + params.getTableName() + " " +
+            "where " + dimensions.get( 0 ) + " in ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
+            "and " + periodType + " in ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
+            "and uidlevel" + level + " in ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
             getExtraDimensionQuery( params ) +
         
-            "GROUP BY " + dimensions.get( 0 ) + ", " + 
+            "group by " + dimensions.get( 0 ) + ", " + 
             dimensions.get( 1 ) + ", " +
             periodType + ", " + 
             "uidlevel" + level +
@@ -111,7 +96,7 @@ public class JdbcAnalyticsManager
 
         log.info( sql );
         
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql.toLowerCase() );
         
         Map<String, Double> map = new HashMap<String, Double>();
         
@@ -126,7 +111,7 @@ public class JdbcAnalyticsManager
             
             key.deleteCharAt( key.length() - SEP.length() );
             
-            Double value = rowSet.getDouble( "value" );
+            Double value = rowSet.getDouble( DataQueryParams.VALUE_ID );
             
             map.put( key.toString(), value );
         }
