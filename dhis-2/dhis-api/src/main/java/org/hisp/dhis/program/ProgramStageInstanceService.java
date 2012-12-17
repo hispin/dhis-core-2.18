@@ -105,4 +105,7 @@ public interface ProgramStageInstanceService
     
     Grid getStatisticalReport( Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, I18n i18n, I18nFormat format );
+    
+    List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, int status, Integer max, Integer min );
 }

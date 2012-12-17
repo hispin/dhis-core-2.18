@@ -346,7 +346,14 @@
 		<action name="generateStatisticalProgramReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateStatisticalProgramReportAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
+			<param name="page">/dhis-web-caseentry/statisticalProgramReport.vm</param>
+			<param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
+		</action>
+		
+		<action name="statisticalProgramDetailsReport"
+			class="org.hisp.dhis.caseentry.action.report.StatisticalProgramDetailsReportAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/statisticalProgramDetailsReport.vm</param>
 			<param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
 		</action>
 		

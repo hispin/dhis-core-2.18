@@ -295,12 +295,13 @@ public class DefaultProgramStageInstanceService
 
         if ( total > 0 )
         {
+            grid.addHeader( new GridHeader( i18n.getString( "id" ), true, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "completed" ), false, false ) );
             grid.addHeader( new GridHeader( i18n.getString( "percent_completed" ), false, false ) );
             grid.addHeader( new GridHeader( i18n.getString( "incomplete" ), false, false ) );
             grid.addHeader( new GridHeader( i18n.getString( "percent_incomplete" ), false, false ) );
-            grid.addHeader( new GridHeader( i18n.getString( "Scheduled" ), false, false ) );
+            grid.addHeader( new GridHeader( i18n.getString( "scheduled" ), false, false ) );
             grid.addHeader( new GridHeader( i18n.getString( "percent_Scheduled" ), false, false ) );
             grid.addHeader( new GridHeader( i18n.getString( "overdue" ), false, false ) );
             grid.addHeader( new GridHeader( i18n.getString( "percent_overdue" ), false, false ) );
@@ -308,8 +309,9 @@ public class DefaultProgramStageInstanceService
             for ( ProgramStage programStage : program.getProgramStages() )
             {
                 grid.addRow();
+                grid.addValue( programStage.getId() );
                 grid.addValue( programStage.getName() );
-
+                
                 int completed = programStageInstanceStore.getStatisticalProgramStageReport( programStage, orgunitIds,
                     startDate, endDate, ProgramStageInstance.COMPLETED_STATUS );
                 grid.addValue( completed );
@@ -333,6 +335,13 @@ public class DefaultProgramStageInstanceService
         }
 
         return grid;
+    }
+
+    public List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
+        Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max )
+    {
+        return programStageInstanceStore.getStatisticalProgramStageDetailsReport( programStage, orgunitIds, startDate,
+            endDate, status, min, max );
     }
 
 }

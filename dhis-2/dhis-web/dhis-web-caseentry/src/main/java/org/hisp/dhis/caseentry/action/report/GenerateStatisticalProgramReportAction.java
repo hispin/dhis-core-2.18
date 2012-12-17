@@ -30,9 +30,7 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
@@ -42,9 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
@@ -74,13 +70,6 @@ public class GenerateStatisticalProgramReportAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -143,39 +132,11 @@ public class GenerateStatisticalProgramReportAction
         this.facilityLB = facilityLB;
     }
 
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
     private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
     public Collection<ProgramInstance> getProgramInstances()
     {
         return programInstances;
-    }
-
-    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
-
-    public Map<Integer, Integer> getStatusMap()
-    {
-        return statusMap;
-    }
-
-    private Program program;
-
-    public Program getProgram()
-    {
-        return program;
-    }
-
-    private int total;
-
-    public int getTotal()
-    {
-        return total;
     }
 
     private Grid grid;
@@ -184,7 +145,7 @@ public class GenerateStatisticalProgramReportAction
     {
         return grid;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -192,9 +153,9 @@ public class GenerateStatisticalProgramReportAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        program = programService.getProgram( programId );
+        Program program = programService.getProgram( programId );
 
         Date sDate = format.parseDate( startDate );
 
@@ -205,7 +166,7 @@ public class GenerateStatisticalProgramReportAction
         // ---------------------------------------------------------------------
 
         Collection<Integer> orgunitIds = new HashSet<Integer>();
-
+        
         if ( facilityLB.equals( "selected" ) )
         {
             orgunitIds.add( organisationUnit.getId() );

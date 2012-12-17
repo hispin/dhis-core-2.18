@@ -95,4 +95,7 @@ public interface ProgramStageInstanceStore
     int getStatisticalProgramStageReport( ProgramStage programStage, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, int status );
     
+    List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, int status, Integer min, Integer max );
+    
 }
