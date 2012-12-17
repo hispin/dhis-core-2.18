@@ -33,6 +33,7 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportService;
@@ -71,16 +72,16 @@ public class AutoGenerateFormRollBack
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private int exportReportId;
+    private Integer exportReportId;
 
-    public void setExportReportId( int exportReportId )
+    public void setExportReportId( Integer exportReportId )
     {
         this.exportReportId = exportReportId;
     }
 
-    private int dataSetId;
+    private Integer dataSetId;
 
-    public void setDataSetId( int dataSetId )
+    public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
@@ -112,20 +113,6 @@ public class AutoGenerateFormRollBack
 
     public String execute()
     {
-        cleanUp();
-
-        autoRollBack();
-
-        return SUCCESS;
-    }
-
-    private void cleanUp()
-    {
-        System.gc();
-    }
-
-    private void autoRollBack()
-    {
         try
         {
             message = "";
@@ -137,13 +124,11 @@ public class AutoGenerateFormRollBack
                 if ( exportReport != null )
                 {
                     message += i18n.getString( "report_with_name" ) + " \"" + exportReport.getDisplayName();
+
+                    exportReportService.deleteExportReport( exportReportId );
+
+                    message += "\" " + i18n.getString( "deleted" );
                 }
-
-                exportReportService.deleteExportReport( exportReportId );
-
-                message += "\" " + i18n.getString( "deleted" );
-
-                exportReportId = 0;
             }
             if ( dataSetId > 0 )
             {
@@ -152,13 +137,11 @@ public class AutoGenerateFormRollBack
                 if ( ds != null )
                 {
                     message += "<br/>" + i18n.getString( "data_set_with_name" ) + " \"" + ds.getDisplayName();
+
+                    dataSetService.deleteDataSet( ds );
+
+                    message += "\" " + i18n.getString( "deleted" );
                 }
-
-                dataSetService.deleteDataSet( ds );
-
-                message += "\" " + i18n.getString( "deleted" );
-
-                dataSetId = 0;
             }
 
             int i = 0;
@@ -167,8 +150,13 @@ public class AutoGenerateFormRollBack
             {
                 for ( Integer id : indicatorIds )
                 {
-                    indicatorService.deleteIndicator( indicatorService.getIndicator( id ) );
-                    i++;
+                    Indicator indicator = indicatorService.getIndicator( id );
+
+                    if ( indicator != null )
+                    {
+                        indicatorService.deleteIndicator( indicator );
+                        i++;
+                    }
                 }
 
                 message += "<br/>" + i18n.getString( "indicators" ) + ": " + i + "/" + indicatorIds.size() + " "
@@ -184,8 +172,8 @@ public class AutoGenerateFormRollBack
                     i++;
                 }
 
-                message += "<br/>" + i18n.getString( "validation_rules" ) + ": " + i + "/" + validationRuleIds.size() + " "
-                    + i18n.getString( "deleted" );
+                message += "<br/>" + i18n.getString( "validation_rules" ) + ": " + i + "/" + validationRuleIds.size()
+                    + " " + i18n.getString( "deleted" );
             }
             if ( dataElementIds != null && !dataElementIds.isEmpty() )
             {
@@ -206,6 +194,10 @@ public class AutoGenerateFormRollBack
             message = i18n.getString( "auto_roll_back_failed" );
 
             e.printStackTrace();
+
+            return ERROR;
         }
+
+        return SUCCESS;
     }
 }
