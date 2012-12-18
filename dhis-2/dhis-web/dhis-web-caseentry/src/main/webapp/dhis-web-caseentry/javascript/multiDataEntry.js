@@ -73,6 +73,7 @@ function loadDataEntry( programStageInstanceId )
 		},function()
 		{
 			showById('patientInforTB');
+			showById('postCommentTbl');
 		}).dialog(
 		{
 			title:i18n_program_stage,
