@@ -191,7 +191,7 @@ public class GetGeneralSettingsAction
 
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
-        Collections.sort( organisationUnitLevels, new OrganisationUnitLevelComparator() );
+        Collections.sort( organisationUnitLevels, OrganisationUnitLevelComparator.INSTANCE );
 
         return SUCCESS;
     }
