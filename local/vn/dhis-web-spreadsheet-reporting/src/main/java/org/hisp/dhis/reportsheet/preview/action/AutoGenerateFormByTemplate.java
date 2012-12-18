@@ -361,7 +361,7 @@ public class AutoGenerateFormByTemplate
 
                     if ( values[0].equalsIgnoreCase( DATAELEMENT_KEY ) )
                     {
-                        String deName = cell.getStringCellValue();
+                        String deName = commonName + " - " + cell.getStringCellValue();
                         String[] colNames = values[1].split( "," );
 
                         for ( String colName : colNames )
