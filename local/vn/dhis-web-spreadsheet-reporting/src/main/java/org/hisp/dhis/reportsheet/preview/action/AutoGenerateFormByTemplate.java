@@ -41,6 +41,7 @@ import static org.hisp.dhis.reportsheet.preview.action.HtmlHelper.TEXT_COLOR;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.PATTERN_EXCELFORMULA;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertAlignmentString;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertColumnNameToNumber;
+import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertColumnNumberToName;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readValueByPOI;
 
 import java.io.FileInputStream;
@@ -115,15 +116,17 @@ public class AutoGenerateFormByTemplate
 
     private static final String MERGEDCELL_CLOSETAG = "</MergedCells>";
 
+    private static final String DESCRIPTION = "Description";
+
     private static final String DATAELEMENT_KEY = "de";
 
     private static final String INDICATOR_KEY = "id";
 
-    private static final String INDICATOR_NAME = "CS ";
+    private static final String INDICATOR_NAME = " - CS ";
 
     private static final String INDICATOR_TYPE_NAME = "Loại số";
 
-    private static final String DESCRIPTION = "Description";
+    private static final String VALIDATION_RULE_NAME = " - VR ";
 
     private static final Pattern pattern = Pattern.compile( PATTERN_EXCELFORMULA );
 
@@ -153,12 +156,16 @@ public class AutoGenerateFormByTemplate
         private static final long serialVersionUID = 1L;
 
         {
+            put( "==", "equal_to" );
             put( "=", "equal_to" );
             put( "!=", "not_equal_to" );
+            put( "<>", "not_equal_to" );
             put( ">", "greater_than" );
             put( ">=", "greater_than_or_equal_to" );
+            put( "=>", "greater_than_or_equal_to" );
             put( "<", "less_than" );
             put( "<=", "less_than_or_equal_to" );
+            put( "=<", "less_than_or_equal_to" );
             put( "cp", "compulsory_pair" );
         }
     };
@@ -326,7 +333,6 @@ public class AutoGenerateFormByTemplate
 
     private void printData( int sheetNo, List<ImportItem> importItems )
     {
-
         // Create new DataSet
         DataSet dataSet = new DataSet( commonName, commonName, periodType );
 
@@ -399,18 +405,22 @@ public class AutoGenerateFormByTemplate
                     }
                     else if ( values[0].equalsIgnoreCase( INDICATOR_KEY ) )
                     {
-                        String idName = INDICATOR_NAME + values[1];
                         Integer colIdx = colIndex + 1;
+                        String idName = commonName + INDICATOR_NAME;
 
-                        if ( values.length == 4 )
+                        if ( values.length == 3 )
                         {
-                            colIdx = convertColumnNameToNumber( values[3] );
+                            idName += "(" + values[2];
+                            colIdx = convertColumnNameToNumber( values[2] );
                         }
-                        else if ( values.length == 5 )
+                        else if ( values.length == 4 )
                         {
-                            colIdx = convertColumnNameToNumber( values[3] );
-                            rowIndex = Integer.parseInt( values[4] ) - 1;
+                            idName += "(" + values[2];
+                            colIdx = convertColumnNameToNumber( values[2] );
+                            rowIndex = Integer.parseInt( values[3] ) - 1;
                         }
+
+                        idName += rowIndex + ")";
 
                         // Create Indicator
                         Indicator indicator = new Indicator();
@@ -445,25 +455,28 @@ public class AutoGenerateFormByTemplate
                     }
                     else
                     {
+                        String name = commonName + VALIDATION_RULE_NAME + "("
+                            + convertColumnNumberToName( colIndex + 1 ) + (rowIndex + 1) + ")";
+
                         // Validation rules
                         Expression leftSide = new Expression();
 
-                        leftSide.setExpression( prepareExcelFormulaForAutoForm( values[2] ) );
+                        leftSide.setExpression( prepareExcelFormulaForAutoForm( values[1] ) );
                         leftSide.setDescription( DESCRIPTION );
                         leftSide.setNullIfBlank( true );
 
                         Expression rightSide = new Expression();
 
-                        rightSide.setExpression( prepareExcelFormulaForAutoForm( values[4] ) );
+                        rightSide.setExpression( prepareExcelFormulaForAutoForm( values[3] ) );
                         rightSide.setDescription( DESCRIPTION );
                         rightSide.setNullIfBlank( true );
 
                         ValidationRule validationRule = new ValidationRule();
 
-                        validationRule.setName( values[1] );
+                        validationRule.setName( name );
                         validationRule.setDescription( DESCRIPTION );
                         validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
-                        validationRule.setOperator( Operator.valueOf( operatorMap.get( values[3] ) ) );
+                        validationRule.setOperator( Operator.valueOf( operatorMap.get( values[2] ) ) );
                         validationRule.setLeftSide( leftSide );
                         validationRule.setRightSide( rightSide );
 
@@ -671,12 +684,16 @@ public class AutoGenerateFormByTemplate
             }
 
             vr.getLeftSide().setExpression( leftExpression );
-            vr.getLeftSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( leftExpression ) );
-            vr.getLeftSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftExpression ) );
+            vr.getLeftSide().setDataElementsInExpression(
+                expressionService.getDataElementsInExpression( leftExpression ) );
+            vr.getLeftSide().setOptionCombosInExpression(
+                expressionService.getOptionCombosInExpression( leftExpression ) );
 
             vr.getRightSide().setExpression( rightExpression );
-            vr.getRightSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( rightExpression ) );
-            vr.getRightSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightExpression ) );
+            vr.getRightSide().setDataElementsInExpression(
+                expressionService.getDataElementsInExpression( rightExpression ) );
+            vr.getRightSide().setOptionCombosInExpression(
+                expressionService.getOptionCombosInExpression( rightExpression ) );
 
             validationRuleService.updateValidationRule( vr );
         }
