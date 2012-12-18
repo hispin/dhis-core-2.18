@@ -96,7 +96,7 @@ public class JdbcAnalyticsManager
 
         log.info( sql );
         
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql.toLowerCase() );
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
         Map<String, Double> map = new HashMap<String, Double>();
         
@@ -112,7 +112,7 @@ public class JdbcAnalyticsManager
             key.deleteCharAt( key.length() - SEP.length() );
             
             Double value = rowSet.getDouble( DataQueryParams.VALUE_ID );
-            
+
             map.put( key.toString(), value );
         }
         
