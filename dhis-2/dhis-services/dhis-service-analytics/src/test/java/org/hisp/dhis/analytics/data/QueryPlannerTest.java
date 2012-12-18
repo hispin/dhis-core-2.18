@@ -104,8 +104,8 @@ public class QueryPlannerTest
     
     /**
      * Query spans 2 partitions. Splits in 2 queries for each partition, then
-     * splits in 2 queries on data elements to satisfy optimal for a total  of 4 
-     * queries.
+     * splits in 2 queries on organisation units to satisfy optimal for a total 
+     * of 4 queries.
      */
     @Test
     public void planQueryA()
@@ -128,8 +128,8 @@ public class QueryPlannerTest
     
     /**
      * Query spans 3 period types. Splits in 3 queries for each period type, then
-     * splits in 2 queries on data elements to satisfy optimal for a total of 6
-     * queries.
+     * splits in 2 queries on organisation units to satisfy optimal for a total 
+     * of 6 queries.
      */
     @Test
     public void planQueryB()
@@ -152,8 +152,8 @@ public class QueryPlannerTest
     
     /**
      * Query spans 3 organisation unit levels. Splits in 3 queries for each level,
-     * then splits in 2 queries on data elements to satisfy optimal for a total 
-     * of 6 queries.
+     * then splits in 2 queries on organisation units to satisfy optimal for a total 
+     * of 5 queries, as there are only 5 organisation units in total.
      */
     @Test
     public void planQueryC()
@@ -179,7 +179,7 @@ public class QueryPlannerTest
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
-        assertEquals( 6, queries.size() );
+        assertEquals( 5, queries.size() );
         
         for ( DataQueryParams query : queries )
         {
@@ -189,7 +189,8 @@ public class QueryPlannerTest
     }
     
     /**
-     * Splits on largest dimension which is period.
+     * Splits on best dimension. Ignores organisation units, splits on 3 data elements,
+     * then splits in 2 queries on periods.
      */
     @Test
     public void planQueryD()
@@ -201,7 +202,7 @@ public class QueryPlannerTest
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 6 );
         
-        assertEquals( 5, queries.size() );
+        assertEquals( 6, queries.size() );
         
         for ( DataQueryParams query : queries )
         {

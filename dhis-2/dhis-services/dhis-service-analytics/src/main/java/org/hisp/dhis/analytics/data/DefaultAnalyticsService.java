@@ -90,7 +90,7 @@ public class DefaultAnalyticsService
     {
         Timer t = new Timer().start();
 
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 6 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
         t.getTime( "Planned query" );
         

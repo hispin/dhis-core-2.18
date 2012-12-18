@@ -149,7 +149,7 @@ public class MathUtils
      * @param significantFigures
      * @return
      */
-    public static String roundToString(double value, int significantFigures)
+    public static String roundToString( double value, int significantFigures )
     {
         MathContext mc = new MathContext(significantFigures);
         BigDecimal num = new BigDecimal(value);
@@ -414,5 +414,19 @@ public class MathUtils
     {
         double deviation = stdDev * stdDevFactor;
         return average + deviation;
+    }
+    
+    /**
+     * Performs a division and rounds upwards to the next integer.
+     * 
+     * @param numerator the numerator.
+     * @param denominator the denominator.
+     * @return an integer value.
+     */
+    public static int divideToCeil( int numerator, int denominator )
+    {
+        Double result = Math.ceil( (double) numerator / denominator );
+        
+        return result.intValue();
     }
 }

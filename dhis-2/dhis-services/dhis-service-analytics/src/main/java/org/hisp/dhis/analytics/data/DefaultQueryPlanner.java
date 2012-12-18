@@ -38,6 +38,7 @@ import org.hisp.dhis.analytics.table.PartitionUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ListMap;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -81,13 +82,29 @@ public class DefaultQueryPlanner
             }
         }
 
+        if ( queries.size() >= optimalQueries )
+        {
+            return queries;
+        }
+
         // ---------------------------------------------------------------------
-        // Return if number of queries are equal or larger than optimal
+        // Group by organisation unit
         // ---------------------------------------------------------------------
         
-        boolean satisfied = queries.size() >= optimalQueries;
+        queries = splitByDimension( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
+
+        if ( queries.size() >= optimalQueries )
+        {
+            return queries;
+        }
+
+        // ---------------------------------------------------------------------
+        // Group by data element
+        // ---------------------------------------------------------------------
         
-        if ( satisfied )
+        queries = splitByDimension( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
+
+        if ( queries.size() >= optimalQueries )
         {
             return queries;
         }
@@ -95,30 +112,8 @@ public class DefaultQueryPlanner
         // ---------------------------------------------------------------------
         // Group by dimensions
         // ---------------------------------------------------------------------
-        
-        List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
-        
-        Double pages = Math.ceil( (double) optimalQueries / queries.size() );
-        
-        int optimal = pages.intValue();
-        
-        for ( DataQueryParams query : queries )
-        {
-            String dimension = getPartitionDimension( query, optimal );
-            
-            List<String> partitionValues = params.getDimension( dimension );
-            
-            List<List<String>> partitionValuePages = new PaginatedList<String>( partitionValues ).setNumberOfPages( optimal ).getPages();
-        
-            for ( List<String> valuePage : partitionValuePages )
-            {
-                DataQueryParams subQuery = new DataQueryParams( query );
-                subQuery.setDimension( dimension, valuePage );
-                subQueries.add( subQuery );
-            }
-        }
-        
-        return subQueries;
+
+        return splitByBestDimension( queries, optimalQueries );
     }
     
     public String getPartitionDimension( DataQueryParams params, int optimalQueries )
@@ -144,6 +139,63 @@ public class DefaultQueryPlanner
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+    
+    /**
+     * Splits the given list of queries in sub queries on the given dimension.
+     */
+    private List<DataQueryParams> splitByDimension( List<DataQueryParams> queries, String dimension, int optimalQueries )
+    {
+        int pageNo = MathUtils.divideToCeil( optimalQueries, queries.size() );
+        
+        List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
+        
+        for ( DataQueryParams query : queries )
+        {
+            List<String> values = query.getDimension( dimension );
+
+            List<List<String>> valuePages = new PaginatedList<String>( values ).setNumberOfPages( pageNo ).getPages();
+            
+            for ( List<String> valuePage : valuePages )
+            {
+                DataQueryParams subQuery = new DataQueryParams( query );
+                subQuery.setDimension( dimension, valuePage );
+                subQueries.add( subQuery );
+            }            
+        }
+
+        return subQueries;
+    }
+    
+    /**
+     * Splits the given list of queries in sub queries on the most favorable
+     * dimension. This is determined by first checking if any dimensions will
+     * satisfy the optimal number of queries, if not the dimension with most
+     * options is selected.
+     */
+    private List<DataQueryParams> splitByBestDimension( List<DataQueryParams> queries, int optimalQueries )
+    {
+        int pageNo = MathUtils.divideToCeil( optimalQueries, queries.size() );
+        
+        List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
+        
+        for ( DataQueryParams query : queries )
+        {
+            String dimension = getPartitionDimension( query, pageNo );
+            
+            List<String> values = query.getDimension( dimension );
+            
+            List<List<String>> valuePages = new PaginatedList<String>( values ).setNumberOfPages( pageNo ).getPages();
+        
+            for ( List<String> valuePage : valuePages )
+            {
+                DataQueryParams subQuery = new DataQueryParams( query );
+                subQuery.setDimension( dimension, valuePage );
+                subQueries.add( subQuery );
+            }
+        }
+        
+        return subQueries;
+    }
     
     /**
      * Groups the given query into sub queries based on its periods and which 
