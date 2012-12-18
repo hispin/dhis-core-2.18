@@ -48,13 +48,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = OrganisationUnitController.RESOURCE_PATH )
+@RequestMapping(value = OrganisationUnitController.RESOURCE_PATH)
 public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
@@ -78,13 +82,13 @@ public class OrganisationUnitController
 
             if ( levelSorted )
             {
-                Collections.sort( entityList, new OrganisationUnitByLevelComparator() );
+                Collections.sort( entityList, OrganisationUnitByLevelComparator.INSTANCE );
             }
         }
         else if ( levelSorted )
         {
             entityList = new ArrayList<OrganisationUnit>( manager.getAll( getEntityClass() ) );
-            Collections.sort( entityList, new OrganisationUnitByLevelComparator() );
+            Collections.sort( entityList, OrganisationUnitByLevelComparator.INSTANCE );
         }
         else if ( options.hasPaging() )
         {
@@ -104,8 +108,8 @@ public class OrganisationUnitController
     }
 
     @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
