@@ -62,8 +62,13 @@ function autoGenerateFormByTemplateReceived( parentElement )
 {
 	var type = getElementAttribute( parentElement, 'message', 'type' );
 	
-	if ( type && type == 'error' )
+	if ( type && type == 'input' )
 	{
+		showErrorMessage( parentElement.firstChild.nodeValue, 5000 );
+	}
+	else if ( type && type == 'error' )
+	{
+		var messageTag 			= parentElement.getElementsByTagName( 'message' )[0];
 		var dataElementTag 		= parentElement.getElementsByTagName( 'dataElements' )[0];
 		var indicatorTag		= parentElement.getElementsByTagName( 'indicators' )[0];
 		var validationRuleTag	= parentElement.getElementsByTagName( 'validationRules' )[0];
@@ -90,18 +95,18 @@ function autoGenerateFormByTemplateReceived( parentElement )
 			url += 'validationRuleIds=' + validationRules[i].firstChild.nodeValue + '&';
 		}
 		
-		url += 'exportReportId=' + reportId + '&dataSetId=' + dataSetId;
+		url += 'exportReportId=' + reportId + '&dataSetId=' + dataSetId + '&message=' + messageTag.firstChild.nodeValue;
 		
 		jQuery.post( url, {}, function( json ) {
 			if ( json.response == "success" ) {
-				showSuccessMessage( json.message, 8000 );
+				showWarningMessage( json.message, 8000 );
 			} else {
 				showErrorMessage( json.message, 5000 );
 			}
 		} );
 	}
-	else
-	{	
+	else if ( type && type == 'success' )
+	{
 		var aKey 	= new Array();
 		var aMerged = new Array();	
 		var cells 	= parentElement.getElementsByTagName( 'cell' );

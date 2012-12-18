@@ -1862,6 +1862,8 @@
 				/dhis-web-spreadsheet-reporting/responseExportReportPreview.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-spreadsheet-reporting/responseAutoGenerateFormError.vm</result>
+			<result name="input" type="velocity-xml">
+				../dhis-web-commons/ajax/xmlResponseInput.vm</result>
 		</action>
 
 		<action name="autoGenerateFormRollback"

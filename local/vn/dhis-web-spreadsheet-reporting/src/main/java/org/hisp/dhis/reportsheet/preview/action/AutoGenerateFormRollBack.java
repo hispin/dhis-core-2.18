@@ -27,7 +27,9 @@ package org.hisp.dhis.reportsheet.preview.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementService;
@@ -49,6 +51,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AutoGenerateFormRollBack
     extends ActionSupport
 {
+    private static final Map<String, String> keyMap = new HashMap<String, String>()
+    {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+        {
+            put( "de", "data_element_duplicated" );
+            put( "id", "indicator_duplicated" );
+            put( "vr", "validation_rule_duplicated" );
+        }
+    };
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -115,7 +131,19 @@ public class AutoGenerateFormRollBack
     {
         try
         {
-            message = "";
+            if ( message == null || message.trim().isEmpty() )
+            {
+                message = "";
+            }
+            else
+            {
+                String values[] = message.split( "@" );
+                
+                message = i18n.getString( keyMap.get( values[0] ) ) + " \"" + values[1] + "\"<br/>";
+                message += "----------------------------------<br/>";
+                message += i18n.getString( "rollback_result" ) + "<br/>";
+                message += "----------------------------------<br/>";
+            }
 
             if ( exportReportId > 0 )
             {
