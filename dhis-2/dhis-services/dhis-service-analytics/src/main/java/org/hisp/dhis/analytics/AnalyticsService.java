@@ -33,7 +33,7 @@ import org.hisp.dhis.common.Grid;
 
 public interface AnalyticsService
 {
-    Grid getAggregatedDataValueTotals( DataQueryParams params ) throws Exception;
+    Grid getAggregatedDataValues( DataQueryParams params ) throws Exception;
     
     Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception;
 }

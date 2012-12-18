@@ -62,8 +62,8 @@ public class AnalyticsController
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO
         
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
-        
-        Grid grid = analyticsService.getAggregatedDataValueTotals( params );
+
+        Grid grid = analyticsService.getAggregatedDataValues( params );
         
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );        
@@ -80,7 +80,7 @@ public class AnalyticsController
         
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
         
-        Grid grid = analyticsService.getAggregatedDataValueTotals( params );
+        Grid grid = analyticsService.getAggregatedDataValues( params );
 
         GridUtils.toXml( grid, response.getOutputStream() );
     }
