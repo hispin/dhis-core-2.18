@@ -34,6 +34,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
@@ -293,11 +294,26 @@ public class FacilityController
         }
 
         Collections.sort( allOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
+        List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
         for ( OrganisationUnit organisationUnit : allOrganisationUnits )
         {
             Facility facility = conversionService.convert( organisationUnit, Facility.class );
             filterFacility( facility, allProperties, fields );
+
+            // TODO this probably belongs in "meta": {}
+            List<Map<String, Object>> hierarchy = new ArrayList<Map<String, Object>>();
+            facility.getProperties().put( "hierarchy", hierarchy );
+
+            for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
+            {
+                Map<String, Object> level = new HashMap<String, Object>();
+
+                level.put( "name", organisationUnitLevel.getName() );
+                level.put( "level", organisationUnitLevel.getLevel() );
+
+                hierarchy.add( level );
+            }
 
             facilities.getFacilities().add( facility );
         }
