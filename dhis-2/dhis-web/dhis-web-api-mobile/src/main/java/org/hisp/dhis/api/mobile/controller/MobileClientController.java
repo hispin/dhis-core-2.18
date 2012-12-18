@@ -89,6 +89,7 @@ public class MobileClientController
         orgUnit.setUpdateDataSetUrl( getUrl( request, unit.getId(), "updateDataSets" ) );
         orgUnit.setChangeUpdateDataSetLangUrl( getUrl( request, unit.getId(), "changeLanguageDataSet" ) );
         orgUnit.setSearchUrl( getUrl( request, unit.getId(), "search" ) );
+        orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );

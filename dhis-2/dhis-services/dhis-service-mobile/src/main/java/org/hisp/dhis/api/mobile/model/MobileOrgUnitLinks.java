@@ -61,6 +61,8 @@ public class MobileOrgUnitLinks
     public static double currentVersion = 2.9;
 
     private String updateNewVersionUrl;
+    
+    private String updateContactUrl;
 
     @XmlAttribute
     public int getId()
@@ -173,6 +175,16 @@ public class MobileOrgUnitLinks
     {
         this.updateNewVersionUrl = updateNewVersionUrl;
     }
+    
+    public String getUpdateContactUrl()
+    {
+        return updateContactUrl;
+    }
+
+    public void setUpdateContactUrl( String updateContactUrl )
+    {
+        this.updateContactUrl = updateContactUrl;
+    }
 
     public void serialize( DataOutputStream dataOutputStream )
 
@@ -188,6 +200,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
         dataOutputStream.writeUTF( this.searchUrl );
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
+        dataOutputStream.writeUTF( this.updateContactUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -203,6 +216,7 @@ public class MobileOrgUnitLinks
         this.changeUpdateDataSetLangUrl = dataInputStream.readUTF();
         this.searchUrl = dataInputStream.readUTF();
         this.updateNewVersionUrl = dataInputStream.readUTF();
+        this.updateContactUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -234,6 +248,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
         dataOutputStream.writeUTF( this.searchUrl );
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
+        dataOutputStream.writeUTF( this.updateContactUrl );
     }
 
 }

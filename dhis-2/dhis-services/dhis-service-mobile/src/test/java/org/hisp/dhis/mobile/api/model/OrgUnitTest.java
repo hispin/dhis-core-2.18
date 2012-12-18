@@ -57,6 +57,7 @@ public class OrgUnitTest
         unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
         unit.setSearchUrl( "search" );
         unit.setUpdateNewVersionUrl( "" );
+        unit.setUpdateContactUrl( "updateContactUrl" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );
