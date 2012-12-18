@@ -35,24 +35,17 @@ public interface QueryPlanner
      * Creates a list of DataQueryParams. It is mandatory to group the queries by
      * the following criteria: 1) partition / year 2) period type 3) organisation 
      * unit level. If the number of queries produced by this grouping is equal or
-     * larger than the number of optimal queries, those queries are returned.
+     * larger than the number of optimal queries, those queries are returned. Next
+     * splits on organisation unit dimension, and returns if optimal queries are
+     * satisfied. Next splits on data element dimension, and returns if optimal
+     * queries are satisfied. 
+     * 
+     * Does not attempt to split on period or organisation unit group set dimensions, 
+     * as splitting on columns with low cardinality typically decreases performance.
      * 
      * @param params the data query params.
      * @param optimalQueries the number of optimal queries for the planner to return.
-     * @return
+     * @return list of data query params.
      */
     List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries );
-
-    /**
-     * Gets the data dimension must suitable as partition key. Will first check
-     * if any of the dimensions have enough values to satisfy a optimal number of
-     * queries, and return that dimension if so. If not returns the dimension
-     * with the highest number of values. The order of the fixed dimensions are
-     * data element, organisation unit, period.
-     * 
-     * @param params the data query parameters.
-     * @param optimalQueries the optimal number of queries to create.
-     */
-    String getPartitionDimension( DataQueryParams params, int optimalQueries );
-
 }

@@ -40,6 +40,8 @@ import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.MathUtils;
+import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -90,9 +92,11 @@ public class DefaultAnalyticsService
     {
         Timer t = new Timer().start();
 
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 16 );
         
-        t.getTime( "Planned query" );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries );
+        
+        t.getTime( "Planned query for optimal: " + optimalQueries + ", got: " + queries.size() );
         
         List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
         
