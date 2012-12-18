@@ -85,13 +85,12 @@ import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportNormal;
 import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.reportsheet.action.ActionSupport;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * Simple demo class which uses the api to present the contents of an excel 97
@@ -104,7 +103,7 @@ import com.opensymphony.xwork2.Action;
  */
 
 public class AutoGenerateFormByTemplate
-    implements Action
+    extends ActionSupport
 {
     private static final String REPORT_EXCEL_GROUP = "BÁO CÁO KIỂM TRA BỆNH VIỆN";
 
@@ -121,6 +120,8 @@ public class AutoGenerateFormByTemplate
     private static final String DATAELEMENT_KEY = "de";
 
     private static final String INDICATOR_KEY = "id";
+
+    private static final String VALIDATIONRULE_KEY = "vr";
 
     private static final String INDICATOR_NAME = " - CS ";
 
@@ -255,6 +256,13 @@ public class AutoGenerateFormByTemplate
         return new HashSet<Integer>( vrList );
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -270,6 +278,13 @@ public class AutoGenerateFormByTemplate
 
             excelFileName = getName( pathFileName );
             commonName = getBaseName( pathFileName );
+
+            if ( dataSetService.getDataSetByName( commonName ) != null )
+            {
+                message = i18n.getString( "form_name_already_exists" );
+
+                return INPUT;
+            }
 
             if ( getExtension( pathFileName ).equals( "xls" ) )
             {
@@ -309,6 +324,8 @@ public class AutoGenerateFormByTemplate
         }
         catch ( Exception e )
         {
+            xml = null;
+
             e.printStackTrace();
 
             return ERROR;
@@ -368,6 +385,7 @@ public class AutoGenerateFormByTemplate
                         {
                             int colIdx = convertColumnNameToNumber( colName );
                             String name = deName + " (" + colIdx + ")";
+                            message = DATAELEMENT_KEY + "@" + name;
 
                             // Generate DataElement
                             DataElement dataElement = new DataElement( name );
@@ -408,19 +426,23 @@ public class AutoGenerateFormByTemplate
                         Integer colIdx = colIndex + 1;
                         String idName = commonName + INDICATOR_NAME;
 
-                        if ( values.length == 3 )
+                        switch ( values.length )
                         {
+                        case 3:
                             idName += "(" + values[2];
                             colIdx = convertColumnNameToNumber( values[2] );
-                        }
-                        else if ( values.length == 4 )
-                        {
+                            break;
+                        case 4:
                             idName += "(" + values[2];
                             colIdx = convertColumnNameToNumber( values[2] );
                             rowIndex = Integer.parseInt( values[3] ) - 1;
+                        default:
+                            idName += "(" + convertColumnNumberToName( colIdx + 1 );
+                            break;
                         }
 
                         idName += rowIndex + ")";
+                        message = INDICATOR_KEY + "@" + idName;
 
                         // Create Indicator
                         Indicator indicator = new Indicator();
@@ -428,7 +450,7 @@ public class AutoGenerateFormByTemplate
                         indicator.setShortName( idName );
                         indicator.setAnnualized( false );
                         indicator.setIndicatorType( indicatorType );
-                        indicator.setNumerator( prepareExcelFormulaForAutoForm( values[2] ) );
+                        indicator.setNumerator( prepareExcelFormulaForAutoForm( values[1] ) );
                         indicator.setNumeratorDescription( DESCRIPTION );
                         indicator.setDenominator( 1 + "" );
                         indicator.setDenominatorDescription( DESCRIPTION );
@@ -457,6 +479,7 @@ public class AutoGenerateFormByTemplate
                     {
                         String name = commonName + VALIDATION_RULE_NAME + "("
                             + convertColumnNumberToName( colIndex + 1 ) + (rowIndex + 1) + ")";
+                        message = VALIDATIONRULE_KEY + "@" + name;
 
                         // Validation rules
                         Expression leftSide = new Expression();
