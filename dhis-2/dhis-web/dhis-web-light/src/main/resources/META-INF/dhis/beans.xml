@@ -16,7 +16,7 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
-	<!-- Chart -->
+	<!-- Chart 
 	<bean id="org.hisp.dhis.light.chart.action.GetDataSetInfoForChartAction" class="org.hisp.dhis.light.chart.action.GetDataSetInfoForChartAction"
 		scope="prototype">
 		<property name="serviceProvider" ref="dataCompletenessServiceProvider" />
@@ -24,7 +24,7 @@
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
+	</bean>-->
 	
 	<!-- Data entry -->
 
