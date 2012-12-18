@@ -4,7 +4,6 @@
  &raquo; <a href="javascript:dashboardHistoryToggle();" >$i18n.getString( 'history' )</a>
 </h3>
 
-<input type='hidden' id='currentUsername' name='currentUsername' value='$!visitor'>
 <div class='dashboard-area'>
 
 	<div class="link-area">

@@ -26,6 +26,7 @@
 <input type='hidden' name='programStageId' id='programStageId' value='$!programStageInstance.programStage.id'>
 <input type='hidden' name='programId' id='programId' value='$!programStageInstance.programInstance.program.id'>
 <input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStageInstance.programStage.validCompleteOnly'>
+<input type='hidden' id='currentUsername' name='currentUsername' value='$!currentUsername'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	<table>

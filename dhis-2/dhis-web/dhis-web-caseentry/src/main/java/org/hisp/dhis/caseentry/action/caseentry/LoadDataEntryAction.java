@@ -171,6 +171,13 @@ public class LoadDataEntryAction
         return patientDataValueMap;
     }
 
+    private String visitor;
+
+    public String getVisitor()
+    {
+        return visitor;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
