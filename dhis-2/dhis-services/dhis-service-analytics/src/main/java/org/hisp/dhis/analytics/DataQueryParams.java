@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.hisp.dhis.common.Dxf2Namespace;
 
@@ -108,29 +106,6 @@ public class DataQueryParams
     // Logic
     // -------------------------------------------------------------------------
 
-    /**
-     * Prioritizing to split on dimensions with high cardinality, which is typically 
-     * organisation unit and data element in that order.
-     */
-    public SortedMap<String, List<String>> getDimensionValuesMap()
-    {
-        SortedMap<String, List<String>> map = new TreeMap<String, List<String>>();
-
-        map.put( ORGUNIT_DIM_ID, organisationUnits );
-        map.put( DATAELEMENT_DIM_ID, dataElements );
-        map.put( PERIOD_DIM_ID, periods );
-        
-        if ( dimensions != null )
-        {
-            for ( String dimension : dimensions.keySet() )
-            {
-                map.put( dimension, dimensions.get( dimension ) );
-            }
-        }
-        
-        return map;
-    }
-    
     public List<String> getDimensionNames()
     {
         List<String> list = new ArrayList<String>();
@@ -191,25 +166,6 @@ public class DataQueryParams
         throw new IllegalArgumentException( dimension );
     }
     
-    public String getLargestDimension()
-    {
-        Map<String, List<String>> map = getDimensionValuesMap();
-        
-        String dimension = map.keySet().iterator().next();
-        int size = map.get( dimension ).size();
-                
-        for ( String dim : map.keySet() )
-        {
-            if ( map.get( dim ).size() > size )
-            {
-                dimension = dim;
-                size = map.get( dim ).size();
-            }
-        }
-        
-        return dimension;
-    }
-
     @Override
     public int hashCode()
     {

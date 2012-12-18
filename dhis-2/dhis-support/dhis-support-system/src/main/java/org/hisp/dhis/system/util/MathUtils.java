@@ -181,6 +181,22 @@ public class MathUtils
     }
     
     /**
+     * Returns the given value if between the min and max value. If lower than
+     * minimum, returns minimum, if higher than maximum, returns maximum.
+     * 
+     * @param value the value.
+     * @param min the minimum value.
+     * @param max the maximum value.
+     * @return an integer value.
+     */
+    public static int getWithin( int value, int min, int max )
+    {
+        value = Math.max( value, min );
+        value = Math.min( value, max );
+        return value;
+    }
+    
+    /**
      * Returns true if the provided String argument can be converted to a Double,
      * false if not.
      * 

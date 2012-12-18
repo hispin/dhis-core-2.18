@@ -27,9 +27,6 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
-import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -86,21 +83,6 @@ public class QueryPlannerTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-
-    @Test
-    public void getPartitionDimension()
-    {
-        DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
-        params.setOrganisationUnits( Arrays.asList( "a", "b", "c", "d", "e" ) );
-        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
-        
-        assertEquals( DATAELEMENT_DIM_ID, queryPlanner.getPartitionDimension( params, 3 ) );
-        assertEquals( DATAELEMENT_DIM_ID, queryPlanner.getPartitionDimension( params, 4 ) );
-        assertEquals( ORGUNIT_DIM_ID, queryPlanner.getPartitionDimension( params, 5 ) );
-        assertEquals( PERIOD_DIM_ID, queryPlanner.getPartitionDimension( params, 6 ) );
-        assertEquals( PERIOD_DIM_ID, queryPlanner.getPartitionDimension( params, 7 ) );
-    }
     
     /**
      * Query spans 2 partitions. Splits in 2 queries for each partition, then
@@ -189,10 +171,9 @@ public class QueryPlannerTest
     }
     
     /**
-     * Splits on best dimension. Ignores organisation units, splits on 3 data elements,
-     * then splits in 2 queries on periods.
+     * Splits on 3 data elements, then splits in 2 queries on periods for a total
+     * of 6 queries.
      */
-    @Test
     public void planQueryD()
     {
         DataQueryParams params = new DataQueryParams();

@@ -131,7 +131,7 @@ public class JdbcAnalyticsManager
         
         for ( String dim : params.getDynamicDimensionNames() )
         {
-            sql += "AND " + dim + " IN ( " + getQuotedCommaDelimitedString( dimensionValues.get( dim ) ) + " ) ";
+            sql += "and " + dim + " in ( " + getQuotedCommaDelimitedString( dimensionValues.get( dim ) ) + " ) ";
         }
         
         return sql;            
