@@ -33,9 +33,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlAnnotationIntrospector;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.hisp.dhis.common.view.BasicView;
@@ -85,9 +82,11 @@ public class JacksonUtils
             objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
         }
 
-        jsonMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
+        jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
+        // jsonMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
 
+        /*
         jsonMapper.setAnnotationIntrospector(
             new JacksonAnnotationIntrospector() );
 
@@ -95,6 +94,7 @@ public class JacksonUtils
             new AnnotationIntrospectorPair(
                 new JacksonXmlAnnotationIntrospector(),
                 new JacksonAnnotationIntrospector() ) );
+        */
 
         // register view classes
         viewClasses.put( "default", BasicView.class );
