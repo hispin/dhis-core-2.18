@@ -28,6 +28,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
@@ -300,20 +301,7 @@ public class FacilityController
         {
             Facility facility = conversionService.convert( organisationUnit, Facility.class );
             filterFacility( facility, allProperties, fields );
-
-            // TODO this probably belongs in "meta": {}
-            List<Map<String, Object>> hierarchy = new ArrayList<Map<String, Object>>();
-            facility.getProperties().put( "hierarchy", hierarchy );
-
-            for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
-            {
-                Map<String, Object> level = new HashMap<String, Object>();
-
-                level.put( "name", organisationUnitLevel.getName() );
-                level.put( "level", organisationUnitLevel.getLevel() );
-
-                hierarchy.add( level );
-            }
+            addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, facility );
 
             facilities.getFacilities().add( facility );
         }
@@ -335,9 +323,11 @@ public class FacilityController
         @RequestParam( value = "fields", required = false ) String fields )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
         Facility facility = conversionService.convert( organisationUnit, Facility.class );
         filterFacility( facility, allProperties, fields );
+        addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, facility );
 
         setAccessRights( model );
 
@@ -363,6 +353,29 @@ public class FacilityController
         model.addAttribute( "canRead", authorities.contains( "M-dhis-web-api-fred" ) || currentUserService.currentUserIsSuper() );
         model.addAttribute( "canUpdate", authorities.contains( "F_FRED_UPDATE" ) || currentUserService.currentUserIsSuper() );
         model.addAttribute( "canDelete", authorities.contains( "F_FRED_DELETE" ) || currentUserService.currentUserIsSuper() );
+    }
+
+    private void addHierarchyPropertyToFacility( List<OrganisationUnitLevel> organisationUnitLevels, OrganisationUnit organisationUnit, Facility facility )
+    {
+        // TODO this probably belongs in "meta": {}
+        List<Map<String, Object>> hierarchy = new ArrayList<Map<String, Object>>();
+        facility.getProperties().put( "hierarchy", hierarchy );
+
+        for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
+        {
+            Map<String, Object> level = new HashMap<String, Object>();
+
+            level.put( "id", organisationUnitLevel.getUid() );
+
+            // temporary fix since ControllerLinkBuilder can't handle cross-servlet controllers
+            level.put( "url", linkTo( OrganisationUnitLevelController.class ).slash( organisationUnitLevel.getUid() ).toString()
+                .replace( "/api-fred", "/api" ) );
+
+            level.put( "name", organisationUnitLevel.getName() );
+            level.put( "level", organisationUnitLevel.getLevel() );
+
+            hierarchy.add( level );
+        }
     }
 
     //--------------------------------------------------------------------------
