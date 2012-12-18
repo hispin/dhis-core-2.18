@@ -108,6 +108,7 @@ function loadDataEntry( programStageInstanceId )
 			programStageInstanceId: programStageInstanceId
 		}, function(){
 			showById('patientInforTB');
+			showById('postCommentTbl');
 			showById('entryForm');
 			showById('inputCriteriaDiv');
 		}).dialog(

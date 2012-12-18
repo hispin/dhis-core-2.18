@@ -29,7 +29,7 @@
 <input type='hidden' id='currentUsername' name='currentUsername' value='$!currentUsername'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
-	<table>
+	<table id="postCommentTbl" class="hidden">
 		<tr>
 			<td class="text-column">$i18n.getString('post_comment'):</td>
 			<td><input type="text" class="{validate:{maxlength:160}}" name="message_$programStageInstance.id" id="message_$programStageInstance.id" name="message_$programStageInstance.id" style="width:450px;" onkeypress="keypressOnComent(event,this,$programStageInstance.id);"></td>
