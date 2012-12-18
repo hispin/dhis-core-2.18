@@ -41,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.mobile.FacilityReportingService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
+import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.DataSet;
 import org.hisp.dhis.api.mobile.model.DataSetList;
@@ -52,6 +53,7 @@ import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -91,6 +93,8 @@ public class FacilityReportingServiceImpl
     private CompleteDataSetRegistrationService registrationService;
 
     private CurrentUserService currentUserService;
+    
+    private OrganisationUnitService oUnitService;
 
     // -------------------------------------------------------------------------
     // Service methods
@@ -477,6 +481,33 @@ public class FacilityReportingServiceImpl
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    @Required
+    public void setoUnitService( OrganisationUnitService oUnitService )
+    {
+        this.oUnitService = oUnitService;
+    }
+
+    @Override
+    public Contact updateContactForMobile()
+    {
+
+        Contact contact = new Contact();
+        
+        List<String> listOfContacts = new ArrayList<String>();
+
+        List<OrganisationUnit> listOfOrgUnit = (List<OrganisationUnit>) oUnitService.getAllOrganisationUnits();
+
+        for ( OrganisationUnit each : listOfOrgUnit )
+        {
+            String contactDetail = each.getName() + "/" + each.getPhoneNumber();
+            listOfContacts.add( contactDetail );
+        }
+        
+        contact.setListOfContacts( listOfContacts );
+        
+        return contact;
     }
     
     

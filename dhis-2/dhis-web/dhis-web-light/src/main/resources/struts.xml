@@ -13,6 +13,15 @@
       <param name="page">/dhis-web-light/menu.vm</param>
     </action>
 
+	<!-- chart 
+	
+	<action name="viewChart" class="org.hisp.dhis.light.chart.action.GetDataSetInfoForChartAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/chart/viewChartInfo.vm</param>
+    </action>
+	
+	-->
+	
     <!-- data entry -->
 
     <action name="selectOrganisationUnit"

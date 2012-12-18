@@ -274,11 +274,8 @@ public class FormUtils
         if ( dataSet.isAllowFuturePeriods() )
         {
             List<Period> periods = new ArrayList<Period>();
-            //if ( periodType.getName().equals( "Monthly" ) || periodType.getName().equals( "Quarterly" ))
-            //{
-                periods = periodType.generatePeriods( new Date() );
-                Collections.reverse( periods );
-            //}
+            periods = periodType.generatePeriods( new Date() );
+            Collections.reverse( periods );
             return periods;
         }
         else

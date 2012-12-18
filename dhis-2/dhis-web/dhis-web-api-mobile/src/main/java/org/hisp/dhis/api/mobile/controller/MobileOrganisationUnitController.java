@@ -10,6 +10,7 @@ import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
+import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
@@ -233,7 +234,13 @@ public class MobileOrganisationUnitController
     {
         return facilityReportingService.getDataSetsForLocale( getUnit( id ), locale );
     }
-
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/updateContactForMobile" )
+    @ResponseBody
+    public Contact updateContactForMobile()
+    {
+        return facilityReportingService.updateContactForMobile();
+    }
     // Supportive methods
 
     private Collection<String> getLocalStrings( Collection<Locale> locales )
