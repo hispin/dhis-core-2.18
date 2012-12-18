@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 public class TextUtils
 {
     public static final TextUtils INSTANCE = new TextUtils();
+    public static final String EMPTY = "";
     
     private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($|\\n|\\r|\\r\\n| )" );
     private static final String DELIMITER = ", ";
@@ -123,7 +124,7 @@ public class TextUtils
         
         if ( beginIndex >= string.length()  )
         {
-            return "";
+            return EMPTY;
         }
         
         if ( endIndex > string.length() )
@@ -146,10 +147,23 @@ public class TextUtils
     {
         if ( value == null || length > value.length() )
         {
-            return "";
+            return EMPTY;
         }
         
         return value.substring( 0, value.length() - length );
+    }
+    
+    /**
+     * Returns an empty string if the given argument is true, the string 
+     * otherwise. This is a convenience method.
+     * 
+     * @param string the string.
+     * @param emptyString whether to return an empty string.
+     * @return a string.
+     */
+    public static String getString( String string, boolean emptyString )
+    {
+        return emptyString ? EMPTY : string;
     }
 
     /**
@@ -234,11 +248,11 @@ public class TextUtils
     }
     
     /**
-     * Returns null if the given string is not null and contains no charachters,
-     * the string itselft otherwise.
+     * Returns null if the given string is not null and contains no characters,
+     * the string itself otherwise.
      * 
      * @param string the string.
-     * @return null if the given string is not null and contains no charachters,
+     * @return null if the given string is not null and contains no characters,
      *         the string itself otherwise.
      */
     public static String nullIfEmpty( String string )

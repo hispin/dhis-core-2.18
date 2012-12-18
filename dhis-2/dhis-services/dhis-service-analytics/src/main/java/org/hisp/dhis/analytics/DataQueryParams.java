@@ -111,7 +111,12 @@ public class DataQueryParams
         List<String> list = new ArrayList<String>();
         
         list.add( DATAELEMENT_DIM_ID );
-        list.add( CATEGORYOPTIONCOMBO_DIM_ID );
+        
+        if ( categories )
+        {
+            list.add( CATEGORYOPTIONCOMBO_DIM_ID );
+        }
+        
         list.add( PERIOD_DIM_ID );
         list.add( ORGUNIT_DIM_ID );
         list.addAll( dimensions.keySet() );

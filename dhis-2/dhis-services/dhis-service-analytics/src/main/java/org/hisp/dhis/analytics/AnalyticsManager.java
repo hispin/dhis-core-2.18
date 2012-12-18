@@ -34,5 +34,5 @@ public interface AnalyticsManager
 {
     static final String SEP = "-";
     
-    Future<Map<String, Double>> getAggregatedDataValueTotals(  DataQueryParams params );
+    Future<Map<String, Double>> getAggregatedDataValues(  DataQueryParams params );
 }

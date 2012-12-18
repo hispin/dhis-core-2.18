@@ -27,8 +27,10 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.getString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +69,7 @@ public class JdbcAnalyticsManager
     //TODO optimize when all options in dimensions are selected
     
     @Async
-    public Future<Map<String, Double>> getAggregatedDataValueTotals( DataQueryParams params )
+    public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
         int level = params.getOrganisationUnitLevel();
         String periodType = params.getPeriodType();
@@ -75,21 +77,21 @@ public class JdbcAnalyticsManager
         List<String> extraDimensions = params.getDynamicDimensionNames();
         
         String sql = 
-            "select " + dimensions.get( 0 ) + ", " + 
-            dimensions.get( 1 ) + ", " +
-            periodType + " as " + dimensions.get( 2 ) + ", " + 
-            "uidlevel" + level + " as " + dimensions.get( 3 ) + ", " +
+            "select " + DATAELEMENT_DIM_ID + ", " + 
+            getString( CATEGORYOPTIONCOMBO_DIM_ID + ", ", !params.isCategories() ) +
+            periodType + " as " + PERIOD_DIM_ID + ", " + 
+            "uidlevel" + level + " as " + ORGUNIT_DIM_ID + ", " +
             getCommaDelimitedString( extraDimensions, false, true ) +
             "sum(value) as value " +
             
             "from " + params.getTableName() + " " +
-            "where " + dimensions.get( 0 ) + " in ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
+            "where " + DATAELEMENT_DIM_ID + " in ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
             "and " + periodType + " in ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
             "and uidlevel" + level + " in ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
             getExtraDimensionQuery( params ) +
         
-            "group by " + dimensions.get( 0 ) + ", " + 
-            dimensions.get( 1 ) + ", " +
+            "group by " + DATAELEMENT_DIM_ID + ", " + 
+            getString( CATEGORYOPTIONCOMBO_DIM_ID + ", ", !params.isCategories() ) +
             periodType + ", " + 
             "uidlevel" + level +
             getCommaDelimitedString( extraDimensions, true, false );
@@ -111,7 +113,7 @@ public class JdbcAnalyticsManager
             
             key.deleteCharAt( key.length() - SEP.length() );
             
-            Double value = rowSet.getDouble( DataQueryParams.VALUE_ID );
+            Double value = rowSet.getDouble( VALUE_ID );
 
             map.put( key.toString(), value );
         }

@@ -50,14 +50,12 @@ public class DefaultAnalyticsService
 {
     private static final String VALUE_HEADER_NAME = "Value";
     
-    //TODO period aggregation for multiple period types
-    //TODO hierarchy aggregation for org units at multiple levels
     //TODO indicator aggregation
     //TODO category sub-totals and totals
     //TODO use data mart when query can be satisfied
     //TODO create data mart for average, less-than yearly data elements
     
-    //NOTE split on high-cardinality columns like data element and org unit, not period, improves performance
+    //TODO investigate whether quarterly partitions are faster
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -65,10 +63,8 @@ public class DefaultAnalyticsService
     @Autowired
     private QueryPlanner queryPlanner;
     
-    public Grid getAggregatedDataValueTotals( DataQueryParams params ) throws Exception
+    public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
     {
-        Map<String, Double> map = getAggregatedDataValueMap( params );
-        
         Grid grid = new ListGrid();
         
         for ( String col : params.getDimensionNames() )
@@ -77,6 +73,8 @@ public class DefaultAnalyticsService
         }
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
+
+        Map<String, Double> map = getAggregatedDataValueMap( params );
         
         for ( Map.Entry<String, Double> entry : map.entrySet() )
         {
@@ -104,7 +102,7 @@ public class DefaultAnalyticsService
         
         for ( DataQueryParams query : queries )
         {
-            futures.add( analyticsManager.getAggregatedDataValueTotals( query ) );
+            futures.add( analyticsManager.getAggregatedDataValues( query ) );
         }
         
         for ( Future<Map<String, Double>> future : futures )
