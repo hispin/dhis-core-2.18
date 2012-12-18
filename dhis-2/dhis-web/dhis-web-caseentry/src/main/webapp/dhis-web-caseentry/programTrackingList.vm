@@ -15,7 +15,7 @@
 			<table>
 				<tr>            
 					<td class="bold">$i18n.getString( "full_name" ):</td>
-					<td>$encoder.htmlEncode($programStageInstance.programInstance.patient.getFullName()) ( $programStageInstance.programInstance.patient.gender ))</td>
+					<td>$encoder.htmlEncode($programStageInstance.programInstance.patient.getFullName()) ( $programStageInstance.programInstance.patient.gender )</td>
 				</tr>
 				<tr>
 					<td class="bold">$i18n.getString( "date_of_birth" ):</td>

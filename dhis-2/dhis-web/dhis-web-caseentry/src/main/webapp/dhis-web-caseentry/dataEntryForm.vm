@@ -28,6 +28,28 @@
 <input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStageInstance.programStage.validCompleteOnly'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
+	<table class="entryScreen formSection">
+		<tr>
+			<td class="text-column">$i18n.getString('post_comment'):</td>
+			<td><input type="text" class="{validate:{maxlength:160}}" name="message_$programStageInstance.id" id="message_$programStageInstance.id" name="message_$programStageInstance.id" style="width:450px;" onkeypress="keypressOnComent(event,this,$programStageInstance.id);"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan='3'>
+				<table>
+					<tbody id="commentTB">
+						#foreach( $comment in $programStageInstance.patientComments )
+						<tr>
+							<td>$format.formatDateTime($comment.createdDate) </td>
+							<td>$comment.creator </td>
+							<td>$comment.commentText</td>
+						</tr>
+						#end
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</table>
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
 	#elseif( $sections && $sections.size() > 0 )

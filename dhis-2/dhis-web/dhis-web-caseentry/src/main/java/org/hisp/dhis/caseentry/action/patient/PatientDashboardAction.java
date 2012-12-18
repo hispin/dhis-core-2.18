@@ -70,7 +70,7 @@ public class PatientDashboardAction
     private PatientAuditService patientAuditService;
 
     private CurrentUserService currentUserService;
-    
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -165,6 +165,13 @@ public class PatientDashboardAction
         this.patientId = patientId;
     }
 
+    private String visitor;
+
+    public String getVisitor()
+    {
+        return visitor;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -209,7 +216,7 @@ public class PatientDashboardAction
         long currentTime = new Date().getTime();
         long dateOnly = (currentTime / millisInDay) * millisInDay;
         Date date = new Date( dateOnly );
-        String visitor = currentUserService.getCurrentUsername();
+        visitor = currentUserService.getCurrentUsername();
         PatientAudit patientAudit = patientAuditService.getPatientAudit( patient, visitor, date );
         if ( patientAudit == null )
         {

@@ -1670,6 +1670,14 @@ function sendSmsOnePatient( field, programStageInstanceId )
 		});
 }
 
+function keypressOnComent(event, field, programStageInstanceId )
+{
+	var key = getKeyCode( event );
+	if ( key==13 ){ // Enter
+		addComment( field, programStageInstanceId );
+	}
+}
+
 function addComment( field, programStageInstanceId )
 {
 	field.style.backgroundColor = SAVING_COLOR;
@@ -1689,10 +1697,14 @@ function addComment( field, programStageInstanceId )
 			var programStageName = jQuery("#ps_" + programStageInstanceId).attr('programStageName');
 			var date = new Date();
 			var currentTime = date.getHours() + ":" + date.getMinutes();
-			jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " " + currentTime + "</td>"
-					+ "<td>" + programStageName + "</td>"
-					+ "<td>" + getFieldValue('currentUsername') + "</td>"
-					+ "<td>" + commentText + "</td></tr>");
+			var content = "<tr><td>" + getCurrentDate("currentDate") + " " + currentTime + "</td>"
+			if(programStageName!=undefined)
+			{
+				content += "<td>" + programStageName + "</td>"
+			}
+			content += "<td>" + getFieldValue('currentUsername') + "</td>"
+			content += "<td>" + commentText + "</td></tr>";
+			jQuery('#commentTB').prepend(content);
 			field.value="";
 			showSuccessMessage( i18n_comment_added );
 			field.style.backgroundColor = SUCCESS_COLOR;
