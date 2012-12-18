@@ -671,7 +671,7 @@ public class DefaultOrganisationUnitService
         List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<OrganisationUnitLevel>(
             organisationUnitLevelStore.getAll() );
 
-        Collections.sort( organisationUnitLevels, new OrganisationUnitLevelComparator() );
+        Collections.sort( organisationUnitLevels, OrganisationUnitLevelComparator.INSTANCE );
 
         return organisationUnitLevels;
     }
