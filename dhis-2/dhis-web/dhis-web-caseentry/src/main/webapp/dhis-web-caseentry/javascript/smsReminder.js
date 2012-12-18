@@ -192,14 +192,6 @@ function sendSmsToList()
 // Post Comments/Send Message
 // --------------------------------------------------------------------
 
-function keypressOnComent(event, field, programStageInstanceId )
-{
-	var key = getKeyCode( event );
-	if ( key==13 ){ // Enter
-		addComment( field, programStageInstanceId );
-	}
-}
-
 function keypressOnMessage(event, field, programStageInstanceId )
 {
 	var key = getKeyCode( event );
