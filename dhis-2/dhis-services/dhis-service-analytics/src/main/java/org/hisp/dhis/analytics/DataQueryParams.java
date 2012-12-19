@@ -48,19 +48,13 @@ public class DataQueryParams
     public static final String VALUE_ID = "value";
     
     private static final String LEVEL_PREFIX = "uidlevel";
-        
-    private List<String> indicators = new ArrayList<String>();
-    
-    private List<String> dataElements = new ArrayList<String>();
-    
-    private List<String> periods = new ArrayList<String>();
-    
-    private List<String> organisationUnits = new ArrayList<String>();
     
     private Map<String, List<String>> dimensions = new HashMap<String, List<String>>();
     
     private boolean categories = false;
 
+    private Map<String, List<String>> filters = new HashMap<String, List<String>>();
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -79,25 +73,18 @@ public class DataQueryParams
     {
     }
     
-    public DataQueryParams( List<String> indicators, List<String> dataElements, List<String> periods,
-        List<String> organisationUnits, Map<String, List<String>> dimensions, boolean categories )
+    public DataQueryParams( Map<String, List<String>> dimensions, boolean categories, Map<String, List<String>> filters )
     {
-        this.indicators = indicators;
-        this.dataElements = dataElements;
-        this.periods = periods;
-        this.organisationUnits = organisationUnits;
         this.dimensions = dimensions;
         this.categories = categories;
+        this.filters = filters;
     }
     
     public DataQueryParams( DataQueryParams params )
     {
-        this.indicators = params.getIndicators();
-        this.dataElements = params.getDataElements();
-        this.periods = params.getPeriods();
-        this.organisationUnits = params.getOrganisationUnits();
-        this.dimensions = params.getDimensions();
+        this.dimensions = new HashMap<String, List<String>>( params.getDimensions() );
         this.categories = params.isCategories();
+        this.filters = new HashMap<String, List<String>>( params.getFilters() );
         
         this.tableName = params.getTableName();
         this.periodType = params.getPeriodType();
@@ -111,102 +98,59 @@ public class DataQueryParams
     public List<String> getDimensionNames()
     {
         List<String> list = new ArrayList<String>();
-        
-        if ( dataElements != null && !dataElements.isEmpty() )
-        {
-            list.add( DATAELEMENT_DIM_ID );
-        }
+
+        list.addAll( dimensions.keySet() );
         
         if ( categories )
         {
             list.add( CATEGORYOPTIONCOMBO_DIM_ID );
         }
         
-        if ( periods != null && !periods.isEmpty() )
+        if ( list.contains( PERIOD_DIM_ID ) && periodType != null )
         {
-            list.add( periodType != null ? periodType : PERIOD_DIM_ID );
+            list.set( list.indexOf( PERIOD_DIM_ID ), periodType );
         }
         
-        if ( organisationUnits != null && !organisationUnits.isEmpty() )
+        if ( list.contains( ORGUNIT_DIM_ID ) && organisationUnitLevel != 0 )
         {
-            list.add( organisationUnitLevel != 0 ? ( "uidlevel" + organisationUnitLevel ) : ORGUNIT_DIM_ID );
+            list.set( list.indexOf( ORGUNIT_DIM_ID ), LEVEL_PREFIX + organisationUnitLevel );
         }
-        
-        list.addAll( dimensions.keySet() );
-        
+                
         return list;
     }
-    
-    public List<String> getDynamicDimensionNames()
-    {
-        return new ArrayList<String>( dimensions.keySet() );
-    }
-    
+        
     public Map<String, List<String>> getDimensionMap()
     {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
-        
-        map.put( DATAELEMENT_DIM_ID, dataElements );
-        map.put( periodType != null ? periodType : PERIOD_DIM_ID, periods );
-        map.put( organisationUnitLevel != 0 ? ( LEVEL_PREFIX + organisationUnitLevel ) : ORGUNIT_DIM_ID, organisationUnits );
+
         map.putAll( dimensions );
+        
+        if ( periodType != null )
+        {
+            map.put( periodType, dimensions.get( PERIOD_DIM_ID ) );
+        }
+        
+        if ( organisationUnitLevel != 0 )
+        {
+            map.put( LEVEL_PREFIX + organisationUnitLevel, dimensions.get( ORGUNIT_DIM_ID ) );
+        }
         
         return map;
     }
-        
+    
     public void setDimension( String dimension, List<String> values )
     {
-        if ( DATAELEMENT_DIM_ID.equals( dimension ) )
-        {
-            setDataElements( values );
-        }
-        else if ( PERIOD_DIM_ID.equals( dimension ) )
-        {
-            setPeriods( values );
-        }
-        else if ( ORGUNIT_DIM_ID.equals( dimension ) )
-        {
-            setOrganisationUnits( values );
-        }
-        else if ( dimensions.containsKey( dimension ) )
-        {
-            dimensions.put( dimension, values );
-        }
+        dimensions.put( dimension, values );
     }
-    
-    public List<String> getDimension( String dimension )
-    {
-        if ( DATAELEMENT_DIM_ID.equals( dimension ) )
-        {
-            return dataElements;
-        }
-        else if ( PERIOD_DIM_ID.equals( dimension ) )
-        {
-            return periods;
-        }
-        else if ( ORGUNIT_DIM_ID.equals( dimension ) )
-        {
-            return organisationUnits;
-        }
-        else if ( dimensions != null && dimensions.containsKey( dimension ) )
-        {
-            return dimensions.get( dimension );
-        }
         
-        throw new IllegalArgumentException( dimension );
-    }
-    
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
         result = prime * result + ( categories ? 1231 : 1237);
-        result = prime * result + ( ( indicators == null ) ? 0 : indicators.hashCode() );
-        result = prime * result + ( ( dataElements == null ) ? 0 : dataElements.hashCode() );
-        result = prime * result + ( ( periods == null ) ? 0 : periods.hashCode() );
-        result = prime * result + ( ( organisationUnits == null ) ? 0 : organisationUnits.hashCode() );
         result = prime * result + ( ( dimensions == null ) ? 0 : dimensions.hashCode() );
+        result = prime * result + ( ( filters == null ) ? 0 : filters.hashCode() );
         return result;
     }
 
@@ -229,54 +173,6 @@ public class DataQueryParams
         }
         
         DataQueryParams other = (DataQueryParams) object;
-
-        if ( indicators == null )
-        {
-            if ( other.indicators != null )
-            {
-                return false;
-            }
-        }
-        else if ( !indicators.equals( other.indicators ) )
-        {
-            return false;
-        }
-        
-        if ( dataElements == null )
-        {
-            if ( other.dataElements != null )
-            {
-                return false;
-            }
-        }
-        else if ( !dataElements.equals( other.dataElements ) )
-        {
-            return false;
-        }
-
-        if ( periods == null )
-        {
-            if ( other.periods != null )
-            {
-                return false;
-            }
-        }
-        else if ( !periods.equals( other.periods ) )
-        {
-            return false;
-        }
-
-        if ( organisationUnits == null )
-        {
-            if ( other.organisationUnits != null )
-            {
-                return false;
-            }
-        }
-        else if ( !organisationUnits.equals( other.organisationUnits ) )
-        {
-            return false;
-        }
         
         if ( dimensions == null )
         {
@@ -294,6 +190,18 @@ public class DataQueryParams
         {
             return false;
         }
+
+        if ( filters == null )
+        {
+            if ( other.filters != null )
+            {
+                return false;
+            }
+        }
+        else if ( !filters.equals( other.filters ) )
+        {
+            return false;
+        }
         
         return true;
     }
@@ -301,58 +209,13 @@ public class DataQueryParams
     @Override
     public String toString()
     {
-        return "[in: " + indicators + ", de: " + dataElements + ", pe: " + periods
-            + ", ou: " + organisationUnits + ", categories: " + categories + "]";
+        return dimensions != null ? dimensions.toString() : "";
     }
         
     // -------------------------------------------------------------------------
-    // Get and set methods
+    // Get and set methods for serialize properties
     // -------------------------------------------------------------------------
   
-    @JsonProperty( value = INDICATOR_DIM_ID )
-    public List<String> getIndicators()
-    {
-        return indicators;
-    }
-
-    public void setIndicators( List<String> indicators )
-    {
-        this.indicators = indicators;
-    }
-
-    @JsonProperty( value = DATAELEMENT_DIM_ID )
-    public List<String> getDataElements()
-    {
-        return dataElements;
-    }
-
-    public void setDataElements( List<String> dataElements )
-    {
-        this.dataElements = dataElements;
-    }
-
-    @JsonProperty( value = PERIOD_DIM_ID )
-    public List<String> getPeriods()
-    {
-        return periods;
-    }
-
-    public void setPeriods( List<String> periods )
-    {
-        this.periods = periods;
-    }
-
-    @JsonProperty( value = ORGUNIT_DIM_ID )
-    public List<String> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    public void setOrganisationUnits( List<String> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
-    }
-
     @JsonProperty( value = "dimensions" )
     public Map<String, List<String>> getDimensions()
     {
@@ -375,6 +238,21 @@ public class DataQueryParams
         this.categories = categories;
     }
 
+    @JsonProperty( value = "filters" )
+    public Map<String, List<String>> getFilters()
+    {
+        return filters;
+    }
+
+    public void setFilters( Map<String, List<String>> filters )
+    {
+        this.filters = filters;
+    }
+
+    // -------------------------------------------------------------------------
+    // Get and set methods for transient properties
+    // -------------------------------------------------------------------------
+  
     public String getTableName()
     {
         return tableName;
@@ -403,5 +281,39 @@ public class DataQueryParams
     public void setOrganisationUnitLevel( int organisationUnitLevel )
     {
         this.organisationUnitLevel = organisationUnitLevel;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Get and set helpers
+    // -------------------------------------------------------------------------
+  
+    public List<String> getDatElements()
+    {
+        return dimensions.get( DATAELEMENT_DIM_ID );
+    }
+    
+    public void setDataElements( List<String> dataElements )
+    {
+        dimensions.put( DATAELEMENT_DIM_ID, dataElements );
+    }
+    
+    public List<String> getPeriods()
+    {
+        return dimensions.get( PERIOD_DIM_ID );
+    }
+    
+    public void setPeriods( List<String> periods )
+    {
+        dimensions.put( PERIOD_DIM_ID, periods );
+    }
+
+    public List<String> getOrganisationUnits()
+    {
+        return dimensions.get( ORGUNIT_DIM_ID );
+    }
+    
+    public void setOrganisationUnits( List<String> organisationUnits )
+    {
+        this.dimensions.put( ORGUNIT_DIM_ID, organisationUnits );
     }
 }

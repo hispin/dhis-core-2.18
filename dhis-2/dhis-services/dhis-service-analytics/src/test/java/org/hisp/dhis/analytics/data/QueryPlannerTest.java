@@ -171,9 +171,9 @@ public class QueryPlannerTest
     }
     
     /**
-     * Splits on 3 data elements, then splits in 2 queries on periods for a total
-     * of 6 queries.
+     * Splits on 3 data elements.
      */
+    @Test
     public void planQueryD()
     {
         DataQueryParams params = new DataQueryParams();
@@ -181,9 +181,9 @@ public class QueryPlannerTest
         params.setOrganisationUnits( Arrays.asList( ouA.getUid() ) );
         params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 6 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
-        assertEquals( 6, queries.size() );
+        assertEquals( 3, queries.size() );
         
         for ( DataQueryParams query : queries )
         {

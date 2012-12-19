@@ -124,7 +124,7 @@ public class DefaultQueryPlanner
         
         for ( DataQueryParams query : queries )
         {
-            List<String> values = query.getDimension( dimension );
+            List<String> values = query.getDimensions().get( dimension );
 
             List<List<String>> valuePages = new PaginatedList<String>( values ).setNumberOfPages( pageNo ).getPages();
             
@@ -138,8 +138,7 @@ public class DefaultQueryPlanner
 
         return subQueries;
     }
-    
-    
+        
     /**
      * Groups the given query into sub queries based on its periods and which 
      * partition it should be executed against. Sets the partition table name on
