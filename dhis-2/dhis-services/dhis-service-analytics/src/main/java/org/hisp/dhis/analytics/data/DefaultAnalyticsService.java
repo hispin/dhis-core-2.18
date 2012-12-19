@@ -54,6 +54,9 @@ public class DefaultAnalyticsService
     //TODO category sub-totals and totals
     //TODO use data mart when query can be satisfied
     //TODO create data mart for average, less-than yearly data elements
+    //     aggregate in time dimension only
+    //     insert into standard analytics table?
+    //TODO filter, exclude from select
     
     //TODO investigate whether quarterly partitions are faster
     
@@ -90,7 +93,7 @@ public class DefaultAnalyticsService
     {
         Timer t = new Timer().start();
 
-        int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 16 );
+        int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 4 );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries );
         
