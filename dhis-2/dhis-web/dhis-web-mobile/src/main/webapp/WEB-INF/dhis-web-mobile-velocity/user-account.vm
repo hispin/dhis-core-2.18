@@ -4,7 +4,7 @@
         $.mobile.loading( 'show' );
 
         $.ajax({
-            url: '../api/currentUser/user-account',
+            url: '$contextPath/api/currentUser/user-account',
             dataType: 'json'
         }).success(function(data) {
             // user account
@@ -44,7 +44,7 @@
             $.mobile.loading( 'show' );
 
             $.ajax({
-                url: '../api/currentUser/user-account',
+                url: '$contextPath/api/currentUser/user-account',
                 contentType: 'application/json',
                 data: JSON.stringify( settings ),
                 type: 'POST'
@@ -61,7 +61,7 @@
 <section data-role="page" id="settings-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="index" data-icon="back">Back</a>
 	</header>
 

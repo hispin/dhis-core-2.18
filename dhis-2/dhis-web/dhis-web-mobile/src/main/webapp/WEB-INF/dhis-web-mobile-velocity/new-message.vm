@@ -111,7 +111,7 @@
             $.mobile.loading( 'show' );
 
             $.ajax({
-                url  : '$baseUrl/../api/currentUser/recipients',
+                url  : '$contextPath/api/currentUser/recipients',
                 type : 'get',
                 dataType: 'json',
                 data : {
@@ -270,7 +270,7 @@
         }
 
         $.ajax({
-           url: "$baseUrl/../api/messageConversations",
+           url: "$contextPath/api/messageConversations",
            type: 'POST',
            contentType: 'application/json',
            data: JSON.stringify(message),
@@ -317,7 +317,7 @@
 <section data-role="page" id="new-message-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="../messages" data-icon="delete" class="ui-btn-right">Discard</a>
     </header>
 
@@ -347,7 +347,7 @@
 <section data-role="page" id="manage-recipients-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="#new-message-page" data-icon="delete" class="ui-btn-right">Finish</a>
     </header>
 

@@ -28,12 +28,13 @@ package org.hisp.dhis.web.mobile.controller;
  */
 
 import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponents;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,8 +62,8 @@ public class MobileController
     @RequestMapping(value = "/index")
     public String index( Model model, HttpServletRequest request )
     {
-        // model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "index.vm" );
 
         return "base";
@@ -71,7 +72,8 @@ public class MobileController
     @RequestMapping(value = "/messages")
     public String messages( Model model, HttpServletRequest request )
     {
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "messages.vm" );
 
         return "base";
@@ -80,7 +82,8 @@ public class MobileController
     @RequestMapping(value = "/messages/new-message")
     public String newMessage( Model model, HttpServletRequest request )
     {
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "new-message.vm" );
 
         return "base";
@@ -89,7 +92,8 @@ public class MobileController
     @RequestMapping(value = "/messages/{uid}")
     public String message( @PathVariable("uid") String uid, Model model, HttpServletRequest request )
     {
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "message.vm" );
         model.addAttribute( "messageId", uid );
 
@@ -99,7 +103,8 @@ public class MobileController
     @RequestMapping(value = "/interpretations")
     public String interpretations( Model model, HttpServletRequest request )
     {
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "interpretations.vm" );
 
         return "base";
@@ -108,7 +113,8 @@ public class MobileController
     @RequestMapping(value = "/user-account")
     public String settings( Model model, HttpServletRequest request )
     {
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "user-account.vm" );
 
         return "base";
@@ -118,7 +124,8 @@ public class MobileController
     @RequestMapping(value = "/data-entry")
     public String dataEntry( Model model, HttpServletRequest request )
     {
-        model.addAttribute( "baseUrl", request.getContextPath() + request.getServletPath() );
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+        model.addAttribute( "contextPath", contextPath.toString() );
         model.addAttribute( "page", "data-entry.vm" );
 
         return "base";

@@ -4,7 +4,7 @@
         $.mobile.loading( 'show' );
 
         $.ajax({
-            url: '../api/currentUser/inbox',
+            url: '$contextPath/api/currentUser/inbox',
             dataType: 'json'
         }).success(function(data) {
             if( data['messageConversations'] !== undefined ) {
@@ -37,7 +37,7 @@
 <section data-role="page" id="messages-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="index" data-icon="back">Back</a>
         <a href="messages/new-message" data-icon="plus">New</a>
     </header>

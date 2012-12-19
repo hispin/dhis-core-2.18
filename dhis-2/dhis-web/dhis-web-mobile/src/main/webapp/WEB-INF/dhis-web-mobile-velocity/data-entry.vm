@@ -1,10 +1,10 @@
-<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
-<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
-<script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action"></script>
-<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
-<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
-<script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
-<script type="text/javascript" src="../dhis-web-commons/javascripts/periodType.js"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/i18nJavaScript.action"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/date.js"></script>
+<script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/periodType.js"></script>
 
 <script>
     var Selected = {};
@@ -188,7 +188,7 @@
             $.mobile.loading( 'hide' );
         } else {
             $.ajax({
-                url: '../api/dataSets/' + Selected.dataSet + '/form',
+                url: '$contextPath/api/dataSets/' + Selected.dataSet + '/form',
                 cache: false,
                 data: {
                     ou: Selected.orgUnit,
@@ -350,7 +350,7 @@
 <section data-role="page" id="organisation-units-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="index" data-icon="back">Back</a>
 	</header>
 
@@ -366,7 +366,7 @@
 <section data-role="page" id="data-sets-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="#organisation-units-page" data-icon="back">Back</a>
 	</header>
 
@@ -382,7 +382,7 @@
 <section data-role="page" id="period-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="#data-sets-page" data-icon="back">Back</a>
 	</header>
 
@@ -398,7 +398,7 @@
 <section data-role="page" id="data-entry-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="#period-page" data-icon="back">Back</a>
 	</header>
 
