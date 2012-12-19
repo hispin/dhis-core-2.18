@@ -27,10 +27,9 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.DataQueryParams.*;
+import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
-import static org.hisp.dhis.system.util.TextUtils.getString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +40,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.system.util.SqlHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.util.Assert;
 
 /**
  * This class is responsible for producing aggregated data values. It reads data
@@ -71,31 +72,24 @@ public class JdbcAnalyticsManager
     @Async
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
-        int level = params.getOrganisationUnitLevel();
-        String periodType = params.getPeriodType();
         List<String> dimensions = params.getDimensionNames();
-        List<String> extraDimensions = params.getDynamicDimensionNames();
+        Map<String, List<String>> dimensionMap = params.getDimensionMap();
+        
+        Assert.isTrue( dimensions.size() > 0, "Must be at least one dimension" );
+
+        SqlHelper sqlHelper = new SqlHelper();
         
         String sql = 
-            "select " + DATAELEMENT_DIM_ID + ", " + 
-            getString( CATEGORYOPTIONCOMBO_DIM_ID + ", ", !params.isCategories() ) +
-            periodType + " as " + PERIOD_DIM_ID + ", " + 
-            "uidlevel" + level + " as " + ORGUNIT_DIM_ID + ", " +
-            getCommaDelimitedString( extraDimensions, false, true ) +
-            "sum(value) as value " +
+            "select " + getCommaDelimitedString( dimensions ) + ", sum(value) as value " +
+            "from " + params.getTableName() + " ";
             
-            "from " + params.getTableName() + " " +
-            "where " + DATAELEMENT_DIM_ID + " in ( " + getQuotedCommaDelimitedString( params.getDataElements() ) + " ) " +
-            "and " + periodType + " in ( " + getQuotedCommaDelimitedString( params.getPeriods() ) + " ) " +
-            "and uidlevel" + level + " in ( " + getQuotedCommaDelimitedString( params.getOrganisationUnits() ) + " ) " +
-            getExtraDimensionQuery( params ) +
+        for ( String dim : dimensions )
+        {
+            sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( dimensionMap.get( dim ) ) + " ) ";
+        }
         
-            "group by " + DATAELEMENT_DIM_ID + ", " + 
-            getString( CATEGORYOPTIONCOMBO_DIM_ID + ", ", !params.isCategories() ) +
-            periodType + ", " + 
-            "uidlevel" + level +
-            getCommaDelimitedString( extraDimensions, true, false );
-
+        sql += "group by " + getCommaDelimitedString( dimensions );
+    
         log.info( sql );
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -119,23 +113,5 @@ public class JdbcAnalyticsManager
         }
         
         return new AsyncResult<Map<String, Double>>( map );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String getExtraDimensionQuery( DataQueryParams params )
-    {
-        Map<String, List<String>> dimensionValues = params.getDimensions();
-        
-        String sql = "";
-        
-        for ( String dim : params.getDynamicDimensionNames() )
-        {
-            sql += "and " + dim + " in ( " + getQuotedCommaDelimitedString( dimensionValues.get( dim ) ) + " ) ";
-        }
-        
-        return sql;            
     }    
 }

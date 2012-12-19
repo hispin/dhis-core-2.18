@@ -213,7 +213,7 @@ public class DefaultQueryPlanner
         
         for ( String period : isoPeriods )
         {
-            String periodTypeName = PeriodType.getPeriodTypeFromIsoString( period ).getName();
+            String periodTypeName = PeriodType.getPeriodTypeFromIsoString( period ).getName().toLowerCase();
             
             map.putValue( periodTypeName, period );
         }

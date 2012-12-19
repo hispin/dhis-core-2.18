@@ -46,6 +46,8 @@ public class DataQueryParams
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
     public static final String VALUE_ID = "value";
+    
+    private static final String LEVEL_PREFIX = "uidlevel";
         
     private List<String> indicators = new ArrayList<String>();
     
@@ -110,15 +112,26 @@ public class DataQueryParams
     {
         List<String> list = new ArrayList<String>();
         
-        list.add( DATAELEMENT_DIM_ID );
+        if ( dataElements != null && !dataElements.isEmpty() )
+        {
+            list.add( DATAELEMENT_DIM_ID );
+        }
         
         if ( categories )
         {
             list.add( CATEGORYOPTIONCOMBO_DIM_ID );
         }
         
-        list.add( PERIOD_DIM_ID );
-        list.add( ORGUNIT_DIM_ID );
+        if ( periods != null && !periods.isEmpty() )
+        {
+            list.add( periodType != null ? periodType : PERIOD_DIM_ID );
+        }
+        
+        if ( organisationUnits != null && !organisationUnits.isEmpty() )
+        {
+            list.add( organisationUnitLevel != 0 ? ( "uidlevel" + organisationUnitLevel ) : ORGUNIT_DIM_ID );
+        }
+        
         list.addAll( dimensions.keySet() );
         
         return list;
@@ -127,6 +140,18 @@ public class DataQueryParams
     public List<String> getDynamicDimensionNames()
     {
         return new ArrayList<String>( dimensions.keySet() );
+    }
+    
+    public Map<String, List<String>> getDimensionMap()
+    {
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        
+        map.put( DATAELEMENT_DIM_ID, dataElements );
+        map.put( periodType != null ? periodType : PERIOD_DIM_ID, periods );
+        map.put( organisationUnitLevel != 0 ? ( LEVEL_PREFIX + organisationUnitLevel ) : ORGUNIT_DIM_ID, organisationUnits );
+        map.putAll( dimensions );
+        
+        return map;
     }
         
     public void setDimension( String dimension, List<String> values )
