@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="$contextPath/app-cache">
+<html manifest="$contextPath/mobile/app-cache">
 <!-- <html> -->
 
 <head>
