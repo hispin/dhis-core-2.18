@@ -71,7 +71,7 @@ public class ContextUtils
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_LOCATION = "Location";
-    
+
     @Autowired
     private SystemSettingManager systemSettingManager;
 
@@ -88,9 +88,9 @@ public class ContextUtils
     {
         configureResponse( response, contentType, cacheStrategy, null, false );
     }
-    
+
     public void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy,
-                                   String filename, boolean attachment )
+        String filename, boolean attachment )
     {
         if ( contentType != null )
         {
@@ -118,9 +118,9 @@ public class ContextUtils
         {
             Calendar cal = Calendar.getInstance();
             cal.add( Calendar.HOUR_OF_DAY, 1 );
-            
+
             response.setHeader( HEADER_CACHE_CONTROL, "public, max-age=3600" );
-            response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( cal.getTime() ) );            
+            response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( cal.getTime() ) );
         }
         else if ( cacheStrategy.equals( CacheStrategy.CACHE_6AM_TOMORROW ) )
         {
@@ -148,17 +148,17 @@ public class ContextUtils
     {
         setResponse( response, HttpServletResponse.SC_OK, message );
     }
-    
+
     public static void createdResponse( HttpServletResponse response, String message, String location )
     {
         if ( location != null )
         {
             response.addHeader( HEADER_LOCATION, location );
         }
-        
+
         setResponse( response, HttpServletResponse.SC_CREATED, message );
     }
-    
+
     public static void notFoundResponse( HttpServletResponse response, String message )
     {
         setResponse( response, HttpServletResponse.SC_NOT_FOUND, message );
@@ -173,7 +173,7 @@ public class ContextUtils
     {
         setResponse( response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message );
     }
-    
+
     private static void setResponse( HttpServletResponse response, int statusCode, String message )
     {
         response.setStatus( statusCode );
@@ -184,7 +184,7 @@ public class ContextUtils
             PrintWriter writer = response.getWriter();
             writer.println( message );
             writer.flush();
-        } 
+        }
         catch ( IOException ex )
         {
             // Ignore
@@ -235,7 +235,7 @@ public class ContextUtils
         try
         {
             port = Integer.parseInt( xForwardedPort );
-        } 
+        }
         catch ( NumberFormatException e )
         {
             port = request.getServerPort();
@@ -250,11 +250,12 @@ public class ContextUtils
 
         return builder.toString();
     }
-    
+
     public static String getRootPath( HttpServletRequest request )
     {
         StringBuilder builder = new StringBuilder( getContextPath( request ) );
         builder.append( request.getServletPath() );
+
         return builder.toString();
     }
 }
