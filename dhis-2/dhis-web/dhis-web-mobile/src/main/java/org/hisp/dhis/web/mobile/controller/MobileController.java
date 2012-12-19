@@ -62,8 +62,7 @@ public class MobileController
     @RequestMapping(value = "/index")
     public String index( Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "index.vm" );
 
         return "base";
@@ -72,8 +71,7 @@ public class MobileController
     @RequestMapping(value = "/messages")
     public String messages( Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "messages.vm" );
 
         return "base";
@@ -82,8 +80,7 @@ public class MobileController
     @RequestMapping(value = "/messages/new-message")
     public String newMessage( Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "new-message.vm" );
 
         return "base";
@@ -92,8 +89,7 @@ public class MobileController
     @RequestMapping(value = "/messages/{uid}")
     public String message( @PathVariable("uid") String uid, Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "message.vm" );
         model.addAttribute( "messageId", uid );
 
@@ -103,8 +99,7 @@ public class MobileController
     @RequestMapping(value = "/interpretations")
     public String interpretations( Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "interpretations.vm" );
 
         return "base";
@@ -113,8 +108,7 @@ public class MobileController
     @RequestMapping(value = "/user-account")
     public String settings( Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "user-account.vm" );
 
         return "base";
@@ -124,8 +118,7 @@ public class MobileController
     @RequestMapping(value = "/data-entry")
     public String dataEntry( Model model, HttpServletRequest request )
     {
-        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
-        model.addAttribute( "contextPath", contextPath.toString() );
+        populateContextPath( model, request );
         model.addAttribute( "page", "data-entry.vm" );
 
         return "base";
@@ -137,5 +130,27 @@ public class MobileController
         response.setContentType( "text/cache-manifest" );
         InputStream inputStream = new ClassPathResource( "dhis-mobile-manifest.appcache" ).getInputStream();
         IOUtils.copy( inputStream, response.getOutputStream() );
+    }
+
+    private void populateContextPath( Model model, HttpServletRequest request )
+    {
+        UriComponents contextPath = ServletUriComponentsBuilder.fromContextPath( request ).build();
+
+        String contextPathString = contextPath.toString();
+        String xForwardedProto = request.getHeader( "X-Forwarded-Proto" );
+
+        if ( xForwardedProto != null )
+        {
+            if ( contextPathString.contains( "http://" ) && xForwardedProto.equalsIgnoreCase( "https" ) )
+            {
+                contextPathString = contextPathString.replace( "http://", "https://" );
+            }
+            else if ( contextPathString.contains( "https://" ) && xForwardedProto.equalsIgnoreCase( "http" ) )
+            {
+                contextPathString = contextPathString.replace( "https://", "http://" );
+            }
+        }
+
+        model.addAttribute( "contextPath", contextPathString );
     }
 }
