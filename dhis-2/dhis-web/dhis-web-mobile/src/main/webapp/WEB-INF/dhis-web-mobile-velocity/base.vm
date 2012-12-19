@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- <html manifest="$baseUrl/app-cache"> -->
-<html>
+<html manifest="$baseUrl/app-cache">
+<!-- <html> -->
 
 <head>
 	<title>DHIS 2</title>
