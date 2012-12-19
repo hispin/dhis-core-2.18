@@ -64,7 +64,8 @@ function autoGenerateFormByTemplateReceived( parentElement )
 	
 	if ( type && type == 'input' )
 	{
-		showErrorMessage( parentElement.firstChild.nodeValue, 5000 );
+		var messageTag = parentElement.getElementsByTagName( 'message' )[0];
+		showErrorMessage( messageTag.firstChild.nodeValue, 5000 );
 	}
 	else if ( type && type == 'error' )
 	{
