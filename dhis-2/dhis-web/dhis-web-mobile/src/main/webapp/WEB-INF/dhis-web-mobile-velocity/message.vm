@@ -23,7 +23,7 @@
             $.mobile.loading( 'show' );
 
             $.ajax({
-                url         : '$baseUrl/../api/messageConversations/${messageId}',
+                url         : '$contextPath/api/messageConversations/${messageId}',
                 type        : 'post',
                 contentType : 'text/plain; charset=UTF-8',
                 data        : msg
@@ -47,7 +47,7 @@
 
     $(document).bind('pageinit', function() {
         $.ajax({
-            url   : '$baseUrl/../api/messageConversations/${messageId}?markRead=true',
+            url   : '$contextPath/api/messageConversations/${messageId}?markRead=true',
             dataType: 'json'
         }).success(function ( data ) {
             var tmpl = jQuery('#message-template').html();
@@ -96,7 +96,7 @@
 <section data-role="page" id="message-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="../messages" data-icon="back">Back</a>
 	</header>
 

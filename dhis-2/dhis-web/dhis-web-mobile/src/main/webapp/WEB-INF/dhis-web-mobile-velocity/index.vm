@@ -7,7 +7,7 @@
 
     function checkOnlineStatus() {
         return $.ajax({
-            url: '../mobile',
+            url: '$contextPath/mobile',
             async: false
         }).error(function() {
            onlineStatus = false;
@@ -26,7 +26,7 @@
 
     function getDashboard() {
         return $.ajax({
-            url: '../api/currentUser/dashboard',
+            url: '$contextPath/api/currentUser/dashboard',
             dataType: 'json'
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {
@@ -124,7 +124,7 @@
 <section data-role="page" id="index-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
 	</header>
 
 	<section data-role="content">
