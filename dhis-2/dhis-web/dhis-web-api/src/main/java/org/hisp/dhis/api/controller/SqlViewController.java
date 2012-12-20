@@ -81,6 +81,30 @@ public class SqlViewController
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
     
+    @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
+    public void getViewXls( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.xls", true );
+        
+        GridUtils.toXls( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
+    public void getViewHtml( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.html", false );
+        
+        GridUtils.toHtml( grid, response.getWriter() );
+    }
+    
     @RequestMapping( value = "/{uid}/execute", method = RequestMethod.POST )
     public void executeView( @PathVariable( "uid" ) String uid, HttpServletResponse response )
     {
