@@ -7,8 +7,7 @@
 
     function checkOnlineStatus() {
         return $.ajax({
-            url: '$contextPath/mobile',
-            async: false
+            url: '$contextPath/mobile'
         }).error(function() {
            onlineStatus = false;
            loggedInStatus = false;
@@ -80,10 +79,11 @@
     }
 
     function onlineTimer() {
-        setTimeout(function () {
-            checkOnlineStatus();
-            onlineTimer();
-        }, 5000);
+        setTimeout( function () {
+            checkOnlineStatus().complete( function () {
+                onlineTimer();
+            } );
+        }, 5000 );
     }
 
     function renderOfflineStatus() {
