@@ -32,7 +32,7 @@
 	<table id="postCommentTbl" class="hidden">
 		<tr>
 			<td class="text-column">$i18n.getString('post_comment'):</td>
-			<td><input type="text" class="{validate:{maxlength:160}}" name="message_$programStageInstance.id" id="message_$programStageInstance.id" name="message_$programStageInstance.id" style="width:450px;" onkeypress="keypressOnComent(event,this,$programStageInstance.id);"></td>
+			<td><input type="text" class="{validate:{maxlength:160}}" name="comment_$programStageInstance.id" id="comment_$programStageInstance.id" style="width:450px;" onkeypress="keypressOnComent(event,this,$programStageInstance.id);"></td>
 		</tr>
 		<tr>
 			<td></td>
