@@ -7,7 +7,8 @@
 
     function checkOnlineStatus() {
         return $.ajax({
-            url: '$contextPath/mobile'
+            url: '$contextPath/mobile',
+            type: 'POST'
         }).error(function() {
            onlineStatus = false;
            loggedInStatus = false;
@@ -18,7 +19,7 @@
             $('body').trigger('dhis2.online');
         }).complete(function() {
             if( onlineStatus && !loggedInStatus ) {
-                document.location = '../mobile';
+                document.location = '$contextPath/mobile';
             }
         });
     }
