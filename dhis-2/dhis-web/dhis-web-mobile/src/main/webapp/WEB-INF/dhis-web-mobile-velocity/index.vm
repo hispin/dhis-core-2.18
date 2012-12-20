@@ -7,7 +7,7 @@
 
     function checkOnlineStatus() {
         return $.ajax({
-            url: '$contextPath/mobile',
+            url: '$contextPath/mobile/messages',
             type: 'POST'
         }).error(function() {
            onlineStatus = false;
