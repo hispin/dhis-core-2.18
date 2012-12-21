@@ -291,7 +291,7 @@ public class DefaultProgramStageInstanceService
             + " )" );
 
         int total = programInstanceService.countProgramInstances( program, orgunitIds, startDate, endDate );
-        grid.setSubtitle( i18n.getString( "total_result" ) + ": " + total );
+        grid.setSubtitle( i18n.getString( "total_persons_enrolled" ) + ": " + total );
 
         if ( total > 0 )
         {
