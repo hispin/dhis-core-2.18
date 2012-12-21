@@ -265,6 +265,12 @@
 		class="org.hisp.dhis.patientattributevalue.DefaultPatientAttributeValueService">
 		<property name="patientAttributeValueStore"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueStore" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeOptionService"

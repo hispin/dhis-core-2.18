@@ -31,6 +31,8 @@
     </set>
 
  	<property name="inherit" column="inherit"/>
+ 	
+ 	<property name="expression" column="expression"/>
     
   </class>
 </hibernate-mapping>

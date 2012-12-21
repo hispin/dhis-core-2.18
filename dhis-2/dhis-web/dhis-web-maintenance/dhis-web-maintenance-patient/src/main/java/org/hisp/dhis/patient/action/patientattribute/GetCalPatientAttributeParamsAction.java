@@ -27,24 +27,26 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version GetCalPatientAttributeParamsAction.java 2:35:22 PM Dec 21, 2012 $
  */
-public class AddPatientAttributeAction
+public class GetCalPatientAttributeParamsAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;
@@ -54,64 +56,29 @@ public class AddPatientAttributeAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientAttributeOptionService patientAttributeOptionService;
+    private ProgramService programService;
 
-    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
+    public void setProgramService( ProgramService programService )
     {
-        this.patientAttributeOptionService = patientAttributeOptionService;
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Collection<Program> programs = new ArrayList<Program>();
 
-    public void setName( String name )
+    public Collection<Program> getPrograms()
     {
-        this.name = name;
+        return programs;
     }
 
-    private String description;
+    private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
-    public void setDescription( String description )
+    public Collection<PatientAttribute> getPatientAttributes()
     {
-        this.description = description;
-    }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
-    private Boolean mandatory;
-
-    public void setMandatory( Boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-
-    private List<String> attrOptions;
-
-    public void setAttrOptions( List<String> attrOptions )
-    {
-        this.attrOptions = attrOptions;
-    }
-
-    private Boolean inherit;
-
-    public void setInherit( Boolean inherit )
-    {
-        this.inherit = inherit;
-    }
-
-    private String expression;
-
-    public void setExpression( String expression )
-    {
-        this.expression = expression;
+        return patientAttributes;
     }
 
     // -------------------------------------------------------------------------
@@ -121,33 +88,12 @@ public class AddPatientAttributeAction
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = new PatientAttribute();
+        programs = programService.getAllPrograms();
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 
-        patientAttribute.setName( name );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
-        patientAttribute.setExpression( expression );
-
-        mandatory = (mandatory == null) ? false : true;
-        patientAttribute.setMandatory( mandatory );
-
-        inherit = (inherit == null) ? false : true;
-        patientAttribute.setInherit( inherit );
-
-        patientAttributeService.savePatientAttribute( patientAttribute );
-
-        if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
-        {
-            PatientAttributeOption opt = null;
-            for ( String optionName : attrOptions )
-            {
-                opt = new PatientAttributeOption();
-                opt.setName( optionName );
-                opt.setPatientAttribute( patientAttribute );
-                patientAttribute.addAttributeOptions( opt );
-                patientAttributeOptionService.addPatientAttributeOption( opt );
-            }
-        }
+        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        patientAttributes.removeAll( patientAttributeService
+            .getPatientAttributesByValueType( PatientAttribute.TYPE_CALCULATED ) );
 
         return SUCCESS;
     }

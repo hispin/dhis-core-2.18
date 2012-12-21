@@ -120,7 +120,7 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
+		
 		<action name="removePatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction">
 			<result name="success" type="velocity-json">
@@ -189,6 +189,14 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
+		</action>
+
+		<action name="getCalPatientAttributeParams"
+			class="org.hisp.dhis.patient.action.patientattribute.GetCalPatientAttributeParamsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/jsonCalPatientAttributeParams.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<!-- Program -->

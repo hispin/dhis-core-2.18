@@ -29,10 +29,15 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -71,6 +76,10 @@ public class PatientDashboardAction
 
     private CurrentUserService currentUserService;
 
+    private PatientAttributeService patientAttributeService;
+    
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -91,6 +100,8 @@ public class PatientDashboardAction
 
     private Collection<PatientAudit> patientAudits;
 
+    private Map<String, Double> calAttributeValueMap = new HashMap<String, Double>();
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -98,6 +109,26 @@ public class PatientDashboardAction
     public void setPatientAuditService( PatientAuditService patientAuditService )
     {
         this.patientAuditService = patientAuditService;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
+    public void setAttributeValues( Collection<PatientAttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
+    public void setActiveProgramInstances( Collection<ProgramInstance> activeProgramInstances )
+    {
+        this.activeProgramInstances = activeProgramInstances;
+    }
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
     }
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
@@ -108,6 +139,11 @@ public class PatientDashboardAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    public Map<String, Double> getCalAttributeValueMap()
+    {
+        return calAttributeValueMap;
     }
 
     public Collection<ProgramInstance> getActiveProgramInstances()
@@ -179,6 +215,14 @@ public class PatientDashboardAction
 
         attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
 
+        Collection<PatientAttribute> calAttributes = patientAttributeService.getPatientAttributesByValueType(PatientAttribute.TYPE_CALCULATED);
+        
+        for( PatientAttribute calAttribute : calAttributes )
+        {
+            Double value = patientAttributeValueService.getCalculatedPatientAttributeValue( patient, calAttribute, format );
+            calAttributeValueMap.put( calAttribute.getName(), value );
+        }
+        
         relationship = relationshipService.getRelationshipsForPatient( patient );
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
@@ -219,5 +263,4 @@ public class PatientDashboardAction
 
         return SUCCESS;
     }
-
 }

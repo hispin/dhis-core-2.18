@@ -60,6 +60,9 @@ public class PatientAttribute
 
     public static final String TYPE_COMBO = "COMBO";
 
+    public static final String TYPE_CALCULATED = "CALCULATED";
+
+
     private String description;
 
     private String valueType;
@@ -73,6 +76,8 @@ public class PatientAttribute
     private PatientAttributeGroup patientAttributeGroup;
 
     private Set<PatientAttributeOption> attributeOptions;
+
+    private String expression;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -205,6 +210,16 @@ public class PatientAttribute
     public void setPatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
     {
         this.patientAttributeGroup = patientAttributeGroup;
+    }
+
+    public String getExpression()
+    {
+        return expression;
+    }
+
+    public void setExpression( String expression )
+    {
+        this.expression = expression;
     }
 
 }
