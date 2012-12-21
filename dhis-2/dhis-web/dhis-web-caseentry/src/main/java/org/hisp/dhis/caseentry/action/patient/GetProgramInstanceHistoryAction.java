@@ -103,12 +103,7 @@ public class GetProgramInstanceHistoryAction
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
         grid = programInstanceService.getProgramInstanceReport( programInstance, i18n, format );
-
-        if ( type == null )
-        {
-            return SUCCESS;
-        }
-
-        return type;
+        
+        return ( type == null ) ? SUCCESS : type;
     }
 }

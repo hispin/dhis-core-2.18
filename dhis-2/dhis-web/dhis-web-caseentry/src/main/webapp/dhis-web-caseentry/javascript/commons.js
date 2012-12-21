@@ -1605,6 +1605,12 @@ function programReports( programInstanceId )
 	$('#programReportDiv').load("getProgramReportHistory.action", {programInstanceId:programInstanceId});
 }
 
+// export program instance history
+function exportProgramReports( programInstanceId, type )
+{
+	window.location.href='getProgramReportHistory.action?programInstanceId=' + programInstanceId + "&type=" + type;
+}
+
 // load SMS message and comments
 function getEventMessages( programInstanceId )
 {
