@@ -54,8 +54,9 @@ public class DefaultQueryPlanner
     
     public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries )
     {
-        Assert.isTrue( params.getDimensions().size() > 0 );
+        Assert.isTrue( !params.getDimensions().isEmpty() );
         Assert.isTrue( params.dimensionsAsFilters().isEmpty() );
+        Assert.isTrue( params.hasPeriods() );
 
         // ---------------------------------------------------------------------
         // Group queries by partition, period type and organisation unit level
@@ -122,7 +123,7 @@ public class DefaultQueryPlanner
      */
     private List<DataQueryParams> splitByDimension( List<DataQueryParams> queries, String dimension, int optimalQueries )
     {
-        int pageNo = MathUtils.divideToCeil( optimalQueries, queries.size() );
+        int optimalForSubQuery = MathUtils.divideToCeil( optimalQueries, queries.size() );
         
         List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
         
@@ -130,14 +131,20 @@ public class DefaultQueryPlanner
         {
             List<String> values = query.getDimensions().get( dimension );
 
-            List<List<String>> valuePages = new PaginatedList<String>( values ).setNumberOfPages( pageNo ).getPages();
+            if ( values == null || values.isEmpty() )
+            {
+                subQueries.add( new DataQueryParams( query ) );
+                continue;
+            }
+            
+            List<List<String>> valuePages = new PaginatedList<String>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
             
             for ( List<String> valuePage : valuePages )
             {
                 DataQueryParams subQuery = new DataQueryParams( query );
                 subQuery.setDimension( dimension, valuePage );
                 subQueries.add( subQuery );
-            }            
+            }
         }
 
         return subQueries;
@@ -146,20 +153,35 @@ public class DefaultQueryPlanner
     /**
      * Groups the given query into sub queries based on its periods and which 
      * partition it should be executed against. Sets the partition table name on
-     * each query.
+     * each query. Queries are grouped based on both dimensions and filters.
      */
     private List<DataQueryParams> groupByPartition( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
-        ListMap<String, String> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods() );
-        
-        for ( String tableName : tablePeriodMap.keySet() )
+        if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
-            DataQueryParams query = new DataQueryParams( params );
-            query.setPeriods( tablePeriodMap.get( tableName ) );
-            query.setTableName( tableName );
-            queries.add( query );            
+            ListMap<String, String> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods() );
+            
+            for ( String tableName : tablePeriodMap.keySet() )
+            {
+                DataQueryParams query = new DataQueryParams( params );
+                query.setPeriods( tablePeriodMap.get( tableName ) );
+                query.setTableName( tableName );
+                queries.add( query );            
+            }
+        }
+        else
+        {
+            ListMap<String, String> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getFilterPeriods() );
+            
+            for ( String tableName : tablePeriodMap.keySet() )
+            {
+                DataQueryParams query = new DataQueryParams( params );
+                query.setFilterPeriods( tablePeriodMap.get( tableName ) );
+                query.setTableName( tableName );
+                queries.add( query );            
+            }
         }
         
         return queries;
@@ -172,6 +194,12 @@ public class DefaultQueryPlanner
     private List<DataQueryParams> groupByPeriodType( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+
+        if ( params.getPeriods() == null || params.getPeriods().isEmpty() )
+        {
+            queries.add( new DataQueryParams( params ) );
+            return queries;
+        }
         
         ListMap<String, String> periodTypePeriodMap = getPeriodTypePeriodMap( params.getPeriods() );
 
@@ -193,6 +221,12 @@ public class DefaultQueryPlanner
     private List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+
+        if ( params.getOrganisationUnits() == null || params.getOrganisationUnits().isEmpty() )
+        {
+            queries.add( new DataQueryParams( params ) );
+            return queries;
+        }
         
         ListMap<Integer, String> levelOrgUnitMap = getLevelOrgUnitMap( params.getOrganisationUnits() );
         

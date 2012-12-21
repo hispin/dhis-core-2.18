@@ -145,9 +145,22 @@ public class DataQueryParams
         dimensions.put( dimension, values );
     }
     
+    /**
+     * Returns the dimensions which are part of dimensions and filters. If any
+     * such dimensions exist this object is in an illegal state.
+     */
     public Collection<String> dimensionsAsFilters()
     {
         return CollectionUtils.intersection( dimensions.keySet(), filters.keySet() );
+    }
+    
+    /**
+     * Indicates whether periods are present as a dimension or as a filter. If
+     * not this object is in an illegal state.
+     */
+    public boolean hasPeriods()
+    {
+        return dimensions.containsKey( PERIOD_DIM_ID ) || filters.containsKey( PERIOD_DIM_ID );
     }
     
     @Override
@@ -291,7 +304,7 @@ public class DataQueryParams
     }
     
     // -------------------------------------------------------------------------
-    // Get and set helpers
+    // Get and set helpers for dimensions
     // -------------------------------------------------------------------------
   
     public List<String> getDatElements()
@@ -321,6 +334,40 @@ public class DataQueryParams
     
     public void setOrganisationUnits( List<String> organisationUnits )
     {
-        this.dimensions.put( ORGUNIT_DIM_ID, organisationUnits );
+        dimensions.put( ORGUNIT_DIM_ID, organisationUnits );
     }
+    
+    // -------------------------------------------------------------------------
+    // Get and set helpers for filters
+    // -------------------------------------------------------------------------
+
+    public List<String> getFilterDatElements()
+    {
+        return filters.get( DATAELEMENT_DIM_ID );
+    }
+    
+    public void setFilterDataElements( List<String> dataElements )
+    {
+        filters.put( DATAELEMENT_DIM_ID, dataElements );
+    }
+    
+    public List<String> getFilterPeriods()
+    {
+        return filters.get( PERIOD_DIM_ID );
+    }
+    
+    public void setFilterPeriods( List<String> periods )
+    {
+        filters.put( PERIOD_DIM_ID, periods );
+    }
+    
+    public List<String> getFilterOrganisationUnits()
+    {
+        return filters.get( ORGUNIT_DIM_ID );
+    }
+    
+    public void setFilterOrganisationUnits( List<String> organisationUnits )
+    {
+        filters.put( ORGUNIT_DIM_ID, organisationUnits );
+    }    
 }

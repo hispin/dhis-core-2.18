@@ -148,6 +148,12 @@ public class AnalyticsController
             return false;
         }
         
+        if ( !params.hasPeriods() )
+        {
+            ContextUtils.conflictResponse( response, "Periods must be specified as dimension or filter" );
+            return false;
+        }
+        
         return true;        
     }
 }
