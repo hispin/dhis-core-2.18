@@ -122,7 +122,13 @@
 		</div>
 	#end
 
-	<div id='tab-5'><div id='programReportDiv'></div></div>
+	<div id='tab-5'>
+		<p>
+			<input type="button" onclick="exportProgramReports( '$programInstance.id', 'xls' )" value="$i18n.getString('get_report_as_xls')">
+			<input type="button" onclick="exportProgramReports( '$programInstance.id', 'pdf' )" value="$i18n.getString('get_report_as_pdf')">
+		</p>
+		<div id='programReportDiv'></div>
+	</div>
 	
 </div>
 #end

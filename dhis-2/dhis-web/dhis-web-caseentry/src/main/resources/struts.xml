@@ -534,6 +534,8 @@
 		<action name="getProgramReportHistory"
 			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceHistoryAction">
 			<result name="success" type="velocity">/content.vm</result>
+			<result name="xls" type="gridXlsResult" />
+			<result name="pdf" type="gridPdfResult" />
 			<param name="page">/dhis-web-caseentry/programInstanceHistory.vm</param>
 		</action>
 
