@@ -45,6 +45,8 @@ import org.springframework.util.Assert;
 public class DefaultQueryPlanner
     implements QueryPlanner
 {
+    //TODO call getLevelOrgUnitMap once
+    
     @Autowired
     private OrganisationUnitService organisationUnitService;
     
@@ -86,6 +88,13 @@ public class DefaultQueryPlanner
             }
         }
 
+        // ---------------------------------------------------------------------
+        // Set filters for each period type and organisation unit level
+        // ---------------------------------------------------------------------
+        
+        queries = setFilterByPeriodType( queries );
+        queries = setFilterByOrgUnitLevel( queries );
+        
         if ( queries.size() >= optimalQueries )
         {
             return queries;
@@ -95,7 +104,7 @@ public class DefaultQueryPlanner
         // Group by organisation unit
         // ---------------------------------------------------------------------
         
-        queries = splitByDimension( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
+        queries = splitByDimensionOrFilter( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
 
         if ( queries.size() >= optimalQueries )
         {
@@ -106,7 +115,7 @@ public class DefaultQueryPlanner
         // Group by data element
         // ---------------------------------------------------------------------
         
-        return splitByDimension( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
+        return splitByDimensionOrFilter( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
     }
         
     public boolean canQueryFromDataMart( DataQueryParams params )
@@ -121,7 +130,7 @@ public class DefaultQueryPlanner
     /**
      * Splits the given list of queries in sub queries on the given dimension.
      */
-    private List<DataQueryParams> splitByDimension( List<DataQueryParams> queries, String dimension, int optimalQueries )
+    private List<DataQueryParams> splitByDimensionOrFilter( List<DataQueryParams> queries, String dimension, int optimalQueries )
     {
         int optimalForSubQuery = MathUtils.divideToCeil( optimalQueries, queries.size() );
         
@@ -129,7 +138,7 @@ public class DefaultQueryPlanner
         
         for ( DataQueryParams query : queries )
         {
-            List<String> values = query.getDimensions().get( dimension );
+            List<String> values = query.getDimensionOrFilter( dimension );
 
             if ( values == null || values.isEmpty() )
             {
@@ -142,7 +151,7 @@ public class DefaultQueryPlanner
             for ( List<String> valuePage : valuePages )
             {
                 DataQueryParams subQuery = new DataQueryParams( query );
-                subQuery.setDimension( dimension, valuePage );
+                subQuery.resetDimensionOrFilter( dimension, valuePage );
                 subQueries.add( subQuery );
             }
         }
@@ -242,6 +251,41 @@ public class DefaultQueryPlanner
     }
     
     /**
+     * Replaces the period filter with individual filters for each period type.
+     */
+    private List<DataQueryParams> setFilterByPeriodType( List<DataQueryParams> queries )
+    {
+        for ( DataQueryParams params : queries )
+        {
+            if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
+            {
+                params.getFilters().putAll( getPeriodTypePeriodMap( params.getFilterPeriods() ) );
+                params.getFilters().remove( DataQueryParams.PERIOD_DIM_ID );
+            }
+        }
+        
+        return queries;
+    }
+    
+    /**
+     * Replaces the organisation unit filter with individual filters for each
+     * organisation unit level.
+     */
+    private List<DataQueryParams> setFilterByOrgUnitLevel( List<DataQueryParams> queries )
+    {
+        for ( DataQueryParams params : queries )
+        {
+            if ( params.getFilterOrganisationUnits() != null && !params.getFilterOrganisationUnits().isEmpty() )
+            {
+                params.getFilters().putAll( getLevelColumnOrgUnitMap( params.getFilterOrganisationUnits() ) );
+                params.getFilters().remove( DataQueryParams.ORGUNIT_DIM_ID );
+            }
+        }
+        
+        return queries;
+    }
+    
+    /**
      * Creates a mapping between period type name and period for the given periods.
      */
     private ListMap<String, String> getPeriodTypePeriodMap( Collection<String> isoPeriods )
@@ -271,6 +315,24 @@ public class DefaultQueryPlanner
             int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
             
             map.putValue( level, orgUnit );
+        }
+        
+        return map;
+    }
+    
+    /**
+     * Creates a mapping between the level column and organisation unit for the 
+     * given organisation units.
+     */
+    private ListMap<String, String> getLevelColumnOrgUnitMap( Collection<String> orgUnits )
+    {
+        ListMap<String, String> map = new ListMap<String, String>();
+        
+        for ( String orgUnit : orgUnits )
+        {
+            int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+            
+            map.putValue( DataQueryParams.LEVEL_PREFIX + level, orgUnit );
         }
         
         return map;

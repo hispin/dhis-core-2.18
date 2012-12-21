@@ -49,7 +49,7 @@ public class DataQueryParams
     public static final String ORGUNIT_DIM_ID = "ou";
     public static final String VALUE_ID = "value";
     
-    private static final String LEVEL_PREFIX = "uidlevel";
+    public static final String LEVEL_PREFIX = "uidlevel";
     
     private Map<String, List<String>> dimensions = new HashMap<String, List<String>>();
     
@@ -120,6 +120,11 @@ public class DataQueryParams
                 
         return list;
     }
+    
+    public List<String> getFilterNames()
+    {
+        return new ArrayList<String>( filters.keySet() );
+    }
         
     public Map<String, List<String>> getDimensionMap()
     {
@@ -138,11 +143,6 @@ public class DataQueryParams
         }
         
         return map;
-    }
-    
-    public void setDimension( String dimension, List<String> values )
-    {
-        dimensions.put( dimension, values );
     }
     
     /**
@@ -229,7 +229,7 @@ public class DataQueryParams
     @Override
     public String toString()
     {
-        return dimensions != null ? dimensions.toString() : "";
+        return "[Dimensions: " + dimensions + ", Filters: " + filters + "]";
     }
         
     // -------------------------------------------------------------------------
@@ -301,6 +301,27 @@ public class DataQueryParams
     public void setOrganisationUnitLevel( int organisationUnitLevel )
     {
         this.organisationUnitLevel = organisationUnitLevel;
+    }
+
+    // -------------------------------------------------------------------------
+    // Get and set helpers for dimensions or filter
+    // -------------------------------------------------------------------------
+  
+    public List<String> getDimensionOrFilter( String key )
+    {
+        return dimensions.containsKey( key ) ? dimensions.get( key ) : filters.get( key );
+    }
+    
+    public void resetDimensionOrFilter( String key, List<String> values )
+    {
+        if ( dimensions.containsKey( key ) )
+        {
+            dimensions.put( key, values );
+        }
+        else if ( filters.containsKey( key ) )
+        {
+            filters.put( key, values );
+        }
     }
     
     // -------------------------------------------------------------------------
