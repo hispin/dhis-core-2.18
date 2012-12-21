@@ -73,12 +73,11 @@ public class DefaultPatientAttributeValueService
     implements PatientAttributeValueService
 {
     private final String CURRENT_DATE = "current_date";
-    
-    private final String regExp = "\\[(" + CURRENT_DATE + "|" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
-        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|"
-        + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
-        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([0-9]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
 
+    private final String regExp = "\\[(" + CURRENT_DATE + "|" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|"
+        + OBJECT_PROGRAM_STAGE + "|" + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY
+        + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
+        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([0-9]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -295,7 +294,7 @@ public class DefaultPatientAttributeValueService
                 matcher.appendReplacement( result, "0" );
             }
             else
-            {   
+            {
                 String[] infor = matcher.group( 2 ).split( SEPARATOR_ID );
                 int id = Integer.parseInt( infor[0] );
 
@@ -304,14 +303,18 @@ public class DefaultPatientAttributeValueService
                     PatientAttribute attribute = patientAttributeService.getPatientAttribute( id );
                     PatientAttributeValue attributeValue = patientAttributeValueStore.get( patient, attribute );
 
-                    if ( PatientAttribute.TYPE_INT.equals( attributeValue.getPatientAttribute().getValueType() ) )
+                    if ( attributeValue != null )
                     {
-                        matcher.appendReplacement( result, attributeValue.getValue() );
-                    }
-                    else if ( PatientAttribute.TYPE_DATE.equals( attributeValue.getPatientAttribute().getValueType() ) )
-                    {
-                        matcher.appendReplacement( result,
-                            getDays( currentDate, format.parseDate( attributeValue.getValue() ) ) + "" );
+                        if ( PatientAttribute.TYPE_INT.equals( attributeValue.getPatientAttribute().getValueType() ) )
+                        {
+                            matcher.appendReplacement( result, attributeValue.getValue() );
+                        }
+                        else if ( PatientAttribute.TYPE_DATE.equals( attributeValue.getPatientAttribute()
+                            .getValueType() ) )
+                        {
+                            matcher.appendReplacement( result,
+                                getDays( currentDate, format.parseDate( attributeValue.getValue() ) ) + "" );
+                        }
                     }
                 }
                 else if ( property.equalsIgnoreCase( OBJECT_PATIENT_PROPERTY ) )
@@ -325,7 +328,7 @@ public class DefaultPatientAttributeValueService
                         program, false );
 
                     Date value = null;
-                    if ( programInstances != null && programInstances.size() > 0)
+                    if ( programInstances != null && programInstances.size() > 0 )
                     {
                         ProgramInstance programInstance = programInstances.iterator().next();
                         String propProgram = infor[1];
@@ -340,13 +343,13 @@ public class DefaultPatientAttributeValueService
                     }
                     else
                     {
-                        return 0.0;
+                        return null;
                     }
                     matcher.appendReplacement( result, getDays( currentDate, value ) + "" );
                 }
             }
         }
-        
+
         final JEP parser = new JEP();
 
         parser.parseExpression( result.toString() );

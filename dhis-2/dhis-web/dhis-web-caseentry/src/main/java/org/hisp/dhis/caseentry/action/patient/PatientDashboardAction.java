@@ -77,7 +77,7 @@ public class PatientDashboardAction
     private CurrentUserService currentUserService;
 
     private PatientAttributeService patientAttributeService;
-    
+
     private I18nFormat format;
 
     // -------------------------------------------------------------------------
@@ -215,14 +215,19 @@ public class PatientDashboardAction
 
         attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
 
-        Collection<PatientAttribute> calAttributes = patientAttributeService.getPatientAttributesByValueType(PatientAttribute.TYPE_CALCULATED);
-        
-        for( PatientAttribute calAttribute : calAttributes )
+        Collection<PatientAttribute> calAttributes = patientAttributeService
+            .getPatientAttributesByValueType( PatientAttribute.TYPE_CALCULATED );
+
+        for ( PatientAttribute calAttribute : calAttributes )
         {
-            Double value = patientAttributeValueService.getCalculatedPatientAttributeValue( patient, calAttribute, format );
-            calAttributeValueMap.put( calAttribute.getName(), value );
+            Double value = patientAttributeValueService.getCalculatedPatientAttributeValue( patient, calAttribute,
+                format );
+            if ( value != null )
+            {
+                calAttributeValueMap.put( calAttribute.getName(), value );
+            }
         }
-        
+
         relationship = relationshipService.getRelationshipsForPatient( patient );
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
