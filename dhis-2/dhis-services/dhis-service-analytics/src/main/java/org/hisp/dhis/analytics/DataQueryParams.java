@@ -28,11 +28,13 @@ package org.hisp.dhis.analytics;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.system.util.CollectionUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -142,7 +144,12 @@ public class DataQueryParams
     {
         dimensions.put( dimension, values );
     }
-        
+    
+    public Collection<String> dimensionsAsFilters()
+    {
+        return CollectionUtils.intersection( dimensions.keySet(), filters.keySet() );
+    }
+    
     @Override
     public int hashCode()
     {

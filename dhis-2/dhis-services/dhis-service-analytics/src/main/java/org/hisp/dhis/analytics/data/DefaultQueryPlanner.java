@@ -40,6 +40,7 @@ import org.hisp.dhis.system.util.ListMap;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 public class DefaultQueryPlanner
     implements QueryPlanner
@@ -53,12 +54,15 @@ public class DefaultQueryPlanner
     
     public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries )
     {
+        Assert.isTrue( params.getDimensions().size() > 0 );
+        Assert.isTrue( params.dimensionsAsFilters().isEmpty() );
+
         // ---------------------------------------------------------------------
         // Group queries by partition, period type and organisation unit level
         // ---------------------------------------------------------------------
         
         params = new DataQueryParams( params );
-        
+
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
         
         List<DataQueryParams> groupedByPartition = groupByPartition( params );

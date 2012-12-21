@@ -45,9 +45,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping( "/analytics" )
 public class AnalyticsController
 {
+    private static final String RESOURCE_PATH = "/analytics";
     @Autowired
     private AnalyticsService analyticsService;
     
@@ -55,17 +55,20 @@ public class AnalyticsController
     private ContextUtils contextUtils;
     
     //TODO URL only requests
-    
-    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json", "application/javascript" } )
+
+    // -------------------------------------------------------------------------
+    // Resources
+    // -------------------------------------------------------------------------
+  
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
     public String getJson( InputStream in, // JSON, JSONP
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
 
-        if ( params == null || params.getDimensions().isEmpty() )
+        if ( !valid( params, response ) )
         {
-            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
             return null;
         }
         
@@ -76,16 +79,15 @@ public class AnalyticsController
         return "grid";
     }
 
-    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" } )
+    @RequestMapping( value = RESOURCE_PATH + ".xml", method = RequestMethod.GET )
     public void getXml( InputStream in,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
 
-        if ( params == null || params.getDimensions().isEmpty() )
+        if ( !valid( params, response ) )
         {
-            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
             return;
         }
         
@@ -94,16 +96,15 @@ public class AnalyticsController
         GridUtils.toXml( grid, response.getOutputStream() );
     }
     
-    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" } )
+    @RequestMapping( value = RESOURCE_PATH + ".csv", method = RequestMethod.GET )
     public void getCsv( InputStream in,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
 
-        if ( params == null || params.getDimensions().isEmpty() )
+        if ( !valid( params, response ) )
         {
-            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
             return;
         }
         
@@ -112,21 +113,41 @@ public class AnalyticsController
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
     
-    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" } )
+    @RequestMapping( value = RESOURCE_PATH + ".html", method = RequestMethod.GET )
     public void getHtml( InputStream in,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
 
-        if ( params == null || params.getDimensions().isEmpty() )
+        if ( !valid( params, response ) )
         {
-            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
             return;
         }
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.NO_CACHE ); //TODO        
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toHtml( grid, response.getWriter() );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+  
+    private boolean valid( DataQueryParams params, HttpServletResponse response )
+    {
+        if ( params == null || params.getDimensions().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
+            return false;
+        }
+        
+        if ( !params.dimensionsAsFilters().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "Dimensions cannot also be specified as filters: " + params.dimensionsAsFilters() );
+            return false;
+        }
+        
+        return true;        
     }
 }
