@@ -34,7 +34,7 @@ import org.hisp.dhis.common.Grid;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland

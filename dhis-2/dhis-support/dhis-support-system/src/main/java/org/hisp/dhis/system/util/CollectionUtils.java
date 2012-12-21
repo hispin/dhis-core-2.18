@@ -27,11 +27,13 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.system.util.functional.Predicate;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -64,5 +66,12 @@ public class CollectionUtils
                 iterator.remove();
             }
         }
+    }
+    
+    public static <T> Collection<T> intersection( Collection<T> c1, Collection<T> c2 )
+    {
+        Set<T> set1 = new HashSet<T>( c1 );
+        set1.retainAll( new HashSet<T>( c2 ) );
+        return set1;
     }
 }

@@ -46,7 +46,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.util.Assert;
 
 /**
  * This class is responsible for producing aggregated data values. It reads data
@@ -75,8 +74,6 @@ public class JdbcAnalyticsManager
         List<String> dimensions = params.getDimensionNames();
         Map<String, List<String>> dimensionMap = params.getDimensionMap();
         
-        Assert.isTrue( dimensions.size() > 0, "Must be at least one dimension" );
-
         SqlHelper sqlHelper = new SqlHelper();
         
         String sql = 

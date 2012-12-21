@@ -27,7 +27,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.hisp.dhis.system.util.TextUtils.subString;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 import static org.hisp.dhis.system.util.TextUtils.*;
