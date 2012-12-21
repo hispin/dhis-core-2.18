@@ -129,6 +129,13 @@ public class UpdatePatientAttributeAction
         this.inherit = inherit;
     }
 
+    private String expression;
+
+    public void setExpression( String expression )
+    {
+        this.expression = expression;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -141,10 +148,11 @@ public class UpdatePatientAttributeAction
         patientAttribute.setName( name );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
+        patientAttribute.setExpression( expression );
 
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
-        
+
         inherit = (inherit == null) ? false : true;
         patientAttribute.setInherit( inherit );
 

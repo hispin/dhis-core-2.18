@@ -70,6 +70,9 @@ public class CaseAggregationCondition
     public static String OBJECT_PROGRAM_STAGE_PROPERTY = "PSP";
     
     public static String OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY = "PC";
+    
+    public static String OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE = "dateOfIncident";
+    public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
 
     // -------------------------------------------------------------------------
     // Fields

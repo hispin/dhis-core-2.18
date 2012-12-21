@@ -151,6 +151,15 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetCalPatientAttributeParamsAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetCalPatientAttributeParamsAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
 
 	<!-- Program -->
 

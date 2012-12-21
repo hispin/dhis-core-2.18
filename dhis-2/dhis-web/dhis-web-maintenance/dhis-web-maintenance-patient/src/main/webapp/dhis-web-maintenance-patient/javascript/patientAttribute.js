@@ -13,6 +13,7 @@ function showPatientAttributeDetails( patientAttributeId )
 			var inherit = ( json.patientAttribute.inherit == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'inheritField', inherit );
 			setInnerHTML( 'valueTypeField', json.patientAttribute.valueType );    
+			setInnerHTML( 'expressionField', json.patientAttribute.expression ); 
 			
 			showDetails();
 	});
@@ -32,15 +33,50 @@ ATTRIBUTE_OPTION =
 	{
 		if ( jQuery(this_).val() == "COMBO" )
 		{
-			jQuery("#attributeComboRow").show();
+			hideById("calculatedAttrTR");
+			hideById("expressionTR");
+			showById("attributeComboRow");
 			if( jQuery("#attrOptionContainer").find("input").length ==0 ) 
 			{
 				ATTRIBUTE_OPTION.addOption();
 				ATTRIBUTE_OPTION.addOption();
 			}
-		}else {
-			jQuery("#attributeComboRow").hide();
 		}
+		else if (jQuery(this_).val() == "CALCULATED"){
+			if( jQuery("#availableAttribute option").length == 0 )
+			{
+				jQuery.getJSON( 'getCalPatientAttributeParams.action', { },
+					function ( json ) {
+						var patientAttributes = jQuery("#availableAttribute");
+						patientAttributes.append( "<option value='[current_date:0]' title='" + i18n_current_date + "'>" + i18n_current_date + "</option>" );
+						patientAttributes.append( "<option value='[CP:0]' title='" + i18n_date_of_birth + "'>" + i18n_date_of_birth + "</option>" );
+						for ( i in json.programs ) 
+						{ 
+							var id = "[PG:" + json.programs[i].id + ".dateOfIncident]";
+							patientAttributes.append( "<option value='" + id + "' title='" + json.programs[i].name + "( " +  i18n_incident_date + " )" + "'>" + json.programs[i].name + "( " +  i18n_incident_date + " )" + "</option>" );
+							var id = "[PG:" + json.programs[i].id + ".enrollmentDate]";
+							patientAttributes.append( "<option value='" + id + "' title='" + json.programs[i].name + "( " +  i18n_enrollment_date + " )" + "'>" + json.programs[i].name + "( " +  i18n_enrollment_date + " )" + "</option>" );
+						}
+						for ( i in json.patientAttributes ) 
+						{ 
+							var id = "[CA:" + json.patientAttributes[i].id + "]";
+							patientAttributes.append( "<option value='" + id + "' title='" + json.patientAttributes[i].name + "'>" + json.patientAttributes[i].name + "</option>" );
+						}
+				});
+			}
+			hideById("attributeComboRow");
+			showById("calculatedAttrTR");
+			showById("expressionTR");
+			showById("descriptionTR");
+		}
+		else
+		{
+			hideById("attributeComboRow");
+			hideById("calculatedAttrTR");
+			hideById("expressionTR");
+			hideById("descriptionTR");
+		}
+		
 	},
 	checkOnSubmit : function ()
 	{
@@ -92,4 +128,15 @@ ATTRIBUTE_OPTION =
 	{
 		return "<tr><td><input type='text' name='attrOptions' /><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
+}
+
+function getConditionDescription()
+{
+	$.postUTF8( 'getCaseAggregationDescription.action', 
+		{ 
+			condition:getFieldValue('expression') 
+		},function(html)
+		{
+			setInnerHTML('expDescription', html);
+		});
 }

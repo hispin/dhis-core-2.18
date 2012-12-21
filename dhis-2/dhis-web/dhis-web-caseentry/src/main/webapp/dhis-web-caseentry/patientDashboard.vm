@@ -62,6 +62,12 @@
 					<td>$identifier.identifier</td>
 				</tr>
 				#end
+				#foreach( $attributeName in $calAttributeValueMap.keySet() )
+				<tr>
+					<td>$attributeName</td>
+					<td>$calAttributeValueMap.get($attributeName)</td>
+				</tr>
+				#end
 				#foreach( $attributeValue in $attributeValues )
 				<tr>
 					<td>$attributeValue.patientAttribute.name</td>
@@ -72,8 +78,6 @@
 							#else
 								$i18n.getString("no")
 							#end
-						#elseif($attributeValue.patientAttribute.valueType=='DATE')
-							$format.formatDate( $attributeValue.value )
 						#else
 							$encoder.htmlEncode($attributeValue.value)
 						#end	
