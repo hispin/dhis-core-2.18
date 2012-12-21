@@ -192,6 +192,61 @@ public class QueryPlannerTest
         }
     }
     
+    /**
+     * Splits on 3 data elements. No organisation units specified.
+     */
+    @Test
+    public void planQueryE()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( "a", "b", "c" ) );
+        params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
+
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+
+        assertEquals( 3, queries.size() );
+
+        for ( DataQueryParams query : queries )
+        {
+            assertTrue( samePeriodType( query.getPeriods() ) );
+            assertTrue( samePartition( query.getPeriods() ) );
+        }
+    }
+
+    /**
+     * Splits on 5 organisation units. No data elements units specified.
+     */
+    @Test
+    public void planQueryF()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
+        params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
+
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+
+        assertEquals( 3, queries.size() );
+
+        for ( DataQueryParams query : queries )
+        {
+            assertTrue( samePeriodType( query.getPeriods() ) );
+            assertTrue( samePartition( query.getPeriods() ) );
+        }
+    }
+    
+    /**
+     * Expected to fail because of no periods specified.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void planQueryG()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( "a", "b", "c" ) );
+        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
+
+        queryPlanner.planQuery( params, 4 );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
