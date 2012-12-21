@@ -84,6 +84,11 @@ public class JdbcAnalyticsManager
         {
             sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( dimensionMap.get( dim ) ) + " ) ";
         }
+
+        for ( String filter : params.getFilterNames() )
+        {
+            sql += sqlHelper.whereAnd() + " " + filter + " in (" + getQuotedCommaDelimitedString( params.getFilters().get( filter ) ) + " ) ";
+        }
         
         sql += "group by " + getCommaDelimitedString( dimensions );
     

@@ -246,6 +246,42 @@ public class QueryPlannerTest
 
         queryPlanner.planQuery( params, 4 );
     }
+
+    /**
+     * Query filters span 2 partitions. Splits in 2 queries for each partition, 
+     * then splits in 2 queries on organisation units to satisfy optimal for a 
+     * total of 4 queries.
+     */
+    @Test
+    public void planQueryH()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
+        params.setFilterPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
+        
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        
+        assertEquals( 4, queries.size() );
+    }
+
+    /**
+     * Query spans 3 period types. Splits in 3 queries for each period type, then
+     * splits in 2 queries on data elements units to satisfy optimal for a total 
+     * of 6 queries.
+     */
+    @Test
+    public void planQueryI()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setFilterOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
+        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000", "200002", "200003", "200004" ) );
+        
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        
+        assertEquals( 6, queries.size() );
+    }
     
     // -------------------------------------------------------------------------
     // Supportive methods
