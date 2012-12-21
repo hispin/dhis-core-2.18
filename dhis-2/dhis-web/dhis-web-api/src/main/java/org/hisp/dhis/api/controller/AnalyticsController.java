@@ -54,34 +54,79 @@ public class AnalyticsController
     @Autowired
     private ContextUtils contextUtils;
     
-    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
-    public String getJson( InputStream in,
+    //TODO URL only requests
+    
+    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json", "application/javascript" } )
+    public String getJson( InputStream in, // JSON, JSONP
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO
-        
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
 
-        Grid grid = analyticsService.getAggregatedDataValues( params );
+        if ( params == null || params.getDimensions().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
+            return null;
+        }
         
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO        
+        Grid grid = analyticsService.getAggregatedDataValues( params );        
         model.addAttribute( "model", grid );
-        model.addAttribute( "viewClass", "detailed" );        
-        
+        model.addAttribute( "viewClass", "detailed" );
         return "grid";
     }
 
-    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/xml" } )
+    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" } )
     public void getXml( InputStream in,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE ); //TODO
-        
         DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
-        
-        Grid grid = analyticsService.getAggregatedDataValues( params );
 
+        if ( params == null || params.getDimensions().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
+            return;
+        }
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE ); //TODO        
+        Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toXml( grid, response.getOutputStream() );
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" } )
+    public void getCsv( InputStream in,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+
+        if ( params == null || params.getDimensions().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
+            return;
+        }
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE ); //TODO        
+        Grid grid = analyticsService.getAggregatedDataValues( params );
+        GridUtils.toCsv( grid, response.getOutputStream() );
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, consumes = { "application/json" } )
+    public void getHtml( InputStream in,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+
+        if ( params == null || params.getDimensions().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
+            return;
+        }
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.NO_CACHE ); //TODO        
+        Grid grid = analyticsService.getAggregatedDataValues( params );
+        GridUtils.toHtml( grid, response.getWriter() );
     }
 }
