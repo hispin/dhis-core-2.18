@@ -216,6 +216,14 @@ public class HibernateDataElementStore
             ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsByAggregationLevel( int aggregationLevel )
+    {
+        String hql = "from DataElement de join de.aggregationLevels al where al = :aggregationLevel";
+        
+        return getQuery( hql ).setInteger( "aggregationLevel", aggregationLevel ).list();
+    }
+
     public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
     {
         final String sql = "select de.dataelementid, coc.categoryoptioncomboid from dataelement de " +
@@ -246,6 +254,7 @@ public class HibernateDataElementStore
     public Collection<DataElement> get( DataSet dataSet, String key, Integer max )
     {
         String hql = "select dataElement from DataSet dataSet inner join dataSet.dataElements as dataElement where dataSet.id = :dataSetId ";
+        
         if( key != null )
         {
             hql += " and lower(dataElement.name) like lower('%" + key + "%') ";

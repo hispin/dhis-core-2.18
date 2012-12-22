@@ -94,11 +94,12 @@ public interface AnalyticsTableManager
     Date getLatestData();
     
     /**
-     * Checks whether the given table has no rows, if so drops the table.
+     * Checks whether the given table has no rows, if so drops the table. Returns
+     * true if the table was empty and pruned, if not false.
      * 
      * @param tableName the name of the table to prune.
      */
-    void pruneTable( String tableName );
+    boolean pruneTable( String tableName );
     
     /**
      * Drops the given table.

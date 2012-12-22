@@ -324,6 +324,11 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );
     }
 
+    public Collection<DataElement> getDataElementsByAggregationLevel( int aggregationLevel )
+    {
+        return i18n( i18nService, dataElementStore.getDataElementsByAggregationLevel( aggregationLevel ) );
+    }
+    
     public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
     {
         return dataElementStore.getDataElementCategoryOptionCombos();
