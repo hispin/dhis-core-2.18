@@ -50,6 +50,8 @@ public class DefaultAnalyticsService
 {
     private static final String VALUE_HEADER_NAME = "Value";
     
+    //TODO aggregation levels
+    //     add org unit level as column in tables
     //TODO indicator aggregation
     //TODO category sub-totals and totals
     //TODO use data mart when query can be satisfied

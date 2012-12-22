@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.table;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -57,8 +58,8 @@ public class DefaultAnalyticsTableService
     // -------------------------------------------------------------------------
 
     //TODO generateOrganisationUnitStructures
-    //TODO generateOrganisationUnitGroupSetTable
-    //TODO generatePeriodStructure
+    //     generateOrganisationUnitGroupSetTable
+    //     generatePeriodStructure
     
     @Async
     public Future<?> update()
@@ -116,9 +117,6 @@ public class DefaultAnalyticsTableService
         
         for ( List<String> tablePage : tablePages )
         {
-            System.out.println();
-            System.out.println(tablePage);
-            
             List<Future<?>> futures = new ArrayList<Future<?>>();
             
             for ( String table : tablePage )
@@ -134,9 +132,14 @@ public class DefaultAnalyticsTableService
     
     public void pruneTables( List<String> tables )
     {
-        for ( String table : tables )
+        Iterator<String> iterator = tables.iterator();
+        
+        while ( iterator.hasNext() )
         {
-            tableManager.pruneTable( table );
+            if ( tableManager.pruneTable( iterator.next() ) )
+            {
+                iterator.remove();
+            }
         }
     }
     

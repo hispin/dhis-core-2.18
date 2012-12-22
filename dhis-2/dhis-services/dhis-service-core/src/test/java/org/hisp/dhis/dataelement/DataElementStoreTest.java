@@ -403,6 +403,39 @@ public class DataElementStoreTest
     }
         
     @Test
+    public void testGetDataElementsByAggregationLevel()
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        
+        dataElementA.getAggregationLevels().addAll( Arrays.asList( 3, 5 ) );
+        dataElementB.getAggregationLevels().addAll( Arrays.asList( 4, 5 ) );
+
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        
+        Collection<DataElement> dataElements = dataElementStore.getDataElementsByAggregationLevel( 2 );
+        
+        assertEquals( 0, dataElements.size() );
+        
+        dataElements = dataElementStore.getDataElementsByAggregationLevel( 3 );
+        
+        assertEquals( 1, dataElements.size() );
+
+        dataElements = dataElementStore.getDataElementsByAggregationLevel( 4 );
+        
+        assertEquals( 1, dataElements.size() );
+        
+        dataElements = dataElementStore.getDataElementsByAggregationLevel( 5 );
+        
+        assertEquals( 2, dataElements.size() );
+        assertTrue( dataElements.contains( dataElementA ) );
+        assertTrue( dataElements.contains( dataElementB ) );
+    }
+    
+    @Test
     public void testGetDataElementsZeroIsSignificant()
     {
         DataElement dataElementA = createDataElement( 'A' );

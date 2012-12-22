@@ -285,7 +285,7 @@ public class JdbcAnalyticsTableManager
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
     
-    public void pruneTable( String tableName )
+    public boolean pruneTable( String tableName )
     {
         final String sqlCount = "select count(*) from " + tableName;
         
@@ -300,7 +300,11 @@ public class JdbcAnalyticsTableManager
             executeSilently( sqlDrop );
             
             log.info( "Drop SQL: " + sqlDrop );
+            
+            return true;
         }
+        
+        return false;
     }
     
     public void dropTable( String tableName )
