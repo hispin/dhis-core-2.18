@@ -27,6 +27,7 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -107,4 +108,15 @@ public interface AnalyticsTableManager
      * @param tableName the name of the table to drop.
      */
     void dropTable( String tableName );
+    
+    /**
+     * Applies aggregation level logic to the analytics table by setting the
+     * organisation unit level column values to null for the levels above the
+     * given aggregation level.
+     * 
+     * @param tableName the name of the analytics table.
+     * @param dataElements the data element uids to apply aggregation levels for.
+     * @param aggregationLevel the aggregation level.
+     */
+    void applyAggregationLevels( String tableName, Collection<String> dataElements, int aggregationLevel );
 }

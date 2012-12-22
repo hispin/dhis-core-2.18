@@ -65,6 +65,24 @@ public class IdentifiableObjectUtils
 
         return null;
     }
+    
+    /**
+     * Returns a list of uids for the given collection of IdentifiableObjects.
+     * 
+     * @param objects the list of IdentifiableObjects.
+     * @return a list of uids.
+     */
+    public static <T extends IdentifiableObject> List<String> getUids( Collection<T> objects )
+    {
+        List<String> uids = new ArrayList<String>();
+        
+        for ( T object : objects )
+        {
+            uids.add( object.getUid() );
+        }
+        
+        return uids;
+    }
 
     /**
      * Filters the given list of IdentifiableObjects based on the given key.

@@ -37,6 +37,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -50,6 +51,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
+
+import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
 /**
  * This class manages the analytics table. The analytics table is a denormalized
@@ -249,8 +252,9 @@ public class JdbcAnalyticsTableManager
         
         String[] de = { "de", "character(11) not null", "de.uid" };
         String[] co = { "coc", "character(11) not null", "coc.uid" };
+        String[] level = { "level", "integer", "ous.level" };
         
-        columns.addAll( Arrays.asList( de, co ) );
+        columns.addAll( Arrays.asList( de, co, level ) );
         
         return columns;
     }
@@ -314,6 +318,29 @@ public class JdbcAnalyticsTableManager
         executeSilently( "drop table " + tableName );
         executeSilently( "drop table " + realTable );
     }
+    
+    public void applyAggregationLevels( String tableName, Collection<String> dataElements, int aggregationLevel )
+    {
+        StringBuilder sql = new StringBuilder( "update " + tableName + " set " );
+        
+        for ( int i = 0; i < aggregationLevel; i++ )
+        {
+            int level = i + 1;
+            
+            String column = DataQueryParams.LEVEL_PREFIX + level;
+            
+            sql.append( column + " = null," );
+        }
+        
+        sql.deleteCharAt( sql.length() - ",".length() );
+        
+        sql.append( " where level > " + aggregationLevel );
+        sql.append( " and de in (" + getQuotedCommaDelimitedString( dataElements ) + ")" );
+        
+        log.info( "Aggregation level SQL: " + sql.toString() );
+        
+        jdbcTemplate.execute( sql.toString() );
+    }   
     
     // -------------------------------------------------------------------------
     // Supportive methods
