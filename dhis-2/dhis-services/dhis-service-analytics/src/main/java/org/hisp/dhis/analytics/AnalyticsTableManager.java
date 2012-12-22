@@ -119,4 +119,12 @@ public interface AnalyticsTableManager
      * @param aggregationLevel the aggregation level.
      */
     void applyAggregationLevels( String tableName, Collection<String> dataElements, int aggregationLevel );
+    
+    /**
+     * Performs vacuum or optimization of the given table. The type of operation
+     * performed is dependent on the underlying DBMS.
+     * 
+     * @param tableName the name of the analytics table.
+     */
+    Future<?> vacuumTableAsync( String tableName );
 }

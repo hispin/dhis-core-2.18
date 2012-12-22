@@ -44,7 +44,7 @@ public class MySQLStatementBuilder
     @Override
     public String getVacuum( String table )
     {
-        return null;
+        return "optimize table " + table + ";";
     }
 
     @Override
