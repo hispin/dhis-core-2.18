@@ -98,6 +98,9 @@ public class DefaultAnalyticsTableService
         createIndexes( tables );
         clock.logTime( "Created all indexes" );
         
+        vacuumTables( tables );
+        clock.logTime( "Vacuumed tables" );
+        
         swapTables( tables );
         clock.logTime( "Swapped analytics tables" );
         
@@ -120,11 +123,7 @@ public class DefaultAnalyticsTableService
     
     private void populateTables( List<String> tables )
     {
-        int pageSize = Math.max( ( SystemUtils.getCpuCores() - 1 ), 1 );
-
-        log.info( "Page size: " + pageSize );
-        
-        List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( pageSize ).getPages();
+        List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( getProcessNo() ).getPages();
         
         log.info( "No of pages: " + tablePages.size() );
         
@@ -177,17 +176,30 @@ public class DefaultAnalyticsTableService
         }
     }
     
+    private void vacuumTables( List<String> tables )
+    {
+        List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( getProcessNo() ).getPages();
+        
+        for ( List<String> tablePage : tablePages )
+        {
+            List<Future<?>> futures = new ArrayList<Future<?>>();
+            
+            for ( String table : tablePage )
+            {
+                futures.add( tableManager.vacuumTableAsync( table ) );
+            }
+            
+            ConcurrentUtils.waitForCompletion( futures );
+        }
+    }
+    
     private void createIndexes( List<String> tables )
     {
-        int pages = Math.max( ( SystemUtils.getCpuCores() - 1 ), 1 );
-        
-        log.info( "No of pages: " + pages );
-        
         for ( String table : tables )
         {
             List<Future<?>> futures = new ArrayList<Future<?>>();
     
-            List<List<String>> columnPages = new PaginatedList<String>( tableManager.getDimensionColumnNames() ).setNumberOfPages( pages ).getPages();
+            List<List<String>> columnPages = new PaginatedList<String>( tableManager.getDimensionColumnNames() ).setNumberOfPages( getProcessNo() ).getPages();
             
             for ( List<String> columnPage : columnPages )
             {
@@ -212,5 +224,10 @@ public class DefaultAnalyticsTableService
         {
             tableManager.dropTable( table );
         }
+    }
+    
+    private int getProcessNo()
+    {
+        return Math.max( ( SystemUtils.getCpuCores() - 1 ), 1 );
     }
 }

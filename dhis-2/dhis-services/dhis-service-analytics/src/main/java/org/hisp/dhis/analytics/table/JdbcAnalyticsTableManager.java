@@ -41,6 +41,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -88,6 +89,9 @@ public class JdbcAnalyticsTableManager
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
    
+    @Autowired
+    private StatementBuilder statementBuilder;
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
@@ -340,7 +344,19 @@ public class JdbcAnalyticsTableManager
         log.info( "Aggregation level SQL: " + sql.toString() );
         
         jdbcTemplate.execute( sql.toString() );
-    }   
+    }
+    
+    @Async
+    public Future<?> vacuumTableAsync( String tableName )
+    {
+        final String sql = statementBuilder.getVacuum( tableName );
+        
+        log.info( "Vacuum SQL:" + sql );
+        
+        jdbcTemplate.execute( sql );
+        
+        return null;
+    }
     
     // -------------------------------------------------------------------------
     // Supportive methods
