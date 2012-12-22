@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.AnalyticsTableService;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
@@ -52,6 +56,12 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private AnalyticsTableManager tableManager;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private DataElementService dataElementService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -81,6 +91,9 @@ public class DefaultAnalyticsTableService
 
         pruneTables( tables );
         clock.logTime( "Pruned analytics tables" );
+        
+        applyAggregationLevels( tables );
+        clock.logTime( "Applied aggregation levels" );
         
         createIndexes( tables );
         clock.logTime( "Created all indexes" );
@@ -130,7 +143,7 @@ public class DefaultAnalyticsTableService
         }
     }
     
-    public void pruneTables( List<String> tables )
+    private void pruneTables( List<String> tables )
     {
         Iterator<String> iterator = tables.iterator();
         
@@ -139,6 +152,27 @@ public class DefaultAnalyticsTableService
             if ( tableManager.pruneTable( iterator.next() ) )
             {
                 iterator.remove();
+            }
+        }
+    }
+    
+    private void applyAggregationLevels( List<String> tables )
+    {
+        int maxLevels = organisationUnitService.getMaxOfOrganisationUnitLevels();
+        
+        for ( int i = 0; i < maxLevels; i++ )
+        {
+            int level = maxLevels - i;
+            
+            Collection<String> dataElements = IdentifiableObjectUtils.getUids( 
+                dataElementService.getDataElementsByAggregationLevel( level ) );
+            
+            if ( !dataElements.isEmpty() )
+            {
+                for ( String table : tables )
+                {
+                    tableManager.applyAggregationLevels( table, dataElements, level );
+                }
             }
         }
     }
