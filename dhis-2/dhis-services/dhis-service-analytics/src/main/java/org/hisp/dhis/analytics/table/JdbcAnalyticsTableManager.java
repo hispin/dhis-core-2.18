@@ -27,6 +27,12 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
+import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,8 +58,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
-
-import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
 /**
  * This class manages the analytics table. The analytics table is a denormalized
@@ -156,17 +160,22 @@ public class JdbcAnalyticsTableManager
     @Async
     public Future<?> populateTableAsync( String tableName, Date startDate, Date endDate )
     {
-        populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", "int" );
+        populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
         
-        populateTable( tableName, startDate, endDate, "1 as value" , "bool" );
+        populateTable( tableName, startDate, endDate, "1 as value" , VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_SUM );
+
+        populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
+        
+        populateTable( tableName, startDate, endDate, "1 as value" , VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_AVERAGE );
         
         return null;
     }
     
-    private void populateTable( String tableName, Date startDate, Date endDate, String valueExpression, String valueType )
+    private void populateTable( String tableName, Date startDate, Date endDate, String valueExpression, String valueType, String aggregationType )
     {
         final String start = DateUtils.getMediumDateString( startDate );
-        final String end = DateUtils.getMediumDateString( endDate );
+        final String end = DateUtils.getMediumDateString( endDate );        
+        final String periodTable = AGGREGATION_OPERATOR_SUM.equals( aggregationType ) ? "_period_aggregation_structure" : "_period_disaggregation_structure";
         
         String insert = "insert into " + tableName + " (";
         
@@ -191,11 +200,12 @@ public class JdbcAnalyticsTableManager
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
-            "left join _period_no_disagg_structure ps on dv.periodid=ps.periodid " +
+            "left join " + periodTable + " ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
             "left join categoryoptioncombo coc on dv.categoryoptioncomboid=coc.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype='" + valueType + "' " +
+            "and de.aggregationtype = '" + aggregationType + "' " +
             "and pe.startdate >= '" + start + "' " +
             "and pe.startdate <= '" + end + "'" +
             "and dv.value != ''" +

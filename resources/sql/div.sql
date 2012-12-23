@@ -9,11 +9,12 @@ where categorycomboid=12414 );
 
 -- Data elements and frequency with average agg operator (higher than yearly negative for data mart performance)
 
-select d.dataelementid, d.name, pt.name from dataelement d 
+select d.dataelementid, d.name as dataelement, pt.name as periodtype from dataelement d 
 join datasetmembers dsm on d.dataelementid=dsm.dataelementid 
 join dataset ds on dsm.datasetid=ds.datasetid 
 join periodtype pt on ds.periodtypeid = pt.periodtypeid 
-where d.aggregationtype = 'average';
+where d.aggregationtype = 'average'
+order by pt.name;
 
 -- Data elements with aggregation levels
 
