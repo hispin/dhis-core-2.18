@@ -44,8 +44,8 @@ public interface ResourceTableStore
     final String TABLE_NAME_CATEGORY_OPTION_COMBO_NAME = "_categoryoptioncomboname";
     final String TABLE_NAME_ORGANISATION_UNIT_STRUCTURE = "_orgunitstructure";
     final String TABLE_NAME_DATA_ELEMENT_STRUCTURE = "_dataelementstructure";
-    final String TABLE_NAME_PERIOD_STRUCTURE = "_periodstructure";
-    final String TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE = "_period_no_disagg_structure";
+    final String TABLE_NAME_PERIOD_AGGREGATION_STRUCTURE = "_period_aggregation_structure";
+    final String TABLE_NAME_PERIOD_DISAGGREGATION_STRUCTURE = "_period_disaggregation_structure";
     
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
