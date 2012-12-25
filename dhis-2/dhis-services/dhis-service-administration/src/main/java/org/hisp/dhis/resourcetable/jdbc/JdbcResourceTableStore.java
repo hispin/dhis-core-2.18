@@ -227,9 +227,9 @@ public class JdbcResourceTableStore
     // PeriodTable
     // -------------------------------------------------------------------------
 
-    public void createPeriodStructure( boolean disAggregation )
+    public void createPeriodStructure( boolean noDisaggregation )
     {
-        String tableName = disAggregation ? TABLE_NAME_PERIOD_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_AGGREGATION_STRUCTURE;
+        String tableName = noDisaggregation ? TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_STRUCTURE;
         
         try
         {
@@ -248,8 +248,6 @@ public class JdbcResourceTableStore
         }
         
         sql += ")";
-        
-        log.info( "Create period structure SQL: " + sql );
         
         jdbcTemplate.update( sql );
     }

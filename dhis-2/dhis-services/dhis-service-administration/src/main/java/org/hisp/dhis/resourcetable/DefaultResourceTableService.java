@@ -443,7 +443,7 @@ public class DefaultResourceTableService
     // PeriodTable
     // -------------------------------------------------------------------------
 
-    public void generatePeriodTable( boolean disAggregation )
+    public void generatePeriodTable( boolean noDisaggregation )
     {
         // ---------------------------------------------------------------------
         // Create table
@@ -451,13 +451,13 @@ public class DefaultResourceTableService
 
         Collection<Period> periods = periodService.getAllPeriods();
         
-        resourceTableStore.createPeriodStructure( disAggregation );
+        resourceTableStore.createPeriodStructure( noDisaggregation );
         
         // ---------------------------------------------------------------------
         // Populate table
         // ---------------------------------------------------------------------
 
-        String tableName = disAggregation ? TABLE_NAME_PERIOD_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_AGGREGATION_STRUCTURE;
+        String tableName = noDisaggregation ? TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_STRUCTURE;
         
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
             setTableName( tableName ).init();
@@ -465,7 +465,7 @@ public class DefaultResourceTableService
         for ( Period period : periods )
         {
             final Date startDate = period.getStartDate();
-            final PeriodType rowPeriodType = period.getPeriodType();
+            final PeriodType rowType = period.getPeriodType();
             
             final List<String> values = new ArrayList<String>();
             
@@ -473,11 +473,7 @@ public class DefaultResourceTableService
             
             for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
             {
-                if ( !disAggregation && ( rowPeriodType.getFrequencyOrder() <= periodType.getFrequencyOrder() ) )
-                {
-                    values.add( periodType.createPeriod( startDate ).getIsoDate() );
-                }
-                else if ( disAggregation && ( rowPeriodType.getFrequencyOrder() >= periodType.getFrequencyOrder() ) )
+                if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() || !noDisaggregation )
                 {
                     values.add( periodType.createPeriod( startDate ).getIsoDate() );
                 }
