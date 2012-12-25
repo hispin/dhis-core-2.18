@@ -470,6 +470,7 @@ public class DefaultResourceTableService
             final List<String> values = new ArrayList<String>();
             
             values.add( String.valueOf( period.getId() ) );
+            values.add( period.getIsoDate() );
             
             for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
             {
