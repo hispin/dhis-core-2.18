@@ -436,6 +436,7 @@ public class AutoGenerateFormByTemplate
                             idName += "(" + values[2];
                             colIdx = convertColumnNameToNumber( values[2] );
                             rowIndex = Integer.parseInt( values[3] ) - 1;
+                            break;
                         default:
                             idName += "(" + convertColumnNumberToName( colIdx + 1 );
                             break;
