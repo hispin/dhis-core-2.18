@@ -63,6 +63,7 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
+import org.hisp.dhis.system.util.DateUtils;
 
 import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
@@ -469,8 +470,11 @@ public class DefaultResourceTableService
             
             final List<String> values = new ArrayList<String>();
             
+            int days = DateUtils.daysBetween( period.getStartDate(), period.getEndDate() ) + 1;
+            
             values.add( String.valueOf( period.getId() ) );
             values.add( period.getIsoDate() );
+            values.add( String.valueOf( days ) );
             
             for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
             {
