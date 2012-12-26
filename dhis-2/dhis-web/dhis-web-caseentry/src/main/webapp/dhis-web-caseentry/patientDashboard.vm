@@ -193,21 +193,33 @@
 <br>
 <div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>
-<div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;">
-	<table width="100%">
+<div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;height:250px;width:300px;">
+	<table width="300px;">
+		<colgroup>
+			<col width="150px">
+			<col>
+		</colgroup>
 		<tr>
-			<th>$i18n.getString("visitor")</th>
 			<th>$i18n.getString("date")</th>
+			<th>$i18n.getString("visitor")</th>
 		</tr>
-		#set( $mark = false )
-		#foreach( $patientAudit in $patientAudits )
-		<tr #alternate( $mark )>
-			<td>$encoder.htmlEncode($patientAudit.visitor)</td>
-			<td>$format.formatDate($patientAudit.date)</td>
-		</tr>
-		#set( $mark = !$mark )
-		#end
 	</table>
+	<div style="height:200px;width:300px;overflow:auto">
+		<table width='280px'>
+			<colgroup>
+				<col width="150px">
+				<col>
+			</colgroup>
+			#set( $mark = false )
+			#foreach( $patientAudit in $patientAudits )
+			<tr #alternate( $mark )>
+				<td>$format.formatDate($patientAudit.date)</td>
+				<td>$encoder.htmlEncode($patientAudit.visitor)</td>
+			</tr>
+			#set( $mark = !$mark )
+			#end
+		</table>
+	</div>
 </div>
 
 <script>
