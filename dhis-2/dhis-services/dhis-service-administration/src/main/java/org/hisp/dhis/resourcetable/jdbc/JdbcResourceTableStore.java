@@ -240,7 +240,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        String sql = "CREATE TABLE " + tableName + " (periodid INTEGER NOT NULL PRIMARY KEY, iso VARCHAR(10)";
+        String sql = "CREATE TABLE " + tableName + " (periodid INTEGER NOT NULL PRIMARY KEY, iso VARCHAR(10) NOT NULL, daysno INTEGER NOT NULL";
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {
