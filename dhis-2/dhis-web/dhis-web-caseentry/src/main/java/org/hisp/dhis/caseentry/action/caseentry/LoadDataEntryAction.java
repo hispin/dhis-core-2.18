@@ -39,7 +39,12 @@ import java.util.Set;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
@@ -73,6 +78,12 @@ public class LoadDataEntryAction
 
     private SelectedStateManager selectedStateManager;
 
+    private PatientAttributeService patientAttributeService;
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -97,6 +108,8 @@ public class LoadDataEntryAction
 
     private Set<ProgramStageSection> sections = new HashSet<ProgramStageSection>();
 
+    private Map<String, Double> calAttributeValueMap = new HashMap<String, Double>();
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -104,6 +117,21 @@ public class LoadDataEntryAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     public void setProgramStageInstanceId( Integer programStageInstanceId )
@@ -178,6 +206,18 @@ public class LoadDataEntryAction
         return visitor;
     }
 
+    private Patient patient;
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public Map<String, Double> getCalAttributeValueMap()
+    {
+        return calAttributeValueMap;
+    }
+    
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -200,6 +240,24 @@ public class LoadDataEntryAction
             programStage = programStageInstance.getProgramStage();
 
             selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+
+            if ( program.isRegistration() )
+            {
+                patient = programStageInstance.getProgramInstance().getPatient();
+
+                Collection<PatientAttribute> calAttributes = patientAttributeService
+                    .getPatientAttributesByValueType( PatientAttribute.TYPE_CALCULATED );
+
+                for ( PatientAttribute calAttribute : calAttributes )
+                {
+                    Double value = patientAttributeValueService.getCalculatedPatientAttributeValue( patient,
+                        calAttribute, format );
+                    if ( value != null )
+                    {
+                        calAttributeValueMap.put( calAttribute.getName(), value );
+                    }
+                }
+            }
 
             // ---------------------------------------------------------------------
             // Get data values

@@ -101,6 +101,10 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
 
 	<bean
@@ -169,20 +173,6 @@
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction"
-		scope="prototype">
-		<property name="programDataEntryService"
-			ref="org.hisp.dhis.program.ProgramDataEntryService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
 	<!-- Single-event DataEntry -->
