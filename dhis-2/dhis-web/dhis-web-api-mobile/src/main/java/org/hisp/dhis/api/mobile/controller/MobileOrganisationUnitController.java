@@ -105,7 +105,7 @@ public class MobileOrganisationUnitController
     public String saveActivityReport2_8( @PathVariable int id, @RequestBody ActivityValue activityValue )
         throws NotAllowedException
     {
-        //FIXME set the last argument to 0 to fix compilation error
+        // FIXME set the last argument to 0 to fix compilation error
         activityReportingService.saveActivityReport( getUnit( id ), activityValue, 0 );
         return ACTIVITY_REPORT_UPLOADED;
     }
@@ -212,7 +212,7 @@ public class MobileOrganisationUnitController
     public String saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
         throws NotAllowedException
     {
-        //FIXME set the last argument to 0 to fix compilation error
+        // FIXME set the last argument to 0 to fix compilation error
         activityReportingService.saveActivityReport( getUnit( id ), activityValue, 0 );
         return ACTIVITY_REPORT_UPLOADED;
     }
@@ -223,7 +223,7 @@ public class MobileOrganisationUnitController
         throws NotAllowedException
     {
         ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
-        
+
         activityPlan.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
         return activityPlan;
     }
@@ -234,13 +234,14 @@ public class MobileOrganisationUnitController
     {
         return facilityReportingService.getDataSetsForLocale( getUnit( id ), locale );
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/updateContactForMobile" )
     @ResponseBody
     public Contact updateContactForMobile()
     {
         return facilityReportingService.updateContactForMobile();
     }
+
     // Supportive methods
 
     private Collection<String> getLocalStrings( Collection<Locale> locales )
