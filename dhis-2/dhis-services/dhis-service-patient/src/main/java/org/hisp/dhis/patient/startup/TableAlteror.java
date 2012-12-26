@@ -157,7 +157,9 @@ public class TableAlteror
         
         executeSql( "UPDATE programstage SET displayGenerateEventBox=true WHERE displayGenerateEventBox is null" );
         executeSql( "ALTER TABLE patientidentifier DROP COLUMN preferred");
-        
+
+        executeSql( "UPDATE patientidentifiertype SET personDisplayName=false WHERE personDisplayName is null");
+
     }
 
     // -------------------------------------------------------------------------
