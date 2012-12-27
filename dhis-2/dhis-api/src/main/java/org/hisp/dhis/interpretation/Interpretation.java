@@ -73,10 +73,6 @@ public class Interpretation
     
     private String text;
 
-    private User user;
-
-    private Date created;
-
     @Scanned
     private List<InterpretationComment> comments = new ArrayList<InterpretationComment>();
 
@@ -260,33 +256,6 @@ public class Interpretation
     public void setText( String text )
     {
         this.text = text;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public Date getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated( Date created )
-    {
-        this.created = created;
     }
 
     @JsonProperty

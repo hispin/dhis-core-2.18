@@ -52,8 +52,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class Map
     extends BaseIdentifiableObject
 {
-    private User user;
-
     private Double longitude;
 
     private Double latitude;
@@ -83,20 +81,6 @@ public class Map
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
-    }
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )

@@ -145,8 +145,6 @@ public class Chart
     private boolean showData;
 
     private boolean rewindRelativePeriods;
-    
-    private User user;
 
     private OrganisationUnitGroupSet organisationUnitGroupSet;
 
@@ -680,20 +678,6 @@ public class Chart
     public void setRewindRelativePeriods( boolean rewindRelativePeriods )
     {
         this.rewindRelativePeriods = rewindRelativePeriods;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
     }
 
     @JsonProperty
