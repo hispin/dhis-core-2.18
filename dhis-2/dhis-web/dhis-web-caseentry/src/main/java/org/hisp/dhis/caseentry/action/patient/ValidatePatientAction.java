@@ -110,8 +110,6 @@ public class ValidatePatientAction
 
     private I18n i18n;
 
-    private Patient patient;
-
     private Map<String, String> patientAttributeValueMap = new HashMap<String, String>();
 
     private PatientIdentifier patientIdentifier;
@@ -366,11 +364,6 @@ public class ValidatePatientAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    }
-
-    public Patient getPatient()
-    {
-        return patient;
     }
 
     public Map<String, String> getPatientAttributeValueMap()
