@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,31 +27,66 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-public interface UserGroupService
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class AccessHelper
 {
-    String ID = UserGroupService.class.getName();
+    public final String DEFAULT_ACCESS = "--------";
 
-    void addUserGroup( UserGroup userGroup );
+    public enum Permission
+    {
+        READ( 'r', 0 ), WRITE( 'w', 1 );
 
-    void updateUserGroup( UserGroup userGroup );
+        private char value;
 
-    void deleteUserGroup( UserGroup userGroup );
+        private int position;
 
-    UserGroup getUserGroup( int userGroupId );
+        private Permission( char value, int position )
+        {
+            this.value = value;
+            this.position = position;
+        }
 
-    UserGroup getUserGroup( String uid );
+        public char getValue()
+        {
+            return value;
+        }
 
-    Collection<UserGroup> getAllUserGroups();
+        public int getPosition()
+        {
+            return position;
+        }
+    }
 
-    UserGroup getUserGroupByName( String name );
+    private char[] access = DEFAULT_ACCESS.toCharArray();
 
-    Collection<UserGroup> getUserGroupsBetween( int first, int max );
+    public AccessHelper()
+    {
+    }
 
-    Collection<UserGroup> getUserGroupsBetweenByName( String name, int first, int max );
+    public AccessHelper( char[] access )
+    {
+        this.access = access;
+    }
 
-    int getUserGroupCount();
+    public AccessHelper( String access )
+    {
+        this.access = access.toCharArray();
+    }
 
-    int getUserGroupCountByName( String name );
+    public void enable( Permission permission )
+    {
+        access[permission.getPosition()] = permission.getValue();
+    }
+
+    public void disable( Permission permission )
+    {
+        access[permission.getPosition()] = '-';
+    }
+
+    public String toString()
+    {
+        return access.toString();
+    }
 }
