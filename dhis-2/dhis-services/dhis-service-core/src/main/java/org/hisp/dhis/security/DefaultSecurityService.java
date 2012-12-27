@@ -27,17 +27,10 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -48,6 +41,14 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Lars Helge Overland
  */
@@ -55,12 +56,12 @@ public class DefaultSecurityService
     implements SecurityService
 {
     private static final Log log = LogFactory.getLog( DefaultSecurityService.class );
-    
+
     private static final String RESTORE_PATH = "/dhis-web-commons/security/restore.action";
 
     private static final int TOKEN_LENGTH = 50;
     private static final int CODE_LENGTH = 15;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -85,7 +86,7 @@ public class DefaultSecurityService
     {
         this.userService = userService;
     }
-    
+
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -103,51 +104,51 @@ public class DefaultSecurityService
         {
             return false;
         }
-        
+
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-        
+
         if ( credentials == null || credentials.getUser() == null || credentials.getUser().getEmail() == null )
         {
             log.info( "Could not send message as user does not exist or has no email: " + username );
             return false;
         }
-        
+
         if ( !ValidationUtils.emailIsValid( credentials.getUser().getEmail() ) )
         {
             log.info( "Could not send message as email is invalid" );
             return false;
         }
-        
+
         if ( !systemSettingManager.emailEnabled() )
         {
             log.info( "Could not send message as email is not configured" );
             return false;
         }
-        
+
         if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
         {
             log.info( "Not allowed to recover credentials with critical authorities" );
             return false;
         }
-        
+
         String[] result = initRestore( credentials );
-        
+
         Set<User> users = new HashSet<User>();
         users.add( credentials.getUser() );
-        
+
         Map<String, String> vars = new HashMap<String, String>();
         vars.put( "rootPath", rootPath );
         vars.put( "restorePath", rootPath + RESTORE_PATH );
         vars.put( "token", result[0] );
         vars.put( "code", result[1] );
         vars.put( "username", username );
-        
+
         String text1 = new VelocityManager().render( vars, "restore_message1" );
         String text2 = new VelocityManager().render( vars, "restore_message2" );
-        
+
         emailMessageSender.sendMessage( "User account restore confirmation (message 1 of 2)", text1, null, users, true );
         emailMessageSender.sendMessage( "User account restore confirmation (message 2 of 2)", text2, null, users, true );
-        
+
         return true;
     }
 
@@ -155,22 +156,22 @@ public class DefaultSecurityService
     {
         String token = CodeGenerator.generateCode( TOKEN_LENGTH );
         String code = CodeGenerator.generateCode( CODE_LENGTH );
-        
+
         String hashedToken = passwordManager.encodePassword( credentials.getUsername(), token );
         String hashedCode = passwordManager.encodePassword( credentials.getUsername(), code );
-        
+
         Date expiry = new Cal().now().add( Calendar.HOUR_OF_DAY, 1 ).time();
-        
+
         credentials.setRestoreToken( hashedToken );
         credentials.setRestoreCode( hashedCode );
         credentials.setRestoreExpiry( expiry );
 
         userService.updateUserCredentials( credentials );
-        
+
         String[] result = { token, code };
         return result;
     }
-    
+
     public boolean restore( String username, String token, String code, String newPassword )
     {
         if ( username == null || token == null || code == null || newPassword == null )
@@ -179,36 +180,36 @@ public class DefaultSecurityService
         }
 
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-        
+
         if ( credentials == null )
         {
             log.info( "Could not restore as user does not exist: " + username );
             return false;
         }
-        
+
         token = passwordManager.encodePassword( username, token );
         code = passwordManager.encodePassword( username, code );
-        
+
         Date date = new Cal().now().time();
 
         if ( !credentials.canRestore( token, code, date ) )
         {
             return false;
         }
-        
+
         newPassword = passwordManager.encodePassword( username, newPassword );
-        
+
         credentials.setPassword( newPassword );
-        
+
         credentials.setRestoreCode( null );
         credentials.setRestoreToken( null );
         credentials.setRestoreExpiry( null );
-        
+
         userService.updateUserCredentials( credentials );
-        
+
         return true;
     }
-    
+
     public boolean verifyToken( String username, String token )
     {
         if ( username == null || token == null )
@@ -217,15 +218,27 @@ public class DefaultSecurityService
         }
 
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-        
+
         if ( credentials == null || credentials.getRestoreToken() == null )
         {
             log.info( "Could not verify token as user does not exist or has no token: " + username );
             return false;
         }
-        
+
         token = passwordManager.encodePassword( username, token );
-        
+
         return credentials.getRestoreToken().equals( token );
+    }
+
+    @Override
+    public boolean isWritable( IdentifiableObject identifiableObject )
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isReadable( IdentifiableObject identifiableObject )
+    {
+        return false;
     }
 }

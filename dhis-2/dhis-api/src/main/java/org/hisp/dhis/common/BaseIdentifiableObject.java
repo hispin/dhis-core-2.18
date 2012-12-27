@@ -30,17 +30,22 @@ package org.hisp.dhis.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroupAccess;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Bob Jolliffe
@@ -84,6 +89,21 @@ public class BaseIdentifiableObject
      * The date this object was last updated.
      */
     protected Date lastUpdated;
+
+    /**
+     * Access string for public access.
+     */
+    protected String publicAccess;
+
+    /**
+     * Owner of this object.
+     */
+    protected User user;
+
+    /**
+     * Access for userGroups
+     */
+    protected Set<UserGroupAccess> userGroupAccesses;
 
     /**
      * The i18n variant of the name. Should not be persisted.
@@ -178,8 +198,8 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
-    @JacksonXmlProperty( isAttribute = true )
+    @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
+    @JacksonXmlProperty(isAttribute = true)
     public Date getCreated()
     {
         return created;
@@ -201,6 +221,49 @@ public class BaseIdentifiableObject
     public void setLastUpdated( Date lastUpdated )
     {
         this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    @JsonProperty
+    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getPublicAccess()
+    {
+        return publicAccess;
+    }
+
+    public void setPublicAccess( String publicAccess )
+    {
+        this.publicAccess = publicAccess;
+    }
+
+    @Override
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { BasicView.class, DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    @JsonProperty
+    @JsonView( { BasicView.class, DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "userGroupAccesses", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "userGroupAccess", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<UserGroupAccess> getUserGroupAccesses()
+    {
+        return userGroupAccesses;
+    }
+
+    public void setUserGroupAccesses( Set<UserGroupAccess> userGroupAccesses )
+    {
+        this.userGroupAccesses = userGroupAccesses;
     }
 
     public String getDisplayName()

@@ -27,6 +27,7 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.user.UserCredentials;
 
 /**
@@ -37,51 +38,67 @@ public interface SecurityService
     /**
      * Will invoke the initiateRestore method and dispatch email messages with
      * restore information to the user.
-     * 
+     *
      * @param username the user name of the user to send restore messages.
      * @param rootPath the root path of the request.
      * @return false if any of the arguments are null or if the user credentials
      *         identified by the user name does not exist, true otherwise.
      */
     boolean sendRestoreMessage( String username, String rootPath );
-    
+
     /**
      * Will populate the restoreToken and restoreCode property of the given
      * credentials with a hashed version of auto-generated values. Will set the
      * restoreExpiry property with a date time one hour from now. Changes will be
      * persisted.
-     * 
+     *
      * @param credentials the user credentials.
-     * @return an array where index 0 is the clear-text token and index 1 the 
+     * @return an array where index 0 is the clear-text token and index 1 the
      *         clear-text code.
      */
     String[] initRestore( UserCredentials credentials );
-    
+
     /**
      * Tests whether the given token and code are valid for the given user name.
      * If true, it will update the user credentials identified by the given user
      * name with the new password. In order to succeed, the given token and code
      * must match the ones on the credentials, and the current date must be before
      * the expiry date time of the credentials.
-     * 
-     * @param username the user name.
-     * @param token the token.
-     * @param code the code.
+     *
+     * @param username    the user name.
+     * @param token       the token.
+     * @param code        the code.
      * @param newPassword the proposed new password.
      * @return true or false.
      */
     boolean restore( String username, String token, String code, String newPassword );
-    
+
     /**
      * Tests whether the given token in combination with the given user name is
      * valid, i.e. whether the hashed version of the token matches the one on the
      * user credentials identified by the given user name.
-     * 
+     *
      * @param username the user name.
-     * @param token the token.
+     * @param token    the token.
      * @return false if any of the arguments are null or if the user credentials
      *         identified by the user name does not exist, true if the arguments
      *         are valid.
      */
     boolean verifyToken( String username, String token );
+
+    /**
+     * Checks whether current user has write access to object.
+     *
+     * @param identifiableObject Object to check for write access.
+     * @return true of false depending on outcome of writable check
+     */
+    boolean isWritable( IdentifiableObject identifiableObject );
+
+    /**
+     * Checks whether current user has read access to object.
+     *
+     * @param identifiableObject Object to check for read access.
+     * @return true of false depending on outcome of readable check
+     */
+    boolean isReadable( IdentifiableObject identifiableObject );
 }

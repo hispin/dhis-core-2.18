@@ -27,7 +27,11 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroupAccess;
+
 import java.util.Date;
+import java.util.Set;
 
 public interface IdentifiableObject
     extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>, Mergeable<IdentifiableObject>
@@ -50,6 +54,12 @@ public interface IdentifiableObject
     Date getCreated();
 
     Date getLastUpdated();
+
+    String getPublicAccess();
+
+    User getUser();
+
+    Set<UserGroupAccess> getUserGroupAccesses();
 
     String getDisplayName();
 }

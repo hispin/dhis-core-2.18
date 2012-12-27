@@ -1,4 +1,4 @@
-package org.hisp.dhis.interpretation;
+package org.hisp.dhis.user;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,55 +27,48 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.user.User;
-
-import java.util.Date;
-
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "interpretationComment", namespace = Dxf2Namespace.NAMESPACE)
-public class InterpretationComment
-    extends BaseIdentifiableObject
+public class UserGroupAccess
 {
-    private String text;
+    private int id;
 
-    public InterpretationComment()
+    private String access;
+
+    private UserGroup userGroup;
+
+    public UserGroupAccess()
     {
-        this.created = new Date();
     }
 
-    public InterpretationComment( String text )
+    public int getId()
     {
-        this.text = text;
-        this.created = new Date();
+        return id;
     }
 
-    public InterpretationComment( String text, User user )
+    public void setId( int id )
     {
-        this.text = text;
-        this.user = user;
-        this.created = new Date();
+        this.id = id;
     }
 
-    @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
-    public String getText()
+    public String getAccess()
     {
-        return text;
+        return access;
     }
 
-    public void setText( String text )
+    public void setAccess( String access )
     {
-        this.text = text;
+        this.access = access;
+    }
+
+    public UserGroup getUserGroup()
+    {
+        return userGroup;
+    }
+
+    public void setUserGroup( UserGroup userGroup )
+    {
+        this.userGroup = userGroup;
     }
 }
