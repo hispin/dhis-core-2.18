@@ -8,11 +8,17 @@ fi
 USERNAME=$1
 
 #Paramaters for specific install
+#Name of the database
 DB_HOSTNAME="localhost"
+#Database port
 DB_PORT="5432"
+#Path to a database dump in custom format
 DUMP_FILE="/tmp/dhis.dump"
-VERSION="2.9"
+#Desired DHIS2 version
+VERSION="2.10"
+#Desired Tomcat HTTP port
 HTTP_PORT=8080
+#Desired Tomcat control port
 TOMCAT_CONTROL_PORT=8005
 DBNAME=$USERNAME
 BASE=/home/$USERNAME
@@ -41,13 +47,13 @@ sudo -u $USERNAME mkdir $BASE/dhis_home
 sudo -u $USERNAME sh -c "echo '@reboot $BASE/tomcat/bin/startup.sh' |crontab -u $USERNAME -"
 # sudo -u $USERNAME sh -c "echo '03 03 * * * $BASE/backup.sh' |crontab -u $USERNAME -"
 #Create a new postgres config and restart the server
-sudo -u postgres createuser -SDRw $USERNAME
 PASSWORD=$(makepasswd)
-sudo -u postgres psql -c "ALTER USER $USERNAME WITH PASSWORD '$PASSWORD';"
+sudo -u postgres psql -c "CREATE ROLE $USERNAME PASSWORD '$PASSWORD' NOSUPERUSER CREATEDB NOCREATEROLE INHERIT LOGIN;"
 #Create the database
-sudo -u postgres createdb -O $USERNAME $DBNAME
-#TODO 
-#sudo -u dhis psql -f $DUMP_FILE $DBNAME
+sudo -u postgres psql -c  "CREATE DATABASE $DBNAME OWNER $USERNAME ENCODING 'UTF-8' TEMPLATE template0;"
+sudo -u postgres psql -c  "GRANT ALL ON DATABASE $DBNAME TO $USERNAME;" 
+#Uncomment this if you want to restore from a custom dump 
+#sudo -u $USERNAME pg_restore --format=custom --ignore-version --no-owner --no-privileges --verbose -U $USERNAME -d $DBNAME $DUMP_FILE
 
 #Download and install DHIS2 
 sudo sh -c "sudo -u $USERNAME wget -O $BASE/tomcat/webapps/$USERNAME.war http://dhis2.org/download/releases/$VERSION/dhis.war"
