@@ -67,6 +67,8 @@ public class DataQueryParams
     
     private transient int organisationUnitLevel;
     
+    private AggregationType aggregationType;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -91,6 +93,7 @@ public class DataQueryParams
         this.tableName = params.getTableName();
         this.periodType = params.getPeriodType();
         this.organisationUnitLevel = params.getOrganisationUnitLevel();
+        this.aggregationType = params.getAggregationType();
     }
 
     // -------------------------------------------------------------------------
@@ -161,6 +164,14 @@ public class DataQueryParams
     public boolean hasPeriods()
     {
         return dimensions.containsKey( PERIOD_DIM_ID ) || filters.containsKey( PERIOD_DIM_ID );
+    }
+    
+    /**
+     * Indicates whether this object is of the given aggregation type.
+     */
+    public boolean isAggregationType( AggregationType aggregationType )
+    {
+        return this.aggregationType != null && this.aggregationType.equals( aggregationType );
     }
     
     @Override
@@ -390,5 +401,15 @@ public class DataQueryParams
     public void setFilterOrganisationUnits( List<String> organisationUnits )
     {
         filters.put( ORGUNIT_DIM_ID, organisationUnits );
-    }    
+    }
+
+    public AggregationType getAggregationType()
+    {
+        return aggregationType;
+    }
+
+    public void setAggregationType( AggregationType aggregationType )
+    {
+        this.aggregationType = aggregationType;
+    }
 }

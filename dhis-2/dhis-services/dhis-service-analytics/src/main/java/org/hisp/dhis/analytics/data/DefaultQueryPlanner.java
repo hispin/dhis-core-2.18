@@ -27,13 +27,19 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.table.PartitionUtils;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ListMap;
@@ -49,6 +55,9 @@ public class DefaultQueryPlanner
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private DataElementService dataElementService;
     
     // -------------------------------------------------------------------------
     // DefaultQueryPlanner implementation
@@ -72,18 +81,26 @@ public class DefaultQueryPlanner
         
         for ( DataQueryParams byPartition : groupedByPartition )
         {
-            List<DataQueryParams> groupedByPeriodType = groupByPeriodType( byPartition );
+            List<DataQueryParams> groupedByOrgUnitLevel = groupByOrgUnitLevel( byPartition );
             
-            for ( DataQueryParams byPeriodType : groupedByPeriodType )
+            for ( DataQueryParams byOrgUnitLevel : groupedByOrgUnitLevel )
             {
-                List<DataQueryParams> groupedByOrgUnitLevel = groupByOrgUnitLevel( byPeriodType );
+                List<DataQueryParams> groupedByPeriodType = groupByPeriodType( byOrgUnitLevel );
                 
-                for ( DataQueryParams byOrgUnitLevel : groupedByOrgUnitLevel )
+                for ( DataQueryParams byPeriodType : groupedByPeriodType )
                 {
-                    byOrgUnitLevel.setTableName( byPartition.getTableName() );
-                    byOrgUnitLevel.setPeriodType( byPeriodType.getPeriodType() );
+                    List<DataQueryParams> groupedByAggregationType = groupByAggregationType( byPeriodType );
                     
-                    queries.add( byOrgUnitLevel );
+                    for ( DataQueryParams byAggregationType : groupedByAggregationType )
+                    {
+                        byAggregationType.setTableName( byPartition.getTableName() );
+                        byAggregationType.setOrganisationUnitLevel( byOrgUnitLevel.getOrganisationUnitLevel() );
+                        byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
+                        
+                        //TODO split on data element period type for average disaggregation
+                        
+                        queries.add( byAggregationType );
+                    }
                 }
             }
         }
@@ -250,6 +267,31 @@ public class DefaultQueryPlanner
         return queries;    
     }
     
+    private List<DataQueryParams> groupByAggregationType( DataQueryParams params )
+    {
+        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+
+        if ( params.getDatElements() == null || params.getDatElements().isEmpty() )
+        {
+            queries.add( new DataQueryParams( params ) );
+            return queries;
+        }
+     
+        PeriodType periodType = PeriodType.getPeriodTypeByName( params.getPeriodType() );
+        
+        ListMap<AggregationType, String> aggregationTypeDataElementMap = getAggregationTypeDataElementMap( params.getDatElements(), periodType );
+        
+        for ( AggregationType aggregationType : aggregationTypeDataElementMap.keySet() )
+        {
+            DataQueryParams query = new DataQueryParams( params );
+            query.setDataElements( aggregationTypeDataElementMap.get( aggregationType ) );
+            query.setAggregationType( aggregationType );
+            queries.add( query );
+        }
+        
+        return queries;
+    }
+    
     /**
      * Replaces the period filter with individual filters for each period type.
      */
@@ -294,7 +336,7 @@ public class DefaultQueryPlanner
         
         for ( String period : isoPeriods )
         {
-            String periodTypeName = PeriodType.getPeriodTypeFromIsoString( period ).getName().toLowerCase();
+            String periodTypeName = PeriodType.getPeriodTypeFromIsoString( period ).getName();
             
             map.putValue( periodTypeName, period );
         }
@@ -333,6 +375,40 @@ public class DefaultQueryPlanner
             int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
             
             map.putValue( DataQueryParams.LEVEL_PREFIX + level, orgUnit );
+        }
+        
+        return map;
+    }
+    
+    /**
+     * Creates a mapping between the aggregation type and data element for the
+     * given data elements and period type.
+     */
+    private ListMap<AggregationType, String> getAggregationTypeDataElementMap( Collection<String> dataElements, PeriodType aggregationPeriodType )
+    {
+        ListMap<AggregationType, String> map = new ListMap<AggregationType, String>();
+        
+        for ( String element : dataElements )
+        {
+            DataElement dataElement = dataElementService.getDataElement( element );
+            
+            if ( AGGREGATION_OPERATOR_SUM.equals( dataElement.getAggregationOperator() ) )
+            {
+                map.putValue( AggregationType.SUM, element );
+            }
+            else if ( AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() ) )
+            {
+                PeriodType dataPeriodType = dataElement.getPeriodType();
+                
+                if ( dataPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
+                {
+                    map.putValue( AggregationType.AVERAGE_AGGREGATION, element );
+                }
+                else
+                {
+                    map.putValue( AggregationType.AVERAGE_DISAGGREGATION, element );
+                }
+            }
         }
         
         return map;
