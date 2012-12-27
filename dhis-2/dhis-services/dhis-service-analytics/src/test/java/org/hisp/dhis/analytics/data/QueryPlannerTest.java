@@ -38,6 +38,8 @@ import java.util.List;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.QueryPlanner;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
@@ -52,12 +54,20 @@ public class QueryPlannerTest
     private QueryPlanner queryPlanner;
     
     @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
+    private DataElement deA;
+    private DataElement deB;
+    private DataElement deC;
+    private DataElement deD;
+    
     private OrganisationUnit ouA;
     private OrganisationUnit ouB;
     private OrganisationUnit ouC;
@@ -67,6 +77,16 @@ public class QueryPlannerTest
     @Override
     public void setUpTest()
     {
+        deA = createDataElement( 'A' );
+        deB = createDataElement( 'B' );
+        deC = createDataElement( 'C' );
+        deD = createDataElement( 'D' );
+        
+        dataElementService.addDataElement( deA );
+        dataElementService.addDataElement( deB );
+        dataElementService.addDataElement( deC );
+        dataElementService.addDataElement( deD );
+        
         ouA = createOrganisationUnit( 'A' );
         ouB = createOrganisationUnit( 'B' );
         ouC = createOrganisationUnit( 'C' );
@@ -93,7 +113,7 @@ public class QueryPlannerTest
     public void planQueryA()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
         params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
         params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
         
@@ -117,7 +137,7 @@ public class QueryPlannerTest
     public void planQueryB()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
         params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
         params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000", "200002", "200003", "200004" ) );
         
@@ -155,7 +175,7 @@ public class QueryPlannerTest
         organisationUnitService.updateOrganisationUnit( ouE );
         
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
         params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
         params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3" ) );
         
@@ -177,7 +197,7 @@ public class QueryPlannerTest
     public void planQueryD()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid() ) );
         params.setOrganisationUnits( Arrays.asList( ouA.getUid() ) );
         params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
         
@@ -199,7 +219,7 @@ public class QueryPlannerTest
     public void planQueryE()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid() ) );
         params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
 
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
@@ -241,7 +261,7 @@ public class QueryPlannerTest
     public void planQueryG()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid() ) );
         params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
 
         queryPlanner.planQuery( params, 4 );
@@ -256,7 +276,7 @@ public class QueryPlannerTest
     public void planQueryH()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
         params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
         params.setFilterPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
         
@@ -274,7 +294,7 @@ public class QueryPlannerTest
     public void planQueryI()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "a", "b", "c", "d" ) );
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
         params.setFilterOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
         params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000", "200002", "200003", "200004" ) );
         

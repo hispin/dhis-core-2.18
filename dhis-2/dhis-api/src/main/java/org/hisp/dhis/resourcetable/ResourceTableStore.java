@@ -105,5 +105,5 @@ public interface ResourceTableStore
     /**
      * Creates table.
      */
-    void createPeriodStructure( boolean noDisaggregation );
+    void createPeriodStructure();
 }
