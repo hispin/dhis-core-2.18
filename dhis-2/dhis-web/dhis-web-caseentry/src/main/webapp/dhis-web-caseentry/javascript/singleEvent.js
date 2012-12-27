@@ -65,11 +65,12 @@ function addEventForPatientForm( divname )
 
 function validateData()
 {
+	var params = "programId=" + getFieldValue('programIdAddPatient') + "&" + getParamsForDiv('patientForm');
 	$("#patientForm :input").attr("disabled", true);
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
-		data: getParamsForDiv('patientForm'),
+		data: params,
 		success: function( data ){
 			var type = jQuery(data).find('message').attr('type');
 			var message = jQuery(data).find('message').text();
@@ -109,45 +110,9 @@ function addPatient()
 		data: getParamsForDiv('patientForm'),
 		success: function(json) {
 			var patientId = json.message.split('_')[0];
-			validateSingleProgramEnrollment( getFieldValue('programIdAddPatient'), patientId )
+			addData( getFieldValue('programIdAddPatient'), patientId );
 		}
      });
-}
-
-function validateSingleProgramEnrollment( programId, patientId )
-{	
-	jQuery('#loaderDiv').show();
-	jQuery.getJSON( "validatePatientProgramEnrollment.action",
-		{
-			patientId: patientId,
-			programId: programId
-		}, 
-		function( json ) 
-		{    
-			hideById('message');
-			var type = json.response;
-			if ( type == 'success' ){
-				addData( programId, patientId );
-			}
-			else if ( type == 'error' ){
-				showWarningMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
-				removeEvent( patientId );
-			}
-			else if ( type == 'input' ){
-				showWarningMessage( json.message );
-				removeEvent( patientId );
-			}
-			jQuery('#loaderDiv').hide();
-		});
-}
-
-function removeEvent( patientId )
-{
-	$("#patientForm :input").attr("disabled",false);
-	jQuery.postJSON( "removePatient.action",
-		{
-			id: patientId
-		}, function(json){});
 }
 
 function addData( programId, patientId )
@@ -161,7 +126,7 @@ function addData( programId, patientId )
 		url: 'saveValues.action',
 		data: params,
 		success: function(json) {
-			showSuccessMessage( i18n_save_success );
+			$("#patientForm :input").attr("disabled", true);
 			jQuery("#resultSearchDiv").dialog("close");
 			if( _continue==true )
 			{
@@ -195,6 +160,7 @@ function addData( programId, patientId )
 					showById('contentDiv');
 				}
 			}
+			showSuccessMessage( i18n_save_success );
 		}
      });
     return false;
