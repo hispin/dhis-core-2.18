@@ -45,7 +45,7 @@
 		<tbody id='patientForm'>
 		#parse( "/dhis-web-caseentry/patientForm.vm" )
 		</tbody>
-		<tr><td>$programStage.program.name</td></tr>
+		<tr><td>&nbsp;</td><tr>
 		#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
 		<tr><td>&nbsp;</td><tr>
 		<tr>
