@@ -44,6 +44,7 @@ import org.hisp.dhis.user.UserGroupAccess;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -103,7 +104,7 @@ public class BaseIdentifiableObject
     /**
      * Access for userGroups
      */
-    protected Set<UserGroupAccess> userGroupAccesses;
+    protected Set<UserGroupAccess> userGroupAccesses = new HashSet<UserGroupAccess>();
 
     /**
      * The i18n variant of the name. Should not be persisted.
@@ -225,8 +226,8 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { DetailedView.class, BasicView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getPublicAccess()
     {
         return publicAccess;
@@ -239,9 +240,9 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { BasicView.class, DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JsonView({ BasicView.class, DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public User getUser()
     {
         return user;
@@ -253,9 +254,9 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { BasicView.class, DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "userGroupAccesses", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "userGroupAccess", namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ BasicView.class, DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "userGroupAccesses", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty(localName = "userGroupAccess", namespace = Dxf2Namespace.NAMESPACE)
     public Set<UserGroupAccess> getUserGroupAccesses()
     {
         return userGroupAccesses;
@@ -335,7 +336,18 @@ public class BaseIdentifiableObject
             setUid( CodeGenerator.generateCode() );
         }
 
+        if ( user == null && publicAccess == null && userGroupAccesses.isEmpty() )
+        {
+            publicAccess = AccessHelper.newInstance().enable( AccessHelper.Permission.READ )
+                .enable( AccessHelper.Permission.WRITE ).build();
+        }
+
         Date date = new Date();
+
+        if ( created == null )
+        {
+            created = date;
+        }
 
         setLastUpdated( date );
     }
