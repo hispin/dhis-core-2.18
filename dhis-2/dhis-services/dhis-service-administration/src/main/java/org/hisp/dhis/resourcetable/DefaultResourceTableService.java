@@ -27,6 +27,8 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_PERIOD_STRUCTURE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,9 +65,6 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
-import org.hisp.dhis.system.util.DateUtils;
-
-import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
 /**
  * @author Lars Helge Overland
@@ -444,7 +443,7 @@ public class DefaultResourceTableService
     // PeriodTable
     // -------------------------------------------------------------------------
 
-    public void generatePeriodTable( boolean noDisaggregation )
+    public void generatePeriodTable()
     {
         // ---------------------------------------------------------------------
         // Create table
@@ -452,16 +451,14 @@ public class DefaultResourceTableService
 
         Collection<Period> periods = periodService.getAllPeriods();
         
-        resourceTableStore.createPeriodStructure( noDisaggregation );
+        resourceTableStore.createPeriodStructure();
         
         // ---------------------------------------------------------------------
         // Populate table
         // ---------------------------------------------------------------------
-
-        String tableName = noDisaggregation ? TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_STRUCTURE;
         
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
-            setTableName( tableName ).init();
+            setTableName( TABLE_NAME_PERIOD_STRUCTURE ).init();
         
         for ( Period period : periods )
         {
@@ -470,15 +467,13 @@ public class DefaultResourceTableService
             
             final List<String> values = new ArrayList<String>();
             
-            int days = DateUtils.daysBetween( period.getStartDate(), period.getEndDate() ) + 1;
-            
             values.add( String.valueOf( period.getId() ) );
             values.add( period.getIsoDate() );
-            values.add( String.valueOf( days ) );
+            values.add( String.valueOf( rowType.getFrequencyOrder() ) );
             
             for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
             {
-                if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() || !noDisaggregation )
+                if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() )
                 {
                     values.add( periodType.createPeriod( startDate ).getIsoDate() );
                 }

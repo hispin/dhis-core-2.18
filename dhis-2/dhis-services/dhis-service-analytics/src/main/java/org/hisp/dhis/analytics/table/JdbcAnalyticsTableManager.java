@@ -114,7 +114,7 @@ public class JdbcAnalyticsTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "value double precision)";
+        sqlCreate += "daysxvalue double precision, value double precision)";
         
         log.info( "Create SQL: " + sqlCreate );
         
@@ -156,14 +156,14 @@ public class JdbcAnalyticsTableManager
     @Async
     public Future<?> populateTableAsync( String tableName, Date startDate, Date endDate )
     {
-        populateSumTable( tableName, startDate, endDate, "cast(dv.value as double precision)", "int" );
+        populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", "int" );
         
-        populateSumTable( tableName, startDate, endDate, "1 as value" , "bool" );
+        populateTable( tableName, startDate, endDate, "1" , "bool" );
         
         return null;
     }
     
-    private void populateSumTable( String tableName, Date startDate, Date endDate, String valueExpression, String valueType )
+    private void populateTable( String tableName, Date startDate, Date endDate, String valueExpression, String valueType )
     {
         final String start = DateUtils.getMediumDateString( startDate );
         final String end = DateUtils.getMediumDateString( endDate );
@@ -175,7 +175,7 @@ public class JdbcAnalyticsTableManager
             insert += col[0] + ",";
         }
         
-        insert += "value) ";
+        insert += "daysxvalue, value) ";
         
         String select = "select ";
         
@@ -186,17 +186,18 @@ public class JdbcAnalyticsTableManager
         
         select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix
         
-        select += valueExpression + " " +
+        select += 
+            valueExpression + " * ps.daysno as value, " +
+            valueExpression + " as value " +
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
-            "left join _period_no_disagg_structure ps on dv.periodid=ps.periodid " +
+            "left join _periodstructure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
             "left join categoryoptioncombo coc on dv.categoryoptioncomboid=coc.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype='" + valueType + "' " +
-            "and de.aggregationtype = 'sum' " +
             "and pe.startdate >= '" + start + "' " +
             "and pe.startdate <= '" + end + "'" +
             "and dv.value != ''" +

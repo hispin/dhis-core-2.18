@@ -79,8 +79,7 @@ public class ResourceTableController
         resourceTableService.generateIndicatorGroupSetTable();
         resourceTableService.generateOrganisationUnitGroupSetTable();
         resourceTableService.generateOrganisationUnitStructures();
-        resourceTableService.generatePeriodTable( true );
-        resourceTableService.generatePeriodTable( false );
+        resourceTableService.generatePeriodTable();
         
         sqlViewService.createAllViewTables();
         
