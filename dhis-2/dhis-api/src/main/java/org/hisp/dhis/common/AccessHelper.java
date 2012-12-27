@@ -75,18 +75,32 @@ public class AccessHelper
         this.access = access.toCharArray();
     }
 
-    public void enable( Permission permission )
+    public static AccessHelper newInstance()
     {
-        access[permission.getPosition()] = permission.getValue();
+        return new AccessHelper();
     }
 
-    public void disable( Permission permission )
+    public AccessHelper enable( Permission permission )
+    {
+        access[permission.getPosition()] = permission.getValue();
+
+        return this;
+    }
+
+    public AccessHelper disable( Permission permission )
     {
         access[permission.getPosition()] = '-';
+
+        return this;
+    }
+
+    public String build()
+    {
+        return new String( access );
     }
 
     public String toString()
     {
-        return access.toString();
+        return build();
     }
 }
