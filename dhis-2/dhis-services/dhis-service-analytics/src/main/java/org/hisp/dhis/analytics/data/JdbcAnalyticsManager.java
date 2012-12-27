@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics.data;
 import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.analytics.AggregationType.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -76,9 +78,13 @@ public class JdbcAnalyticsManager
         
         SqlHelper sqlHelper = new SqlHelper();
         
-        String sql = 
-            "select " + getCommaDelimitedString( dimensions ) + ", sum(value) as value " +
-            "from " + params.getTableName() + " ";
+        String sql = "select " + getCommaDelimitedString( dimensions ) + ", ";
+        
+        int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
+        
+        sql += params.isAggregationType( AVERAGE_AGGREGATION ) ? "sum(daysxvalue) / " + days : "sum(value)";
+        
+        sql += " as value from " + params.getTableName() + " ";
             
         for ( String dim : dimensions )
         {
