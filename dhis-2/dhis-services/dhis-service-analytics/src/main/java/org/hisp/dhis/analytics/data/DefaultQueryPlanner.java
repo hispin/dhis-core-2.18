@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
+import static org.hisp.dhis.analytics.AggregationType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -93,13 +94,28 @@ public class DefaultQueryPlanner
                     
                     for ( DataQueryParams byAggregationType : groupedByAggregationType )
                     {
-                        byAggregationType.setTableName( byPartition.getTableName() );
-                        byAggregationType.setOrganisationUnitLevel( byOrgUnitLevel.getOrganisationUnitLevel() );
-                        byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
-                        
-                        //TODO split on data element period type for average disaggregation
-                        
-                        queries.add( byAggregationType );
+                        if ( AVERAGE_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
+                        {
+                            List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
+                            
+                            for ( DataQueryParams byDataPeriodType : groupedByDataPeriodType )
+                            {
+                                byDataPeriodType.setTableName( byPartition.getTableName() );
+                                byDataPeriodType.setOrganisationUnitLevel( byOrgUnitLevel.getOrganisationUnitLevel() );
+                                byDataPeriodType.setPeriodType( byPeriodType.getPeriodType() );
+                                byDataPeriodType.setAggregationType( byAggregationType.getAggregationType() );
+                                
+                                queries.add( byDataPeriodType );
+                            }
+                        }
+                        else
+                        {
+                            byAggregationType.setTableName( byPartition.getTableName() );
+                            byAggregationType.setOrganisationUnitLevel( byOrgUnitLevel.getOrganisationUnitLevel() );
+                            byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
+                            
+                            queries.add( byAggregationType );
+                        }
                     }
                 }
             }
@@ -267,6 +283,17 @@ public class DefaultQueryPlanner
         return queries;    
     }
     
+    /**
+     * Groups the given query in sub queries based on the aggregation type of its
+     * data elements. The aggregation type can be sum, average aggregation or
+     * average disaggregation. Sum means that the data elements have sum aggregation
+     * operator. Average aggregation means that the data elements have the average
+     * aggregation operator and that the period type of the data elements have 
+     * higher or equal frequency than the aggregation period type. Average disaggregation
+     * means that the data elements have the average aggregation operator and
+     * that the period type of the data elements have lower frequency than the
+     * aggregation period type.
+     */
     private List<DataQueryParams> groupByAggregationType( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
@@ -286,6 +313,33 @@ public class DefaultQueryPlanner
             DataQueryParams query = new DataQueryParams( params );
             query.setDataElements( aggregationTypeDataElementMap.get( aggregationType ) );
             query.setAggregationType( aggregationType );
+            queries.add( query );
+        }
+        
+        return queries;
+    }
+    
+    /**
+     * Groups the given query in sub queries based on the period type of its
+     * data elements. Sets the data period type on each query.
+     */
+    private List<DataQueryParams> groupByDataPeriodType( DataQueryParams params )
+    {
+        List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
+
+        if ( params.getDatElements() == null || params.getDatElements().isEmpty() )
+        {
+            queries.add( new DataQueryParams( params ) );
+            return queries;
+        }
+        
+        ListMap<PeriodType, String> periodTypeDataElementMap = getPeriodTypeDataElementMap( params.getDatElements() );
+        
+        for ( PeriodType periodType : periodTypeDataElementMap.keySet() )
+        {
+            DataQueryParams query = new DataQueryParams( params );
+            query.setDataElements( periodTypeDataElementMap.get( periodType ) );
+            query.setDataPeriodType( periodType );
             queries.add( query );
         }
         
@@ -379,7 +433,7 @@ public class DefaultQueryPlanner
         
         return map;
     }
-    
+        
     /**
      * Creates a mapping between the aggregation type and data element for the
      * given data elements and period type.
@@ -409,6 +463,24 @@ public class DefaultQueryPlanner
                     map.putValue( AggregationType.AVERAGE_DISAGGREGATION, element );
                 }
             }
+        }
+        
+        return map;
+    }
+
+    /**
+     * Creates a mapping between the period type and the data element for the
+     * given data elements.
+     */
+    private ListMap<PeriodType, String> getPeriodTypeDataElementMap( Collection<String> dataElements )
+    {
+        ListMap<PeriodType, String> map = new ListMap<PeriodType, String>();
+        
+        for ( String element : dataElements )
+        {
+            DataElement dataElement = dataElementService.getDataElement( element );
+            
+            map.putValue( dataElement.getPeriodType(), element );
         }
         
         return map;

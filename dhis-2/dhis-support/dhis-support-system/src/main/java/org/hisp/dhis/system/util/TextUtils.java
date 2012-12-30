@@ -306,4 +306,29 @@ public class TextUtils
     {
         return string != null ? string.toLowerCase() : null;
     }
+    
+    /**
+     * Null-safe method for writing the items of a string array out as a string
+     * separated by the given char separator.
+     * 
+     * @param array the array.
+     * @param separator the separator of the array items.
+     * @return a string.
+     */
+    public static String toString( String[] array, char separator )
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        if ( array != null && array.length > 0 )
+        {
+            for ( String string : array )
+            {
+                builder.append( string ).append( separator );
+            }
+            
+            builder.deleteCharAt( builder.length() - 1 );
+        }
+        
+        return builder.toString();
+    }
 }
