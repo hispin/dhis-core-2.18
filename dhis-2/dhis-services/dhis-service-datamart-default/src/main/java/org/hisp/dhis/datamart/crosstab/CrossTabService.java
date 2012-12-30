@@ -110,17 +110,6 @@ public interface CrossTabService
         Collection<Integer> sourceIds, String key );
 
     /**
-     * Gets all CrossTabDataValues for the given collection of period ids and the source id.
-     * 
-     * @param dataElementIds the data element identifiers.
-     * @param periodIds the period identifiers.
-     * @param sourceId the source identifier.
-     * @return collection of CrossTabDataValues.
-     */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        int sourceId, String key );
-    
-    /**
      * Gets a map of DataElementOperands and corresponding Double aggregated data
      * element value from the cache table. If the group argument is not null it
      * will read from the aggregated org unit data cache, if null it will read from

@@ -212,12 +212,6 @@ public class DefaultCrossTabService
         return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceIds, key );
     }
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
-        Collection<Integer> periodIds, int sourceId, String key )
-    {
-        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceId, key );
-    }
-    
     public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
         Period period, OrganisationUnit unit, OrganisationUnitGroup group, String key )
     {
