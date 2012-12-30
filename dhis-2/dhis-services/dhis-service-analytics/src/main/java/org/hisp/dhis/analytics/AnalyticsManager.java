@@ -30,9 +30,30 @@ package org.hisp.dhis.analytics;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.hisp.dhis.system.util.ListMap;
+
 public interface AnalyticsManager
 {
-    static final String SEP = "-";
+    static final char SEP = '-';
     
-    Future<Map<String, Double>> getAggregatedDataValues(  DataQueryParams params );
+    /**
+     * Retrieves aggregated data values for the given query. The data is returned
+     * as a mapping where the key is concatenated from the dimension options for
+     * all dimensions, and the value is the data value.
+     * 
+     * @param params the query to retrieve aggregated data for.
+     * @return a map.
+     */
+    Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params );
+
+    /**
+     * Inserts entries for the aggregation periods mapped to each data period
+     * in the given data value map. Removes the original entry for the data period.
+     * 
+     * @param dataValueMap map with entries for all data values produced for the query.
+     * @param params the query.
+     * @param dataPeriodAggregationPeriodMap the mapping between data periods and
+     *        aggregation periods for this query.
+     */
+    void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<String, String> dataPeriodAggregationPeriodMap );
 }

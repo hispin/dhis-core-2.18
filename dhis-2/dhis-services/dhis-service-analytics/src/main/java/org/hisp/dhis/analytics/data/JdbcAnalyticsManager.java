@@ -27,14 +27,17 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_AGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
 import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
-import static org.hisp.dhis.analytics.AggregationType.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
@@ -42,12 +45,15 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.ListMap;
 import org.hisp.dhis.system.util.SqlHelper;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.util.Assert;
 
 /**
  * This class is responsible for producing aggregated data values. It reads data
@@ -59,6 +65,8 @@ import org.springframework.scheduling.annotation.AsyncResult;
 public class JdbcAnalyticsManager
     implements AnalyticsManager
 {
+    //TODO optimize when all options in dimensions are selected
+    
     private static final Log log = LogFactory.getLog( JdbcAnalyticsManager.class );
     
     @Autowired
@@ -68,11 +76,12 @@ public class JdbcAnalyticsManager
     // Implementation
     // -------------------------------------------------------------------------
 
-    //TODO optimize when all options in dimensions are selected
-    
     @Async
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
+        ListMap<String, String> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
+        params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
+        
         List<String> dimensions = params.getDimensionNames();
         Map<String, List<String>> dimensionMap = params.getDimensionMap();
         
@@ -85,7 +94,7 @@ public class JdbcAnalyticsManager
         sql += params.isAggregationType( AVERAGE_AGGREGATION ) ? "sum(daysxvalue) / " + days : "sum(value)";
         
         sql += " as value from " + params.getTableName() + " ";
-            
+        
         for ( String dim : dimensions )
         {
             sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( dimensionMap.get( dim ) ) + " ) ";
@@ -113,13 +122,47 @@ public class JdbcAnalyticsManager
                 key.append( rowSet.getString( dim ) + SEP );
             }
             
-            key.deleteCharAt( key.length() - SEP.length() );
+            key.deleteCharAt( key.length() - 1 );
             
             Double value = rowSet.getDouble( VALUE_ID );
 
             map.put( key.toString(), value );
         }
         
+        replaceDataPeriodsWithAggregationPeriods( map, params, dataPeriodAggregationPeriodMap );
+        
         return new AsyncResult<Map<String, Double>>( map );
-    }    
+    }
+
+    public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<String, String> dataPeriodAggregationPeriodMap )
+    {
+        if ( params.isAggregationType( AVERAGE_DISAGGREGATION ) )
+        {
+            int periodIndex = params.getPeriodDimensionIndex();
+            
+            Set<String> keys = new HashSet<String>( dataValueMap.keySet() );
+            
+            for ( String key : keys )
+            {
+                String[] keyArray = key.split( String.valueOf( SEP ) );
+                
+                Assert.notNull( keyArray[periodIndex], keyArray.toString() );
+                
+                List<String> periods = dataPeriodAggregationPeriodMap.get( keyArray[periodIndex] );
+                
+                Assert.notNull( periods, dataPeriodAggregationPeriodMap.toString() );
+                
+                Double value = dataValueMap.get( key );
+                
+                for ( String period : periods )
+                {
+                    String[] keyCopy = keyArray.clone();
+                    keyCopy[periodIndex] = period;                    
+                    dataValueMap.put( TextUtils.toString( keyCopy, SEP ), value );
+                }
+                
+                dataValueMap.remove( key );
+            }
+        }
+    }
 }

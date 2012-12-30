@@ -27,6 +27,8 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,7 +36,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
+import org.hisp.dhis.system.util.ListMap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -67,7 +72,9 @@ public class DataQueryParams
     
     private transient int organisationUnitLevel;
     
-    private AggregationType aggregationType;
+    private transient AggregationType aggregationType;
+    
+    private transient PeriodType dataPeriodType;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -94,17 +101,23 @@ public class DataQueryParams
         this.periodType = params.getPeriodType();
         this.organisationUnitLevel = params.getOrganisationUnitLevel();
         this.aggregationType = params.getAggregationType();
+        this.dataPeriodType = params.getDataPeriodType();
     }
 
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Creates a list of the names of all dimensions for this query. If the period
+     * type property is set, the period dimension name will be replaced by the name
+     * of the period type, if present. If the organisation unit level property
+     * is set, the organisation unit dimension name will be replaced by the name
+     * of the organisation unit level column.
+     */
     public List<String> getDimensionNames()
     {
-        List<String> list = new ArrayList<String>();
-
-        list.addAll( dimensions.keySet() );
+        List<String> list = getDimensionNamesAsList();
         
         if ( categories )
         {
@@ -124,11 +137,28 @@ public class DataQueryParams
         return list;
     }
     
+    /**
+     * Returns the index of the period dimension in the index list.
+     */
+    public int getPeriodDimensionIndex()
+    {
+        return getDimensionNamesAsList().indexOf( PERIOD_DIM_ID );
+    }
+    
+    /**
+     * Returns a list of the names of all filters.
+     */
     public List<String> getFilterNames()
     {
         return new ArrayList<String>( filters.keySet() );
     }
-        
+    
+    /**
+     * Returns a mapping between the dimension names and dimension values. Inserts
+     * keys and values for the current period type column name and organisation 
+     * unit level name, if the period type property and organisation unit level
+     * property are set.
+     */
     public Map<String, List<String>> getDimensionMap()
     {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
@@ -173,7 +203,62 @@ public class DataQueryParams
     {
         return this.aggregationType != null && this.aggregationType.equals( aggregationType );
     }
+
+    /**
+     * Creates a mapping between the data periods, based on the data period type
+     * for this query, and the aggregation periods for this query.
+     */
+    public ListMap<String, String> getDataPeriodAggregationPeriodMap()
+    {
+        ListMap<String, String> map = new ListMap<String, String>();
+
+        if ( dataPeriodType != null )
+        {
+            for ( String period : this.getPeriods() )
+            {
+                Period aggregatePeriod = PeriodType.getPeriodFromIsoString( period );
+                
+                Period dataPeriod = dataPeriodType.createPeriod( aggregatePeriod.getStartDate() );
+                
+                map.putValue( dataPeriod.getIsoDate(), period );
+            }
+        }
+        
+        return map;
+    }
     
+    /**
+     * Replaces the periods of this query with the corresponding data periods.
+     * Sets the period type to the data period type. This method is relevant only 
+     * when then the data period type has lower frequency than the aggregation 
+     * period type.
+     */
+    public void replaceAggregationPeriodsWithDataPeriods( ListMap<String, String> dataPeriodAggregationPeriodMap )
+    {
+        if ( isAggregationType( AVERAGE_DISAGGREGATION ) &&  dataPeriodType != null )
+        {
+            this.periodType = this.dataPeriodType.getName();
+            
+            setPeriods( new ArrayList<String>( getDataPeriodAggregationPeriodMap().keySet() ) );
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns the dimension names as a list.
+     */
+    private List<String> getDimensionNamesAsList()
+    {
+        return new ArrayList<String>( dimensions.keySet() );
+    }
+    
+    // -------------------------------------------------------------------------
+    // hashCode, equals and toString
+    // -------------------------------------------------------------------------
+
     @Override
     public int hashCode()
     {
@@ -242,7 +327,7 @@ public class DataQueryParams
     {
         return "[Dimensions: " + dimensions + ", Filters: " + filters + "]";
     }
-        
+    
     // -------------------------------------------------------------------------
     // Get and set methods for serialize properties
     // -------------------------------------------------------------------------
@@ -411,5 +496,15 @@ public class DataQueryParams
     public void setAggregationType( AggregationType aggregationType )
     {
         this.aggregationType = aggregationType;
+    }
+
+    public PeriodType getDataPeriodType()
+    {
+        return dataPeriodType;
+    }
+
+    public void setDataPeriodType( PeriodType dataPeriodType )
+    {
+        this.dataPeriodType = dataPeriodType;
     }
 }

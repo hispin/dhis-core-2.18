@@ -44,6 +44,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.system.util.ListMap;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -103,6 +106,34 @@ public class QueryPlannerTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+    
+    public void testGetDataPeriodAggregationPeriodMap()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
+        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
+        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
+        params.setPeriodType( QuarterlyPeriodType.NAME );
+        params.setDataPeriodType( new YearlyPeriodType() );
+        
+        ListMap<String, String> map = params.getDataPeriodAggregationPeriodMap();
+        
+        assertEquals( 2, map.size() );
+        
+        assertTrue( map.keySet().contains( "2000" ) );
+        assertTrue( map.keySet().contains( "2001" ) );
+        
+        assertEquals( 4, map.get( "2000" ).size() );
+        assertEquals( 2, map.get( "2001" ).size() );
+        
+        assertTrue( map.get( "2000" ).contains( "2000Q1" ) );
+        assertTrue( map.get( "2000" ).contains( "2000Q2" ) );
+        assertTrue( map.get( "2000" ).contains( "2000Q3" ) );
+        assertTrue( map.get( "2000" ).contains( "2000Q4" ) );
+
+        assertTrue( map.get( "2001" ).contains( "2001Q1" ) );
+        assertTrue( map.get( "2001" ).contains( "2001Q2" ) );
+    }
     
     /**
      * Query spans 2 partitions. Splits in 2 queries for each partition, then

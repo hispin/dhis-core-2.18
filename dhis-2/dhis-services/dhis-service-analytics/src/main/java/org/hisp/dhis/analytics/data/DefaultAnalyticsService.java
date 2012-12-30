@@ -45,6 +45,8 @@ import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.hisp.dhis.analytics.AnalyticsManager.SEP;
+
 public class DefaultAnalyticsService
     implements AnalyticsService
 {
@@ -76,7 +78,7 @@ public class DefaultAnalyticsService
         for ( Map.Entry<String, Double> entry : map.entrySet() )
         {
             grid.addRow();
-            grid.addValues( entry.getKey().split( AnalyticsManager.SEP ) );
+            grid.addValues( entry.getKey().split( String.valueOf( SEP ) ) );
             grid.addValue( entry.getValue() );
         }
         
@@ -115,5 +117,5 @@ public class DefaultAnalyticsService
         t.getTime( "Got aggregated values" );
         
         return map;
-    }
+    } 
 }
