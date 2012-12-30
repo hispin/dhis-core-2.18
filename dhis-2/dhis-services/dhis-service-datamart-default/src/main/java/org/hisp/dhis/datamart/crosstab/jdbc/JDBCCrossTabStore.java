@@ -139,9 +139,13 @@ public class JDBCCrossTabStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
-        final String operandIds = getCommadelimitedString( operands );
+        if ( operands.isEmpty() || periodIds.isEmpty() || sourceIds.isEmpty() )
+        {
+            return new ArrayList<CrossTabDataValue>();
+        }
         
-        final String sql = "SELECT periodid, sourceid, " + operandIds + " FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
+        final String sql = "SELECT periodid, sourceid, " + getCommadelimitedString( operands ) + 
+            " FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
             getCommaDelimitedString( periodIds ) + ") AND c.sourceid IN (" + getCommaDelimitedString( sourceIds ) + ")";
         
         try
@@ -159,33 +163,7 @@ public class JDBCCrossTabStore
             holder.close();
         }
     }
-    
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, 
-        Collection<Integer> periodIds, int sourceId, String key )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-
-        final String operandIds = getCommadelimitedString( operands );
         
-        final String sql = "SELECT periodid, sourceid, " + operandIds + " FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
-            getCommaDelimitedString( periodIds ) + ") AND c.sourceid = " + sourceId;
-
-        try
-        {
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return getCrossTabDataValues( resultSet, operands );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get CrossTabDataValues", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-    
     public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
         int periodId, int sourceId, String key )
     {
