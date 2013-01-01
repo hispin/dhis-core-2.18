@@ -35,8 +35,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessEngine;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
@@ -49,6 +47,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.DataSetWithOrganisationUnitsFilter;
+import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -62,8 +61,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataSetCompletenessEngine
     implements DataSetCompletenessEngine
 {
-    private static final Log log = LogFactory.getLog( DefaultDataSetCompletenessEngine.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -133,18 +130,18 @@ public class DefaultDataSetCompletenessEngine
     {
         final int cpuCores = SystemUtils.getCpuCores();
         
-        log.info( "Data completeness export process started" );
+        Clock clock = new Clock().startClock().logTime( "Data completeness export process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
 
         completenessStore.dropIndex();
 
-        log.info( "Dropped potential index" );
+        clock.logTime( "Dropped potential index" );
 
         int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET,
             DEFAULT_COMPLETENESS_OFFSET );
 
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
 
-        log.info( "Deleted existing completeness data" );
+        clock.logTime( "Deleted existing completeness data" );
 
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
@@ -167,8 +164,8 @@ public class DefaultDataSetCompletenessEngine
         
         completenessStore.createIndex();
 
-        log.info( "Created index" );
+        clock.logTime( "Created index" );
 
-        log.info( "Completeness export process done" );
+        clock.logTime( "Completeness export process completed" );
     }
 }
