@@ -29,6 +29,8 @@ package org.hisp.dhis.completeness.engine;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,8 +47,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.DataSetWithOrganisationUnitsFilter;
+import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -107,30 +111,38 @@ public class DefaultDataSetCompletenessEngine
         this.systemSettingManager = systemSettingManager;
     }
 
+    private Notifier notifier;
+
+    public void setNotifier( Notifier notifier )
+    {
+        this.notifier = notifier;
+    }
+
     // -------------------------------------------------------------------------
     // DataSetCompletenessEngine implementation
     // -------------------------------------------------------------------------
 
     @Transactional
     public void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives,
-        Collection<Integer> organisationUnitIds )
+        Collection<Integer> organisationUnitIds, TaskId id )
     {
         if ( relatives != null )
         {
             Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class,
                 periodService.reloadPeriods( relatives.getRelativePeriods() ) );
 
-            exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
+            exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, id );
         }
     }
 
     @Transactional
     public void exportDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
-        Collection<Integer> organisationUnitIds )
+        Collection<Integer> organisationUnitIds, TaskId id )
     {
         final int cpuCores = SystemUtils.getCpuCores();
         
         Clock clock = new Clock().startClock().logTime( "Data completeness export process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
+        notifier.notify( id, DATAMART, "Completeness export process started" );
 
         completenessStore.dropIndex();
 
@@ -142,6 +154,7 @@ public class DefaultDataSetCompletenessEngine
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
 
         clock.logTime( "Deleted existing completeness data" );
+        notifier.notify( id, DATAMART, "Exporting completeness for data sets" );
 
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
@@ -167,5 +180,6 @@ public class DefaultDataSetCompletenessEngine
         clock.logTime( "Created index" );
 
         clock.logTime( "Completeness export process completed" );
+        notifier.notify( id, DATAMART, INFO, "Completeness process completed", true );
     }
 }

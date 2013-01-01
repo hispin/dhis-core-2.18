@@ -45,7 +45,6 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -69,8 +68,6 @@ public class DataSetCompletenessServiceTest
     private CompleteDataSetRegistrationService registrationService;
     
     private DataSetCompletenessService registrationCompletenessService;
-    
-    private DataSetCompletenessService compulsoryCompletenessService;
     
     private PeriodType periodType;
     
@@ -140,8 +137,6 @@ public class DataSetCompletenessServiceTest
         
         registrationCompletenessService = (DataSetCompletenessService) getBean( "registrationDataCompletenessService" );
         
-        compulsoryCompletenessService = (DataSetCompletenessService) getBean( "compulsoryDataCompletenessService" );
-
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         periodType = new MonthlyPeriodType();
