@@ -449,6 +449,7 @@ public class TableAlteror
 
         executeSql( "update users set selfregistered = false where selfregistered is null" );
         executeSql( "update users set disabled = false where disabled is null" );
+        executeSql( "update dataentryform set format = 1 where format is null" );
         
         // report, reporttable, chart groups
         

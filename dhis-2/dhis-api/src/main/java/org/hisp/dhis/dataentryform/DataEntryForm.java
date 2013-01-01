@@ -53,6 +53,8 @@ public class DataEntryForm
     public static final String STYLE_COMPACT = "compact";
     public static final String STYLE_NONE = "none";
     
+    public static final int CURRENT_FORMAT = 2;
+    
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -80,6 +82,11 @@ public class DataEntryForm
      * HTML Code of DataEntryForm
      */
     private String htmlCode;
+    
+    /**
+     * The format of the DataEntryForm.
+     */
+    private int format;
 
     // -------------------------------------------------------------------------
     // Contructors
@@ -243,5 +250,18 @@ public class DataEntryForm
     public void setHtmlCode( String htmlCode )
     {
         this.htmlCode = htmlCode;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public int getFormat()
+    {
+        return format;
+    }
+
+    public void setFormat( int format )
+    {
+        this.format = format;
     }
 }
