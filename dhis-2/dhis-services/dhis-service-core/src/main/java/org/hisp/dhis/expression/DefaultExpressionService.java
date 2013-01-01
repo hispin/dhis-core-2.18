@@ -60,8 +60,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * The expression is a string describing a formula containing data element ids
  * and category option combo ids. The formula can potentially contain references
- * to category totals (also called sub-totals) and data element totals (also
- * called totals).
+ * to data element totals.
  * 
  * @author Margrethe Store
  * @author Lars Helge Overland
