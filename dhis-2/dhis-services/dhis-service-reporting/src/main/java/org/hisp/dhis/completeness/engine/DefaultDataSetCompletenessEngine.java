@@ -48,8 +48,10 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.filter.DataSetWithOrganisationUnitsFilter;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,6 +152,8 @@ public class DefaultDataSetCompletenessEngine
 
         dataSets = completenessStore.getDataSetsWithRegistrations( dataSets );
 
+        FilterUtils.filter( dataSets, new DataSetWithOrganisationUnitsFilter() );
+        
         List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
         
         List<Future<?>> futures = new ArrayList<Future<?>>();
