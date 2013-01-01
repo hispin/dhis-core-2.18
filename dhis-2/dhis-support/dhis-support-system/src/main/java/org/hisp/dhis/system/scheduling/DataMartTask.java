@@ -166,7 +166,7 @@ public class DataMartTask
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, taskId );
-        completenessEngine.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
+        completenessEngine.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, taskId ); 
     }
 
     // -------------------------------------------------------------------------

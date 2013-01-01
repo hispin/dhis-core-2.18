@@ -104,6 +104,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+	<property name="notifier" ref="notifier" />
   </bean>
 
   <bean id="compulsoryDataCompletenessService" class="org.hisp.dhis.completeness.impl.CompulsoryDataSetCompletenessService">

@@ -161,7 +161,7 @@ public class DataSetCompletenessServiceExportTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodC, unitC, null, "" ) );
         
         completenessEngine.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
-            getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ) );
+            getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ), null );
         
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodA.getId(), unitB.getId() ) );
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodA.getId(), unitC.getId() ) );

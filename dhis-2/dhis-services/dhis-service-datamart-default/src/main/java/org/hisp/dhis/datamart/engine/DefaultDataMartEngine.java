@@ -205,7 +205,7 @@ public class DefaultDataMartEngine
         final int cpuCores = SystemUtils.getCpuCores();
         
         Clock clock = new Clock().startClock().logTime( "Data mart export process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
-        notifier.clear( id, DATAMART ).notify( id, DATAMART, "Process started" );
+        notifier.clear( id, DATAMART ).notify( id, DATAMART, "Data mart export process started" );
 
         // ---------------------------------------------------------------------
         // Replace null with empty collection
