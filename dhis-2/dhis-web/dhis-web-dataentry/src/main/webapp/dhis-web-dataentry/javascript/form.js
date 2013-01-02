@@ -895,8 +895,15 @@ function displayPeriodsInternal()
 
     clearListById( 'selectedPeriodId' );
 
-    addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
-
+    if ( periods.length > 0 )
+    {
+    	addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
+    }
+    else
+    {
+    	addOptionById( 'selectedPeriodId', '-1', i18n_no_periods_click_prev_year_button );
+    }
+    
     $.safeEach(periods, function(idx, item) {
         addOptionById( 'selectedPeriodId', item.id, item.name );
     });
@@ -929,8 +936,15 @@ function dataSetSelected()
         clearListById( 'selectedPeriodId' );
         clearSectionFilters();
 
-        addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
-
+        if ( periods.length > 0 )
+        {
+        	addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
+        }
+        else
+        {
+        	addOptionById( 'selectedPeriodId', '-1', i18n_no_periods_click_prev_year_button );
+        }
+        
         $.safeEach(periods, function(idx, item) {
             addOptionById( 'selectedPeriodId', item.id, item.name );
         });
