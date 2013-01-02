@@ -70,13 +70,15 @@ var FORMTYPE_DEFAULT = 'default';
 
 var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded";
 
-(function( $ ) {
-    $.safeEach = function( arr, fn ) {
-        if( arr ) {
+( function( $ ) {
+    $.safeEach = function( arr, fn ) 
+    {
+        if( arr )
+        {
             $.each( arr, fn );
         }
     };
-})( jQuery );
+} )( jQuery );
 
 /**
  * Page init. The order of events is:
@@ -657,11 +659,12 @@ function filterInSection( $this )
 //------------------------------------------------------------------------------
 
 // splits a id based on the multiOrgUnit var
+
 function splitFieldId( id )
 {
     var split = {};
 
-    if( multiOrganisationUnit )
+    if ( multiOrganisationUnit )
     {
         split.organisationUnitId = id.split( '-' )[0];
         split.dataElementId = id.split( '-' )[1];
@@ -757,23 +760,27 @@ function getSortedDataSetListForOrgUnits( orgUnits )
 {
     var dataSetList = [];
 
-    $.safeEach(orgUnits, function(idx, item) {
+    $.safeEach(orgUnits, function( idx, item )
+    {
         dataSetList.push.apply( dataSetList, getSortedDataSetList(item) )
-    });
+    } );
 
     var filteredDataSetList = [];
 
-    $.safeEach(dataSetList, function(idx, item) {
+    $.safeEach(dataSetList, function( idx, item ) 
+    {
         var formType = dataSets[item.id].type;
         var found = false;
 
-        $.safeEach(filteredDataSetList, function(i, el) {
-
-            if(item.name == el.name)
+        $.safeEach(filteredDataSetList, function( i, el ) 
+        {
+            if( item.name == el.name )
+            {
                 found = true;
-        });
+            }
+        } );
 
-        if( !found && formType == FORMTYPE_SECTION )
+        if ( !found && formType == FORMTYPE_SECTION )
         {
             filteredDataSetList.push(item);
         }
@@ -807,14 +814,15 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
     var dataSetValid = false;
 
-    $.safeEach(dataSetList, function(idx, item) {
+    $.safeEach( dataSetList, function( idx, item ) 
+    {
         addOptionById( 'selectedDataSetId', item.id, item.name );
 
         if ( dataSetId == item.id )
         {
             dataSetValid = true;
         }
-    });
+    } );
 
     if ( children )
     {
@@ -822,13 +830,14 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
         if( childrenDataSets && childrenDataSets.length > 0 )
         {
-            $('#selectedDataSetId').append('<optgroup label="' + i18n_childrens_forms + '">');
+            $( '#selectedDataSetId' ).append( '<optgroup label="' + i18n_childrens_forms + '">' );
 
-            $.safeEach(childrenDataSets, function(idx, item) {
-                $('<option />').attr('data-multiorg', true).attr('value', item.id).html(item.name).appendTo('#selectedDataSetId');
-            });
+            $.safeEach(childrenDataSets, function( idx, item )
+            {
+                $( '<option />' ).attr( 'data-multiorg', true).attr( 'value', item.id).html(item.name).appendTo( '#selectedDataSetId' );
+            } );
 
-            $('#selectDataSetId').append('</optgroup>')
+            $( '#selectDataSetId' ).append( '</optgroup>' );
         }
     }
 
@@ -1552,14 +1561,15 @@ function purgeLocalForms()
 {
     var formIds = storageManager.getAllForms();
 
-    $.safeEach(formIds, function(idx, item) {
+    $.safeEach( formIds, function( idx, item ) 
+    {
         if ( dataSets[item] == null )
         {
             storageManager.deleteForm( item );
             storageManager.deleteFormVersion( item );
             log( 'Deleted locally stored form: ' + item );
         }
-    });
+    } );
 
     log( 'Purged local forms' );
 }
@@ -1569,7 +1579,8 @@ function updateExistingLocalForms()
     var formIds = storageManager.getAllForms();
     var formVersions = storageManager.getAllFormVersions();
 
-    $.safeEach(formIds, function(idx, item) {
+    $.safeEach( formIds, function( idx, item ) 
+    {
         var remoteVersion = dataSets[item].version;
         var localVersion = formVersions[item];
 
@@ -1577,19 +1588,20 @@ function updateExistingLocalForms()
         {
             storageManager.downloadForm( item, remoteVersion );
         }
-    });
+    } );
 }
 
 function downloadRemoteForms()
 {
-    $.safeEach(dataSets, function(idx, item) {
+    $.safeEach( dataSets, function( idx, item ) 
+    {
         var remoteVersion = item.version;
 
         if ( !storageManager.formExists( idx ) && !item.skipOffline )
         {
             storageManager.downloadForm( idx, remoteVersion );
         }
-    });
+    } );
 }
 
 // TODO break if local storage is full
