@@ -278,7 +278,7 @@ public abstract class PeriodType
         {
             return new YearlyPeriodType();
         }
-        if ( isoPeriod.matches( "\\b\\d{6}\\b" ) )
+        if ( isoPeriod.matches( "\\b\\d{4}[-]?\\d{2}\\b" ) )
         {
             return new MonthlyPeriodType();
         }
