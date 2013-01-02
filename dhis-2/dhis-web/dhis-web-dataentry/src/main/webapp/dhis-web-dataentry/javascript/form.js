@@ -738,7 +738,8 @@ function getSortedDataSetList( orgUnit )
 
     var dataSetList = [];
 
-    $.safeEach(orgUnitDataSets, function(idx, item) {
+    $.safeEach( orgUnitDataSets, function( idx, item ) 
+    {
         var dataSetId = orgUnitDataSets[idx];
         var dataSetName = dataSets[dataSetId].name;
 
@@ -746,7 +747,7 @@ function getSortedDataSetList( orgUnit )
         row['id'] = dataSetId;
         row['name'] = dataSetName;
         dataSetList[idx] = row;
-    });
+    } );
 
     dataSetList.sort( function( a, b )
     {
@@ -760,19 +761,19 @@ function getSortedDataSetListForOrgUnits( orgUnits )
 {
     var dataSetList = [];
 
-    $.safeEach(orgUnits, function( idx, item )
+    $.safeEach( orgUnits, function( idx, item )
     {
         dataSetList.push.apply( dataSetList, getSortedDataSetList(item) )
     } );
 
     var filteredDataSetList = [];
 
-    $.safeEach(dataSetList, function( idx, item ) 
+    $.safeEach( dataSetList, function( idx, item ) 
     {
         var formType = dataSets[item.id].type;
         var found = false;
 
-        $.safeEach(filteredDataSetList, function( i, el ) 
+        $.safeEach( filteredDataSetList, function( i, el ) 
         {
             if( item.name == el.name )
             {
@@ -832,7 +833,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
         {
             $( '#selectedDataSetId' ).append( '<optgroup label="' + i18n_childrens_forms + '">' );
 
-            $.safeEach(childrenDataSets, function( idx, item )
+            $.safeEach( childrenDataSets, function( idx, item )
             {
                 $( '<option />' ).attr( 'data-multiorg', true).attr( 'value', item.id).html(item.name).appendTo( '#selectedDataSetId' );
             } );
@@ -904,9 +905,10 @@ function displayPeriodsInternal()
     	addOptionById( 'selectedPeriodId', '-1', i18n_no_periods_click_prev_year_button );
     }
     
-    $.safeEach(periods, function(idx, item) {
+    $.safeEach( periods, function( idx, item ) 
+    {
         addOptionById( 'selectedPeriodId', item.id, item.name );
-    });
+    } );
 }
 
 // -----------------------------------------------------------------------------
@@ -945,9 +947,10 @@ function dataSetSelected()
         	addOptionById( 'selectedPeriodId', '-1', i18n_no_periods_click_prev_year_button );
         }
         
-        $.safeEach(periods, function(idx, item) {
+        $.safeEach( periods, function( idx, item )
+        {
             addOptionById( 'selectedPeriodId', item.id, item.name );
-        });
+        } );
 
         var previousPeriodType = currentDataSetId ? dataSets[currentDataSetId].periodType : null;
 
