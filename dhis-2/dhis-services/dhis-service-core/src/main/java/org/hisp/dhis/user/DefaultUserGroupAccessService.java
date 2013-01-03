@@ -27,93 +27,50 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericStore;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 @Transactional
-public class DefaultUserGroupService implements UserGroupService
+public class DefaultUserGroupAccessService implements UserGroupAccessService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private GenericIdentifiableObjectStore<UserGroup> userGroupStore;
-    
-    public void setUserGroupStore( GenericIdentifiableObjectStore<UserGroup> userGroupStore )
+
+    private GenericStore<UserGroupAccess> userGroupAccessStore;
+
+    public void setUserGroupAccessStore( GenericStore<UserGroupAccess> userGroupAccessStore )
     {
-        this.userGroupStore = userGroupStore;
+        this.userGroupAccessStore = userGroupAccessStore;
     }
 
     // -------------------------------------------------------------------------
-    // UserGroup
+    // UserGroupAccess
     // -------------------------------------------------------------------------
 
     @Override
-    public void addUserGroup( UserGroup userGroup )
+    public void addUserGroupAccess( UserGroupAccess userGroupAccess )
     {
-        userGroupStore.saveOrUpdate( userGroup );
+        userGroupAccessStore.saveOrUpdate( userGroupAccess );
     }
 
     @Override
-    public void deleteUserGroup( UserGroup userGroup )
+    public void updateUserGroupAccess( UserGroupAccess userGroupAccess )
     {
-        userGroupStore.delete( userGroup );
+        userGroupAccessStore.update( userGroupAccess );
     }
 
     @Override
-    public void updateUserGroup( UserGroup userGroup )
+    public void deleteUserGroupAccess( UserGroupAccess userGroupAccess )
     {
-        userGroupStore.update( userGroup );
-    }
-
-    
-    @Override
-    public Collection<UserGroup> getAllUserGroups()
-    {
-        return userGroupStore.getAll();
+        userGroupAccessStore.delete( userGroupAccess );
     }
 
     @Override
-    public UserGroup getUserGroup( int userGroupId )
+    public Collection<UserGroupAccess> getAllUserGroupAccesses()
     {
-        return userGroupStore.get( userGroupId );
-    }
-
-    @Override
-    public UserGroup getUserGroup( String uid )
-    {
-        return userGroupStore.getByUid( uid );
-    }
-
-    @Override
-    public UserGroup getUserGroupByName( String name )
-    {
-        return userGroupStore.getByName( name );
-    }
-
-    @Override
-    public int getUserGroupCount()
-    {
-        return userGroupStore.getCount();
-    }
-
-    @Override
-    public int getUserGroupCountByName( String name )
-    {
-        return userGroupStore.getCountByName( name );
-    }
-
-    @Override
-    public Collection<UserGroup> getUserGroupsBetween( int first, int max )
-    {
-        return userGroupStore.getBetween( first, max );
-    }
-
-    @Override
-    public Collection<UserGroup> getUserGroupsBetweenByName( String name, int first, int max )
-    {
-        return userGroupStore.getBetweenByName( name, first, max );
+        return userGroupAccessStore.getAll();
     }
 }

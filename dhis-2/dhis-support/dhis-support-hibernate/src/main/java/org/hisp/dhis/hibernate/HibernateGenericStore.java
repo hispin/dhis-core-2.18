@@ -52,7 +52,6 @@ import java.util.List;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class HibernateGenericStore<T>
     implements GenericNameableObjectStore<T>
@@ -230,8 +229,8 @@ public class HibernateGenericStore<T>
     @SuppressWarnings("unchecked")
     public final T get( int id )
     {
-        T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+        T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
 
         return object;
     }
@@ -240,8 +239,8 @@ public class HibernateGenericStore<T>
     @SuppressWarnings("unchecked")
     public final T load( int id )
     {
-        T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+        T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
 
         return object;
     }
@@ -249,8 +248,8 @@ public class HibernateGenericStore<T>
     @Override
     public final T getByUid( String uid )
     {
-        T object = getObject( Restrictions.eq( "uid", uid ) );
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+        T object = getObject( Restrictions.eq( "uid", uid ) );
 
         return object;
     }
@@ -258,8 +257,8 @@ public class HibernateGenericStore<T>
     @Override
     public final T getByName( String name )
     {
-        T object = getObject( Restrictions.eq( "name", name ) );
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+        T object = getObject( Restrictions.eq( "name", name ) );
 
         return object;
     }
@@ -267,8 +266,8 @@ public class HibernateGenericStore<T>
     @Override
     public final T getByShortName( String shortName )
     {
-        T object = getObject( Restrictions.eq( "shortName", shortName ) );
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+        T object = getObject( Restrictions.eq( "shortName", shortName ) );
 
         return object;
     }
@@ -276,8 +275,8 @@ public class HibernateGenericStore<T>
     @Override
     public final T getByCode( String code )
     {
-        T object = getObject( Restrictions.eq( "code", code ) );
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+        T object = getObject( Restrictions.eq( "code", code ) );
 
         return object;
     }

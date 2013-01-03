@@ -482,7 +482,7 @@
   <!-- Common actions JSON -->
 
   <package name="dhis-web-commons-ajax-json" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax-json">
-   
+
     <action name="getNotifications" class="org.hisp.dhis.commons.action.GetNotificationsAction">
 	  <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonNotifications.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

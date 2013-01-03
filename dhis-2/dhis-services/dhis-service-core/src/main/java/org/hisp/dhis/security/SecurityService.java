@@ -87,12 +87,20 @@ public interface SecurityService
     boolean verifyToken( String username, String token );
 
     /**
+     * Checks whether current user has read access to object.
+     *
+     * @param identifiableObject Object to check for read access.
+     * @return true of false depending on outcome of readable check
+     */
+    boolean canRead( IdentifiableObject identifiableObject );
+
+    /**
      * Checks whether current user has write access to object.
      *
      * @param identifiableObject Object to check for write access.
      * @return true of false depending on outcome of writable check
      */
-    boolean isWritable( IdentifiableObject identifiableObject );
+    boolean canWrite( IdentifiableObject identifiableObject );
 
     /**
      * Checks whether current user has read access to object.
@@ -100,5 +108,13 @@ public interface SecurityService
      * @param identifiableObject Object to check for read access.
      * @return true of false depending on outcome of readable check
      */
-    boolean isReadable( IdentifiableObject identifiableObject );
+    boolean canUpdate( IdentifiableObject identifiableObject );
+
+    /**
+     * Checks whether current user has read access to object.
+     *
+     * @param identifiableObject Object to check for read access.
+     * @return true of false depending on outcome of readable check
+     */
+    boolean canDelete( IdentifiableObject identifiableObject );
 }

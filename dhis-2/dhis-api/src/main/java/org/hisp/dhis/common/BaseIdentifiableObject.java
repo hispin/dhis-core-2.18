@@ -338,8 +338,10 @@ public class BaseIdentifiableObject
 
         if ( user == null && publicAccess == null && userGroupAccesses.isEmpty() )
         {
-            publicAccess = AccessHelper.newInstance().enable( AccessHelper.Permission.READ )
-                .enable( AccessHelper.Permission.WRITE ).build();
+            publicAccess = AccessHelper.newInstance()
+                .enable( AccessHelper.Permission.READ )
+                .enable( AccessHelper.Permission.WRITE )
+                .build();
         }
 
         Date date = new Date();
