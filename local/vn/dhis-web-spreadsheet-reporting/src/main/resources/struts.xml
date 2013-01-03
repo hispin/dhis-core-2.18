@@ -1872,6 +1872,20 @@
 			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
+		<!-- OrganisationUnit -->
+
+		<action name="department" class="org.hisp.dhis.reportsheet.organisationunit.ShowAddDepartmentFormAction">
+		  <result name="success" type="velocity">/main.vm</result>
+		  <param name="page">/dhis-web-maintenance-organisationunit/department.vm</param>
+		  <param name="menu">/dhis-web-maintenance-organisationunit/menuWithTree.vm</param>
+		  <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/department.js</param>
+		  <interceptor-ref name="organisationUnitTreeStack" />
+		</action>
+
+		<action name="addDepartment" class="org.hisp.dhis.reportsheet.organisationunit.AddDepartmentAction">
+		  <result name="success" type="redirect">department.action</result>
+		  <param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
+		</action>
 	</package>
 </struts>
