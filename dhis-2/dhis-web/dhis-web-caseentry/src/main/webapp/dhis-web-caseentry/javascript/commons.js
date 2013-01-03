@@ -1653,6 +1653,9 @@ function sendSmsOnePatient( field, programStageInstanceId )
 				setInnerHTML('smsError', json.message);
 				var date = new Date();
 				var currentTime = date.getHours() + ":" + date.getMinutes();
+				jQuery('#commentEntryTB').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
+					+ "<td>" + getFieldValue('currentUsername') + "</td>"
+					+ "<td>" + field.value + "</td></tr>");
 				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
@@ -1742,10 +1745,10 @@ function commentDivToggle(isHide)
 	jQuery("#commentTB tr").removeClass("hidden");
 	jQuery("#commentTB tr").each( function(index, item){
 		if(isHide && index > 4){
-			jQuery(this).addClass("hidden");
+			jQuery(item).addClass("hidden");
 		}
 		else if(!isHide){		
-			jQuery(this).removeClass("hidden");
+			jQuery(item).removeClass("hidden");
 		}
 		index++;
 	});
@@ -1817,5 +1820,6 @@ function filterInSection( $this )
 
 function refreshZebraStripes( $tbody )
 {
-    $tbody.find( 'tr:visible:odd' ).find( 'td:first-child' ).removeClass( 'reg' ).addClass( 'reg' );
+     $tbody.find( 'tr:visible:even' ).removeClass( 'listRow' ).removeClass( 'listAlternateRow' ).addClass( 'listRow' );
+     $tbody.find( 'tr:visible:odd' ).removeClass( 'listRow' ).removeClass( 'listAlternateRow' ).addClass( 'listAlternateRow' );
 }
