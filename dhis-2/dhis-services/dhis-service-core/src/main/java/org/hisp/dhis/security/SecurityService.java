@@ -90,7 +90,7 @@ public interface SecurityService
      * Checks whether current user has read access to object.
      *
      * @param identifiableObject Object to check for read access.
-     * @return true of false depending on outcome of readable check
+     * @return true of false depending on outcome of read check
      */
     boolean canRead( IdentifiableObject identifiableObject );
 
@@ -98,23 +98,31 @@ public interface SecurityService
      * Checks whether current user has write access to object.
      *
      * @param identifiableObject Object to check for write access.
-     * @return true of false depending on outcome of writable check
+     * @return true of false depending on outcome of write check
      */
     boolean canWrite( IdentifiableObject identifiableObject );
 
     /**
-     * Checks whether current user has read access to object.
+     * Checks whether current user has update access to object.
      *
-     * @param identifiableObject Object to check for read access.
-     * @return true of false depending on outcome of readable check
+     * @param identifiableObject Object to check for update access.
+     * @return true of false depending on outcome of update check
      */
     boolean canUpdate( IdentifiableObject identifiableObject );
 
     /**
-     * Checks whether current user has read access to object.
+     * Checks whether current user has delete access to object.
      *
-     * @param identifiableObject Object to check for read access.
-     * @return true of false depending on outcome of readable check
+     * @param identifiableObject Object to check for delete access.
+     * @return true of false depending on outcome of delete check
      */
     boolean canDelete( IdentifiableObject identifiableObject );
+
+    /**
+     * Checks whether current user has manage access to object.
+     *
+     * @param identifiableObject Object to check for manage access.
+     * @return true of false depending on outcome of manage check
+     */
+    boolean canManage( IdentifiableObject identifiableObject );
 }
