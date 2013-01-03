@@ -1775,3 +1775,47 @@ function backPreviousPage( patientId )
 		loadPatientList();
 	}
 }
+
+// ----------------------------------------------
+// Data entry section
+// ----------------------------------------------
+
+function filterInSection( $this )
+{
+    var $tbody = $this.parent().parent().parent().parent().parent().find("tbody");
+	var $trTarget = $tbody.find("tr");
+
+    if ( $this.val() == '' )
+    {
+        $trTarget.show();
+    }
+    else 
+    {
+        var $trTargetChildren = $trTarget.find( 'td:first-child' );
+
+        $trTargetChildren.each( function( idx, item ) 
+        {
+			if( $( item ).find( 'span' ).length != 0 )
+			{
+				var text1 = $this.val().toUpperCase();
+				var text2 = $( item ).find( 'span' ).html().toUpperCase();
+
+				if ( text2.indexOf( text1 ) >= 0 )
+				{
+					$( item ).parent().show();
+				}
+				else
+				{
+					$( item ).parent().hide();
+				}
+			}
+		} );
+    }
+
+    refreshZebraStripes( $tbody );
+}
+
+function refreshZebraStripes( $tbody )
+{
+    $tbody.find( 'tr:visible:odd' ).find( 'td:first-child' ).removeClass( 'reg' ).addClass( 'reg' );
+}

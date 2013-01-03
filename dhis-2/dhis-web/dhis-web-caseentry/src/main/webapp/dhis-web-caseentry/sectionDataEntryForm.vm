@@ -16,14 +16,18 @@
 							<col width="18%" />
 							#end
 						</colgroup>
-
+					
+						<thead>
 						<tr>
-							<th>$i18n.getString( "data_element" )</th>                   
-							<th>$i18n.getString( "entry" )</th>
+							<td>
+								<input type="text" class="sectionFilter" placeholder="$encoder.jsEscape( $i18n.getString( "filter_in_section" ) , "'")" onkeyup="filterInSection($(this));" >
+							</td>                   
+							<th>$i18n.getString( "value" )</th>
 							#if( $programStage.program.displayProvidedOtherFacility=='true')
 							<th>$i18n.getString( "provided_elsewhere" )</th>
 							#end
 						</tr>
+						</thead>
 			#set( $dataElementRowCount = 0 )
 			#set( $mark = true )
 			#set( $tabIndex = 1 )
@@ -35,9 +39,8 @@
 						#set( $patientDataValue = $patientDataValueMap.get( $key ) )    
 						<tr #alternate( $mark )>
 							##data element name
-							<td class='text-column' align='center'>
-								<span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
-									$encoder.htmlEncode( $programStageDataElement.dataElement.formNameFallback )						
+							<td id="$key-cell" class='text-column' align='center'>
+								<span id="$key-dataelement">${encoder.htmlEncode( $programStageDataElement.dataElement.getFormNameFallback() )}</span>
 									#if ( $programStageDataElement.compulsory )
 										<em title="$i18n.getString( "required" )" class="required">*</em>
 									#end        
