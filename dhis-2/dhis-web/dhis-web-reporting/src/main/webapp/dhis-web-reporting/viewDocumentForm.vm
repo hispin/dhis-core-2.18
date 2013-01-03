@@ -1,3 +1,77 @@
+
+<script>
+function loadSharingSettings( type, uid ) {
+    return $.ajax( {
+        url: '../api/sharing',
+        data: {
+            type: type,
+            id: uid
+        },
+        dataType: 'json'
+    } );
+}
+
+function saveSharingSettings( type, uid, data ) {
+    data.type = type;
+    data.id = uid;
+
+    return $.ajax( {
+        url: '../api/sharing?type=' + type + '&id=' + uid,
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify( data )
+    } );
+}
+
+function showSharingDialog( type, uid ) {
+    loadSharingSettings( type, uid ).done( function ( data ) {
+        $( '#sharingPublicAccess option' ).removeAttr( 'selected' ).each( function ( idx, item ) {
+            if ( $( item ).val() == data.object.publicAccess ) {
+                $( item ).attr( 'selected', true );
+            }
+        } );
+
+        $( '#sharingSettings' ).dialog( {
+            modal: true,
+            width: 480,
+            height: 260,
+            buttons: {
+                'Cancel': function () {
+                    $( this ).dialog( 'close' );
+                },
+                'Save': function () {
+                    var me = $( this );
+
+                    data.object.publicAccess = $( '#sharingPublicAccess :selected' ).val();
+
+                    saveSharingSettings( type, uid, data ).done( function () {
+                        me.dialog( 'close' );
+                    } );
+                }
+            }
+        } );
+    } );
+}
+</script>
+
+<div id="sharingSettings" title="Sharing Settings" style="display: none;">
+    <p>
+        <label style="width: 100%;" for="sharingName">Name</label>
+        <input style="width: 100%;" id="sharingName" value="vg.no" disabled="disabled"/>
+    
+        <br />
+        <br />
+
+        <label style="width: 100%;" for="sharingPublicAccess">Public Access</label>
+        <select style="width: 100%;" id="sharingPublicAccess">
+            <option value="--------">None</option>
+            <option value="r-------">Read</option>
+            <option value="rw------">Read and Write</option>
+        </select>
+    </p>
+</div>
+
 <script type="text/javascript">
 	jQuery(document).ready(function(){		
 		tableSorter( 'listTable' );	
@@ -24,7 +98,7 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col>
-                <col width="120px">                       
+                <col width="150px">
                 <thead>               
                 <tr>
                     <th>$i18n.getString( "name" )</th>
@@ -36,15 +110,23 @@
                 <tr id="tr${document.id}">
                     <td>$encoder.htmlEncode( $document.name )</td>
 					<td>
+                        #if ( $security.canManage( $document ) )
+                        <a href="javascript:showSharingDialog('document', '$document.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+                        #end
 						#if ( $document.external )
                     	   <a href="${document.url}" title="$i18n.getString( 'view_resource' )">
                     	#else
                     	   <a href="../api/documents/${document.uid}/data" title="$i18n.getString( 'view_resource' )">
                     	#end
-                    	<img src="../images/start_process.png" alt="$i18n.getString( 'view_report' )"></a>                    
+
+                    	<img src="../images/start_process.png" alt="$i18n.getString( 'view_report' )"></a>
+
+                        #if( $security.canUpdate( $document ) )
                     	<a href="displayAddDocumentForm.action?id=$!document.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                        #end
+
 						<a href="javascript:addDocumentToDashboard( '$document.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
-						#if( $auth.hasAccess( "dhis-web-reporting", "removeDocument" ) )
+						#if( $auth.hasAccess( "dhis-web-reporting", "removeDocument" ) && $security.canDelete( $document ) )
 						<a href="javascript:removeDocument( $document.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>
 						#else <img src="../images/delete-denied.png"> #end
 					</td>
