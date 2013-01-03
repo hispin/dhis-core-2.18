@@ -46,8 +46,7 @@ function executeTasks()
 function schedulingAggCondTasks()
 {
 	$.post( 'scheduleCaseAggTasks.action',{
-		execute:false,
-		aggQueryBuilderStrategy:getFieldValue("aggQueryBuilderStrategy")
+		execute:false
 	}, function( json ){
 		var status = json.scheduleTasks.status;
 		if( status=='not_started' ){
@@ -72,8 +71,7 @@ function executeAggCondTasks()
 	if ( ok )
 	{
 		$.post( 'scheduleCaseAggTasks.action',{
-			execute:true,
-			aggQueryBuilderStrategy:getFieldValue("aggQueryBuilderStrategy")
+			execute:true
 		},function( json ){
 			setMessage(i18n_execute_success);
 		});

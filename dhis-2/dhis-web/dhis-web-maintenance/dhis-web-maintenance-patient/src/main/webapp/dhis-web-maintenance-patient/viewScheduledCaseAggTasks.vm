@@ -17,26 +17,7 @@
 <input type='hidden' id='execute' name='execute'/>
 	
 <table>
-<tr>
-	<td style="height:10px"></td>
-</tr>
-<tr>
-	<td style="height:10px"></td>
-</tr>
-<tr>
-	<th>$i18n.getString( "aggregate_task_strategy" )</th>
-</tr>
-<tr>
-	<td>
-		<select id="aggQueryBuilderStrategy" name="aggQueryBuilderStrategy" class="scheduling" style="width:100%">
-		<option value="last12Daily"#if( $aggQueryBuilderStrategy && $aggQueryBuilderStrategy == "last12Daily" ) selected="selected"#end>$i18n.getString( "last_12_months_daily" )</option>
-		<option value="last6Daily6To12Weekly"#if( $aggQueryBuilderStrategy && $aggQueryBuilderStrategy == "last6Daily6To12Weekly" ) selected="selected"#end>$i18n.getString( "last_6_months_daily_6_to_12_months_weekly" )</option>		
-		</select>
-	</td>
-</tr>
-<tr>
-	<td style="height:10px"></td>
-</tr>
+
 <tr>
 	<td>
 		<input type="button" style="width:140px" onclick="schedulingAggCondTasks();"

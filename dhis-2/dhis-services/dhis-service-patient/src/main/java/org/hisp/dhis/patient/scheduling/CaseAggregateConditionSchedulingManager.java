@@ -36,10 +36,7 @@ import java.util.Map;
  */
 public interface CaseAggregateConditionSchedulingManager
 {
-    final String TASK_AGGREGATE_QUERY_BUILDER_LAST_12_MONTHS = "aggregateLast12MonthsTask";
-    final String TASK_AGGREGATE_QUERY_BUILDER_LAST_6_MONTS = "aggregateLast6MonthsTask";
-    final String TASK_AGGREGATE_QUERY_BUILDER_FROM_6_TO_12_MONTS = "aggregateFrom6To12MonthsTask";
-    
+    final String TASK_AGGREGATE_QUERY_BUILDER = "aggregateQueryBuilder";
     void scheduleTasks();
     
     void scheduleTasks( Map<String, String> keyCronMap );
