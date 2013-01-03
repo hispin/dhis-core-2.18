@@ -5,6 +5,11 @@
 
 <h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
 <ul>
+	<li><a href="department.action">$i18n.getString( "organisationunit" )</a></li>
+</ul>
+
+<h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
+<ul>
 	<li><a href="../dhis-web-reporting/displayViewDataCompletenessForm.action">$i18n.getString( "view_data_status" )</a></li>
 	<li><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></li>
 	<!--
