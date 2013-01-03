@@ -1653,10 +1653,7 @@ function sendSmsOnePatient( field, programStageInstanceId )
 				setInnerHTML('smsError', json.message);
 				var date = new Date();
 				var currentTime = date.getHours() + ":" + date.getMinutes();
-				jQuery('#commentEntryTB').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
-					+ "<td>" + getFieldValue('currentUsername') + "</td>"
-					+ "<td>" + field.value + "</td></tr>");
-				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
+				jQuery('[name=commentTB]').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + field.value + "</td></tr>");
@@ -1742,8 +1739,8 @@ function removeComment( programStageInstanceId, commentId )
 
 function commentDivToggle(isHide)
 {
-	jQuery("#commentTB tr").removeClass("hidden");
-	jQuery("#commentTB tr").each( function(index, item){
+	jQuery("#commentReportTB tr").removeClass("hidden");
+	jQuery("#commentReportTB tr").each( function(index, item){
 		if(isHide && index > 4){
 			jQuery(item).addClass("hidden");
 		}
@@ -1753,7 +1750,7 @@ function commentDivToggle(isHide)
 		index++;
 	});
 	
-	if(jQuery("#commentTB tr").length <= 5 )
+	if(jQuery("#commentReportTB tr").length <= 5 )
 	{
 		hideById('showCommentBtn');
 		hideById('hideCommentBtn');
