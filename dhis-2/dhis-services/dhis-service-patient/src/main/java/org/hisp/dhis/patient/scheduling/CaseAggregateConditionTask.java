@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.patient.scheduling;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -188,12 +189,14 @@ public class CaseAggregateConditionTask
 
     private Period getPeriod( String periodTypeName )
     {
-        Date date = new Date();
+        Calendar today = Calendar.getInstance();  
+        
+        today.add(Calendar.DATE, -1);  
 
         CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodTypeName );
 
-        Period period = periodType.createPeriod( date );
+        Period period = periodType.createPeriod( today );
 
-        return (period.getEndDate().equals( date ) || period.getEndDate().before( date )) ? period : null;
+        return ( period.getEndDate().before( today.getTime() )) ? period : null;
     }
 }
