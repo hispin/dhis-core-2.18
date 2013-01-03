@@ -12,9 +12,6 @@ function loadSharingSettings( type, uid ) {
 }
 
 function saveSharingSettings( type, uid, data ) {
-    data.type = type;
-    data.id = uid;
-
     return $.ajax( {
         url: '../api/sharing?type=' + type + '&id=' + uid,
         type: 'POST',
@@ -31,6 +28,8 @@ function showSharingDialog( type, uid ) {
                 $( item ).attr( 'selected', true );
             }
         } );
+
+        $( '#sharingName' ).val( data.object.name );
 
         $( '#sharingSettings' ).dialog( {
             modal: true,
@@ -58,7 +57,7 @@ function showSharingDialog( type, uid ) {
 <div id="sharingSettings" title="Sharing Settings" style="display: none;">
     <p>
         <label style="width: 100%;" for="sharingName">Name</label>
-        <input style="width: 100%;" id="sharingName" value="vg.no" disabled="disabled"/>
+        <input style="width: 100%;" id="sharingName" value="" disabled="disabled"/>
     
         <br />
         <br />
