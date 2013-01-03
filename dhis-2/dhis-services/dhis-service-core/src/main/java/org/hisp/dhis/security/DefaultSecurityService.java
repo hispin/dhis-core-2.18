@@ -289,6 +289,12 @@ public class DefaultSecurityService
         return isCurrentUser( identifiableObject.getUser() );
     }
 
+    @Override
+    public boolean canManage( IdentifiableObject identifiableObject )
+    {
+        return canWrite( identifiableObject );
+    }
+
     public boolean isCurrentUser( User user )
     {
         return currentUserService.getCurrentUser() == user;
