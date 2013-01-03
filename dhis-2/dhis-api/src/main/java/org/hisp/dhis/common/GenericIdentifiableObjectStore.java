@@ -27,11 +27,12 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -57,53 +58,53 @@ public interface GenericIdentifiableObjectStore<T>
 
     /**
      * Retrieves the object with the given code.
-     * 
+     *
      * @param name the code.
      * @return the object with the given code.
      */
     T getByCode( String code );
-    
+
     /**
      * Retrieves the objects determined by the given first result and max result.
-     * 
+     *
      * @param first the first result object to return.
-     * @param max the max number of result objects to return. 
+     * @param max   the max number of result objects to return.
      * @return collection of objects.
      */
     Collection<T> getBetween( int first, int max );
 
     /**
      * Retrieves the objects determined by the given first result and max result.
-     * The returned list is ordered by the last updated property descending. 
-     * 
+     * The returned list is ordered by the last updated property descending.
+     *
      * @param first the first result object to return.
-     * @param max the max number of result objects to return. 
+     * @param max   the max number of result objects to return.
      * @return collection of objects.
      */
     List<T> getBetweenOrderderByLastUpdated( int first, int max );
-    
+
     /**
      * Retrieves the objects determined by the given first result and max result
      * which name is like the given name.
-     * 
-     * @param the name which result object names must be like.
+     *
+     * @param the   name which result object names must be like.
      * @param first the first result object to return.
-     * @param max the max number of result objects to return. 
+     * @param max   the max number of result objects to return.
      * @return collection of objects.
-     */    
+     */
     Collection<T> getBetweenByName( String name, int first, int max );
-    
+
     /**
      * Gets the count of objects which name is like the given name.
-     * 
+     *
      * @param name the name which result object names must be like.
      * @return the count of objects.
      */
     int getCountByName( String name );
-    
+
     /**
      * Retrieves a list of objects referenced by the given collection of uids.
-     * 
+     *
      * @param uids a collection of uids.
      * @return a list of objects.
      */
@@ -141,19 +142,19 @@ public interface GenericIdentifiableObjectStore<T>
      * @return the number of objects equal or newer than given date.
      */
     long getCountByLastUpdated( Date lastUpdated );
-    
+
     /**
      * Retrieves objects associated with the given user.
-     * 
+     *
      * @param user the user.
-     * @param a list of objects.
+     * @param a    list of objects.
      */
     Collection<T> getByUser( User user );
-    
+
     /**
      * Retrieves objects which are accessible to the given user, which includes
      * public objects and objects owned by this user.
-     * 
+     *
      * @param user the user.
      * @return a list of objects.
      */
@@ -161,47 +162,47 @@ public interface GenericIdentifiableObjectStore<T>
 
     /**
      * Retrieves objects which are accessible to the given user, which includes
-     * public objects and objects owned by this user, that are equal to or newer 
+     * public objects and objects owned by this user, that are equal to or newer
      * than given date.
-     * 
-     * @param user the user.
+     *
+     * @param user        the user.
      * @param lastUpdated the Date to compare with.
      * @return a list of objects.
      */
     List<T> getAccessibleByLastUpdated( User user, Date lastUpdated );
-    
+
     /**
      * Retrieves objects which are accessible to the given user, which includes
      * public objects and objects owned by this user, which name is like the
      * given name.
-     * 
+     *
      * @param user the user.
      * @param name the name.
      * @return a list of objects.
      */
     List<T> getAccessibleLikeName( User user, String name );
-    
+
     /**
      * Retrieves objects which are accessible to the given user, which includes
-     * public objects and objects owned by this user, limited by the given offset 
+     * public objects and objects owned by this user, limited by the given offset
      * and max result.
-     * 
-     * @param user the user.
+     *
+     * @param user  the user.
      * @param first the first result object to return.
-     * @param max the max number of result objects to return. 
+     * @param max   the max number of result objects to return.
      * @return a list of objects.
      */
     List<T> getAccessibleBetween( User user, int first, int max );
-    
+
     /**
      * Retrieves objects which are accessible to the given user, which includes
      * public objects and objects owned by this user, which name is like the
      * given name, limited by the given offset and max result.
-     * 
-     * @param user the user.
-     * @param name the name.
+     *
+     * @param user  the user.
+     * @param name  the name.
      * @param first the first result object to return.
-     * @param max the max number of result objects to return. 
+     * @param max   the max number of result objects to return.
      * @return a list of objects.
      */
     List<T> getAccessibleBetweenLikeName( User user, String name, int first, int max );

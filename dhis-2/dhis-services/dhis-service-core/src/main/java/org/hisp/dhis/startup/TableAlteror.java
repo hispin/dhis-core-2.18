@@ -38,6 +38,7 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.AccessHelper;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,9 +130,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataelement DROP COLUMN alternativename" );
         executeSql( "ALTER TABLE indicator DROP COLUMN alternativename" );
         executeSql( "ALTER TABLE orgunitgroup DROP COLUMN image" );
-        
+
         executeSql( "DROP INDEX datamart_crosstab" );
-        
+
         // remove relative period type
         executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name in ( 'Survey', 'OnChange', 'Relative' ))" );
         executeSql( "DELETE FROM periodtype WHERE name in ( 'Survey', 'OnChange', 'Relative' )" );
@@ -154,12 +155,12 @@ public class TableAlteror
         //TODO executeSql( "ALTER TABLE datavalue ALTER COLUMN storedby TYPE character varying(100)" );
 
         executeSql( "ALTER TABLE maplegend DROP CONSTRAINT maplegend_name_key" );
-        
+
         executeSql( "UPDATE mapview SET layer = 'thematic1' WHERE layer IS NULL" );
-        
+
         executeSql( "DELETE FROM systemsetting WHERE name = 'longitude'" );
         executeSql( "DELETE FROM systemsetting WHERE name = 'latitude'" );
-        
+
         executeSql( "ALTER TABLE maplayer DROP CONSTRAINT maplayer_mapsource_key" );
         executeSql( "ALTER TABLE maplayer DROP COLUMN mapsource" );
         executeSql( "ALTER TABLE maplayer DROP COLUMN mapsourcetype" );
@@ -171,11 +172,11 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP CONSTRAINT fk_indicator_extendeddataelementid" );
         executeSql( "ALTER TABLE indicator DROP COLUMN extendeddataelementid" );
         executeSql( "DROP TABLE extendeddataelement" );
-        
+
         executeSql( "ALTER TABLE organisationunit DROP COLUMN hasPatients" );
-        
+
         executeSql( "update dataelement set texttype='text' where valuetype='string' and texttype is null" );
-        
+
         // ---------------------------------------------------------------------
         // Update tables for dimensional model
         // ---------------------------------------------------------------------
@@ -208,9 +209,9 @@ public class TableAlteror
         // categoryoptioncombos_categoryoptions
         executeSql( "alter table categoryoptioncombos_categoryoptions drop column sort_order" );
         executeSql( "alter table categoryoptioncombos_categoryoptions add constraint categoryoptioncombos_categoryoptions_pkey primary key(categoryoptioncomboid, categoryoptionid)" );
-        
+
         // dataelementcategoryoption
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );        
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
 
         // minmaxdataelement query index
@@ -218,18 +219,18 @@ public class TableAlteror
 
         // add mandatory boolean field to patientattribute
         executeSql( "ALTER TABLE patientattribute ADD mandatory bool" );
-        
+
         if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0 )
         {
             executeSql( "UPDATE patientattribute SET groupby=false" );
         }
-        
+
         // update periodType field to ValidationRule
         executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly') WHERE periodtypeid is null" );
 
         // update dataelement.domainTypes of which values is null
         executeSql( "UPDATE dataelement SET domaintype='aggregate' WHERE domaintype is null" );
-        
+
         // set varchar to text
         executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
         executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
@@ -260,11 +261,11 @@ public class TableAlteror
         executeSql( "UPDATE indicatortype SET indicatornumber=false WHERE indicatornumber is null" );
 
         // program
-        
+
         executeSql( "ALTER TABLE programinstance ALTER COLUMN patientid DROP NOT NULL" );
 
         // migrate charts from dimension to category, series, filter
-        
+
         executeSql( "UPDATE chart SET series='PERIOD', category='DATA', filter='ORGANISATIONUNIT' WHERE dimension='indicator'" );
         executeSql( "UPDATE chart SET series='DATA', category='ORGANISATIONUNIT', filter='PERIOD' WHERE dimension='organisationUnit'" );
         executeSql( "UPDATE chart SET series='PERIOD', category='DATA', filter='ORGANISATIONUNIT' WHERE dimension='dataElement_period'" );
@@ -295,19 +296,19 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN monthsLastYear" );
         executeSql( "ALTER TABLE chart DROP COLUMN quartersLastYear" );
         executeSql( "ALTER TABLE chart DROP COLUMN last6BiMonths" );
-        
+
         executeSql( "ALTER TABLE chart DROP CONSTRAINT chart_title_key" );
         executeSql( "ALTER TABLE chart DROP CONSTRAINT chart_name_key" );
-        
+
         executeSql( "ALTER TABLE chart DROP COLUMN domainaxixlabel" );
-        
+
         executeSql( "ALTER TABLE chart ALTER hideLegend DROP NOT NULL" );
         executeSql( "ALTER TABLE chart ALTER regression DROP NOT NULL" );
         executeSql( "ALTER TABLE chart ALTER hideSubtitle DROP NOT NULL" );
-        executeSql( "ALTER TABLE chart ALTER userOrganisationUnit DROP NOT NULL" );        
-        
+        executeSql( "ALTER TABLE chart ALTER userOrganisationUnit DROP NOT NULL" );
+
         // remove outdated relative periods
-        
+
         executeSql( "ALTER TABLE reporttable DROP COLUMN last6months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN last9months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisyear" );
@@ -331,7 +332,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
 
         // remove source
-        
+
         executeSql( "ALTER TABLE datasetsource DROP CONSTRAINT fk766ae2938fd8026a" );
         executeSql( "ALTER TABLE datasetlocksource DROP CONSTRAINT fk582fdf7e8fd8026a" );
         executeSql( "ALTER TABLE completedatasetregistration DROP CONSTRAINT fk_datasetcompleteregistration_sourceid" );
@@ -339,7 +340,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE datavalue DROP CONSTRAINT fk_datavalue_sourceid" );
         executeSql( "ALTER TABLE datavaluearchive DROP CONSTRAINT fk_datavaluearchive_sourceid" );
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT fke509dd5ef1c932ed" );
-        executeSql( "DROP TABLE source CASCADE" );        
+        executeSql( "DROP TABLE source CASCADE" );
 
         // message
 
@@ -353,13 +354,13 @@ public class TableAlteror
         executeSql( "DROP TABLE message_usermessages" );
 
         // create code unique constraints
-        
+
         executeSql( "ALTER TABLE dataelement ADD CONSTRAINT dataelement_code_key UNIQUE(code)" );
         executeSql( "ALTER TABLE indicator ADD CONSTRAINT indicator_code_key UNIQUE(code)" );
         executeSql( "ALTER TABLE organisationunit ADD CONSTRAINT organisationunit_code_key UNIQUE(code)" );
-        
+
         // remove uuid
-        
+
         executeSql( "ALTER TABLE attribute DROP COLUMN uuid" );
         executeSql( "ALTER TABLE categorycombo DROP COLUMN uuid" );
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN uuid" );
@@ -384,9 +385,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE report DROP COLUMN uuid" );
         executeSql( "ALTER TABLE validationrule DROP COLUMN uuid" );
         executeSql( "ALTER TABLE validationrulegroup DROP COLUMN uuid" );
-        
+
         // replace null with false for boolean fields
-        
+
         executeSql( "update dataset set fieldcombinationrequired = false where fieldcombinationrequired is null" );
         executeSql( "update chart set hidelegend = false where hidelegend is null" );
         executeSql( "update chart set regression = false where regression is null" );
@@ -452,32 +453,40 @@ public class TableAlteror
         executeSql( "update dataentryform set format = 1 where format is null" );
         
         // report, reporttable, chart groups
-        
+
         executeSql( "DROP TABLE reportgroupmembers" );
         executeSql( "DROP TABLE reportgroup" );
         executeSql( "DROP TABLE reporttablegroupmembers" );
         executeSql( "DROP TABLE reporttablegroup" );
         executeSql( "DROP TABLE chartgroupmembers" );
         executeSql( "DROP TABLE chartgroup" );
-        
+
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN categoryoptioncomboid" );
         executeSql( "delete from usersetting where name='currentStyle' and value like '%blue/blue.css'" );
         executeSql( "delete from systemsetting where name='currentStyle' and value like '%blue/blue.css'" );
-        
+
         executeSql( "update dataentryform set style='regular' where style is null" );
 
         executeSql( "UPDATE dataset SET skipaggregation = false WHERE skipaggregation IS NULL" );
         executeSql( "UPDATE dataset SET skipoffline = false WHERE skipoffline IS NULL" );
 
         executeSql( "UPDATE categorycombo SET skiptotal = false WHERE skiptotal IS NULL" );
-        
+
         // short names
-        
+
         executeSql( "ALTER TABLE dataelement ALTER COLUMN shortname TYPE character varying(50)" );
         executeSql( "ALTER TABLE indicator ALTER COLUMN shortname TYPE character varying(50)" );
         executeSql( "ALTER TABLE dataset ALTER COLUMN shortname TYPE character varying(50)" );
         executeSql( "ALTER TABLE organisationunit ALTER COLUMN shortname TYPE character varying(50)" );
-        
+
+        // set default access properties
+        String publicString = AccessHelper.newInstance()
+            .enable( AccessHelper.Permission.READ )
+            .enable( AccessHelper.Permission.WRITE )
+            .build();
+
+        // executeSql( "UPDATE document SET publicaccess = '" + publicString + "' WHERE userid IS NULL AND publicaccess IS NULL" );
+
         log.info( "Tables updated" );
     }
 

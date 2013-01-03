@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.api.webdomain.sharing;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,95 +27,95 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class AccessHelper
+public class SharingObject
 {
-    public static final String DEFAULT_ACCESS = "--------";
+    @JsonProperty
+    private String id;
 
-    public static enum Permission
-    {
-        READ( 'r', 0 ), WRITE( 'w', 1 );
+    @JsonProperty
+    private String clazz;
 
-        private char value;
+    @JsonProperty
+    private String name;
 
-        private int position;
+    @JsonProperty
+    private String publicAccess;
 
-        private Permission( char value, int position )
-        {
-            this.value = value;
-            this.position = position;
-        }
+    @JsonProperty
+    private SharingUser user = new SharingUser();
 
-        public char getValue()
-        {
-            return value;
-        }
+    @JsonProperty
+    private List<SharingUserGroupAccess> userGroupAccesses = new ArrayList<SharingUserGroupAccess>();
 
-        public int getPosition()
-        {
-            return position;
-        }
-    }
-
-    private char[] access = DEFAULT_ACCESS.toCharArray();
-
-    public AccessHelper()
+    public SharingObject()
     {
     }
 
-    public AccessHelper( char[] access )
+    public String getId()
     {
-        this.access = access;
+        return id;
     }
 
-    public AccessHelper( String access )
+    public void setId( String id )
     {
-        this.access = access.toCharArray();
+        this.id = id;
     }
 
-    public static AccessHelper newInstance()
+    public String getClazz()
     {
-        return new AccessHelper();
+        return clazz;
     }
 
-    public AccessHelper enable( Permission permission )
+    public void setClazz( String clazz )
     {
-        access[permission.getPosition()] = permission.getValue();
-
-        return this;
+        this.clazz = clazz;
     }
 
-    public AccessHelper disable( Permission permission )
+    public String getName()
     {
-        access[permission.getPosition()] = '-';
-
-        return this;
+        return name;
     }
 
-    public String build()
+    public void setName( String name )
     {
-        return new String( access );
+        this.name = name;
     }
 
-    public String toString()
+    public String getPublicAccess()
     {
-        return build();
+        return publicAccess;
     }
 
-    public static boolean canRead( String access )
+    public void setPublicAccess( String publicAccess )
     {
-        return isEnabled( access, Permission.READ );
+        this.publicAccess = publicAccess;
     }
 
-    public static boolean canWrite( String access )
+    public SharingUser getUser()
     {
-        return isEnabled( access, Permission.WRITE );
+        return user;
     }
 
-    public static boolean isEnabled( String access, Permission permission )
+    public void setUser( SharingUser user )
     {
-        return access.charAt( permission.getPosition() ) == permission.getValue();
+        this.user = user;
+    }
+
+    public List<SharingUserGroupAccess> getUserGroupAccesses()
+    {
+        return userGroupAccesses;
+    }
+
+    public void setUserGroupAccesses( List<SharingUserGroupAccess> userGroupAccesses )
+    {
+        this.userGroupAccesses = userGroupAccesses;
     }
 }

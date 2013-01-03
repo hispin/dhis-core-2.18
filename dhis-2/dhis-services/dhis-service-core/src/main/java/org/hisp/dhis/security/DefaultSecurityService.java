@@ -29,6 +29,7 @@ package org.hisp.dhis.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.AccessHelper;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.message.MessageSender;
@@ -36,10 +37,13 @@ import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserGroupAccess;
 import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -93,6 +97,9 @@ public class DefaultSecurityService
     {
         this.systemSettingManager = systemSettingManager;
     }
+
+    @Autowired
+    private CurrentUserService currentUserService;
 
     // -------------------------------------------------------------------------
     // SecurityService implementation
@@ -231,14 +238,59 @@ public class DefaultSecurityService
     }
 
     @Override
-    public boolean isWritable( IdentifiableObject identifiableObject )
+    public boolean canRead( IdentifiableObject identifiableObject )
     {
+        if ( isCurrentUser( identifiableObject.getUser() ) || AccessHelper.canRead( identifiableObject.getPublicAccess() ) )
+        {
+            return true;
+        }
+
+        for ( UserGroupAccess userGroupAccess : identifiableObject.getUserGroupAccesses() )
+        {
+            if ( AccessHelper.canRead( userGroupAccess.getAccess() )
+                && userGroupAccess.getUserGroup().getMembers().contains( currentUserService.getCurrentUser() ) )
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 
     @Override
-    public boolean isReadable( IdentifiableObject identifiableObject )
+    public boolean canWrite( IdentifiableObject identifiableObject )
     {
+        if ( isCurrentUser( identifiableObject.getUser() ) || AccessHelper.canWrite( identifiableObject.getPublicAccess() ) )
+        {
+            return true;
+        }
+
+        for ( UserGroupAccess userGroupAccess : identifiableObject.getUserGroupAccesses() )
+        {
+            if ( AccessHelper.canWrite( userGroupAccess.getAccess() )
+                && userGroupAccess.getUserGroup().getMembers().contains( currentUserService.getCurrentUser() ) )
+            {
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    @Override
+    public boolean canUpdate( IdentifiableObject identifiableObject )
+    {
+        return canWrite( identifiableObject );
+    }
+
+    @Override
+    public boolean canDelete( IdentifiableObject identifiableObject )
+    {
+        return isCurrentUser( identifiableObject.getUser() );
+    }
+
+    public boolean isCurrentUser( User user )
+    {
+        return currentUserService.getCurrentUser() == user;
     }
 }
