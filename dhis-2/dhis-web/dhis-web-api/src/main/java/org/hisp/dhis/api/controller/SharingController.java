@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.webdomain.sharing.Sharing;
 import org.hisp.dhis.api.webdomain.sharing.SharingUserGroupAccess;
+import org.hisp.dhis.api.webdomain.sharing.SharingUserGroups;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -125,14 +126,10 @@ public class SharingController
         {
             SharingUserGroupAccess sharingUserGroupAccess = new SharingUserGroupAccess();
             sharingUserGroupAccess.setId( userGroupAccess.getUserGroup().getUid() );
+            sharingUserGroupAccess.setName( userGroupAccess.getUserGroup().getDisplayName() );
             sharingUserGroupAccess.setAccess( userGroupAccess.getAccess() );
 
             sharing.getObject().getUserGroupAccesses().add( sharingUserGroupAccess );
-        }
-
-        for ( UserGroup userGroup : userGroupService.getAllUserGroups() )
-        {
-            sharing.getUserGroups().put( userGroup.getUid(), userGroup.getDisplayName() );
         }
 
         JacksonUtils.toJson( response.getOutputStream(), sharing );
@@ -185,5 +182,18 @@ public class SharingController
         }
 
         manager.update( object );
+    }
+
+    @RequestMapping( value = "/search", produces = { "application/json", "text/*" } )
+    public void searchUserGroups( @RequestParam String key, HttpServletResponse response ) throws IOException
+    {
+        SharingUserGroups sharingUserGroups = new SharingUserGroups();
+
+        for ( UserGroup userGroup : userGroupService.getUserGroupsBetweenByName( key, 0, Integer.MAX_VALUE ) )
+        {
+            sharingUserGroups.getUserGroups().put( userGroup.getUid(), userGroup.getDisplayName() );
+        }
+
+        JacksonUtils.toJson( response.getOutputStream(), sharingUserGroups );
     }
 }
