@@ -1,4 +1,24 @@
 
+<script src="../dhis-web-commons/select2/select2.min.js"></script>
+<link rel="stylesheet" href="../dhis-web-commons/select2/select2.css" />
+
+<style>
+.dialog-form {
+    margin: 0 auto;
+}
+
+.dialog-form > p {
+    padding: 0;
+    margin : 5px auto;
+}
+
+.dialog-form > p input {
+    border: none;
+    background-color: white;
+    width: 455px;
+}
+</style>
+
 <script>
 function loadSharingSettings( type, uid ) {
     return $.ajax( {
@@ -21,6 +41,28 @@ function saveSharingSettings( type, uid, data ) {
     } );
 }
 
+function addUserGroupAccess( ugName, ugId, ugAccess )
+{
+    var $tr = $( '<tr/>' );
+
+    $( '<td />' ).text( ugName ).attr('id', ugId ).appendTo( $tr );
+
+    if ( ugAccess == 'rw------' ) {
+        $( '<td style="width: 100px;"/>' ).attr( 'access', ugAccess ).text( "Read / Write" ).appendTo( $tr );
+    } else if ( ugAccess == 'r-------' ) {
+        $( '<td style="width: 100px;" />' ).attr( 'access', ugAccess ).text( "Read" ).appendTo( $tr );
+    }
+
+    $( '<td style="width: 80px;"/>' ).html('<button class="removeUgButton" style="width: 80px; height: 22px;">Remove</button>' ).appendTo( $tr );
+
+    $( '#sharingUserGroupAccesses table tbody' ).append( $tr );
+}
+
+function formatItem( item )
+{
+    return '<span data-id=' + item.id + '>' + item.name + '</span>';
+}
+
 function showSharingDialog( type, uid ) {
     loadSharingSettings( type, uid ).done( function ( data ) {
         $( '#sharingPublicAccess option' ).removeAttr( 'selected' ).each( function ( idx, item ) {
@@ -29,12 +71,61 @@ function showSharingDialog( type, uid ) {
             }
         } );
 
+        $( '#sharingUserGroupAccesses table tbody' ).children().remove();
+
+        $( '#sharingUserGroupAccesses table tbody' ).on( 'click', '.removeUgButton', function() {
+            var tr = $( this ).parent().parent();
+            tr.remove()
+        } );
+
+        $( '#addUserGroupAccess' ).click(function() {
+            var data = $( '#sharingUserGroupInput' ).select2('data');
+            var access = $('#sharingUserGroupAccess :selected' ).val();
+
+            addUserGroupAccess(data.name, data.id, access);
+        });
+
+        if(data.object.userGroupAccesses !== undefined)
+        {
+            $.each(data.object.userGroupAccesses, function(idx, item) {
+                addUserGroupAccess( item.name, item.id, item.access );
+            });
+        }
+
+        $( '#sharingPublicAccess' ).select2({
+            minimumResultsForSearch: 40
+        });
+
+        $( '#sharingUserGroupAccess' ).select2({
+            minimumResultsForSearch: 40
+        });
+
+        $( '#sharingUserGroupInput' ).select2({
+            minimumResultsForSearch: 40,
+            minimumInputLength: 1,
+            ajax: {
+                url: '../api/sharing/search',
+                dataType: 'json',
+                data: function(term, page) {
+                     return {
+                         key: term
+                     }
+                },
+                results: function(data, page) {
+                    return { results: data.userGroups }
+                }
+            },
+            formatResult: formatItem,
+            formatSelection: formatItem
+        });
+
         $( '#sharingName' ).val( data.object.name );
 
         $( '#sharingSettings' ).dialog( {
             modal: true,
-            width: 480,
-            height: 260,
+            resizable: false,
+            width: 485,
+            height: 394,
             buttons: {
                 'Cancel': function () {
                     $( this ).dialog( 'close' );
@@ -43,6 +134,17 @@ function showSharingDialog( type, uid ) {
                     var me = $( this );
 
                     data.object.publicAccess = $( '#sharingPublicAccess :selected' ).val();
+                    data.object.userGroupAccesses = [];
+
+                    $( '#sharingUserGroupAccesses table tbody' ).find('tr').each(function(idx, item) {
+                        var tr = $(item);
+                        var uga = {};
+
+                        uga.id = $(tr.children()[0]).attr('id');
+                        uga.access = $(tr.children()[1]).attr('access');
+
+                        data.object.userGroupAccesses.push(uga);
+                    });
 
                     saveSharingSettings( type, uid, data ).done( function () {
                         me.dialog( 'close' );
@@ -55,20 +157,59 @@ function showSharingDialog( type, uid ) {
 </script>
 
 <div id="sharingSettings" title="Sharing Settings" style="display: none;">
-    <p>
-        <label style="width: 100%;" for="sharingName">Name</label>
-        <input style="width: 100%;" id="sharingName" value="" disabled="disabled"/>
-    
-        <br />
-        <br />
+    <div class="dialog-form">
+        <p>
+        <label for="sharingName">Name</label>
+        </p>
 
-        <label style="width: 100%;" for="sharingPublicAccess">Public Access</label>
-        <select style="width: 100%;" id="sharingPublicAccess">
+        <p>
+        <input id="sharingName" value="" disabled="disabled"/>
+        </p>
+
+        <p>
+        <label for="sharingPublicAccess">Public Access</label>
+        </p>
+
+        <p>
+        <select style="width: 440px;" id="sharingPublicAccess">
             <option value="--------">None</option>
             <option value="r-------">Read</option>
-            <option value="rw------">Read and Write</option>
+            <option value="rw------">Read / Write</option>
         </select>
-    </p>
+        </p>
+
+        <p>
+        <label for="sharingUserGroupInput">User Group Access</label>
+        </p>
+
+        <p>
+        <div id="sharingUserGroupAccesses" style="overflow-x: hidden; overflow-y: scroll; height: 100px; width: 440px;">
+            <table style="width: 425px;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Access</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </p>
+
+        <p>
+        <button id="addUserGroupAccess" style="width: 30px; height: 22px; padding: 0; margin: 0;">Add</button>
+
+        <input style="width: 290px;" id="sharingUserGroupInput" />
+
+        <select style="width: 111px;" id="sharingUserGroupAccess">
+            <option value="r-------">Read</option>
+            <option value="rw------">Read / Write</option>
+        </select>
+
+        </p>
+    </div>
 </div>
 
 <script type="text/javascript">
