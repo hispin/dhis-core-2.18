@@ -191,7 +191,12 @@ public class SharingController
 
         for ( UserGroup userGroup : userGroupService.getUserGroupsBetweenByName( key, 0, Integer.MAX_VALUE ) )
         {
-            sharingUserGroups.getUserGroups().put( userGroup.getUid(), userGroup.getDisplayName() );
+            SharingUserGroupAccess sharingUserGroupAccess = new SharingUserGroupAccess();
+
+            sharingUserGroupAccess.setId( userGroup.getUid() );
+            sharingUserGroupAccess.setName( userGroup.getDisplayName() );
+
+            sharingUserGroups.getUserGroups().add( sharingUserGroupAccess );
         }
 
         JacksonUtils.toJson( response.getOutputStream(), sharingUserGroups );

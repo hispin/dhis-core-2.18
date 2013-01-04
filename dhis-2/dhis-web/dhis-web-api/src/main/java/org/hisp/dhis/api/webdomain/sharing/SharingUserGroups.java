@@ -29,8 +29,8 @@ package org.hisp.dhis.api.webdomain.sharing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -38,18 +38,18 @@ import java.util.Map;
 public class SharingUserGroups
 {
     @JsonProperty
-    private Map<String, String> userGroups = new HashMap<String, String>();
+    private List<SharingUserGroupAccess> userGroups = new ArrayList<SharingUserGroupAccess>();
 
     public SharingUserGroups()
     {
     }
 
-    public Map<String, String> getUserGroups()
+    public List<SharingUserGroupAccess> getUserGroups()
     {
         return userGroups;
     }
 
-    public void setUserGroups( Map<String, String> userGroups )
+    public void setUserGroups( List<SharingUserGroupAccess> userGroups )
     {
         this.userGroups = userGroups;
     }
