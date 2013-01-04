@@ -29,25 +29,28 @@ package org.hisp.dhis.api.webdomain.sharing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Sharing
+public class SharingUserGroups
 {
     @JsonProperty
-    private SharingObject object = new SharingObject();
+    private Map<String, String> userGroups = new HashMap<String, String>();
 
-    public Sharing()
+    public SharingUserGroups()
     {
     }
 
-    public SharingObject getObject()
+    public Map<String, String> getUserGroups()
     {
-        return object;
+        return userGroups;
     }
 
-    public void setObject( SharingObject object )
+    public void setUserGroups( Map<String, String> userGroups )
     {
-        this.object = object;
+        this.userGroups = userGroups;
     }
 }
