@@ -64,6 +64,8 @@ checkpoint_completion_target = 0.8\n
 wal_buffers = 4MB\n
 synchronous_commit = off\n
 wal_writer_delay = 10000ms\n\"  > /etc/postgresql/$PG_VERSION/main/postgresql.conf"
+
+#NGINX Configuration
 #Nginx configuration
 sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 #Main ngnix config
@@ -125,10 +127,12 @@ location /dhis/ {
   }
 rewrite ^/$ /$USERNAME/ permanent;
 }\" > /etc/nginx/sites-available/$USERNAME"
+sudo ln -s /etc/nginx/sites-available/$USERNAME /etc/nginx/sites-enabled/$USERNAME
 sudo /etc/init.d/nginx restart
 
 #Restart postgres
 sudo /etc/init.d/postgresql restart $PG_VERSION
+#Restart Tomcat
 sudo -u $USERNAME /home/$USERNAME/tomcat/bin/shutdown.sh
 sudo -u $USERNAME /home/$USERNAME/tomcat/bin/startup.sh
 
