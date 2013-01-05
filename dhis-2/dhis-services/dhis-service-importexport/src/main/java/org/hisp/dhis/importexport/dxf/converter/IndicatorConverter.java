@@ -33,7 +33,6 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -72,14 +71,8 @@ public class IndicatorConverter
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-
-    private ExpressionService expressionService;
     
     private Map<Object, Integer> indicatorTypeMapping;
-    
-    private Map<Object, Integer> dataElementMapping;
-    
-    private Map<Object, Integer> categoryOptionComboMapping;
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -99,27 +92,18 @@ public class IndicatorConverter
      * @param batchHandler the batchHandler to use.
      * @param importObjectService the importObjectService to use.
      * @param indicatorService the indicatorService to use.
-     * @param expressionService the expressionService to use.
-     * @param indicatorTypeMapping the indicatorTypeMapping to use.
-     * @param dataElementMapping the dataElementMapping to use.
      * @param categoryOptionComboMapping the categoryOptionComboMapping to use.
      */
     public IndicatorConverter( BatchHandler<Indicator> batchHandler, 
         ImportObjectService importObjectService, 
         IndicatorService indicatorService,
-        ExpressionService expressionService,
         Map<Object, Integer> indicatorTypeMapping, 
-        Map<Object, Integer> dataElementMapping,
-        Map<Object, Integer> categoryOptionComboMapping,
         ImportAnalyser importAnalyser )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.indicatorService = indicatorService;
-        this.expressionService = expressionService;
         this.indicatorTypeMapping = indicatorTypeMapping;
-        this.dataElementMapping = dataElementMapping;
-        this.categoryOptionComboMapping = categoryOptionComboMapping;
         this.importAnalyser = importAnalyser;
     }    
 
@@ -188,9 +172,9 @@ public class IndicatorConverter
             indicator.setDescription( values.get( FIELD_DESCRIPTION ) );
             indicator.setAnnualized( Boolean.parseBoolean( values.get( FIELD_ANNUALIZED ) ) );
             indicator.getIndicatorType().setId( indicatorTypeMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_TYPE ) ) ) );
-            indicator.setNumerator( expressionService.convertExpression( values.get( FIELD_NUMERATOR ), dataElementMapping, categoryOptionComboMapping ) );
+            indicator.setNumerator( values.get( FIELD_NUMERATOR ) );
             indicator.setNumeratorDescription( values.get( FIELD_NUMERATOR_DESCRIPTION ) );
-            indicator.setDenominator( expressionService.convertExpression( values.get( FIELD_DENOMINATOR ), dataElementMapping, categoryOptionComboMapping ) );
+            indicator.setDenominator( values.get( FIELD_DENOMINATOR ) );
             indicator.setDenominatorDescription( values.get( FIELD_DENOMINATOR_DESCRIPTION ) );
             indicator.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
             

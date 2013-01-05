@@ -167,7 +167,7 @@ $( document ).ready( function() {
 		handler: function(item) {
 			var option = jQuery("<option />");
 			option.text( item.name );
-			option.data( "id", item.id );
+			option.data( "id", item.uid );
 			option.dblclick(insertTotal);
 
 			return option;
@@ -183,7 +183,7 @@ $( document ).ready( function() {
 		handler: function(item) {
 			var option = jQuery("<option />");
 			option.text( item.name );
-			option.data("id", item.id);
+			option.data("id", item.uid);
 			option.dblclick(insertIndicator);
 
 			return option;
@@ -423,9 +423,9 @@ function showDynamicElementInsert() {
 	
 	clearListById( "dynamicElementSelector" );
 	
-	var optionCombos = $.getJSON( "../dhis-web-commons-ajax-json/getCategoryOptionCombos.action?categoryComboId=" + categoryComboId, function( json ) {
+	var optionCombos = $.getJSON( "../dhis-web-commons-ajax-json/getCategoryOptionCombos.action?categoryComboUid=" + categoryComboId, function( json ) {
 		$.each( json.categoryOptionCombos, function( index, value ) {
-			addOptionById( "dynamicElementSelector", value.id, value.name );
+			addOptionById( "dynamicElementSelector", value.uid, value.name );
 		} );
 	} );	
 }

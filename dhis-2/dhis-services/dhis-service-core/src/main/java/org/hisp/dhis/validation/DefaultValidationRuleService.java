@@ -136,7 +136,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
     {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
+        Map<String, Double> constantMap = constantService.getConstantMap();
         
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
@@ -145,14 +145,14 @@ public class DefaultValidationRuleService
         for ( OrganisationUnit source : sources )
         {
             Collection<ValidationRule> relevantRules = getRelevantValidationRules( source.getDataElementsInDataSets() );
-
+            
             Set<DataElement> dataElements = getDataElementsInValidationRules( relevantRules ); //TODO move outside loop?
-
+            
             if ( relevantRules != null && relevantRules.size() > 0 )
             {
                 for ( Period period : relevantPeriods )
                 {
-                    validationViolations.addAll( validateInternal( period, source, relevantRules, dataElements, constantMap, false,
+                    validationViolations.addAll( validateInternal( period, source, relevantRules, dataElements, constantMap, 
                         validationViolations.size() ) );
                 }
             }
@@ -164,7 +164,7 @@ public class DefaultValidationRuleService
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
         ValidationRuleGroup group )
     {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
+        Map<String, Double> constantMap = constantService.getConstantMap();
         
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
@@ -181,7 +181,7 @@ public class DefaultValidationRuleService
             {
                 for ( Period period : relevantPeriods )
                 {
-                    validationViolations.addAll( validateInternal( period, source, relevantRules, dataElements, constantMap, false,
+                    validationViolations.addAll( validateInternal( period, source, relevantRules, dataElements, constantMap, 
                         validationViolations.size() ) );
                 }
             }
@@ -192,7 +192,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source )
     {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
+        Map<String, Double> constantMap = constantService.getConstantMap();
         
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
@@ -204,7 +204,7 @@ public class DefaultValidationRuleService
 
         for ( Period period : relevantPeriods )
         {
-            validationViolations.addAll( validateInternal( period, source, relevantRules, dataElements, constantMap, false, validationViolations
+            validationViolations.addAll( validateInternal( period, source, relevantRules, dataElements, constantMap, validationViolations
                 .size() ) );
         }
 
@@ -213,7 +213,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source )
     {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
+        Map<String, Double> constantMap = constantService.getConstantMap();
         
         Collection<ValidationRule> relevantRules = null;
         
@@ -228,7 +228,7 @@ public class DefaultValidationRuleService
         
         Set<DataElement> dataElements = getDataElementsInValidationRules( relevantRules );
         
-        return validateInternal( period, source, relevantRules, dataElements, constantMap, false, 0 );
+        return validateInternal( period, source, relevantRules, dataElements, constantMap, 0 );
     }
 
     public Collection<DataElement> getDataElementsInValidationRules()
@@ -254,13 +254,16 @@ public class DefaultValidationRuleService
      * @param period the period to validate for.
      * @param source the source to validate for.
      * @param validationRules the rules to validate.
+     * @param dataElementsInRules the data elements which are part of the rules expressions.
+     * @param constantMap the constants which are part of the rule expressions.
+     * @param currentSize the current number of validation violations.
      * @returns a collection of rules that did not pass validation.
      */
     private Collection<ValidationResult> validateInternal( Period period, OrganisationUnit unit,
-        Collection<ValidationRule> validationRules, Set<DataElement> dataElementsInRules, Map<Integer, Double> constantMap, boolean aggregate, int currentSize )
+        Collection<ValidationRule> validationRules, Set<DataElement> dataElementsInRules, Map<String, Double> constantMap, int currentSize )
     {
         Map<DataElementOperand, Double> valueMap = dataValueService.getDataValueMap( dataElementsInRules, period, unit );
-        
+
         final Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
         if ( currentSize < MAX_VIOLATIONS && !valueMap.isEmpty() )

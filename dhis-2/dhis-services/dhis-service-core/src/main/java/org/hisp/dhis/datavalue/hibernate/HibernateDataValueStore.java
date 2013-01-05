@@ -409,27 +409,34 @@ public class HibernateDataValueStore
     {
         Map<DataElementOperand, Double> map = new HashMap<DataElementOperand, Double>();
         
+        if ( dataElements.isEmpty() )
+        {
+            return map;
+        }
+        
         final String sql = 
-            "select dataelementid, categoryoptioncomboid, value " +
-            "from datavalue " +
-            "where dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-            "and periodid = " + period.getId() + " " +
-            "and sourceid = " + unit.getId();
+            "select de.uid, coc.uid, value " +
+            "from datavalue dv " +
+            "join dataelement de on dv.dataelementid = de.dataelementid " +
+            "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
+            "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+            "and dv.periodid = " + period.getId() + " " +
+            "and dv.sourceid = " + unit.getId();
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
         while ( rowSet.next() )
         {
-            int dataElementId = rowSet.getInt( "dataelementid" );
-            int optionComboId = rowSet.getInt( "categoryoptioncomboid" );
-            Double value = MathUtils.parseDouble( rowSet.getString( "value" ) );
+            String dataElement = rowSet.getString( 1 );
+            String optionCombo = rowSet.getString( 2 );
+            Double value = MathUtils.parseDouble( rowSet.getString( 3 ) );
             
             if ( value != null )
             {
-                map.put( new DataElementOperand( dataElementId, optionComboId ), value );
+                map.put( new DataElementOperand( dataElement, optionCombo ), value );
             }
         }
         
-        return map;        
+        return map; 
     }
 }

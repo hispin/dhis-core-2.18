@@ -44,7 +44,7 @@
     #set( $count = 0 )
     #set( $mark = 0 )
     #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryComboId )  )
-    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
+    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
     #end
     #foreach( $dataElement in $section.dataElements )
     #if( $mark == 1 )
@@ -54,11 +54,11 @@
     #end
     #set( $count = $count + 1 )
     <tr>
-    <td id="${dataElement.id}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end><span id="${dataElement.id}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
+    <td id="${dataElement.uid}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end><span id="${dataElement.uid}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
     #foreach( $optionCombo in $optionCombos )
-    #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
+    #set( $dataEntryId = "${dataElement.uid}-${optionCombo.uid}-val" )
     #set( $greyedField = false )
-    #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )        
+    #set( $greyedField = $greyedFields.get( "$dataElement.uid:$optionCombo.uid" ) )        
     #if( $dataElement.type == "bool" )
     <td><select name="entryselect" id="$dataEntryId" tabindex="$tabIndex"#if( $greyedField || !$hasAccess ) disabled="disabled"#end>
       <option value="">[$i18n.getString( "no_value" )]</option>

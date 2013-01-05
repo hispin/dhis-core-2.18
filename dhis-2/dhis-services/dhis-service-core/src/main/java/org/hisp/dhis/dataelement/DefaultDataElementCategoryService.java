@@ -502,6 +502,18 @@ public class DefaultDataElementCategoryService
         updateDataElementCategoryCombo( categoryCombo );
     }
     
+    public Map<String, Integer> getDataElementCategoryOptionComboUidIdMap()
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        
+        for ( DataElementCategoryOptionCombo coc : getAllDataElementCategoryOptionCombos() )
+        {
+            map.put( coc.getUid(), coc.getId() );
+        }
+        
+        return map;
+    }
+    
     public int getDataElementCategoryCount()
     {
         return dataElementCategoryStore.getCount();

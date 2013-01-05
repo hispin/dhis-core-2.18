@@ -27,8 +27,8 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
@@ -77,16 +77,10 @@ public class AggregationServiceTest
     private DataElementCategoryOptionCombo categoryOptionComboA;
     private DataElementCategoryOptionCombo categoryOptionComboB;    
     
-    private int categoryOptionComboIdA;
-    
     private DataElement dataElementA;
     private DataElement dataElementB;
     private DataElement dataElementC;
-    
-    private int dataElementIdA;
-    private int dataElementIdB;
-    private int dataElementIdC;
-    
+        
     private IndicatorType indicatorType;
     
     private Indicator indicatorA;
@@ -160,7 +154,7 @@ public class AggregationServiceTest
         categoryOptionComboA = createCategoryOptionCombo( categoryCombo, categoryOptionA );
         categoryOptionComboB = createCategoryOptionCombo( categoryCombo, categoryOptionB );
         
-        categoryOptionComboIdA = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
         categoryService.addDataElementCategoryOptionCombo( categoryOptionComboB );
 
         // ---------------------------------------------------------------------
@@ -171,9 +165,9 @@ public class AggregationServiceTest
         dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
 
-        dataElementIdA = dataElementService.addDataElement( dataElementA );
-        dataElementIdB = dataElementService.addDataElement( dataElementB );
-        dataElementIdC = dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
 
         // ---------------------------------------------------------------------
         // Setup Indicators
@@ -185,11 +179,11 @@ public class AggregationServiceTest
         indicatorService.addIndicatorType( indicatorType );
         
         indicatorA = createIndicator( 'A', indicatorType );
-        indicatorA.setNumerator( "[" + dataElementIdA + SEPARATOR + categoryOptionComboIdA + "]+150" );
-        indicatorA.setDenominator( "[" + dataElementIdB + SEPARATOR + categoryOptionComboIdA + "]" );
+        indicatorA.setNumerator( "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionComboA.getUid() + "}+150" );
+        indicatorA.setDenominator( "#{" + dataElementB.getUid() + SEPARATOR + categoryOptionComboA.getUid() + "}" );
         
         indicatorB = createIndicator( 'B', indicatorType );
-        indicatorB.setNumerator( "[" + dataElementIdC + "]" );
+        indicatorB.setNumerator( "#{" + dataElementC.getUid() + "}" );
         indicatorB.setDenominator( "1" );
         
         indicatorService.addIndicator( indicatorA );

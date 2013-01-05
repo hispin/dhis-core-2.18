@@ -443,10 +443,10 @@ public class DataMartServiceOrgUnitTest
         DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
         DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
         
-        int idC = dataElementService.addDataElement( dataElementC );
-        int idD = dataElementService.addDataElement( dataElementD );
-        int idE = dataElementService.addDataElement( dataElementE );
-        int idF = dataElementService.addDataElement( dataElementF );
+        dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementD );
+        dataElementService.addDataElement( dataElementE );
+        dataElementService.addDataElement( dataElementF );
 
         dataSet.getDataElements().add( dataElementC );
         dataSet.getDataElements().add( dataElementD );
@@ -504,11 +504,11 @@ public class DataMartServiceOrgUnitTest
         
         Indicator indicatorA = createIndicator( 'A', indicatorType );
         
-        String suffix = "." + categoryOptionCombo.getId();
+        String suffix = "." + categoryOptionCombo.getUid();
         
-        indicatorA.setNumerator( "[" + idC + suffix + "]*[" + idD + suffix + "]" );
+        indicatorA.setNumerator( "#{" + dataElementC.getUid() + suffix + "}*#{" + dataElementD.getUid() + suffix + "}" );
         
-        indicatorA.setDenominator( "[" + idE + suffix + "]+[" + idF + suffix + "]" );
+        indicatorA.setDenominator( "#{" + dataElementE.getUid() + suffix + "}+#{" + dataElementF.getUid() + suffix + "}" );
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
 

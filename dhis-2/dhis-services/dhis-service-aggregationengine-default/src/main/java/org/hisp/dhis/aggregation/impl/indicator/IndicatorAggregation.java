@@ -147,7 +147,7 @@ public class IndicatorAggregation
     
     private String generateExpression( String expression, Date startDate, Date endDate, OrganisationUnit organisationUnit, int days )
     {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
+        Map<String, Double> constantMap = constantService.getConstantMap();
         
         Set<DataElementOperand> operands = expressionService.getOperandsInExpression( expression );
         

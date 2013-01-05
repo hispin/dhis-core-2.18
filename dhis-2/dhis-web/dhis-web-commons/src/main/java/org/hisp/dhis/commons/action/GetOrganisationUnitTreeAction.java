@@ -27,7 +27,12 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -40,7 +45,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
 import org.hisp.dhis.version.VersionService;
 
-import java.util.*;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
@@ -214,7 +219,7 @@ public class GetOrganisationUnitTreeAction
             }
         }
 
-        Collection intersection = org.apache.commons.collections.CollectionUtils.intersection(
+        Collection<?> intersection = org.apache.commons.collections.CollectionUtils.intersection(
             organisationUnitService.getRootOrganisationUnits(), rootOrganisationUnits );
 
         if ( intersection.size() > 0 )

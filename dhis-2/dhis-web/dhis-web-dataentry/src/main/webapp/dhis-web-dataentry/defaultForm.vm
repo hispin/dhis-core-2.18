@@ -26,7 +26,7 @@
   #set( $dataElements = $orderedDataElements.get( $categoryCombo )  )
   #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryCombo.id )  )
   #set( $mark = 0 )
-  #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
+  #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
   #end
   #foreach( $dataElement in $dataElements )
   #if( $mark == 1 )
@@ -36,9 +36,9 @@
   #end
   #set( $count = $count + 1 )
   <tr>
-  <td id="${dataElement.id}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end><span id="${dataElement.id}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
+  <td id="${dataElement.uid}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end><span id="${dataElement.uid}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
   #foreach( $optionCombo in $optionCombos )
-  #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )	    
+  #set( $dataEntryId = "${dataElement.uid}-${optionCombo.uid}-val" )	    
   <td>
   #if( $dataElement.type == "bool" )
   <select name="entryselect" id="$dataEntryId"#if( !$hasAccess ) disabled="disabled"#end tabindex="$tabIndex">

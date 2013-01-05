@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
@@ -231,6 +232,9 @@ public class DefaultDataMartEngine
         final Collection<OrganisationUnitGroup> organisationUnitGroups = organisationUnitGroupService.getOrganisationUnitGroups( organisationUnitGroupIds );
         final Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
 
+        final Map<String, Integer> dataElementUidIdMap = dataElementService.getDataElementUidIdMap();
+        final Map<String, Integer> categoryOptionComboUidIdMap = categoryService.getDataElementCategoryOptionComboUidIdMap();
+        
         clock.logTime( "Retrieved meta-data objects" );
         notifier.notify( id, DATAMART, "Filtering meta-data" );
 
@@ -342,7 +346,8 @@ public class DefaultDataMartEngine
             for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
                 futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
-                    null, new DataElementOperandList( indicatorOperands ), hierarchy, AggregatedDataValueTempBatchHandler.class, key ) );
+                    null, new DataElementOperandList( indicatorOperands ), hierarchy,
+                    dataElementUidIdMap, categoryOptionComboUidIdMap, AggregatedDataValueTempBatchHandler.class, key ) );
             }
 
             ConcurrentUtils.waitForCompletion( futures );
@@ -478,7 +483,8 @@ public class DefaultDataMartEngine
                 for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
                 {
                     futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
-                        organisationUnitGroups, new DataElementOperandList( indicatorOperands ), hierarchy, AggregatedOrgUnitDataValueTempBatchHandler.class, key ) );
+                        organisationUnitGroups, new DataElementOperandList( indicatorOperands ), hierarchy, 
+                        dataElementUidIdMap, categoryOptionComboUidIdMap, AggregatedOrgUnitDataValueTempBatchHandler.class, key ) );
                 }
 
                 ConcurrentUtils.waitForCompletion( futures );

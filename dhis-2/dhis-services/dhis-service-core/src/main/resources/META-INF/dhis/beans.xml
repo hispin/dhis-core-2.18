@@ -267,7 +267,7 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.constant.ConstantStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+  <bean id="org.hisp.dhis.constant.ConstantStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.constant.Constant" />
   </bean>
@@ -769,6 +769,11 @@
     <property name="skipInTests" value="true" />
   </bean>
 
+  <bean id="org.hisp.dhis.startup.ExpressionUpgrader" class="org.hisp.dhis.startup.ExpressionUpgrader">
+    <property name="runlevel" value="6" />
+    <property name="skipInTests" value="true" />
+  </bean>
+
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
     <property name="targetMethod" value="addStartupRoutines" />
@@ -783,6 +788,7 @@
           <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
+          <ref local="org.hisp.dhis.startup.ExpressionUpgrader" />
         </list>
       </list>
     </property>

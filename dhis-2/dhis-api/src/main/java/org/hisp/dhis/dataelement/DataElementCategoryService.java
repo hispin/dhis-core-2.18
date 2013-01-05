@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -183,7 +184,6 @@ public interface DataElementCategoryService
      *         are no DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getDataElementCategorOptionsByConcept( Concept concept );
-
 
     // -------------------------------------------------------------------------
     // CategoryCombo
@@ -419,6 +419,8 @@ public interface DataElementCategoryService
      * @return a collection of all DataElementCategories, or an empty collection.
      */
     Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept );
+    
+    Map<String, Integer> getDataElementCategoryOptionComboUidIdMap();
     
     int getDataElementCategoryCount();
 

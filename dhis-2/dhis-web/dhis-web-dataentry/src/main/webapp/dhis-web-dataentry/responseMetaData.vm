@@ -3,20 +3,20 @@
 "significantZeros": [
 #set( $size = $significantZeros.size() )
 #foreach( $dataElement in $significantZeros )
-${dataElement.id}#if( $velocityCount < $size ),#end
+${dataElement.uid}#if( $velocityCount < $size ),#end
 #end ],
 
 "dataElements": {
 #set( $size = $dataElements.size() )
 #foreach( $dataElement in $dataElements )
-"${dataElement.id}":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )" 
+"${dataElement.uid}":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )" 
 #if( $velocityCount < $size ),#end
 #end },
 
 "indicatorFormulas": {
 #set( $size = $indicators.size() )
 #foreach( $indicator in $indicators )
-"${indicator.id}":"($!{indicator.explodedNumerator})/($!{indicator.explodedDenominator})*($!{indicator.indicatorType.factor})"
+"${indicator.uid}":"($!{indicator.explodedNumerator})/($!{indicator.explodedDenominator})*($!{indicator.indicatorType.factor})"
 #if( $velocityCount < $size ),#end
 #end },
 

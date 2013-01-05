@@ -224,12 +224,15 @@ public class HibernateDataElementStore
         return getQuery( hql ).setInteger( "aggregationLevel", aggregationLevel ).list();
     }
 
-    public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
+    public Map<String, Set<String>> getDataElementCategoryOptionCombos()
     {
-        final String sql = "select de.dataelementid, coc.categoryoptioncomboid from dataelement de " +
-            "join categorycombos_optioncombos coc on de.categorycomboid=coc.categorycomboid";
+        final String sql = 
+            "select de.uid, coc.uid " +
+            "from dataelement de " +
+            "join categorycombos_optioncombos cc on de.categorycomboid = cc.categorycomboid " +
+            "join categoryoptioncombo coc on cc.categoryoptioncomboid = coc.categoryoptioncomboid";
         
-        final Map<Integer, Set<Integer>> sets = new HashMap<Integer, Set<Integer>>();
+        final Map<String, Set<String>> sets = new HashMap<String, Set<String>>();
         
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
@@ -237,13 +240,13 @@ public class HibernateDataElementStore
             public void processRow( ResultSet rs )
                 throws SQLException
             {
-                int dataElementId = rs.getInt( 1 );
-                int categoryOptionComboId = rs.getInt( 2 );
+                String dataElement = rs.getString( 1 );
+                String categoryOptionCombo = rs.getString( 2 );
                 
-                Set<Integer> set = sets.get( dataElementId ) != null ? sets.get( dataElementId ) : new HashSet<Integer>();
+                Set<String> set = sets.get( dataElement ) != null ? sets.get( dataElement ) : new HashSet<String>();
                 
-                set.add( categoryOptionComboId );                
-                sets.put( dataElementId, set );
+                set.add( categoryOptionCombo );                
+                sets.put( dataElement, set );
             }
         } );
         

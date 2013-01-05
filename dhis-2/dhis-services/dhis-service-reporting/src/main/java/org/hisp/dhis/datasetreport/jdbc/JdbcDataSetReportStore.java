@@ -78,25 +78,29 @@ public class JdbcDataSetReportStore
         if ( !dataElements.isEmpty() )
         {
             final String sql = rawData ?
-                "select dataelementid, categoryoptioncomboid, value " +
-                "from datavalue " +
-                "where dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-                "and periodid = " + period.getId() + " " +
-                "and sourceid = " + unit.getId()
+                "select de.uid, coc.uid, dv.value " +
+                "from datavalue dv " +
+                "left join dataelement de on dv.dataelementid = de.dataelementid " +
+                "left join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
+                "where dv.dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+                "and dv.periodid = " + period.getId() + " " +
+                "and dv.sourceid = " + unit.getId()
                 :
-                "select dataelementid, categoryoptioncomboid, value " +
-                "from aggregateddatavalue " +
-                "where dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-                "and periodid = " + period.getId() + " " +
-                "and organisationunitid = " + unit.getId();            
+                "select de.uid, coc.uid, dv.value " +
+                "from aggregateddatavalue dv " +
+                "left join dataelement de on dv.dataelementid = de.dataelementid " +
+                "left join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
+                "where dv.dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+                "and dv.periodid = " + period.getId() + " " +
+                "and dv.organisationunitid = " + unit.getId();            
             
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
             
             while ( rowSet.next() )
             {
-                int dataElementId = rowSet.getInt( "dataelementid" );
-                int categoryOptionComboId = rowSet.getInt( "categoryoptioncomboid" );
-                Double value = rowSet.getDouble( "value" );
+                String dataElementId = rowSet.getString( 1 );
+                String categoryOptionComboId = rowSet.getString( 2 );
+                Double value = rowSet.getDouble( 3 );
                 
                 map.put( dataElementId + SEPARATOR + categoryOptionComboId, value );
             }
@@ -119,20 +123,21 @@ public class JdbcDataSetReportStore
                 for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                 {
                     final String sql = 
-                        "select dataelementid, sum(value) as total " +
-                        "from aggregateddatavalue " +
-                        "where dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-                        "and categoryoptioncomboid in (" + getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, categoryOption.getCategoryOptionCombos() ) ) + ") " +
-                        "and periodid = " + period.getId() + " " +
-                        "and organisationunitid = " + unit.getId() + " " +
-                        "group by dataelementid";
+                        "select de.uid, sum(dv.value) as total " +
+                        "from aggregateddatavalue dv " +
+                        "left join dataelement de on dv.dataelementid = de.dataelementid " +
+                        "where dv.dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+                        "and dv.categoryoptioncomboid in (" + getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, categoryOption.getCategoryOptionCombos() ) ) + ") " +
+                        "and dv.periodid = " + period.getId() + " " +
+                        "and dv.organisationunitid = " + unit.getId() + " " +
+                        "group by de.uid";
                     
                     SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
                     
                     while ( rowSet.next() )
                     {
-                        int dataElementId = rowSet.getInt( "dataelementid" );
-                        Double value = rowSet.getDouble( "total" );
+                        String dataElementId = rowSet.getString( 1 );
+                        Double value = rowSet.getDouble( 2 );
                         
                         map.put( dataElementId + SEPARATOR + categoryOption.getId(), value );
                     }
@@ -154,19 +159,20 @@ public class JdbcDataSetReportStore
         if ( !dataElements.isEmpty() )
         {
             final String sql = 
-                "select dataelementid, sum(value) as total " +
-                "from aggregateddatavalue " +
-                "where dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-                "and periodid = " + period.getId() + " " +
-                "and organisationunitid = " + unit.getId() + " " +
-                "group by dataelementid";
+                "select de.uid, sum(dv.value) as total " +
+                "from aggregateddatavalue dv " +
+                "left join dataelement de on dv.dataelementid = de.dataelementid " +
+                "where dv.dataelementid in (" + getCommaDelimitedString( getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+                "and dv.periodid = " + period.getId() + " " +
+                "and dv.organisationunitid = " + unit.getId() + " " +
+                "group by de.uid";
     
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
             
             while ( rowSet.next() )
             {
-                int dataElementId = rowSet.getInt( "dataelementid" );
-                Double value = rowSet.getDouble( "total" );
+                String dataElementId = rowSet.getString( 1 );
+                Double value = rowSet.getDouble( 2 );
                 
                 map.put( String.valueOf( dataElementId ), value );
             }
@@ -184,19 +190,20 @@ public class JdbcDataSetReportStore
         if ( !indicators.isEmpty() )
         {
             final String sql =
-                "select indicatorid, sum(value) as total " +
-                "from aggregatedindicatorvalue " +
-                "where indicatorid in (" + getCommaDelimitedString( getIdentifiers( Indicator.class, indicators ) ) + ") " +
-                "and periodid = " + period.getId() + " " +
-                "and organisationunitid = " + unit.getId() + " " +
-                "group by indicatorid";
+                "select ind.uid, sum(dv.value) as total " +
+                "from aggregatedindicatorvalue dv " +
+                "left join indicator ind on dv.indicatorid = ind.indicatorid " +
+                "where dv.indicatorid in (" + getCommaDelimitedString( getIdentifiers( Indicator.class, indicators ) ) + ") " +
+                "and dv.periodid = " + period.getId() + " " +
+                "and dv.organisationunitid = " + unit.getId() + " " +
+                "group by ind.uid";
     
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
             
             while ( rowSet.next() )
             {
-                int indicatorid = rowSet.getInt( "indicatorid" );
-                Double value = rowSet.getDouble( "total" );
+                String indicatorid = rowSet.getString( 1 );
+                Double value = rowSet.getDouble( 2 );
                 
                 map.put( String.valueOf( indicatorid ), value );
             }

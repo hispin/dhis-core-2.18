@@ -77,14 +77,6 @@ public class ValidationRuleServiceTest
 
     private DataElement dataElementD;
 
-    private int dataElementIdA;
-
-    private int dataElementIdB;
-
-    private int dataElementIdC;
-
-    private int dataElementIdD;
-
     private Set<DataElement> dataElementsA = new HashSet<DataElement>();
 
     private Set<DataElement> dataElementsB = new HashSet<DataElement>();
@@ -127,9 +119,9 @@ public class ValidationRuleServiceTest
 
     private PeriodType periodType;
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Fixture
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public void setUpTest()
@@ -158,10 +150,10 @@ public class ValidationRuleServiceTest
         dataElementC = createDataElement( 'C' );
         dataElementD = createDataElement( 'D' );
 
-        dataElementIdA = dataElementService.addDataElement( dataElementA );
-        dataElementIdB = dataElementService.addDataElement( dataElementB );
-        dataElementIdC = dataElementService.addDataElement( dataElementC );
-        dataElementIdD = dataElementService.addDataElement( dataElementD );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementD );
 
         dataElementsA.add( dataElementA );
         dataElementsA.add( dataElementB );
@@ -174,16 +166,16 @@ public class ValidationRuleServiceTest
 
         categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 
-        String suffix = SEPARATOR + categoryOptionCombo.getId();
+        String suffix = SEPARATOR + categoryOptionCombo.getUid();
 
         optionCombos = new HashSet<DataElementCategoryOptionCombo>();
         optionCombos.add( categoryOptionCombo );
 
-        expressionA = new Expression( "[" + dataElementIdA + suffix + "] + [" + dataElementIdB + suffix + "]",
+        expressionA = new Expression( "#{" + dataElementA.getUid() + suffix + "} + #{" + dataElementB.getUid() + suffix + "}",
             "descriptionA", dataElementsA, optionCombos );
-        expressionB = new Expression( "[" + dataElementIdC + suffix + "] - [" + dataElementIdD + suffix + "]",
+        expressionB = new Expression( "#{" + dataElementC.getUid() + suffix + "} - #{" + dataElementD.getUid() + suffix + "}",
             "descriptionB", dataElementsB , optionCombos);
-        expressionC = new Expression( "[" + dataElementIdB + suffix + "] * 2", "descriptionC", dataElementsC, optionCombos);
+        expressionC = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 2", "descriptionC", dataElementsC, optionCombos );
 
         expressionService.addExpression( expressionA );
         expressionService.addExpression( expressionB );
@@ -240,9 +232,9 @@ public class ValidationRuleServiceTest
         return true;
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Business logic tests
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Test
     public void testValidateDateDateSources()
@@ -293,7 +285,7 @@ public class ValidationRuleServiceTest
                 .getOperator(), result.getRightsideValue() ) );
         }
 
-        assertEquals( results.size(), 8 );
+        assertEquals( 8, results.size() );
         assertEquals( reference, results );
     }
 
@@ -418,9 +410,9 @@ public class ValidationRuleServiceTest
         assertEquals( reference, results );
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // CURD functionality tests
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Test
     public void testSaveValidationRule()

@@ -30,6 +30,7 @@ package org.hisp.dhis.expression;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -37,10 +38,16 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 
 /**
- * Interface for ExpressionService. Defines service functionality for
- * Expressions.
+ * Expressions are mathematical formulas and can contain references to various
+ * elements.
+ * 
+ * - Data element operands on the form #{dataelementuid.categoryoptioncombouid}
+ * - Data element totals on the form #{dataelementuid}
+ * - Constants on the form C{constantuid}
+ * - Days in aggregation period as the symbol D{}
  *
  * @author Margrethe Store
+ * @author Lars Helge Overland
  * @version $Id: ExpressionService.java 6461 2008-11-24 11:32:37Z larshelg $
  */
 public interface ExpressionService
@@ -49,20 +56,24 @@ public interface ExpressionService
     
     final String VALID = "valid";
     final String EXPRESSION_IS_EMPTY = "expression_is_empty";
-    final String ID_NOT_NUMERIC = "id_not_numeric";
     final String DATAELEMENT_DOES_NOT_EXIST = "data_element_does_not_exist";
     final String CATEGORYOPTIONCOMBO_DOES_NOT_EXIST = "category_option_combo_does_not_exist";
-    final String EXPRESSION_NOT_WELL_FORMED = "expression_not_well_formed";
     final String CONSTANT_DOES_NOT_EXIST = "constant_does_not_exist";
+    final String EXPRESSION_NOT_WELL_FORMED = "expression_not_well_formed";
 
     final String DAYS_DESCRIPTION = "[Number of days]";
     final String NULL_REPLACEMENT = "0";
     final String SPACE = " ";
 
-    final String FORMULA_EXPRESSION = "\\[.+?\\]";
-    final String OPERAND_EXPRESSION = "\\[\\d+?.*?\\]";
-    final String DAYS_EXPRESSION = "[days]";
-    final String CONSTANT_EXPRESSION = "\\[C(\\d+?)\\]";
+    final String OPERAND_EXPRESSION = "#\\{(\\w+)\\.?(\\w*)\\}";
+    final String CONSTANT_EXPRESSION = "C\\{(\\w+)\\}";
+    final String DAYS_EXPRESSION = "\\[days\\]";
+
+    final Pattern OPERAND_PATTERN = Pattern.compile( OPERAND_EXPRESSION );
+    final Pattern CONSTANT_PATTERN = Pattern.compile( CONSTANT_EXPRESSION );
+    final Pattern DAYS_PATTERN = Pattern.compile( DAYS_EXPRESSION );
+
+    final String DAYS_SYMBOL = "[days]";
     
     /**
      * Adds a new Expression to the database.
@@ -102,7 +113,7 @@ public interface ExpressionService
     Collection<Expression> getAllExpressions();
 
     Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
-        Map<Integer, Double> constantMap, Integer days );
+        Map<String, Double> constantMap, Integer days );
     
     /**
      * Returns all DataElements included in the given expression string.
@@ -124,20 +135,6 @@ public interface ExpressionService
     Set<DataElementOperand> getOperandsInExpression( String expression );
     
     /**
-     * Converts the given expression based on the maps of corresponding data element
-     * identifiers and category option combo identifiers.
-     * 
-     * @param expression the expression formula.
-     * @param dataElementMapping the data element mapping.
-     * @param categoryOptionComboMapping the category option combo mapping.
-     * 
-     * @return an expression which has converted its data element and category
-     *         option combo identifiers with the corresponding entries in the
-     *         mappings.
-     */
-    String convertExpression( String expression, Map<Object, Integer> dataElementMapping, Map<Object, Integer> categoryOptionComboMapping );
-    
-    /**
      * Filters indicators from the given collection where the numerator and /
      * or the denominator are invalid.
      *  
@@ -151,10 +148,11 @@ public interface ExpressionService
      * 
      * @param formula the expression formula.
      * @return VALID if the expression is valid.
-     * 	       DATAELEMENT_ID_NOT_NUMERIC if the data element is not a number.
-     * 	       CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC if the category option combo id is not a number.
+     * 	       EXPRESSION_IS_EMPTY if the expression is empty.
      * 	       DATAELEMENT_DOES_NOT_EXIST if the data element does not exist.
      *         CATEGORYOPTIONCOMBO_DOES_NOT_EXIST if the category option combo does not exist.
+     *         CONSTANT_DOES_NOT_EXIST if the constant does not exist.
+     *         EXPRESSION_NOT_WELL_FORMED if the expression is not well-formed.
      */
     String expressionIsValid( String formula );
 
@@ -164,12 +162,13 @@ public interface ExpressionService
      * 
      * @param formula the expression formula.
      * @return VALID if the expression is valid.
-     *         DATAELEMENT_ID_NOT_NUMERIC if the data element is not a number.
-     *         CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC if the category option combo id is not a number.
+     *         EXPRESSION_IS_EMPTY if the expression is empty.
      *         DATAELEMENT_DOES_NOT_EXIST if the data element does not exist.
      *         CATEGORYOPTIONCOMBO_DOES_NOT_EXIST if the category option combo does not exist.
+     *         CONSTANT_DOES_NOT_EXIST if the constant does not exist.
+     *         EXPRESSION_NOT_WELL_FORMED if the expression is not well-formed.
      */
-    String expressionIsValid( String formula, Set<Integer> dataElements, Set<Integer> categoryOptionCombos, Set<Integer> constants );
+    String expressionIsValid( String formula, Set<String> dataElements, Set<String> categoryOptionCombos, Set<String> constants );
     
     /**
      * Creates an expression string containing DataElement names and the names of
@@ -229,7 +228,7 @@ public interface ExpressionService
      * @param valueMap The map containing data element identifiers and aggregated value.
      * @param days The number to be substituted with the days expression in the formula.
      */
-    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues );
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<String, Double> constantMap, Integer days, boolean nullIfNoValues );
     
     /**
      * Returns all Operands included in the formulas for the given collection of
