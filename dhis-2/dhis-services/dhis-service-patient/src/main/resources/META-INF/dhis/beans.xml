@@ -389,6 +389,10 @@
 		class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.patient.PatientAuditDeletionHandler" class="org.hisp.dhis.patient.PatientAuditDeletionHandler">
+		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
+	</bean>
 
 	<!-- PatientComment -->
 
@@ -501,9 +505,10 @@
 						local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
+					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
 					<ref
 						local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
-
+					
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
@@ -545,6 +550,9 @@
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.relationship.RelationshipTypeService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.patient.PatientAuditService.delete*(..) )"
 				method="intercept" />
 
 			<aop:before

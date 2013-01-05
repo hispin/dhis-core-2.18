@@ -28,60 +28,45 @@
 package org.hisp.dhis.patient;
 
 import java.util.Collection;
-import java.util.Date;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version DefaultPatientAuditService.java 9:08:54 AM Sep 26, 2012 $
+ *
+ * @version PatientAuditDeletionHandler.java 8:44:33 AM Jan 5, 2013 $
  */
-@Transactional
-public class DefaultPatientAuditService
-    implements PatientAuditService
+public class PatientAuditDeletionHandler extends DeletionHandler
 {
-    private PatientAuditStore patientAuditStore;
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
+    private PatientAuditService patientAuditService;
 
-    public void setPatientAuditStore( PatientAuditStore patientAuditStore )
+    public void setPatientAuditService( PatientAuditService patientAuditService )
     {
-        this.patientAuditStore = patientAuditStore;
+        this.patientAuditService = patientAuditService;
     }
+    
+    // -------------------------------------------------------------------------
+    // DeletionHandler implementation
+    // -------------------------------------------------------------------------
 
     @Override
-    public int savePatientAudit( PatientAudit patientAudit )
+    public String getClassName()
     {
-        return patientAuditStore.save( patientAudit );
+        return PatientAudit.class.getSimpleName();
     }
-
+    
     @Override
-    public void deletePatientAudit( PatientAudit patientAudit )
+    public void deletePatient( Patient patient )
     {
-        patientAuditStore.delete( patientAudit );
+        Collection<PatientAudit> patientAudits = patientAuditService.getPatientAudits( patient );
+        
+        for ( PatientAudit patientAudit : patientAudits )
+        {
+            patientAuditService.deletePatientAudit( patientAudit );
+        }
     }
-
-    @Override
-    public PatientAudit getPatientAudit( int id )
-    {
-        return patientAuditStore.get( id );
-    }
-
-    @Override
-    public Collection<PatientAudit> getAllPatientAudit()
-    {
-        return patientAuditStore.getAll();
-    }
-
-    @Override
-    public Collection<PatientAudit> getPatientAudits( Patient patient )
-    {
-        return patientAuditStore.get( patient );
-    }
-
-    @Override
-    public PatientAudit getPatientAudit( Patient patient, String visitor, Date date )
-    {
-        return patientAuditStore.get( patient, visitor, date );
-    }
-
 }

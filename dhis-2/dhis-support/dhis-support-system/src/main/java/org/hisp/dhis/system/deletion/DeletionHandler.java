@@ -66,6 +66,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -693,4 +694,14 @@ public abstract class DeletionHandler
     public void deleteLockException( LockException lockException )
     {
     }
+    
+    public void deletePatientAudit( PatientAudit patientAudit )
+    {
+    }
+
+    public String allowDeletePatientAudit( PatientAudit patientAudit )
+    {
+        return null;
+    }
+
 }
