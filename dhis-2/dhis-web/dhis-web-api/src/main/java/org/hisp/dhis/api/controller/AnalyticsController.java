@@ -27,8 +27,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.analytics.AnalyticsService;
@@ -36,18 +34,19 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AnalyticsController
 {
     private static final String RESOURCE_PATH = "/analytics";
+
     @Autowired
     private AnalyticsService analyticsService;
     
@@ -61,11 +60,17 @@ public class AnalyticsController
     // -------------------------------------------------------------------------
   
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
-    public String getJson( InputStream in, // JSON, JSONP
+    public String getJson( // JSON, JSONP
+        @RequestParam String dimensions,
+        @RequestParam(required = false) String filters,
+        @RequestParam(required = false) boolean categories,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+        DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, categories );
+System.out.println("dim " + dimensions);
+System.out.println("fl " + filters);
+System.out.println("par " + params);
 
         if ( !valid( params, response ) )
         {
@@ -80,11 +85,14 @@ public class AnalyticsController
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".xml", method = RequestMethod.GET )
-    public void getXml( InputStream in,
+    public void getXml( 
+        @RequestParam String dimensions,
+        @RequestParam(required = false) String filters,
+        @RequestParam(required = false) boolean categories,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+        DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, categories );
 
         if ( !valid( params, response ) )
         {
@@ -97,11 +105,14 @@ public class AnalyticsController
     }
     
     @RequestMapping( value = RESOURCE_PATH + ".csv", method = RequestMethod.GET )
-    public void getCsv( InputStream in,
+    public void getCsv( 
+        @RequestParam String dimensions, 
+        @RequestParam(required = false) String filters,
+        @RequestParam(required = false) boolean categories,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+        DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, categories );
 
         if ( !valid( params, response ) )
         {
@@ -114,11 +125,14 @@ public class AnalyticsController
     }
     
     @RequestMapping( value = RESOURCE_PATH + ".html", method = RequestMethod.GET )
-    public void getHtml( InputStream in,
+    public void getHtml( 
+        @RequestParam String dimensions, 
+        @RequestParam(required = false) String filters,
+        @RequestParam(required = false) boolean categories,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = JacksonUtils.fromJson( in, DataQueryParams.class );
+        DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, categories );
 
         if ( !valid( params, response ) )
         {
@@ -133,7 +147,7 @@ public class AnalyticsController
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-  
+      
     private boolean valid( DataQueryParams params, HttpServletResponse response )
     {
         if ( params == null || params.getDimensions().isEmpty() )

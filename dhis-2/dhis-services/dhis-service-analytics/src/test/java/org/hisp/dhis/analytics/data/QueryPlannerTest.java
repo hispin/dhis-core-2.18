@@ -107,6 +107,21 @@ public class QueryPlannerTest
     // Tests
     // -------------------------------------------------------------------------
     
+    public void testGetFromUrl()
+    {
+        String dimensions = "de:s46m5MS0hxu,fClA2Erf6IO,UOlfIjgN8X6,I78gJm4KBo7,n6aMJNLdvep;pe:2012,2012S1,2012S2";
+        String filters = "ou:ImspTQPwCqd";
+        
+        DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, false );
+        
+        assertEquals( 2, params.getDimensions().size() );
+        assertEquals( 1, params.getFilters().size() );
+        
+        assertTrue( params.getDimensionNames().contains( "de" ) );
+        assertTrue( params.getDimensionNames().contains( "pe" ) );
+        assertTrue( params.getFilterNames().contains( "ou" ) );
+    }
+    
     public void testGetDataPeriodAggregationPeriodMap()
     {
         DataQueryParams params = new DataQueryParams();

@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -52,9 +53,12 @@ public class DataQueryParams
     public static final String CATEGORYOPTIONCOMBO_DIM_ID = "coc";
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
-    public static final String VALUE_ID = "value";
-    
+    public static final String VALUE_ID = "value";    
     public static final String LEVEL_PREFIX = "uidlevel";
+
+    private static final String DIMENSION_SEP = ";";
+    private static final String DIMENSION_NAME_SEP = ":";
+    private static final String OPTION_SEP = ",";
     
     private Map<String, List<String>> dimensions = new HashMap<String, List<String>>();
     
@@ -243,9 +247,53 @@ public class DataQueryParams
         }
     }
 
+    /**
+     * Creates an instance based on a URL.
+     */
+    public static DataQueryParams getFromUrl( String dimensions, String filters, boolean categories )
+    {
+        DataQueryParams params = new DataQueryParams();
+        
+        params.getDimensions().putAll( getDimension( dimensions ) );
+        params.getFilters().putAll( getDimension( filters ) );
+        params.setCategories( categories );
+        
+        return params;
+    }
+
     // -------------------------------------------------------------------------
-    // Logic
+    // Supportive methods
     // -------------------------------------------------------------------------
+
+    /**
+     * Gets a mapping between dimension name and dimension options for the given
+     * query parameter.
+     */
+    private static Map<String, List<String>> getDimension( String requestParam )
+    {
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+
+        if ( requestParam == null || requestParam.isEmpty() )
+        {
+            return map;
+        }
+        
+        String[] dimensions = requestParam.split( DIMENSION_SEP );
+        
+        for ( String dimension : dimensions )
+        {
+            String[] elements = dimension.split( DIMENSION_NAME_SEP );
+            
+            if ( elements[0] != null && !elements[0].isEmpty() && elements[1] != null && !elements[1].isEmpty() )
+            {                
+                List<String> options = Arrays.asList( elements[1].split( OPTION_SEP ) );
+            
+                map.put( elements[0], options );
+            }
+        }
+        
+        return map;
+    }
 
     /**
      * Returns the dimension names as a list.
@@ -254,7 +302,7 @@ public class DataQueryParams
     {
         return new ArrayList<String>( dimensions.keySet() );
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
