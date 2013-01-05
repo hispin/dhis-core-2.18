@@ -27,8 +27,8 @@ package org.hisp.dhis.dataintegrity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.ListUtils.getDuplicates;
-import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,10 +40,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -358,9 +356,9 @@ public class DefaultDataIntegrityService
     {
         SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( IdentifiableObjectNameComparator.INSTANCE );
 
-        Set<Integer> dataElements = new HashSet<Integer>( getIdentifiers( DataElement.class, dataElementService.getAllDataElements() ) );
-        Set<Integer> categoryOptionCombos = new HashSet<Integer>( getIdentifiers( DataElementCategoryOptionCombo.class, categoryService.getAllDataElementCategoryOptionCombos() ) );
-        Set<Integer> constants = new HashSet<Integer>( getIdentifiers( Constant.class, constantService.getAllConstants() ) );
+        Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
+        Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
+        Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
         
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -379,9 +377,9 @@ public class DefaultDataIntegrityService
     {
         SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( IdentifiableObjectNameComparator.INSTANCE );
 
-        Set<Integer> dataElements = new HashSet<Integer>( getIdentifiers( DataElement.class, dataElementService.getAllDataElements() ) );
-        Set<Integer> categoryOptionCombos = new HashSet<Integer>( getIdentifiers( DataElementCategoryOptionCombo.class, categoryService.getAllDataElementCategoryOptionCombos() ) );
-        Set<Integer> constants = new HashSet<Integer>( getIdentifiers( Constant.class, constantService.getAllConstants() ) );
+        Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
+        Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
+        Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
         
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -539,9 +537,9 @@ public class DefaultDataIntegrityService
         SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>(
             IdentifiableObjectNameComparator.INSTANCE );
 
-        Set<Integer> dataElements = new HashSet<Integer>( getIdentifiers( DataElement.class, dataElementService.getAllDataElements() ) );
-        Set<Integer> categoryOptionCombos = new HashSet<Integer>( getIdentifiers( DataElementCategoryOptionCombo.class, categoryService.getAllDataElementCategoryOptionCombos() ) );
-        Set<Integer> constants = new HashSet<Integer>( getIdentifiers( Constant.class, constantService.getAllConstants() ) );
+        Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
+        Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
+        Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
         
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
@@ -561,9 +559,9 @@ public class DefaultDataIntegrityService
         SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>(
             IdentifiableObjectNameComparator.INSTANCE );
 
-        Set<Integer> dataElements = new HashSet<Integer>( getIdentifiers( DataElement.class, dataElementService.getAllDataElements() ) );
-        Set<Integer> categoryOptionCombos = new HashSet<Integer>( getIdentifiers( DataElementCategoryOptionCombo.class, categoryService.getAllDataElementCategoryOptionCombos() ) );
-        Set<Integer> constants = new HashSet<Integer>( getIdentifiers( Constant.class, constantService.getAllConstants() ) );
+        Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
+        Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
+        Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
         
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {

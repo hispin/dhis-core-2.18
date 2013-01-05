@@ -15,7 +15,7 @@
 // Save
 // -----------------------------------------------------------------------------
 
-var FORMULA_PATTERN = /\[.+?\]/g;
+var FORMULA_PATTERN = /#\{.+?\}/g;
 var SEPARATOR = '.';
 
 function updateDataElementTotals()
@@ -89,7 +89,7 @@ function generateExpression( expression )
 
         // Remove brackets from expression to simplify extraction of identifiers
 
-        var operand = match.replace( /[\[\]]/g, '' );
+        var operand = match.replace( /[#\{\}]/g, '' );
 
         var dataElementId = operand.substring( 0, operand.indexOf( SEPARATOR ) );
         var categoryOptionComboId = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );
@@ -126,8 +126,6 @@ function saveDynamicVal( code, optionComboId, fieldId )
 
 function saveVal( dataElementId, optionComboId, fieldId )
 {
-	dataElementId = parseInt( dataElementId );
-	optionComboId = parseInt( optionComboId );
     fieldId = '#' + fieldId;
 	
     var dataElementName = getDataElementName( dataElementId );

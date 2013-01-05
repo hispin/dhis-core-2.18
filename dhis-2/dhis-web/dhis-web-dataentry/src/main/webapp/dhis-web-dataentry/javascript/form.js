@@ -480,7 +480,7 @@ function loadForm( dataSetId, multiOrg )
 
         multiOrganisationUnit = !!$('.formSection').data('multiorg');
 
-        if(!multiOrganisationUnit)
+        if ( !multiOrganisationUnit )
         {
             enableSectionFilter();
             insertDynamicOptions();
@@ -584,16 +584,17 @@ function getDynamicSelectElementId( dataElementId )
 
 function enableSectionFilter()
 {
-    var $sectionsHeaders = $( '.formSection .cent h3' );
+    var $sectionHeaders = $( '.formSection .cent h3' );
     clearSectionFilters();
 
-    if ( $sectionsHeaders.size() > 1)
+    if ( $sectionHeaders.size() > 1)
     {
         $( '#selectionBox' ).css( 'height', '123px' );
 
         $( '#filterDataSetSection' ).append( "<option value='all'>" + i18n_show_all_sections + "</option>" );
 
-        $sectionsHeaders.each(function(idx, value) {
+        $sectionHeaders.each( function( idx, value ) 
+        {
             $( '#filterDataSetSection' ).append( "<option value='" + idx + "'>" + value.innerHTML + "</option>" );
         } );
 
@@ -994,7 +995,7 @@ function periodSelected()
         }
         else
         {
-            var isMultiOrganisationUnitForm = !!$('#selectedDataSetId :selected').data('multiorg');
+            var isMultiOrganisationUnitForm = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
             loadForm( dataSetId, isMultiOrganisationUnitForm );
         }
     }
@@ -1186,7 +1187,7 @@ function displayEntryFormCompleted()
 {
     addEventListeners();
 
-    if(!multiOrganisationUnit)
+    if ( !multiOrganisationUnit )
     {
         $( '#validationButton' ).removeAttr( 'disabled' );
         $( '#validateButton' ).removeAttr( 'disabled' );

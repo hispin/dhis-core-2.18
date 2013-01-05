@@ -65,9 +65,9 @@ public class DataEntryFormServiceTest
     
     private I18n i18n;
     
-    private int dataElementId;
+    private String dataElementUid;
     
-    private int categoryOptionComboId;
+    private String categoryOptionComboUid;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -89,11 +89,12 @@ public class DataEntryFormServiceTest
         
         dataElement = createDataElement( 'A' );
         
-        dataElementId = dataElementService.addDataElement( dataElement );
+        dataElementService.addDataElement( dataElement );
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
-        categoryOptionComboId = categoryOptionCombo.getId();
+        dataElementUid = dataElement.getUid();
+        categoryOptionComboUid = categoryOptionCombo.getUid();
         
         i18n = new MockI18n();
     }
@@ -249,14 +250,14 @@ public class DataEntryFormServiceTest
     @Test
     public void testGetOperands()
     {
-        String html = "<table><tr><td><input id=\"1434-11-val\" style=\"width:4em;text-align:center\" /></td></tr></table>";
+        String html = "<table><tr><td><input id=\"abc-def-val\" style=\"width:4em;text-align:center\" /></td></tr></table>";
         DataEntryForm dataEntryForm = new DataEntryForm( "FormA", html );
         DataSet dataSet = createDataSet( 'A', new MonthlyPeriodType() );
         dataSet.setDataEntryForm( dataEntryForm );
         
         Set<DataElementOperand> operands = dataEntryFormService.getOperandsInDataEntryForm( dataSet );
         
-        DataElementOperand operand = new DataElementOperand( 1434, 11 );
+        DataElementOperand operand = new DataElementOperand( "abc", "def" );
         
         assertEquals( 1, operands.size() );
         assertTrue( operands.contains( operand ) );
@@ -274,13 +275,13 @@ public class DataEntryFormServiceTest
     
     @Test
     public void testPrepareForEdit()
-    {
-        String html = "<table><tr><td><input id=\"" + dataElementId + "-" + categoryOptionComboId + "-val\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
-        String title = "" + dataElementId + " - " + dataElement.getName() + " - " + categoryOptionComboId + " - " + categoryOptionCombo.getName() + " - " + dataElement.getType();
+    {        
+        String html = "<table><tr><td><input id=\"" + dataElementUid + "-" + categoryOptionComboUid + "-val\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
+        String title = "" + dataElementUid + " - " + dataElement.getName() + " - " + categoryOptionComboUid + " - " + categoryOptionCombo.getName() + " - " + dataElement.getType();
         String value = "[ " + dataElement.getName() + " " + categoryOptionCombo.getName() + " ]";
-        String expected = "<table><tr><td><input id=\"" + dataElementId + "-" + categoryOptionComboId + "-val\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
+        String expected = "<table><tr><td><input id=\"" + dataElementUid + "-" + categoryOptionComboUid + "-val\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
         String actual = dataEntryFormService.prepareDataEntryFormForEdit( html, i18n );
-        
+
         assertEquals( expected.length(), actual.length() );
     }
 }

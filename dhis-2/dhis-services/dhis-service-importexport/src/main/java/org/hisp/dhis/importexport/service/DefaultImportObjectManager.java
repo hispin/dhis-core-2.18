@@ -593,8 +593,6 @@ public class DefaultImportObjectManager
             .init();
 
         Map<Object, Integer> indicatorTypeMapping = objectMappingGenerator.getIndicatorTypeMapping( false );
-        Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
-        Map<Object, Integer> categoryOptionComboMapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
 
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Indicator.class );
 
@@ -604,10 +602,6 @@ public class DefaultImportObjectManager
         {
             Indicator object = (Indicator) importObject.getObject();
             object.getIndicatorType().setId( indicatorTypeMapping.get( object.getIndicatorType().getId() ) );
-            object.setNumerator( expressionService.convertExpression( object.getNumerator(), dataElementMapping,
-                categoryOptionComboMapping ) );
-            object.setDenominator( expressionService.convertExpression( object.getDenominator(), dataElementMapping,
-                categoryOptionComboMapping ) );
             importer.importObject( object, params );
         }
 

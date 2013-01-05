@@ -168,7 +168,7 @@ public interface DataElementStore
      */
     Collection<DataElement> getDataElementsByAggregationLevel( int aggregationLevel );
 
-    Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos();
+    Map<String, Set<String>> getDataElementCategoryOptionCombos();
     
     Collection<DataElement> get( DataSet dataSet, String key, Integer max );
 }

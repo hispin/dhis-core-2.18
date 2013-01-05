@@ -366,7 +366,7 @@ public class LoadFormAction
 
             for ( DataElementOperand operand : section.getGreyedFields() )
             {
-                greyedFields.put( operand.getDataElement().getId() + ":" + operand.getCategoryOptionCombo().getId(),
+                greyedFields.put( operand.getDataElement().getUid() + ":" + operand.getCategoryOptionCombo().getUid(),
                     true );
             }
         }

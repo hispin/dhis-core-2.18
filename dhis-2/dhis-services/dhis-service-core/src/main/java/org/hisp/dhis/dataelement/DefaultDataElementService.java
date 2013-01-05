@@ -329,9 +329,21 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsByAggregationLevel( aggregationLevel ) );
     }
     
-    public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
+    public Map<String, Set<String>> getDataElementCategoryOptionCombos()
     {
         return dataElementStore.getDataElementCategoryOptionCombos();
+    }
+    
+    public Map<String, Integer> getDataElementUidIdMap()
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        
+        for ( DataElement dataElement : getAllDataElements() )
+        {
+            map.put( dataElement.getUid(), dataElement.getId() );
+        }
+        
+        return map;
     }
     
     public Collection<DataElement> getDataElements( DataSet dataSet, String key, Integer max )

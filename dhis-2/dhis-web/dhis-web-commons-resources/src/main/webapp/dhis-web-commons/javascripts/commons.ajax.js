@@ -209,7 +209,7 @@ function DataDictionary()
             {
                 jQuery.each( json.operands, function( i, item )
                 {
-                    target.append( '<option value="[' + item.operandId + ']">' + item.operandName
+                    target.append( '<option value="#{' + item.operandId + '}">' + item.operandName
                             + '</option>' );
                 } );
 

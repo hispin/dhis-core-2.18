@@ -141,7 +141,7 @@ public class DefaultIndicatorDataMart
         
         final AggregatedIndicatorValue indicatorValue = new AggregatedIndicatorValue();
         
-        final Map<Integer, Double> constantMap = constantService.getConstantMap();
+        final Map<String, Double> constantMap = constantService.getConstantMap();
 
         organisationUnitGroups = organisationUnitGroups != null ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
         

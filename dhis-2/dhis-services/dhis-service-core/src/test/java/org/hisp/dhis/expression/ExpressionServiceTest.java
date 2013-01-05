@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
-import static org.hisp.dhis.expression.ExpressionService.DAYS_EXPRESSION;
+import static org.hisp.dhis.expression.ExpressionService.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -59,7 +59,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ExpressionServiceTest
     extends DhisTest
@@ -92,21 +91,9 @@ public class ExpressionServiceTest
 
     private OrganisationUnit source;
 
-    private int dataElementIdA;
-
-    private int dataElementIdB;
-
-    private int dataElementIdC;
-
-    private int dataElementIdD;
-
-    private int dataElementIdE;
-
     private DataElementCategoryOptionCombo categoryOptionCombo;
-
-    private int categoryOptionComboId;
-
-    private int constantIdA;
+    
+    private Constant constantA;
 
     private String expressionA;
 
@@ -179,15 +166,15 @@ public class ExpressionServiceTest
         dataElementD = createDataElement( 'D' );
         dataElementE = createDataElement( 'E', categoryCombo );
 
-        dataElementIdA = dataElementService.addDataElement( dataElementA );
-        dataElementIdB = dataElementService.addDataElement( dataElementB );
-        dataElementIdC = dataElementService.addDataElement( dataElementC );
-        dataElementIdD = dataElementService.addDataElement( dataElementD );
-        dataElementIdE = dataElementService.addDataElement( dataElementE );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementD );
+        dataElementService.addDataElement( dataElementE );
 
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
-        categoryOptionComboId = categoryOptionCombo.getId();
+        categoryOptionCombo.getId();
         optionCombos.add( categoryOptionCombo );
 
         period = createPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
@@ -196,15 +183,17 @@ public class ExpressionServiceTest
 
         organisationUnitService.addOrganisationUnit( source );
 
-        constantIdA = constantService.saveConstant( new Constant( "ConstantA", 2.0 ) );
+        constantA = new Constant( "ConstantA", 2.0 );
         
-        expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdB + SEPARATOR
-            + categoryOptionComboId + "]";
-        expressionB = "[" + dataElementIdC + SEPARATOR + categoryOptionComboId + "]-[" + dataElementIdD + SEPARATOR
-            + categoryOptionComboId + "]";
-        expressionC = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdE + "]-10";
-        expressionD = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+" + DAYS_EXPRESSION;
-        expressionE = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]*[C" + constantIdA + "]";
+        constantService.saveConstant( constantA );
+        
+        expressionA = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+#{" + dataElementB.getUid() + SEPARATOR
+            + categoryOptionCombo.getUid() + "}";
+        expressionB = "#{" + dataElementC.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}-#{" + dataElementD.getUid() + SEPARATOR
+            + categoryOptionCombo.getUid() + "}";
+        expressionC = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+#{" + dataElementE.getUid() + "}-10";
+        expressionD = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+" + DAYS_SYMBOL;
+        expressionE = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}*C{" + constantA.getUid() + "}";
 
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -238,11 +227,11 @@ public class ExpressionServiceTest
 
         Set<DataElementCategoryOptionCombo> categoryOptionCombos = categoryCombo.getOptionCombos();
 
-        assertTrue( actual.contains( "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]" ) );
+        assertTrue( actual.contains( "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}" ) );
 
         for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
         {
-            assertTrue( actual.contains( "[" + dataElementIdE + SEPARATOR + categoryOptionCombo.getId() + "]" ) );
+            assertTrue( actual.contains( "#{" + dataElementE.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}" ) );
         }
     }
 
@@ -271,29 +260,11 @@ public class ExpressionServiceTest
         assertNotNull( operands );
         assertEquals( 2, operands.size() );
 
-        DataElementOperand operandA = new DataElementOperand( dataElementIdA, categoryOptionComboId );
-        DataElementOperand operandB = new DataElementOperand( dataElementIdB, categoryOptionComboId );
+        DataElementOperand operandA = new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() );
+        DataElementOperand operandB = new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() );
 
         assertTrue( operands.contains( operandA ) );
         assertTrue( operands.contains( operandB ) );
-    }
-
-    @Test
-    public void testConvertExpression()
-    {
-        Map<Object, Integer> dataElementMapping = new HashMap<Object, Integer>();
-        dataElementMapping.put( 1, 4 );
-        dataElementMapping.put( 2, 5 );
-
-        Map<Object, Integer> categoryOptionComboMapping = new HashMap<Object, Integer>();
-        categoryOptionComboMapping.put( 1, 6 );
-        categoryOptionComboMapping.put( 2, 7 );
-
-        String expression = "[1.1]+2+[2.2]";
-        String expected = "[4.6]+2+[5.7]";
-
-        assertEquals( expected, expressionService.convertExpression( expression, dataElementMapping,
-            categoryOptionComboMapping ) );
     }
 
     @Test
@@ -305,20 +276,16 @@ public class ExpressionServiceTest
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionD ) );
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionE ) );
 
-        expressionA = "[" + dataElementIdA + SEPARATOR + "foo" + "] + 12";
-
-        assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
-
-        expressionA = "[" + 999 + SEPARATOR + categoryOptionComboId + "] + 12";
+        expressionA = "#{NonExistingUid" + SEPARATOR + categoryOptionCombo.getUid() + "} + 12";
 
         assertEquals( ExpressionService.DATAELEMENT_DOES_NOT_EXIST, expressionService.expressionIsValid( expressionA ) );
 
-        expressionA = "[" + dataElementIdA + SEPARATOR + 999 + "] + 12";
+        expressionA = "#{" + dataElementA.getUid() + SEPARATOR + 999 + "} + 12";
 
         assertEquals( ExpressionService.CATEGORYOPTIONCOMBO_DOES_NOT_EXIST, expressionService
             .expressionIsValid( expressionA ) );
 
-        expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "] + ( 12";
+        expressionA = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "} + ( 12";
 
         assertEquals( ExpressionService.EXPRESSION_NOT_WELL_FORMED, expressionService.expressionIsValid( expressionA ) );
 
@@ -326,11 +293,7 @@ public class ExpressionServiceTest
 
         assertEquals( ExpressionService.EXPRESSION_NOT_WELL_FORMED, expressionService.expressionIsValid( expressionA ) );
         
-        expressionA = "12 + [Cfoo]";
-
-        assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
-
-        expressionA = "12 + [C999999]";
+        expressionA = "12 + C{999999}";
 
         assertEquals( ExpressionService.CONSTANT_DOES_NOT_EXIST, expressionService.expressionIsValid( expressionA ) );
     }
@@ -344,22 +307,22 @@ public class ExpressionServiceTest
         
         description = expressionService.getExpressionDescription( expressionD );
         
-        assertEquals( description, "DataElementA+" + ExpressionService.DAYS_DESCRIPTION );
+        assertEquals( "DataElementA+" + ExpressionService.DAYS_DESCRIPTION, description );
 
         description = expressionService.getExpressionDescription( expressionE );
         
-        assertEquals( description, "DataElementA*ConstantA" );
+        assertEquals( "DataElementA*ConstantA", description );
     }
 
     @Test
     public void testGenerateExpressionMap()
     {
         Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
-        valueMap.put( new DataElementOperand( dataElementIdA, categoryOptionComboId ), new Double( 12 ) );
-        valueMap.put( new DataElementOperand( dataElementIdB, categoryOptionComboId ), new Double( 34 ) );
+        valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
+        valueMap.put( new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() ), new Double( 34 ) );
         
-        Map<Integer, Double> constantMap = new HashMap<Integer, Double>();
-        constantMap.put( constantIdA, 2.0 );
+        Map<String, Double> constantMap = new HashMap<String, Double>();
+        constantMap.put( constantA.getUid(), 2.0 );
 
         assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null, false ) );
         assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5, false ) );

@@ -190,15 +190,15 @@ public class DefaultDataEntryFormService
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                String dataElementId = identifierMatcher.group( 1 );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                String optionComboId = identifierMatcher.group( 2 );
                 DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
 
                 StringBuilder title = dataElement != null ? 
-                    new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
+                    new StringBuilder( "title=\"" ).append( dataElementId ).append( " - " ).
                     append( dataElement.getDisplayName() ).append( " - " ).append( optionComboId ).append( " - " ).
                     append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
 
@@ -207,7 +207,7 @@ public class DefaultDataEntryFormService
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
-                int dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
+                String dataElementId = dataElementTotalMatcher.group( 1 );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
@@ -215,7 +215,7 @@ public class DefaultDataEntryFormService
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
-                int indicatorId = Integer.parseInt( indicatorMatcher.group( 1 ) );
+                String indicatorId = indicatorMatcher.group( 1 );
                 Indicator indicator = indicatorService.getIndicator( indicatorId );
 
                 displayValue = indicator != null ? "value=\"[ " + indicator.getDisplayName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
@@ -223,7 +223,7 @@ public class DefaultDataEntryFormService
             }
             else if ( dynamicInputMatcher.find() && dynamicInputMatcher.groupCount() > 0 )
             {
-                int categoryOptionComboId = Integer.parseInt( dynamicInputMatcher.group( 2 ) );
+                String categoryOptionComboId = dynamicInputMatcher.group( 2 );
                 DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
                 
                 displayValue = categoryOptionCombo != null ? "value=\"[ " + categoryOptionCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
@@ -231,7 +231,7 @@ public class DefaultDataEntryFormService
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
             {
-                int categoryComboId = Integer.parseInt( dynamicSelectMatcher.group( 1 ) );
+                String categoryComboId = dynamicSelectMatcher.group( 1 );
                 DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
                 
                 displayValue = categoryCombo != null ? "value=\"[ " + categoryCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
@@ -273,7 +273,7 @@ public class DefaultDataEntryFormService
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
 
-        Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
+        Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
 
         while ( inputMatcher.find() )
         {
@@ -289,8 +289,8 @@ public class DefaultDataEntryFormService
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                String dataElementId = identifierMatcher.group( 1 );
+                String optionComboId = identifierMatcher.group( 2 );
 
                 DataElement dataElement = dataElementMap.get( dataElementId );
 
@@ -327,13 +327,12 @@ public class DefaultDataEntryFormService
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
-                inputHtml += "<span id=\"" + dataElement.getId() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
-                inputHtml += "<span id=\"" + categoryOptionCombo.getId() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
+                inputHtml += "<span id=\"" + dataElement.getUid() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
+                inputHtml += "<span id=\"" + categoryOptionCombo.getUid() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
             }
             else if ( dynamicInputMather.find() && dynamicInputMather.groupCount() > 0 )
             {
-                int optionComboId = Integer.parseInt( dynamicInputMather.group( 2 ) );
-
+                String optionComboId = dynamicInputMather.group( 2 );
                 DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( categoryOptionCombo == null )
@@ -364,7 +363,7 @@ public class DefaultDataEntryFormService
             return null;
         }
         
-        Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
+        Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
         
         Set<DataElement> dataElements = new HashSet<DataElement>();
         
@@ -381,12 +380,12 @@ public class DefaultDataEntryFormService
             
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                String dataElementId = identifierMatcher.group( 1 );
                 dataElement = dataElementMap.get( dataElementId );
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
-                int dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
+                String dataElementId = dataElementTotalMatcher.group( 1 );
                 dataElement = dataElementMap.get( dataElementId );
             }
             
@@ -418,8 +417,8 @@ public class DefaultDataEntryFormService
             
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                int categoryOptionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );                
+                String dataElementId = identifierMatcher.group( 1 );
+                String categoryOptionComboId = identifierMatcher.group( 2 );                
 
                 DataElementOperand operand = new DataElementOperand( dataElementId, categoryOptionComboId );
                 
@@ -471,13 +470,13 @@ public class DefaultDataEntryFormService
      * Returns a Map of all DataElements in the given DataSet where the key is
      * the DataElement identifier and the value is the DataElement.
      */
-    private Map<Integer, DataElement> getDataElementMap( DataSet dataSet )
+    private Map<String, DataElement> getDataElementMap( DataSet dataSet )
     {
-        Map<Integer, DataElement> map = new HashMap<Integer, DataElement>();
+        Map<String, DataElement> map = new HashMap<String, DataElement>();
 
         for ( DataElement element : dataSet.getDataElements() )
         {
-            map.put( element.getId(), element );
+            map.put( element.getUid(), element );
         }
 
         return map;

@@ -107,7 +107,7 @@ import org.springframework.aop.support.AopUtils;
  */
 public abstract class DhisConvenienceTest
 {
-    private static final String BASE_UID = "123456789a";
+    protected static final String BASE_UID = "123456789a";
 
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 

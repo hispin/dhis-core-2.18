@@ -110,9 +110,9 @@ public class SaveValueAction
         this.value = value;
     }
 
-    private int dataElementId;
+    private String dataElementId;
 
-    public void setDataElementId( int dataElementId )
+    public void setDataElementId( String dataElementId )
     {
         this.dataElementId = dataElementId;
     }
@@ -124,9 +124,9 @@ public class SaveValueAction
         this.organisationUnitId = organisationUnitId;
     }
 
-    private int optionComboId;
+    private String optionComboId;
 
-    public void setOptionComboId( int optionComboId )
+    public void setOptionComboId( String optionComboId )
     {
         this.optionComboId = optionComboId;
     }

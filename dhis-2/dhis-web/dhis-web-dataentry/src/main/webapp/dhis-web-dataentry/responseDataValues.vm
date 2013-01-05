@@ -4,9 +4,9 @@
   #foreach( $value in $dataValues )
   {
     #if( $multiOrganisationUnit )
-    "id":"${value.source.id}-${value.dataElement.id}-${value.optionCombo.id}",
+    "id":"${value.source.id}-${value.dataElement.uid}-${value.optionCombo.uid}",
     #else
-    "id":"${value.dataElement.id}-${value.optionCombo.id}",
+    "id":"${value.dataElement.uid}-${value.optionCombo.uid}",
     #end
     "val":"$!{value.value}"
   }#if( $velocityCount < $size1 ),#end
@@ -15,9 +15,9 @@
   #foreach( $element in $minMaxDataElements )
   {
     #if( $multiOrganisationUnit )
-    "id":"${element.source.id}-${element.dataElement.id}-${element.optionCombo.id}",
+    "id":"${element.source.id}-${element.dataElement.uid}-${element.optionCombo.uid}",
     #else
-    "id":"${element.dataElement.id}-${element.optionCombo.id}",
+    "id":"${element.dataElement.uid}-${element.optionCombo.uid}",
     #end
     "min":"${element.min}",
     "max":"${element.max}"
@@ -27,4 +27,4 @@
   "complete":${complete},
   "date":"$!format.formatDate( $date )",
   "storedBy":"$!{storedBy}"
- }
+}

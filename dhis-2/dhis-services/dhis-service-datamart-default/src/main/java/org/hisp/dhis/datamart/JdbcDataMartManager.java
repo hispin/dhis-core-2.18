@@ -84,9 +84,12 @@ public class JdbcDataMartManager
         for ( DataElementOperand operand : operands )
         {
             final String sql = 
-                "SELECT COUNT(*) FROM datavalue " + 
-                "WHERE dataelementid=" + operand.getDataElementId() + " " +
-                "AND categoryoptioncomboid=" + operand.getOptionComboId();
+                "SELECT COUNT(*) " +
+                "FROM datavalue dv " +
+                "LEFT JOIN dataelement de ON dv.dataelementid = de.dataelementid " +
+                "LEFT JOIN categoryoptioncombo coc ON dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
+                "WHERE de.uid = '" + operand.getDataElementId() + "' " +
+                "AND coc.uid = '" + operand.getOptionComboId()+ "'";
             
             Integer count = holder.queryForInteger( sql );
             
@@ -107,8 +110,10 @@ public class JdbcDataMartManager
         try
         {
             final String sql =
-                "SELECT dataelementid, categoryoptioncomboid, value " +
-                "FROM datavalue " +
+                "SELECT de.uid, coc.uid, value " +
+                "FROM datavalue dv " +
+                "LEFT JOIN dataelement de ON dv.dataelementid = de.dataelementid " +
+                "LEFT JOIN categoryoptioncombo coc ON dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
                 "WHERE periodid = " + periodId + " " +
                 "AND sourceid = " + sourceId;
             
@@ -118,7 +123,7 @@ public class JdbcDataMartManager
             
             while ( resultSet.next() )
             {
-                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
+                final DataElementOperand operand = new DataElementOperand( resultSet.getString( 1 ), resultSet.getString( 2 ) );
                 
                 map.put( operand, resultSet.getString( 3 ) );
             }
@@ -270,6 +275,10 @@ public class JdbcDataMartManager
     {
         executeSilently( "insert into aggregatedorgunitindicatorvalue select * from aggregatedorgunitindicatorvalue_temp" );
     }
+    
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     private void executeSilently( String sql )
     {

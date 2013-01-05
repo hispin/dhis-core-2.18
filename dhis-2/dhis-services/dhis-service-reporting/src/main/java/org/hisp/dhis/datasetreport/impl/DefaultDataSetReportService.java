@@ -200,7 +200,7 @@ public class DefaultDataSetReportService
                     }
                     else
                     {
-                        value = valueMap.get( dataElement.getId() + SEPARATOR + optionCombo.getId() );
+                        value = valueMap.get( dataElement.getUid() + SEPARATOR + optionCombo.getUid() );
                     }
 
                     grid.addValue( value );
@@ -210,7 +210,7 @@ public class DefaultDataSetReportService
                 {
                     for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                     {
-                        Double value = subTotalMap.get( dataElement.getId() + SEPARATOR + categoryOption.getId() );
+                        Double value = subTotalMap.get( dataElement.getUid() + SEPARATOR + categoryOption.getUid() );
 
                         grid.addValue( value );
                     }
@@ -218,7 +218,7 @@ public class DefaultDataSetReportService
 
                 if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total
                 {
-                    Double value = totalMap.get( String.valueOf( dataElement.getId() ) );
+                    Double value = totalMap.get( String.valueOf( dataElement.getUid() ) );
 
                     grid.addValue( value );
                 }
@@ -295,7 +295,7 @@ public class DefaultDataSetReportService
                 }
                 else
                 {
-                    value = valueMap.get( dataElement.getId() + SEPARATOR + optionCombo.getId() );
+                    value = valueMap.get( dataElement.getUid() + SEPARATOR + optionCombo.getUid() );
                 }
 
                 grid.addValue( value );
@@ -315,7 +315,7 @@ public class DefaultDataSetReportService
 
             grid.addValue( indicator.getName() );
             
-            Double value = indicatorValueMap.get( String.valueOf( indicator.getId() ) );
+            Double value = indicatorValueMap.get( String.valueOf( indicator.getUid() ) );
             
             grid.addValue( value );
             

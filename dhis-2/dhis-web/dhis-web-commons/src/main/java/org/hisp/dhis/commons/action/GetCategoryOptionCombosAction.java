@@ -78,6 +78,13 @@ public class GetCategoryOptionCombosAction
     {
         this.categoryComboId = categoryComboId;
     }
+    
+    private String categoryComboUid;
+
+    public void setCategoryComboUid( String categoryComboUid )
+    {
+        this.categoryComboUid = categoryComboUid;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -113,6 +120,15 @@ public class GetCategoryOptionCombosAction
         else if ( categoryComboId != null )
         {
             DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
+            
+            if ( categoryCombo != null )
+            {
+                categoryOptionCombos = categoryCombo.getOptionCombos();
+            }
+        }
+        else if ( categoryComboUid != null )
+        {
+            DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboUid );
             
             if ( categoryCombo != null )
             {
