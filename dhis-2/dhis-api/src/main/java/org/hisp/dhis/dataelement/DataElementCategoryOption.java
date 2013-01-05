@@ -48,7 +48,7 @@ import java.util.Set;
 /**
  * @author Abyot Asalefew
  */
-@JacksonXmlRootElement( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "categoryOption", namespace = Dxf2Namespace.NAMESPACE )
 public class DataElementCategoryOption
     extends BaseNameableObject
 {
