@@ -30,10 +30,13 @@ package org.hisp.dhis.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -141,6 +144,60 @@ public class HibernateGenericStore<T>
         return query;
     }
 
+    protected final Criteria getAccessibleCriteria()
+    {
+        Criteria criteria = getCriteria();
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null || currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        {
+            return criteria;
+        }
+
+        try
+        {
+            // for now we need to have this test, since not all idObjectClasses are converted
+            sessionFactory.getClassMetadata( clazz ).getPropertyType( "publicAccess" );
+        }
+        catch ( HibernateException ignored )
+        {
+            return criteria;
+        }
+
+        criteria.createAlias( "userGroupAccesses", "u" );
+
+        Disjunction root = Restrictions.disjunction();
+        root.add( Restrictions.ilike( "publicAccess", "r%" ) );
+        root.add( Restrictions.eq( "user", currentUser ) );
+
+        Conjunction ugAccess = Restrictions.conjunction();
+        ugAccess.add( Restrictions.ilike( "u.access", "r%" ) );
+        root.add( ugAccess );
+
+        criteria.add( root );
+
+        return criteria;
+    }
+
+    /**
+     * Creates a Criteria for the implementation Class type restricted by the
+     * given Criterions.
+     *
+     * @param expressions the Criterions for the Criteria.
+     * @return a Criteria instance.
+     */
+    protected final Criteria getAccessibleCriteria( Criterion... expressions )
+    {
+        Criteria criteria = getAccessibleCriteria();
+
+        for ( Criterion expression : expressions )
+        {
+            criteria.add( expression );
+        }
+
+        return criteria;
+    }
+
     /**
      * Creates a Criteria for the implementation Class type.
      *
@@ -181,7 +238,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -193,7 +250,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -226,7 +283,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
@@ -236,7 +293,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
@@ -282,24 +339,24 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getLikeName( String name )
     {
-        return getCriteria().add( Restrictions.ilike( "name", "%" + name + "%" ) ).list();
+        return getAccessibleCriteria().add( Restrictions.ilike( "name", "%" + name + "%" ) ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final Collection<T> getAll()
     {
-        return getCriteria().list();
+        return getAccessibleCriteria().list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final Collection<T> getAllSorted()
     {
-        return getCriteria().addOrder( Order.asc( "name" ) ).list();
+        return getAccessibleCriteria().addOrder( Order.asc( "name" ) ).list();
     }
 
     @Override
@@ -310,10 +367,10 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetween( int first, int max )
     {
-        Criteria criteria = getCriteria();
+        Criteria criteria = getAccessibleCriteria();
         criteria.addOrder( Order.asc( "name" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
@@ -321,10 +378,10 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getBetweenOrderderByLastUpdated( int first, int max )
     {
-        Criteria criteria = getCriteria();
+        Criteria criteria = getAccessibleCriteria();
         criteria.addOrder( Order.desc( "lastUpdated" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
@@ -332,10 +389,10 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetweenByName( String name, int first, int max )
     {
-        Criteria criteria = getCriteria();
+        Criteria criteria = getAccessibleCriteria();
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         criteria.addOrder( Order.asc( "name" ) );
         criteria.setFirstResult( first );
@@ -346,7 +403,7 @@ public class HibernateGenericStore<T>
     @Override
     public int getCount()
     {
-        Criteria criteria = getCriteria();
+        Criteria criteria = getAccessibleCriteria();
         criteria.setProjection( Projections.rowCount() );
         return ((Number) criteria.uniqueResult()).intValue();
     }
@@ -354,7 +411,7 @@ public class HibernateGenericStore<T>
     @Override
     public int getCountByName( String name )
     {
-        Criteria criteria = getCriteria();
+        Criteria criteria = getAccessibleCriteria();
         criteria.setProjection( Projections.rowCount() );
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         return ((Number) criteria.uniqueResult()).intValue();
@@ -382,43 +439,43 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdated( Date lastUpdated )
     {
-        return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
+        return getAccessibleCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByCreated( Date created )
     {
-        return getCriteria().add( Restrictions.ge( "created", created ) ).list();
+        return getAccessibleCriteria().add( Restrictions.ge( "created", created ) ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdatedSorted( Date lastUpdated )
     {
-        return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).addOrder( Order.asc( "name" ) ).list();
+        return getAccessibleCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).addOrder( Order.asc( "name" ) ).list();
     }
 
     @Override
     public long getCountByLastUpdated( Date lastUpdated )
     {
-        Object count = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
+        Object count = getAccessibleCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
 
         return count != null ? (Long) count : -1;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getByUser( User user )
     {
-        return getCriteria( Restrictions.eq( "user", user ) ).list();
+        return getAccessibleCriteria( Restrictions.eq( "user", user ) ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleByUser( User user )
     {
         //TODO link to interface
@@ -430,7 +487,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleByLastUpdated( User user, Date lastUpdated )
     {
         Criteria criteria = getCriteria();
@@ -440,7 +497,7 @@ public class HibernateGenericStore<T>
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleLikeName( User user, String name )
     {
         Criteria criteria = getCriteria();
@@ -451,7 +508,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleBetween( User user, int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -462,7 +519,7 @@ public class HibernateGenericStore<T>
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleBetweenLikeName( User user, String name, int first, int max )
     {
         Criteria criteria = getCriteria();
