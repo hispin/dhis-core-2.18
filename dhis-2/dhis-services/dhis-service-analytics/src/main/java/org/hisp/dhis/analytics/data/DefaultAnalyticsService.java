@@ -43,10 +43,12 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.MathUtils;
@@ -91,6 +93,8 @@ public class DefaultAnalyticsService
     public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
     {
         Grid grid = new ListGrid();
+        
+        grid.setMetaData( params.getUidNameMap() );
         
         for ( String col : params.getDimensionNames() )
         {
@@ -145,7 +149,7 @@ public class DefaultAnalyticsService
         return map;
     }
     
-    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories )
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
         
@@ -158,7 +162,7 @@ public class DefaultAnalyticsService
             
             if ( dimension != null && options != null )
             {
-                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options );
+                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
                 
                 params.getDimensions().put( dimension, dimensionOptions );
             }
@@ -171,7 +175,7 @@ public class DefaultAnalyticsService
             
             if ( dimension != null && options != null )
             {
-                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options );
+                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
                 
                 params.getFilters().put( dimension, dimensionOptions );
             }
@@ -184,7 +188,7 @@ public class DefaultAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
     
-    private List<IdentifiableObject> getDimensionOptions( String dimension, List<String> options )
+    private List<IdentifiableObject> getDimensionOptions( String dimension, List<String> options, I18nFormat format )
     {
         if ( INDICATOR_DIM_ID.equals( dimension ) )
         {
@@ -204,7 +208,9 @@ public class DefaultAnalyticsService
             
             for ( String isoPeriod : options )
             {
-                list.add( PeriodType.getPeriodFromIsoString( isoPeriod ) );
+                Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
+                period.setName( format != null ? format.formatPeriod( period ) : null );
+                list.add( period );
             }
             
             return list;

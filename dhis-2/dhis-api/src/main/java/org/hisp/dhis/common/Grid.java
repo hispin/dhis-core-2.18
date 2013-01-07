@@ -80,6 +80,11 @@ public interface Grid
     Map<String, String> getMetaData();
     
     /**
+     * Sets map of meta-data.
+     */
+    void setMetaData( Map<String, String> metaData );
+    
+    /**
      * Returns all visible headers, ie. headers which are not hidden.
      */
     List<GridHeader> getVisibleHeaders();

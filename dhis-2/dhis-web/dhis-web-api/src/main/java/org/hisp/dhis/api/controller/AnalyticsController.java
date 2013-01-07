@@ -36,6 +36,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,9 @@ public class AnalyticsController
     @Autowired
     private ContextUtils contextUtils;
     
+    @Autowired
+    private I18nManager i18nManager;
+    
     //TODO URL only requests
 
     // -------------------------------------------------------------------------
@@ -69,7 +73,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
@@ -91,7 +95,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
@@ -111,7 +115,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
@@ -131,7 +135,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
