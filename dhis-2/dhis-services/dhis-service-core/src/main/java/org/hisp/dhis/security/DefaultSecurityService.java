@@ -240,6 +240,8 @@ public class DefaultSecurityService
     @Override
     public boolean canRead( IdentifiableObject identifiableObject )
     {
+        if ( defaultAccessIsNull( identifiableObject ) ) return true;
+
         if ( isCurrentUser( identifiableObject.getUser() ) || AccessHelper.canRead( identifiableObject.getPublicAccess() ) )
         {
             return true;
@@ -260,6 +262,8 @@ public class DefaultSecurityService
     @Override
     public boolean canWrite( IdentifiableObject identifiableObject )
     {
+        if ( defaultAccessIsNull( identifiableObject ) ) return true;
+
         if ( isCurrentUser( identifiableObject.getUser() ) || AccessHelper.canWrite( identifiableObject.getPublicAccess() ) )
         {
             return true;
@@ -277,6 +281,12 @@ public class DefaultSecurityService
         return false;
     }
 
+    private boolean defaultAccessIsNull( IdentifiableObject identifiableObject )
+    {
+        return (identifiableObject.getPublicAccess() == null || identifiableObject.getPublicAccess().equalsIgnoreCase( "--------" ))
+            && identifiableObject.getUser() == null;
+    }
+
     @Override
     public boolean canUpdate( IdentifiableObject identifiableObject )
     {
@@ -286,13 +296,20 @@ public class DefaultSecurityService
     @Override
     public boolean canDelete( IdentifiableObject identifiableObject )
     {
-        return isCurrentUser( identifiableObject.getUser() );
+        return canWrite( identifiableObject );
     }
 
     @Override
     public boolean canManage( IdentifiableObject identifiableObject )
     {
-        return canWrite( identifiableObject );
+        User user = currentUserService.getCurrentUser();
+
+        if ( user.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        {
+            return true;
+        }
+
+        return !defaultAccessIsNull( identifiableObject ) && canWrite( identifiableObject );
     }
 
     public boolean isCurrentUser( User user )
