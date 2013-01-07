@@ -328,7 +328,7 @@ public class DefaultCaseAggregationConditionService
         {
             String match = matcher.group();
             match = match.replaceAll( "[\\[\\]]", "" );
-
+            
             String[] info = match.split( SEPARATOR_OBJECT );
 
             if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
