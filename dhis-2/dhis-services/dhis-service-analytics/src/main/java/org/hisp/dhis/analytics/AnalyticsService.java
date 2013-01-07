@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics;
  */
 
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 
@@ -36,4 +37,6 @@ public interface AnalyticsService
     Grid getAggregatedDataValues( DataQueryParams params ) throws Exception;
     
     Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception;
+    
+    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories );
 }

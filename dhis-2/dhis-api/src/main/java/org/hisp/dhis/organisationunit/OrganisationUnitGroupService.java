@@ -28,6 +28,7 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Defines methods for working with OrganisationUnitGroups and
@@ -81,6 +82,14 @@ public interface OrganisationUnitGroupService
      * @return the OrganisationUnitGroup with the given identifiers.
      */
     Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers );
+    
+    /**
+     * Returns the OrganisationUnitGroupSets with the given uids.
+     * 
+     * @param uids the collection of uids.
+     * @return the OrganisationUnitGroupSets with the given uids.
+     */
+    List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsByUid( Collection<String> uids );
     
     /**
      * Returns the OrganisationUnitGroup with the given UID.

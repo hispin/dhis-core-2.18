@@ -116,6 +116,37 @@ public class IdentifiableObjectUtils
 
         return objects;
     }
+    
+    /**
+     * Returns a list of IdentifiableObjects.
+     * 
+     * @param objects the IdentifiableObjects to include in the list.
+     * @return a list of IdentifiableObjects.
+     */
+    public static List<IdentifiableObject> getList( IdentifiableObject... objects )
+    {
+        List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
+        
+        for ( IdentifiableObject object : objects )
+        {
+            list.add( object );
+        }
+        
+        return list;
+    }
+    
+    /**
+     * Returns a list with erasure IdentifiableObject based on the given collection.
+     * 
+     * @param collection the collection.
+     * @return a list of IdentifiableObjects.
+     */
+    public static List<IdentifiableObject> asList( Collection<? extends IdentifiableObject> collection )
+    {
+        List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
+        list.addAll( collection );
+        return list;
+    }
 
     /**
      * Generates a tag reflecting the date of when the most recently updated

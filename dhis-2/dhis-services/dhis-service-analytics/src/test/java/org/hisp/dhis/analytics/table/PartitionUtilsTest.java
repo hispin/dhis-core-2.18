@@ -27,15 +27,17 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.DhisConvenienceTest.createPeriod;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME_TEMP;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -63,10 +65,10 @@ public class PartitionUtilsTest
     @Test
     public void testGetTable()
     {
-        assertEquals( TABLE_NAME + "_2000", PartitionUtils.getTable( "200011" ) );
-        assertEquals( TABLE_NAME + "_2001", PartitionUtils.getTable( "2001W02" ) );
-        assertEquals( TABLE_NAME + "_2002", PartitionUtils.getTable( "2002Q2" ) );
-        assertEquals( TABLE_NAME + "_2003", PartitionUtils.getTable( "2003S2" ) );
+        assertEquals( TABLE_NAME + "_2000", PartitionUtils.getTable( createPeriod( "200011" ) ) );
+        assertEquals( TABLE_NAME + "_2001", PartitionUtils.getTable( createPeriod( "2001W02" ) ) );
+        assertEquals( TABLE_NAME + "_2002", PartitionUtils.getTable( createPeriod( "2002Q2" ) ) );
+        assertEquals( TABLE_NAME + "_2003", PartitionUtils.getTable( createPeriod( "2003S2" ) ) );
     }
     
     @Test
@@ -84,7 +86,8 @@ public class PartitionUtilsTest
     @Test
     public void testGetTablePeriodMap()
     {        
-        ListMap<String, String> map = PartitionUtils.getTablePeriodMap( Arrays.asList( "2000S1", "2000S2", "2001S1", "2001S2", "2002S1" ) );
+        ListMap<String, IdentifiableObject> map = PartitionUtils.getTablePeriodMap( getList( 
+            createPeriod( "2000S1" ), createPeriod( "2000S2" ), createPeriod( "2001S1" ), createPeriod( "2001S2" ), createPeriod( "2002S1" ) ) );
         
         assertEquals( 3, map.size() );
         

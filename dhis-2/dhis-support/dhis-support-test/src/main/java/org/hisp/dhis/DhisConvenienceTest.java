@@ -662,6 +662,14 @@ public abstract class DhisConvenienceTest
 
         return period;
     }
+    
+    /**
+     * @param isoPeriod the ISO period string.
+     */
+    public static Period createPeriod( String isoPeriod )
+    {
+        return PeriodType.getPeriodFromIsoString( isoPeriod );
+    }
 
     /**
      * @param startDate The start date.

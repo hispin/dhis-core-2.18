@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.system.util.ListMap;
 
 public interface AnalyticsManager
@@ -55,5 +56,5 @@ public interface AnalyticsManager
      * @param dataPeriodAggregationPeriodMap the mapping between data periods and
      *        aggregation periods for this query.
      */
-    void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<String, String> dataPeriodAggregationPeriodMap );
+    void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap );
 }

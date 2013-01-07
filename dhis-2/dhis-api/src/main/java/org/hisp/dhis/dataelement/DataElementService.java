@@ -447,6 +447,8 @@ public interface DataElementService
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
 
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
+    
+    List<DataElementGroupSet> getDataElementGroupSetsByUid( Collection<String> uids );
 
     Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max );
 
