@@ -101,7 +101,7 @@ public class AnalyticsServiceTest
         Set<String> filterParams = new HashSet<String>();
         filterParams.add( "ou:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D," + BASE_UID + "E" );
         
-        DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, false );
+        DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, false, null );
         
         assertEquals( 4, params.getDatElements().size() );
         assertEquals( 3, params.getPeriods().size() );

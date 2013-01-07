@@ -223,6 +223,11 @@ public class ListGrid
     {
         return metaData;
     }
+    
+    public void setMetaData( Map<String, String> metaData )
+    {
+        this.metaData = metaData;
+    }
 
     public int getVisibleWidth()
     {

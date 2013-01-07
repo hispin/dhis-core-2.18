@@ -244,6 +244,32 @@ public class DataQueryParams
             setPeriods( new ArrayList<IdentifiableObject>( getDataPeriodAggregationPeriodMap().keySet() ) );
         }
     }
+    
+    /**
+     * Returns a mapping between the uid and name for all options in all dimensions.
+     */
+    public Map<String, String> getUidNameMap()
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        
+        for ( String dimension : dimensions.keySet() )
+        {
+            for ( IdentifiableObject idObject : dimensions.get( dimension ) )
+            {
+                map.put( idObject.getUid(), idObject.getDisplayName() );
+            }
+        }
+        
+        for ( String filter : filters.keySet() )
+        {
+            for ( IdentifiableObject idObject : filters.get( filter ) )
+            {
+                map.put( idObject.getUid(), idObject.getDisplayName() );
+            }
+        }
+        
+        return map;
+    }
 
     // -------------------------------------------------------------------------
     // Static methods

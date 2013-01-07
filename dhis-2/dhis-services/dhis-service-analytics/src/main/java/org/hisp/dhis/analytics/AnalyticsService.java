@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nFormat;
 
 public interface AnalyticsService
 {
@@ -38,5 +39,5 @@ public interface AnalyticsService
     
     Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception;
     
-    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories );
+    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, I18nFormat format );
 }
