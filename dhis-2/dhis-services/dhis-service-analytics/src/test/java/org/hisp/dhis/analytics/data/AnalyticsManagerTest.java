@@ -27,9 +27,10 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.*;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.ListMap;
 import org.junit.Test;
@@ -51,34 +54,36 @@ public class AnalyticsManagerTest
     @Test
     public void testReplace()
     {
+        Period y2012 = createPeriod( "2012" );
+                
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( "de1", "de2" ) );
-        params.setPeriods( Arrays.asList( "2012" ) );
-        params.setOrganisationUnits( Arrays.asList( "ou1" ) );
+        params.setDataElements( getList( createDataElement( 'A' ), createDataElement( 'B' ) ) );
+        params.setPeriods( getList( y2012 ) );
+        params.setOrganisationUnits( getList( createOrganisationUnit( 'A' ) ) );
         params.setDataPeriodType( new YearlyPeriodType() );
         params.setAggregationType( AggregationType.AVERAGE_DISAGGREGATION );
         
         Map<String, Double> dataValueMap = new HashMap<String, Double>();
-        dataValueMap.put( "de1-2012-ou1", 1d );
-        dataValueMap.put( "de2-2012-ou1", 1d );
+        dataValueMap.put( BASE_UID + "A-2012-" + BASE_UID + "A", 1d );
+        dataValueMap.put( BASE_UID + "B-2012-" + BASE_UID + "A", 1d );
         
-        ListMap<String, String> dataPeriodAggregationPeriodMap = new ListMap<String, String>();
-        dataPeriodAggregationPeriodMap.putValue( "2012", "2012Q1" );
-        dataPeriodAggregationPeriodMap.putValue( "2012", "2012Q2" );
-        dataPeriodAggregationPeriodMap.putValue( "2012", "2012Q3" );
-        dataPeriodAggregationPeriodMap.putValue( "2012", "2012Q4" );
+        ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = new ListMap<IdentifiableObject, IdentifiableObject>();
+        dataPeriodAggregationPeriodMap.putValue( y2012, createPeriod( "2012Q1" ) );
+        dataPeriodAggregationPeriodMap.putValue( y2012, createPeriod( "2012Q2" ) );
+        dataPeriodAggregationPeriodMap.putValue( y2012, createPeriod( "2012Q3" ) );
+        dataPeriodAggregationPeriodMap.putValue( y2012, createPeriod( "2012Q4" ) );
         
         analyticsManager.replaceDataPeriodsWithAggregationPeriods( dataValueMap, params, dataPeriodAggregationPeriodMap );
         
         assertEquals( 8, dataValueMap.size() );
         
-        assertTrue( dataValueMap.keySet().contains( "de1-2012Q1-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de1-2012Q2-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de1-2012Q3-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de1-2012Q4-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de2-2012Q1-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de2-2012Q2-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de2-2012Q3-ou1" ) );
-        assertTrue( dataValueMap.keySet().contains( "de2-2012Q4-ou1" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "A-2012Q1-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "A-2012Q2-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "A-2012Q3-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "A-2012Q4-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "B-2012Q1-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "B-2012Q2-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "B-2012Q3-" + BASE_UID + "A" ) );
+        assertTrue( dataValueMap.keySet().contains( BASE_UID + "B-2012Q4-" + BASE_UID + "A" ) );
     }
 }

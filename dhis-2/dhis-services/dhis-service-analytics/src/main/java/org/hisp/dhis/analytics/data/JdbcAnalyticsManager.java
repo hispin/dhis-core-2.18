@@ -32,6 +32,7 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
 import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +45,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ListMap;
 import org.hisp.dhis.system.util.SqlHelper;
@@ -79,11 +82,11 @@ public class JdbcAnalyticsManager
     @Async
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
-        ListMap<String, String> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
+        ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
         
         List<String> dimensions = params.getDimensionNames();
-        Map<String, List<String>> dimensionMap = params.getDimensionMap();
+        Map<String, List<IdentifiableObject>> dimensionMap = params.getDimensionMap();
         
         SqlHelper sqlHelper = new SqlHelper();
         
@@ -97,12 +100,12 @@ public class JdbcAnalyticsManager
         
         for ( String dim : dimensions )
         {
-            sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( dimensionMap.get( dim ) ) + " ) ";
+            sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( getUids( dimensionMap.get( dim ) ) ) + " ) ";
         }
 
         for ( String filter : params.getFilterNames() )
         {
-            sql += sqlHelper.whereAnd() + " " + filter + " in (" + getQuotedCommaDelimitedString( params.getFilters().get( filter ) ) + " ) ";
+            sql += sqlHelper.whereAnd() + " " + filter + " in (" + getQuotedCommaDelimitedString( getUids( params.getFilters().get( filter ) ) ) + " ) ";
         }
         
         sql += "group by " + getCommaDelimitedString( dimensions );
@@ -134,7 +137,7 @@ public class JdbcAnalyticsManager
         return new AsyncResult<Map<String, Double>>( map );
     }
 
-    public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<String, String> dataPeriodAggregationPeriodMap )
+    public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap )
     {
         if ( params.isAggregationType( AVERAGE_DISAGGREGATION ) )
         {
@@ -148,16 +151,16 @@ public class JdbcAnalyticsManager
                 
                 Assert.notNull( keyArray[periodIndex], keyArray.toString() );
                 
-                List<String> periods = dataPeriodAggregationPeriodMap.get( keyArray[periodIndex] );
+                List<IdentifiableObject> periods = dataPeriodAggregationPeriodMap.get( PeriodType.getPeriodFromIsoString( keyArray[periodIndex] ) );
                 
                 Assert.notNull( periods, dataPeriodAggregationPeriodMap.toString() );
                 
                 Double value = dataValueMap.get( key );
                 
-                for ( String period : periods )
+                for ( IdentifiableObject period : periods )
                 {
                     String[] keyCopy = keyArray.clone();
-                    keyCopy[periodIndex] = period;                    
+                    keyCopy[periodIndex] = ((Period) period).getIsoDate();
                     dataValueMap.put( TextUtils.toString( keyCopy, SEP ), value );
                 }
                 

@@ -31,6 +31,7 @@ import static org.hisp.dhis.i18n.I18nUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
@@ -200,6 +201,11 @@ public class DefaultOrganisationUnitGroupService
                     return identifiers.contains( object.getId() );
                 }
             } );
+    }
+
+    public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsByUid( Collection<String> uids )
+    {
+        return organisationUnitGroupSetStore.getByUid( uids );
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name )

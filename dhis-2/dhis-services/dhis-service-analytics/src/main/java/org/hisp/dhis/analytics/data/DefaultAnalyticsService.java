@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.AnalyticsManager;
@@ -39,6 +40,14 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
@@ -46,6 +55,8 @@ import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hisp.dhis.analytics.AnalyticsManager.SEP;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
 
 public class DefaultAnalyticsService
     implements AnalyticsService
@@ -61,6 +72,22 @@ public class DefaultAnalyticsService
     @Autowired
     private QueryPlanner queryPlanner;
     
+    @Autowired
+    private IndicatorService indicatorService;
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    // -------------------------------------------------------------------------
+    // Implementation
+    // -------------------------------------------------------------------------
+  
     public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
     {
         Grid grid = new ListGrid();
@@ -116,5 +143,87 @@ public class DefaultAnalyticsService
         t.getTime( "Got aggregated values" );
         
         return map;
-    } 
+    }
+    
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories )
+    {
+        DataQueryParams params = new DataQueryParams();
+        
+        params.setCategories( categories );
+        
+        for ( String param : dimensionParams )
+        {
+            String dimension = DataQueryParams.getDimension( param );
+            List<String> options = DataQueryParams.getDimensionOptions( param );
+            
+            if ( dimension != null && options != null )
+            {
+                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options );
+                
+                params.getDimensions().put( dimension, dimensionOptions );
+            }
+        }
+
+        for ( String param : filterParams )
+        {
+            String dimension = DataQueryParams.getDimension( param );
+            List<String> options = DataQueryParams.getDimensionOptions( param );
+            
+            if ( dimension != null && options != null )
+            {
+                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options );
+                
+                params.getFilters().put( dimension, dimensionOptions );
+            }
+        }
+        
+        return params;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
+    private List<IdentifiableObject> getDimensionOptions( String dimension, List<String> options )
+    {
+        if ( INDICATOR_DIM_ID.equals( dimension ) )
+        {
+            return asList( indicatorService.getIndicatorsByUid( options ) );
+        }
+        else if ( DATAELEMENT_DIM_ID.equals( dimension ) )
+        {
+            return asList( dataElementService.getDataElementsByUid( options ) );
+        }
+        else if ( ORGUNIT_DIM_ID.equals( dimension ) )
+        {
+            return asList( organisationUnitService.getOrganisationUnitsByUid( options ) );
+        }
+        else if ( PERIOD_DIM_ID.equals( dimension ) )
+        {
+            List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
+            
+            for ( String isoPeriod : options )
+            {
+                list.add( PeriodType.getPeriodFromIsoString( isoPeriod ) );
+            }
+            
+            return list;
+        }
+        
+        OrganisationUnitGroupSet orgUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
+            
+        if ( orgUnitGroupSet != null )
+        {
+            return asList( organisationUnitGroupService.getOrganisationUnitGroupSetsByUid( options ) );
+        }
+        
+        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( dimension );
+        
+        if ( dataElementGroupSet != null )
+        {
+            return asList( dataElementService.getDataElementGroupSetsByUid( options ) );
+        }
+        
+        return null;
+    }
 }

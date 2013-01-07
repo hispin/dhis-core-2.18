@@ -116,7 +116,7 @@ public class ReportTableController
 
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );        
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
 
         return grid != null ? "reportTableData" : null;
     }

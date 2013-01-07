@@ -566,6 +566,11 @@ public class DefaultDataElementService
             }
         } );
     }
+    
+    public List<DataElementGroupSet> getDataElementGroupSetsByUid( Collection<String> uids )
+    {
+        return dataElementGroupSetStore.getByUid( uids );
+    }
 
     public int getDataElementGroupSetCount()
     {

@@ -27,24 +27,24 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.QueryPlanner;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -109,51 +109,32 @@ public class QueryPlannerTest
     // Tests
     // -------------------------------------------------------------------------
     
-    public void testGetFromUrl()
-    {
-        Set<String> dimensions = new HashSet<String>();
-        dimensions.add( "de:s46m5MS0hxu,fClA2Erf6IO,UOlfIjgN8X6,I78gJm4KBo7,n6aMJNLdvep" );
-        dimensions.add( "pe:2012,2012S1,2012S2" );
-        
-        Set<String> filters = new HashSet<String>();
-        filters.add( "ou:ImspTQPwCqd" );
-        
-        DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, false );
-        
-        assertEquals( 2, params.getDimensions().size() );
-        assertEquals( 1, params.getFilters().size() );
-        
-        assertTrue( params.getDimensionNames().contains( "de" ) );
-        assertTrue( params.getDimensionNames().contains( "pe" ) );
-        assertTrue( params.getFilterNames().contains( "ou" ) );
-    }
-    
     public void testGetDataPeriodAggregationPeriodMap()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod( "2001Q1" ), createPeriod( "2001Q2" ) ) );
         params.setPeriodType( QuarterlyPeriodType.NAME );
         params.setDataPeriodType( new YearlyPeriodType() );
         
-        ListMap<String, String> map = params.getDataPeriodAggregationPeriodMap();
+        ListMap<IdentifiableObject, IdentifiableObject> map = params.getDataPeriodAggregationPeriodMap();
         
         assertEquals( 2, map.size() );
         
-        assertTrue( map.keySet().contains( "2000" ) );
-        assertTrue( map.keySet().contains( "2001" ) );
+        assertTrue( map.keySet().contains( createPeriod( "2000" ) ) );
+        assertTrue( map.keySet().contains( createPeriod( "2001" ) ) );
         
-        assertEquals( 4, map.get( "2000" ).size() );
-        assertEquals( 2, map.get( "2001" ).size() );
+        assertEquals( 4, map.get( createPeriod( "2000" ) ).size() );
+        assertEquals( 2, map.get( createPeriod( "2001" ) ).size() );
         
-        assertTrue( map.get( "2000" ).contains( "2000Q1" ) );
-        assertTrue( map.get( "2000" ).contains( "2000Q2" ) );
-        assertTrue( map.get( "2000" ).contains( "2000Q3" ) );
-        assertTrue( map.get( "2000" ).contains( "2000Q4" ) );
+        assertTrue( map.get( createPeriod( "2000" ) ).contains( createPeriod( "2000Q1" ) ) );
+        assertTrue( map.get( createPeriod( "2000" ) ).contains( createPeriod( "2000Q2" ) ) );
+        assertTrue( map.get( createPeriod( "2000" ) ).contains( createPeriod( "2000Q3" ) ) );
+        assertTrue( map.get( createPeriod( "2000" ) ).contains( createPeriod( "2000Q4" ) ) );
 
-        assertTrue( map.get( "2001" ).contains( "2001Q1" ) );
-        assertTrue( map.get( "2001" ).contains( "2001Q2" ) );
+        assertTrue( map.get( createPeriod( "2001" ) ).contains( createPeriod( "2001Q1" ) ) );
+        assertTrue( map.get( createPeriod( "2001" ) ).contains( createPeriod( "2001Q2" ) ) );
     }
     
     /**
@@ -165,9 +146,9 @@ public class QueryPlannerTest
     public void planQueryA()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod(  "2001Q1" ), createPeriod( "2001Q2" ) ) );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
@@ -189,9 +170,9 @@ public class QueryPlannerTest
     public void planQueryB()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000", "200002", "200003", "200004" ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ) ) );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
@@ -227,9 +208,9 @@ public class QueryPlannerTest
         organisationUnitService.updateOrganisationUnit( ouE );
         
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3" ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ) ) );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
@@ -249,9 +230,10 @@ public class QueryPlannerTest
     public void planQueryD()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid() ) );
-        params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
+        params.setDataElements( getList( deA, deB, deC ) );
+        params.setOrganisationUnits( getList( ouA ) );
+        params.setPeriods( getList( createPeriod( "200001" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ),
+            createPeriod( "200005" ), createPeriod( "200006" ), createPeriod( "200007" ), createPeriod( "200008" ), createPeriod( "200009" ) ) );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
@@ -271,8 +253,9 @@ public class QueryPlannerTest
     public void planQueryE()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid() ) );
-        params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
+        params.setDataElements( getList( deA, deB, deC ) );
+        params.setPeriods( getList( createPeriod( "200001" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ), 
+            createPeriod( "200005" ), createPeriod( "200006" ), createPeriod( "200007" ), createPeriod( "200008" ), createPeriod( "200009" ) ) );
 
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
 
@@ -292,8 +275,9 @@ public class QueryPlannerTest
     public void planQueryF()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setPeriods( Arrays.asList( "200001", "200002", "200003", "200004", "200005", "200006", "200007", "200008", "200009" ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setPeriods( getList( createPeriod( "200001" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ), 
+            createPeriod( "200005" ), createPeriod( "200006" ), createPeriod( "200007" ), createPeriod( "200008" ), createPeriod( "200009" ) ) );
 
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
 
@@ -313,8 +297,8 @@ public class QueryPlannerTest
     public void planQueryG()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
+        params.setDataElements( getList( deA, deB, deC ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
 
         queryPlanner.planQuery( params, 4 );
     }
@@ -328,9 +312,9 @@ public class QueryPlannerTest
     public void planQueryH()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
-        params.setOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setFilterPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000Q3", "2000Q4", "2001Q1", "2001Q2" ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setFilterPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod( "2001Q1" ), createPeriod( "2001Q2" ) ) );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
@@ -346,9 +330,9 @@ public class QueryPlannerTest
     public void planQueryI()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( Arrays.asList( deA.getUid(), deB.getUid(), deC.getUid(), deD.getUid() ) );
-        params.setFilterOrganisationUnits( Arrays.asList( ouA.getUid(), ouB.getUid(), ouC.getUid(), ouD.getUid(), ouE.getUid() ) );
-        params.setPeriods( Arrays.asList( "2000Q1", "2000Q2", "2000", "200002", "200003", "200004" ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ) ) );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
         
@@ -359,15 +343,15 @@ public class QueryPlannerTest
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private static boolean samePeriodType( List<String> isoPeriods )
+    private static boolean samePeriodType( List<IdentifiableObject> isoPeriods )
     {
-        Iterator<String> periods = new ArrayList<String>( isoPeriods ).iterator();
+        Iterator<IdentifiableObject> periods = new ArrayList<IdentifiableObject>( isoPeriods ).iterator();
         
-        PeriodType first = PeriodType.getPeriodTypeFromIsoString( periods.next() );
+        PeriodType first = ((Period) periods.next()).getPeriodType();
         
         while ( periods.hasNext() )
         {
-            PeriodType next = PeriodType.getPeriodTypeFromIsoString( periods.next() );
+            PeriodType next = ((Period) periods.next()).getPeriodType();
             
             if ( !first.equals( next ) )
             {   
@@ -378,15 +362,15 @@ public class QueryPlannerTest
         return true;
     }
     
-    private static boolean samePartition( List<String> isoPeriods )
+    private static boolean samePartition( List<IdentifiableObject> isoPeriods )
     {
-        Iterator<String> periods = new ArrayList<String>( isoPeriods ).iterator();
+        Iterator<IdentifiableObject> periods = new ArrayList<IdentifiableObject>( isoPeriods ).iterator();
         
-        int year = new Cal().set( PeriodType.getPeriodFromIsoString( periods.next() ).getStartDate() ).getYear();
+        int year = new Cal().set( ((Period) periods.next()).getStartDate() ).getYear();
         
         while ( periods.hasNext() )
         {
-            int next = new Cal().set( PeriodType.getPeriodFromIsoString( periods.next() ).getStartDate() ).getYear();
+            int next = new Cal().set( ((Period) periods.next()).getStartDate() ).getYear();
             
             if ( year != next )
             {   

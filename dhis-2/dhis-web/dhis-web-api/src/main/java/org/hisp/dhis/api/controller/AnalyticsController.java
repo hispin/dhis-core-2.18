@@ -69,7 +69,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = DataQueryParams.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
 
         if ( !valid( params, response ) )
         {
@@ -91,7 +91,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = DataQueryParams.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
 
         if ( !valid( params, response ) )
         {
@@ -111,7 +111,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = DataQueryParams.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
 
         if ( !valid( params, response ) )
         {
@@ -131,7 +131,7 @@ public class AnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = DataQueryParams.getFromUrl( dimension, filter, categories );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories );
 
         if ( !valid( params, response ) )
         {

@@ -27,9 +27,9 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-import static org.hisp.dhis.analytics.AggregationType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,9 +39,11 @@ import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.table.PartitionUtils;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ListMap;
 import org.hisp.dhis.system.util.MathUtils;
@@ -56,9 +58,6 @@ public class DefaultQueryPlanner
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
-    @Autowired
-    private DataElementService dataElementService;
     
     // -------------------------------------------------------------------------
     // DefaultQueryPlanner implementation
@@ -171,7 +170,7 @@ public class DefaultQueryPlanner
         
         for ( DataQueryParams query : queries )
         {
-            List<String> values = query.getDimensionOrFilter( dimension );
+            List<IdentifiableObject> values = query.getDimensionOrFilter( dimension );
 
             if ( values == null || values.isEmpty() )
             {
@@ -179,9 +178,9 @@ public class DefaultQueryPlanner
                 continue;
             }
             
-            List<List<String>> valuePages = new PaginatedList<String>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
+            List<List<IdentifiableObject>> valuePages = new PaginatedList<IdentifiableObject>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
             
-            for ( List<String> valuePage : valuePages )
+            for ( List<IdentifiableObject> valuePage : valuePages )
             {
                 DataQueryParams subQuery = new DataQueryParams( query );
                 subQuery.resetDimensionOrFilter( dimension, valuePage );
@@ -203,7 +202,7 @@ public class DefaultQueryPlanner
 
         if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
-            ListMap<String, String> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods() );
+            ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods() );
             
             for ( String tableName : tablePeriodMap.keySet() )
             {
@@ -215,7 +214,7 @@ public class DefaultQueryPlanner
         }
         else
         {
-            ListMap<String, String> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getFilterPeriods() );
+            ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getFilterPeriods() );
             
             for ( String tableName : tablePeriodMap.keySet() )
             {
@@ -243,7 +242,7 @@ public class DefaultQueryPlanner
             return queries;
         }
         
-        ListMap<String, String> periodTypePeriodMap = getPeriodTypePeriodMap( params.getPeriods() );
+        ListMap<String, IdentifiableObject> periodTypePeriodMap = getPeriodTypePeriodMap( params.getPeriods() );
 
         for ( String periodType : periodTypePeriodMap.keySet() )
         {
@@ -270,7 +269,7 @@ public class DefaultQueryPlanner
             return queries;
         }
         
-        ListMap<Integer, String> levelOrgUnitMap = getLevelOrgUnitMap( params.getOrganisationUnits() );
+        ListMap<Integer, IdentifiableObject> levelOrgUnitMap = getLevelOrgUnitMap( params.getOrganisationUnits() );
         
         for ( Integer level : levelOrgUnitMap.keySet() )
         {
@@ -306,7 +305,7 @@ public class DefaultQueryPlanner
      
         PeriodType periodType = PeriodType.getPeriodTypeByName( params.getPeriodType() );
         
-        ListMap<AggregationType, String> aggregationTypeDataElementMap = getAggregationTypeDataElementMap( params.getDatElements(), periodType );
+        ListMap<AggregationType, IdentifiableObject> aggregationTypeDataElementMap = getAggregationTypeDataElementMap( params.getDatElements(), periodType );
         
         for ( AggregationType aggregationType : aggregationTypeDataElementMap.keySet() )
         {
@@ -333,7 +332,7 @@ public class DefaultQueryPlanner
             return queries;
         }
         
-        ListMap<PeriodType, String> periodTypeDataElementMap = getPeriodTypeDataElementMap( params.getDatElements() );
+        ListMap<PeriodType, IdentifiableObject> periodTypeDataElementMap = getPeriodTypeDataElementMap( params.getDatElements() );
         
         for ( PeriodType periodType : periodTypeDataElementMap.keySet() )
         {
@@ -384,13 +383,13 @@ public class DefaultQueryPlanner
     /**
      * Creates a mapping between period type name and period for the given periods.
      */
-    private ListMap<String, String> getPeriodTypePeriodMap( Collection<String> isoPeriods )
+    private ListMap<String, IdentifiableObject> getPeriodTypePeriodMap( Collection<IdentifiableObject> periods )
     {
-        ListMap<String, String> map = new ListMap<String, String>();
+        ListMap<String, IdentifiableObject> map = new ListMap<String, IdentifiableObject>();
         
-        for ( String period : isoPeriods )
+        for ( IdentifiableObject period : periods )
         {
-            String periodTypeName = PeriodType.getPeriodTypeFromIsoString( period ).getName();
+            String periodTypeName = ((Period) period).getPeriodType().getName();
             
             map.putValue( periodTypeName, period );
         }
@@ -402,13 +401,13 @@ public class DefaultQueryPlanner
      * Creates a mapping between level and organisation unit for the given organisation
      * units.
      */
-    private ListMap<Integer, String> getLevelOrgUnitMap( Collection<String> orgUnits )
+    private ListMap<Integer, IdentifiableObject> getLevelOrgUnitMap( Collection<IdentifiableObject> orgUnits )
     {
-        ListMap<Integer, String> map = new ListMap<Integer, String>();
+        ListMap<Integer, IdentifiableObject> map = new ListMap<Integer, IdentifiableObject>();
         
-        for ( String orgUnit : orgUnits )
+        for ( IdentifiableObject orgUnit : orgUnits )
         {
-            int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+            int level = organisationUnitService.getLevelOfOrganisationUnit( ((OrganisationUnit) orgUnit).getUid() );
             
             map.putValue( level, orgUnit );
         }
@@ -420,13 +419,13 @@ public class DefaultQueryPlanner
      * Creates a mapping between the level column and organisation unit for the 
      * given organisation units.
      */
-    private ListMap<String, String> getLevelColumnOrgUnitMap( Collection<String> orgUnits )
+    private ListMap<String, IdentifiableObject> getLevelColumnOrgUnitMap( Collection<IdentifiableObject> orgUnits )
     {
-        ListMap<String, String> map = new ListMap<String, String>();
+        ListMap<String, IdentifiableObject> map = new ListMap<String, IdentifiableObject>();
         
-        for ( String orgUnit : orgUnits )
+        for ( IdentifiableObject orgUnit : orgUnits )
         {
-            int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+            int level = organisationUnitService.getLevelOfOrganisationUnit( ((OrganisationUnit) orgUnit).getUid() );
             
             map.putValue( DataQueryParams.LEVEL_PREFIX + level, orgUnit );
         }
@@ -438,13 +437,13 @@ public class DefaultQueryPlanner
      * Creates a mapping between the aggregation type and data element for the
      * given data elements and period type.
      */
-    private ListMap<AggregationType, String> getAggregationTypeDataElementMap( Collection<String> dataElements, PeriodType aggregationPeriodType )
+    private ListMap<AggregationType, IdentifiableObject> getAggregationTypeDataElementMap( Collection<IdentifiableObject> dataElements, PeriodType aggregationPeriodType )
     {
-        ListMap<AggregationType, String> map = new ListMap<AggregationType, String>();
+        ListMap<AggregationType, IdentifiableObject> map = new ListMap<AggregationType, IdentifiableObject>();
         
-        for ( String element : dataElements )
+        for ( IdentifiableObject element : dataElements )
         {
-            DataElement dataElement = dataElementService.getDataElement( element );
+            DataElement dataElement = (DataElement) element;
             
             if ( AGGREGATION_OPERATOR_SUM.equals( dataElement.getAggregationOperator() ) )
             {
@@ -472,13 +471,13 @@ public class DefaultQueryPlanner
      * Creates a mapping between the period type and the data element for the
      * given data elements.
      */
-    private ListMap<PeriodType, String> getPeriodTypeDataElementMap( Collection<String> dataElements )
+    private ListMap<PeriodType, IdentifiableObject> getPeriodTypeDataElementMap( Collection<IdentifiableObject> dataElements )
     {
-        ListMap<PeriodType, String> map = new ListMap<PeriodType, String>();
+        ListMap<PeriodType, IdentifiableObject> map = new ListMap<PeriodType, IdentifiableObject>();
         
-        for ( String element : dataElements )
+        for ( IdentifiableObject element : dataElements )
         {
-            DataElement dataElement = dataElementService.getDataElement( element );
+            DataElement dataElement = (DataElement) element;
             
             map.putValue( dataElement.getPeriodType(), element );
         }

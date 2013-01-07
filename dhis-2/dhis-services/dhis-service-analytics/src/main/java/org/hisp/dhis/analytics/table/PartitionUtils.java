@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -69,15 +70,8 @@ public class PartitionUtils
         return tables;
     }
     
-    public static String getTable( String isoPeriod )
+    public static String getTable( Period period )
     {
-        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
-        
-        if ( period == null )
-        {
-            throw new IllegalArgumentException( "Illegal ISO period: " +  isoPeriod );
-        }
-        
         Period quarter = PERIODTYPE.createPeriod( period.getStartDate() );
         
         return TABLE_NAME + SEP + quarter.getIsoDate();
@@ -96,13 +90,13 @@ public class PartitionUtils
         return PeriodType.getPeriodFromIsoString( isoPeriod );
     }
     
-    public static ListMap<String, String> getTablePeriodMap( Collection<String> isoPeriods )
+    public static ListMap<String, IdentifiableObject> getTablePeriodMap( Collection<IdentifiableObject> periods )
     {
-        ListMap<String, String> map = new ListMap<String, String>();
+        ListMap<String, IdentifiableObject> map = new ListMap<String, IdentifiableObject>();
         
-        for ( String period : isoPeriods )
+        for ( IdentifiableObject period : periods )
         {
-            map.putValue( getTable( period ), period );
+            map.putValue( getTable( (Period) period ), period );
         }
         
         return map;
