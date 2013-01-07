@@ -30,20 +30,14 @@ package org.hisp.dhis.program;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Chau Thu Tran
  * 
  * @version ProgramStageSection.java 11:07:27 AM Aug 22, 2012 $
  */
-@XmlRootElement( name = "ProgramStageSection", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+
 public class ProgramStageSection
     extends BaseIdentifiableObject
 {

@@ -432,7 +432,7 @@
 		<action name="getProgramStageSection"
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/jsonProgramStageSection.vm
+				/dhis-web-commons/ajax/jsonProgramStageSection.vm
 			</result>
 		</action>
 

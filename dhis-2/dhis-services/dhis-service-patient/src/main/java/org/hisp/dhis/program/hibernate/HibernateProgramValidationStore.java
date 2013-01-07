@@ -30,7 +30,7 @@ package org.hisp.dhis.program.hibernate;
 import java.util.Collection;
 
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationStore;
@@ -40,7 +40,7 @@ import org.hisp.dhis.program.ProgramValidationStore;
  * @version $ HibernateProgramValidationStore.java Apr 28, 2011 10:43:09 AM $
  */
 public class HibernateProgramValidationStore
-    extends HibernateGenericStore<ProgramValidation>
+    extends HibernateIdentifiableObjectStore<ProgramValidation>
     implements ProgramValidationStore
 {
     @SuppressWarnings( "unchecked" )

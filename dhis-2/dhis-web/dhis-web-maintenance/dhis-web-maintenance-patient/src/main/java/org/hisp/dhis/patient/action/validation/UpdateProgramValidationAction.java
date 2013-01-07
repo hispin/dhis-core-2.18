@@ -64,11 +64,11 @@ public class UpdateProgramValidationAction
         this.id = id;
     }
 
-    private String description;
+    private String name;
 
-    public void setDescription( String description )
+    public void setName( String name )
     {
-        this.description = description;
+        this.name = name;
     }
 
     private String operator;
@@ -134,15 +134,15 @@ public class UpdateProgramValidationAction
         throws Exception
     {
         ProgramValidation validation = programValidationService.getProgramValidation( id );
-        
+
         ProgramExpression leftExpression = new ProgramExpression( leftSideExpression, leftSideDescription );
         ProgramExpression rightExpression = new ProgramExpression( rightSideExpression, rightSideDescription );
 
-        validation.setDescription( description.trim() );
+        validation.setName( name.trim() );
         validation.setOperator( Operator.valueOf( operator ) );
         validation.setLeftSide( leftExpression );
         validation.setRightSide( rightExpression );
-        
+
         programValidationService.updateProgramValidation( validation );
 
         return SUCCESS;

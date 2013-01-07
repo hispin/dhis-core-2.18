@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.expression.Operator;
 
 /**
@@ -36,7 +37,7 @@ import org.hisp.dhis.expression.Operator;
  * @version $ ProgramValidation.java Apr 28, 2011 10:27:29 AM $
  */
 public class ProgramValidation
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -48,7 +49,6 @@ public class ProgramValidation
     public static final String SEPARATOR_OBJECT = ":";
 
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
-    
 
     public static final int BEFORE_CURRENT_DATE = 1;
 
@@ -57,7 +57,6 @@ public class ProgramValidation
     public static final int AFTER_CURRENT_DATE = 3;
 
     public static final int AFTER_OR_EQUALS_TO_CURRENT_DATE = 4;
-    
 
     public static final int BEFORE_DUE_DATE = -1;
 
@@ -66,28 +65,23 @@ public class ProgramValidation
     public static final int AFTER_DUE_DATE = -3;
 
     public static final int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
-    
+
     public static final int BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS = -5;
-    
 
     public static final String NOT_NULL_VALUE_IN_EXPRESSION = "{NOT-NULL-VALUE}";
 
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
-
-    private int id;
-
-    private String description;
-
-    private ProgramExpression leftSide;
     
+    private ProgramExpression leftSide;
+
     private Operator operator;
 
     private ProgramExpression rightSide;
 
     private Program program;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -97,9 +91,10 @@ public class ProgramValidation
 
     }
 
-    public ProgramValidation( String description, ProgramExpression leftSide, ProgramExpression rightSide, Program program )
+    public ProgramValidation( String name, ProgramExpression leftSide, ProgramExpression rightSide,
+        Program program )
     {
-        this.description = description;
+        this.name = name;
         this.leftSide = leftSide;
         this.rightSide = rightSide;
         this.program = program;
@@ -182,27 +177,7 @@ public class ProgramValidation
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
+    
     public ProgramExpression getLeftSide()
     {
         return leftSide;
