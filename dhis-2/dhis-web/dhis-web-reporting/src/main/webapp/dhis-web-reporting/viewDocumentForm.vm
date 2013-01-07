@@ -63,6 +63,23 @@ function formatItem( item )
     return '<span data-id=' + item.id + '>' + item.name + '</span>';
 }
 
+function getUserGroupAccesses()
+{
+    userGroupAccesses = [];
+
+    $( '#sharingUserGroupAccesses table tbody' ).find('tr').each(function(idx, item) {
+        var tr = $(item);
+        var uga = {};
+
+        uga.id = $(tr.children()[0]).attr('id');
+        uga.access = $(tr.children()[1]).attr('access');
+
+        userGroupAccesses.push(uga);
+    });
+
+    return userGroupAccesses;
+}
+
 function showSharingDialog( type, uid ) {
     loadSharingSettings( type, uid ).done( function ( data ) {
         $( '#sharingPublicAccess option' ).removeAttr( 'selected' ).each( function ( idx, item ) {
@@ -78,11 +95,12 @@ function showSharingDialog( type, uid ) {
             tr.remove()
         } );
 
-        $( '#addUserGroupAccess' ).click(function() {
+        $( '#addUserGroupAccess' ).unbind('click' ).on('click', function() {
             var data = $( '#sharingUserGroupInput' ).select2('data');
             var access = $('#sharingUserGroupAccess :selected' ).val();
 
             addUserGroupAccess(data.name, data.id, access);
+            $('#sharingUserGroupInput').select2('data', null);
         });
 
         if(data.object.userGroupAccesses !== undefined)
@@ -112,6 +130,26 @@ function showSharingDialog( type, uid ) {
                      }
                 },
                 results: function(data, page) {
+                    var ugas = getUserGroupAccesses();
+                    var ugs = data.userGroups;
+                    data.userGroups = [];
+
+                    $.each(ugs, function(idx, ug) {
+                        var found = false;
+
+                        $.each(ugas, function(idx, uga) {
+                            if(ug.id == uga.id)
+                            {
+                                found = true;
+                            }
+                        });
+
+                        if(!found)
+                        {
+                            data.userGroups.push( ug );
+                        }
+                    });
+
                     return { results: data.userGroups }
                 }
             },
@@ -134,17 +172,7 @@ function showSharingDialog( type, uid ) {
                     var me = $( this );
 
                     data.object.publicAccess = $( '#sharingPublicAccess :selected' ).val();
-                    data.object.userGroupAccesses = [];
-
-                    $( '#sharingUserGroupAccesses table tbody' ).find('tr').each(function(idx, item) {
-                        var tr = $(item);
-                        var uga = {};
-
-                        uga.id = $(tr.children()[0]).attr('id');
-                        uga.access = $(tr.children()[1]).attr('access');
-
-                        data.object.userGroupAccesses.push(uga);
-                    });
+                    data.object.userGroupAccesses = getUserGroupAccesses();
 
                     saveSharingSettings( type, uid, data ).done( function () {
                         me.dialog( 'close' );
@@ -179,7 +207,7 @@ function showSharingDialog( type, uid ) {
         </p>
 
         <p>
-        <label for="sharingUserGroupInput">User Group Access</label>
+        <label for="sharingUserGroupAccesses">User Group Access</label>
         </p>
 
         <p>
