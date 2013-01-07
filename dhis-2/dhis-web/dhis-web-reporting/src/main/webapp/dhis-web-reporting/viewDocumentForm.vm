@@ -280,7 +280,10 @@ function showSharingDialog( type, uid ) {
 					<td>
                         #if ( $security.canManage( $document ) )
                         <a href="javascript:showSharingDialog('document', '$document.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+                        #else
+                        <img src="../images/relationship-denied.png">
                         #end
+
 						#if ( $document.external )
                     	   <a href="${document.url}" title="$i18n.getString( 'view_resource' )">
                     	#else
@@ -291,12 +294,17 @@ function showSharingDialog( type, uid ) {
 
                         #if( $security.canUpdate( $document ) )
                     	<a href="displayAddDocumentForm.action?id=$!document.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                        #else
+                        <img src="../images/edit-denied.png">
                         #end
 
 						<a href="javascript:addDocumentToDashboard( '$document.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
+
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeDocument" ) && $security.canDelete( $document ) )
 						<a href="javascript:removeDocument( $document.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>
-						#else <img src="../images/delete-denied.png"> #end
+						#else
+                        <img src="../images/delete-denied.png">
+                        #end
 					</td>
                 </tr>
                 #end
