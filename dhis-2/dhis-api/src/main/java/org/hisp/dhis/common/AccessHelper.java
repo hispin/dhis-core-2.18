@@ -116,6 +116,6 @@ public class AccessHelper
 
     public static boolean isEnabled( String access, Permission permission )
     {
-        return access.charAt( permission.getPosition() ) == permission.getValue();
+        return access != null && access.charAt( permission.getPosition() ) == permission.getValue();
     }
 }
