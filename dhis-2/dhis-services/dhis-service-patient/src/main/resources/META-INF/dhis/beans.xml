@@ -40,12 +40,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.program.ProgramStageStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+	<bean id="org.hisp.dhis.program.ProgramStageStore" 
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.program.ProgramStageSectionStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+	<bean id="org.hisp.dhis.program.ProgramStageSectionStore" 
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStageSection" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

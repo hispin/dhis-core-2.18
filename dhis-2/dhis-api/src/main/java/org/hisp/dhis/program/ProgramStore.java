@@ -45,11 +45,4 @@ public interface ProgramStore
     Collection<Program> getByType( int type );
     
     Collection<Program> get( int type, OrganisationUnit orgunit );
-
-    // Collection<Program> get( boolean singleEvent );
-    //
-    // Collection<Program> get( boolean singleEvent, boolean anonymous );
-    //
-    // Collection<Program> get( boolean singleEvent, boolean anonymous,
-    // OrganisationUnit orgunit );
 }

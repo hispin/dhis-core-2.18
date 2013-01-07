@@ -78,7 +78,7 @@ public class DefaultProgramStageSectionService
     @Override
     public ProgramStageSection getProgramStageSection( int id )
     {
-         return programStageSectionStore.get( id );
+        return programStageSectionStore.get( id );
     }
 
     @Override

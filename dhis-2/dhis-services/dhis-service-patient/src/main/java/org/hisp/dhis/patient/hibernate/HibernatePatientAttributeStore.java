@@ -30,7 +30,7 @@ package org.hisp.dhis.patient.hibernate;
 import java.util.Collection;
 
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeStore;
 
@@ -39,7 +39,7 @@ import org.hisp.dhis.patient.PatientAttributeStore;
  * @version $Id$
  */
 public class HibernatePatientAttributeStore
-    extends HibernateGenericStore<PatientAttribute>
+    extends HibernateIdentifiableObjectStore<PatientAttribute>
     implements PatientAttributeStore
 {
     @SuppressWarnings( "unchecked" )

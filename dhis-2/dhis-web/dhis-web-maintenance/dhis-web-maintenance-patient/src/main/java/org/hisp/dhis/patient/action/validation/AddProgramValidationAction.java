@@ -65,11 +65,11 @@ public class AddProgramValidationAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String description;
+    private String name;
 
-    public void setDescription( String description )
+    public void setName( String name )
     {
-        this.description = description;
+        this.name = name;
     }
 
     private String operator;
@@ -131,7 +131,7 @@ public class AddProgramValidationAction
         ProgramExpression rightExpression = new ProgramExpression( rightSideExpression, rightSideDescription );
 
         ProgramValidation validation = new ProgramValidation();
-        validation.setDescription( description.trim() );
+        validation.setName( name.trim() );
         validation.setOperator( Operator.valueOf( operator ) );
         validation.setLeftSide( leftExpression );
         validation.setRightSide( rightExpression );

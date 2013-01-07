@@ -28,7 +28,7 @@
 				<td></td>
 			  </tr>
 			  <tr>            
-				<th>$i18n.getString( "description" )</th>
+				<th>$i18n.getString( "name" )</th>
 				<th colspan='2'>$i18n.getString( "operations" )</th>
 			  </tr>
 
@@ -36,7 +36,7 @@
 				#foreach( $validation in $validations )
 				  <tr id="tr${validation.id}">
 					
-					<td onclick="showProgramValidationDetails( $validation.id )">$validation.description</td>
+					<td onclick="showProgramValidationDetails( $validation.id )">$validation.name</td>
 					<td>
 						<a href="showUpdateSingleProgramValidationForm.action?validationId=$validation.id&id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 						<a href="javascript:removeProgramValidation( '$validation.id', '$encoder.jsEncode( $validation.description )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>

@@ -30,7 +30,7 @@ package org.hisp.dhis.program.hibernate;
 import java.util.Collection;
 
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStore;
@@ -41,7 +41,7 @@ import org.hisp.dhis.program.ProgramStore;
  * @version $Id: HibernateProgramStore.java Dec 14, 2011 9:24:21 AM $
  */
 public class HibernateProgramStore
-    extends HibernateGenericStore<Program>
+    extends HibernateIdentifiableObjectStore<Program>
     implements ProgramStore
 {
     @SuppressWarnings( "unchecked" )
