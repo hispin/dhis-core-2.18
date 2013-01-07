@@ -20,7 +20,7 @@
 
 <tr>
 	<td>
-		<input type="button" style="width:140px" onclick="schedulingAggCondTasks();"
+		<input type="button" style="width:140px" onclick="schedulingAggCondTasks();" id="scheduledBtn" name="scheduledBtn"
 		#if ( $running )
 		value="$i18n.getString( 'stop' )"
 		#else
