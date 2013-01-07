@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.period.Period;
@@ -56,7 +57,6 @@ public class DataQueryParams
     public static final String VALUE_ID = "value";    
     public static final String LEVEL_PREFIX = "uidlevel";
 
-    private static final String DIMENSION_SEP = ";";
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ",";
     
@@ -250,7 +250,7 @@ public class DataQueryParams
     /**
      * Creates an instance based on a URL.
      */
-    public static DataQueryParams getFromUrl( String dimensions, String filters, boolean categories )
+    public static DataQueryParams getFromUrl( Set<String> dimensions, Set<String> filters, boolean categories )
     {
         DataQueryParams params = new DataQueryParams();
         
@@ -269,18 +269,16 @@ public class DataQueryParams
      * Gets a mapping between dimension name and dimension options for the given
      * query parameter.
      */
-    private static Map<String, List<String>> getDimension( String requestParam )
+    private static Map<String, List<String>> getDimension( Set<String> requestParams )
     {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
 
-        if ( requestParam == null || requestParam.isEmpty() )
+        if ( requestParams == null || requestParams.isEmpty() )
         {
             return map;
         }
         
-        String[] dimensions = requestParam.split( DIMENSION_SEP );
-        
-        for ( String dimension : dimensions )
+        for ( String dimension : requestParams )
         {
             String[] elements = dimension.split( DIMENSION_NAME_SEP );
             

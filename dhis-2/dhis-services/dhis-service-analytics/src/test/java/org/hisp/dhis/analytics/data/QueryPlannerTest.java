@@ -32,8 +32,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
@@ -109,8 +111,12 @@ public class QueryPlannerTest
     
     public void testGetFromUrl()
     {
-        String dimensions = "de:s46m5MS0hxu,fClA2Erf6IO,UOlfIjgN8X6,I78gJm4KBo7,n6aMJNLdvep;pe:2012,2012S1,2012S2";
-        String filters = "ou:ImspTQPwCqd";
+        Set<String> dimensions = new HashSet<String>();
+        dimensions.add( "de:s46m5MS0hxu,fClA2Erf6IO,UOlfIjgN8X6,I78gJm4KBo7,n6aMJNLdvep" );
+        dimensions.add( "pe:2012,2012S1,2012S2" );
+        
+        Set<String> filters = new HashSet<String>();
+        filters.add( "ou:ImspTQPwCqd" );
         
         DataQueryParams params = DataQueryParams.getFromUrl( dimensions, filters, false );
         
