@@ -12,7 +12,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataelement.LocalDataElementStore" 
-		class="org.hisp.dhis.dataelement.hibernate.HibernateLocalDataElementStore">		
+		class="org.hisp.dhis.dataelement.hibernate.HibernateLocalDataElementStore">
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElement" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -39,10 +39,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.LocalDataSetStore" 
-		class="org.hisp.dhis.dataset.hibernate.HibernateLocalDataSetStore">		
+		class="org.hisp.dhis.dataset.hibernate.HibernateLocalDataSetStore">
 		<property name="clazz" value="org.hisp.dhis.dataset.DataSet" />
-		<property name="sessionFactory" ref="sessionFactory" />	
+		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	</bean>
+	
+	<!-- LocalPeriod -->
+	
+	<bean id="org.hisp.dhis.period.LocalPeriodService"
+		class="org.hisp.dhis.period.DefaultLocalPeriodService">
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
+	</bean>
+	
+	<!-- LocalDataValue -->
+	
+	<bean id="org.hisp.dhis.datavalue.LocalDataValueService"
+		class="org.hisp.dhis.datavalue.DefaultLocalDataValueService">
+		<property name="localDataValueStore" ref="org.hisp.dhis.datavalue.LocalDataValueStore"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.datavalue.LocalDataValueStore" 
+		class="org.hisp.dhis.datavalue.hibernate.HibernateLocalDataValueStore">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
 	</bean>
 
 	<!-- OrganisationUnitPrototype -->
