@@ -170,8 +170,12 @@ public class HibernateGenericStore<T>
         root.add( Restrictions.ilike( "publicAccess", "r%" ) );
         root.add( Restrictions.eq( "user", currentUser ) );
 
+        criteria.createAlias( "u.userGroup", "ug" );
+        criteria.createAlias( "ug.members", "member" );
+
         Conjunction ugAccess = Restrictions.conjunction();
         ugAccess.add( Restrictions.ilike( "u.access", "r%" ) );
+        ugAccess.add( Restrictions.eq( "member.uid", currentUser.getUid() ) );
         root.add( ugAccess );
 
         criteria.add( root );

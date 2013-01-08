@@ -155,12 +155,12 @@ public class SharingController
 
         object.setPublicAccess( sharing.getObject().getPublicAccess() );
 
-        Iterator<UserGroupAccess> iterator = object.getUserGroupAccesses().iterator();
-
         if ( object.getUser() == null )
         {
             object.setUser( currentUserService.getCurrentUser() );
         }
+
+        Iterator<UserGroupAccess> iterator = object.getUserGroupAccesses().iterator();
 
         while ( iterator.hasNext() )
         {
