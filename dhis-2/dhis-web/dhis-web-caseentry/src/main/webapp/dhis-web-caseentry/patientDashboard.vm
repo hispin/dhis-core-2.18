@@ -63,7 +63,7 @@
 				</tr>
 				#end
 				#foreach( $attributeName in $calAttributeValueMap.keySet() )
-				<tr>
+				<tr class="bold">
 					<td>$attributeName</td>
 					<td>$calAttributeValueMap.get($attributeName)</td>
 				</tr>

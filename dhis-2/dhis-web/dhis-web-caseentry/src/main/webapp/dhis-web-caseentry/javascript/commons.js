@@ -1811,7 +1811,7 @@ function filterInSection( $this )
 			}
 		} );
     }
-
+	
     refreshZebraStripes( $tbody );
 }
 
