@@ -30,7 +30,7 @@ package org.hisp.dhis.reporting.document.action;
 import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.AccessHelper;
+import org.hisp.dhis.common.AccessStringHelper;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.external.location.LocationManager;
@@ -176,7 +176,7 @@ public class SaveDocumentAction
 
         document.setUser( currentUserService.getCurrentUser() );
 
-        document.setPublicAccess( AccessHelper.newInstance().enable( AccessHelper.Permission.READ ).build() );
+        document.setPublicAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
 
         documentService.saveDocument( document );
 
