@@ -164,12 +164,11 @@ public class HibernateGenericStore<T>
             return criteria;
         }
 
-        criteria.createAlias( "userGroupAccesses", "u" );
-
         Disjunction root = Restrictions.disjunction();
         root.add( Restrictions.ilike( "publicAccess", "r%" ) );
         root.add( Restrictions.eq( "user", currentUser ) );
 
+        criteria.createAlias( "userGroupAccesses", "u" );
         criteria.createAlias( "u.userGroup", "ug" );
         criteria.createAlias( "ug.members", "member" );
 
