@@ -110,3 +110,12 @@ function detailsReport()
 	showById('programStageTitleLbl');
 	hideById('patientNameLbl');
 }
+
+function showStatisticalReportForm()
+{
+	if( getInnerHTML('statisticalReportDiv' )!="")
+	{
+		hideById('reportForm');
+		showById('statisticalReportDiv');
+	}
+}
