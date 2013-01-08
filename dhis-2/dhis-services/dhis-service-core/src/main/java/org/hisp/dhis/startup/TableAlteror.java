@@ -38,7 +38,7 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.AccessHelper;
+import org.hisp.dhis.common.AccessStringHelper;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -480,9 +480,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE organisationunit ALTER COLUMN shortname TYPE character varying(50)" );
 
         // set default access properties
-        String publicString = AccessHelper.newInstance()
-            .enable( AccessHelper.Permission.READ )
-            .enable( AccessHelper.Permission.WRITE )
+        String publicString = AccessStringHelper.newInstance()
+            .enable( AccessStringHelper.Permission.READ )
+            .enable( AccessStringHelper.Permission.WRITE )
             .build();
 
         // executeSql( "UPDATE document SET publicaccess = '" + publicString + "' WHERE userid IS NULL AND publicaccess IS NULL" );

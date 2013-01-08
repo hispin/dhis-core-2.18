@@ -30,7 +30,7 @@ package org.hisp.dhis.common;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class AccessHelper
+public class AccessStringHelper
 {
     public static final String DEFAULT_ACCESS = "--------";
 
@@ -61,33 +61,33 @@ public class AccessHelper
 
     private char[] access = DEFAULT_ACCESS.toCharArray();
 
-    public AccessHelper()
+    public AccessStringHelper()
     {
     }
 
-    public AccessHelper( char[] access )
+    public AccessStringHelper( char[] access )
     {
         this.access = access;
     }
 
-    public AccessHelper( String access )
+    public AccessStringHelper( String access )
     {
         this.access = access.toCharArray();
     }
 
-    public static AccessHelper newInstance()
+    public static AccessStringHelper newInstance()
     {
-        return new AccessHelper();
+        return new AccessStringHelper();
     }
 
-    public AccessHelper enable( Permission permission )
+    public AccessStringHelper enable( Permission permission )
     {
         access[permission.getPosition()] = permission.getValue();
 
         return this;
     }
 
-    public AccessHelper disable( Permission permission )
+    public AccessStringHelper disable( Permission permission )
     {
         access[permission.getPosition()] = '-';
 

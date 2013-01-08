@@ -40,13 +40,17 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
+import org.hisp.dhis.common.AccessUtils;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -144,6 +148,26 @@ public class HibernateGenericStore<T>
         return query;
     }
 
+    private boolean hasShareProperties()
+    {
+        try
+        {
+            // for now we need to have this test, since not all idObjectClasses are converted
+            sessionFactory.getClassMetadata( clazz ).getPropertyType( "publicAccess" );
+        }
+        catch ( HibernateException ignored )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Creates a Criteria for the implementation Class type based on the accessibility of objects.
+     *
+     * @return a Criteria instance.
+     */
     protected final Criteria getAccessibleCriteria()
     {
         Criteria criteria = getCriteria();
@@ -154,23 +178,18 @@ public class HibernateGenericStore<T>
             return criteria;
         }
 
-        try
-        {
-            // for now we need to have this test, since not all idObjectClasses are converted
-            sessionFactory.getClassMetadata( clazz ).getPropertyType( "publicAccess" );
-        }
-        catch ( HibernateException ignored )
+        if ( !hasShareProperties() )
         {
             return criteria;
         }
 
+        criteria.createAlias( "userGroupAccesses", "u", JoinType.LEFT_OUTER_JOIN );
+        criteria.createAlias( "u.userGroup", "ug", JoinType.LEFT_OUTER_JOIN );
+        criteria.createAlias( "ug.members", "member", JoinType.LEFT_OUTER_JOIN );
+
         Disjunction root = Restrictions.disjunction();
         root.add( Restrictions.ilike( "publicAccess", "r%" ) );
         root.add( Restrictions.eq( "user", currentUser ) );
-
-        criteria.createAlias( "userGroupAccesses", "u" );
-        criteria.createAlias( "u.userGroup", "ug" );
-        criteria.createAlias( "ug.members", "member" );
 
         Conjunction ugAccess = Restrictions.conjunction();
         ugAccess.add( Restrictions.ilike( "u.access", "r%" ) );
@@ -267,6 +286,12 @@ public class HibernateGenericStore<T>
     public int save( T object )
     {
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE );
+
+        if ( !isWriteAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have write access to object" );
+        }
+
         return (Integer) sessionFactory.getCurrentSession().save( object );
     }
 
@@ -274,6 +299,12 @@ public class HibernateGenericStore<T>
     public void update( T object )
     {
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
+
+        if ( !isUpdateAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have update access to object" );
+        }
+
         sessionFactory.getCurrentSession().update( object );
     }
 
@@ -282,6 +313,12 @@ public class HibernateGenericStore<T>
     {
         // TODO check if object is persisted or not to decide logging? defaulting to edit for now
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
+
+        if ( !isWriteAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have write access to object" );
+        }
+
         sessionFactory.getCurrentSession().saveOrUpdate( object );
     }
 
@@ -305,11 +342,76 @@ public class HibernateGenericStore<T>
         return object;
     }
 
+    private boolean isReadAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canRead( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isWriteAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canWrite( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isUpdateAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isDeleteAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canDelete( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public final T getByUid( String uid )
     {
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         T object = getObject( Restrictions.eq( "uid", uid ) );
+
+        if ( !isReadAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have read access to object with uid " + uid );
+        }
 
         return object;
     }
@@ -320,6 +422,11 @@ public class HibernateGenericStore<T>
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         T object = getObject( Restrictions.eq( "name", name ) );
 
+        if ( !isReadAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have read access to object with name " + name );
+        }
+
         return object;
     }
 
@@ -329,6 +436,11 @@ public class HibernateGenericStore<T>
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         T object = getObject( Restrictions.eq( "shortName", shortName ) );
 
+        if ( !isReadAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have read access to object with shortName " + shortName );
+        }
+
         return object;
     }
 
@@ -337,6 +449,11 @@ public class HibernateGenericStore<T>
     {
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         T object = getObject( Restrictions.eq( "code", code ) );
+
+        if ( !isReadAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have read access to object with code " + code );
+        }
 
         return object;
     }
@@ -366,6 +483,12 @@ public class HibernateGenericStore<T>
     public final void delete( T object )
     {
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_DELETE );
+
+        if ( !isDeleteAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have delete access to this object." );
+        }
+
         sessionFactory.getCurrentSession().delete( object );
     }
 

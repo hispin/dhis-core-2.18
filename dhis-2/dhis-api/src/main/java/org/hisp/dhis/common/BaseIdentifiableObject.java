@@ -338,9 +338,9 @@ public class BaseIdentifiableObject
 
         if ( user == null && publicAccess == null && userGroupAccesses.isEmpty() )
         {
-            publicAccess = AccessHelper.newInstance()
-                .enable( AccessHelper.Permission.READ )
-                .enable( AccessHelper.Permission.WRITE )
+            publicAccess = AccessStringHelper.newInstance()
+                .enable( AccessStringHelper.Permission.READ )
+                .enable( AccessStringHelper.Permission.WRITE )
                 .build();
         }
 
