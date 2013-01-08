@@ -329,6 +329,11 @@ public class HibernateGenericStore<T>
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
 
+        if ( !isReadAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have read access to object with id " + id );
+        }
+
         return object;
     }
 
@@ -339,67 +344,12 @@ public class HibernateGenericStore<T>
         // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
 
+        if ( !isReadAllowed( object ) )
+        {
+            throw new AccessDeniedException( "You do not have read access to object with id " + id );
+        }
+
         return object;
-    }
-
-    private boolean isReadAllowed( T object )
-    {
-        if ( IdentifiableObject.class.isInstance( object ) )
-        {
-            IdentifiableObject idObject = (IdentifiableObject) object;
-
-            if ( hasShareProperties() )
-            {
-                return AccessUtils.canRead( currentUserService.getCurrentUser(), idObject );
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isWriteAllowed( T object )
-    {
-        if ( IdentifiableObject.class.isInstance( object ) )
-        {
-            IdentifiableObject idObject = (IdentifiableObject) object;
-
-            if ( hasShareProperties() )
-            {
-                return AccessUtils.canWrite( currentUserService.getCurrentUser(), idObject );
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isUpdateAllowed( T object )
-    {
-        if ( IdentifiableObject.class.isInstance( object ) )
-        {
-            IdentifiableObject idObject = (IdentifiableObject) object;
-
-            if ( hasShareProperties() )
-            {
-                return AccessUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isDeleteAllowed( T object )
-    {
-        if ( IdentifiableObject.class.isInstance( object ) )
-        {
-            IdentifiableObject idObject = (IdentifiableObject) object;
-
-            if ( hasShareProperties() )
-            {
-                return AccessUtils.canDelete( currentUserService.getCurrentUser(), idObject );
-            }
-        }
-
-        return true;
     }
 
     @Override
@@ -655,5 +605,65 @@ public class HibernateGenericStore<T>
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         return criteria.list();
+    }
+
+    private boolean isReadAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canRead( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isWriteAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canWrite( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isUpdateAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isDeleteAllowed( T object )
+    {
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject idObject = (IdentifiableObject) object;
+
+            if ( hasShareProperties() )
+            {
+                return AccessUtils.canDelete( currentUserService.getCurrentUser(), idObject );
+            }
+        }
+
+        return true;
     }
 }
