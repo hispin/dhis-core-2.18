@@ -76,11 +76,6 @@ public class SystemController
     {
         response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
 
-        if ( n > 10000 )
-        {
-            n = 10000;
-        }
-
         List<String> codes = new ArrayList<String>();
 
         if ( n == null )
@@ -89,6 +84,11 @@ public class SystemController
         }
         else
         {
+            if ( n > 10000 )
+            {
+                n = 10000;
+            }
+
             for ( int i = 0; i < n; i++ )
             {
                 codes.add( CodeGenerator.generateCode() );
