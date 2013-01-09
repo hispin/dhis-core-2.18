@@ -1,10 +1,6 @@
 <h2><a href="administration.action">$i18n.getString( "administration" )&nbsp;</a></h2>
 <ul>
 	<li><a href="listAllExportReport.action">$i18n.getString( "design_export_reports" )&nbsp;</a></li>
-</ul>
-
-<h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
-<ul>
 	<li><a href="department.action">$i18n.getString( "organisation_unit" )</a></li>
 </ul>
 
