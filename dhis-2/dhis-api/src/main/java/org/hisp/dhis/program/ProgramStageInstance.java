@@ -57,7 +57,13 @@ public class ProgramStageInstance
     public static final int LATE_VISIT_STATUS = 4;
 
     public static final int SKIPPED_STATUS = 5;
+    
 
+    public static final String GROUP_BY_VALUE = "value";
+    
+    public static final String GROUP_BY_DATAELEMENT = "dataelementname";
+    
+    
     private int id;
 
     private ProgramInstance programInstance;

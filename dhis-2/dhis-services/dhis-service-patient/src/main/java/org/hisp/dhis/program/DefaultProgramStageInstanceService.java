@@ -45,6 +45,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
@@ -311,7 +312,7 @@ public class DefaultProgramStageInstanceService
                 grid.addRow();
                 grid.addValue( programStage.getId() );
                 grid.addValue( programStage.getName() );
-                
+
                 int completed = programStageInstanceStore.getStatisticalProgramStageReport( programStage, orgunitIds,
                     startDate, endDate, ProgramStageInstance.COMPLETED_STATUS );
                 grid.addValue( completed );
@@ -342,6 +343,14 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.getStatisticalProgramStageDetailsReport( programStage, orgunitIds, startDate,
             endDate, status, min, max );
+    }
+
+    public Grid getAggregateReport( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType, String groupBy,
+        String orderBy, Integer limit, I18nFormat format, I18n i18n )
+    {
+        return programStageInstanceStore.getAggregateReport( programStage, orgunitIds, dataElementIds, periods, aggregateType, groupBy,
+            orderBy, limit, format, i18n );
     }
 
 }

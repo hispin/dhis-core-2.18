@@ -42,11 +42,14 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -369,6 +372,36 @@ public class HibernateProgramStageInstanceStore
         return criteria.list();
     }
 
+    public Grid getAggregateReport( ProgramStage programStage, Collection<Integer> orgunitIds, Collection<Integer> dataElementIds, Collection<Period> periods,
+        String aggregateType, String groupBy, String orderBy, Integer limit, I18nFormat format, I18n i18n )
+    {
+     // ---------------------------------------------------------------------
+        // Headers TODO hidden cols
+        // ---------------------------------------------------------------------
+
+        Grid grid = new ListGrid();
+
+        if( orgunitIds.size() > 1 )
+        {
+                grid.addHeader( new GridHeader( i18n.getString("orgunit_name"), false, true ) );
+        }
+        grid.addHeader( new GridHeader( i18n.getString("data_name"), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString("value"), false, true ) );
+        
+        // ---------------------------------------------------------------------
+        // Get SQL and build grid
+        // ---------------------------------------------------------------------
+
+        String sql = getAggregateReportSQL( programStage,orgunitIds, dataElementIds, periods, 
+            aggregateType, groupBy, orderBy, limit, format );
+
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+
+        GridUtils.addRows( grid, rowSet );
+
+        return grid;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -549,4 +582,67 @@ public class HibernateProgramStageInstanceStore
         return criteria;
     }
 
+    private String getAggregateReportSQL( ProgramStage programStage, Collection<Integer> orgunitIds,
+        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType,
+        String groupBy, String orderBy, Integer limit, I18nFormat format )
+    {
+        // SELECT
+        String select = "SELECT ";
+        String from = "FROM patientdatavalue pdv "
+                        + "INNER JOIN programstageinstance psi "
+                                + "ON pdv.programstageinstanceid=psi.programstageinstanceid "
+                        + "INNER JOIN programstage ps "
+                                 + "ON ps.programstageid=psi.programstageid ";
+        String where = "WHERE "
+                        + "pdv.dataelementid in (" + TextUtils.getCommaDelimitedString( dataElementIds )+ ") AND "
+                        + "ps.programstageid = " + programStage.getId() + " AND "
+                        + "psi.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds )+ ") AND ";
+        String groupByValue = "";
+        
+        // Display orgunit names if have many orgunits selected
+        if( orgunitIds.size() > 1 )
+        {
+            select += "ou.name,";
+            from += "INNER JOIN organisationunit ou "
+                        + "ON ou.organisationunitid=psi.organisationunitid ";
+            groupByValue = "ou.name,";
+        }
+        
+        if( ProgramStageInstance.GROUP_BY_VALUE.equals( groupBy ) )
+        {
+            select += "pdv.value,";
+            groupByValue += "pdv.value";
+        }
+        else if( ProgramStageInstance.GROUP_BY_DATAELEMENT.equals( groupBy ) )
+        {
+            select += "de.name,";
+            groupByValue += "de.name ";
+            from += "INNER JOIN dataelement de ON de.dataelementid=pdv.dataelementid ";
+        }
+        
+        select +=aggregateType + "(pdv.value) ";
+        
+        // WHERE
+        if( periods != null )
+        {
+            for( Period period : periods )
+            {
+                where += "( psi.executiondate >= '" + format.formatDate( period.getStartDate() ) + "' AND "
+                      +  "psi.executiondate <= '" + format.formatDate( period.getEndDate() ) + "' ) OR ";
+            }
+            where = where.substring( 0, where.length() - 3 ) + "AND ";
+        }
+        where += "psi.completed = true ";
+        
+        // GROUP-BY, ORDER, LIMIT
+        where += "GROUP BY " + groupByValue + " "
+             + "ORDER BY count(pdv.value) " + orderBy + " ";
+        if( limit != null )
+        {
+            where += "LIMIT " + limit;
+        }
+
+  System.out.println("\n\n === \n " + select + from + where );      
+        return select + from + where;
+    }
 }

@@ -37,6 +37,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
@@ -102,10 +103,14 @@ public interface ProgramStageInstanceService
     void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
 
     Collection<SchedulingProgramObject> getSendMesssageEvents();
-    
-    Grid getStatisticalReport( Program program, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate, I18n i18n, I18nFormat format );
-    
-    List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate, int status, Integer max, Integer min );
+
+    Grid getStatisticalReport( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        I18n i18n, I18nFormat format );
+
+    List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
+        Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer max, Integer min );
+
+    Grid getAggregateReport( ProgramStage programStage, Collection<Integer> orgunitIds, Collection<Integer> dataElementIds, Collection<Period> periods,
+        String aggregateType, String groupBy, String orderBy, Integer limit, I18nFormat format, I18n i18n );
+
 }
