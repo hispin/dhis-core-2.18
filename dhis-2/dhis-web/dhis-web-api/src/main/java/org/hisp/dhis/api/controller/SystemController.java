@@ -76,6 +76,11 @@ public class SystemController
     {
         response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
 
+        if ( n > 10000 )
+        {
+            n = 10000;
+        }
+
         List<String> codes = new ArrayList<String>();
 
         if ( n == null )
