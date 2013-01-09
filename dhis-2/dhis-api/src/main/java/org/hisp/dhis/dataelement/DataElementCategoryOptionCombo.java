@@ -43,8 +43,10 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -272,6 +274,21 @@ public class DataElementCategoryOptionCombo
         return categoryCombo != null && categoryCombo.getName().equals( DEFAULT_NAME );
     }
 
+    /**
+     * Creates a mapping between the category option combo identifier and name
+     * for the given collection of elements.
+     */
+    public static Map<Integer, String> getCategoryOptionComboMap( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
+    {
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        
+        for ( DataElementCategoryOptionCombo coc : categoryOptionCombos )
+        {
+            map.put( coc.getId(), coc.getName() );
+        }
+        
+        return map;
+    }
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
