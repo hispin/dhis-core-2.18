@@ -66,5 +66,5 @@ function showOrganisationUnitDetails( unitId )
 
 function removeOrganisationUnit( unitId, unitName )
 {
-    removeItem( unitId, unitName, confirm_to_delete_org_unit, 'removeOrganisationUnit.action', subtree.refreshTree );
+    removeItem( unitId, unitName, confirm_to_delete_org_unit, '../dhis-web-maintenance-organisationunit/removeOrganisationUnit.action', subtree.refreshTree );
 }
