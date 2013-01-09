@@ -35,7 +35,6 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -159,7 +158,7 @@ public class JdbcDataAnalysisStore
         String periodIds = getCommaDelimitedString( getIdentifiers( Period.class, periods ) );
         String categoryOptionComboIds = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, categoryOptionCombos ) );
         
-        Map<Integer, String> optionComboMap = getCategoryOptionComboMap( categoryOptionCombos );
+        Map<Integer, String> optionComboMap = DataElementCategoryOptionCombo.getCategoryOptionComboMap( categoryOptionCombos );
         
         //TODO persist name on category option combo and use join to improve performance
         
@@ -188,7 +187,7 @@ public class JdbcDataAnalysisStore
     {
         if ( lowerBoundMap == null || lowerBoundMap.isEmpty() || periods.isEmpty() )
         {
-            return new HashSet<DeflatedDataValue>();
+            return new ArrayList<DeflatedDataValue>();
         }
         
         String periodIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Period.class, periods ) );
@@ -234,17 +233,5 @@ public class JdbcDataAnalysisStore
             "where dv.followup = true";
         
         return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper() );        
-    }
-    
-    private Map<Integer, String> getCategoryOptionComboMap( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
-    {
-        Map<Integer, String> map = new HashMap<Integer, String>();
-        
-        for ( DataElementCategoryOptionCombo coc : categoryOptionCombos )
-        {
-            map.put( coc.getId(), coc.getName() );
-        }
-        
-        return map;
     }
 }
