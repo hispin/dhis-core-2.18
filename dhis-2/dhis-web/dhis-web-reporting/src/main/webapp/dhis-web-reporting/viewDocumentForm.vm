@@ -213,6 +213,11 @@ function showSharingDialog( type, uid ) {
         <p>
         <div id="sharingUserGroupAccesses" style="overflow-x: hidden; overflow-y: scroll; height: 100px; width: 440px;">
             <table style="width: 425px;">
+                <colgroup>
+                    <col />
+                    <col style="width: 105px;" />
+                    <col style="width: 85px;" />
+                </colgroup>
                 <thead>
                     <tr>
                         <th>Name</th>
