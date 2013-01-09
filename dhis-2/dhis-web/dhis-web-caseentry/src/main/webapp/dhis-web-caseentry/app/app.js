@@ -50,6 +50,7 @@ TR.conf = {
 			favorite_save: 'saveTabularReport.action',
             favorite_delete: 'deleteTabularReport.action',
 			suggested_dataelement_get: 'getOptions.action',
+			generateaggregatereport_get: 'generateAggregateReport.action',
 			redirect: 'index.action'
         },
         params: {
@@ -96,6 +97,32 @@ TR.conf = {
 			urlparam: 'id'
         }
     },
+	period: {
+		relativeperiodunits: {
+			reportingMonth: 1,
+			last3Months: 3,
+			last12Months: 12,
+			reportingQuarter: 1,
+			last4Quarters: 4,
+			lastSixMonth: 1,
+			last2SixMonths: 2,
+			thisYear: 1,
+			lastYear: 1,
+			last5Years: 5
+		},
+		periodtypes: [
+			{id: 'Daily', name: 'Daily'},
+			{id: 'Weekly', name: 'Weekly'},
+			{id: 'Monthly', name: 'Monthly'},
+			{id: 'BiMonthly', name: 'BiMonthly'},
+			{id: 'Quarterly', name: 'Quarterly'},
+			{id: 'SixMonthly', name: 'SixMonthly'},
+			{id: 'Yearly', name: 'Yearly'},
+			{id: 'FinancialOct', name: 'FinancialOct'},
+			{id: 'FinancialJuly', name: 'FinancialJuly'},
+			{id: 'FinancialApril', name: 'FinancialApril'}
+		]
+	},
     statusbar: {
 		icon: {
 			error: 'error_s.png',
@@ -152,7 +179,11 @@ Ext.onReady( function() {
             program:{},
 			programStage: {},
 			dataelement: {},
-			organisationunit: {}
+			organisationunit: {},
+			relativeperiod: {
+				checkbox: []
+			},
+			fixedperiod: {}
         },
         options: {},
         toolbar: {
@@ -655,7 +686,29 @@ Ext.onReady( function() {
                     });
                 }
             }
-        })
+        }),
+		periodtype: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name'],
+			data: TR.conf.period.periodtypes
+		}),
+        fixedperiod: {
+            available: Ext.create('Ext.data.Store', {
+                fields: ['id', 'name', 'index'],
+                data: [],
+                setIndex: function(periods) {
+					for (var i = 0; i < periods.length; i++) {
+						periods[i].index = i;
+					}
+				},
+                sortStore: function() {
+					this.sort('index', 'ASC');
+				}
+            }),
+            selected: Ext.create('Ext.data.Store', {
+                fields: ['id', 'name'],
+                data: []
+            })
+        }
 	}
     
     TR.state = {
@@ -667,309 +720,577 @@ Ext.onReady( function() {
 		orderByExecutionDateByAsc: true,
 		orgunitIds: [],
 		generateReport: function( type, isSorted ) {
-			// Validation
-			if( !this.validation.objects() )
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 			{
-				return;
+				this.caseBasedReport.generate( type, isSorted );
 			}
-			// Get url
-			var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
-			// Export to XLS 
-			if( type)
-			{
-				window.location.href = url + "?" + this.getURLParams(type, isSorted );
-			}
-			// Show report on grid
 			else
 			{
+				this.aggregateReport.generate( type, isSorted );
+			}
+		},
+		filterReport: function() {
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+			{
+				this.caseBasedReport.filter();
+			}
+			else
+			{
+				
+			}
+		},
+		getParams: function(isSorted){
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+			{
+				return this.caseBasedReport.getParams(isSorted);
+			}
+			return this.aggregateReport.getParams(isSorted);
+		},
+		getURLParams: function( type, isSorted ){
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+			{
+				return this.caseBasedReport.getURLParams(type, isSorted );
+			}
+			else
+			{
+				return this.aggregateReport.getURLParams(type, isSorted );
+			}
+		},
+		paramChanged: function() {
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+			{
+				return this.caseBasedReport.isParamChanged();
+			}
+			return true;
+		},
+		
+		caseBasedReport: {
+			generate: function( type, isSorted ) {
+				// Validation
+				if( !TR.state.caseBasedReport.validation.objects() )
+				{
+					return;
+				}
+				// Get url
+				var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
+				// Export to XLS 
+				if( type)
+				{
+					window.location.href = url + "?type=" + type + "&" + TR.state.caseBasedReport.getURLParams( isSorted );
+				}
+				// Show report on grid
+				else
+				{
+					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
+					Ext.Ajax.request({
+						url: url,
+						method: "POST",
+						scope: this,
+						params: this.getParams(isSorted),
+						success: function(r) {
+							var json = Ext.JSON.decode(r.responseText);
+							if(json.message!=""){
+								TR.util.notification.error(TR.i18n.error, json.message);
+							}
+							else{
+								if( isSorted ){
+									TR.store.datatable.loadData(TR.value.values,false);
+								}
+								else{
+									TR.state.total = json.total;
+									TR.state.totalRecords = json.totalRecords
+									TR.value.columns = json.columns;
+									TR.value.values = json.items;
+									// Get fields
+									var fields = [];
+									fields[0] = 'id';
+									for( var index=1; index < TR.value.columns.length; index++ )
+									{
+										fields[index] = 'col' + index;
+									}
+									TR.value.fields = fields;
+									
+									// Set data for grid
+									TR.store.getDataTableStore();
+									TR.datatable.getDataTable();
+								}
+								TR.datatable.setPagingToolbarStatus();
+							}
+							TR.util.mask.hideMask();
+						}
+					});
+				}
+				TR.util.notification.ok();
+			},
+			filter: function() {
 				TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
+				TR.state.isFilter = true;
+				var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
 				Ext.Ajax.request({
 					url: url,
 					method: "POST",
 					scope: this,
-					params: this.getParams(isSorted),
+					params: this.getParams(),
 					success: function(r) {
 						var json = Ext.JSON.decode(r.responseText);
-						if(json.message!=""){
-							TR.util.notification.error(TR.i18n.error, json.message);
-						}
-						else{
-							if( isSorted ){
-								TR.store.datatable.loadData(TR.value.values,false);
-							}
-							else{
-								TR.state.total = json.total;
-								TR.state.totalRecords = json.totalRecords
-								TR.value.columns = json.columns;
-								TR.value.values = json.items;
-								// Get fields
-								var fields = [];
-								fields[0] = 'id';
-								for( var index=1; index < TR.value.columns.length; index++ )
-								{
-									fields[index] = 'col' + index;
-								}
-								TR.value.fields = fields;
-								
-								// Set data for grid
-								TR.store.getDataTableStore();
-								TR.datatable.getDataTable();
-							}
-							TR.datatable.setPagingToolbarStatus();
-						}
+						TR.value.values = json.items;
+						TR.state.total = json.total;
+						TR.state.totalRecords = json.totalRecords
+						TR.value.columns = json.columns;
+						TR.store.datatable.loadData(TR.value.values,false);
+						
+						TR.datatable.setPagingToolbarStatus();
+							
+						TR.util.notification.ok();
 						TR.util.mask.hideMask();
 					}
 				});
-			}
-			TR.util.notification.ok();
-		},
-		filterReport: function() {
-			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
-			TR.state.isFilter = true;
-			var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
-			Ext.Ajax.request({
-				url: url,
-				method: "POST",
-				scope: this,
-				params: this.getParams(),
-				success: function(r) {
-					var json = Ext.JSON.decode(r.responseText);
-					TR.value.values = json.items;
-					TR.state.total = json.total;
-					TR.state.totalRecords = json.totalRecords
-					TR.value.columns = json.columns;
-					TR.store.datatable.loadData(TR.value.values,false);
-					
-					TR.datatable.setPagingToolbarStatus();
-						
-					TR.util.notification.ok();
-					TR.util.mask.hideMask();
-				}
-			});
-		},
-		getParams: function(isSorted) {
-			var p = {};
-            p.startDate = TR.cmp.settings.startDate.rawValue;
-            p.endDate = TR.cmp.settings.endDate.rawValue;
-			p.facilityLB = TR.cmp.settings.facilityLB.getValue();
-			p.level = TR.cmp.settings.level.getValue();
-			
-			// orders
-			p.orderByOrgunitAsc = this.orderByOrgunitAsc;
-			p.orderByExecutionDateByAsc= this.orderByExecutionDateByAsc;
-			
-			p.programStageId = TR.cmp.params.programStage.getValue();
-			p.currentPage = this.currentPage;
-			
-			// organisation unit
-			p.orgunitIds = TR.state.orgunitIds;
-			
-			// Get searching values
-			p.searchingValues = [];
-			if( !TR.state.paramChanged() || isSorted )
-			{
-				var cols = TR.datatable.datatable.columns;
-				for( var k in cols )
+			},
+			getParams: function(isSorted) {
+				var p = {};
+				p.startDate = TR.cmp.settings.startDate.rawValue;
+				p.endDate = TR.cmp.settings.endDate.rawValue;
+				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
+				p.level = TR.cmp.settings.level.getValue();
+				
+				// orders
+				p.orderByOrgunitAsc = this.orderByOrgunitAsc;
+				p.orderByExecutionDateByAsc= this.orderByExecutionDateByAsc;
+				
+				p.programStageId = TR.cmp.params.programStage.getValue();
+				p.currentPage = this.currentPage;
+				
+				// organisation unit
+				p.orgunitIds = TR.state.orgunitIds;
+				
+				// Get searching values
+				p.searchingValues = [];
+				if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
 				{
-					var col = cols[k];
-					if( col.name )
+					var cols = TR.datatable.datatable.columns;
+					for( var k in cols )
 					{
-						var params = TR.state.getFilterValueByColumn(col.name);
-						for(var i in params){
-							p.searchingValues.push(params[i]);
-						}
-					}
-				}
-			}
-			else
-			{
-				// Data elements
-				TR.cmp.params.dataelement.selected.store.each( function(r) {
-					p.searchingValues.push( r.data.id +  '_false_' );
-				});
-			}
-            return p;
-        },
-		getURLParams: function( type, isSorted ) {
-            var p = "";
-            p += "startDate=" + TR.cmp.settings.startDate.rawValue;
-            p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
-			p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
-			p += "&level=" + TR.cmp.settings.level.getValue();
-			p += "&orderByOrgunitAsc=" + this.orderByOrgunitAsc;
-			p += "&orderByExecutionDateByAsc=" + this.orderByExecutionDateByAsc;
-			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
-			p += "&type=" + type;
-			
-			// organisation units
-			for( var i=0; i<TR.state.orgunitIds.length; i++ ){
-				p += '&orgunitIds=' + TR.state.orgunitIds[i];
-			}
-			
-			if( !TR.state.paramChanged() || isSorted )
-			{
-				var cols = TR.datatable.datatable.columns;
-				for( var k in cols )
-				{
-					var col = cols[k];
-					if( col.name )
-					{
-						var params = TR.state.getFilterValueByColumn(col.name);
-						for(var i in params){
-							p += "&searchingValues=" + params[i];
-						}
-					}
-				}
-			}
-			else
-			{
-				// Data elements
-				TR.cmp.params.dataelement.selected.store.each( function(r) {
-					p += "&searchingValues=" + r.data.id + '_false_';
-				});
-			}
-			
-            return p;
-        },
-		getFilterValueByColumn: function( colname ) {
-			var grid = TR.datatable.datatable;
-			var cols = grid.columns;
-			var editor = grid.getStore().getAt(0);
-			var params = [];
-			for( var i=0; i<cols.length; i++ )
-			{
-				var col = cols[i];
-				var p = "";
-				if( col.name && col.name == colname )
-				{
-					var filters = grid.filters.getFilterData();
-					var value = "";
-					for( var i=0; i<filters.length; i++ )
-					{
-						var filter = filters[i];
-						if(col.dataIndex == filter.field)
+						var col = cols[k];
+						if( col.name )
 						{
-							var compare = '=';
-							if( filter.data.comparison == 'lt')
-								compare = '<' ;
-							else if( filter.data.comparison == 'gt' )
-								compare = '>' ;
-							value = compare + "'"+ filter.data.value + "'";
-							var hidden = (col.hidden==undefined)? false : col.hidden;
-							if( value!=null && value!= ''){	
-								var value = TR.util.getValueFormula(value);
-								p = colname + '_' + hidden + "_" + value;
+							var params = TR.state.getFilterValueByColumn(col.name);
+							for(var i in params){
+								p.searchingValues.push(params[i]);
 							}
-							params.push(p);
 						}
 					}
-					if (value=='')
-					{
-						p = colname + '_' + col.hidden + "_";
-						params.push(p);
-					}
-					return params;
 				}
-			}		
-			params.push(colname + "_false_");
-			return params
-		},
-		paramChanged: function() {
-			if( TR.store.datatable && TR.store.datatable.data.length > 0 )
-			{
-				var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
-				var orgUnitColsInTable =  ( TR.datatable.datatable.columns.length 
-									- TR.cmp.params.dataelement.selected.store.data.length - 2 );
-				if( orgUnitCols!=orgUnitColsInTable )
+				else
 				{
-					return true;
+					// Data elements
+					TR.cmp.params.dataelement.selected.store.each( function(r) {
+						p.searchingValues.push( r.data.id +  '_false_' );
+					});
+				}
+				return p;
+			},
+			getURLParams: function( isSorted ) {
+				var p = "";
+				p += "startDate=" + TR.cmp.settings.startDate.rawValue;
+				p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
+				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
+				p += "&level=" + TR.cmp.settings.level.getValue();
+				p += "&orderByOrgunitAsc=" + this.orderByOrgunitAsc;
+				p += "&orderByExecutionDateByAsc=" + this.orderByExecutionDateByAsc;
+				p += "&programStageId=" + TR.cmp.params.programStage.getValue();
+				
+				// organisation units
+				for( var i=0; i<TR.state.orgunitIds.length; i++ ){
+					p += '&orgunitIds=' + TR.state.orgunitIds[i];
 				}
 				
-				var colNames=[];
-				TR.cmp.params.dataelement.selected.store.each( function(r) {
-					colNames.push( r.data.id );
-				});
-					
-				var cols = TR.datatable.datatable.columns;
-				var colDataLen = 0;
+				if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
+				{
+					var cols = TR.datatable.datatable.columns;
+					for( var k in cols )
+					{
+						var col = cols[k];
+						if( col.name )
+						{
+							var params = TR.state.getFilterValueByColumn(col.name);
+							for(var i in params){
+								p += "&searchingValues=" + params[i];
+							}
+						}
+					}
+				}
+				else
+				{
+					// Data elements
+					TR.cmp.params.dataelement.selected.store.each( function(r) {
+						p += "&searchingValues=" + r.data.id + '_false_';
+					});
+				}
+				
+				return p;
+			},
+			getFilterValueByColumn: function( colname ) {
+				var grid = TR.datatable.datatable;
+				var cols = grid.columns;
+				var editor = grid.getStore().getAt(0);
+				var params = [];
 				for( var i=0; i<cols.length; i++ )
 				{
 					var col = cols[i];
-					if( col.name && col.name.indexOf('meta_')==-1 )
+					var p = "";
+					if( col.name && col.name == colname )
 					{
-						colDataLen ++;
-						if( colNames.indexOf(col.name) == -1 )
-							return true;
+						var filters = grid.filters.getFilterData();
+						var value = "";
+						for( var i=0; i<filters.length; i++ )
+						{
+							var filter = filters[i];
+							if(col.dataIndex == filter.field)
+							{
+								var compare = '=';
+								if( filter.data.comparison == 'lt')
+									compare = '<' ;
+								else if( filter.data.comparison == 'gt' )
+									compare = '>' ;
+								value = compare + "'"+ filter.data.value + "'";
+								var hidden = (col.hidden==undefined)? false : col.hidden;
+								if( value!=null && value!= ''){	
+									var value = TR.util.getValueFormula(value);
+									p = colname + '_' + hidden + "_" + value;
+								}
+								params.push(p);
+							}
+						}
+						if (value=='')
+						{
+							p = colname + '_' + col.hidden + "_";
+							params.push(p);
+						}
+						return params;
 					}
-				}
-				if( colDataLen < colNames.length )
+				}		
+				params.push(colname + "_false_");
+				return params
+			},
+			isParamChanged: function() {
+				if( TR.store.datatable && TR.store.datatable.data.length > 0 )
 				{
+					var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
+					var orgUnitColsInTable =  ( TR.datatable.datatable.columns.length 
+										- TR.cmp.params.dataelement.selected.store.data.length - 2 );
+					if( orgUnitCols!=orgUnitColsInTable )
+					{
+						return true;
+					}
+					
+					var colNames=[];
+					TR.cmp.params.dataelement.selected.store.each( function(r) {
+						colNames.push( r.data.id );
+					});
+						
+					var cols = TR.datatable.datatable.columns;
+					var colDataLen = 0;
+					for( var i=0; i<cols.length; i++ )
+					{
+						var col = cols[i];
+						if( col.name && col.name.indexOf('meta_')==-1 )
+						{
+							colDataLen ++;
+							if( colNames.indexOf(col.name) == -1 )
+								return true;
+						}
+					}
+					if( colDataLen < colNames.length )
+					{
+						return true;
+					}
+					
+					return !TR.state.isFilter;
+				}
+				return true;
+			},
+			validation: {
+				objects: function() {
+					
+					if (TR.cmp.settings.program.getValue() == null) {
+						TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
+						return false;
+					}
+					
+					if( !TR.cmp.settings.startDate.isValid() )
+					{
+						var message = TR.i18n.start_date + " " + TR.i18n.is_not_valid;
+						TR.util.notification.error( message, message);
+						return false;
+					}
+					
+					if( !TR.cmp.settings.endDate.isValid() )
+					{
+						var message = TR.i18n.end_date + " " + TR.i18n.is_not_valid;
+						TR.util.notification.error( message, message);
+						return false;
+					}
+				
+					if (TR.state.orgunitIds.length == 0) {
+						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
+						return false;
+					}
+					
+					if (Ext.getCmp('programStageCombobox').getValue() == '') {
+						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
+						return false;
+					}
+					
+					return true;
+				},
+				response: function(r) {
+					if (!r.responseText) {
+						TR.util.mask.hideMask();
+						TR.util.notification.error(TR.i18n.et_invalid_uid, TR.i18n.em_invalid_uid);
+						return false;
+					}
+					return true;
+				},
+				value: function() {
+					if (!TR.value.values.length) {
+						TR.util.mask.hideMask();
+						TR.util.notification.error(TR.i18n.et_no_data, TR.i18n.em_no_data);
+						return false;
+					}
 					return true;
 				}
-				
-				return !TR.state.isFilter;
 			}
-			return true;
 		},
-		validation: {
-			params: function() {
-				if (!TR.c.params.program ) {
-					TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
-					return false;
+		
+		aggregateReport: {
+			generate: function( type, isSorted ) {
+				// Validation
+				if( !TR.state.aggregateReport.validation.objects() )
+				{
+					return;
 				}
-				return true;
+				// Get url
+				var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generateaggregatereport_get;
+				// Export to XLS 
+				if( type)
+				{
+					window.location.href = url + "?type="+ type + "&" + TR.state.aggregateReport.getURLParams(isSorted );
+				}
+				// Show report on grid
+				else
+				{
+					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
+					Ext.Ajax.request({
+						url: url,
+						method: "POST",
+						scope: this,
+						params: this.getParams(isSorted),
+						success: function(r) {
+							var json = Ext.JSON.decode(r.responseText);
+							if(json.message!=""){
+								TR.util.notification.error(TR.i18n.error, json.message);
+							}
+							else{
+								if( isSorted ){
+									TR.store.datatable.loadData(TR.value.values,false);
+								}
+								else{
+									TR.value.columns = json.columns;
+									TR.value.values = json.items;
+									// Get fields
+									var fields = [];
+									for( var index=0; index < TR.value.columns.length; index++ )
+									{
+										fields[index] = 'col' + index;
+									}
+									TR.value.fields = fields;
+									
+									// Set data for grid
+									TR.store.getDataTableStore();
+									TR.datatable.getDataTable();
+									TR.datatable.hidePagingBar();
+								}
+							}
+							TR.util.mask.hideMask();
+						}
+					});
+				}
+				TR.util.notification.ok();
 			},
-			objects: function() {
-				
-				if (TR.cmp.settings.program.getValue() == null) {
-					TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
-					return false;
-				}
-				
-				if( !TR.cmp.settings.startDate.isValid() )
-				{
-					var message = TR.i18n.start_date + " " + TR.i18n.is_not_valid;
-					TR.util.notification.error( message, message);
-					return false;
-				}
-				
-				if( !TR.cmp.settings.endDate.isValid() )
-				{
-					var message = TR.i18n.end_date + " " + TR.i18n.is_not_valid;
-					TR.util.notification.error( message, message);
-					return false;
-				}
+			filter: function() {
 			
-				if (TR.state.orgunitId == '') {
-					TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
-					return false;
-				}
-				
-				if (Ext.getCmp('programStageCombobox').getValue() == '') {
-					TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
-					return false;
-				}
-				
-				return true;
 			},
-			response: function(r) {
-				if (!r.responseText) {
-					TR.util.mask.hideMask();
-					TR.util.notification.error(TR.i18n.et_invalid_uid, TR.i18n.em_invalid_uid);
-					return false;
-				}
-				return true;
+			getParams: function( isSorted ) {
+				var p = {};
+				
+				// get params
+				p.startDate = TR.cmp.settings.startDate.rawValue;
+				p.endDate = TR.cmp.settings.endDate.rawValue;
+				p.aggregateType = Ext.getCmp('aggregateType').getValue().aggregateType;
+				p.groupBy = Ext.getCmp('groupByCbx').getValue();
+				p.limit = Ext.getCmp('limitOption').getValue();
+				
+				// get options
+				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
+				p.level = TR.cmp.settings.level.getValue();
+				
+				// orders
+				p.orderBy = "desc";
+				
+				p.programStageId = TR.cmp.params.programStage.getValue();
+				p.currentPage = this.currentPage;
+				
+				// organisation unit
+				p.orgunitIds = TR.state.orgunitIds;
+				
+				// data elements
+				p.dataElementIds = [];
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					p.dataElementIds.push( r.data.id.split('_')[1] );
+				});
+				
+				// get relative periods
+				var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
+				p.relativePeriods = [];
+				Ext.Array.each(relativePeriodList, function(item) {
+					if(item.getValue()){
+						p.relativePeriods.push(item.paramName);
+					}
+				});
+				
+				// get fixed periods
+				p.periodIds = [];
+				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
+					p.periodIds.push( r.data.id );
+				});
+				
+				return p;
 			},
-			value: function() {
-				if (!TR.value.values.length) {
-					TR.util.mask.hideMask();
-					TR.util.notification.error(TR.i18n.et_no_data, TR.i18n.em_no_data);
-					return false;
+			getURLParams: function(isSorted) {
+				var p = "";
+				
+				// get params
+				p  = "startDate=" + TR.cmp.settings.startDate.rawValue;
+				p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
+				p += "&aggregateType=" + Ext.getCmp('aggregateType').getValue().aggregateType;
+				p += "&groupBy=" + Ext.getCmp('groupByCbx').getValue();
+				p += "&limit=" + Ext.getCmp('limitOption').getValue();
+				
+				// get options
+				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
+				p += "&level=" + TR.cmp.settings.level.getValue();
+				
+				// orders
+				p += "&orderBy=desc";
+				
+				p += "&programStageId=" + TR.cmp.params.programStage.getValue();
+				p += "&currentPage=" + this.currentPage;
+				
+				// organisation unit
+				p += "&orgunitIds=" + TR.state.orgunitIds;
+				
+				// data elements
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					p += "&dataElementIds=" + r.data.id.split('_')[1];
+				});
+				
+				// get relative periods
+				var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
+				p.relativePeriods = [];
+				Ext.Array.each(relativePeriodList, function(item) {
+					if(item.getValue()){
+						p += "&relativePeriods=" + item.paramName;
+					}
+				});
+				
+				// get fixed periods
+				p.periodIds = [];
+				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
+					p += "&periodIds=" + r.data.id;
+				});
+				
+				return p;
+			},
+			getFilterValueByColumn: function( colname ) {
+				
+			},
+			isParamChanged: function() {
+			
+			},
+			validation: {
+				objects: function() {
+					if (TR.cmp.settings.program.getValue() == null) {
+						TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
+						return false;
+					}
+					
+					if( TR.cmp.settings.startDate.rawValue != "" 
+						&& !TR.cmp.settings.startDate.isValid() )
+					{
+						var message = TR.i18n.start_date + " " + TR.i18n.is_not_valid;
+						TR.util.notification.error( message, message);
+						return false;
+					}
+					
+					if( TR.cmp.settings.endDate.rawValue != "" 
+						&& !TR.cmp.settings.endDate.isValid() )
+					{
+						var message = TR.i18n.end_date + " " + TR.i18n.is_not_valid;
+						TR.util.notification.error( message, message);
+						return false;
+					}
+				
+					if (TR.state.orgunitIds.length == 0) {
+						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
+						return false;
+					}
+					
+					if (Ext.getCmp('programStageCombobox').getValue() == '') {
+						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
+						return false;
+					}
+					
+					if( TR.cmp.settings.startDate.rawValue=="" 
+						&& TR.cmp.settings.endDate.rawValue=="" 
+						&& TR.cmp.params.fixedperiod.selected.store.data.items.length == 0 )
+					{
+						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
+						Ext.Array.each(relativePeriodList, function(item) {
+							if(item.getValue()){
+								return true;
+							}
+						});
+						
+						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_period);
+						return false;
+					}
+					
+					if (TR.cmp.params.dataelement.selected.store.data.items.length == 0) {
+						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_dataelement);
+						return false;
+					};
+				
+					return true;
+				},
+				response: function(r) {
+					if (!r.responseText) {
+						TR.util.mask.hideMask();
+						TR.util.notification.error(TR.i18n.et_invalid_uid, TR.i18n.em_invalid_uid);
+						return false;
+					}
+					return true;
+				},
+				value: function() {
+					if (!TR.value.values.length) {
+						TR.util.mask.hideMask();
+						TR.util.notification.error(TR.i18n.et_no_data, TR.i18n.em_no_data);
+						return false;
+					}
+					return true;
 				}
-				return true;
 			}
 		}
-    };
+   };
     
     TR.value = {
 		columns: [],
@@ -1021,57 +1342,7 @@ Ext.onReady( function() {
     TR.datatable = {
         datatable: null,
 		getDataTable: function() {
-			var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
-			var index = 0;
-			var cols = [];
-			
-			// id of event
-			
-			cols[index] = {
-				header: TR.value.columns[index].name, 
-				dataIndex: 'id',
-				height: TR.conf.layout.east_gridcolumn_height,
-				sortable: false,
-				draggable: false,
-				hidden: true,
-				hideable: false,
-				menuDisabled: true
-			};
-			
-			// report date
-			
-			cols[++index] = {
-				header: TR.value.columns[index].name, 
-				dataIndex: 'col' + index,
-				height: TR.conf.layout.east_gridcolumn_height,
-				sortable: false,
-				draggable: false,
-				hideable: false,
-				menuDisabled: true
-			};
-						
-			// Org unit level columns
-			
-			for( var i = 0; i <orgUnitCols; i++ )
-			{
-				cols[++index] = {
-					header: TR.value.columns[index].name, 
-					dataIndex: 'col' + index,
-					height: TR.conf.layout.east_gridcolumn_height,
-					name: 'meta_' + index,
-					sortable: false,
-					draggable: false,
-					hideable: false,
-					menuDisabled: true
-				}
-			}
-			
-			// Data element columns
-			
-			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, r.data.compulsory, r.data.name, index );
-			});
-			
+			var cols = this.createColTable();
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 58,
@@ -1198,8 +1469,72 @@ Ext.onReady( function() {
             return this.datatable;
             
         },
-		createColumn: function( type, id, compulsory, colname, index )
-		{
+		createColTable:function(){
+			var cols = [];
+				
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+			{
+				var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
+				var index = 0;
+				
+				// id of event
+				
+				cols[index] = {
+					header: TR.value.columns[index].name, 
+					dataIndex: 'id',
+					height: TR.conf.layout.east_gridcolumn_height,
+					sortable: false,
+					draggable: false,
+					hidden: true,
+					hideable: false,
+					menuDisabled: true
+				};
+				
+				// report date
+				
+				cols[++index] = {
+					header: TR.value.columns[index].name, 
+					dataIndex: 'col' + index,
+					height: TR.conf.layout.east_gridcolumn_height,
+					sortable: false,
+					draggable: false,
+					hideable: false,
+					menuDisabled: true
+				};
+							
+				// Org unit level columns
+				
+				for( var i = 0; i <orgUnitCols; i++ )
+				{
+					cols[++index] = {
+						header: TR.value.columns[index].name, 
+						dataIndex: 'col' + index,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: 'meta_' + index,
+						sortable: false,
+						draggable: false,
+						hideable: false,
+						menuDisabled: true
+					}
+				}
+				
+				// Data element columns
+				
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, r.data.compulsory, r.data.name, index );
+				});
+			
+			}
+			else
+			{
+				for(var i in TR.value.columns)
+				{
+					cols[i] = this.createColumn( "textfield","id" + i, false, TR.value.columns[i].name, i );
+				}
+			}
+			return cols;
+		},
+		createColumn: function( type, id, compulsory, colname, index ){
 			var objectType = id.split('_')[0];
 			var objectId = id.split('_')[1];
 			
@@ -1286,6 +1621,7 @@ Ext.onReady( function() {
 			return params;
 		},
         setPagingToolbarStatus: function() {
+			TR.datatable.showPagingBar();
 			Ext.getCmp('currentPage').enable();
 			Ext.getCmp('totalEventLbl').setText( TR.state.totalRecords + ' ' + TR.i18n.events );
 			Ext.getCmp('totalPageLbl').setText( ' of ' + TR.state.total + ' | ' );
@@ -1338,7 +1674,32 @@ Ext.onReady( function() {
 					Ext.getCmp('lastPageBtn').enable();
 				} 
 			}
-        }           
+        },
+		hidePagingBar: function(){
+			Ext.getCmp('currentPage').setVisible(false);
+			Ext.getCmp('totalEventLbl').setVisible(false);
+			Ext.getCmp('totalPageLbl').setVisible(false);
+			Ext.getCmp('currentPage').setVisible(false);
+			Ext.getCmp('currentPage').setVisible(false);
+			Ext.getCmp('currentPage').setVisible(false);
+			Ext.getCmp('firstPageBtn').setVisible(false);
+			Ext.getCmp('previousPageBtn').setVisible(false);
+			Ext.getCmp('nextPageBtn').setVisible(false);
+			Ext.getCmp('lastPageBtn').setVisible(false);
+				
+		},
+		showPagingBar: function(){
+			Ext.getCmp('currentPage').setVisible(true);
+			Ext.getCmp('totalEventLbl').setVisible(true);
+			Ext.getCmp('totalPageLbl').setVisible(true);
+			Ext.getCmp('currentPage').setVisible(true);
+			Ext.getCmp('currentPage').setVisible(true);
+			Ext.getCmp('currentPage').setVisible(true);
+			Ext.getCmp('firstPageBtn').setVisible(true);
+			Ext.getCmp('previousPageBtn').setVisible(true);
+			Ext.getCmp('nextPageBtn').setVisible(true);
+			Ext.getCmp('lastPageBtn').setVisible(true);
+		}
     };
         
 	TR.exe = {
@@ -1408,11 +1769,61 @@ Ext.onReady( function() {
 				{
 					xtype: 'toolbar',
 					style: 'padding-top:1px; border-style:none',
-					items: [
+					bodyStyle: 'border-style:none; background-color:transparent; padding:4px 0 0 8px',
+                    items: [
 						{
 							xtype: 'panel',
 							bodyStyle: 'border-style:none; background-color:transparent; padding:4px 0 0 8px',
-                            items: [
+							items: [
+								Ext.create('Ext.form.Panel', {
+								bodyStyle: 'border-style:none; background-color:transparent; padding:3px 0 0 0',
+                                items: [
+								{
+									xtype: 'label',
+									text: TR.i18n.report_type,
+									style: 'font-size:11px; font-weight:bold; padding:0 0 0 3px'
+								},
+								{
+									xtype: 'radiogroup',
+									id: 'reportTypeGroup',
+									columns: 2,
+									vertical: true,
+									items: [
+									{
+										boxLabel: TR.i18n.case_based_report,
+										name: 'reportType',
+										inputValue: 'true',
+										listeners: {
+											change: function (cb, nv, ov) {
+												if(nv)
+												{
+													Ext.getCmp('aggregateReportDiv').setVisible(false); 
+													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
+													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
+													Ext.getCmp('orgunitDiv').expand();
+												}
+											}
+										}
+									}, 
+									{
+										boxLabel: TR.i18n.aggregated_report,
+										name: 'reportType',
+										inputValue: 'false',
+										checked: true,
+										listeners: {
+											change: function (cb, nv, ov) {
+												if(nv)
+												{
+													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
+													Ext.getCmp('relativePeriodsDiv').setVisible(true);
+													Ext.getCmp('aggregateReportDiv').setVisible(true);
+													Ext.getCmp('aggregateReportDiv').expand();
+												}
+											}
+										}
+									}]
+								}]
+							}),
                             {
 								xtype: 'label',
 								text: TR.i18n.program,
@@ -1507,7 +1918,6 @@ Ext.onReady( function() {
 									}
 								]
 							}
-							
 							]
 						}]
 					},                            
@@ -1524,9 +1934,448 @@ Ext.onReady( function() {
 								bodyStyle: 'border:0 none',
 								height: 430,
 								items: [
+									// AGGREGATE REPORT TYPE PARAMS
+									{
+										title: '<div style="height:17px;background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.aggregate_type + '</div>',
+										id: 'aggregateReportDiv',
+										hideCollapseTool: true,
+										items: [
+											{
+												xtype: 'fieldset',
+												title: TR.i18n.aggregate_type,
+												layout: 'anchor',
+												defaults: {
+													anchor: '100%',
+													labelStyle: 'padding-left:4px;'
+												},
+												collapsible: true,
+												items: [
+												 {
+													xtype: 'radiogroup',
+													id: 'aggregateType',
+													columns: 1,
+													vertical: true,
+													items: [{
+														boxLabel: TR.i18n.count,
+														name: 'aggregateType',
+														inputValue: 'count',
+														checked: true
+													}, 
+													{
+														boxLabel: TR.i18n.sum,
+														name: 'aggregateType',
+														inputValue: 'sum'
+													}, 
+													{
+														boxLabel: TR.i18n.avg,
+														name: 'aggregateType',
+														inputValue: 'avg'
+													}]
+												}]
+											},
+											{
+												xtype: 'fieldset',
+												title: TR.i18n.report_option,
+												layout: 'anchor',
+												defaults: {
+													anchor: '100%',
+													labelStyle: 'padding-left:4px;'
+												},
+												collapsible: true,
+												items: [
+												 {
+													xtype: 'combobox',
+													id: 'groupByCbx',
+													cls: 'tr-combo',
+													fieldLabel: TR.i18n.group_by,
+													labelStyle: 'padding-left:3px; font-weight:bold',
+													labelAlign: 'top',
+													labelSeparator: '',
+													valueField: 'value',
+													displayField: 'name',
+													emptyText: TR.i18n.data_element,
+													editable: false,
+													width: TR.conf.layout.west_fieldset_width / 2 - 4,
+													store:  new Ext.data.ArrayStore({
+														fields: ['value', 'name'],
+														data: [['value', TR.i18n.value], ['dataelementname', TR.i18n.data_element_name],],
+													}),
+													value: 'value',
+													listeners: {
+														added: function() {
+															TR.cmp.settings.groupBy = this;
+														}
+													}
+												},
+												 {
+													xtype: 'numberfield',
+													cls: 'tr-textfield-alt1',
+													id: 'limitOption',
+													fieldLabel: TR.i18n.limit,
+													labelStyle: 'padding-left:3px; font-weight:bold',
+													emptyText: TR.i18n.limit_number,
+													labelAlign: 'top',
+													labelSeparator: '',
+													editable: true,
+													allowBlank:false,
+													value: 10,
+													width: TR.conf.layout.west_fieldset_width / 2 - 4,
+													listeners: {
+														added: function() {
+															TR.cmp.settings.limitOption = this;
+														}
+													}
+												}
+												]
+											}
+										]
+									},
+									
+									// RELATIVE PERIODS
+									{
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.relative_periods + '</div>',
+										id: 'relativePeriodsDiv',
+										hideCollapseTool: true,
+										items: [
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none',
+												items: [
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 10px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.relativeperiod.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'label',
+																text: TR.i18n.months,
+																cls: 'tr-label-period-heading'
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'reportingMonth',
+																boxLabel: TR.i18n.last_month
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'last3Months',
+																boxLabel: TR.i18n.last_3_months
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'last12Months',
+																boxLabel: TR.i18n.last_12_months,
+																checked: true
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 32px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.relativeperiod.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'label',
+																text: TR.i18n.quarters,
+																cls: 'tr-label-period-heading'
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'reportingQuarter',
+																boxLabel: TR.i18n.last_quarter
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'last4Quarters',
+																boxLabel: TR.i18n.last_4_quarters
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 32px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.relativeperiod.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'label',
+																text: TR.i18n.six_months,
+																cls: 'tr-label-period-heading'
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'lastSixMonth',
+																boxLabel: TR.i18n.last_six_month
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'last2SixMonths',
+																boxLabel: TR.i18n.last_two_six_month
+															}
+														]
+													}
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none',
+												items: [
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.relativeperiod.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'label',
+																text: TR.i18n.years,
+																cls: 'tr-label-period-heading'
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'thisYear',
+																boxLabel: TR.i18n.this_year
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'lastYear',
+																boxLabel: TR.i18n.last_year
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'last5Years',
+																boxLabel: TR.i18n.last_5_years
+															}
+														]
+													}
+												]
+											}
+										], 
+										listeners: {
+											added: function() {
+												TR.cmp.params.relativeperiod.panel = this;
+											}
+										}
+									},
+									
+									// FIXED PERIODS
+									{
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.fixed_periods + '</div>',
+										id: 'fixedPeriodsDiv',
+										hideCollapseTool: true,
+										items: [
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none',
+												items: [
+													{
+														xtype: 'combobox',
+														cls: 'tr-combo',
+														style: 'margin-bottom:8px',
+														width: 253,
+														valueField: 'id',
+														displayField: 'name',
+														fieldLabel: TR.i18n.select_type,
+														labelStyle: 'padding-left:7px;',
+														labelWidth: 90,
+														editable: false,
+														queryMode: 'remote',
+														store: TR.store.periodtype,
+														periodOffset: 0,
+														listeners: {
+															select: function() {
+																var pt = new PeriodType(),
+																	periodType = this.getValue();
+																var periods = pt.get(periodType).generatePeriods({
+																	offset: this.periodOffset,
+																	filterFuturePeriods: true,
+																	reversePeriods: true
+																});
+
+																TR.store.fixedperiod.available.setIndex(periods);
+																TR.store.fixedperiod.available.loadData(periods);
+																TR.util.multiselect.filterAvailable(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+															}
+														}
+													},
+													{
+														xtype: 'button',
+														text: 'Prev year',
+														style: 'margin-left:4px',
+														height: 24,
+														handler: function() {
+															var cb = this.up('panel').down('combobox');
+															if (cb.getValue()) {
+																cb.periodOffset--;
+																cb.fireEvent('select');
+															}
+														}
+													},
+													{
+														xtype: 'button',
+														text: 'Next year',
+														style: 'margin-left:3px',
+														height: 24,
+														handler: function() {
+															var cb = this.up('panel').down('combobox');
+															if (cb.getValue() && cb.periodOffset < 0) {
+																cb.periodOffset++;
+																cb.fireEvent('select');
+															}
+														}
+													}
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none',
+												items: [
+													{
+														xtype: 'multiselect',
+														name: 'availableFixedPeriods',
+														cls: 'tr-toolbar-multiselect-left',
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+														valueField: 'id',
+														displayField: 'name',
+														store: TR.store.fixedperiod.available,
+														tbar: [
+															{
+																xtype: 'label',
+																text: TR.i18n.available,
+																cls: 'tr-toolbar-multiselect-left-label'
+															},
+															'->',
+															{
+																xtype: 'button',
+																icon: 'images/arrowright.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.select(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/arrowrightdouble.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.selectAll(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+																}
+															},
+															' '
+														],
+														listeners: {
+															added: function() {
+																TR.cmp.params.fixedperiod.available = this;
+															},
+															afterrender: function() {
+																this.boundList.on('itemdblclick', function() {
+																	TR.util.multiselect.select(this, TR.cmp.params.fixedperiod.selected);
+																}, this);
+															}
+														}
+													},
+													{
+														xtype: 'multiselect',
+														name: 'selectedFixedPeriods',
+														cls: 'tr-toolbar-multiselect-right',
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+														displayField: 'name',
+														valueField: 'id',
+														ddReorder: false,
+														queryMode: 'local',
+														store: TR.store.fixedperiod.selected,
+														tbar: [
+															' ',
+															{
+																xtype: 'button',
+																icon: 'images/arrowleftdouble.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.unselectAll(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/arrowleft.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.unselect(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+																}
+															},
+															'->',
+															{
+																xtype: 'label',
+																text: TR.i18n.selected,
+																cls: 'tr-toolbar-multiselect-right-label'
+															}
+														],
+														listeners: {
+															added: function() {
+																TR.cmp.params.fixedperiod.selected = this;
+															},
+															afterrender: function() {
+																this.boundList.on('itemdblclick', function() {
+																	TR.util.multiselect.unselect(TR.cmp.params.fixedperiod.available, this);
+																}, this);
+															}
+														}
+													}
+												]
+											}
+										],
+										listeners: {
+											added: function() {
+												TR.cmp.params.fixedperiod.panel = this;
+											}
+										}
+									},
+									
 									// ORGANISATION UNIT
 									{
 										title: '<div style="height:17px;background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.organisation_units + '</div>',
+										id: 'orgunitDiv',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -1749,7 +2598,7 @@ Ext.onReady( function() {
 														name: 'availableDataelements',
 														cls: 'tr-toolbar-multiselect-left',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 240,
+														height: 200,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'remote',
@@ -1812,7 +2661,7 @@ Ext.onReady( function() {
 														name: 'selectedDataelements',
 														cls: 'tr-toolbar-multiselect-right',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 240,
+														height: 200,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -1937,13 +2786,10 @@ Ext.onReady( function() {
 										]
 									}
 								
-								
 								]
 							}
 						]
 					}
-					
-					
 				],
                 listeners: {
                     added: function() {
@@ -2451,7 +3297,7 @@ Ext.onReady( function() {
 																						},
 																						{
 																							html: '<br/>' + item,
-																							cls: 'dv-window-confirm-list'
+																							cls: 'tr-window-confirm-list'
 																						}
 																					],
 																					bbar: [

@@ -793,16 +793,6 @@
 
 	<!-- Tabular report -->
 
-	<bean id="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
-		class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
 		class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
 		scope="prototype">
@@ -910,6 +900,19 @@
 		scope="prototype">
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<!-- SMS Reminder -->

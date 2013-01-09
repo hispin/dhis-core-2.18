@@ -33,10 +33,13 @@ import java.util.Map;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
@@ -97,5 +100,8 @@ public interface ProgramStageInstanceStore
     
     List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, int status, Integer min, Integer max );
+    
+    Grid getAggregateReport( ProgramStage programStage, Collection<Integer> orgunitIds, Collection<Integer> dataElementIds, Collection<Period> periods,
+        String aggregateType, String groupBy, String orderBy, Integer limit, I18nFormat format, I18n i18n );
     
 }

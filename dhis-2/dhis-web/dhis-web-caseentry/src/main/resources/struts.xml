@@ -767,24 +767,13 @@
 
 		<!-- Tabular report -->
 
-		<action name="tabularReportSelect"
-			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
-			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js</param>
-			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
 		<action name="getOrganisationUnitChildren"
 			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm
 			</result>
 		</action>
-
+		
 		<action name="tabularInitialize"
 			class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction">
 			<result name="success" type="velocity-json">
@@ -880,6 +869,15 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
             <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+		
+		<action name="generateAggregateReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonAggregateReportResult.vm
+			</result>
+			<result name="xls" type="gridXlsResult" />
+			<result name="pdf" type="gridPdfResult" />
+			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		
 		<!-- SMS Reminder -->
