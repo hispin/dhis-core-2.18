@@ -183,6 +183,8 @@ public class HibernateGenericStore<T>
             return criteria;
         }
 
+        criteria.setResultTransformer( Criteria.DISTINCT_ROOT_ENTITY );
+
         criteria.createAlias( "userGroupAccesses", "u", JoinType.LEFT_OUTER_JOIN );
         criteria.createAlias( "u.userGroup", "ug", JoinType.LEFT_OUTER_JOIN );
         criteria.createAlias( "ug.members", "member", JoinType.LEFT_OUTER_JOIN );
