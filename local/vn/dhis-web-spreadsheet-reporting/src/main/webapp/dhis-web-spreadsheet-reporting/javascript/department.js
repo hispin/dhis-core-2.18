@@ -68,3 +68,25 @@ function removeOrganisationUnit( unitId, unitName )
 {
     removeItem( unitId, unitName, confirm_to_delete_org_unit, '../dhis-web-maintenance-organisationunit/removeOrganisationUnit.action', subtree.refreshTree );
 }
+
+function nameChanged()
+{
+	/* fail quietly if previousName is not available */
+	if( previousName === undefined ) {
+		return;
+	}
+	
+    var nameField = document.getElementById( 'name' );
+    var shortNameField = document.getElementById( 'shortName' );
+    var maxLength = parseInt( shortNameField.maxLength );
+    
+    if ( previousName != nameField.value
+        && nameField.value.length <= maxLength
+        && ( shortNameField.value == previousName
+          || shortNameField.value.length == 0 ))
+    {
+            shortNameField.value = nameField.value;
+    }
+    
+    previousName = nameField.value;
+}
