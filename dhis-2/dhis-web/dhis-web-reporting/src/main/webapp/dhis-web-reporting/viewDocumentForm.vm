@@ -53,7 +53,8 @@ function addUserGroupAccess( ugName, ugId, ugAccess )
         $( '<td style="width: 100px;" />' ).attr( 'access', ugAccess ).text( "Read" ).appendTo( $tr );
     }
 
-    $( '<td style="width: 80px;"/>' ).html('<button class="removeUgButton" style="width: 80px; height: 22px;">Remove</button>' ).appendTo( $tr );
+    $( '<td style="width: 80px;"/>' ).html('<button class="removeUgButton" style="width: 80px; height: 22px;">'
+            + "$encoder.jsEscape( $i18n.getString( "remove" ) , "'")" + '</button>' ).appendTo( $tr );
 
     $( '#sharingUserGroupAccesses table tbody' ).append( $tr );
 }
@@ -65,7 +66,7 @@ function formatItem( item )
 
 function getUserGroupAccesses()
 {
-    userGroupAccesses = [];
+    var userGroupAccesses = [];
 
     $( '#sharingUserGroupAccesses table tbody' ).find('tr').each(function(idx, item) {
         var tr = $(item);
@@ -184,10 +185,10 @@ function showSharingDialog( type, uid ) {
 }
 </script>
 
-<div id="sharingSettings" title="Sharing Settings" style="display: none;">
+<div id="sharingSettings" title='$i18n.getString( "sharing_settings" )' style="display: none;">
     <div class="dialog-form">
         <p>
-        <label for="sharingName">Name</label>
+        <label for="sharingName">$i18n.getString( "name" )</label>
         </p>
 
         <p>
@@ -195,19 +196,19 @@ function showSharingDialog( type, uid ) {
         </p>
 
         <p>
-        <label for="sharingPublicAccess">Public Access</label>
+        <label for="sharingPublicAccess">$i18n.getString( "public_access" )</label>
         </p>
 
         <p>
         <select style="width: 440px;" id="sharingPublicAccess">
-            <option value="--------">None</option>
-            <option value="r-------">Read</option>
-            <option value="rw------">Read / Write</option>
+            <option value="--------">$i18n.getString( "no_access" )</option>
+            <option value="r-------">$i18n.getString( "read_access" )</option>
+            <option value="rw------">$i18n.getString( "read_write_access" )</option>
         </select>
         </p>
 
         <p>
-        <label for="sharingUserGroupAccesses">User Group Access</label>
+        <label for="sharingUserGroupAccesses">$i18n.getString( "user_group_access" )</label>
         </p>
 
         <p>
@@ -220,9 +221,9 @@ function showSharingDialog( type, uid ) {
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Access</th>
-                        <th>Actions</th>
+                        <th>$i18n.getString( "group_name" )</th>
+                        <th>$i18n.getString( "access" )</th>
+                        <th>$i18n.getString( "actions" )</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -232,13 +233,13 @@ function showSharingDialog( type, uid ) {
         </p>
 
         <p>
-        <button id="addUserGroupAccess" style="width: 30px; height: 22px; padding: 0; margin: 0;">Add</button>
+        <button id="addUserGroupAccess" style="width: 30px; height: 22px; padding: 0; margin: 0;">$i18n.getString( "add" )</button>
 
         <input style="width: 290px;" id="sharingUserGroupInput" />
 
         <select style="width: 111px;" id="sharingUserGroupAccess">
-            <option value="r-------">Read</option>
-            <option value="rw------">Read / Write</option>
+            <option value="r-------">$i18n.getString( "read_access" )</option>
+            <option value="rw------">$i18n.getString( "read_write_access" )</option>
         </select>
 
         </p>
