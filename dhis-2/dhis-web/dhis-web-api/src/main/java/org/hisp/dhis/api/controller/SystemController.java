@@ -74,7 +74,7 @@ public class SystemController
     @RequestMapping(value = "/uid", method = RequestMethod.GET)
     public void getUid( @RequestParam( required = false ) Integer n, HttpServletResponse response ) throws IOException
     {
-        response.setContentType( ContextUtils.CONTENT_TYPE_TEXT );
+        response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
 
         List<String> codes = new ArrayList<String>();
 
