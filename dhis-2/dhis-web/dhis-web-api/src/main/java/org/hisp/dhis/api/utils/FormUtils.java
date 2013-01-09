@@ -29,15 +29,22 @@ package org.hisp.dhis.api.utils;
 
 import org.hisp.dhis.api.webdomain.form.Field;
 import org.hisp.dhis.api.webdomain.form.Form;
-import org.hisp.dhis.api.webdomain.form.InputType;
 import org.hisp.dhis.api.webdomain.form.Group;
+import org.hisp.dhis.api.webdomain.form.InputType;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.system.util.CollectionUtils;
+import org.hisp.dhis.system.util.functional.Predicate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,7 +64,7 @@ public class FormUtils
             {
                 Group s = new Group();
                 s.setLabel( section.getName() );
-                s.setFields( inputsFromDataElements( section.getDataElements() ) );
+                s.setFields( inputsFromDataElements( section.getDataElements(), new ArrayList<DataElementOperand>( section.getGreyedFields() ) ) );
                 form.getGroups().add( s );
             }
         }
@@ -65,7 +72,7 @@ public class FormUtils
         {
             Group s = new Group();
             s.setLabel( "default" );
-            s.setFields( inputsFromDataElements( dataSet.getDataElements() ) );
+            s.setFields( inputsFromDataElements( new ArrayList<DataElement>( dataSet.getDataElements() ) ) );
 
             form.getGroups().add( s );
         }
@@ -73,9 +80,32 @@ public class FormUtils
         return form;
     }
 
-    private static List<Field> inputsFromDataElements( Collection<DataElement> dataElements )
+
+    private static List<Field> inputsFromDataElements( List<DataElement> dataElements )
+    {
+        return inputsFromDataElements( dataElements, new ArrayList<DataElementOperand>() );
+    }
+
+    private static List<Field> inputsFromDataElements( List<DataElement> dataElements, final List<DataElementOperand> greyedFields )
     {
         List<Field> fields = new ArrayList<Field>();
+
+        CollectionUtils.filter( dataElements, new Predicate<DataElement>()
+        {
+            @Override
+            public boolean evaluate( DataElement dataElement )
+            {
+                for ( DataElementOperand operand : greyedFields )
+                {
+                    if ( dataElement == operand.getDataElement() && dataElement.getCategoryCombo() == operand.getCategoryOptionCombo().getCategoryCombo() )
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        } );
 
         for ( DataElement dataElement : dataElements )
         {
