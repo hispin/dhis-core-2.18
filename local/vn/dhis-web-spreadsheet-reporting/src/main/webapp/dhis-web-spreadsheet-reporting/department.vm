@@ -10,6 +10,8 @@
 		jQuery( "table.listTable tbody tr td[allowRename=true]" ).bind( "click", showRename );
 	});
 
+	var organisationUnitTreePath = '../dhis-web-maintenance-organisationunit/';
+	
 	function showRename( event )
 	{
 		var jqsource = jQuery( "#" + this.id );
@@ -35,7 +37,7 @@
 
 			if ( _old != _new )
 			{
-				jQuery.postUTF8( "renameOrganisationUnit.action",
+				jQuery.postUTF8( organisationUnitTreePath + "renameOrganisationUnit.action",
 				{
 					id: id.substring(2, id.length),
 					name: _new
