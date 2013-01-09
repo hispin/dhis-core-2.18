@@ -124,7 +124,7 @@
 				<tr>
 					<td>#filterDiv( "organisationUnit" )</td>
 					<td colspan="3" style="text-align:right">
-						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'organisationUnit' );" style="width:80px"/>
+						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'organisationUnit' );" style="width:90px"/>
 					</td>
 				</tr>
 			</table>

@@ -5,7 +5,7 @@
 
 <h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
 <ul>
-	<li><a href="department.action">$i18n.getString( "organisationunit" )</a></li>
+	<li><a href="department.action">$i18n.getString( "organisation_unit" )</a></li>
 </ul>
 
 <h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
