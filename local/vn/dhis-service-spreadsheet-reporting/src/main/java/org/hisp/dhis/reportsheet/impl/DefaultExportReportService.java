@@ -447,7 +447,7 @@ public class DefaultExportReportService
 
                 for ( DataElementOperand operand : operands )
                 {
-                    if ( operand.getOptionComboId() == 0 )
+                    if ( operand.getOptionComboId() == null || operand.getOptionComboId().isEmpty() )
                     {
                         Indicator indicator = indicatorService.getIndicator( operand.getDataElementId() );
 

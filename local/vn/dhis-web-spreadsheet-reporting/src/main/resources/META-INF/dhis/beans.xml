@@ -1800,11 +1800,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		</property>
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.organisationunit.action.RenameOrganisationUnitAction"
+		class="org.hisp.dhis.reportsheet.organisationunit.action.RenameOrganisationUnitAction"
+		scope="prototype">
+		<property name="organisationUnitService">
+			<ref
+				bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+	</bean>
 
 	<!-- Data Entry module -->
 
-	<bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"
-		class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"
+	<bean id="org.hisp.dhis.reportsheet.de.action.GetDataValuesForDataSetAction"
+		class="org.hisp.dhis.reportsheet.de.action.GetDataValuesForDataSetAction"
 		scope="prototype">
 		<property name="dataValueService"
 			ref="org.hisp.dhis.datavalue.DataValueService" />

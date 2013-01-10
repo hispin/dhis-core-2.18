@@ -2543,11 +2543,23 @@
 				F_ORGANISATIONUNIT_ADD
 			</param>
 		</action>
+		
+		<action name="renameOrganisationUnit"
+			class="org.hisp.dhis.reportsheet.organisationunit.action.RenameOrganisationUnitAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
+		</action>
 
 		<!-- Data Entry module -->
 
 		<action name="getDataValues"
-			class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction">
+			class="org.hisp.dhis.reportsheet.de.action.GetDataValuesForDataSetAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-spreadsheet-reporting/dataentry/responseDataValues.vm
 			</result>
