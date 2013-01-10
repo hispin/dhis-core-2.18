@@ -220,7 +220,7 @@ public class ActivityReportingServiceImpl
                     {
                         ProgramStageInstance programStageInstance = programStageInstances.get( i );
 
-                        expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 0 ) );
+                        expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 30 ) );
 
                         if ( programStageInstance.getDueDate().getTime() <= time
                             && expiredDate.getTimeInMillis() > time )
@@ -320,7 +320,7 @@ public class ActivityReportingServiceImpl
         activity.setDueDate( instance.getDueDate() );
         activity.setTask( getTask( instance ) );
         activity.setLate( late );
-        activity.setExpireDate( DateUtils.getDateAfterAddition( instance.getDueDate(), 0 ) );
+        activity.setExpireDate( DateUtils.getDateAfterAddition( instance.getDueDate(), 30 ) );
 
         return activity;
     }
