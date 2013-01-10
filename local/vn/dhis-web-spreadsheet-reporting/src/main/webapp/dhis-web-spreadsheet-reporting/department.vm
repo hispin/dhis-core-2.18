@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 
-		validation('addDepartmentForm', function(form) {
+		validation( 'addDepartmentForm', function(form) {
 			form.submit();
 		});
 		
@@ -9,8 +9,6 @@
 		jQuery("#name").focus();
 		jQuery( "table.listTable tbody tr td[allowRename=true]" ).bind( "click", showRename );
 	});
-
-	var organisationUnitTreePath = '../dhis-web-maintenance-organisationunit/';
 	
 	function showRename( event )
 	{
@@ -37,7 +35,7 @@
 
 			if ( _old != _new )
 			{
-				jQuery.postUTF8( organisationUnitTreePath + "renameOrganisationUnit.action",
+				jQuery.postUTF8( "renameOrganisationUnit.action",
 				{
 					id: id.substring(2, id.length),
 					name: _new
@@ -151,7 +149,7 @@
 						</select>
 					</td>
 					<td style="text-align:right">
-						<a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+						<!--a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a-->
 						#if( $organisationUnit.children.size() == 0 && $auth.hasAccess( "dhis-web-maintenance-organisationunit", "removeOrganisationUnit" ) )
 						<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 						#else <img src="../images/delete-denied.png" alt="$i18n.getString( 'remove' )"/> #end
