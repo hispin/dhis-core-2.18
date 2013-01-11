@@ -1,6 +1,6 @@
 Ext.onReady( function() {
 
-if (!Ext.isObject(GIS)) {
+if (!Ext.isDefined(GIS)) {
 	GIS = {};
 }
 
@@ -242,6 +242,12 @@ GIS.core.getOLMap = function(gis) {
 		maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508),
 		mouseMove: {}, // Track all mouse moves
 		relocate: {} // Relocate organisation units
+	});
+
+	// Map events
+	olmap.events.register('mousemove', null, function(e) {
+		gis.olmap.mouseMove.x = e.clientX;
+		gis.olmap.mouseMove.y = e.clientY;
 	});
 
 	olmap.zoomToVisibleExtent = function() {

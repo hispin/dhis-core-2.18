@@ -636,7 +636,7 @@ Ext.onReady( function() {
 			width: 184,
 			height: 22,
 			value: false,
-			number: 5,
+			number: 5000,
 			getValue: function() {
 				return this.checkbox.getValue();
 			},
@@ -666,7 +666,7 @@ Ext.onReady( function() {
 				var that = this;
 
 				this.checkbox = Ext.create('Ext.form.field.Checkbox', {
-					width: 196,
+					width: 191,
 					boxLabel: this.text,
 					checked: this.value,
 					disabled: this.disabled,
@@ -686,10 +686,10 @@ Ext.onReady( function() {
 					cls: 'gis-numberfield',
 					fieldStyle: 'border-top-left-radius: 1px; border-bottom-left-radius: 1px',
 					style: 'padding-bottom: 3px',
-					width: 60,
+					width: 65,
 					height: 21,
 					minValue: 0,
-					maxValue: 10000,
+					maxValue: 999999,
 					value: this.number,
 					allowBlank: false,
 					disabled: true
@@ -848,26 +848,37 @@ Ext.onReady( function() {
 			items = [],
 			item,
 			panel,
-			visibleLayerId = window.google ? layers.googleStreets.id : layers.openStreetMap.id;
+			visibleLayer = window.google ? layers.googleStreets : layers.openStreetMap,
+			reversedLayers = [];
 
 		for (var key in gis.layer) {
 			if (gis.layer.hasOwnProperty(key)) {
-				layer = gis.layer[key];
-
-				item = Ext.create('Ext.ux.panel.LayerItemPanel', {
-					cls: 'gis-container-inner',
-					height: 23,
-					layer: layer,
-					text: layer.name,
-					imageUrl: 'images/' + layer.id + '_14.png',
-					value: layer.id === visibleLayerId ? true : false,
-					opacity: layer.layerOpacity,
-					numberFieldDisabled: layer.id !== visibleLayerId
-				});
-
-				layer.item = item;
-				items.push(layer.item);
+				reversedLayers.push(gis.layer[key]);
 			}
+		}
+
+		reversedLayers = reversedLayers.reverse();
+
+		for (var i = 0; i < reversedLayers.length; i++) {
+			layer = reversedLayers[i];
+
+			item = Ext.create('Ext.ux.panel.LayerItemPanel', {
+				cls: 'gis-container-inner',
+				height: 23,
+				layer: layer,
+				text: layer.name,
+				imageUrl: 'images/' + layer.id + '_14.png',
+				value: layer.id === visibleLayer.id ? true : false,
+				opacity: layer.layerOpacity,
+				numberFieldDisabled: layer.id !== visibleLayer.id
+			});
+
+			layer.item = item;
+			items.push(layer.item);
+		}
+
+		if (window.google) {
+			visibleLayer.item.setValue(true);
 		}
 
         panel = Ext.create('Ext.panel.Panel', {
@@ -4196,7 +4207,7 @@ Ext.onReady( function() {
 
 		areaRadius = Ext.create('Ext.ux.panel.CheckTextNumber', {
 			width: 262,
-			text: 'Show circular area with radius (km):' //i18n
+			text: 'Show circular area with radius (m):' //i18n
 		});
 
 		// Functions
@@ -4542,7 +4553,7 @@ Ext.onReady( function() {
 				collapseMode: 'mini',
 				items: [
 					{
-						title: 'Layer overview and visibility %', //i18n
+						title: 'Layer stack / transparency', //i18n
 						bodyStyle: 'padding: 4px 6px 3px',
 						items: GIS.app.LayersPanel(),
 						collapsible: true,
@@ -4614,12 +4625,6 @@ Ext.onReady( function() {
 				document.getElementsByClassName('zoomOutButton')[0].innerHTML = '<img src="images/zoomout_24.png" />';
 				document.getElementsByClassName('zoomVisibleButton')[0].innerHTML = '<img src="images/zoomvisible_24.png" />';
 				document.getElementsByClassName('measureButton')[0].innerHTML = '<img src="images/measure_24.png" />';
-
-				// Map events
-				gis.olmap.events.register('mousemove', null, function(e) {
-					gis.olmap.mouseMove.x = e.clientX;
-					gis.olmap.mouseMove.y = e.clientY;
-				});
 
 				gis.olmap.events.register('click', null, function(e) {
 					if (gis.olmap.relocate.active) {

@@ -1,17 +1,17 @@
-OpenLayers.Control.Circle = OpenLayers.Class(OpenLayers.Control, {	
+OpenLayers.Control.Circle = OpenLayers.Class(OpenLayers.Control, {
     feature: null,
     layer: null,
     radius: 5,
     origin: null,
     sides: 40,
     angle: null,
-    snapAngle: null,  
+    snapAngle: null,
     dragControl: null,
-    
+
     initialize: function(options) {
         OpenLayers.Control.prototype.initialize.apply(this, arguments);
     },
-    
+
     activate: function() {
         var activated = OpenLayers.Control.prototype.activate.call(this);
         if (activated) {
@@ -27,7 +27,7 @@ OpenLayers.Control.Circle = OpenLayers.Class(OpenLayers.Control, {
         }
         return activated;
     },
-    
+
     deactivate: function() {
         var deactivated = OpenLayers.Control.prototype.deactivate.call(this);
         if (deactivated) {
@@ -45,7 +45,7 @@ OpenLayers.Control.Circle = OpenLayers.Class(OpenLayers.Control, {
         }
         return deactivated;
     },
-    
+
     createGeometry: function() {
         this.angle = Math.PI * ((1 / this.sides) - (1 / 2));
         if(this.snapAngle) {
@@ -55,7 +55,7 @@ OpenLayers.Control.Circle = OpenLayers.Class(OpenLayers.Control, {
             this.origin, this.radius, this.sides, this.snapAngle
         );
     },
-    
+
     modifyGeometry: function() {
         var angle, dx, dy, point;
         var ring = this.feature.geometry.components[0];
@@ -71,10 +71,10 @@ OpenLayers.Control.Circle = OpenLayers.Class(OpenLayers.Control, {
             point.clearBounds();
         }
     },
-    
+
     updateCircle: function(origin, radius) {
         this.origin = new OpenLayers.Geometry.Point(origin.lon, origin.lat);
-        this.radius = radius * 1000; // gives km when projection is 4326
+        this.radius = radius * 1; // gives m when projection is 4326
         if (!this.feature) {
             this.feature = new OpenLayers.Feature.Vector();
             this.createGeometry();
