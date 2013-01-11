@@ -2733,8 +2733,7 @@ Ext.onReady( function() {
 								height: 430,
 								items: [
 									{
-										//title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.indicators + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.indicators + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Data</div></div>',
+										title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.indicators + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -2905,8 +2904,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										//title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.data_elements + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.data_elements + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Data</div></div>',
+										title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.data_elements + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -3076,8 +3074,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										//title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.reporting_rates + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.reporting_rates + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Data</div></div>',
+										title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.reporting_rates + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -3197,8 +3194,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										//title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.relative_periods + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.relative_periods + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Period</div></div>',
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.relative_periods + '</div>',
 										hideCollapseTool: true,
 										autoScroll: true,
 										items: [
@@ -3406,8 +3402,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										//title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.fixed_periods + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.fixed_periods + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Period</div></div>',
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.fixed_periods + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -3589,8 +3584,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										//title: '<div style="height:17px; background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.organisation_units + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.organisation_units + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Org unit</div></div>',
+										title: '<div style="height:17px; background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.organisation_units + '</div>',
 										hideCollapseTool: true,
 										collapsed: false,
 										items: [
@@ -3869,8 +3863,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										//title: '<div style="height:17px; background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.organisation_unit_groups + '</div>',
-										title: '<div style="height:17px; padding-right: 4px"><div style="background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px; width:50%; display:inline;">' + DV.i18n.organisation_unit_groups + '</div><div style="display:inline; float:right; color:#555; font-weight:normal; font-size:10px">Org unit</div></div>',
+										title: '<div style="height:17px; background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.organisation_unit_groups + '</div>',
 										hideCollapseTool: true,
 										bodyStyle: 'padding-bottom: 0px',
 										items: [
