@@ -98,8 +98,11 @@ public class JdbcAnalyticsManager
         
         sql += " as value from " + params.getTableName() + " ";
         
+        System.out.println("dim map " + dimensionMap);
+        
         for ( String dim : dimensions )
         {
+            System.out.println("dim " + dim);
             sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( getUids( dimensionMap.get( dim ) ) ) + " ) ";
         }
 

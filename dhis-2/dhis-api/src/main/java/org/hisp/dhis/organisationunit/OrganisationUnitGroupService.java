@@ -84,12 +84,12 @@ public interface OrganisationUnitGroupService
     Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers );
     
     /**
-     * Returns the OrganisationUnitGroupSets with the given uids.
+     * Returns the OrganisationUnitGroups with the given UIDs.
      * 
-     * @param uids the collection of uids.
-     * @return the OrganisationUnitGroupSets with the given uids.
+     * @param uids the collection of UIDs.
+     * @return the OrganisationUnitGroups with the given UIDs.
      */
-    List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsByUid( Collection<String> uids );
+    List<OrganisationUnitGroup> getOrganisationUnitGroupsByUid( Collection<String> uids );
     
     /**
      * Returns the OrganisationUnitGroup with the given UID.
@@ -184,6 +184,14 @@ public interface OrganisationUnitGroupService
      * @return the OrganisationUnitGroupSets with the given identifiers.
      */
     Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( Collection<Integer> identifiers );
+
+    /**
+     * Returns the OrganisationUnitGroupSets with the given uids.
+     * 
+     * @param uids the collection of uids.
+     * @return the OrganisationUnitGroupSets with the given uids.
+     */
+    List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsByUid( Collection<String> uids );
     
     /**
      * Returns an OrganisationUnitGroupSet with a given name.

@@ -401,6 +401,11 @@ public class DefaultDataElementService
             }
         } );
     }
+    
+    public Collection<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids )
+    {
+        return dataElementGroupStore.getByUid( uids );
+    }
 
     public DataElementGroup getDataElementGroup( String uid )
     {

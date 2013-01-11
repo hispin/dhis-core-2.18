@@ -109,6 +109,11 @@ public class DefaultOrganisationUnitGroupService
             } );
     }
 
+    public List<OrganisationUnitGroup> getOrganisationUnitGroupsByUid( Collection<String> uids )
+    {
+        return organisationUnitGroupStore.getByUid( uids );
+    }
+
     public OrganisationUnitGroup getOrganisationUnitGroup( String uid )
     {
         return i18n( i18nService, organisationUnitGroupStore.getByUid( uid ) );

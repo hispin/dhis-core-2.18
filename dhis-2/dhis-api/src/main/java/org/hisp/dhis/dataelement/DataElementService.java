@@ -334,13 +334,21 @@ public interface DataElementService
     DataElementGroup getDataElementGroup( int id, boolean i18nDataElements );
 
     /**
-     * Returns data elements with identifiers in the given collection.
+     * Returns data element groups with identifiers in the given collection.
      *
      * @param identifiers the id collection.
      * @return data elements with identifiers in the given collection.
      */
     Collection<DataElementGroup> getDataElementGroups( Collection<Integer> identifiers );
 
+    /**
+     * Returns the data element groups with the given uids.
+     * 
+     * @param uids the uid collection.
+     * @return the data element groups with the given uids.
+     */
+    Collection<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids );    
+    
     /**
      * Returns the DataElementGroup with the given UID.
      *
