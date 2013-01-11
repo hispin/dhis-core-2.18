@@ -1,0 +1,51 @@
+table {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 0 none;
+}
+td {
+	padding: 0;
+	border: 1px solid #888;
+	background-color: #dae6f8;
+}
+
+
+td div div {
+	padding: 5px;
+	text-align: center;
+	font-family: roboto thin;
+	font-size: 12px;
+}
+
+td .empty-body {
+	background-color: #dae6f8;
+	border: 0 none;
+}
+
+td .dim-body {
+	background-color: #dae6f8;
+}
+td .dimtotal-body {
+	background-color: #b0c4de;
+}
+
+td .value-body {
+	background-color: #fff;
+}
+td .valuetotal-body {
+	background-color: #eee;
+}
+td .valuegrandtotal-body {
+	background-color: #ccc;
+}
+
+td .good div {
+	color: green;
+}
+td .medium div {
+	color: #333;
+}
+td .bad div {
+	color: red;
+}
+
