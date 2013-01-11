@@ -32,6 +32,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceStore"
@@ -131,6 +133,13 @@
 		class="org.hisp.dhis.patientreport.hibernate.HibernatePatientTabularReportStore">
 		<property name="clazz"
 			value="org.hisp.dhis.patientreport.PatientTabularReport" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patientreport.PatientAggregateReportStore"
+		class="org.hisp.dhis.patientreport.hibernate.HibernatePatientAggregateReportStore">
+		<property name="clazz"
+			value="org.hisp.dhis.patientreport.PatientAggregateReport" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -303,6 +312,12 @@
 		class="org.hisp.dhis.patientreport.DefaultPatientTabularReportService">
 		<property name="tabularReportStore"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportStore" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patientreport.PatientAggregateReportService"
+		class="org.hisp.dhis.patientreport.DefaultPatientAggregateReportService">
+		<property name="patientAggregateReportStore"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportStore" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientAuditService" class="org.hisp.dhis.patient.DefaultPatientAuditService">

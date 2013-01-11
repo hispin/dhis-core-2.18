@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+    [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+    >
+
+<hibernate-mapping>
+	<class name="org.hisp.dhis.patientreport.PatientAggregateReport"
+		table="patientaggregatereport">
+
+		<id name="id" column="patientaggregatereportid">
+			<generator class="native" />
+		</id>
+		
+		&identifiableProperties;
+
+		<list name="organisationUnits" table="patientaggregatereport_organisationUnits">
+			<key column="patientaggregatereportid" foreign-key="fk_patientaggregatereport_organisationunitid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many column="organisationunitid"
+				class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_patientaggregatereportid_organisationunit" />
+		</list>
+
+		<list name="periods" table="patientaggregatereport_periods">
+			<key column="patientaggregatereportid"
+				foreign-key="fk_patientaggregatereport_periods_patientaggregatereportid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many column="periodid" class="org.hisp.dhis.period.Period"
+				foreign-key="fk_patientaggregatereport_periods_periodid" />
+		</list>
+
+		<list name="dataElements" table="patientaggregatereport_programstagedataelements">
+			<key column="patientaggregatereportid" />
+			<list-index column="sort_order" base="1" />
+			<one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
+		</list>
+
+		<property name="position" />
+
+		<property name="limitRecords" />
+
+		<many-to-one name="user" class="org.hisp.dhis.user.User"
+			column="userid" foreign-key="fk_patientaggregatereport_userid" />
+
+	</class>
+</hibernate-mapping>

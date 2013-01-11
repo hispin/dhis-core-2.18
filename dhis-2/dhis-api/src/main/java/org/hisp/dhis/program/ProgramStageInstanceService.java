@@ -110,7 +110,8 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer max, Integer min );
 
-    Grid getAggregateReport( ProgramStage programStage, Collection<Integer> orgunitIds, Collection<Integer> dataElementIds, Collection<Period> periods,
-        String aggregateType, String groupBy, String orderBy, Integer limit, I18nFormat format, I18n i18n );
+    Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
+        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType, I18nFormat format,
+        I18n i18n );
 
 }
