@@ -345,12 +345,12 @@ public class DefaultProgramStageInstanceService
             endDate, status, min, max );
     }
 
-    public Grid getAggregateReport( ProgramStage programStage, Collection<Integer> orgunitIds,
-        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType, String groupBy,
-        String orderBy, Integer limit, I18nFormat format, I18n i18n )
+    public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
+        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType, I18nFormat format,
+        I18n i18n )
     {
-        return programStageInstanceStore.getAggregateReport( programStage, orgunitIds, dataElementIds, periods, aggregateType, groupBy,
-            orderBy, limit, format, i18n );
+        return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, dataElementIds, periods,
+            aggregateType, format, i18n );
     }
 
 }

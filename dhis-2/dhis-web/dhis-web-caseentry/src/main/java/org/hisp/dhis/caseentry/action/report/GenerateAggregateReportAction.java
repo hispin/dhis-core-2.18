@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -113,6 +115,13 @@ public class GenerateAggregateReportAction
         this.programStageId = programStageId;
     }
 
+    private String aggregateType;
+
+    public void setAggregateType( String aggregateType )
+    {
+        this.aggregateType = aggregateType;
+    }
+
     private Collection<Integer> orgunitIds;
 
     public void setOrgunitIds( Collection<Integer> orgunitIds )
@@ -134,32 +143,18 @@ public class GenerateAggregateReportAction
         this.periodIds = periodIds;
     }
 
-    private String aggregateType;
+    private Collection<String> relativePeriods = new HashSet<String>();
 
-    public void setAggregateType( String aggregateType )
+    public void setRelativePeriods( Collection<String> relativePeriods )
     {
-        this.aggregateType = aggregateType;
+        this.relativePeriods = relativePeriods;
     }
 
-    private String groupBy;
+    private String periodTypeName;
 
-    public void setGroupBy( String groupBy )
+    public void setPeriodTypeName( String periodTypeName )
     {
-        this.groupBy = groupBy;
-    }
-
-    private String orderBy;
-
-    public void setOrderBy( String orderBy )
-    {
-        this.orderBy = orderBy;
-    }
-
-    private Integer limit;
-
-    public void setLimit( Integer limit )
-    {
-        this.limit = limit;
+        this.periodTypeName = periodTypeName;
     }
 
     private String startDate;
@@ -183,11 +178,11 @@ public class GenerateAggregateReportAction
         this.facilityLB = facilityLB;
     }
 
-    private Collection<String> relativePeriods = new HashSet<String>();
+    public Integer position;
 
-    public void setRelativePeriods( Collection<String> relativePeriods )
+    public void setPosition( Integer position )
     {
-        this.relativePeriods = relativePeriods;
+        this.position = position;
     }
 
     private String type;
@@ -252,10 +247,11 @@ public class GenerateAggregateReportAction
         // Create period from start-date and end-date
         if ( startDate != null && endDate != null )
         {
-            Period period = new Period();
-            period.setStartDate( format.parseDate( startDate ) );
-            period.setEndDate( format.parseDate( endDate ) );
-            periods.add( period );
+            Calendar today = Calendar.getInstance();
+            today.add( Calendar.DATE, -1 );
+            CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType
+                .getPeriodTypeByName( periodTypeName );
+            periods.addAll( periodType.generatePeriods( format.parseDate( startDate ), format.parseDate( endDate ) ) );
         }
 
         // Fixed periods
@@ -273,8 +269,8 @@ public class GenerateAggregateReportAction
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        grid = programStageInstanceService.getAggregateReport( programStage, organisationUnits, dataElementIds,
-            periods, aggregateType, groupBy, orderBy, limit, format, i18n );
+        grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits, dataElementIds, periods,
+            aggregateType, format, i18n );
 
         return type == null ? SUCCESS : type;
     }

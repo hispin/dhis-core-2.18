@@ -522,6 +522,20 @@ TR.utilbody {
     line-height: 8px;
 }
 
+.tr-textfield-alt2 {  
+    height: 22px;
+    padding-left: 4px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    -o-border-radius: 2px 2px 2px 2px;
+    -ms-border-radius: 2px 2px 2px 2px;
+    -khtml-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    font-size: 11px;
+    color: #333;
+	align: right;
+}
+
 /* TR window confirm list */
 .tr-window-confirm-list .x-panel-body {
     color: #444;
@@ -776,4 +790,8 @@ TR.utilbody {
 .tr-toolbar-bbar {
 	height: 29px;
 	padding: 0;
+}
+
+.align-right{
+	align: right;
 }
