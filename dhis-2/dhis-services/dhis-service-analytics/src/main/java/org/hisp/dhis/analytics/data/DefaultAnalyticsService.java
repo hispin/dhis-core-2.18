@@ -155,29 +155,35 @@ public class DefaultAnalyticsService
         
         params.setCategories( categories );
         
-        for ( String param : dimensionParams )
+        if ( dimensionParams != null && !dimensionParams.isEmpty() )
         {
-            String dimension = DataQueryParams.getDimension( param );
-            List<String> options = DataQueryParams.getDimensionOptions( param );
-            
-            if ( dimension != null && options != null )
+            for ( String param : dimensionParams )
             {
-                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
+                String dimension = DataQueryParams.getDimension( param );
+                List<String> options = DataQueryParams.getDimensionOptions( param );
                 
-                params.getDimensions().put( dimension, dimensionOptions );
+                if ( dimension != null && options != null )
+                {
+                    List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
+                    
+                    params.getDimensions().put( dimension, dimensionOptions );
+                }
             }
         }
 
-        for ( String param : filterParams )
+        if ( filterParams != null && !filterParams.isEmpty() )
         {
-            String dimension = DataQueryParams.getDimension( param );
-            List<String> options = DataQueryParams.getDimensionOptions( param );
-            
-            if ( dimension != null && options != null )
+            for ( String param : filterParams )
             {
-                List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
+                String dimension = DataQueryParams.getDimension( param );
+                List<String> options = DataQueryParams.getDimensionOptions( param );
                 
-                params.getFilters().put( dimension, dimensionOptions );
+                if ( dimension != null && options != null )
+                {
+                    List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
+                    
+                    params.getFilters().put( dimension, dimensionOptions );
+                }
             }
         }
         
@@ -220,14 +226,14 @@ public class DefaultAnalyticsService
             
         if ( orgUnitGroupSet != null )
         {
-            return asList( organisationUnitGroupService.getOrganisationUnitGroupSetsByUid( options ) );
+            return asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( options ) );
         }
         
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( dimension );
         
         if ( dataElementGroupSet != null )
         {
-            return asList( dataElementService.getDataElementGroupSetsByUid( options ) );
+            return asList( dataElementService.getDataElementGroupsByUid( options ) );
         }
         
         return null;

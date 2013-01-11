@@ -36,6 +36,9 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +59,12 @@ public class AnalyticsServiceTest
     private OrganisationUnit ouD;
     private OrganisationUnit ouE;
     
+    private OrganisationUnitGroup ouGroupA;
+    private OrganisationUnitGroup ouGroupB;
+    private OrganisationUnitGroup ouGroupC;
+    
+    private OrganisationUnitGroupSet ouGroupSetA;
+    
     @Autowired
     private AnalyticsService analyticsService;
     
@@ -64,6 +73,9 @@ public class AnalyticsServiceTest
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
     
     @Override
     public void setUpTest()
@@ -89,6 +101,22 @@ public class AnalyticsServiceTest
         organisationUnitService.addOrganisationUnit( ouC );
         organisationUnitService.addOrganisationUnit( ouD );
         organisationUnitService.addOrganisationUnit( ouE );
+        
+        ouGroupA = createOrganisationUnitGroup( 'A' );
+        ouGroupB = createOrganisationUnitGroup( 'B' );
+        ouGroupC = createOrganisationUnitGroup( 'C' );
+        
+        ouGroupSetA = createOrganisationUnitGroupSet( 'A' );
+        
+        organisationUnitGroupService.addOrganisationUnitGroup( ouGroupA );
+        organisationUnitGroupService.addOrganisationUnitGroup( ouGroupB );
+        organisationUnitGroupService.addOrganisationUnitGroup( ouGroupC );
+        
+        ouGroupSetA.getOrganisationUnitGroups().add( ouGroupA );
+        ouGroupSetA.getOrganisationUnitGroups().add( ouGroupB );
+        ouGroupSetA.getOrganisationUnitGroups().add( ouGroupC );
+        
+        organisationUnitGroupService.addOrganisationUnitGroupSet( ouGroupSetA );
     }
     
     @Test
@@ -97,6 +125,7 @@ public class AnalyticsServiceTest
         Set<String> dimensionParams = new HashSet<String>();
         dimensionParams.add( "de:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D" );
         dimensionParams.add( "pe:2012,2012S1,2012S2" );
+        dimensionParams.add( ouGroupSetA.getUid() + ":" + ouGroupA.getUid() + "," + ouGroupB.getUid() + "," + ouGroupC.getUid() );
         
         Set<String> filterParams = new HashSet<String>();
         filterParams.add( "ou:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D," + BASE_UID + "E" );
@@ -106,5 +135,8 @@ public class AnalyticsServiceTest
         assertEquals( 4, params.getDatElements().size() );
         assertEquals( 3, params.getPeriods().size() );
         assertEquals( 5, params.getFilterOrganisationUnits().size() );
+        
+        assertEquals( 4, params.getDimensionMap().get( DataQueryParams.DATAELEMENT_DIM_ID ).size() );
+        assertEquals( 3, params.getDimensionMap().get( ouGroupSetA.getUid() ).size() );
     }
 }
