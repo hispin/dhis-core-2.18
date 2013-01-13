@@ -101,8 +101,6 @@ public class JdbcAnalyticsManager
         
         for ( String dim : queryDimensions )
         {
-            System.out.println("dim " + dim);
-            System.out.println("dim map " + dimensionMap);
             sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( getUids( dimensionMap.get( dim ) ) ) + " ) ";
         }
 

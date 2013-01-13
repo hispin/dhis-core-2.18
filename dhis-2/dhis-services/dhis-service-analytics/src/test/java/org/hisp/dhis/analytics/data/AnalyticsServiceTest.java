@@ -132,7 +132,7 @@ public class AnalyticsServiceTest
         
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, false, null );
         
-        assertEquals( 4, params.getDatElements().size() );
+        assertEquals( 4, params.getDataElements().size() );
         assertEquals( 3, params.getPeriods().size() );
         assertEquals( 5, params.getFilterOrganisationUnits().size() );
         

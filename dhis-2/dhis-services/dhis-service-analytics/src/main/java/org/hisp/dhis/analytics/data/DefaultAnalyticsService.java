@@ -27,6 +27,16 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AnalyticsManager.SEP;
+import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.getDimensionFromParam;
+import static org.hisp.dhis.analytics.DataQueryParams.getDimensionOptionsFromParam;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +53,9 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -55,10 +67,6 @@ import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.hisp.dhis.analytics.AnalyticsManager.SEP;
-import static org.hisp.dhis.analytics.DataQueryParams.*;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
 
 public class DefaultAnalyticsService
     implements AnalyticsService
@@ -86,6 +94,9 @@ public class DefaultAnalyticsService
     
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    @Autowired
+    private ExpressionService expressionService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -94,7 +105,11 @@ public class DefaultAnalyticsService
     public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
     {
         Grid grid = new ListGrid();
-        
+
+        // ---------------------------------------------------------------------
+        // Set meta-data and headers on grid
+        // ---------------------------------------------------------------------
+
         grid.setMetaData( params.getUidNameMap() );
         
         for ( String col : params.getDimensionNames() )
@@ -103,6 +118,26 @@ public class DefaultAnalyticsService
         }
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
+
+        // ---------------------------------------------------------------------
+        // Manage indicators, add data elements from indicators to query
+        // ---------------------------------------------------------------------
+
+        if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
+        {
+            params.setCategories( true );
+            
+            List<Indicator> indicators = asTypedList( params.getIndicators() );            
+            List<IdentifiableObject> dataElementsOnlyInIndicators = asList( expressionService.getDataElementsInIndicators( indicators ) );
+            List<IdentifiableObject> dataElements = params.getDataElements() != null ? params.getDataElements() : new ArrayList<IdentifiableObject>();
+            dataElementsOnlyInIndicators.removeAll( dataElements );
+            dataElements.addAll( dataElementsOnlyInIndicators );
+            params.getDimensions().put( DATAELEMENT_DIM_ID, dataElements );
+        }
+
+        // ---------------------------------------------------------------------
+        // Set aggregated values on grid
+        // ---------------------------------------------------------------------
 
         Map<String, Double> map = getAggregatedDataValueMap( params );
         
@@ -153,15 +188,15 @@ public class DefaultAnalyticsService
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
-        
+
         params.setCategories( categories );
         
         if ( dimensionParams != null && !dimensionParams.isEmpty() )
         {
             for ( String param : dimensionParams )
             {
-                String dimension = DataQueryParams.getDimension( param );
-                List<String> options = DataQueryParams.getDimensionOptions( param );
+                String dimension = getDimensionFromParam( param );
+                List<String> options = getDimensionOptionsFromParam( param );
                 
                 if ( dimension != null && options != null )
                 {
@@ -176,8 +211,8 @@ public class DefaultAnalyticsService
         {
             for ( String param : filterParams )
             {
-                String dimension = DataQueryParams.getDimension( param );
-                List<String> options = DataQueryParams.getDimensionOptions( param );
+                String dimension = DataQueryParams.getDimensionFromParam( param );
+                List<String> options = DataQueryParams.getDimensionOptionsFromParam( param );
                 
                 if ( dimension != null && options != null )
                 {
@@ -187,7 +222,7 @@ public class DefaultAnalyticsService
                 }
             }
         }
-        
+
         return params;
     }
 

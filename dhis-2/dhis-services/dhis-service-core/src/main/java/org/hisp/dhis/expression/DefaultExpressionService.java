@@ -216,6 +216,19 @@ public class DefaultExpressionService
         return operandsInExpression;
     }
     
+    public Set<DataElement> getDataElementsInIndicators( Collection<Indicator> indicators )
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( Indicator indicator : indicators )
+        {
+            dataElements.addAll( getDataElementsInExpression( indicator.getNumerator() ) );
+            dataElements.addAll( getDataElementsInExpression( indicator.getDenominator() ) );
+        }
+        
+        return dataElements;
+    }
+    
     public void filterInvalidIndicators( Collection<Indicator> indicators )
     {
         if ( indicators != null )
