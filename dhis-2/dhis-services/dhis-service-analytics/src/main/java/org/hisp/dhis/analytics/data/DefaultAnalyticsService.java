@@ -67,6 +67,7 @@ public class DefaultAnalyticsService
     
     //TODO indicator aggregation
     //TODO category sub-totals and totals
+    //TODO completeness
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -89,7 +90,7 @@ public class DefaultAnalyticsService
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
-  
+
     public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
     {
         Grid grid = new ListGrid();
