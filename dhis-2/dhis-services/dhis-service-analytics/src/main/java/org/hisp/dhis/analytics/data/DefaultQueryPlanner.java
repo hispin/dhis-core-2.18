@@ -297,7 +297,7 @@ public class DefaultQueryPlanner
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
-        if ( params.getDatElements() == null || params.getDatElements().isEmpty() )
+        if ( params.getDataElements() == null || params.getDataElements().isEmpty() )
         {
             queries.add( new DataQueryParams( params ) );
             return queries;
@@ -305,7 +305,7 @@ public class DefaultQueryPlanner
      
         PeriodType periodType = PeriodType.getPeriodTypeByName( params.getPeriodType() );
         
-        ListMap<AggregationType, IdentifiableObject> aggregationTypeDataElementMap = getAggregationTypeDataElementMap( params.getDatElements(), periodType );
+        ListMap<AggregationType, IdentifiableObject> aggregationTypeDataElementMap = getAggregationTypeDataElementMap( params.getDataElements(), periodType );
         
         for ( AggregationType aggregationType : aggregationTypeDataElementMap.keySet() )
         {
@@ -326,13 +326,13 @@ public class DefaultQueryPlanner
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
-        if ( params.getDatElements() == null || params.getDatElements().isEmpty() )
+        if ( params.getDataElements() == null || params.getDataElements().isEmpty() )
         {
             queries.add( new DataQueryParams( params ) );
             return queries;
         }
         
-        ListMap<PeriodType, IdentifiableObject> periodTypeDataElementMap = getPeriodTypeDataElementMap( params.getDatElements() );
+        ListMap<PeriodType, IdentifiableObject> periodTypeDataElementMap = getPeriodTypeDataElementMap( params.getDataElements() );
         
         for ( PeriodType periodType : periodTypeDataElementMap.keySet() )
         {

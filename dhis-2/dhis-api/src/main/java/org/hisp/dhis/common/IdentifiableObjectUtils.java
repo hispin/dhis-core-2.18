@@ -147,6 +147,27 @@ public class IdentifiableObjectUtils
         list.addAll( collection );
         return list;
     }
+    
+    /**
+     * Returns a list typed with the desired erasure based on the given collection.
+     * This operation implies an unchecked cast and it is the responsibility of
+     * the caller to make sure the cast is valid.
+     * 
+     * @param collection the collection.
+     * @return a list.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends IdentifiableObject> List<T> asTypedList( Collection<IdentifiableObject> collection )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( IdentifiableObject object : collection )
+        {
+            list.add( (T) object );
+        }
+        
+        return list;
+    }
 
     /**
      * Generates a tag reflecting the date of when the most recently updated
