@@ -39,7 +39,7 @@ public class AccessUtils
     {
         if ( defaultAccessIsNull( object ) ) return true;
 
-        if ( user == object.getUser() || AccessStringHelper.canWrite( object.getPublicAccess() ) )
+        if ( user.equals( object.getUser() ) || AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
             return true;
         }
@@ -60,7 +60,7 @@ public class AccessUtils
     {
         if ( defaultAccessIsNull( object ) ) return true;
 
-        if ( user == object.getUser() || AccessStringHelper.canRead( object.getPublicAccess() ) )
+        if ( user.equals( object.getUser() ) || AccessStringHelper.canRead( object.getPublicAccess() ) )
         {
             return true;
         }
@@ -95,6 +95,6 @@ public class AccessUtils
     private static boolean defaultAccessIsNull( IdentifiableObject identifiableObject )
     {
         return (identifiableObject.getPublicAccess() == null || identifiableObject.getPublicAccess().equalsIgnoreCase( "--------" ))
-            && identifiableObject.getUser() == null;
+            || identifiableObject.getUser() == null;
     }
 }
