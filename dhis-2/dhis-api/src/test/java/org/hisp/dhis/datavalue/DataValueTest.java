@@ -30,7 +30,7 @@ package org.hisp.dhis.datavalue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland

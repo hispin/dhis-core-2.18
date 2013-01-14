@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.program;
 
-import java.io.Serializable;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.expression.Operator;
 
