@@ -32,8 +32,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
 /**
  * @author Nguyen Kim Lai
  * 

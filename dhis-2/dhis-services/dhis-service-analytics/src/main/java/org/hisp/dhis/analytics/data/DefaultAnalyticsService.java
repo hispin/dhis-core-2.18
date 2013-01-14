@@ -123,17 +123,7 @@ public class DefaultAnalyticsService
         // Manage indicators, add data elements from indicators to query
         // ---------------------------------------------------------------------
 
-        if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
-        {
-            params.setCategories( true );
-            
-            List<Indicator> indicators = asTypedList( params.getIndicators() );            
-            List<IdentifiableObject> dataElementsOnlyInIndicators = asList( expressionService.getDataElementsInIndicators( indicators ) );
-            List<IdentifiableObject> dataElements = params.getDataElements() != null ? params.getDataElements() : new ArrayList<IdentifiableObject>();
-            dataElementsOnlyInIndicators.removeAll( dataElements );
-            dataElements.addAll( dataElementsOnlyInIndicators );
-            params.getDimensions().put( DATAELEMENT_DIM_ID, dataElements );
-        }
+        addDataElementsFromIndicators( params );
 
         // ---------------------------------------------------------------------
         // Set aggregated values on grid
@@ -273,5 +263,24 @@ public class DefaultAnalyticsService
         }
         
         return null;
+    }
+    
+    private List<IdentifiableObject> addDataElementsFromIndicators( DataQueryParams params )
+    {
+        List<IdentifiableObject> dataElementsOnlyInIndicators = null;
+        
+        if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
+        {
+            params.setCategories( true );
+            
+            List<Indicator> indicators = asTypedList( params.getIndicators() );            
+            dataElementsOnlyInIndicators = asList( expressionService.getDataElementsInIndicators( indicators ) );
+            List<IdentifiableObject> dataElements = params.getDataElements() != null ? params.getDataElements() : new ArrayList<IdentifiableObject>();
+            dataElementsOnlyInIndicators.removeAll( dataElements );
+            dataElements.addAll( dataElementsOnlyInIndicators );
+            params.getDimensions().put( DATAELEMENT_DIM_ID, dataElements );
+        }
+        
+        return dataElementsOnlyInIndicators;
     }
 }

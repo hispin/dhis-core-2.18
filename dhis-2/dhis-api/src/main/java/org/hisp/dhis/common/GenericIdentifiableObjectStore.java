@@ -27,12 +27,11 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
