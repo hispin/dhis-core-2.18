@@ -876,7 +876,10 @@
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonAggregateReportResult.vm
 			</result>
 			<result name="xls" type="gridXlsResult" />
-			<result name="pdf" type="gridPdfResult" />
+     		<result name="pdf" type="gridPdfResult" />
+     		<result name="csv" type="gridCsvResult" />
+     		<result name="jasper" type="gridJasperResult" />
+     		<result name="jrxml" type="gridJrxmlResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		

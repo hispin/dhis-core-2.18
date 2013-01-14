@@ -32,7 +32,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
