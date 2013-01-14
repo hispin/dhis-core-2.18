@@ -529,7 +529,7 @@ public class DefaultMappingService
     
     public Collection<MapView> getMapViewsBetweenByName( String name, int first, int max )
     {
-        return mapViewStore.getBetweenByName( name, first, max );
+        return mapViewStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     // -------------------------------------------------------------------------

@@ -521,7 +521,7 @@ public class DefaultDataElementCategoryService
 
     public int getDataElementCategoryCountByName( String name )
     {
-        return dataElementCategoryStore.getCountByName( name );
+        return dataElementCategoryStore.getCountLikeName( name );
     }
 
     @Override
@@ -533,7 +533,7 @@ public class DefaultDataElementCategoryService
     @Override
     public int getDataElementCategoryOptionCountByName( String name )
     {
-        return dataElementCategoryOptionStore.getCountByName( name );
+        return dataElementCategoryOptionStore.getCountLikeName( name );
     }
 
     @Override
@@ -545,17 +545,17 @@ public class DefaultDataElementCategoryService
     @Override
     public int getDataElementCategoryOptionComboCountByName( String name )
     {
-        return dataElementCategoryOptionComboStore.getCountByName( name );
+        return dataElementCategoryOptionComboStore.getCountLikeName( name );
     }
 
     public Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max )
     {
-        return dataElementCategoryStore.getBetween( first, max );
+        return dataElementCategoryStore.getAllOrderedName( first, max );
     }
 
     public Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max )
     {
-        return dataElementCategoryStore.getBetweenByName( name, first, max );
+        return dataElementCategoryStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     public int getDataElementCategoryComboCount()
@@ -565,18 +565,18 @@ public class DefaultDataElementCategoryService
 
     public int getDataElementCategoryComboCountByName( String name )
     {
-        return dataElementCategoryComboStore.getCountByName( name );
+        return dataElementCategoryComboStore.getCountLikeName( name );
     }
 
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetween( int first, int max )
     {
-        return dataElementCategoryComboStore.getBetween( first, max );
+        return dataElementCategoryComboStore.getAllOrderedName( first, max );
     }
 
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first,
                                                                                            int max )
     {
-        return dataElementCategoryComboStore.getBetweenByName( name, first, max );
+        return dataElementCategoryComboStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     @Override
@@ -594,24 +594,24 @@ public class DefaultDataElementCategoryService
     @Override
     public Collection<DataElementCategory> getDataElementCategoryBetween( int first, int max )
     {
-        return dataElementCategoryStore.getBetween( first, max );
+        return dataElementCategoryStore.getAllOrderedName( first, max );
     }
 
     @Override
     public Collection<DataElementCategory> getDataElementCategoryBetweenByName( String name, int first, int max )
     {
-        return dataElementCategoryStore.getBetweenByName( name, first, max );
+        return dataElementCategoryStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     @Override
     public Collection<DataElementCategoryOption> getDataElementCategoryOptionsBetween( int first, int max )
     {
-        return dataElementCategoryOptionStore.getBetween( first, max );
+        return dataElementCategoryOptionStore.getAllOrderedName( first, max );
     }
 
     @Override
     public Collection<DataElementCategoryOption> getDataElementCategoryOptionsBetweenByName( String name, int first, int max )
     {
-        return dataElementCategoryOptionStore.getBetweenByName( name, first, max );
+        return dataElementCategoryOptionStore.getAllLikeNameOrderedName( name, first, max );
     }
 }

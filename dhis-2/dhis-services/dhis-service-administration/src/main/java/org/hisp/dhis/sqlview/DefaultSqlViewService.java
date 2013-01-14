@@ -115,13 +115,13 @@ public class DefaultSqlViewService
     @Override
     public Collection<SqlView> getSqlViewsBetween( int first, int max )
     {
-        return sqlViewStore.getBetween( first, max );
+        return sqlViewStore.getAllOrderedName( first, max );
     }
 
     @Override
     public Collection<SqlView> getSqlViewsBetweenByName( String name, int first, int max )
     {
-        return sqlViewStore.getBetweenByName( name, first, max );
+        return sqlViewStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     @Override

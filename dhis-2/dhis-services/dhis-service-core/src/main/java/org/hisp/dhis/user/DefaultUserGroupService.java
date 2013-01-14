@@ -102,18 +102,18 @@ public class DefaultUserGroupService implements UserGroupService
     @Override
     public int getUserGroupCountByName( String name )
     {
-        return userGroupStore.getCountByName( name );
+        return userGroupStore.getCountLikeName( name );
     }
 
     @Override
     public Collection<UserGroup> getUserGroupsBetween( int first, int max )
     {
-        return userGroupStore.getBetween( first, max );
+        return userGroupStore.getAllOrderedName( first, max );
     }
 
     @Override
     public Collection<UserGroup> getUserGroupsBetweenByName( String name, int first, int max )
     {
-        return userGroupStore.getBetweenByName( name, first, max );
+        return userGroupStore.getAllLikeNameOrderedName( name, first, max );
     }
 }

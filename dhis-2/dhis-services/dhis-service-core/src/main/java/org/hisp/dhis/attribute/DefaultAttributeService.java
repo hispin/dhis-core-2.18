@@ -157,19 +157,19 @@ public class DefaultAttributeService
     @Override
     public int getAttributeCountByName( String name )
     {
-        return attributeStore.getCountByName( name );
+        return attributeStore.getCountLikeName( name );
     }
 
     @Override
     public Set<Attribute> getAttributesBetween( int first, int max )
     {
-        return new HashSet<Attribute>( attributeStore.getBetween( first, max ) );
+        return new HashSet<Attribute>( attributeStore.getAllOrderedName( first, max ) );
     }
 
     @Override
     public Set<Attribute> getAttributesBetweenByName( String name, int first, int max )
     {
-        return new HashSet<Attribute>( attributeStore.getBetweenByName( name, first, max ) );
+        return new HashSet<Attribute>( attributeStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 
     // -------------------------------------------------------------------------

@@ -552,12 +552,12 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsBetween( int first, int max )
     {
-        return organisationUnitStore.getBetween( first, max );
+        return organisationUnitStore.getAllOrderedName( first, max );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsBetweenByName( String name, int first, int max )
     {
-        return organisationUnitStore.getBetweenByName( name, first, max );
+        return organisationUnitStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     @Override

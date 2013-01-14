@@ -94,16 +94,16 @@ public class DefaultDocumentService
 
     public int getDocumentCountByName( String name )
     {
-        return documentStore.getCountByName( name );
+        return documentStore.getCountLikeName( name );
     }
 
     public Collection<Document> getDocumentsBetween( int first, int max )
     {
-        return documentStore.getBetween( first, max );
+        return documentStore.getAllOrderedName( first, max );
     }
 
     public Collection<Document> getDocumentsBetweenByName( String name, int first, int max )
     {
-        return documentStore.getBetweenByName( name, first, max );
+        return documentStore.getAllLikeNameOrderedName( name, first, max );
     }
 }
