@@ -88,8 +88,10 @@ TR.conf = {
         data: {
 			domain: 'domain_',
 		},
-		image: {
-            xls: 'xls'
+		download: {
+            xls: 'xls',
+			pdf: 'pdf',
+			csv: 'csv'
         },
         cmd: {
             init: 'init_',
@@ -1184,32 +1186,31 @@ Ext.onReady( function() {
 			getURLParams: function(isSorted) {
 				var p = "";
 				
-				// get params
-				p += "periodTypeName=" + Ext.getCmp('periodTypeRangeCbx').getValue();
-				p += "&startDate=" + TR.cmp.settings.startDate.rawValue;
-				p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
+				p += "&programStageId=" + TR.cmp.params.programStage.getValue();
 				p += "&aggregateType=" + Ext.getCmp('aggregateType').getValue().aggregateType;
-				p += "&groupBy=" + Ext.getCmp('dataElementGroupByCbx').getValue();
+				p += "&orgunitIds=" + TR.state.orgunitIds;
 				p += "&limit=" + Ext.getCmp('limitOption').getValue();
 				
-				// get options
-				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
-				p += "&level=" + TR.cmp.settings.level.getValue();
+				if( TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
+					|| TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
+						|| TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_DATA ){
+					p += "&dataElementId=" + TR.cmp.settings.dataElementGroupBy.getValue().split('_')[1];
+				}
 				
-				// orders
-				p += "&orderBy=desc";
-				
-				p += "&programStageId=" + TR.cmp.params.programStage.getValue();
-				
-				// organisation unit
-				p += "&orgunitIds=" + TR.state.orgunitIds;
-				
-				// data elements
+				p.deFilters = [];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
-					p += "&dataElementIds=" + r.data.id.split('_')[1];
+					var deId = r.data.id;
+					var filterValue = TR.value.filterValues[deId];
+					p += "&deFilters=" + deId.split('_')[1] + "_" + filterValue;
 				});
 				
-				// get relative periods
+				// Fixed periods
+				p.periodIds = [];
+				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
+					p += "&periodIds=" +  r.data.id;
+				});
+				
+				// Relative periods
 				var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 				p.relativePeriods = [];
 				Ext.Array.each(relativePeriodList, function(item) {
@@ -1218,11 +1219,16 @@ Ext.onReady( function() {
 					}
 				});
 				
-				// get fixed periods
-				p.periodIds = [];
-				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
-					p += "&periodIds=" + r.data.id;
-				});
+				// Period range
+				if( Ext.getCmp('periodTypeRangeCbx').getValue() != null )
+				{
+					p += "&periodTypeName=" + Ext.getCmp('periodTypeRangeCbx').getValue();
+					p += "&startDate=" + TR.cmp.settings.startDate.rawValue;
+					p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
+				}
+				
+				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
+				p += "&position=" + TR.cmp.settings.position.getValue();
 				
 				return p;
 			},
@@ -1872,7 +1878,10 @@ Ext.onReady( function() {
 													Ext.getCmp('limitOption').setVisible(false);
 													Ext.getCmp('dataElementGroupByCbx').setVisible(false);
 													Ext.getCmp('aggregateType').setVisible(false);
+													Ext.getCmp('downloadPdfIcon').setVisible(false);
+													Ext.getCmp('downloadCvsIcon').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(true);
+													
 													
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
@@ -1895,6 +1904,8 @@ Ext.onReady( function() {
 													Ext.getCmp('limitOption').setVisible(true);
 													Ext.getCmp('dataElementGroupByCbx').setVisible(true);
 													Ext.getCmp('aggregateType').setVisible(true);
+													Ext.getCmp('downloadPdfIcon').setVisible(true);
+													Ext.getCmp('downloadCvsIcon').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(false);
 													
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
@@ -3562,9 +3573,27 @@ Ext.onReady( function() {
 											iconCls: 'tr-menu-item-xls',
 											minWidth: 105,
 											handler: function() {
-												b.execute(TR.conf.finals.image.xls);
+												b.execute(TR.conf.finals.download.xls);
 											}
-										}
+										},
+										{
+											text: TR.i18n.pdf,
+											iconCls: 'tr-menu-item-pdf',
+											id: 'downloadPdfIcon',
+											minWidth: 105,
+											handler: function() {
+												b.execute(TR.conf.finals.download.pdf);
+											}
+										},
+										{
+											text: TR.i18n.csv,
+											iconCls: 'tr-menu-item-csv',
+											id: 'downloadCvsIcon',
+											minWidth: 105,
+											handler: function() {
+												b.execute(TR.conf.finals.download.csv);
+											}
+										}										
 									]                                            
 								});
 							}

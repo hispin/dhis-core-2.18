@@ -51,7 +51,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.TabularReportColumn;
@@ -93,14 +92,7 @@ public class HibernateProgramStageInstanceStore
     {
         this.statementBuilder = statementBuilder;
     }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
+    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -424,22 +416,6 @@ public class HibernateProgramStageInstanceStore
         // Type = 2
         if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT )
         {
-            // //
-            // ---------------------------------------------------------------------
-            // // Headers cols
-            // //
-            // ---------------------------------------------------------------------
-            //
-            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
-            // false, true ) );
-            //
-            // for ( Integer orgunitId : orgunitIds )
-            // {
-            // grid.addHeader( new GridHeader(
-            // organisationUnitService.getOrganisationUnit( orgunitId )
-            // .getDisplayName(), false, false ) );
-            // }
-
             // ---------------------------------------------------------------------
             // Get SQL and build grid
             // ---------------------------------------------------------------------
@@ -569,7 +545,6 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, dataElementId, periods.iterator().next(),
                 aggregateType, limit, format );
         }
-        System.out.println( "\n\n == \n " + sql );
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         // Type != 2
@@ -788,7 +763,7 @@ public class HibernateProgramStageInstanceStore
             sql += filterSQL + " ) as \"" + format.formatPeriod( period ) + "\",";
         }
 
-        sql = sql.substring( 0, sql.length() - 1 );
+        sql = sql.substring( 0, sql.length() - 1 ) + " ";
 
         sql += "FROM programstageinstance psi ";
         sql += "        RIGHT OUTER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid ";
@@ -1015,43 +990,7 @@ public class HibernateProgramStageInstanceStore
             return "";
         }
     }
-
-    private void addColumns( Grid grid, SqlRowSet rowSet )
-    {
-        try
-        {
-            int cols = rowSet.getMetaData().getColumnCount();
-
-            List<Object> columnValues = new ArrayList<Object>();
-            columnValues = new ArrayList<Object>();
-
-            for ( int i = 2; i <= cols; i++ )
-            {
-                grid.addRow();
-                if ( i > 1 )
-                {
-                    columnValues.add( rowSet.getMetaData().getColumnLabel( i ) );
-                }
-            }
-            grid.addColumn( columnValues );
-
-            while ( rowSet.next() )
-            {
-                columnValues = new ArrayList<Object>();
-
-                for ( int i = cols; i >= 2; i-- )
-                {
-                    columnValues.add( rowSet.getObject( i ) );
-                }
-                grid.addColumn( columnValues );
-            }
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-    }
-
+    
     private void pivotTable( Grid grid, SqlRowSet rowSet )
     {
         try

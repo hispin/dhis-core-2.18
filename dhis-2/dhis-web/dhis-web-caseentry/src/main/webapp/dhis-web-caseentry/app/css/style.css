@@ -492,6 +492,10 @@ TR.utilbody {
     background-image:url('../images/pdf.png');
 }
 
+.tr-menu-item-csv {
+    background-image:url('../images/csv.png');
+}
+
 .tr-menu-item-datatable {
     background-image:url('../images/datatable.png');
 }
