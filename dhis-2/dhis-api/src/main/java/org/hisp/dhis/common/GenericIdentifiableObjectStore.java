@@ -70,7 +70,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param max   the max number of result objects to return.
      * @return collection of objects.
      */
-    Collection<T> getBetween( int first, int max );
+    Collection<T> getAllOrderedName( int first, int max );
 
     /**
      * Retrieves the objects determined by the given first result and max result.
@@ -80,7 +80,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param max   the max number of result objects to return.
      * @return collection of objects.
      */
-    List<T> getBetweenOrderedByLastUpdated( int first, int max );
+    List<T> getAllOrderedLastUpdated( int first, int max );
 
     /**
      * Retrieves the objects determined by the given first result and max result
@@ -91,7 +91,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param max   the max number of result objects to return.
      * @return collection of objects.
      */
-    Collection<T> getBetweenByName( String name, int first, int max );
+    Collection<T> getAllLikeNameOrderedName( String name, int first, int max );
 
     /**
      * Gets the count of objects which name is like the given name.
@@ -99,7 +99,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param name the name which result object names must be like.
      * @return the count of objects.
      */
-    int getCountByName( String name );
+    int getCountLikeName( String name );
 
     /**
      * Retrieves a list of objects referenced by the given collection of uids.
@@ -115,7 +115,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param created Date to compare with.
      * @return All objects equal or newer than given date.
      */
-    List<T> getByCreated( Date created );
+    List<T> getAllGeCreated( Date created );
 
     /**
      * Returns all objects that are equal to or newer than given date.
@@ -123,16 +123,16 @@ public interface GenericIdentifiableObjectStore<T>
      * @param lastUpdated Date to compare with.
      * @return All objects equal or newer than given date.
      */
-    List<T> getByLastUpdated( Date lastUpdated );
+    List<T> getAllGeLastUpdated( Date lastUpdated );
 
     /**
      * Returns all objects that are equal to or newer than given date.
-     * (sorted by name)
+     * (ordered by name)
      *
      * @param lastUpdated Date to compare to.
      * @return All objects equal or newer than given date.
      */
-    List<T> getByLastUpdatedSorted( Date lastUpdated );
+    List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated );
 
     /**
      * Returns the number of objects that are equal to or newer than given date.
@@ -140,13 +140,13 @@ public interface GenericIdentifiableObjectStore<T>
      * @param lastUpdated Date to compare to.
      * @return the number of objects equal or newer than given date.
      */
-    long getCountByLastUpdated( Date lastUpdated );
+    long getCountGeLastUpdated( Date lastUpdated );
 
     /**
      * Retrieves objects associated with the given user.
      *
      * @param user the user.
-     * @param a    list of objects.
+     * @return list of objects.
      */
     Collection<T> getByUser( User user );
 

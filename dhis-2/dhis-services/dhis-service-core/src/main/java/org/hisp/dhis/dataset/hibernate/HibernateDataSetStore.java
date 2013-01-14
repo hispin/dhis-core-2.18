@@ -27,8 +27,6 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -40,6 +38,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
+
+import java.util.Collection;
 
 /**
  * @author Kristian Nordal
@@ -83,7 +83,7 @@ public class HibernateDataSetStore
         super.update( dataSet );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
     {
         periodType = periodService.reloadPeriodType( periodType );
@@ -96,7 +96,7 @@ public class HibernateDataSetStore
         return criteria.list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources )
     {
         String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";
@@ -105,7 +105,7 @@ public class HibernateDataSetStore
             .setParameterList( "ids", ConversionUtils.getIdentifiers( OrganisationUnit.class, sources ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<DataSet> getDataSetsForMobile( OrganisationUnit source )
     {
         String hql = "from DataSet d where :source in elements(d.sources) and d.mobile = true";
@@ -115,7 +115,7 @@ public class HibernateDataSetStore
         return query.list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<DataSet> getDataSetsForMobile()
     {
         String hql = "from DataSet d where d.mobile = true";

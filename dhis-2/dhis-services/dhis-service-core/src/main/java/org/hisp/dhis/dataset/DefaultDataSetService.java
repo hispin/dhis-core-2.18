@@ -362,7 +362,7 @@ public class DefaultDataSetService
     @Override
     public Collection<LockException> getLockExceptionsBetween( int first, int max )
     {
-        return lockExceptionStore.getBetween( first, max );
+        return lockExceptionStore.getAllOrderedName( first, max );
     }
 
     @Override

@@ -76,7 +76,7 @@ public class HibernateOrganisationUnitStore
     @Override
     public Collection<OrganisationUnit> getAllOrganisationUnitsByLastUpdated( Date lastUpdated )
     {
-        return getByLastUpdated( lastUpdated );
+        return getAllGeLastUpdated( lastUpdated );
     }
 
     @Override

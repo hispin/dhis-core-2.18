@@ -186,19 +186,19 @@ public class DefaultUserService
     @Override
     public Collection<User> getAllUsersBetween( int first, int max )
     {
-        return userStore.getBetween( first, max );
+        return userStore.getAllOrderedName( first, max );
     }
     
     @Override
     public Collection<User> getAllUsersBetweenByName( String name, int first, int max )
     {
-        return userStore.getBetweenByName( name, first, max );
+        return userStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     @Override
     public Collection<User> getUsersByLastUpdated( Date lastUpdated )
     {
-        return userStore.getByLastUpdated( lastUpdated );
+        return userStore.getAllGeLastUpdated( lastUpdated );
     }
 
     public User getUser( int userId )
@@ -314,12 +314,12 @@ public class DefaultUserService
 
     public Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max )
     {
-        return userAuthorityGroupStore.getBetween( first, max );
+        return userAuthorityGroupStore.getAllOrderedName( first, max );
     }
 
     public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
     {
-        return userAuthorityGroupStore.getBetweenByName( name, first, max );
+        return userAuthorityGroupStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     public int getUserRoleCount()
@@ -329,7 +329,7 @@ public class DefaultUserService
 
     public int getUserRoleCountByName( String name )
     {
-        return userAuthorityGroupStore.getCountByName( name );
+        return userAuthorityGroupStore.getCountLikeName( name );
     }
 
     public void assignDataSetToUserRole( DataSet dataSet )

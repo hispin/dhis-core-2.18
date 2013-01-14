@@ -789,17 +789,17 @@ public class DefaultChartService
 
     public int getChartCountByName( String name )
     {
-        return chartStore.getCountByName( name );
+        return chartStore.getCountLikeName( name );
     }
 
     public Collection<Chart> getChartsBetween( int first, int max )
     {
-        return chartStore.getBetween( first, max );
+        return chartStore.getAllOrderedName( first, max );
     }
 
     public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
     {
-        return chartStore.getBetweenByName( name, first, max );
+        return chartStore.getAllLikeNameOrderedName( name, first, max );
     }
     
     public Collection<Chart> getChartsByUser( User user )

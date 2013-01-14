@@ -250,19 +250,19 @@ public class DefaultReportService
     @Override
     public int getReportCountByName( String name )
     {
-        return reportStore.getCountByName( name );
+        return reportStore.getCountLikeName( name );
     }
     
     @Override
     public Collection<Report> getReportsBetween( int first, int max )
     {
-        return reportStore.getBetween( first, max );
+        return reportStore.getAllOrderedName( first, max );
     }
 
     @Override
     public Collection<Report> getReportsBetweenByName( String name, int first, int max )
     {
-        return reportStore.getBetweenByName( name, first, max );
+        return reportStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     public Report getReportByName( String name )

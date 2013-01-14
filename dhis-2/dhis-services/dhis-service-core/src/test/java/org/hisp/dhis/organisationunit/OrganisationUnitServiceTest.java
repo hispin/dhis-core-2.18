@@ -621,7 +621,7 @@ public class OrganisationUnitServiceTest
 
         int id2 = organisationUnitGroupService.addOrganisationUnitGroupSet( organisationUnitGroupSet2 );
 
-        // assert getAll
+        // assert getAllOrderedName
         assertTrue( organisationUnitGroupService.getAllOrganisationUnitGroupSets().size() == 2 );
         
         organisationUnitGroupService.deleteOrganisationUnitGroupSet( organisationUnitGroupSet1 );

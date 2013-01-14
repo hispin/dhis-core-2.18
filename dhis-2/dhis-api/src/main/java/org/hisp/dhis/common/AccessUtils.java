@@ -94,7 +94,6 @@ public class AccessUtils
 
     private static boolean defaultAccessIsNull( IdentifiableObject identifiableObject )
     {
-        return (identifiableObject.getPublicAccess() == null || identifiableObject.getPublicAccess().equalsIgnoreCase( "--------" ))
-            || identifiableObject.getUser() == null;
+        return identifiableObject.getUser() == null;
     }
 }

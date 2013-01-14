@@ -123,7 +123,7 @@ public class DefaultInterpretationService
     
     public List<Interpretation> getInterpretations( int first, int max )
     {
-        return interpretationStore.getBetweenOrderedByLastUpdated( first, max );
+        return interpretationStore.getAllOrderedLastUpdated( first, max );
     }
     
     public List<Interpretation> getInterpretations( User user, int first, int max )
@@ -168,7 +168,7 @@ public class DefaultInterpretationService
         
         if ( user != null && user.getLastCheckedInterpretations() != null )
         {
-            count = interpretationStore.getCountByLastUpdated( user.getLastCheckedInterpretations() );
+            count = interpretationStore.getCountGeLastUpdated( user.getLastCheckedInterpretations() );
         }
         else
         {

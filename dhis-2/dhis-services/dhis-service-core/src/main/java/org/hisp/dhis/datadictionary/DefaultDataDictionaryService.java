@@ -118,16 +118,16 @@ public class DefaultDataDictionaryService
 
     public int getDataDictionaryCountByName( String name )
     {
-        return dataDictionaryStore.getCountByName( name );
+        return dataDictionaryStore.getCountLikeName( name );
     }
 
     public Collection<DataDictionary> getDataDictionarysBetween( int first, int max )
     {
-        return i18n( i18nService, dataDictionaryStore.getBetween( first, max ) );
+        return i18n( i18nService, dataDictionaryStore.getAllOrderedName( first, max ) );
     }
 
     public Collection<DataDictionary> getDataDictionarysBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataDictionaryStore.getBetweenByName( name, first, max ) );
+        return i18n( i18nService, dataDictionaryStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 }

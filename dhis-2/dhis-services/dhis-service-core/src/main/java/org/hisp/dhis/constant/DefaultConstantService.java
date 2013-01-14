@@ -126,16 +126,16 @@ public class DefaultConstantService
 
     public int getConstantCountByName( String name )
     {
-        return constantStore.getCountByName( name );
+        return constantStore.getCountLikeName( name );
     }
 
     public Collection<Constant> getConstantsBetween( int first, int max )
     {
-        return constantStore.getBetween( first, max );
+        return constantStore.getAllOrderedName( first, max );
     }
 
     public Collection<Constant> getConstantsBetweenByName( String name, int first, int max )
     {
-        return constantStore.getBetweenByName( name, first, max );
+        return constantStore.getAllLikeNameOrderedName( name, first, max );
     }
 }

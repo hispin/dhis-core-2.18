@@ -217,7 +217,7 @@ public class DefaultReportTableService
 
     public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {
-        return reportTableStore.getBetweenByName( name, first, max );
+        return reportTableStore.getAllLikeNameOrderedName( name, first, max );
     }
 
     public int getReportTableCount()
@@ -227,12 +227,12 @@ public class DefaultReportTableService
 
     public int getReportTableCountByName( String name )
     {
-        return reportTableStore.getCountByName( name );
+        return reportTableStore.getCountLikeName( name );
     }
 
     public Collection<ReportTable> getReportTablesBetween( int first, int max )
     {
-        return reportTableStore.getBetween( first, max );
+        return reportTableStore.getAllOrderedName( first, max );
     }
 
     // -------------------------------------------------------------------------

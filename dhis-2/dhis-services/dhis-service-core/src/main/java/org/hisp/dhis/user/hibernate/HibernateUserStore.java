@@ -57,7 +57,7 @@ public class HibernateUserStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<User> getBetween( int first, int max )
+    public Collection<User> getAllOrderedName( int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
@@ -68,7 +68,7 @@ public class HibernateUserStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<User> getBetweenByName( String name, int first, int max )
+    public Collection<User> getAllLikeNameOrderedName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),

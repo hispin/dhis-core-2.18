@@ -226,7 +226,6 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
     @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getPublicAccess()
     {
@@ -241,7 +240,6 @@ public class BaseIdentifiableObject
     @Override
     @JsonProperty
     @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JsonView({ BasicView.class, DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public User getUser()
     {
@@ -254,7 +252,6 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView({ BasicView.class, DetailedView.class, ExportView.class })
     @JacksonXmlElementWrapper(localName = "userGroupAccesses", namespace = Dxf2Namespace.NAMESPACE)
     @JacksonXmlProperty(localName = "userGroupAccess", namespace = Dxf2Namespace.NAMESPACE)
     public Set<UserGroupAccess> getUserGroupAccesses()

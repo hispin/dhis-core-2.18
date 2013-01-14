@@ -86,7 +86,7 @@ public interface GenericStore<T>
      * @param name the name.
      * @return a Collection of objects.
      */
-    Collection<T> getLikeName( String name );
+    Collection<T> getAllLikeName( String name );
 
     /**
      * Retrieves a Collection of all objects.
@@ -100,7 +100,7 @@ public interface GenericStore<T>
      *
      * @return a Collection of all objects.
      */
-    Collection<T> getAllSorted();
+    Collection<T> getAllOrderedName();
 
     /**
      * Removes the given object instance.
