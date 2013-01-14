@@ -123,7 +123,7 @@ public class DefaultInterpretationService
     
     public List<Interpretation> getInterpretations( int first, int max )
     {
-        return interpretationStore.getBetweenOrderderByLastUpdated( first, max );
+        return interpretationStore.getBetweenOrderedByLastUpdated( first, max );
     }
     
     public List<Interpretation> getInterpretations( User user, int first, int max )

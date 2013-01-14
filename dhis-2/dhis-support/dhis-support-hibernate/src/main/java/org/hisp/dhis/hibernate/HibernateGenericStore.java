@@ -34,13 +34,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.hisp.dhis.common.AccessUtils;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.GenericNameableObjectStore;
@@ -164,65 +160,6 @@ public class HibernateGenericStore<T>
     }
 
     /**
-     * Creates a Criteria for the implementation Class type based on the accessibility of objects.
-     *
-     * @return a Criteria instance.
-     */
-    protected final Criteria getAccessibleCriteria()
-    {
-        Criteria criteria = getCriteria();
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser == null || currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
-        {
-            return criteria;
-        }
-
-        if ( !hasShareProperties() )
-        {
-            return criteria;
-        }
-
-        criteria.setResultTransformer( Criteria.DISTINCT_ROOT_ENTITY );
-
-        criteria.createAlias( "userGroupAccesses", "u", JoinType.LEFT_OUTER_JOIN );
-        criteria.createAlias( "u.userGroup", "ug", JoinType.LEFT_OUTER_JOIN );
-        criteria.createAlias( "ug.members", "member", JoinType.LEFT_OUTER_JOIN );
-
-        Disjunction root = Restrictions.disjunction();
-        root.add( Restrictions.ilike( "publicAccess", "r%" ) );
-        root.add( Restrictions.eq( "user", currentUser ) );
-
-        Conjunction ugAccess = Restrictions.conjunction();
-        ugAccess.add( Restrictions.ilike( "u.access", "r%" ) );
-        ugAccess.add( Restrictions.eq( "member.uid", currentUser.getUid() ) );
-        root.add( ugAccess );
-
-        criteria.add( root );
-
-        return criteria;
-    }
-
-    /**
-     * Creates a Criteria for the implementation Class type restricted by the
-     * given Criterions.
-     *
-     * @param expressions the Criterions for the Criteria.
-     * @return a Criteria instance.
-     */
-    protected final Criteria getAccessibleCriteria( Criterion... expressions )
-    {
-        Criteria criteria = getAccessibleCriteria();
-
-        for ( Criterion expression : expressions )
-        {
-            criteria.add( expression );
-        }
-
-        return criteria;
-    }
-
-    /**
      * Creates a Criteria for the implementation Class type.
      *
      * @return a Criteria instance.
@@ -262,7 +199,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -274,7 +211,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -325,7 +262,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
@@ -341,7 +278,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
@@ -417,27 +354,6 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Collection<T> getLikeName( String name )
-    {
-        return getAccessibleCriteria().add( Restrictions.ilike( "name", "%" + name + "%" ) ).list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public final Collection<T> getAll()
-    {
-        return getAccessibleCriteria().list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public final Collection<T> getAllSorted()
-    {
-        return getAccessibleCriteria().addOrder( Order.asc( "name" ) ).list();
-    }
-
-    @Override
     public final void delete( T object )
     {
         if ( !isDeleteAllowed( object ) )
@@ -451,54 +367,160 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
+    public Collection<T> getLikeName( String name )
+    {
+        String hql = "from " + clazz.getName() + " c where lower(name) like :name";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c where lower(name) like :name";
+        }
+
+        Query query = getQuery( hql );
+        query.setString( "name", "%" + name.toLowerCase() + "%" );
+
+        return query.list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public final Collection<T> getAll()
+    {
+        String hql = "from " + clazz.getName() + " c";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c";
+        }
+
+        return getQuery( hql ).list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public final Collection<T> getAllSorted()
+    {
+        String hql = "from " + clazz.getName() + " c order by name";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c order by name";
+        }
+
+        return getQuery( hql ).list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetween( int first, int max )
     {
-        Criteria criteria = getAccessibleCriteria();
-        criteria.addOrder( Order.asc( "name" ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-        return criteria.list();
+        String hql = "from " + clazz.getName() + " c order by name";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c order by name";
+        }
+
+        Query query = getQuery( hql );
+        query.setFirstResult( first );
+        query.setMaxResults( max );
+
+        return query.list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<T> getBetweenOrderderByLastUpdated( int first, int max )
+    @SuppressWarnings( "unchecked" )
+    public List<T> getBetweenOrderedByLastUpdated( int first, int max )
     {
-        Criteria criteria = getAccessibleCriteria();
-        criteria.addOrder( Order.desc( "lastUpdated" ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-        return criteria.list();
+        String hql = "from " + clazz.getName() + " c order by lastUpdated desc";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c order by lastUpdated desc";
+        }
+
+        Query query = getQuery( hql );
+        query.setFirstResult( first );
+        query.setMaxResults( max );
+
+        return query.list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetweenByName( String name, int first, int max )
     {
-        Criteria criteria = getAccessibleCriteria();
-        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
-        criteria.addOrder( Order.asc( "name" ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-        return criteria.list();
+        String hql = "from " + clazz.getName() + " c where lower(name) like :name order by name";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c where lower(name) like :name order by name";
+        }
+
+        Query query = getQuery( hql );
+        query.setString( "name", "%" + name.toLowerCase() + "%" );
+        query.setFirstResult( first );
+        query.setMaxResults( max );
+
+        return query.list();
     }
 
     @Override
     public int getCount()
     {
-        Criteria criteria = getAccessibleCriteria();
-        criteria.setProjection( Projections.rowCount() );
-        return ((Number) criteria.uniqueResult()).intValue();
+        String hql = "select count(c) from " + clazz.getName() + " c";
+
+        if ( disableSharing() )
+        {
+            hql = "select count(c) from " + clazz.getName() + " c";
+        }
+
+        return ((Long) getQuery( hql ).uniqueResult()).intValue();
+
+        // Criteria criteria = getCriteria();
+        // criteria.setProjection( Projections.rowCount() );
+        //return ((Number) criteria.uniqueResult()).intValue();
     }
 
     @Override
     public int getCountByName( String name )
     {
-        Criteria criteria = getAccessibleCriteria();
-        criteria.setProjection( Projections.rowCount() );
-        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
-        return ((Number) criteria.uniqueResult()).intValue();
+        String hql = "select count(c) from " + clazz.getName() + " c where lower(name) like :name";
+
+        if ( disableSharing() )
+        {
+            hql = "select count(c) from " + clazz.getName() + " c where lower(name) like :name";
+        }
+
+        Query query = getQuery( hql );
+        query.setString( "name", "%" + name.toLowerCase() + "%" );
+
+        return ((Long) query.uniqueResult()).intValue();
+
+        //Criteria criteria = getCriteria();
+        //criteria.setProjection( Projections.rowCount() );
+        //criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
+        //return ((Number) criteria.uniqueResult()).intValue();
+    }
+
+    @Override
+    public long getCountByLastUpdated( Date lastUpdated )
+    {
+        String hql = "select count(c) from " + clazz.getName() + " c where lastUpdated >= :lastUpdated";
+
+        if ( disableSharing() )
+        {
+            hql = "select count(c) from " + clazz.getName() + " c where lastUpdated >= :lastUpdated";
+        }
+
+        Query query = getQuery( hql );
+        query.setDate( "lastUpdated", lastUpdated );
+
+        return ((Long) query.uniqueResult()).intValue();
+
+        //Object count = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
+        //return count != null ? (Long) count : -1;
     }
 
     @Override
@@ -523,43 +545,78 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdated( Date lastUpdated )
     {
-        return getAccessibleCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
+        String hql = "from " + clazz.getName() + " c where lastUpdated >= :lastUpdated";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c where lastUpdated >= :lastUpdated";
+        }
+
+        Query query = getQuery( hql );
+        query.setDate( "lastUpdated", lastUpdated );
+
+        return query.list();
+        // return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByCreated( Date created )
     {
-        return getAccessibleCriteria().add( Restrictions.ge( "created", created ) ).list();
+        String hql = "from " + clazz.getName() + " c where created >= :created";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c where created >= :created";
+        }
+
+        Query query = getQuery( hql );
+        query.setDate( "created", created );
+
+        return query.list();
+        // return getCriteria().add( Restrictions.ge( "created", created ) ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdatedSorted( Date lastUpdated )
     {
-        return getAccessibleCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).addOrder( Order.asc( "name" ) ).list();
+        String hql = "from " + clazz.getName() + " c where lastUpdated >= :lastUpdated order by name";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c where lastUpdated >= :lastUpdated order by name";
+        }
+
+        Query query = getQuery( hql );
+        query.setDate( "lastUpdated", lastUpdated );
+
+        return query.list();
+        //return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).addOrder( Order.asc( "name" ) ).list();
     }
 
     @Override
-    public long getCountByLastUpdated( Date lastUpdated )
-    {
-        Object count = getAccessibleCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
-
-        return count != null ? (Long) count : -1;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getByUser( User user )
     {
-        return getAccessibleCriteria( Restrictions.eq( "user", user ) ).list();
+        String hql = "from " + clazz.getName() + " c where user = :user";
+
+        if ( disableSharing() )
+        {
+            hql = "from " + clazz.getName() + " c where user = :user";
+        }
+
+        Query query = getQuery( hql );
+        query.setEntity( "user", user );
+
+        return query.list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleByUser( User user )
     {
         //TODO link to interface
@@ -571,7 +628,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleByLastUpdated( User user, Date lastUpdated )
     {
         Criteria criteria = getCriteria();
@@ -581,7 +638,7 @@ public class HibernateGenericStore<T>
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleLikeName( User user, String name )
     {
         Criteria criteria = getCriteria();
@@ -592,7 +649,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleBetween( User user, int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -603,7 +660,7 @@ public class HibernateGenericStore<T>
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleBetweenLikeName( User user, String name, int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -613,6 +670,15 @@ public class HibernateGenericStore<T>
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         return criteria.list();
+    }
+
+    //----------------------------------------------------------------------------------------------------------------
+    // Helpers
+    //----------------------------------------------------------------------------------------------------------------
+
+    private boolean disableSharing()
+    {
+        return currentUserService.getCurrentUser() == null || currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities().contains( "ALL" );
     }
 
     private boolean isReadAllowed( T object )

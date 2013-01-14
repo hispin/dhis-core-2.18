@@ -81,7 +81,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param max   the max number of result objects to return.
      * @return collection of objects.
      */
-    List<T> getBetweenOrderderByLastUpdated( int first, int max );
+    List<T> getBetweenOrderedByLastUpdated( int first, int max );
 
     /**
      * Retrieves the objects determined by the given first result and max result
