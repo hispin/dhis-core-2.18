@@ -58,6 +58,7 @@ public class OrgUnitTest
         unit.setSearchUrl( "search" );
         unit.setUpdateNewVersionUrl( "" );
         unit.setUpdateContactUrl( "updateContactUrl" );
+        unit.setFindPatientUrl( "findPatientUrl" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );

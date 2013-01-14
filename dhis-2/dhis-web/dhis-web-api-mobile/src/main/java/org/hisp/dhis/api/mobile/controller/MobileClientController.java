@@ -90,12 +90,14 @@ public class MobileClientController
         orgUnit.setChangeUpdateDataSetLangUrl( getUrl( request, unit.getId(), "changeLanguageDataSet" ) );
         orgUnit.setSearchUrl( getUrl( request, unit.getId(), "search" ) );
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
+        orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );
         String root = full.substring( 0, full.length() - UrlUtils.buildRequestUrl( request ).length() );
         String updateNewVersionUrl = root + "/dhis-web-api-mobile/updateClient.action";
         orgUnit.setUpdateNewVersionUrl( updateNewVersionUrl );
+        
         return orgUnit;
     }
 

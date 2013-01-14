@@ -279,7 +279,9 @@ public class Beneficiary
         {
             dout.writeBoolean( false );
         }
-
+        //doesn't transfer blood group to client
+            dout.writeBoolean( false );
+        
         if ( registrationDate != null )
         {
             dout.writeBoolean( true );
@@ -378,7 +380,7 @@ public class Beneficiary
         {
             dout.writeBoolean( false );
         }
-        
+        //doesn't transfer blood group to client
             dout.writeBoolean( false );
 
         if ( registrationDate != null )
@@ -462,7 +464,7 @@ public class Beneficiary
         {
             dout.writeBoolean( false );
         }
-        
+        //doesn't transfer blood group to client
             dout.writeBoolean( false );
 
         if ( registrationDate != null )

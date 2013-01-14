@@ -63,6 +63,8 @@ public class MobileOrgUnitLinks
     private String updateNewVersionUrl;
     
     private String updateContactUrl;
+    
+    private String findPatientUrl;
 
     @XmlAttribute
     public int getId()
@@ -186,6 +188,16 @@ public class MobileOrgUnitLinks
         this.updateContactUrl = updateContactUrl;
     }
 
+    public String getFindPatientUrl()
+    {
+        return findPatientUrl;
+    }
+
+    public void setFindPatientUrl( String findPatientUrl )
+    {
+        this.findPatientUrl = findPatientUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
 
         throws IOException
@@ -201,6 +213,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.searchUrl );
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.updateContactUrl );
+        dataOutputStream.writeUTF( this.findPatientUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -217,6 +230,7 @@ public class MobileOrgUnitLinks
         this.searchUrl = dataInputStream.readUTF();
         this.updateNewVersionUrl = dataInputStream.readUTF();
         this.updateContactUrl = dataInputStream.readUTF();
+        this.findPatientUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -249,6 +263,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.searchUrl );
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.updateContactUrl );
+        dataOutputStream.writeUTF( this.findPatientUrl );
     }
 
 }

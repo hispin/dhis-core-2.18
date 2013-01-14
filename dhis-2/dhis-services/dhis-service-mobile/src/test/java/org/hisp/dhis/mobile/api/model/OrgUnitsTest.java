@@ -83,6 +83,7 @@ public class OrgUnitsTest
         unit.setSearchUrl( "search" );
         unit.setUpdateNewVersionUrl( "test" );
         unit.setUpdateContactUrl( "updateContactUrl" );
+        unit.setFindPatientUrl( "findPatientUrl" );
         return unit;
     }
 }

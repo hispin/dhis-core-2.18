@@ -10,6 +10,7 @@ import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
+import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
@@ -182,6 +183,7 @@ public class MobileOrganisationUnitController
     public String saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
         throws NotAllowedException
     {
+    	System.out.println("access METHOD");
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
         return DATASET_REPORT_UPLOADED;
     }
@@ -240,6 +242,14 @@ public class MobileOrganisationUnitController
     public Contact updateContactForMobile()
     {
         return facilityReportingService.updateContactForMobile();
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/findPatient" )
+    @ResponseBody
+    public Beneficiary findPatientByName( @PathVariable int id, @RequestHeader( "name" ) String fullName)
+    throws NotAllowedException
+    {
+        return activityReportingService.findPatient( fullName );
     }
 
     // Supportive methods

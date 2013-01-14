@@ -17,6 +17,7 @@ public class MediaTypes
         MediaType.parseMediaType( DATASETVALUE_SERIALIZED );
 
     public static String MOBILE_SERIALIZED = "application/vnd.org.dhis2.mobile+serialized";
+    //public static String MOBILE_SERIALIZED = "application/vnd.org.dhis2.mobile+serialized;charset=UTF-8";
     public static MediaType MOBILE_SERIALIZED_TYPE = 
         MediaType.parseMediaType( MOBILE_SERIALIZED );
     
