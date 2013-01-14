@@ -40,6 +40,9 @@ import org.hisp.dhis.system.util.functional.Predicate;
  */
 public class CollectionUtils
 {
+    public static String[] STRING_ARR = new String[0];
+    public static String[][] STRING_2D_ARR = new String[0][];
+    
     public static <T> void forEach( Collection<T> collection, Function1<T> function )
     {
         for ( T object : collection )
