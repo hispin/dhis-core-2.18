@@ -30,8 +30,10 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
@@ -58,6 +60,8 @@ import com.opensymphony.xwork2.Action;
 public class GenerateAggregateReportAction
     implements Action
 {
+    private final String SEPARATE_FILTER = "_";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -129,11 +133,11 @@ public class GenerateAggregateReportAction
         this.orgunitIds = orgunitIds;
     }
 
-    private Collection<Integer> dataElementIds;
+    private List<String> deFilters;
 
-    public void setDataElementIds( Collection<Integer> dataElementIds )
+    public void setDeFilters( List<String> deFilters )
     {
-        this.dataElementIds = dataElementIds;
+        this.deFilters = deFilters;
     }
 
     private Collection<String> periodIds = new HashSet<String>();
@@ -178,11 +182,25 @@ public class GenerateAggregateReportAction
         this.facilityLB = facilityLB;
     }
 
-    public Integer position;
+    private Integer position;
 
     public void setPosition( Integer position )
     {
         this.position = position;
+    }
+
+    private Integer limit;
+
+    public void setLimit( Integer limit )
+    {
+        this.limit = limit;
+    }
+
+    private Integer dataElementId;
+
+    public void setDataElementId( Integer dataElementId )
+    {
+        this.dataElementId = dataElementId;
     }
 
     private String type;
@@ -245,7 +263,7 @@ public class GenerateAggregateReportAction
         Collection<Period> periods = new HashSet<Period>();
 
         // Create period from start-date and end-date
-        if ( startDate != null && endDate != null )
+        if ( startDate != null && endDate != null && periodTypeName != null )
         {
             Calendar today = Calendar.getInstance();
             today.add( Calendar.DATE, -1 );
@@ -268,9 +286,18 @@ public class GenerateAggregateReportAction
         // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
-        grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits, dataElementIds, periods,
-            aggregateType, format, i18n );
+        Map<Integer, String> deFilterMap = null;
+        if ( deFilters != null )
+        {
+            deFilterMap = new HashMap<Integer, String>();
+            for ( String deFilter : deFilters )
+            {
+                String[] arr = deFilter.split( SEPARATE_FILTER );
+                deFilterMap.put( Integer.parseInt( arr[0] ), arr[1] );
+            }
+        }
+        grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits,
+            dataElementId, deFilterMap, periods, aggregateType, limit, format, i18n );
 
         return type == null ? SUCCESS : type;
     }

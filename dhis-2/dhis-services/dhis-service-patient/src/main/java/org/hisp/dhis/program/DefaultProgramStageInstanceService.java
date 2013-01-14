@@ -345,12 +345,13 @@ public class DefaultProgramStageInstanceService
             endDate, status, min, max );
     }
 
+    @Override
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType, I18nFormat format,
-        I18n i18n )
+        Integer dataElementId, Map<Integer, String> deFilters, Collection<Period> periods, String aggregateType,
+        Integer limit, I18nFormat format, I18n i18n )
     {
-        return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, dataElementIds, periods,
-            aggregateType, format, i18n );
+        return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, dataElementId, deFilters, periods,
+            aggregateType, limit, format, i18n );
     }
 
 }
