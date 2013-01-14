@@ -29,6 +29,7 @@ package org.hisp.dhis.api.mobile;
 
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
+import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -46,5 +47,7 @@ public interface ActivityReportingService
 
     public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException;
+    
+    public Beneficiary findPatient ( String name ) throws NotAllowedException;
 
 }

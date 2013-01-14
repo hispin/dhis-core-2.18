@@ -97,9 +97,9 @@ public class ActivityReportingServiceImpl
     private PatientMobileSettingService patientMobileSettingService;
 
     private PatientIdentifierService patientIdentifierService;
-    
+
     private ProgramStageSectionService programStageSectionService;
-    
+
     public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
     {
         this.programStageSectionService = programStageSectionService;
@@ -220,6 +220,8 @@ public class ActivityReportingServiceImpl
                     {
                         ProgramStageInstance programStageInstance = programStageInstances.get( i );
 
+                        // expiredDate.setTime( DateUtils.getDateAfterAddition(
+                        // programStageInstance.getDueDate(), 0 ) );
                         expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 30 ) );
 
                         if ( programStageInstance.getDueDate().getTime() <= time
@@ -254,9 +256,10 @@ public class ActivityReportingServiceImpl
 
         programStageInstance.getProgramStage();
         Collection<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>();
-        
-        ProgramStageSection programStageSection = programStageSectionService.getProgramStageSection( programStageSectionId );
-        
+
+        ProgramStageSection programStageSection = programStageSectionService
+            .getProgramStageSection( programStageSectionId );
+
         if ( programStageSectionId != null && programStageSectionId != 0 )
         {
             for ( ProgramStageDataElement de : programStageSection.getProgramStageDataElements() )
@@ -281,7 +284,8 @@ public class ActivityReportingServiceImpl
         }
 
         if ( dataElements.size() != dataElementIds.size() )
-        {;
+        {
+            ;
             throw NotAllowedException.INVALID_PROGRAM_STAGE;
         }
 
@@ -301,7 +305,7 @@ public class ActivityReportingServiceImpl
             programStageInstance.setCompleted( true );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
-            
+
         // Everything is fine, hence save
         saveDataValues( activityValue, programStageInstance, dataElementMap );
 
@@ -565,6 +569,48 @@ public class ActivityReportingServiceImpl
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    @Override
+    public Beneficiary findPatient( String fullName )
+        throws NotAllowedException
+    {
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+
+        String firstName = fullName.toString();
+        String middleName = " ";
+        String lastName = " ";
+
+        if ( fullName.indexOf( ' ' ) != -1 )
+        {
+            firstName = fullName.substring( 0, startIndex );
+            if ( startIndex == endIndex )
+            {
+                middleName = "  ";
+                lastName = fullName.substring( startIndex + 1, fullName.length() );
+            }
+            else
+            {
+                middleName = " " + fullName.substring( startIndex + 1, endIndex ) + " ";
+                lastName = fullName.substring( endIndex + 1, fullName.length() );
+            }
+        }
+        List<Patient> patients = (List<Patient>) this.patientService.getPatientsByNames( firstName + middleName
+            + lastName, 0, 1 );
+
+        if ( patients.size() > 1 )
+        {
+            throw NotAllowedException.NEED_MORE_SPECIFIC;
+        }
+        else if ( patients.size() == 0 )
+        {
+            throw NotAllowedException.NO_BENEFICIARY_FOUND;
+        }
+        else
+        {    
+            return getBeneficiaryModel( patients.get( 0 ) );
+        }
     }
 
 }

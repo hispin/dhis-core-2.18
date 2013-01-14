@@ -108,7 +108,7 @@ public class HibernatePatientStore
 
         fullName = fullName.toLowerCase();
         String sql = "SELECT patientid FROM patient " + "where lower( " + statementBuilder.getPatientFullName() + ") "
-            + "like '%" + fullName + "%' ";
+            + "='" + fullName + "'";
 
         if ( min != null && max != null )
         {
