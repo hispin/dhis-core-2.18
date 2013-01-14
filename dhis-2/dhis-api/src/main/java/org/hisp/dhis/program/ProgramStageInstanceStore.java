@@ -102,7 +102,7 @@ public interface ProgramStageInstanceStore
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max );
 
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        Collection<Integer> dataElementIds, Collection<Period> periods, String aggregateType, I18nFormat format,
+        Integer dataElementId, Map<Integer, String> deFilters, Collection<Period> periods, String aggregateType, Integer limit, I18nFormat format,
         I18n i18n );
 
 }
