@@ -2,24 +2,13 @@
 <script src="../dhis-web-commons/select2/select2.min.js"></script>
 <link rel="stylesheet" href="../dhis-web-commons/select2/select2.css" />
 
-<style>
-.dialog-form {
-    margin: 0 auto;
-}
-
-.dialog-form > p {
-    padding: 0;
-    margin : 5px auto;
-}
-
-.dialog-form > p input {
-    border: none;
-    background-color: white;
-    width: 455px;
-}
-</style>
-
 <script>
+var proto = $.ui.autocomplete.prototype,
+    initSource = proto._initSource;
+
+$.extend( proto, {
+});
+
 function loadSharingSettings( type, uid ) {
     return $.ajax( {
         url: '../api/sharing',
@@ -41,130 +30,130 @@ function saveSharingSettings( type, uid, data ) {
     } );
 }
 
-function addUserGroupAccess( ugName, ugId, ugAccess )
-{
-    var $tr = $( '<tr/>' );
+var sharingSelectedItem;
 
-    $( '<td />' ).text( ugName ).attr('id', ugId ).appendTo( $tr );
+function renderUserGroupAccessTemplate(item) {
+    var tmpl = jQuery('#user-group-access-template').html();
+    var tmpl_html = _.template(tmpl, item);
 
-    if ( ugAccess == 'rw------' ) {
-        $( '<td style="width: 100px;"/>' ).attr( 'access', ugAccess ).text( "Read / Write" ).appendTo( $tr );
-    } else if ( ugAccess == 'r-------' ) {
-        $( '<td style="width: 100px;" />' ).attr( 'access', ugAccess ).text( "Read" ).appendTo( $tr );
-    }
-
-    $( '<td style="width: 80px;"/>' ).html('<button class="removeUgButton" style="width: 80px; height: 22px;">'
-            + "$encoder.jsEscape( $i18n.getString( "remove" ) , "'")" + '</button>' ).appendTo( $tr );
-
-    $( '#sharingUserGroupAccesses table tbody' ).append( $tr );
+    return tmpl_html;
 }
 
-function formatItem( item )
-{
-    return '<span data-id=' + item.id + '>' + item.name + '</span>';
-}
-
-function getUserGroupAccesses()
-{
-    var userGroupAccesses = [];
-
-    $( '#sharingUserGroupAccesses table tbody' ).find('tr').each(function(idx, item) {
-        var tr = $(item);
-        var uga = {};
-
-        uga.id = $(tr.children()[0]).attr('id');
-        uga.access = $(tr.children()[1]).attr('access');
-
-        userGroupAccesses.push(uga);
+function addUserGroupAccessSelectedItem(e) {
+    var tmpl_html = renderUserGroupAccessTemplate({
+        label: sharingSelectedItem.label,
+        id: sharingSelectedItem.id,
+        access: "r-------"
     });
 
-    return userGroupAccesses;
+    $('#sharingAccessTable tbody' ).append(tmpl_html);
+}
+
+function removeUserGroupAccess(e) {
+    $( this ).parent().parent().remove();
+    e.preventDefault();
+}
+
+function clearUserGroupAccesses() {
+    $('#sharingAccessTable tbody tr[id]' ).remove();
+}
+
+function setUserGroupAccesses(userGroupAccesses) {
+    clearUserGroupAccesses();
+
+    if(userGroupAccesses) {
+        $.each(userGroupAccesses, function(idx, item) {
+            var tmpl_html = renderUserGroupAccessTemplate({
+                label: item.name,
+                id: item.id,
+                access: item.access
+            });
+
+            $('#sharingAccessTable tbody' ).append(tmpl_html);
+        });
+    }
+}
+
+function setPublicAccess(access) {
+    $( '#sharingPublicAccess option' ).removeAttr( 'selected' ).each( function ( idx, item ) {
+        if ( $( item ).val() == access ) {
+            $( item ).attr( 'selected', true );
+        }
+    } );
+}
+
+function getPublicAccess() {
+    return $( '#sharingPublicAccess' ).val();
+}
+
+function getUserGroupAccesses() {
+    var v = [];
+
+    $( '#sharingAccessTable tbody tr[id]' ).each( function ( idx, item ) {
+        var jqItem = $(item);
+
+        var groupName = $( '#sharingAccessTable tbody tr[id]' ).find('.sharingGroupName').text();
+        var groupAccess = $( '#sharingAccessTable tbody tr[id]' ).find('.sharingGroupAccess').val();
+
+        v.push({
+            id: jqItem.attr('id'),
+            name: groupName,
+            access: groupAccess
+        });
+    } );
+
+    return v;
 }
 
 function showSharingDialog( type, uid ) {
     loadSharingSettings( type, uid ).done( function ( data ) {
-        $( '#sharingPublicAccess option' ).removeAttr( 'selected' ).each( function ( idx, item ) {
-            if ( $( item ).val() == data.object.publicAccess ) {
-                $( item ).attr( 'selected', true );
-            }
-        } );
+        console.log( data )
 
-        $( '#sharingUserGroupAccesses table tbody' ).children().remove();
+        setPublicAccess( data.object.publicAccess );
+        setUserGroupAccesses( data.object.userGroupAccesses );
 
-        $( '#sharingUserGroupAccesses table tbody' ).on( 'click', '.removeUgButton', function() {
-            var tr = $( this ).parent().parent();
-            tr.remove()
-        } );
+        $( '#sharingName' ).text( data.object.name );
 
-        $( '#addUserGroupAccess' ).unbind('click' ).on('click', function() {
-            var data = $( '#sharingUserGroupInput' ).select2('data');
-            var access = $('#sharingUserGroupAccess :selected' ).val();
+        $( '.removeUserGroupAccess' ).unbind( 'click' ).bind( 'click', removeUserGroupAccess );
+        $( '#addUserGroupAccess' ).unbind( 'click' ).bind( 'click', addUserGroupAccessSelectedItem );
 
-            addUserGroupAccess(data.name, data.id, access);
-            $('#sharingUserGroupInput').select2('data', null);
-        });
+        $( '#sharingFindUserGroup' ).autocomplete( {
+            source: function ( request, response ) {
+                $.ajax({
+                    url: '../api/sharing/search',
+                    dataType: 'json',
+                    data: {
+                        key: request.term
+                    }
+                } ).success(function(data) {
+                    var v = [];
 
-        if(data.object.userGroupAccesses !== undefined)
-        {
-            $.each(data.object.userGroupAccesses, function(idx, item) {
-                addUserGroupAccess( item.name, item.id, item.access );
-            });
-        }
+                    if(data.userGroups) {
+                        $.each(data.userGroups, function(idx, item) {
+                            var d = {};
 
-        $( '#sharingPublicAccess' ).select2({
-            minimumResultsForSearch: 40
-        });
+                            d.label = item.name;
+                            d.value = item.name;
+                            d.id = item.id;
 
-        $( '#sharingUserGroupAccess' ).select2({
-            minimumResultsForSearch: 40
-        });
-
-        $( '#sharingUserGroupInput' ).select2({
-            minimumResultsForSearch: 40,
-            minimumInputLength: 1,
-            ajax: {
-                url: '../api/sharing/search',
-                dataType: 'json',
-                data: function(term, page) {
-                     return {
-                         key: term
-                     }
-                },
-                results: function(data, page) {
-                    var ugas = getUserGroupAccesses();
-                    var ugs = data.userGroups;
-                    data.userGroups = [];
-
-                    $.each(ugs, function(idx, ug) {
-                        var found = false;
-
-                        $.each(ugas, function(idx, uga) {
-                            if(ug.id == uga.id)
-                            {
-                                found = true;
-                            }
+                            v.push(d);
                         });
+                    }
 
-                        if(!found)
-                        {
-                            data.userGroups.push( ug );
-                        }
-                    });
-
-                    return { results: data.userGroups }
-                }
+                    response(v);
+                });
             },
-            formatResult: formatItem,
-            formatSelection: formatItem
+            minLength: 2,
+            select: function( event, ui ) {
+                sharingSelectedItem = ui.item;
+            }
         });
-
-        $( '#sharingName' ).val( data.object.name );
 
         $( '#sharingSettings' ).dialog( {
             modal: true,
             resizable: false,
             width: 485,
-            height: 394,
+            height: 480,
             buttons: {
                 'Cancel': function () {
                     $( this ).dialog( 'close' );
@@ -172,7 +161,7 @@ function showSharingDialog( type, uid ) {
                 'Save': function () {
                     var me = $( this );
 
-                    data.object.publicAccess = $( '#sharingPublicAccess :selected' ).val();
+                    data.object.publicAccess = getPublicAccess();
                     data.object.userGroupAccesses = getUserGroupAccesses();
 
                     saveSharingSettings( type, uid, data ).done( function () {
@@ -186,65 +175,48 @@ function showSharingDialog( type, uid ) {
 </script>
 
 <div id="sharingSettings" title='$i18n.getString( "sharing_settings" )' style="display: none;">
-    <div class="dialog-form">
-        <p>
-        <label for="sharingName">$i18n.getString( "name" )</label>
-        </p>
+    <table style="width: 100%;">
+        <tbody>
+            <tr>
+                <td colspan="2"><h3 style="border-bottom: 1px solid black;" id="sharingName"></h3></td>
+            </tr>
 
-        <p>
-        <input id="sharingName" value="" disabled="disabled"/>
-        </p>
+            <tr>
+                <td><input style="width: 100%;" id="sharingFindUserGroup" /></td>
+                <td style="width: 24px;"><button id="addUserGroupAccess" style="width: 24px; text-align: center;">+</button></td>
+            </tr>
+        </tbody>
+    </table>
 
-        <p>
-        <label for="sharingPublicAccess">$i18n.getString( "public_access" )</label>
-        </p>
-
-        <p>
-        <select style="width: 440px;" id="sharingPublicAccess">
-            <option value="--------">$i18n.getString( "no_access" )</option>
-            <option value="r-------">$i18n.getString( "read_access" )</option>
-            <option value="rw------">$i18n.getString( "read_write_access" )</option>
-        </select>
-        </p>
-
-        <p>
-        <label for="sharingUserGroupAccesses">$i18n.getString( "user_group_access" )</label>
-        </p>
-
-        <p>
-        <div id="sharingUserGroupAccesses" style="overflow-x: hidden; overflow-y: scroll; height: 100px; width: 440px;">
-            <table style="width: 425px;">
-                <colgroup>
-                    <col />
-                    <col style="width: 105px;" />
-                    <col style="width: 85px;" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>$i18n.getString( "group_name" )</th>
-                        <th>$i18n.getString( "access" )</th>
-                        <th>$i18n.getString( "actions" )</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        </p>
-
-        <p>
-        <button id="addUserGroupAccess" style="width: 30px; height: 22px; padding: 0; margin: 0;">$i18n.getString( "add" )</button>
-
-        <input style="width: 290px;" id="sharingUserGroupInput" />
-
-        <select style="width: 111px;" id="sharingUserGroupAccess">
-            <option value="r-------">$i18n.getString( "read_access" )</option>
-            <option value="rw------">$i18n.getString( "read_write_access" )</option>
-        </select>
-
-        </p>
-    </div>
+    <table id="sharingAccessTable" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td style="width: 300px;">Public Access</td>
+                <td>
+                    <select id="sharingPublicAccess" style="width: 150px;">
+                        <option value="--------">None</option>
+                        <option value="r-------">Read Only</option>
+                        <option value="rw------">Read and Write</option>
+                    </select>
+                </td>
+                <td style="width: 25px; text-align: center;"></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+<script id="user-group-access-template" type="text/template">
+<tr id="<%= id %>">
+    <td class="sharingGroupName" style="width: 300px;"><%= label %></td>
+    <td>
+        <select class="sharingGroupAccess" style="width: 150px;">
+            <option value="r-------" <% if(access == 'r-------') { %>selected<% } %>>Read Only</option>
+            <option value="rw------" <% if(access == 'rw------') { %>selected<% } %>>Read and Write</option>
+        </select>
+    </td>
+    <td style="width: 25px; text-align: center;"><a href="" class="removeUserGroupAccess">X</a></td>
+</tr>
+</script>
 
 <script type="text/javascript">
 	jQuery(document).ready(function(){		
