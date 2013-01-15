@@ -1578,9 +1578,7 @@ Ext.onReady( function() {
 				p.limit = Ext.getCmp('limitOption').getValue();
 				
 				var position = TR.state.aggregateReport.getPosition();
-				if( position == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
-					|| position == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| position == TR.conf.reportPosition.POSITION_ROW_DATA ){
+				if( TR.cmp.settings.dataElementGroupBy.getValue() != null ){
 					p.dataElementId = TR.cmp.settings.dataElementGroupBy.getValue().split('_')[1];
 				}
 				
@@ -1635,32 +1633,45 @@ Ext.onReady( function() {
 			getURLParams: function(isSorted) {
 				var p = "";
 				
-				p += "&programStageId=" + TR.cmp.params.programStage.getValue();
+				p = "programStageId=" + TR.cmp.params.programStage.getValue();
 				p += "&aggregateType=" + Ext.getCmp('aggregateType').getValue().aggregateType;
 				p += "&orgunitIds=" + TR.state.orgunitIds;
 				p += "&limit=" + Ext.getCmp('limitOption').getValue();
 				
 				var position = TR.state.aggregateReport.getPosition();
-				if( position == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
-					|| position == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| position == TR.conf.reportPosition.POSITION_ROW_DATA ){
+				if( TR.cmp.settings.dataElementGroupBy.getValue() != null ){
 					p += "&dataElementId=" + TR.cmp.settings.dataElementGroupBy.getValue().split('_')[1];
 				}
 				
-				p.deFilters = [];
+				// Filter values
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var deId = r.data.id;
-					var filterValue = Ext.getCmp('filter_' + deId).getValue();
-					p += "&deFilters=" + deId.split('_')[1] + "_" + filterValue;
+					var filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
+					var filterValue = Ext.getCmp('filter_' + deId).rawValue;
+					var filter = deId.split('_')[1] + "_" + filterOpt + "_" + filterValue;
+					
+					var valueType = r.data.valueType;
+					if( valueType != 'string' && valueType != 'trueOnly' 
+						&& valueType != 'bool' && valueType != 'list')
+						{
+							var deId = deId + '_1';
+							filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
+							filterValue = Ext.getCmp('filter_' + deId).rawValue;
+							filter += "_" + filterOpt + "_" + filterValue;
+						}
+					p += "&deFilters=" + filter;
+					
 				});
 				
 				// Fixed periods
+				
 				p.periodIds = [];
 				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
-					p += "&periodIds=" +  r.data.id;
+					p += "&periodIds=" + r.data.id;
 				});
 				
 				// Relative periods
+				
 				var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 				p.relativePeriods = [];
 				Ext.Array.each(relativePeriodList, function(item) {
@@ -1673,10 +1684,10 @@ Ext.onReady( function() {
 				
 				p += "&startDate=" + TR.cmp.settings.startDate.rawValue;
 				p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
-				
-				
+			
 				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
 				p += "&position=" + position;
+				
 				
 				return p;
 			},
@@ -1738,15 +1749,6 @@ Ext.onReady( function() {
 						}
 					}
 					
-					var position = TR.state.aggregateReport.getPosition();
-					if(( position==TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-					 || position==TR.conf.reportPosition.POSITION_ROW_DATA ) 
-					 && TR.cmp.params.dataelement.selected.store.data.items.length > 1)
-					 {
-						TR.util.notification.error(TR.i18n.select_only_one_data_element, TR.i18n.select_only_one_data_element);
-						return false;
-					 }
-					
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
 						var deId = r.data.id;
 						var filterValue = Ext.getCmp('filter_' + deId).getValue();
@@ -1778,6 +1780,7 @@ Ext.onReady( function() {
 						return false;
 					}
 					
+					var position = TR.state.aggregateReport.getPosition();
 					if( !( position== TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
 						|| position== TR.conf.reportPosition.POSITION_ROW_DATA )
 						&& TR.cmp.params.dataelement.selected.store.data.items.length == 0) {
@@ -1785,13 +1788,12 @@ Ext.onReady( function() {
 						return false;
 					};
 					
-					if( ( position == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
-						|| position == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| position == TR.conf.reportPosition.POSITION_ROW_DATA)
-						&& TR.cmp.settings.dataElementGroupBy.getValue() == null ){
+					if( position==TR.conf.reportPosition.POSITION_ROW_DATA 
+						&& TR.cmp.settings.dataElementGroupBy.getValue()==null ){
 						TR.util.notification.error(TR.i18n.select_data_element_for_grouping, TR.i18n.select_data_element_for_grouping);
 						return false;
 					}
+					
 					return true;
 				},
 				response: function(r) {
@@ -3268,6 +3270,15 @@ Ext.onReady( function() {
 															},
 															change: function (cb, nv, ov) {
 																TR.util.positionFilter.orgunit();
+																var position = TR.state.aggregateReport.getPosition();
+																if( position!=TR.conf.reportPosition.POSITION_ROW_DATA){
+																	Ext.getCmp('dataElementGroupByCbx').disable();
+																	Ext.getCmp('limitOption').disable();
+																}
+																else{
+																	Ext.getCmp('dataElementGroupByCbx').enable();
+																	Ext.getCmp('limitOption').enable();
+																}
 															}
 														}
 													},
@@ -3296,6 +3307,15 @@ Ext.onReady( function() {
 															},
 															change: function (cb, nv, ov) {
 																TR.util.positionFilter.period();
+																var position = TR.state.aggregateReport.getPosition();
+																if( position!=TR.conf.reportPosition.POSITION_ROW_DATA){
+																	Ext.getCmp('dataElementGroupByCbx').disable();
+																	Ext.getCmp('limitOption').disable();
+																}
+																else{
+																	Ext.getCmp('dataElementGroupByCbx').enable();
+																	Ext.getCmp('limitOption').enable();
+																}
 															}
 														}
 													},
@@ -3319,6 +3339,17 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																TR.cmp.settings.positionData = this;
+															},
+															change: function (cb, nv, ov) {
+																var position = TR.state.aggregateReport.getPosition();
+																if( position!=TR.conf.reportPosition.POSITION_ROW_DATA){
+																	Ext.getCmp('dataElementGroupByCbx').disable();
+																	Ext.getCmp('limitOption').disable();
+																}
+																else{
+																	Ext.getCmp('dataElementGroupByCbx').enable();
+																	Ext.getCmp('limitOption').enable();
+																}
 															}
 														}
 													}
@@ -3392,6 +3423,7 @@ Ext.onReady( function() {
 													emptyText: TR.i18n.please_select,
 													queryMode: 'local',
 													editable: true,
+													disabled: true,
 													valueField: 'id',
 													displayField: 'name',
 													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 30,
