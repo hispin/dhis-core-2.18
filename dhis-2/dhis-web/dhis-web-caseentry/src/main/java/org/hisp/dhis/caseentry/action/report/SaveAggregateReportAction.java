@@ -237,7 +237,7 @@ public class SaveAggregateReportAction
         }
 
         aggregateReport.setRelativePeriods( relativePeriods );
-        aggregateReport.setFixedPeriod( fixedPeriod );
+        aggregateReport.setFixedPeriods( fixedPeriod );
         aggregateReport.setOrganisationUnits( new HashSet<OrganisationUnit>( organisationUnitService
             .getOrganisationUnits( orgunitIds ) ) );
 
