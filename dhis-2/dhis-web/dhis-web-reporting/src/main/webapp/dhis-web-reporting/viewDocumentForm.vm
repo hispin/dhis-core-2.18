@@ -47,6 +47,8 @@ function addUserGroupAccessSelectedItem(e) {
     });
 
     $('#sharingAccessTable tbody' ).append(tmpl_html);
+    $('#sharingFindUserGroup').val('')
+    sharingSelectedItem = undefined;
 }
 
 function removeUserGroupAccess(e) {
@@ -92,8 +94,8 @@ function getUserGroupAccesses() {
     $( '#sharingAccessTable tbody tr[id]' ).each( function ( idx, item ) {
         var jqItem = $(item);
 
-        var groupName = $( '#sharingAccessTable tbody tr[id]' ).find('.sharingGroupName').text();
-        var groupAccess = $( '#sharingAccessTable tbody tr[id]' ).find('.sharingGroupAccess').val();
+        var groupName = $( item ).find('.sharingGroupName').text();
+        var groupAccess = $( item ).find('.sharingGroupAccess').val();
 
         v.push({
             id: jqItem.attr('id'),
@@ -107,8 +109,6 @@ function getUserGroupAccesses() {
 
 function showSharingDialog( type, uid ) {
     loadSharingSettings( type, uid ).done( function ( data ) {
-        console.log( data )
-
         setPublicAccess( data.object.publicAccess );
         setUserGroupAccesses( data.object.userGroupAccesses );
 
@@ -127,6 +127,7 @@ function showSharingDialog( type, uid ) {
                     }
                 } ).success(function(data) {
                     var v = [];
+                    var u = getUserGroupAccesses();
 
                     if(data.userGroups) {
                         $.each(data.userGroups, function(idx, item) {
@@ -136,7 +137,17 @@ function showSharingDialog( type, uid ) {
                             d.value = item.name;
                             d.id = item.id;
 
-                            v.push(d);
+                            var found = false;
+
+                            $.each(u, function(idx, item) {
+                                if(item.id == d.id) {
+                                    found = true;
+                                }
+                            });
+
+                            if(!found) {
+                                v.push(d);
+                            }
                         });
                     }
 
