@@ -33,6 +33,7 @@ import static org.hisp.dhis.expression.Expression.PAR_CLOSE;
 import static org.hisp.dhis.expression.Expression.PAR_OPEN;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
+import static org.hisp.dhis.system.util.MathUtils.isEqual;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,6 +55,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,6 +140,25 @@ public class DefaultExpressionService
     // -------------------------------------------------------------------------
     // Business logic
     // -------------------------------------------------------------------------
+    
+    public Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
+        Map<String, Double> constantMap, Integer days )
+    {
+        final double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(), valueMap, constantMap, days, false ) );
+        
+        if ( !isEqual( denominatorValue, 0d ) )
+        {
+            final double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), valueMap, constantMap, days, false ) );
+            
+            final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );
+            final double factor = indicator.getIndicatorType().getFactor();
+            final double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;
+            
+            return aggregatedValue;
+        }
+        
+        return null;
+    }
     
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
         Map<String, Double> constantMap, Integer days )
