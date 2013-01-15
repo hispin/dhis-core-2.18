@@ -30,7 +30,7 @@
 			<element type="text" column="relativeperiod" />
 		</set>
 
-		<set name="fixedPeriod" table="patientaggregatereport_fixedpriods">
+		<set name="fixedPeriods" table="patientaggregatereport_fixedperiods">
 			<key column="patientaggregatereportid"
 				foreign-key="fk_patientaggregatereport_fixedperiods_patientaggregatereportid" />
 			<element type="text" column="fixedperiod" />
