@@ -871,6 +871,8 @@
             <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		
+		<!-- Aggregate Report -->
+		
 		<action name="generateAggregateReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonAggregateReportResult.vm
@@ -881,6 +883,46 @@
      		<result name="jasper" type="gridJasperResult" />
      		<result name="jrxml" type="gridJrxmlResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+		
+		<action name="saveAggregateReport"
+			class="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+
+		<action name="getAggregateReports"
+			class="org.hisp.dhis.caseentry.action.report.GetAggregateReportsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonTabularReportList.vm
+			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+
+		<action name="getAggregateReport"
+			class="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonTabularAggregateReport.vm.vm
+			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+
+		<action name="updateAggregateReportName"
+			class="org.hisp.dhis.caseentry.action.report.UpdateAggregateReportNameAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+
+		<action name="deleteAggregateReport"
+			class="org.hisp.dhis.caseentry.action.report.DeleteAggregateReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		
 		<!-- SMS Reminder -->

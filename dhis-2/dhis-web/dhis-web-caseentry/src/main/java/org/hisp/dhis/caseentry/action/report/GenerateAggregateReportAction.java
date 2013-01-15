@@ -28,7 +28,6 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,7 +40,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -154,13 +153,6 @@ public class GenerateAggregateReportAction
         this.relativePeriods = relativePeriods;
     }
 
-    private String periodTypeName;
-
-    public void setPeriodTypeName( String periodTypeName )
-    {
-        this.periodTypeName = periodTypeName;
-    }
-
     private String startDate;
 
     public void setStartDate( String startDate )
@@ -263,13 +255,13 @@ public class GenerateAggregateReportAction
         Collection<Period> periods = new HashSet<Period>();
 
         // Create period from start-date and end-date
-        if ( startDate != null && endDate != null && periodTypeName != null )
+        if ( startDate != null && endDate != null )
         {
-            Calendar today = Calendar.getInstance();
-            today.add( Calendar.DATE, -1 );
-            CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType
-                .getPeriodTypeByName( periodTypeName );
-            periods.addAll( periodType.generatePeriods( format.parseDate( startDate ), format.parseDate( endDate ) ) );
+            Period period = new Period();
+            period.setStartDate( format.parseDate( startDate ) );
+            period.setEndDate( format.parseDate( endDate ) );
+            period.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) );
+            periods.add( period );
         }
 
         // Fixed periods
@@ -292,8 +284,8 @@ public class GenerateAggregateReportAction
             deFilterMap = new HashMap<Integer, String>();
             for ( String deFilter : deFilters )
             {
-                String[] arr = deFilter.split( SEPARATE_FILTER );
-                deFilterMap.put( Integer.parseInt( arr[0] ), arr[1] );
+                int index = deFilter.indexOf( SEPARATE_FILTER );
+                deFilterMap.put( Integer.parseInt( deFilter.substring( 0, index - 1 )), deFilter.substring( index + 1, deFilter.length() ) );
             }
         }
         grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits,

@@ -44,12 +44,17 @@ TR.conf = {
 			dataelements_get: 'loadDataElements.action',
 			organisationunitchildren_get: 'getOrganisationUnitChildren.action',
 			generatetabularreport_get: 'generateTabularReport.action',
-			favorite_getall: 'getTabularReports.action',
-			favorite_get: 'getTabularReport.action',
-			favorite_rename: 'updateTabularReportName.action',
-			favorite_save: 'saveTabularReport.action',
-            favorite_delete: 'deleteTabularReport.action',
+			casebasedfavorite_getall: 'getTabularReports.action',
+			casebasedfavorite_get: 'getTabularReport.action',
+			casebasedfavorite_rename: 'updateTabularReportName.action',
+			casebasedfavorite_save: 'saveTabularReport.action',
+            casebasedfavorite_delete: 'deleteTabularReport.action',
 			suggested_dataelement_get: 'getOptions.action',
+			aggregatefavorite_getall: 'getAggregateReports.action',
+			aggregatefavorite_get: 'getAggregateReport.action',
+			aggregatefavorite_rename: 'updateAggregateReportName.action',
+			aggregatefavorite_save: 'saveAggregateReport.action',
+            aggregatefavorite_delete: 'deleteAggregateReport.action',
 			generateaggregatereport_get: 'generateAggregateReport.action',
 			redirect: 'index.action'
         },
@@ -126,15 +131,15 @@ TR.conf = {
 		]
 	},
 	reportPosition: {
-        POSITION_ROW_ORGUNIT_COLUMN_PERIOD: 1,
-        POSITION_ROW_PERIOD_COLUMN_ORGUNIT: 2,
+		POSITION_ROW_ORGUNIT_COLUMN_PERIOD: 1,
+		POSITION_ROW_PERIOD_COLUMN_ORGUNIT: 2,
 		POSITION_ROW_ORGUNIT_ROW_PERIOD: 3,
-        POSITION_ROW_PERIOD: 4,
-        POSITION_ROW_ORGUNIT: 5,
-        POSITION_ROW_PERIOD_COLUMN_DATA: 6,
-        POSITION_ROW_ORGUNIT_COLUMN_DATA: 7,
-        POSITION_ROW_DATA: 8
-    },
+		POSITION_ROW_PERIOD: 4,
+		POSITION_ROW_ORGUNIT: 5,
+		POSITION_ROW_PERIOD_COLUMN_DATA: 6,
+		POSITION_ROW_ORGUNIT_COLUMN_DATA: 7,
+		POSITION_ROW_DATA: 8
+	},
     statusbar: {
 		icon: {
 			error: 'error_s.png',
@@ -158,7 +163,7 @@ TR.conf = {
         window_favorite_ypos: 100,
         window_confirm_width: 250,
 		window_record_width: 450,
-		window_record_height: 300,
+		window_record_height: 300
     }
 };
 
@@ -251,8 +256,12 @@ Ext.onReady( function() {
 			}
         },
         multiselect: {
-            select: function(a, s) {
+            select: function(a, s, f) {
                 var selected = a.getValue();
+				var idx = a.store.findExact('id', selected);
+				var name = a.store.getAt(idx).data.name;
+				var valueType = a.store.getAt(idx).data.valueType;
+				
                 if (selected.length) {
                     var array = [];
                     Ext.Array.each(selected, function(item) {
@@ -262,21 +271,31 @@ Ext.onReady( function() {
                     s.store.add(array);
                 }
                 this.filterAvailable(a, s);
+				
+				if(f)
+				{
+					this.addFilterField( 'filterPanel', selected[0], name, valueType );
+				}
             },
-            selectAll: function(a, s) {
+            selectAll: function(a, s, f) {
 				var array = [];
 				var elements = a.boundList.all.elements;
 				for( var i=0; i< elements.length; i++ )
 				{
 					if( elements[i].style.display != 'none' )
 					{
-						array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name, compulsory: a.store.getAt(i).data.compulsory, valueType: a.store.getAt(i).data.valueType});
+						var id = a.store.getAt(i).data.id;
+						var name = a.store.getAt(i).data.name;
+						var valueType = a.store.getAt(i).data.valueType;
+						
+						array.push({id: id, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
+						this.addFilterField( 'filterPanel', id, name, valueType );
 					}
 				}
 				s.store.add(array);
                 this.filterAvailable(a, s);
             },            
-            unselect: function(a, s) {
+            unselect: function(a, s, f) {
                 var selected = s.getValue();
                 if (selected.length) {
                     Ext.Array.each(selected, function(item) {
@@ -284,9 +303,12 @@ Ext.onReady( function() {
                     });                    
                     this.filterAvailable(a, s);
                 }
-				Ext.getCmp('deFilterField').setValue( "" );
+				if(f)
+				{
+					this.removeFilterField( 'filterPanel', selected[0], a.store.getAt(a.store.findExact('id', selected)).data.valueType );
+				}
             },
-            unselectAll: function(a, s) {
+            unselectAll: function(a, s, f) {
                 var elements = s.boundList.all.elements;
 				var index = 0;
 				var arr = [];
@@ -294,12 +316,12 @@ Ext.onReady( function() {
 					if( elements[index].style.display != 'none' )
 					{
 					  arr.push(item.data.id);
+					  TR.util.multiselect.removeFilterField( 'filterPanel', item.data.id, item.data.valueType );
 					}
 					index++;
 				}); 
 				s.setValue(arr);
 				this.unselect(a,s);
-				Ext.getCmp('deFilterField').setValue( "" );
             },
             filterAvailable: function(a, s) {
 				a.store.filterBy( function(r) {
@@ -331,9 +353,226 @@ Ext.onReady( function() {
 				for (var i = 0; i < ms.length; i++) {
 					ms[i].setHeight(panel.getHeight() - 49);
 				}
+			},
+			addFilterField: function( p, id, name, valueType ){
+				var xtype = TR.value.covertXType(valueType);
+				
+				var fields = [];
+				fields[0] = {
+					xtype: 'label',
+					id: 'filter_lb_' + id,
+					text:name,
+					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2
+				};
+				fields[1] = this.createOperatorField(valueType, id);
+				fields[2] = this.createFilterField( xtype, id, name );
+				
+				if(valueType != 'string' && valueType != 'trueOnly' 
+					&& valueType != 'bool' && valueType != 'list' ){
+					id = id + '_1';
+					fields[3] = {
+						xtype: 'label',
+						id: 'filter_lb_' + id,
+						text: '-',
+						width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2
+					};
+					fields[4] = this.createOperatorField(valueType, id);
+					fields[5] = this.createFilterField( xtype, id, name );
+				}
+				Ext.getCmp(p).add(fields);
+			},
+			removeFilterField: function( p, id, valueType ){
+				var e1 = Ext.getCmp( 'filter_' + id );
+				var e2 = Ext.getCmp( 'filter_opt_' + id );
+				var e3 = Ext.getCmp( 'filter_lb_' + id );
+				
+				Ext.getCmp(p).remove(e1);
+				Ext.getCmp(p).remove(e2);
+				Ext.getCmp(p).remove(e3);
+				
+				if(valueType != 'string' && valueType != 'trueOnly' && valueType != 'bool'){
+					id = id + '_1';
+					var e4 = Ext.getCmp( 'filter_' + id );
+					var e5 = Ext.getCmp( 'filter_opt_' + id );
+					var e6 = Ext.getCmp( 'filter_lb_' + id );
+					Ext.getCmp(p).remove(e4);
+					Ext.getCmp(p).remove(e5);
+					Ext.getCmp(p).remove(e6);
+				}
+				
+				Ext.getCmp(p).doLayout();
+			},
+			createFilterField: function( xtype, id ){
+				var params = {};
+				params.xtype = xtype;
+				params.id = 'filter_' + id;
+				params.cls = 'tr-textfield-alt1';
+				params.emptyText = TR.i18n.enter_filter_value;
+				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 70;
+				xtype = xtype.toLowerCase();
+				if( xtype == 'datefield' )
+				{
+					params.format = TR.i18n.format_date;
+				}
+				else if( xtype == 'bool')
+				{
+					params.queryMode = 'local';
+					params.editable = false;
+					params.valueField = 'value';
+					params.displayField = 'name';
+					params.selectOnFocus = true;
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value', 'name'],
+						data: [['true', TR.i18n.true_value], ['false', TR.i18n.false_value]]
+					});
+				}
+				else if( xtype == 'combobox' )
+				{
+					var deId = id.split('_')[1];
+					params.typeAhead = true;
+					params.forceSelection = true;
+					params.queryMode = 'remote';
+					params.valueField = 'o';
+					params.displayField = 'o';
+					params.store = Ext.create('Ext.data.Store', {
+						fields: ['o'],
+						data:[],
+						proxy: {
+							type: 'ajax',
+							url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.suggested_dataelement_get,
+							extraParams:{id: deId},
+							reader: {
+								type: 'json',
+								root: 'options'
+							}
+						}
+					});		
+				}
+				return params;
+			},
+			createOperatorField: function( valueType, id){
+				var params = {};
+				params.xtype = 'combobox';
+				params.id = 'filter_opt_' + id;
+				params.width = 40;
+				params.queryMode = 'local';
+				params.valueField = 'value';
+				params.displayField = 'name';
+				params.value = '=';
+				
+				if(valueType == 'string' || valueType == 'trueOnly' 
+					|| valueType == 'bool' && valueType != 'list' ){
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value','name'],
+						data: [ ['=','='] ]
+					});
+				}
+				else
+				{
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value','name'],
+						data: [ ['=','='],
+								['>','>'],
+								['>=','>='],
+								['<','<'],
+								['<=','<='],
+								['!=','!=' ] ]
+					});
+				}
+				
+				return params;
 			}
         },
-        store: {
+        positionFilter:{
+			orgunit: function() {
+				var o = TR.cmp.settings.positionOrgunit.value;
+				
+				// Orgunit is columns
+				if( o==1 )
+				{
+					var periodStore = TR.cmp.settings.positionPeriod.store;
+					periodStore.removeAll();
+					periodStore.add (
+						{value: 1,name: TR.i18n.rows},
+						{value: 2,name: TR.i18n.columns},
+						{value: 3,name: TR.i18n.filters}
+					);
+					Ext.getCmp('positionPeriodCbx').setValue( 1 );
+				}
+				// Orgunit is columns
+				else if( o==2 )
+				{
+					var periodStore = TR.cmp.settings.positionPeriod.store;
+					periodStore.removeAll();
+					periodStore.add ({value: 1,name: TR.i18n.rows});
+					Ext.getCmp('positionPeriodCbx').setValue( 1 );
+					
+					var dataStore = TR.cmp.settings.positionData.store;
+					dataStore.removeAll();
+					dataStore.add ({value: 3,name: TR.i18n.filters});
+					Ext.getCmp('positionDataCbx').setValue( 3 );
+				}
+				// Orgunit is filters
+				else if( o==3)
+				{
+					var periodStore = TR.cmp.settings.positionPeriod.store;
+					periodStore.removeAll();
+					periodStore.add (
+						{value: 1,name: TR.i18n.rows},
+						{value: 3,name: TR.i18n.filters}
+					);
+					Ext.getCmp('positionPeriodCbx').setValue( 1 );
+					
+					var dataStore = TR.cmp.settings.positionData.store;
+					dataStore.removeAll();
+					dataStore.add (
+						{value: 2,name: TR.i18n.columns},
+						{value: 3,name: TR.i18n.filters}
+					);
+					Ext.getCmp('positionDataCbx').setValue( 2 );
+				}
+			},
+			period: function()
+			{
+				// Orgunit is column
+				var o = TR.cmp.settings.positionOrgunit.value;
+				var p = TR.cmp.settings.positionPeriod.value;
+				
+				var dataStore = TR.cmp.settings.positionData.store;
+				dataStore.removeAll();
+					
+				if( o==1 ){
+					if( p==1 || p==2 ){
+						dataStore.add (
+							{value: 3,name: TR.i18n.filters}
+						);
+					}
+					else if( p==3 ){
+						dataStore.add (
+							{value: 2,name: TR.i18n.columns},
+							{value: 3,name: TR.i18n.filters}
+						);
+					}
+					Ext.getCmp('positionDataCbx').setValue( 3 );
+				}
+				else if( o==3 && p==1 ){
+					dataStore.add (
+						{value: 2,name: TR.i18n.columns},
+						{value: 3,name: TR.i18n.filters}
+					);
+					Ext.getCmp('positionDataCbx').setValue( 2 );
+				}
+				else if( o==3 && p==3 ){
+					var dataStore = TR.cmp.settings.positionData.store;
+					dataStore.removeAll();
+					dataStore.add (
+						{value: 1,name: TR.i18n.rows}
+					);
+					Ext.getCmp('positionDataCbx').setValue( 1 );
+				}
+			}
+		},
+		store: {
             addToStorage: function(s, records) {
                 s.each( function(r) {
                     if (!s.storage[r.data.id]) {
@@ -454,125 +693,240 @@ Ext.onReady( function() {
         crud: {
             favorite: {
                 create: function(fn, isupdate) {
-                    TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.saving + '...');
-                    
-                    var p = TR.state.getParams();
-                    p.name = TR.cmp.favorite.name.getValue();
-                    
-                    if (isupdate) {
-                        p.uid = TR.store.favorite.getAt(TR.store.favorite.findExact('name', p.name)).data.id;
-                    }
+					var url = "";
+					if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+					{
+						url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_save;
+					}
+					else
+					{
+						url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_save;
+					}
 					
-                    Ext.Ajax.request({
-                        url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_save,
-                        method: 'POST',
-                        params: p,
-                        success: function() {
-                            TR.store.favorite.load({callback: function() {
-                                TR.util.mask.hideMask();
-                                if (fn) {
-                                    fn();
-                                }
-                            }});
-                        }
-                    });
+					TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.saving + '...');
+					var p = TR.state.getParams();
+					p.name = TR.cmp.favorite.name.getValue();
+					
+					if (isupdate) {
+						p.uid = TR.store.favorite.getAt(TR.store.favorite.findExact('name', p.name)).data.id;
+					}
+					
+					Ext.Ajax.request({
+						url: url,
+						method: 'POST',
+						params: p,
+						success: function() {
+							TR.store.favorite.load({callback: function() {
+								TR.util.mask.hideMask();
+								if (fn) {
+									fn();
+								}
+							}});
+						}
+					});  
                 },
                 update: function(fn) {
-                    TR.util.crud.favorite.create(fn, true);
+					TR.util.crud.favorite.create(fn, true);
                 },
 				updateName: function(name) {
-                    if (TR.store.favorite.findExact('name', name) != -1) {
-                        return;
-                    }
-                    TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.renaming + '...');
-                    var r = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0];
-                    Ext.Ajax.request({
-                        url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_rename,
-                        method: 'POST',
-                        params: {id: r.data.id, name: name},
-                        success: function() {
-                            TR.store.favorite.load({callback: function() {
-                                TR.cmp.favorite.rename.window.close();
-                                TR.util.mask.hideMask();
-                                TR.cmp.favorite.grid.getSelectionModel().select(TR.store.favorite.getAt(TR.store.favorite.findExact('name', name)));
-                                TR.cmp.favorite.name.setValue(name);
-                            }});
-                        }
-                    });
-                },
-                del: function(fn) {
-                    TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.deleting + '...');
-					var id = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0].data.id;
-                    var baseurl = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_delete + "?id=" + id,
-                        selection = TR.cmp.favorite.grid.getSelectionModel().getSelection();
-                    Ext.Array.each(selection, function(item) {
-                        baseurl = Ext.String.urlAppend(baseurl, 'uids=' + item.data.id);
-                    });
-                    Ext.Ajax.request({
-                        url: baseurl,
-                        method: 'POST',
-                        success: function() {
-                            TR.store.favorite.load({callback: function() {
-                                TR.util.mask.hideMask();
-                                if (fn) {
-                                    fn();
-                                }
-                            }});
-                        }
-                    }); 
-                },
-				run: function(id) {
+                    var url = "";
+					if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+					{
+						url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_rename;
+					}
+					else
+					{
+						url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_rename;
+					}
+					
+					if (TR.store.favorite.findExact('name', name) != -1) {
+						return;
+					}
+					TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.renaming + '...');
+					var r = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0];
 					Ext.Ajax.request({
-						url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_get + '?id=' + id,
-						scope: this,
-						success: function(r) {
-							var f = Ext.JSON.decode(r.responseText);
-							
-							Ext.getCmp('programCombobox').setValue( f.programId );
-							Ext.getCmp('programStageCombobox').setValue( f.programStageId );
-							Ext.getCmp('startDate').setValue( f.startDate );
-							Ext.getCmp('endDate').setValue( f.endDate );
-							Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
-							Ext.getCmp('levelCombobox').setValue( f.level );
-							TR.state.orgunitIds = f.orgunitIds;
-							
-							// Data element
-							TR.cmp.params.dataelement.objects = [];
-							TR.store.dataelement.selected.removeAll();
-							if (f.dataElements) {
-								for (var i = 0; i < f.dataElements.length; i++) {
-									TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name), compulsory: f.dataElements[i].compulsory, valueType:f.dataElements[i].valueType });
-								}
-								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
-								
-								if( f.singleEvent == 'false' )
-								{
-									var store = TR.store.dataelement.available;
-									store.parent = f.programStageId;
-									if (TR.util.store.containsParent(store)) {
-										TR.util.store.loadFromStorage(store);
-										TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-									}
-									else {
-										store.load({params: {programStageId: f.programStageId}});
-									}
-								}
-							}
-							
-							// Program stage									
-							var storeProgramStage = TR.store.programStage;
-							storeProgramStage.parent = f.programStageId;
-							storeProgramStage.isLoadFromFavorite = true;
-							storeProgramStage.load({params: {programId: f.programId}});
-							
-							Ext.getCmp('programStageCombobox').setValue( f.programStageId );
-							
-							TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
-							TR.exe.execute();
+						url: url,
+						method: 'POST',
+						params: {id: r.data.id, name: name},
+						success: function() {
+							TR.store.favorite.load({callback: function() {
+								TR.cmp.favorite.rename.window.close();
+								TR.util.mask.hideMask();
+								TR.cmp.favorite.grid.getSelectionModel().select(TR.store.favorite.getAt(TR.store.favorite.findExact('name', name)));
+								TR.cmp.favorite.name.setValue(name);
+							}});
 						}
 					});
-				}				
-            }
+                },
+                del: function(fn) {
+					var baseurl = TR.conf.finals.ajax.path_root;
+					if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+					{
+						baseurl += TR.conf.finals.ajax.casebasedfavorite_delete;
+					}
+					else
+					{
+						baseurl += TR.conf.finals.ajax.aggregatefavorite_delete;
+					}
+					
+					TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.deleting + '...');
+					var id = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0].data.id;
+					baseurl +=  "?id=" + id;
+						selection = TR.cmp.favorite.grid.getSelectionModel().getSelection();
+					Ext.Array.each(selection, function(item) {
+						baseurl = Ext.String.urlAppend(baseurl, 'uids=' + item.data.id);
+					});
+					Ext.Ajax.request({
+						url: baseurl,
+						method: 'POST',
+						success: function() {
+							TR.store.favorite.load({callback: function() {
+								TR.util.mask.hideMask();
+								if (fn) {
+									fn();
+								}
+							}});
+						}
+					}); 
+                },
+				run: function(id) {
+					if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+					{
+						this.caseBasedReport.run( id );
+					}
+					else
+					{
+						this.aggregateReport.run( id );
+					}
+				},			
+				
+				caseBasedReport:{
+					run: function(id) {
+						Ext.Ajax.request({
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_get + '?id=' + id,
+							scope: this,
+							success: function(r) {
+								var f = Ext.JSON.decode(r.responseText);
+								
+								Ext.getCmp('programCombobox').setValue( f.programId );
+								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								Ext.getCmp('startDate').setValue( f.startDate );
+								Ext.getCmp('endDate').setValue( f.endDate );
+								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
+								Ext.getCmp('levelCombobox').setValue( f.level );
+								TR.state.orgunitIds = f.orgunitIds;
+								
+								// Data element
+								TR.cmp.params.dataelement.objects = [];
+								TR.store.dataelement.selected.removeAll();
+								if (f.dataElements) {
+									for (var i = 0; i < f.dataElements.length; i++) {
+										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name), compulsory: f.dataElements[i].compulsory, valueType:f.dataElements[i].valueType });
+									}
+									TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
+									
+									if( f.singleEvent == 'false' )
+									{
+										var store = TR.store.dataelement.available;
+										store.parent = f.programStageId;
+										if (TR.util.store.containsParent(store)) {
+											TR.util.store.loadFromStorage(store);
+											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+										}
+										else {
+											store.load({params: {programStageId: f.programStageId}});
+										}
+									}
+								}
+								
+								// Program stage									
+								var storeProgramStage = TR.store.programStage;
+								storeProgramStage.parent = f.programStageId;
+								storeProgramStage.isLoadFromFavorite = true;
+								storeProgramStage.load({params: {programId: f.programId}});
+								
+								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								
+								TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
+								TR.exe.execute();
+							}
+						});
+					}				
+				},
+				
+				aggregateReport:{
+					run: function(id) {
+						Ext.Ajax.request({
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_get + '?id=' + id,
+							scope: this,
+							success: function(r) {
+								var f = Ext.JSON.decode(r.responseText);
+								
+								Ext.getCmp('programCombobox').setValue( f.programId );
+								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								
+								// Date range
+								
+								Ext.getCmp('startDate').setValue( f.startDate );
+								Ext.getCmp('endDate').setValue( f.endDate );
+								
+								// Relative periods
+								
+								for (var i = 0; i < f.relativePeriods.length; i++) {
+									var cmp = Ext.getCmp('checkbox[paramName="' + f.relativePeriods[i] + '"]');
+									if (cmp) {
+										cmp.setValue(true);
+									}
+								}
+								
+								// Fixed periods
+								
+								for (var i = 0; i < f.fixedPeriods.length; i++) {
+									// var cmp = Ext.getCmp('');
+									// if (cmp) {
+									//	cmp.setValue(fixedPeriods);
+									// } 
+								}
+								
+								// Orgunits
+								
+								TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
+								TR.state.orgunitIds = f.orgunitIds;
+								
+								// Filter values
+								
+								TR.value.filterValues = [];
+								for (var i = 0; i < f.fixedPeriods.length; i++) {
+									// var filterValue = f.fixedPeriods[i].split('_');
+									// TR.value.filterValues[filterValue[0]] = filterValue[1];
+									// TR.cmp.params.dataelement.objects.push({id: filterValue[0].split('_')[1], name: TR.util.string.getEncodedString(f.dataElements[i].name), compulsory: f.dataElements[i].compulsory, valueType:""});
+								}
+								
+								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
+								Ext.getCmp('limitOption').setValue( f.limitRecords );
+								Ext.getCmp('position').setValue( f.position );
+								Ext.getCmp('dataElementGroupByCbx').setValue( f.deGroupBy );
+								Ext.getCmp('aggregateType').setValue( f.deGroupBy );
+								
+								
+								Ext.getCmp('levelCombobox').setValue( f.level );
+								TR.state.orgunitIds = f.orgunitIds;
+								
+								
+								// Program stage									
+								var storeProgramStage = TR.store.programStage;
+								storeProgramStage.parent = f.programStageId;
+								storeProgramStage.isLoadFromFavorite = true;
+								storeProgramStage.load({params: {programId: f.programId}});
+								
+								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								
+								TR.exe.execute();
+							}
+						});
+					}				
+				}
+		   }
         }
 	};
     
@@ -671,25 +1025,56 @@ Ext.onReady( function() {
 				data: TR.value.values
 			});
         },
-		favorite: Ext.create('Ext.data.Store', {
-            fields: ['id', 'name', 'lastUpdated'],
-            proxy: {
-                type: 'ajax',
-                url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_getall,
-                reader: {
-                    type: 'json',
-                    root: 'tabularReports'
-                }
-            },
-            isloaded: false,
-            sorting: {
-                field: 'name',
-                direction: 'ASC'
-            },
-            sortStore: function() {
-                this.sort(this.sorting.field, this.sorting.direction);
-            },
-            listeners: {
+		reportFavorite: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'lastUpdated'],
+			proxy: {
+				type: 'ajax',
+				url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_getall,
+				reader: {
+					type: 'json',
+					root: 'tabularReports'
+				}
+			},
+			isloaded: false,
+			sorting: {
+				field: 'name',
+				direction: 'ASC'
+			},
+			sortStore: function() {
+				this.sort(this.sorting.field, this.sorting.direction);
+			},
+			listeners: {
+				load: function(s) {
+					s.isloaded = !s.isloaded ? true : false;
+					
+					s.sortStore();
+					s.each(function(r) {
+						r.data.lastUpdated = r.data.lastUpdated.substr(0,16);
+						r.data.icon = '<img src="' + TR.conf.finals.ajax.path_images + 'favorite.png" />';
+						r.commit();
+					});
+				}
+            }
+		}),
+		aggregateFavorite: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'lastUpdated'],
+			proxy: {
+				type: 'ajax',
+				url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_getall,
+				reader: {
+					type: 'json',
+					root: 'tabularReports'
+				}
+			},
+			isloaded: false,
+			sorting: {
+				field: 'name',
+				direction: 'ASC'
+			},
+			sortStore: function() {
+				this.sort(this.sorting.field, this.sorting.direction);
+			},
+			listeners: {
                 load: function(s) {
 					s.isloaded = !s.isloaded ? true : false;
 					
@@ -701,7 +1086,7 @@ Ext.onReady( function() {
                     });
                 }
             }
-        }),
+		}),
 		periodtype: Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			data: TR.conf.period.periodtypes
@@ -1135,6 +1520,56 @@ Ext.onReady( function() {
 			filter: function() {
 			
 			},
+			getPosition: function() {
+				// 1 - Rows
+				// 2 - Columns
+				// 3 - Filter
+				var positionOrgunit = Ext.getCmp('positionOrgunitCbx').getValue();
+				var positionPeriod = Ext.getCmp('positionPeriodCbx').getValue();
+				var positionData = Ext.getCmp('positionDataCbx').getValue();
+				
+				// 1
+				if( positionOrgunit==1 && positionPeriod==2 && positionData==3 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_PERIOD;
+				}
+				// 2
+				if( positionOrgunit==2 && positionPeriod==1 && positionData==3 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_ORGUNIT;
+				}
+				// 3
+				if( positionOrgunit==1 && positionPeriod==1 && positionData==3 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_ORGUNIT_ROW_PERIOD;
+				}
+				// 4
+				if( positionOrgunit==3 && positionPeriod==1 && positionData==3 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_PERIOD;
+				}
+				// 5
+				if( positionOrgunit==1 && positionPeriod==3 && positionData==3 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_ORGUNIT;
+				}
+				//6
+				if( positionOrgunit==3 && positionPeriod==1 && positionData==2 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA;
+				}
+				//7
+				if( positionOrgunit==1 && positionPeriod==3 && positionData==2 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA;
+				}
+				// 8
+				if( positionOrgunit==3 && positionPeriod==3 && positionData==1 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_DATA;
+				}
+				return '';
+			},
 			getParams: function( isSorted ) {
 				var p = {};
 				p.programStageId = TR.cmp.params.programStage.getValue();
@@ -1142,26 +1577,43 @@ Ext.onReady( function() {
 				p.orgunitIds = TR.state.orgunitIds;
 				p.limit = Ext.getCmp('limitOption').getValue();
 				
-				if( TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
-					|| TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_DATA ){
+				var position = TR.state.aggregateReport.getPosition();
+				if( position == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
+					|| position == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
+						|| position == TR.conf.reportPosition.POSITION_ROW_DATA ){
 					p.dataElementId = TR.cmp.settings.dataElementGroupBy.getValue().split('_')[1];
 				}
 				
+				// Filter values
 				p.deFilters = [];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var deId = r.data.id;
-					var filterValue = TR.value.filterValues[deId];
-					p.deFilters.push( deId.split('_')[1] + "_" + filterValue );
+					var filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
+					var filterValue = Ext.getCmp('filter_' + deId).rawValue;
+					var filter = deId.split('_')[1] + "_" + filterOpt + "_" + filterValue;
+					
+					var valueType = r.data.valueType;
+					if( valueType != 'string' && valueType != 'trueOnly' 
+						&& valueType != 'bool' && valueType != 'list')
+						{
+							var deId = deId + '_1';
+							filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
+							filterValue = Ext.getCmp('filter_' + deId).rawValue;
+							filter += "_" + filterOpt + "_" + filterValue;
+						}
+					p.deFilters.push( filter );
+					
 				});
 				
 				// Fixed periods
+				
 				p.periodIds = [];
 				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
 					p.periodIds.push( r.data.id );
 				});
 				
 				// Relative periods
+				
 				var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 				p.relativePeriods = [];
 				Ext.Array.each(relativePeriodList, function(item) {
@@ -1171,15 +1623,12 @@ Ext.onReady( function() {
 				});
 				
 				// Period range
-				if( Ext.getCmp('periodTypeRangeCbx').getValue() != null )
-				{
-					p.periodTypeName = Ext.getCmp('periodTypeRangeCbx').getValue();
-					p.startDate = TR.cmp.settings.startDate.rawValue;
-					p.endDate = TR.cmp.settings.endDate.rawValue;
-				}
 				
+				p.startDate = TR.cmp.settings.startDate.rawValue;
+				p.endDate = TR.cmp.settings.endDate.rawValue;
+			
 				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
-				p.position = TR.cmp.settings.position.getValue();
+				p.position = position;
 				
 				return p;
 			},
@@ -1191,16 +1640,17 @@ Ext.onReady( function() {
 				p += "&orgunitIds=" + TR.state.orgunitIds;
 				p += "&limit=" + Ext.getCmp('limitOption').getValue();
 				
-				if( TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
-					|| TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_DATA ){
+				var position = TR.state.aggregateReport.getPosition();
+				if( position == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
+					|| position == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
+						|| position == TR.conf.reportPosition.POSITION_ROW_DATA ){
 					p += "&dataElementId=" + TR.cmp.settings.dataElementGroupBy.getValue().split('_')[1];
 				}
 				
 				p.deFilters = [];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var deId = r.data.id;
-					var filterValue = TR.value.filterValues[deId];
+					var filterValue = Ext.getCmp('filter_' + deId).getValue();
 					p += "&deFilters=" + deId.split('_')[1] + "_" + filterValue;
 				});
 				
@@ -1220,15 +1670,13 @@ Ext.onReady( function() {
 				});
 				
 				// Period range
-				if( Ext.getCmp('periodTypeRangeCbx').getValue() != null )
-				{
-					p += "&periodTypeName=" + Ext.getCmp('periodTypeRangeCbx').getValue();
-					p += "&startDate=" + TR.cmp.settings.startDate.rawValue;
-					p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
-				}
+				
+				p += "&startDate=" + TR.cmp.settings.startDate.rawValue;
+				p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
+				
 				
 				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
-				p += "&position=" + TR.cmp.settings.position.getValue();
+				p += "&position=" + position;
 				
 				return p;
 			},
@@ -1290,13 +1738,23 @@ Ext.onReady( function() {
 						}
 					}
 					
-					if(( TR.cmp.settings.position.getValue()==TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-					 || TR.cmp.settings.position.getValue()==TR.conf.reportPosition.POSITION_ROW_DATA ) 
+					var position = TR.state.aggregateReport.getPosition();
+					if(( position==TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
+					 || position==TR.conf.reportPosition.POSITION_ROW_DATA ) 
 					 && TR.cmp.params.dataelement.selected.store.data.items.length > 1)
 					 {
 						TR.util.notification.error(TR.i18n.select_only_one_data_element, TR.i18n.select_only_one_data_element);
 						return false;
 					 }
+					
+					TR.cmp.params.dataelement.selected.store.each( function(r) {
+						var deId = r.data.id;
+						var filterValue = Ext.getCmp('filter_' + deId).getValue();
+						if( filterValue == null ){
+							TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
+							return false;
+						}
+					});
 					
 					var periodInt = 0;
 					if( TR.cmp.settings.startDate.rawValue!="" 
@@ -1320,16 +1778,16 @@ Ext.onReady( function() {
 						return false;
 					}
 					
-					if( !( TR.cmp.settings.position.getValue()== TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| TR.cmp.settings.position.getValue()== TR.conf.reportPosition.POSITION_ROW_DATA )
+					if( !( position== TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
+						|| position== TR.conf.reportPosition.POSITION_ROW_DATA )
 						&& TR.cmp.params.dataelement.selected.store.data.items.length == 0) {
 						TR.util.notification.error(TR.i18n.em_no_dataelement, TR.i18n.em_no_dataelement);
 						return false;
 					};
 					
-					if( ( TR.cmp.settings.position.getValue() == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
-						|| TR.cmp.settings.position.getValue()== TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| TR.cmp.settings.position.getValue()== TR.conf.reportPosition.POSITION_ROW_DATA)
+					if( ( position == TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA
+						|| position == TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
+						|| position == TR.conf.reportPosition.POSITION_ROW_DATA)
 						&& TR.cmp.settings.dataElementGroupBy.getValue() == null ){
 						TR.util.notification.error(TR.i18n.select_data_element_for_grouping, TR.i18n.select_data_element_for_grouping);
 						return false;
@@ -1359,7 +1817,6 @@ Ext.onReady( function() {
     TR.value = {
 		columns: [],
 		fields: [],
-		filterValues: [],
 		values: [],
 		covertValueType: function( type )
 		{
@@ -1376,7 +1833,7 @@ Ext.onReady( function() {
 			{
 				return 'numeric';
 			}
-			if( type == 'bool' || type == 'yes/no' )
+			if( type == 'bool' || type == 'yes/no' || type == 'trueOnly' )
 			{
 				return 'boolean';
 			}
@@ -1873,16 +2330,15 @@ Ext.onReady( function() {
 											change: function (cb, nv, ov) {
 												if(nv)
 												{
-													Ext.getCmp('periodTypeRangeCbx').setVisible(false);
-													Ext.getCmp('positionCbx').setVisible(false);
 													Ext.getCmp('limitOption').setVisible(false);
 													Ext.getCmp('dataElementGroupByCbx').setVisible(false);
 													Ext.getCmp('aggregateType').setVisible(false);
 													Ext.getCmp('downloadPdfIcon').setVisible(false);
 													Ext.getCmp('downloadCvsIcon').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(true);
+													Ext.getCmp('selectedDataelements').setVisible(true);
 													
-													
+													Ext.getCmp('filterPanel').setVisible(false);
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
 													Ext.getCmp('dateRangeDiv').expand();
@@ -1899,15 +2355,15 @@ Ext.onReady( function() {
 											change: function (cb, nv, ov) {
 												if(nv)
 												{
-													Ext.getCmp('periodTypeRangeCbx').setVisible(true);
-													Ext.getCmp('positionCbx').setVisible(true);
 													Ext.getCmp('limitOption').setVisible(true);
 													Ext.getCmp('dataElementGroupByCbx').setVisible(true);
 													Ext.getCmp('aggregateType').setVisible(true);
 													Ext.getCmp('downloadPdfIcon').setVisible(true);
 													Ext.getCmp('downloadCvsIcon').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(false);
+													Ext.getCmp('selectedDataelements').setVisible(false);
 													
+													Ext.getCmp('filterPanel').setVisible(true);
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(true);
 													Ext.getCmp('dateRangeDiv').expand();
@@ -1940,6 +2396,7 @@ Ext.onReady( function() {
 									select: function(cb) {
 										TR.state.isFilter = false;
 										var pId = cb.getValue();
+										
 										// PROGRAM-STAGE										
 										var storeProgramStage = TR.store.programStage;
 										TR.store.dataelement.available.removeAll();
@@ -1947,6 +2404,9 @@ Ext.onReady( function() {
 										storeProgramStage.parent = pId;
 										TR.store.dataelement.isLoadFromFavorite = false;
 										storeProgramStage.load({params: {programId: pId}});
+										
+										// FILTER-VALUES FIELDS
+										Ext.getCmp('filterPanel').removeAll();
 									}
 								}
 							},
@@ -2007,21 +2467,6 @@ Ext.onReady( function() {
 										id: 'dateRangeDiv',
 										hideCollapseTool: true,
 										items: [
-											{
-												xtype: 'combobox',
-												id: 'periodTypeRangeCbx',
-												cls: 'tr-combo',
-												width: TR.conf.layout.west_fieldset_width - 20,
-												valueField: 'id',
-												displayField: 'name',
-												fieldLabel: TR.i18n.select_type,
-												labelWidth: 90,
-												editable: true,
-												allowBlank: true,
-												queryMode: 'remote',
-												store: TR.store.periodtype,
-												periodOffset: 0,
-											},
 											{
 												xtype: 'datefield',
 												cls: 'tr-textfield-alt1',
@@ -2424,6 +2869,29 @@ Ext.onReady( function() {
 											{
 												xtype: 'combobox',
 												cls: 'tr-combo',
+												id: 'facilityLBCombobox',
+												fieldLabel: TR.i18n.use_data_from_level,
+												labelWidth: 135,
+												emptyText: TR.i18n.please_select,
+												queryMode: 'local',
+												editable: false,
+												valueField: 'value',
+												displayField: 'name',
+												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
+												store:  new Ext.data.ArrayStore({
+													fields: ['value', 'name'],
+													data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
+												}),
+												value: 'all',
+												listeners: {
+													added: function() {
+														TR.cmp.settings.facilityLB = this;
+													}
+												}
+											},
+											{
+												xtype: 'combobox',
+												cls: 'tr-combo',
 												name: TR.init.system.orgunitGroup,
 												id: 'orgGroupCombobox',
 												emptyText: TR.i18n.please_select,
@@ -2448,7 +2916,6 @@ Ext.onReady( function() {
 												cls: 'tr-tree',
 												id: 'treeOrg',
 												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												height: 305,
 												autoScroll: true,
 												multiSelect: true,
 												isrendered: false,
@@ -2522,7 +2989,7 @@ Ext.onReady( function() {
 												TR.cmp.params.organisationunit.panel = this;
 											},
 											expand: function() {
-												TR.cmp.params.organisationunit.treepanel.setHeight(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit);
+												TR.cmp.params.organisationunit.treepanel.setHeight(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit - 25 );
 											}
 										}
 									},
@@ -2553,7 +3020,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowright.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.select(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+																	TR.util.multiselect.select(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}
 															},
@@ -2562,8 +3029,8 @@ Ext.onReady( function() {
 																icon: 'images/arrowrightdouble.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.selectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-																		TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
+																	TR.util.multiselect.selectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}
 															},
 															''
@@ -2580,7 +3047,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowleftdouble.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.unselectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+																	TR.util.multiselect.unselectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															},
@@ -2589,7 +3056,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowleft.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															},
@@ -2606,7 +3073,7 @@ Ext.onReady( function() {
 														name: 'availableDataelements',
 														cls: 'tr-toolbar-multiselect-left',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 220,
+														height: 190,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'remote',
@@ -2658,9 +3125,9 @@ Ext.onReady( function() {
 															},                                                                
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.select(this, TR.cmp.params.dataelement.selected);
+																	TR.util.multiselect.select(this, TR.cmp.params.dataelement.selected, true);
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
-																}, this);
+																}, this);																
 															}
 														}
 													},											
@@ -2669,7 +3136,7 @@ Ext.onReady( function() {
 														name: 'selectedDataelements',
 														cls: 'tr-toolbar-multiselect-right',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 200,
+														height: 190,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -2719,44 +3186,17 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																TR.cmp.params.dataelement.selected = this;
-															}, 
-															change: function( cp, newValue, oldValue, eOpts )
-															{
-																Ext.getCmp('deFilterField').enable();
-																Ext.getCmp('addDeFilterBtn').enable();
-																
-																var deId = TR.cmp.params.dataelement.selected.getValue()
-																Ext.getCmp('deFilterField').setValue(TR.value.filterValues[deId]);
 															},
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, this);
+																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, this, true);
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}, this);
 															}
 														}
 													},
-													{
-														xtype: 'textfield',
-														emptyText: TR.i18n.filter_value,
-														id: 'deFilterField',
-														disabled: true,
-														dock: 'bottom',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 32
-													},
-													{
-														xtype: 'button',
-														text: TR.i18n.add,
-														id: 'addDeFilterBtn',
-														width: 30,
-														disabled: true,
-														handler: function() {
-															var deId = TR.cmp.params.dataelement.selected.getValue()
-														    TR.value.filterValues[deId]= Ext.getCmp('deFilterField').rawValue;
-														}
-													}
 												]
-											}
+											},
 										],
 										listeners: {
 											added: function() {
@@ -2765,6 +3205,27 @@ Ext.onReady( function() {
 										}
 									},
 									
+									// FILTER BY
+									{
+										title: '<div style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.filter_values + '</div>',
+										hideCollapseTool: true,
+										layout:{
+											padding:'10 10 0 10'
+										},
+										items: [
+											{
+												xtype: 'panel',
+												layout: 'column',
+												id: 'filterPanel',
+												bodyStyle: 'border-style:none',
+												autoScroll: true,
+												height: 225,
+												width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) ,
+												items: []
+											}
+										]
+									},
+											
 									// OPTIONS
 									{
 										title: '<div style="height:17px;background-image:url(images/options.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.options + '</div>',
@@ -2772,140 +3233,113 @@ Ext.onReady( function() {
 										cls: 'tr-accordion-options',
 										items: [
 											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
-												id: 'facilityLBCombobox',
-												fieldLabel: TR.i18n.use_data_from_level,
-												labelWidth: 135,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: false,
-												valueField: 'value',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												store:  new Ext.data.ArrayStore({
-													fields: ['value', 'name'],
-													data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
-												}),
-												value: 'all',
-												listeners: {
-													added: function() {
-														TR.cmp.settings.facilityLB = this;
-													}
-												}
-											},
-											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
-												id:'levelCombobox',
-												hidden: true,
-												fieldLabel: TR.i18n.show_hierachy_from_level,
-												labelWidth: 135,
-												name: TR.conf.finals.programs,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: false,
-												valueField: 'value',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												store: Ext.create('Ext.data.Store', {
-													fields: ['value', 'name'],
-													data: TR.init.system.level,
-												}),
-												value: '1',
-												listeners: {
-													added: function() {
-														TR.cmp.settings.level = this;
-													}
-												}
-											},
-											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
-												id: 'positionCbx',
-												fieldLabel: TR.i18n.position,
-												labelWidth: 135,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: false,
-												valueField: 'value',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												store:  new Ext.data.ArrayStore({
-													fields: ['value', 'name'],
-													data: [ ['1', TR.i18n.position1], 
-															['2', TR.i18n.position2], 
-															['3', TR.i18n.position3],
-															['4', TR.i18n.position4],
-															['5', TR.i18n.position5],
-															['6', TR.i18n.position6],
-															['7', TR.i18n.position7],
-															['8', TR.i18n.position8] ],
-												}),
-												value: '1',
-												listeners: {
-													added: function() {
-														TR.cmp.settings.position = this;
-													},
-													select: function(cb) {
-														var position = cb.getValue();
-														if( position != TR.conf.reportPosition.POSITION_ROW_DATA ){
-															Ext.getCmp('limitOption').setValue("");
-															Ext.getCmp('limitOption').disable();
-														}
-														else{
-															Ext.getCmp('limitOption').enable();
-														}
-													}
-												}
-											},
-											{
-												xtype: 'numberfield',
-												id: 'limitOption',
-												fieldLabel: TR.i18n.limit_records,
-												labelSeparator: '',
-												labelWidth: 135,
-												editable: true,
-												allowBlank:true,
-												disabled: true,
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												minValue: 1,
-												listeners: {
-													added: function() {
-														TR.cmp.settings.limitOption = this;
-													}
-												}
-											},
-											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
-												id: 'dataElementGroupByCbx',
-												fieldLabel: TR.i18n.group_by,
-												labelWidth: 135,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: true,
-												valueField: 'id',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												store: TR.store.dataelement.available,
-												listeners: {
-													added: function() {
-														TR.cmp.settings.dataElementGroupBy = this;
-													}
-												}
-											},
-											{
-												xtype: 'panel',
+												xtype: 'fieldset',
+												title: TR.i18n.position,
 												layout: 'anchor',
-												bodyStyle: 'border:0 none',
+												collapsible: false,
+												collapsed: false,
+												defaults: {
+													anchor: '100%',
+													labelStyle: 'padding-left:4px;'
+												},
 												items: [
-												 {
+													{
+														xtype: 'combobox',
+														cls: 'tr-combo',
+														id: 'positionOrgunitCbx',
+														fieldLabel: TR.i18n.orgunit,
+														labelWidth: 135,
+														emptyText: TR.i18n.please_select,
+														queryMode: 'local',
+														editable: false,
+														valueField: 'value',
+														displayField: 'name',
+														width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+														store:  new Ext.data.ArrayStore({
+															fields: ['value', 'name'],
+															data: [ ['1', TR.i18n.rows], 
+																	['2', TR.i18n.columns], 
+																	['3', TR.i18n.filters] ]
+														}),
+														value: '1',
+														listeners: {
+															added: function() {
+																TR.cmp.settings.positionOrgunit = this;
+															},
+															change: function (cb, nv, ov) {
+																TR.util.positionFilter.orgunit();
+															}
+														}
+													},
+													{
+														xtype: 'combobox',
+														cls: 'tr-combo',
+														id: 'positionPeriodCbx',
+														fieldLabel: TR.i18n.period,
+														labelWidth: 135,
+														emptyText: TR.i18n.please_select,
+														queryMode: 'local',
+														editable: false,
+														valueField: 'value',
+														displayField: 'name',
+														width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+														store:  new Ext.data.ArrayStore({
+															fields: ['value', 'name'],
+															data: [ ['1', TR.i18n.rows], 
+																	['2', TR.i18n.columns], 
+																	['3', TR.i18n.filters] ]
+														}),
+														value: '2',
+														listeners: {
+															added: function() {
+																TR.cmp.settings.positionPeriod = this;
+															},
+															change: function (cb, nv, ov) {
+																TR.util.positionFilter.period();
+															}
+														}
+													},
+													{
+														xtype: 'combobox',
+														cls: 'tr-combo',
+														id: 'positionDataCbx',
+														fieldLabel: TR.i18n.data,
+														labelWidth: 135,
+														emptyText: TR.i18n.please_select,
+														queryMode: 'local',
+														editable: false,
+														valueField: 'value',
+														displayField: 'name',
+														width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+														store:  new Ext.data.ArrayStore({
+															fields: ['value', 'name'],
+															data: [ ['3', TR.i18n.filters] ]
+														}),
+														value: '3',
+														listeners: {
+															added: function() {
+																TR.cmp.settings.positionData = this;
+															}
+														}
+													}
+												]
+											},
+											{
+												xtype: 'fieldset',
+												layout: 'anchor',
+												collapsible: false,
+												collapsed: false,
+												defaults: {
+														anchor: '100%',
+														labelStyle: 'padding-left:4px;'
+												},
+												items: [
+												{
 													xtype: 'radiogroup',
 													id: 'aggregateType',
 													fieldLabel: TR.i18n.aggregate_type,
 													labelWidth: 135,
-													columns: 1,
+													columns: 3,
 													vertical: true,
 													items: [{
 														boxLabel: TR.i18n.count,
@@ -2923,8 +3357,70 @@ Ext.onReady( function() {
 														name: 'aggregateType',
 														inputValue: 'avg'
 													}]
-												}]
-											}
+												},
+												{
+													xtype: 'combobox',
+													cls: 'tr-combo',
+													id:'levelCombobox',
+													hidden: true,
+													fieldLabel: TR.i18n.show_hierachy_from_level,
+													labelWidth: 135,
+													name: TR.conf.finals.programs,
+													emptyText: TR.i18n.please_select,
+													queryMode: 'local',
+													editable: false,
+													valueField: 'value',
+													displayField: 'name',
+													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 30,
+													store: Ext.create('Ext.data.Store', {
+														fields: ['value', 'name'],
+														data: TR.init.system.level,
+													}),
+													value: '1',
+													listeners: {
+														added: function() {
+															TR.cmp.settings.level = this;
+														}
+													}
+												},
+												{
+													xtype: 'combobox',
+													cls: 'tr-combo',
+													id: 'dataElementGroupByCbx',
+													fieldLabel: TR.i18n.group_by,
+													labelWidth: 135,
+													emptyText: TR.i18n.please_select,
+													queryMode: 'local',
+													editable: true,
+													valueField: 'id',
+													displayField: 'name',
+													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 30,
+													store: TR.store.dataelement.available,
+													listeners: {
+														added: function() {
+															TR.cmp.settings.dataElementGroupBy = this;
+														}
+													}
+												},
+												{
+													xtype: 'numberfield',
+													id: 'limitOption',
+													fieldLabel: TR.i18n.limit_records,
+													labelSeparator: '',
+													labelWidth: 135,
+													editable: true,
+													allowBlank:true,
+													disabled: true,
+													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 30,
+													minValue: 1,
+													listeners: {
+														added: function() {
+															TR.cmp.settings.limitOption = this;
+														}
+													}
+												}
+												]
+											},
 										]
 									}
 								
