@@ -31,6 +31,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.autogrow.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/underscore.min.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>

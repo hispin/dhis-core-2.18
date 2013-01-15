@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Version: 2.11-SNAPSHOT V8
+# Version: 2.11-SNAPSHOT V9
 
 CACHE:
 ../mobile/index
@@ -10,6 +10,7 @@ CACHE:
 ../dhis-web-commons/i18nJavaScript.action
 ../dhis-web-commons/javascripts/jQuery/jquery.glob.js
 ../dhis-web-commons/javascripts/jQuery/jquery.date.js
+../dhis-web-commons/javascripts/underscore.min.js
 ../dhis-web-commons/javascripts/date.js
 ../dhis-web-commons/javascripts/periodType.js
 ../dhis-web-commons/javascripts/jQuery/jquery.validate.js
@@ -23,7 +24,6 @@ CACHE:
 ../dhis-web-mobile-resources/css/images/icons-18-black.png
 ../dhis-web-mobile-resources/css/images/icons-36-white.png
 ../dhis-web-mobile-resources/css/images/icons-36-black.png
-../dhis-web-mobile-resources/js/underscore.min.js
 ../dhis-web-mobile-resources/js/jquery.mobile.min.js
 ../dhis-web-mobile-resources/js/dhis2.storage.js
 
