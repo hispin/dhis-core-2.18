@@ -46,7 +46,7 @@ function addUserGroupAccessSelectedItem(e) {
         access: "r-------"
     });
 
-    $(tmpl_html ).insertAfter('#sharingAccessTable tbody');
+    $(tmpl_html).insertAfter('#sharingAccessTable tbody');
 
     $('#sharingFindUserGroup').val('')
     sharingSelectedItem = undefined;
