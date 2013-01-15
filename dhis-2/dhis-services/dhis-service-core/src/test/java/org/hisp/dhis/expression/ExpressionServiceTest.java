@@ -52,6 +52,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -104,6 +106,8 @@ public class ExpressionServiceTest
     private String expressionD;
     
     private String expressionE;
+    
+    private String expressionF;
 
     private String descriptionA;
 
@@ -194,6 +198,7 @@ public class ExpressionServiceTest
         expressionC = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+#{" + dataElementE.getUid() + "}-10";
         expressionD = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+" + DAYS_SYMBOL;
         expressionE = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}*C{" + constantA.getUid() + "}";
+        expressionF = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}";
 
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -328,7 +333,44 @@ public class ExpressionServiceTest
         assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5, false ) );
         assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null, false ) );
     }
+    
+    @Test
+    public void testGetExpressionValue()
+    {
+        Expression expA = createExpression( 'A', expressionA, null, null );
+        Expression expD = createExpression( 'D', expressionD, null, null );
+        Expression expE = createExpression( 'E', expressionE, null, null );
+        
+        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
+        valueMap.put( new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() ), new Double( 34 ) );
+        
+        Map<String, Double> constantMap = new HashMap<String, Double>();
+        constantMap.put( constantA.getUid(), 2.0 );
+        
+        assertEquals( 46d, expressionService.getExpressionValue( expA, valueMap, constantMap, null ), DELTA );
+        assertEquals( 17d, expressionService.getExpressionValue( expD, valueMap, constantMap, 5 ), DELTA );
+        assertEquals( 24d, expressionService.getExpressionValue( expE, valueMap, constantMap, null ), DELTA );
+    }
+    
+    @Test
+    public void testGetIndicatorValue()
+    {
+        IndicatorType indicatorType = new IndicatorType( "A", 100, false );
+        Indicator indicatorA = createIndicator( 'A', indicatorType );
+        indicatorA.setNumerator( expressionE );
+        indicatorA.setDenominator( expressionF );
 
+        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
+        valueMap.put( new DataElementOperand( dataElementB.getUid(), categoryOptionCombo.getUid() ), new Double( 34 ) );
+        
+        Map<String, Double> constantMap = new HashMap<String, Double>();
+        constantMap.put( constantA.getUid(), 2.0 );
+        
+        assertEquals( 200d, expressionService.getIndicatorValue( indicatorA, period, valueMap, constantMap, null ), DELTA );        
+    }
+    
     // -------------------------------------------------------------------------
     // CRUD tests
     // -------------------------------------------------------------------------

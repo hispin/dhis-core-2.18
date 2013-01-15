@@ -36,6 +36,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.Period;
 
 /**
  * Expressions are mathematical formulas and can contain references to various
@@ -111,7 +112,10 @@ public interface ExpressionService
      * @return A collection with all Expressions.
      */
     Collection<Expression> getAllExpressions();
-
+    
+    Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
+        Map<String, Double> constantMap, Integer days );
+    
     /**
      * Generates the calculated value for the given expression base on the values
      * supplied in the value map, constant map and days.
