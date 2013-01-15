@@ -28,6 +28,8 @@ package org.hisp.dhis.analytics;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
+import static org.hisp.dhis.system.util.CollectionUtils.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.period.Period;
@@ -56,9 +59,10 @@ public class DataQueryParams
     public static final String ORGUNIT_DIM_ID = "ou";
     public static final String VALUE_ID = "value";    
     public static final String LEVEL_PREFIX = "uidlevel";
-
+    
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ",";
+    public static final char DIMENSION_SEP = '-';
     
     private Map<String, List<IdentifiableObject>> dimensions = new HashMap<String, List<IdentifiableObject>>();
     
@@ -157,7 +161,23 @@ public class DataQueryParams
     }
 
     /**
-     * Returns the index of the period dimension in the index list.
+     * Returns the index of the data element dimension in the dimension map.
+     */
+    public int getDataElementDimensionIndex()
+    {
+        return getDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
+    }
+
+    /**
+     * Returns the index of the category option combo dimension in the dimension map.
+     */
+    public int getCategoryOptionComboDimensionIndex()
+    {
+        return getDimensionNamesAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
+    }
+    
+    /**
+     * Returns the index of the period dimension in the dimension map.
      */
     public int getPeriodDimensionIndex()
     {
@@ -285,6 +305,39 @@ public class DataQueryParams
         }
         
         return map;
+    }
+    
+    public List<String> getDimensionOptionPermutations()
+    {
+        List<String[]> dimensionOptions = new ArrayList<String[]>();
+        
+        List<String> ignoreDims = Arrays.asList( DATAELEMENT_DIM_ID, CATEGORYOPTIONCOMBO_DIM_ID, INDICATOR_DIM_ID );
+        
+        for ( String dim : getDimensionNamesAsList() )
+        {
+            if ( !ignoreDims.contains( dim ) )
+            {
+                dimensionOptions.add( getUids( dimensions.get( dim ) ).toArray( STRING_ARR ) );
+            }
+        }
+        
+        CombinationGenerator<String> generator = new CombinationGenerator<String>( dimensionOptions.toArray( STRING_2D_ARR ) );
+        
+        List<String> perms = new ArrayList<String>();
+        
+        for ( List<String> perm : generator.getCombinations() )
+        {
+            StringBuilder key = new StringBuilder();
+            
+            for ( String uid : perm )
+            {
+                key.append( uid + DIMENSION_SEP );
+            }
+            
+            key.deleteCharAt( key.length() - 1 );
+        }
+        
+        return perms;
     }
 
     // -------------------------------------------------------------------------

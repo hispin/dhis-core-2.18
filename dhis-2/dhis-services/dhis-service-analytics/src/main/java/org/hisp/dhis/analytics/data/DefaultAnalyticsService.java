@@ -27,8 +27,8 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsManager.SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
@@ -38,12 +38,14 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
@@ -51,7 +53,9 @@ import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -63,10 +67,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 public class DefaultAnalyticsService
     implements AnalyticsService
@@ -97,6 +103,9 @@ public class DefaultAnalyticsService
     
     @Autowired
     private ExpressionService expressionService;
+    
+    @Autowired
+    private ConstantService constantService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -120,21 +129,52 @@ public class DefaultAnalyticsService
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
 
         // ---------------------------------------------------------------------
-        // Manage indicators, add data elements from indicators to query
+        // Add data elements from indicators to query
         // ---------------------------------------------------------------------
 
         addDataElementsFromIndicators( params );
 
         // ---------------------------------------------------------------------
+        // Get aggregated data
+        // ---------------------------------------------------------------------
+
+        Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( params );
+
+        List<Indicator> indicators = asTypedList( params.getIndicators() );
+        
+        if ( !indicators.isEmpty() )
+        {
+            List<String> dimensionOptionPermutations = params.getDimensionOptionPermutations();
+            
+            Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = getPermutationOperandValueMap( params, aggregatedDataMap );
+
+            Map<String, Double> constantMap = constantService.getConstantMap();
+            
+            int periodDimensionIndex = params.getPeriodDimensionIndex();
+            
+            int dataElementDimensionIndex = params.getDataElementDimensionIndex();
+            
+            for ( Indicator indicator : indicators )
+            {
+                for ( String perm : dimensionOptionPermutations )
+                {
+                    List<String> dimensionOptions = Arrays.asList( perm.split( String.valueOf( DIMENSION_SEP ) ) );
+                    
+                    Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( perm );
+                    
+                    Double value = expressionService.getIndicatorValue( indicator, null, valueMap, constantMap, null );
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
         // Set aggregated values on grid
         // ---------------------------------------------------------------------
 
-        Map<String, Double> map = getAggregatedDataValueMap( params );
-        
-        for ( Map.Entry<String, Double> entry : map.entrySet() )
+        for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
         {
             grid.addRow();
-            grid.addValues( entry.getKey().split( String.valueOf( SEP ) ) );
+            grid.addValues( entry.getKey().split( String.valueOf( DIMENSION_SEP ) ) );
             grid.addValue( entry.getValue() );
         }
         
@@ -282,5 +322,31 @@ public class DefaultAnalyticsService
         }
         
         return dataElementsOnlyInIndicators;
+    }
+    
+    private Map<String, Map<DataElementOperand, Double>> getPermutationOperandValueMap( DataQueryParams params, Map<String, Double> aggregatedDataMap )
+    {
+        MapMap<String, DataElementOperand, Double> valueMap = new MapMap<String, DataElementOperand, Double>();
+        
+        for ( String key : aggregatedDataMap.keySet() )
+        {
+            List<String> keys = Arrays.asList( key.split( String.valueOf( DIMENSION_SEP ) ) );
+            
+            String de = keys.get( params.getDataElementDimensionIndex() );
+            String coc = keys.get( params.getCategoryOptionComboDimensionIndex() );
+            
+            keys.remove( params.getDataElementDimensionIndex() );
+            keys.remove( params.getCategoryOptionComboDimensionIndex() );
+            
+            String permKey = StringUtils.join( keys, DIMENSION_SEP );
+            
+            DataElementOperand operand = new DataElementOperand( de, coc );
+            
+            Double value = aggregatedDataMap.get( keys );
+            
+            valueMap.putEntry( permKey, operand, value );            
+        }
+        
+        return valueMap;
     }
 }
