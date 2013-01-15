@@ -902,6 +902,8 @@
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
 	
+	<!-- Patient Aggregate Report -->
+	
 	<bean id="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction"
 		class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction"
 		scope="prototype">
@@ -914,8 +916,52 @@
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+	
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction"
+		class="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction"
+		scope="prototype">
+		<property name="aggregateReportService"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.UpdateAggregateReportNameAction"
+		class="org.hisp.dhis.caseentry.action.report.UpdateAggregateReportNameAction"
+		scope="prototype">
+		<property name="aggregateReportService"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.DeleteAggregateReportAction"
+		class="org.hisp.dhis.caseentry.action.report.DeleteAggregateReportAction"
+		scope="prototype">
+		<property name="aggregateReportService"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.GetAggregateReportListAction"
+		class="org.hisp.dhis.caseentry.action.report.GetAggregateReportListAction"
+		scope="prototype">
+		<property name="aggregateReportService"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction"
+		scope="prototype">
+		<property name="aggregateReportService"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+	</bean>
 
-	<!-- SMS Reminder -->
+	<!-- Reminder -->
 	
 	<bean
 		id="org.hisp.dhis.caseentry.action.reminder.GetProgramTrackingListAction"

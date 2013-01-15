@@ -92,7 +92,7 @@ public class HibernateProgramStageInstanceStore
     {
         this.statementBuilder = statementBuilder;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -392,6 +392,8 @@ public class HibernateProgramStageInstanceStore
         String filterSQL = filterSQLStatement( deFilters );
 
         Grid grid = new ListGrid();
+        grid.setTitle( programStage.getProgram().getName() );
+        grid.setSubtitle( programStage.getName() );
 
         // Type = 1
         if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD )
@@ -523,8 +525,8 @@ public class HibernateProgramStageInstanceStore
             // Get SQL and build grid
             // ---------------------------------------------------------------------
 
-            sql = getAggregateReportSQL7( programStage, orgunitIds, filterSQL, dataElementId, deValues, periods.iterator().next(),
-                aggregateType, format );
+            sql = getAggregateReportSQL7( programStage, orgunitIds, filterSQL, dataElementId, deValues, periods
+                .iterator().next(), aggregateType, format );
         }
         // type = 8
         else if ( position == PatientAggregateReport.POSITION_ROW_DATA )
@@ -545,6 +547,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, dataElementId, periods.iterator().next(),
                 aggregateType, limit, format );
         }
+        System.out.println( "\n\n === \n\n " + sql );
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         // Type != 2
@@ -896,8 +899,8 @@ public class HibernateProgramStageInstanceStore
      * Aggregate report Position Orgunit Rows - Period Filter - Data Columns
      * 
      **/
-    private String getAggregateReportSQL7( ProgramStage programStage, Collection<Integer> orgunitIds,
-        String filterSQL, Integer dataElementId, List<String> deValues, Period period, String aggregateType, I18nFormat format )
+    private String getAggregateReportSQL7( ProgramStage programStage, Collection<Integer> orgunitIds, String filterSQL,
+        Integer dataElementId, List<String> deValues, Period period, String aggregateType, I18nFormat format )
     {
         String sql = "select ou.name as orgunit, ";
 
@@ -920,7 +923,7 @@ public class HibernateProgramStageInstanceStore
             sql += "     WHERE programstageinstanceid=psi_1.programstageinstanceid ";
             sql += "            AND dataelementid=" + dataElementId + " ";
             sql += "     ) = '" + deValue + "' ";
-           
+
             sql += ") as v_" + index + ",";
 
             index++;
@@ -990,7 +993,7 @@ public class HibernateProgramStageInstanceStore
             return "";
         }
     }
-    
+
     private void pivotTable( Grid grid, SqlRowSet rowSet )
     {
         try
@@ -1050,7 +1053,7 @@ public class HibernateProgramStageInstanceStore
             while ( iterFilter.hasNext() )
             {
                 Integer id = iterFilter.next();
-                String value = deFilters.get( id );
+                String[] filterKey = deFilters.get( id ).split( "_" );
 
                 filter += "AND (SELECT value ";
                 filter += "FROM patientdatavalue ";
@@ -1060,12 +1063,21 @@ public class HibernateProgramStageInstanceStore
                     filter += "dataelementid= pdv_1.dataelementid AND ";
                     flag = true;
                 }
-                filter += "dataelementid=" + id + "   ";
-                filter += ") = '" + value + "' ";
+                filter += "dataelementid=" + id + "  ";
+                filter += ") " + filterKey[0] + " '" + filterKey[1] + "' ";
+                
+                if( filterKey.length == 4 )
+                {
+                    filter += "AND (SELECT value ";
+                    filter += "FROM patientdatavalue ";
+                    filter += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
+                    filter += "dataelementid=" + id + "  ";
+                    filter += ") " + filterKey[2] + " '" + filterKey[3] + "' ";
+                }
             }
         }
-
+        
         return filter;
     }
-
+    
 }

@@ -15,30 +15,49 @@
 		
 		&identifiableProperties;
 
-		<list name="organisationUnits" table="patientaggregatereport_organisationUnits">
+		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+			column="programstageid" foreign-key="fk_patientaggregatereport_programstage" />
+
+		<property name="periodTypeName" />
+
+		<property name="startDate" />
+
+		<property name="endDate" />
+
+		<set name="relativePeriods" table="patientaggregatereport_relativeperiods">
+			<key column="patientaggregatereportid"
+				foreign-key="fk_patientaggregatereport_relativeperiods_patientaggregatereportid" />
+			<element type="text" column="relativeperiod" />
+		</set>
+
+		<set name="fixedPeriod" table="patientaggregatereport_fixedpriods">
+			<key column="patientaggregatereportid"
+				foreign-key="fk_patientaggregatereport_fixedperiods_patientaggregatereportid" />
+			<element type="text" column="fixedperiod" />
+		</set>
+
+		<set name="organisationUnits" table="patientaggregatereport_organisationUnits">
 			<key column="patientaggregatereportid" foreign-key="fk_patientaggregatereport_organisationunitid" />
-			<list-index column="sort_order" base="0" />
 			<many-to-many column="organisationunitid"
 				class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_patientaggregatereportid_organisationunit" />
-		</list>
+		</set>
 
-		<list name="periods" table="patientaggregatereport_periods">
+		<set name="filterValues" table="patientaggregatereport_filtervalues">
 			<key column="patientaggregatereportid"
-				foreign-key="fk_patientaggregatereport_periods_patientaggregatereportid" />
-			<list-index column="sort_order" base="0" />
-			<many-to-many column="periodid" class="org.hisp.dhis.period.Period"
-				foreign-key="fk_patientaggregatereport_periods_periodid" />
-		</list>
+				foreign-key="fk_patientaggregatereport_filtervalues_patientaggregatereportid" />
+			<element type="text" column="filtervalue" />
+		</set>
 
-		<list name="dataElements" table="patientaggregatereport_programstagedataelements">
-			<key column="patientaggregatereportid" />
-			<list-index column="sort_order" base="1" />
-			<one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
-		</list>
+		<property name="facilityLB" />
+		
+		<property name="limitRecords" />
 
 		<property name="position" />
+		
+		<many-to-one name="deGroupBy" class="org.hisp.dhis.dataelement.DataElement"
+			column="dataelementid" foreign-key="fk_patientaggregatereport_dataelementid" />
 
-		<property name="limitRecords" />
+		<property name="aggregateType" />
 
 		<many-to-one name="user" class="org.hisp.dhis.user.User"
 			column="userid" foreign-key="fk_patientaggregatereport_userid" />
