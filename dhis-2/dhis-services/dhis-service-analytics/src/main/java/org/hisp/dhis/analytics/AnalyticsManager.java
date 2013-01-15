@@ -35,8 +35,6 @@ import org.hisp.dhis.system.util.ListMap;
 
 public interface AnalyticsManager
 {
-    static final char SEP = '-';
-    
     /**
      * Retrieves aggregated data values for the given query. The data is returned
      * as a mapping where the key is concatenated from the dimension options for

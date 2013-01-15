@@ -29,7 +29,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_AGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
-import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
@@ -123,7 +123,7 @@ public class JdbcAnalyticsManager
             
             for ( String dim : dimensions )
             {
-                key.append( rowSet.getString( dim ) + SEP );
+                key.append( rowSet.getString( dim ) + DIMENSION_SEP );
             }
             
             key.deleteCharAt( key.length() - 1 );
@@ -148,7 +148,7 @@ public class JdbcAnalyticsManager
             
             for ( String key : keys )
             {
-                String[] keyArray = key.split( String.valueOf( SEP ) );
+                String[] keyArray = key.split( String.valueOf( DIMENSION_SEP ) );
                 
                 Assert.notNull( keyArray[periodIndex], keyArray.toString() );
                 
@@ -162,7 +162,7 @@ public class JdbcAnalyticsManager
                 {
                     String[] keyCopy = keyArray.clone();
                     keyCopy[periodIndex] = ((Period) period).getIsoDate();
-                    dataValueMap.put( TextUtils.toString( keyCopy, SEP ), value );
+                    dataValueMap.put( TextUtils.toString( keyCopy, DIMENSION_SEP ), value );
                 }
                 
                 dataValueMap.remove( key );
