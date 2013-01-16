@@ -63,8 +63,6 @@ public class HibernateMessageConversationStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    
-
     public List<MessageConversation> getMessageConversations( User user, boolean followUpOnly, boolean unreadOnly,
         Integer first, Integer max )
     {
@@ -145,6 +143,11 @@ public class HibernateMessageConversationStore
 
     public long getUnreadUserMessageConversationCount( User user )
     {
+        if ( user == null )
+        {
+            return -1;
+        }
+        
         String hql = "select count(*) from MessageConversation m join m.userMessages u where u.user = :user and u.read = false";
 
         Query query = getQuery( hql );
@@ -156,6 +159,11 @@ public class HibernateMessageConversationStore
 
     public int deleteMessages( User sender )
     {
+        if ( sender == null )
+        {
+            return -1;
+        }
+        
         String sql = "delete from messageconversation_messages where messageid in ("
             + "select messageid from message where userid = " + sender.getId() + ")";
 
@@ -170,6 +178,11 @@ public class HibernateMessageConversationStore
 
     public int deleteUserMessages( User user )
     {
+        if ( user == null )
+        {
+            return -1;
+        }
+        
         String sql = "delete from messageconversation_usermessages where usermessageid in ("
             + "select usermessageid from usermessage where userid = " + user.getId() + ")";
 
@@ -191,13 +204,13 @@ public class HibernateMessageConversationStore
         return query.executeUpdate();
     }
 
-    public List<UserMessage> getLastRecipients( User user, Integer first, Integer max, Integer currentUserId )
+    public List<UserMessage> getLastRecipients( User user, Integer first, Integer max )
     {        
         String sql = " select distinct userinfoid, surname, firstname from userinfo uf" 
-                      + " JOIN usermessage um ON (uf.userinfoid = um.userid)"
-                      + " JOIN messageconversation_usermessages mu ON (um.usermessageid = mu.usermessageid)"
-                      + " JOIN messageconversation mc ON(mu.messageconversationid = mc.messageconversationid)"
-                      + " where mc.lastsenderid = " + currentUserId;
+                      + " join usermessage um on (uf.userinfoid = um.userid)"
+                      + " join messageconversation_usermessages mu on (um.usermessageid = mu.usermessageid)"
+                      + " join messageconversation mc on (mu.messageconversationid = mc.messageconversationid)"
+                      + " where mc.lastsenderid = " + user.getId();
   
         sql += " order by userinfoid desc";
         
@@ -205,7 +218,6 @@ public class HibernateMessageConversationStore
         {
             sql += " " + statementBuilder.limitRecord( first, max );
         }
-        
         
         final List<UserMessage> recipients = jdbcTemplate.query( sql, new RowMapper<UserMessage>()
         {
@@ -219,8 +231,7 @@ public class HibernateMessageConversationStore
             
                 return recipient;
             }           
-        } );
-        
+        } );        
         
         return recipients;
     }

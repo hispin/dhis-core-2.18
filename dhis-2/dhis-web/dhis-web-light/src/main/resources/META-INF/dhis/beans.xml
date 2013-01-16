@@ -15,16 +15,6 @@
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
-
-	<!-- Chart 
-	<bean id="org.hisp.dhis.light.chart.action.GetDataSetInfoForChartAction" class="org.hisp.dhis.light.chart.action.GetDataSetInfoForChartAction"
-		scope="prototype">
-		<property name="serviceProvider" ref="dataCompletenessServiceProvider" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>-->
 	
 	<!-- Data entry -->
 
@@ -205,8 +195,6 @@
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
@@ -519,7 +507,6 @@
 	<bean id="org.hisp.dhis.light.message.action.GetMessagesAction"
 		class="org.hisp.dhis.light.message.action.GetMessagesAction" scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.GetMessageAction"

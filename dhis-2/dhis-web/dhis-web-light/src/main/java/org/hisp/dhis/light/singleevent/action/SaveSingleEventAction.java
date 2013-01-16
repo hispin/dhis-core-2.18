@@ -66,11 +66,11 @@ public class SaveSingleEventAction
     implements Action
 {
     private static final String REDIRECT = "redirect";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private ProgramInstanceService programInstanceService;
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -274,21 +274,21 @@ public class SaveSingleEventAction
             return i1.getSortOrder().compareTo( i2.getSortOrder() );
         }
     };
-    
+
     private String keyword;
-    
+
     public String getKeyword()
     {
         return keyword;
     }
-    
+
     private int dataElementIdForSearching;
-    
+
     public int getDataElementIdForSearching()
     {
         return dataElementIdForSearching;
     }
-    
+
     private String isEditing;
 
     public String getIsEditing()
@@ -300,7 +300,7 @@ public class SaveSingleEventAction
     {
         this.isEditing = isEditing;
     }
-    
+
     private int programStageInstanceId;
 
     public int getProgramStageInstanceId()
@@ -335,8 +335,8 @@ public class SaveSingleEventAction
         typeViolations.clear();
 
         prevDataValues.clear();
-        
-        if( SessionUtils.getSessionVar( "prevDataValues" ) == null)
+
+        if ( SessionUtils.getSessionVar( "prevDataValues" ) == null )
         {
             SessionUtils.setSessionVar( "prevDataValues", this.prevDataValues );
         }
@@ -344,7 +344,7 @@ public class SaveSingleEventAction
         {
             this.prevDataValues = (Map<String, String>) SessionUtils.getSessionVar( "prevDataValues" );
         }
-        
+
         // -------------------------------------------------------------------------
         // Validation
         // -------------------------------------------------------------------------
@@ -388,47 +388,49 @@ public class SaveSingleEventAction
         {
             return ERROR;
         }
-        
-        if( isSearching( parameterMap ) == true )
-        {    
+
+        if ( isSearching( parameterMap ) == true )
+        {
             return REDIRECT;
         }
-        
-        if( this.isEditing.equals( "true" ) )
+
+        if ( this.isEditing.equals( "true" ) )
         {
-            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( this.programStageInstanceId );
-            
+            ProgramStageInstance programStageInstance = programStageInstanceService
+                .getProgramStageInstance( this.programStageInstanceId );
+
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
                 DataElement dataElement = programStageDataElement.getDataElement();
-                
-                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
-                
+
+                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+                    dataElement );
+
                 String id = "DE" + dataElement.getId();
-                
+
                 String value = parameterMap.get( id );
-                
+
                 if ( patientDataValue == null && value != null )
                 {
 
                     patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
-                    
+
                     patientDataValue.setProvidedElsewhere( false );
 
                     patientDataValueService.savePatientDataValue( patientDataValue );
                 }
-                if( patientDataValue != null && value == null )
+                if ( patientDataValue != null && value == null )
                 {
                     patientDataValueService.deletePatientDataValue( patientDataValue );
                 }
-                else if( patientDataValue != null && value != null )
+                else if ( patientDataValue != null && value != null )
                 {
                     patientDataValue.setValue( value );
-                    
+
                     patientDataValue.setTimestamp( new Date() );
-                    
+
                     patientDataValue.setProvidedElsewhere( false );
-                    
+
                     patientDataValueService.updatePatientDataValue( patientDataValue );
                 }
             }
@@ -442,7 +444,7 @@ public class SaveSingleEventAction
             programInstance.setPatient( patient );
             programInstance.setCompleted( true );
             programInstanceService.addProgramInstance( programInstance );
-    
+
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
             programStageInstance.setOrganisationUnit( organisationUnit );
             programStageInstance.setProgramInstance( programInstance );
@@ -451,25 +453,25 @@ public class SaveSingleEventAction
             programStageInstance.setExecutionDate( new Date() );
             programStageInstance.setCompleted( true );
             programStageInstanceService.addProgramStageInstance( programStageInstance );
-    
+
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
                 DataElement dataElement = programStageDataElement.getDataElement();
-    
+
                 PatientDataValue patientDataValue = new PatientDataValue();
-    
+
                 patientDataValue.setDataElement( dataElement );
-    
+
                 String id = "DE" + dataElement.getId();
-    
+
                 patientDataValue.setValue( parameterMap.get( id ) );
-    
+
                 patientDataValue.setProgramStageInstance( programStageInstance );
-    
+
                 patientDataValue.setProvidedElsewhere( false );
-    
+
                 patientDataValue.setTimestamp( new Date() );
-    
+
                 patientDataValueService.savePatientDataValue( patientDataValue );
             }
         }
@@ -477,32 +479,33 @@ public class SaveSingleEventAction
 
         return SUCCESS;
     }
-    
+
     public boolean isSearching( Map<String, String> parameterMap )
     {
         boolean isCorrect = false;
-        for( ProgramStageDataElement each : this.programStageDataElements)
+        for ( ProgramStageDataElement each : this.programStageDataElements )
         {
             DataElement dataElement = each.getDataElement();
-            
-            if( dataElement.getOptionSet() != null && dataElement.getOptionSet().getOptions().size() > 15)
+
+            if ( dataElement.getOptionSet() != null && dataElement.getOptionSet().getOptions().size() > 15 )
             {
-                this.keyword = parameterMap.get( "DE"+dataElement.getId() ).trim();
-                
+                this.keyword = parameterMap.get( "DE" + dataElement.getId() ).trim();
+
                 dataElementIdForSearching = dataElement.getId();
 
-                //if( !parameterMap.get( "preDE"+dataElement.getId() ).equals( parameterMap.get( "DE"+dataElement.getId() )))
-                for( String option: dataElement.getOptionSet().getOptions() )
+                // if( !parameterMap.get( "preDE"+dataElement.getId() ).equals(
+                // parameterMap.get( "DE"+dataElement.getId() )))
+                for ( String option : dataElement.getOptionSet().getOptions() )
                 {
-                    if( option != null )
+                    if ( option != null )
                     {
-                        if(option.equals( this.keyword ))
+                        if ( option.equals( this.keyword ) )
                         {
                             isCorrect = true;
                         }
                     }
                 }
-                if( isCorrect == false && !this.keyword.isEmpty())
+                if ( isCorrect == false && !this.keyword.isEmpty() )
                     return true;
                 else
                     isCorrect = false;
