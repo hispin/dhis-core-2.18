@@ -64,8 +64,6 @@ public class CodeGenerator
     {
         // Using the system default algorithm and seed
         SecureRandom sr = new SecureRandom();
-        String test = new String();
-        String.va
 
         char[] randomChars = new char[codeSize];
         
