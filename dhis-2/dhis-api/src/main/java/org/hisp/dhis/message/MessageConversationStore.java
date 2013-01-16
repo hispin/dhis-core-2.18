@@ -59,7 +59,5 @@ public interface MessageConversationStore
     
     int removeUserFromMessageConversations( User lastSender );
     
-    List<UserMessage> getLastRecipients(User user, Integer first, Integer max, Integer currentUserId);
-    
-    
+    List<UserMessage> getLastRecipients( User user, Integer first, Integer max );
 }

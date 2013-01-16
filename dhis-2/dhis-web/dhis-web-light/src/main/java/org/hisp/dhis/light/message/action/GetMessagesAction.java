@@ -33,7 +33,6 @@ import java.util.List;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.UserMessage;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,13 +53,6 @@ public class GetMessagesAction
         this.messageService = messageService;
     }
 
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -79,13 +71,6 @@ public class GetMessagesAction
         return usermessages;
     }
 
-    private Integer currentUserId;
-
-    public void setCurrentUserId( Integer currentUserId )
-    {
-        this.currentUserId = currentUserId;
-    }
-
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -96,9 +81,7 @@ public class GetMessagesAction
     {
         conversations = new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 10 ) );
 
-        currentUserId = currentUserService.getCurrentUser().getId();
-
-        usermessages = new ArrayList<UserMessage>( messageService.getLastRecipients( 0, 5, currentUserId ) );
+        usermessages = new ArrayList<UserMessage>( messageService.getLastRecipients( 0, 5 ) );
 
         return SUCCESS;
     }

@@ -41,8 +41,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.light.utils.NamebasedUtils;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -97,13 +95,6 @@ public class SaveProgramStageFormAction
         this.dataElementService = dataElementService;
     }
     
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     private PatientService patientService;
 
     public PatientService getPatientService()
@@ -222,8 +213,6 @@ public class SaveProgramStageFormAction
     {
         return orgUnitId;
     }
-
-    private OrganisationUnit organisationUnit;
 
     private Integer programStageInstanceId;
 
@@ -425,15 +414,6 @@ public class SaveProgramStageFormAction
     public String execute()
         throws Exception
     {
-        if ( orgUnitId != 0 )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        }
-        else
-        {
-            organisationUnit = patientService.getPatient( patientId ).getOrganisationUnit();
-        }
-
         programStage = util.getProgramStage( programId, programStageId );
         program = programStageService.getProgramStage( programStageId ).getProgram();
         org.hisp.dhis.program.ProgramStage dhisProgramStage = programStageService.getProgramStage( programStageId );
@@ -444,6 +424,7 @@ public class SaveProgramStageFormAction
         List<PatientDataValue> patientDataValues = new ArrayList<PatientDataValue>();
 
         patient = patientService.getPatient( patientId );
+        
         if ( programStageSectionId != null && programStageSectionId != 0 )
         {
             this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );

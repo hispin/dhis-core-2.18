@@ -292,6 +292,11 @@ public class DefaultMessageService
         messageConversationStore.removeUserFromMessageConversations( user );
     }
 
+    public List<UserMessage> getLastRecipients( int first, int max )
+    {
+        return messageConversationStore.getLastRecipients( currentUserService.getCurrentUser(), first, max );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -303,11 +308,4 @@ public class DefaultMessageService
             messageSender.sendMessage( subject, text, sender, new HashSet<User>( users ), false );
         }
     }
-
-    @Override
-    public List<UserMessage> getLastRecipients( int first, int max, Integer currentUserId )
-    {
-        return messageConversationStore.getLastRecipients( currentUserService.getCurrentUser(), first, max, currentUserId );
-    }
-
 }
