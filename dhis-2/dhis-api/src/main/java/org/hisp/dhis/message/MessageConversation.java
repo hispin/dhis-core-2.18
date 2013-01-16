@@ -164,6 +164,19 @@ public class MessageConversation
 
         return false;
     }
+    
+    public boolean isFollowUp( User user )
+    {
+        for ( UserMessage userMessage : userMessages )
+        {
+            if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
+            {
+                return userMessage.isFollowUp();
+            }
+        }
+
+        return false;
+    }
 
     public boolean markRead( User user )
     {
