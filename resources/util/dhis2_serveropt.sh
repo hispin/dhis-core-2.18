@@ -15,7 +15,7 @@ sudo apt-get -y upgrade
 
 #Install postgres
 #Installs Postgres 9.2 from a custom repository. Adjust as needed
-sudo apt-get install -y python-software-properties
+sudo apt-get -y install python-software-properties
 sudo add-apt-repository -y ppa:pitti/postgresql
 sudo apt-get -y update
 sudo apt-get -y install postgresql-$PG_VERSION tomcat7-user libtcnative-1 nginx makepasswd bc ufw ttf-dejavu ttf-liberation
