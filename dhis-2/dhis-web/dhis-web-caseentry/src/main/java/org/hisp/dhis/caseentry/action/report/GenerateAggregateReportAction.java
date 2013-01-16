@@ -181,19 +181,20 @@ public class GenerateAggregateReportAction
         this.position = position;
     }
 
-    private Integer limit;
+    private Integer limitRecords;
 
-    public void setLimit( Integer limit )
+    public void setLimitRecords( Integer limitRecords )
     {
-        this.limit = limit;
+        this.limitRecords = limitRecords;
     }
 
-    private Integer dataElementId;
+    private Integer deGroupBy;
 
-    public void setDataElementId( Integer dataElementId )
+    public void setDeGroupBy( Integer deGroupBy )
     {
-        this.dataElementId = dataElementId;
+        this.deGroupBy = deGroupBy;
     }
+
 
     private String type;
 
@@ -285,11 +286,12 @@ public class GenerateAggregateReportAction
             for ( String deFilter : deFilters )
             {
                 int index = deFilter.indexOf( SEPARATE_FILTER );
-                deFilterMap.put( Integer.parseInt( deFilter.substring( 0, index - 1 )), deFilter.substring( index + 1, deFilter.length() ) );
+                deFilterMap.put( Integer.parseInt( deFilter.substring( 0, index - 1 ) ),
+                    deFilter.substring( index + 1, deFilter.length() ) );
             }
         }
         grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits,
-            dataElementId, deFilterMap, periods, aggregateType, limit, format, i18n );
+            deGroupBy, deFilterMap, periods, aggregateType, limitRecords, format, i18n );
 
         return type == null ? SUCCESS : type;
     }

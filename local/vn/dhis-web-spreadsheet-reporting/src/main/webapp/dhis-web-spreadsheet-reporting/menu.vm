@@ -4,10 +4,11 @@
 	<li><a href="department.action">$i18n.getString( "organisation_unit" )</a></li>
 </ul>
 
-<h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
+<h2><a href="index.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
 <ul>
+	<li><a href="getSettingFrame.action">$i18n.getString( "user_setting_frame" )&nbsp;</a></li>
 	<li><a href="../dhis-web-reporting/displayViewDataCompletenessForm.action">$i18n.getString( "view_data_status" )</a></li>
-	<li><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></li>
+	<li><a href="index.action">$i18n.getString( "generate_report" )&nbsp;</a></li>
 	<!--
 	<li><a href="viewDataEntryStatus.action">$i18n.getString( "view_data_status" )</a></li>
 	<li><a href="viewJCharts.action">$i18n.getString( "chart" )&nbsp;</a></li>

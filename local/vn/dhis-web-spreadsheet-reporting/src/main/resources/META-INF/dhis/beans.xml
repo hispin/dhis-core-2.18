@@ -10,6 +10,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
+		id="org.hisp.dhis.reportsheet.action.CheckDefaultFrameAction"
+		class="org.hisp.dhis.reportsheet.action.CheckDefaultFrameAction"
+		scope="prototype">
+		<property name="userSettingService"
+			ref="org.hisp.dhis.user.UserSettingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.configuration.action.GetUserSettingFrameAction"
+		class="org.hisp.dhis.reportsheet.configuration.action.GetUserSettingFrameAction"
+		scope="prototype">
+		<property name="userSettingService"
+			ref="org.hisp.dhis.user.UserSettingService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.configuration.action.SaveUserSettingFrameAction"
+		class="org.hisp.dhis.reportsheet.configuration.action.SaveUserSettingFrameAction"
+		scope="prototype">
+		<property name="userSettingService"
+			ref="org.hisp.dhis.user.UserSettingService" />
+	</bean>
+
+	<bean
 		id="org.hisp.dhis.reportsheet.filemanager.action.DownloadFileAction"
 		class="org.hisp.dhis.reportsheet.filemanager.action.DownloadFileAction"
 		scope="prototype">
@@ -103,6 +127,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
 		<property name="systemSettingManager"
 			ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<property name="userSettingService"
+			ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
 
 	<bean
@@ -1800,7 +1826,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 				bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportsheet.organisationunit.action.RenameOrganisationUnitAction"
 		class="org.hisp.dhis.reportsheet.organisationunit.action.RenameOrganisationUnitAction"
@@ -1813,7 +1839,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Data Entry module -->
 
-	<bean id="org.hisp.dhis.reportsheet.de.action.GetDataValuesForDataSetAction"
+	<bean
+		id="org.hisp.dhis.reportsheet.de.action.GetDataValuesForDataSetAction"
 		class="org.hisp.dhis.reportsheet.de.action.GetDataValuesForDataSetAction"
 		scope="prototype">
 		<property name="dataValueService"

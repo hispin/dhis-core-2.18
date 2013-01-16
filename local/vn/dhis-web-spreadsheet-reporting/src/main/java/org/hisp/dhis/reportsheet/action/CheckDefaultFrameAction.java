@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportsheet.action;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,64 +27,57 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.report;
-
-import java.util.Collection;
-import java.util.HashSet;
-
-import org.hisp.dhis.patientreport.PatientTabularReport;
-import org.hisp.dhis.patientreport.PatientTabularReportService;
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
- * 
- * @version $GetTabularReportsAction.java May 7, 2012 4:08:13 PM$
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-public class GetTabularReportsAction
+public class CheckDefaultFrameAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientTabularReportService tabularReportService;
+    private UserSettingService userSettingService;
 
-    public void setTabularReportService( PatientTabularReportService tabularReportService )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.tabularReportService = tabularReportService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientTabularReport> reports = new HashSet<PatientTabularReport>();
+    private String backUrl;
 
-    public Collection<PatientTabularReport> getReports()
+    public String getBackUrl()
     {
-        return reports;
+        return backUrl;
+    }
+
+    public void setBackUrl( String backUrl )
+    {
+        this.backUrl = backUrl;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
-        throws Exception
     {
-        reports = tabularReportService.getPatientTabularReports( currentUserService.getCurrentUser() );
+        String setting = (String) userSettingService.getUserSetting( UserSettingService.KEY_GENERATE_REPORT_INTERFACE );
 
-        return SUCCESS;
+        if ( setting == null )
+        {
+            return "default";
+        }
+
+        return setting;
     }
 }

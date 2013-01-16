@@ -27,6 +27,11 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportService;
 
@@ -51,6 +56,13 @@ public class GetAggregateReportAction
         this.aggregateReportService = aggregateReportService;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -69,6 +81,13 @@ public class GetAggregateReportAction
         return aggregateReport;
     }
 
+    private Collection<DataElement> selectedDataElements = new HashSet<DataElement>();
+
+    public Collection<DataElement> getSelectedDataElements()
+    {
+        return selectedDataElements;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -78,6 +97,12 @@ public class GetAggregateReportAction
         throws Exception
     {
         aggregateReport = aggregateReportService.getPatientAggregateReport( id );
+
+        for ( String deFilter : aggregateReport.getFilterValues() )
+        {
+            int id = Integer.parseInt( deFilter.split( "_" )[0] );
+            selectedDataElements.add( dataElementService.getDataElement( id ) );
+        }
 
         return SUCCESS;
     }

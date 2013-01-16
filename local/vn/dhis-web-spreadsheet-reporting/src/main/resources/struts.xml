@@ -11,9 +11,30 @@
 		namespace="/dhis-web-spreadsheet-reporting">
 
 		<action name="index"
-			class="org.hisp.dhis.reportsheet.action.NoAction">
+			class="org.hisp.dhis.reportsheet.action.CheckDefaultFrameAction">
+			<result name="default" type="redirect">
+				default.action
+			</result>
+			<result name="extension" type="redirect">
+				defau1t.action
+			</result>
+		</action>
+		
+		<action name="getSettingFrame"
+			class="org.hisp.dhis.reportsheet.configuration.action.GetUserSettingFrameAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-spreadsheet-reporting/userSettingFrame.vm
+			</param>
+			<param name="menu">
+				/dhis-web-spreadsheet-reporting/menu.vm
+			</param>
+		</action>
+
+		<action name="saveSettingFrame"
+			class="org.hisp.dhis.reportsheet.configuration.action.SaveUserSettingFrameAction">
 			<result name="success" type="redirect">
-				selectExportReportParam.action
+				index.action
 			</result>
 		</action>
 
@@ -997,12 +1018,31 @@
 
 		<!-- GENERATE REPORT EXCEL ACTION -->
 
-		<action name="selectExportReportParam"
+		<action name="default"
 			class="org.hisp.dhis.reportsheet.exporting.action.SelectFormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-spreadsheet-reporting/generateReportForm.vm
+				/dhis-web-spreadsheet-reporting/defaultForm.vm
+			</param>
+			<param name="menu">
+				/dhis-web-spreadsheet-reporting/menuWithTree.vm
+			</param>
+			<param name="menuTreeHeight">250</param>
+			<param name="stylesheets">style/previewStyle.css</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/jQuery/jquery.jqprint.0.3.js,
+				javascript/export.js, javascript/preview.js
+			</param>
+		</action>
+
+		<action name="defau1t"
+			class="org.hisp.dhis.reportsheet.exporting.action.SelectFormAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-spreadsheet-reporting/extensionForm.vm
 			</param>
 			<param name="menu">
 				/dhis-web-spreadsheet-reporting/menuWithTree.vm

@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportsheet.configuration.action;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,63 +27,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.report;
-
-import java.util.Collection;
-import java.util.HashSet;
-
-import org.hisp.dhis.patientreport.PatientTabularReport;
-import org.hisp.dhis.patientreport.PatientTabularReportService;
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
- * 
- * @version $GetTabularReportsAction.java May 7, 2012 4:08:13 PM$
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-public class GetTabularReportsAction
+
+public class SaveUserSettingFrameAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientTabularReportService tabularReportService;
+    private UserSettingService userSettingService;
 
-    public void setTabularReportService( PatientTabularReportService tabularReportService )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.tabularReportService = tabularReportService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Getter and Setter
     // -------------------------------------------------------------------------
 
-    private Collection<PatientTabularReport> reports = new HashSet<PatientTabularReport>();
+    private String interfaceType;
 
-    public Collection<PatientTabularReport> getReports()
+    public void setInterfaceType( String interfaceType )
     {
-        return reports;
+        this.interfaceType = interfaceType;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
-    {
-        reports = tabularReportService.getPatientTabularReports( currentUserService.getCurrentUser() );
+    {        
+        userSettingService.saveUserSetting( UserSettingService.KEY_GENERATE_REPORT_INTERFACE, interfaceType );
 
         return SUCCESS;
     }

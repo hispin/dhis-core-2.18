@@ -1,3 +1,4 @@
+#set( $programStage=$aggregateReport.programStage)
 {
 	"id": "${aggregateReport.id}",
 	"name": "$!encoder.jsonEncode( ${aggregateReport.name} )",
@@ -12,14 +13,13 @@
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
 	"programStageName": "${programStage.name}",
-	"periodTypeName": "${aggregateReport.periodTypeName}",
 	"startDate": "$!format.formatDate( $aggregateReport.startDate )",
 	"endDate": "$!format.formatDate( ${aggregateReport.endDate} )",
 	"relativePeriods": [
 		#set( $size = $aggregateReport.relativePeriods.size() )
 		#set( $relativePeriods = ${aggregateReport.relativePeriods} )
 		#foreach( ${relativePeriod} in $!{relativePeriods} )
-			$relativePeriods
+			'$relativePeriod'
 			#if( $velocityCount < $size ),#end
 		#end
 	],
@@ -27,7 +27,7 @@
 		#set( $size = $aggregateReport.fixedPeriods.size() )
 		#set( $relativePeriods = ${aggregateReport.fixedPeriods} )
 		#foreach( ${fixedPeriod} in $!{fixedPeriods} )
-			$fixedPeriod
+			'$fixedPeriod'
 			#if( $velocityCount < $size ),#end
 		#end
 	],
@@ -43,13 +43,29 @@
 		#set( $size = $aggregateReport.filterValues.size() )
 		#set( $filterValues = ${aggregateReport.filterValues} )
 		#foreach( ${filterValue} in $!{filterValues} )
-			$filterValue
+			'$filterValue'
+			#if( $velocityCount < $size ),#end
+		#end
+	],
+	"selectedDEs": [
+		#set( $size = ${selectedDataElements.size()} )
+		#foreach( ${dataElement} in $!{selectedDataElements} )
+			{
+				"id": "de_${dataElement.id}",
+				"name": "${dataElement.name}",
+				"compulsory": "${dataElement.compulsory}",
+				"valueType": #if( $dataElement.optionSet )
+								"list"
+							 #else
+								"${dataElement.type}"
+							 #end
+			}
 			#if( $velocityCount < $size ),#end
 		#end
 	],
 	"facilityLB": "${aggregateReport.facilityLB}",
-	"limitRecords": "${aggregateReport.limitRecords}",
+	"limitRecords": "$!aggregateReport.limitRecords",
 	"position": "${aggregateReport.position}",
-	"deGroupBy": "${aggregateReport.deGroupBy.id}",
+	"deGroupBy": "$!aggregateReport.deGroupBy.id",
 	"aggregateType": "${aggregateReport.aggregateType}"
 }

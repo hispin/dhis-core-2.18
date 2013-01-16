@@ -50,10 +50,9 @@ function getExportReportsByGroup( selectedOrgUnitName ) {
 
 				hideById( "elementSelect_loader" );
 				
-				currentPeriodOffset = 0;
+				currentPeriodOffset = -1;
 
 				reportSelected();
-				displayPeriodsInternal();
 			});
 		}
 	}
