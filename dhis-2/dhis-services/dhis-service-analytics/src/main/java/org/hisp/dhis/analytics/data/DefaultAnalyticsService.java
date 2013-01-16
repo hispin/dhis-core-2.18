@@ -185,7 +185,7 @@ public class DefaultAnalyticsService
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
                 grid.addRow();
-                grid.addValues( entry.getKey().split( String.valueOf( DIMENSION_SEP ) ) );
+                grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
                 grid.addValue( entry.getValue() );
             }            
         }
@@ -337,7 +337,7 @@ public class DefaultAnalyticsService
         
         for ( String key : aggregatedDataMap.keySet() )
         {
-            List<String> keys = Arrays.asList( key.split( String.valueOf( DIMENSION_SEP ) ) );
+            List<String> keys = Arrays.asList( key.split( DIMENSION_SEP ) );
             
             String de = keys.get( params.getDataElementDimensionIndex() );
             String coc = keys.get( params.getCategoryOptionComboDimensionIndex() );

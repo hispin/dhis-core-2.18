@@ -60,7 +60,7 @@ public class DataQueryParams
     
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ",";
-    public static final char DIMENSION_SEP = '-';
+    public static final String DIMENSION_SEP = "-";
     
     private static final DimensionOption[] DIM_OPT_ARR = new DimensionOption[0];
     private static final DimensionOption[][] DIM_OPT_2D_ARR = new DimensionOption[0][];

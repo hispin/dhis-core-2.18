@@ -148,7 +148,7 @@ public class JdbcAnalyticsManager
             
             for ( String key : keys )
             {
-                String[] keyArray = key.split( String.valueOf( DIMENSION_SEP ) );
+                String[] keyArray = key.split( DIMENSION_SEP );
                 
                 Assert.notNull( keyArray[periodIndex], keyArray.toString() );
                 
