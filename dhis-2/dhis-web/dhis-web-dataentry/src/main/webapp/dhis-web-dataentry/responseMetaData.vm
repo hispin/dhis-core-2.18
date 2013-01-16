@@ -3,7 +3,7 @@
 "significantZeros": [
 #set( $size = $significantZeros.size() )
 #foreach( $dataElement in $significantZeros )
-${dataElement.uid}#if( $velocityCount < $size ),#end
+"${dataElement.uid}"#if( $velocityCount < $size ),#end
 #end ],
 
 "dataElements": {
