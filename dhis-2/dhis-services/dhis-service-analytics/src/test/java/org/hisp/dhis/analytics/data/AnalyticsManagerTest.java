@@ -52,7 +52,7 @@ public class AnalyticsManagerTest
     private AnalyticsManager analyticsManager;
     
     @Test
-    public void testReplace()
+    public void testReplaceDataPeriodsWithAggregationPeriods()
     {
         Period y2012 = createPeriod( "2012" );
                 

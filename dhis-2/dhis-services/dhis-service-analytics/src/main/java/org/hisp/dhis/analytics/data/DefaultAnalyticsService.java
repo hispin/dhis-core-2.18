@@ -81,7 +81,6 @@ public class DefaultAnalyticsService
     private static final String VALUE_HEADER_NAME = "Value";
     
     //TODO indicator aggregation
-    //TODO category sub-totals and totals
     //TODO completeness
     
     @Autowired
@@ -117,7 +116,7 @@ public class DefaultAnalyticsService
         Grid grid = new ListGrid();
 
         // ---------------------------------------------------------------------
-        // Set meta-data and headers on grid
+        // Headers and meta-data
         // ---------------------------------------------------------------------
 
         grid.setMetaData( params.getUidNameMap() );
@@ -130,26 +129,24 @@ public class DefaultAnalyticsService
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
 
         // ---------------------------------------------------------------------
-        // Add data elements from indicators to query
+        // Indicators
         // ---------------------------------------------------------------------
 
-        addDataElementsFromIndicators( params );
-
-        // ---------------------------------------------------------------------
-        // Get aggregated data
-        // ---------------------------------------------------------------------
-
-        Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( params );
-
-        List<Indicator> indicators = asTypedList( params.getIndicators() );
-        
-        if ( !indicators.isEmpty() )
-        {
-            List<List<DimensionOption>> dimensionOptionPermutations = params.getDimensionOptionPermutations();
-            
-            Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = getPermutationOperandValueMap( params, aggregatedDataMap );
-
+        if ( !params.getIndicators().isEmpty() )
+        {         
             Map<String, Double> constantMap = constantService.getConstantMap();
+
+            int indicatorIndex = params.getIndicatorDimensionIndex();
+            
+            DataQueryParams dataSourceParams = setDataElementsFromIndicators( params );
+
+            List<Indicator> indicators = asTypedList( params.getIndicators() );
+            
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
+    
+            Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = getPermutationOperandValueMap( dataSourceParams, aggregatedDataMap );
+
+            List<List<DimensionOption>> dimensionOptionPermutations = dataSourceParams.getDimensionOptionPermutations();
             
             for ( Indicator indicator : indicators )
             {
@@ -159,26 +156,38 @@ public class DefaultAnalyticsService
                     
                     Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( permKey );
                     
-                    String pe = DimensionOption.getPeriodOption( options );
+                    Period period = (Period) DimensionOption.getPeriodOption( options );
                     
-                    Assert.notNull( pe );
+                    Assert.notNull( period );
                     
-                    Period period = PeriodType.getPeriodFromIsoString( pe );
-                    
-                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
+                    if ( valueMap != null )
+                    {
+                        Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
+                        
+                        options.set( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
+                        
+                        grid.addRow();
+                        grid.addValues( DimensionOption.getOptions( options ) );
+                        grid.addValue( value );
+                    }                    
                 }
             }
         }
 
         // ---------------------------------------------------------------------
-        // Set aggregated values on grid
+        // Data elements
         // ---------------------------------------------------------------------
 
-        for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
+        if ( !params.getDataElements().isEmpty() )
         {
-            grid.addRow();
-            grid.addValues( entry.getKey().split( String.valueOf( DIMENSION_SEP ) ) );
-            grid.addValue( entry.getValue() );
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( params );
+            
+            for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
+            {
+                grid.addRow();
+                grid.addValues( entry.getKey().split( String.valueOf( DIMENSION_SEP ) ) );
+                grid.addValue( entry.getValue() );
+            }            
         }
         
         return grid;
@@ -308,23 +317,18 @@ public class DefaultAnalyticsService
         return null;
     }
     
-    private List<IdentifiableObject> addDataElementsFromIndicators( DataQueryParams params )
+    private DataQueryParams setDataElementsFromIndicators( DataQueryParams params )
     {
-        List<IdentifiableObject> dataElementsOnlyInIndicators = null;
+        DataQueryParams immutableParams = new DataQueryParams( params );
         
-        if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
-        {
-            params.setCategories( true );
-            
-            List<Indicator> indicators = asTypedList( params.getIndicators() );            
-            dataElementsOnlyInIndicators = asList( expressionService.getDataElementsInIndicators( indicators ) );
-            List<IdentifiableObject> dataElements = params.getDataElements() != null ? params.getDataElements() : new ArrayList<IdentifiableObject>();
-            dataElementsOnlyInIndicators.removeAll( dataElements );
-            dataElements.addAll( dataElementsOnlyInIndicators );
-            params.getDimensions().put( DATAELEMENT_DIM_ID, dataElements );
-        }
+        List<Indicator> indicators = asTypedList( immutableParams.getIndicators() );            
+        List<IdentifiableObject> dataElements = asList( expressionService.getDataElementsInIndicators( indicators ) );
         
-        return dataElementsOnlyInIndicators;
+        immutableParams.setDataElements( dataElements );
+        immutableParams.setIndicators( new ArrayList<IdentifiableObject>() );
+        immutableParams.setCategories( true );
+        
+        return immutableParams;
     }
     
     private Map<String, Map<DataElementOperand, Double>> getPermutationOperandValueMap( DataQueryParams params, Map<String, Double> aggregatedDataMap )
