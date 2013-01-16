@@ -49,6 +49,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -144,25 +145,27 @@ public class DefaultAnalyticsService
         
         if ( !indicators.isEmpty() )
         {
-            List<String> dimensionOptionPermutations = params.getDimensionOptionPermutations();
+            List<List<DimensionOption>> dimensionOptionPermutations = params.getDimensionOptionPermutations();
             
             Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = getPermutationOperandValueMap( params, aggregatedDataMap );
 
             Map<String, Double> constantMap = constantService.getConstantMap();
             
-            int periodDimensionIndex = params.getPeriodDimensionIndex();
-            
-            int dataElementDimensionIndex = params.getDataElementDimensionIndex();
-            
             for ( Indicator indicator : indicators )
             {
-                for ( String perm : dimensionOptionPermutations )
+                for ( List<DimensionOption> options : dimensionOptionPermutations )
                 {
-                    List<String> dimensionOptions = Arrays.asList( perm.split( String.valueOf( DIMENSION_SEP ) ) );
+                    String permKey = DimensionOption.asOptionKey( options );
                     
-                    Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( perm );
+                    Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( permKey );
                     
-                    Double value = expressionService.getIndicatorValue( indicator, null, valueMap, constantMap, null );
+                    String pe = DimensionOption.getPeriodOption( options );
+                    
+                    Assert.notNull( pe );
+                    
+                    Period period = PeriodType.getPeriodFromIsoString( pe );
+                    
+                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
                 }
             }
         }

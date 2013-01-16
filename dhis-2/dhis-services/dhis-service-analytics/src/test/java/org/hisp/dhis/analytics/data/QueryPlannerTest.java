@@ -27,8 +27,11 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -109,6 +113,33 @@ public class QueryPlannerTest
     // Tests
     // -------------------------------------------------------------------------
     
+    /**
+     * Ignores data element dimension and generates 2 x 3 = 6 combinations based
+     * on organisation unit and period dimensions.
+     */
+    @Test
+    public void testGetPermutations()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( getList( deA, deB ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+        
+        List<List<DimensionOption>> permutations = params.getDimensionOptionPermutations();
+        
+        assertNotNull( permutations );
+        assertEquals( 6, permutations.size() );
+        
+        for ( List<DimensionOption> permutation : permutations )
+        {
+            assertNotNull( permutation );
+            assertEquals( 2, permutation.size() );
+            assertEquals( PERIOD_DIM_ID, permutation.get( 0 ).getDimension() );
+            assertEquals( ORGUNIT_DIM_ID, permutation.get( 1 ).getDimension() );
+        }
+    }
+    
+    @Test
     public void testGetDataPeriodAggregationPeriodMap()
     {
         DataQueryParams params = new DataQueryParams();
