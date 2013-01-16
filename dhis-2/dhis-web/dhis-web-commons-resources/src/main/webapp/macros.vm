@@ -352,7 +352,7 @@ function addUserGroupAccessSelectedItem(e) {
         access: "r-------"
     });
 
-    $(tmpl_html).insertAfter('#sharingAccessTable tbody');
+    $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]') );
 
     $('#sharingFindUserGroup').val('')
     sharingSelectedItem = undefined;
@@ -380,7 +380,8 @@ function setUserGroupAccesses(userGroupAccesses) {
                 access: item.access
             });
 
-            $('#sharingAccessTable tbody tr[id]' ).append(tmpl_html);
+            // $('#sharingAccessTable tbody tr[id]' ).append(tmpl_html);
+            $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]') );
         });
     }
 }
