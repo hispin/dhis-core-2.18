@@ -36,6 +36,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.report.Report;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroup;
@@ -70,6 +71,7 @@ public class SharingController
     static
     {
         TYPE_MAP.put( "document", Document.class );
+        TYPE_MAP.put( "report", Report.class );
     }
 
     @Autowired
