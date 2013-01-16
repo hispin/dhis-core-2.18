@@ -380,7 +380,6 @@ function setUserGroupAccesses(userGroupAccesses) {
                 access: item.access
             });
 
-            // $('#sharingAccessTable tbody tr[id]' ).append(tmpl_html);
             $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]') );
         });
     }
