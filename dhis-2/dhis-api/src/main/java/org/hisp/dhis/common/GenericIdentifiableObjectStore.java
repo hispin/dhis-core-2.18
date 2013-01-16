@@ -27,11 +27,11 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.user.User;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -58,10 +58,17 @@ public interface GenericIdentifiableObjectStore<T>
     /**
      * Retrieves the object with the given code.
      *
-     * @param name the code.
+     * @param code the code.
      * @return the object with the given code.
      */
     T getByCode( String code );
+
+    /**
+     * Retrieves a Collection of all objects (sorted on name).
+     *
+     * @return a Collection of all objects.
+     */
+    Collection<T> getAllOrderedName();
 
     /**
      * Retrieves the objects determined by the given first result and max result.
@@ -71,6 +78,14 @@ public interface GenericIdentifiableObjectStore<T>
      * @return collection of objects.
      */
     Collection<T> getAllOrderedName( int first, int max );
+
+    /**
+     * Retrieves a Collection of objects where the name is like the given name.
+     *
+     * @param name the name.
+     * @return a Collection of objects.
+     */
+    Collection<T> getAllLikeName( String name );
 
     /**
      * Retrieves the objects determined by the given first result and max result.
@@ -86,7 +101,7 @@ public interface GenericIdentifiableObjectStore<T>
      * Retrieves the objects determined by the given first result and max result
      * which name is like the given name.
      *
-     * @param the   name which result object names must be like.
+     * @param name  the name which result object names must be like.
      * @param first the first result object to return.
      * @param max   the max number of result objects to return.
      * @return collection of objects.
