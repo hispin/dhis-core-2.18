@@ -162,6 +162,14 @@ public class DataQueryParams
     }
 
     /**
+     * Returns the index of the indicator dimension in the dimension map.
+     */
+    public int getIndicatorDimensionIndex()
+    {
+        return getDimensionNamesAsList().indexOf( INDICATOR_DIM_ID );
+    }
+    
+    /**
      * Returns the index of the data element dimension in the dimension map.
      */
     public int getDataElementDimensionIndex()
@@ -327,7 +335,7 @@ public class DataQueryParams
                 
                 for ( IdentifiableObject option : dimensions.get( dim ) )
                 {
-                    options.add( new DimensionOption( dim, option.getUid() ) );
+                    options.add( new DimensionOption( dim, option ) );
                 }
                 
                 dimensionOptions.add( options.toArray( DIM_OPT_ARR ) );
