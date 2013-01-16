@@ -356,6 +356,8 @@ function addUserGroupAccessSelectedItem(e) {
 
     $('#sharingFindUserGroup').val('')
     sharingSelectedItem = undefined;
+
+    $( '#addUserGroupAccess' ).attr( 'disabled', true );
 }
 
 function removeUserGroupAccess(e) {
@@ -464,6 +466,7 @@ function showSharingDialog( type, uid ) {
             minLength: 2,
             select: function( event, ui ) {
                 sharingSelectedItem = ui.item;
+                $( '#addUserGroupAccess' ).removeAttr( 'disabled' );
             }
         });
 
@@ -501,7 +504,7 @@ function showSharingDialog( type, uid ) {
 
             <tr>
                 <td><input style="width: 100%;" id="sharingFindUserGroup" /></td>
-                <td style="width: 24px;"><button id="addUserGroupAccess" style="width: 24px; text-align: center;">+</button></td>
+                <td style="width: 24px;"><button id="addUserGroupAccess" disabled="disabled" style="width: 24px; text-align: center;">+</button></td>
             </tr>
         </tbody>
     </table>
