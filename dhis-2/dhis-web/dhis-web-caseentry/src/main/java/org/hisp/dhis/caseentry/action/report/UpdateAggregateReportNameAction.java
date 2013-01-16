@@ -81,7 +81,7 @@ public class UpdateAggregateReportNameAction
 
         aggregateReport.setName( name );
 
-        aggregateReportService.saveOrUpdate( aggregateReport );
+        aggregateReportService.updatePatientAggregateReport( aggregateReport );
 
         return SUCCESS;
     }

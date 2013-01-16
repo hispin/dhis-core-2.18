@@ -55,14 +55,6 @@ public interface GenericStore<T>
     void update( T object );
 
     /**
-     * Saves or updates the given object instance depending on the object's
-     * persistent state.
-     *
-     * @param object the object instance.
-     */
-    void saveOrUpdate( T object );
-
-    /**
      * Retrieves the object with the given identifier. This method will first
      * look in the current Session, then hit the database if not existing.
      * 

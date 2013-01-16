@@ -53,7 +53,7 @@ public class DefaultUserGroupService implements UserGroupService
     @Override
     public void addUserGroup( UserGroup userGroup )
     {
-        userGroupStore.saveOrUpdate( userGroup );
+        userGroupStore.save( userGroup );
     }
 
     @Override

@@ -80,7 +80,7 @@ public class InterpretationServiceTest
         setDependency( interpretationService, "currentUserService", new MockCurrentUserService( userA ), CurrentUserService.class );
         
         chartA = new Chart( "ChartA" );
-        chartService.saveChart( chartA );
+        chartService.addChart( chartA );
         
         interpretationA = new Interpretation( chartA, "Interpration of chart A" );
         interpretationB = new Interpretation( chartA, "Interpration of chart B" );

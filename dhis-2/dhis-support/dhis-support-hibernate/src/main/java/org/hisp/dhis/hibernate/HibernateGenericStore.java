@@ -233,20 +233,6 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    public void saveOrUpdate( T object )
-    {
-        if ( !isWriteAllowed( object ) )
-        {
-            AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE_DENIED );
-            throw new AccessDeniedException( "You do not have write access to object" );
-        }
-
-        // TODO check if object is persisted or not to decide logging? defaulting to edit for now
-        AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
-        sessionFactory.getCurrentSession().saveOrUpdate( object );
-    }
-
-    @Override
     @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {

@@ -27,12 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -42,11 +37,14 @@ import org.hisp.dhis.patientreport.PatientAggregateReportService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version SaveAggregateReportAction.java 1:16:10 PM Jan 14, 2013 $
  */
 public class SaveAggregateReportAction
@@ -221,14 +219,16 @@ public class SaveAggregateReportAction
         aggregateReport.setFacilityLB( facilityLB );
         aggregateReport.setLimitRecords( limitRecords );
         aggregateReport.setPosition( position );
+
         if ( deGroupBy != null )
         {
             aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
         }
+
         aggregateReport.setAggregateType( aggregateType );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
 
-        aggregateReportService.saveOrUpdate( aggregateReport );
+        aggregateReportService.addPatientAggregateReport( aggregateReport );
 
         return SUCCESS;
     }

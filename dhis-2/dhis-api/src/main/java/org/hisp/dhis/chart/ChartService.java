@@ -69,9 +69,9 @@ public interface ChartService
     JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
                                      Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format );
 
-    int saveChart( Chart chart );
+    int addChart( Chart chart );
 
-    void saveOrUpdate( Chart chart );
+    void updateChart( Chart chart );
 
     Chart getChart( int id );
 

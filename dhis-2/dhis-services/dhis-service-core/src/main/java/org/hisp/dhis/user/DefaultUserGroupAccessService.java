@@ -53,7 +53,7 @@ public class DefaultUserGroupAccessService implements UserGroupAccessService
     @Override
     public void addUserGroupAccess( UserGroupAccess userGroupAccess )
     {
-        userGroupAccessStore.saveOrUpdate( userGroupAccess );
+        userGroupAccessStore.save( userGroupAccess );
     }
 
     @Override
