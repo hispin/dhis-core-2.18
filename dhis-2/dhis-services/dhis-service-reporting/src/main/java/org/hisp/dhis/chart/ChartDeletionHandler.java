@@ -84,7 +84,7 @@ public class ChartDeletionHandler
         {
             if ( chart.getIndicators().remove( indicator ) )
             {
-                chartService.saveChart( chart );
+                chartService.addChart( chart );
             }
         }
     }
@@ -96,7 +96,7 @@ public class ChartDeletionHandler
         {
             if ( chart.getOrganisationUnits().remove( unit ) )
             {
-                chartService.saveChart( chart );
+                chartService.addChart( chart );
             }
         }
     }

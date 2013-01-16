@@ -160,7 +160,7 @@ public class ChartServiceTest
     @Test
     public void testGetBarChart()
     {
-        int id = chartService.saveChart( chartA );
+        int id = chartService.addChart( chartA );
 
         JFreeChart jFreeChart = chartService.getJFreeChart( id, new MockI18nFormat() );
 
@@ -170,9 +170,9 @@ public class ChartServiceTest
     @Test
     public void testSaveGet()
     {
-        int idA = chartService.saveChart( chartA );
-        int idB = chartService.saveChart( chartB );
-        int idC = chartService.saveChart( chartC );
+        int idA = chartService.addChart( chartA );
+        int idB = chartService.addChart( chartB );
+        int idC = chartService.addChart( chartC );
 
         assertEquals( chartA, chartService.getChart( idA ) );
         assertEquals( chartB, chartService.getChart( idB ) );
@@ -187,9 +187,9 @@ public class ChartServiceTest
     @Test
     public void testDelete()
     {
-        int idA = chartService.saveChart( chartA );
-        int idB = chartService.saveChart( chartB );
-        int idC = chartService.saveChart( chartC );
+        int idA = chartService.addChart( chartA );
+        int idB = chartService.addChart( chartB );
+        int idC = chartService.addChart( chartC );
 
         assertNotNull( chartService.getChart( idA ) );
         assertNotNull( chartService.getChart( idB ) );
@@ -211,9 +211,9 @@ public class ChartServiceTest
     @Test
     public void testGetAll()
     {
-        chartService.saveChart( chartA );
-        chartService.saveChart( chartB );
-        chartService.saveChart( chartC );
+        chartService.addChart( chartA );
+        chartService.addChart( chartB );
+        chartService.addChart( chartC );
 
         assertTrue( equals( chartService.getAllCharts(), chartA, chartB, chartC ) );
     }
@@ -221,9 +221,9 @@ public class ChartServiceTest
     @Test
     public void testGetByTitle()
     {
-        chartService.saveChart( chartA );
-        chartService.saveChart( chartB );
-        chartService.saveChart( chartC );
+        chartService.addChart( chartA );
+        chartService.addChart( chartB );
+        chartService.addChart( chartC );
 
         assertEquals( chartB, chartService.getChartByName( "ChartB" ) );
     }

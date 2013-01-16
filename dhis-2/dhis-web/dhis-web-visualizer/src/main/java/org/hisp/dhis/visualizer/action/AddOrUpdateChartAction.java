@@ -27,11 +27,7 @@ package org.hisp.dhis.visualizer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.setNames;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -46,7 +42,10 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hisp.dhis.system.util.DateUtils.setNames;
 
 /**
  * @author Jan Henrik Overland
@@ -443,7 +442,7 @@ public class AddOrUpdateChartAction
             }
         }
 
-        if ( reportingMonth || last12Months|| last3Months || reportingQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
+        if ( reportingMonth || last12Months || last3Months || reportingQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
             || lastYear || last5Years )
         {
             RelativePeriods rp = new RelativePeriods();
@@ -516,7 +515,14 @@ public class AddOrUpdateChartAction
 
         chart.setBaseLineLabel( baseLineLabel );
 
-        chartService.saveOrUpdate( chart );
+        if ( uid == null )
+        {
+            chartService.addChart( chart );
+        }
+        else
+        {
+            chartService.updateChart( chart );
+        }
 
         chartId = chart.getUid();
 

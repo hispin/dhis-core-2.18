@@ -38,7 +38,9 @@ import org.hisp.dhis.user.User;
  */
 public interface PatientAggregateReportService
 {
-    void saveOrUpdate( PatientAggregateReport patientAggregateReport );
+    void addPatientAggregateReport( PatientAggregateReport patientAggregateReport );
+
+    void updatePatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
     PatientAggregateReport getPatientAggregateReport( int id );
 

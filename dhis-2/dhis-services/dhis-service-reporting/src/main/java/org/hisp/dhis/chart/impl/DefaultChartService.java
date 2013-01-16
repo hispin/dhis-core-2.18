@@ -27,27 +27,6 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.chart.Chart.TYPE_AREA;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_COLUMN;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
-import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -100,6 +79,19 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static org.hisp.dhis.chart.Chart.*;
+import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -116,10 +108,10 @@ public class DefaultChartService
 
     private static final String TREND_PREFIX = "Trend - ";
 
-    private static final Color[] colors = {Color.decode( "#88be3b" ), Color.decode( "#3b6286" ),
+    private static final Color[] colors = { Color.decode( "#88be3b" ), Color.decode( "#3b6286" ),
         Color.decode( "#b7404c" ), Color.decode( "#ff9f3a" ), Color.decode( "#968f8f" ), Color.decode( "#b7409f" ),
         Color.decode( "#ffda64" ), Color.decode( "#4fbdae" ), Color.decode( "#b78040" ), Color.decode( "#676767" ),
-        Color.decode( "#6a33cf" ), Color.decode( "#4a7833" )};
+        Color.decode( "#6a33cf" ), Color.decode( "#4a7833" ) };
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -186,7 +178,7 @@ public class DefaultChartService
     {
         return getJFreeChart( chart, null, format );
     }
-    
+
     public JFreeChart getJFreeChart( Chart chart, Date date, I18nFormat format )
     {
         if ( chart.getRelatives() != null )
@@ -194,7 +186,7 @@ public class DefaultChartService
             List<Period> periods = chart.isRewindRelativePeriods() ?
                 chart.getRelatives().getRewindedRelativePeriods( 1, date, format, true ) :
                 chart.getRelatives().getRelativePeriods( date, format, true );
-            
+
             chart.setRelativePeriods( periodService.reloadPeriods( periods ) );
         }
 
@@ -203,7 +195,7 @@ public class DefaultChartService
         if ( user != null && user.getOrganisationUnit() != null )
         {
             OrganisationUnit unit = user.getOrganisationUnit();
-            
+
             if ( chart.isUserOrganisationUnit() )
             {
                 chart.getRelativeOrganisationUnits().add( unit );
@@ -213,7 +205,7 @@ public class DefaultChartService
                 chart.getRelativeOrganisationUnits().addAll( unit.hasChild() ? unit.getSortedChildren() : Arrays.asList( unit ) );
             }
         }
-        
+
         chart.setFormat( format );
 
         return getJFreeChart( chart, !chart.isHideSubtitle() );
@@ -221,7 +213,7 @@ public class DefaultChartService
 
     public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
     {
-        List<Period> periods = periodService.reloadPeriods( 
+        List<Period> periods = periodService.reloadPeriods(
             new RelativePeriods().setLast12Months( true ).getRelativePeriods( format, true ) );
 
         Chart chart = new Chart();
@@ -243,9 +235,9 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
-                                                     I18nFormat format )
+        I18nFormat format )
     {
-        List<Period> periods = periodService.reloadPeriods( 
+        List<Period> periods = periodService.reloadPeriods(
             new RelativePeriods().setThisYear( true ).getRelativePeriods( format, true ) );
 
         Chart chart = new Chart();
@@ -267,9 +259,9 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
-                                     List<Period> periods, List<OrganisationUnit> organisationUnits, 
-                                     String series, String category, String filter,
-                                     boolean regression, I18nFormat format )
+        List<Period> periods, List<OrganisationUnit> organisationUnits,
+        String series, String category, String filter,
+        boolean regression, I18nFormat format )
     {
         Chart chart = new Chart();
 
@@ -288,7 +280,7 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
-                                     Map<String, Double> categoryValues )
+        Map<String, Double> categoryValues )
     {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
@@ -306,8 +298,8 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChartHistory( DataElement dataElement,
-                                            DataElementCategoryOptionCombo categoryOptionCombo, Period lastPeriod, OrganisationUnit organisationUnit,
-                                            int historyLength, I18nFormat format )
+        DataElementCategoryOptionCombo categoryOptionCombo, Period lastPeriod, OrganisationUnit organisationUnit,
+        int historyLength, I18nFormat format )
     {
         lastPeriod = periodService.reloadPeriod( lastPeriod );
 
@@ -424,7 +416,7 @@ public class DefaultChartService
      * Returns a CategoryPlot.
      */
     private CategoryPlot getCategoryPlot( CategoryDataset dataSet, CategoryItemRenderer renderer,
-                                          PlotOrientation orientation, CategoryLabelPositions labelPositions )
+        PlotOrientation orientation, CategoryLabelPositions labelPositions )
     {
         CategoryPlot plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), renderer );
 
@@ -476,7 +468,7 @@ public class DefaultChartService
     private StackedBarRenderer getStackedBarRenderer()
     {
         StackedBarRenderer renderer = new StackedBarRenderer();
-        
+
         for ( int i = 0; i < colors.length; i++ )
         {
             renderer.setSeriesPaint( i, colors[i] );
@@ -485,7 +477,7 @@ public class DefaultChartService
 
         return renderer;
     }
-    
+
     /**
      * Returns a horizontal line marker for the given x value and label.
      */
@@ -497,7 +489,7 @@ public class DefaultChartService
         marker.setLabel( label );
         marker.setLabelOffset( new RectangleInsets( -10, 50, 0, 0 ) );
         marker.setLabelFont( subTitleFont );
-        
+
         return marker;
     }
 
@@ -557,7 +549,7 @@ public class DefaultChartService
         {
             plot.addRangeMarker( getMarker( chart.getTargetLineValue(), chart.getTargetLineLabel() ) );
         }
-        
+
         if ( chart.isBaseLine() )
         {
             plot.addRangeMarker( getMarker( chart.getBaseLineValue(), chart.getBaseLineLabel() ) );
@@ -590,7 +582,7 @@ public class DefaultChartService
 
         return jFreeChart;
     }
-    
+
     private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet, boolean horizontal )
     {
         JFreeChart stackedBarChart = null;
@@ -668,42 +660,42 @@ public class DefaultChartService
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
         Map<String, Double> valueMap = reportTableManager.getAggregatedValueMap( chart );
-                
+
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
-        
+
         SimpleRegression regression = new SimpleRegression();
-        
+
         for ( NameableObject series : chart.series() )
         {
             double categoryIndex = 0;
-            
+
             for ( NameableObject category : chart.category() )
-            {   
+            {
                 categoryIndex++;
-                
+
                 String key = getIdentifier( Arrays.asList( series, category, chart.filter() ) );
-                
+
                 Double value = valueMap.get( key );
-                
+
                 regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
-                
+
                 if ( chart.isRegression() && value != null && !MathUtils.isEqual( value, MathUtils.ZERO ) )
                 {
                     regression.addData( categoryIndex, value );
                 }
             }
-            
+
             if ( chart.isRegression() ) // Period must be category
             {
                 categoryIndex = 0;
-                
+
                 for ( NameableObject category : chart.category() )
                 {
                     final double value = regression.predict( categoryIndex++ );
 
                     // Enough values must exist for regression
-                    
+
                     if ( !Double.isNaN( value ) )
                     {
                         regressionDataSet.addValue( value, TREND_PREFIX + series.getShortName(), category.getShortName() );
@@ -711,32 +703,33 @@ public class DefaultChartService
                 }
             }
         }
-        
-        return new CategoryDataset[] { regularDataSet, regressionDataSet };
+
+        return new CategoryDataset[]{ regularDataSet, regressionDataSet };
     }
-    
+
     private TextTitle getSubTitle( Chart chart )
     {
         TextTitle title = new TextTitle();
-        
+
         title.setFont( subTitleFont );
         title.setText( chart.getTitle() );
-        
+
         return title;
     }
-    
+
     // -------------------------------------------------------------------------
     // CRUD operations
     // -------------------------------------------------------------------------
 
-    public int saveChart( Chart chart )
+    public int addChart( Chart chart )
     {
         return chartStore.save( chart );
     }
 
-    public void saveOrUpdate( Chart chart )
+    @Override
+    public void updateChart( Chart chart )
     {
-        chartStore.saveOrUpdate( chart );
+        chartStore.update( chart );
     }
 
     public Chart getChart( int id )
@@ -758,7 +751,7 @@ public class DefaultChartService
     {
         return chartStore.getAll();
     }
-    
+
     public Collection<Chart> getSystemAndUserCharts()
     {
         return chartStore.getSystemAndUserCharts( currentUserService.getCurrentUser() );
@@ -801,7 +794,7 @@ public class DefaultChartService
     {
         return chartStore.getAllLikeNameOrderedName( name, first, max );
     }
-    
+
     public Collection<Chart> getChartsByUser( User user )
     {
         return chartStore.getByUser( user );
