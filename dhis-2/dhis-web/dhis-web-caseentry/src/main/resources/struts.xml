@@ -873,6 +873,14 @@
 		
 		<!-- Aggregate Report -->
 		
+		<action name="getAggregateReportList"
+			class="org.hisp.dhis.caseentry.action.report.GetAggregateReportListAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonTabularReportList.vm
+			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+		
 		<action name="generateAggregateReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonAggregateReportResult.vm
@@ -904,7 +912,7 @@
 		<action name="getAggregateReport"
 			class="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonTabularAggregateReport.vm.vm
+				/dhis-web-caseentry/jsonTabularAggregateReport.vm
 			</result>
             <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>

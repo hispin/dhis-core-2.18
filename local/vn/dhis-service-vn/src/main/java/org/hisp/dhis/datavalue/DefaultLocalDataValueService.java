@@ -52,7 +52,7 @@ public class DefaultLocalDataValueService
 
     private LocalDataValueStore localDataValueStore;
 
-    public void setDataValueStore( LocalDataValueStore localDataValueStore )
+    public void setLocalDataValueStore( LocalDataValueStore localDataValueStore )
     {
         this.localDataValueStore = localDataValueStore;
     }

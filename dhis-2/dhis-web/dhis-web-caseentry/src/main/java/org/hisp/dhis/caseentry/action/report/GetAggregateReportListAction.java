@@ -66,11 +66,11 @@ public class GetAggregateReportListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientAggregateReport> aggregateReports = new HashSet<PatientAggregateReport>();
+    private Collection<PatientAggregateReport> reports = new HashSet<PatientAggregateReport>();
 
-    public Collection<PatientAggregateReport> getAggregateReports()
+    public Collection<PatientAggregateReport> getReports()
     {
-        return aggregateReports;
+        return reports;
     }
 
     // -------------------------------------------------------------------------
@@ -81,7 +81,7 @@ public class GetAggregateReportListAction
     public String execute()
         throws Exception
     {
-        aggregateReports = aggregateReportService.getPatientAggregateReports( currentUserService.getCurrentUser() );
+        reports = aggregateReportService.getPatientAggregateReports( currentUserService.getCurrentUser() );
 
         return SUCCESS;
     }

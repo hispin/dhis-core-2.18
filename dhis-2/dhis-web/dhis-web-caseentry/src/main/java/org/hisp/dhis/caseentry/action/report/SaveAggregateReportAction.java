@@ -58,162 +58,139 @@ public class SaveAggregateReportAction
 
     private PatientAggregateReportService aggregateReportService;
 
-    private ProgramStageService programStageService;
-
-    private OrganisationUnitService organisationUnitService;
-
-    private DataElementService dataElementService;
-
-    private CurrentUserService currentUserService;
-
-    private I18nFormat format;
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private String name;
-
-    private int programStageId;
-
-    // Date period range
-
-    private String periodTypeName;
-
-    private String startDate;
-
-    private String endDate;
-
-    // Relative periods
-
-    private Set<String> relativePeriods = new HashSet<String>();
-
-    // Fixed periods
-
-    private List<String> fixedPeriod = new ArrayList<String>();
-
-    // Organisation units
-
-    private Set<Integer> orgunitIds;
-
-    // Data element filter values
-
-    private Collection<String> filterValues;
-
-    // Option
-
-    private String facilityLB;
-
-    private Integer limitRecords;
-
-    private int position;
-
-    private Integer deGroupBy;
-
-    private String aggregateType;
-
-    // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-
     public void setAggregateReportService( PatientAggregateReportService aggregateReportService )
     {
         this.aggregateReportService = aggregateReportService;
     }
+
+    private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
+
+    private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
 
+    private CurrentUserService currentUserService;
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
+
+    private I18nFormat format;
 
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
 
+    // -------------------------------------------------------------------------
+    // Setters
+    // -------------------------------------------------------------------------
+
+    private String name;
+
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public void setProgramStageId( int programStageId )
+    private Integer programStageId;
+
+    public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
     }
 
-    public void setPeriodTypeName( String periodTypeName )
+    private String aggregateType;
+
+    public void setAggregateType( String aggregateType )
     {
-        this.periodTypeName = periodTypeName;
+        this.aggregateType = aggregateType;
     }
 
-    public void setStartDate( String startDate )
+    private Collection<Integer> orgunitIds;
+
+    public void setOrgunitIds( Collection<Integer> orgunitIds )
     {
-        this.startDate = startDate;
+        this.orgunitIds = orgunitIds;
     }
 
-    public void setEndDate( String endDate )
+    private Set<String> deFilters;
+
+    public void setDeFilters( Set<String> deFilters )
     {
-        this.endDate = endDate;
+        this.deFilters = deFilters;
     }
+
+    private List<String> fixedPeriods = new ArrayList<String>();
+
+    public void setFixedPeriods( List<String> fixedPeriods )
+    {
+        this.fixedPeriods = fixedPeriods;
+    }
+
+    private Set<String> relativePeriods = new HashSet<String>();
 
     public void setRelativePeriods( Set<String> relativePeriods )
     {
         this.relativePeriods = relativePeriods;
     }
 
-    public void setFixedPeriod( List<String> fixedPeriod )
+    private String startDate;
+
+    public void setStartDate( String startDate )
     {
-        this.fixedPeriod = fixedPeriod;
+        this.startDate = startDate;
     }
 
-    public void setOrgunitIds( Set<Integer> orgunitIds )
+    private String endDate;
+
+    public void setEndDate( String endDate )
     {
-        this.orgunitIds = orgunitIds;
+        this.endDate = endDate;
     }
 
-    public void setFilterValues( Collection<String> filterValues )
-    {
-        this.filterValues = filterValues;
-    }
+    private String facilityLB; // All, children, current
 
     public void setFacilityLB( String facilityLB )
     {
         this.facilityLB = facilityLB;
     }
 
+    private Integer position;
+
+    public void setPosition( Integer position )
+    {
+        this.position = position;
+    }
+
+    private Integer limitRecords;
+
     public void setLimitRecords( Integer limitRecords )
     {
         this.limitRecords = limitRecords;
     }
 
-    public void setPosition( int position )
-    {
-        this.position = position;
-    }
+    private Integer deGroupBy;
 
     public void setDeGroupBy( Integer deGroupBy )
     {
         this.deGroupBy = deGroupBy;
-    }
-
-    public void setAggregateType( String aggregateType )
-    {
-        this.aggregateType = aggregateType;
     }
 
     // -------------------------------------------------------------------------
@@ -229,23 +206,25 @@ public class SaveAggregateReportAction
         aggregateReport.setName( name );
         aggregateReport.setProgramStage( programStageService.getProgramStage( programStageId ) );
 
-        if ( periodTypeName != null )
+        if ( startDate != null && endDate != null )
         {
-            aggregateReport.setPeriodTypeName( periodTypeName );
             aggregateReport.setStartDate( format.parseDate( startDate ) );
             aggregateReport.setEndDate( format.parseDate( endDate ) );
         }
 
         aggregateReport.setRelativePeriods( relativePeriods );
-        aggregateReport.setFixedPeriods( fixedPeriod );
+        aggregateReport.setFixedPeriods( fixedPeriods );
         aggregateReport.setOrganisationUnits( new HashSet<OrganisationUnit>( organisationUnitService
             .getOrganisationUnits( orgunitIds ) ) );
 
-        aggregateReport.setFilterValues( filterValues );
+        aggregateReport.setFilterValues( deFilters );
         aggregateReport.setFacilityLB( facilityLB );
         aggregateReport.setLimitRecords( limitRecords );
         aggregateReport.setPosition( position );
-        aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
+        if ( deGroupBy != null )
+        {
+            aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
+        }
         aggregateReport.setAggregateType( aggregateType );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
 

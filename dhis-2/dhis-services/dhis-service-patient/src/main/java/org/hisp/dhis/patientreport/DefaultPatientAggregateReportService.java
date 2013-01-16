@@ -30,12 +30,14 @@ package org.hisp.dhis.patientreport;
 import java.util.Collection;
 
 import org.hisp.dhis.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
  * 
  * @version DefaultPatientAggregateReportService.java 12:22:45 PM Jan 10, 2013 $
  */
+@Transactional
 public class DefaultPatientAggregateReportService
     implements PatientAggregateReportService
 {

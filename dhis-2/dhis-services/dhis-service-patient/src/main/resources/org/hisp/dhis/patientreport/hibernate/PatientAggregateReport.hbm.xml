@@ -18,8 +18,6 @@
 		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
 			column="programstageid" foreign-key="fk_patientaggregatereport_programstage" />
 
-		<property name="periodTypeName" />
-
 		<property name="startDate" />
 
 		<property name="endDate" />
@@ -30,11 +28,11 @@
 			<element type="text" column="relativeperiod" />
 		</set>
 
-		<set name="fixedPeriods" table="patientaggregatereport_fixedperiods">
-			<key column="patientaggregatereportid"
-				foreign-key="fk_patientaggregatereport_fixedperiods_patientaggregatereportid" />
-			<element type="text" column="fixedperiod" />
-		</set>
+		<list name="fixedPeriods" table="patientaggregatereport_fixedperiods">
+	      <key column="patientaggregatereportid"/>
+	      <list-index column="sort_order" />
+	      <element type="text" column="fixedperiod" />
+	    </list>
 
 		<set name="organisationUnits" table="patientaggregatereport_organisationUnits">
 			<key column="patientaggregatereportid" foreign-key="fk_patientaggregatereport_organisationunitid" />

@@ -952,6 +952,7 @@
 		scope="prototype">
 		<property name="aggregateReportService"
 			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction"
@@ -959,6 +960,8 @@
 		scope="prototype">
 		<property name="aggregateReportService"
 			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<!-- Reminder -->

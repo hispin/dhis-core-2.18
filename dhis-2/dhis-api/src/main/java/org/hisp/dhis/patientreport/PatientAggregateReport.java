@@ -28,7 +28,6 @@
 package org.hisp.dhis.patientreport;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -70,8 +69,6 @@ public class PatientAggregateReport
 
     // Date period range
 
-    private String periodTypeName;
-
     private Date startDate;
 
     private Date endDate;
@@ -90,7 +87,7 @@ public class PatientAggregateReport
 
     // Data element filter values
 
-    private Collection<String> filterValues = new HashSet<String>();
+    private Set<String> filterValues = new HashSet<String>();
 
     // Option
 
@@ -130,17 +127,7 @@ public class PatientAggregateReport
     {
         this.programStage = programStage;
     }
-
-    public String getPeriodTypeName()
-    {
-        return periodTypeName;
-    }
-
-    public void setPeriodTypeName( String periodTypeName )
-    {
-        this.periodTypeName = periodTypeName;
-    }
-
+    
     public Date getStartDate()
     {
         return startDate;
@@ -191,12 +178,12 @@ public class PatientAggregateReport
         this.organisationUnits = organisationUnits;
     }
 
-    public Collection<String> getFilterValues()
+    public Set<String> getFilterValues()
     {
         return filterValues;
     }
 
-    public void setFilterValues( Collection<String> filterValues )
+    public void setFilterValues( Set<String> filterValues )
     {
         this.filterValues = filterValues;
     }
