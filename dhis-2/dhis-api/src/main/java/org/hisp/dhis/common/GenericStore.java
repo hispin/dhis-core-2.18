@@ -38,10 +38,10 @@ public interface GenericStore<T>
      * Class of the object for this store.
      */
     Class<T> getClazz();
-    
+
     /**
      * Saves the given object instance.
-     * 
+     *
      * @param object the object instance.
      * @return the generated identifier.
      */
@@ -49,7 +49,7 @@ public interface GenericStore<T>
 
     /**
      * Updates the given object instance.
-     * 
+     *
      * @param object the object instance.
      */
     void update( T object );
@@ -57,7 +57,7 @@ public interface GenericStore<T>
     /**
      * Retrieves the object with the given identifier. This method will first
      * look in the current Session, then hit the database if not existing.
-     * 
+     *
      * @param id the object identifier.
      * @return the object identified by the given identifier.
      */
@@ -65,45 +65,30 @@ public interface GenericStore<T>
 
     /**
      * Retrieves the object with the given identifier, assuming it exists.
-     * 
+     *
      * @param id the object identifier.
      * @return the object identified by the given identifier or a generated
      *         proxy.
      */
     T load( int id );
-    
-    /**
-     * Retrieves a Collection of objects where the name is like the given name.
-     * 
-     * @param name the name.
-     * @return a Collection of objects.
-     */
-    Collection<T> getAllLikeName( String name );
 
     /**
      * Retrieves a Collection of all objects.
-     * 
+     *
      * @return a Collection of all objects.
      */
     Collection<T> getAll();
 
     /**
-     * Retrieves a Collection of all objects (sorted on name).
-     *
-     * @return a Collection of all objects.
-     */
-    Collection<T> getAllOrderedName();
-
-    /**
      * Removes the given object instance.
-     * 
+     *
      * @param object the object instance to delete.
      */
     void delete( T object );
-    
+
     /**
      * Gets the count of objects.
-     * 
+     *
      * @return the count of objects.
      */
     int getCount();

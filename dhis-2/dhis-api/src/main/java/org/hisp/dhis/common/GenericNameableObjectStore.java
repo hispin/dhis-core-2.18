@@ -37,7 +37,7 @@ public interface GenericNameableObjectStore<T>
     /**
      * Retrieves the object with the given short name.
      *
-     * @param name the short name.
+     * @param shortName the short name.
      * @return the object with the given short name.
      */
     T getByShortName( String shortName );
