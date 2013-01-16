@@ -174,10 +174,6 @@ public class SaveDocumentAction
 
         document.setName( name );
 
-        document.setUser( currentUserService.getCurrentUser() );
-
-        document.setPublicAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
-
         documentService.saveDocument( document );
 
         return SUCCESS;

@@ -39,12 +39,6 @@
                 <tr id="tr${document.id}">
                     <td>$encoder.htmlEncode( $document.name )</td>
 					<td>
-                        #if ( $security.canManage( $document ) )
-                        <a href="javascript:showSharingDialog('document', '$document.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
-                        #else
-                        <img src="../images/relationship-denied.png">
-                        #end
-
 						#if ( $document.external )
                     	   <a href="${document.url}" title="$i18n.getString( 'view_resource' )">
                     	#else
@@ -52,6 +46,12 @@
                     	#end
 
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'view_report' )"></a>
+
+                        #if ( $security.canManage( $document ) )
+                        <a href="javascript:showSharingDialog('document', '$document.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+                        #else
+                        <img src="../images/relationship-denied.png">
+                        #end
 
                         #if( $security.canUpdate( $document ) )
                     	<a href="displayAddDocumentForm.action?id=$!document.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>

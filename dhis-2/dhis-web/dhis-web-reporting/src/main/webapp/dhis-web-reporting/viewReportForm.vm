@@ -1,3 +1,6 @@
+
+#sharingDialog()
+
 <script type="text/javascript">
 	jQuery(document).ready(function(){		
 		tableSorter( 'listTable' );	
@@ -27,7 +30,7 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col>
-                <col width="140px">               
+                <col width="180px">
                 <thead>               
                 <tr>
                     <th>$i18n.getString( "name" )</th>
@@ -41,8 +44,21 @@
                     <td style="text-align:right">
                     	<a href="getReportParams.action?uid=${report.uid}&mode=report" title="$i18n.getString( 'create' )">                    	
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'create' )"></a>                   
-						<a href="displayAddReportForm.action?id=$report.id" title="$i18n.getString( 'edit_report' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit_report' )"></a>
+
+                        #if ( $security.canManage( $report ) )
+                        <a href="javascript:showSharingDialog('report', '$report.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+                        #else
+                        <img src="../images/relationship-denied.png">
+                        #end
+
+                        #if( $security.canUpdate( $report ) )
+                        <a href="displayAddReportForm.action?id=$report.id" title="$i18n.getString( 'edit_report' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit_report' )"></a>
+                        #else
+                        <img src="../images/edit-denied.png">
+                        #end
+
 						<a href="javascript:addToDashboard( '$report.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
+
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeReport" ) )
 						<a href="javascript:removeReport( $report.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>
 						#else <img src="../images/delete-denied.png"> #end

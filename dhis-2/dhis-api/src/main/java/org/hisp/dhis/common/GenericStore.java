@@ -57,7 +57,7 @@ public interface GenericStore<T>
     /**
      * Saves or updates the given object instance depending on the object's
      * persistent state.
-     * 
+     *
      * @param object the object instance.
      */
     void saveOrUpdate( T object );
