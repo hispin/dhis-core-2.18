@@ -315,7 +315,7 @@ public class TextUtils
      * @param separator the separator of the array items.
      * @return a string.
      */
-    public static String toString( String[] array, char separator )
+    public static String toString( String[] array, String separator )
     {
         StringBuilder builder = new StringBuilder();
         
