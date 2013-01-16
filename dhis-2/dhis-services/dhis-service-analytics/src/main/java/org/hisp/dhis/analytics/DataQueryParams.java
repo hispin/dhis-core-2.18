@@ -28,8 +28,6 @@ package org.hisp.dhis.analytics;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
-import static org.hisp.dhis.system.util.CollectionUtils.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +61,9 @@ public class DataQueryParams
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ",";
     public static final char DIMENSION_SEP = '-';
+    
+    private static final DimensionOption[] DIM_OPT_ARR = new DimensionOption[0];
+    private static final DimensionOption[][] DIM_OPT_2D_ARR = new DimensionOption[0][];
     
     private Map<String, List<IdentifiableObject>> dimensions = new HashMap<String, List<IdentifiableObject>>();
     
@@ -307,39 +308,37 @@ public class DataQueryParams
         return map;
     }
     
-    public List<String> getDimensionOptionPermutations()
+    /**
+     * Generates all permutations of the dimension options for this query.
+     */
+    public List<List<DimensionOption>> getDimensionOptionPermutations()
     {
-        List<String[]> dimensionOptions = new ArrayList<String[]>();
+        List<DimensionOption[]> dimensionOptions = new ArrayList<DimensionOption[]>();
         
+        List<String> dimensionNames = getDimensionNamesAsList();
+
         List<String> ignoreDims = Arrays.asList( DATAELEMENT_DIM_ID, CATEGORYOPTIONCOMBO_DIM_ID, INDICATOR_DIM_ID );
         
-        for ( String dim : getDimensionNamesAsList() )
+        for ( String dim : dimensionNames )
         {
             if ( !ignoreDims.contains( dim ) )
             {
-                dimensionOptions.add( getUids( dimensions.get( dim ) ).toArray( STRING_ARR ) );
+                List<DimensionOption> options = new ArrayList<DimensionOption>();
+                
+                for ( IdentifiableObject option : dimensions.get( dim ) )
+                {
+                    options.add( new DimensionOption( dim, option.getUid() ) );
+                }
+                
+                dimensionOptions.add( options.toArray( DIM_OPT_ARR ) );
             }
         }
         
-        CombinationGenerator<String> generator = new CombinationGenerator<String>( dimensionOptions.toArray( STRING_2D_ARR ) );
+        CombinationGenerator<DimensionOption> generator = new CombinationGenerator<DimensionOption>( dimensionOptions.toArray( DIM_OPT_2D_ARR ) );
         
-        List<String> perms = new ArrayList<String>();
-        
-        for ( List<String> perm : generator.getCombinations() )
-        {
-            StringBuilder key = new StringBuilder();
-            
-            for ( String uid : perm )
-            {
-                key.append( uid + DIMENSION_SEP );
-            }
-            
-            key.deleteCharAt( key.length() - 1 );
-        }
-        
-        return perms;
+        return generator.getCombinations();
     }
-
+    
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
