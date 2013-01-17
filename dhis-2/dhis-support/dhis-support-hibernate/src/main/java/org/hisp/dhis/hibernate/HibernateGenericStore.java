@@ -349,7 +349,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllACL()
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user=:user"
+            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')";
 
@@ -376,7 +376,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllLikeNameACL( String name )
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(name) like :name and ( c.publicAccess like 'r%' or c.user=:user"
+            + " where lower(name) like :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " ) order by c.name";
@@ -408,7 +408,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllOrderedNameACL()
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user=:user"
+            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " order by c.name";
@@ -451,7 +451,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllOrderedLastUpdatedACL()
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user=:user"
+            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " order by c.lastUpdated desc";
@@ -482,7 +482,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllLikeNameOrderedNameACL( String name )
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where lower(c.name) like :name and ( c.publicAccess like 'r%' or c.user=:user"
+            + " where lower(c.name) like :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " ) order by c.name";
@@ -513,7 +513,7 @@ public class HibernateGenericStore<T>
     private Query getQueryCountACL()
     {
         String hql = "select count(distinct c) from " + clazz.getName() + " c"
-            + " where c.publicAccess like 'r%' or c.user=:user"
+            + " where c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')";
 
@@ -539,7 +539,7 @@ public class HibernateGenericStore<T>
     private Query getQueryCountLikeNameACL( String name )
     {
         String hql = "select count(distinct c) from " + clazz.getName() + " c"
-            + " where lower(name) like :name and (c.publicAccess like 'r%' or c.user=:user"
+            + " where lower(name) like :name and (c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " )";
@@ -570,7 +570,7 @@ public class HibernateGenericStore<T>
     private Query getQueryCountGeLastUpdatedACL( Date lastUpdated )
     {
         String hql = "select count(distinct c) from " + clazz.getName() + " c"
-            + " where c.lastUpdated >= :lastUpdated and (c.publicAccess like 'r%' or c.user=:user"
+            + " where c.lastUpdated >= :lastUpdated and (c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " )";
@@ -602,7 +602,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllGeLastUpdatedACL( Date lastUpdated )
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.lastUpdated >= :lastUpdated and ( c.publicAccess like 'r%' or c.user=:user"
+            + " where c.lastUpdated >= :lastUpdated and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " )";
@@ -634,7 +634,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllGeCreatedACL( Date created )
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.created >= :created and ( c.publicAccess like 'r%' or c.user=:user"
+            + " where c.created >= :created and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " ) order by c.name";
@@ -666,7 +666,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllGeLastUpdatedOrderedNameACL( Date lastUpdated )
     {
         String hql = "select distinct c from " + clazz.getName() + " c"
-            + " where c.lastUpdated >= :lastUpdated and ( c.publicAccess like 'r%' or c.user=:user"
+            + " where c.lastUpdated >= :lastUpdated and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
             + " or exists "
             + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
             + " ) order by c.name";
