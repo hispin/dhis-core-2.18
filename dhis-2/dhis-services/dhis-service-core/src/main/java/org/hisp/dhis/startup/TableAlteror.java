@@ -27,20 +27,19 @@ package org.hisp.dhis.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.AccessStringHelper;
-import org.hisp.dhis.system.startup.AbstractStartupRoutine;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -254,10 +253,10 @@ public class TableAlteror
         executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
         executeSql( "UPDATE dataelement SET numbertype='number' where numbertype is null and valuetype='int'" );
 
-       // revert prepare aggregate*Value tables for offline diffs
+        // revert prepare aggregate*Value tables for offline diffs
 
-        executeSql( "ALTER TABLE aggregateddatavalue DROP COLUMN modified");
-        executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified ");
+        executeSql( "ALTER TABLE aggregateddatavalue DROP COLUMN modified" );
+        executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified " );
         executeSql( "UPDATE indicatortype SET indicatornumber=false WHERE indicatornumber is null" );
 
         // program
@@ -418,7 +417,7 @@ public class TableAlteror
         executeSql( "update reporttable set lastsixmonth = false where lastsixmonth is null" );
         executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
         executeSql( "update reporttable set last12months = false where last12months is null" );
-	executeSql( "update reporttable set last3months = false where last3months is null" );
+        executeSql( "update reporttable set last3months = false where last3months is null" );
         executeSql( "update reporttable set last6bimonths = false where last6bimonths is null" );
         executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
         executeSql( "update reporttable set last2sixmonths = false where last2sixmonths is null" );
@@ -451,7 +450,7 @@ public class TableAlteror
         executeSql( "update users set selfregistered = false where selfregistered is null" );
         executeSql( "update users set disabled = false where disabled is null" );
         executeSql( "update dataentryform set format = 1 where format is null" );
-        
+
         // report, reporttable, chart groups
 
         executeSql( "DROP TABLE reportgroupmembers" );
@@ -479,13 +478,11 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataset ALTER COLUMN shortname TYPE character varying(50)" );
         executeSql( "ALTER TABLE organisationunit ALTER COLUMN shortname TYPE character varying(50)" );
 
-        // set default access properties
-        String publicString = AccessStringHelper.newInstance()
-            .enable( AccessStringHelper.Permission.READ )
-            .enable( AccessStringHelper.Permission.WRITE )
-            .build();
+        // upgrade authorities
 
-        // executeSql( "UPDATE document SET publicaccess = '" + publicString + "' WHERE userid IS NULL AND publicaccess IS NULL" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_DOCUMENT_PUBLIC_ADD' WHERE authority='F_DOCUMENT_ADD'" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_REPORT_PUBLIC_ADD' WHERE authority='F_REPORT_ADD'" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_REPORTTABLE_PUBLIC_ADD' WHERE authority='F_REPORTTABLE_ADD'" );
 
         log.info( "Tables updated" );
     }
