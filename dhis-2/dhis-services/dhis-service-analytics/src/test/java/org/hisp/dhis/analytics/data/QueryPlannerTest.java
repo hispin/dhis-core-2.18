@@ -31,6 +31,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -257,7 +258,7 @@ public class QueryPlannerTest
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod(  "2001Q1" ), createPeriod( "2001Q2" ) ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 4, queries.size() );
         
@@ -281,7 +282,7 @@ public class QueryPlannerTest
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ) ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 6, queries.size() );
         
@@ -319,7 +320,7 @@ public class QueryPlannerTest
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ) ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 5, queries.size() );
         
@@ -342,7 +343,7 @@ public class QueryPlannerTest
         params.setPeriods( getList( createPeriod( "200001" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ),
             createPeriod( "200005" ), createPeriod( "200006" ), createPeriod( "200007" ), createPeriod( "200008" ), createPeriod( "200009" ) ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 3, queries.size() );
         
@@ -364,7 +365,7 @@ public class QueryPlannerTest
         params.setPeriods( getList( createPeriod( "200001" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ), 
             createPeriod( "200005" ), createPeriod( "200006" ), createPeriod( "200007" ), createPeriod( "200008" ), createPeriod( "200009" ) ) );
 
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
 
         assertEquals( 3, queries.size() );
 
@@ -386,7 +387,7 @@ public class QueryPlannerTest
         params.setPeriods( getList( createPeriod( "200001" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ), 
             createPeriod( "200005" ), createPeriod( "200006" ), createPeriod( "200007" ), createPeriod( "200008" ), createPeriod( "200009" ) ) );
 
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
 
         assertEquals( 3, queries.size() );
 
@@ -407,7 +408,7 @@ public class QueryPlannerTest
         params.setDataElements( getList( deA, deB, deC ) );
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
 
-        queryPlanner.planQuery( params, 4 );
+        queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
     }
 
     /**
@@ -423,7 +424,7 @@ public class QueryPlannerTest
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setFilterPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod( "2001Q1" ), createPeriod( "2001Q2" ) ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 4, queries.size() );
     }
@@ -441,7 +442,7 @@ public class QueryPlannerTest
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ) ) );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4 );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 6, queries.size() );
     }

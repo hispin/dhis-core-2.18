@@ -46,6 +46,7 @@ import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.QueryPlanner;
@@ -201,7 +202,7 @@ public class DefaultAnalyticsService
 
         int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 6 );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, AnalyticsTableManager.ANALYTICS_TABLE_NAME );
         
         t.getTime( "Planned query for optimal: " + optimalQueries + ", got: " + queries.size() );
         

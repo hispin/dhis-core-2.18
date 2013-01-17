@@ -34,10 +34,20 @@ import java.util.concurrent.Future;
 
 public interface AnalyticsTableManager
 {
-    public static final String TABLE_NAME = "analytics";
     public static final String TABLE_TEMP_SUFFIX = "_temp";
-    public static final String TABLE_NAME_TEMP = TABLE_NAME + TABLE_TEMP_SUFFIX;
+    public static final String ANALYTICS_TABLE_NAME = "analytics";
+    public static final String COMPLETENESS_TABLE_NAME = "completeness";
     
+    /**
+     * Returns the base table name.
+     */
+    String getTableName();
+    
+    /**
+     * Returns the temporary table name.
+     */
+    String getTempTableName();
+        
     /**
      * Attempts to drop and then create analytics table.
      * 
@@ -74,8 +84,12 @@ public interface AnalyticsTableManager
 
     /**
      * Returns a list of string arrays in where the first index holds the database
-     * column name, the second index holds the database column type and the third
-     * column holds a table alias.
+     * column name, the second index holds the database column data type and the 
+     * third column holds a table alias and name, i.e.:
+     * 
+     * 0 = database column name
+     * 1 = database column data type
+     * 2 = column alias and name
      */
     List<String[]> getDimensionColumns();
     

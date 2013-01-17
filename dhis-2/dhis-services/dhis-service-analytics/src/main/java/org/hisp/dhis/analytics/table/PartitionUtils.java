@@ -27,14 +27,12 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME_TEMP;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -47,7 +45,7 @@ public class PartitionUtils
     
     private static final String SEP = "_";
 
-    public static List<String> getTempTableNames( Date earliest, Date latest )
+    public static List<String> getTempTableNames( Date earliest, Date latest, String tableName )
     {   
         if ( earliest == null || latest == null || earliest.after( latest ) )
         {
@@ -60,7 +58,7 @@ public class PartitionUtils
         
         while ( period != null && period.getStartDate().before( latest ) )
         {
-            String table = TABLE_NAME_TEMP + SEP + period.getIsoDate();
+            String table = tableName + AnalyticsTableManager.TABLE_TEMP_SUFFIX + SEP + period.getIsoDate();
             
             tables.add( table );
             
@@ -70,11 +68,11 @@ public class PartitionUtils
         return tables;
     }
     
-    public static String getTable( Period period )
+    public static String getTable( Period period, String tableName )
     {
         Period quarter = PERIODTYPE.createPeriod( period.getStartDate() );
         
-        return TABLE_NAME + SEP + quarter.getIsoDate();
+        return tableName + SEP + quarter.getIsoDate();
     }
     
     public static Period getPeriod( String tableName )
@@ -90,13 +88,13 @@ public class PartitionUtils
         return PeriodType.getPeriodFromIsoString( isoPeriod );
     }
     
-    public static ListMap<String, IdentifiableObject> getTablePeriodMap( Collection<IdentifiableObject> periods )
+    public static ListMap<String, IdentifiableObject> getTablePeriodMap( Collection<IdentifiableObject> periods, String tableName )
     {
         ListMap<String, IdentifiableObject> map = new ListMap<String, IdentifiableObject>();
         
         for ( IdentifiableObject period : periods )
         {
-            map.putValue( getTable( (Period) period ), period );
+            map.putValue( getTable( (Period) period, tableName ), period );
         }
         
         return map;

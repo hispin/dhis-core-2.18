@@ -54,9 +54,13 @@ public class DefaultAnalyticsTableService
 {
     private static final Log log = LogFactory.getLog( DefaultAnalyticsTableService.class );
     
-    @Autowired
     private AnalyticsTableManager tableManager;
     
+    public void setTableManager( AnalyticsTableManager tableManager )
+    {
+        this.tableManager = tableManager;
+    }
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
     
@@ -78,7 +82,8 @@ public class DefaultAnalyticsTableService
         
         final Date earliest = tableManager.getEarliestData();
         final Date latest = tableManager.getLatestData();
-        final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest );        
+        final String tableName = tableManager.getTableName();
+        final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );        
         clock.logTime( "Checked data timespan and got tables: " + tables );
         
         //dropTables( tables );

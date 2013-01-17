@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.analytics.AnalyticsTableService;
@@ -48,8 +49,11 @@ public class ResourceTableController
 {
     public static final String RESOURCE_PATH = "/resourceTables";
     
-    @Autowired
+    @Resource(name="org.hisp.dhis.analytics.AnalyticsTableService")
     private AnalyticsTableService analyticsTableService;
+
+    @Resource(name="org.hisp.dhis.analytics.CompletenessTableService")
+    private AnalyticsTableService completenessTableService;
     
     @Autowired
     private ResourceTableService resourceTableService;
@@ -64,6 +68,15 @@ public class ResourceTableController
         analyticsTableService.update();
         
         ContextUtils.okResponse( response, "Initiated analytics table update" );
+    }
+
+    @RequestMapping( value = "/completeness", method = RequestMethod.PUT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
+    public void completeness( HttpServletResponse response )
+    {
+        completenessTableService.update();
+        
+        ContextUtils.okResponse( response, "Initiated completeness table update" );
     }
     
     @RequestMapping( method = RequestMethod.PUT )
