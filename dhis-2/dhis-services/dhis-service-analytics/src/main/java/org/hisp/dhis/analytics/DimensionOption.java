@@ -77,6 +77,11 @@ public class DimensionOption
     // Static methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns a string key for dimension options in the given list. The key is 
+     * a concatenation of the dimension options separated by the dimension separator.
+     * If no options are given or options is null, an empty string is returned.
+     */
     public static String asOptionKey( List<DimensionOption> options )
     {
         StringBuilder builder = new StringBuilder();
@@ -93,7 +98,31 @@ public class DimensionOption
         
         return builder.toString();
     }
-    
+
+    /**
+     * Returns an array of identifiers of the dimension options in the given list.
+     * If no options are given or options is null, an empty array is returned.
+     */
+    public static String[] getOptions( List<DimensionOption> options )
+    {
+        List<String> optionUids = new ArrayList<String>();
+        
+        if ( options != null && !options.isEmpty() )
+        {
+            for ( DimensionOption option : options )
+            {
+                optionUids.add( option.getOption().getUid() );
+            }
+        }
+        
+        return optionUids.toArray( CollectionUtils.STRING_ARR );
+    }
+
+    /**
+     * Returns the period dimension option object from the given list of
+     * dimension options. If no options are given, options is null or there is 
+     * no period dimension, null is returned.
+     */
     public static IdentifiableObject getPeriodOption( List<DimensionOption> options )
     {
         if ( options != null && !options.isEmpty() )
@@ -110,21 +139,6 @@ public class DimensionOption
         return null;
     }
     
-    public static String[] getOptions( List<DimensionOption> options )
-    {
-        List<String> optionUids = new ArrayList<String>();
-        
-        if ( options != null && !options.isEmpty() )
-        {
-            for ( DimensionOption option : options )
-            {
-                optionUids.add( option.getOption().getUid() );
-            }
-        }
-        
-        return optionUids.toArray( CollectionUtils.STRING_ARR );
-    }
-
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

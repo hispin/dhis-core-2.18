@@ -194,7 +194,7 @@ public class QueryPlannerTest
      * on organisation unit and period dimensions.
      */
     @Test
-    public void testGetPermutations()
+    public void testGetDimensionOptionPermutations()
     {
         DataQueryParams params = new DataQueryParams();
         params.setDataElements( getList( deA, deB ) );

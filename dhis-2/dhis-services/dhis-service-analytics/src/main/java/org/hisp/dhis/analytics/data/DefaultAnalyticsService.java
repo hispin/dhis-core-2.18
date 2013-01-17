@@ -161,11 +161,14 @@ public class DefaultAnalyticsService
                     {
                         Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
                         
-                        options.set( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
-                        
-                        grid.addRow();
-                        grid.addValues( DimensionOption.getOptions( options ) );
-                        grid.addValue( value );
+                        if ( value != null )
+                        {
+                            options.set( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
+                            
+                            grid.addRow();
+                            grid.addValues( DimensionOption.getOptions( options ) );
+                            grid.addValue( value );
+                        }
                     }                    
                 }
             }
