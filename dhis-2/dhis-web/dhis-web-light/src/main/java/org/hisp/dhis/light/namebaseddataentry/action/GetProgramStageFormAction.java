@@ -268,7 +268,7 @@ public class GetProgramStageFormAction
         return listOfProgramStageSections;
     }
 
-    public ProgramStageSection programStageSection;
+    private ProgramStageSection programStageSection;
 
     public ProgramStageSection getProgramStageSection()
     {
@@ -313,7 +313,6 @@ public class GetProgramStageFormAction
         {
             this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );
             dataElements = programStageSection.getProgramStageDataElements();
-
         }
         else
         {

@@ -100,6 +100,8 @@ public class ActivityReportingServiceImpl
 
     private ProgramStageSectionService programStageSectionService;
 
+    private Beneficiary beneficiary;
+
     public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
     {
         this.programStageSectionService = programStageSectionService;
@@ -571,6 +573,11 @@ public class ActivityReportingServiceImpl
         this.patientService = patientService;
     }
 
+    public void setBeneficiary( Beneficiary beneficiary )
+    {
+        this.beneficiary = beneficiary;
+    }
+
     @Override
     public Beneficiary findPatient( String fullName )
         throws NotAllowedException
@@ -608,7 +615,7 @@ public class ActivityReportingServiceImpl
             throw NotAllowedException.NO_BENEFICIARY_FOUND;
         }
         else
-        {    
+        {
             return getBeneficiaryModel( patients.get( 0 ) );
         }
     }

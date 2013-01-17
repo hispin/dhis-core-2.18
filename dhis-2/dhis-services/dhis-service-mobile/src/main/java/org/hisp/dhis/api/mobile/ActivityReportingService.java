@@ -47,7 +47,7 @@ public interface ActivityReportingService
 
     public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException;
-    
-    public Beneficiary findPatient ( String name ) throws NotAllowedException;
 
+    public Beneficiary findPatient( String name )
+        throws NotAllowedException;
 }

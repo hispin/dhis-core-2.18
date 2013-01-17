@@ -20,6 +20,7 @@ import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,10 +54,15 @@ public class MobileOrganisationUnitController
     @Autowired
     private I18nService i18nService;
 
+    @Autowired
+    private PatientService patientService;
+
     // For client version 2.8 and lower
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/all" )
     @ResponseBody
-    public MobileModel getAllDataForOrgUnit2_8( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
+    public MobileModel getAllDataForOrgUnit2_8( @PathVariable
+    int id, @RequestHeader( "accept-language" )
+    String locale )
     {
         MobileModel mobileModel = new MobileModel();
         mobileModel.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
@@ -71,8 +77,10 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/updateDataSets" )
     @ResponseBody
-    public DataSetList checkUpdatedDataSet2_8( @PathVariable int id, @RequestBody DataSetList dataSetList,
-        @RequestHeader( "accept-language" ) String locale )
+    public DataSetList checkUpdatedDataSet2_8( @PathVariable
+    int id, @RequestBody
+    DataSetList dataSetList, @RequestHeader( "accept-language" )
+    String locale )
     {
         DataSetList returnList = facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
         returnList.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
@@ -87,7 +95,9 @@ public class MobileOrganisationUnitController
      */
     @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/dataSets" )
     @ResponseBody
-    public String saveDataSetValues2_8( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
+    public String saveDataSetValues2_8( @PathVariable
+    int id, @RequestBody
+    DataSetValue dataSetValue )
         throws NotAllowedException
     {
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
@@ -103,7 +113,9 @@ public class MobileOrganisationUnitController
      */
     @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/activities" )
     @ResponseBody
-    public String saveActivityReport2_8( @PathVariable int id, @RequestBody ActivityValue activityValue )
+    public String saveActivityReport2_8( @PathVariable
+    int id, @RequestBody
+    ActivityValue activityValue )
         throws NotAllowedException
     {
         // FIXME set the last argument to 0 to fix compilation error
@@ -113,8 +125,10 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/activitiyplan" )
     @ResponseBody
-    public MobileModel updatePrograms2_8( @PathVariable int id, @RequestHeader( "accept-language" ) String locale,
-        @RequestBody ModelList programsFromClient )
+    public MobileModel updatePrograms2_8( @PathVariable
+    int id, @RequestHeader( "accept-language" )
+    String locale, @RequestBody
+    ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
         model.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
@@ -126,7 +140,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/search" )
     @ResponseBody
-    public ActivityPlan search2_8( @PathVariable int id, @RequestHeader( "identifier" ) String identifier )
+    public ActivityPlan search2_8( @PathVariable
+    int id, @RequestHeader( "identifier" )
+    String identifier )
         throws NotAllowedException
     {
         ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
@@ -137,7 +153,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/changeLanguageDataSet" )
     @ResponseBody
-    public DataSetList changeLanguageDataSet2_8( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
+    public DataSetList changeLanguageDataSet2_8( @PathVariable
+    int id, @RequestHeader( "accept-language" )
+    String locale )
     {
         return facilityReportingService.getDataSetsForLocale( getUnit( id ), locale );
     }
@@ -146,8 +164,10 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/all" )
     @ResponseBody
-    public MobileModel getAllDataForOrgUnit( @PathVariable String clientVersion, @PathVariable int id,
-        @RequestHeader( "accept-language" ) String locale )
+    public MobileModel getAllDataForOrgUnit( @PathVariable
+    String clientVersion, @PathVariable
+    int id, @RequestHeader( "accept-language" )
+    String locale )
     {
         MobileModel mobileModel = new MobileModel();
         mobileModel.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
@@ -163,8 +183,11 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/updateDataSets" )
     @ResponseBody
-    public DataSetList checkUpdatedDataSet( @PathVariable String clientVersion, @PathVariable int id,
-        @RequestBody DataSetList dataSetList, @RequestHeader( "accept-language" ) String locale )
+    public DataSetList checkUpdatedDataSet( @PathVariable
+    String clientVersion, @PathVariable
+    int id, @RequestBody
+    DataSetList dataSetList, @RequestHeader( "accept-language" )
+    String locale )
     {
         DataSetList returnList = facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
         returnList.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
@@ -180,7 +203,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/dataSets" )
     @ResponseBody
-    public String saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
+    public String saveDataSetValues( @PathVariable
+    int id, @RequestBody
+    DataSetValue dataSetValue )
         throws NotAllowedException
     {
     	System.out.println("access METHOD");
@@ -190,8 +215,11 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/activitiyplan" )
     @ResponseBody
-    public MobileModel updatePrograms( @PathVariable String clientVersion, @PathVariable int id,
-        @RequestHeader( "accept-language" ) String locale, @RequestBody ModelList programsFromClient )
+    public MobileModel updatePrograms( @PathVariable
+    String clientVersion, @PathVariable
+    int id, @RequestHeader( "accept-language" )
+    String locale, @RequestBody
+    ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
         model.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
@@ -211,7 +239,9 @@ public class MobileOrganisationUnitController
      */
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/activities" )
     @ResponseBody
-    public String saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
+    public String saveActivityReport( @PathVariable
+    int id, @RequestBody
+    ActivityValue activityValue )
         throws NotAllowedException
     {
         // FIXME set the last argument to 0 to fix compilation error
@@ -221,7 +251,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/search" )
     @ResponseBody
-    public ActivityPlan search( @PathVariable int id, @RequestHeader( "identifier" ) String identifier )
+    public ActivityPlan search( @PathVariable
+    int id, @RequestHeader( "identifier" )
+    String identifier )
         throws NotAllowedException
     {
         ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
@@ -232,7 +264,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/changeLanguageDataSet" )
     @ResponseBody
-    public DataSetList changeLanguageDataSet( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
+    public DataSetList changeLanguageDataSet( @PathVariable
+    int id, @RequestHeader( "accept-language" )
+    String locale )
     {
         return facilityReportingService.getDataSetsForLocale( getUnit( id ), locale );
     }
