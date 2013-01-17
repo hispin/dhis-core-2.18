@@ -27,11 +27,10 @@ package org.hisp.dhis.security.authority;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import com.opensymphony.xwork2.config.entities.ActionConfig;
 import org.springframework.security.access.SecurityMetadataSource;
 
-import com.opensymphony.xwork2.config.entities.ActionConfig;
+import java.util.Collection;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -46,7 +45,7 @@ public interface RequiredAuthoritiesProvider
      * needed.
      *
      * @param actionConfig the secure actionConfig to get required authorities
-     *        from.
+     *                     from.
      */
     public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig );
 
@@ -56,9 +55,14 @@ public interface RequiredAuthoritiesProvider
      * SecurityMetadataSource may include additional attributes if needed.
      *
      * @param actionConfig the actionConfig to get required authorities from.
-     * @param object the secure object.
+     * @param object       the secure object.
      */
     public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig, Object object );
+
+    /**
+     * Returns all authorities of an action configuration.
+     */
+    public Collection<String> getAllAuthorities( ActionConfig actionConfig );
 
     /**
      * Returns the required authorities of an action configuration.
