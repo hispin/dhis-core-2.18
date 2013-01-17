@@ -30,12 +30,14 @@ package org.hisp.dhis.security.authority;
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 import org.hisp.dhis.security.StrutsAuthorityUtils;
 import org.hisp.dhis.security.intercept.SingleSecurityMetadataSource;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityMetadataSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -51,9 +53,18 @@ public class DefaultRequiredAuthoritiesProvider
 
     private String requiredAuthoritiesKey;
 
+    @Required
     public void setRequiredAuthoritiesKey( String requiredAuthoritiesKey )
     {
         this.requiredAuthoritiesKey = requiredAuthoritiesKey;
+    }
+
+    private String anyAuthoritiesKey;
+
+    @Required
+    public void setAnyAuthoritiesKey( String anyAuthoritiesKey )
+    {
+        this.anyAuthoritiesKey = anyAuthoritiesKey;
     }
 
     private Set<String> globalAttributes = Collections.emptySet();
@@ -81,8 +92,22 @@ public class DefaultRequiredAuthoritiesProvider
         return new SingleSecurityMetadataSource( object, attributes );
     }
 
+    public Collection<String> getAllAuthorities( ActionConfig actionConfig )
+    {
+        Collection<String> authorities = new HashSet<String>();
+        authorities.addAll( getRequiredAuthorities( actionConfig ) );
+        authorities.addAll( getAnyAuthorities( actionConfig ) );
+
+        return authorities;
+    }
+
     public Collection<String> getRequiredAuthorities( ActionConfig actionConfig )
     {
         return StrutsAuthorityUtils.getAuthorities( actionConfig, requiredAuthoritiesKey );
+    }
+
+    public Collection<String> getAnyAuthorities( ActionConfig actionConfig )
+    {
+        return StrutsAuthorityUtils.getAuthorities( actionConfig, anyAuthoritiesKey );
     }
 }
