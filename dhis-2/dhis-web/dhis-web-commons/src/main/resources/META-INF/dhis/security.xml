@@ -181,12 +181,7 @@
 
   <bean id="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider"
     class="org.hisp.dhis.security.authority.DefaultRequiredAuthoritiesProvider">
-    <property name="requiredAuthoritiesKeys">
-      <set>
-        <value>requiredAuthorities</value>
-        <value>requiredAnyAuthorities</value>
-      </set>
-    </property>
+    <property name="requiredAuthoritiesKey" value="requiredAuthorities" />
     <property name="globalAttributes">
       <set>
         <value>M_MODULE_ACCESS_VOTER_ENABLED</value>

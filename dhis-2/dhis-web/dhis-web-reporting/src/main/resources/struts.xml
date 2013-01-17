@@ -20,7 +20,6 @@
       <result name="success" type="redirect">displayViewDocumentForm.action</result>
       <interceptor-ref name="fileUploadStack" />
       <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
-      <param name="requiredAnyAuthorities">F_DOCUMENT_PUBLIC_ADD,F_DOCUMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDocument" class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction">

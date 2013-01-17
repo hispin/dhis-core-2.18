@@ -27,15 +27,14 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import com.opensymphony.xwork2.config.entities.ActionConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.opensymphony.xwork2.config.entities.ActionConfig;
+import java.util.Collection;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -71,7 +70,7 @@ public class ActionAccessVoter
         }
 
         int supported = 0;
-        
+
         for ( ConfigAttribute attribute : attributes )
         {
             if ( supports( attribute ) )
