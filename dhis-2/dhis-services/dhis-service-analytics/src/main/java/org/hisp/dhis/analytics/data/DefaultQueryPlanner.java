@@ -63,7 +63,7 @@ public class DefaultQueryPlanner
     // DefaultQueryPlanner implementation
     // -------------------------------------------------------------------------
     
-    public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries )
+    public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName )
     {
         Assert.isTrue( !params.getDimensions().isEmpty() );
         Assert.isTrue( params.dimensionsAsFilters().isEmpty() );
@@ -77,7 +77,7 @@ public class DefaultQueryPlanner
 
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
         
-        List<DataQueryParams> groupedByPartition = groupByPartition( params );
+        List<DataQueryParams> groupedByPartition = groupByPartition( params, tableName );
         
         for ( DataQueryParams byPartition : groupedByPartition )
         {
@@ -196,31 +196,31 @@ public class DefaultQueryPlanner
      * partition it should be executed against. Sets the partition table name on
      * each query. Queries are grouped based on both dimensions and filters.
      */
-    private List<DataQueryParams> groupByPartition( DataQueryParams params )
+    private List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
         if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
-            ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods() );
+            ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods(), tableName );
             
-            for ( String tableName : tablePeriodMap.keySet() )
+            for ( String table : tablePeriodMap.keySet() )
             {
                 DataQueryParams query = new DataQueryParams( params );
-                query.setPeriods( tablePeriodMap.get( tableName ) );
-                query.setTableName( tableName );
+                query.setPeriods( tablePeriodMap.get( table ) );
+                query.setTableName( table );
                 queries.add( query );            
             }
         }
         else
         {
-            ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getFilterPeriods() );
+            ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getFilterPeriods(), tableName );
             
-            for ( String tableName : tablePeriodMap.keySet() )
+            for ( String table : tablePeriodMap.keySet() )
             {
                 DataQueryParams query = new DataQueryParams( params );
-                query.setFilterPeriods( tablePeriodMap.get( tableName ) );
-                query.setTableName( tableName );
+                query.setFilterPeriods( tablePeriodMap.get( table ) );
+                query.setTableName( table );
                 queries.add( query );            
             }
         }

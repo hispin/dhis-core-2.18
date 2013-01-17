@@ -28,8 +28,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import static org.hisp.dhis.DhisConvenienceTest.createPeriod;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_NAME_TEMP;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -46,6 +45,9 @@ import org.junit.Test;
 
 public class PartitionUtilsTest
 {
+    private static final String TABLE_NAME_TEMP = ANALYTICS_TABLE_NAME + TABLE_TEMP_SUFFIX;
+    private static final String TABLE_NAME = ANALYTICS_TABLE_NAME;
+    
     @Test
     public void testGetTableNames()
     {
@@ -53,7 +55,7 @@ public class PartitionUtilsTest
         Date earliest = cal.set( 2000, 5, 4 ).time();
         Date latest = cal.set( 2003, 2, 10 ).time();
         
-        List<String> tables = PartitionUtils.getTempTableNames( earliest, latest );
+        List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, TABLE_NAME );
         
         assertEquals( 4, tables.size() );
         assertTrue( tables.contains( TABLE_NAME_TEMP + "_2000" ) );
@@ -65,10 +67,10 @@ public class PartitionUtilsTest
     @Test
     public void testGetTable()
     {
-        assertEquals( TABLE_NAME + "_2000", PartitionUtils.getTable( createPeriod( "200011" ) ) );
-        assertEquals( TABLE_NAME + "_2001", PartitionUtils.getTable( createPeriod( "2001W02" ) ) );
-        assertEquals( TABLE_NAME + "_2002", PartitionUtils.getTable( createPeriod( "2002Q2" ) ) );
-        assertEquals( TABLE_NAME + "_2003", PartitionUtils.getTable( createPeriod( "2003S2" ) ) );
+        assertEquals( TABLE_NAME + "_2000", PartitionUtils.getTable( createPeriod( "200011" ), TABLE_NAME ) );
+        assertEquals( TABLE_NAME + "_2001", PartitionUtils.getTable( createPeriod( "2001W02" ), TABLE_NAME ) );
+        assertEquals( TABLE_NAME + "_2002", PartitionUtils.getTable( createPeriod( "2002Q2" ), TABLE_NAME ) );
+        assertEquals( TABLE_NAME + "_2003", PartitionUtils.getTable( createPeriod( "2003S2" ), TABLE_NAME ) );
     }
     
     @Test
@@ -87,7 +89,7 @@ public class PartitionUtilsTest
     public void testGetTablePeriodMap()
     {        
         ListMap<String, IdentifiableObject> map = PartitionUtils.getTablePeriodMap( getList( 
-            createPeriod( "2000S1" ), createPeriod( "2000S2" ), createPeriod( "2001S1" ), createPeriod( "2001S2" ), createPeriod( "2002S1" ) ) );
+            createPeriod( "2000S1" ), createPeriod( "2000S2" ), createPeriod( "2001S1" ), createPeriod( "2001S2" ), createPeriod( "2002S1" ) ), TABLE_NAME );
         
         assertEquals( 3, map.size() );
         

@@ -45,7 +45,8 @@ public interface QueryPlanner
      * 
      * @param params the data query params.
      * @param optimalQueries the number of optimal queries for the planner to return.
+     * @param tableName the base table name.
      * @return list of data query params.
      */
-    List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries );
+    List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName );
 }
