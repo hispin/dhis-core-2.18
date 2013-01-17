@@ -85,13 +85,13 @@ public class JdbcAnalyticsManager
         ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
         
-        List<String> dimensions = params.getDimensionNames();
-        List<String> queryDimensions = params.getDimensionNamesIgnoreCategories();
+        List<String> selectDimensions = params.getSelectDimensionNames();
+        List<String> queryDimensions = params.getQueryDimensionNames();
         Map<String, List<IdentifiableObject>> dimensionMap = params.getDimensionMap();
         
         SqlHelper sqlHelper = new SqlHelper();
         
-        String sql = "select " + getCommaDelimitedString( dimensions ) + ", ";
+        String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", ";
         
         int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
         
@@ -109,7 +109,7 @@ public class JdbcAnalyticsManager
             sql += sqlHelper.whereAnd() + " " + filter + " in (" + getQuotedCommaDelimitedString( getUids( params.getFilters().get( filter ) ) ) + " ) ";
         }
         
-        sql += "group by " + getCommaDelimitedString( dimensions );
+        sql += "group by " + getCommaDelimitedString( selectDimensions );
     
         log.info( sql );
         
@@ -121,7 +121,7 @@ public class JdbcAnalyticsManager
         {
             StringBuilder key = new StringBuilder();
             
-            for ( String dim : dimensions )
+            for ( String dim : selectDimensions )
             {
                 key.append( rowSet.getString( dim ) + DIMENSION_SEP );
             }

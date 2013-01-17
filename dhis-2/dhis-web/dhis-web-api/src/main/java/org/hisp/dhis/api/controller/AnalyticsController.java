@@ -171,6 +171,12 @@ public class AnalyticsController
             return false;
         }
         
+        if ( params.getFilterNames() != null && params.getFilterNames().contains( DataQueryParams.INDICATOR_DIM_ID ) )
+        {
+            ContextUtils.conflictResponse( response, "Indicators cannot be specified as filter" );
+            return false;
+        }
+        
         return true;        
     }
 }
