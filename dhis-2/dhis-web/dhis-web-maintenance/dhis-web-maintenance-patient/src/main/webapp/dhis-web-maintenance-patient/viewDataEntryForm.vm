@@ -121,24 +121,43 @@
   
 </form>
 
-<div id="dataElementSelection">	
+<div id="dataElementSelection">
 	<table>
+		<tr>
+			<td>$i18n.getString("display_name")</td>
+			<td>
+				<select id='displayNameOption' onchange='displayNameOnChange( this.value )'>
+					<option selected value='1'>$i18n.getString("name")</option>
+					<option value='2'>$i18n.getString("code")</option>
+					<option value='3'>$i18n.getString("code_and_name")</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>$i18n.getString("sort_by")</td>
+			<td>
+				<select id='sortBy' onchange="sortByOnChange(this.value)">
+					<option value='1' selected>$i18n.getString("name")</option>
+					<option value='2' >$i18n.getString("code")</option>
+				</select>
+			</td>
+		</tr>
 		<tr>
 			<td>
 				<span class="bold">$i18n.getString( "dataelement" )</span><br>
 			</td>
 		</tr>
 		<tr>
-			<td>	
+			<td  colspan='2'>	
 				<input type="text" style="width:100%" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 			</td>
 		</tr>
 		<tr>
-			<td>	
+			<td colspan='2'>	
 				<select id="dataElementIds" name="dataElementIds" style="width:100%; height:210px;" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.id')">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"id"' + ":" + $de.id + "," + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' );
-					<option value='$deJSON'>$encoder.htmlEncode( $de.name )</option>
+					<option value='$deJSON' decode="$!de.code" dename="$de.name">$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">

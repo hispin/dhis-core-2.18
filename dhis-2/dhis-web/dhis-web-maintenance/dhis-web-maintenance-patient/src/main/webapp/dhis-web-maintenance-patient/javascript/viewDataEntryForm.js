@@ -6,8 +6,8 @@ var existedDataEntry;
 jQuery(function(){
 	dataElementSelector = jQuery("#dataElementSelection").dialog({
 		title: i18n_dataelement,
-		height: 350,
-		width:350,
+		height: 400,
+		width:480,
 		autoOpen: false,
 		zIndex:99999
 	});
@@ -177,3 +177,65 @@ function insertDataElement( source, programStageId )
 
 	oEditor.insertHtml( htmlCode );
 }
+
+
+function displayNameOnChange( displayName )
+{
+	// display - name
+	if(displayName=='1'){
+		jQuery('#dataElementIds option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('dename');
+		});
+	}
+	// display - code
+	else if(displayName=='2'){
+		jQuery('#dataElementIds option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('decode');
+		});
+	}
+	// display - code and name
+	else{
+		jQuery('#dataElementIds option').each(function(){
+			var item = jQuery(this);
+			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
+		});
+	}	
+}
+
+function sortByOnChange(sortBy)
+{
+	var sb = $('#dataElementIds');
+	
+	if( sortBy == 1)
+	{
+		sb.append(sb.find('option').sort(function(a, b){
+			return (
+				a = $(a).attr('dename'),
+				b = $(b).attr('dename'),
+				a == 'NA' ? 1 : b == 'NA' ? -1 : 0|a > b
+			);
+		}));
+	}
+	else
+	{
+		sb.append(sb.find('option').sort(function(a, b){
+			return (
+				a = $(a).attr('decode'),
+				b = $(b).attr('decode'),
+				a == 'NA' ? 1 : b == 'NA' ? -1 : 0|a > b
+			);
+		}));
+	}
+}
+
+function NASort(a, b) {    
+    if (a == 'NA') {
+        return 1;   
+    }
+    else if (b.innerHTML == 'NA') {
+        return -1;   
+    }       
+    return (a.innerHTML > b.innerHTML) ? 1 : -1;
+};
