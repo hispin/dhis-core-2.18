@@ -19,7 +19,6 @@
     <action name="saveDocument" class="org.hisp.dhis.reporting.document.action.SaveDocumentAction">
       <result name="success" type="redirect">displayViewDocumentForm.action</result>
       <interceptor-ref name="fileUploadStack" />
-      <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
       <param name="anyAuthorities">F_DOCUMENT_PUBLIC_ADD,F_DOCUMENT_PRIVATE_ADD</param>
     </action>
 
@@ -41,7 +40,7 @@
       <param name="page">/dhis-web-reporting/addDocumentForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/document.js</param>
-      <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
+      <param name="anyAuthorities">F_DOCUMENT_PUBLIC_ADD,F_DOCUMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDocument" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction">
@@ -72,14 +71,14 @@
       <param name="page">/dhis-web-reporting/addReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/report.js</param>
-      <param name="requiredAuthorities">F_REPORT_ADD</param>
+      <param name="anyAuthorities">F_REPORT_PUBLIC_ADD,F_REPORT_PRIVATE_ADD</param>
     </action>
 
     <action name="addReport" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction">
       <result name="success" type="redirect">displayViewReportForm.action</result>
       <result name="error" type="redirect">displayAddReportForm.action</result>
       <interceptor-ref name="fileUploadStack" />
-      <param name="requiredAuthorities">F_REPORT_ADD</param>
+      <param name="anyAuthorities">F_REPORT_PUBLIC_ADD,F_REPORT_PRIVATE_ADD</param>
     </action>
 
     <action name="removeReport" class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction">
@@ -146,7 +145,7 @@
 
     <action name="saveTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction">
       <result name="success" type="redirect">displayManageTableForm.action</result>
-      <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
+      <param name="anyAuthorities">F_REPORTTABLE_PUBLIC_ADD,F_REPORTTABLE_PRIVATE_ADD</param>
     </action>
 
     <action name="getReportParams" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction">
@@ -161,7 +160,7 @@
       <param name="page">/dhis-web-reporting/addTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/table.js,javascript/lists.js</param>
-      <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
+      <param name="anyAuthorities">F_REPORTTABLE_PUBLIC_ADD,F_REPORTTABLE_PRIVATE_ADD</param>
     </action>
 
     <action name="getTable" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction">
