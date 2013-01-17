@@ -7,7 +7,7 @@ jQuery(function(){
 	dataElementSelector = jQuery("#dataElementSelection").dialog({
 		title: i18n_dataelement,
 		height: 400,
-		width:480,
+		width: jQuery("#dataElementIds").outerWidth() + 30,
 		autoOpen: false,
 		zIndex:99999
 	});
@@ -213,31 +213,44 @@ function displayNameOnChange( displayName )
 			var item = jQuery(this);
 			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
 		});
-	}	
+	}
+	jQuery("#dataElementIds").width(jQuery("#dataElementSelection").width() - 10 );	
 }
 
 function sortByOnChange(sortBy)
 {
-	var sb = $('#dataElementIds');
-	
 	if( sortBy == 1)
 	{
-		sb.append(sb.find('option').sort(function(a, b){
-			return (
-				a = $(a).attr('dename'),
-				b = $(b).attr('dename'),
-				a == 'NA' ? 1 : b == 'NA' ? -1 : 0|a > b
-			);
-		}));
+		$('#dataElementIds').each(function() {
+
+			// Keep track of the selected option.
+			var selectedValue = $(this).val();
+
+			// sort it out
+			$(this).html($("option", $(this)).sort(function(a, b) { 
+				return $(a).attr('dename') == $(b).attr('dename') ? 0 : $(a).attr('dename') < $(b).attr('dename') ? -1 : 1 
+			}));
+
+			// Select one option.
+			$(this).val(selectedValue);
+
+		});
 	}
 	else
 	{
-		sb.append(sb.find('option').sort(function(a, b){
-			return (
-				a = $(a).attr('decode'),
-				b = $(b).attr('decode'),
-				a == 'NA' ? 1 : b == 'NA' ? -1 : 0|a > b
-			);
-		}));
-	}
+		$('#dataElementIds').each(function() {
+
+			// Keep track of the selected option.
+			var selectedValue = $(this).val();
+
+			// sort it out
+			$(this).html($("option", $(this)).sort(function(a, b) { 
+				return $(a).attr('decode') == $(b).attr('decode') ? 0 : $(a).attr('decode') < $(b).attr('decode') ? -1 : 1 
+			}));
+
+			// Select one option.
+			$(this).val(selectedValue);
+
+		});
+	} 
 }
