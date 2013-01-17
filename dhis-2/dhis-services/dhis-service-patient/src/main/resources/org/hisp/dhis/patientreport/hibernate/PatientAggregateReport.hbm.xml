@@ -24,7 +24,7 @@
 
 		<set name="relativePeriods" table="patientaggregatereport_relativeperiods">
 			<key column="patientaggregatereportid"
-				foreign-key="fk_patientaggregatereport_relativeperiods_patientaggregatereportid" />
+				foreign-key="fk_patientaggregatereportid_relativeperiods" />
 			<element type="text" column="relativeperiod" />
 		</set>
 
@@ -42,7 +42,7 @@
 
 		<set name="filterValues" table="patientaggregatereport_filtervalues">
 			<key column="patientaggregatereportid"
-				foreign-key="fk_patientaggregatereport_filtervalues_patientaggregatereportid" />
+				foreign-key="fk_patientaggregatereportid_filtervalues" />
 			<element type="text" column="filtervalue" />
 		</set>
 

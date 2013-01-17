@@ -89,7 +89,7 @@ public class SaveProgramEnrollmentAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -207,13 +207,13 @@ public class SaveProgramEnrollmentAction
                         programStageInstance.setProgramInstance( programInstance );
                         programStageInstance.setProgramStage( programStage );
                         programStageInstance.setDueDate( dueDate );
-                        
-                        if( program.isSingleEvent() )
+
+                        if ( program.isSingleEvent() )
                         {
-                            programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+                            programStageInstance.setOrganisationUnit( selectedStateManager
+                                .getSelectedOrganisationUnit() );
                             programStageInstance.setExecutionDate( dueDate );
                         }
-
                         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
                         if ( !isFirstStage )

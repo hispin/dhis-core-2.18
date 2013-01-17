@@ -799,3 +799,9 @@ TR.utilbody {
 .align-right{
 	align: right;
 }
+
+.x-row-panel {
+    background-color: #F3F3F3;
+    background-image: -moz-linear-gradient(center top , #F1F1F1, #F5F5F5);
+    border-color: #D0D0D0;
+}
