@@ -125,7 +125,7 @@ function filterDataElements( filter, container, list )
 		item = jQuery( item );		
 		var toMatch = item.text().toString().toLowerCase();		
         if( toMatch.indexOf(filterLower) != -1 ){
-			dataElementList.append( "<option value='" + item.attr('value') + "'>" + item.text() + "</option>" );
+			dataElementList.append( "<option value='" + item.attr('value') + "' dename='"+item.attr('dename')+"' decode='"+item.attr('decode')+"'>" + item.text() + "</option>" );
 		};
 	});	
 }
@@ -187,6 +187,10 @@ function displayNameOnChange( displayName )
 			var item = jQuery(this);
 			item[0].text = item.attr('dename');
 		});
+		jQuery('#dataElementIdsStore option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('dename');
+		});
 	}
 	// display - code
 	else if(displayName=='2'){
@@ -194,10 +198,18 @@ function displayNameOnChange( displayName )
 			var item = jQuery(this);
 			item[0].text = item.attr('decode');
 		});
+		jQuery('#dataElementIdsStore option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('decode');
+		});
 	}
 	// display - code and name
 	else{
 		jQuery('#dataElementIds option').each(function(){
+			var item = jQuery(this);
+			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
+		});
+		jQuery('#dataElementIdsStore option').each(function(){
 			var item = jQuery(this);
 			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
 		});
@@ -229,13 +241,3 @@ function sortByOnChange(sortBy)
 		}));
 	}
 }
-
-function NASort(a, b) {    
-    if (a == 'NA') {
-        return 1;   
-    }
-    else if (b.innerHTML == 'NA') {
-        return -1;   
-    }       
-    return (a.innerHTML > b.innerHTML) ? 1 : -1;
-};

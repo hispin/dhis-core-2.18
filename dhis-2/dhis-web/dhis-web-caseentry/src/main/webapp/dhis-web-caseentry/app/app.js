@@ -2470,23 +2470,23 @@ Ext.onReady( function() {
 				{
 					xtype: 'toolbar',
 					style: 'padding-top:1px; border-style:none',
+					width: TR.conf.layout.west_fieldset_width + 50,
 					bodyStyle: 'border-style:none; background-color:transparent; padding:4px 0 0 8px',
                     items: [
 						{
 							xtype: 'panel',
-							bodyStyle: 'border-style:none; background-color:transparent; padding:4px 0 0 8px',
+							bodyStyle: 'border-style:none; background-color:transparent; padding:10px 0 0 8px',
 							items: [
 								Ext.create('Ext.form.Panel', {
-								bodyStyle: 'border-style:none; background-color:transparent; padding:3px 0 0 0',
-                                items: [
-								{
-									xtype: 'label',
-									text: TR.i18n.report_type,
-									style: 'font-size:11px; font-weight:bold; padding:0 0 0 3px'
-								},
+								bodyStyle: 'border-style:none; background-color:transparent; padding:3px 30px 0 8px',
+                                width: TR.conf.layout.west_fieldset_width + 50,
+								items: [
 								{
 									xtype: 'radiogroup',
 									id: 'reportTypeGroup',
+									fieldLabel: TR.i18n.report_type,
+									labelStyle: 'font-weight:bold',
+									labelAlign: 'top',
 									columns: 2,
 									vertical: true,
 									items: [
@@ -2549,76 +2549,87 @@ Ext.onReady( function() {
 							}),
 							{ bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
 							{
-								xtype: 'combobox',
-								cls: 'tr-combo',
-								name: TR.init.system.programs,
-								id: 'programCombobox',
-								fieldLabel: TR.i18n.program,
-								labelStyle: 'font-weight:bold',
-								labelAlign: 'top',
-								emptyText: TR.i18n.please_select,
-								queryMode: 'local',
-								editable: false,
-								valueField: 'id',
-								displayField: 'name',
-								width: TR.conf.layout.west_fieldset_width,
-								store: TR.store.program,
-								listeners: {
-									added: function() {
-										TR.cmp.settings.program = this;
-									},
-									select: function(cb) {
-										TR.state.isFilter = false;
-										var pId = cb.getValue();
-										
-										// PROGRAM-STAGE										
-										var storeProgramStage = TR.store.programStage;
-										TR.store.dataelement.available.removeAll();
-										TR.store.dataelement.selected.removeAll();
-										storeProgramStage.parent = pId;
-										TR.store.dataelement.isLoadFromFavorite = false;
-										storeProgramStage.load({params: {programId: pId}});
-										
-										// FILTER-VALUES FIELDS
-										Ext.getCmp('filterPanel').removeAll();
+								xtype: 'panel',
+								layout: 'column',
+								bodyStyle: 'border-style:none; background-color:transparent; padding:4px 0 0 8px',
+								width: TR.conf.layout.west_fieldset_width + 50,
+								items:[
+								{
+									xtype: 'combobox',
+									cls: 'tr-combo',
+									name: TR.init.system.programs,
+									id: 'programCombobox',
+									fieldLabel: TR.i18n.program,
+									labelStyle: 'font-weight:bold',
+									labelAlign: 'top',
+									emptyText: TR.i18n.please_select,
+									queryMode: 'local',
+									editable: false,
+									valueField: 'id',
+									displayField: 'name',
+									width: TR.conf.layout.west_fieldset_width / 2 - 10,
+									store: TR.store.program,
+									listeners: {
+										added: function() {
+											TR.cmp.settings.program = this;
+										},
+										select: function(cb) {
+											TR.state.isFilter = false;
+											var pId = cb.getValue();
+											
+											// PROGRAM-STAGE										
+											var storeProgramStage = TR.store.programStage;
+											TR.store.dataelement.available.removeAll();
+											TR.store.dataelement.selected.removeAll();
+											storeProgramStage.parent = pId;
+											TR.store.dataelement.isLoadFromFavorite = false;
+											storeProgramStage.load({params: {programId: pId}});
+											
+											// FILTER-VALUES FIELDS
+											Ext.getCmp('filterPanel').removeAll();
+										}
+									}
+								},
+								{
+									xtyle:'label',
+									text: ''
+								},
+								{
+									xtype: 'combobox',
+									cls: 'tr-combo',
+									id:'programStageCombobox',
+									fieldLabel: TR.i18n.program_stage,
+									labelStyle: 'font-weight:bold',
+									labelAlign: 'top',
+									emptyText: TR.i18n.please_select,
+									queryMode: 'local',
+									editable: false,
+									valueField: 'id',
+									displayField: 'name',
+									width:  TR.conf.layout.west_fieldset_width / 2 - 10,
+									store: TR.store.programStage,
+									listeners: {
+										added: function() {
+											TR.cmp.params.programStage = this;
+										},  
+										select: function(cb) {
+											TR.state.isFilter = false;
+											var store = TR.store.dataelement.available;
+											TR.store.dataelement.selected.loadData([],false);
+											store.parent = cb.getValue();
+											
+											if (TR.util.store.containsParent(store)) {
+												TR.util.store.loadFromStorage(store);
+												TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+											}
+											else {
+												store.load({params: {programStageId: cb.getValue()}});
+											}
+										} 
 									}
 								}
-							},
-							{
-								xtype: 'combobox',
-								cls: 'tr-combo',
-								id:'programStageCombobox',
-								fieldLabel: TR.i18n.program_stage,
-								labelStyle: 'font-weight:bold',
-								labelAlign: 'top',
-								emptyText: TR.i18n.please_select,
-								queryMode: 'local',
-								editable: false,
-								valueField: 'id',
-								displayField: 'name',
-								width: TR.conf.layout.west_fieldset_width,
-								store: TR.store.programStage,
-								listeners: {
-									added: function() {
-										TR.cmp.params.programStage = this;
-									},  
-									select: function(cb) {
-										TR.state.isFilter = false;
-										var store = TR.store.dataelement.available;
-										TR.store.dataelement.selected.loadData([],false);
-										store.parent = cb.getValue();
-										
-										if (TR.util.store.containsParent(store)) {
-											TR.util.store.loadFromStorage(store);
-											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-										}
-										else {
-											store.load({params: {programStageId: cb.getValue()}});
-										}
-									} 
-								}
-							},
-							]
+								]
+							}]
 						}]
 					},                            
 					{
@@ -3170,29 +3181,6 @@ Ext.onReady( function() {
 											{
 												xtype: 'combobox',
 												cls: 'tr-combo',
-												id: 'facilityLBCombobox',
-												fieldLabel: TR.i18n.use_data_from_level,
-												labelWidth: 135,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: false,
-												valueField: 'value',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												store:  new Ext.data.ArrayStore({
-													fields: ['value', 'name'],
-													data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
-												}),
-												value: 'all',
-												listeners: {
-													added: function() {
-														TR.cmp.settings.facilityLB = this;
-													}
-												}
-											},
-											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
 												name: TR.init.system.orgunitGroup,
 												id: 'orgGroupCombobox',
 												emptyText: TR.i18n.please_select,
@@ -3211,6 +3199,42 @@ Ext.onReady( function() {
 														TR.cmp.settings.orgunitGroup = this;
 													}
 												}
+											},
+											{
+												layout: 'column',
+												bodyStyle: 'border:0 none; padding-bottom:4px',
+												items: [
+													{
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: TR.i18n.user_orgunit,
+														labelWidth: TR.conf.layout.form_label_width,
+														handler: function(chb, checked) {
+															TR.cmp.params.organisationunit.toolbar.xable(checked, TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue());
+															TR.cmp.params.organisationunit.treepanel.xable(checked, TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue());
+														},
+														listeners: {
+															added: function() {
+																TR.cmp.aggregateFavorite.userorganisationunit = this;
+															}
+														}
+													},
+													{
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: TR.i18n.user_orgunit_children,
+														labelWidth: TR.conf.layout.form_label_width,
+														handler: function(chb, checked) {
+															TR.cmp.params.organisationunit.toolbar.xable(checked, TR.cmp.favorite.userorganisationunit.getValue());
+															TR.cmp.params.organisationunit.treepanel.treepanel.xable(checked, TR.cmp.favorite.userorganisationunit.getValue());
+														},
+														listeners: {
+															added: function() {
+																TR.cmp.aggregateFavorite.userorganisationunitchildren = this;
+															}
+														}
+													}
+												]
 											},
 											{
 												xtype: 'treepanel',
@@ -3567,6 +3591,29 @@ Ext.onReady( function() {
 										hideCollapseTool: true,
 										cls: 'tr-accordion-options',
 										items: [
+											{
+												xtype: 'combobox',
+												cls: 'tr-combo',
+												id: 'facilityLBCombobox',
+												fieldLabel: TR.i18n.use_data_from_level,
+												labelWidth: 135,
+												emptyText: TR.i18n.please_select,
+												queryMode: 'local',
+												editable: false,
+												valueField: 'value',
+												displayField: 'name',
+												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
+												store:  new Ext.data.ArrayStore({
+													fields: ['value', 'name'],
+													data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
+												}),
+												value: 'all',
+												listeners: {
+													added: function() {
+														TR.cmp.settings.facilityLB = this;
+													}
+												}
+											},
 											{
 												xtype: 'checkbox',
 												id: 'completedEventsOpt',
