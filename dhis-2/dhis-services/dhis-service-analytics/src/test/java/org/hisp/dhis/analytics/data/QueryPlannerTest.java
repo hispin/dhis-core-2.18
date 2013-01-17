@@ -27,6 +27,7 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
@@ -35,8 +36,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
@@ -44,6 +47,9 @@ import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -66,8 +72,11 @@ public class QueryPlannerTest
     private DataElementService dataElementService;
     
     @Autowired
+    private DataElementCategoryService categoryService;
+    
+    @Autowired
     private OrganisationUnitService organisationUnitService;
-
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -76,6 +85,8 @@ public class QueryPlannerTest
     private DataElement deB;
     private DataElement deC;
     private DataElement deD;
+    
+    private DataElementCategoryOptionCombo coc;
     
     private OrganisationUnit ouA;
     private OrganisationUnit ouB;
@@ -96,6 +107,8 @@ public class QueryPlannerTest
         dataElementService.addDataElement( deC );
         dataElementService.addDataElement( deD );
         
+        coc = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         ouA = createOrganisationUnit( 'A' );
         ouB = createOrganisationUnit( 'B' );
         ouC = createOrganisationUnit( 'C' );
@@ -112,6 +125,69 @@ public class QueryPlannerTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+    
+    @Test
+    public void testGetPermutationOperandValueMap()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( getList( deA, deB ) );
+        params.setOrganisationUnits( getList( ouA, ouB ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+        params.setCategories( true );
+        
+        Map<String, Double> aggregatedDataMap = new HashMap<String, Double>();
+        aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 1d );
+        aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q2" + DIMENSION_SEP + coc.getUid(), 2d );
+        aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouB.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 3d );
+        aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouB.getUid() + DIMENSION_SEP + "2000Q2" + DIMENSION_SEP + coc.getUid(), 4d );
+        aggregatedDataMap.put( deB.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 5d );
+        aggregatedDataMap.put( deB.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q2" + DIMENSION_SEP + coc.getUid(), 6d );
+        aggregatedDataMap.put( deB.getUid() + DIMENSION_SEP + ouB.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 7d );
+        aggregatedDataMap.put( deB.getUid() + DIMENSION_SEP + ouB.getUid() + DIMENSION_SEP + "2000Q2" + DIMENSION_SEP + coc.getUid(), 8d );
+        
+        Map<String, Map<DataElementOperand, Double>> permutationMap = params.getPermutationOperandValueMap( aggregatedDataMap );
+        
+        assertNotNull( permutationMap );
+        
+        String ouAQ1Key = ouA.getUid() + DIMENSION_SEP + "2000Q1";
+        String ouAQ2Key = ouA.getUid() + DIMENSION_SEP + "2000Q2";
+        String ouBQ1Key = ouB.getUid() + DIMENSION_SEP + "2000Q1";
+        String ouBQ2Key = ouB.getUid() + DIMENSION_SEP + "2000Q2";
+                
+        Map<DataElementOperand, Double> ouAQ1 = permutationMap.get( ouAQ1Key );
+        Map<DataElementOperand, Double> ouAQ2 = permutationMap.get( ouAQ2Key );
+        Map<DataElementOperand, Double> ouBQ1 = permutationMap.get( ouBQ1Key );
+        Map<DataElementOperand, Double> ouBQ2 = permutationMap.get( ouBQ2Key );
+        
+        assertEquals( 2, ouAQ1.size() );
+        assertEquals( 2, ouAQ2.size() );
+        assertEquals( 2, ouBQ1.size() );
+        assertEquals( 2, ouBQ2.size() );
+        
+        DataElementOperand deACoc = new DataElementOperand( deA.getUid(), coc.getUid() );
+        DataElementOperand deBCoc = new DataElementOperand( deB.getUid(), coc.getUid() );
+        
+        Map<DataElementOperand, Double> ouAQ1Expected = new HashMap<DataElementOperand, Double>();
+        ouAQ1Expected.put( deACoc, 1d );
+        ouAQ1Expected.put( deBCoc, 5d );
+
+        Map<DataElementOperand, Double> ouAQ2Expected = new HashMap<DataElementOperand, Double>();
+        ouAQ2Expected.put( deACoc, 2d );
+        ouAQ2Expected.put( deBCoc, 6d );
+
+        Map<DataElementOperand, Double> ouBQ1Expected = new HashMap<DataElementOperand, Double>();
+        ouBQ1Expected.put( deACoc, 3d );
+        ouBQ1Expected.put( deBCoc, 7d );
+
+        Map<DataElementOperand, Double> ouBQ2Expected = new HashMap<DataElementOperand, Double>();
+        ouBQ2Expected.put( deACoc, 4d );
+        ouBQ2Expected.put( deBCoc, 8d );
+                
+        assertEquals( ouAQ1Expected, ouAQ1 );
+        assertEquals( ouAQ2Expected, ouAQ2 );
+        assertEquals( ouBQ1Expected, ouBQ1 );
+        assertEquals( ouBQ2Expected, ouBQ2 );
+    }
     
     /**
      * Ignores data element dimension and generates 2 x 3 = 6 combinations based

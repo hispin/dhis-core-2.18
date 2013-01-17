@@ -38,14 +38,12 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
@@ -68,7 +66,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
@@ -144,7 +141,7 @@ public class DefaultAnalyticsService
             
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
     
-            Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = getPermutationOperandValueMap( dataSourceParams, aggregatedDataMap );
+            Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = dataSourceParams.getPermutationOperandValueMap( aggregatedDataMap );
 
             List<List<DimensionOption>> dimensionOptionPermutations = dataSourceParams.getDimensionOptionPermutations();
             
@@ -329,31 +326,5 @@ public class DefaultAnalyticsService
         immutableParams.setCategories( true );
         
         return immutableParams;
-    }
-    
-    private Map<String, Map<DataElementOperand, Double>> getPermutationOperandValueMap( DataQueryParams params, Map<String, Double> aggregatedDataMap )
-    {
-        MapMap<String, DataElementOperand, Double> valueMap = new MapMap<String, DataElementOperand, Double>();
-        
-        for ( String key : aggregatedDataMap.keySet() )
-        {
-            List<String> keys = Arrays.asList( key.split( DIMENSION_SEP ) );
-            
-            String de = keys.get( params.getDataElementDimensionIndex() );
-            String coc = keys.get( params.getCategoryOptionComboDimensionIndex() );
-            
-            keys.remove( params.getDataElementDimensionIndex() );
-            keys.remove( params.getCategoryOptionComboDimensionIndex() );
-            
-            String permKey = StringUtils.join( keys, DIMENSION_SEP );
-            
-            DataElementOperand operand = new DataElementOperand( de, coc );
-            
-            Double value = aggregatedDataMap.get( keys );
-            
-            valueMap.putEntry( permKey, operand, value );            
-        }
-        
-        return valueMap;
     }
 }
