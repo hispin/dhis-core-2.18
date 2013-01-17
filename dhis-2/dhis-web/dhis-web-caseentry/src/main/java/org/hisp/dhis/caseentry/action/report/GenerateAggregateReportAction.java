@@ -268,7 +268,6 @@ public class GenerateAggregateReportAction
             Period period = new Period();
             period.setStartDate( format.parseDate( startDates.get( i ) ) );
             period.setEndDate( format.parseDate( endDates.get( i ) ) );
-            period.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) );
             periods.add( period );
         }
 
