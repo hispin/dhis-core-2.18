@@ -133,7 +133,7 @@ public class DefaultAnalyticsService
         {         
             Map<String, Double> constantMap = constantService.getConstantMap();
 
-            int indicatorIndex = params.getIndicatorDimensionIndex();
+            int indicatorIndex = params.getDataElementOrIndicatorDimensionIndex();
             
             DataQueryParams dataSourceParams = setDataElementsFromIndicators( params );
 
