@@ -1,4 +1,4 @@
-package org.hisp.dhis.security.authority;
+package org.hisp.dhis.security;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,41 +27,58 @@ package org.hisp.dhis.security.authority;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.springframework.security.access.SecurityMetadataSource;
-
 import com.opensymphony.xwork2.config.entities.ActionConfig;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: RequiredAuthoritiesProvider.java 3160 2007-03-24 20:15:06Z torgeilo $
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface RequiredAuthoritiesProvider
+public class StrutsAuthorityUtils
 {
-    /**
-     * Creates an SecurityMetadataSource based on the required authorities for
-     * the action config. The specified action config is set as the secure
-     * object. The SecurityMetadataSource may include additional attributes if
-     * needed.
-     *
-     * @param actionConfig the secure actionConfig to get required authorities
-     *        from.
-     */
-    public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig );
+    public static Collection<String> getAuthorities( ActionConfig actionConfig, String key )
+    {
+        final Map<String, String> staticParams = actionConfig.getParams();
 
-    /**
-     * Creates an SecurityMetadataSource for a specified secure object based on
-     * the required authorities for the action config. The
-     * SecurityMetadataSource may include additional attributes if needed.
-     *
-     * @param actionConfig the actionConfig to get required authorities from.
-     * @param object the secure object.
-     */
-    public SecurityMetadataSource createSecurityMetadataSource( ActionConfig actionConfig, Object object );
+        if ( staticParams == null || !staticParams.containsKey( key ) )
+        {
+            return Collections.emptySet();
+        }
 
-    /**
-     * Returns the required authorities of an action configuration.
-     */
-    public Collection<String> getRequiredAuthorities( ActionConfig actionConfig );
+        final String param = staticParams.get( key );
+
+        HashSet<String> keys = new HashSet<String>();
+
+        StringTokenizer t = new StringTokenizer( param, "\t\n\r ," );
+
+        while ( t.hasMoreTokens() )
+        {
+            keys.add( t.nextToken() );
+        }
+
+        return keys;
+    }
+
+    public static Collection<ConfigAttribute> getConfigAttributes( ActionConfig actionConfig, String key )
+    {
+        return getConfigAttributes( getAuthorities( actionConfig, key ) );
+    }
+
+    public static Collection<ConfigAttribute> getConfigAttributes( Collection<String> authorities )
+    {
+        Collection<ConfigAttribute> configAttributes = new HashSet<ConfigAttribute>();
+
+        for ( String authority : authorities )
+        {
+            configAttributes.add( new SecurityConfig( authority ) );
+        }
+
+        return configAttributes;
+    }
 }
