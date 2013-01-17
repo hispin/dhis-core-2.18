@@ -153,18 +153,18 @@ public class GenerateAggregateReportAction
         this.relativePeriods = relativePeriods;
     }
 
-    private String startDate;
+    private List<String> startDates = new ArrayList<String>();
 
-    public void setStartDate( String startDate )
+    public void setStartDates( List<String> startDates )
     {
-        this.startDate = startDate;
+        this.startDates = startDates;
     }
 
-    private String endDate;
+    private List<String> endDates = new ArrayList<String>();
 
-    public void setEndDate( String endDate )
+    public void setEndDates( List<String> endDates )
     {
-        this.endDate = endDate;
+        this.endDates = endDates;
     }
 
     private String facilityLB; // All, children, current
@@ -195,6 +195,12 @@ public class GenerateAggregateReportAction
         this.deGroupBy = deGroupBy;
     }
 
+    private Boolean useCompletedEvents;
+
+    public void setUseCompletedEvents( Boolean useCompletedEvents )
+    {
+        this.useCompletedEvents = useCompletedEvents;
+    }
 
     private String type;
 
@@ -256,11 +262,12 @@ public class GenerateAggregateReportAction
         Collection<Period> periods = new HashSet<Period>();
 
         // Create period from start-date and end-date
-        if ( startDate != null && endDate != null )
+
+        for ( int i = 0; i < startDates.size(); i++ )
         {
             Period period = new Period();
-            period.setStartDate( format.parseDate( startDate ) );
-            period.setEndDate( format.parseDate( endDate ) );
+            period.setStartDate( format.parseDate( startDates.get( i ) ) );
+            period.setEndDate( format.parseDate( endDates.get( i ) ) );
             period.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) );
             periods.add( period );
         }
@@ -290,8 +297,9 @@ public class GenerateAggregateReportAction
                     deFilter.substring( index + 1, deFilter.length() ) );
             }
         }
-        grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits,
-            deGroupBy, deFilterMap, periods, aggregateType, limitRecords, format, i18n );
+        
+        grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits, deGroupBy,
+            deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, format, i18n );
 
         return type == null ? SUCCESS : type;
     }
