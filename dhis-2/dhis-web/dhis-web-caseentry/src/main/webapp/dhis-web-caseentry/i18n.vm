@@ -148,4 +148,6 @@ data_filter: '$encoder.jsEscape($i18n.getString( 'data_filter' ) , "'")',
 use_completed_events: '$encoder.jsEscape($i18n.getString( 'use_completed_events' ) , "'")',
 show_hide_filter_values: '$encoder.jsEscape($i18n.getString( 'show_hide_filter_values' ) , "'")',
 date_period_range: '$encoder.jsEscape($i18n.getString( 'date_period_range' ) , "'")',
+select_from_date: '$encoder.jsEscape($i18n.getString( 'select_from_date' ) , "'")',
+select_to_date: '$encoder.jsEscape($i18n.getString( 'select_to_date' ) , "'")'
 };
