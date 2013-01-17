@@ -180,9 +180,11 @@ public class DataQueryParams
     /**
      * Returns the index of the indicator dimension in the dimension map.
      */
-    public int getIndicatorDimensionIndex()
+    public int getDataElementOrIndicatorDimensionIndex()
     {
-        return getAllDimensionNamesAsList().indexOf( INDICATOR_DIM_ID );
+        List<String> dims = getAllDimensionNamesAsList();
+        
+        return dims.contains( DATAELEMENT_DIM_ID ) ? dims.indexOf( DATAELEMENT_DIM_ID ) : dims.indexOf( INDICATOR_DIM_ID );
     }
     
     /**
