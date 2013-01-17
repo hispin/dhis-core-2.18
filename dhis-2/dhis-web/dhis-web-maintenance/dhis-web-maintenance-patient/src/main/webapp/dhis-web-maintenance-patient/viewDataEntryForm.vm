@@ -124,7 +124,7 @@
 <div id="dataElementSelection">
 	<table>
 		<tr>
-			<td>$i18n.getString("display_name")</td>
+			<td class="bold">$i18n.getString("display_name")</td>
 			<td>
 				<select id='displayNameOption' onchange='displayNameOnChange( this.value )'>
 					<option selected value='1'>$i18n.getString("name")</option>
@@ -134,7 +134,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>$i18n.getString("sort_by")</td>
+			<td class="bold">$i18n.getString("sort_by")</td>
 			<td>
 				<select id='sortBy' onchange="sortByOnChange(this.value)">
 					<option value='1' selected>$i18n.getString("name")</option>
@@ -163,7 +163,7 @@
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"id"' + ":" + $de.id + "," + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' );
-					<option value='$deJSON'>$encoder.htmlEncode( $de.name )</option>
+					<option value='$deJSON' decode="$!de.code" dename="$de.name">$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 			</td>
