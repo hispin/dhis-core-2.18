@@ -127,13 +127,18 @@ public class DataQueryParams
      * is set, the organisation unit dimension name will be replaced by the name
      * of the organisation unit level column.
      */
-    public List<String> getDimensionNames()
+    public List<String> getSelectDimensionNames()
     {
-        List<String> list = getDimensionNamesIgnoreCategories();
+        List<String> list = getSelectDimensionNamesAsList();
 
-        if ( categories )
+        if ( list.contains( PERIOD_DIM_ID ) && periodType != null )
         {
-            list.add( CATEGORYOPTIONCOMBO_DIM_ID );
+            list.set( list.indexOf( PERIOD_DIM_ID ), periodType );
+        }
+        
+        if ( list.contains( ORGUNIT_DIM_ID ) && organisationUnitLevel != 0 )
+        {
+            list.set( list.indexOf( ORGUNIT_DIM_ID ), LEVEL_PREFIX + organisationUnitLevel );
         }
         
         return list;
@@ -147,9 +152,9 @@ public class DataQueryParams
      * of the organisation unit level column. Does not include the categories
      * dimension, even if the categories property of this object is true.
      */
-    public List<String> getDimensionNamesIgnoreCategories()
+    public List<String> getQueryDimensionNames()
     {
-        List<String> list = getDimensionNamesAsListIgnoreCategories();
+        List<String> list = getQueryDimensionNamesAsList();
         
         if ( list.contains( PERIOD_DIM_ID ) && periodType != null )
         {
@@ -165,11 +170,19 @@ public class DataQueryParams
     }
 
     /**
+     * Removes the dimension with the given identifier.
+     */
+    public void removeDimension( String dimension )
+    {
+        this.dimensions.remove( dimension );
+    }
+    
+    /**
      * Returns the index of the indicator dimension in the dimension map.
      */
     public int getIndicatorDimensionIndex()
     {
-        return getDimensionNamesAsList().indexOf( INDICATOR_DIM_ID );
+        return getAllDimensionNamesAsList().indexOf( INDICATOR_DIM_ID );
     }
     
     /**
@@ -177,7 +190,7 @@ public class DataQueryParams
      */
     public int getDataElementDimensionIndex()
     {
-        return getDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
+        return getAllDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
     }
 
     /**
@@ -185,7 +198,7 @@ public class DataQueryParams
      */
     public int getCategoryOptionComboDimensionIndex()
     {
-        return getDimensionNamesAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
+        return getAllDimensionNamesAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
     }
     
     /**
@@ -193,7 +206,7 @@ public class DataQueryParams
      */
     public int getPeriodDimensionIndex()
     {
-        return getDimensionNamesAsList().indexOf( PERIOD_DIM_ID );
+        return getAllDimensionNamesAsList().indexOf( PERIOD_DIM_ID );
     }
     
     /**
@@ -320,34 +333,34 @@ public class DataQueryParams
     }
     
     /**
-     * Generates all permutations of the dimension options for this query.
+     * Generates all permutations of the dimension and filter options for this query.
      */
     public List<List<DimensionOption>> getDimensionOptionPermutations()
     {
         List<DimensionOption[]> dimensionOptions = new ArrayList<DimensionOption[]>();
         
-        List<String> dimensionNames = getDimensionNamesAsList();
-
         List<String> ignoreDims = Arrays.asList( DATAELEMENT_DIM_ID, CATEGORYOPTIONCOMBO_DIM_ID, INDICATOR_DIM_ID );
         
-        for ( String dim : dimensionNames )
+        for ( String dimension : getInputDimensionNamesAsList() )
         {
-            if ( !ignoreDims.contains( dim ) )
+            if ( !ignoreDims.contains( dimension ) )
             {
                 List<DimensionOption> options = new ArrayList<DimensionOption>();
                 
-                for ( IdentifiableObject option : dimensions.get( dim ) )
+                for ( IdentifiableObject option : dimensions.get( dimension ) )
                 {
-                    options.add( new DimensionOption( dim, option ) );
+                    options.add( new DimensionOption( dimension, option ) );
                 }
                 
                 dimensionOptions.add( options.toArray( DIM_OPT_ARR ) );
             }
         }
-        
+                
         CombinationGenerator<DimensionOption> generator = new CombinationGenerator<DimensionOption>( dimensionOptions.toArray( DIM_OPT_2D_ARR ) );
         
-        return generator.getCombinations();
+        List<List<DimensionOption>> permutations = generator.getCombinations();
+        
+        return permutations;
     }
 
     /**
@@ -404,30 +417,17 @@ public class DataQueryParams
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    /**
-     * Returns the dimension names as a list. The indicator key is included as
-     * indicator is not a true dimension, rather a formula based on the data
-     * element dimension.
-     */
-    private List<String> getDimensionNamesAsListIgnoreCategories()
+    private List<String> getInputDimensionNamesAsList()
     {
-        List<String> list = new ArrayList<String>( dimensions.keySet() );
+        return new ArrayList<String>( dimensions.keySet() );
+    }
+    
+    private List<String> getSelectDimensionNamesAsList()
+    {
+        List<String> list = getInputDimensionNamesAsList();
         
         list.remove( INDICATOR_DIM_ID );
-        
-        return list;
-    }
 
-    /**
-     * Returns the dimension names as a list. The indicator key is included as
-     * indicator is not a true dimension, rather a formula based on the data
-     * element dimension. Adds the category option combo dimension if the
-     * categories parameter of this query is true.
-     */
-    public List<String> getDimensionNamesAsList()
-    {
-        List<String> list = getDimensionNamesAsListIgnoreCategories();
-        
         if ( categories )
         {
             list.add( CATEGORYOPTIONCOMBO_DIM_ID );
@@ -436,6 +436,27 @@ public class DataQueryParams
         return list;
     }
 
+    private List<String> getQueryDimensionNamesAsList()
+    {
+        List<String> list = getInputDimensionNamesAsList();
+        
+        list.remove( INDICATOR_DIM_ID );
+        
+        return list;
+    }
+    
+    private List<String> getAllDimensionNamesAsList()
+    {
+        List<String> list = getInputDimensionNamesAsList();
+
+        if ( categories )
+        {
+            list.add( CATEGORYOPTIONCOMBO_DIM_ID );
+        }
+        
+        return list;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

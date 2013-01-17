@@ -118,7 +118,7 @@ public class DefaultAnalyticsService
 
         grid.setMetaData( params.getUidNameMap() );
         
-        for ( String col : params.getDimensionNames() )
+        for ( String col : params.getSelectDimensionNames() )
         {
             grid.addHeader( new GridHeader( col, col, String.class.getName(), false, true ) );
         }
@@ -129,7 +129,7 @@ public class DefaultAnalyticsService
         // Indicators
         // ---------------------------------------------------------------------
 
-        if ( !params.getIndicators().isEmpty() )
+        if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
         {         
             Map<String, Double> constantMap = constantService.getConstantMap();
 
@@ -140,33 +140,35 @@ public class DefaultAnalyticsService
             List<Indicator> indicators = asTypedList( params.getIndicators() );
             
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
-    
+
             Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = dataSourceParams.getPermutationOperandValueMap( aggregatedDataMap );
 
             List<List<DimensionOption>> dimensionOptionPermutations = dataSourceParams.getDimensionOptionPermutations();
-            
+
             for ( Indicator indicator : indicators )
             {
                 for ( List<DimensionOption> options : dimensionOptionPermutations )
                 {
                     String permKey = DimensionOption.asOptionKey( options );
-                    
+
                     Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( permKey );
-                    
-                    Period period = (Period) DimensionOption.getPeriodOption( options );
-                    
-                    Assert.notNull( period );
-                    
+
                     if ( valueMap != null )
                     {
+                        Period period = (Period) DimensionOption.getPeriodOption( options );
+                        
+                        Assert.notNull( period );
+                        
                         Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
                         
                         if ( value != null )
                         {
-                            options.set( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
+                            List<DimensionOption> row = new ArrayList<DimensionOption>( options );
+                            
+                            row.add( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
                             
                             grid.addRow();
-                            grid.addValues( DimensionOption.getOptions( options ) );
+                            grid.addValues( DimensionOption.getOptionIdentifiers( row ) );
                             grid.addValue( value );
                         }
                     }                    
@@ -178,7 +180,7 @@ public class DefaultAnalyticsService
         // Data elements
         // ---------------------------------------------------------------------
 
-        if ( !params.getDataElements().isEmpty() )
+        if ( params.getDataElements() != null && !params.getDataElements().isEmpty() )
         {
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( params );
             
@@ -325,7 +327,7 @@ public class DefaultAnalyticsService
         List<IdentifiableObject> dataElements = asList( expressionService.getDataElementsInIndicators( indicators ) );
         
         immutableParams.setDataElements( dataElements );
-        immutableParams.setIndicators( new ArrayList<IdentifiableObject>() );
+        immutableParams.removeDimension( INDICATOR_DIM_ID );
         immutableParams.setCategories( true );
         
         return immutableParams;

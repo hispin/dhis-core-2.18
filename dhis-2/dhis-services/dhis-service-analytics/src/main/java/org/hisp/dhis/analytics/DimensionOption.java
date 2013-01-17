@@ -103,7 +103,7 @@ public class DimensionOption
      * Returns an array of identifiers of the dimension options in the given list.
      * If no options are given or options is null, an empty array is returned.
      */
-    public static String[] getOptions( List<DimensionOption> options )
+    public static String[] getOptionIdentifiers( List<DimensionOption> options )
     {
         List<String> optionUids = new ArrayList<String>();
         

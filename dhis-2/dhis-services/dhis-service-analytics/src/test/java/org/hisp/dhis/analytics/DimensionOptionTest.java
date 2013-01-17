@@ -77,8 +77,8 @@ public class DimensionOptionTest
     {
         String[] expected = { deA.getUid(), peA.getUid(), ouA.getUid() };
         
-        assertArrayEquals( expected, DimensionOption.getOptions( options ) );
-        assertArrayEquals( new String[0], DimensionOption.getOptions( null ) );
+        assertArrayEquals( expected, DimensionOption.getOptionIdentifiers( options ) );
+        assertArrayEquals( new String[0], DimensionOption.getOptionIdentifiers( null ) );
     }
     
     @Test
