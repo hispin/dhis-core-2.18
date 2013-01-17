@@ -7,15 +7,15 @@ jQuery(function(){
 	dataElementSelector = jQuery("#dataElementSelection").dialog({
 		title: i18n_dataelement,
 		height: 400,
-		width: jQuery("#dataElementIds").outerWidth() + 30,
+		width: jQuery("#dataElementSelection [id=dataElementIds]").outerWidth() + 30,
 		autoOpen: false,
 		zIndex:99999
 	});
 	
 	otherProgramStageDataElements = jQuery("#otherProgramStageDataElements").dialog({
 		title: i18n_dataelement_of_orther_program_stage,
-		height: 350,
-		width:350,
+		height: 460,
+		width:jQuery("#otherProgramStageDataElements [id=dataElementIds]").outerWidth() + 50,
 		autoOpen: false,
 		zIndex:99999
 	});
@@ -81,8 +81,8 @@ function getProgramStageDataElements( id )
 			associationId: id
 		}, function( xml ){			
 			jQuery( xml ).find( 'dataElement' ).each( function(i, item ){
-				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
-				dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "' dename='" + jQuery( item ).find( "name" ).text() + "' decode='" + jQuery( item ).find( "code" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+				dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "' dename='" + jQuery( item ).find( "name" ).text() + "' decode='" + jQuery( item ).find( "code" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
 			});
 		});
 	}
@@ -179,49 +179,49 @@ function insertDataElement( source, programStageId )
 }
 
 
-function displayNameOnChange( displayName )
+function displayNameOnChange( div, displayName )
 {
 	// display - name
 	if(displayName=='1'){
-		jQuery('#dataElementIds option').each(function(){
+		jQuery('#' + div + ' [id=dataElementIds] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = item.attr('dename');
 		});
-		jQuery('#dataElementIdsStore option').each(function(){
+		jQuery('#' + div + ' [id=dataElementIdsStore] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = item.attr('dename');
 		});
 	}
 	// display - code
 	else if(displayName=='2'){
-		jQuery('#dataElementIds option').each(function(){
+		jQuery('#' + div + ' [id=dataElementIds] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = item.attr('decode');
 		});
-		jQuery('#dataElementIdsStore option').each(function(){
+		jQuery('#' + div + ' [id=dataElementIdsStore] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = item.attr('decode');
 		});
 	}
 	// display - code and name
 	else{
-		jQuery('#dataElementIds option').each(function(){
+		jQuery('#' + div + ' [id=dataElementIds] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
 		});
-		jQuery('#dataElementIdsStore option').each(function(){
+		jQuery('#' + div + ' [id=dataElementIdsStore] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
 		});
 	}
-	jQuery("#dataElementIds").width(jQuery("#dataElementSelection").width() - 10 );	
+	jQuery('#' + div + ' [id=dataElementIds]').width(jQuery("#" + div).width() - 10 );	
 }
 
-function sortByOnChange(sortBy)
+function sortByOnChange( div, sortBy)
 {
 	if( sortBy == 1)
 	{
-		$('#dataElementIds').each(function() {
+		jQuery('#' + div + ' [id=dataElementIds]').each(function() {
 
 			// Keep track of the selected option.
 			var selectedValue = $(this).val();
@@ -238,7 +238,7 @@ function sortByOnChange(sortBy)
 	}
 	else
 	{
-		$('#dataElementIds').each(function() {
+		jQuery('#' + div + ' [id=dataElementIds]').each(function() {
 
 			// Keep track of the selected option.
 			var selectedValue = $(this).val();
