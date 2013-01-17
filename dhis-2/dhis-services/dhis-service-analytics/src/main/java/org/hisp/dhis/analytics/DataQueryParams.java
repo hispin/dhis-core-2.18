@@ -36,13 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ListMap;
+import org.hisp.dhis.system.util.MapMap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -146,7 +149,7 @@ public class DataQueryParams
      */
     public List<String> getDimensionNamesIgnoreCategories()
     {
-        List<String> list = getDimensionNamesAsList();
+        List<String> list = getDimensionNamesAsListIgnoreCategories();
         
         if ( list.contains( PERIOD_DIM_ID ) && periodType != null )
         {
@@ -157,7 +160,7 @@ public class DataQueryParams
         {
             list.set( list.indexOf( ORGUNIT_DIM_ID ), LEVEL_PREFIX + organisationUnitLevel );
         }
-                
+        
         return list;
     }
 
@@ -346,6 +349,37 @@ public class DataQueryParams
         
         return generator.getCombinations();
     }
+
+    /**
+     * Returns a mapping of permutation keys and mappings of data element operands
+     * and values, based on the given mapping of dimension option keys and 
+     * aggregated values.
+     */
+    public Map<String, Map<DataElementOperand, Double>> getPermutationOperandValueMap( Map<String, Double> aggregatedDataMap )
+    {
+        MapMap<String, DataElementOperand, Double> valueMap = new MapMap<String, DataElementOperand, Double>();
+        
+        for ( String key : aggregatedDataMap.keySet() )
+        {
+            List<String> keys = new ArrayList<String>( Arrays.asList( key.split( DIMENSION_SEP ) ) );
+            
+            String de = keys.get( getDataElementDimensionIndex() );
+            String coc = keys.get( getCategoryOptionComboDimensionIndex() );
+            
+            keys.remove( getDataElementDimensionIndex() );
+            keys.remove( getCategoryOptionComboDimensionIndex() - 1 );
+            
+            String permKey = StringUtils.join( keys, DIMENSION_SEP );
+            
+            DataElementOperand operand = new DataElementOperand( de, coc );
+            
+            Double value = aggregatedDataMap.get( key );
+            
+            valueMap.putEntry( permKey, operand, value );            
+        }
+        
+        return valueMap;
+    }
     
     // -------------------------------------------------------------------------
     // Static methods
@@ -375,10 +409,30 @@ public class DataQueryParams
      * indicator is not a true dimension, rather a formula based on the data
      * element dimension.
      */
-    private List<String> getDimensionNamesAsList()
+    private List<String> getDimensionNamesAsListIgnoreCategories()
     {
         List<String> list = new ArrayList<String>( dimensions.keySet() );
+        
         list.remove( INDICATOR_DIM_ID );
+        
+        return list;
+    }
+
+    /**
+     * Returns the dimension names as a list. The indicator key is included as
+     * indicator is not a true dimension, rather a formula based on the data
+     * element dimension. Adds the category option combo dimension if the
+     * categories parameter of this query is true.
+     */
+    public List<String> getDimensionNamesAsList()
+    {
+        List<String> list = getDimensionNamesAsListIgnoreCategories();
+        
+        if ( categories )
+        {
+            list.add( CATEGORYOPTIONCOMBO_DIM_ID );
+        }
+        
         return list;
     }
 
