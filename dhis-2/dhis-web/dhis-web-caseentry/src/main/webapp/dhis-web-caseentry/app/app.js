@@ -1745,6 +1745,7 @@ Ext.onReady( function() {
 				}
 				
 				// Filter values
+				
 				p.deFilters = [];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var deId = r.data.id;
@@ -1766,6 +1767,7 @@ Ext.onReady( function() {
 				});
 				
 				// Period range
+				
 				p.startDates = [];
 				p.endDates = [];
 				TR.store.dateRange.data.each( function(r) {
@@ -1896,8 +1898,7 @@ Ext.onReady( function() {
 						return false;
 					}
 					
-					if( TR.cmp.settings.startDate.rawValue=="" 
-						&& TR.cmp.settings.endDate.rawValue=="" 
+					if( TR.store.dateRange.data.length==0
 						&& TR.cmp.params.fixedperiod.selected.store.data.items.length == 0 )
 					{
 						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
@@ -1947,15 +1948,14 @@ Ext.onReady( function() {
 					}
 					
 					var position = TR.state.aggregateReport.getPosition();
-					if( !( position== TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA
-						|| position== TR.conf.reportPosition.POSITION_ROW_DATA )
+					if( position == TR.conf.reportPosition.POSITION_ROW_DATA
 						&& TR.cmp.params.dataelement.selected.store.data.items.length == 0) {
 						TR.util.notification.error(TR.i18n.em_no_dataelement, TR.i18n.em_no_dataelement);
 						return false;
 					};
 					
 					if( position==TR.conf.reportPosition.POSITION_ROW_DATA 
-						&& TR.cmp.settings.dataElementGroupBy.getValue()==null ){
+						&& TR.cmp.settings.dataElementGroupBy.getValue()=='' ){
 						TR.util.notification.error(TR.i18n.select_data_element_for_grouping, TR.i18n.select_data_element_for_grouping);
 						return false;
 					}
