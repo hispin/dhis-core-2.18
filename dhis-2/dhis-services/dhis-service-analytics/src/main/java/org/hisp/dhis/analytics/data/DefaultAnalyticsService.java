@@ -70,6 +70,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.RelativePeriodEnum;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
@@ -328,12 +330,24 @@ public class DefaultAnalyticsService
         else if ( PERIOD_DIM_ID.equals( dimension ) )
         {
             List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
-            
-            for ( String isoPeriod : options )
+                        
+            periodLoop : for ( String isoPeriod : options )
             {
                 Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
-                period.setName( format != null ? format.formatPeriod( period ) : null );
-                list.add( period );
+                
+                if ( period != null )
+                {
+                    period.setName( format != null ? format.formatPeriod( period ) : null );
+                    list.add( period );
+                    continue periodLoop;
+                }
+                
+                if ( RelativePeriodEnum.contains( isoPeriod ) )
+                {
+                    RelativePeriodEnum relativePeriod = RelativePeriodEnum.valueOf( isoPeriod );
+                    list.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, format, true ) );
+                    continue periodLoop;
+                }
             }
             
             return list;
