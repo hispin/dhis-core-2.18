@@ -186,6 +186,7 @@ function displayNameOnChange( div, displayName )
 		jQuery('#' + div + ' [id=dataElementIds] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = item.attr('dename');
+			item[0].title = item[0].text;
 		});
 		jQuery('#' + div + ' [id=dataElementIdsStore] option').each(function(){
 			var item = jQuery(this);
@@ -197,6 +198,7 @@ function displayNameOnChange( div, displayName )
 		jQuery('#' + div + ' [id=dataElementIds] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = item.attr('decode');
+			item[0].title = item[0].text;
 		});
 		jQuery('#' + div + ' [id=dataElementIdsStore] option').each(function(){
 			var item = jQuery(this);
@@ -208,6 +210,7 @@ function displayNameOnChange( div, displayName )
 		jQuery('#' + div + ' [id=dataElementIds] option').each(function(){
 			var item = jQuery(this);
 			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
+			item[0].title = item[0].text;
 		});
 		jQuery('#' + div + ' [id=dataElementIdsStore] option').each(function(){
 			var item = jQuery(this);

@@ -633,6 +633,7 @@ function runValidation()
 function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField );
+	input.parent().width( input.width() + 200 );
 	var dataElementId = input.attr('id').split('-')[1];
 	
 	input.autocomplete({
