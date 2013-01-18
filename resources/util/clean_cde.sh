@@ -44,7 +44,7 @@ sed -i 's/style="[^"]*"//g' $1
 sed -i 's/width="[^"]*"//g' $1
 sed -i 's/nowrap="[^"]*"//g' $1
 sed -i 's/valign="[^"]*"//g' $1
-sed -i 's/view="[^"]*"//g' $11
+sed -i 's/view="[^"]*"//g' $1
 sed -i 's/bgcolor="[^"]*"//g' $1
 
 # Remove weird stuff
