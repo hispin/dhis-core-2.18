@@ -27,7 +27,10 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
 import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
@@ -44,9 +47,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
-import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.QueryPlanner;
@@ -57,6 +60,7 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
@@ -78,7 +82,6 @@ public class DefaultAnalyticsService
 {
     private static final String VALUE_HEADER_NAME = "Value";
     
-    //TODO indicator aggregation
     //TODO completeness
     
     @Autowired
@@ -92,6 +95,9 @@ public class DefaultAnalyticsService
     
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private DataSetService dataSetService;
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -132,19 +138,19 @@ public class DefaultAnalyticsService
 
         if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
         {         
-            Map<String, Double> constantMap = constantService.getConstantMap();
-
             int indicatorIndex = params.getDataElementOrIndicatorDimensionIndex();
-            
-            DataQueryParams dataSourceParams = setDataElementsFromIndicators( params );
 
             List<Indicator> indicators = asTypedList( params.getIndicators() );
             
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
+            DataQueryParams dataSourceParams = setDataElementsFromIndicators( params );
+
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, ANALYTICS_TABLE_NAME );
 
             Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = dataSourceParams.getPermutationOperandValueMap( aggregatedDataMap );
 
             List<List<DimensionOption>> dimensionOptionPermutations = dataSourceParams.getDimensionOptionPermutations();
+
+            Map<String, Double> constantMap = constantService.getConstantMap();
 
             for ( Indicator indicator : indicators )
             {
@@ -183,26 +189,52 @@ public class DefaultAnalyticsService
 
         if ( params.getDataElements() != null && !params.getDataElements().isEmpty() )
         {
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( params );
+            DataQueryParams dataSourceParams = new DataQueryParams( params );
+            dataSourceParams.removeDimension( INDICATOR_DIM_ID );
+            dataSourceParams.removeDimension( DATASET_DIM_ID );
+            
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, ANALYTICS_TABLE_NAME );
             
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
                 grid.addRow();
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
                 grid.addValue( entry.getValue() );
-            }            
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Data sets
+        // ---------------------------------------------------------------------
+
+        if ( params.getDataSets() != null && !params.getDataSets().isEmpty() )
+        {
+            DataQueryParams dataSourceParams = new DataQueryParams( params );
+            dataSourceParams.removeDimension( INDICATOR_DIM_ID );
+            dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
+            dataSourceParams.setCategories( false );
+            dataSourceParams.setAggregationType( AggregationType.COUNT_AGGREGATION );
+
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, COMPLETENESS_TABLE_NAME );
+
+            for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
+            {
+                grid.addRow();
+                grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
+                grid.addValue( entry.getValue() );
+            }
         }
         
         return grid;
     }
     
-    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception
+    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) throws Exception
     {
         Timer t = new Timer().start();
 
         int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 6 );
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, AnalyticsTableManager.ANALYTICS_TABLE_NAME );
+        List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, tableName );
         
         t.getTime( "Planned query for optimal: " + optimalQueries + ", got: " + queries.size() );
         
@@ -285,6 +317,10 @@ public class DefaultAnalyticsService
         {
             return asList( dataElementService.getDataElementsByUid( options ) );
         }
+        else if ( DATASET_DIM_ID.equals( dimension ) )
+        {
+            return asList( dataSetService.getDataSetsByUid( options ) );
+        }
         else if ( ORGUNIT_DIM_ID.equals( dimension ) )
         {
             return asList( organisationUnitService.getOrganisationUnitsByUid( options ) );
@@ -329,6 +365,7 @@ public class DefaultAnalyticsService
         
         immutableParams.setDataElements( dataElements );
         immutableParams.removeDimension( INDICATOR_DIM_ID );
+        immutableParams.removeDimension( DATASET_DIM_ID );
         immutableParams.setCategories( true );
         
         return immutableParams;
