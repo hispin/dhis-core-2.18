@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_AGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.COUNT_AGGREGATION;
 import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
@@ -78,7 +79,7 @@ public class JdbcAnalyticsManager
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
-
+    
     @Async
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
@@ -95,7 +96,18 @@ public class JdbcAnalyticsManager
         
         int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
         
-        sql += params.isAggregationType( AVERAGE_AGGREGATION ) ? "sum(daysxvalue) / " + days : "sum(value)";
+        if ( params.isAggregationType( AVERAGE_AGGREGATION ) )
+        {
+            sql += "sum(daysxvalue) / " + days;
+        }
+        else if ( params.isAggregationType( COUNT_AGGREGATION ) )
+        {
+            sql += "count(value)";
+        }
+        else
+        {
+            sql += "sum(value)";
+        }
         
         sql += " as value from " + params.getTableName() + " ";
         

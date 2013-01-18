@@ -37,7 +37,7 @@ public interface AnalyticsService
 {
     Grid getAggregatedDataValues( DataQueryParams params ) throws Exception;
     
-    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) throws Exception;
+    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) throws Exception;
     
     DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, I18nFormat format );
 }
