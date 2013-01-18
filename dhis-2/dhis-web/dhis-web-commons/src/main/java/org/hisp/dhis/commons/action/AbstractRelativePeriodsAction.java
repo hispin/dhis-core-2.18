@@ -162,20 +162,35 @@ public abstract class AbstractRelativePeriodsAction
         this.last5FinancialYears = last5FinancialYears;
     }
 
+    protected boolean last4Weeks;
+    
+    public void setLast4Weeks( boolean last4Weeks )
+    {
+        this.last4Weeks = last4Weeks;
+    }
+
+    protected boolean last12Weeks;
+
+    public void setLast12Weeks( boolean last12Weeks )
+    {
+        this.last12Weeks = last12Weeks;
+    }
+
     protected boolean last52Weeks;
     
     public void setLast52Weeks( boolean last52Weeks )
     {
         this.last52Weeks = last52Weeks;
     }
-
+    
     protected RelativePeriods getRelativePeriods()
     {
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, 
             last5Years, last12Months, last3Months, false, last4Quarters, last2SixMonths,
-            thisFinancialYear, lastFinancialYear, last5FinancialYears, last52Weeks );
+            thisFinancialYear, lastFinancialYear, last5FinancialYears, 
+            last4Weeks, last12Weeks, last52Weeks );
         
         return relatives;
     }
