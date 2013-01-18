@@ -143,7 +143,12 @@ public class SharingController
 
         Sharing sharing = JacksonUtils.fromJson( request.getInputStream(), Sharing.class );
 
-        object.setPublicAccess( sharing.getObject().getPublicAccess() );
+        // just ignore publicAccess if user is not allowed to make objects public, this should be hidden
+        // in the UI.
+        if ( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), object ) )
+        {
+            object.setPublicAccess( sharing.getObject().getPublicAccess() );
+        }
 
         if ( object.getUser() == null )
         {
@@ -179,7 +184,7 @@ public class SharingController
         manager.update( object );
     }
 
-    @RequestMapping(value = "/search", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/search", produces = { "application/json", "text/*" } )
     public void searchUserGroups( @RequestParam String key, HttpServletResponse response ) throws IOException
     {
         SharingUserGroups sharingUserGroups = new SharingUserGroups();
