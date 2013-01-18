@@ -95,12 +95,28 @@ public interface SecurityService
     boolean canRead( IdentifiableObject identifiableObject );
 
     /**
-     * Checks whether current user has write access to object.
+     * Checks whether current user has create access to object.
      *
      * @param identifiableObject Object to check for write access.
      * @return true of false depending on outcome of write check
      */
     boolean canWrite( IdentifiableObject identifiableObject );
+
+    /**
+     * Checks whether current user can create public instances of the object.
+     *
+     * @param identifiableObject Object to check for write access.
+     * @return true of false depending on outcome of write check
+     */
+    boolean canCreatePublic( IdentifiableObject identifiableObject );
+
+    /**
+     * Checks whether current user can create private instances of the object.
+     *
+     * @param identifiableObject Object to check for write access.
+     * @return true of false depending on outcome of write check
+     */
+    boolean canCreatePrivate( IdentifiableObject identifiableObject );
 
     /**
      * Checks whether current user has update access to object.

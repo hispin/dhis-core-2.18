@@ -29,7 +29,7 @@ package org.hisp.dhis.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.AccessUtils;
+import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.message.MessageSender;
@@ -237,32 +237,44 @@ public class DefaultSecurityService
     }
 
     @Override
+    public boolean canCreatePublic( IdentifiableObject identifiableObject )
+    {
+        return SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject );
+    }
+
+    @Override
+    public boolean canCreatePrivate( IdentifiableObject identifiableObject )
+    {
+        return SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject );
+    }
+
+    @Override
     public boolean canRead( IdentifiableObject identifiableObject )
     {
-        return AccessUtils.canRead( currentUserService.getCurrentUser(), identifiableObject );
+        return SharingUtils.canRead( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canWrite( IdentifiableObject identifiableObject )
     {
-        return AccessUtils.canWrite( currentUserService.getCurrentUser(), identifiableObject );
+        return SharingUtils.canWrite( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canUpdate( IdentifiableObject identifiableObject )
     {
-        return AccessUtils.canUpdate( currentUserService.getCurrentUser(), identifiableObject );
+        return SharingUtils.canUpdate( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canDelete( IdentifiableObject identifiableObject )
     {
-        return AccessUtils.canDelete( currentUserService.getCurrentUser(), identifiableObject );
+        return SharingUtils.canDelete( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canManage( IdentifiableObject identifiableObject )
     {
-        return AccessUtils.canManage( currentUserService.getCurrentUser(), identifiableObject );
+        return SharingUtils.canManage( currentUserService.getCurrentUser(), identifiableObject );
     }
 }
