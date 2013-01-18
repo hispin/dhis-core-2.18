@@ -30,7 +30,6 @@ package org.hisp.dhis.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
@@ -806,23 +805,8 @@ public class HibernateGenericStore<T>
 
     private boolean sharingEnabled()
     {
-        return hasShareProperties() && !(currentUserService.getCurrentUser() == null ||
+        return SharingUtils.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
             currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities().contains( SharingUtils.SHARING_OVERRIDE_AUTHORITY ));
-    }
-
-    private boolean hasShareProperties()
-    {
-        try
-        {
-            // for now we need to have this test, since not all idObjectClasses are converted
-            sessionFactory.getClassMetadata( clazz ).getPropertyType( "publicAccess" );
-        }
-        catch ( HibernateException ignored )
-        {
-            return false;
-        }
-
-        return true;
     }
 
     private boolean isReadAllowed( T object )
@@ -861,7 +845,7 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( hasShareProperties() )
+            if ( SharingUtils.isSupported( clazz ) )
             {
                 return SharingUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
             }
@@ -876,7 +860,7 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( hasShareProperties() )
+            if ( SharingUtils.isSupported( clazz ) )
             {
                 return SharingUtils.canDelete( currentUserService.getCurrentUser(), idObject );
             }
