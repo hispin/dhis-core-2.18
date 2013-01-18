@@ -333,14 +333,6 @@ public class BaseIdentifiableObject
             setUid( CodeGenerator.generateCode() );
         }
 
-        if ( user == null && publicAccess == null && userGroupAccesses.isEmpty() )
-        {
-            publicAccess = AccessStringHelper.newInstance()
-                .enable( AccessStringHelper.Permission.READ )
-                .enable( AccessStringHelper.Permission.WRITE )
-                .build();
-        }
-
         Date date = new Date();
 
         if ( created == null )

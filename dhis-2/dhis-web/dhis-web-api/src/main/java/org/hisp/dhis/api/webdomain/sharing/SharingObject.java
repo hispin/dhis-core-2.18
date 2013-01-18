@@ -41,9 +41,6 @@ public class SharingObject
     private String id;
 
     @JsonProperty
-    private String clazz;
-
-    @JsonProperty
     private String name;
 
     @JsonProperty
@@ -67,16 +64,6 @@ public class SharingObject
     public void setId( String id )
     {
         this.id = id;
-    }
-
-    public String getClazz()
-    {
-        return clazz;
-    }
-
-    public void setClazz( String clazz )
-    {
-        this.clazz = clazz;
     }
 
     public String getName()

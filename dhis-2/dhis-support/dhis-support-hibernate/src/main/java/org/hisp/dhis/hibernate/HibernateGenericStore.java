@@ -37,10 +37,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.AccessUtils;
+import org.hisp.dhis.common.AccessStringHelper;
 import org.hisp.dhis.common.AuditLogUtil;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,6 +215,30 @@ public class HibernateGenericStore<T>
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE_DENIED );
             throw new AccessDeniedException( "You do not have write access to object" );
+        }
+
+        if ( hasShareProperties() )
+        {
+            BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
+
+            if ( identifiableObject.getUser() == null )
+            {
+                identifiableObject.setUser( currentUserService.getCurrentUser() );
+            }
+
+            if ( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject ) )
+            {
+                identifiableObject.setPublicAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
+            }
+            else if ( SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject ) )
+            {
+                identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
+            }
+            else
+            {
+                AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE_DENIED );
+                throw new AccessDeniedException( "You are not allowed to create public or private objects of this kind" );
+            }
         }
 
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE );
@@ -780,8 +806,8 @@ public class HibernateGenericStore<T>
 
     private boolean sharingEnabled()
     {
-        return hasShareProperties()
-            && !(currentUserService.getCurrentUser() == null || currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities().contains( "ALL" ));
+        return hasShareProperties() && !(currentUserService.getCurrentUser() == null ||
+            currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities().contains( SharingUtils.SHARING_OVERRIDE_AUTHORITY ));
     }
 
     private boolean hasShareProperties()
@@ -805,9 +831,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( hasShareProperties() )
+            if ( sharingEnabled() )
             {
-                return AccessUtils.canRead( currentUserService.getCurrentUser(), idObject );
+                return SharingUtils.canRead( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -820,9 +846,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( hasShareProperties() )
+            if ( sharingEnabled() )
             {
-                return AccessUtils.canWrite( currentUserService.getCurrentUser(), idObject );
+                return SharingUtils.canWrite( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -837,7 +863,7 @@ public class HibernateGenericStore<T>
 
             if ( hasShareProperties() )
             {
-                return AccessUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
+                return SharingUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -852,7 +878,7 @@ public class HibernateGenericStore<T>
 
             if ( hasShareProperties() )
             {
-                return AccessUtils.canDelete( currentUserService.getCurrentUser(), idObject );
+                return SharingUtils.canDelete( currentUserService.getCurrentUser(), idObject );
             }
         }
 

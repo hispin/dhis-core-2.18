@@ -27,14 +27,71 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class AccessUtils
+public class SharingUtils
 {
+    public static Map<Class<? extends IdentifiableObject>, String> PUBLIC_AUTHORITIES = new HashMap<Class<? extends IdentifiableObject>, String>();
+
+    public static Map<Class<? extends IdentifiableObject>, String> PRIVATE_AUTHORITIES = new HashMap<Class<? extends IdentifiableObject>, String>();
+
+    public static final Map<String, Class<? extends IdentifiableObject>> SUPPORTED_TYPES = new HashMap<String, Class<? extends IdentifiableObject>>();
+
+    public static final String SHARING_OVERRIDE_AUTHORITY = "ALL";
+
+    static
+    {
+        SUPPORTED_TYPES.put( "document", Document.class );
+        PUBLIC_AUTHORITIES.put( Document.class, "F_DOCUMENT_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( Document.class, "F_DOCUMENT_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "report", Report.class );
+        PUBLIC_AUTHORITIES.put( Report.class, "F_REPORT_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( Report.class, "F_REPORT_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "reportTable", ReportTable.class );
+        PUBLIC_AUTHORITIES.put( ReportTable.class, "F_REPORTTABLE_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( ReportTable.class, "F_REPORTTABLE_PRIVATE_ADD" );
+    }
+
+    public static boolean isSupported( String type )
+    {
+        return SUPPORTED_TYPES.containsKey( type );
+    }
+
+    public static boolean isSupported( IdentifiableObject identifiableObject )
+    {
+        return SUPPORTED_TYPES.containsValue( identifiableObject.getClass() );
+    }
+
+    public static Class<? extends IdentifiableObject> classForType( String type )
+    {
+        return SUPPORTED_TYPES.get( type );
+    }
+
+    public static boolean canCreatePublic( User user, IdentifiableObject identifiableObject )
+    {
+        Set<String> authorities = user.getUserCredentials().getAllAuthorities();
+        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PUBLIC_AUTHORITIES.get( identifiableObject.getClass() ) );
+    }
+
+    public static boolean canCreatePrivate( User user, IdentifiableObject identifiableObject )
+    {
+        Set<String> authorities = user.getUserCredentials().getAllAuthorities();
+        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PRIVATE_AUTHORITIES.get( identifiableObject.getClass() ) );
+    }
+
     public static boolean canWrite( User user, IdentifiableObject object )
     {
         if ( defaultAccessIsNull( object ) ) return true;
@@ -89,7 +146,8 @@ public class AccessUtils
 
     public static boolean canManage( User user, IdentifiableObject object )
     {
-        return user.getUserCredentials().getAllAuthorities().contains( "ALL" ) || !defaultAccessIsNull( object ) && canWrite( user, object );
+        return user.getUserCredentials().getAllAuthorities().contains( SHARING_OVERRIDE_AUTHORITY ) ||
+            !defaultAccessIsNull( object ) && canWrite( user, object );
     }
 
     private static boolean defaultAccessIsNull( IdentifiableObject identifiableObject )
