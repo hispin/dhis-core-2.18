@@ -32,35 +32,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Sharing
+public class Meta
 {
     @JsonProperty
-    private Meta meta = new Meta();
+    private boolean allowPublicAccess;
 
-    @JsonProperty
-    private SharingObject object = new SharingObject();
-
-    public Sharing()
+    public Meta()
     {
     }
 
-    public Meta getMeta()
+    public boolean isAllowPublicAccess()
     {
-        return meta;
+        return allowPublicAccess;
     }
 
-    public void setMeta( Meta meta )
+    public void setAllowPublicAccess( boolean allowPublicAccess )
     {
-        this.meta = meta;
-    }
-
-    public SharingObject getObject()
-    {
-        return object;
-    }
-
-    public void setObject( SharingObject object )
-    {
-        this.object = object;
+        this.allowPublicAccess = allowPublicAccess;
     }
 }

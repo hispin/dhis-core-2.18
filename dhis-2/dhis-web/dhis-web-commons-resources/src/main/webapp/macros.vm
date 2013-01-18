@@ -423,6 +423,10 @@ function showSharingDialog( type, uid ) {
 
         $( '#sharingName' ).text( data.object.name );
 
+        if ( !data.meta.allowPublicAccess ) {
+            $( '#sharingPublicAccess' ).attr( 'disabled', true );
+        }
+
         $( '.removeUserGroupAccess' ).unbind( 'click' ).bind( 'click', removeUserGroupAccess );
         $( '#addUserGroupAccess' ).unbind( 'click' ).bind( 'click', addUserGroupAccessSelectedItem );
 
@@ -538,6 +542,4 @@ function showSharingDialog( type, uid ) {
     <td style="width: 25px; text-align: center;"><a href="" class="removeUserGroupAccess">X</a></td>
 </tr>
 </script>
-
-
 #end

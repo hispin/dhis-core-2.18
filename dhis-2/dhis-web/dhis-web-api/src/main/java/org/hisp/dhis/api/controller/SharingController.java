@@ -102,6 +102,8 @@ public class SharingController
 
         Sharing sharing = new Sharing();
 
+        sharing.getMeta().setAllowPublicAccess( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), object ) );
+
         sharing.getObject().setId( object.getUid() );
         sharing.getObject().setName( object.getDisplayName() );
         sharing.getObject().setPublicAccess( object.getPublicAccess() );
