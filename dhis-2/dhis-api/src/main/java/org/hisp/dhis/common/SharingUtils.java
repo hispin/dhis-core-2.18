@@ -72,7 +72,12 @@ public class SharingUtils
 
     public static boolean isSupported( IdentifiableObject identifiableObject )
     {
-        return SUPPORTED_TYPES.containsValue( identifiableObject.getClass() );
+        return isSupported( identifiableObject.getClass() );
+    }
+
+    public static boolean isSupported( Class<?> clazz )
+    {
+        return SUPPORTED_TYPES.containsValue( clazz );
     }
 
     public static Class<? extends IdentifiableObject> classForType( String type )
