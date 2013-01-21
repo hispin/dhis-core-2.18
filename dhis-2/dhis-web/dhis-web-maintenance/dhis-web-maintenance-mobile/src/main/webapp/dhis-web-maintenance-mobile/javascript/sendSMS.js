@@ -40,7 +40,9 @@ function toggleAll( checked )
 
 function sendSMSMessage( _form )
 {
-	var params = "";
+	var params = "?";
+	var p = {};
+	p.recipients = [];
 
 	if ( _target == "phone" )
 	{
@@ -58,11 +60,9 @@ function sendSMSMessage( _form )
 		{
 			if ( list[i] && list[i] != '' )
 			{
-				params += "recipients=" + list[i] + "&";
+				p.recipients.push( list[i] );
 			}
 		}
-
-		params = "?" + params.substring( 0, params.length - 1 );
 	}
 	else if ( _target == "user" || _target == "unit" )
 	{
@@ -76,13 +76,18 @@ function sendSMSMessage( _form )
 	{
 		if ( hasElements( 'recipients' ) )
 		{
-			params = "?" + getParamString( 'recipients', 'recipients' );
+			var list = jQuery( '#recipients' ).children();
+	
+			list.each( function( i, item ){
+				p.recipients.push( item.value );
+			});
 		}
 		else { markInvalid( "recipients", i18n_list_empty ); }
 	}
 
-	jQuery.postUTF8( _form.action + params,
+	jQuery.postUTF8( _form.action,
 	{
+		recipients: JSON.stringify( p.recipients ),
 		gatewayId: getFieldValue( 'gatewayId' ),
 		smsMessage: getFieldValue( 'smsMessage' ),
 		sendTarget: getFieldValue( 'sendTarget' )
