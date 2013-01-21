@@ -128,7 +128,6 @@ em_no_dataelement:'$encoder.jsEscape($i18n.getString( 'em_no_dataelement' ) , "'
 em_no_period: '$encoder.jsEscape($i18n.getString( 'em_no_period' ) , "'")',
 period_range: '$encoder.jsEscape($i18n.getString( 'period_range' ) , "'")',
 select_only_one_period: '$encoder.jsEscape($i18n.getString( 'select_only_one_period' ) , "'")',
-select_only_one_data_element: '$encoder.jsEscape($i18n.getString( 'select_only_one_data_element' ) , "'")',
 position: '$encoder.jsEscape($i18n.getString( 'position' ) , "'")',
 orgunit: '$encoder.jsEscape($i18n.getString( 'orgunit' ) , "'")',
 data: '$encoder.jsEscape($i18n.getString( 'data' ) , "'")',
@@ -149,5 +148,10 @@ use_completed_events: '$encoder.jsEscape($i18n.getString( 'use_completed_events'
 show_hide_filter_values: '$encoder.jsEscape($i18n.getString( 'show_hide_filter_values' ) , "'")',
 date_period_range: '$encoder.jsEscape($i18n.getString( 'date_period_range' ) , "'")',
 select_from_date: '$encoder.jsEscape($i18n.getString( 'select_from_date' ) , "'")',
-select_to_date: '$encoder.jsEscape($i18n.getString( 'select_to_date' ) , "'")'
+select_to_date: '$encoder.jsEscape($i18n.getString( 'select_to_date' ) , "'")',
+user_orgunit: '$encoder.jsEscape($i18n.getString( 'user_orgunit' ) , "'")',
+user_orgunit_children: '$encoder.jsEscape($i18n.getString( 'user_orgunit_children' ) , "'")',
+auto_select_orgunit_by: '$encoder.jsEscape($i18n.getString( 'auto_select_orgunit_by' ) , "'")',
+in: '$encoder.jsEscape($i18n.getString( 'in' ) , "'")',
+like: '$encoder.jsEscape($i18n.getString( 'like' ) , "'")',
 };

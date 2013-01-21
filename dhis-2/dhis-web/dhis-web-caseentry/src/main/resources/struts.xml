@@ -933,6 +933,12 @@
             <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		
+		<action name="getOrganisationUnitPathsByGroup"
+			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsByGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonminOrganisationUnitPaths.vm</result>
+		</action>
+		
 		<!-- SMS Reminder -->
 
 		<action name="smsReminderSelect"

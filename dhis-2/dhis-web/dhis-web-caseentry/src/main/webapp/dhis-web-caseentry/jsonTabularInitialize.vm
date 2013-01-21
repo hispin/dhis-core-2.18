@@ -6,7 +6,8 @@
 		"ous":[
 			#foreach( $orgunit in $currentUser.organisationUnits )
 			   {
-					 "id":  "${orgunit.id}" ,
+					 "id":  "${orgunit.uid}" ,
+					 "localid": "$organisationUnit.id",
 					 "name": "$!encoder.jsonEncode( ${orgunit.name} )",
 					 "leaf": !$orgunit.hasChild()
 			   }#if( $velocityCount < $programs.size() ),#end
@@ -25,7 +26,7 @@
 	"orgunitGroups": [
 		#foreach( $orgunitGroup in $orgunitGroups )
 		  {
-			"id":  "${orgunitGroup.id}" ,
+			"id":  "${orgunitGroup.uid}" ,
 			"name": "$!encoder.jsonEncode( ${orgunitGroup.name} )"
 		  }#if($velocityCount < $orgunitGroups.size()),#end
 		#end
