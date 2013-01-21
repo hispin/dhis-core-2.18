@@ -154,4 +154,5 @@ user_orgunit_children: '$encoder.jsEscape($i18n.getString( 'user_orgunit_childre
 auto_select_orgunit_by: '$encoder.jsEscape($i18n.getString( 'auto_select_orgunit_by' ) , "'")',
 in: '$encoder.jsEscape($i18n.getString( 'in' ) , "'")',
 like: '$encoder.jsEscape($i18n.getString( 'like' ) , "'")',
+select_all_children: '$encoder.jsEscape($i18n.getString( 'select_all_children' ) , "'")'
 };

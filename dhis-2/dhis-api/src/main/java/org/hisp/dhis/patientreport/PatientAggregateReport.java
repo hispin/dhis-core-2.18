@@ -64,6 +64,10 @@ public class PatientAggregateReport
     public static final int POSITION_ROW_ORGUNIT_COLUMN_DATA = 7;
 
     public static final int POSITION_ROW_DATA = 8;
+    
+    public static final int POSITION_ROW_DATA_COLUMN_PERIOD = 9; // PIVOT FROM 6
+    
+    public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM A
 
     private ProgramStage programStage;
 
