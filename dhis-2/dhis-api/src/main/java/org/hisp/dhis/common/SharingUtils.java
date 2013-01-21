@@ -70,12 +70,12 @@ public class SharingUtils
         return SUPPORTED_TYPES.containsKey( type );
     }
 
-    public static boolean isSupported( IdentifiableObject identifiableObject )
+    public static boolean isSupported( IdentifiableObject object )
     {
-        return isSupported( identifiableObject.getClass() );
+        return isSupported( object.getClass() );
     }
 
-    public static boolean isSupported( Class<?> clazz )
+    public static boolean isSupported( Class clazz )
     {
         return SUPPORTED_TYPES.containsValue( clazz );
     }
@@ -85,23 +85,55 @@ public class SharingUtils
         return SUPPORTED_TYPES.get( type );
     }
 
-    public static boolean canCreatePublic( User user, IdentifiableObject identifiableObject )
+    /**
+     * Checks if a user can create a public instance of a certain object.
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Does user have the authority to create public instances of that object
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
+    public static boolean canCreatePublic( User user, IdentifiableObject object )
     {
         Set<String> authorities = user.getUserCredentials().getAllAuthorities();
-        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PUBLIC_AUTHORITIES.get( identifiableObject.getClass() ) );
+        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PUBLIC_AUTHORITIES.get( object.getClass() ) );
     }
 
-    public static boolean canCreatePrivate( User user, IdentifiableObject identifiableObject )
+    /**
+     * Checks if a user can create a private instance of a certain object.
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Does user have the authority to create private instances of that object
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
+    public static boolean canCreatePrivate( User user, IdentifiableObject object )
     {
         Set<String> authorities = user.getUserCredentials().getAllAuthorities();
-        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PRIVATE_AUTHORITIES.get( identifiableObject.getClass() ) );
+        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) );
     }
 
+    /**
+     * Can user write to this object (create)
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Is the user for the object null?
+     * 3. Is the user of the object equal to current user?
+     * 4. Is the object public write?
+     * 5. Does any of the userGroupAccesses contain public write and the current user is in that group
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
     public static boolean canWrite( User user, IdentifiableObject object )
     {
-        if ( defaultAccessIsNull( object ) ) return true;
-
-        if ( user.equals( object.getUser() ) || AccessStringHelper.canWrite( object.getPublicAccess() ) )
+        if ( sharingOverrideAuthority( user ) || object.getUser() == null || user.equals( object.getUser() ) ||
+            AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
             return true;
         }
@@ -118,11 +150,23 @@ public class SharingUtils
         return false;
     }
 
+    /**
+     * Can user read this object
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Is the user for the object null?
+     * 3. Is the user of the object equal to current user?
+     * 4. Is the object public read?
+     * 5. Does any of the userGroupAccesses contain public read and the current user is in that group
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
     public static boolean canRead( User user, IdentifiableObject object )
     {
-        if ( defaultAccessIsNull( object ) ) return true;
-
-        if ( user.equals( object.getUser() ) || AccessStringHelper.canRead( object.getPublicAccess() ) )
+        if ( sharingOverrideAuthority( user ) || object.getUser() == null || user.equals( object.getUser() ) ||
+            AccessStringHelper.canRead( object.getPublicAccess() ) )
         {
             return true;
         }
@@ -139,24 +183,53 @@ public class SharingUtils
         return false;
     }
 
+    /**
+     * Can user update this object
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Can user write to this object?
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
     public static boolean canUpdate( User user, IdentifiableObject object )
     {
         return canWrite( user, object );
     }
 
+    /**
+     * Can user delete this object
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Can user write to this object?
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
     public static boolean canDelete( User user, IdentifiableObject object )
     {
         return canWrite( user, object );
     }
 
+    /**
+     * Can user read this object
+     * <p/>
+     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 2. Can user write to this object?
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
     public static boolean canManage( User user, IdentifiableObject object )
     {
-        return user.getUserCredentials().getAllAuthorities().contains( SHARING_OVERRIDE_AUTHORITY ) ||
-            !defaultAccessIsNull( object ) && canWrite( user, object );
+        return sharingOverrideAuthority( user ) || canWrite( user, object );
     }
 
-    private static boolean defaultAccessIsNull( IdentifiableObject identifiableObject )
+    private static boolean sharingOverrideAuthority( User user )
     {
-        return identifiableObject.getUser() == null;
+        return user != null && user.getUserCredentials().getAllAuthorities().contains( SHARING_OVERRIDE_AUTHORITY );
     }
 }
