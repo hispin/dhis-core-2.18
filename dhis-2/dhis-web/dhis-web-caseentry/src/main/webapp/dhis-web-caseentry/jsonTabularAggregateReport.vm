@@ -13,13 +13,25 @@
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
 	"programStageName": "${programStage.name}",
-	"startDate": "$!format.formatDate( $aggregateReport.startDate )",
-	"endDate": "$!format.formatDate( ${aggregateReport.endDate} )",
+	"startDates": [
+		#set( $size = ${aggregateReport.startDates.size()} )
+		#foreach( $startDate in $!aggregateReport.startDates )
+			"$format.formatDate( $startDate )"
+			#if( $velocityCount < $size ),#end
+		#end
+	],
+	"endDates": [
+		#set( $size = $aggregateReport.endDates.size() )
+		#foreach( $endDate in $!$aggregateReport.endDates )
+			"$format.formatDate( $endDate )"
+			#if( $velocityCount < $size ),#end
+		#end
+	],
 	"relativePeriods": [
-		#set( $size = $aggregateReport.relativePeriods.size() )
+		#set( $size = ${aggregateReport.startDates.size()} )
 		#set( $relativePeriods = ${aggregateReport.relativePeriods} )
 		#foreach( ${relativePeriod} in $!{relativePeriods} )
-			'$relativePeriod'
+			"$relativePeriod"
 			#if( $velocityCount < $size ),#end
 		#end
 	],
@@ -47,7 +59,7 @@
 		#set( $size = $aggregateReport.filterValues.size() )
 		#set( $filterValues = ${aggregateReport.filterValues} )
 		#foreach( ${filterValue} in $!{filterValues} )
-			'$filterValue'
+			"$filterValue"
 			#if( $velocityCount < $size ),#end
 		#end
 	],
@@ -71,5 +83,8 @@
 	"limitRecords": "$!aggregateReport.limitRecords",
 	"position": "${aggregateReport.position}",
 	"deGroupBy": "$!aggregateReport.deGroupBy.id",
-	"aggregateType": "${aggregateReport.aggregateType}"
+	"aggregateType": "${aggregateReport.aggregateType}",
+	"useCompletedEvents": "$!aggregateReport.useCompletedEvents",
+	"userOrganisationUnit": "$!aggregateReport.userOrganisationUnit",
+	"userOrganisationUnitChildren": "$!aggregateReport.userOrganisationUnitChildren"
 }

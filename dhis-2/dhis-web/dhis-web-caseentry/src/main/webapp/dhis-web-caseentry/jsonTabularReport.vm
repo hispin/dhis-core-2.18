@@ -21,7 +21,11 @@
 		#set( $size = $tabularReport.organisationUnits.size() )
 		#set( $organisationUnits = ${tabularReport.organisationUnits} )
 		#foreach( ${organisationUnit} in $!{organisationUnits} )
-			$organisationUnit.id
+			{
+				"id": "$organisationUnit.uid",
+				"localid": "$organisationUnit.id",
+				"path":"#foreach($anc in $organisationUnit.getAncestors())/${anc.uid}#end"
+			}
 			#if( $velocityCount < $size ),#end
 		#end
 	],
