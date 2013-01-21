@@ -35,6 +35,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -102,7 +103,7 @@ public class SharingUtils
      */
     public static boolean canCreatePublic( User user, IdentifiableObject object )
     {
-        Set<String> authorities = user.getUserCredentials().getAllAuthorities();
+        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
         return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PUBLIC_AUTHORITIES.get( object.getClass() ) );
     }
 
@@ -118,7 +119,7 @@ public class SharingUtils
      */
     public static boolean canCreatePrivate( User user, IdentifiableObject object )
     {
-        Set<String> authorities = user.getUserCredentials().getAllAuthorities();
+        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
         return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) );
     }
 

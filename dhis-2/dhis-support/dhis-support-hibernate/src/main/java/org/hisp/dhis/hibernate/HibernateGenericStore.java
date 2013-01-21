@@ -185,7 +185,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -197,7 +197,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -216,7 +216,7 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have write access to object" );
         }
 
-        if ( SharingUtils.isSupported( clazz ) )
+        if ( SharingUtils.isSupported( clazz ) && currentUserService.getCurrentUser() != null )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
@@ -258,7 +258,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final T get( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
@@ -274,7 +274,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
@@ -363,7 +363,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final Collection<T> getAll()
     {
         Query query = sharingEnabled() ? getQueryAllACL() : getQueryAll();
@@ -390,7 +390,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<T> getAllLikeName( String name )
     {
         Query query = sharingEnabled() ? getQueryAllLikeNameACL( name ) : getQueryAllLikeName( name );
@@ -422,7 +422,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public final Collection<T> getAllOrderedName()
     {
         Query query = sharingEnabled() ? getQueryAllOrderedNameACL() : getQueryAllOrderedName();
@@ -450,7 +450,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<T> getAllOrderedName( int first, int max )
     {
         Query query = sharingEnabled() ? getQueryAllOrderedNameACL() : getQueryAllOrderedName();
@@ -462,7 +462,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAllOrderedLastUpdated( int first, int max )
     {
         Query query = sharingEnabled() ? getQueryAllOrderedLastUpdatedACL() : getQueryAllOrderedLastUpdated();
@@ -493,7 +493,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<T> getAllLikeNameOrderedName( String name, int first, int max )
     {
         Query query = sharingEnabled() ? getQueryAllLikeNameOrderedNameACL( name ) : getQueryAllLikeNameOrderedName( name );
@@ -616,7 +616,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAllGeLastUpdated( Date lastUpdated )
     {
         Query query = sharingEnabled() ? getQueryAllGeLastUpdatedACL( lastUpdated ) : getQueryAllGeLastUpdated( lastUpdated );
@@ -648,7 +648,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAllGeCreated( Date created )
     {
         Query query = sharingEnabled() ? getQueryAllGeCreatedACL( created ) : getQueryAllGeCreated( created );
@@ -680,7 +680,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated )
     {
         Query query = sharingEnabled() ? getQueryAllGeLastUpdatedOrderedNameACL( lastUpdated ) : getQueryAllGeLastUpdatedOrderedName( lastUpdated );
@@ -712,7 +712,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<T> getByUser( User user )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where user = :user" );
@@ -743,7 +743,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAccessibleByUser( User user )
     {
         //TODO link to interface
@@ -755,7 +755,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAccessibleByLastUpdated( User user, Date lastUpdated )
     {
         Criteria criteria = getCriteria();
@@ -765,7 +765,7 @@ public class HibernateGenericStore<T>
         return criteria.list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAccessibleLikeName( User user, String name )
     {
         Criteria criteria = getCriteria();
@@ -776,7 +776,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAccessibleBetween( User user, int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -787,7 +787,7 @@ public class HibernateGenericStore<T>
         return criteria.list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<T> getAccessibleBetweenLikeName( User user, String name, int first, int max )
     {
         Criteria criteria = getCriteria();
