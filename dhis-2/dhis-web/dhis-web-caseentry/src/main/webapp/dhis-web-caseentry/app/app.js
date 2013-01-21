@@ -142,7 +142,9 @@ TR.conf = {
 		POSITION_ROW_ORGUNIT: 5,
 		POSITION_ROW_PERIOD_COLUMN_DATA: 6,
 		POSITION_ROW_ORGUNIT_COLUMN_DATA: 7,
-		POSITION_ROW_DATA: 8
+		POSITION_ROW_DATA: 8,
+		POSITION_ROW_DATA_COLUMN_PERIOD: 9,
+		POSITION_ROW_DATA_COLUMN_ORGUNIT: 10
 	},
     statusbar: {
 		icon: {
@@ -527,7 +529,10 @@ Ext.onReady( function() {
 				{
 					var periodStore = TR.cmp.settings.positionPeriod.store;
 					periodStore.removeAll();
-					periodStore.add ({value: 1,name: TR.i18n.rows});
+					periodStore.add (
+						{value: 1,name: TR.i18n.rows},
+						{value: 3,name: TR.i18n.filter}
+					);
 					Ext.getCmp('positionPeriodCbx').setValue( 1 );
 					
 					var dataStore = TR.cmp.settings.positionData.store;
@@ -542,6 +547,7 @@ Ext.onReady( function() {
 					periodStore.removeAll();
 					periodStore.add (
 						{value: 1,name: TR.i18n.rows},
+						{value: 2,name: TR.i18n.columns},
 						{value: 3,name: TR.i18n.filters}
 					);
 					Ext.getCmp('positionPeriodCbx').setValue( 1 );
@@ -577,6 +583,20 @@ Ext.onReady( function() {
 					}
 					Ext.getCmp('positionDataCbx').setValue( 3 );
 				}
+				else if( o==2 ){
+					if( p==3 ){
+						dataStore.add (
+							{value: 1,name: TR.i18n.rows}
+						);
+						Ext.getCmp('positionDataCbx').setValue( 1 );
+					}
+					else if( p==1 ){
+						dataStore.add (
+							{value: 3,name: TR.i18n.filters}
+						);
+						Ext.getCmp('positionDataCbx').setValue( 3 );
+					}
+				}
 				else if( o==3 && p==1 ){
 					dataStore.add (
 						{value: 2,name: TR.i18n.columns},
@@ -584,7 +604,7 @@ Ext.onReady( function() {
 					);
 					Ext.getCmp('positionDataCbx').setValue( 2 );
 				}
-				else if( o==3 && p==3 ){
+				else if( o==3 && ( p==2 || p==3 ) ){
 					var dataStore = TR.cmp.settings.positionData.store;
 					dataStore.removeAll();
 					dataStore.add (
@@ -647,6 +667,18 @@ Ext.onReady( function() {
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA :
 					Ext.getCmp('positionOrgunitCbx').setValue(3);
+					Ext.getCmp('positionPeriodCbx').setValue(3);
+					Ext.getCmp('positionDataCbx').setValue(1);
+					this.period();
+					break;
+				case TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_PERIOD :
+					Ext.getCmp('positionOrgunitCbx').setValue(3);
+					Ext.getCmp('positionPeriodCbx').setValue(2);
+					Ext.getCmp('positionDataCbx').setValue(1);
+					this.period();
+					break;
+				case TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_ORGUNIT :
+					Ext.getCmp('positionOrgunitCbx').setValue(2);
 					Ext.getCmp('positionPeriodCbx').setValue(3);
 					Ext.getCmp('positionDataCbx').setValue(1);
 					this.period();
@@ -1756,6 +1788,16 @@ Ext.onReady( function() {
 				if( positionOrgunit==3 && positionPeriod==3 && positionData==1 )
 				{
 					return TR.conf.reportPosition.POSITION_ROW_DATA;
+				}
+				// 9
+				if( positionOrgunit==3 && positionPeriod==2 && positionData==1 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_PERIOD;
+				}
+				// 10
+				if( positionOrgunit==2 && positionPeriod==3 && positionData==1 )
+				{
+					return TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_ORGUNIT;
 				}
 				return '';
 			},

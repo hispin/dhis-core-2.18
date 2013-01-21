@@ -502,3 +502,10 @@ div.link-area-tracking
     line-height: 170%;
 }
 
+/* Treepanel contextmenu */
+#treepanel-contextmenu {
+    border-radius: 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #aaa;
+}
