@@ -82,4 +82,6 @@ public interface PatientStore
     
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max);
     
+    Collection<Patient> getByFullName( String fullName );
+    
 }
