@@ -603,8 +603,8 @@ public class ActivityReportingServiceImpl
                 lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
-        List<Patient> patients = (List<Patient>) this.patientService.getPatientsByNames( firstName + middleName
-            + lastName, 0, 1 );
+        List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
+            + lastName);
 
         if ( patients.size() > 1 )
         {

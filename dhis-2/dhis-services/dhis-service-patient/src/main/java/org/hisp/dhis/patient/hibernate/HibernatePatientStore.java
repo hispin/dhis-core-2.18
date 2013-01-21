@@ -108,7 +108,7 @@ public class HibernatePatientStore
 
         fullName = fullName.toLowerCase();
         String sql = "SELECT patientid FROM patient " + "where lower( " + statementBuilder.getPatientFullName() + ") "
-            + "='" + fullName + "'";
+            + "like '%" + fullName + "%'";
 
         if ( min != null && max != null )
         {
@@ -566,6 +566,34 @@ public class HibernatePatientStore
         }
 
         return query.list();
+    }
+
+    @Override
+    public Collection<Patient> getByFullName( String fullName )
+    {
+        List<Patient> patients = new ArrayList<Patient>();
+
+        fullName = fullName.toLowerCase();
+        String sql = "SELECT patientid FROM patient " + "where lower( " + statementBuilder.getPatientFullName() + ") "
+            + "='" + fullName + "'";
+
+        try
+        {
+            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
+            {
+                public Patient mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    return get( rs.getInt( 1 ) );
+                }
+            } );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return patients;
     }
     
 }

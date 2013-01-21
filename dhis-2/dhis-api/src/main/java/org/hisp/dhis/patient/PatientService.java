@@ -217,4 +217,5 @@ public interface PatientService
 
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
     
+    Collection<Patient> getPatientByFullname( String fullName );
 }

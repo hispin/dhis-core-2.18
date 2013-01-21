@@ -592,4 +592,10 @@ public class DefaultPatientService
 
     }
 
+    @Override
+    public Collection<Patient> getPatientByFullname( String fullName )
+    {
+        return patientStore.getByFullName( fullName );
+    }
+
 }
