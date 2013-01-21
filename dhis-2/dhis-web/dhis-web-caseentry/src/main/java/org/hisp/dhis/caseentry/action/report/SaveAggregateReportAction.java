@@ -27,7 +27,13 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -37,11 +43,7 @@ import org.hisp.dhis.patientreport.PatientAggregateReportService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
@@ -149,18 +151,18 @@ public class SaveAggregateReportAction
         this.relativePeriods = relativePeriods;
     }
 
-    private String startDate;
+    private List<String> startDates;
 
-    public void setStartDate( String startDate )
+    public void setStartDates( List<String> startDates )
     {
-        this.startDate = startDate;
+        this.startDates = startDates;
     }
 
-    private String endDate;
+    private List<String> endDates;
 
-    public void setEndDate( String endDate )
+    public void setEndDates( List<String> endDates )
     {
-        this.endDate = endDate;
+        this.endDates = endDates;
     }
 
     private String facilityLB; // All, children, current
@@ -191,6 +193,27 @@ public class SaveAggregateReportAction
         this.deGroupBy = deGroupBy;
     }
 
+    private Boolean useCompletedEvents;
+
+    public void setUseCompletedEvents( Boolean useCompletedEvents )
+    {
+        this.useCompletedEvents = useCompletedEvents;
+    }
+
+    private Boolean userOrganisationUnit;
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    private Boolean userOrganisationUnitChildren;
+
+    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -204,10 +227,18 @@ public class SaveAggregateReportAction
         aggregateReport.setName( name );
         aggregateReport.setProgramStage( programStageService.getProgramStage( programStageId ) );
 
-        if ( startDate != null && endDate != null )
+        if ( startDates != null && endDates != null )
         {
-            aggregateReport.setStartDate( format.parseDate( startDate ) );
-            aggregateReport.setEndDate( format.parseDate( endDate ) );
+            List<Date> start = new ArrayList<Date>();
+            List<Date> end = new ArrayList<Date>();
+
+            for ( int i = 0; i < startDates.size(); i++ )
+            {
+                start.add( format.parseDate( startDates.get( i ) ) );
+                end.add( format.parseDate( startDates.get( i ) ) );
+            }
+            aggregateReport.setStartDates( start );
+            aggregateReport.setEndDates( end );
         }
 
         aggregateReport.setRelativePeriods( relativePeriods );
@@ -223,6 +254,21 @@ public class SaveAggregateReportAction
         if ( deGroupBy != null )
         {
             aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
+        }
+
+        if ( useCompletedEvents != null )
+        {
+            aggregateReport.setUseCompletedEvents( useCompletedEvents );
+        }
+
+        if ( userOrganisationUnit != null )
+        {
+            aggregateReport.setUserOrganisationUnit( userOrganisationUnit );
+        }
+
+        if ( userOrganisationUnitChildren != null )
+        {
+            aggregateReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
         }
 
         aggregateReport.setAggregateType( aggregateType );

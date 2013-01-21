@@ -64,18 +64,19 @@ public class PatientAggregateReport
     public static final int POSITION_ROW_ORGUNIT_COLUMN_DATA = 7;
 
     public static final int POSITION_ROW_DATA = 8;
-    
+
     public static final int POSITION_ROW_DATA_COLUMN_PERIOD = 9; // PIVOT FROM 6
-    
-    public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM A
+
+    public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM
+                                                                   // 7
 
     private ProgramStage programStage;
 
     // Date period range
 
-    private Date startDate;
+    private List<Date> startDates;
 
-    private Date endDate;
+    private List<Date> endDates;
 
     // Relative periods
 
@@ -105,6 +106,12 @@ public class PatientAggregateReport
 
     private String aggregateType;
 
+    private Boolean useCompletedEvents;
+
+    private Boolean userOrganisationUnit;
+
+    private Boolean userOrganisationUnitChildren;
+
     // User created
 
     private User user;
@@ -131,25 +138,25 @@ public class PatientAggregateReport
     {
         this.programStage = programStage;
     }
-    
-    public Date getStartDate()
+
+    public List<Date> getStartDates()
     {
-        return startDate;
+        return startDates;
     }
 
-    public void setStartDate( Date startDate )
+    public void setStartDates( List<Date> startDates )
     {
-        this.startDate = startDate;
+        this.startDates = startDates;
     }
 
-    public Date getEndDate()
+    public List<Date> getEndDates()
     {
-        return endDate;
+        return endDates;
     }
 
-    public void setEndDate( Date endDate )
+    public void setEndDates( List<Date> endDates )
     {
-        this.endDate = endDate;
+        this.endDates = endDates;
     }
 
     public Set<String> getRelativePeriods()
@@ -250,6 +257,36 @@ public class PatientAggregateReport
     public void setUser( User user )
     {
         this.user = user;
+    }
+
+    public Boolean getUseCompletedEvents()
+    {
+        return useCompletedEvents;
+    }
+
+    public void setUseCompletedEvents( Boolean useCompletedEvents )
+    {
+        this.useCompletedEvents = useCompletedEvents;
+    }
+
+    public Boolean getUserOrganisationUnit()
+    {
+        return userOrganisationUnit;
+    }
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    public Boolean getUserOrganisationUnitChildren()
+    {
+        return userOrganisationUnitChildren;
+    }
+
+    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
 }
