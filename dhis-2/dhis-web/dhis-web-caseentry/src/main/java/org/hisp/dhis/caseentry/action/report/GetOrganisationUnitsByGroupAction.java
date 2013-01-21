@@ -28,78 +28,64 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
  */
-public class GetOrganisationUnitChildrenAction
+public class GetOrganisationUnitsByGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private String node;
-    
-    public void setNode( String node )
+    private String id;
+
+    public void setId( String id )
     {
-        this.node = node;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
-    
-    public List<OrganisationUnit> getUnits()
+    private Collection<OrganisationUnit> object = new ArrayList<OrganisationUnit>();
+
+    public Collection<OrganisationUnit> getObject()
     {
-        return units;
+        return object;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( node );
-        
-        int level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) + 1;
-        
-        if ( unit != null )
+        if ( id != null )
         {
-            units = new ArrayList<OrganisationUnit>( unit.getChildren() );
-            
-            for ( OrganisationUnit organisationUnit : units )
-            {
-                organisationUnit.setLevel( level );
-            }
-
-            Collections.sort( units, new IdentifiableObjectNameComparator() );
+            object = organisationUnitGroupService.getOrganisationUnitGroup( id ).getMembers();
         }
-        
+
         return SUCCESS;
     }
 }

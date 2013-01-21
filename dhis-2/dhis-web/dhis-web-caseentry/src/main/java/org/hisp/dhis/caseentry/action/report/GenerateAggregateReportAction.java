@@ -33,14 +33,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -48,6 +45,7 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -79,18 +77,18 @@ public class GenerateAggregateReportAction
         this.programStageService = programStageService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     private I18nFormat format;
@@ -125,7 +123,7 @@ public class GenerateAggregateReportAction
         this.aggregateType = aggregateType;
     }
 
-    private Collection<Integer> orgunitIds;
+    private Collection<Integer> orgunitIds = new HashSet<Integer>();
 
     public void setOrgunitIds( Collection<Integer> orgunitIds )
     {
@@ -202,6 +200,20 @@ public class GenerateAggregateReportAction
         this.useCompletedEvents = useCompletedEvents;
     }
 
+    private Boolean userOrganisationUnit;
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    private Boolean userOrganisationUnitChildren;
+
+    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
     private String type;
 
     public void setType( String type )
@@ -227,31 +239,35 @@ public class GenerateAggregateReportAction
     public String execute()
     {
         // ---------------------------------------------------------------------
-        // Get orgunitIds
+        // Get user orgunits
         // ---------------------------------------------------------------------
 
-        Set<Integer> organisationUnits = new HashSet<Integer>();
+        Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
+        
+        if ( userOrganisationUnit || userOrganisationUnitChildren )
+        {
+            orgunitIds = new HashSet<Integer>();
 
-        if ( facilityLB.equals( "selected" ) )
-        {
-            organisationUnits.addAll( orgunitIds );
-        }
-        else if ( facilityLB.equals( "childrenOnly" ) )
-        {
-            for ( Integer orgunitId : orgunitIds )
+            if ( userOrganisationUnit )
             {
-                OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy()
-                    .getChildren( orgunitId ) );
-                organisationUnits.remove( selectedOrgunit );
+                for ( OrganisationUnit userOrgunit : userOrgunits )
+                {
+                    orgunitIds.add( userOrgunit.getId() );
+                }
             }
-        }
-        else
-        {
-            for ( Integer orgunitId : orgunitIds )
+
+            if ( userOrganisationUnitChildren )
             {
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy()
-                    .getChildren( orgunitId ) );
+                for ( OrganisationUnit userOrgunit : userOrgunits )
+                {
+                    if ( userOrgunit.hasChild() )
+                    {
+                        for ( OrganisationUnit childOrgunit : userOrgunit.getSortedChildren() )
+                        {
+                            orgunitIds.add( childOrgunit.getId() );
+                        }
+                    }
+                }
             }
         }
 
@@ -292,13 +308,13 @@ public class GenerateAggregateReportAction
             for ( String deFilter : deFilters )
             {
                 int index = deFilter.indexOf( SEPARATE_FILTER );
-                deFilterMap.put( Integer.parseInt( deFilter.substring( 0, index - 1 ) ),
+                deFilterMap.put( Integer.parseInt( deFilter.substring( 0, index ) ),
                     deFilter.substring( index + 1, deFilter.length() ) );
             }
         }
-        
-        grid = programStageInstanceService.getAggregateReport( position, programStage, organisationUnits, deGroupBy,
-            deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, format, i18n );
+
+        grid = programStageInstanceService.getAggregateReport( position, programStage, orgunitIds, facilityLB,
+            deGroupBy, deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, format, i18n );
 
         return type == null ? SUCCESS : type;
     }
