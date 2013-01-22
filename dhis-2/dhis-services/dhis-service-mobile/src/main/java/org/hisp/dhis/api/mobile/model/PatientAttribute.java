@@ -124,4 +124,12 @@ public class PatientAttribute
 
     }
 
+    @Override
+    public void serializeVerssion2_10( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

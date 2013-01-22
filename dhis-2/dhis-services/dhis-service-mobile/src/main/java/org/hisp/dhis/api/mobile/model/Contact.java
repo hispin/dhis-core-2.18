@@ -86,5 +86,13 @@ public class Contact
     {
         this.listOfContacts = listOfContacts;
     }
+
+    @Override
+    public void serializeVerssion2_10( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
