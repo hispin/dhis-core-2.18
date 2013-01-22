@@ -61,14 +61,6 @@ public class SmsLibService
 {
     private static final Log log = LogFactory.getLog( SmsLibService.class );
 
-    private Map<String, String> gatewayMap = new HashMap<String, String>();
-
-    private GateWayFactory gatewayFactory = new GateWayFactory();
-
-    private SmsConfiguration config;
-
-    private String message = "success";
-
     private final String BULK_GATEWAY = "bulk_gw";
 
     private final String CLICKATELL_GATEWAY = "clickatell_gw";
@@ -78,6 +70,14 @@ public class SmsLibService
     private final String MODEM_GATEWAY = "modem_gw";
 
     private final String SMPP_GATEWAY = "smpp_gw";
+
+    private Map<String, String> gatewayMap = new HashMap<String, String>();
+
+    private GateWayFactory gatewayFactory = new GateWayFactory();
+
+    private SmsConfiguration config;
+
+    private String message = "success";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -157,7 +157,7 @@ public class SmsLibService
 
         try
         {
-            log.debug( "Sending message " + sms );
+            log.info( "Sending message " + sms );
 
             if ( gatewayId == null || gatewayId.isEmpty() )
             {
@@ -176,10 +176,14 @@ public class SmsLibService
         catch ( IOException e )
         {
             log.warn( "Unable to send message: " + sms, e );
-
             message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
         }
         catch ( InterruptedException e )
+        {
+            log.warn( "Unable to send message: " + sms, e );
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
+        }
+        catch ( Exception e )
         {
             log.warn( "Unable to send message: " + sms, e );
             message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
@@ -188,7 +192,7 @@ public class SmsLibService
         {
             if ( recipients.size() > 1 )
             {
-                // Make sure we delete tmp. group
+                // Make sure we delete "tmp" group
                 removeGroup( recipient );
             }
             sms.setStatus( OutboundSmsStatus.ERROR );
@@ -513,4 +517,43 @@ public class SmsLibService
         outboundSmsStore.delete( sms );
     }
 
+    public String getDefaultGateway()
+    {
+        SmsGatewayConfig gatewayConfig = config.getDefaultGateway();
+
+        if ( gatewayConfig == null )
+        {
+            return null;
+        }
+
+        if ( getGatewayMap() == null )
+        {
+            return null;
+        }
+
+        String gatewayId;
+
+        if ( gatewayConfig instanceof BulkSmsGatewayConfig )
+        {
+            gatewayId = gatewayMap.get( BULK_GATEWAY );
+        }
+        else if ( gatewayConfig instanceof ClickatellGatewayConfig )
+        {
+            gatewayId = gatewayMap.get( CLICKATELL_GATEWAY );
+        }
+        else if ( gatewayConfig instanceof GenericHttpGatewayConfig )
+        {
+            gatewayId = gatewayMap.get( HTTP_GATEWAY );
+        }
+        else if ( gatewayConfig instanceof SMPPGatewayConfig )
+        {
+            gatewayId = gatewayMap.get( SMPP_GATEWAY );
+        }
+        else
+        {
+            gatewayId = gatewayMap.get( MODEM_GATEWAY );
+        }
+
+        return gatewayId;
+    }
 }

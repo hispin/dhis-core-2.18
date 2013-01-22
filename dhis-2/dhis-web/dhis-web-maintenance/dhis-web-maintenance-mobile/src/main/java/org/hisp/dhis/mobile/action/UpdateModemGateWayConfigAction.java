@@ -149,7 +149,7 @@ public class UpdateModemGateWayConfigAction
                 {
                     index = config.getGateways().indexOf( gatewayConfig );
                 }
-                
+
                 gatewayConfig.setName( name );
                 gatewayConfig.setPort( port );
                 gatewayConfig.setBaudRate( baudRate );
@@ -159,6 +159,11 @@ public class UpdateModemGateWayConfigAction
                 gatewayConfig.setPin( pin );
                 gatewayConfig.setInbound( inbound );
                 gatewayConfig.setOutbound( outbound );
+
+                if ( config.getGateways() == null || config.getGateways().isEmpty() )
+                {
+                    gatewayConfig.setDefault( true );
+                }
 
                 if ( index >= 0 )
                 {

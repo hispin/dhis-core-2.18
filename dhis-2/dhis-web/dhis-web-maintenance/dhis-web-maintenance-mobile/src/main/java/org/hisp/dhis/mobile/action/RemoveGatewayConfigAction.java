@@ -88,7 +88,6 @@ public class RemoveGatewayConfigAction
     public String execute()
         throws Exception
     {
-
         SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
 
         Iterator<SmsGatewayConfig> it = smsConfig.getGateways().iterator();

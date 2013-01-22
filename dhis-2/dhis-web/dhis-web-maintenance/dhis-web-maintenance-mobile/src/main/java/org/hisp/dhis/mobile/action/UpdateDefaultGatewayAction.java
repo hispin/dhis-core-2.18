@@ -28,8 +28,8 @@ package org.hisp.dhis.mobile.action;
  */
 
 import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class UpdateBulkGateWayConfigAction
+public class UpdateDefaultGatewayAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -50,47 +50,14 @@ public class UpdateBulkGateWayConfigAction
     private SmsConfigurationManager smsConfigurationManager;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Integer index;
 
-    public void setName( String name )
+    public void setIndex( Integer index )
     {
-        this.name = name;
-    }
-
-    private String password;
-
-    public void setPassword( String password )
-    {
-        this.password = password;
-    }
-
-    private String username;
-
-    public void setUsername( String username )
-    {
-        this.username = username;
-    }
-
-    private String region;
-
-    public String getRegion()
-    {
-        return region;
-    }
-
-    public void setRegion( String region )
-    {
-        this.region = region;
-    }
-
-    private String gatewayType;
-
-    public void setGatewayType( String gatewayType )
-    {
-        this.gatewayType = gatewayType;
+        this.index = index;
     }
 
     // -------------------------------------------------------------------------
@@ -100,47 +67,29 @@ public class UpdateBulkGateWayConfigAction
     public String execute()
         throws Exception
     {
-        if ( gatewayType != null && gatewayType.equals( "bulksms" ) )
+        SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
+
+        SmsGatewayConfig defaultGateway = smsConfig.getGateways().get( index );
+
+        if ( defaultGateway != null )
         {
-            SmsConfiguration config = smsConfigurationManager.getSmsConfiguration();
+            int i = 0;
 
-            if ( config != null )
+            for ( SmsGatewayConfig gw : smsConfig.getGateways() )
             {
-                BulkSmsGatewayConfig gatewayConfig = (BulkSmsGatewayConfig) smsConfigurationManager
-                    .checkInstanceOfGateway( BulkSmsGatewayConfig.class );
-
-                int index = -1;
-
-                if ( gatewayConfig == null )
+                if ( index == i )
                 {
-                    gatewayConfig = new BulkSmsGatewayConfig();
+                    gw.setDefault( true );
                 }
                 else
                 {
-                    index = config.getGateways().indexOf( gatewayConfig );
+                    gw.setDefault( false );
                 }
 
-                gatewayConfig.setName( name );
-                gatewayConfig.setPassword( password );
-                gatewayConfig.setUsername( username );
-                gatewayConfig.setRegion( region );
-
-                if ( config.getGateways() == null || config.getGateways().isEmpty() )
-                {
-                    gatewayConfig.setDefault( true );
-                }
-
-                if ( index >= 0 )
-                {
-                    config.getGateways().set( index, gatewayConfig );
-                }
-                else
-                {
-                    config.getGateways().add( gatewayConfig );
-                }
-
-                smsConfigurationManager.updateSmsConfiguration( config );
+                smsConfig.getGateways().set( i++, gw );
             }
+
+            smsConfigurationManager.updateSmsConfiguration( smsConfig );
         }
 
         return SUCCESS;
