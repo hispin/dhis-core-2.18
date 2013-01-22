@@ -30,11 +30,12 @@ package org.hisp.dhis.analytics.data;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_AGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT_AGGREGATION;
-import static org.hisp.dhis.analytics.DataQueryParams.*;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
+import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -46,6 +47,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -85,14 +87,15 @@ public class JdbcAnalyticsManager
     {
         ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
+
+        params.populateDimensionNames();
         
-        List<String> selectDimensions = params.getSelectDimensionNames();
-        List<String> queryDimensions = params.getQueryDimensionNames();
-        Map<String, List<IdentifiableObject>> dimensionMap = params.getDimensionMap();
+        List<Dimension> selectDimensions = params.getSelectDimensions();
+        List<Dimension> queryDimensions = params.getQueryDimensions();
         
         SqlHelper sqlHelper = new SqlHelper();
         
-        String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", ";
+        String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", "; //TODO
         
         int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
         
@@ -111,14 +114,14 @@ public class JdbcAnalyticsManager
         
         sql += " as value from " + params.getTableName() + " ";
         
-        for ( String dim : queryDimensions )
+        for ( Dimension dim : queryDimensions )
         {
-            sql += sqlHelper.whereAnd() + " " + dim + " in (" + getQuotedCommaDelimitedString( getUids( dimensionMap.get( dim ) ) ) + " ) ";
+            sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getOptions() ) ) + " ) ";
         }
 
-        for ( String filter : params.getFilterNames() )
+        for ( Dimension filter : params.getFilters() )
         {
-            sql += sqlHelper.whereAnd() + " " + filter + " in (" + getQuotedCommaDelimitedString( getUids( params.getFilters().get( filter ) ) ) + " ) ";
+            sql += sqlHelper.whereAnd() + " " + filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getOptions() ) ) + " ) ";
         }
         
         sql += "group by " + getCommaDelimitedString( selectDimensions );
@@ -133,9 +136,9 @@ public class JdbcAnalyticsManager
         {
             StringBuilder key = new StringBuilder();
             
-            for ( String dim : selectDimensions )
+            for ( Dimension dim : selectDimensions )
             {
-                key.append( rowSet.getString( dim ) + DIMENSION_SEP );
+                key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
             }
             
             key.deleteCharAt( key.length() - 1 );
@@ -180,5 +183,22 @@ public class JdbcAnalyticsManager
                 dataValueMap.remove( key );
             }
         }
+    }
+    
+    private static String getCommaDelimitedString( Collection<Dimension> dimensions )
+    {
+        final StringBuilder builder = new StringBuilder();
+        
+        if ( dimensions != null && !dimensions.isEmpty() )
+        {
+            for ( Dimension dimension : dimensions )
+            {
+                builder.append( dimension.getDimensionName() ).append( "," );
+            }
+            
+            return builder.substring( 0, builder.length() - 1 );
+        }
+        
+        return builder.toString();
     }
 }

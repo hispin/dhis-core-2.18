@@ -136,7 +136,7 @@ public class AnalyticsServiceTest
         assertEquals( 3, params.getPeriods().size() );
         assertEquals( 5, params.getFilterOrganisationUnits().size() );
         
-        assertEquals( 4, params.getDimensionMap().get( DataQueryParams.DATAELEMENT_DIM_ID ).size() );
-        assertEquals( 3, params.getDimensionMap().get( ouGroupSetA.getUid() ).size() );
+        assertEquals( 4, params.getDataElements().size() );
+        assertEquals( 3, params.getDimensionOptions( ouGroupSetA.getUid() ).size() );
     }
 }

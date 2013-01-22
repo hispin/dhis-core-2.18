@@ -44,6 +44,7 @@ import java.util.Map;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -126,6 +127,33 @@ public class QueryPlannerTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+
+    @Test
+    public void testSetGetCopy()
+    {
+        List<IdentifiableObject> desA = getList( deA, deB );
+        List<IdentifiableObject> ousA = getList( ouA, ouB );
+        List<IdentifiableObject> ousB = getList( ouC, ouD );
+        List<IdentifiableObject> pesA = getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) );
+        List<IdentifiableObject> pesB = getList( createPeriod( "200001" ), createPeriod( "200002" ) );
+        
+        DataQueryParams paramsA = new DataQueryParams();
+        paramsA.setDataElements( desA );
+        paramsA.setOrganisationUnits( ousA );
+        paramsA.setPeriods( pesA );
+        
+        DataQueryParams paramsB = new DataQueryParams( paramsA );
+        paramsB.setOrganisationUnits( ousB );
+        paramsB.setPeriods( pesB );
+        
+        assertEquals( desA, paramsA.getDataElements() );
+        assertEquals( ousA, paramsA.getOrganisationUnits() );
+        assertEquals( pesA, paramsA.getPeriods() );
+        
+        assertEquals( desA, paramsB.getDataElements() );
+        assertEquals( ousB, paramsB.getOrganisationUnits() );
+        assertEquals( pesB, paramsB.getPeriods() );
+    }
     
     @Test
     public void testGetPermutationOperandValueMap()
@@ -211,8 +239,8 @@ public class QueryPlannerTest
         {
             assertNotNull( permutation );
             assertEquals( 2, permutation.size() );
-            assertEquals( PERIOD_DIM_ID, permutation.get( 0 ).getDimension() );
-            assertEquals( ORGUNIT_DIM_ID, permutation.get( 1 ).getDimension() );
+            assertEquals( ORGUNIT_DIM_ID, permutation.get( 0 ).getDimension() );
+            assertEquals( PERIOD_DIM_ID, permutation.get( 1 ).getDimension() );
         }
     }
     
@@ -266,6 +294,7 @@ public class QueryPlannerTest
         {
             assertTrue( samePeriodType( query.getPeriods() ) );
             assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
         }
     }
     
@@ -290,6 +319,7 @@ public class QueryPlannerTest
         {
             assertTrue( samePeriodType( query.getPeriods() ) );
             assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
         }
     }
     
@@ -328,6 +358,7 @@ public class QueryPlannerTest
         {
             assertTrue( samePeriodType( query.getPeriods() ) );
             assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
         }
     }
     
@@ -351,6 +382,7 @@ public class QueryPlannerTest
         {
             assertTrue( samePeriodType( query.getPeriods() ) );
             assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
         }
     }
     
@@ -373,6 +405,7 @@ public class QueryPlannerTest
         {
             assertTrue( samePeriodType( query.getPeriods() ) );
             assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
         }
     }
 
@@ -395,6 +428,7 @@ public class QueryPlannerTest
         {
             assertTrue( samePeriodType( query.getPeriods() ) );
             assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
         }
     }
     
@@ -427,6 +461,13 @@ public class QueryPlannerTest
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 4, queries.size() );
+
+        for ( DataQueryParams query : queries )
+        {
+            assertTrue( samePeriodType( query.getFilterPeriods() ) );
+            assertTrue( samePartition( query.getFilterPeriods() ) );
+            assertDimensionNameNotNull( query );
+        }
     }
 
     /**
@@ -445,6 +486,13 @@ public class QueryPlannerTest
         List<DataQueryParams> queries = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
         assertEquals( 6, queries.size() );
+
+        for ( DataQueryParams query : queries )
+        {
+            assertTrue( samePeriodType( query.getPeriods() ) );
+            assertTrue( samePartition( query.getPeriods() ) );
+            assertDimensionNameNotNull( query );
+        }
     }
     
     // -------------------------------------------------------------------------
@@ -487,5 +535,18 @@ public class QueryPlannerTest
         }
         
         return true;
+    }
+    
+    private static void assertDimensionNameNotNull( DataQueryParams params )
+    {
+        for ( Dimension dim : params.getDimensions() )
+        {
+            assertNotNull( dim.getDimensionName() );
+        }
+        
+        for ( Dimension filter : params.getFilters() )
+        {
+            assertNotNull( filter.getDimensionName() );
+        }
     }
 }

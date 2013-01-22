@@ -51,7 +51,9 @@ import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.DimensionOption;
+import org.hisp.dhis.analytics.DimensionType;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -127,9 +129,9 @@ public class DefaultAnalyticsService
 
         grid.setMetaData( params.getUidNameMap() );
         
-        for ( String col : params.getSelectDimensionNames() )
+        for ( Dimension col : params.getSelectDimensions() )
         {
-            grid.addHeader( new GridHeader( col, col, String.class.getName(), false, true ) );
+            grid.addHeader( new GridHeader( col.getDimensionName(), col.getDimension(), String.class.getName(), false, true ) );
         }
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
@@ -279,9 +281,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
-                    
-                    params.getDimensions().put( dimension, dimensionOptions );
+                    params.getDimensions().add( getDimension( dimension, options, format ) );
                 }
             }
         }
@@ -295,9 +295,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    List<IdentifiableObject> dimensionOptions = getDimensionOptions( dimension, options, format );
-                    
-                    params.getFilters().put( dimension, dimensionOptions );
+                    params.getFilters().add( getDimension( dimension, options, format ) );
                 }
             }
         }
@@ -309,23 +307,23 @@ public class DefaultAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
     
-    private List<IdentifiableObject> getDimensionOptions( String dimension, List<String> options, I18nFormat format )
+    private Dimension getDimension( String dimension, List<String> options, I18nFormat format )
     {
         if ( INDICATOR_DIM_ID.equals( dimension ) )
         {
-            return asList( indicatorService.getIndicatorsByUid( options ) );
+            return new Dimension( dimension, DimensionType.INDICATOR, asList( indicatorService.getIndicatorsByUid( options ) ) );
         }
         else if ( DATAELEMENT_DIM_ID.equals( dimension ) )
         {
-            return asList( dataElementService.getDataElementsByUid( options ) );
+            return new Dimension( dimension, DimensionType.DATAELEMENT, asList( dataElementService.getDataElementsByUid( options ) ) );
         }
         else if ( DATASET_DIM_ID.equals( dimension ) )
         {
-            return asList( dataSetService.getDataSetsByUid( options ) );
+            return new Dimension( dimension, DimensionType.DATASET, asList( dataSetService.getDataSetsByUid( options ) ) );
         }
         else if ( ORGUNIT_DIM_ID.equals( dimension ) )
         {
-            return asList( organisationUnitService.getOrganisationUnitsByUid( options ) );
+            return new Dimension( dimension, DimensionType.ORGANISATIONUNIT, asList( organisationUnitService.getOrganisationUnitsByUid( options ) ) );
         }
         else if ( PERIOD_DIM_ID.equals( dimension ) )
         {
@@ -350,21 +348,21 @@ public class DefaultAnalyticsService
                 }
             }
             
-            return list;
+            return new Dimension( dimension, DimensionType.PERIOD, list );
         }
         
         OrganisationUnitGroupSet orgUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
             
         if ( orgUnitGroupSet != null )
         {
-            return asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( options ) );
+            return new Dimension( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( options ) ) );
         }
         
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( dimension );
         
         if ( dataElementGroupSet != null )
         {
-            return asList( dataElementService.getDataElementGroupsByUid( options ) );
+            return new Dimension( dimension, DimensionType.DATAELEMENT_GROUPSET, asList( dataElementService.getDataElementGroupsByUid( options ) ) );
         }
         
         return null;
