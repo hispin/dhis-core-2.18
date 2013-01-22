@@ -42,7 +42,7 @@ jQuery( document ).ready( function() {
 	<span class="bold">$i18n.getString( "latest_interpretations" )</span> |
     <span>$i18n.getString( "share_your_own_interpretations_from" ) 
     <a href="../dhis-web-visualizer/app/index.html">$i18n.getString( "data_visualizer" )</a>,
-    <a href="../dhis-web-mapping/app/index.html">$i18n.getString( "gis" )</a>&nsbp;$i18n.getString( "or" )&nsbp;
+    <a href="../dhis-web-mapping/app/index.html">$i18n.getString( "gis" )</a>&nbsp;$i18n.getString( "or" )&nbsp;
     <a href="../dhis-web-reporting/displayManageTableForm.action">$i18n.getString( "report_table" )</a></span>
 </div>
 <div id="profileInterpretationFeed"></div>

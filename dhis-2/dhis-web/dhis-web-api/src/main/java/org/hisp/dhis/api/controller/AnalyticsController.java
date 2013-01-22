@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
@@ -44,6 +45,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.hisp.dhis.analytics.DataQueryParams.*;
 
 @Controller
 public class AnalyticsController
@@ -171,7 +174,7 @@ public class AnalyticsController
             return false;
         }
         
-        if ( params.getFilterNames() != null && params.getFilterNames().contains( DataQueryParams.INDICATOR_DIM_ID ) )
+        if ( params.getFilters() != null && params.getFilters().contains( new Dimension( INDICATOR_DIM_ID ) ) )
         {
             ContextUtils.conflictResponse( response, "Indicators cannot be specified as filter" );
             return false;
