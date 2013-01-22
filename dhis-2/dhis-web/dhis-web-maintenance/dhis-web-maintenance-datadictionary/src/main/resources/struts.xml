@@ -370,12 +370,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
       <param name="javascripts">javascript/indicatorGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="addIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateIndicatorGroupForm" class="org.hisp.dhis.dd.action.indicatorgroup.ShowUpdateIndicatorGroupFormAction">
@@ -410,12 +410,12 @@
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicatorGroupSet.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+      <param name="anyAuthorities">F_INDICATORGROUPSET_PUBLIC_ADD, F_INDICATORGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="addIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction">
       <result name="success" type="redirect">indicatorGroupSet.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUPSET_ADD</param>
+      <param name="anyAuthorities">F_INDICATORGROUPSET_PUBLIC_ADD, F_INDICATORGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="openUpdateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.OpenUpdateIndicatorGroupSetAction">

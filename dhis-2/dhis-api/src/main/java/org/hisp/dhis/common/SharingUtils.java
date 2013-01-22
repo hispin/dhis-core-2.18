@@ -32,6 +32,8 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
@@ -84,6 +86,14 @@ public class SharingUtils
         SUPPORTED_TYPES.put( "dataElementGroupSet", DataElementGroupSet.class );
         PUBLIC_AUTHORITIES.put( DataElementGroupSet.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataElementGroupSet.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "indicatorGroup", IndicatorGroup.class );
+        PUBLIC_AUTHORITIES.put( IndicatorGroup.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( IndicatorGroup.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "indicatorGroupSet", IndicatorGroupSet.class );
+        PUBLIC_AUTHORITIES.put( IndicatorGroupSet.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( IndicatorGroupSet.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
     }
 
     public static boolean isSupported( String type )
