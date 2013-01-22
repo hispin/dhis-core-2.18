@@ -109,9 +109,13 @@ public class DataSetList
         {
             serializeVerssion2_8( dout );
         }
-        else
+        else if ( this.getClientVersion().equals( DataStreamSerializable.TWO_POINT_NINE ) )
         {
             serializeVerssion2_9( dout );
+        }
+        else if ( this.getClientVersion().equals( DataStreamSerializable.TWO_POINT_TEN ) )
+        {
+            serializeVerssion2_10( dout );
         }
     }
 
@@ -215,6 +219,61 @@ public class DataSetList
             for ( DataSet dataSet : currentDataSets )
             {
                 dataSet.serializeVerssion2_9( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+    }
+
+    @Override
+    public void serializeVerssion2_10( DataOutputStream dout )
+        throws IOException
+    {
+
+        if ( addedDataSets != null )
+        {
+            dout.writeInt( addedDataSets.size() );
+            for ( DataSet dataSet : addedDataSets )
+            {
+                dataSet.serializeVerssion2_10( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+        if ( deletedDataSets != null )
+        {
+            dout.writeInt( deletedDataSets.size() );
+            for ( DataSet dataSet : deletedDataSets )
+            {
+                dataSet.serializeVerssion2_10( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+        if ( modifiedDataSets != null )
+        {
+            dout.writeInt( modifiedDataSets.size() );
+            for ( DataSet dataSet : modifiedDataSets )
+            {
+                dataSet.serializeVerssion2_10( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+        if ( currentDataSets != null )
+        {
+            dout.writeInt( currentDataSets.size() );
+            for ( DataSet dataSet : currentDataSets )
+            {
+                dataSet.serializeVerssion2_10( dout );
             }
         }
         else

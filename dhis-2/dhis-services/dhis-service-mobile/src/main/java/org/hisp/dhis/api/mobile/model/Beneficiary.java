@@ -505,4 +505,12 @@ public class Beneficiary
             each.serializeVerssion2_9( dout );
         }
     }
+
+    @Override
+    public void serializeVerssion2_10( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }
