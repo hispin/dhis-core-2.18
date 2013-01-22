@@ -126,7 +126,13 @@ public class UpdateSMPPGateWayConfigAction
                 gatewayConfig.setPassword( password );
                 gatewayConfig.setUsername( username );
                 gatewayConfig.setAddress( address );
-                gatewayConfig.setPort( port  );
+                gatewayConfig.setPort( port );
+
+                if ( config.getGateways() == null || config.getGateways().isEmpty() )
+                {
+                    gatewayConfig.setDefault( true );
+                }
+
                 if ( index >= 0 )
                 {
                     config.getGateways().set( index, gatewayConfig );

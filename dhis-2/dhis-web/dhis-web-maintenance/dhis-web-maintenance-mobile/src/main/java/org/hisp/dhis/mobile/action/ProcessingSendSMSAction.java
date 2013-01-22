@@ -44,6 +44,7 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.sms.MessageSender;
+import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,9 @@ public class ProcessingSendSMSAction
 
     @Autowired
     private MessageSender messageSender;
+
+    @Autowired
+    private OutboundSmsTransportService transportService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -137,7 +141,9 @@ public class ProcessingSendSMSAction
     @SuppressWarnings( "unchecked" )
     public String execute()
     {
-        if ( gatewayId == null || gatewayId.isEmpty() )
+        gatewayId = transportService.getDefaultGateway();
+
+        if ( gatewayId == null || gatewayId.trim().length() == 0 )
         {
             message = i18n.getString( "please_select_a_gateway_type_to_send_sms" );
 

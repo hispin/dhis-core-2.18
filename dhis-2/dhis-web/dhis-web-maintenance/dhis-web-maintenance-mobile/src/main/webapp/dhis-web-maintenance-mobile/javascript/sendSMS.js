@@ -40,7 +40,6 @@ function toggleAll( checked )
 
 function sendSMSMessage( _form )
 {
-	var params = "?";
 	var p = {};
 	p.recipients = [];
 

@@ -101,10 +101,6 @@ public class SmsMessageSender
         {
             message = sendMessage( text, phones, gatewayId );
         }
-        else if ( log.isDebugEnabled() )
-        {
-            log.debug( "Not sending message to any of the recipients" );
-        }
         else
         {
             message = "no_recipient";
@@ -128,11 +124,6 @@ public class SmsMessageSender
             if ( smsNotification && phoneNumber != null && !phoneNumber.trim().isEmpty() )
             {
                 recipients.add( phoneNumber );
-
-                if ( log.isDebugEnabled() )
-                {
-                    log.debug( "Adding user as sms recipient: " + user + " with phone number: " + phoneNumber );
-                }
             }
         }
 
@@ -175,11 +166,6 @@ public class SmsMessageSender
         try
         {
             message = outboundSmsService.sendMessage( sms, id );
-
-            if ( log.isDebugEnabled() )
-            {
-                log.debug( "Sent message to " + recipients + ": " + text );
-            }
         }
         catch ( SmsServiceException e )
         {

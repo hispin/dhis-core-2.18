@@ -27,7 +27,7 @@ public class TestOutboundSmsService
     private static final Log log = LogFactory.getLog( TestOutboundSmsService.class );
 
     private boolean enabled = true;
-    
+
     private String message = "success";
 
     @Override
@@ -40,7 +40,7 @@ public class TestOutboundSmsService
         }
 
         log.debug( "Send message: " + sms );
-        
+
         return message;
     }
 
@@ -116,7 +116,6 @@ public class TestOutboundSmsService
     public void updateOutboundSms( OutboundSms sms )
     {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -130,6 +129,13 @@ public class TestOutboundSmsService
     public void deleteById( Integer outboundSmsId )
     {
         // TODO Auto-generated method stub
-        
+
+    }
+
+    @Override
+    public String getDefaultGateway()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
