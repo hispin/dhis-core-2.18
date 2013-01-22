@@ -69,6 +69,8 @@ public class PatientAggregateReport
 
     public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM
                                                                    // 7
+    
+    public static final String SEPARATE_FILTER = "_";
 
     private ProgramStage programStage;
 
