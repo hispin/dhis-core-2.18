@@ -27,6 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.report.Report;
@@ -69,6 +70,10 @@ public class SharingUtils
         SUPPORTED_TYPES.put( "dataSet", DataSet.class );
         PUBLIC_AUTHORITIES.put( DataSet.class, "F_DATASET_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataSet.class, "F_DATASET_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "dataDictionary", DataDictionary.class );
+        PUBLIC_AUTHORITIES.put( DataDictionary.class, "F_DATADICTIONARY_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( DataDictionary.class, "F_DATADICTIONARY_PRIVATE_ADD" );
     }
 
     public static boolean isSupported( String type )

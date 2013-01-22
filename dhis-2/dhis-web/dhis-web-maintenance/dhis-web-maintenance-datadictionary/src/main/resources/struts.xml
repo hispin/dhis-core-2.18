@@ -538,12 +538,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addDataDictionaryForm.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
-      <param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
+      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action</result>
-      <param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
+      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataDictionaryForm" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction">
