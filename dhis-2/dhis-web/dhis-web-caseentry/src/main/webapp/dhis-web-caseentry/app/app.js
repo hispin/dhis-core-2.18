@@ -803,7 +803,7 @@ Ext.onReady( function() {
                 return text.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'');
             }
         },
-        getValueFormula: function( value ){
+		getValueFormula: function( value ){
 			if( value.indexOf('"') != value.lastIndexOf('"') )
 			{
 				value = value.replace(/"/g,"'");
@@ -1151,17 +1151,27 @@ Ext.onReady( function() {
 								}
 								
 								// Filter values
-							
-								for (var i = 0; i < f.filterValues.length; i++) {
-									var filter = f.filterValues[i].split('_');
-									var id = 'de_' + filter[0];
-									Ext.getCmp('filter_opt_' + id ).setValue(filter[1]);
-									Ext.getCmp('filter_' + id ).rawValue = filter[2];
-									if( filter.length == 5 )
-									{
-										id += '_1';
-										Ext.getCmp('filter_opt_' + id ).setValue(filter[1]);
-										Ext.getCmp('filter_' + id ).rawValue = filter[2];
+								
+								Ext.getCmp('filterPanel').removeAll();
+								for (var j = 0; j < f.selectedDEs.length; j++) {
+									var id = f.selectedDEs[j].id;
+									var name = TR.util.string.getEncodedString(f.selectedDEs[j].name);
+									var valueType = f.selectedDEs[j].valueType;
+									
+									for (var i = 0; i < f.filterValues.length; i++) {
+										var filter = f.filterValues[i].split('_');
+										var fitlerId = 'de_' + filter[0];
+										if(id==fitlerId){
+											TR.util.multiselect.addFilterField( 'filterPanel', fitlerId, name, valueType );
+											var idx = Ext.getCmp('p_' + fitlerId).items.length/4 - 1;
+											var value = filter[2].replace('(','').replace(')','').replace(/,/g, ';').replace(/'/g, '');
+											
+											if(valueType=='list'){
+												Ext.getCmp('filter_' + fitlerId + '_' + idx ).store.add({o:value});
+											}
+											Ext.getCmp('filter_opt_' + fitlerId + '_' + idx ).setValue(filter[1]);
+											Ext.getCmp('filter_' + fitlerId + '_' + idx ).setValue(value);
+										}
 									}
 								}
 								
@@ -1958,41 +1968,34 @@ Ext.onReady( function() {
 				
 				// Filter values
 				
-				p.deFilters = [];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
-					var filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
-					var filterValue = Ext.getCmp('filter_' + deId).rawValue;
-					var filter = deId.split('_')[1] + "_" + filterOpt + '_';
+					var length = Ext.getCmp('p_' + deId).items.length/4;
 					
-					if( valueType == 'string' || valueType == 'trueOnly' 
-						|| valueType == 'bool' || valueType == 'list' )
+					for(var idx=0;idx<length;idx++)
 					{
-						var filterValues = filterValue.split(";");
-						filter +=" (";
-						for(var i=0;i<filterValues.length;i++)
-						{
-							filter += "'"+ filterValues[i] +"',";
-						}
-						filter = filter.substr(0,filter.length - 1) + " ) ";
-					}
-					else 
-					{
-						filter += filterValue;
-						
-						var deId = deId + '_1';
-						if( Ext.getCmp('filter_' + deId) != undefined
-							&& Ext.getCmp('filter_' + deId).rawValue != '' )
-						{
-							filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
-							filterValue = Ext.getCmp('filter_' + deId).rawValue;
-							filter += "_" + filterOpt + "_" + filterValue;
-						}
+						var id = deId + '_' + idx;
+						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
+						if( valueType == 'list' )
+						{
+							var filterValues = filterValue.split(";");
+							filter +=" (";
+							for(var i=0;i<filterValues.length;i++)
+							{
+								filter += "'"+ filterValues[i] +"',";
+							}
+							filter = filter.substr(0,filter.length - 1) + " ) ";
+						}
+						else 
+						{
+							filter += "'" + filterValue + "'";
+						}
+						p += "&deFilters=" + filter;
 					}
-					p += "&deFilters=" + filter;
-					
 				});
 				
 				// Period range
