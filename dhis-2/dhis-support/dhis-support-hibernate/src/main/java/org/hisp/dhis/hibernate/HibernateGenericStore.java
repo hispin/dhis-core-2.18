@@ -216,7 +216,7 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have write access to object" );
         }
 
-        if ( SharingUtils.isSupported( clazz ) && currentUserService.getCurrentUser() != null )
+        if ( currentUserService.getCurrentUser() != null && SharingUtils.isSupported( clazz ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
