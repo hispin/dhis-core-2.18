@@ -38,6 +38,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -57,8 +58,6 @@ import com.opensymphony.xwork2.Action;
 public class GenerateAggregateReportAction
     implements Action
 {
-    private final String SEPARATE_FILTER = "_";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -243,7 +242,7 @@ public class GenerateAggregateReportAction
         // ---------------------------------------------------------------------
 
         Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
-        
+
         if ( userOrganisationUnit || userOrganisationUnitChildren )
         {
             orgunitIds = new HashSet<Integer>();
@@ -301,15 +300,26 @@ public class GenerateAggregateReportAction
         // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-        Map<Integer, String> deFilterMap = null;
+        Map<Integer, Collection<String>> deFilterMap = null;
         if ( deFilters != null )
         {
-            deFilterMap = new HashMap<Integer, String>();
+            deFilterMap = new HashMap<Integer, Collection<String>>();
             for ( String deFilter : deFilters )
             {
-                int index = deFilter.indexOf( SEPARATE_FILTER );
-                deFilterMap.put( Integer.parseInt( deFilter.substring( 0, index ) ),
-                    deFilter.substring( index + 1, deFilter.length() ) );
+                int index = deFilter.indexOf( PatientAggregateReport.SEPARATE_FILTER );
+                Integer deId = Integer.parseInt( deFilter.substring( 0, index ) );
+                String filter = deFilter.substring( index + 1, deFilter.length() );
+                if ( deFilterMap.containsKey( deId ) )
+                {
+                    Collection<String> filterValues = deFilterMap.get( deId );
+                    filterValues.add( filter );
+                }
+                else
+                {
+                    Collection<String> filterValues = new HashSet<String>();
+                    filterValues.add( filter );
+                    deFilterMap.put( deId, filterValues );
+                }
             }
         }
 

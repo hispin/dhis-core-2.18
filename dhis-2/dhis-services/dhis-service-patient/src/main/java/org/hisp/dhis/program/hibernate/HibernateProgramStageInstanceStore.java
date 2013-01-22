@@ -392,7 +392,7 @@ public class HibernateProgramStageInstanceStore
     }
 
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        String facilityLB, Integer deGroupBy, Map<Integer, String> deFilters, Collection<Period> periods,
+        String facilityLB, Integer deGroupBy, Map<Integer, Collection<String>> deFilters, Collection<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n )
     {
         String sql = "";
@@ -590,13 +590,13 @@ public class HibernateProgramStageInstanceStore
             // ---------------------------------------------------------------------
             // Headers cols
             // ---------------------------------------------------------------------
-            
+
             if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
             {
                 grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, true ) );
                 grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
             }
-            
+
             // ---------------------------------------------------------------------
             // Get SQL and build grid
             // ---------------------------------------------------------------------
@@ -1378,7 +1378,7 @@ public class HibernateProgramStageInstanceStore
         }
     }
 
-    private String filterSQLStatement( Map<Integer, String> deFilters )
+    private String filterSQLStatement( Map<Integer, Collection<String>> deFilters )
     {
         String filter = "";
         if ( deFilters != null )
@@ -1389,26 +1389,22 @@ public class HibernateProgramStageInstanceStore
             while ( iterFilter.hasNext() )
             {
                 Integer id = iterFilter.next();
-                String[] filterKey = deFilters.get( id ).split( "_" );
-
-                filter += "AND (SELECT value ";
-                filter += "FROM patientdatavalue ";
-                filter += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
-                if ( !flag )
+                for ( String filterValue : deFilters.get( id ) )
                 {
-                    filter += "dataelementid= pdv_1.dataelementid AND ";
-                    flag = true;
-                }
-                filter += "dataelementid=" + id + "  ";
-                filter += ") " + filterKey[0] + " " + filterKey[1] + " ";
+                    int index = filterValue.indexOf( PatientAggregateReport.SEPARATE_FILTER );
+                    String operator = (filterValue.substring( 0, index ));
+                    String value = filterValue.substring( index + 1, filterValue.length() );
 
-                if ( filterKey.length == 4 )
-                {
                     filter += "AND (SELECT value ";
                     filter += "FROM patientdatavalue ";
                     filter += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
+                    if ( !flag )
+                    {
+                        filter += "dataelementid= pdv_1.dataelementid AND ";
+                        flag = true;
+                    }
                     filter += "dataelementid=" + id + "  ";
-                    filter += ") " + filterKey[2] + " " + filterKey[3] + " ";
+                    filter += ") " + operator + " " + value + " ";
                 }
             }
         }

@@ -379,59 +379,93 @@ Ext.onReady( function() {
 			},
 			addFilterField: function( p, id, name, valueType ){
 				var xtype = TR.value.covertXType(valueType);
-				
-				var fields = [];
-				fields[0] = {
-					xtype: 'label',
-					id: 'filter_lb_' + id,
-					text:name,
-					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2
-				};
-				fields[1] = this.createOperatorField(valueType, id);
-				fields[2] = this.createFilterField( xtype, id, name );
-				
-				if(valueType != 'string' && valueType != 'trueOnly' 
-					&& valueType != 'bool' && valueType != 'list' ){
-					id = id + '_1';
-					fields[3] = {
-						xtype: 'label',
-						id: 'filter_lb_' + id,
-						text: '-',
-						width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2
+				var panelid = 'p_' + id;
+				var idx = 0;
+				var subPanel = Ext.getCmp(panelid);
+				if( subPanel == undefined )
+				{
+					var panel = {
+						xtype: 'panel',
+						id: panelid,
+						layout: 'column',
+						bodyStyle: 'border-style:none',
+						autoScroll: true,
+						overflowX: 'hidden',
+						overflowY: 'auto',
+						width: TR.conf.layout.west_fieldset_width - 40
 					};
-					fields[4] = this.createOperatorField(valueType, id);
-					fields[5] = this.createFilterField( xtype, id, name );
+					Ext.getCmp(p).add(panel);
+					subPanel = Ext.getCmp(panelid);
 				}
-				Ext.getCmp(p).add(fields);
+				else {
+					idx = subPanel.items.length/4;
+				}
+				
+				var items = [];
+				var fieldid = id + '_' + idx;
+				items[0] = {
+					xtype: 'label',
+					id: 'filter_lb_' + fieldid,
+					text:name,
+					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 60
+				};
+				items[1] = this.createOperatorField(valueType, fieldid);
+				items[2] = this.createFilterField( xtype, fieldid );
+				if( idx == 0 ){
+					items[3] = this.addFieldBtn( panelid, id, name, valueType, idx );
+				}
+				else
+				{
+					items[3] = this.removeFieldBtn( panelid, fieldid );
+				}
+				
+				subPanel.add(items);
 			},
-			removeFilterField: function( p, id, valueType ){
-				var e1 = Ext.getCmp( 'filter_' + id );
-				var e2 = Ext.getCmp( 'filter_opt_' + id );
-				var e3 = Ext.getCmp( 'filter_lb_' + id );
+			removeFilterField: function( p, id ){
+				var e = Ext.getCmp( 'p_' + id );
+				Ext.getCmp(p).remove(e);
+				Ext.getCmp(p).doLayout();
+			},
+			createOperatorField: function( valueType, id ){
+				var params = {};
+				params.xtype = 'combobox';
+				params.id = 'filter_opt_' + id;
+				params.width = 50;
+				params.queryMode = 'local';
+				params.valueField = 'value';
+				params.displayField = 'name';
+				params.editable = false;
+				params.value = '=';
 				
-				Ext.getCmp(p).remove(e1);
-				Ext.getCmp(p).remove(e2);
-				Ext.getCmp(p).remove(e3);
-				
-				if(valueType != 'string' && valueType != 'trueOnly' && valueType != 'bool'){
-					id = id + '_1';
-					var e4 = Ext.getCmp( 'filter_' + id );
-					var e5 = Ext.getCmp( 'filter_opt_' + id );
-					var e6 = Ext.getCmp( 'filter_lb_' + id );
-					Ext.getCmp(p).remove(e4);
-					Ext.getCmp(p).remove(e5);
-					Ext.getCmp(p).remove(e6);
+				if(valueType == 'string' || valueType == 'trueOnly' 
+					|| valueType == 'bool' || valueType == 'list' ){
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value','name'],
+						data: [ ['=','='],['like',TR.i18n.like],['in',TR.i18n.in] ]
+					});
+				}
+				else
+				{
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value','name'],
+						data: [ ['=','='],
+								['>','>'],
+								['>=','>='],
+								['<','<'],
+								['<=','<='],
+								['!=','!=' ] ]
+					});
 				}
 				
-				Ext.getCmp(p).doLayout();
+				return params;
 			},
 			createFilterField: function( xtype, id ){
 				var params = {};
 				params.xtype = xtype;
 				params.id = 'filter_' + id;
 				params.cls = 'tr-textfield-alt1';
-				params.emptyText = TR.i18n.enter_filter_value;
-				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 70;
+				params.emptyText = TR.i18n.filter_value;
+				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 50;
 				xtype = xtype.toLowerCase();
 				if( xtype == 'datefield' )
 				{
@@ -475,36 +509,33 @@ Ext.onReady( function() {
 				}
 				return params;
 			},
-			createOperatorField: function( valueType, id){
+			addFieldBtn: function( p, id, name, valueType, idx ){
 				var params = {};
-				params.xtype = 'combobox';
-				params.id = 'filter_opt_' + id;
-				params.width = 40;
-				params.queryMode = 'local';
-				params.valueField = 'value';
-				params.displayField = 'name';
-				params.value = '=';
-				
-				if(valueType == 'string' || valueType == 'trueOnly' 
-					|| valueType == 'bool' || valueType == 'list' ){
-					params.store = new Ext.data.ArrayStore({
-						fields: ['value','name'],
-						data: [ ['=','='],['like',TR.i18n.like],['in',TR.i18n.in] ]
-					});
-				}
-				else
-				{
-					params.store = new Ext.data.ArrayStore({
-						fields: ['value','name'],
-						data: [ ['=','='],
-								['>','>'],
-								['>=','>='],
-								['<','<'],
-								['<=','<='],
-								['!=','!=' ] ]
-					});
+				params.xtype = 'button';
+				params.text = "+";
+				params.tooltip = TR.i18n.add,
+				params.handler = function() {
+					TR.util.multiselect.addFilterField(p, id, name, valueType);
 				}
 				
+				return params;
+			},
+			removeFieldBtn: function( p, id ){
+				var params = {};
+				params.xtype = 'button';
+				params.id = 'filter_rmv_' + id;	
+				params.text = "-";
+				params.tooltip = TR.i18n.add,
+				params.handler = function() {
+					var e1 = Ext.getCmp( 'filter_' + id );
+					var e2 = Ext.getCmp( 'filter_opt_' + id );	
+					var e3 = Ext.getCmp( 'filter_lb_' + id );
+					var e4 = Ext.getCmp( 'filter_rmv_' + id );
+					Ext.getCmp(p).remove(e1);
+					Ext.getCmp(p).remove(e2);
+					Ext.getCmp(p).remove(e3);
+					Ext.getCmp(p).remove(e4);
+				}
 				return params;
 			}
         },
@@ -1671,10 +1702,10 @@ Ext.onReady( function() {
 						return false;
 					}
 				
-					/* if (TR.state.orgunitIds.length == 0) {
+					if (TR.state.orgunitIds.length == 0) {
 						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
 						return false;
-					} */
+					}
 					
 					if (Ext.getCmp('programStageCombobox').getValue() == '') {
 						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
@@ -1844,37 +1875,31 @@ Ext.onReady( function() {
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
-					var filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
-					var filterValue = Ext.getCmp('filter_' + deId).rawValue;
-					var filter = deId.split('_')[1] + "_" + filterOpt + '_';
+					var length = Ext.getCmp('p_' + deId).items.length/4;
 					
-					if( valueType == 'string' || valueType == 'trueOnly' 
-						|| valueType == 'bool' || valueType == 'list' )
+					for(var idx=0;idx<length;idx++)
 					{
-						var filterValues = filterValue.split(";");
-						filter +=" (";
-						for(var i=0;i<filterValues.length;i++)
-						{
-							filter += "'"+ filterValues[i] +"',";
-						}
-						filter = filter.substr(0,filter.length - 1) + " ) ";
-					}
-					else 
-					{
-						filter += filterValue;
-						
-						var deId = deId + '_1';
-						if( Ext.getCmp('filter_' + deId) != undefined
-							&& Ext.getCmp('filter_' + deId).rawValue != '' )
-						{
-							filterOpt = Ext.getCmp('filter_opt_' + deId).rawValue;
-							filterValue = Ext.getCmp('filter_' + deId).rawValue;
-							filter += "_" + filterOpt + "_" + filterValue;
-						}
+						var id = deId + '_' + idx;
+						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
+						if( valueType == 'list' )
+						{
+							var filterValues = filterValue.split(";");
+							filter +=" (";
+							for(var i=0;i<filterValues.length;i++)
+							{
+								filter += "'"+ filterValues[i] +"',";
+							}
+							filter = filter.substr(0,filter.length - 1) + " ) ";
+						}
+						else 
+						{
+							filter += "'" + filterValue + "'";
+						}
+						p.deFilters.push( filter );
 					}
-					p.deFilters.push( filter );
-					
 				});
 				
 				// Period range
@@ -2029,12 +2054,12 @@ Ext.onReady( function() {
 						return false;
 					}
 				
-					/* if (TR.state.orgunitIds.length == 0 
+					if (TR.state.orgunitIds.length == 0 
 						&& TR.cmp.aggregateFavorite.userorganisationunit.getValue() == 'false'
 						&& TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue() == 'false' ) {
 						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
 						return false;
-					}*/ 
+					}
 					
 					if (Ext.getCmp('programStageCombobox').getValue() == '') {
 						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
@@ -2061,10 +2086,15 @@ Ext.onReady( function() {
 					
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
 						var deId = r.data.id;
-						var filterValue = Ext.getCmp('filter_' + deId).getValue();
-						if( filterValue == null ){
-							TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
-							return false;
+						var length = Ext.getCmp('p_' + deId).items.length/4;
+						for(var idx=0;idx<length;idx++)
+						{
+							var id = deId + '_' + idx;
+							var filterValue = Ext.getCmp('filter_' + id).getValue();
+							if( filterValue == null ){
+								TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
+								return false;
+							}
 						}
 					});
 					
@@ -3874,7 +3904,7 @@ Ext.onReady( function() {
 																		Ext.getCmp('selectedDEBar').setVisible(false);
 																		Ext.getCmp('availableDataelements').setVisible(false);
 																		Ext.getCmp('selectedDataelements').setVisible(false);
-																		Ext.getCmp('filterPanel').setHeight(210);
+																		Ext.getCmp('filterPanel').setHeight(260);
 																		this.setIcon('images/arrowdown.png');
 																		this.up = false;
 																	}
@@ -3883,7 +3913,7 @@ Ext.onReady( function() {
 																		Ext.getCmp('selectedDEBar').setVisible(true);
 																		Ext.getCmp('availableDataelements').setVisible(true);
 																		Ext.getCmp('selectedDataelements').setVisible(true);
-																		Ext.getCmp('filterPanel').setHeight(65);
+																		Ext.getCmp('filterPanel').setHeight(110);
 																		this.setIcon('images/arrowup.png');
 																		this.up = true;
 																	}
@@ -3897,6 +3927,8 @@ Ext.onReady( function() {
 														id: 'filterPanel',
 														bodyStyle: 'background-color:transparent; padding:10px 10px 0px 3px',
 														autoScroll: true,
+														overflowX: 'hidden',
+														overflowY: 'auto',
 														height: 110,
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) ,
 														items: []

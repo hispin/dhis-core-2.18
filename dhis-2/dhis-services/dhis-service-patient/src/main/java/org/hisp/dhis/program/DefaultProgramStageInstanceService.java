@@ -347,7 +347,7 @@ public class DefaultProgramStageInstanceService
 
     @Override
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        String facilityLB, Integer dataElementId, Map<Integer, String> deFilters, Collection<Period> periods,
+        String facilityLB, Integer dataElementId, Map<Integer, Collection<String>> deFilters, Collection<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n )
     {
         return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, facilityLB,
