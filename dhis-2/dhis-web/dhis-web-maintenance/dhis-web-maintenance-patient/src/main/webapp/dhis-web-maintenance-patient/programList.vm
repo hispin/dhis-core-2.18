@@ -20,14 +20,15 @@
 				#foreach( $program in $programs )
 				  <tr id="tr${program.id}">
 				  
-					<td onclick="showProgramDetails( $program.id )">$encoder.htmlEncode( $program.name )</td>                
+					<td onclick="showProgramDetails( $program.id )">$encoder.htmlEncode( $program.displayName )</td>                
 					
 					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_orgunits' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program_to_orgunits' )"></a>					  
 					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_rule_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'program_validation_rule_management' )"></a>					  
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+					  <a href="javascript:translate( 'Program', '$program.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 					  <a href="programStage.action?id=$program.id" title="$i18n.getString( 'view_program_stages' )"><img src="../images/add_section.png" alt="$i18n.getString( 'view_stage_management' )"></a>
-					  <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					  <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.displayName )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					  <a href="javascript:showProgramDetails( $program.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 					</td>
 					
@@ -47,6 +48,7 @@
 				<p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>				
 				<p><label class="bold">$i18n.getString( "display_provided_other_facility_column" ):</label><br><span id="displayProvidedOtherFacilityField"></span></p>
+				<p><label class="bold">$i18n.getString( "block_entry_form_after_completed" ):</label><br><span id="blockEntryFormField"></span></p>
 				<p><label class="bold">$i18n.getString( "display_date_of_incident" ):</label><br><span id="displayIncidentDateField"></span></p>
 				<p><label class="bold">$i18n.getString( "generated_events_by_enrollment_date" ):</label><br><span id="generatedByEnrollmentDateField"></span></p>
 				<p><label class="bold">$i18n.getString( "ignore_to_generate_overdue_events" ):</label><br><span id="ignoreOverdueEventsField"></span></p>

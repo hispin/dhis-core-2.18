@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "create_new_program_stage" )</h3>
 
-<h4>$program.name</h4>
+<h4>$program.displayName</h4>
 		
 <form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="post">
 	<input type="hidden" id="id" name="id" value="$program.id"/>

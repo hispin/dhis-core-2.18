@@ -4,7 +4,7 @@
 		#foreach( $program in $programs )
 		  {
 			"id":  ${program.id} ,
-			"name": "$!encoder.jsonEncode( ${program.name} )",
+			"name": "$!encoder.jsonEncode( ${program.displayName} )",
 			"type": "$program.type",
 			#foreach( $programStage in $program.programStages )
 				"reportDateDescription": "$programStage.reportDateDescription",

@@ -28,7 +28,7 @@
 					<option value="$program.id" programType='$program.type' 
 						displayIncidentDate='$!program.displayIncidentDate'
 						dateOfEnrollmentDescription='$!program.dateOfEnrollmentDescription'
-						dateOfIncidentDescription='$!program.dateOfIncidentDescription'>$encoder.htmlEncode( $program.name )</option>
+						dateOfIncidentDescription='$!program.dateOfIncidentDescription'>$encoder.htmlEncode( $program.displayName )</option>
 					#end
 				</select>
 			</td>

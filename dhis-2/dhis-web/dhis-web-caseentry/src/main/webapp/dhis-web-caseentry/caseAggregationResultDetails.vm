@@ -35,7 +35,7 @@
 				#set( $mark = false )
 				#foreach( $dataValue in $dataValues )
 				<tr #alternate( $mark )>
-					<td>$dataValue.programStageInstance.programStage.name</td>
+					<td>$dataValue.programStageInstance.programStage.displayName</td>
 					<td>$dataValue.dataElement.name</td>
 					<td>$dataValue.value</td>
 					<td>$format.formatDate($dataValue.timestamp)</td>
@@ -69,7 +69,7 @@
 				#set( $mark = false )
 				#foreach( $dataValue in $dataValues )
 					<tr #alternate( $mark )>
-						<td>$encoder.htmlEncode($dataValue.programStageInstance.programStage.name)</td>
+						<td>$encoder.htmlEncode($dataValue.programStageInstance.programStage.displayName)</td>
 						<td>$encoder.htmlEncode($dataValue.dataElement.name)</td>
 						<td>$dataValue.value</td>
 						<td>$format.formatDate($dataValue.timestamp)</td>

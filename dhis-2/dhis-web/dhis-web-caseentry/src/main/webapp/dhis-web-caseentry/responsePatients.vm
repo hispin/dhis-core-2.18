@@ -31,7 +31,7 @@
   #end  
   #foreach( $program in $patient.programs )
     <program>
-        <name>$!encoder.xmlEncode( $program.name )</name>
+        <name>$!encoder.xmlEncode( $program.displayName )</name>
     </program> 
   #end         
 </patient>

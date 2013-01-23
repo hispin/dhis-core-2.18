@@ -20,6 +20,9 @@ function showProgramDetails( programId )
 		var displayProvidedOtherFacility = ( json.program.displayProvidedOtherFacility == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'displayProvidedOtherFacilityField', displayProvidedOtherFacility );   	
 		
+		var blockEntryForm = ( json.program.blockEntryForm == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'blockEntryFormField', blockEntryForm );   	
+		
 		var displayIncidentDate = ( json.program.displayIncidentDate == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'displayIncidentDateField', displayIncidentDate );   	
 		

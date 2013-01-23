@@ -13,7 +13,7 @@
     <tbody>
 		<tr>
 			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input style="width: 330px;" type="text" id="name" name="name" value="$encoder.htmlEncode( $program.name )" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input style="width: 330px;" type="text" id="name" name="name" value="$encoder.htmlEncode( $program.displayName )" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
@@ -48,6 +48,12 @@
 		<tr>
 			<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
 			<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true' #if( $program.displayProvidedOtherFacility=='true' ) checked #end ></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
+			<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true'  #if( $program.blockEntryForm=='true' ) checked #end ></td>
 			<td></td>
 		</tr>
 			

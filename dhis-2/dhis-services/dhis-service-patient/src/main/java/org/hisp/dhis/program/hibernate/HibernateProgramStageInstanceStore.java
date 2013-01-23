@@ -399,8 +399,8 @@ public class HibernateProgramStageInstanceStore
         String filterSQL = filterSQLStatement( deFilters );
 
         Grid grid = new ListGrid();
-        grid.setTitle( programStage.getProgram().getName() );
-        grid.setSubtitle( programStage.getName() );
+        grid.setTitle( programStage.getProgram().getDisplayName() );
+        grid.setSubtitle( programStage.getDisplayName() );
 
         // Type = 1
         if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD )

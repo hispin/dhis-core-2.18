@@ -20,7 +20,7 @@
 			#foreach( $comment in $programStageInstance.patientComments )
 				<tr id="comment_$comment.id" #alternate( $mark )>
 					<td>$format.formatDateTime($comment.createdDate)</td>
-					<td>$programStageInstance.programStage.name</td>
+					<td>$programStageInstance.programStage.displayName</td>
 					<td>$comment.creator</td>
 					<td>$comment.commentText</td>
 				</tr>
@@ -31,7 +31,7 @@
 			#foreach( $sms in $programStageInstance.outboundSms )
 				<tr id="tr${sms.id}" #alternate( $mark )>
 					<td>$format.formatDateTime($!sms.date)</td>
-					<td>$programStageInstance.programStage.name</td>
+					<td>$programStageInstance.programStage.displayName</td>
 					<td>$sms.sender</td>
 					<td>$sms.message</td>
 				</tr>

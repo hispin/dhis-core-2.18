@@ -152,14 +152,14 @@ public class DefaultProgramDataEntryService
 
                 DataElement dataElement = null;
 
-                String programStageName = programStage.getName();
+                String programStageName = programStage.getDisplayName();
 
                 if ( programStageId != programStage.getId() )
                 {
                     dataElement = dataElementService.getDataElement( dataElementId );
 
                     ProgramStage otherProgramStage = programStageService.getProgramStage( programStageId );
-                    programStageName = otherProgramStage != null ? otherProgramStage.getName() : "N/A";
+                    programStageName = otherProgramStage != null ? otherProgramStage.getDisplayName() : "N/A";
                 }
                 else
                 {

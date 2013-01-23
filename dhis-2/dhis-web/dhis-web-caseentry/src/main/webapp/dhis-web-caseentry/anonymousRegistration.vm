@@ -31,7 +31,7 @@
 						<option value="" psid="" reportDateDes="$i18n.getString('report_date')">[$i18n.getString("please_select")]</option>
 						#foreach( $program in $programs )
 							#foreach( $programStage in $program.programStages )
-								<option value='$program.id' psid='$programStage.id' reportDateDes="$programStage.reportDateDescription">$program.name</option>
+								<option value='$program.id' psid='$programStage.id' reportDateDes="$programStage.reportDateDescription">$program.displayName</option>
 							#end
 						#end
 					</select>

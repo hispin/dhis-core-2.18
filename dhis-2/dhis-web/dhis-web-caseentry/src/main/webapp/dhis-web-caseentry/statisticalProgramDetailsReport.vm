@@ -1,4 +1,4 @@
-<input type="hidden" id="programStageName" name="programStageName" value="$!encoder.jsEncode($programStage.name)">
+<input type="hidden" id="programStageName" name="programStageName" value="$!encoder.jsEncode($programStage.displayName)">
 <table width="100%">
 	<tr>
 		<td>

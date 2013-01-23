@@ -288,7 +288,7 @@ public class DefaultProgramStageInstanceService
     {
 
         Grid grid = new ListGrid();
-        grid.setTitle( program.getName() + " ( " + format.formatDate( startDate ) + " - " + format.formatDate( endDate )
+        grid.setTitle( program.getDisplayName() + " ( " + format.formatDate( startDate ) + " - " + format.formatDate( endDate )
             + " )" );
 
         int total = programInstanceService.countProgramInstances( program, orgunitIds, startDate, endDate );
@@ -311,7 +311,7 @@ public class DefaultProgramStageInstanceService
             {
                 grid.addRow();
                 grid.addValue( programStage.getId() );
-                grid.addValue( programStage.getName() );
+                grid.addValue( programStage.getDisplayName() );
 
                 int completed = programStageInstanceStore.getStatisticalProgramStageReport( programStage, orgunitIds,
                     startDate, endDate, ProgramStageInstance.COMPLETED_STATUS );

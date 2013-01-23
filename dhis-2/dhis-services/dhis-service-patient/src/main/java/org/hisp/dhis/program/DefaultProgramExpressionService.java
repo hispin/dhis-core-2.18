@@ -189,7 +189,7 @@ public class DefaultProgramExpressionService
                 return INVALID_CONDITION;
             }
 
-            matcher.appendReplacement( description, programStage.getName() + SEPARATOR_ID + dataElement.getName() );
+            matcher.appendReplacement( description, programStage.getDisplayName() + SEPARATOR_ID + dataElement.getName() );
         }
 
         matcher.appendTail( description );

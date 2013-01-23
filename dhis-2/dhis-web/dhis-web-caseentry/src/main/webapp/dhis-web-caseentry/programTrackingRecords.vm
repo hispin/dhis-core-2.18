@@ -80,14 +80,14 @@
 												
 												<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
 													programStageInstanceId='$programStageInstance.id' 
-													programStageName='$encoder.htmlEncode($programStageInstance.programStage.name)' 
+													programStageName='$encoder.htmlEncode($programStageInstance.programStage.displayName)' 
 													programStageId='$programStageInstance.programStage.id' 
 													programInstanceId='$programInstance.id'
 													dueDate='$format.formatDate( $programStageInstance.dueDate )'
 													status='$programStageInstance.getEventStatus()'
 													index="$idx"
 													class='stage-object'
-													value='$programStageInstance.programStage.name&#13;&#10;$valueDate' 
+													value='$programStageInstance.programStage.displayName&#13;&#10;$valueDate' 
 													title="$title" onclick='javascript:programTrackingList( $programStageInstance.id, false );'>
 												<script>
 													var status = $programStageInstance.getEventStatus(); 

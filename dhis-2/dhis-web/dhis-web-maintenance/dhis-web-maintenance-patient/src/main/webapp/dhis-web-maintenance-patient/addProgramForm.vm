@@ -47,6 +47,12 @@
 		</tr>
 		
 		<tr>
+			<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
+			<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true'></td>
+			<td></td>
+		</tr>
+		
+		<tr>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
 		

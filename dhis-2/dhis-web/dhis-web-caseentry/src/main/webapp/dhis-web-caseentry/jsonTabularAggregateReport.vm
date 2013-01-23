@@ -12,7 +12,7 @@
 		#end
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
-	"programStageName": "${programStage.name}",
+	"programStageName": "${programStage.displayName}",
 	"startDates": [
 		#set( $size = ${aggregateReport.startDates.size()} )
 		#foreach( $startDate in $!aggregateReport.startDates )

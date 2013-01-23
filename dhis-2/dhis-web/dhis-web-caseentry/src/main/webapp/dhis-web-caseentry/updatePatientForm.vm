@@ -119,7 +119,7 @@
 			<td class="bold text-column">$i18n.getString("enrolled_in_program"):</td>
 			<td>  
 				 #foreach( $program in $representative.programs )
-					$encoder.htmlEncode($program.name)
+					$encoder.htmlEncode($program.displayName)
 					#if( $velocityCount > 1 )
 						<br>
 					#end
