@@ -28,6 +28,15 @@ $( document ).ready( function() {
 		dynamicElementSelector.height( dialog.height() - 120 );
 	});
 
+	$("#imageDialog").dialog({
+		minWidth: 350,
+		minheight: 263,
+		position: [20, 50],
+		zIndex: 10000,
+		resizable: false,
+		autoOpen: false
+	});
+
 	$(":button").button();
 	$(":submit").button();
 
@@ -43,6 +52,18 @@ $( document ).ready( function() {
 
 	$("#insertDataElementsButton").click(function() {
 		$("#selectionDialog").dialog("open");
+	});
+	
+	$("#imageDialog").bind("dialogopen", function(event, ui) {
+		$("#insertImagesButton").button("disable");
+	})
+	
+	$("#imageDialog").bind("dialogclose", function(event, ui) {
+		$("#insertImagesButton").button("enable");
+	})
+	
+	$("#insertImagesButton").click(function() {
+		$("#imageDialog").dialog("open");
 	});
 	
 	$("#startButton").button("option", "icons", { primary: "ui-icon-triangle-1-e" });
@@ -106,6 +127,8 @@ $( document ).ready( function() {
 			insertDynamicElement();
 		}
 	});
+	
+	$("#insertImageButton").click(insertImage);
 
 	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	$("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
@@ -113,6 +136,7 @@ $( document ).ready( function() {
 	$("#insertDataElementsButton").button("option", "icons", { primary: "ui-icon-newwin" });
 	$("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
 	$("#delete").button("option", "icons", { primary: "ui-icon-trash" });
+	$("#insertImageButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	
 	$("#dataElementsFilterButton").button({
 		icons: {
@@ -192,8 +216,9 @@ $( document ).ready( function() {
 			dataSetId: dataSetId
 		}
 	});
-	
+		
 	$("#dynamicElementSelector").dblclick(insertDynamicElement);
+	$("#imageSelector").dblclick(insertImage);
 	
 	if( autoSave )
 	{
@@ -430,6 +455,13 @@ function showDynamicElementInsert() {
 	} );	
 }
 
+function insertImage() {
+	var image = $("#imageDialog :selected").val();
+	var html = "<img src=\"" + image + "\" title=\"" + $("#imageDialog :selected").text() + "\">";
+	var oEditor = $("#designTextarea").ckeditorGet();
+	oEditor.insertHtml( html );
+}
+
 function checkExisted(id) {
 	var result = false;
 	var html = $("#designTextarea").ckeditorGet().getData();
@@ -444,15 +476,13 @@ function checkExisted(id) {
  
 function setAutoSaveSetting(_autoSave)
 {
-	jQuery.postJSON("setAutoSaveSetting.action",{autoSave:_autoSave}, 
-		function(json)
-		{
-			autoSave = _autoSave;
-			if(_autoSave){
-				window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
-			}
-			else{
-				window.clearTimeout(timeOut);
-			}
-		});
+	jQuery.postJSON("setAutoSaveSetting.action", {autoSave:_autoSave}, function(json) {
+		autoSave = _autoSave;
+		if (_autoSave) {
+			window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+		}
+		else{
+			window.clearTimeout(timeOut);
+		}
+	});
 }

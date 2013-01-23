@@ -40,6 +40,7 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -67,6 +68,13 @@ public class ViewDataEntryFormAction
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
+    }
+    
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     private DataEntryFormService dataEntryFormService;
@@ -142,6 +150,13 @@ public class ViewDataEntryFormAction
     {
         return categoryCombos;
     }
+    
+    private List<String> flags;
+
+    public List<String> getFlags()
+    {
+        return flags;
+    }
 
     // -------------------------------------------------------------------------
     // Execute
@@ -166,6 +181,8 @@ public class ViewDataEntryFormAction
         categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
         
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
+        
+        flags = systemSettingManager.getFlags();
         
         return SUCCESS;
     }

@@ -92,7 +92,8 @@
 	    <button type="button" id="saveButton" onclick="validateDataEntryForm( false )">$i18n.getString( 'save' )</button>
         <button type="button" id="saveCloseButton" onclick="validateDataEntryForm( true )">$i18n.getString( 'save_close' )</button>
         <button type="button" id="cancelButton" onclick="window.location.href='dataSet.action'">$i18n.getString( 'cancel' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-        <button type="button" id="insertDataElementsButton" >$i18n.getString( 'insert_data_elements' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+        <button type="button" id="insertDataElementsButton">$i18n.getString( 'insert_data_elements' )</button>&nbsp;&nbsp;
+        <button type="button" id="insertImagesButton">$i18n.getString( 'insert_images' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
         <button type="button" id="delete" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )">$i18n.getString( 'delete' )</button>
 		<input type="checkbox" id="autoSave" name="autoSave" #if($autoSave && $autoSave=="true") checked #end onchange="setAutoSaveSetting(this.checked)" />$i18n.getString( 'auto_save_data_entry_forms' )
       </td>          
@@ -162,5 +163,18 @@
 		</table>
 	</div>
 </div>
+</div>
 
+
+<div id="imageDialog" title="$i18n.getString( 'insert_images' )">
+<div style="margin:4px">
+    <div>
+    	<select id="imageSelector" multiple="multiple" style="height: 200px; width:100%;">
+    	#foreach( $flag in $flags )
+    	<option value="../dhis-web-commons/flags/${flag}.png">$i18n.getString( ${flag} )</option>
+	    #end
+    	</select>
+    </div>
+    <div style="margin-top:6px"><button type="button" id="insertImageButton">$i18n.getString( "insert" )</button></div>
+</div>
 </div>
