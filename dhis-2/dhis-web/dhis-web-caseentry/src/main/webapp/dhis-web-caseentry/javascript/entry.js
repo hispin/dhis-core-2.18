@@ -97,9 +97,7 @@ function updateProvidingFacility( dataElementId, checkField )
 {
 	var programStageId = byId( 'programStageId' ).value;
 	var checked= checkField.checked;
-	var spanField = byId( 'span_' + checkField.id );
-	spanField.style.backgroundColor = SAVING_COLOR;
-    
+
     var facilitySaver = new FacilitySaver( dataElementId, checked, SUCCESS_COLOR );
     facilitySaver.save();    
 }
@@ -304,35 +302,16 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
     {
         var codeElement = rootElement.getElementsByTagName( 'code' )[0];
         var code = parseInt( codeElement.firstChild.nodeValue );
-        if ( code == 0 )
+		
+        if ( code != 0 )
         {
-            markValue( SUCCESS );
-        }
-        else
-        {
-            markValue( ERROR );
             window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
         }
     }
 
     function handleHttpError( errorCode )
     {
-        markValue( ERROR );
         window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
-    }
-
-    function markValue( result )
-    {
-		var programStageId = byId( 'programStageId' ).value;
-		var element = byId('span_' + programStageId + '_' + dataElementId + '_facility');
-        if( result == SUCCESS )
-        {
-            element.style.backgroundColor = SUCCESS_COLOR;
-        }
-        else if( result == ERROR )
-        {
-            element.style.backgroundColor = ERROR_COLOR;
-        }
     }
 }
 
@@ -531,6 +510,12 @@ function runCompleteEvent( isCreateEvent )
 					eventBox.attr('status',1);
 					resetActiveEvent( eventBox.attr("pi") );
 			
+			
+					var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
+					if( blocked=='true' ){
+						blockEntryForm();
+					}
+					
 					hideLoader();
 					
 					if( isCreateEvent ){
@@ -557,9 +542,37 @@ function doUnComplete( isCreateEvent )
 				var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
 				eventBox.attr('status',2);
 				resetActiveEvent( eventBox.attr("pi") );
+				
+				unblockEntryForm();
 			});
 	}
     
+}
+
+
+function blockEntryForm()
+{
+	jQuery("#entryFormContainer :input").each(function()
+	{
+		disable($(this).attr('id'));
+	});
+	jQuery("#entryFormContainer").find(".ui-combobox").each(function()
+	{
+		jQuery(this).addClass('hidden');
+	});
+	
+}
+
+function unblockEntryForm()
+{
+	jQuery("#entryFormContainer :input").each(function()
+	{
+		enable($(this).attr('id'));
+	});
+	jQuery("#entryFormContainer").find(".ui-combobox").each(function()
+	{
+		jQuery(this).removeClass('hidden');
+	});
 }
 
 TOGGLE = {

@@ -12,6 +12,7 @@
 		#end
 		
 		entryFormContainerOnReady();
+		
 	});
 </script>
 
@@ -26,7 +27,8 @@
 <input type='hidden' name='programStageId' id='programStageId' value='$!programStageInstance.programStage.id'>
 <input type='hidden' name='programId' id='programId' value='$!programStageInstance.programInstance.program.id'>
 <input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStageInstance.programStage.validCompleteOnly'>
-<input type='hidden' id='currentUsername' name='currentUsername' value='$!currentUsername'>
+<input type='hidden' name='currentUsername' id='currentUsername' value='$!currentUsername'>
+<input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!programStageInstance.programInstance.program.blockEntryForm'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	<table id="postCommentTbl" class="hidden">
@@ -78,5 +80,9 @@
 		jQuery("[id=executionDate]").prop('disabled', true);
 		jQuery("[id=executionDate]").datepicker("destroy");
 	#end
+
+	if(getFieldValue('completed')=='true' && getFieldValue('blockEntryForm')=='true'){
+		blockEntryForm();
+	}
 </script>
 

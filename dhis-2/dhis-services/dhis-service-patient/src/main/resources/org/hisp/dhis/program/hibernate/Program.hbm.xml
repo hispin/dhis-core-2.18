@@ -61,5 +61,7 @@
     
     <property name="ignoreOverdueEvents" />
     
+    <property name="blockEntryForm" />
+   
   </class>
 </hibernate-mapping>
