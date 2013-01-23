@@ -1,0 +1,60 @@
+package org.hisp.dhis.adhoc;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+/**
+ * This class should be executed. You can do this e.g. by choosing "Run as" -
+ * "Java application" in your IDE.
+ * 
+ * To add tasks you should implement the Command interface, add your implementation
+ * class as a bean in beans.xml under src/main/resources/META-INF/dhis, and add
+ * the bean identifier to the list in the commands() method int this class.
+ */
+public class RunMe
+{
+    private static final Log log = LogFactory.getLog( RunMe.class );
+    
+    private static final String DHIS2_HOME = "/home/larshelg/dev/config/dhis2"; // Change this
+    
+    private static ApplicationContext context;
+    
+    public static void main( String[] args )
+    {
+        System.setProperty( "dhis2.home", DHIS2_HOME );
+        
+        log.info( "Initializing Spring context" );
+        
+        context = new ClassPathXmlApplicationContext( "classpath*:/META-INF/dhis/beans.xml" );
+        
+        log.info( "Spring context initialized" );
+        
+        for ( String id : commands() )
+        {
+            Command command = get( id );
+            
+            log.info( "Executing: " + id );
+            
+            command.execute();
+            
+            log.info( "Done: " + id );
+        }
+        
+        log.info( "Completed" );
+    }
+    
+    private static Command get( String id )
+    {
+        return (Command) context.getBean( id );
+    }
+    
+    private static List<String> commands()
+    {
+        return Arrays.asList( "customFormWriter" );
+    }
+}
