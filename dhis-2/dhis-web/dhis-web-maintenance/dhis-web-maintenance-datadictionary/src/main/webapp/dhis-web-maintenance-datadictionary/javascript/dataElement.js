@@ -39,11 +39,13 @@ function changeValueType( value )
         disable( 'zeroIsSignificant' );
 		hideById( 'numberTypeTR' );
 		hideById( 'textTypeTR' );
+		disable('aggregationOperatorSelect');
 		if( value=='string' ){
 			showById( 'textTypeTR' );
 		}
-		
-		disable('aggregationOperatorSelect');
+		else if(value=='bool'){
+			enable('aggregationOperatorSelect');
+		}
     }
 
     updateAggreationOperation( value );

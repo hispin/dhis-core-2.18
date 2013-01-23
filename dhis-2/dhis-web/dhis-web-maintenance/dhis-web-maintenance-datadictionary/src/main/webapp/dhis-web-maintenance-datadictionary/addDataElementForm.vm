@@ -10,6 +10,7 @@
 	        {
 	            setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
 	            setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
+				enable('aggregationOperatorSelect');
 				#tblDynamicAttributesJavascript()
 	        },
 	        'rules' : getValidationRules( "dataElement" )
