@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "update_program_validation_rule" )</h3>
 
-<h4>$validation.program.name</h4>
+<h4>$validation.program.displayName</h4>
 
 <form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action'>
 

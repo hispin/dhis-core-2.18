@@ -60,7 +60,7 @@
 		<td><label class="bold">$i18n.getString( "enrolled_in_program" )</label></td>
 		<td>: 
 		#foreach( $program in $partner.programs )
-			$encoder.htmlEncode($program.name)
+			$encoder.htmlEncode($program.displayName)
 		#end
 		</td>
 	</tr>

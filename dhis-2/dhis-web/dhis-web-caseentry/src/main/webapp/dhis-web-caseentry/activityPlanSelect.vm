@@ -43,7 +43,7 @@
 						<option value="">[$i18n.getString("please_select")]</option>
 						#foreach($program in $programs)
 							#if($program.type=='1') 
-								<option value="$program.id" type='$program.type'>$program.name</option>
+								<option value="$program.id" type='$program.type'>$program.displayName</option>
 							#end
 						#end
 					</select>

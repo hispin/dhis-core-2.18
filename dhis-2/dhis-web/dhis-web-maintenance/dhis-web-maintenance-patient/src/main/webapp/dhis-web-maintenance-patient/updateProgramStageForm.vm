@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "edit_program_stage" )</h3>
 
-<h4>$programStage.program.name</h4>
+<h4>$programStage.program.displayName</h4>
 
 <form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post">
 	<input type="hidden" id="id" name="id" value="$programStage.id"/>
@@ -16,7 +16,7 @@
 		<tbody>
 			<tr>
 				<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-				<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $programStage.name )" class="{validate:{required:true,rangelength:[4,160]}}"/></td>
+				<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $programStage.displayName )" class="{validate:{required:true,rangelength:[4,160]}}"/></td>
 			</tr>
 
 			<tr>

@@ -33,6 +33,7 @@ import java.util.List;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,6 +53,13 @@ public class GetProgramStageListAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
     }
 
     // -------------------------------------------------------------------------
@@ -98,7 +106,7 @@ public class GetProgramStageListAction
     {
         program = programService.getProgram( id );
 
-        associations = new ArrayList<ProgramStage>( program.getProgramStages() );
+        associations = new ArrayList<ProgramStage>( programStageService.getProgramStages( program ) );
 
         return SUCCESS;
     }

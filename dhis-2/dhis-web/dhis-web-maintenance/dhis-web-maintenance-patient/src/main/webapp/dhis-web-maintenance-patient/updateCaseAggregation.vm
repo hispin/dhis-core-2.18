@@ -61,7 +61,7 @@
 			<select id="programId" name="programId" onChange="getParams();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $program in $programs )
-					<option value="$program.id" title='$program.name' programType='$program.type'>$encoder.htmlEncode( $program.name )</option>
+					<option value="$program.id" title='$program.displayName' programType='$program.type'>$encoder.htmlEncode( $program.displayName )</option>
 				#end
 			</select>
 		</td>

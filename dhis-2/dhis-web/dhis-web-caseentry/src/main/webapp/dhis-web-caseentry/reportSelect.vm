@@ -24,7 +24,7 @@
             <select id="programId" name="programId" #if($!programs) #else disabled #end class="{validate:{required:true}}" >
 				<option value=''>[$i18n.getString('please_select_a_program')]</option>
 				#foreach( $program in $programs )
-				<option value='$program.id'>$program.name</option>
+				<option value='$program.id'>$program.displayName</option>
 				#end
 			</select>
         </td>

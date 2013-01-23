@@ -351,7 +351,7 @@ public class DefaultCaseAggregationConditionService
                     return INVALID_CONDITION;
                 }
 
-                matcher.appendReplacement( description, "[" + program.getName() + SEPARATOR_ID + programStage
+                matcher.appendReplacement( description, "[" + program.getDisplayName() + SEPARATOR_ID + programStage
                     + SEPARATOR_ID + dataElement.getName() + "]" );
             }
             else
@@ -388,7 +388,7 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
-                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getName()
+                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getDisplayName()
                         + "]" );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
@@ -403,7 +403,7 @@ public class DefaultCaseAggregationConditionService
 
                     String count = (ids.length == 2) ? SEPARATOR_ID + ids[1] : "";
                     matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT
-                        + programStage.getName() + count + "]" );
+                        + programStage.getDisplayName() + count + "]" );
 
                 }
             }

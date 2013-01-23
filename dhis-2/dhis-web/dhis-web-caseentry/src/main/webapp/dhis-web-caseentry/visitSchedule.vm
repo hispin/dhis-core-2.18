@@ -12,7 +12,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type="button" class='button' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.name")'/>
+				<input type="button" class='button' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.displayName")'/>
 				<input type="button" class='button' value="$i18n.getString( 'complete' )" onclick='unenrollmentForm($programInstance.id)'/>
 			</td>
 		</tr>
@@ -51,12 +51,12 @@
 			<td>$rowCount</td>        
 			##stage name
 			<td>
-				$encoder.htmlEncode( $programStageInstance.programStage.name )						
+				$encoder.htmlEncode( $programStageInstance.programStage.displayName )						
 			</td>
 			#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
 			#set($status = $programStageInstance.getEventStatus())
 			<td>        
-				<input type="text" id="$duedateId" style='width:80%;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
+				<input type="text" id="$duedateId" style='width:80%;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.displayName )' )" />
 				<script type="text/javascript">
 					#if($status==1 || $status==2 || $status==5 )
 						disable('$duedateId');

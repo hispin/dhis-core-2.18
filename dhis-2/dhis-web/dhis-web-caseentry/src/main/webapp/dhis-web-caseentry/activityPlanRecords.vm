@@ -67,7 +67,7 @@
 												 <input type="button" name="programStageBtn"
 													id="ps_$!programStageInstance.id"
 													psid="$programStageInstance.programStage.id"
-													psname="$encoder.htmlEncode($programStageInstance.programStage.name)"
+													psname="$encoder.htmlEncode($programStageInstance.programStage.displayName)"
 													orgunit="$encoder.htmlEncode($!programStageInstance.organisationUnit.name)"
 													programType='$programInstance.program.type'
 													reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
@@ -77,7 +77,7 @@
 													index="$idx"
 													class="stage-object" 
 													title="$title"
-													value="$encoder.htmlEncode($programStageInstance.programStage.name)&#13;&#10;$valueDate" 
+													value="$encoder.htmlEncode($programStageInstance.programStage.displayName)&#13;&#10;$valueDate" 
 													onclick="javascript:loadDataEntry( $programStageInstance.id );">
 												<script>	
 													var status = $programStageInstance.getEventStatus();
