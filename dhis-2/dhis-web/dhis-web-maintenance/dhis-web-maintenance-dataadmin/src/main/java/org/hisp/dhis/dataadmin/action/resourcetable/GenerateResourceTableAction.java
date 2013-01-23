@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -121,6 +122,13 @@ public class GenerateResourceTableAction
         this.periodStructure = periodStructure;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -130,7 +138,7 @@ public class GenerateResourceTableAction
     {
         sqlViewService.dropAllSqlViewTables();
         
-        log.info( "Dropped all sql views" );
+        log.info( "'" + currentUserService.getCurrentUsername() + "': Dropped all sql views" );
         
         if ( organisationUnit )
         {
@@ -172,11 +180,11 @@ public class GenerateResourceTableAction
             resourceTableService.generatePeriodTable();
         }
         
-        log.info( "Generated resource tables" );
+        log.info( "'" + currentUserService.getCurrentUsername() + "': Generated resource tables" );
         
         sqlViewService.createAllViewTables();
         
-        log.info( "Created all views" );
+        log.info( "'" + currentUserService.getCurrentUsername() + "': Created all views" );
         
         return SUCCESS;
     }
