@@ -338,6 +338,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 					var box = jQuery(".stage-object-selected");
 					var boxName = box.attr('psname') + "\n" + executionDate;
 					box.val( boxName );
+					box.attr( 'reportDate', executionDate );
 					box.css('border-color', COLOR_LIGHTRED);
 					box.css('background-color', COLOR_LIGHT_LIGHTRED);
 					disableCompletedButton(false);
