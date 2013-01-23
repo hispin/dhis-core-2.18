@@ -12,6 +12,7 @@
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
 	"noAttributes": "$!program.patientAttributes.size()",
-	"noIdentifierTypes": "$!program.patientIdentifierTypes.size()"
+	"noIdentifierTypes": "$!program.patientIdentifierTypes.size()",
+	"blockEntryForm": "$!program.blockEntryForm"
   }
 }

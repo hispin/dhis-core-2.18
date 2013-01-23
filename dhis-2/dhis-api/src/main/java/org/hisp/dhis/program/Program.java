@@ -94,6 +94,8 @@ public class Program
 
     private List<PatientAttribute> patientAttributes;
     
+    private Boolean blockEntryForm = false;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -364,5 +366,15 @@ public class Program
     public boolean isRegistration()
     {
         return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type);
+    }
+
+    public Boolean getBlockEntryForm()
+    {
+        return blockEntryForm;
+    }
+
+    public void setBlockEntryForm( Boolean blockEntryForm )
+    {
+        this.blockEntryForm = blockEntryForm;
     }
 }

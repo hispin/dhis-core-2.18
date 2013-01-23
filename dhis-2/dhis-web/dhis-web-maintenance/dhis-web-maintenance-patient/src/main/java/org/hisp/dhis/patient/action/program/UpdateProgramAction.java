@@ -172,6 +172,13 @@ public class UpdateProgramAction
         this.ignoreOverdueEvents = ignoreOverdueEvents;
     }
 
+    private Boolean blockEntryForm;
+
+    public void setBlockEntryForm( Boolean blockEntryForm )
+    {
+        this.blockEntryForm = blockEntryForm;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -183,6 +190,7 @@ public class UpdateProgramAction
         displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
         generateBydEnrollmentDate = (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
+        blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -195,7 +203,8 @@ public class UpdateProgramAction
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
         program.setIgnoreOverdueEvents( ignoreOverdueEvents );
-        
+        program.setBlockEntryForm( blockEntryForm );
+
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
         int index = 0;

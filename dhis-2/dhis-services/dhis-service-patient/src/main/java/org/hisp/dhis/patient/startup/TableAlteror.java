@@ -163,6 +163,8 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE programvalidation RENAME description TO name" );
         
+        executeSql( "UPDATE program SET blockEntryForm=false WHERE blockEntryForm is null" );
+        
         updateUid();
     }
 
