@@ -28,6 +28,7 @@ function exportPDF( type )
 
 function changeValueType( value )
 {
+	enable('aggregationOperatorSelect');
     if ( value == 'int' )
     {
 		showById( 'numberTypeTR' );
@@ -38,9 +39,11 @@ function changeValueType( value )
         disable( 'zeroIsSignificant' );
 		hideById( 'numberTypeTR' );
 		hideById( 'textTypeTR' );
-		if( value=='string'){
+		if( value=='string' ){
 			showById( 'textTypeTR' );
 		}
+		
+		disable('aggregationOperatorSelect');
     }
 
     updateAggreationOperation( value );
