@@ -139,3 +139,13 @@ function removeDataElement( dataElementId, dataElementName )
     removeItem( dataElementId, dataElementName, i18n_confirm_delete, 'removeDataElement.action' );
 }
 
+function domainTypeChange( domainType )
+{
+	if( domainType=='aggregate'){
+		enable('selectedCategoryComboId');
+	}
+	else{
+		setFieldValue('selectedCategoryComboId', getFieldValue('defaultCategoryCombo'));
+		disable('selectedCategoryComboId');
+	}
+}

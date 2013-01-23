@@ -56,7 +56,7 @@
 	<tr>
 		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="domainType" name="domainType">
+			<select id="domainType" name="domainType" onchange='domainTypeChange(this.value)'>
 				<option value="aggregate" selected="selected">$i18n.getString( "aggregate" )</option>
 				<option value="patient">$i18n.getString( "patient" )</option>				
 			</select>

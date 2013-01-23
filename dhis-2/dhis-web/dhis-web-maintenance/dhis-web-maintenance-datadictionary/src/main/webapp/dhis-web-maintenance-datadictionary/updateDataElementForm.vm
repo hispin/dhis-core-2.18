@@ -67,7 +67,7 @@
 	<tr>
 		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="domainType" name="domainType">
+			<select id="domainType" name="domainType" onchange='domainTypeChange(this.value)'>
 				<option value="aggregate" #if( $dataElement.getDomainTypeNullSafe() == 'aggregate' ) selected="selected" #end>$i18n.getString( "aggregate" )</option>
 				<option value="patient" #if( $dataElement.getDomainTypeNullSafe() == 'patient' ) selected="selected" #end>$i18n.getString( "patient" )</option>				
 			</select>
@@ -139,7 +139,7 @@
 	<tr #if( $calculatedDataElement ) style="display:none" #end >	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="selectedCategoryComboId">				
+			<select id="selectedCategoryComboId" #if( $dataElement.getDomainTypeNullSafe()=='patient') disabled #end>>				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
 				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $dataElement.categoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
 			#end
