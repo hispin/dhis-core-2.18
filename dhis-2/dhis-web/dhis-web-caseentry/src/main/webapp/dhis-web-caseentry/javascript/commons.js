@@ -540,13 +540,24 @@ function showCreateNewEvent( programInstanceId, programStageId )
 
 function setSuggestedDueDate( programInstanceId )
 {
-	var standardInterval =  jQuery('#repeatableProgramStage_' + programInstanceId + ' option:selected').attr('standardInterval');
-	var date = new Date();
+	var lastVisit = jQuery('.stage-object-selected').attr('reportDate');
+	jQuery('#tb_' + programInstanceId + ' input').each(function()
+	{
+		var reportDate = jQuery(this).attr('reportDate');
+		if( reportDate > lastVisit )
+		{
+			lastVisit = reportDate;
+		}
+	});
+	
+	var standardInterval = jQuery('#repeatableProgramStage_' + programInstanceId + ' option:selected').attr('standardInterval');
+	var date = $.datepicker.parseDate( dateFormat, lastVisit );
 	var d = date.getDate() + eval(standardInterval);
 	var m = date.getMonth();
 	var y = date.getFullYear();
 	var edate= new Date(y, m, d);
-	jQuery( '#dueDateNewEncounter_' + programInstanceId ).datepicker( "setDate" , edate );
+	var sdate = jQuery.datepicker.formatDate( dateFormat , edate ) ;
+	jQuery( '#dueDateNewEncounter_' + programInstanceId ).val(sdate);
 }
 
 function closeDueDateDiv( programInstanceId )
