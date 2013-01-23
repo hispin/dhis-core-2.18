@@ -50,43 +50,21 @@ public class AuditLogUtil
                 IdentifiableObject idObject = (IdentifiableObject) object;
                 StringBuilder builder = new StringBuilder();
 
-                builder.append( "'" );
-                builder.append( username );
-                builder.append( "' " );
-                builder.append( action );
-                builder.append( " " );
-                builder.append( object.getClass().getName() );
+                builder.append( "'" ).append( username ).append( "' " ).append( action );
+                builder.append( " " ).append( object.getClass().getName() );
 
                 if ( idObject.getName() != null && !idObject.getName().isEmpty() )
                 {
-                    builder.append( ", name: " );
-                    builder.append( idObject.getName() );
+                    builder.append( ", name: " ).append( idObject.getName() );
                 }
 
                 if ( idObject.getUid() != null && !idObject.getUid().isEmpty() )
                 {
-                    builder.append( ", uid: " );
-                    builder.append( idObject.getUid() );
+                    builder.append( ", uid: " ).append( idObject.getUid() );
                 }
 
-                // String msg = logMessage( username, action, object.getClass().getName(), builder.toString() );
                 log.info( builder.toString() );
             }
         }
-    }
-
-    /**
-     * Generate audit trail logging message
-     *
-     * @param userName   : Current user name
-     * @param action     : user's action ( add, edit, delete )
-     * @param objectType : The name of the object that user is working on
-     * @param objectName : The value of the name attribute of the object that
-     *                   user is working on
-     * @return : the audit trail logging message
-     */
-    public static String logMessage( String userName, String action, String objectType, String objectName )
-    {
-        return "'" + userName + "' " + action + " " + objectType + " '" + objectName + "'";
     }
 }
