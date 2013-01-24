@@ -218,8 +218,6 @@ function saveVal( dataElementId, optionComboId, fieldId )
 
 function saveBoolean( dataElementId, optionComboId, fieldId )
 {
-	dataElementId = parseInt( dataElementId );
-	optionComboId = parseInt( optionComboId );
     fieldId = '#' + fieldId;
     
     var value = $( fieldId + ' option:selected' ).val();
