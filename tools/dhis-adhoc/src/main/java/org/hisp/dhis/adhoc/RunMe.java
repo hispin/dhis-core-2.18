@@ -14,7 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * To add tasks you should implement the Command interface, add your implementation
  * class as a bean in beans.xml under src/main/resources/META-INF/dhis, and add
- * the bean identifier to the list in the commands() method int this class.
+ * the bean identifier to the list in the commands() method in this class.
  */
 public class RunMe
 {
@@ -24,7 +24,16 @@ public class RunMe
     
     private static ApplicationContext context;
     
+    /**
+     * Add commands here by adding the bean identifier to the list.
+     */
+    public static List<String> commands()
+    {
+        return Arrays.asList( "exampleCommand" );
+    }
+    
     public static void main( String[] args )
+        throws Exception
     {
         System.setProperty( "dhis2.home", DHIS2_HOME );
         
@@ -45,16 +54,11 @@ public class RunMe
             log.info( "Done: " + id );
         }
         
-        log.info( "Completed" );
+        log.info( "Process completed" );
     }
     
     private static Command get( String id )
     {
         return (Command) context.getBean( id );
-    }
-    
-    private static List<String> commands()
-    {
-        return Arrays.asList( "customFormWriter" );
     }
 }
