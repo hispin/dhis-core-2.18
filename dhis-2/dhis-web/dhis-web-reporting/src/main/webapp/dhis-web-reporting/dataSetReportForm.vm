@@ -25,25 +25,21 @@
 </script>
 
 <style type="text/css" media="print">
-div#header {
-    display: none;
-}
-
-div#leftBar {
-    display: none;
-}
-
 div#control {
-    display: none;
+  display: none;
 }
 
 h3#dataset_report_header {
-    display: none;
+  display: none;
 }
 
 #download_buttons {
-    display: none;
+  display: none;
 }
+
+#shareForm {
+  display: none;
+}  
 
 .gridTable {
     width: 100%;
