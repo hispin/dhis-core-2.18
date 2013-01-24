@@ -138,9 +138,12 @@ public class ProgramInstanceDeletionHandler
     }
 
     @Override
-    public String allowDeleteProgram( Program program )
+    public void deleteProgram( Program program )
     {
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program );
-        return (programInstances != null && programInstances.size() > 0) ? null : ERROR;
+        for( ProgramInstance programInstance : programInstances)
+        {
+            programInstanceService.deleteProgramInstance( programInstance );
+        }
     }
 }
