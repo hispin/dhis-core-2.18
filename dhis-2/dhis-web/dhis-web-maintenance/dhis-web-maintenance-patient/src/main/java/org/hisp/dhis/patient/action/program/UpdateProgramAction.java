@@ -201,9 +201,17 @@ public class UpdateProgramAction
         program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         program.setDisplayIncidentDate( displayIncidentDate );
-        program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
-        program.setIgnoreOverdueEvents( ignoreOverdueEvents );
         program.setBlockEntryForm( blockEntryForm );
+        if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
+        {
+            program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
+            program.setIgnoreOverdueEvents( ignoreOverdueEvents );
+        }
+        else
+        {
+            program.setGeneratedByEnrollmentDate( true );
+            program.setIgnoreOverdueEvents( false );
+        }
 
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
