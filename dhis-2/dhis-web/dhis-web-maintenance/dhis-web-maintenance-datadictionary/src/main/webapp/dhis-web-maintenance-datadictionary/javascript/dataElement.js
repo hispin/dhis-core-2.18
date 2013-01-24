@@ -97,7 +97,8 @@ function showDataElementDetails( dataElementId )
 			'bool' : i18n_yes_no,
 			'trueOnly' : i18n_yes_only,
 			'string' : i18n_text,
-			'date' : i18n_date
+			'date' : i18n_date,
+			'username' : i18n_user_name
 		};
 		var type = json.dataElement.valueType;
 		setInnerHTML( 'typeField', typeMap[type] );
