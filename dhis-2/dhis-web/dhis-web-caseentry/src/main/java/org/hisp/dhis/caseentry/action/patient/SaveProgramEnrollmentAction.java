@@ -201,7 +201,7 @@ public class SaveProgramEnrollmentAction
                     Date dueDate = DateUtils
                         .getDateAfterAddition( dateCreatedEvent, programStage.getMinDaysFromStart() );
 
-                    if ( !program.getIgnoreOverdueEvents() || !dueDate.before( currentDate ) )
+                    if ( ! ( program.getIgnoreOverdueEvents() && dueDate.before( currentDate ) ))
                     {
                         ProgramStageInstance programStageInstance = new ProgramStageInstance();
                         programStageInstance.setProgramInstance( programInstance );
