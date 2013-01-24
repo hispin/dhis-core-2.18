@@ -4,22 +4,7 @@
   -webkit-print-color-adjust: exact;
 }
 
-div#header 
-{
-  display: none;
-}
-
-div#leftBar 
-{
-  display: none;
-}
-
-div#headerMessage 
-{
-  display: none;
-}
-
-div#rightBar
+div#header, #headerMessage, div#leftBar, div#headerMessage, div#rightBar
 {
   display: none;
 }
