@@ -178,4 +178,7 @@ public interface UserCredentialsStore
      * @return a Collection of UserSettings.
      */
     Collection<UserSetting> getUserSettings( String name );
+    
+    Collection<String> getUsernames( String key, Integer max );
+
 }

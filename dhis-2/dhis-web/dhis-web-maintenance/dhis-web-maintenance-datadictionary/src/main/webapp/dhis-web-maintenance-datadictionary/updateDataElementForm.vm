@@ -83,6 +83,7 @@
 				<option value="trueOnly" #if( $dataElement.type == 'trueOnly' ) selected="selected" #end >$i18n.getString( "yes_only" )</option>
 				<option value="bool" #if( $dataElement.type == 'bool' ) selected="selected" #end >$i18n.getString( "yes_no" )</option>
 				<option value="date" #if( $dataElement.type == 'date' ) selected="selected" #end >$i18n.getString( "date" )</option>
+				<option value="username" #if( $dataElement.type == 'username' ) selected="selected" #end >$i18n.getString( "user_name" )</option>
 			</select>
 		</td>
 	</tr>

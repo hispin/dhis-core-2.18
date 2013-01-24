@@ -194,6 +194,12 @@
 			</result>
 		</action>
 
+		<action name="getUsernameList"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonUsernames.vm
+			</result>
+		</action>
+		
 		<!-- save value -->
 
 		<action name="saveValue"

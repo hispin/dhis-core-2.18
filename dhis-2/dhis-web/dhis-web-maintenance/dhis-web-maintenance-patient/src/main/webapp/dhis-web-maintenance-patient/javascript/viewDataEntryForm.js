@@ -161,6 +161,11 @@ function insertDataElement( source, programStageId )
 		var displayName = dataElementName;
 		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\">";
 	} 
+	else if ( dataElementType == "username" )
+	{
+		var displayName = dataElementName;
+		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\ username=\"true\" ">";
+	} 
 	else
 	{
 		var displayName = dataElementName;

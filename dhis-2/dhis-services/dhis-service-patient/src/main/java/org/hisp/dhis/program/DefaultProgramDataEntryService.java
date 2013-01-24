@@ -242,7 +242,8 @@ public class DefaultProgramDataEntryService
                 tabindex++;
 
                 if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
-                    || DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
+                    || DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() )
+                    || DataElement.VALUE_TYPE_USER_NAME.equals( dataElement.getType() ) )
                 {
                     inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML, dataElementValue );
                 }

@@ -62,7 +62,7 @@ public class HibernateUserCredentialsStore
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
     private UserService userService;
 
     public void setUserService( UserService userService )
@@ -168,8 +168,8 @@ public class HibernateUserCredentialsStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first ).setMaxResults(
-            max ).list();
+        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first )
+            .setMaxResults( max ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -215,7 +215,8 @@ public class HibernateUserCredentialsStore
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
     {
-        return getBlockUser( findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ), first, max );
+        return getBlockUser( findByName( toUserCredentials( userService.getUsersWithoutOrganisationUnit() ), name ),
+            first, max );
     }
 
     public int getUsersWithoutOrganisationUnitCount()
@@ -236,10 +237,10 @@ public class HibernateUserCredentialsStore
         criteria.addOrder( Order.desc( "created" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
-        
+
         return criteria.list();
     }
-    
+
     public int getSelfRegisteredUserCredentialsCount()
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
@@ -250,7 +251,7 @@ public class HibernateUserCredentialsStore
 
         return rs != null ? rs.intValue() : 0;
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> getInactiveUsers( Date date )
     {
@@ -349,6 +350,28 @@ public class HibernateUserCredentialsStore
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( userSetting );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<String> getUsernames( String key, Integer max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        String hql = "select username from UserCredentials ";
+
+        if ( key != null )
+        {
+            hql += "where lower(username) like lower('%" + key + "%') ";
+        }
+
+        Query query = session.createQuery( hql );
+        
+        if ( max != null )
+        {
+            query.setMaxResults( max );
+        }
+
+        return query.list();
     }
 
     // -------------------------------------------------------------------------

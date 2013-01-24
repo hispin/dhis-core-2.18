@@ -49,8 +49,6 @@ public class HibernateUserStore
     extends HibernateIdentifiableObjectStore<User>
     implements UserStore
 {
-  
-    
     // -------------------------------------------------------------------------
     // UserStore implementation
     // -------------------------------------------------------------------------
@@ -133,4 +131,5 @@ public class HibernateUserStore
         
         return criteria.list();  
     }
+    
 }
