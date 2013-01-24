@@ -5,6 +5,7 @@
 	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css" />
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}" />
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css" />
+    <link type="text/css" rel="stylesheet" media="print" href="../dhis-web-commons/css/print.css" />
     #foreach ( $style in $stylesheets )
     <link type="text/css" rel="stylesheet" href="$style">
     #end    

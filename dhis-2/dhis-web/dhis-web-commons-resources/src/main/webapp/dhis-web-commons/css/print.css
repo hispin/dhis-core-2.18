@@ -1,0 +1,25 @@
+body
+{
+  font-family: arial, sans-serif;
+}
+
+div#header 
+{
+  display: none;
+}
+
+div#leftBar 
+{
+  display: none;
+}
+
+div#headerMessage 
+{
+  display: none;
+}
+
+div#rightBar
+{
+  display: none;
+}
+	
