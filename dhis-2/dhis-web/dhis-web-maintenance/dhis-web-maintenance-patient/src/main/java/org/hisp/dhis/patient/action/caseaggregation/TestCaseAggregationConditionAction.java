@@ -27,13 +27,16 @@
 
 package org.hisp.dhis.patient.action.caseaggregation;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_COUNT;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.program.Program;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,6 +61,13 @@ public class TestCaseAggregationConditionAction
         this.aggregationConditionService = aggregationConditionService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -67,6 +77,20 @@ public class TestCaseAggregationConditionAction
     public void setCondition( String condition )
     {
         this.condition = condition;
+    }
+
+    private String operator;
+
+    public void setOperator( String operator )
+    {
+        this.operator = operator;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -79,6 +103,20 @@ public class TestCaseAggregationConditionAction
     {
         CaseAggregationCondition aggCondition = new CaseAggregationCondition( "", AGGRERATION_COUNT, condition, null,
             null );
+
+        Collection<Program> programs = aggregationConditionService.getProgramsInCondition( condition );
+
+        if ( operator.equals( AGGRERATION_COUNT ) )
+        {
+            for ( Program program : programs )
+            {
+                if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+                {
+                    message = i18n.getString( "select_operator_number_of_visits_for_this_condition" );
+                    return INPUT;
+                }
+            }
+        }
 
         OrganisationUnit orgunit = new OrganisationUnit();
         orgunit.setId( 1 );
@@ -96,5 +134,4 @@ public class TestCaseAggregationConditionAction
 
         return SUCCESS;
     }
-
 }

@@ -291,16 +291,23 @@ function getConditionDescription()
 
 function testCaseAggregationCondition()
 {
+	var operator = jQuery('[name=operator]:checked').val();
 	$.postUTF8( 'testCaseAggregationCondition.action', 
 		{ 
-			condition:getFieldValue('aggregationCondition') 
+			condition: getFieldValue('aggregationCondition'),
+			operator: operator
 		},function (json)
 		{
 			var type = json.response;
 			
 			if ( type == "input" )
 			{
-				showWarningMessage( i18n_run_fail );
+				if( json.message == '' ){
+					showWarningMessage( i18n_run_fail );
+				}
+				else{
+					showWarningMessage( json.message );
+				}
 			}
 			else
 			{
