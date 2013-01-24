@@ -143,6 +143,7 @@
 	#foreach($attribute in $attributes )
 		#set($value = "")
 		#set($value = $patientAttributeValueMap.get($attribute.id))
+		#if( $attribute.valueType != 'CALCULATED')
 		<tr>
 			<td class='text-column'><label>$encoder.htmlEncode($attribute.name) #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column">
@@ -164,11 +165,12 @@
 							<option value="$option.id" #if("$value"=="$option.name") selected #end>$option.name</option>
 						#end
 					</select>
-				#else 
+				#else
 					<input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value='$value' class="{validate:{required:$attribute.mandatory #if($attribute.valueType=='NUMBER'),number:true #end }}" />
 				#end
 			</td>		
 		</tr>
+		#end
 	#end
 #end
 
@@ -183,6 +185,7 @@
 	#elseif( $!attribute )
 		#set( $attributeValue = "" )
 		#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
+		#if( $attribute.valueType != 'CALCULATED')
 		<tr>
 			<td class='text-column'><label>$encoder.htmlEncode($attribute.name) #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 			<td class="input-column">
@@ -204,11 +207,12 @@
 						<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 					#end
 					</select>
-				#else
+				#else  
 					<input type="text"  id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value="$!attributeValue" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" >
 				#end
 			</td>		
 		</tr>
+		#end
 		#end
 	#end
 #end
