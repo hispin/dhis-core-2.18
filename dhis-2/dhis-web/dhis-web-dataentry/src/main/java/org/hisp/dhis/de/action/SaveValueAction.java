@@ -164,11 +164,26 @@ public class SaveValueAction
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
+        if ( organisationUnit == null )
+        {
+            return logError( "Invalid organisation unit identifier: " + organisationUnitId );
+        }
+        
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        String storedBy = currentUserService.getCurrentUsername();
-
+        if ( dataElement == null )
+        {
+            return logError( "Invalid data element identifier: " + dataElementId );
+        }
+        
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+
+        if ( optionCombo == null )
+        {
+            return logError( "Invalid category option combo identifier: " + optionComboId );
+        }
+        
+        String storedBy = currentUserService.getCurrentUsername();
 
         Date now = new Date();
 
