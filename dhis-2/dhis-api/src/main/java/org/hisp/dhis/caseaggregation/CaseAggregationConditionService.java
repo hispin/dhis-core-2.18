@@ -61,7 +61,6 @@ public interface CaseAggregationConditionService
     CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
     
     Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements );
-
     
     Integer parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
         

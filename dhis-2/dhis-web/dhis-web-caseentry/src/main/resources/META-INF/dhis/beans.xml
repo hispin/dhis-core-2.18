@@ -282,7 +282,7 @@
 		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
 		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
 		scope="prototype">
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 	</bean>
 
 	<bean
