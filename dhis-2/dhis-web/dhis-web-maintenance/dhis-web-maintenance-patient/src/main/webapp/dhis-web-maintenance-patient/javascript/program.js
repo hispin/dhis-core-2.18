@@ -63,6 +63,7 @@ function programOnChange()
 		disable("dateOfIncidentDescription");
 		disable("generatedByEnrollmentDate");
 		disable("availablePropertyIds");
+		disable('ignoreOverdueEvents');
 		hideById("selectedList");
 		jQuery("[name=displayed]").attr("disabled", true);
 		jQuery("[name=displayed]").removeAttr("checked");
@@ -74,6 +75,11 @@ function programOnChange()
 		enable("generatedByEnrollmentDate");
 		enable('dateOfEnrollmentDescription');
 		enable("displayIncidentDate");
+		enable('ignoreOverdueEvents');
+		if( type == 2 ){
+			disable('ignoreOverdueEvents');
+		}
+		
 		if(byId('displayIncidentDate').checked){
 			enable("dateOfIncidentDescription");
 		}

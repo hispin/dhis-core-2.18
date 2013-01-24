@@ -64,7 +64,7 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
-			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type=='3' ) disabled #end ></td>
+			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
 			<td></td>
 		</tr>
 		
