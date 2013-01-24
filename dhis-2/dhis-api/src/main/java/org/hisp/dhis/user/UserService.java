@@ -374,5 +374,8 @@ public interface UserService
      */
     void removeUserSettings( User user );
     
-    Collection<User> getUsersByName( String name );    
+    Collection<User> getUsersByName( String name );  
+    
+    Collection<String> getUsernames( String query, Integer max );
+    
 }

@@ -83,6 +83,8 @@ public class DataElement
     public static final String VALUE_TYPE_INT = "int";
 
     public static final String VALUE_TYPE_NUMBER = "number";
+    
+    public static final String VALUE_TYPE_USER_NAME = "username";
 
     public static final String VALUE_TYPE_POSITIVE_INT = "positiveNumber";
 

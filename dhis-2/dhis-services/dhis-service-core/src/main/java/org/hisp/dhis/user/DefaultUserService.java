@@ -518,4 +518,10 @@ public class DefaultUserService
     {
         userStore.removeUserSettings( user );
     }
+    
+    public Collection<String> getUsernames( String query, Integer max )
+    {
+        return userCredentialsStore.getUsernames( query, max );
+    }
+    
 }
