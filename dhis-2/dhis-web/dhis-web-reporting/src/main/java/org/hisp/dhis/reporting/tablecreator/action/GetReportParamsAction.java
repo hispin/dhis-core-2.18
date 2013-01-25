@@ -105,7 +105,19 @@ public class GetReportParamsAction
     {
         this.mode = mode;
     }
-        
+    
+    private String type;
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -151,12 +163,12 @@ public class GetReportParamsAction
         {
             Report report = reportService.getReport( uid );
             
-            if ( report != null && report.isReportTableDataSource() )
+            if ( report != null && report.isTypeReportTable() )
             {
                 reportParams = report.getReportTable().getReportParams();                
                 relatives = report.getReportTable().getRelatives();
             }
-            else if ( report != null && report.isJdbcDataSource() )
+            else if ( report != null && ( report.isTypeJdbc() || report.isTypeHtml() ) )
             {
                 reportParams = report.getReportParams();                
                 relatives = report.getRelatives();

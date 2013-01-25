@@ -478,6 +478,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataset ALTER COLUMN shortname TYPE character varying(50)" );
         executeSql( "ALTER TABLE organisationunit ALTER COLUMN shortname TYPE character varying(50)" );
 
+        executeSql( "update report set type='jasperReportTable' where type is null and reporttableid is not null" );
+        executeSql( "update report set type='jasperJdbc' where type is null and reporttableid is null" );
+        
         // upgrade authorities
 
         executeSql( "UPDATE userroleauthorities SET authority='F_DOCUMENT_PUBLIC_ADD' WHERE authority='F_DOCUMENT_ADD'" );

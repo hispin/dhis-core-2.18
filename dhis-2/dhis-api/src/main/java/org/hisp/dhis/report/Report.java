@@ -27,11 +27,6 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -40,6 +35,12 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Lars Helge Overland
@@ -51,7 +52,13 @@ public class Report
     private static final long serialVersionUID = 7880117720157807526L;
 
     public static final String TEMPLATE_DIR = "templates";
+    
+    public static final String TYPE_JASPER_REPORT_TABLE = "jasperReportTable";
+    public static final String TYPE_JASPER_JDBC = "jasperJdbc";
+    public static final String TYPE_HTML = "html";
 
+    private String type;
+    
     private String designContent;
 
     private ReportTable reportTable;
@@ -70,14 +77,14 @@ public class Report
     {
     }
 
-    public Report( String name, String designContent, ReportTable reportTable )
+    public Report( String name, String type, String designContent, ReportTable reportTable )
     {
         this.name = name;
         this.designContent = designContent;
         this.reportTable = reportTable;
     }
     
-    public Report( String name, String designContent, RelativePeriods relatives, ReportParams reportParams )
+    public Report( String name, String type, String designContent, RelativePeriods relatives, ReportParams reportParams )
     {
         this.name = name;
         this.designContent = designContent;
@@ -89,16 +96,21 @@ public class Report
     // Logic
     // -------------------------------------------------------------------------
 
-    public boolean isReportTableDataSource()
+    public boolean isTypeReportTable()
     {
-        return reportTable != null;
+        return type != null && TYPE_JASPER_REPORT_TABLE.equals( type );
     }
     
-    public boolean isJdbcDataSource()
+    public boolean isTypeJdbc()
     {
-        return reportTable == null;
+        return type != null && TYPE_JASPER_JDBC.equals( type );
     }
     
+    public boolean isTypeHtml()
+    {
+        return type != null && TYPE_HTML.equals( type );
+    }
+        
     public boolean hasReportTable()
     {
         return reportTable != null;
@@ -167,6 +179,19 @@ public class Report
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )

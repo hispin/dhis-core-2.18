@@ -42,7 +42,7 @@
                 <tr id="tr${report.id}">
                     <td>$encoder.htmlEncode( $report.name )</td>
                     <td style="text-align:right">
-                    	<a href="getReportParams.action?uid=${report.uid}&mode=report" title="$i18n.getString( 'create' )">                    	
+                    	<a href="getReportParams.action?uid=${report.uid}&mode=report&type=${report.type}" title="$i18n.getString( 'create' )">                    	
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'create' )"></a>                   
 
                         #if ( $security.canManage( $report ) )

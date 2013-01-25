@@ -1,6 +1,8 @@
 var MODE_REPORT = "report";
 var MODE_TABLE = "table";
 
+var TYPE_HTML = "html";
+
 // -----------------------------------------------------------------------------
 // Validation
 // -----------------------------------------------------------------------------
@@ -28,16 +30,24 @@ function viewReport( type )
     {
         return false;
     }
-    
-    var mode = $( "#mode" ).val();
+
     var uid = $( "#uid" ).val();
+    var mode = $( "#mode" ).val();
+    var type = $( "#type" ).val();
 
     setMessage( i18n_process_completed );
 
-    if ( mode == MODE_REPORT )
+    if ( MODE_REPORT == mode )
     {
-    	window.location.href = "../api/reports/" + uid + "/data." + reportType + "?" + getUrlParams();
-    } 
+    	if ( TYPE_HTML == type )
+    	{
+    		window.location.href= "generateHtmlReport.action?uid=" + uid + "&" + getUrlParams();
+    	}
+    	else // JASPER
+    	{
+    		window.location.href = "../api/reports/" + uid + "/data." + reportType + "?" + getUrlParams();
+    	}
+    }
     else // MODE_TABLE
     {
         window.location.href = "exportTable.action?uid=" + uid + "&type=html&" + getUrlParams();
