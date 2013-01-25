@@ -6,8 +6,11 @@
 
 <script type="text/javascript">
 
-// Put your javscript here
+// Put your javascript functions here 
 
+jQuery( document ).ready( function() {
+    // Put javascript to be executed after page is loaded here 
+} );
 </script>
 
 <div>
@@ -16,7 +19,7 @@
 
 </div>
 
-<!-- Remove text after this point after reading it -->
+<!-- Remove content after this line after reading it -->
 
 <h3>This is a template for HTML/javascript based reports</h3>
 
@@ -31,25 +34,27 @@ You should not include &lt;html&gt;, &lt;body&gt; or &lt;head&gt; tags in your r
 <p>
 You can utilize the DHIS 2 Web API to render meta-data and data in your report. 
 The Web API can be accessed from ../api. For instance, to retrieve the first page
-of data elements in JSON format you can link to ../api/dataElements.json . To 
+of data elements in JSON format you can link to ../api/dataElements.json. To 
 get access to aggregate data you can utilize the analytics controller at
 ../api/analytics.</p>
 
 <p>
 HTML-based standard reports can use relative periods and report parameters in
-the same way as other standard reports. If you select relative periods or report
+the same way as other types of standard reports. If you select relative periods or report
 parameters for period and organisation unit, you can access the resulting periods
-and organisation unit in the dhis2.report javascript namespace like below. 
+and organisation unit in the dhis2.report javascript namespace like below:
 </p>
 
 <div style="font-family:courier,sans-serif; padding:20px; border: 1px solid #ddd;">
-var organisationUnit = dhis2.report.organisationUnit; // An object<br><br>
+var orgUnit = dhis2.report.organisationUnit; // An object<br><br>
 
-var name = organisationUnit.name;<br>
-var shortName = organisationUnit.shortName;<br>
-var code = organisationUnit.code;<br><br>
+var name = orgUnit.name;<br>
+var shortName = orgUnit.shortName;<br>
+var code = orgUnit.code;<br><br>
 
-var periods = dhis2.report.periods; // An array with period identifiers
+var periods = dhis2.report.periods; // An array with period identifiers<br><br>
+
+var period = periods[0];
 </div> 
 
 <p>

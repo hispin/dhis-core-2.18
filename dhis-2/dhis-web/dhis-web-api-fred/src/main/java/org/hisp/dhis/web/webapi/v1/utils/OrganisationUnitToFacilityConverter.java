@@ -27,9 +27,13 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.controller.FacilityController;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
@@ -37,13 +41,6 @@ import org.hisp.dhis.web.webapi.v1.domain.Identifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

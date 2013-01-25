@@ -73,7 +73,7 @@ final public class GeoUtils
 
         try
         {
-            List list = new ObjectMapper().readValue( coordinatesString, List.class );
+            List<?> list = new ObjectMapper().readValue( coordinatesString, List.class );
 
             if ( from == CoordinateOrder.COORDINATE_LATLNG )
             {
