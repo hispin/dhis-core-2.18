@@ -35,10 +35,28 @@ function addToDashboard( id )
     }
 }
 
-function toggleDataSource()
+function setReportType()
 {
-	$( ".reportTableDataSource" ).toggle();
-	$( ".jdbcDataSource" ).toggle();
+	var type = $( "#type :selected" ).val();
+	
+	if ( "jasperReportTable" == type )
+	{
+		$( ".jasperJdbcDataSource" ).hide();
+		$( ".htmlDataSource" ).hide();
+		$( ".jasperReportTableDataSource" ).show();
+	}
+	else if ( "jasperJdbc" == type )
+	{
+		$( ".jasperReportTableDataSource" ).hide();
+		$( ".htmlDataSource" ).hide();
+		$( ".jasperJdbcDataSource" ).show();
+	}
+	else if ( "html" == type )
+	{
+		$( ".jasperReportTableDataSource" ).hide();
+		$( ".jasperJdbcDataSource" ).hide();
+		$( ".htmlDataSource" ).show();
+	}
 }
 
 // -----------------------------------------------------------------------------

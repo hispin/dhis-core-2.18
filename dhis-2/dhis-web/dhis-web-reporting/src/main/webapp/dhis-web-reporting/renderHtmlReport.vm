@@ -1,0 +1,31 @@
+<script type="text/javascript">
+
+dhis2.util.namespace( 'dhis2.report' );
+
+dhis2.report.organisationUnit = {
+#if ( $organisationUnit )
+    "id": "$!{organisationUnit.uid}",
+    "name": "$!{organisationUnit.name}",
+    "shortName": "$!{organisationUnit.shortName}",
+    "code": "$!{organisationUnit.code}"
+#end
+};
+
+dhis2.report.periods = {
+#if ( $periods )
+#set( $size = $periods.size() )
+#foreach( $period in $periods )
+"$period.getIsoDate()"#if( $velocityCount < $size ),#end
+#end
+#end
+};
+
+</script>
+
+<div style="margin-bottom:16px" class="hideInPrint">
+<input type="button" value="$i18n.getString( 'print' )" onclick="window.print()" id="printButton" style="width:120px"/>
+</div>
+
+<div>
+${report.designContent}
+</div>
