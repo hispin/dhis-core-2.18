@@ -84,7 +84,7 @@ public class DefaultAnalyticsTableService
         final Date latest = tableManager.getLatestData();
         final String tableName = tableManager.getTableName();
         final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );        
-        clock.logTime( "Checked data timespan and got tables: " + tables );
+        clock.logTime( "Got partition tables: " + tables + ", earliest: " + earliest + ", latest: " + latest );
         
         //dropTables( tables );
         

@@ -211,7 +211,7 @@ public class JdbcAnalyticsTableManager
 
     public Date getLatestData()
     {
-        final String sql = "select max(pe.startdate) from datavalue dv " +
+        final String sql = "select max(pe.enddate) from datavalue dv " +
             "join period pe on dv.periodid=pe.periodid";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
