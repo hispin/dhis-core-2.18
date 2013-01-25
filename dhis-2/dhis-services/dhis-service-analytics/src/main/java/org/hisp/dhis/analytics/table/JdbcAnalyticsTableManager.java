@@ -40,6 +40,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.scheduling.annotation.Async;
@@ -93,8 +94,11 @@ public class JdbcAnalyticsTableManager
     }
     
     @Async
-    public Future<?> populateTableAsync( String tableName, Date startDate, Date endDate )
+    public Future<?> populateTableAsync( String tableName, Period period )
     {
+        Date startDate = period.getStartDate();
+        Date endDate = period.getEndDate();
+        
         populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", "int" );
         
         populateTable( tableName, startDate, endDate, "1" , "bool" );
@@ -123,7 +127,7 @@ public class JdbcAnalyticsTableManager
             select += col[2] + ",";
         }
         
-        select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix
+        select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix TODO remove
         
         select += 
             valueExpression + " * ps.daysno as value, " +

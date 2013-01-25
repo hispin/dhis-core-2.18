@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -47,9 +48,14 @@ public class PartitionUtils
 
     public static List<String> getTempTableNames( Date earliest, Date latest, String tableName )
     {   
-        if ( earliest == null || latest == null || earliest.after( latest ) )
+        if ( earliest == null || latest == null )
         {
-            throw new IllegalArgumentException( "Earliest or latest date invalid: " + earliest + ", " + latest );
+            return new ArrayList<String>( Arrays.asList( tableName + AnalyticsTableManager.TABLE_TEMP_SUFFIX ) );
+        }
+        
+        if ( earliest.after( latest ) )
+        {
+            throw new IllegalArgumentException( "Earliest date is after latest: " + earliest + ", " + latest );
         }
         
         List<String> tables = new ArrayList<String>();
@@ -79,7 +85,7 @@ public class PartitionUtils
     {
         if ( tableName == null || tableName.indexOf( SEP ) == -1 )
         {
-            throw new IllegalArgumentException( "Illegal table name: " + tableName );
+            return null;
         }
         
         String[] split = tableName.split( SEP );

@@ -32,6 +32,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.hisp.dhis.period.Period;
+
 public interface AnalyticsTableManager
 {
     public static final String TABLE_TEMP_SUFFIX = "_temp";
@@ -77,10 +79,9 @@ public interface AnalyticsTableManager
      * The data range is based on the start date of the data value row.
      * 
      * @param tableName the name of the analytics table.
-     * @param startDate the start date for the data value row start date
-     * @param endDate the end date for the data value row end date
+     * @param period the data period for which to populate the table.
      */
-    Future<?> populateTableAsync( String tableName, Date startDate, Date endDate );    
+    Future<?> populateTableAsync( String tableName, Period period );    
 
     /**
      * Returns a list of string arrays in where the first index holds the database
