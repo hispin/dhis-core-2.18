@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.program.hibernate;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -663,7 +664,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-        
+
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         // Type != 2
@@ -985,7 +986,7 @@ public class HibernateProgramStageInstanceStore
                 }
                 sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                 sql += "     psi_1.executiondate <= '" + endDate + "' ";
-                sql += filterSQL + " ) ) ";
+                sql += filterSQL + " ) as " + aggregateType + "  ) ";
                 sql += " UNION ";
             }
         }
@@ -1389,8 +1390,12 @@ public class HibernateProgramStageInstanceStore
                 total = 0;
                 for ( int i = 2; i <= cols; i++ )
                 {
-                    column.add( rowSet.getInt( i ) );
-                    total += rowSet.getInt( i );
+                    column.add( rowSet.getObject( i ) );
+                    // value
+                    if ( rowSet.getMetaData().getColumnType( i ) != Types.VARCHAR )
+                    {
+                        total += rowSet.getInt( i );
+                    }
                 }
                 column.add( total );
                 columnValues.put( index, column );
@@ -1424,7 +1429,10 @@ public class HibernateProgramStageInstanceStore
                 total = 0;
                 for ( int i = 2; i < index; i++ )
                 {
-                    total += (Integer) columnValues.get( i ).get( j );
+                    if ( rowSet.getMetaData().getColumnType( i ) != Types.VARCHAR )
+                    {
+                        total += (Long) columnValues.get( i ).get( j );
+                    }
                 }
                 column.add( total );
                 allTotal += total;
@@ -1516,12 +1524,12 @@ public class HibernateProgramStageInstanceStore
             int total = 0;
             for ( int i = 1; i <= cols; i++ )
             {
-                // meta column
-                if ( i == 1 )
+                // values
+                if ( rs.getMetaData().getColumnType( i ) == Types.VARCHAR )
                 {
                     grid.addValue( rs.getObject( i ) );
                 }
-                // values
+                // meta column
                 else
                 {
                     Integer value = rs.getInt( i );
