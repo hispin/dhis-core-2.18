@@ -130,10 +130,12 @@ public class DefaultAnalyticsTableService
     {
         List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( getProcessNo() ).getPages();
         
-        log.info( "No of pages: " + tablePages.size() );
+        log.info( "No of table pages: " + tablePages.size() );
         
         for ( List<String> tablePage : tablePages )
         {
+            log.info( "Table page: " + tablePage );
+            
             List<Future<?>> futures = new ArrayList<Future<?>>();
             
             for ( String table : tablePage )

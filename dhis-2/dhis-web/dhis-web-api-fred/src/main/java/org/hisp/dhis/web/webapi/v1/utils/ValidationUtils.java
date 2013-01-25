@@ -55,7 +55,7 @@ public class ValidationUtils
     {
         Map<String, String> constraintViolationsMap = new HashMap<String, String>();
 
-        for ( ConstraintViolation constraintViolation : constraintViolations )
+        for ( ConstraintViolation<T> constraintViolation : constraintViolations )
         {
             constraintViolationsMap.put( constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage() );
         }
