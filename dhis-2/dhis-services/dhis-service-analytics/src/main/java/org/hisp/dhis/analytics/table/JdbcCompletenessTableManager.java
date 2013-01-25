@@ -160,7 +160,7 @@ public class JdbcCompletenessTableManager
 
     public Date getLatestData()
     {
-        final String sql = "select max(pe.startdate) from completedatasetregistration cdr " +
+        final String sql = "select max(pe.enddate) from completedatasetregistration cdr " +
             "join period pe on cdr.periodid=pe.periodid";
         
         return jdbcTemplate.queryForObject( sql, Date.class );

@@ -83,6 +83,18 @@ public class DefaultPeriodService
     {
         return periodStore.get( id );
     }
+    
+    public Period getPeriod( String isoPeriod )
+    {
+        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
+        
+        if ( period != null )
+        {        
+            period = periodStore.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
+        }
+        
+        return period;
+    }
 
     public Period getPeriod( Date startDate, Date endDate, PeriodType periodType )
     {

@@ -71,6 +71,14 @@ public interface PeriodService
     Period getPeriod( int id );
 
     /**
+     * Gets the Period with the given ISO period identifier.
+     * 
+     * @param isoPeriod the ISO period identifier.
+     * @return the Period with the given ISO period identifier.
+     */
+    Period getPeriod( String isoPeriod );
+    
+    /**
      * Returns a Period.
      * 
      * @param startDate the start date of the Period.
