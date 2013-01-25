@@ -396,6 +396,7 @@ public class HibernateProgramStageInstanceStore
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n )
     {
         String sql = "";
+        List<String> deValues = new ArrayList<String>();
         String filterSQL = filterSQLStatement( deFilters );
 
         Grid grid = new ListGrid();
@@ -409,23 +410,26 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, true ) );
-
-            for ( Period period : periods )
-            {
-                String periodName = "";
-                if ( period.getPeriodType() != null )
-                {
-                    periodName = format.formatPeriod( period );
-                }
-                else
-                {
-                    String startDate = format.formatDate( period.getStartDate() );
-                    String endDate = format.formatDate( period.getEndDate() );
-                    periodName = startDate + " -> " + endDate;
-                }
-                grid.addHeader( new GridHeader( periodName, false, false ) );
-            }
+            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
+            // false, true ) );
+            //
+            // for ( Period period : periods )
+            // {
+            // String periodName = "";
+            // if ( period.getPeriodType() != null )
+            // {
+            // periodName = format.formatPeriod( period );
+            // }
+            // else
+            // {
+            // String startDate = format.formatDate( period.getStartDate() );
+            // String endDate = format.formatDate( period.getEndDate() );
+            // periodName = startDate + " -> " + endDate;
+            // }
+            // grid.addHeader( new GridHeader( periodName, false, false ) );
+            // }
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -451,10 +455,15 @@ public class HibernateProgramStageInstanceStore
             // ---------------------------------------------------------------------
             // Headers cols
             // ---------------------------------------------------------------------
-
-            grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
+            //
+            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
+            // false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -471,8 +480,12 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
+            // false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -489,8 +502,12 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
+            // false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -507,7 +524,6 @@ public class HibernateProgramStageInstanceStore
         else if ( (position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD)
             && deGroupBy != null )
         {
-            List<String> deValues = new ArrayList<String>();
 
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
@@ -515,14 +531,20 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
-            {
-                grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
-                for ( String deValue : deValues )
-                {
-                    grid.addHeader( new GridHeader( deValue, false, false ) );
-                }
-            }
+            // if ( position ==
+            // PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
+            // {
+            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
+            // false, true ) );
+            // for ( String deValue : deValues )
+            // {
+            // grid.addHeader( new GridHeader( deValue, false, false ) );
+            // }
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
+            // }
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -540,11 +562,16 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
-            {
-                grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
-                grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
-            }
+            // if ( position ==
+            // PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
+            // {
+            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
+            // false, false ) );
+            // }
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -558,21 +585,25 @@ public class HibernateProgramStageInstanceStore
         else if ( (position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT)
             && deGroupBy != null )
         {
-            List<String> deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
+            deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
             // ---------------------------------------------------------------------
             // Headers cols
             // ---------------------------------------------------------------------
 
-            if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
-            {
-                grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, true ) );
-
-                for ( String deValue : deValues )
-                {
-                    grid.addHeader( new GridHeader( deValue, false, false ) );
-                }
-            }
+            // if ( position ==
+            // PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
+            // {
+            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
+            // false, true ) );
+            //
+            // for ( String deValue : deValues )
+            // {
+            // grid.addHeader( new GridHeader( deValue, false, false ) );
+            // }
+            // }
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -591,11 +622,16 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
-            {
-                grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, true ) );
-                grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
-            }
+            // if ( position ==
+            // PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
+            // {
+            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
+            // false, false ) );
+            // }
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -613,8 +649,12 @@ public class HibernateProgramStageInstanceStore
             // Headers cols
             // ---------------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "data_element" ), false, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( aggregateType ), false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString( "data_element" ),
+            // false, true ) );
+            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
+            // false, false ) );
+            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
+            // false ) );
 
             // ---------------------------------------------------------------------
             // Get SQL and build grid
@@ -623,8 +663,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-
-        System.out.println( "\n\n === \n " + sql );
+        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         // Type != 2
@@ -632,11 +671,11 @@ public class HibernateProgramStageInstanceStore
             || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD
             || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT )
         {
-            pivotTable( grid, rowSet );
+            pivotTable( grid, rowSet, i18n );
         }
         else
         {
-            GridUtils.addRows( grid, rowSet );
+            fillDataInGrid( grid, rowSet, i18n );
         }
 
         return grid;
@@ -1330,14 +1369,14 @@ public class HibernateProgramStageInstanceStore
         return sql;
     }
 
-    private void pivotTable( Grid grid, SqlRowSet rowSet )
+    private void pivotTable( Grid grid, SqlRowSet rowSet, I18n i18n )
     {
         try
         {
             int cols = rowSet.getMetaData().getColumnCount();
-
+            int total = 0;
             Map<Integer, List<Object>> columnValues = new HashMap<Integer, List<Object>>();
-            int index = 1;
+            int index = 2;
 
             grid.addHeader( new GridHeader( "", false, true ) );
             while ( rowSet.next() )
@@ -1347,30 +1386,51 @@ public class HibernateProgramStageInstanceStore
 
                 // Column values
                 List<Object> column = new ArrayList<Object>();
+                total = 0;
                 for ( int i = 2; i <= cols; i++ )
                 {
-                    column.add( rowSet.getObject( i ) );
+                    column.add( rowSet.getInt( i ) );
+                    total += rowSet.getInt( i );
                 }
+                column.add( total );
                 columnValues.put( index, column );
-
                 index++;
             }
+            // Add total header
+            grid.addHeader( new GridHeader( i18n.getString( "total" ), false, false ) );
 
-            // Rows grid
-            List<Object> firstColumn = new ArrayList<Object>();
+            // First column
+            List<Object> column = new ArrayList<Object>();
             for ( int i = 2; i <= cols; i++ )
             {
                 grid.addRow();
-                // first column
-                firstColumn.add( rowSet.getMetaData().getColumnLabel( i ) );
+                column.add( rowSet.getMetaData().getColumnLabel( i ) );
             }
-            grid.addColumn( firstColumn );
+            grid.addRow();
+            column.add( i18n.getString( "total" ) );
+            grid.addColumn( column );
 
             // Other columns
-            for ( int i = 1; i < index; i++ )
+            for ( int i = 2; i < index; i++ )
             {
                 grid.addColumn( columnValues.get( i ) );
             }
+
+            // Total column
+            int allTotal = 0;
+            column = new ArrayList<Object>();
+            for ( int j = 0; j < cols - 1; j++ )
+            {
+                total = 0;
+                for ( int i = 2; i < index; i++ )
+                {
+                    total += (Integer) columnValues.get( i ).get( j );
+                }
+                column.add( total );
+                allTotal += total;
+            }
+            column.add( allTotal );
+            grid.addColumn( column );
         }
         catch ( Exception ex )
         {
@@ -1435,5 +1495,54 @@ public class HibernateProgramStageInstanceStore
         }
 
         return orgunitIds;
+    }
+
+    public static void fillDataInGrid( Grid grid, SqlRowSet rs, I18n i18n )
+    {
+        int cols = rs.getMetaData().getColumnCount();
+
+        // Create column with Total column
+        for ( int i = 1; i <= cols; i++ )
+        {
+            grid.addHeader( new GridHeader( rs.getMetaData().getColumnLabel( i ), false, false ) );
+        }
+        grid.addHeader( new GridHeader( i18n.getString( "total" ), false, false ) );
+
+        int[] sumRow = new int[rs.getMetaData().getColumnCount() + 1];
+        while ( rs.next() )
+        {
+            grid.addRow();
+
+            int total = 0;
+            for ( int i = 1; i <= cols; i++ )
+            {
+                // meta column
+                if ( i == 1 )
+                {
+                    grid.addValue( rs.getObject( i ) );
+                }
+                // values
+                else
+                {
+                    Integer value = rs.getInt( i );
+                    sumRow[i] += value;
+                    grid.addValue( value );
+                    total += rs.getInt( i );
+                }
+            }
+
+            // total
+            grid.addValue( total );
+        }
+
+        grid.addRow();
+        grid.addValue( i18n.getString( "total" ) );
+        int total = 0;
+        for ( int i = 2; i <= cols; i++ )
+        {
+            total += sumRow[i];
+            grid.addValue( sumRow[i] );
+        }
+        grid.addValue( total );
     }
 }

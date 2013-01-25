@@ -235,7 +235,7 @@ public class SaveAggregateReportAction
             for ( int i = 0; i < startDates.size(); i++ )
             {
                 start.add( format.parseDate( startDates.get( i ) ) );
-                end.add( format.parseDate( startDates.get( i ) ) );
+                end.add( format.parseDate( endDates.get( i ) ) );
             }
             aggregateReport.setStartDates( start );
             aggregateReport.setEndDates( end );
