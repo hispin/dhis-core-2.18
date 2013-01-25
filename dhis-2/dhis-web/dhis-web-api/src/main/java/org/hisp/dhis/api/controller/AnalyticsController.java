@@ -62,8 +62,6 @@ public class AnalyticsController
     @Autowired
     private I18nManager i18nManager;
     
-    //TODO URL only requests
-
     // -------------------------------------------------------------------------
     // Resources
     // -------------------------------------------------------------------------
@@ -164,13 +162,13 @@ public class AnalyticsController
         
         if ( !params.dimensionsAsFilters().isEmpty() )
         {
-            ContextUtils.conflictResponse( response, "Dimensions cannot also be specified as filters: " + params.dimensionsAsFilters() );
+            ContextUtils.conflictResponse( response, "Dimensions cannot be specified as dimension and filter simultaneously: " + params.dimensionsAsFilters() );
             return false;
         }
         
         if ( !params.hasPeriods() )
         {
-            ContextUtils.conflictResponse( response, "Periods must be specified as dimension or filter" );
+            ContextUtils.conflictResponse( response, "At least one period must be specified as dimension or filter" );
             return false;
         }
         

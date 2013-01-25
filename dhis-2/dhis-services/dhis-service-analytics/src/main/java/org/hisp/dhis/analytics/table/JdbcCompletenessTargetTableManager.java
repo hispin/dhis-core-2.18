@@ -36,83 +36,70 @@ import java.util.concurrent.Future;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.scheduling.annotation.Async;
 
-public class JdbcCompletenessTableManager
+public class JdbcCompletenessTargetTableManager
     extends AbstractJdbcTableManager
 {
     public String getTableName()
     {
-        return "completeness";
+        return "completenesstarget";
     }
-    
+
     public void createTable( String tableName )
     {
         final String sqlDrop = "drop table " + tableName;
         
         executeSilently( sqlDrop );
-        
+
         String sqlCreate = "create table " + tableName + " (";
-        
+
         for ( String[] col : getDimensionColumns() )
         {
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "date date)";
+        sqlCreate = sqlCreate.substring( 0, sqlCreate.length() - 1 ) + ")";
         
         log.info( "Create SQL: " + sqlCreate );
         
         executeSilently( sqlCreate );
     }
-    
+
     @Async
     public Future<?> populateTableAsync( String tableName, Period period )
     {
-        final String start = DateUtils.getMediumDateString( period.getStartDate() );
-        final String end = DateUtils.getMediumDateString( period.getEndDate() );
-        
-        String insert = "insert into " + tableName + " (";
-        
-        for ( String[] col : getDimensionColumns() )
-        {
-            insert += col[0] + ",";
-        }
-        
-        insert += "date) ";
-        
-        String select = "select ";
-        
-        for ( String[] col : getDimensionColumns() )
-        {
-            select += col[2] + ",";
-        }
-        
-        select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix TODO remove
-        
-        select += 
-            "cdr.date as date " +
-            "from completedatasetregistration cdr " +
-            "left join _organisationunitgroupsetstructure ougs on cdr.sourceid=ougs.organisationunitid " +
-            "left join _orgunitstructure ous on cdr.sourceid=ous.organisationunitid " +
-            "left join _periodstructure ps on cdr.periodid=ps.periodid " +
-            "left join period pe on cdr.periodid=pe.periodid " +
-            "left join dataset ds on cdr.datasetid=ds.datasetid " +
-            "where pe.startdate >= '" + start + "' " +
-            "and pe.startdate <= '" + end + "'" +
-            "and cdr.date is not null";
+        String sql = "insert into " + tableName + " (";
 
-        final String sql = insert + select;
+        for ( String[] col : getDimensionColumns() )
+        {
+            sql += col[0] + ",";
+        }
+
+        sql = sql.substring( 0, sql.length() - 1 );
         
+        sql += ") select ";
+
+        for ( String[] col : getDimensionColumns() )
+        {
+            sql += col[2] + ",";
+        }
+        
+        sql = sql.substring( 0, sql.length() - 1 ) + " ";
+        
+        sql +=
+            "from datasetsource dss " +
+            "left join dataset ds on dss.datasetid=ds.datasetid " +
+            "left join _orgunitstructure ous on dss.sourceid=ous.organisationunitid " +
+            "left join _organisationunitgroupsetstructure ougs on dss.sourceid=ougs.organisationunitid";            
+
         log.info( "Populate SQL: "+ sql );
         
         jdbcTemplate.execute( sql );
         
         return null;
     }
-    
+
     public List<String[]> getDimensionColumns()
     {
         List<String[]> columns = new ArrayList<String[]>();
@@ -135,14 +122,7 @@ public class JdbcCompletenessTableManager
             String[] col = { column, "character(11)", "ous." + column };
             columns.add( col );
         }
-        
-        for ( PeriodType periodType : PeriodType.getAvailablePeriodTypes().subList( 0, 7 ) )
-        {
-            String column = periodType.getName().toLowerCase();
-            String[] col = { column, "character varying(10)", "ps." + column };
-            columns.add( col );
-        }
-        
+
         String[] ds = { "ds", "character(11) not null", "ds.uid" };
         
         columns.add( ds );
@@ -152,20 +132,14 @@ public class JdbcCompletenessTableManager
 
     public Date getEarliestData()
     {
-        final String sql = "select min(pe.startdate) from completedatasetregistration cdr " +
-            "join period pe on cdr.periodid=pe.periodid";
-        
-        return jdbcTemplate.queryForObject( sql, Date.class );
+        return null; // Not relevant
     }
 
     public Date getLatestData()
     {
-        final String sql = "select max(pe.startdate) from completedatasetregistration cdr " +
-            "join period pe on cdr.periodid=pe.periodid";
-        
-        return jdbcTemplate.queryForObject( sql, Date.class );
+        return null; // Not relevant
     }
-    
+
     public void applyAggregationLevels( String tableName, Collection<String> dataElements, int aggregationLevel )
     {
         // Not relevant

@@ -55,6 +55,9 @@ public class ResourceTableController
     @Resource(name="org.hisp.dhis.analytics.CompletenessTableService")
     private AnalyticsTableService completenessTableService;
     
+    @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
+    private AnalyticsTableService completenessTargetTableService;
+    
     @Autowired
     private ResourceTableService resourceTableService;
         
@@ -77,6 +80,15 @@ public class ResourceTableController
         completenessTableService.update();
         
         ContextUtils.okResponse( response, "Initiated completeness table update" );
+    }
+
+    @RequestMapping( value = "/completenessTarget", method = RequestMethod.PUT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
+    public void completenessTarget( HttpServletResponse response )
+    {
+        completenessTargetTableService.update();
+        
+        ContextUtils.okResponse( response, "Initiated completeness target table update" );
     }
     
     @RequestMapping( method = RequestMethod.PUT )

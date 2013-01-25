@@ -6,12 +6,18 @@
   
   <bean id="org.hisp.dhis.analytics.CompletenessTableManager" class="org.hisp.dhis.analytics.table.JdbcCompletenessTableManager" />
   
+  <bean id="org.hisp.dhis.analytics.CompletenessTargetTableManager" class="org.hisp.dhis.analytics.table.JdbcCompletenessTargetTableManager" />
+  
   <bean id="org.hisp.dhis.analytics.AnalyticsTableService" class="org.hisp.dhis.analytics.table.DefaultAnalyticsTableService">
     <property name="tableManager" ref="org.hisp.dhis.analytics.AnalyticsTableManager" />
   </bean>
   
   <bean id="org.hisp.dhis.analytics.CompletenessTableService" class="org.hisp.dhis.analytics.table.DefaultAnalyticsTableService">
     <property name="tableManager" ref="org.hisp.dhis.analytics.CompletenessTableManager" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.analytics.CompletenessTargetTableService" class="org.hisp.dhis.analytics.table.DefaultAnalyticsTableService">
+    <property name="tableManager" ref="org.hisp.dhis.analytics.CompletenessTargetTableManager" />
   </bean>
   
   <bean id="org.hisp.dhis.analytics.AnalyticsManager" class="org.hisp.dhis.analytics.data.JdbcAnalyticsManager" />

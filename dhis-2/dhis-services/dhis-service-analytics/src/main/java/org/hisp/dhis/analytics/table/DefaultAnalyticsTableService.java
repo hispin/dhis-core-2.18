@@ -140,7 +140,7 @@ public class DefaultAnalyticsTableService
             {
                 Period period = PartitionUtils.getPeriod( table );
                 
-                futures.add( tableManager.populateTableAsync( table, period.getStartDate(), period.getEndDate() ) );
+                futures.add( tableManager.populateTableAsync( table, period ) );
             }
             
             ConcurrentUtils.waitForCompletion( futures );

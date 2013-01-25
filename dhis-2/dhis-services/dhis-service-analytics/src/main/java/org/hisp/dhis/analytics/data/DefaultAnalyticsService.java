@@ -208,7 +208,7 @@ public class DefaultAnalyticsService
         }
 
         // ---------------------------------------------------------------------
-        // Data sets
+        // Data sets / completeness
         // ---------------------------------------------------------------------
 
         if ( params.getDataSets() != null && !params.getDataSets().isEmpty() )
