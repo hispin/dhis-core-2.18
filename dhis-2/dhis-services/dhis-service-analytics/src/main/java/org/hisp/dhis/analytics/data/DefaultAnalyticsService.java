@@ -136,11 +136,13 @@ public class DefaultAnalyticsService
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
 
+        //TODO how to handle group sets?
+        
         // ---------------------------------------------------------------------
         // Indicators
         // ---------------------------------------------------------------------
 
-        if ( params.getIndicators() != null && !params.getIndicators().isEmpty() )
+        if ( params.getIndicators() != null )
         {         
             int indicatorIndex = params.getDataElementOrIndicatorDimensionIndex();
 
@@ -191,7 +193,7 @@ public class DefaultAnalyticsService
         // Data elements
         // ---------------------------------------------------------------------
 
-        if ( params.getDataElements() != null && !params.getDataElements().isEmpty() )
+        if ( params.getDataElements() != null )
         {
             DataQueryParams dataSourceParams = new DataQueryParams( params );
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
@@ -211,7 +213,7 @@ public class DefaultAnalyticsService
         // Data sets / completeness
         // ---------------------------------------------------------------------
 
-        if ( params.getDataSets() != null && !params.getDataSets().isEmpty() )
+        if ( params.getDataSets() != null )
         {
             DataQueryParams dataSourceParams = new DataQueryParams( params );
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
@@ -228,6 +230,22 @@ public class DefaultAnalyticsService
                 grid.addValue( entry.getValue() );
             }
         }
+
+        // ---------------------------------------------------------------------
+        // Other dimensions
+        // ---------------------------------------------------------------------
+
+        if ( params.getIndicators() == null && params.getDataElements() == null && params.getDataSets() == null )
+        {
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( new DataQueryParams( params ), ANALYTICS_TABLE_NAME );
+            
+            for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
+            {
+                grid.addRow();
+                grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
+                grid.addValue( entry.getValue() );
+            }
+        }        
         
         return grid;
     }

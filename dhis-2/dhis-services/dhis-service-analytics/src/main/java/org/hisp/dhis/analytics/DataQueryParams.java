@@ -234,6 +234,30 @@ public class DataQueryParams
     }
     
     /**
+     * Returns the first dimension which has no dimension options. 
+     */
+    public Dimension getEmptyDimension()
+    {
+        for ( Dimension dim : dimensions )
+        {
+            if ( dim.getOptions() == null || dim.getOptions().isEmpty() )
+            {
+                return dim;
+            }
+        }
+        
+        for ( Dimension filter : filters )
+        {
+            if ( filter == null ||  filter.getOptions().isEmpty() )
+            {
+                return filter;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
      * Indicates whether periods are present as a dimension or as a filter. If
      * not this object is in an illegal state.
      */

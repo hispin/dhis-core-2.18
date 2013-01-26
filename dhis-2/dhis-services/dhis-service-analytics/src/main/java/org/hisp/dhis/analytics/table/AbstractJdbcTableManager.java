@@ -152,7 +152,7 @@ public abstract class AbstractJdbcTableManager
     {
         final String sql = statementBuilder.getVacuum( tableName );
         
-        log.info( "Vacuum SQL:" + sql );
+        log.info( "Vacuum SQL: " + sql );
         
         jdbcTemplate.execute( sql );
         
