@@ -126,6 +126,13 @@ function saveDynamicVal( code, optionComboId, fieldId )
 
 function saveVal( dataElementId, optionComboId, fieldId )
 {
+	var fieldIds = fieldId.split( "-" );
+	
+	if ( fieldIds.length > 3 )
+	{
+		currentOrganisationUnitId = fieldIds[0];
+	}
+
     fieldId = '#' + fieldId;
 	
     var dataElementName = getDataElementName( dataElementId );
