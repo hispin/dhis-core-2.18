@@ -27,13 +27,17 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -63,6 +67,13 @@ public class GetAggregateReportAction
         this.dataElementService = dataElementService;
     }
 
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -88,6 +99,13 @@ public class GetAggregateReportAction
         return selectedDataElements;
     }
 
+    private List<String> fixedPeriodNames = new ArrayList<String>();
+
+    public List<String> getFixedPeriodNames()
+    {
+        return fixedPeriodNames;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -97,6 +115,11 @@ public class GetAggregateReportAction
         throws Exception
     {
         aggregateReport = aggregateReportService.getPatientAggregateReport( id );
+
+        for ( String fixedPeriodId : aggregateReport.getFixedPeriods() )
+        {
+            fixedPeriodNames.add( format.formatPeriod( PeriodType.getPeriodFromIsoString( fixedPeriodId ) ) );
+        }
 
         for ( String deFilter : aggregateReport.getFilterValues() )
         {

@@ -404,38 +404,13 @@ public class HibernateProgramStageInstanceStore
         grid.setTitle( programStage.getProgram().getDisplayName() );
         grid.setSubtitle( programStage.getDisplayName() );
 
+        // ---------------------------------------------------------------------
+        // Get SQL and build grid
+        // ---------------------------------------------------------------------
+
         // Type = 1
         if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
-            // false, true ) );
-            //
-            // for ( Period period : periods )
-            // {
-            // String periodName = "";
-            // if ( period.getPeriodType() != null )
-            // {
-            // periodName = format.formatPeriod( period );
-            // }
-            // else
-            // {
-            // String startDate = format.formatDate( period.getStartDate() );
-            // String endDate = format.formatDate( period.getEndDate() );
-            // periodName = startDate + " -> " + endDate;
-            // }
-            // grid.addHeader( new GridHeader( periodName, false, false ) );
-            // }
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods,
                 aggregateType, useCompletedEvents, format );
         }
@@ -453,103 +428,29 @@ public class HibernateProgramStageInstanceStore
         // Type = 3
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-            //
-            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
-            // false, false ) );
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL3( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy,
                 periods, aggregateType, useCompletedEvents, format );
-
         }
         // Type = 4
         else if ( position == PatientAggregateReport.POSITION_ROW_PERIOD )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
-            // false, false ) );
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL4( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy,
                 periods, aggregateType, useCompletedEvents, format );
-
         }
         // type = 5
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
-            // false, false ) );
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             List<Period> firstPeriod = new ArrayList<Period>();
             firstPeriod.add( periods.iterator().next() );
             sql = getAggregateReportSQL5( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, useCompletedEvents, format );
-
         }
 
         // Type = 6 && With group-by
         else if ( (position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD)
             && deGroupBy != null )
         {
-
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
-
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // if ( position ==
-            // PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
-            // {
-            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
-            // false, true ) );
-            // for ( String deValue : deValues )
-            // {
-            // grid.addHeader( new GridHeader( deValue, false, false ) );
-            // }
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-            // }
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
 
             sql = getAggregateReportSQL6( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy,
                 deValues, periods, aggregateType, useCompletedEvents, format );
@@ -559,25 +460,6 @@ public class HibernateProgramStageInstanceStore
         else if ( (position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD)
             && deGroupBy == null )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // if ( position ==
-            // PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
-            // {
-            // grid.addHeader( new GridHeader( i18n.getString( "period" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
-            // false, false ) );
-            // }
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL6WithoutGroup( programStage, orgunitIds.iterator().next(), facilityLB,
                 filterSQL, deGroupBy, periods, aggregateType, useCompletedEvents, format );
         }
@@ -588,56 +470,14 @@ public class HibernateProgramStageInstanceStore
         {
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // if ( position ==
-            // PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
-            // {
-            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
-            // false, true ) );
-            //
-            // for ( String deValue : deValues )
-            // {
-            // grid.addHeader( new GridHeader( deValue, false, false ) );
-            // }
-            // }
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL7( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deValues, periods
                 .iterator().next(), aggregateType, useCompletedEvents, format );
-
         }
 
         // Type = 7 && NOT group-by
         else if ( (position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT)
             && deGroupBy == null )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // if ( position ==
-            // PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA )
-            // {
-            // grid.addHeader( new GridHeader( i18n.getString( "orgunit" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
-            // false, false ) );
-            // }
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL7WithoutGroup( programStage, orgunitIds, facilityLB, filterSQL, periods
                 .iterator().next(), aggregateType, useCompletedEvents, format );
 
@@ -646,28 +486,13 @@ public class HibernateProgramStageInstanceStore
         // type = 8 && With group-by
         else if ( position == PatientAggregateReport.POSITION_ROW_DATA )
         {
-            // ---------------------------------------------------------------------
-            // Headers cols
-            // ---------------------------------------------------------------------
-
-            // grid.addHeader( new GridHeader( i18n.getString( "data_element" ),
-            // false, true ) );
-            // grid.addHeader( new GridHeader( i18n.getString( aggregateType ),
-            // false, false ) );
-            // grid.addHeader( new GridHeader( i18n.getString("total"), false,
-            // false ) );
-
-            // ---------------------------------------------------------------------
-            // Get SQL and build grid
-            // ---------------------------------------------------------------------
-
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
-        // Type != 2
+        // Type ==2 && ==9 && ==10
         if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT
             || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD
             || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT )
@@ -934,8 +759,7 @@ public class HibernateProgramStageInstanceStore
     }
 
     /**
-     * Generate SQL statement for 3 report type - Aggregate report Position
-     * Orgunit Rows - Period Rows - Data Filter
+     * Aggregate report Position Orgunit Rows - Period Rows - Data Filter
      * 
      **/
     private String getAggregateReportSQL3( int position, ProgramStage programStage, Collection<Integer> roots,
@@ -964,7 +788,7 @@ public class HibernateProgramStageInstanceStore
 
                 sql += "( SELECT ";
                 sql += "( SELECT ou.name FROM organisationunit ou WHERE organisationunitid=" + root + " ) as orgunit, ";
-                sql += "'" + periodName + "' , ";
+                sql += "'" + periodName + "' as period, ";
 
                 sql += " ( SELECT " + aggregateType + "(pdv_1.value)   ";
                 sql += "FROM ";
@@ -1027,7 +851,7 @@ public class HibernateProgramStageInstanceStore
                 }
 
                 sql += "( SELECT ";
-                sql += "'" + periodName + "' , ";
+                sql += "'" + periodName + "' as period, ";
 
                 sql += " ( SELECT " + aggregateType + "(pdv_1.value)   ";
                 sql += "FROM ";
@@ -1049,7 +873,7 @@ public class HibernateProgramStageInstanceStore
                 }
                 sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                 sql += "     psi_1.executiondate <= '" + endDate + "' ";
-                sql += filterSQL + " ) ) ";
+                sql += filterSQL + " )  as " + aggregateType + ") ";
                 sql += " UNION ";
             }
         }
@@ -1098,7 +922,7 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += " AND psi_1.completed = true ";
             }
-            sql += " )  ) ";
+            sql += " ) as " + aggregateType + "  ) ";
             sql += " UNION ";
         }
 
@@ -1135,7 +959,7 @@ public class HibernateProgramStageInstanceStore
                 periodName = startDate + " -> " + endDate;
             }
 
-            sql += "(SELECT '" + periodName + "', ";
+            sql += "(SELECT '" + periodName + "' as period, ";
             for ( String deValue : deValues )
             {
                 sql += "(SELECT " + aggregateType + "(value)  ";
@@ -1199,7 +1023,7 @@ public class HibernateProgramStageInstanceStore
                 periodName = startDate + " -> " + endDate;
             }
 
-            sql += "(SELECT '" + periodName + "', ";
+            sql += "(SELECT '" + periodName + "' as period, ";
 
             sql += "(SELECT " + aggregateType + "(value)  ";
             sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
@@ -1273,7 +1097,7 @@ public class HibernateProgramStageInstanceStore
                 sql += "   WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
                 sql += "     dataelementid= pdv_1.dataelementid AND ";
                 sql += "     dataelementid=" + deGroupBy + "  ) = '" + deValue + "' ";
-                sql += ") as \"" + aggregateType + "\",";
+                sql += ") as \"" + deValue + "\",";
             }
 
             sql = sql.substring( 0, sql.length() - 1 ) + " ) ";
@@ -1409,7 +1233,7 @@ public class HibernateProgramStageInstanceStore
             for ( int i = 2; i <= cols; i++ )
             {
                 grid.addRow();
-                column.add( rowSet.getMetaData().getColumnLabel( i ) );
+                column.add( i18n.getString( rowSet.getMetaData().getColumnLabel( i ) ) );
             }
             grid.addRow();
             column.add( i18n.getString( "total" ) );
@@ -1512,7 +1336,7 @@ public class HibernateProgramStageInstanceStore
         // Create column with Total column
         for ( int i = 1; i <= cols; i++ )
         {
-            grid.addHeader( new GridHeader( rs.getMetaData().getColumnLabel( i ), false, false ) );
+            grid.addHeader( new GridHeader( i18n.getString( rs.getMetaData().getColumnLabel( i ) ), false, false ) );
         }
         grid.addHeader( new GridHeader( i18n.getString( "total" ), false, false ) );
 

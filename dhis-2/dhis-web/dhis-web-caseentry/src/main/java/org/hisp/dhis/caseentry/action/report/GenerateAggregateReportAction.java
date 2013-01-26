@@ -136,11 +136,11 @@ public class GenerateAggregateReportAction
         this.deFilters = deFilters;
     }
 
-    private Collection<String> periodIds = new HashSet<String>();
+    private Collection<String> fixedPeriods = new HashSet<String>();
 
-    public void setPeriodIds( Collection<String> periodIds )
+    public void setFixedPeriods( Collection<String> fixedPeriods )
     {
-        this.periodIds = periodIds;
+        this.fixedPeriods = fixedPeriods;
     }
 
     private Collection<String> relativePeriods = new HashSet<String>();
@@ -287,7 +287,7 @@ public class GenerateAggregateReportAction
         }
 
         // Fixed periods
-        for ( String periodId : periodIds )
+        for ( String periodId : fixedPeriods )
         {
             periods.add( PeriodType.getPeriodFromIsoString( periodId ) );
         }

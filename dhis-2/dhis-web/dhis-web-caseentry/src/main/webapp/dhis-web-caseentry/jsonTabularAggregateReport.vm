@@ -12,7 +12,7 @@
 		#end
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
-	"programStageName": "${programStage.displayName}",
+	"programStageName": "$!encoder.jsonEncode( ${programStage.displayName} )",
 	"startDates": [
 		#set( $size = ${aggregateReport.startDates.size()} )
 		#foreach( $startDate in $!aggregateReport.startDates )
@@ -37,9 +37,16 @@
 	],
 	"fixedPeriods": [
 		#set( $size = $aggregateReport.fixedPeriods.size() )
-		#set( $relativePeriods = ${aggregateReport.fixedPeriods} )
+		#set( $fixedPeriods = ${aggregateReport.fixedPeriods} )
 		#foreach( ${fixedPeriod} in $!{fixedPeriods} )
-			'$fixedPeriod'
+			"$fixedPeriod"
+			#if( $velocityCount < $size ),#end
+		#end
+	],
+	"fixedPeriodNames":[
+		#set( $size = $fixedPeriodNames.size() )
+		#foreach( $fixedPeriodName in $!fixedPeriodNames )
+			"$!encoder.jsonEncode( $fixedPeriodName )"
 			#if( $velocityCount < $size ),#end
 		#end
 	],
@@ -59,7 +66,7 @@
 		#set( $size = $aggregateReport.filterValues.size() )
 		#set( $filterValues = ${aggregateReport.filterValues} )
 		#foreach( ${filterValue} in $!{filterValues} )
-			"$filterValue"
+			"$!encoder.jsonEncode( $filterValue )"
 			#if( $velocityCount < $size ),#end
 		#end
 	],
@@ -68,7 +75,7 @@
 		#foreach( ${dataElement} in $!{selectedDataElements} )
 			{
 				"id": "de_${dataElement.id}",
-				"name": "${dataElement.name}",
+				"name": "$!encoder.jsonEncode( ${dataElement.name} )",
 				"compulsory": "${dataElement.compulsory}",
 				"valueType": #if( $dataElement.optionSet )
 								"list"
@@ -82,7 +89,7 @@
 	"facilityLB": "${aggregateReport.facilityLB}",
 	"limitRecords": "$!aggregateReport.limitRecords",
 	"position": "${aggregateReport.position}",
-	"deGroupBy": "$!aggregateReport.deGroupBy.id",
+	"deGroupBy": #if($!aggregateReport.deGroupBy) "de_$!aggregateReport.deGroupBy.id" #else "" #end,
 	"aggregateType": "${aggregateReport.aggregateType}",
 	"useCompletedEvents": "$!aggregateReport.useCompletedEvents",
 	"userOrganisationUnit": "$!aggregateReport.userOrganisationUnit",
