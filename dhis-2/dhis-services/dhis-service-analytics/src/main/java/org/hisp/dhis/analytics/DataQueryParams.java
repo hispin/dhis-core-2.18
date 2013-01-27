@@ -70,9 +70,11 @@ public class DataQueryParams
     
     private List<Dimension> dimensions = new ArrayList<Dimension>();
     
+    private List<Dimension> filters = new ArrayList<Dimension>();
+
     private boolean categories = false;
 
-    private List<Dimension> filters = new ArrayList<Dimension>();
+    private AggregationType aggregationType;
     
     // -------------------------------------------------------------------------
     // Transient properties
@@ -83,8 +85,6 @@ public class DataQueryParams
     private transient String periodType;
     
     private transient int organisationUnitLevel;
-    
-    private transient AggregationType aggregationType;
     
     private transient PeriodType dataPeriodType;
     
@@ -576,6 +576,16 @@ public class DataQueryParams
         this.dimensions = dimensions;
     }
 
+    public List<Dimension> getFilters()
+    {
+        return filters;
+    }
+
+    public void setFilters( List<Dimension> filters )
+    {
+        this.filters = filters;
+    }
+
     public boolean isCategories()
     {
         return categories;
@@ -586,14 +596,14 @@ public class DataQueryParams
         this.categories = categories;
     }
 
-    public List<Dimension> getFilters()
+    public AggregationType getAggregationType()
     {
-        return filters;
+        return aggregationType;
     }
 
-    public void setFilters( List<Dimension> filters )
+    public void setAggregationType( AggregationType aggregationType )
     {
-        this.filters = filters;
+        this.aggregationType = aggregationType;
     }
 
     // -------------------------------------------------------------------------
@@ -762,16 +772,6 @@ public class DataQueryParams
     // -------------------------------------------------------------------------
     // Get and set methods for transient properties
     // -------------------------------------------------------------------------
-
-    public AggregationType getAggregationType()
-    {
-        return aggregationType;
-    }
-
-    public void setAggregationType( AggregationType aggregationType )
-    {
-        this.aggregationType = aggregationType;
-    }
 
     public PeriodType getDataPeriodType()
     {

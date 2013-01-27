@@ -282,11 +282,12 @@ public class DefaultAnalyticsService
         return map;
     }
     
-    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, I18nFormat format )
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, AggregationType aggregationType, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
         params.setCategories( categories );
+        params.setAggregationType( aggregationType );
         
         if ( dimensionParams != null && !dimensionParams.isEmpty() )
         {
