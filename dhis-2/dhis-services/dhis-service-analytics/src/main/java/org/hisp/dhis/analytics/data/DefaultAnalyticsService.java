@@ -243,7 +243,7 @@ public class DefaultAnalyticsService
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
                 grid.addValue( entry.getValue() );
             }
-        }        
+        }
         
         return grid;
     }
