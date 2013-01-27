@@ -136,8 +136,6 @@ public class DefaultAnalyticsService
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
 
-        //TODO how to handle group sets?
-        
         // ---------------------------------------------------------------------
         // Indicators
         // ---------------------------------------------------------------------

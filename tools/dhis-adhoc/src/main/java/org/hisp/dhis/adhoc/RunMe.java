@@ -9,6 +9,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
+ * The purpose of this tool is to assist in performing ad-hoc tasks which
+ * benefits from having the DHIS 2 service layer accessible. Examples of
+ * such tasks are writing complex custom data entry forms to file, generating
+ * custom HTML or Jasper reports, and performing database operations which
+ * cannot be solved using SQL.
+ * 
  * This class should be executed. You can do this e.g. by choosing "Run as" -
  * "Java application" in your IDE.
  * 
