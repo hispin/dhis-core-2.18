@@ -310,11 +310,20 @@ public class DefaultQueryPlanner
      * first group set found. A constraint for data element groups is that they
      * must contain data elements with equal aggregation type. Hence it is not
      * meaningful to split on multiple data element group sets.
+     * 
+     * If the aggregation type is already set/overridden in the request, the
+     * query will be returned unchanged.
      */
     private List<DataQueryParams> groupByAggregationType( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
      
+        if ( params.getAggregationType() != null )
+        {
+            queries.add( new DataQueryParams( params ) );
+            return queries;
+        }
+        
         if ( params.getDataElements() != null && !params.getDataElements().isEmpty() )
         {
             PeriodType periodType = PeriodType.getPeriodTypeByName( params.getPeriodType() );

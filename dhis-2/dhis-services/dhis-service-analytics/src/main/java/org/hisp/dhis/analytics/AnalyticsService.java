@@ -39,5 +39,5 @@ public interface AnalyticsService
     
     Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) throws Exception;
     
-    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, I18nFormat format );
+    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, AggregationType aggregationType, I18nFormat format );
 }

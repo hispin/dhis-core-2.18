@@ -106,7 +106,7 @@ public class SharingUtils
         return isSupported( object.getClass() );
     }
 
-    public static boolean isSupported( Class clazz )
+    public static boolean isSupported( Class<?> clazz )
     {
         return SUPPORTED_TYPES.containsValue( clazz );
     }
