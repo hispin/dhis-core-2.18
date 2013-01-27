@@ -27,7 +27,7 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -303,7 +303,7 @@ public class DataQueryParams
      */
     public void replaceAggregationPeriodsWithDataPeriods( ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap )
     {
-        if ( isAggregationType( AVERAGE_DISAGGREGATION ) &&  dataPeriodType != null )
+        if ( isAggregationType( AVERAGE_INT_DISAGGREGATION ) &&  dataPeriodType != null )
         {
             this.periodType = this.dataPeriodType.getName();
             

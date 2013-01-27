@@ -27,9 +27,10 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_AGGREGATION;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
-import static org.hisp.dhis.analytics.AggregationType.COUNT_AGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_AGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.COUNT;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
@@ -74,7 +75,7 @@ public class JdbcAnalyticsManager
     //TODO optimize when all options in dimensions are selected
     
     private static final Log log = LogFactory.getLog( JdbcAnalyticsManager.class );
-    
+        
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
@@ -87,7 +88,7 @@ public class JdbcAnalyticsManager
     {
         ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
-
+        
         params.populateDimensionNames();
         
         List<Dimension> selectDimensions = params.getSelectDimensions();
@@ -99,15 +100,19 @@ public class JdbcAnalyticsManager
         
         String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", ";
         
-        if ( params.isAggregationType( AVERAGE_AGGREGATION ) )
+        if ( params.isAggregationType( AVERAGE_INT_AGGREGATION ) )
         {
             sql += "sum(daysxvalue) / " + days;
         }
-        else if ( params.isAggregationType( COUNT_AGGREGATION ) )
+        else if ( params.isAggregationType( AVERAGE_BOOL ) )
+        {
+            sql += "sum(daysxvalue) / sum(daysno)";
+        }
+        else if ( params.isAggregationType( COUNT ) )
         {
             sql += "count(value)";
         }
-        else
+        else // SUM, AVERAGE_DISAGGREGATION and undefined //TODO
         {
             sql += "sum(value)";
         }
@@ -155,7 +160,7 @@ public class JdbcAnalyticsManager
 
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap )
     {
-        if ( params.isAggregationType( AVERAGE_DISAGGREGATION ) )
+        if ( params.isAggregationType( AVERAGE_INT_DISAGGREGATION ) )
         {
             int periodIndex = params.getPeriodDimensionIndex();
             

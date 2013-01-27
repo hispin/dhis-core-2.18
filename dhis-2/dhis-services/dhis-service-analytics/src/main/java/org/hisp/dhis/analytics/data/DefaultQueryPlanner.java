@@ -27,7 +27,7 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.*;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.*;
@@ -97,7 +97,7 @@ public class DefaultQueryPlanner
                     
                     for ( DataQueryParams byAggregationType : groupedByAggregationType )
                     {
-                        if ( AVERAGE_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
+                        if ( AVERAGE_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
                         {
                             List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
                             
@@ -465,19 +465,26 @@ public class DefaultQueryPlanner
             
             if ( AGGREGATION_OPERATOR_SUM.equals( dataElement.getAggregationOperator() ) )
             {
-                map.putValue( AggregationType.SUM, element );
+                map.putValue( SUM, element );
             }
             else if ( AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() ) )
             {
-                PeriodType dataPeriodType = dataElement.getPeriodType();
-                
-                if ( dataPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
+                if ( DataElement.VALUE_TYPE_BOOL.equals( dataElement.getType() ) )
                 {
-                    map.putValue( AggregationType.AVERAGE_AGGREGATION, element );
+                    map.putValue( AVERAGE_BOOL, element );
                 }
                 else
                 {
-                    map.putValue( AggregationType.AVERAGE_DISAGGREGATION, element );
+                    PeriodType dataPeriodType = dataElement.getPeriodType();
+                    
+                    if ( dataPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
+                    {
+                        map.putValue( AVERAGE_INT_AGGREGATION, element );
+                    }
+                    else
+                    {
+                        map.putValue( AVERAGE_INT_DISAGGREGATION, element );
+                    }
                 }
             }
         }
