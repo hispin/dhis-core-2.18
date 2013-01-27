@@ -11,7 +11,7 @@
 		#end
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
-	"programStageName": "${programStage.displayName}",
+	"programStageName": "$!encoder.jsonEncode( ${programStage.displayName} )",
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",
 	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
 	"level": "${tabularReport.level}",
