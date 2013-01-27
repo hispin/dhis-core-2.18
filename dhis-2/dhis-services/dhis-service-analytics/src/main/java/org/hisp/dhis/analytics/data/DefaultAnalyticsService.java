@@ -151,7 +151,7 @@ public class DefaultAnalyticsService
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, ANALYTICS_TABLE_NAME );
 
             Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = dataSourceParams.getPermutationOperandValueMap( aggregatedDataMap );
-
+            
             List<List<DimensionOption>> dimensionOptionPermutations = dataSourceParams.getDimensionOptionPermutations();
 
             Map<String, Double> constantMap = constantService.getConstantMap();
@@ -163,7 +163,7 @@ public class DefaultAnalyticsService
                     String permKey = DimensionOption.asOptionKey( options );
 
                     Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( permKey );
-
+                    
                     if ( valueMap != null )
                     {
                         Period period = (Period) DimensionOption.getPeriodOption( options );
@@ -217,7 +217,7 @@ public class DefaultAnalyticsService
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
             dataSourceParams.setCategories( false );
-            dataSourceParams.setAggregationType( AggregationType.COUNT_AGGREGATION );
+            dataSourceParams.setAggregationType( AggregationType.COUNT );
 
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, COMPLETENESS_TABLE_NAME );
 
