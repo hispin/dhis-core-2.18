@@ -330,7 +330,7 @@ public class DataElement
      */
     public PeriodType getPeriodType()
     {
-        return dataSets != null && dataSets.size() > 0 ? dataSets.iterator().next().getPeriodType() : null;
+        return dataSets != null && !dataSets.isEmpty() ? dataSets.iterator().next().getPeriodType() : null;
     }
 
     /**
