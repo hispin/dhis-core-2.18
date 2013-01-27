@@ -1007,6 +1007,7 @@ Ext.onReady( function() {
 								
 								Ext.getCmp('programCombobox').setValue( f.programId );
 								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								Ext.getCmp('programStageCombobox').setRawValue( f.programStageName );
 								Ext.getCmp('startDate').setValue( f.startDate );
 								Ext.getCmp('endDate').setValue( f.endDate );
 								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
@@ -1135,6 +1136,7 @@ Ext.onReady( function() {
 								
 								Ext.getCmp('programCombobox').setValue( f.programId );
 								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								Ext.getCmp('programStageCombobox').setRawValue( f.programStageName );
 								Ext.getCmp('userOrgunit').setValue( f.userOrganisationUnit );
 								Ext.getCmp('userOrgunitChildren').setValue( f.userOrganisationUnitChildren );								
 								
@@ -2150,6 +2152,7 @@ Ext.onReady( function() {
 						}
 					}
 					
+					var isValid = true;
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
 						var deId = r.data.id;
 						var length = Ext.getCmp('p_' + deId).items.length/4;
@@ -2157,12 +2160,15 @@ Ext.onReady( function() {
 						{
 							var id = deId + '_' + idx;
 							var filterValue = Ext.getCmp('filter_' + id).getValue();
-							if( filterValue == null ){
-								TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
-								return false;
+							if( filterValue == null || filterValue == '' ){
+								isValid = false;
 							}
 						}
 					});
+					if( !isValid){
+						TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
+						return false;		
+					}
 					
 					var periodInt = 0;
 					if( TR.cmp.settings.startDate.rawValue!="" 
@@ -2726,6 +2732,7 @@ Ext.onReady( function() {
 										boxLabel: TR.i18n.case_based_report,
 										name: 'reportType',
 										inputValue: 'true',
+										checked: true,
 										listeners: {
 											change: function (cb, nv, ov) {
 												if(nv)
@@ -2755,7 +2762,6 @@ Ext.onReady( function() {
 										boxLabel: TR.i18n.aggregated_report,
 										name: 'reportType',
 										inputValue: 'false',
-										checked: true,
 										listeners: {
 											change: function (cb, nv, ov) {
 												if(nv)
@@ -5465,6 +5471,25 @@ Ext.onReady( function() {
         listeners: {
             afterrender: function(vp) {
                 TR.init.initialize(vp);
+				Ext.getCmp('reportTypeGroup').setValue(true);
+				Ext.getCmp('limitOption').setVisible(false);
+				dataElementTabTitle.innerHTML = TR.i18n.data_elements;
+				Ext.getCmp('limitOption').setVisible(false);
+				Ext.getCmp('dataElementGroupByCbx').setVisible(false);
+				Ext.getCmp('aggregateType').setVisible(false);
+				Ext.getCmp('downloadPdfIcon').setVisible(false);
+				Ext.getCmp('downloadCvsIcon').setVisible(false);
+				Ext.getCmp('positionField').setVisible(false);
+				Ext.getCmp('completedEventsOpt').setVisible(false);
+				Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
+				Ext.getCmp('datePeriodRangeDiv').setVisible(false);
+				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
+				Ext.getCmp('levelCombobox').setVisible(true);
+				
+				Ext.getCmp('dateRangeDiv').setVisible(true);
+				Ext.getCmp('relativePeriodsDiv').setVisible(false); 
+				Ext.getCmp('fixedPeriodsDiv').setVisible(false);
+				Ext.getCmp('dateRangeDiv').expand();
             },
             resize: function(vp) {
                 TR.cmp.region.west.setWidth(TR.conf.layout.west_width);
