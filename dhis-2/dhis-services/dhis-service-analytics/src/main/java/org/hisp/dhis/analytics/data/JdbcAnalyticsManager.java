@@ -94,10 +94,10 @@ public class JdbcAnalyticsManager
         List<Dimension> queryDimensions = params.getQueryDimensions();
         
         SqlHelper sqlHelper = new SqlHelper();
-        
-        String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", "; //TODO
-        
+
         int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
+        
+        String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", ";
         
         if ( params.isAggregationType( AVERAGE_AGGREGATION ) )
         {
