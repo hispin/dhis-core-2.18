@@ -106,7 +106,7 @@ public class JdbcAnalyticsManager
         }
         else if ( params.isAggregationType( AVERAGE_BOOL ) )
         {
-            sql += "sum(daysxvalue) / sum(daysno)";
+            sql += "sum(daysxvalue) / sum(daysno) * 100";
         }
         else if ( params.isAggregationType( COUNT ) )
         {
