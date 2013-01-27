@@ -40,6 +40,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.period.PeriodType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -119,6 +120,33 @@ public class DataElementGroup
         {
             addDataElement( dataElement );
         }
+    }
+    
+    /**
+     * Returns the value type of the data elements in this group. Uses an arbitrary
+     * member to determine the value type.
+     */
+    public String getValueType()
+    {
+        return members != null && !members.isEmpty() ? members.iterator().next().getType() : null;
+    }
+    
+    /**
+     * Returns the aggregation operator of the data elements in this group. Uses
+     * an arbitrary member to determine the aggregation operator.
+     */
+    public String getAggregationOperator()
+    {
+        return members != null && !members.isEmpty() ? members.iterator().next().getAggregationOperator() : null;
+    }
+
+    /**
+     * Returns the period type of the data elements in this group. Uses an 
+     * arbitrary member to determine the period type.
+     */
+    public PeriodType getPeriodType()
+    {
+        return members != null && !members.isEmpty() ? members.iterator().next().getPeriodType() : null;
     }
 
     // -------------------------------------------------------------------------

@@ -705,6 +705,26 @@ public class DataQueryParams
         setDimensionOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, organisationUnits );
     }
     
+    public List<Dimension> getDataElementGroupSets()
+    {
+        List<Dimension> list = new ArrayList<Dimension>();
+        
+        for ( Dimension dimension : dimensions )
+        {
+            if ( DimensionType.DATAELEMENT_GROUPSET.equals( dimension.getType() ) )
+            {
+                list.add( dimension );
+            }
+        }
+        
+        return list;
+    }
+    
+    public void setDataElementGroupSet( Dimension dimension, List<IdentifiableObject> dataElementGroups )
+    {
+        setDimensionOptions( dimension.getDimension(), DimensionType.DATAELEMENT_GROUPSET, dataElementGroups );
+    }
+    
     // -------------------------------------------------------------------------
     // Get and set helpers for filters
     // -------------------------------------------------------------------------
