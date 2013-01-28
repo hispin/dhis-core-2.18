@@ -19,7 +19,7 @@
 		</table>
       <table class="listTable" id="categoryComboList">
           <col/>
-          <col width="96px"/>        
+          <col width="120px"/>        
           <thead>		 
           <tr>
             <th>$i18n.getString( "name" )</th>
