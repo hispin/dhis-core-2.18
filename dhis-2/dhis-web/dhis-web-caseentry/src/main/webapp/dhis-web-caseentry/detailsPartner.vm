@@ -48,7 +48,7 @@
 		#foreach( $attribute in $partner.attributes )
 			#if( $patientAttributeValueMap.get( $attribute.id ) != " " )
 			<tr>
-				<td>$attribute.name</td>
+				<td>$attribute.displayName</td>
 				<td>: $encoder.htmlEncode($patientAttributeValueMap.get( $attribute.id ))</td>
 			</tr>
 			#end

@@ -49,7 +49,7 @@
 				<th>#</th>
 				#foreach( $attribute in $patientAttributes )
 					#if($attribute)
-						<th id="patientAttributeName">$encoder.htmlEncode($attribute.name)</th>
+						<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
 					#end
 				#end
 				

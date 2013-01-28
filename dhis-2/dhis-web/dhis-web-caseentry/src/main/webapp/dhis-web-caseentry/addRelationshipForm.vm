@@ -84,7 +84,7 @@
                     <select id="searchingAttributeId" name="searchingAttributeId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end style='width:119px'>
                         <option value="">$i18n.getString( "search_by_name_identifier" )</option>
                         #foreach( $attribute in $patientAttributes )
-                            <option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
+                            <option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.displayName )</option>
                         #end
                     </select> 
                     <em title="$i18n.getString( 'required' )" class="required">*</em>

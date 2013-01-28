@@ -24,7 +24,7 @@
     #set( $key = $patient.id + "_" + $attribute.id )
     #set( $attributeValue = $patientAttributeValueMap.get( $key ) )             
     <attribute>
-        <name>$encoder.xmlEncode( $attribute.name )</name>
+        <name>$encoder.xmlEncode( $attribute.displayName )</name>
         <value>$encoder.xmlEncode( $attributeValue )</value>
     </attribute> 
   #end  
