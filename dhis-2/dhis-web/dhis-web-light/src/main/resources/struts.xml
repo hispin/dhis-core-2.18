@@ -330,7 +330,8 @@
 
     <action name="showProgramEnrollmentForm"
         class="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction">
-      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      	<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+       <result name="redirect" type="redirect">/light/showSingleEventForm.action?programId=${program.getId()}&amp;patientId=${patient.getId()}&amp;organisationUnitId=${patient.getOrganisationUnit().getId()}&amp;isEditing=false</result>
       <param name="page">/dhis-web-light/enrollment/programEnrollmentForm.vm</param>
     </action>
 
@@ -366,7 +367,7 @@
     <action name="saveSingleEvent"
         class="org.hisp.dhis.light.singleevent.action.SaveSingleEventAction">
       <result name="success" type="redirect">
-        /light/selectSingleEventBeneficiary.action?programId=${programId}&amp;organisationUnitId=${organisationUnitId}&amp;validated=true
+        /light/showPatientProgramList.action?patientId=${patientId}
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <result name="redirect" type="redirect">findSingleEventOptionSet.action?keyword=${keyword}&amp;dataElementIdForSearching=${dataElementIdForSearching}&amp;organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;programId=${programId}&amp;programStageInstanceId=${programStageInstanceId}&amp;isEditing=${isEditing}</result>

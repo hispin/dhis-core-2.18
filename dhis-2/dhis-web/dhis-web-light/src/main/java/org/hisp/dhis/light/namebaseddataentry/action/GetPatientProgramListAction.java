@@ -68,9 +68,9 @@ public class GetPatientProgramListAction
     {
         this.programInstanceService = programInstanceService;
     }
-    
+
     private PatientIdentifierService patientIdentifierService;
-    
+
     public PatientIdentifierService getPatientIdentifierService()
     {
         return patientIdentifierService;
@@ -128,9 +128,9 @@ public class GetPatientProgramListAction
     {
         this.relationshipService = relationshipService;
     }
-    
+
     public RelationshipTypeService relationshipTypeService;
-    
+
     public RelationshipTypeService getRelationshipTypeService()
     {
         return relationshipTypeService;
@@ -192,9 +192,9 @@ public class GetPatientProgramListAction
     {
         this.enrollmentProgramList = enrollmentProgramList;
     }
-    
-    private Map<Relationship,Patient> relatedPeople;
-    
+
+    private Map<Relationship, Patient> relatedPeople;
+
     public Map<Relationship, Patient> getRelatedPeople()
     {
         return relatedPeople;
@@ -206,7 +206,7 @@ public class GetPatientProgramListAction
     }
 
     private Collection<RelationshipType> relationshipTypes;
-    
+
     public Collection<RelationshipType> getRelationshipTypes()
     {
         return relationshipTypes;
@@ -216,9 +216,9 @@ public class GetPatientProgramListAction
     {
         this.relationshipTypes = relationshipTypes;
     }
-    
+
     private Boolean validated;
-    
+
     public Boolean getValidated()
     {
         return validated;
@@ -228,9 +228,9 @@ public class GetPatientProgramListAction
     {
         this.validated = validated;
     }
-    
+
     private Collection<PatientIdentifier> patientIdentifiers;
-    
+
     public Collection<PatientIdentifier> getPatientIdentifiers()
     {
         return patientIdentifiers;
@@ -240,9 +240,9 @@ public class GetPatientProgramListAction
     {
         this.patientIdentifiers = patientIdentifiers;
     }
-    
+
     private List<ProgramInstance> listOfCompletedProgram;
-    
+
     public List<ProgramInstance> getListOfCompletedProgram()
     {
         return listOfCompletedProgram;
@@ -258,7 +258,7 @@ public class GetPatientProgramListAction
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
         {
-            if ( !programInstance.getProgram().isSingleEvent() && !programInstance.isCompleted())
+            if ( !programInstance.isCompleted() )
             {
                 programInstances.add( programInstance );
             }
@@ -271,31 +271,31 @@ public class GetPatientProgramListAction
         {
             if ( relationship.getPatientA().getId() != patient.getId() )
             {
-                relatedPeople.put( relationship, relationship.getPatientA());
+                relatedPeople.put( relationship, relationship.getPatientA() );
             }
 
             if ( relationship.getPatientB().getId() != patient.getId() )
             {
-                relatedPeople.put( relationship, relationship.getPatientB());
+                relatedPeople.put( relationship, relationship.getPatientB() );
             }
         }
-        
+
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
-        
+
         patientIdentifiers = patientIdentifierService.getPatientIdentifiers( patient );
-        
+
         Collection<ProgramInstance> listOfProgramInstance = programInstanceService.getProgramInstances( patient );
-        
+
         this.listOfCompletedProgram = new ArrayList<ProgramInstance>();
-        
-        for( ProgramInstance each: listOfProgramInstance )
+
+        for ( ProgramInstance each : listOfProgramInstance )
         {
-            if( each.isCompleted() )
+            if ( each.isCompleted() )
             {
                 this.listOfCompletedProgram.add( each );
             }
         }
-        
+
         return SUCCESS;
     }
 
@@ -305,7 +305,7 @@ public class GetPatientProgramListAction
         for ( Program program : programService.getPrograms( patient.getOrganisationUnit() ) )
 
         {
-            if ( !program.isSingleEvent() )
+            if ( (program.isSingleEvent() && program.isRegistration()) || !program.isSingleEvent() )
             {
                 if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
                 {
