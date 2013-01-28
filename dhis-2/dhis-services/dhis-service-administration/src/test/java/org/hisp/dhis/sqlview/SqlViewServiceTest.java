@@ -29,9 +29,9 @@ package org.hisp.dhis.sqlview;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotSame;
 
 import java.util.Collection;
 
@@ -192,7 +192,7 @@ public class SqlViewServiceTest
 
     @Test
     public void testMakeUpForQueryStatement()
-    {        
+    {
         SqlView sqlViewA = createSqlView( 'A', SQL1 );
 
         sqlViewA.setSqlQuery( sqlViewService.makeUpForQueryStatement( sqlViewA.getSqlQuery() ) );
@@ -210,7 +210,7 @@ public class SqlViewServiceTest
 
     @Test
     public void testSetUpViewTableName()
-    {        
+    {
         SqlView sqlViewC = createSqlView( 'C', SQL3 );
         SqlView sqlViewD = createSqlView( 'D', SQL4 );
 
@@ -221,7 +221,7 @@ public class SqlViewServiceTest
 
     @Test
     public void testGetAllSqlViewNames()
-    {        
+    {
         SqlView sqlViewA = createSqlView( 'A', SQL4 );
         SqlView sqlViewB = createSqlView( 'B', SQL4 );
         SqlView sqlViewC = createSqlView( 'C', SQL4 );
@@ -240,10 +240,22 @@ public class SqlViewServiceTest
         sqlViewService.dropViewTable( sqlViewB.getViewName() );
         sqlViewService.dropViewTable( sqlViewC.getViewName() );
         sqlViewService.dropViewTable( sqlViewD.getViewName() );
-        
+
         sqlViewService.deleteSqlView( sqlViewA );
         sqlViewService.deleteSqlView( sqlViewB );
         sqlViewService.deleteSqlView( sqlViewC );
         sqlViewService.deleteSqlView( sqlViewD );
+    }
+
+    @Test
+    public void testTestSqlGrammar()
+    {
+        String sql = "select de.name, de.name from dataelement de";
+
+        assertNotSame( sqlViewService.testSqlGrammar( sql ), "" );
+
+        sql += " xyz";
+
+        assertNotSame( sqlViewService.testSqlGrammar( sql ), "" );
     }
 }

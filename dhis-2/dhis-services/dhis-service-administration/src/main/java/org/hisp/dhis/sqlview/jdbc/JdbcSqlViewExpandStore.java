@@ -156,9 +156,13 @@ public class JdbcSqlViewExpandStore
     @Override
     public String testSqlGrammar( String sql )
     {
+        String viewNameCheck = SqlView.PREFIX_VIEWNAME + System.currentTimeMillis();
+
         try
         {
-            jdbcTemplate.queryForList( sql );
+            jdbcTemplate.execute( PREFIX_CREATEVIEW_QUERY + viewNameCheck + " AS " + sql );
+
+            dropViewTable( viewNameCheck );
         }
         catch ( Exception ex )
         {
