@@ -143,7 +143,7 @@
 		<td>
 			<select id="selectedCategoryComboId" #if( $dataElement.getDomainTypeNullSafe()=='patient') disabled #end>>				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
-				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $dataElement.categoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
+				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $dataElement.categoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.displayName )</option>
 			#end
 			</select>
 			<input type="hidden" id="submitCategoryComboId" name="selectedCategoryComboId"/>
