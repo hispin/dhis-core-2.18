@@ -81,8 +81,6 @@ public interface SqlViewService
 
     void dropAllSqlViewTables();
 
-    Grid getDataSqlViewGrid( String viewTableName );
-    
     Grid getDataSqlViewGrid( SqlView sqlView );
     
     String testSqlGrammar( String sql );

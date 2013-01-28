@@ -169,19 +169,13 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public Grid getDataSqlViewGrid( String viewTableName )
+    public Grid getDataSqlViewGrid( SqlView sqlView )
     {
         Grid sqlViewGrid = new ListGrid();
 
-        sqlViewExpandStore.setUpDataSqlViewTable( sqlViewGrid, viewTableName );
+        sqlViewExpandStore.setUpDataSqlViewTable( sqlViewGrid, sqlView.getViewName() );
 
         return sqlViewGrid;
-    }
-
-    @Override
-    public Grid getDataSqlViewGrid( SqlView sqlView )
-    {
-        return getDataSqlViewGrid( sqlView.getViewName() );
     }
 
     @Override
