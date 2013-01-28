@@ -481,7 +481,7 @@ public class DataQueryParams
     }
     
     /**
-     * Retrieves the measure criteria form the given string. Criteria are separated
+     * Retrieves the measure criteria from the given string. Criteria are separated
      * by the option separator, while the criterion filter and value are separated
      * with the dimension name separator.
      */
