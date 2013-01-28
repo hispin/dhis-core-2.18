@@ -10,21 +10,25 @@
 	<ul>
         #if( $programInstances.size() > 0)
             #foreach( $programInstance in $programInstances )
-          			<li>
-          				<a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()&validated=false">
-          					 $programInstance.getProgram().getName()
-          				</a>
-          			</li>
-
-                    #set($nextStage = false)
-          			#set($nextStage = $util.getNextStage( $programInstance.getProgramStageInstances()))
-
-          			#if($nextStage)
-          				<li>
-          					<a href="showProgramStageSection.action?programId=$programInstance.getProgram().getId()&programStageId=$nextStage.getProgramStage().getId()&programStageInstanceId=$nextStage.getId()&patientId=$patient.getId()&programInstanceId=$programInstance.getId()&orgUnitId=0"> - Next: $nextStage.getProgramStage().getName()</a>
+				#if($programInstance.getProgram().isSingleEvent())
+					<li><a href="showSingleEventForm.action?programId=$programInstance.getProgram().getId()&patientId=$patientId&organisationUnitId=$patient.getOrganisationUnit().getId()&isEditing=true">$programInstance.getProgram().getName()</a></li>
+				#else
+					    <li>
+	          				<a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()&validated=false">
+	          					 $programInstance.getProgram().getName()
+	          				</a>
           				</li>
-          			#end
-          		#end
+
+	                    #set($nextStage = false)
+	          			#set($nextStage = $util.getNextStage( $programInstance.getProgramStageInstances()))
+	
+	          			#if($nextStage)
+	          				<li>
+	          					<a href="showProgramStageSection.action?programId=$programInstance.getProgram().getId()&programStageId=$nextStage.getProgramStage().getId()&programStageInstanceId=$nextStage.getId()&patientId=$patient.getId()&programInstanceId=$programInstance.getId()&orgUnitId=0"> - Next: $nextStage.getProgramStage().getName()</a>
+	          				</li>
+	          			#end	
+				#end
+            #end		
         #else
             <li>$i18n.getString("no_enrolled_programs")</li>
         #end
@@ -35,11 +39,15 @@
 	<ul>
 		#if( $listOfCompletedProgram.size() != 0 )
 			#foreach( $programInstance in $listOfCompletedProgram )
-				#if( $programInstance.getProgram().getProgramStages().size() > 1)
-					$programInstance.getProgram().getName()
-				#else
-					<a href="showSingleEventForm.action?programId=$programInstance.program.id&patientId=$patient.id&organisationUnitId=$patient.organisationUnit.id&isEditing=true">$programInstance.getProgram().getName()</a>
-				#end	
+					#if($programInstance.getProgram().isSingleEvent())
+						<li><a href="showSingleEventForm.action?programId=$programInstance.getProgram().getId()&patientId=$patientId&organisationUnitId=$patient.getOrganisationUnit().getId()&isEditing=true">$programInstance.getProgram().getName()</a></li>
+
+					#else	
+						<li><a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()&validated=false">
+          					 $programInstance.getProgram().getName()
+          			</a></li>
+					#end
+
 			#end
 		#else
 			<li>$i18n.getString("no_completed_programs")</li>

@@ -149,12 +149,20 @@ public class GetProgramEnrollmentFormAction
         this.patientAttributes = patientAttributes;
     }
 
+    public static final String REDIRECT = "redirect";
+
     @Override
     public String execute()
         throws Exception
     {
         patient = patientService.getPatient( patientId );
         program = programService.getProgram( programId );
+
+        if ( this.program.isSingleEvent() )
+        {
+            return REDIRECT;
+        }
+
         patientAttributes = program.getPatientAttributes();
         patientIdentifierTypes = program.getPatientIdentifierTypes();
         now = new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date() );

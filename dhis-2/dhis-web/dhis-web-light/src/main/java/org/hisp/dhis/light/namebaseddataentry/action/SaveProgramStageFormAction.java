@@ -554,6 +554,7 @@ public class SaveProgramStageFormAction
         }
 
         programStageInstance.setCompleted( true );
+        programStageInstance.setExecutionDate( new Date() );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
     }

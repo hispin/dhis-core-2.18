@@ -177,16 +177,30 @@ public class GetProgramStageListAction
     {
         return new SimpleDateFormat( "yyyy-MM-dd" );
     }
+    
+    private ProgramInstance programInstance;
+    
+    public ProgramInstance getProgramInstance()
+    {
+        return programInstance;
+    }
+
+    public void setProgramInstance( ProgramInstance programInstance )
+    {
+        this.programInstance = programInstance;
+    }
 
     @Override
     public String execute()
         throws Exception
     {
-        ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
+        programInstance = programInstanceService.getProgramInstance( programInstanceId );
+        
         exclusedRepeatableStages = new HashMap<Integer, ProgramStage>();
         patient = patientService.getPatient( patientId );
         programStageInstances = programInstance.getProgramStageInstances();
         repeatableStages = new HashSet<ProgramStage>();
+        
         Set<ProgramStage> programStages = programInstance.getProgram().getProgramStages();
 
         for ( ProgramStage programStage : programStages )
@@ -199,6 +213,7 @@ public class GetProgramStageListAction
 
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
+            
             ProgramStage programStage = programStageInstance.getProgramStage();
             if ( programStage.getIrregular() && !programStageInstance.isCompleted() )
             {
