@@ -41,6 +41,10 @@ public class Dimension
     private String dimensionName;
 
     private List<IdentifiableObject> options = new ArrayList<IdentifiableObject>();
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
     
     public Dimension( String dimension )
     {
@@ -53,6 +57,23 @@ public class Dimension
         this.type = type;
         this.options = options;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Indicates whether this dimension should use all dimension options. All
+     * dimension options is represented as an option list of zero elements.
+     */
+    public boolean isAllOptions()
+    {
+        return options != null && options.isEmpty();
+    }
+    
+    // -------------------------------------------------------------------------
+    // Get and set methods
+    // -------------------------------------------------------------------------
     
     public String getDimension()
     {
@@ -94,6 +115,10 @@ public class Dimension
         this.options = options;
     }
 
+    // -------------------------------------------------------------------------
+    // hashCode, equals, toString
+    // -------------------------------------------------------------------------
+    
     @Override
     public int hashCode()
     {

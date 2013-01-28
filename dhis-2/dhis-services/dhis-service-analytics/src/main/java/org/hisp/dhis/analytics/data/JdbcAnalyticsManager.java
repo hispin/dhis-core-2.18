@@ -121,12 +121,18 @@ public class JdbcAnalyticsManager
         
         for ( Dimension dim : queryDimensions )
         {
-            sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getOptions() ) ) + " ) ";
+            if ( !dim.isAllOptions() )
+            {
+                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getOptions() ) ) + " ) ";
+            }
         }
 
         for ( Dimension filter : params.getFilters() )
         {
-            sql += sqlHelper.whereAnd() + " " + filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getOptions() ) ) + " ) ";
+            if ( !filter.isAllOptions() )
+            {
+                sql += sqlHelper.whereAnd() + " " + filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getOptions() ) ) + " ) ";
+            }
         }
         
         sql += "group by " + getCommaDelimitedString( selectDimensions );

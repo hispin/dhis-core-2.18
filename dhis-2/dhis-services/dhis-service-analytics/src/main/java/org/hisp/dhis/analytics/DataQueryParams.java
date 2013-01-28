@@ -446,19 +446,41 @@ public class DataQueryParams
     // Static methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Retrieves the dimension name from the given string. Returns the part of
+     * the string preceding the dimension name separator, or the whole string if
+     * the separator is not present.
+     */
     public static String getDimensionFromParam( String param )
     {
-        return param != null && param.split( DIMENSION_NAME_SEP ).length > 0 ? param.split( DIMENSION_NAME_SEP )[0] : null;
+        if ( param == null )
+        {
+            return null;
+        }
+        
+        return param.split( DIMENSION_NAME_SEP ).length > 0 ? param.split( DIMENSION_NAME_SEP )[0] : param;
     }
     
+    /**
+     * Retrieves the dimension options from the given string. Looks for the part
+     * succeeding the dimension name separator, if exists, splits the string part
+     * on the option separator and returns the resulting values. If the dimension
+     * name separator does not exist an empty list is returned, indicating that
+     * all dimension options should be used.
+     */
     public static List<String> getDimensionOptionsFromParam( String param )
     {
-        if ( param != null && param.split( DIMENSION_NAME_SEP ).length > 0 )
+        if ( param == null )
+        {
+            return null;
+        }
+        
+        if ( param.split( DIMENSION_NAME_SEP ).length > 1 )
         {
             return Arrays.asList( param.split( DIMENSION_NAME_SEP )[1].split( OPTION_SEP ) );
         }
         
-        return null;
+        return new ArrayList<String>();
     }
     
     // -------------------------------------------------------------------------

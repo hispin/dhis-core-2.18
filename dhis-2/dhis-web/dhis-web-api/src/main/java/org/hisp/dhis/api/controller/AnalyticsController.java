@@ -183,12 +183,6 @@ public class AnalyticsController
             return false;
         }
         
-        if ( params.getEmptyDimension() != null )
-        {
-            ContextUtils.conflictResponse( response, "Dimensions or filters must have at least one option: " + params.getEmptyDimension() );
-            return false;
-        }
-        
         return true;        
     }
 }
