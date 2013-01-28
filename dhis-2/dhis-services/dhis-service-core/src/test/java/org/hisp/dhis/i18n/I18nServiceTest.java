@@ -177,7 +177,7 @@ public class I18nServiceTest
         Map<String, String> values = i18nService.getObjectPropertyValues( dataElementA );
         
         assertNotNull( values );
-        assertEquals( 3, values.size() );
+        assertEquals( 4, values.size() );
         assertTrue( values.keySet().contains( "name" ) );
         assertTrue( values.keySet().contains( "shortName" ) );
         assertTrue( values.keySet().contains( "description" ) );
