@@ -187,7 +187,7 @@
         <td>
             <select multiple size="4" id="organisationUnitLevels" style="width:450px" ondblclick="moveSelectedById( 'organisationUnitLevels', 'aggregationLevels' )">
             #foreach( $level in $organisationUnitLevels )
-                <option value="$level.level">$level.name</option>
+                <option value="$level.level">$level.displayName</option>
             #end
             </select>
         </td>
@@ -205,7 +205,7 @@
         <td>
             <select multiple size="4" id="aggregationLevels" name="aggregationLevels" style="width:450px" ondblclick="moveSelectedById( 'aggregationLevels', 'organisationUnitLevels' )">
             #foreach( $level in $aggregationLevels )
-            	<option value="$level.level">$level.name</option>
+            	<option value="$level.level">$level.displayName</option>
             #end
             </select>
         </td>
