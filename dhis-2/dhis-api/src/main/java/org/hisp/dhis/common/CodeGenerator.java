@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.security.SecureRandom;
+import java.util.regex.Pattern;
 
 /**
  * @author bobj
@@ -42,6 +43,8 @@ public class CodeGenerator
     public static final int NUMBER_OF_CODEPOINTS = allowedChars.length();
     public static final int CODESIZE = 11;
 
+    private static final Pattern CODE_PATTERN = Pattern.compile( "^[a-zA-Z0-9]{11}$" );
+    
     /**
      * Generates a pseudo random string using the allowed characters. Code is
      * 11 characters long.
@@ -76,5 +79,16 @@ public class CodeGenerator
         }
         
         return new String( randomChars );
+    }
+    
+    /**
+     * Tests whether the given code is valid.
+     * 
+     * @param code the code to validate.
+     * @return true if the code is valid.
+     */
+    public boolean isValidCode( String code )
+    {
+        return code != null && CODE_PATTERN.matcher( code ).matches();
     }
 }
