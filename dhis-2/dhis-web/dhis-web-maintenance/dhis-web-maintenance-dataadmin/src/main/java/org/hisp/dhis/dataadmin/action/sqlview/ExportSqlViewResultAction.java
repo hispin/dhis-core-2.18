@@ -28,6 +28,7 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  */
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
 import com.opensymphony.xwork2.Action;
@@ -58,32 +59,29 @@ public class ExportSqlViewResultAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String viewTableName;
+    private Integer id;
 
-    public void setViewTableName( String viewTableName )
+    public void setId( Integer id )
     {
-        this.viewTableName = viewTableName;
-    }
-
-    public void setType( String type )
-    {
-        this.type = type;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    public String getViewTableName()
-    {
-        return viewTableName;
-    }
-
     private Grid grid;
 
     public Grid getGrid()
     {
         return grid;
+    }
+
+    private SqlView sqlView;
+    
+    public SqlView getSqlView()
+    {
+        return sqlView;
     }
 
     private String type;
@@ -93,13 +91,20 @@ public class ExportSqlViewResultAction
         return type;
     }
 
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        grid = sqlViewService.getDataSqlViewGrid( viewTableName );
+        sqlView = sqlViewService.getSqlView( id );
+        
+        grid = sqlViewService.getDataSqlViewGrid( sqlView );
 
         return type != null ? type : DEFAULT_TYPE;
     }
