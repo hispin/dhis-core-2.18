@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics.data;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
 import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
@@ -129,7 +130,7 @@ public class DefaultAnalyticsService
 
         grid.setMetaData( params.getUidNameMap() );
         
-        for ( Dimension col : params.getSelectDimensions() )
+        for ( Dimension col : params.getQueryDimensions() )
         {
             grid.addHeader( new GridHeader( col.getDimensionName(), col.getDimension(), String.class.getName(), false, true ) );
         }
@@ -216,7 +217,7 @@ public class DefaultAnalyticsService
             DataQueryParams dataSourceParams = new DataQueryParams( params );
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
-            dataSourceParams.setCategories( false );
+            dataSourceParams.removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
             dataSourceParams.setAggregationType( AggregationType.COUNT );
 
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, COMPLETENESS_TABLE_NAME );
@@ -283,11 +284,10 @@ public class DefaultAnalyticsService
     }
     
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        boolean categories, AggregationType aggregationType, String measureCriteria, I18nFormat format )
+        AggregationType aggregationType, String measureCriteria, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
-        params.setCategories( categories );
         params.setAggregationType( aggregationType );
         
         if ( dimensionParams != null && !dimensionParams.isEmpty() )
@@ -343,6 +343,10 @@ public class DefaultAnalyticsService
         else if ( DATASET_DIM_ID.equals( dimension ) )
         {
             return new Dimension( dimension, DimensionType.DATASET, asList( dataSetService.getDataSetsByUid( options ) ) );
+        }
+        else if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
+        {
+            return new Dimension( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() );
         }
         else if ( ORGUNIT_DIM_ID.equals( dimension ) )
         {
@@ -401,7 +405,7 @@ public class DefaultAnalyticsService
         immutableParams.setDataElements( dataElements );
         immutableParams.removeDimension( INDICATOR_DIM_ID );
         immutableParams.removeDimension( DATASET_DIM_ID );
-        immutableParams.setCategories( true );
+        immutableParams.enableCategoryOptionCombos();
         
         return immutableParams;
     }

@@ -162,7 +162,7 @@ public class QueryPlannerTest
         params.setDataElements( getList( deA, deB ) );
         params.setOrganisationUnits( getList( ouA, ouB ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
-        params.setCategories( true );
+        params.enableCategoryOptionCombos();
         
         Map<String, Double> aggregatedDataMap = new HashMap<String, Double>();
         aggregatedDataMap.put( deA.getUid() + DIMENSION_SEP + ouA.getUid() + DIMENSION_SEP + "2000Q1" + DIMENSION_SEP + coc.getUid(), 1d );
@@ -182,7 +182,7 @@ public class QueryPlannerTest
         String ouAQ2Key = ouA.getUid() + DIMENSION_SEP + "2000Q2";
         String ouBQ1Key = ouB.getUid() + DIMENSION_SEP + "2000Q1";
         String ouBQ2Key = ouB.getUid() + DIMENSION_SEP + "2000Q2";
-                
+        
         Map<DataElementOperand, Double> ouAQ1 = permutationMap.get( ouAQ1Key );
         Map<DataElementOperand, Double> ouAQ2 = permutationMap.get( ouAQ2Key );
         Map<DataElementOperand, Double> ouBQ1 = permutationMap.get( ouBQ1Key );
