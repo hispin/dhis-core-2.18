@@ -67,6 +67,8 @@ function programOnChange()
 		hideById("selectedList");
 		jQuery("[name=displayed]").attr("disabled", true);
 		jQuery("[name=displayed]").removeAttr("checked");
+		
+		jQuery("[name=nonAnonymous]").hide();
 	}
 	else{
 		jQuery("[name=displayed]").prop("disabled", false);
@@ -76,6 +78,8 @@ function programOnChange()
 		enable('dateOfEnrollmentDescription');
 		enable("displayIncidentDate");
 		enable('ignoreOverdueEvents');
+		
+		jQuery("[name=nonAnonymous]").show();
 		if( type == 2 ){
 			disable('ignoreOverdueEvents');
 		}
