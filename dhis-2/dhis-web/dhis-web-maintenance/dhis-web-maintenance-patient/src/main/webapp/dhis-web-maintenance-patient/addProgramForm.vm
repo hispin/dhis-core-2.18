@@ -52,35 +52,35 @@
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
 			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true'></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "ignore_to_generate_overdue_events" )</label></td>
 			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "show_incident_date" )</label></td>
 			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' checked onchange='programOnChange();'></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}"></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
@@ -90,7 +90,7 @@
 	<tbody>
 </table>
 	
-<table>
+<table name='nonAnonymous'>
 	<colgroup>
         <col style="width:400px;"/>
 		<col/>
@@ -144,6 +144,9 @@
 			<a href="javascript:moveDownPropertyList()"><img src="../images/move_down.png"/></a><br/><br/>
 		</td>  
 	</tr>
+</table>
+
+<table>
 	<tr>
 		<td colspan='3'>
 			<input type="submit" value="$i18n.getString( 'add' )" >
@@ -151,5 +154,4 @@
 		</td>
 	</tr>
 </table>
-
 </form>

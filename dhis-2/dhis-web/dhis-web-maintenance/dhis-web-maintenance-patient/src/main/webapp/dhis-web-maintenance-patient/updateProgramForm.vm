@@ -53,40 +53,40 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
-			<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true'  #if( $program.blockEntryForm=='true' ) checked #end ></td>
+			<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true' #if( $program.blockEntryForm=='true' ) checked #end ></td>
 			<td></td>
 		</tr>
 			
-		<tr>
+		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
 		
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
 			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "ignore_to_generate_overdue_events" )</label></td>
 			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true' #if($program.ignoreOverdueEvents=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "show_incident_date" )</label></td>
 			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' #if( $program.type=='3' ) disabled #elseif($program.displayIncidentDate=='true') checked #end></td>
 			<td></td>
 		</tr>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.type=='2' || $program.type=='3') disabled #end ></td>
 			<td></td>
-		</tr>
+		</tr name='nonAnonymous'>
 		
-		<tr>
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.type=='3' ) disabled #end></td>
 			<td></td>
@@ -97,7 +97,7 @@
 	<tbody>
 	</table>
 
-	<table>
+	<table name='nonAnonymous'>
 		<colgroup>
 			<col style="width:400px;"/>
 			<col/>
@@ -165,13 +165,14 @@
 				<a href="javascript:moveDownPropertyList()"><img src="../images/move_down.png"/></a><br/><br/>
 			</td>  
 	  </tr>
-      <tr>
+    </tbody>
+  </table>  
+  <table>
+	 <tr>
       	<td colspan='3'>
 			<input type="submit" value="$i18n.getString( 'update' )">
 			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'">
 		</td>
       </tr>
-    </tbody>
-  </table>  
-
-</form> 	
+  </table>
+</form>	
