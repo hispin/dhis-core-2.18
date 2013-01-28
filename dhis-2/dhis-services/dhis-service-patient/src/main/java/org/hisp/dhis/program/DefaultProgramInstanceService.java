@@ -240,7 +240,7 @@ public class DefaultProgramInstanceService
         for ( PatientAttribute patientAttribute : patientAttributes )
         {
             attrGrid.addRow();
-            attrGrid.addValue( patientAttribute.getName() );
+            attrGrid.addValue( patientAttribute.getDisplayName() );
             PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
                 patientAttribute );
             String value = "";
