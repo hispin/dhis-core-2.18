@@ -159,7 +159,7 @@
 			<select id="selectedOptionSetId" name="selectedOptionSetId">
 				<option value="0">[$i18n.getString('please_select')]</option>
 				#foreach ( $optionSet in $optionSets )
-				<option value="$optionSet.id" #if( $dataElement.optionSet && $dataElement.optionSet.id == "$optionSet.id" ) selected #end>$encoder.htmlEncode( $optionSet.name )</option>
+				<option value="$optionSet.id" #if( $dataElement.optionSet && $dataElement.optionSet.id == "$optionSet.id" ) selected #end>$encoder.htmlEncode( $optionSet.displayName )</option>
 				#end
 			</select>
 		</td>

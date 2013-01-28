@@ -556,6 +556,7 @@
 
   <bean id="org.hisp.dhis.option.OptionService" class="org.hisp.dhis.option.DefaultOptionService">
     <property name="optionStore" ref="org.hisp.dhis.option.OptionStore" />
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MappingService" class="org.hisp.dhis.mapping.DefaultMappingService">

@@ -27,10 +27,13 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,12 +43,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultOptionService
     implements OptionService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private OptionStore optionStore;
 
     public void setOptionStore( OptionStore optionStore )
     {
         this.optionStore = optionStore;
     }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
 
     public int saveOptionSet( OptionSet optionSet )
     {
@@ -56,20 +74,20 @@ public class DefaultOptionService
     {
         optionStore.update( optionSet );
     }
-    
+
     public OptionSet getOptionSet( int id )
     {
-        return optionStore.get( id );
+        return i18n( i18nService, optionStore.get( id ));
     }
 
     public OptionSet getOptionSet( String uid )
     {
-        return optionStore.getByUid( uid );
+        return i18n( i18nService, optionStore.getByUid( uid ));
     }
-    
+
     public OptionSet getOptionSetByName( String name )
     {
-        return optionStore.getByName( name );
+        return i18n( i18nService, optionStore.getByName( name ));
     }
 
     public void deleteOptionSet( OptionSet optionSet )
@@ -79,17 +97,17 @@ public class DefaultOptionService
 
     public Collection<OptionSet> getAllOptionSets()
     {
-        return optionStore.getAll();
+        return i18n( i18nService, optionStore.getAll());
     }
-    
-    public List<String> getOptions( int optionSetId, String key, Integer max  )
+
+    public List<String> getOptions( int optionSetId, String key, Integer max )
     {
         List<String> options = null;
-        
+
         if ( key != null || max != null )
         {
             // Use query as option set size might be very high
-            
+
             options = optionStore.getOptions( optionSetId, key, max );
         }
         else
@@ -97,10 +115,10 @@ public class DefaultOptionService
             // Return all from object association to preserve custom order
 
             OptionSet optionSet = getOptionSet( optionSetId );
-            
+
             options = new ArrayList<String>( optionSet.getOptions() );
         }
-        
+
         return options;
     }
 }
