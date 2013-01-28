@@ -227,7 +227,8 @@ public class LoadFormAction
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId, true, false, false );
 
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( dataSet, null,
+            null ) );
 
         if ( dataElements.isEmpty() )
         {
@@ -306,7 +307,13 @@ public class LoadFormAction
 
         String displayMode = dataSet.getDataSetType();
 
-        if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 ) // for multiOrg, we only support section forms
+        if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 ) // for
+                                                                           // multiOrg,
+                                                                           // we
+                                                                           // only
+                                                                           // support
+                                                                           // section
+                                                                           // forms
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( multiOrganisationUnit );
             List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();

@@ -73,6 +73,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class DataElement
     extends BaseNameableObject
 {
+    public static final String[] I18N_PROPERTIES = { "name", "shortName", "description", "formName" };
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -114,7 +116,12 @@ public class DataElement
      * The name to appear in forms.
      */
     private String formName;
-
+    
+    /**
+     * The i18n variant of the display name. Should not be persisted.
+     */
+    protected transient String displayFormName;
+    
     /**
      * If this DataElement is active or not (enabled or disabled).
      */
@@ -413,7 +420,17 @@ public class DataElement
      */
     public String getFormNameFallback()
     {
-        return formName != null && !formName.isEmpty() ? formName : getDisplayName();
+        return formName != null && !formName.isEmpty() ? getDisplayFormName() : getDisplayName();
+    }
+    
+    public String getDisplayFormName()
+    {
+        return ( displayFormName != null && !displayFormName.trim().isEmpty() ) ? displayFormName : formName;
+    }
+
+    public void setDisplayFormName( String displayFormName )
+    {
+        this.displayFormName = displayFormName;
     }
 
     /**
