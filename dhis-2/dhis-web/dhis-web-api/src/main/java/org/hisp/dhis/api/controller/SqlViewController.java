@@ -37,6 +37,7 @@ import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,14 +58,29 @@ public class SqlViewController
     @Autowired
     private ContextUtils contextUtils;
 
-    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
+    public String getViewJson( @PathVariable( "uid" ) String uid, Model model, HttpServletResponse response ) throws Exception
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+
+        model.addAttribute( "model", grid );
+        model.addAttribute( "viewClass", "detailed" );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
+        
+        return grid != null ? "sqlView" : null;
+    }
+
+    @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
     public void getViewXml( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
         
         Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
         
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.xml", false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         
         GridUtils.toXml( grid, response.getOutputStream() );
     }
@@ -100,7 +116,7 @@ public class SqlViewController
         
         Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
         
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.html", false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         
         GridUtils.toHtml( grid, response.getWriter() );
     }
