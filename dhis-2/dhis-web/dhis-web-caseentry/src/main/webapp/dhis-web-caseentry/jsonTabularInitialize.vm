@@ -35,7 +35,7 @@
 		#foreach( $level in $levels )
 		  {
 			"value":  "${level.level}" ,
-			"name": "$!encoder.jsonEncode( ${level.name} )"
+			"name": "$!encoder.jsonEncode( ${level.displayName} )"
 		  }#if($velocityCount < $levels.size()),#end
 		#end
 	]
