@@ -215,72 +215,70 @@ public class GetDataValuesForDataSetAction
         // Data values & Min-max data elements
         // ---------------------------------------------------------------------
 
-        if ( !multiOrganisationUnit )
+        dataValues.addAll( dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() ) );
+        minMaxDataElements.addAll( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet
+            .getDataElements() ) );
+
+        // ---------------------------------------------------------------------
+        // Modified 1
+        // ---------------------------------------------------------------------
+
+        Set<DataElement> compulsoryElements = new HashSet<DataElement>();
+
+        for ( DataElementOperand operand : dataSet.getCompulsoryDataElementOperands() )
         {
-            dataValues.addAll( dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() ) );
-            minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet
-                .getDataElements() );
-
-            // ---------------------------------------------------------------------
-            // Modified 1
-            // ---------------------------------------------------------------------
-
-            Set<DataElement> compulsoryElements = new HashSet<DataElement>();
-
-            for ( DataElementOperand operand : dataSet.getCompulsoryDataElementOperands() )
-            {
-                compulsoryElements.add( operand.getDataElement() );
-            }
-
-            for ( DataValue dv : dataValues )
-            {
-                Iterator<DataElement> iterator = compulsoryElements.iterator();
-
-                while ( iterator.hasNext() )
-                {
-                    if ( iterator.next().equals( dv.getDataElement() ) )
-                    {
-                        iterator.remove();
-                    }
-                }
-            }
-
-            if ( !compulsoryElements.isEmpty() )
-            {
-                Collection<Period> periods = localPeriodService.getPreviousPeriods( period );
-
-                Collection<DataValue> previousDataValues = localDataValueService.getDataValues( organisationUnit,
-                    compulsoryElements, periods );
-
-                Map<String, DataValue> dataValueMap = new HashMap<String, DataValue>();
-
-                for ( DataValue dv : previousDataValues )
-                {
-                    String key = dv.getDataElement().getId() + SEPARATE + dv.getOptionCombo().getId();
-
-                    if ( !dataValueMap.containsKey( key )
-                        || dv.getPeriod().getStartDate().after( dataValueMap.get( key ).getPeriod().getStartDate() ) )
-                    {
-                        dataValueMap.put( key, dv );
-                    }
-                }
-
-                if ( !dataValueMap.isEmpty() )
-                {
-                    dataValues.addAll( dataValueMap.values() );
-                }
-
-                periods = null;
-                previousDataValues = null;
-                dataValueMap = null;
-                compulsoryElements = null;
-            }
-
-            // ---------------------------------------------------------------------
-            // End of modified 1
-            // ---------------------------------------------------------------------
+            compulsoryElements.add( operand.getDataElement() );
         }
-        else
+
+        for ( DataValue dv : dataValues )
+        {
+            Iterator<DataElement> iterator = compulsoryElements.iterator();
+
+            while ( iterator.hasNext() )
+            {
+                if ( iterator.next().equals( dv.getDataElement() ) )
+                {
+                    iterator.remove();
+                }
+            }
+        }
+
+        if ( !compulsoryElements.isEmpty() )
+        {
+            Collection<Period> periods = localPeriodService.getPreviousPeriods( period );
+
+            Collection<DataValue> previousDataValues = localDataValueService.getDataValues( organisationUnit,
+                compulsoryElements, periods );
+
+            Map<String, DataValue> dataValueMap = new HashMap<String, DataValue>();
+
+            for ( DataValue dv : previousDataValues )
+            {
+                String key = dv.getDataElement().getId() + SEPARATE + dv.getOptionCombo().getId();
+
+                if ( !dataValueMap.containsKey( key )
+                    || dv.getPeriod().getStartDate().after( dataValueMap.get( key ).getPeriod().getStartDate() ) )
+                {
+                    dataValueMap.put( key, dv );
+                }
+            }
+
+            if ( !dataValueMap.isEmpty() )
+            {
+                dataValues.addAll( dataValueMap.values() );
+            }
+
+            periods = null;
+            previousDataValues = null;
+            dataValueMap = null;
+            compulsoryElements = null;
+        }
+
+        // ---------------------------------------------------------------------
+        // End of modified 1
+        // ---------------------------------------------------------------------
+
+        if ( multiOrganisationUnit )
         {
             for ( OrganisationUnit ou : children )
             {
@@ -296,14 +294,14 @@ public class GetDataValuesForDataSetAction
                     // Modified 2
                     // ---------------------------------------------------------------------
 
-                    Set<DataElement> compulsoryElements = new HashSet<DataElement>();
+                    Set<DataElement> compulsoryElements2 = new HashSet<DataElement>();
 
                     for ( DataElementOperand operand : dataSet.getCompulsoryDataElementOperands() )
                     {
-                        compulsoryElements.add( operand.getDataElement() );
+                        compulsoryElements2.add( operand.getDataElement() );
                     }
 
-                    Iterator<DataElement> iterator = compulsoryElements.iterator();
+                    Iterator<DataElement> iterator = compulsoryElements2.iterator();
 
                     for ( DataValue dv : dataValues )
                     {
@@ -316,12 +314,12 @@ public class GetDataValuesForDataSetAction
                         }
                     }
 
-                    if ( !compulsoryElements.isEmpty() )
+                    if ( !compulsoryElements2.isEmpty() )
                     {
                         Collection<Period> periods = localPeriodService.getPreviousPeriods( period );
 
                         Collection<DataValue> previousDataValues = localDataValueService.getDataValues( ou,
-                            compulsoryElements, periods );
+                            compulsoryElements2, periods );
 
                         Map<String, DataValue> dataValueMap = new HashMap<String, DataValue>();
 
@@ -342,7 +340,7 @@ public class GetDataValuesForDataSetAction
                         periods = null;
                         previousDataValues = null;
                         dataValueMap = null;
-                        compulsoryElements = null;
+                        compulsoryElements2 = null;
                     }
 
                     // ---------------------------------------------------------------------

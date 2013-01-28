@@ -190,20 +190,21 @@ public class GetDataValuesForDataSetAction
         // Data values & Min-max data elements
         // ---------------------------------------------------------------------
 
-        if ( !multiOrganisationUnit )
-        {
-            dataValues = dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() );
-            minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet.getDataElements() );
-        }
-        else
+        dataValues.addAll( dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() ) );
+        minMaxDataElements.addAll( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet
+            .getDataElements() ) );
+
+        if ( multiOrganisationUnit )
         {
             for ( OrganisationUnit ou : children )
             {
-                // make sure that the orgUnit have this dataSet (the same data elements can be contained in another dataSet)
+                // make sure that the orgUnit have this dataSet (the same data
+                // elements can be contained in another dataSet)
                 if ( ou.getDataSets().contains( dataSet ) )
                 {
                     dataValues.addAll( dataValueService.getDataValues( ou, period, dataSet.getDataElements() ) );
-                    minMaxDataElements.addAll( minMaxDataElementService.getMinMaxDataElements( ou, dataSet.getDataElements() ) );
+                    minMaxDataElements.addAll( minMaxDataElementService.getMinMaxDataElements( ou, dataSet
+                        .getDataElements() ) );
                 }
             }
         }
@@ -216,7 +217,8 @@ public class GetDataValuesForDataSetAction
         {
             if ( !multiOrganisationUnit )
             {
-                CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit );
+                CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
+                    period, organisationUnit );
 
                 if ( registration != null )
                 {
@@ -231,7 +233,8 @@ public class GetDataValuesForDataSetAction
             {
                 complete = true;
 
-                // if this is multiOrg, and one of the children is locked. Then just lock everything down.
+                // if this is multiOrg, and one of the children is locked. Then
+                // just lock everything down.
                 for ( OrganisationUnit ou : children )
                 {
                     if ( ou.getDataSets().contains( dataSet ) )
@@ -243,7 +246,8 @@ public class GetDataValuesForDataSetAction
                             break;
                         }
 
-                        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, ou );
+                        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration(
+                            dataSet, period, ou );
 
                         if ( complete && registration == null )
                         {
