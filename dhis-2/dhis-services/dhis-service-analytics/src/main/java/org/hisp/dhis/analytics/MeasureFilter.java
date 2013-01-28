@@ -27,18 +27,7 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-import java.util.Set;
-
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.i18n.I18nFormat;
-
-public interface AnalyticsService
+public enum MeasureFilter
 {
-    Grid getAggregatedDataValues( DataQueryParams params ) throws Exception;
-    
-    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) throws Exception;
-    
-    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        boolean categories, AggregationType aggregationType, String measureCriteria, I18nFormat format );
+    EQ, GT, GE, LT, LE
 }

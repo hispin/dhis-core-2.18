@@ -282,7 +282,8 @@ public class DefaultAnalyticsService
         return map;
     }
     
-    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, boolean categories, AggregationType aggregationType, I18nFormat format )
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
+        boolean categories, AggregationType aggregationType, String measureCriteria, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -315,6 +316,11 @@ public class DefaultAnalyticsService
                     params.getFilters().add( getDimension( dimension, options, format ) );
                 }
             }
+        }
+        
+        if ( measureCriteria != null && !measureCriteria.isEmpty() )
+        {
+            params.setMeasureCriteria( DataQueryParams.getMeasureCriteriaFromParam( measureCriteria ) );
         }
 
         return params;

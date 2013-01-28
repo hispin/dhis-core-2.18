@@ -73,10 +73,11 @@ public class AnalyticsController
         @RequestParam(required = false) Set<String> filter,
         @RequestParam(required = false) boolean categories,
         @RequestParam(required = false) AggregationType aggregationType,
+        @RequestParam(required = false) String measureCriteria,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, i18nManager.getI18nFormat() );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
@@ -96,10 +97,11 @@ public class AnalyticsController
         @RequestParam(required = false) Set<String> filter,
         @RequestParam(required = false) boolean categories,
         @RequestParam(required = false) AggregationType aggregationType,
+        @RequestParam(required = false) String measureCriteria,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, i18nManager.getI18nFormat() );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
@@ -117,10 +119,11 @@ public class AnalyticsController
         @RequestParam(required = false) Set<String> filter,
         @RequestParam(required = false) boolean categories,
         @RequestParam(required = false) AggregationType aggregationType,
+        @RequestParam(required = false) String measureCriteria,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, i18nManager.getI18nFormat() );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
@@ -138,10 +141,11 @@ public class AnalyticsController
         @RequestParam(required = false) Set<String> filter,
         @RequestParam(required = false) boolean categories,
         @RequestParam(required = false) AggregationType aggregationType,
+        @RequestParam(required = false) String measureCriteria,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, i18nManager.getI18nFormat() );
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, categories, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
         if ( !valid( params, response ) )
         {
