@@ -10,7 +10,7 @@
 				
 #foreach($attribute in $program.patientAttributes )
 	<tr>
-		<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+		<td class='text-column'><label>$attribute.displayName #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 		<td class="input-column" >
 			#if( $attribute.valueType == "YES/NO" )
 				<select id="attr$attribute.id" name="attr$attribute.id" >              

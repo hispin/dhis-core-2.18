@@ -1,5 +1,4 @@
 <input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
-<input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
 <input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
@@ -71,7 +70,7 @@
 				<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>
 				<option value="fixedAttr_phoneNumber">$i18n.getString( "phone_number" )</option>
 				#foreach( $attribute in $patientAttributes )
-					<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
+					<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 				#end
 			  </select>
 			  <em title="$i18n.getString( 'required' )" class="required">*</em></label>
@@ -101,7 +100,7 @@
 					<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>
 					<option value="fixedAttr_phoneNumber">$i18n.getString( "phone_number" )</option>
 					#foreach( $attribute in $patientAttributes )
-						<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
+						<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 					#end
 				  </select>
 				  <em title="$i18n.getString( 'required' )" class="required">*</em></label>

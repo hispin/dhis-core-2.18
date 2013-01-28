@@ -145,7 +145,7 @@
 		#set($value = $patientAttributeValueMap.get($attribute.id))
 		#if( $attribute.valueType != 'CALCULATED')
 		<tr>
-			<td class='text-column'><label>$encoder.htmlEncode($attribute.name) #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
+			<td class='text-column'><label>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column">
 				#if( $attribute.valueType == "YES/NO" )
 					<select id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit"> 
@@ -187,7 +187,7 @@
 		#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 		#if( $attribute.valueType != 'CALCULATED')
 		<tr>
-			<td class='text-column'><label>$encoder.htmlEncode($attribute.name) #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+			<td class='text-column'><label>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 			<td class="input-column">
 				#if( $attribute.valueType == "YES/NO" )
 					<select id="attr$attribute.id"  name="attr$attribute.id" inherit="$!attribute.inherit">              

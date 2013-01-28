@@ -110,7 +110,7 @@ public class DefaultProgramService
             }
         }
 
-        return programs;
+        return i18n( i18nService, programs);
     }
 
     public Collection<Program> getPrograms( ValidationCriteria validationCriteria )
@@ -125,7 +125,7 @@ public class DefaultProgramService
             }
         }
 
-        return programs;
+        return i18n( i18nService, programs);
     }
 
     public Collection<Program> getPrograms( int type )

@@ -50,7 +50,7 @@
 		#foreach( ${attribute} in $!{attributes} )
 			{
 				"id": "attr_${attribute.id}",
-				"name": "${attribute.name}"
+				"name": "${attribute.displayName}"
 			}
 			#if( $velocityCount < $size ),#end
 		#end

@@ -29,19 +29,13 @@ package org.hisp.dhis.patient;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
-@XmlRootElement( name = "patientAttribute", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+
 public class PatientAttribute
     extends BaseIdentifiableObject
 {

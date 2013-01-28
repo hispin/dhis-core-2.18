@@ -70,7 +70,7 @@
 				#end
 				#foreach( $attributeValue in $attributeValues )
 				<tr>
-					<td>$attributeValue.patientAttribute.name</td>
+					<td>$attributeValue.patientAttribute.displayName</td>
 					<td>
 						#if($attributeValue.patientAttribute.valueType=='YES/NO')
 							#if($attributeValue.value=='true')

@@ -99,7 +99,7 @@
 						<select name="attributeId" id="attributeId" style='width:18em'>
 							<option value="">[$i18n.getString( "please_select" )]</option>       
 							#foreach($attribute in $attributes)
-								<option value="$attribute.id">$attribute.name</option>
+								<option value="$attribute.id">$attribute.displayName</option>
 							#end
 						</select>
 					</td>
