@@ -27,7 +27,7 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_AGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT;
@@ -100,7 +100,7 @@ public class JdbcAnalyticsManager
         
         String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", ";
         
-        if ( params.isAggregationType( AVERAGE_INT_AGGREGATION ) )
+        if ( params.isAggregationType( AVERAGE_INT ) )
         {
             sql += "sum(daysxvalue) / " + days;
         }

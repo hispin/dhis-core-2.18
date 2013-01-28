@@ -95,24 +95,17 @@ public class DataQueryParams
     public DataQueryParams()
     {
     }
-    
-    public DataQueryParams( List<Dimension> dimensions, boolean categories, List<Dimension> filters )
-    {
-        this.dimensions = dimensions;
-        this.categories = categories;
-        this.filters = filters;
-    }
-    
+        
     public DataQueryParams( DataQueryParams params )
     {
         this.dimensions = new ArrayList<Dimension>( params.getDimensions() );
-        this.categories = params.isCategories();
         this.filters = new ArrayList<Dimension>( params.getFilters() );
+        this.categories = params.isCategories();
+        this.aggregationType = params.getAggregationType();
         
         this.tableName = params.getTableName();
         this.periodType = params.getPeriodType();
         this.organisationUnitLevel = params.getOrganisationUnitLevel();
-        this.aggregationType = params.getAggregationType();
         this.dataPeriodType = params.getDataPeriodType();
     }
 
