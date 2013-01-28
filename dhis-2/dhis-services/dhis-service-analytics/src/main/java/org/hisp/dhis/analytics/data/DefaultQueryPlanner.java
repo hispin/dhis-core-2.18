@@ -28,7 +28,7 @@ package org.hisp.dhis.analytics.data;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_AGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
@@ -548,7 +548,7 @@ public class DefaultQueryPlanner
             {
                 if ( dataPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
                 {
-                    map.putValue( AVERAGE_INT_AGGREGATION, element );
+                    map.putValue( AVERAGE_INT, element );
                 }
                 else
                 {
