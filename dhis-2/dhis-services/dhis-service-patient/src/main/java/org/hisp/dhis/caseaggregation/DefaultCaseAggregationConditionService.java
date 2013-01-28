@@ -375,7 +375,7 @@ public class DefaultCaseAggregationConditionService
                     }
 
                     matcher.appendReplacement( description, "[" + OBJECT_PATIENT_ATTRIBUTE + SEPARATOR_OBJECT
-                        + patientAttribute.getName() + "]" );
+                        + patientAttribute.getDisplayName() + "]" );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
                 {
