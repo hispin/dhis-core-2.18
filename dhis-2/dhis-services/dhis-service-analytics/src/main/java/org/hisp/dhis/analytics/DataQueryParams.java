@@ -46,6 +46,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ListMap;
 import org.hisp.dhis.system.util.MapMap;
+import org.hisp.dhis.system.util.MathUtils;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -76,6 +77,8 @@ public class DataQueryParams
 
     private AggregationType aggregationType;
     
+    private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -102,6 +105,7 @@ public class DataQueryParams
         this.filters = new ArrayList<Dimension>( params.getFilters() );
         this.categories = params.isCategories();
         this.aggregationType = params.getAggregationType();
+        this.measureCriteria = params.getMeasureCriteria();
         
         this.tableName = params.getTableName();
         this.periodType = params.getPeriodType();
@@ -476,6 +480,37 @@ public class DataQueryParams
         return new ArrayList<String>();
     }
     
+    /**
+     * Retrieves the measure criteria form the given string. Criteria are separated
+     * by the option separator, while the criterion filter and value are separated
+     * with the dimension name separator.
+     */
+    public static Map<MeasureFilter, Double> getMeasureCriteriaFromParam( String param )
+    {
+        if ( param == null )
+        {
+            return null;
+        }
+        
+        Map<MeasureFilter, Double> map = new HashMap<MeasureFilter, Double>();
+        
+        String[] criteria = param.split( OPTION_SEP );
+        
+        for ( String c : criteria )
+        {
+            String[] criterion = c.split( DIMENSION_NAME_SEP );
+            
+            if ( criterion != null && criterion.length == 2 && MathUtils.isNumeric( criterion[1] ) )
+            {
+                MeasureFilter filter = MeasureFilter.valueOf( criterion[0] );
+                Double value = Double.valueOf( criterion[1] );
+                map.put( filter, value );
+            }
+        }
+        
+        return map;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -619,6 +654,16 @@ public class DataQueryParams
     public void setAggregationType( AggregationType aggregationType )
     {
         this.aggregationType = aggregationType;
+    }
+
+    public Map<MeasureFilter, Double> getMeasureCriteria()
+    {
+        return measureCriteria;
+    }
+
+    public void setMeasureCriteria( Map<MeasureFilter, Double> measureCriteria )
+    {
+        this.measureCriteria = measureCriteria;
     }
 
     // -------------------------------------------------------------------------

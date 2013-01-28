@@ -27,18 +27,38 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-public interface AnalyticsService
+public class DataQueryParamsTest
 {
-    Grid getAggregatedDataValues( DataQueryParams params ) throws Exception;
+    @Test
+    public void testGetDimensionFromParam()
+    {
+        assertEquals( DataQueryParams.DATAELEMENT_DIM_ID, DataQueryParams.getDimensionFromParam( "de:D348asd782j,kj78HnH6hgT,9ds9dS98s2" ) );
+    }
     
-    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) throws Exception;
+    @Test
+    public void testGetDimensionOptionsFromParam()
+    {
+        List<String> expected = new ArrayList<String>( Arrays.asList( "D348asd782j", "kj78HnH6hgT", "9ds9dS98s2" ) );
+        
+        assertEquals( expected, DataQueryParams.getDimensionOptionsFromParam( "de:D348asd782j,kj78HnH6hgT,9ds9dS98s2" ) );        
+    }
     
-    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        boolean categories, AggregationType aggregationType, String measureCriteria, I18nFormat format );
+    @Test
+    public void test()
+    {
+        Map<MeasureFilter, Double> expected = new HashMap<MeasureFilter, Double>();
+        expected.put( MeasureFilter.GT, 100d );
+        expected.put( MeasureFilter.LT, 200d );
+        
+        assertEquals( expected, DataQueryParams.getMeasureCriteriaFromParam( "GT:100,LT:200" ) );
+    }
 }
