@@ -73,8 +73,6 @@ public class DataQueryParams
     
     private List<Dimension> filters = new ArrayList<Dimension>();
 
-    private boolean categories = false;
-
     private AggregationType aggregationType;
     
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
@@ -103,7 +101,6 @@ public class DataQueryParams
     {
         this.dimensions = new ArrayList<Dimension>( params.getDimensions() );
         this.filters = new ArrayList<Dimension>( params.getFilters() );
-        this.categories = params.isCategories();
         this.aggregationType = params.getAggregationType();
         this.measureCriteria = params.getMeasureCriteria();
         
@@ -117,23 +114,6 @@ public class DataQueryParams
     // Logic
     // -------------------------------------------------------------------------
 
-    /**
-     * Creates a list of the names of all dimensions for this query.
-     */
-    public List<Dimension> getSelectDimensions()
-    {
-        List<Dimension> list = new ArrayList<Dimension>( dimensions );
-        
-        list.remove( new Dimension( INDICATOR_DIM_ID ) );
-        
-        if ( categories )
-        {
-            list.add( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() ) );
-        }
-        
-        return list;
-    }
-    
     /**
      * Creates a list of the names of all dimensions for this query. 
      */
@@ -159,7 +139,7 @@ public class DataQueryParams
      */
     public int getDataElementOrIndicatorDimensionIndex()
     {
-        List<String> dims = getAllDimensionNamesAsList();
+        List<String> dims = getInputDimensionNamesAsList();
         
         return dims.contains( DATAELEMENT_DIM_ID ) ? dims.indexOf( DATAELEMENT_DIM_ID ) : dims.indexOf( INDICATOR_DIM_ID );
     }
@@ -169,7 +149,7 @@ public class DataQueryParams
      */
     public int getDataElementDimensionIndex()
     {
-        return getAllDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
+        return getInputDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
     }
 
     /**
@@ -177,7 +157,7 @@ public class DataQueryParams
      */
     public int getCategoryOptionComboDimensionIndex()
     {
-        return getAllDimensionNamesAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
+        return getInputDimensionNamesAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
     }
     
     /**
@@ -185,7 +165,7 @@ public class DataQueryParams
      */
     public int getPeriodDimensionIndex()
     {
-        return getAllDimensionNamesAsList().indexOf( PERIOD_DIM_ID );
+        return getInputDimensionNamesAsList().indexOf( PERIOD_DIM_ID );
     }
         
     /**
@@ -526,19 +506,7 @@ public class DataQueryParams
         
         return list;
     }
-    
-    private List<String> getAllDimensionNamesAsList()
-    {
-        List<String> list = getInputDimensionNamesAsList();
-
-        if ( categories )
-        {
-            list.add( CATEGORYOPTIONCOMBO_DIM_ID );
-        }
         
-        return list;
-    }
-    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -548,7 +516,6 @@ public class DataQueryParams
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ( categories ? 1231 : 1237);
         result = prime * result + ( ( dimensions == null ) ? 0 : dimensions.hashCode() );
         result = prime * result + ( ( filters == null ) ? 0 : filters.hashCode() );
         return result;
@@ -586,11 +553,6 @@ public class DataQueryParams
             return false;
         }
         
-        if ( categories != other.categories )
-        {
-            return false;
-        }
-
         if ( filters == null )
         {
             if ( other.filters != null )
@@ -634,16 +596,6 @@ public class DataQueryParams
     public void setFilters( List<Dimension> filters )
     {
         this.filters = filters;
-    }
-
-    public boolean isCategories()
-    {
-        return categories;
-    }
-
-    public void setCategories( boolean categories )
-    {
-        this.categories = categories;
     }
 
     public AggregationType getAggregationType()
@@ -793,6 +745,11 @@ public class DataQueryParams
     public void setDataElementGroupSet( Dimension dimension, List<IdentifiableObject> dataElementGroups )
     {
         setDimensionOptions( dimension.getDimension(), DimensionType.DATAELEMENT_GROUPSET, dataElementGroups );
+    }
+    
+    public void enableCategoryOptionCombos()
+    {
+        setDimensionOptions( CATEGORYOPTIONCOMBO_DIM_ID, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() );
     }
     
     // -------------------------------------------------------------------------

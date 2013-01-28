@@ -94,14 +94,13 @@ public class JdbcAnalyticsManager
         
         params.populateDimensionNames();
         
-        List<Dimension> selectDimensions = params.getSelectDimensions();
         List<Dimension> queryDimensions = params.getQueryDimensions();
         
         SqlHelper sqlHelper = new SqlHelper();
 
         int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
         
-        String sql = "select " + getCommaDelimitedString( selectDimensions ) + ", ";
+        String sql = "select " + getCommaDelimitedString( queryDimensions ) + ", ";
         
         if ( params.isAggregationType( AVERAGE_INT ) )
         {
@@ -138,7 +137,7 @@ public class JdbcAnalyticsManager
             }
         }
         
-        sql += "group by " + getCommaDelimitedString( selectDimensions );
+        sql += "group by " + getCommaDelimitedString( queryDimensions );
     
         log.info( sql );
         
@@ -157,7 +156,7 @@ public class JdbcAnalyticsManager
             
             StringBuilder key = new StringBuilder();
             
-            for ( Dimension dim : selectDimensions )
+            for ( Dimension dim : queryDimensions )
             {
                 key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
             }
