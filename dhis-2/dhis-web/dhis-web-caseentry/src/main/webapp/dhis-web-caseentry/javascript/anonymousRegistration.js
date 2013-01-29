@@ -402,6 +402,16 @@ function showUpdateEvent( programStageInstanceId )
 			hideById('loaderDiv');
 			showById('dataEntryInfor');
 			showById('entryFormContainer');
+			
+			jQuery("#entryForm :input").each(function()
+			{ 
+				if(( jQuery(this).attr( 'options' )!= null && jQuery(this).attr( 'options' )== 'true' )
+					|| ( jQuery(this).attr( 'username' )!= null && jQuery(this).attr( 'username' )== 'true' ))
+				{
+					var input = jQuery(this);
+					input.parent().width( input.width() + 200 );
+				}
+			});
 		});
 }
 
