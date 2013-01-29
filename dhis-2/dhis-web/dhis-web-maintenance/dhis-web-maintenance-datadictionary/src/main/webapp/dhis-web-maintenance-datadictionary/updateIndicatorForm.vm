@@ -94,7 +94,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:200px"  #if($!indicator.indicatorType.number=='true') disabled #end/>
+			<input type="button" name="denominatorButton" id="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:200px"  #if($!indicator.indicatorType.number=='true') disabled #end/>
 			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator"/>
 			<input type="hidden" id="denominatorFormula" name="denominatorFormula" value="$!indicator.denominator"/>
 		</td>
