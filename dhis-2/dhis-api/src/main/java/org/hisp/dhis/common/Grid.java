@@ -251,5 +251,5 @@ public interface Grid
      * 
      * @param rs the result set.
      */
-    Grid addRow( ResultSet rs );
+    Grid addRows( ResultSet rs );
 }

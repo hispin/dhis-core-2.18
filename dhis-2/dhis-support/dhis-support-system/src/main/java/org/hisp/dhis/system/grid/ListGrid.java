@@ -576,7 +576,7 @@ public class ListGrid
         return this;
     }
 
-    public Grid addRow( ResultSet rs )
+    public Grid addRows( ResultSet rs )
     {
         try
         {
