@@ -722,7 +722,7 @@ public class HibernateProgramStageInstanceStore
                 {
                     periodName = startDate + " -> " + endDate;
                 }
-
+                
                 sql += " ( SELECT " + aggregateType + "(*) ";
                 sql += "FROM programstageinstance psi_1 ";
                 sql += "        JOIN patientdatavalue pdv_1 ";

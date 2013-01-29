@@ -164,12 +164,12 @@ function insertDataElement( source, programStageId )
 	else if ( dataElementType == "username" )
 	{
 		var displayName = dataElementName;
-		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\ username=\"true\" ">";
+		htmlCode = "<input title=\"" + titleValue + "\" value=\"[" + displayName + "]\" name=\"entryfield\" id=\"" + id + "\" username=\"true\" />";
 	} 
 	else
 	{
 		var displayName = dataElementName;
-		htmlCode += "<input title=\"" + titleValue + "\" value=\"[" + displayName + "]\" name=\"entryfield\" id=\"" + id + "\" />";
+		htmlCode = "<input title=\"" + titleValue + "\" value=\"[" + displayName + "]\" name=\"entryfield\" id=\"" + id + "\" />";
 	}
 	
 	if( checkExisted( id ) )
