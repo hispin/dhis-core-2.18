@@ -128,6 +128,10 @@ function dataElementOnChange( this_ )
 			element.replaceWith( searchTextBox );
 			autocompletedFilterField( container + " [id=searchText]" , jQuery(this_).val() );
 		}
+		else if( valueType== 'username' )
+		{
+			autocompletedUsernameField(jQuery(this).attr('id'));
+		}
 		else{
 			element.replaceWith( searchTextBox );
 		}
@@ -158,6 +162,94 @@ function autocompletedFilterField( idField, searchObjectId )
 		select: function( event, ui ) {
 			input.val(ui.item.value);
 			input.autocomplete( "close" );
+		}
+	})
+	.addClass( "ui-widget" );
+	
+	input.data( "autocomplete" )._renderItem = function( ul, item ) {
+		return $( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( "<a>" + item.label + "</a>" )
+			.appendTo( ul );
+	};
+		
+	var wrapper = this.wrapper = $( "<span style='width:200px'>" )
+			.addClass( "ui-combobox" )
+			.insertAfter( input );
+						
+	var button = $( "<a style='width:20px; margin-bottom:-5px;height:20px;'>" )
+		.attr( "tabIndex", -1 )
+		.attr( "title", i18n_show_all_items )
+		.appendTo( wrapper )
+		.button({
+			icons: {
+				primary: "ui-icon-triangle-1-s"
+			},
+			text: false
+		})
+		.addClass('small-button')
+		.click(function() {
+			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+				input.autocomplete( "close" );
+				return;
+			}
+			$( this ).blur();
+			input.autocomplete( "search", "" );
+			input.focus();
+		});
+}
+
+function autocompletedUsernameField( idField )
+{
+	var input = jQuery( "#" +  idField );
+	input.parent().width( input.width() + 200 );
+	var dataElementId = input.attr('id').split('-')[1];
+	
+	input.autocomplete({
+		delay: 0,
+		minLength: 0,
+		source: function( request, response ){
+			$.ajax({
+				url: "getUsernameList.action?query=" + input.val(),
+				dataType: "json",
+				cache: true,
+				success: function(data) {
+					response($.map(data.usernames, function(item) {
+						return {
+							label: item.u,
+							id: item.u
+						};
+					}));
+				}
+			});
+		},
+		minLength: 0,
+		select: function( event, ui ) {
+			var fieldValue = ui.item.value;
+			
+			if ( !dhis2.trigger.invoke( "caseentry-value-selected", [dataElementId, fieldValue] ) ) {
+				input.val( "" );
+				return false;
+			}
+			
+			input.val( fieldValue );			
+			if ( !unSave ) {
+				saveVal( dataElementId );
+			}
+			input.autocomplete( "close" );
+		},
+		change: function( event, ui ) {
+			if ( !ui.item ) {
+				var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+					valid = false;
+				if ( !valid ) {
+					$( this ).val( "" );
+					if(!unSave)
+						saveVal( dataElementId );
+					input.data( "autocomplete" ).term = "";
+					return false;
+				}
+			}
 		}
 	})
 	.addClass( "ui-widget" );
