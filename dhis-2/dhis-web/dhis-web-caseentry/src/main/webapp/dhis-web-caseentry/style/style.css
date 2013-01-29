@@ -57,10 +57,10 @@ textarea
 }
 
 .incomplete-record
-{
-	color:red;
-	font-weight: bold;
-	font-size:25px;
+{ 
+	color: black;
+    font-size: 21px;
+    font-weight: bold;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -439,6 +439,7 @@ function checkDuplicate( divname )
 {
 	$.postUTF8( 'validatePatient.action', 
 		{
+			id: jQuery( '#' + divname + ' [id=id]' ).val(),
 			fullName: jQuery( '#' + divname + ' [id=fullName]' ).val(),
 			dobType: jQuery( '#' + divname + ' [id=dobType]' ).val(),
 			gender: jQuery( '#' + divname + ' [id=gender]' ).val(),
