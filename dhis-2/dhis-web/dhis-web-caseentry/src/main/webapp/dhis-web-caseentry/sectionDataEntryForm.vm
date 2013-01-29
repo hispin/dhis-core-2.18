@@ -1,5 +1,5 @@
 #foreach( $section in $sections )
-	<table class="formSection" width='60%'>
+	<table class="formSection" width='80%'>
 		<tr>
 		  <td class='entryScreen'>
 			<div class="cent"><h3>$encoder.htmlEncode( $section.name )</h3></div>
