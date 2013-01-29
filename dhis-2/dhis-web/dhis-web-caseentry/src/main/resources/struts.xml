@@ -123,7 +123,7 @@
 				,javascript/entry.js
 				,../dhis-web-commons/javascripts/date.js</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
+			<param name="requiredAuthorities">F_ANONYMOUS_DATA_ENTRY</param>
 		</action>
 
 		<action name="anonymousPrograms"
@@ -288,7 +288,7 @@
 				,../dhis-web-commons/javascripts/date.js
 			</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
+			<param name="requiredAuthorities">F_SINGLE_EVENT_DATA_ENTRY</param>
 		</action>
 
 		<action name="singleEventPrograms"
