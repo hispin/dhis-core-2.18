@@ -17,15 +17,22 @@
 		<li><a href="smsReminderSelect.action">$i18n.getString( "program_tracking" )</a></li>     
 	#end
 </ul>
-
-#if( $auth.hasAccess( "dhis-web-caseentry", "multipledataEntrySelect" ) )
+#if( $auth.hasAccess( "dhis-web-caseentry", "multipledataEntrySelect" ) 
+	|| $auth.hasAccess( "dhis-web-caseentry", "singleEventSelect" ) 
+	|| $auth.hasAccess( "dhis-web-caseentry", "anonymousRegistration" ) )
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
-<ul>
-	<li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_individual_records" )&nbsp;</a></li>
-	<li><a href="singleEventSelect.action">$i18n.getString( "single_event_with_registration" )</a></li>
-	<li><a href="anonymousRegistration.action">$i18n.getString( "anonymous_events" )</a></li>
-</ul>
 #end
+<ul>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "multipledataEntrySelect" ) )
+		<li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_individual_records" )&nbsp;</a></li>
+	#end
+	#if( $auth.hasAccess( "dhis-web-caseentry", "singleEventSelect" ) )
+		<li><a href="singleEventSelect.action">$i18n.getString( "single_event_with_registration" )</a></li>
+	#end
+	#if( $auth.hasAccess( "dhis-web-caseentry", "anonymousRegistration" ) )
+		<li><a href="anonymousRegistration.action">$i18n.getString( "anonymous_events" )</a></li>
+	#end
+</ul>
 
 #if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) 
 	|| $auth.hasAccess( "dhis-web-caseentry", "generateTabularReport" ) )	
