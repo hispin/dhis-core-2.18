@@ -216,6 +216,11 @@ TR.utilbody {
     padding-left: 1px;
     font-size: 11px;
 }
+.x-form-cb-label-before {
+    padding-left: 1px;
+    font-size: 11px;
+}
+
 /* TR checkbox */
 .tr-checkbox .x-form-item-label {
     padding-left: 5px;
