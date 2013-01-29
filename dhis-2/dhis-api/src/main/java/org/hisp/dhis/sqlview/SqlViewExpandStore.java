@@ -1,6 +1,7 @@
 package org.hisp.dhis.sqlview;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
 
@@ -24,7 +25,7 @@ public interface SqlViewExpandStore
 
     void dropViewTable( String sqlViewName );
 
-    void setUpDataSqlViewTable( Grid sqlViewGrid, String viewTableName );
+    void setUpDataSqlViewTable( Grid sqlViewGrid, String viewTableName, Map<String, String> criteria );
 
     String testSqlGrammar( String sql );
 }

@@ -27,12 +27,17 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -48,6 +53,8 @@ public class SqlView
 {
     public static final String PREFIX_VIEWNAME = "_view";
 
+    private static final String CRITERIA_SEP = ":";
+    
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
@@ -132,6 +139,31 @@ public class SqlView
         }
 
         return PREFIX_VIEWNAME + input;
+    }
+    
+    public static Map<String, String> getCriteria( Set<String> params )
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        
+        if ( params != null )
+        {
+            for ( String param : params )
+            {
+                if ( param != null && param.split( CRITERIA_SEP ).length == 2 )
+                {
+                    String[] criteria = param.split( CRITERIA_SEP );
+                    String filter = criteria[0];
+                    String value = criteria[1];
+                    
+                    if ( StringUtils.isAlphanumeric( filter ) && StringUtils.isAlphanumeric( value ) )
+                    {
+                        map.put( filter, value );
+                    }
+                }
+            }
+        }
+        
+        return map;
     }
     
     // -------------------------------------------------------------------------

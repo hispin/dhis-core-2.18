@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -41,6 +43,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -59,11 +62,12 @@ public class SqlViewController
     private ContextUtils contextUtils;
 
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
-    public String getViewJson( @PathVariable( "uid" ) String uid, Model model, HttpServletResponse response ) throws Exception
+    public String getViewJson( @PathVariable( "uid" ) String uid, 
+        @RequestParam(required=false) Set<String> criteria, Model model, HttpServletResponse response )
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
         
-        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
 
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
@@ -74,11 +78,12 @@ public class SqlViewController
     }
 
     @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
-    public void getViewXml( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    public void getViewXml( @PathVariable( "uid" ) String uid, 
+        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
         
-        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         
@@ -86,11 +91,12 @@ public class SqlViewController
     }
 
     @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
-    public void getViewCsv( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    public void getViewCsv( @PathVariable( "uid" ) String uid, 
+        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
         
-        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.csv", true );
         
@@ -98,11 +104,12 @@ public class SqlViewController
     }
     
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
-    public void getViewXls( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    public void getViewXls( @PathVariable( "uid" ) String uid, 
+        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
         
-        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.xls", true );
         
@@ -110,11 +117,12 @@ public class SqlViewController
     }
 
     @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
-    public void getViewHtml( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    public void getViewHtml( @PathVariable( "uid" ) String uid, 
+        @RequestParam(required=false) Set<String> criteria, HttpServletResponse response ) throws Exception
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
         
-        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ) );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         

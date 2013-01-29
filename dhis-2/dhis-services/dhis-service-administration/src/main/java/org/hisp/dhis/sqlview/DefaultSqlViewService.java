@@ -27,12 +27,13 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 
 /**
  * @author Dang Duy Hieu
@@ -169,11 +170,11 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public Grid getDataSqlViewGrid( SqlView sqlView )
+    public Grid getSqlViewGrid( SqlView sqlView, Map<String, String> criteria )
     {
         Grid sqlViewGrid = new ListGrid();
 
-        sqlViewExpandStore.setUpDataSqlViewTable( sqlViewGrid, sqlView.getViewName() );
+        sqlViewExpandStore.setUpDataSqlViewTable( sqlViewGrid, sqlView.getViewName(), criteria );
 
         return sqlViewGrid;
     }

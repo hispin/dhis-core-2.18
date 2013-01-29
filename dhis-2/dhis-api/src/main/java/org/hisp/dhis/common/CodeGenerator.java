@@ -43,7 +43,7 @@ public class CodeGenerator
     public static final int NUMBER_OF_CODEPOINTS = allowedChars.length();
     public static final int CODESIZE = 11;
 
-    private static final Pattern CODE_PATTERN = Pattern.compile( "^[a-zA-Z0-9]{11}$" );
+    private static final Pattern CODE_PATTERN = Pattern.compile( "^[a-zA-Z]{1}[a-zA-Z0-9]{10}$" );
     
     /**
      * Generates a pseudo random string using the allowed characters. Code is
