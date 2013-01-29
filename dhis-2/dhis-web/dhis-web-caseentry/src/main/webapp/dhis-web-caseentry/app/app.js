@@ -10,7 +10,7 @@ TR.conf = {
 				};
 				obj.system.rootnodes = [];
 				for (var i = 0; i < r.user.ous.length; i++) {
-					obj.system.rootnodes.push({id: r.user.ous[i].id, localid: r.user.ous[i].id,text: r.user.ous[i].name, leaf: r.user.ous[i].leaf});
+					obj.system.rootnodes.push({id: r.user.ous[i].id, localid: r.user.ous[i].localid,text: r.user.ous[i].name, leaf: r.user.ous[i].leaf});
 				}
 				
 				obj.system.program = [];
@@ -702,67 +702,56 @@ Ext.onReady( function() {
 					Ext.getCmp('positionOrgunitCbx').setValue(1);
 					Ext.getCmp('positionPeriodCbx').setValue(2);
 					Ext.getCmp('positionDataCbx').setValue(3);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_ORGUNIT :
 					Ext.getCmp('positionOrgunitCbx').setValue(2);
 					Ext.getCmp('positionPeriodCbx').setValue(1);
 					Ext.getCmp('positionDataCbx').setValue(3);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT_ROW_PERIOD :
 					Ext.getCmp('positionOrgunitCbx').setValue(1);
 					Ext.getCmp('positionPeriodCbx').setValue(1);
 					Ext.getCmp('positionDataCbx').setValue(3);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_PERIOD :
 					Ext.getCmp('positionOrgunitCbx').setValue(3);
 					Ext.getCmp('positionPeriodCbx').setValue(1);
 					Ext.getCmp('positionDataCbx').setValue(3);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_PERIOD :
 					Ext.getCmp('positionOrgunitCbx').setValue(3);
 					Ext.getCmp('positionPeriodCbx').setValue(1);
 					Ext.getCmp('positionDataCbx').setValue(2);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT :
 					Ext.getCmp('positionOrgunitCbx').setValue(1);
 					Ext.getCmp('positionPeriodCbx').setValue(2);
 					Ext.getCmp('positionDataCbx').setValue(3);
-					this.period();
 					break;	
 				case TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA :
 					Ext.getCmp('positionOrgunitCbx').setValue(3);
 					Ext.getCmp('positionPeriodCbx').setValue(1);
 					Ext.getCmp('positionDataCbx').setValue(2);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA :
 					Ext.getCmp('positionOrgunitCbx').setValue(1);
 					Ext.getCmp('positionPeriodCbx').setValue(3);
 					Ext.getCmp('positionDataCbx').setValue(2);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA :
 					Ext.getCmp('positionOrgunitCbx').setValue(3);
 					Ext.getCmp('positionPeriodCbx').setValue(3);
 					Ext.getCmp('positionDataCbx').setValue(1);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_PERIOD :
 					Ext.getCmp('positionOrgunitCbx').setValue(3);
 					Ext.getCmp('positionPeriodCbx').setValue(2);
 					Ext.getCmp('positionDataCbx').setValue(1);
-					this.period();
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_ORGUNIT :
 					Ext.getCmp('positionOrgunitCbx').setValue(2);
 					Ext.getCmp('positionPeriodCbx').setValue(3);
 					Ext.getCmp('positionDataCbx').setValue(1);
-					this.period();
 					break;
 				}
 			}
@@ -1006,8 +995,8 @@ Ext.onReady( function() {
 								var f = Ext.JSON.decode(r.responseText);
 								
 								Ext.getCmp('programCombobox').setValue( f.programId );
-								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
-								Ext.getCmp('programStageCombobox').setRawValue( f.programStageName );
+								TR.store.programStage.removeAll();
+								TR.store.programStage.add({'id': f.programStageId, 'name': f.programStageName});
 								Ext.getCmp('startDate').setValue( f.startDate );
 								Ext.getCmp('endDate').setValue( f.endDate );
 								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
@@ -1135,8 +1124,11 @@ Ext.onReady( function() {
 								var f = Ext.JSON.decode(r.responseText);
 								
 								Ext.getCmp('programCombobox').setValue( f.programId );
-								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
-								Ext.getCmp('programStageCombobox').setRawValue( f.programStageName );
+								
+								// Program-Stage
+								TR.store.programStage.removeAll();
+								TR.store.programStage.add({'id': f.programStageId, 'name': f.programStageName});
+								
 								Ext.getCmp('userOrgunit').setValue( f.userOrganisationUnit );
 								Ext.getCmp('userOrgunitChildren').setValue( f.userOrganisationUnitChildren );								
 								
@@ -1463,10 +1455,6 @@ Ext.onReady( function() {
 			{
 				this.caseBasedReport.filter();
 			}
-			else
-			{
-				
-			}
 		},
 		getParams: function(isSorted){
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -1480,10 +1468,7 @@ Ext.onReady( function() {
 			{
 				return this.caseBasedReport.getURLParams( type, isSorted );
 			}
-			else
-			{
-				return this.aggregateReport.getURLParams( type );
-			}
+			return this.aggregateReport.getURLParams( type );
 		},
 		paramChanged: function() {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -2093,16 +2078,15 @@ Ext.onReady( function() {
 					}
 				});
 			},
-			getFilterValueByColumn: function( colname ) {
-				
-			},
-			isParamChanged: function() {
-			
-			},
 			validation: {
 				objects: function() {
 					if (TR.cmp.settings.program.getValue() == null) {
 						TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
+						return false;
+					}
+					
+					if (Ext.getCmp('programStageCombobox').getValue() == '') {
+						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
 						return false;
 					}
 					
@@ -2126,11 +2110,6 @@ Ext.onReady( function() {
 						&& TR.cmp.aggregateFavorite.userorganisationunit.getValue() == 'false'
 						&& TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue() == 'false' ) {
 						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
-						return false;
-					}
-					
-					if (Ext.getCmp('programStageCombobox').getValue() == '') {
-						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
 						return false;
 					}
 					
@@ -2186,6 +2165,13 @@ Ext.onReady( function() {
 							periodInt++;
 						}
 					});
+					
+					var position = TR.state.aggregateReport.getPosition();
+					if( position==''){
+						TR.util.notification.error(TR.i18n.invalid_position, TR.i18n.invalid_position);
+						return false;	
+					}
+					
 					if( Ext.getCmp('limitOption').getValue() && periodInt>1)
 					{
 						TR.util.notification.error(TR.i18n.select_only_one_period, TR.i18n.select_only_one_period);
@@ -2265,13 +2251,17 @@ Ext.onReady( function() {
         datatable: null,
 		getDataTable: function() {
 			var cols = this.createColTable();
+
+			// title
+			var title = TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report;
+			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 58,
 				id: 'gridTable',
 				columns: cols,
 				scroll: 'both',
-				title: TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report,
+				title: title,
 				selType: 'cellmodel',
 				features: [{
 					ftype: 'filters',
@@ -3002,19 +2992,8 @@ Ext.onReady( function() {
 											},
 											{
 												xtype: 'button',
-												text: TR.i18n.clear,
-												style: 'margin-left:95px; margin-bottom: 10px;',
-												width: 130,
-												height: 24,
-												handler: function() {
-													Ext.getCmp('startDateRange').setValue("");
-													Ext.getCmp('endDateRange').setValue("");
-												}
-											},
-											{
-												xtype: 'button',
 												text: TR.i18n.add,
-												style: 'margin-left:4px; margin-bottom: 10px;',
+												style: 'margin-left:95px; margin-bottom: 10px;',
 												width: 130,
 												height: 24,
 												handler: function() {	
@@ -3028,6 +3007,23 @@ Ext.onReady( function() {
 															'startDate': startDate,
 															'endDate': endDate
 														});
+													}
+												}
+											},
+											{
+												xtype: 'button',
+												text: TR.i18n.clear,
+												style: 'margin-left:4px; margin-bottom: 10px;',
+												width: 130,
+												height: 24,
+												handler: function() {
+													if( TR.store.dateRange.data.items.length > 0 )
+													{
+														var result = window.confirm( TR.i18n.confirm_delete_date_range_list );
+														if ( result )
+														{
+															TR.store.dateRange.loadData([],false);
+														}
 													}
 												}
 											},
@@ -3105,7 +3101,8 @@ Ext.onReady( function() {
 															{
 																xtype: 'checkbox',
 																paramName: 'reportingMonth',
-																boxLabel: TR.i18n.last_month
+																boxLabel: TR.i18n.last_month,
+																checked: true
 															},
 															{
 																xtype: 'checkbox',
@@ -3115,8 +3112,7 @@ Ext.onReady( function() {
 															{
 																xtype: 'checkbox',
 																paramName: 'last12Months',
-																boxLabel: TR.i18n.last_12_months,
-																checked: true
+																boxLabel: TR.i18n.last_12_months
 															}
 														]
 													},
@@ -3724,6 +3720,11 @@ Ext.onReady( function() {
 																	r.expand(false, function() {
 																		v.getSelectionModel().select(r.childNodes, true);
 																		v.getSelectionModel().deselect(r);
+																		
+																		TR.state.orgunitIds = [];
+																		for( var i in r.childNodes){
+																			 TR.state.orgunitIds.push( r.childNodes[0].data.localid );
+																		}
 																	});
 																}
 															});
@@ -4055,9 +4056,6 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																TR.cmp.settings.positionOrgunit = this;
-															},
-															change: function (cb, nv, ov) {
-																TR.util.positionFilter.orgunit();
 															}
 														}
 													},
@@ -4083,9 +4081,6 @@ Ext.onReady( function() {
 														listeners: {
 															added: function() {
 																TR.cmp.settings.positionPeriod = this;
-															},
-															change: function (cb, nv, ov) {
-																TR.util.positionFilter.period();
 															}
 														}
 													},
@@ -4103,7 +4098,9 @@ Ext.onReady( function() {
 														width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
 														store:  new Ext.data.ArrayStore({
 															fields: ['value', 'name'],
-															data: [ ['3', TR.i18n.filters] ]
+															data: [ ['1', TR.i18n.rows], 
+																	['2', TR.i18n.columns], 
+																	['3', TR.i18n.filters] ]
 														}),
 														value: '3',
 														listeners: {
@@ -4150,11 +4147,12 @@ Ext.onReady( function() {
 												},
 												{
 													xtype: 'checkbox',
+													cls: 'tr-checkbox',
 													id: 'completedEventsOpt',
 													style:'padding: 0px 0px 0px 3px;',
 													boxLabel: TR.i18n.use_completed_events,
 													boxLabelAlign: 'before',
-													labelWidth: 135,
+													labelWidth: 135
 												},
 												{
 													xtype: 'combobox',

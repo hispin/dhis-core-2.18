@@ -7,7 +7,7 @@
 			#foreach( $orgunit in $currentUser.organisationUnits )
 			   {
 					 "id":  "${orgunit.uid}" ,
-					 "localid": "$organisationUnit.id",
+					 "localid": "$orgunit.id",
 					 "name": "$!encoder.jsonEncode( ${orgunit.name} )",
 					 "leaf": !$orgunit.hasChild()
 			   }#if( $velocityCount < $programs.size() ),#end
