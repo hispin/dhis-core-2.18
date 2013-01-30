@@ -1,3 +1,6 @@
+
+#sharingDialog()
+
 <script type="text/javascript" src="javascript/userGroupList.js"></script>
 <script type="text/javascript">
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
@@ -18,7 +21,7 @@
         </table>
       <table class="listTable" id="listTable">
           <col/>          
-          <col width="100"/>
+          <col width="120"/>
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
@@ -30,9 +33,27 @@
               <tr id="tr${userGroup.id}">
                 <td onclick="showUserGroupDetails( $userGroup.id )">$encoder.htmlEncode( $userGroup.name )</td>
                 <td style="text-align:center">
-                  <a href="editUserGroupForm.action?userGroupId=$userGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>               
-                  <a href="javascript:removeUserGroup( '$userGroup.id', '$encoder.jsEncode( $userGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>               
+
+                  #if ( $security.canManage( $userGroup ) )
+                  <a href="javascript:showSharingDialog('userGroup', '$userGroup.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+                  #else
+                  <img src="../images/relationship-denied.png">
+                  #end
+
+                  #if( $security.canUpdate( $userGroup ) )
+                  <a href="editUserGroupForm.action?userGroupId=$userGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+                  #else
+                  <img src="../images/edit-denied.png">
+                  #end
+
+                  #if( $security.canDelete( $userGroup ) )
+                  <a href="javascript:removeUserGroup( '$userGroup.id', '$encoder.jsEncode( $userGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+                  #else
+                  <img src="../images/delete-denied.png">
+                  #end
+
                   <a href="javascript:showUserGroupDetails( $userGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+
                 </td>
               </tr>
             #end
