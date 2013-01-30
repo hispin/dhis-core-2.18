@@ -39,6 +39,7 @@ import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
 
 import java.util.HashMap;
@@ -104,6 +105,10 @@ public class SharingUtils
         SUPPORTED_TYPES.put( "indicatorGroupSet", IndicatorGroupSet.class );
         PUBLIC_AUTHORITIES.put( IndicatorGroupSet.class, "F_INDICATORGROUPSET_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( IndicatorGroupSet.class, "F_INDICATORGROUPSET_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "userGroup", UserGroup.class );
+        PUBLIC_AUTHORITIES.put( UserGroup.class, "F_USERGROUP_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( UserGroup.class, "F_USERGROUP_PRIVATE_ADD" );
     }
 
     public static boolean isSupported( String type )
