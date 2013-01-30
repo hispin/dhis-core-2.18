@@ -1227,7 +1227,8 @@ Ext.onReady( function() {
 								Ext.getCmp('limitOption').setValue( f.limitRecords );
 								TR.util.positionFilter.convert( f.position );
 								Ext.getCmp('dataElementGroupByCbx').setValue( f.deGroupBy );
-								Ext.getCmp('aggregateType').setValue( f.deGroupBy );
+								Ext.getCmp('deSumCbx').setValue( f.deSum );
+								Ext.getCmp('aggregateType').setValue( f.aggregateType );
 								Ext.getCmp('levelCombobox').setValue( f.level );
 																
 								// Program stage									
@@ -1235,7 +1236,6 @@ Ext.onReady( function() {
 								storeProgramStage.parent = f.programStageId;
 								storeProgramStage.isLoadFromFavorite = true;
 								storeProgramStage.load({params: {programId: f.programId}});
-								
 								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
 								
 								TR.exe.execute();
@@ -1921,7 +1921,7 @@ Ext.onReady( function() {
 				p.aggregateType = Ext.getCmp('aggregateType').getValue().aggregateType;
 				if( p.aggregateType != 'count')
 				{
-					p.deSum = Ext.getCmp('deSumCbx').getValue();
+					p.deSum = Ext.getCmp('deSumCbx').getValue().split('_')[1];
 				}				
 				
 				// orgunits
@@ -2747,7 +2747,6 @@ Ext.onReady( function() {
 									id: 'reportTypeGroup',
 									fieldLabel: TR.i18n.report_type,
 									labelStyle: 'font-weight:bold',
-									//labelAlign: 'top',
 									columns: 2,
 									vertical: true,
 									items: [
@@ -2760,6 +2759,7 @@ Ext.onReady( function() {
 											change: function (cb, nv, ov) {
 												if(nv)
 												{
+													// for case-based report
 													dataElementTabTitle.innerHTML = TR.i18n.data_elements;
 													Ext.getCmp('limitOption').setVisible(false);
 													Ext.getCmp('dataElementGroupByCbx').setVisible(false);
@@ -2770,6 +2770,7 @@ Ext.onReady( function() {
 													Ext.getCmp('completedEventsOpt').setVisible(false);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 													Ext.getCmp('datePeriodRangeDiv').setVisible(false);
+													Ext.getCmp('deSumCbx').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(true);
 													
@@ -2789,6 +2790,7 @@ Ext.onReady( function() {
 											change: function (cb, nv, ov) {
 												if(nv)
 												{
+													// For aggregate report
 													dataElementTabTitle.innerHTML = TR.i18n.data_filter;
 													Ext.getCmp('limitOption').setVisible(true);
 													Ext.getCmp('dataElementGroupByCbx').setVisible(true);
@@ -2796,11 +2798,12 @@ Ext.onReady( function() {
 													Ext.getCmp('downloadPdfIcon').setVisible(true);
 													Ext.getCmp('downloadCvsIcon').setVisible(true);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(true);
-													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
 													Ext.getCmp('positionField').setVisible(true);
 													Ext.getCmp('completedEventsOpt').setVisible(true);
+													Ext.getCmp('deSumCbx').setVisible(true);
 													Ext.getCmp('dateRangeDiv').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(false);
+													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
 													
 													Ext.getCmp('datePeriodRangeDiv').setVisible(true);
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
@@ -4176,12 +4179,29 @@ Ext.onReady( function() {
 														boxLabel: TR.i18n.avg,
 														name: 'aggregateType',
 														inputValue: 'avg'
-													}]
+													}],
+													listeners: {
+														change : function(thisFormField, newValue, oldValue, eOpts) {
+														  var opt = newValue.aggregateType[0];
+														  
+														  if( opt==oldValue.aggregateType && newValue.aggregateType.length > 1){
+															opt = newValue.aggregateType[1];
+														  }
+														  
+														  if (opt=='sum' || opt=='avg') {
+															Ext.getCmp('deSumCbx').enable();
+														  }
+														  else  if (opt=='count'){
+															Ext.getCmp('deSumCbx').disable();
+														  }
+														}
+													}
 												},
 												{
 													xtype: 'combobox',
 													cls: 'tr-combo',
 													id: 'deSumCbx',
+													disabled: true,
 													fieldLabel: TR.i18n.sum_avg_of,
 													labelWidth: 135,
 													emptyText: TR.i18n.please_select,
@@ -5526,6 +5546,7 @@ Ext.onReady( function() {
 				dataElementTabTitle.innerHTML = TR.i18n.data_elements;
 				Ext.getCmp('limitOption').setVisible(false);
 				Ext.getCmp('dataElementGroupByCbx').setVisible(false);
+				Ext.getCmp('deSumCbx').setVisible(false);
 				Ext.getCmp('aggregateType').setVisible(false);
 				Ext.getCmp('downloadPdfIcon').setVisible(false);
 				Ext.getCmp('downloadCvsIcon').setVisible(false);

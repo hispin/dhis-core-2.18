@@ -193,6 +193,13 @@ public class SaveAggregateReportAction
         this.deGroupBy = deGroupBy;
     }
 
+    private Integer deSum;
+
+    public void setDeSum( Integer deSum )
+    {
+        this.deSum = deSum;
+    }
+
     private Boolean useCompletedEvents;
 
     public void setUseCompletedEvents( Boolean useCompletedEvents )
@@ -254,6 +261,11 @@ public class SaveAggregateReportAction
         if ( deGroupBy != null )
         {
             aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
+        }
+        
+        if ( deSum != null )
+        {
+            aggregateReport.setDeSum( dataElementService.getDataElement( deSum ) );
         }
 
         if ( useCompletedEvents != null )

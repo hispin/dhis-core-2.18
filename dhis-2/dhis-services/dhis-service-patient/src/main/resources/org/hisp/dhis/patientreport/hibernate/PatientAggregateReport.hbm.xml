@@ -74,6 +74,9 @@
 		<property name="userOrganisationUnit" />
 		
 		<property name="userOrganisationUnitChildren" />
+		
+		<many-to-one name="deSum" class="org.hisp.dhis.dataelement.DataElement"
+			column="desumid" foreign-key="fk_patientaggregatereport_dataelementsumtid" />
 
 	</class>
 </hibernate-mapping>

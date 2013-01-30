@@ -90,6 +90,7 @@
 	"limitRecords": "$!aggregateReport.limitRecords",
 	"position": "${aggregateReport.position}",
 	"deGroupBy": #if($!aggregateReport.deGroupBy) "de_$!aggregateReport.deGroupBy.id" #else "" #end,
+	"deSum": #if($!aggregateReport.deSum) "de_$!aggregateReport.deSum.id" #else "" #end,
 	"aggregateType": "${aggregateReport.aggregateType}",
 	"useCompletedEvents": "$!aggregateReport.useCompletedEvents",
 	"userOrganisationUnit": "$!aggregateReport.userOrganisationUnit",
