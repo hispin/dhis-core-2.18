@@ -109,6 +109,8 @@ public class PatientAggregateReport
     private int position;
 
     private DataElement deGroupBy;
+    
+    private DataElement deSum;
 
     private String aggregateType;
 
@@ -293,6 +295,16 @@ public class PatientAggregateReport
     public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
     {
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
+    public DataElement getDeSum()
+    {
+        return deSum;
+    }
+
+    public void setDeSum( DataElement deSum )
+    {
+        this.deSum = deSum;
     }
 
 }
