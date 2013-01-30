@@ -55,6 +55,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.DimensionOption;
 import org.hisp.dhis.analytics.DimensionType;
+import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -392,7 +393,7 @@ public class DefaultAnalyticsService
             return new Dimension( dimension, DimensionType.DATAELEMENT_GROUPSET, asList( dataElementService.getDataElementGroupsByUid( options ) ) );
         }
         
-        return null;
+        throw new IllegalQueryException( "Dimension identifier does not reference any dimension: " + dimension );
     }
     
     private DataQueryParams setDataElementsFromIndicators( DataQueryParams params )

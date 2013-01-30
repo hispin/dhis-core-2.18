@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,7 @@ import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Dimension;
+import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
@@ -43,6 +45,7 @@ import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -152,7 +155,14 @@ public class AnalyticsController
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toHtml( grid, response.getWriter() );
     }
-
+    
+    @ExceptionHandler(IllegalQueryException.class)
+    public void handleError( IllegalQueryException ex, HttpServletResponse response )
+        throws IOException
+    {
+        ContextUtils.conflictResponse( response, ex.getMessage() );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
