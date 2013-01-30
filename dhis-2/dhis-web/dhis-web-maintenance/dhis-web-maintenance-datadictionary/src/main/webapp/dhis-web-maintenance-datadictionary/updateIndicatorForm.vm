@@ -101,7 +101,7 @@
 	</tr>
 </table>
 
-#if( $groupSets.size() > 0 )
+#if( $!groupSets && $!groupSets.size() > 0 )
 <table>
 	<tr>
 		<td style="height:15px" colspan="2">
