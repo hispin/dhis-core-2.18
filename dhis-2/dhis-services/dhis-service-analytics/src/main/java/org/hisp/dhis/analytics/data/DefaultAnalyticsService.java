@@ -131,7 +131,7 @@ public class DefaultAnalyticsService
 
         grid.setMetaData( params.getUidNameMap() );
         
-        for ( Dimension col : params.getQueryDimensions() )
+        for ( Dimension col : params.getDimensions() )
         {
             grid.addHeader( new GridHeader( col.getDimensionName(), col.getDimension(), String.class.getName(), false, true ) );
         }
