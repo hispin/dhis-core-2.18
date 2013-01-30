@@ -98,6 +98,7 @@ public class DefaultAnalyticsService
     
     //TODO completeness
     //TODO make sure data x dims are successive
+    //TODO disable all dim options? often leads to sequential scans
     
     @Autowired
     private AnalyticsManager analyticsManager;
