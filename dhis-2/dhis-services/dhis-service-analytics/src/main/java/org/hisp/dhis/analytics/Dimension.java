@@ -51,6 +51,12 @@ public class Dimension
         this.dimension = dimension;
     }
 
+    public Dimension( String dimension, DimensionType type )
+    {
+        this.dimension = dimension;
+        this.type = type;
+    }
+
     public Dimension( String dimension, DimensionType type, List<IdentifiableObject> options )
     {
         this.dimension = dimension;

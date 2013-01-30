@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -53,6 +54,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
 public class DataQueryParams
 {
+    public static final String DATA_X_DIM_ID = "dx"; // IN, DE, DS
     public static final String INDICATOR_DIM_ID = "in";
     public static final String DATAELEMENT_DIM_ID = "de";
     public static final String DATASET_DIM_ID = "ds";
@@ -68,6 +70,8 @@ public class DataQueryParams
     
     private static final DimensionOption[] DIM_OPT_ARR = new DimensionOption[0];
     private static final DimensionOption[][] DIM_OPT_2D_ARR = new DimensionOption[0][];
+    
+    private static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID );
     
     private List<Dimension> dimensions = new ArrayList<Dimension>();
     
@@ -115,7 +119,34 @@ public class DataQueryParams
     // -------------------------------------------------------------------------
 
     /**
-     * Creates a list of the names of all dimensions for this query. 
+     * Creates a list of dimensions for use as headers. Will replace any of
+     * the indicator, data element or data set dimensions with the common
+     * data x dimension.
+     */
+    public List<Dimension> getHeaderDimensions()
+    {
+        List<Dimension> list = new ArrayList<Dimension>( dimensions );
+        
+        ListIterator<Dimension> iter = list.listIterator();
+        
+        dimensions : while ( iter.hasNext() )
+        {
+            if ( DATA_DIMS.contains( iter.next().getDimension() ) )
+            {
+                iter.set( new Dimension( DATA_X_DIM_ID, DimensionType.DATA_X ) );
+                break dimensions;
+            }
+        }
+        
+        list.remove( new Dimension( INDICATOR_DIM_ID ) );
+        list.remove( new Dimension( DATAELEMENT_DIM_ID ) );
+        list.remove( new Dimension( DATASET_DIM_ID ) );
+        
+        return list;
+    }
+        
+    /**
+     * Creates a list of dimensions used to query. 
      */
     public List<Dimension> getQueryDimensions()
     {
@@ -137,11 +168,9 @@ public class DataQueryParams
     /**
      * Returns the index of the indicator dimension in the dimension map.
      */
-    public int getDataElementOrIndicatorDimensionIndex()
+    public int getIndicatorDimensionIndex()
     {
-        List<String> dims = getInputDimensionNamesAsList();
-        
-        return dims.contains( DATAELEMENT_DIM_ID ) ? dims.indexOf( DATAELEMENT_DIM_ID ) : dims.indexOf( INDICATOR_DIM_ID );
+        return getInputDimensionNamesAsList().indexOf( INDICATOR_DIM_ID );
     }
     
     /**
@@ -377,6 +406,9 @@ public class DataQueryParams
         return valueMap;
     }
 
+    /**
+     * Retrieves the options for the given dimension.
+     */
     public List<IdentifiableObject> getDimensionOptions( String dimension )
     {
         int index = dimensions.indexOf( new Dimension( dimension ) );
@@ -384,6 +416,9 @@ public class DataQueryParams
         return index != -1 ? dimensions.get( index ).getOptions() : null;
     }
 
+    /**
+     * Sets the options for the given dimension.
+     */
     public void setDimensionOptions( String dimension, DimensionType type, List<IdentifiableObject> options )
     {
         int index = dimensions.indexOf( new Dimension( dimension ) );
@@ -398,6 +433,9 @@ public class DataQueryParams
         }
     }
     
+    /**
+     * Retrieves the options for the given filter.
+     */
     public List<IdentifiableObject> getFilterOptions( String filter )
     {
         int index = filters.indexOf( new Dimension( filter ) );
@@ -405,6 +443,9 @@ public class DataQueryParams
         return index != -1 ? filters.get( index ).getOptions() : null;
     }
     
+    /**
+     * Sets the options for the given filter.
+     */
     public void setFilterOptions( String filter, DimensionType type, List<IdentifiableObject> options )
     {
         int index = filters.indexOf( new Dimension( filter ) );

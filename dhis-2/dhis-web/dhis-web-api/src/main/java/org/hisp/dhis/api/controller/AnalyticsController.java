@@ -193,6 +193,8 @@ public class AnalyticsController
             return false;
         }
         
+        //TODO check if any dimension occur more than once
+        
         return true;        
     }
 }

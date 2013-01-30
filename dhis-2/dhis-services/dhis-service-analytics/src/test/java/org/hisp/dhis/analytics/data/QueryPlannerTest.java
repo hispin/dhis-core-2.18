@@ -29,7 +29,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.junit.Assert.assertEquals;
@@ -53,6 +53,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
@@ -77,12 +79,17 @@ public class QueryPlannerTest
     private DataElementCategoryService categoryService;
     
     @Autowired
+    private IndicatorService indicatorService;
+    
+    @Autowired
     private OrganisationUnitService organisationUnitService;
     
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
+    private Indicator inA;
+    
     private DataElement deA;
     private DataElement deB;
     private DataElement deC;
@@ -99,6 +106,10 @@ public class QueryPlannerTest
     @Override
     public void setUpTest()
     {
+        inA = createIndicator( 'A', null );
+        
+        indicatorService.addIndicator( inA );
+        
         deA = createDataElement( 'A' );
         deB = createDataElement( 'B' );
         deC = createDataElement( 'C' );
@@ -128,6 +139,40 @@ public class QueryPlannerTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
+    public void testGetHeaderDimensions()
+    {
+        List<Dimension> expected = new ArrayList<Dimension>();
+        expected.add( new Dimension( DATA_X_DIM_ID ) );
+        expected.add( new Dimension( ORGUNIT_DIM_ID ) );
+        expected.add( new Dimension( PERIOD_DIM_ID ) );
+        
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( getList( deA, deB ) );
+        params.setOrganisationUnits( getList( ouA, ouB ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+        
+        assertEquals( expected, params.getHeaderDimensions() );
+        
+        params = new DataQueryParams();
+        params.setDataElements( getList( deA, deB ) );
+        params.setIndicators( getList( inA ) );
+        params.setOrganisationUnits( getList( ouA, ouB ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+
+        assertEquals( expected, params.getHeaderDimensions() );
+        
+        expected = new ArrayList<Dimension>();
+        expected.add( new Dimension( ORGUNIT_DIM_ID ) );
+        expected.add( new Dimension( PERIOD_DIM_ID ) );
+
+        params = new DataQueryParams();
+        params.setOrganisationUnits( getList( ouA, ouB ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+
+        assertEquals( expected, params.getHeaderDimensions() );
+    }
+    
     @Test
     public void testSetGetCopy()
     {

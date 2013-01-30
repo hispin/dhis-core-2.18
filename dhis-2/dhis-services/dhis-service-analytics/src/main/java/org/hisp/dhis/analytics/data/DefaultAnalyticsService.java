@@ -29,9 +29,10 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
-import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.CATEGORYOPTIONCOMBO_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.DATA_X_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
@@ -42,12 +43,15 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
@@ -61,9 +65,11 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -86,9 +92,12 @@ import org.springframework.util.Assert;
 public class DefaultAnalyticsService
     implements AnalyticsService
 {
+    private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
+    
     private static final String VALUE_HEADER_NAME = "Value";
     
     //TODO completeness
+    //TODO make sure data x dims are successive
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -123,6 +132,8 @@ public class DefaultAnalyticsService
 
     public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
     {
+        log.info( "Query: " + params );
+        
         Grid grid = new ListGrid();
 
         // ---------------------------------------------------------------------
@@ -131,7 +142,7 @@ public class DefaultAnalyticsService
 
         grid.setMetaData( params.getUidNameMap() );
         
-        for ( Dimension col : params.getDimensions() )
+        for ( Dimension col : params.getHeaderDimensions() )
         {
             grid.addHeader( new GridHeader( col.getDimensionName(), col.getDimension(), String.class.getName(), false, true ) );
         }
@@ -143,12 +154,15 @@ public class DefaultAnalyticsService
         // ---------------------------------------------------------------------
 
         if ( params.getIndicators() != null )
-        {         
-            int indicatorIndex = params.getDataElementOrIndicatorDimensionIndex();
-
+        {   
+            int indicatorIndex = params.getIndicatorDimensionIndex();
             List<Indicator> indicators = asTypedList( params.getIndicators() );
+                  
+            DataQueryParams dataSourceParams = new DataQueryParams( params );
+            dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
+            dataSourceParams.removeDimension( DATASET_DIM_ID );
             
-            DataQueryParams dataSourceParams = setDataElementsFromIndicators( params );
+            dataSourceParams = replaceIndicatorsWithDataElements( dataSourceParams, indicatorIndex );
 
             Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, ANALYTICS_TABLE_NAME );
 
@@ -300,7 +314,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    params.getDimensions().add( getDimension( dimension, options, format ) );
+                    params.getDimensions().addAll( getDimension( dimension, options, format ) );
                 }
             }
         }
@@ -314,7 +328,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    params.getFilters().add( getDimension( dimension, options, format ) );
+                    params.getFilters().addAll( getDimension( dimension, options, format ) );
                 }
             }
         }
@@ -331,33 +345,75 @@ public class DefaultAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
     
-    private Dimension getDimension( String dimension, List<String> options, I18nFormat format )
+    private List<Dimension> getDimension( String dimension, List<String> options, I18nFormat format )
     {
-        if ( INDICATOR_DIM_ID.equals( dimension ) )
+        if ( DATA_X_DIM_ID.equals( dimension ) )
         {
-            return new Dimension( dimension, DimensionType.INDICATOR, asList( indicatorService.getIndicatorsByUid( options ) ) );
-        }
-        else if ( DATAELEMENT_DIM_ID.equals( dimension ) )
-        {
-            return new Dimension( dimension, DimensionType.DATAELEMENT, asList( dataElementService.getDataElementsByUid( options ) ) );
-        }
-        else if ( DATASET_DIM_ID.equals( dimension ) )
-        {
-            return new Dimension( dimension, DimensionType.DATASET, asList( dataSetService.getDataSetsByUid( options ) ) );
+            List<Dimension> dataDimensions = new ArrayList<Dimension>();
+            
+            List<IdentifiableObject> indicators = new ArrayList<IdentifiableObject>();
+            List<IdentifiableObject> dataElements = new ArrayList<IdentifiableObject>();
+            List<IdentifiableObject> dataSets = new ArrayList<IdentifiableObject>();
+            
+            options : for ( String uid : options )
+            {
+                Indicator in = indicatorService.getIndicator( uid );
+                
+                if ( in != null )
+                {
+                    indicators.add( in );
+                    continue options;
+                }
+                
+                DataElement de = dataElementService.getDataElement( uid );
+                
+                if ( de != null )
+                {
+                    dataElements.add( de );
+                    continue options;
+                }
+                
+                DataSet ds = dataSetService.getDataSet( uid );
+                
+                if ( ds != null )
+                {
+                    dataSets.add( ds );
+                    continue options;
+                }
+                
+                throw new IllegalQueryException( "Data dimension option identifier does not reference any option: " + uid );                
+            }
+            
+            if ( !indicators.isEmpty() )
+            {
+                dataDimensions.add( new Dimension( INDICATOR_DIM_ID, DimensionType.INDICATOR, indicators ) );
+            }
+            
+            if ( !dataElements.isEmpty() )
+            {
+                dataDimensions.add( new Dimension( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, dataElements ) );
+            }
+            
+            if ( !dataSets.isEmpty() )
+            {
+                dataDimensions.add( new Dimension( DATASET_DIM_ID, DimensionType.DATASET, dataSets ) );
+            }
+            
+            return dataDimensions;
         }
         else if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
         {
-            return new Dimension( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() );
+            return Arrays.asList( new Dimension( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() ) );
         }
         else if ( ORGUNIT_DIM_ID.equals( dimension ) )
         {
-            return new Dimension( dimension, DimensionType.ORGANISATIONUNIT, asList( organisationUnitService.getOrganisationUnitsByUid( options ) ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT, asList( organisationUnitService.getOrganisationUnitsByUid( options ) ) ) );
         }
         else if ( PERIOD_DIM_ID.equals( dimension ) )
         {
             List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
-                        
-            periodLoop : for ( String isoPeriod : options )
+            
+            periods : for ( String isoPeriod : options )
             {
                 Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
                 
@@ -365,49 +421,49 @@ public class DefaultAnalyticsService
                 {
                     period.setName( format != null ? format.formatPeriod( period ) : null );
                     list.add( period );
-                    continue periodLoop;
+                    continue periods;
                 }
                 
                 if ( RelativePeriodEnum.contains( isoPeriod ) )
                 {
                     RelativePeriodEnum relativePeriod = RelativePeriodEnum.valueOf( isoPeriod );
                     list.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, format, true ) );
-                    continue periodLoop;
+                    continue periods;
                 }
             }
             
-            return new Dimension( dimension, DimensionType.PERIOD, list );
+            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, list ) );
         }
         
         OrganisationUnitGroupSet orgUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
             
         if ( orgUnitGroupSet != null )
         {
-            return new Dimension( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( options ) ) );
+            List<IdentifiableObject> ous = asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( options ) );
+            
+            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, ous ) );
         }
         
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( dimension );
         
         if ( dataElementGroupSet != null )
         {
-            return new Dimension( dimension, DimensionType.DATAELEMENT_GROUPSET, asList( dataElementService.getDataElementGroupsByUid( options ) ) );
+            List<IdentifiableObject> des = asList( dataElementService.getDataElementGroupsByUid( options ) );
+            
+            return Arrays.asList( new Dimension( dimension, DimensionType.DATAELEMENT_GROUPSET, des ) );
         }
         
         throw new IllegalQueryException( "Dimension identifier does not reference any dimension: " + dimension );
     }
     
-    private DataQueryParams setDataElementsFromIndicators( DataQueryParams params )
+    private DataQueryParams replaceIndicatorsWithDataElements( DataQueryParams params, int indicatorIndex )
     {
-        DataQueryParams immutableParams = new DataQueryParams( params );
-        
-        List<Indicator> indicators = asTypedList( immutableParams.getIndicators() );            
+        List<Indicator> indicators = asTypedList( params.getIndicators() );        
         List<IdentifiableObject> dataElements = asList( expressionService.getDataElementsInIndicators( indicators ) );
         
-        immutableParams.setDataElements( dataElements );
-        immutableParams.removeDimension( INDICATOR_DIM_ID );
-        immutableParams.removeDimension( DATASET_DIM_ID );
-        immutableParams.enableCategoryOptionCombos();
+        params.getDimensions().set( indicatorIndex, new Dimension( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, dataElements ) );
+        params.enableCategoryOptionCombos();
         
-        return immutableParams;
+        return params;
     }
 }
