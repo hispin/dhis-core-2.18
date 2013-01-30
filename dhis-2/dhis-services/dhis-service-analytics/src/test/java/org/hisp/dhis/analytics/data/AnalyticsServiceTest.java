@@ -123,7 +123,7 @@ public class AnalyticsServiceTest
     public void testGetFromUrl()
     {
         Set<String> dimensionParams = new HashSet<String>();
-        dimensionParams.add( "de:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D" );
+        dimensionParams.add( "dx:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D" );
         dimensionParams.add( "pe:2012,2012S1,2012S2" );
         dimensionParams.add( ouGroupSetA.getUid() + ":" + ouGroupA.getUid() + "," + ouGroupB.getUid() + "," + ouGroupC.getUid() );
         
