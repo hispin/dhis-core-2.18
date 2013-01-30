@@ -28,10 +28,12 @@ package org.hisp.dhis.common;
  */
 
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.report.Report;
@@ -79,6 +81,10 @@ public class SharingUtils
         PUBLIC_AUTHORITIES.put( DataDictionary.class, "F_DATADICTIONARY_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataDictionary.class, "F_DATADICTIONARY_PRIVATE_ADD" );
 
+        SUPPORTED_TYPES.put( "dataElement", DataElement.class );
+        PUBLIC_AUTHORITIES.put( DataElement.class, "F_DATAELEMENT_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( DataElement.class, "F_DATAELEMENT_PRIVATE_ADD" );
+
         SUPPORTED_TYPES.put( "dataElementGroup", DataElementGroup.class );
         PUBLIC_AUTHORITIES.put( DataElementGroup.class, "F_DATAELEMENTGROUP_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataElementGroup.class, "F_DATAELEMENTGROUP_PRIVATE_ADD" );
@@ -87,13 +93,17 @@ public class SharingUtils
         PUBLIC_AUTHORITIES.put( DataElementGroupSet.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataElementGroupSet.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
 
+        SUPPORTED_TYPES.put( "indicator", Indicator.class );
+        PUBLIC_AUTHORITIES.put( Indicator.class, "F_INDICATOR_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( Indicator.class, "F_INDICATOR_PRIVATE_ADD" );
+
         SUPPORTED_TYPES.put( "indicatorGroup", IndicatorGroup.class );
-        PUBLIC_AUTHORITIES.put( IndicatorGroup.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
-        PRIVATE_AUTHORITIES.put( IndicatorGroup.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
+        PUBLIC_AUTHORITIES.put( IndicatorGroup.class, "F_INDICATORGROUP_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( IndicatorGroup.class, "F_INDICATORGROUP_PRIVATE_ADD" );
 
         SUPPORTED_TYPES.put( "indicatorGroupSet", IndicatorGroupSet.class );
-        PUBLIC_AUTHORITIES.put( IndicatorGroupSet.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
-        PRIVATE_AUTHORITIES.put( IndicatorGroupSet.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
+        PUBLIC_AUTHORITIES.put( IndicatorGroupSet.class, "F_INDICATORGROUPSET_PUBLIC_ADD" );
+        PRIVATE_AUTHORITIES.put( IndicatorGroupSet.class, "F_INDICATORGROUPSET_PRIVATE_ADD" );
     }
 
     public static boolean isSupported( String type )

@@ -54,12 +54,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addDataElementForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataElement.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElement" class="org.hisp.dhis.dd.action.dataelement.AddDataElementAction">
       <result name="success" type="redirect">dataElement.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataElementForm" class="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction">
@@ -270,12 +270,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
-      <param name="requiredAuthorities">F_INDICATOR_ADD</param>
+      <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
     <action name="addIndicator" class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
       <result name="success" type="redirect">indicator.action</result>
-      <param name="requiredAuthorities">F_INDICATOR_ADD</param>
+      <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowUpdateIndicatorFormAction">
@@ -456,19 +456,13 @@
     </action>
 
     <action name="getIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonIndicatorType.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorType.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATORTYPE_DELETE</param>
     </action>
@@ -570,12 +564,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElementCategory" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction">
       <result name="success" type="redirect">category.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementCategory" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction">
@@ -630,7 +624,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonCategoryOption.vm
       </result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction">
@@ -653,12 +647,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryComboForm.vm</param>
       <param name="javascripts">javascript/categoryCombo.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction">
