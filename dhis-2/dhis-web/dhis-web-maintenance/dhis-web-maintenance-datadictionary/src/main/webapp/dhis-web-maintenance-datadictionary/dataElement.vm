@@ -60,8 +60,8 @@
 			<div id="content">
 			<table class="listTable" id="dataElementList">
 				<col/>				
-				<col width="145px"/>
-                <thead>				
+				<col width="125px"/>
+                <thead>
 					<tr>
 						<th>$i18n.getString( "name" )</th>
 						<th class="{sorter: false}">$i18n.getString( "operations" )</th>
@@ -73,11 +73,13 @@
 					<td onclick="showDataElementDetails( $dataElement.id )">$encoder.htmlEncode( $dataElement.displayName )</td>
 					<td style="text-align:right">
 
+                    #* Hide sharing controls for 2.11 release
                     #if ( $security.canManage( $dataElement ) )
                     <a href="javascript:showSharingDialog('dataElement', '$dataElement.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
                     #else
                     <img src="../images/relationship-denied.png">
                     #end
+                    *#
 
                     #if( $security.canUpdate( $dataElement ) )
                     <a href="showUpdateDataElementForm.action?id=$dataElement.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
