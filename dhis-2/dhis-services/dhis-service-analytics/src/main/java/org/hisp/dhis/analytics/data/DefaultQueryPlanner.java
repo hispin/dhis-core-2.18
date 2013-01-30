@@ -312,7 +312,8 @@ public class DefaultQueryPlanner
      * meaningful to split on multiple data element group sets.
      * 
      * If the aggregation type is already set/overridden in the request, the
-     * query will be returned unchanged.
+     * query will be returned unchanged. If there are no dimension options specified
+     * the aggregation type will fall back to sum.
      */
     private List<DataQueryParams> groupByAggregationType( DataQueryParams params )
     {
@@ -337,11 +338,15 @@ public class DefaultQueryPlanner
                 query.setAggregationType( aggregationType );
                 queries.add( query );
             }
-        }
-        else if ( params.getDataElementGroupSets() != null && !params.getDataElementGroupSets().isEmpty() )
-        {
-            Dimension groupSet = params.getDataElementGroupSets().iterator().next();
             
+            return queries;
+        }
+        
+        Dimension groupSet = null;
+        
+        if ( params.getDataElementGroupSets() != null && !params.getDataElementGroupSets().isEmpty() &&
+            ( groupSet = params.getDataElementGroupSets().iterator().next() ).getOptions() != null && !groupSet.getOptions().isEmpty() )
+        {
             PeriodType periodType = PeriodType.getPeriodTypeByName( params.getPeriodType() );
             
             ListMap<AggregationType, IdentifiableObject> aggregationTypeDataElementGroupMap = getAggregationTypeDataElementGroupMap( groupSet.getOptions(), periodType );
@@ -353,12 +358,13 @@ public class DefaultQueryPlanner
                 query.setAggregationType( aggregationType );
                 queries.add( query );
             }
-        }
-        else
-        {
-            queries.add( new DataQueryParams( params ) );
+            
+            return queries;
         }
         
+        DataQueryParams query = new DataQueryParams( params );
+        query.setAggregationType( SUM );
+        queries.add( query );
         return queries;
     }
         
