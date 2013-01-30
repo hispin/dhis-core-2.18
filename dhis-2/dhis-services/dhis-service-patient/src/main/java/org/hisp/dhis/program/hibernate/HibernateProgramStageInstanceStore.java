@@ -393,8 +393,9 @@ public class HibernateProgramStageInstanceStore
     }
 
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        String facilityLB, Integer deGroupBy, Map<Integer, Collection<String>> deFilters, Collection<Period> periods,
-        String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n )
+        String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
+        Collection<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
+        I18n i18n )
     {
         String sql = "";
         List<String> deValues = new ArrayList<String>();
@@ -411,7 +412,7 @@ public class HibernateProgramStageInstanceStore
         // Type = 1
         if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD )
         {
-            sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods,
+            sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, periods,
                 aggregateType, useCompletedEvents, format );
         }
         // Type = 2
@@ -421,20 +422,20 @@ public class HibernateProgramStageInstanceStore
             // Get SQL and build grid
             // ---------------------------------------------------------------------
 
-            sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods,
+            sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, periods,
                 aggregateType, useCompletedEvents, format );
 
         }
         // Type = 3
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD )
         {
-            sql = getAggregateReportSQL3( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy,
+            sql = getAggregateReportSQL3( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum,
                 periods, aggregateType, useCompletedEvents, format );
         }
         // Type = 4
         else if ( position == PatientAggregateReport.POSITION_ROW_PERIOD )
         {
-            sql = getAggregateReportSQL4( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy,
+            sql = getAggregateReportSQL4( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum,
                 periods, aggregateType, useCompletedEvents, format );
         }
         // type = 5
@@ -442,7 +443,7 @@ public class HibernateProgramStageInstanceStore
         {
             List<Period> firstPeriod = new ArrayList<Period>();
             firstPeriod.add( periods.iterator().next() );
-            sql = getAggregateReportSQL5( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
+            sql = getAggregateReportSQL5( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, periods
                 .iterator().next(), aggregateType, useCompletedEvents, format );
         }
 
@@ -452,7 +453,7 @@ public class HibernateProgramStageInstanceStore
         {
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
-            sql = getAggregateReportSQL6( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy,
+            sql = getAggregateReportSQL6( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy, deSum,
                 deValues, periods, aggregateType, useCompletedEvents, format );
         }
 
@@ -461,7 +462,7 @@ public class HibernateProgramStageInstanceStore
             && deGroupBy == null )
         {
             sql = getAggregateReportSQL6WithoutGroup( programStage, orgunitIds.iterator().next(), facilityLB,
-                filterSQL, deGroupBy, periods, aggregateType, useCompletedEvents, format );
+                filterSQL, deSum, periods, aggregateType, useCompletedEvents, format );
         }
 
         // Type = 7 && Group-by
@@ -470,7 +471,7 @@ public class HibernateProgramStageInstanceStore
         {
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
-            sql = getAggregateReportSQL7( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deValues, periods
+            sql = getAggregateReportSQL7( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, deValues, periods
                 .iterator().next(), aggregateType, useCompletedEvents, format );
         }
 
@@ -693,7 +694,7 @@ public class HibernateProgramStageInstanceStore
      * 
      **/
     private String getAggregateReportSQL12( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
-        String filterSQL, Integer deGroupBy, Collection<Period> periods, String aggregateType,
+        String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods, String aggregateType,
         Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
@@ -722,8 +723,18 @@ public class HibernateProgramStageInstanceStore
                 {
                     periodName = startDate + " -> " + endDate;
                 }
-                
-                sql += " ( SELECT " + aggregateType + "(*) ";
+
+                if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+                {
+                    sql += "(SELECT " + aggregateType + "(*) ";
+                }
+                else
+                {
+                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                        + statementBuilder.getDoubleColumnType() + " ))";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
+                        + deSum + " ) ";
+                }
                 sql += "FROM programstageinstance psi_1 ";
                 sql += "        JOIN patientdatavalue pdv_1 ";
                 sql += "                ON psi_1.programstageinstanceid=pdv_1.programstageinstanceid ";
@@ -763,8 +774,8 @@ public class HibernateProgramStageInstanceStore
      * 
      **/
     private String getAggregateReportSQL3( int position, ProgramStage programStage, Collection<Integer> roots,
-        String facilityLB, String filterSQL, Integer deGroupBy, Collection<Period> periods, String aggregateType,
-        Boolean useCompletedEvents, I18nFormat format )
+        String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
+        String aggregateType, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -790,7 +801,17 @@ public class HibernateProgramStageInstanceStore
                 sql += "( SELECT ou.name FROM organisationunit ou WHERE organisationunitid=" + root + " ) as orgunit, ";
                 sql += "'" + periodName + "' as period, ";
 
-                sql += " ( SELECT " + aggregateType + "(pdv_1.value)   ";
+                if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+                {
+                    sql += "( SELECT " + aggregateType + "(pdv_1.value) ";
+                }
+                else
+                {
+                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                        + statementBuilder.getDoubleColumnType() + " ))";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
+                        + deSum + " ) ";
+                }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
                 sql += "        ON psi_1.programstageinstanceid=pdv_1.programstageinstanceid ";
@@ -827,8 +848,8 @@ public class HibernateProgramStageInstanceStore
      * 
      **/
     private String getAggregateReportSQL4( int position, ProgramStage programStage, Collection<Integer> roots,
-        String facilityLB, String filterSQL, Integer deGroupBy, Collection<Period> periods, String aggregateType,
-        Boolean useCompletedEvents, I18nFormat format )
+        String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
+        String aggregateType, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -853,7 +874,17 @@ public class HibernateProgramStageInstanceStore
                 sql += "( SELECT ";
                 sql += "'" + periodName + "' as period, ";
 
-                sql += " ( SELECT " + aggregateType + "(pdv_1.value)   ";
+                if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+                {
+                    sql += "( SELECT " + aggregateType + "(pdv_1.value) ";
+                }
+                else
+                {
+                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                        + statementBuilder.getDoubleColumnType() + " ))";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
+                        + deSum + " ) ";
+                }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
                 sql += "        ON psi_1.programstageinstanceid=pdv_1.programstageinstanceid ";
@@ -888,7 +919,7 @@ public class HibernateProgramStageInstanceStore
      * 
      **/
     private String getAggregateReportSQL5( int position, ProgramStage programStage, Collection<Integer> roots,
-        String facilityLB, String filterSQL, Integer deGroupBy, Period period, String aggregateType,
+        String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Period period, String aggregateType,
         Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
@@ -902,7 +933,17 @@ public class HibernateProgramStageInstanceStore
             sql += "FROM organisationunit ou  ";
             sql += "WHERE ou.organisationunitid=" + root + " ) as orgunit, ";
 
-            sql += "(select " + aggregateType + "(pdv_1.value)  ";
+            if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+            {
+                sql += "(select " + aggregateType + "(pdv_1.value)  ";
+            }
+            else
+            {
+                sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                    + statementBuilder.getDoubleColumnType() + " ))";
+                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid=" + deSum
+                    + " ) ";
+            }
             sql += "FROM ";
             sql += "    patientdatavalue pdv_1 RIGHT JOIN programstageinstance psi_1 ";
             sql += "            ON psi_1.programstageinstanceid=pdv_1.programstageinstanceid ";
@@ -938,7 +979,7 @@ public class HibernateProgramStageInstanceStore
      * with group-by
      **/
     private String getAggregateReportSQL6( ProgramStage programStage, Integer root, String facilityLB,
-        String filterSQL, Integer deGroupBy, Collection<String> deValues, Collection<Period> periods,
+        String filterSQL, Integer deGroupBy, Integer deSum, Collection<String> deValues, Collection<Period> periods,
         String aggregateType, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
@@ -962,7 +1003,17 @@ public class HibernateProgramStageInstanceStore
             sql += "(SELECT '" + periodName + "' as period, ";
             for ( String deValue : deValues )
             {
-                sql += "(SELECT " + aggregateType + "(value)  ";
+                if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+                {
+                    sql += "(SELECT " + aggregateType + "(value)  ";
+                }
+                else
+                {
+                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                        + statementBuilder.getDoubleColumnType() + " ))";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
+                        + deSum + " ) ";
+                }
                 sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
                 sql += "    on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
                 sql += "WHERE ";
@@ -1002,7 +1053,7 @@ public class HibernateProgramStageInstanceStore
      * without group-by
      **/
     private String getAggregateReportSQL6WithoutGroup( ProgramStage programStage, Integer root, String facilityLB,
-        String filterSQL, Integer deGroupBy, Collection<Period> periods, String aggregateType,
+        String filterSQL, Integer deSum, Collection<Period> periods, String aggregateType,
         Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
@@ -1025,7 +1076,17 @@ public class HibernateProgramStageInstanceStore
 
             sql += "(SELECT '" + periodName + "' as period, ";
 
-            sql += "(SELECT " + aggregateType + "(value)  ";
+            if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+            {
+                sql += "(SELECT " + aggregateType + "(value) ";
+            }
+            else
+            {
+                sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                    + statementBuilder.getDoubleColumnType() + " ))";
+                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid=" + deSum
+                    + " ) ";
+            }
             sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
             sql += "    on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
             sql += "WHERE ";
@@ -1033,12 +1094,6 @@ public class HibernateProgramStageInstanceStore
                 + "     ) AND ";
             sql += "    psi_1.executiondate >= '" + startDate + "' AND ";
             sql += "    psi_1.executiondate <= '" + endDate + "' ";
-            if ( deGroupBy != null )
-            {
-                sql += " AND (SELECT value from patientdatavalue ";
-                sql += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
-                sql += "      dataelementid=" + deGroupBy + ") is not null ";
-            }
             sql += filterSQL + ") as \"" + aggregateType + "\",";
 
             sql = sql.substring( 0, sql.length() - 1 ) + " ";
@@ -1066,7 +1121,7 @@ public class HibernateProgramStageInstanceStore
      * 
      **/
     private String getAggregateReportSQL7( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
-        String filterSQL, Integer deGroupBy, List<String> deValues, Period period, String aggregateType,
+        String filterSQL, Integer deGroupBy, Integer deSum, List<String> deValues, Period period, String aggregateType,
         Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
@@ -1079,7 +1134,18 @@ public class HibernateProgramStageInstanceStore
             sql += "( SELECT ou.name FROM organisationunit ou WHERE ou.organisationunitid=" + root + " ) as orgunit, ";
             for ( String deValue : deValues )
             {
-                sql += "( SELECT " + aggregateType + "(value) FROM patientdatavalue pdv_1 ";
+                if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+                {
+                    sql += "( SELECT " + aggregateType + "(value) ";
+                }
+                else
+                {
+                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                        + statementBuilder.getDoubleColumnType() + " ))";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
+                        + deSum + " ) ";
+                }
+                sql += "FROM patientdatavalue pdv_1 ";
                 sql += "        inner join programstageinstance psi_1 ";
                 sql += "          on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
                 sql += "WHERE ";

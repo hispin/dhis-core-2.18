@@ -213,6 +213,13 @@ public class GenerateAggregateReportAction
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
+    private Integer deSum;
+
+    public void setDeSum( Integer deSum )
+    {
+        this.deSum = deSum;
+    }
+
     private String type;
 
     public void setType( String type )
@@ -324,7 +331,7 @@ public class GenerateAggregateReportAction
         }
 
         grid = programStageInstanceService.getAggregateReport( position, programStage, orgunitIds, facilityLB,
-            deGroupBy, deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, format, i18n );
+            deGroupBy, deSum, deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, format, i18n );
 
         return type == null ? SUCCESS : type;
     }

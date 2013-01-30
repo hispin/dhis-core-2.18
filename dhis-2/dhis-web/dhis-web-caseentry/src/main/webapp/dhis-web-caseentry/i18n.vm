@@ -157,5 +157,7 @@ like: '$encoder.jsEscape($i18n.getString( 'like' ) , "'")',
 select_all_children: '$encoder.jsEscape($i18n.getString( 'select_all_children' ) , "'")',
 total: '$encoder.jsEscape($i18n.getString( 'total' ) , "'")',
 confirm_delete_date_range_list: '$encoder.jsEscape($i18n.getString( 'confirm_delete_date_range_list' ) , "'")',
-invalid_position: '$encoder.jsEscape($i18n.getString( 'invalid_position' ) , "'")'
+invalid_position: '$encoder.jsEscape($i18n.getString( 'invalid_position' ) , "'")',
+sum_avg_of: '$encoder.jsEscape($i18n.getString( 'sum_avg_of' ) , "'")',
+select_a_dataelement_for_sum_avg_operator: '$encoder.jsEscape($i18n.getString( 'select_a_dataelement_for_sum_avg_operator' ) , "'")',
 };
