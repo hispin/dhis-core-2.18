@@ -50,4 +50,12 @@ public class Facilities
     {
         this.facilities = facilities;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Facilities{" +
+            "facilities=" + facilities +
+            '}';
+    }
 }
