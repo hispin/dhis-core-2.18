@@ -46,7 +46,7 @@ public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
         objectMapper.configure( SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false );
-        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
+        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_NULL );
 
         return objectMapper;
     }
