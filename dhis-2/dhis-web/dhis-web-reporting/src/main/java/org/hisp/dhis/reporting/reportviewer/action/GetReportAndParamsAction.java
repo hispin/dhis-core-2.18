@@ -27,6 +27,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -100,6 +101,13 @@ public class GetReportAndParamsAction
         return organisationUnit;
     }
 
+    private List<OrganisationUnit> organisationUnitHierarchy = new ArrayList<OrganisationUnit>();
+    
+    public List<OrganisationUnit> getOrganisationUnitHierarchy()
+    {
+        return organisationUnitHierarchy;
+    }
+
     private List<Period> periods;
     
     public List<Period> getPeriods()
@@ -118,6 +126,19 @@ public class GetReportAndParamsAction
         if ( ou != null )
         {
             organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+            
+            if ( organisationUnit != null )
+            {
+                organisationUnitHierarchy.add( organisationUnit );
+                
+                OrganisationUnit parent = organisationUnit;
+                
+                while ( parent.getParent() != null )
+                {
+                    parent = parent.getParent();
+                    organisationUnitHierarchy.add( parent );
+                }
+            }
         }
         
         Date date = new Date();
