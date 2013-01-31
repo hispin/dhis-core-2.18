@@ -28,6 +28,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -42,6 +43,7 @@ import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.ContextUtils;
 import org.hisp.dhis.web.webapi.v1.utils.MessageResponseUtils;
+import org.hisp.dhis.web.webapi.v1.utils.ObjectMapperFactoryBean;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -54,6 +56,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -444,9 +447,17 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
+    protected String generateETagHeaderValue( byte[] bytes )
+    {
+        StringBuilder builder = new StringBuilder( "\"0" );
+        DigestUtils.appendMd5DigestAsHex( bytes, builder );
+        builder.append( '"' );
+        return builder.toString();
+    }
+
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
-    public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility ) throws IOException
+    public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
     {
         facility.setId( id );
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Update.class );
@@ -459,18 +470,35 @@ public class FacilityController
         if ( constraintViolations.isEmpty() )
         {
             OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
-            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
+            OrganisationUnit old_organisationUnit = organisationUnitService.getOrganisationUnit( facility.getId() );
 
-            if ( ou == null )
+            if ( request.getHeader( "ETag" ) != null )
+            {
+                Facility old_facility = conversionService.convert( old_organisationUnit, Facility.class );
+                List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+                addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, old_facility );
+                ObjectMapper objectMapper = new ObjectMapperFactoryBean().getObject();
+                String body = objectMapper.writeValueAsString( old_facility );
+
+                String ETag = generateETagHeaderValue( body.getBytes() );
+
+                if ( !ETag.equals( request.getHeader( "ETag" ) ) )
+                {
+                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "ETag provided does not match current ETag of facility" ),
+                        headers, HttpStatus.PRECONDITION_FAILED );
+                }
+            }
+
+            if ( old_organisationUnit == null )
             {
                 return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "No object with that identifier exists." ),
                     headers, HttpStatus.NOT_FOUND );
             }
-            else if ( !ou.getName().equals( organisationUnit.getName() ) )
+            else if ( !old_organisationUnit.getName().equals( organisationUnit.getName() ) )
             {
                 OrganisationUnit ouByName = organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() );
 
-                if ( ouByName != null && !ou.getUid().equals( ouByName.getUid() ) )
+                if ( ouByName != null && !old_organisationUnit.getUid().equals( ouByName.getUid() ) )
                 {
                     return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same name already exists." ),
                         headers, HttpStatus.CONFLICT );
@@ -480,27 +508,27 @@ public class FacilityController
             {
                 OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() );
 
-                if ( ouByCode != null && !ou.getUid().equals( ouByCode.getUid() ) )
+                if ( ouByCode != null && !old_organisationUnit.getUid().equals( ouByCode.getUid() ) )
                 {
                     return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same code already exists." ),
                         headers, HttpStatus.CONFLICT );
                 }
             }
 
-            ou.setName( organisationUnit.getName() );
-            ou.setShortName( organisationUnit.getShortName() );
-            ou.setCode( organisationUnit.getCode() );
-            ou.setFeatureType( organisationUnit.getFeatureType() );
-            ou.setCoordinates( organisationUnit.getCoordinates() );
-            ou.setParent( organisationUnit.getParent() );
-            ou.setActive( organisationUnit.isActive() );
+            old_organisationUnit.setName( organisationUnit.getName() );
+            old_organisationUnit.setShortName( organisationUnit.getShortName() );
+            old_organisationUnit.setCode( organisationUnit.getCode() );
+            old_organisationUnit.setFeatureType( organisationUnit.getFeatureType() );
+            old_organisationUnit.setCoordinates( organisationUnit.getCoordinates() );
+            old_organisationUnit.setParent( organisationUnit.getParent() );
+            old_organisationUnit.setActive( organisationUnit.isActive() );
 
-            ou.removeAllDataSets();
-            organisationUnitService.updateOrganisationUnit( ou );
+            old_organisationUnit.removeAllDataSets();
+            organisationUnitService.updateOrganisationUnit( old_organisationUnit );
 
             for ( DataSet dataSet : organisationUnit.getDataSets() )
             {
-                dataSet.addOrganisationUnit( ou );
+                dataSet.addOrganisationUnit( old_organisationUnit );
                 dataSetService.updateDataSet( dataSet );
             }
 
