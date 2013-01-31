@@ -130,7 +130,6 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonSingleEventPrograms.vm
 			</result>
-			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 
 		<action name="createAnonymousEncounter"
