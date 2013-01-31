@@ -76,7 +76,7 @@ public class JDBCDataSetCompletenessStore
 
     public Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources )
     {
-        if ( relevantSources == null || relevantSources.size() == 0 )
+        if ( relevantSources == null || relevantSources.isEmpty() || periods == null || periods.isEmpty() )
         {
             return 0;
         }        
@@ -93,7 +93,7 @@ public class JDBCDataSetCompletenessStore
 
     public Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, int completenessOffset )
     {
-        if ( relevantSources == null || relevantSources.size() == 0 )
+        if ( relevantSources == null || relevantSources.isEmpty() || periods == null || periods.isEmpty() )
         {
             return 0;
         }        
@@ -120,7 +120,12 @@ public class JDBCDataSetCompletenessStore
     }
     
     public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, int completenessOffset )
-    {           
+    {
+        if ( children == null || children.isEmpty() || periods == null || periods.isEmpty() )
+        {
+            return 0;
+        }
+        
         final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();
         
         final String deadlineCriteria = completenessOffset >= 0 ? "AND lastupdated <= " + statementBuilder.getAddDate( "pe.enddate", completenessOffset ) : "";
@@ -182,6 +187,11 @@ public class JDBCDataSetCompletenessStore
     
     public void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
+        if ( dataSetIds == null || dataSetIds.isEmpty() || periodIds == null || periodIds.isEmpty() || organisationUnitIds == null || organisationUnitIds.isEmpty() )
+        {
+            return;
+        }
+        
         final String sql = 
             "DELETE FROM aggregateddatasetcompleteness " +
             "WHERE datasetid IN ( " + getCommaDelimitedString( dataSetIds ) + " ) " +
