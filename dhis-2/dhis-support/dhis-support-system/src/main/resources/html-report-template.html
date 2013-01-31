@@ -53,6 +53,10 @@ var name = orgUnit.name;<br>
 var shortName = orgUnit.shortName;<br>
 var code = orgUnit.code;<br><br>
 
+var orgUnitHierarchy = dhis2.report.organisationUnitHierarchy; // An array with org unit objects for the hierarchy (current org unit first)<br><br>
+
+var name = orgUnitHierarchy[0].name;<br><br>
+
 var periods = dhis2.report.periods; // An array with period identifiers<br><br>
 
 var period = periods[0];
