@@ -47,11 +47,11 @@ import java.util.Collection;
 public class FacilityToOrganisationUnitConverter implements Converter<Facility, OrganisationUnit>
 {
     @Autowired
-    @Qualifier( "org.hisp.dhis.organisationunit.OrganisationUnitService" )
+    @Qualifier("org.hisp.dhis.organisationunit.OrganisationUnitService")
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    @Qualifier( "org.hisp.dhis.dataset.DataSetService" )
+    @Qualifier("org.hisp.dhis.dataset.DataSetService")
     private DataSetService dataSetService;
 
     @Override
@@ -62,7 +62,7 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
         organisationUnit.setUid( facility.getId() );
         organisationUnit.setName( facility.getName() );
 
-        if ( facility.getName().length() > 49 )
+        if ( facility.getName() != null && facility.getName().length() > 49 )
         {
             organisationUnit.setShortName( facility.getName().substring( 0, 49 ) );
         }
@@ -72,18 +72,6 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
         }
 
         organisationUnit.setActive( facility.getActive() );
-        organisationUnit.setParent( organisationUnitService.getOrganisationUnit( (String) facility.getProperties().get( "parent" ) ) );
-
-        Collection<String> dataSets = (Collection<String>) facility.getProperties().get( "dataSets" );
-
-        if ( dataSets != null )
-        {
-            for ( String uid : dataSets )
-            {
-                DataSet dataSet = dataSetService.getDataSet( uid );
-                organisationUnit.getDataSets().add( dataSet );
-            }
-        }
 
         if ( facility.getIdentifiers() != null )
         {
@@ -107,7 +95,23 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
         }
         catch ( NumberFormatException err )
         {
-            organisationUnit.setCoordinates( "" );
+            organisationUnit.setCoordinates( null );
+        }
+
+        if ( facility.getProperties() != null )
+        {
+            organisationUnit.setParent( organisationUnitService.getOrganisationUnit( (String) facility.getProperties().get( "parent" ) ) );
+
+            Collection<String> dataSets = (Collection<String>) facility.getProperties().get( "dataSets" );
+
+            if ( dataSets != null )
+            {
+                for ( String uid : dataSets )
+                {
+                    DataSet dataSet = dataSetService.getDataSet( uid );
+                    organisationUnit.getDataSets().add( dataSet );
+                }
+            }
         }
 
         return organisationUnit;

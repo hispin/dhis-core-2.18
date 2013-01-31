@@ -34,7 +34,11 @@ import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -42,8 +46,8 @@ import java.util.*;
 public class Facility
 {
     // Internal system identifier
-    @Null( groups = Create.class )
-    @NotNull( groups = Update.class )
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
     @Length(min = 11, max = 11)
     private String id;
 

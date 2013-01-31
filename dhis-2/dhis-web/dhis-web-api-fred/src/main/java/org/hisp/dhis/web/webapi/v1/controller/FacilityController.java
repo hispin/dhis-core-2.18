@@ -449,8 +449,6 @@ public class FacilityController
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility ) throws IOException
     {
         facility.setId( id );
-        OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
-
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Update.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
@@ -460,6 +458,7 @@ public class FacilityController
 
         if ( constraintViolations.isEmpty() )
         {
+            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
             OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
 
             if ( ou == null )
