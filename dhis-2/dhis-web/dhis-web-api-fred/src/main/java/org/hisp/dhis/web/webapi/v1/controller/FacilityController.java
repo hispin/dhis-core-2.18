@@ -469,14 +469,14 @@ public class FacilityController
 
         if ( constraintViolations.isEmpty() )
         {
-            OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
-            OrganisationUnit old_organisationUnit = organisationUnitService.getOrganisationUnit( facility.getId() );
+            OrganisationUnit organisationUnitUpdate = conversionService.convert( facility, OrganisationUnit.class );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( facility.getId() );
 
             if ( request.getHeader( "ETag" ) != null )
             {
-                Facility old_facility = conversionService.convert( old_organisationUnit, Facility.class );
+                Facility old_facility = conversionService.convert( organisationUnit, Facility.class );
                 List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-                addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, old_facility );
+                addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnitUpdate, old_facility );
                 ObjectMapper objectMapper = new ObjectMapperFactoryBean().getObject();
                 String body = objectMapper.writeValueAsString( old_facility );
 
@@ -489,46 +489,46 @@ public class FacilityController
                 }
             }
 
-            if ( old_organisationUnit == null )
+            if ( organisationUnit == null )
             {
                 return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "No object with that identifier exists." ),
                     headers, HttpStatus.NOT_FOUND );
             }
-            else if ( !old_organisationUnit.getName().equals( organisationUnit.getName() ) )
+            else if ( !organisationUnit.getName().equals( organisationUnitUpdate.getName() ) )
             {
-                OrganisationUnit ouByName = organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() );
+                OrganisationUnit ouByName = organisationUnitService.getOrganisationUnitByName( organisationUnitUpdate.getName() );
 
-                if ( ouByName != null && !old_organisationUnit.getUid().equals( ouByName.getUid() ) )
+                if ( ouByName != null && !organisationUnit.getUid().equals( ouByName.getUid() ) )
                 {
                     return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same name already exists." ),
                         headers, HttpStatus.CONFLICT );
                 }
             }
-            else if ( organisationUnit.getCode() != null )
+            else if ( organisationUnitUpdate.getCode() != null )
             {
-                OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() );
+                OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnitUpdate.getCode() );
 
-                if ( ouByCode != null && !old_organisationUnit.getUid().equals( ouByCode.getUid() ) )
+                if ( ouByCode != null && !organisationUnit.getUid().equals( ouByCode.getUid() ) )
                 {
                     return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same code already exists." ),
                         headers, HttpStatus.CONFLICT );
                 }
             }
 
-            old_organisationUnit.setName( organisationUnit.getName() );
-            old_organisationUnit.setShortName( organisationUnit.getShortName() );
-            old_organisationUnit.setCode( organisationUnit.getCode() );
-            old_organisationUnit.setFeatureType( organisationUnit.getFeatureType() );
-            old_organisationUnit.setCoordinates( organisationUnit.getCoordinates() );
-            old_organisationUnit.setParent( organisationUnit.getParent() );
-            old_organisationUnit.setActive( organisationUnit.isActive() );
+            organisationUnit.setName( organisationUnitUpdate.getName() );
+            organisationUnit.setShortName( organisationUnitUpdate.getShortName() );
+            organisationUnit.setCode( organisationUnitUpdate.getCode() );
+            organisationUnit.setFeatureType( organisationUnitUpdate.getFeatureType() );
+            organisationUnit.setCoordinates( organisationUnitUpdate.getCoordinates() );
+            organisationUnit.setParent( organisationUnitUpdate.getParent() );
+            organisationUnit.setActive( organisationUnitUpdate.isActive() );
 
-            old_organisationUnit.removeAllDataSets();
-            organisationUnitService.updateOrganisationUnit( old_organisationUnit );
+            organisationUnit.removeAllDataSets();
+            organisationUnitService.updateOrganisationUnit( organisationUnit );
 
-            for ( DataSet dataSet : organisationUnit.getDataSets() )
+            for ( DataSet dataSet : organisationUnitUpdate.getDataSets() )
             {
-                dataSet.addOrganisationUnit( old_organisationUnit );
+                dataSet.addOrganisationUnit( organisationUnit );
                 dataSetService.updateDataSet( dataSet );
             }
 
