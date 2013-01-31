@@ -74,4 +74,14 @@ public class Identifier
     {
         this.agency = agency;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Identifier{" +
+            "id='" + id + '\'' +
+            ", context='" + context + '\'' +
+            ", agency='" + agency + '\'' +
+            '}';
+    }
 }
