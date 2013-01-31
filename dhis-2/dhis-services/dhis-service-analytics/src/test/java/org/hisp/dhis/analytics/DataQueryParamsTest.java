@@ -33,15 +33,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.period.Period;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
 
 public class DataQueryParamsTest
 {
     @Test
     public void testGetDimensionFromParam()
     {
-        assertEquals( DataQueryParams.DATAELEMENT_DIM_ID, DataQueryParams.getDimensionFromParam( "de:D348asd782j,kj78HnH6hgT,9ds9dS98s2" ) );
+        assertEquals( DataQueryParams.DATAELEMENT_DIM_ID, DataQueryParams.getDimensionFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );
     }
     
     @Test
@@ -49,16 +52,39 @@ public class DataQueryParamsTest
     {
         List<String> expected = new ArrayList<String>( Arrays.asList( "D348asd782j", "kj78HnH6hgT", "9ds9dS98s2" ) );
         
-        assertEquals( expected, DataQueryParams.getDimensionOptionsFromParam( "de:D348asd782j,kj78HnH6hgT,9ds9dS98s2" ) );        
+        assertEquals( expected, DataQueryParams.getDimensionOptionsFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );        
     }
     
     @Test
-    public void test()
+    public void testGetMeasureCriteriaFromParam()
     {
         Map<MeasureFilter, Double> expected = new HashMap<MeasureFilter, Double>();
         expected.put( MeasureFilter.GT, 100d );
         expected.put( MeasureFilter.LT, 200d );
         
-        assertEquals( expected, DataQueryParams.getMeasureCriteriaFromParam( "GT:100,LT:200" ) );
+        assertEquals( expected, DataQueryParams.getMeasureCriteriaFromParam( "GT:100;LT:200" ) );
+    }
+    
+    @Test
+    public void testHasPeriods()
+    {
+        DataQueryParams params = new DataQueryParams();
+        
+        assertFalse( params.hasPeriods() );
+        
+        List<IdentifiableObject> periods = new ArrayList<IdentifiableObject>();
+        
+        params.getDimensions().add( new Dimension( PERIOD_DIM_ID, DimensionType.PERIOD, periods ) );
+        
+        assertFalse( params.hasPeriods() );
+        
+        params.removeDimension( PERIOD_DIM_ID );
+
+        assertFalse( params.hasPeriods() );
+        
+        periods.add( new Period() );
+        params.getDimensions().add( new Dimension( PERIOD_DIM_ID, DimensionType.PERIOD, periods ) );
+        
+        assertTrue( params.hasPeriods() );
     }
 }

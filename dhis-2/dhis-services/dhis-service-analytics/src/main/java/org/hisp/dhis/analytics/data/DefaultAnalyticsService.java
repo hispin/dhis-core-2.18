@@ -34,6 +34,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATA_X_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
+import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
@@ -98,7 +99,6 @@ public class DefaultAnalyticsService
     
     //TODO completeness
     //TODO make sure data x dims are successive
-    //TODO disable all dim options? often leads to sequential scans
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -141,7 +141,7 @@ public class DefaultAnalyticsService
         // Headers and meta-data
         // ---------------------------------------------------------------------
 
-        grid.setMetaData( params.getUidNameMap() );
+        grid.setMetaData( getUidNameMap( params ) );
         
         for ( Dimension col : params.getHeaderDimensions() )
         {
@@ -346,6 +346,10 @@ public class DefaultAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
     
+    /**
+     * Returns a list of dimensions generated from the given dimension identifier
+     * and list of dimension options.
+     */
     private List<Dimension> getDimension( String dimension, List<String> options, I18nFormat format )
     {
         if ( DATA_X_DIM_ID.equals( dimension ) )
@@ -400,19 +404,34 @@ public class DefaultAnalyticsService
                 dataDimensions.add( new Dimension( DATASET_DIM_ID, DimensionType.DATASET, dataSets ) );
             }
             
+            if ( indicators.isEmpty() && dataElements.isEmpty() && dataSets.isEmpty() )
+            {
+                throw new IllegalQueryException( "Dimension dx is present in query without any valid dimension options" );
+            }
+            
             return dataDimensions;
         }
-        else if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
+        
+        if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
         {
             return Arrays.asList( new Dimension( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() ) );
         }
-        else if ( ORGUNIT_DIM_ID.equals( dimension ) )
+        
+        if ( ORGUNIT_DIM_ID.equals( dimension ) )
         {
-            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT, asList( organisationUnitService.getOrganisationUnitsByUid( options ) ) ) );
+            List<IdentifiableObject> ous = asList( organisationUnitService.getOrganisationUnitsByUid( options ) );
+            
+            if ( ous == null || ous.isEmpty() )
+            {
+                throw new IllegalQueryException( "Dimension ou is present in query without any valid dimension options" );
+            }
+            
+            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT, ous ) );
         }
-        else if ( PERIOD_DIM_ID.equals( dimension ) )
+        
+        if ( PERIOD_DIM_ID.equals( dimension ) )
         {
-            List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
+            List<IdentifiableObject> periods = new ArrayList<IdentifiableObject>();
             
             periods : for ( String isoPeriod : options )
             {
@@ -421,19 +440,24 @@ public class DefaultAnalyticsService
                 if ( period != null )
                 {
                     period.setName( format != null ? format.formatPeriod( period ) : null );
-                    list.add( period );
+                    periods.add( period );
                     continue periods;
                 }
                 
                 if ( RelativePeriodEnum.contains( isoPeriod ) )
                 {
                     RelativePeriodEnum relativePeriod = RelativePeriodEnum.valueOf( isoPeriod );
-                    list.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, format, true ) );
+                    periods.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, format, true ) );
                     continue periods;
                 }
             }
             
-            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, list ) );
+            if ( periods.isEmpty() )
+            {
+                throw new IllegalQueryException( "Dimension pe is present in query without any valid dimension options" );
+            }
+            
+            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, periods ) );
         }
         
         OrganisationUnitGroupSet orgUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
@@ -466,5 +490,50 @@ public class DefaultAnalyticsService
         params.enableCategoryOptionCombos();
         
         return params;
+    }
+    
+    private Map<String, String> getUidNameMap( DataQueryParams params )
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        map.putAll( getUidNameMap( params.getDimensions() ) );
+        map.putAll( getUidNameMap( params.getFilters() ) );        
+        return map;
+    }
+    
+    private Map<String, String> getUidNameMap( List<Dimension> dimensions )
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        
+        for ( Dimension dimension : dimensions )
+        {
+            List<IdentifiableObject> options = new ArrayList<IdentifiableObject>( dimension.getOptions() );
+
+            // -----------------------------------------------------------------
+            // If dimension is not fixed and has no options, insert all options
+            // -----------------------------------------------------------------
+            
+            if ( !FIXED_DIMS.contains( dimension.getDimension() ) && ( options == null || options.isEmpty() ) )
+            {
+                if ( DimensionType.ORGANISATIONUNIT_GROUPSET.equals( dimension.getType() ) )
+                {
+                    options = asList( organisationUnitGroupService.getOrganisationUnitGroupSet( dimension.getDimension() ).getOrganisationUnitGroups() );
+                }
+                else if ( DimensionType.DATAELEMENT_GROUPSET.equals( dimension.getType() ) )
+                {
+                    options = asList( dataElementService.getDataElementGroupSet( dimension.getDimension() ).getMembers() );
+                }
+            }
+
+            // -----------------------------------------------------------------
+            // Insert UID and name into map
+            // -----------------------------------------------------------------
+            
+            for ( IdentifiableObject idObject : options )
+            {
+                map.put( idObject.getUid(), idObject.getDisplayName() );
+            }
+        }
+        
+        return map;
     }
 }

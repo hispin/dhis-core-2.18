@@ -61,7 +61,7 @@ public class JdbcCompletenessTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "date date)";
+        sqlCreate += "value date)";
         
         log.info( "Create SQL: " + sqlCreate );
         
@@ -81,7 +81,7 @@ public class JdbcCompletenessTableManager
             insert += col[0] + ",";
         }
         
-        insert += "date) ";
+        insert += "value) ";
         
         String select = "select ";
         
@@ -93,7 +93,7 @@ public class JdbcCompletenessTableManager
         select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix TODO remove
         
         select += 
-            "cdr.date as date " +
+            "cdr.date as value " +
             "from completedatasetregistration cdr " +
             "left join _organisationunitgroupsetstructure ougs on cdr.sourceid=ougs.organisationunitid " +
             "left join _orgunitstructure ous on cdr.sourceid=ous.organisationunitid " +
