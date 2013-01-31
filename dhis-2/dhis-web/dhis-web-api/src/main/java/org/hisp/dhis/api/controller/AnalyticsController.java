@@ -192,7 +192,7 @@ public class AnalyticsController
             ContextUtils.conflictResponse( response, "Indicators cannot be specified as filter" );
             return false;
         }
-        
+                
         //TODO check if any dimension occur more than once
         
         return true;        

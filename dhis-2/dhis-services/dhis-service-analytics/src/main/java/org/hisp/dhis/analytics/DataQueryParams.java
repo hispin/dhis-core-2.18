@@ -65,13 +65,14 @@ public class DataQueryParams
     public static final String LEVEL_PREFIX = "uidlevel";
     
     private static final String DIMENSION_NAME_SEP = ":";
-    private static final String OPTION_SEP = ",";
+    private static final String OPTION_SEP = ";";
     public static final String DIMENSION_SEP = "-";
+
+    public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID );
+    public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
     private static final DimensionOption[] DIM_OPT_ARR = new DimensionOption[0];
     private static final DimensionOption[][] DIM_OPT_2D_ARR = new DimensionOption[0][];
-    
-    private static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID );
     
     private List<Dimension> dimensions = new ArrayList<Dimension>();
     
@@ -240,36 +241,15 @@ public class DataQueryParams
     }
     
     /**
-     * Returns the first dimension which has no dimension options. 
-     */
-    public Dimension getEmptyDimension()
-    {
-        for ( Dimension dim : dimensions )
-        {
-            if ( dim.getOptions() == null || dim.getOptions().isEmpty() )
-            {
-                return dim;
-            }
-        }
-        
-        for ( Dimension filter : filters )
-        {
-            if ( filter == null ||  filter.getOptions().isEmpty() )
-            {
-                return filter;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
      * Indicates whether periods are present as a dimension or as a filter. If
      * not this object is in an illegal state.
      */
     public boolean hasPeriods()
     {
-        return getDimensionOptions( PERIOD_DIM_ID ) != null || getFilterOptions( PERIOD_DIM_ID ) != null;
+        List<IdentifiableObject> dimOpts = getDimensionOptions( PERIOD_DIM_ID );
+        List<IdentifiableObject> filterOpts = getFilterOptions( PERIOD_DIM_ID );
+        
+        return ( dimOpts != null && !dimOpts.isEmpty() ) || ( filterOpts != null && !filterOpts.isEmpty() );
     }
     
     /**
@@ -315,32 +295,6 @@ public class DataQueryParams
             
             setPeriods( new ArrayList<IdentifiableObject>( getDataPeriodAggregationPeriodMap().keySet() ) );
         }
-    }
-    
-    /**
-     * Returns a mapping between the uid and name for all options in all dimensions.
-     */
-    public Map<String, String> getUidNameMap()
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        
-        for ( Dimension dimension : dimensions )
-        {
-            for ( IdentifiableObject idObject : dimension.getOptions() )
-            {
-                map.put( idObject.getUid(), idObject.getDisplayName() );
-            }
-        }
-        
-        for ( Dimension filter : filters )
-        {
-            for ( IdentifiableObject idObject : filter.getOptions() )
-            {
-                map.put( idObject.getUid(), idObject.getDisplayName() );
-            }
-        }
-        
-        return map;
     }
     
     /**

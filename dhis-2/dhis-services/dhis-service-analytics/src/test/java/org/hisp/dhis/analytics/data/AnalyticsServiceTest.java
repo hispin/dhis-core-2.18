@@ -27,12 +27,15 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -42,8 +45,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.Assert.*;
 
 public class AnalyticsServiceTest
     extends DhisSpringTest
@@ -120,23 +121,76 @@ public class AnalyticsServiceTest
     }
     
     @Test
-    public void testGetFromUrl()
+    public void testGetFromUrlA()
     {
         Set<String> dimensionParams = new HashSet<String>();
-        dimensionParams.add( "dx:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D" );
-        dimensionParams.add( "pe:2012,2012S1,2012S2" );
-        dimensionParams.add( ouGroupSetA.getUid() + ":" + ouGroupA.getUid() + "," + ouGroupB.getUid() + "," + ouGroupC.getUid() );
+        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+        dimensionParams.add( "pe:2012;2012S1;2012S2" );
+        dimensionParams.add( ouGroupSetA.getUid() + ":" + ouGroupA.getUid() + ";" + ouGroupB.getUid() + ";" + ouGroupC.getUid() );
         
         Set<String> filterParams = new HashSet<String>();
-        filterParams.add( "ou:" + BASE_UID + "A," + BASE_UID + "B," + BASE_UID + "C," + BASE_UID + "D," + BASE_UID + "E" );
+        filterParams.add( "ou:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D;" + BASE_UID + "E" );
         
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, null );
         
         assertEquals( 4, params.getDataElements().size() );
         assertEquals( 3, params.getPeriods().size() );
         assertEquals( 5, params.getFilterOrganisationUnits().size() );
-        
-        assertEquals( 4, params.getDataElements().size() );
         assertEquals( 3, params.getDimensionOptions( ouGroupSetA.getUid() ).size() );
     }
+
+    @Test
+    public void testGetFromUrlB()
+    {
+        Set<String> dimensionParams = new HashSet<String>();
+        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+
+        Set<String> filterParams = new HashSet<String>();
+        filterParams.add( "ou:" + BASE_UID + "A" );
+        
+        DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, null );
+        
+        assertEquals( 4, params.getDataElements().size() );
+        assertEquals( 1, params.getFilterOrganisationUnits().size() );
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testGetFromUrlNoDx()
+    {
+        Set<String> dimensionParams = new HashSet<String>();
+        dimensionParams.add( "dx" );
+        dimensionParams.add( "pe:2012,2012S1,2012S2" );
+        
+        analyticsService.getFromUrl( dimensionParams, null, null, null, null );        
+    }
+    
+    @Test( expected = IllegalQueryException.class )
+    public void testGetFromUrlNoPeriods()
+    {
+        Set<String> dimensionParams = new HashSet<String>();
+        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+        dimensionParams.add( "pe" );
+
+        analyticsService.getFromUrl( dimensionParams, null, null, null, null );        
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testGetFromUrlNoOrganisationUnits()
+    {
+        Set<String> dimensionParams = new HashSet<String>();
+        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+        dimensionParams.add( "ou" );
+        
+        analyticsService.getFromUrl( dimensionParams, null, null, null, null );        
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testGetFromUrlInvalidDimension()
+    {
+        Set<String> dimensionParams = new HashSet<String>();
+        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+        dimensionParams.add( "yebo:2012,2012S1,2012S2" );
+        
+        analyticsService.getFromUrl( dimensionParams, null, null, null, null );        
+    }    
 }
