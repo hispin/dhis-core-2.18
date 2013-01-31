@@ -28,10 +28,9 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  */
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * Updates a existing sqlview in database.
@@ -40,7 +39,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id ExportSqlViewResultAction.java July 12, 2010$
  */
 public class ExportSqlViewResultAction
-    implements Action
+    extends ActionPagingSupport<Grid>
 {
     private static final String DEFAULT_TYPE = "html";
 
@@ -105,6 +104,10 @@ public class ExportSqlViewResultAction
         sqlView = sqlViewService.getSqlView( id );
         
         grid = sqlViewService.getSqlViewGrid( sqlView, null );
+        
+        this.paging = this.createPaging( grid.getHeight() );
+
+        grid.limitGrid( paging.getStartPos(), paging.getEndPos() );
 
         return type != null ? type : DEFAULT_TYPE;
     }
