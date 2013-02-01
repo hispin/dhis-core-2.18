@@ -22,6 +22,7 @@ function showPatientAttributeDetails( patientAttributeId )
 // -----------------------------------------------------------------------------
 // Remove Patient Attribute
 // -----------------------------------------------------------------------------
+
 function removePatientAttribute( patientAttributeId, name )
 {
 	removeItem( patientAttributeId, name, i18n_confirm_delete, 'removePatientAttribute.action' );	

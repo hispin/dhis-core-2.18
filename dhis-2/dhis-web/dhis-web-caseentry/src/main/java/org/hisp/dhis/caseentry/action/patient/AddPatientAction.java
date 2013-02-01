@@ -113,7 +113,11 @@ public class AddPatientAction
 
     private Integer relationshipTypeId;
 
-    private Integer healthWorkerId;
+    private Integer healthWorker;
+
+    private boolean isDead;
+
+    private String deathDate;
 
     private String message;
 
@@ -174,11 +178,18 @@ public class AddPatientAction
         patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
-        if ( healthWorkerId != null )
+        patient.setIsDead( isDead );
+        if ( deathDate != null )
         {
-            patient.setHealthWorker( userService.getUser( healthWorkerId ) );
+            deathDate = deathDate.trim();
+            patient.setDeathDate( format.parseDate( deathDate ) );
         }
         
+        if ( healthWorker != null )
+        {
+            patient.setHealthWorker( userService.getUser( healthWorker ) );
+        }
+
         Character dobType = (verified) ? 'V' : 'D';
 
         if ( !verified && age != null )
@@ -330,9 +341,9 @@ public class AddPatientAction
         return message;
     }
 
-    public void setHealthWorkerId( Integer healthWorkerId )
+    public void setHealthWorker( Integer healthWorker )
     {
-        this.healthWorkerId = healthWorkerId;
+        this.healthWorker = healthWorker;
     }
 
     public void setVerified( Boolean verified )

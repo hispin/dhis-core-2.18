@@ -51,6 +51,7 @@ public class Patient
 
     public static final String MALE = "M";
     public static final String FEMALE = "F";
+    public static final String TRANSGENDER = "M";
 
     public static final char DOB_TYPE_VERIFIED = 'V';
     public static final char DOB_TYPE_DECLARED = 'D';

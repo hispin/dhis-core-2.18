@@ -120,7 +120,7 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="removePatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction">
 			<result name="success" type="velocity-json">
@@ -525,6 +525,49 @@
 			</result>
 		</action>
 
+		<!-- Patient Registration Form -->
+
+		<action name="patientRegistrationForm"
+			class="org.hisp.dhis.patient.action.dataentryform.GetPatientRegistrationFormListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/patientRegistrationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/patientRegistrationForm.js</param>
+			<param name="requiredAuthorities">F_ADD_PATIENT_REGISTATION_FORM</param>
+		</action>
+
+		<action name="viewPatientRegistrationForm"
+			class="org.hisp.dhis.patient.action.dataentryform.ViewPatientRegistrationFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/viewPatientRegistationForm.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/ckeditor/ckeditor.js,
+				../dhis-web-commons/ckeditor/adapters/jquery.js,
+				javascript/viewPatientRegistationForm.js
+			</param>
+			<param name="stylesheets">style/basic.css</param>
+		</action>
+
+		<action name="savePatientRegistrationForm"
+			class="org.hisp.dhis.patient.action.dataentryform.SavePatientRegistrationFormAction">
+			<result name="success" type="redirect">patientRegistrationForm.action
+			</result>
+		</action>
+
+		<action name="delRegistrationFormAction"
+			class="org.hisp.dhis.patient.action.dataentryform.DelRegistrationFormAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+		</action>
+
+		<action name="showPatientRegistrationForm"
+			class="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-maintenance-patient/dataEntryFormCode.vm
+			</result>
+		</action>
+
 		<!-- Patient Attribute Group -->
 
 		<action name="patientAttributeGroup"
@@ -905,7 +948,7 @@
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-		
+
 		<action name="addProgramValidation"
 			class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction">
 			<result name="success" type="redirect">
