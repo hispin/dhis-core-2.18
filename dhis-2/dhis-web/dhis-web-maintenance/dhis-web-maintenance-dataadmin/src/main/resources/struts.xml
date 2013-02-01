@@ -119,7 +119,7 @@
     <action name="searchResultByAjax" class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
       <result name="success" type="velocity">/content.vm</result>
       <result name="error" type="velocity">/content.vm</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserResult.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserGrid.vm</param>
     </action>
 
     <action name="error" class="org.hisp.dhis.dataadmin.action.NoAction">
