@@ -45,6 +45,7 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
@@ -373,7 +375,7 @@ public class DefaultAnalyticsService
                 DataElement de = dataElementService.getDataElement( uid );
                 
                 if ( de != null )
-                {
+                {       
                     dataElements.add( de );
                     continue options;
                 }
@@ -431,7 +433,7 @@ public class DefaultAnalyticsService
         
         if ( PERIOD_DIM_ID.equals( dimension ) )
         {
-            List<IdentifiableObject> periods = new ArrayList<IdentifiableObject>();
+            List<Period> periods = new ArrayList<Period>();
             
             periods : for ( String isoPeriod : options )
             {
@@ -456,8 +458,11 @@ public class DefaultAnalyticsService
             {
                 throw new IllegalQueryException( "Dimension pe is present in query without any valid dimension options" );
             }
+
+            List<Period> periodList = new ArrayList<Period>( periods );
+            Collections.sort( periodList, PeriodComparator.INSTANCE );
             
-            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, periods ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, asList( periodList ) ) );
         }
         
         OrganisationUnitGroupSet orgUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
