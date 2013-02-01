@@ -479,6 +479,7 @@ public class SaveProgramStageFormAction
                 // build patient data value
                 PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, dataElement,
                     new Date(), value );
+                
                 String providedElseWhereValue = parameterMap.get( "CB" + dataElementId );
 
                 if ( providedElseWhereValue != null )
