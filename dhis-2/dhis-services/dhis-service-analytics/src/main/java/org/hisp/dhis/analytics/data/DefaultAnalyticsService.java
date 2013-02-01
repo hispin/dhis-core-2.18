@@ -101,6 +101,7 @@ public class DefaultAnalyticsService
     
     //TODO completeness
     //TODO make sure data x dims are successive
+    //TODO check if partition table exists before query
     
     @Autowired
     private AnalyticsManager analyticsManager;
