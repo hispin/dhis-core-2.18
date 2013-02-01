@@ -928,7 +928,7 @@ PT.core.getUtils = function(pt) {
 
 				Ext.data.JsonP.request({
 					method: 'GET',
-					url: 'http://localhost:8080/api/analytics.jsonp' + paramString,
+					url: pt.init.contextPath + '/api/analytics.jsonp' + paramString,
 					params: {
 						filter: getFilterParamStringFromSettings()
 					},
