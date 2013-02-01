@@ -13,6 +13,8 @@ Ext.onReady( function() {
 		}
 	});
 
+	document.body.oncontextmenu = function(){return false;};
+
 	// Init
 
 	var gis = GIS.core.getInstance();

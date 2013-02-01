@@ -233,7 +233,7 @@ DV.conf = {
     layout: {
         west_width: 424,
         west_fieldset_width: 410,
-        west_width_subtractor: 18,
+        west_width_padding: 18,
         west_fill: 117,
         west_fill_accordion_indicator: 77,
         west_fill_accordion_dataelement: 77,
@@ -753,6 +753,7 @@ Ext.onReady( function() {
 						legend: DV.c.hidelegend ? false : DV.util.chart.def.getLegend(),
 						axes: axes,
 						series: series,
+                        //labels: ['nissa'],
 						theme: 'dv1'
 					});
 				},
@@ -2280,7 +2281,8 @@ Ext.onReady( function() {
 				style: {
 					opacity: 0.8
 				},
-				tips: DV.util.chart.def.series.getTips()
+				tips: DV.util.chart.def.series.getTips(),
+                title: ['BCG &lt;1']
 			};
 			if (DV.c.showdata) {
 				main.label = {display: 'outside', field: DV.c.series.names};
@@ -2740,7 +2742,7 @@ Ext.onReady( function() {
 												xtype: 'combobox',
 												cls: 'dv-combo',
 												style: 'margin-bottom:8px',
-												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
+												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												valueField: 'id',
 												displayField: 'name',
 												fieldLabel: DV.i18n.select_group,
@@ -2799,7 +2801,7 @@ Ext.onReady( function() {
 														xtype: 'multiselect',
 														name: 'availableIndicators',
 														cls: 'dv-toolbar-multiselect-left',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														valueField: 'id',
 														displayField: 'name',
 														queryMode: 'remote',
@@ -2844,7 +2846,7 @@ Ext.onReady( function() {
 														xtype: 'multiselect',
 														name: 'selectedIndicators',
 														cls: 'dv-toolbar-multiselect-right',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -2911,7 +2913,7 @@ Ext.onReady( function() {
 												xtype: 'combobox',
 												cls: 'dv-combo',
 												style: 'margin-bottom:8px',
-												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
+												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												valueField: 'id',
 												displayField: 'name',
 												fieldLabel: DV.i18n.select_group,
@@ -2969,7 +2971,7 @@ Ext.onReady( function() {
 													Ext.create('Ext.ux.form.MultiSelect', {
 														name: 'availableDataElements',
 														cls: 'dv-toolbar-multiselect-left',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'remote',
@@ -3014,7 +3016,7 @@ Ext.onReady( function() {
 														xtype: 'multiselect',
 														name: 'selectedDataElements',
 														cls: 'dv-toolbar-multiselect-right',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -3085,7 +3087,7 @@ Ext.onReady( function() {
 													Ext.create('Ext.ux.form.MultiSelect', {
 														name: 'availableDataSets',
 														cls: 'dv-toolbar-multiselect-left',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'remote',
@@ -3130,7 +3132,7 @@ Ext.onReady( function() {
 														xtype: 'multiselect',
 														name: 'selectedDataSets',
 														cls: 'dv-toolbar-multiselect-right',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -3480,7 +3482,7 @@ Ext.onReady( function() {
 														xtype: 'multiselect',
 														name: 'availableFixedPeriods',
 														cls: 'dv-toolbar-multiselect-left',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														valueField: 'id',
 														displayField: 'name',
 														store: DV.store.fixedperiod.available,
@@ -3524,7 +3526,7 @@ Ext.onReady( function() {
 														xtype: 'multiselect',
 														name: 'selectedFixedPeriods',
 														cls: 'dv-toolbar-multiselect-right',
-														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: false,
@@ -3712,7 +3714,7 @@ Ext.onReady( function() {
 											{
 												xtype: 'treepanel',
 												cls: 'dv-tree',
-												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
+												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												rootVisible: false,
 												autoScroll: true,
 												multiSelect: true,
@@ -3877,7 +3879,7 @@ Ext.onReady( function() {
 												xtype: 'combobox',
 												cls: 'dv-combo',
 												style: 'margin-top:10px; margin-bottom: 0',
-												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
+												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												valueField: 'id',
 												displayField: 'name',
 												fieldLabel: 'By group set',
@@ -3916,7 +3918,7 @@ Ext.onReady( function() {
 													{
 														xtype: 'checkbox',
 														style: 'margin-right:6px',
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														boxLabel: DV.i18n.show_data,
 														labelWidth: DV.conf.layout.form_label_width,
 														listeners: {
@@ -3927,7 +3929,7 @@ Ext.onReady( function() {
 													},
 													{
 														xtype: 'checkbox',
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														boxLabel: DV.i18n.hide_subtitle,
 														labelWidth: DV.conf.layout.form_label_width,
 														listeners: {
@@ -3946,7 +3948,7 @@ Ext.onReady( function() {
 													{
 														xtype: 'checkbox',
 														style: 'margin-right:6px',
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														boxLabel: DV.i18n.trend_line,
 														labelWidth: DV.conf.layout.form_label_width,
 														listeners: {
@@ -3957,7 +3959,7 @@ Ext.onReady( function() {
 													},
 													{
 														xtype: 'checkbox',
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														boxLabel: DV.i18n.hide_legend,
 														labelWidth: DV.conf.layout.form_label_width,
 														listeners: {
@@ -3983,7 +3985,7 @@ Ext.onReady( function() {
 														maxLength: 100,
 														enforceMaxLength: true,
 														labelWidth: DV.conf.layout.form_label_width,
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														listeners: {
 															added: function() {
 																DV.cmp.favorite.domainaxislabel = this;
@@ -3999,7 +4001,7 @@ Ext.onReady( function() {
 														maxLength: 100,
 														enforceMaxLength: true,
 														labelWidth: DV.conf.layout.form_label_width,
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														listeners: {
 															added: function() {
 																DV.cmp.favorite.rangeaxislabel = this;
@@ -4023,7 +4025,7 @@ Ext.onReady( function() {
 														labelSeparator: '',
 														maxLength: 100,
 														enforceMaxLength: true,
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														spinUpEnabled: true,
 														spinDownEnabled: true,
 														listeners: {
@@ -4043,7 +4045,7 @@ Ext.onReady( function() {
 														labelSeparator: '',
 														maxLength: 100,
 														enforceMaxLength: true,
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														disabled: true,
 														xable: function() {
 															if (DV.cmp.favorite.targetlinevalue.getValue()) {
@@ -4076,7 +4078,7 @@ Ext.onReady( function() {
 														labelSeparator: '',
 														maxLength: 100,
 														enforceMaxLength: true,
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														spinUpEnabled: true,
 														spinDownEnabled: true,
 														listeners: {
@@ -4096,7 +4098,7 @@ Ext.onReady( function() {
 														labelSeparator: '',
 														maxLength: 100,
 														enforceMaxLength: true,
-														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2) - 3,
+														width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 														disabled: true,
 														xable: function() {
 															if (DV.cmp.favorite.baselinevalue.getValue()) {
