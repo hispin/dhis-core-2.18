@@ -11,13 +11,13 @@ import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
-import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.SMSCode;
 import org.hisp.dhis.api.mobile.model.SMSCommand;
 import org.hisp.dhis.i18n.I18nService;
@@ -274,8 +274,8 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/findPatient" )
     @ResponseBody
-    public Beneficiary findPatientByName( @PathVariable int id, @RequestHeader( "name" ) String fullName )
-        throws NotAllowedException
+    public Patient findPatientByName( @PathVariable int id, @RequestHeader( "name" ) String fullName)
+    throws NotAllowedException
     {
         return activityReportingService.findPatient( fullName );
     }

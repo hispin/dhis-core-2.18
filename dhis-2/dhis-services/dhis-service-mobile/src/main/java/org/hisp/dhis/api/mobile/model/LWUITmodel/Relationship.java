@@ -1,7 +1,5 @@
-package org.hisp.dhis.api.mobile;
-
 /*
- * Copyright (c) 2010, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,28 +24,56 @@ package org.hisp.dhis.api.mobile;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.api.mobile.model.LWUITmodel;
 
-import org.hisp.dhis.api.mobile.model.ActivityPlan;
-import org.hisp.dhis.api.mobile.model.ActivityValue;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
-/**
- * Provides services for activity reporting
+import org.hisp.dhis.api.mobile.model.Model;
+
+ /**
+ * @author Nguyen Kim Lai
+ *
+ * @version Relationship.java 4:34:43 PM Jan 25, 2013 $
  */
-public interface ActivityReportingService
+public class Relationship extends Model
 {
+    private String clientVersion;
+    
+    private String personName;
 
-    public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString );
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
 
-    public ActivityPlan getAllActivityPlan( OrganisationUnit unit, String localeString );
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
 
-    public ActivityPlan getActivitiesByIdentifier( String keyword )
-        throws NotAllowedException;
+    public String getPersonName()
+    {
+        return personName;
+    }
 
-    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
-        throws NotAllowedException;
-
-    public Patient findPatient( String name )
-        throws NotAllowedException;
+    public void setPersonName( String personName )
+    {
+        this.personName = personName;
+    }
+    
+    public void serialize( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeUTF( this.getName() );
+        dout.writeUTF( this.getPersonName() );
+    }
+    
+    public void deSerialize( DataInputStream dataInputStream )
+        throws IOException
+    {
+        this.setName( dataInputStream.readUTF() );
+        this.setPersonName( dataInputStream.readUTF() );
+    }
 }
