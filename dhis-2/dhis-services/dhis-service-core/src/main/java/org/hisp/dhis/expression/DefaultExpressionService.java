@@ -150,7 +150,7 @@ public class DefaultExpressionService
         {
             final double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), valueMap, constantMap, days, false ) );
             
-            final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );
+            final double annualizationFactor = period != null ? DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() ) : 1d;
             final double factor = indicator.getIndicatorType().getFactor();
             final double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;
             

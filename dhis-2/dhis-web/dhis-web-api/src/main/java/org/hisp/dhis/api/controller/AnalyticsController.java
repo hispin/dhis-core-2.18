@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
@@ -49,8 +48,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import static org.hisp.dhis.analytics.DataQueryParams.*;
 
 @Controller
 public class AnalyticsController
@@ -81,11 +78,6 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        if ( !valid( params, response ) )
-        {
-            return null;
-        }
-        
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO        
         Grid grid = analyticsService.getAggregatedDataValues( params );        
         model.addAttribute( "model", grid );
@@ -104,11 +96,6 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        if ( !valid( params, response ) )
-        {
-            return;
-        }
-        
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE ); //TODO        
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toXml( grid, response.getOutputStream() );
@@ -125,11 +112,6 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        if ( !valid( params, response ) )
-        {
-            return;
-        }
-        
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE ); //TODO        
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toCsv( grid, response.getOutputStream() );
@@ -146,55 +128,19 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        if ( !valid( params, response ) )
-        {
-            return;
-        }
-        
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.NO_CACHE ); //TODO        
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toHtml( grid, response.getWriter() );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Exception handling
+    // -------------------------------------------------------------------------
+  
     @ExceptionHandler(IllegalQueryException.class)
     public void handleError( IllegalQueryException ex, HttpServletResponse response )
         throws IOException
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
-    }
-    
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-      
-    private boolean valid( DataQueryParams params, HttpServletResponse response )
-    {
-        if ( params == null || params.getDimensions().isEmpty() )
-        {
-            ContextUtils.conflictResponse( response, "At least one dimension must be specified" );
-            return false;
-        }
-        
-        if ( !params.dimensionsAsFilters().isEmpty() )
-        {
-            ContextUtils.conflictResponse( response, "Dimensions cannot be specified as dimension and filter simultaneously: " + params.dimensionsAsFilters() );
-            return false;
-        }
-        
-        if ( !params.hasPeriods() )
-        {
-            ContextUtils.conflictResponse( response, "At least one period must be specified as dimension or filter" );
-            return false;
-        }
-        
-        if ( params.getFilters() != null && params.getFilters().contains( new Dimension( INDICATOR_DIM_ID ) ) )
-        {
-            ContextUtils.conflictResponse( response, "Indicators cannot be specified as filter" );
-            return false;
-        }
-                
-        //TODO check if any dimension occur more than once
-        
-        return true;        
     }
 }

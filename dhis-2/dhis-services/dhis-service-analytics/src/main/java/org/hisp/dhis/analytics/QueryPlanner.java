@@ -32,6 +32,17 @@ import java.util.List;
 public interface QueryPlanner
 {
     /**
+     * Validates the given query. Throws an IllegalQueryException if the query
+     * is not valid with a descriptive message. Returns normally if the query is
+     * valid.
+     * 
+     * @param params the query.
+     * @throws IllegalQueryException if the query is invalid.
+     */
+    void validate( DataQueryParams params )
+        throws IllegalQueryException;
+    
+    /**
      * Creates a list of DataQueryParams. It is mandatory to group the queries by
      * the following criteria: 1) partition / year 2) period type 3) organisation 
      * unit level. If the number of queries produced by this grouping is equal or
@@ -48,5 +59,6 @@ public interface QueryPlanner
      * @param tableName the base table name.
      * @return list of data query params.
      */
-    List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName );
+    List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName )
+        throws IllegalQueryException;
 }

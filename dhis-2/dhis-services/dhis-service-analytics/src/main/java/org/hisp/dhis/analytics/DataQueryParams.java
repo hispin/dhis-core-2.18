@@ -270,7 +270,7 @@ public class DataQueryParams
 
         if ( dataPeriodType != null )
         {
-            for ( IdentifiableObject aggregatePeriod : getPeriods() )
+            for ( IdentifiableObject aggregatePeriod : getDimensionOrFilter( PERIOD_DIM_ID ) )
             {
                 Period dataPeriod = dataPeriodType.createPeriod( ((Period) aggregatePeriod).getStartDate() );
                 
@@ -293,7 +293,14 @@ public class DataQueryParams
         {
             this.periodType = this.dataPeriodType.getName();
             
-            setPeriods( new ArrayList<IdentifiableObject>( getDataPeriodAggregationPeriodMap().keySet() ) );
+            if ( getPeriods() != null ) // Period is dimension
+            {
+                setPeriods( new ArrayList<IdentifiableObject>( dataPeriodAggregationPeriodMap.keySet() ) );
+            }
+            else // Period is filter
+            {
+                setFilterPeriods( new ArrayList<IdentifiableObject>( dataPeriodAggregationPeriodMap.keySet() ) );
+            }
         }
     }
     
