@@ -647,6 +647,16 @@ public class DataQueryParams
         this.organisationUnitLevel = organisationUnitLevel;
     }
 
+    public PeriodType getDataPeriodType()
+    {
+        return dataPeriodType;
+    }
+
+    public void setDataPeriodType( PeriodType dataPeriodType )
+    {
+        this.dataPeriodType = dataPeriodType;
+    }
+    
     // -------------------------------------------------------------------------
     // Get and set helpers for dimensions or filter
     // -------------------------------------------------------------------------
@@ -779,19 +789,5 @@ public class DataQueryParams
     public void setFilterOrganisationUnits( List<IdentifiableObject> organisationUnits )
     {
         setFilterOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, organisationUnits );
-    }
-
-    // -------------------------------------------------------------------------
-    // Get and set methods for transient properties
-    // -------------------------------------------------------------------------
-
-    public PeriodType getDataPeriodType()
-    {
-        return dataPeriodType;
-    }
-
-    public void setDataPeriodType( PeriodType dataPeriodType )
-    {
-        this.dataPeriodType = dataPeriodType;
     }
 }
