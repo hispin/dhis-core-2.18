@@ -417,8 +417,6 @@
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientAction"
 		class="org.hisp.dhis.caseentry.action.patient.GetPatientAction" scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
@@ -431,6 +429,8 @@
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="patientRegistrationFormService"
+			ref="org.hisp.dhis.patient.PatientRegistrationFormService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.AddPatientAction"
@@ -491,6 +491,9 @@
 		</property>
 		<property name="programService">
 			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="patientRegistrationFormService">
+			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		</property>
 	</bean>
 

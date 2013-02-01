@@ -111,9 +111,11 @@ public class UpdatePatientAction
 
     private Integer relationshipTypeId;
 
-    private Integer healthWorkerId;
+    private Integer healthWorker;
 
     private Character dobType;
+
+    private String registrationDate;
 
     // -------------------------------------------------------------------------
     // Output
@@ -171,9 +173,9 @@ public class UpdatePatientAction
         patient.setGender( gender );
         patient.setIsDead( isDead );
         patient.setPhoneNumber( phoneNumber );
-        if ( healthWorkerId != null )
+        if ( healthWorker != null )
         {
-            patient.setHealthWorker( userService.getUser( healthWorkerId ) );
+            patient.setHealthWorker( userService.getUser( healthWorker ) );
         }
 
         if ( deathDate != null )
@@ -181,7 +183,7 @@ public class UpdatePatientAction
             deathDate = deathDate.trim();
             patient.setDeathDate( format.parseDate( deathDate ) );
         }
-        
+
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
@@ -196,6 +198,11 @@ public class UpdatePatientAction
         }
 
         patient.setDobType( dobType );
+
+        if ( registrationDate != null )
+        {
+            patient.setRegistrationDate( format.parseDate( registrationDate ) );
+        }
 
         // -------------------------------------------------------------------------------------
         // Save PatientIdentifier
@@ -333,7 +340,7 @@ public class UpdatePatientAction
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
-    
+
     public void setUserService( UserService userService )
     {
         this.userService = userService;
@@ -341,7 +348,7 @@ public class UpdatePatientAction
 
     public void setHealthWorkerId( Integer healthWorkerId )
     {
-        this.healthWorkerId = healthWorkerId;
+        this.healthWorker = healthWorkerId;
     }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
@@ -453,4 +460,10 @@ public class UpdatePatientAction
     {
         this.verified = verified;
     }
+
+    public void setRegistrationDate( String registrationDate )
+    {
+        this.registrationDate = registrationDate;
+    }
+
 }

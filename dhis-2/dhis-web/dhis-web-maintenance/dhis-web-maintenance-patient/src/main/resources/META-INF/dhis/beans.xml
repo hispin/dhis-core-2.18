@@ -151,7 +151,7 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.patientattribute.GetCalPatientAttributeParamsAction"
 		class="org.hisp.dhis.patient.action.patientattribute.GetCalPatientAttributeParamsAction"
@@ -463,6 +463,74 @@
 		scope="prototype">
 		<property name="dataEntryFormService">
 			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+	</bean>
+
+	<!-- PatientRegistrationForm -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.GetPatientRegistrationFormListAction"
+		class="org.hisp.dhis.patient.action.dataentryform.GetPatientRegistrationFormListAction"
+		scope="prototype">
+		<property name="patientRegistrationFormService">
+			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.DelRegistrationFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.DelRegistrationFormAction"
+		scope="prototype">
+		<property name="patientRegistrationFormService">
+			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.SavePatientRegistrationFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.SavePatientRegistrationFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="patientRegistrationFormService">
+			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="patientRegistrationFormService">
+			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.ViewPatientRegistrationFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.ViewPatientRegistrationFormAction"
+		scope="prototype">
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+		<property name="patientRegistrationFormService">
+			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		</property>
 	</bean>
 
@@ -907,40 +975,51 @@
 		<property name="programExpressionService"
 			ref="org.hisp.dhis.program.ProgramExpressionService" />
 	</bean>
-	
-	
+
+
 	<!-- Scheduling -->
 
 	<bean id="org.hisp.dhis.patient.action.schedule.GetScheduleParamsAction"
 		class="org.hisp.dhis.patient.action.schedule.GetScheduleParamsAction"
 		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
+		<property name="schedulingManager"
+			ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction" class="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction"  scope="prototype">
- 		 <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
- 		 <property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
- 	</bean>
- 	
- 	<bean id="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
+
+	<bean
+		id="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction"
+		class="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction"
+		scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<property name="schedulingManager"
+			ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
 		class="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
 		scope="prototype">
-		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
-		<property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction"
+
+	<bean
+		id="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction"
 		class="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction"
 		scope="prototype">
-		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
+		<property name="schedulingManager"
+			ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
+
+	<bean
+		id="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
 		class="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
 		scope="prototype">
-		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
+		<property name="schedulingManager"
+			ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
 	</bean>
 
 </beans>

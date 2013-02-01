@@ -486,6 +486,27 @@
 		parent="abstractRunCaseAggregateConditionTask">
 	</bean>
 
+	<!-- PatientRegistrationForm -->
+
+	<bean id="org.hisp.dhis.patient.PatientRegistrationFormService"
+		class="org.hisp.dhis.patient.DefaultPatientRegistrationFormService">
+		<property name="formStore"
+			ref="org.hisp.dhis.patient.PatientRegistrationFormStore" />
+		<property name="identifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="identifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.PatientRegistrationFormStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientRegistrationFormStore">
+		<property name="clazz" value="org.hisp.dhis.patient.PatientRegistrationForm" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
