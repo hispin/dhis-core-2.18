@@ -90,7 +90,6 @@ import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 
 public class DefaultAnalyticsService
     implements AnalyticsService
@@ -134,9 +133,12 @@ public class DefaultAnalyticsService
     // Implementation
     // -------------------------------------------------------------------------
 
-    public Grid getAggregatedDataValues( DataQueryParams params ) throws Exception
+    public Grid getAggregatedDataValues( DataQueryParams params )
+        throws IllegalQueryException, Exception
     {
         log.info( "Query: " + params );
+        
+        queryPlanner.validate( params );
         
         Grid grid = new ListGrid();
 
@@ -187,8 +189,6 @@ public class DefaultAnalyticsService
                     if ( valueMap != null )
                     {
                         Period period = (Period) DimensionOption.getPeriodOption( options );
-                        
-                        Assert.notNull( period );
                         
                         Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
                         
@@ -268,8 +268,11 @@ public class DefaultAnalyticsService
         return grid;
     }
     
-    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) throws Exception
+    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName )
+        throws IllegalQueryException, Exception
     {
+        queryPlanner.validate( params );
+        
         Timer t = new Timer().start();
 
         int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 6 );

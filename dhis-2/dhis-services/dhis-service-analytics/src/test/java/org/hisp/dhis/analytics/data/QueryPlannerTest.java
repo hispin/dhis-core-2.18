@@ -46,6 +46,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.DimensionOption;
+import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -103,6 +104,8 @@ public class QueryPlannerTest
     private OrganisationUnit ouD;
     private OrganisationUnit ouE;
 
+    //TODO test for indicators, periods in filter
+    
     @Override
     public void setUpTest()
     {
@@ -480,7 +483,7 @@ public class QueryPlannerTest
     /**
      * Expected to fail because of no periods specified.
      */
-    @Test( expected = IllegalArgumentException.class )
+    @Test( expected = IllegalQueryException.class )
     public void planQueryG()
     {
         DataQueryParams params = new DataQueryParams();
@@ -538,6 +541,19 @@ public class QueryPlannerTest
             assertTrue( samePartition( query.getPeriods() ) );
             assertDimensionNameNotNull( query );
         }
+    }
+
+    /**
+     * No periods specified, illegal query.
+     */
+    @Test( expected=IllegalQueryException.class )
+    public void planQueryJ()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
+        
+        queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
     }
     
     // -------------------------------------------------------------------------

@@ -177,6 +177,11 @@ public class JdbcAnalyticsManager
         {
             int periodIndex = params.getPeriodDimensionIndex();
             
+            if ( periodIndex == -1 )
+            {
+                return; // Period is filter, nothing to replace
+            }
+            
             Set<String> keys = new HashSet<String>( dataValueMap.keySet() );
             
             for ( String key : keys )
