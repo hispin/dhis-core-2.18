@@ -2281,8 +2281,7 @@ Ext.onReady( function() {
 				style: {
 					opacity: 0.8
 				},
-				tips: DV.util.chart.def.series.getTips(),
-                title: ['BCG &lt;1']
+				tips: DV.util.chart.def.series.getTips()
 			};
 			if (DV.c.showdata) {
 				main.label = {display: 'outside', field: DV.c.series.names};
