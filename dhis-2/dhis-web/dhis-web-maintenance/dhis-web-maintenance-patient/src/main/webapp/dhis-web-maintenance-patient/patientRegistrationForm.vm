@@ -1,8 +1,9 @@
 <h3>$i18n.getString( "patient_registration_form_management" ) #openHelp( "program" )</h3>
 
 <table class="mainPageTable">
-	#if( $programs.size() > 0 )
+	
 	<tr>
+		#if( $programs.size() > 0 )
 		<td>
 			<label>$i18n.getString('program')</label>
 			<select name="programId" id="programId" style="width:20em" >
@@ -12,10 +13,21 @@
 				#end
 			</select>
 		</td>
+		#end
+		
+		#set($display = 'block')
+		#if( $programs.size() == 0 )
+			#foreach( $registrationForm in $registrationForms )
+				#if( $registrationForm.progam )
+				#else
+					#set($hidden = 'none')
+				#end
+			#end
+		#end
 		<td align="right">
-			<input type="button" value="$i18n.getString( 'add_new' )" onclick="addNewForm();" style="width:70px">
+			<input type="button" value="$i18n.getString( 'add_new' )" onclick="addNewForm();" style="width:70px;display:$display">
 		</td>
-	#else
+	#if( $programs.size() == 0 )
 		<input type='hidden' name="programId" id="programId" value="" />
 	#end
   </tr>
@@ -23,18 +35,27 @@
     <td style="vertical-align:top" colspan='2'>
 		
 		<table class="listTable">
-			  <col>          
+			  <col>   
+			  <col>  			  
 			  <col width="40">
 			<thead>			  
 			  <tr>            
 				<th>$i18n.getString( "name" )</th>
+				<th>$i18n.getString( "program" )</th>
 				<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 			  </tr>
 			</thead>
 			  <tbody class="list">
 				#foreach( $registrationForm in $registrationForms )
 				  <tr id="tr${registrationForm.id}">
-					<td>$encoder.htmlEncode( $registrationForm.dataEntryForm.name )</td>                
+					<td>$encoder.htmlEncode( $registrationForm.dataEntryForm.name )</td>  
+					<td>
+						#if($registrationForm.program)
+							$encoder.htmlEncode( $registrationForm.program.name )
+						#else
+							$i18n.getString('all')
+						#end	
+					</td>   					
 					<td style="text-align:center">
 					  <a href="javascript:updateNewForm($registrationForm.id, '$!registrationForm.program.id')" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					  <a href="javascript:removeRegistrationForm( '$registrationForm.id', '$encoder.jsEncode( $registrationForm.dataEntryForm.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>

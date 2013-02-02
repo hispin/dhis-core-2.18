@@ -39,7 +39,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
@@ -48,6 +47,8 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
@@ -83,6 +84,8 @@ public class GetPatientAction
     private RelationshipTypeService relationshipTypeService;
 
     private PatientRegistrationFormService patientRegistrationFormService;
+    
+    private ProgramInstanceService programInstanceService;
 
     private I18n i18n;
 
@@ -157,16 +160,25 @@ public class GetPatientAction
             if ( patientRegistrationForm != null )
             {
                 customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
-                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, patient, i18n, format );
+                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, patient, null, i18n, format );
             }
         }
         else
         {
             Program program = programService.getProgram( programId );
+            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
+                false );
+
+            ProgramInstance programInstance = null;
+            if ( programInstances.iterator().hasNext() )
+            {
+                programInstance = programInstances.iterator().next();
+            }
+            
             PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
                 .getPatientRegistrationForm( program );
             customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
-                .getDataEntryForm().getHtmlCode(), healthWorkers, patient, i18n, format );
+                .getDataEntryForm().getHtmlCode(), healthWorkers, patient, programInstance, i18n, format );
         }
 
         if ( customRegistrationForm == null )
@@ -354,6 +366,11 @@ public class GetPatientAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
     }
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )

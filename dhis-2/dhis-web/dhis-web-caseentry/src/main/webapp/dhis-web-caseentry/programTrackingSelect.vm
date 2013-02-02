@@ -1,6 +1,5 @@
 <script>
 	jQuery(document).ready(	function(){
-		showById('programAddPatientTR');
 		showById('programStageAddPatientTR');
 		showById('sendSmsToListBtn');
 		jQuery("#programIdAddPatient option").each(function(){

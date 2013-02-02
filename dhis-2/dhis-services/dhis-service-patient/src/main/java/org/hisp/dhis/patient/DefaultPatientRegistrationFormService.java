@@ -36,7 +36,11 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,7 +144,7 @@ public class DefaultPatientRegistrationFormService
 
     @Override
     public String prepareDataEntryFormForAdd( String htmlCode, Collection<User> healthWorkers, Patient patient,
-        I18n i18n, I18nFormat format )
+        ProgramInstance programInstance, I18n i18n, I18nFormat format )
     {
         int index = 1;
 
@@ -158,6 +162,7 @@ public class DefaultPatientRegistrationFormService
             Matcher fixedAttrMatcher = FIXED_ATTRIBUTE_PATTERN.matcher( inputHtml );
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dynamicAttrMatcher = DYNAMIC_ATTRIBUTE_PATTERN.matcher( inputHtml );
+            Matcher programMatcher = PROGRAM_PATTERN.matcher( inputHtml );
             index++;
 
             if ( fixedAttrMatcher.find() && fixedAttrMatcher.groupCount() > 0 )
@@ -242,6 +247,21 @@ public class DefaultPatientRegistrationFormService
                 }
 
                 inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index );
+            }
+            else if ( programMatcher.find() && programMatcher.groupCount() > 0 )
+            {
+                String property = programMatcher.group( 1 );
+
+                // Get value
+                String value = "";
+                if ( programInstance != null )
+                {
+                    value = format.formatDate( ((Date) getValueFromProgram( property, programInstance )) );
+                }
+
+                inputHtml = "<input id=\"" + property + "\" name=\"" + property + "\" tabindex=\"" + index
+                    + "\" value=\"" + value + "\" " + TAG_CLOSE;
+                inputHtml += "<script>datePicker(\"" + property + "\", true);</script>";
             }
 
             inputMatcher.appendReplacement( sb, inputHtml );
@@ -448,6 +468,19 @@ public class DefaultPatientRegistrationFormService
         try
         {
             return Patient.class.getMethod( "get" + property ).invoke( patient );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    private Object getValueFromProgram( String property, ProgramInstance programInstance )
+    {
+        try
+        {
+            return Patient.class.getMethod( "get" + property ).invoke( programInstance );
         }
         catch ( Exception ex )
         {

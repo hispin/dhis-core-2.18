@@ -66,6 +66,11 @@ function insertElement( type )
 		id = 'attributeid="' + element.attr('value') + '"';
 		value = element.text();
 	}
+	else if( type == 'prg' ){
+		var element = jQuery('#programAttrSelector option:selected');
+		id = 'programid="' + element.attr('value') + '"';
+		value = element.text();
+	}
 	
 	var htmlCode = "<input " + id + " value=\"[" + value + "]\" title=\"" + value + "\">";
 	

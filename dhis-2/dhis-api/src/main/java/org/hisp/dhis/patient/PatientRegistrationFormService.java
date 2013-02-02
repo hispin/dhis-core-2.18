@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.user.User;
 
 /**
@@ -42,14 +43,21 @@ import org.hisp.dhis.user.User;
  */
 public interface PatientRegistrationFormService
 {
- 
+
     final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?/>)", Pattern.DOTALL );
+
     final Pattern FIXED_ATTRIBUTE_PATTERN = Pattern.compile( "fixedattributeid=\"(\\w+)\"" );
+
     final Pattern IDENTIFIER_PATTERN = Pattern.compile( "identifierid=\"(\\w+)\"" );
+
     final Pattern DYNAMIC_ATTRIBUTE_PATTERN = Pattern.compile( "attributeid=\"(\\w+)\"" );
+
+    final Pattern PROGRAM_PATTERN = Pattern.compile( "programid=\"(\\w+)\"" );
+
     final Pattern VALUE_TAG_PATTERN = Pattern.compile( "value=\"(.*?)\"", Pattern.DOTALL );
+
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
-  
+
     // --------------------------------------------------------------------------
     // ProgramDataEntryService
     // --------------------------------------------------------------------------
@@ -61,13 +69,14 @@ public interface PatientRegistrationFormService
     void updatePatientRegistrationForm( PatientRegistrationForm registrationForm );
 
     PatientRegistrationForm getPatientRegistrationForm( int id );
-    
+
     Collection<PatientRegistrationForm> getAllPatientRegistrationForms();
 
     PatientRegistrationForm getPatientRegistrationForm( Program program );
-    
+
     PatientRegistrationForm getCommonPatientRegistrationForm();
 
-    String prepareDataEntryFormForAdd( String htmlCode, Collection<User> healthWorkers, Patient patient,  I18n i18n, I18nFormat format );
-        
+    String prepareDataEntryFormForAdd( String htmlCode, Collection<User> healthWorkers, Patient patient,
+        ProgramInstance programInstance, I18n i18n, I18nFormat format );
+
 }

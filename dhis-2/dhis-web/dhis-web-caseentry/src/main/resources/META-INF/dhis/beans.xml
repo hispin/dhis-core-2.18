@@ -431,6 +431,8 @@
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientRegistrationFormService"
 			ref="org.hisp.dhis.patient.PatientRegistrationFormService" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.AddPatientAction"
