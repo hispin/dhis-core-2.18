@@ -107,6 +107,13 @@ public class GetReportAndParamsAction
     {
         return organisationUnitHierarchy;
     }
+    
+    private List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
+    
+    public List<OrganisationUnit> getOrganisationUnitChildren()
+    {
+        return organisationUnitChildren;
+    }
 
     private List<Period> periods;
     
@@ -138,6 +145,8 @@ public class GetReportAndParamsAction
                     parent = parent.getParent();
                     organisationUnitHierarchy.add( parent );
                 }
+                
+                organisationUnitChildren.addAll( organisationUnit.getChildren() );
             }
         }
         

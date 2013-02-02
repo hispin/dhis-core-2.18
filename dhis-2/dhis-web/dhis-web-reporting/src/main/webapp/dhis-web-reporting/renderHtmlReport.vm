@@ -32,6 +32,19 @@ dhis2.report.periods = [
 #end
 ];
 
+dhis2.report.organisationUnitChildren = [
+#if( $organisationUnitChildren )
+#set( $size = $organisationUnitChildren.size() )
+#foreach( $ou in $organisationUnitChildren )
+{
+    "id": "$!encoder.htmlEncode( ${ou.uid} )",
+    "name": "$!encoder.htmlEncode( ${ou.name} )",
+    "code": "$!encoder.htmlEncode( ${ou.code} )"
+}#if( $velocityCount < $size ),#end
+#end
+#end
+];
+
 </script>
 
 <div style="margin-bottom:16px" class="hideInPrint">
