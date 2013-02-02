@@ -475,7 +475,6 @@ function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
 	if( programIdAddPatient!='' ){
 		enable('listPatientBtn');
-		enable('addPatientBtn');
 		enable('advancedSearchBtn');
 		jQuery('#advanced-search :input').each( function( idx, item ){
 			enable(this.id);
@@ -484,7 +483,6 @@ function enableBtn(){
 	else
 	{
 		disable('listPatientBtn');
-		disable('addPatientBtn');
 		disable('advancedSearchBtn');
 		jQuery('#advanced-search :input').each( function( idx, item ){
 			disable(this.id);
@@ -961,7 +959,8 @@ function showUpdatePatientForm( patientId )
 	jQuery('#loaderDiv').show();
 	jQuery('#editPatientDiv').load('showUpdatePatientForm.action',
 		{
-			id:patientId
+			id:patientId,
+			programId: getFieldValue('programIdAddPatient')
 		}, function()
 		{
 			jQuery('#searchPatientsDiv').dialog('close');
@@ -1014,12 +1013,32 @@ function updateValidationCompleted( messageElement )
 
 function updatePatient()
 {
+	var params = 'programId=' + getFieldValue('programIdAddPatient') 
+		+ '&' + getParamsForDiv('editPatientDiv');
+
 	$.ajax({
       type: "POST",
       url: 'updatePatient.action',
-      data: getParamsForDiv('editPatientDiv'),
+      data: params,
       success: function( json ) {
-		showPatientDashboardForm( getFieldValue('id') );
+			if( getFieldValue('programIdAddPatient')!='')
+			{
+				jQuery.postJSON( "saveProgramEnrollment.action",
+				{
+					patientId: getFieldValue('id'),
+					programId: getFieldValue('programIdAddPatient'),
+					dateOfIncident: jQuery('#patientForm [id=dateOfIncident]').val(),
+					enrollmentDate: jQuery('#patientForm [id=enrollmentDate]').val()
+				}, 
+				function( json ) 
+				{ 
+					showPatientDashboardForm( getFieldValue('id') );
+				});
+			}
+			else
+			{
+				showPatientDashboardForm( getFieldValue('id') );
+			}
       }
      });
 }

@@ -1,6 +1,5 @@
 <script>
 	jQuery(document).ready(	function(){
-		showById('programAddPatientTR');
 		jQuery("#programIdAddPatient option").each(function(){
 			var item = jQuery(this);
 			if( item.attr('type')!=1 && item.val()!='' ){

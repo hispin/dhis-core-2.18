@@ -95,6 +95,8 @@ public class GetPatientRegistrationFormListAction
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
 
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+
         for ( PatientRegistrationForm registrationForm : registrationForms )
         {
             if ( registrationForm.getProgram() != null )

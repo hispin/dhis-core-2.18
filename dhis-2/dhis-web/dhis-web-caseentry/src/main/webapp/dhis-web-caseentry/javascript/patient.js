@@ -82,7 +82,7 @@ function showAddPatientForm()
 	hideById('migrationPatientDiv');
 	
 	jQuery('#loaderDiv').show();
-	jQuery('#editPatientDiv').load('showAddPatientForm.action'
+	jQuery('#editPatientDiv').load('showAddPatientForm.action?programId=' + getFieldValue('programIdAddPatient')
 		, function()
 		{
 			showById('editPatientDiv');
@@ -136,27 +136,48 @@ function addValidationCompleted( data, isContinue )
 }
 
 function addPatient( isContinue )
-{
+{		
+	var params = 'programId=' + getFieldValue('programIdAddPatient') + '&' + getParamsForDiv('patientForm');
 	$.ajax({
       type: "POST",
       url: 'addPatient.action',
-      data: getParamsForDiv('patientForm'),
+      data: params,
       success: function(json) {
-		var patientId = json.message.split('_')[0];
-		if(isContinue){
-			jQuery("#patientForm :input").each( function(){
-				if( $(this).attr('id') != "registrationDate" 
-					&& $(this).attr('type') != 'button'
-					&& $(this).attr('type') != 'submit' )
+		if(json.response=='success')
+		{
+			var patientId = json.message.split('_')[0];
+			var programId = getFieldValue('programIdAddPatient');
+			var	dateOfIncident = jQuery('#patientForm [id=dateOfIncident]').val();
+			var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
+					
+			if( getFieldValue('programIdAddPatient')!='' && enrollmentDate != '')
+			{
+				jQuery.postJSON( "saveProgramEnrollment.action",
 				{
-					$(this).val("");
-				}
-			});
-			$("#patientForm :input").attr("disabled", false);
-			$("#patientForm").find("select").attr("disabled", false);
-		}
-		else{
-			showPatientDashboardForm( patientId );
+					patientId: patientId,
+					programId: programId,
+					dateOfIncident: dateOfIncident,
+					enrollmentDate: enrollmentDate
+				}, 
+				function( json ) 
+				{    
+					if(isContinue){
+						jQuery("#patientForm :input").each( function(){
+							if( $(this).attr('id') != "registrationDate" 
+								&& $(this).attr('type') != 'button'
+								&& $(this).attr('type') != 'submit' )
+							{
+								$(this).val("");
+							}
+						});
+						$("#patientForm :input").attr("disabled", false);
+						$("#patientForm").find("select").attr("disabled", false);
+					}
+					else{
+						showPatientDashboardForm( patientId );
+					}
+				});
+			}
 		}
       }
      });

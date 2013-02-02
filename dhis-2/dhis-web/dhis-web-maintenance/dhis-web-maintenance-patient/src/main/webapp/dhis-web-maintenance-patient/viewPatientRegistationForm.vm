@@ -1,4 +1,4 @@
-<script type="text/javascript">
+hh<script type="text/javascript">
   
 	jQuery(document).ready(	function()
 	{
@@ -173,10 +173,10 @@
 		</tr>
 		<tr>
 			<td>
-				<select id="programAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'attr' )">
+				<select id="programAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'prg' )">
 					<option value="enrollmentDate">$encoder.htmlEncode($program.dateOfEnrollmentDescription)</option>
 					#if($program.displayIncidentDate=='true')
-					<option value="incidentDate">$encoder.htmlEncode($program.dateOfIncidentDescription)</option>
+					<option value="dateOfIncident">$encoder.htmlEncode($program.dateOfIncidentDescription)</option>
 					#end
 				</select>
 			</td>
