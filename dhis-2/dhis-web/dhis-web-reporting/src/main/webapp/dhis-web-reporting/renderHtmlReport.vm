@@ -4,10 +4,9 @@ dhis2.util.namespace( 'dhis2.report' );
 
 dhis2.report.organisationUnit = {
 #if( $organisationUnit )
-    "id": "$!{organisationUnit.uid}",
-    "name": "$!{organisationUnit.name}",
-    "shortName": "$!{organisationUnit.shortName}",
-    "code": "$!{organisationUnit.code}"
+    "id": "$!encoder.htmlEncode( ${organisationUnit.uid} )",
+    "name": "$!encoder.htmlEncode( ${organisationUnit.name} )",
+    "code": "$!encoder.htmlEncode( ${organisationUnit.code} )"
 #end
 };
 
@@ -16,10 +15,9 @@ dhis2.report.organisationUnitHierarchy = [
 #set( $size = $organisationUnitHierarchy.size() )
 #foreach( $ou in $organisationUnitHierarchy )
 {
-    "id": "${ou.uid}",
-    "name": "${ou.name}",
-    "shortName": "${ou.shortName}",
-    "code": "${ou.code}"
+    "id": "$!encoder.htmlEncode( ${ou.uid} )",
+    "name": "$!encoder.htmlEncode( ${ou.name} )",
+    "code": "$!encoder.htmlEncode( ${ou.code} )"
 }#if( $velocityCount < $size ),#end
 #end
 #end
