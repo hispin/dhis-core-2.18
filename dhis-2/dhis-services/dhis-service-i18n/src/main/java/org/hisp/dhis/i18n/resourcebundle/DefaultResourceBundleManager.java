@@ -100,9 +100,8 @@ public class DefaultResourceBundleManager
             {
                 return ResourceBundle.getBundle( baseName, locale );
             }
-            catch ( MissingResourceException e )
+            catch ( MissingResourceException ignored )
             {
-                System.err.println( "MissingResource: " + e.getMessage() );
             }
         }
 
