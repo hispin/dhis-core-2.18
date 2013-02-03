@@ -40,14 +40,20 @@ import org.hisp.dhis.api.webdomain.user.Recipients;
 import org.hisp.dhis.api.webdomain.user.UserAccount;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.*;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,7 +105,10 @@ public class CurrentUserController
     @Autowired
     private ContextUtils contextUtils;
 
-    @RequestMapping(produces = { "application/json", "text/*" })
+    @Autowired
+    private I18nService i18nService;
+
+    @RequestMapping( produces = { "application/json", "text/*" } )
     public void getCurrentUser( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -247,7 +256,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
-    @RequestMapping( value = "/assignedOrganisationUnits", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/assignedOrganisationUnits", produces = { "application/json", "text/*" })
     public void getAssignedOrganisationUnits( HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -261,8 +270,8 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), currentUser.getOrganisationUnits() );
     }
 
-    @SuppressWarnings( "unchecked" )
-    @RequestMapping( value = "/forms", produces = { "application/json", "text/*" } )
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/forms", produces = { "application/json", "text/*" })
     public void getForms( HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -313,21 +322,27 @@ public class CurrentUserController
             }
         }
 
+        i18nService.internationalise( organisationUnits );
+
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             FormOrganisationUnit ou = new FormOrganisationUnit();
             ou.setId( organisationUnit.getUid() );
-            ou.setLabel( organisationUnit.getName() );
+            ou.setLabel( organisationUnit.getDisplayName() );
 
             Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( organisationUnit.getDataSets(), userDataSets ) );
+            i18nService.internationalise( dataSets );
 
             for ( DataSet dataSet : dataSets )
             {
+                i18nService.internationalise( dataSet.getDataElements() );
+                i18nService.internationalise( dataSet.getSections() );
+
                 String uid = dataSet.getUid();
 
                 FormDataSet ds = new FormDataSet();
                 ds.setId( uid );
-                ds.setLabel( dataSet.getName() );
+                ds.setLabel( dataSet.getDisplayName() );
 
                 forms.getForms().put( uid, FormUtils.fromDataSet( dataSet ) );
                 ou.getDataSets().add( ds );

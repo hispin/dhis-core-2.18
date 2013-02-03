@@ -29,12 +29,14 @@ package org.hisp.dhis.api.webdomain.form;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@XmlRootElement( name = "form" )
 public class Form
 {
     private String label;
