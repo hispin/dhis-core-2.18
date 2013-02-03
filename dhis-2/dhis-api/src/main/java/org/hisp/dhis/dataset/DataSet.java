@@ -67,6 +67,7 @@ public class DataSet
     public static final String TYPE_DEFAULT = "default";
     public static final String TYPE_SECTION = "section";
     public static final String TYPE_CUSTOM = "custom";
+    public static final String TYPE_SECTION_MULTIORG = "multiorg_section";
 
     public static final int NO_EXPIRY = 0;
 

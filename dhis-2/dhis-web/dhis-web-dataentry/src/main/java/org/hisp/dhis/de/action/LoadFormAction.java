@@ -88,17 +88,6 @@ public class LoadFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
@@ -235,7 +224,7 @@ public class LoadFormAction
             return INPUT;
         }
 
-        Collections.sort( dataElements, dataElementComparator );
+        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
 
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
 
@@ -307,13 +296,11 @@ public class LoadFormAction
 
         String displayMode = dataSet.getDataSetType();
 
-        if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 ) // for
-                                                                           // multiOrg,
-                                                                           // we
-                                                                           // only
-                                                                           // support
-                                                                           // section
-                                                                           // forms
+        // ---------------------------------------------------------------------
+        // For multi-org unit we only support custom forms
+        // ---------------------------------------------------------------------
+        
+        if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 ) 
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( multiOrganisationUnit );
             List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
@@ -336,7 +323,8 @@ public class LoadFormAction
             organisationUnits.addAll( organisationUnitChildren );
 
             getSectionForm( dataElements, dataSet );
-            displayMode = "multiorg_section";
+            
+            displayMode = DataSet.TYPE_SECTION_MULTIORG;
         }
         if ( displayMode.equals( DataSet.TYPE_SECTION ) )
         {
@@ -403,6 +391,5 @@ public class LoadFormAction
 
             orderedDataElements.put( categoryCombo, des );
         }
-
     }
 }
