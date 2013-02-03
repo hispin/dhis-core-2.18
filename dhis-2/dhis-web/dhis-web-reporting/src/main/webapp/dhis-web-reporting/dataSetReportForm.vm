@@ -71,7 +71,7 @@ div.inputSection {
 <select id="dataSetId" name="dataSetId" style="width:330px">
   <option value="">[ $i18n.getString( "select" ) ]</option>
   #foreach( $dataSet in $dataSets )
-  <option value="$dataSet.uid">$encoder.htmlEncode( $dataSet.name )</option>
+  <option value="$dataSet.uid">$encoder.htmlEncode( $dataSet.displayName )</option>
   #end
 </select>
 </div>

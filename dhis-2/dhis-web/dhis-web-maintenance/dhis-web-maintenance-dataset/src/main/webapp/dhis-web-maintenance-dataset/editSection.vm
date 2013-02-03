@@ -39,15 +39,15 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionName" name="sectionName" value= "$section.name"></td>        
+        <td><input type="text" id="sectionName" name="sectionName" value= "$section.name"></td>
       </tr>     
       <tr>
       	<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" value="$dataSet.name" disabled="disabled"/></td>
+        <td><input type="text" value="$dataSet.displayName" disabled="disabled"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" value="$!categoryCombo.name" disabled="disabled"/></td>
+        <td><input type="text" value="$!categoryCombo.displayName" disabled="disabled"/></td>
       </tr>
     </tbody>
   </table>
@@ -84,7 +84,7 @@
 		<td>
 			<select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
             #foreach ( $dataElement in $section.dataElements )
-              <option value="$dataElement.id">$dataElement.name</option>
+              <option value="$dataElement.id">$dataElement.displayName</option>
             #end
 			</select>
         </td> 

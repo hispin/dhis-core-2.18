@@ -11,7 +11,7 @@
 		<td>
 			<select id='sectionIds' name='sectionIds'multiple style='width:400px;height:200px'>
 				#foreach( $section in $programStage.programStageSections )
-					<option value='$section.id'>$section.name</option>
+					<option value='$section.id'>$section.displayName</option>
 				#end
 			</select>
 		</td>

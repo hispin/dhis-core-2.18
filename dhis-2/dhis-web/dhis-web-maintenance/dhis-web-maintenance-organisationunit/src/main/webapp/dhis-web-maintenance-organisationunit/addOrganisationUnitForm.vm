@@ -118,7 +118,7 @@
     	<td style="width:120px"><label for="availableDataSets">$i18n.getString( "available_data_sets" )</label></td>
     	<td><select multiple id="availableDataSets" size="5" ondblclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
     	#foreach( $dataSet in $dataSets )
-    	<option value="${dataSet.id}">$encoder.htmlEncode( $dataSet.name )</option>
+    	<option value="${dataSet.id}">$encoder.htmlEncode( $dataSet.displayName )</option>
 	    #end
     	</select></td>
     </tr>

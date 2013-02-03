@@ -27,7 +27,7 @@
 	<select id="dataSetId" name="dataSetId" style="width:330px">
 	<option value="0">[ $i18n.getString( "select_dataset_all" ) ]</option>
 	#foreach( $dataSet in $dataSets )
-		<option value="$dataSet.id">$dataSet.name</option>
+		<option value="$dataSet.id">$dataSet.displayName</option>
 	#end
 	</select><br><br>
     

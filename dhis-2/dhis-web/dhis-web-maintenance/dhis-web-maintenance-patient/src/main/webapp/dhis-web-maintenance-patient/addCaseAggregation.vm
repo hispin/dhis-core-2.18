@@ -33,7 +33,7 @@
 			<select id="dataSets" name="dataSets" onChange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $dataSet in $dataSets)
-					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end>$dataSet.name</option>
+					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end>$dataSet.displayNamew</option>
 				#end
 			</select>
 		</td>				
