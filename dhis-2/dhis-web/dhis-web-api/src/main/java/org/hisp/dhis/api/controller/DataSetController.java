@@ -27,33 +27,19 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.view.ClassPathUriResolver;
 import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.metadata.ExportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -65,6 +51,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -75,7 +76,7 @@ public class DataSetController
 {
     public static final String RESOURCE_PATH = "/dataSets";
     public static final String DSD_TRANSFORM = "/templates/metadata2dsd.xsl";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -86,26 +87,29 @@ public class DataSetController
     @Autowired
     private DataValueService dataValueService;
 
+    @Autowired
+    private I18nService i18nService;
+
     // -------------------------------------------------------------------------
     // Controller
     // -------------------------------------------------------------------------
 
     @RequestMapping( produces = "application/dsd+xml" )
-    public void getStructureDefinition( @RequestParam Map<String, String> parameters, HttpServletResponse response ) 
+    public void getStructureDefinition( @RequestParam Map<String, String> parameters, HttpServletResponse response )
         throws IOException, TransformerConfigurationException, TransformerException
     {
         WebOptions options = filterMetadataOptions();
-        
+
         MetaData metaData = exportService.getMetaData( options );
 
-        InputStream input = new ByteArrayInputStream(JacksonUtils.toXmlWithViewAsString(  metaData, ExportView.class ).getBytes("UTF-8"));
-        
-        TransformerFactory tf = TransformerFactory.newInstance();
-        tf.setURIResolver( new ClassPathUriResolver());
+        InputStream input = new ByteArrayInputStream( JacksonUtils.toXmlWithViewAsString( metaData, ExportView.class ).getBytes( "UTF-8" ) );
 
-        Transformer transformer = tf.newTransformer( new StreamSource( new ClassPathResource(DSD_TRANSFORM).getInputStream()) );
-        
-        transformer.transform( new StreamSource(input), new StreamResult( response.getOutputStream() ) );
+        TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setURIResolver( new ClassPathUriResolver() );
+
+        Transformer transformer = tf.newTransformer( new StreamSource( new ClassPathResource( DSD_TRANSFORM ).getInputStream() ) );
+
+        transformer.transform( new StreamSource( input ), new StreamResult( response.getOutputStream() ) );
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = "application/json" )
@@ -120,6 +124,10 @@ public class DataSetController
             return;
         }
 
+        i18nService.internationalise( dataSet );
+        i18nService.internationalise( dataSet.getDataElements() );
+        i18nService.internationalise( dataSet.getSections() );
+
         Form form = FormUtils.fromDataSet( dataSet );
 
         if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
@@ -129,13 +137,13 @@ public class DataSetController
 
             Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSet.getDataElements() );
 
-            FormUtils.fillWithDataValues(form, dataValues);
+            FormUtils.fillWithDataValues( form, dataValues );
         }
 
         JacksonUtils.toJson( response.getOutputStream(), form );
     }
 
-    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = {"application/xml", "text/xml"} )
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
     public void getFormXml( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
         @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
     {
@@ -147,16 +155,22 @@ public class DataSetController
             return;
         }
 
+        i18nService.internationalise( dataSet );
+        i18nService.internationalise( dataSet.getDataElements() );
+        i18nService.internationalise( dataSet.getSections() );
+
         Form form = FormUtils.fromDataSet( dataSet );
 
         if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
         {
             OrganisationUnit ou = manager.get( OrganisationUnit.class, orgUnit );
+            i18nService.internationalise( ou );
+
             Period p = PeriodType.getPeriodFromIsoString( period );
 
             Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSet.getDataElements() );
 
-            FormUtils.fillWithDataValues(form, dataValues);
+            FormUtils.fillWithDataValues( form, dataValues );
         }
 
         JacksonUtils.toXml( response.getOutputStream(), form );
@@ -167,23 +181,23 @@ public class DataSetController
     {
     }
 
-    @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = {"application/xml", "text/xml"} )
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     public void postFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
     {
     }
 
     /**
      * select only the metadata required to describe form definitions
-     * 
-     * @return the filtered options 
+     *
+     * @return the filtered options
      */
     private WebOptions filterMetadataOptions()
-    {      
-        WebOptions options = new WebOptions(new HashMap<String,String>());
-        options.setAssumeTrue( false);
+    {
+        WebOptions options = new WebOptions( new HashMap<String, String>() );
+        options.setAssumeTrue( false );
         options.addOption( "categoryOptionCombos", "true" );
-        options.addOption( "dataElements","true" );
-        options.addOption( "dataSets", "true" );   
+        options.addOption( "dataElements", "true" );
+        options.addOption( "dataSets", "true" );
         return options;
     }
 

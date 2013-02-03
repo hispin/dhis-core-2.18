@@ -54,7 +54,7 @@ public class FormUtils
     public static Form fromDataSet( DataSet dataSet )
     {
         Form form = new Form();
-        form.setLabel( dataSet.getName() );
+        form.setLabel( dataSet.getDisplayName() );
         form.setPeriodType( dataSet.getPeriodType().getName() );
         form.setAllowFuturePeriods( dataSet.isAllowFuturePeriods() );
 
@@ -63,7 +63,7 @@ public class FormUtils
             for ( Section section : dataSet.getSections() )
             {
                 Group s = new Group();
-                s.setLabel( section.getName() );
+                s.setLabel( section.getDisplayName() );
                 s.setFields( inputsFromDataElements( section.getDataElements(), new ArrayList<DataElementOperand>( section.getGreyedFields() ) ) );
                 form.getGroups().add( s );
             }
@@ -113,7 +113,7 @@ public class FormUtils
             {
                 Field field = new Field();
 
-                field.setLabel( dataElement.getName() );
+                field.setLabel( dataElement.getDisplayName() );
                 field.setDataElement( dataElement.getUid() );
                 field.setCategoryOptionCombo( dataElement.getCategoryCombo().getSortedOptionCombos().get( 0 ).getUid() );
                 field.setType( inputTypeFromDataElement( dataElement ) );
@@ -126,7 +126,7 @@ public class FormUtils
                 {
                     Field field = new Field();
 
-                    field.setLabel( dataElement.getName() + " " + categoryOptionCombo.getName() );
+                    field.setLabel( dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName() );
                     field.setDataElement( dataElement.getUid() );
                     field.setCategoryOptionCombo( categoryOptionCombo.getUid() );
                     field.setType( inputTypeFromDataElement( dataElement ) );
