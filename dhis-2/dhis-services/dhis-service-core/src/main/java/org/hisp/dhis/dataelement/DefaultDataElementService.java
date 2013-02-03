@@ -261,14 +261,14 @@ public class DefaultDataElementService
 
     public List<DataElementCategoryCombo> getDataElementCategoryCombos( List<DataElement> dataElements )
     {
-        Set<DataElementCategoryCombo> setCategoryCombos = new HashSet<DataElementCategoryCombo>();
+        Set<DataElementCategoryCombo> categoryCombos = new HashSet<DataElementCategoryCombo>();
 
         for ( DataElement dataElement : dataElements )
         {
-            setCategoryCombos.add( dataElement.getCategoryCombo() );
+            categoryCombos.add( dataElement.getCategoryCombo() );
         }
 
-        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>( setCategoryCombos );
+        List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>( categoryCombos );
 
         Collections.sort( listCategoryCombos, new DataElementCategoryComboSizeComparator() );
 
