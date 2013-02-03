@@ -16,11 +16,11 @@
                     }
                 });
             } else {
-                $('#messageList').append('<li>No messages</li>');
+                $('#messageList').append('<li>$i18n.getString("no_messages")</li>');
             }
         }).error(function() {
             $.mobile.loading( 'show', {
-                html: '<h1>Unable to get inbox, please try again later</h1>',
+                html: '<h1>$i18n.getString("unable_to_get_inbox")</h1>',
                 textVisible: true
             });
 
@@ -38,13 +38,13 @@
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
-        <a href="index" data-icon="back">Back</a>
-        <a href="messages/new-message" data-icon="plus">New</a>
+        <a href="index" data-icon="back">$i18n.getString("back")</a>
+        <a href="messages/new-message" data-icon="plus">$i18n.getString("new")</a>
     </header>
 
 	<section data-role="content">
         <ul id="messageList" data-role="listview" data-inset="true" data-count-theme="b">
-            <li data-role="list-divider">Messages</li>
+            <li data-role="list-divider">$i18n.getString("messages")</li>
         </ul>
 	</section>
 

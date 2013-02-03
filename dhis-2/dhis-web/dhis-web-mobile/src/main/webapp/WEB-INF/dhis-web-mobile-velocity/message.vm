@@ -32,7 +32,7 @@
                 location.reload(true);
             }).error(function () {
                 $.mobile.loading( 'show', {
-                    html: '<h1>Unable to send reply, please try again later</h1>',
+                    html: '<h1>$i18n.getString("unable_to_send_reply")</h1>',
                     textVisible: true
                 });
 
@@ -60,7 +60,7 @@
             bindSubmitHandler();
         }).error(function () {
             $.mobile.loading( 'show', {
-                html: '<h1>Unable to load message, please try again later</h1>',
+                html: '<h1>$i18n.getString("unable_to_send_reply")</h1>',
                 textVisible: true
             });
 
@@ -85,7 +85,7 @@
         <li>
         <form id='reply-form'>
             <textarea id='reply-text'></textarea>
-            <input type="submit" value="Reply" />
+            <input type="submit" value="$i18n.getString("reply")" />
         </form>
         </li>
         <% } %>
@@ -97,7 +97,7 @@
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
-        <a href="../messages" data-icon="back">Back</a>
+        <a href="../messages" data-icon="back">$i18n.getString("back")</a>
 	</header>
 
 	<section data-role="content">

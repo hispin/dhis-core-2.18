@@ -59,13 +59,13 @@ public class MobileController
         return "redirect:/mobile/index";
     }
 
-    @RequestMapping(value = "/index")
+    @RequestMapping( value = "/index" )
     public String index( Model model, HttpServletRequest request )
     {
         populateContextPath( model, request );
         model.addAttribute( "page", "index.vm" );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/messages")
@@ -74,7 +74,7 @@ public class MobileController
         populateContextPath( model, request );
         model.addAttribute( "page", "messages.vm" );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/messages/new-message")
@@ -83,7 +83,7 @@ public class MobileController
         populateContextPath( model, request );
         model.addAttribute( "page", "new-message.vm" );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/messages/{uid}")
@@ -93,7 +93,7 @@ public class MobileController
         model.addAttribute( "page", "message.vm" );
         model.addAttribute( "messageId", uid );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/interpretations")
@@ -102,7 +102,7 @@ public class MobileController
         populateContextPath( model, request );
         model.addAttribute( "page", "interpretations.vm" );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/user-account")
@@ -111,7 +111,7 @@ public class MobileController
         populateContextPath( model, request );
         model.addAttribute( "page", "user-account.vm" );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/data-entry")
@@ -120,7 +120,7 @@ public class MobileController
         populateContextPath( model, request );
         model.addAttribute( "page", "data-entry.vm" );
 
-        return "base";
+        return "layout";
     }
 
     @RequestMapping(value = "/app-cache")

@@ -106,19 +106,19 @@
     <h3></h3>
 
     <% if( dvsSize == 0 ) { %>
-        <p>No data is stored.</p>
+        <p>$i18n.getString( "no_data_is_stored" ).</p>
     <% } else { %>
         <% if( dvsSize == 1 ) { %>
-            <p>You have <strong><%= dvsSize %></strong> form stored.</p>
+            <p>$i18n.getString("you_have") <strong><%= dvsSize %></strong> $i18n.getString("form_stored").</p>
         <% } else { %>
-            <p>You have <strong><%= dvsSize %></strong> forms stored.</p>
+            <p>$i18n.getString("you_have") <strong><%= dvsSize %></strong> $i18n.getString("forms_stored").</p>
         <% } %>
     <% } %>
 
     <% if( online ) { %>
-        <p class="ui-li-aside">Status: <strong>Online</strong></p>
+        <p class="ui-li-aside">$i18n.getString("status"): <strong>$i18n.getString("online")</strong></p>
     <% } else { %>
-        <p class="ui-li-aside">Status: <strong>Offline</strong></p>
+        <p class="ui-li-aside">$i18n.getString("status"): <strong>$i18n.getString("offline")</strong></p>
     <% } %>
 </script>
 
@@ -130,9 +130,9 @@
 
 	<section data-role="content">
         <ul data-role="listview" data-inset="true">
-            <li id="data-entry"><a href="data-entry">Aggregate Reporting</a></li>
-            <li id="messages"><a href="messages">Messages</a></li>
-            <li id="user-account"><a href="user-account">User Account</a></li>
+            <li id="data-entry"><a href="data-entry">$i18n.getString("aggregate_reporting")</a></li>
+            <li id="messages"><a href="messages">$i18n.getString("messages")</a></li>
+            <li id="user-account"><a href="user-account">$i18n.getString("user_account")</a></li>
             <li id="offline-status">
                 <h3></h3>
                 <p>&nbsp;</p>

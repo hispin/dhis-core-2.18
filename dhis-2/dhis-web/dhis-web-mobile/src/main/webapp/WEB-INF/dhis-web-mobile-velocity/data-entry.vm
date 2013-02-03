@@ -258,7 +258,7 @@
             pageLoaders[pageId].call();
         } else {
             $.mobile.loading( 'show', {
-                html: '<h1>Tried changing to invalid page</h1>',
+                html: '<h1>$i18n.getString("change_to_invalid_page")</h1>',
                 textVisible: true
             });
         }
@@ -272,7 +272,7 @@
             <li><a href="#data-sets-page" data-id="<%= organisationUnit.id %>"><%= organisationUnit.label %></a></li>
             <% }); %>
         <% } else { %>
-            <li>No organisation units available for data entry</li>
+            <li>$i18n.getString("no_organisation_units_for_data_entry").</li>
         <% } %>
     </ul>
 </script>
@@ -287,8 +287,8 @@
 
 <script id="period-template" type="text/template">
     <div data-role="controlgroup" data-type="horizontal">
-        <button id="previous_year" data-icon="arrow-l">Year</button>
-        <button id="next_year" data-icon="arrow-r" data-iconpos="right">Year</button>
+        <button id="previous_year" data-icon="arrow-l">$i18n.getString("year")</button>
+        <button id="next_year" data-icon="arrow-r" data-iconpos="right">$i18n.getString("year")</button>
     </div>
     <ul id="period-list" data-role="listview" data-inset="true">
         <% _( periods ).each( function(period, idx) { %>
@@ -324,9 +324,9 @@
                         <input type="date" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'BOOLEAN' ) { %>
                         <select type="" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255">
-                            <option value="">[ None selected ]</option>
-                            <option value="true" <% if( value == "true" ) { %> selected="selected" <% } %>>Yes</option>
-                            <option value="false" <% if( value == "false" ) { %> selected="selected" <% } %>>No</option>
+                            <option value="">[ $i18n.getString("none_selected") ]</option>
+                            <option value="true" <% if( value == "true" ) { %> selected="selected" <% } %>>$i18n.getString("yes")</option>
+                            <option value="false" <% if( value == "false" ) { %> selected="selected" <% } %>>$i18n.getString("no")</option>
                         </select>
                     <% } else if( field.type == 'INTEGER' ) { %>
                         <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
@@ -342,7 +342,7 @@
 
         <% }); %>
 
-        <li><input type="button" id="send_button" value="Send" /></li>
+        <li><input type="button" id="send_button" value="$i18n.getString("send")" /></li>
     </ul>
     </form>
 </script>
@@ -351,7 +351,7 @@
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
-        <a href="index" data-icon="back">Back</a>
+        <a href="index" data-icon="back">$i18n.getString("back")</a>
 	</header>
 
 	<section data-role="content">
@@ -367,7 +367,7 @@
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
-        <a href="#organisation-units-page" data-icon="back">Back</a>
+        <a href="#organisation-units-page" data-icon="back">$i18n.getString("back")</a>
 	</header>
 
 	<section data-role="content">
@@ -383,7 +383,7 @@
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
-        <a href="#data-sets-page" data-icon="back">Back</a>
+        <a href="#data-sets-page" data-icon="back">$i18n.getString("back")</a>
 	</header>
 
 	<section data-role="content">
@@ -399,7 +399,7 @@
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$contextPath/dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
-        <a href="#period-page" data-icon="back">Back</a>
+        <a href="#period-page" data-icon="back">$i18n.getString("back")</a>
 	</header>
 
 	<section data-role="content">
