@@ -28,7 +28,6 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -71,7 +70,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 import java.beans.PropertyEditorSupport;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,9 +86,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-controller-" + FredController.PREFIX )
-@RequestMapping( FacilityController.RESOURCE_PATH )
-@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
+@Controller(value = "facility-controller-" + FredController.PREFIX)
+@RequestMapping(FacilityController.RESOURCE_PATH)
+@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
@@ -236,22 +234,17 @@ public class FacilityController
         return facility;
     }
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
-    public String readFacilities( Model model, @RequestParam( required = false ) Boolean active,
-        @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
-        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields,
-        @RequestParam( value = "limit", required = false ) Integer limit,
-        @RequestParam( value = "offset", required = false ) Integer offset,
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String readFacilities( Model model, @RequestParam(required = false) Boolean active,
+        @RequestParam(value = "updatedSince", required = false) Date lastUpdated,
+        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
+        @RequestParam(value = "fields", required = false) String fields,
+        @RequestParam(value = "limit", required = false) Integer limit,
+        @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
         HttpServletRequest request )
     {
         Facilities facilities = new Facilities();
         List<OrganisationUnit> allOrganisationUnits;
-
-        if ( offset == null )
-        {
-            offset = 0;
-        }
 
         if ( active == null && lastUpdated == null )
         {
@@ -324,10 +317,10 @@ public class FacilityController
         return FredController.PREFIX + "/layout";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String readFacility( Model model, @PathVariable String id,
-        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields,
+        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
+        @RequestParam(value = "fields", required = false) String fields,
         HttpServletRequest request )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -397,9 +390,9 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.POST )
-    @PreAuthorize( "hasRole('F_FRED_CREATE') or hasRole('ALL')" )
-    public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws IOException
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('F_FRED_CREATE') or hasRole('ALL')")
+    public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws Exception
     {
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
 
@@ -435,6 +428,11 @@ public class FacilityController
 
             headers.setLocation( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toUri() );
 
+            facility = conversionService.convert( organisationUnit, Facility.class );
+            List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+            addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, facility );
+            json = new ObjectMapperFactoryBean().getObject().writeValueAsString( facility );
+
             return new ResponseEntity<String>( json, headers, HttpStatus.CREATED );
         }
         else
@@ -455,8 +453,8 @@ public class FacilityController
         return builder.toString();
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
     {
         facility.setId( id );
@@ -477,8 +475,7 @@ public class FacilityController
                 Facility old_facility = conversionService.convert( organisationUnit, Facility.class );
                 List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
                 addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnitUpdate, old_facility );
-                ObjectMapper objectMapper = new ObjectMapperFactoryBean().getObject();
-                String body = objectMapper.writeValueAsString( old_facility );
+                String body = new ObjectMapperFactoryBean().getObject().writeValueAsString( old_facility );
 
                 String ETag = generateETagHeaderValue( body.getBytes() );
 
@@ -532,6 +529,11 @@ public class FacilityController
                 dataSetService.updateDataSet( dataSet );
             }
 
+            facility = conversionService.convert( organisationUnit, Facility.class );
+            List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+            addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, facility );
+            json = new ObjectMapperFactoryBean().getObject().writeValueAsString( facility );
+
             return new ResponseEntity<String>( json, headers, HttpStatus.OK );
         }
         else
@@ -544,8 +546,8 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('F_FRED_DELETE') or hasRole('ALL')")
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -564,7 +566,7 @@ public class FacilityController
     // EXCEPTION HANDLERS
     //--------------------------------------------------------------------------
 
-    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
+    @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
     public ResponseEntity<String> exceptionHandler( Exception ex )
     {
         return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
