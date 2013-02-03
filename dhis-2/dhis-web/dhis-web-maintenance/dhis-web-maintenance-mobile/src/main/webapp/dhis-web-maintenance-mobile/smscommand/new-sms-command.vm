@@ -39,7 +39,7 @@
 			<td>
 				<select name="selectedDataSetID" >
 				#foreach( $dataSet in $dataSets )
-			        <option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.name</option>
+			        <option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.displayName</option>
 				#end
 				</select> 
 			</td>

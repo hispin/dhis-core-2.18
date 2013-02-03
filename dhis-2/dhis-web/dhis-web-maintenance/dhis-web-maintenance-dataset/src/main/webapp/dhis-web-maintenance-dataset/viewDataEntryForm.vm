@@ -61,7 +61,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" value="$dataSet.name" style="width:30em" disabled /></td>
+        <td><input type="text" value="$dataSet.displayName" style="width:30em" disabled /></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "style" )</label></td>
@@ -136,7 +136,7 @@
 						<div style="color:#666; margin-top:5px; margin-bottom:5px;">$i18n.getString( "select_category_combo_for_which_to_insert" )</div>
 						<select id="categoryComboSelect" style="width: 100%; margin-bottom: 10px;">
 							#foreach( $categoryCombo in $categoryCombos )
-							<option value="$categoryCombo.uid">$encoder.htmlEncode( $categoryCombo.name )</option>
+							<option value="$categoryCombo.uid">$encoder.htmlEncode( $categoryCombo.displayName )</option>
 							#end
 						</select><br>
 						<button type="button" id="startButton">$i18n.getString( "start" )</button>

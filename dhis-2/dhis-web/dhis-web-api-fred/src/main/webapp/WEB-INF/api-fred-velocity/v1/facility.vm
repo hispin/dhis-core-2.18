@@ -160,7 +160,7 @@
                     <label for="facilityDhis2DataSets">Data Sets</label>
                     <select #if(!$canUpdate)disabled#end id="facilityDhis2DataSets" class="$inputSize" multiple="multiple">
                     #foreach( $dataSet in $dataSets )
-                        <option value="$dataSet.uid" #if( $dhis2DataSets.contains( $dataSet.uid ))selected="selected"#end>$!esc.escapeHtml4($dataSet.name)</option>
+                        <option value="$dataSet.uid" #if( $dhis2DataSets.contains( $dataSet.uid ))selected="selected"#end>$!esc.escapeHtml4($dataSet.displayName)</option>
                     #end
                     </select>
 

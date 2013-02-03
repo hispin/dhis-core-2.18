@@ -135,7 +135,7 @@
     	<td>
 			<select multiple id="availableDataSets" size="5" ondblclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
 			#foreach( $dataSet in $availableDataSets )
-				<option value="${dataSet.id}">$encoder.htmlEncode( $dataSet.name )</option>
+				<option value="${dataSet.id}">$encoder.htmlEncode( $dataSet.displayName )</option>
 			#end
 			</select>
 		</td>
@@ -152,7 +152,7 @@
     	<td>
 			<select multiple id="dataSets" name="dataSets" size="5" ondblclick="moveSelectedById( 'dataSets', 'availableDataSets' )">
 			#foreach( $dataSet in $dataSets )
-				<option value="${dataSet.id}">$encoder.htmlEncode( $dataSet.name )</option>
+				<option value="${dataSet.id}">$encoder.htmlEncode( $dataSet.displayName )</option>
 			#end
 			</select>
 		</td>

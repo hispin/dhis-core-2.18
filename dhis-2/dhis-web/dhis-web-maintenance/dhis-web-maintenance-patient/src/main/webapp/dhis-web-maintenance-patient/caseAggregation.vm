@@ -11,7 +11,7 @@
 				<select id='dataSetId' name='dataSetId' onchange='getCaseAggConditionByDataset();'>
 					<option value=''>[ $i18n.getString( "all" ) ]</option>
 					#foreach( $dataSet in $dataSets )
-					<option value='$dataSet.id' #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.name</option>
+					<option value='$dataSet.id' #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.displayName</option>
 					#end
 				</select>
 			</td>
