@@ -24,6 +24,8 @@
     <many-to-one name="parent" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="parentid"
         foreign-key="fk_parentid" index="in_parentid" />
 
+    <property name="uuid" unique="true" length="36"/>
+
     <property name="shortName" column="shortname" not-null="true" unique="false" length="50" />
 
     <property name="description" type="text" />

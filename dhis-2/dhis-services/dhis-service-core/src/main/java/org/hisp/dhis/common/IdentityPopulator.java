@@ -40,6 +40,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author bobj
@@ -139,6 +140,39 @@ public class IdentityPopulator
                     log.info( "Problem updating " + table + ": ", ex );
                 }
             }
+        }
+        finally
+        {
+            if ( statement != null )
+            {
+                statement.close();
+            }
+        }
+
+        try
+        {
+            Connection conn = dummyStatement.getConnection();
+
+            statement = conn.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
+
+            ResultSet resultSet = statement.executeQuery( "SELECT * from organisationunit WHERE uuid IS NULL" );
+            int count = 0;
+
+            while ( resultSet.next() )
+            {
+                ++count;
+                resultSet.updateString( "uuid", UUID.randomUUID().toString() );
+                resultSet.updateRow();
+            }
+
+            if ( count > 0 )
+            {
+                log.info( count + " UUIDs updated on organisationunit" );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            log.info( "Problem updating organisationunit: ", ex );
         }
         finally
         {

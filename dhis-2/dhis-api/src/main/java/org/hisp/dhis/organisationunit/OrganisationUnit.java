@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,6 +82,8 @@ public class OrganisationUnit
     private static final Pattern COORDINATE_PATTERN = Pattern.compile( "([\\-0-9.]+,[\\-0-9.]+)" );
 
     private static final String NAME_SEPARATOR = " - ";
+
+    private String uuid;
 
     private OrganisationUnit parent;
 
@@ -142,10 +145,12 @@ public class OrganisationUnit
 
     public OrganisationUnit()
     {
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public OrganisationUnit( String name )
     {
+        this();
         this.name = name;
     }
 
@@ -160,7 +165,7 @@ public class OrganisationUnit
     public OrganisationUnit( String name, String shortName, String code, Date openingDate, Date closedDate,
         boolean active, String comment )
     {
-        this.name = name;
+        this(name);
         this.shortName = shortName;
         this.code = code;
         this.openingDate = openingDate;
@@ -181,7 +186,7 @@ public class OrganisationUnit
     public OrganisationUnit( String name, OrganisationUnit parent, String shortName, String code, Date openingDate,
         Date closedDate, boolean active, String comment )
     {
-        this.name = name;
+        this(name);
         this.parent = parent;
         this.shortName = shortName;
         this.code = code;
@@ -598,6 +603,16 @@ public class OrganisationUnit
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid( String uuid )
+    {
+        this.uuid = uuid;
+    }
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )

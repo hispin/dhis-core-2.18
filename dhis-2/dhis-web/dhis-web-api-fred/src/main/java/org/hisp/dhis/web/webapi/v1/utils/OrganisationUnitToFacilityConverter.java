@@ -27,11 +27,6 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -41,6 +36,11 @@ import org.hisp.dhis.web.webapi.v1.domain.Identifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -55,12 +55,12 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
     public Facility convert( OrganisationUnit organisationUnit )
     {
         Facility facility = new Facility();
-        facility.setId( organisationUnit.getUid() );
+        facility.setId( organisationUnit.getUuid() );
         facility.setName( organisationUnit.getDisplayName() );
         facility.setActive( organisationUnit.isActive() );
         facility.setCreatedAt( organisationUnit.getCreated() );
         facility.setUpdatedAt( organisationUnit.getLastUpdated() );
-        facility.setUrl( linkTo( FacilityController.class ).slash( facility.getId() ).toString() );
+        facility.setUrl( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toString() );
 
         if ( organisationUnit.getFeatureType() != null && organisationUnit.getFeatureType().equalsIgnoreCase( "POINT" )
             && organisationUnit.getCoordinates() != null )
@@ -82,9 +82,17 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
             facility.getProperties().put( "parent", organisationUnit.getParent().getUid() );
         }
 
+        Identifier identifier = new Identifier();
+
+        identifier.setAgency( Identifier.DHIS2_AGENCY );
+        identifier.setContext( Identifier.DHIS2_UID_CONTEXT );
+        identifier.setId( organisationUnit.getUid() );
+
+        facility.getIdentifiers().add( identifier );
+
         if ( organisationUnit.getCode() != null )
         {
-            Identifier identifier = new Identifier();
+            identifier = new Identifier();
             identifier.setAgency( Identifier.DHIS2_AGENCY );
             identifier.setContext( Identifier.DHIS2_CODE_CONTEXT );
             identifier.setId( organisationUnit.getCode() );

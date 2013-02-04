@@ -34,6 +34,7 @@ public class Identifier
 {
     public static final String DHIS2_AGENCY = "DHIS2";
     public static final String DHIS2_CODE_CONTEXT = "DHIS2_CODE";
+    public static final String DHIS2_UID_CONTEXT = "DHIS2_UID";
 
     private String id;
 
