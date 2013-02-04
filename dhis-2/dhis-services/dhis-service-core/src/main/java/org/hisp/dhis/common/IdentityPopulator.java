@@ -164,7 +164,7 @@ public class IdentityPopulator
             }
             catch ( Exception ex )
             {
-                log.info( "Could not create uid constraint on table " + table +
+                log.debug( "Could not create uid constraint on table " + table +
                     ", might already be created or column contains duplicates", ex );
             }
             finally
