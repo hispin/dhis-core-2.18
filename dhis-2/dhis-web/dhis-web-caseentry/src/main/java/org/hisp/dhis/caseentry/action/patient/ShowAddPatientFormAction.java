@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
@@ -94,7 +95,7 @@ public class ShowAddPatientFormAction
     {
         this.patientRegistrationFormService = patientRegistrationFormService;
     }
-
+    
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -178,8 +179,8 @@ public class ShowAddPatientFormAction
 
             if ( patientRegistrationForm != null )
             {
-                customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
-                    .getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
+                customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
+                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
             }
         }
         else
@@ -205,24 +206,27 @@ public class ShowAddPatientFormAction
             attributeGroupsMap = new HashMap<PatientAttributeGroup, Collection<PatientAttribute>>();
             for ( PatientAttribute patientAttribute : patientAttributes )
             {
-                PatientAttributeGroup attributeGroup = patientAttribute.getPatientAttributeGroup();
-                if ( attributeGroup != null )
+                if ( !patientAttribute.getValueType().equals( PatientAttribute.TYPE_CALCULATED ) )
                 {
-                    if ( attributeGroupsMap.containsKey( attributeGroup ) )
+                    PatientAttributeGroup attributeGroup = patientAttribute.getPatientAttributeGroup();
+                    if ( attributeGroup != null )
                     {
-                        Collection<PatientAttribute> attributes = attributeGroupsMap.get( attributeGroup );
-                        attributes.add( patientAttribute );
+                        if ( attributeGroupsMap.containsKey( attributeGroup ) )
+                        {
+                            Collection<PatientAttribute> attributes = attributeGroupsMap.get( attributeGroup );
+                            attributes.add( patientAttribute );
+                        }
+                        else
+                        {
+                            Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+                            attributes.add( patientAttribute );
+                            attributeGroupsMap.put( attributeGroup, attributes );
+                        }
                     }
                     else
                     {
-                        Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>();
-                        attributes.add( patientAttribute );
-                        attributeGroupsMap.put( attributeGroup, attributes );
+                        noGroupAttributes.add( patientAttribute );
                     }
-                }
-                else
-                {
-                    noGroupAttributes.add( patientAttribute );
                 }
             }
 
@@ -230,5 +234,4 @@ public class ShowAddPatientFormAction
 
         return SUCCESS;
     }
-
 }
