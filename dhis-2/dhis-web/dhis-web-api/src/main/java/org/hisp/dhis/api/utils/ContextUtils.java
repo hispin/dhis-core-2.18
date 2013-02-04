@@ -33,6 +33,8 @@ import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -257,5 +259,20 @@ public class ContextUtils
         builder.append( request.getServletPath() );
 
         return builder.toString();
+    }
+
+    /**
+     * Adds basic authentication by adding an Authorization header to the
+     * given HttpHeaders object.
+     * 
+     * @param headers the HttpHeaders object.
+     * @param username the user name.
+     * @param password the password.
+     */
+    public static void setBasicAuth( HttpHeaders headers, String username, String password )
+    {
+        String authorisation = username + ":" + password;        
+        byte[] encodedAuthorisation = Base64.encode( authorisation.getBytes() );        
+        headers.add( "Authorization", "Basic " + new String( encodedAuthorisation ) );
     }
 }
