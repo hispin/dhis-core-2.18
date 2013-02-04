@@ -123,19 +123,21 @@ PT.core.getConfigs = function() {
 
 	conf.layout = {
         west_width: 424,
-        west_fieldset_width: 410,
+        west_fieldset_width: 416,
         west_width_padding: 18,
         west_fill: 117,
         west_fill_accordion_indicator: 77,
         west_fill_accordion_dataelement: 77,
         west_fill_accordion_dataset: 45,
-        west_fill_accordion_fixedperiod: 77,
+        west_fill_accordion_period: 270,
+        //west_fill_accordion_fixedperiod: 77,        
         west_fill_accordion_organisationunit: 103,
         west_maxheight_accordion_indicator: 478,
         west_maxheight_accordion_dataelement: 478,
         west_maxheight_accordion_dataset: 478,
-        west_maxheight_accordion_relativeperiod: 423,
-        west_maxheight_accordion_fixedperiod: 478,
+        west_maxheight_accordion_period: 700,
+        //west_maxheight_accordion_relativeperiod: 423,
+        //west_maxheight_accordion_fixedperiod: 478,
         west_maxheight_accordion_organisationunit: 756,
         west_maxheight_accordion_organisationunitgroup: 298,
         west_maxheight_accordion_options: 449,
@@ -409,7 +411,8 @@ PT.core.getUtils = function(pt) {
 			};
 
 			getParamStringFromDimensionItems = function(dimensionItems) {
-				var paramString = '?';
+				var paramString = '?',
+					dim;
 
 				for (var key in dimensionItems) {
 					if (dimensionItems.hasOwnProperty(key)) {
@@ -417,35 +420,22 @@ PT.core.getUtils = function(pt) {
 							paramString += 'dimension=' + key + '&';
 						}
 						else {
-							paramString += 'dimension=' + key + ':' + dimensionItems[key].join(';') + '&';
+							dim = dimensionItems[key];
+							paramString += 'dimension=' + key + ':' + dim.join(';') + '&';
 						}
 					}
 				}
 
 				paramString = paramString.substring(0, paramString.length-1);
 
-				return paramString;
-			};
-
-			getFilterParamStringFromSettings = function() {
-				var filter = settings.filter,
-					filterParamString = '';
-
-				for (var key in filter) {
-					if (filter.hasOwnProperty(key)) {
-						filterParamString += key + ':';
-
-						var a = filter[key];
-
-						for (var i = 0; i < a.length; i++) {
-							filterParamString += a[i] + ',';
-						}
-
-						filterParamString = filterParamString.substring(0, filterParamString.length-1);
+				for (var key in settings.filter) {
+					if (settings.filter.hasOwnProperty(key)) {
+						dim = settings.filter[key];
+						paramString += '&filter=' + key + ':' + dim.join(';');
 					}
 				}
 
-				return filterParamString;
+				return paramString;
 			};
 
 			extendResponse = function(dimensionItems) {
@@ -905,6 +895,7 @@ PT.core.getUtils = function(pt) {
 						type: 'table',
 						columns: pt.config.cols.size + pt.config.rows.dims + 1
 					},
+					autoScroll: true,
 					bodyStyle: 'border:0 none',
 					defaults: {
 						baseCls: 'td'
@@ -929,9 +920,9 @@ PT.core.getUtils = function(pt) {
 				Ext.data.JsonP.request({
 					method: 'GET',
 					url: pt.init.contextPath + '/api/analytics.jsonp' + paramString,
-					params: {
-						filter: getFilterParamStringFromSettings()
-					},
+					//params: {
+						//filter: getFilterParamStringFromSettings()
+					//},
 					headers: {
 						'Content-Type': 'application/json',
 						'Accept': 'application/json'
@@ -997,8 +988,8 @@ PT.core.getAPI = function(pt) {
 
 		filter = config.filter;
 
-		if (!(filter && Ext.isObject(filter) && pt.util.object.getLength(filter))) {
-			alert('No filter items selected'); //i18n
+		if (!(filter === undefined || Ext.isObject(filter))) {
+			alert('Illegal filter type'); //i18n
 			return;
 		}
 
