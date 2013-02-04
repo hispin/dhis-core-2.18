@@ -30,7 +30,7 @@ jQuery( document ).ready( function()
 	<tbody>
 		<tr>
 			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}" value='$section.displayName'/></td>
+			<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[2,160]}}" value='$section.name'/></td>
 		</tr>
 	</tbody>
 </table>

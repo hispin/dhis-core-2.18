@@ -386,7 +386,7 @@
 		<!-- Program stage section -->
 
 		<action name="programStageSectionList"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/programStageSection.vm</param>

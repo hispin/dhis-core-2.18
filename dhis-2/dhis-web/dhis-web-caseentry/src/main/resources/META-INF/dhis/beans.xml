@@ -105,6 +105,8 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="programStageSectionService"
+			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 	</bean>
 
 	<bean

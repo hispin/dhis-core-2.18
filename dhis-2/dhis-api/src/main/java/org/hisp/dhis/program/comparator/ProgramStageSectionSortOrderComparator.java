@@ -25,35 +25,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.program;
+package org.hisp.dhis.program.comparator;
 
-import java.util.Collection;
+import java.util.Comparator;
+
+import org.hisp.dhis.program.ProgramStageSection;
 
 /**
  * @author Chau Thu Tran
- *
- * @version ProgramStageSectionService.java 11:12:41 AM Aug 22, 2012 $
+ * 
+ * @version ProgramStageSectionSortOrderComparator.java 9:32:23 AM Feb 4, 2013 $
  */
-public interface ProgramStageSectionService
+public class ProgramStageSectionSortOrderComparator
+    implements Comparator<ProgramStageSection>
 {
-    String ID = ProgramStageSection.class.getName();
+    @Override
+    public int compare( ProgramStageSection object0, ProgramStageSection object1 )
+    {
+        if ( object0.getSortOrder() == null )
+        {
+            return object1.getSortOrder() != null ? -1 : 0;
+        }
 
-    // -------------------------------------------------------------------------
-    // ProgramStageSection
-    // -------------------------------------------------------------------------
-    
-    int saveProgramStageSection( ProgramStageSection programStageSection );
-    
-    void deleteProgramStageSection( ProgramStageSection programStageSection );
-    
-    void updateProgramStageSection( ProgramStageSection programStageSection );
-    
-    ProgramStageSection getProgramStageSection( int id );
-    
-    ProgramStageSection getProgramStageSectionByName( String name );
-    
-    Collection<ProgramStageSection> getAllProgramStageSections();
-    
-    Collection<ProgramStageSection> getProgramStages( ProgramStage programStage );
-    
+        return object0.getSortOrder().compareTo( object1.getSortOrder() );
+    }
 }

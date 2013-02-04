@@ -27,9 +27,12 @@
 
 package org.hisp.dhis.program;
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -51,6 +54,13 @@ public class DefaultProgramStageSectionService
         GenericIdentifiableObjectStore<ProgramStageSection> programStageSectionStore )
     {
         this.programStageSectionStore = programStageSectionStore;
+    }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
     }
 
     // -------------------------------------------------------------------------
@@ -78,19 +88,25 @@ public class DefaultProgramStageSectionService
     @Override
     public ProgramStageSection getProgramStageSection( int id )
     {
-        return programStageSectionStore.get( id );
+        return i18n( i18nService, programStageSectionStore.get( id ) );
     }
 
     @Override
     public ProgramStageSection getProgramStageSectionByName( String name )
     {
-        return programStageSectionStore.getByName( name );
+        return i18n( i18nService, programStageSectionStore.getByName( name ) );
     }
 
     @Override
     public Collection<ProgramStageSection> getAllProgramStageSections()
     {
-        return programStageSectionStore.getAll();
+        return i18n( i18nService, programStageSectionStore.getAll() );
     }
-
+    
+    @Override
+    public Collection<ProgramStageSection> getProgramStages( ProgramStage programStage )
+    {
+        return i18n( i18nService, programStage.getProgramStageSections() );
+    }
+    
 }

@@ -26,11 +26,12 @@
 		  
 				<tbody id="list">
 					#set( $mark = false )
-					#foreach( $section in $programStage.programStageSections )
+					#foreach( $section in $sections )
 						<tr id="tr${section.id}" #alternate( $mark )>			  
 							<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.displayName )</td>
 							<td style="text-align:center"#alternate( $mark )>
 							  <a href="showUpdateProgramStageSectionForm.action?programStageId=$programStage.id&id=$section.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+							  <a href="javascript:translate( 'ProgramStageSection', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 							  <a href="javascript:removeSection( '$section.id', '$section.displayName' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 							  <a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 							</td>
