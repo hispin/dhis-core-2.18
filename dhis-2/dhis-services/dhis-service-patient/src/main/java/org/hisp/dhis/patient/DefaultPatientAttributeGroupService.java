@@ -26,8 +26,11 @@
  */
 package org.hisp.dhis.patient;
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -47,6 +50,13 @@ public class DefaultPatientAttributeGroupService
     public void setPatientAttributeGroupStore( PatientAttributeGroupStore patientAttributeGroupStore )
     {
         this.patientAttributeGroupStore = patientAttributeGroupStore;
+    }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
     }
 
     // -------------------------------------------------------------------------
@@ -70,17 +80,17 @@ public class DefaultPatientAttributeGroupService
 
     public PatientAttributeGroup getPatientAttributeGroup( int id )
     {
-        return patientAttributeGroupStore.get( id );
+        return i18n( i18nService, patientAttributeGroupStore.get( id ) );
     }
 
     public PatientAttributeGroup getPatientAttributeGroupByName( String name )
     {
-        return patientAttributeGroupStore.getByName( name );
+        return i18n( i18nService, patientAttributeGroupStore.getByName( name ) );
     }
 
     public Collection<PatientAttributeGroup> getAllPatientAttributeGroups()
     {
-        return patientAttributeGroupStore.getAll();
+        return i18n( i18nService, patientAttributeGroupStore.getAll() );
     }
-    
+
 }
