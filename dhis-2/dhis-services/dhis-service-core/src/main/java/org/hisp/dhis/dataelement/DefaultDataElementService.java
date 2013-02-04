@@ -27,11 +27,14 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsByName;
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboSizeComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,14 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboSizeComparator;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Kristian Nordal
@@ -190,7 +186,14 @@ public class DefaultDataElementService
 
     public DataElement getDataElementByName( String name )
     {
-        return i18n( i18nService, dataElementStore.getByName( name ) );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementStore.getAllEqName( name ) );
+
+        if ( dataElements.isEmpty() )
+        {
+            return null;
+        }
+
+        return i18n( i18nService, dataElements.get( 0 ) );
     }
 
     public Collection<DataElement> searchDataElementsByName( String key )
@@ -200,7 +203,14 @@ public class DefaultDataElementService
 
     public DataElement getDataElementByShortName( String shortName )
     {
-        return i18n( i18nService, dataElementStore.getByShortName( shortName ) );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementStore.getAllEqShortName( shortName ) );
+
+        if ( dataElements.isEmpty() )
+        {
+            return null;
+        }
+
+        return i18n( i18nService, dataElements.get( 0 ) );
     }
 
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
@@ -420,7 +430,14 @@ public class DefaultDataElementService
 
     public DataElementGroup getDataElementGroupByName( String name )
     {
-        return i18n( i18nService, dataElementGroupStore.getByName( name ) );
+        List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>( dataElementGroupStore.getAllEqName( name ) );
+
+        if ( dataElementGroups.isEmpty() )
+        {
+            return null;
+        }
+
+        return i18n( i18nService, dataElementGroups.get( 0 ) );
     }
 
     public Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement )
@@ -508,7 +525,14 @@ public class DefaultDataElementService
 
     public DataElementGroupSet getDataElementGroupSetByName( String name )
     {
-        return i18n( i18nService, dataElementGroupSetStore.getByName( name ) );
+        List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementGroupSetStore.getAllEqName( name ) );
+
+        if ( dataElementGroupSets.isEmpty() )
+        {
+            return null;
+        }
+
+        return i18n( i18nService, dataElementGroupSets.get( 0 ) );
     }
 
     @Override

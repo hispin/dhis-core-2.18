@@ -27,8 +27,6 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -38,7 +36,15 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Abyot Asalefew
@@ -118,17 +124,17 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategory> getAllDataElementCategories()
     {
-        return i18n( i18nService, dataElementCategoryStore.getAll());
+        return i18n( i18nService, dataElementCategoryStore.getAll() );
     }
 
     public DataElementCategory getDataElementCategory( int id )
     {
-        return i18n( i18nService, dataElementCategoryStore.get( id ));
+        return i18n( i18nService, dataElementCategoryStore.get( id ) );
     }
 
     public DataElementCategory getDataElementCategory( String uid )
     {
-        return i18n( i18nService, dataElementCategoryStore.getByUid( uid ));
+        return i18n( i18nService, dataElementCategoryStore.getByUid( uid ) );
     }
 
     public Collection<DataElementCategory> getDataElementCategories( final Collection<Integer> identifiers )
@@ -146,7 +152,14 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategory getDataElementCategoryByName( String name )
     {
-        return i18n( i18nService, dataElementCategoryStore.getByName( name ));
+        List<DataElementCategory> dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryStore.getAllEqName( name ) );
+
+        if ( dataElementCategories.isEmpty() )
+        {
+            return null;
+        }
+
+        return i18n( i18nService, dataElementCategories.get( 0 ) );
     }
 
     // -------------------------------------------------------------------------
@@ -180,7 +193,14 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
-        return dataElementCategoryOptionStore.getByName( name );
+        List<DataElementCategoryOption> dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>( dataElementCategoryOptionStore.getAllEqName( name ) );
+
+        if ( dataElementCategoryOptions.isEmpty() )
+        {
+            return null;
+        }
+
+        return dataElementCategoryOptions.get( 0 );
     }
 
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( final Collection<Integer> identifiers )
@@ -223,17 +243,17 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos()
     {
-        return i18n( i18nService, dataElementCategoryComboStore.getAll());
+        return i18n( i18nService, dataElementCategoryComboStore.getAll() );
     }
 
     public DataElementCategoryCombo getDataElementCategoryCombo( int id )
     {
-        return i18n( i18nService, dataElementCategoryComboStore.get( id ));
+        return i18n( i18nService, dataElementCategoryComboStore.get( id ) );
     }
 
     public DataElementCategoryCombo getDataElementCategoryCombo( String uid )
     {
-        return i18n( i18nService, dataElementCategoryComboStore.getByUid( uid ));
+        return i18n( i18nService, dataElementCategoryComboStore.getByUid( uid ) );
     }
 
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( final Collection<Integer> identifiers )
@@ -252,7 +272,14 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
     {
-        return i18n( i18nService, dataElementCategoryComboStore.getByName( name ));
+        List<DataElementCategoryCombo> dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboStore.getAllEqName( name ) );
+
+        if ( dataElementCategoryCombos.isEmpty() )
+        {
+            return null;
+        }
+
+        return i18n( i18nService, dataElementCategoryCombos.get( 0 ) );
     }
 
     // -------------------------------------------------------------------------
@@ -562,12 +589,12 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max )
     {
-        return i18n( i18nService, dataElementCategoryStore.getAllOrderedName( first, max ));
+        return i18n( i18nService, dataElementCategoryStore.getAllOrderedName( first, max ) );
     }
 
     public Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataElementCategoryStore.getAllLikeNameOrderedName( name, first, max ));
+        return i18n( i18nService, dataElementCategoryStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 
     public int getDataElementCategoryComboCount()
@@ -582,7 +609,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetween( int first, int max )
     {
-        return i18n( i18nService, dataElementCategoryComboStore.getAllOrderedName( first, max ));
+        return i18n( i18nService, dataElementCategoryComboStore.getAllOrderedName( first, max ) );
     }
 
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first,
@@ -600,19 +627,19 @@ public class DefaultDataElementCategoryService
     @Override
     public Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept )
     {
-        return i18n( i18nService, dataElementCategoryStore.getByConcept( concept ));
+        return i18n( i18nService, dataElementCategoryStore.getByConcept( concept ) );
     }
 
     @Override
     public Collection<DataElementCategory> getDataElementCategoryBetween( int first, int max )
     {
-        return i18n( i18nService, dataElementCategoryStore.getAllOrderedName( first, max ));
+        return i18n( i18nService, dataElementCategoryStore.getAllOrderedName( first, max ) );
     }
 
     @Override
     public Collection<DataElementCategory> getDataElementCategoryBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataElementCategoryStore.getAllLikeNameOrderedName( name, first, max ));
+        return i18n( i18nService, dataElementCategoryStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 
     @Override
