@@ -63,9 +63,7 @@
 	<tr>
 		<th>$i18n.getString( "available_indicatorgroup" )</th>
 		<th></th>
-		<th>$i18n.getString( "group_members" )
-			<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>
-		</th>
+		<th>$i18n.getString( "group_members" )</th>
 	</tr>
 
 	<tr>
@@ -81,7 +79,7 @@
         </td>
 
 		<td>
-			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
+			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;" class="{validate:{required:true}}"></select>
 		</td>
 	</tr>
 </table>

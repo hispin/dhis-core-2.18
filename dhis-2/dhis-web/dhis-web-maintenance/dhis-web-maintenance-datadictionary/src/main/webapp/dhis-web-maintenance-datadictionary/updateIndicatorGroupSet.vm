@@ -82,7 +82,7 @@
         </td>
 
 		<td>
-			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
+			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;" class="{validate:{required:true}}">
 				#foreach( $indicatorGroup in $selectedGroups )
                     <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.displayName )</option>
                 #end
