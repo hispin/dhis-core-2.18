@@ -27,19 +27,19 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
+import org.hisp.dhis.system.util.ListUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.system.util.ListUtils;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -75,7 +75,7 @@ public class ValidateGroupSetAction
     public void setName( String name )
     {
         this.name = name;
-    }    
+    }
 
     private Collection<Integer> selectedGroups = new HashSet<Integer>();
 
@@ -112,17 +112,36 @@ public class ValidateGroupSetAction
         // Validate values
         // ---------------------------------------------------------------------
 
-        if ( name != null )
+        if ( name != null && !name.trim().isEmpty() )
         {
-            OrganisationUnitGroupSet match = organisationUnitGroupService.getOrganisationUnitGroupSetByName( name );
+            List<OrganisationUnitGroupSet> organisationUnitGroupSets = organisationUnitGroupService.getOrganisationUnitGroupSetByName( name );
 
-            if ( match != null && (id == null || match.getId() != id) )
+            if ( !organisationUnitGroupSets.isEmpty() && id == null )
             {
-                message = i18n.getString( "name_in_use" );
+                message = i18n.getString( "name_exists" );
 
                 return ERROR;
             }
-        }      
+            else if ( !organisationUnitGroupSets.isEmpty() )
+            {
+                boolean found = false;
+
+                for ( OrganisationUnitGroupSet organisationUnitGroupSet : organisationUnitGroupSets )
+                {
+                    if ( organisationUnitGroupSet.getId() == id )
+                    {
+                        found = true;
+                    }
+                }
+
+                if ( !found )
+                {
+                    message = i18n.getString( "name_exists" );
+
+                    return ERROR;
+                }
+            }
+        }
 
         // ---------------------------------------------------------------------
         // When adding or updating an exclusive group set any unit in the

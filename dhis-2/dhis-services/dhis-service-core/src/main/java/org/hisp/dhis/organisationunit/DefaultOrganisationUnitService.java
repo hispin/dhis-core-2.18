@@ -27,8 +27,6 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -53,6 +51,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -225,9 +225,9 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getByUid( uid );
     }
 
-    public OrganisationUnit getOrganisationUnitByName( String name )
+    public List<OrganisationUnit> getOrganisationUnitByName( String name )
     {
-        return organisationUnitStore.getByName( name );
+        return organisationUnitStore.getAllEqName( name );
     }
 
     public OrganisationUnit getOrganisationUnitByCode( String code )
@@ -235,9 +235,9 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getByCode( code );
     }
 
-    public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
+    public Collection<OrganisationUnit> getOrganisationUnitByNameIgnoreCase( String name )
     {
-        return organisationUnitStore.getOrganisationUnitByNameIgnoreCase( name );
+        return organisationUnitStore.getAllEqNameIgnoreCase( name );
     }
 
     public Collection<OrganisationUnit> getRootOrganisationUnits()
@@ -465,7 +465,7 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitsByNameAndGroups( query, groups, limit );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
         Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit )
     {
@@ -692,9 +692,9 @@ public class DefaultOrganisationUnitService
         return i18n( i18nService, organisationUnitLevelStore.getByLevel( level ) );
     }
 
-    public OrganisationUnitLevel getOrganisationUnitLevelByName( String name )
+    public List<OrganisationUnitLevel> getOrganisationUnitLevelByName( String name )
     {
-        return i18n( i18nService, organisationUnitLevelStore.getByName( name ) );
+        return new ArrayList<OrganisationUnitLevel>( i18n( i18nService, organisationUnitLevelStore.getAllEqName( name ) ) );
     }
 
     public List<OrganisationUnitLevel> getFilledOrganisationUnitLevels()

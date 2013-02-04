@@ -491,16 +491,6 @@ public class FacilityController
                 return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "No object with that identifier exists." ),
                     headers, HttpStatus.NOT_FOUND );
             }
-            else if ( !organisationUnit.getName().equals( organisationUnitUpdate.getName() ) )
-            {
-                OrganisationUnit ouByName = organisationUnitService.getOrganisationUnitByName( organisationUnitUpdate.getName() );
-
-                if ( ouByName != null && !organisationUnit.getUid().equals( ouByName.getUid() ) )
-                {
-                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Another object with the same name already exists." ),
-                        headers, HttpStatus.CONFLICT );
-                }
-            }
             else if ( organisationUnitUpdate.getCode() != null )
             {
                 OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnitUpdate.getCode() );

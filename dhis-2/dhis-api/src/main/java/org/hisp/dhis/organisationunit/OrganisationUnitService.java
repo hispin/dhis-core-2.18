@@ -176,7 +176,7 @@ public interface OrganisationUnitService
      * @param name the name of the OrganisationUnit to return.
      * @return the OrganisationUnit with the given name, or null if not match.
      */
-    OrganisationUnit getOrganisationUnitByName( String name );
+    List<OrganisationUnit> getOrganisationUnitByName( String name );
 
     /**
      * Returns an OrganisationUnit with a given name. Case is ignored.
@@ -184,7 +184,7 @@ public interface OrganisationUnitService
      * @param name the name of the OrganisationUnit to return.
      * @return the OrganisationUnit with the given name, or null if not match.
      */
-    OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name );
+    Collection<OrganisationUnit> getOrganisationUnitByNameIgnoreCase( String name );
 
     /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an
@@ -358,7 +358,7 @@ public interface OrganisationUnitService
 
     OrganisationUnitLevel getOrganisationUnitLevelByLevel( int level );
 
-    OrganisationUnitLevel getOrganisationUnitLevelByName( String name );
+    List<OrganisationUnitLevel> getOrganisationUnitLevelByName( String name );
 
     List<OrganisationUnitLevel> getFilledOrganisationUnitLevels();
 

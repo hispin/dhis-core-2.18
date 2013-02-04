@@ -79,7 +79,7 @@ public class OrganisationUnitLevelImporter
         
         if ( match == null )
         {
-            match = organisationUnitService.getOrganisationUnitLevelByName( object.getName() );
+            match = organisationUnitService.getOrganisationUnitLevelByName( object.getName() ).get( 0 );
         }
         
         return match;
