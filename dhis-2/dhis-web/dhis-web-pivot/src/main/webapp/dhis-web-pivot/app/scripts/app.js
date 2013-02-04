@@ -96,7 +96,7 @@ Ext.onReady( function() {
 					config.filter[dim] = data[dim];
 				}
 			}();
-
+			
 			return config;
 		};
 
@@ -897,7 +897,7 @@ Ext.onReady( function() {
 						pt.cmp.dimension.panels.push(this);
 					},
 					expand: function() {
-						pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_indicator);
+						pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_dataelement);
 						pt.util.multiselect.setHeight(
 							[dataElementAvailable, dataElementSelected],
 							this,
@@ -1017,11 +1017,11 @@ Ext.onReady( function() {
 						pt.cmp.dimension.panels.push(this);
 					},
 					expand: function() {
-						pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_indicator);
+						pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_dataset);
 						pt.util.multiselect.setHeight(
-							[dataElementAvailable, dataElementSelected],
+							[dataSetAvailable, dataSetSelected],
 							this,
-							pt.conf.layout.west_fill_accordion_indicator
+							pt.conf.layout.west_fill_accordion_dataset
 						);
 					}
 				}
@@ -1409,13 +1409,12 @@ Ext.onReady( function() {
 						pt.cmp.dimension.panels.push(this);
 					},
 					expand: function() {
-						pt.util.dimension.panel.setHeight(600);
-						//pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_fixedperiod + pt.conf.layout.west_maxheight_accordion_relativeperiod);
-						//pt.util.multiselect.setHeight(
-							//[fixedPeriodAvailable, fixedPeriodSelected],
-							//this,
-							//pt.conf.layout.west_fill_accordion_fixedperiod
-						//);
+						pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_period);
+						pt.util.multiselect.setHeight(
+							[fixedPeriodAvailable, fixedPeriodSelected],
+							this,
+							pt.conf.layout.west_fill_accordion_period
+						);
 					}
 				}
 			});
@@ -1906,12 +1905,12 @@ Ext.onReady( function() {
 									availableStore.load();
 								}
 
-								pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_indicator);
+								pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_dataset);
 
 								pt.util.multiselect.setHeight(
 									[available, selected],
 									this,
-									pt.conf.layout.west_fill_accordion_indicator
+									pt.conf.layout.west_fill_accordion_dataset
 								);
 							}
 						}
@@ -1940,7 +1939,7 @@ Ext.onReady( function() {
 			};
 
 			accordion = Ext.create('Ext.panel.Panel', {
-				bodyStyle: 'border-style:none; padding:6px;',
+				bodyStyle: 'border-style:none; padding:3px;',
 				layout: 'fit',
 				items: [
 					{
@@ -1994,7 +1993,8 @@ Ext.onReady( function() {
 
 			centerRegion = Ext.create('Ext.panel.Panel', {
 				region: 'center',
-				bodyStyle: 'padding:20px',
+				bodyStyle: 'padding:3px',
+				autoScroll: true,
 				tbar: {
                     defaults: {
                         height: 26

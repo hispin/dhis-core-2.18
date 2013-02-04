@@ -121,8 +121,14 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
 	},
 
 	getLegendConfig: function() {
+		var orgUnit = this.view.parentOrganisationUnit,
+			orgUnitLevel = this.view.organisationUnitLevel,
+			parent = orgUnit ? orgUnit.name : '',
+			level = orgUnitLevel ? orgUnitLevel.name : '',
+			where = parent + ' / ' + level;
+
 		return {
-			where: this.view.organisationUnitLevel.name + ' / ' + this.view.parentOrganisationUnit.name
+			where: where
 		};
 	},
 
@@ -194,6 +200,8 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
             child.style.clear = "left";
             element.appendChild(child);
         }
+
+        this.layer.legendPanel.update(element.outerHTML);
     },
 
     CLASS_NAME: "mapfish.GeoStat.Facility"

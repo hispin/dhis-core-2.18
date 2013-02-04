@@ -110,10 +110,21 @@ mapfish.GeoStat.Thematic2 = OpenLayers.Class(mapfish.GeoStat, {
 	},
 
 	getLegendConfig: function() {
+		var indicator = this.view.indicator,
+			dataElement = this.view.dataElement,
+			period = this.view.period,
+			orgUnit = this.view.parentOrganisationUnit,
+			orgUnitLevel = this.view.organisationUnitLevel,
+			parent = orgUnit ? orgUnit.name : '',
+			level = orgUnitLevel ? orgUnitLevel.name : '',
+			what = indicator ? indicator.name : (dataElement ? dataElement.name : ''),
+			when = period ? period.name : '',
+			where = parent + ' / ' + level;
+
 		return {
-			what: this.view.indicator.name || this.view.dataElement.name,
-			when: this.view.period.id,
-			where: this.view.parentOrganisationUnit.name + ' / ' + this.view.organisationUnitLevel.name
+			what: what,
+			when: when,
+			where: where
 		};
 	},
 
