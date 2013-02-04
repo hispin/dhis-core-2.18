@@ -80,6 +80,25 @@ public interface GenericIdentifiableObjectStore<T>
     Collection<T> getAllOrderedName( int first, int max );
 
     /**
+     * Retrieves a Collection of objects where the name is equal the given name.
+     *
+     * @param name the name.
+     * @return a Collection of objects.
+     */
+    Collection<T> getAllEqName( String name );
+
+    /**
+     * Return the number of objects where the name is equal the given name.
+     *
+     * This count is _unfiltered_ (no ACL!), so this is not the same as
+     * getAllEqName().size().
+     *
+     * @param name the name.
+     * @return Count of objects.
+     */
+    int getCountEqNameNoAcl( String name );
+
+    /**
      * Retrieves a Collection of objects where the name is like the given name.
      *
      * @param name the name.
