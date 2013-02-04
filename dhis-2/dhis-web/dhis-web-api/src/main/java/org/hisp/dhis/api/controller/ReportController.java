@@ -44,6 +44,7 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,6 +105,7 @@ public class ReportController
     }
     
     @RequestMapping( value = "/{uid}/design", method = RequestMethod.PUT )
+    @PreAuthorize( "hasRole('ALL')" )
     public void updateReportDesign( @PathVariable( "uid" ) String uid, 
         @RequestBody String designContent,
         HttpServletResponse response ) throws Exception

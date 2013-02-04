@@ -27,13 +27,31 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.view.ClassPathUriResolver;
 import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.metadata.ExportService;
@@ -45,26 +63,13 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -81,6 +86,12 @@ public class DataSetController
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
+    private DataSetService dataSetService;
+    
+    @Autowired
+    private DataEntryFormService dataEntryFormService;
+    
     @Autowired
     private ExportService exportService;
 
@@ -186,10 +197,41 @@ public class DataSetController
     {
     }
 
+    @RequestMapping( value = "/{uid}/customDataEntryForm", method = { RequestMethod.PUT, RequestMethod.POST }, consumes = "text/html" )
+    @PreAuthorize( "hasRole('ALL')" )
+    public void updateCustomDataEntryForm( @PathVariable( "uid" ) String uid, 
+        @RequestBody String formContent,
+        HttpServletResponse response ) throws Exception
+    {
+        DataSet dataSet = dataSetService.getDataSet( uid );
+
+        if ( dataSet == null )
+        {
+            ContextUtils.notFoundResponse( response, "Data set not found for identifier: " + uid );
+            return;
+        }
+        
+        DataEntryForm form = dataSet.getDataEntryForm();
+        
+        if ( form == null )
+        {
+            form = new DataEntryForm( dataSet.getName(), DataEntryForm.STYLE_REGULAR, formContent );
+            dataEntryFormService.addDataEntryForm( form );
+            
+            dataSet.setDataEntryForm( form );
+            dataSetService.updateDataSet( dataSet );
+        }
+        else
+        {
+            form.setHtmlCode( formContent );
+            dataEntryFormService.updateDataEntryForm( form );
+        }
+    }
+    
     /**
-     * select only the metadata required to describe form definitions
+     * Select only the meta-data required to describe form definitions.
      *
-     * @return the filtered options
+     * @return the filtered options.
      */
     private WebOptions filterMetadataOptions()
     {
@@ -200,5 +242,4 @@ public class DataSetController
         options.addOption( "dataSets", "true" );
         return options;
     }
-
 }
