@@ -68,7 +68,7 @@ public class DataSet
     public static final String TYPE_SECTION = "section";
     public static final String TYPE_CUSTOM = "custom";
     public static final String TYPE_SECTION_MULTIORG = "multiorg_section";
-
+    
     public static final int NO_EXPIRY = 0;
 
     /**
@@ -150,7 +150,7 @@ public class DataSet
      * Indicating whether the user completing this data set should be sent a notification.
      */
     private boolean notifyCompletingUser;
-
+    
     // -------------------------------------------------------------------------
     // Form properties
     // -------------------------------------------------------------------------
@@ -174,6 +174,11 @@ public class DataSet
      * Property indicating whether offline storage is enabled for this dataSet or not
      */
     private boolean skipOffline;
+
+    /**
+     * Indicating whether data element names should be prefixed with their codes.
+     */
+    private boolean codePrefixDataElements;
 
     // -------------------------------------------------------------------------
     // Contructors
@@ -643,6 +648,19 @@ public class DataSet
         this.skipOffline = skipOffline;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isCodePrefixDataElements()
+    {
+        return codePrefixDataElements;
+    }
+
+    public void setCodePrefixDataElements( boolean codePrefixDataElements )
+    {
+        this.codePrefixDataElements = codePrefixDataElements;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -663,6 +681,7 @@ public class DataSet
             fieldCombinationRequired = dataSet.isFieldCombinationRequired();
             validCompleteOnly = dataSet.isValidCompleteOnly();
             skipOffline = dataSet.isSkipOffline();
+            codePrefixDataElements = dataSet.isCodePrefixDataElements();
 
             removeAllDataElements();
 
