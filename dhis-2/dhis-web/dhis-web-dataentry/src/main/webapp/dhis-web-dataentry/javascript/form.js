@@ -1974,7 +1974,7 @@ function StorageManager()
         var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
         var dataValues = this.getAllDataValues();
 
-        if ( dataValues[id] != null )
+        if ( dataValues != null && dataValues[id] != null )
         {
             delete dataValues[id];
             localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
