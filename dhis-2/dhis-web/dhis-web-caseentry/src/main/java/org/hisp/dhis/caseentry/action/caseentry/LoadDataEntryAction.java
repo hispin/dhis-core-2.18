@@ -31,10 +31,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -54,7 +52,9 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
+import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -82,6 +82,8 @@ public class LoadDataEntryAction
 
     private PatientAttributeValueService patientAttributeValueService;
 
+    private ProgramStageSectionService programStageSectionService;
+    
     private I18nFormat format;
 
     // -------------------------------------------------------------------------
@@ -106,7 +108,7 @@ public class LoadDataEntryAction
 
     private ProgramStage programStage;
 
-    private Set<ProgramStageSection> sections = new HashSet<ProgramStageSection>();
+    private List<ProgramStageSection> sections = new ArrayList<ProgramStageSection>();
 
     private Map<String, Double> calAttributeValueMap = new HashMap<String, Double>();
 
@@ -117,6 +119,11 @@ public class LoadDataEntryAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
+    {
+        this.programStageSectionService = programStageSectionService;
     }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -139,7 +146,7 @@ public class LoadDataEntryAction
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    public Set<ProgramStageSection> getSections()
+    public List<ProgramStageSection> getSections()
     {
         return sections;
     }
@@ -295,7 +302,9 @@ public class LoadDataEntryAction
             }
             else if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
             {
-                sections = programStage.getProgramStageSections();
+                sections = new ArrayList<ProgramStageSection>( programStageSectionService.getProgramStages( programStage ));
+                
+                Collections.sort( sections, new ProgramStageSectionSortOrderComparator() );
             }
         }
 

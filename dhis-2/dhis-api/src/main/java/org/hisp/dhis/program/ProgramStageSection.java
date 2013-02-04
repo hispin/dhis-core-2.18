@@ -45,7 +45,7 @@ public class ProgramStageSection
 
     private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
-    private int sortOrder;
+    private Integer sortOrder;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -62,7 +62,7 @@ public class ProgramStageSection
         this.programStageDataElements = programStageDataElements;
     }
 
-    public ProgramStageSection( String name, List<ProgramStageDataElement> programStageDataElements, int sortOrder )
+    public ProgramStageSection( String name, List<ProgramStageDataElement> programStageDataElements, Integer sortOrder )
     {
         this.name = name;
         this.programStageDataElements = programStageDataElements;
@@ -112,12 +112,12 @@ public class ProgramStageSection
     // Constructors
     // -------------------------------------------------------------------------
 
-    public void setSortOrder( int sortOrder )
+    public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
     }
 
-    public int getSortOrder()
+    public Integer getSortOrder()
     {
         return sortOrder;
     }
