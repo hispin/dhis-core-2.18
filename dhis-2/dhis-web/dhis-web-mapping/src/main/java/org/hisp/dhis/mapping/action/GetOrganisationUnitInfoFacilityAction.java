@@ -92,7 +92,7 @@ public class GetOrganisationUnitInfoFacilityAction
         object = organisationUnitService.getOrganisationUnit( id );
 
         OrganisationUnitGroupSet typeGroupSet = organisationUnitGroupService
-            .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE );
+            .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE ).get( 0 );
 
         object.setType( object.getGroupNameInGroupSet( typeGroupSet ) );
 

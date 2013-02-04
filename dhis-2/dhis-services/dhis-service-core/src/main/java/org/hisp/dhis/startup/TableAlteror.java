@@ -480,7 +480,7 @@ public class TableAlteror
 
         executeSql( "update report set type='jasperReportTable' where type is null and reporttableid is not null" );
         executeSql( "update report set type='jasperJdbc' where type is null and reporttableid is null" );
-        
+
         // upgrade authorities
 
         executeSql( "UPDATE userroleauthorities SET authority='F_DOCUMENT_PUBLIC_ADD' WHERE authority='F_DOCUMENT_ADD'" );
@@ -503,9 +503,14 @@ public class TableAlteror
         executeSql( "UPDATE userroleauthorities SET authority='F_USERGROUP_LIST' WHERE authority='F_USER_GRUP_LIST'" );
 
         // update denominator of indicator which has indicatortype as 'number'
-        
-        executeSql( "UPDATE indicator SET denominator = 1, denominatordescription = '' WHERE indicatortypeid IN (SELECT DISTINCT indicatortypeid FROM indicatortype WHERE indicatornumber = true) AND denominator IS NULL");
-        
+
+        executeSql( "UPDATE indicator SET denominator = 1, denominatordescription = '' WHERE indicatortypeid IN (SELECT DISTINCT indicatortypeid FROM indicatortype WHERE indicatornumber = true) AND denominator IS NULL" );
+
+        // remove name/shortName uniqueness
+        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_name_key" );
+        executeSql( "ALTER TABLE orgunitgroup DROP CONSTRAINT orgunitgroup_name_key" );
+        executeSql( "ALTER TABLE orgunitgroupset DROP CONSTRAINT orgunitgroupset_name_key" );
+
         log.info( "Tables updated" );
     }
 

@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -61,5 +62,13 @@ public interface GenericNameableObjectStore<T>
      * @param shortName the name.
      * @return a Collection of objects.
      */
-    Collection<T> getAllEqShortName( String shortName );
+    List<T> getAllEqShortName( String shortName );
+
+    /**
+     * Retrieves a Collection of objects where the name is like the given name (ignore case).
+     *
+     * @param shortName the name.
+     * @return a Collection of objects.
+     */
+    List<T> getAllEqShortNameIgnoreCase( String shortName );
 }

@@ -85,11 +85,19 @@ public interface GenericIdentifiableObjectStore<T>
      * @param name the name.
      * @return a Collection of objects.
      */
-    Collection<T> getAllEqName( String name );
+    List<T> getAllEqName( String name );
+
+    /**
+     * Retrieves a Collection of objects where the name is equal the given name (ignore case).
+     *
+     * @param name the name.
+     * @return a Collection of objects.
+     */
+    List<T> getAllEqNameIgnoreCase( String name );
 
     /**
      * Return the number of objects where the name is equal the given name.
-     *
+     * <p/>
      * This count is _unfiltered_ (no ACL!), so this is not the same as
      * getAllEqName().size().
      *

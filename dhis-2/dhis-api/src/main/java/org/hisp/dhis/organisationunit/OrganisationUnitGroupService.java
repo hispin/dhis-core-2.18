@@ -102,11 +102,12 @@ public interface OrganisationUnitGroupService
     /**
      * Returns an OrganisationUnitGroup with a given name.
      * 
+     *
      * @param name the name of the OrganisationUnitGroup.
      * @return the OrganisationUnitGroup with the given name, or null if no
      *         match.
      */
-    OrganisationUnitGroup getOrganisationUnitGroupByName( String name );
+    List<OrganisationUnitGroup> getOrganisationUnitGroupByName( String name );
 
     /**
      * Returns all OrganisationUnitGroups.
@@ -196,11 +197,12 @@ public interface OrganisationUnitGroupService
     /**
      * Returns an OrganisationUnitGroupSet with a given name.
      * 
+     *
      * @param name the name of the OrganisationUnitGroupSet to return.
      * @return the OrganisationUnitGroupSet with the given name, or null if no
      *         match.
      */
-    OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name );
+    List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetByName( String name );
 
     /**
      * Returns all OrganisationUnitGroupSets.
