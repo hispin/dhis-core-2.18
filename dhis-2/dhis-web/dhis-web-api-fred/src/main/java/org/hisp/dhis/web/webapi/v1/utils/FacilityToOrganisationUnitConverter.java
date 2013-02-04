@@ -77,11 +77,16 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
         {
             for ( Identifier identifier : facility.getIdentifiers() )
             {
-                // for now, this is the only known identifier
+                // two known system identifiers, uid and code
                 if ( identifier.getAgency().equalsIgnoreCase( Identifier.DHIS2_AGENCY )
                     && identifier.getContext().equalsIgnoreCase( Identifier.DHIS2_CODE_CONTEXT ) )
                 {
                     organisationUnit.setCode( identifier.getId() );
+                }
+                else if ( identifier.getAgency().equalsIgnoreCase( Identifier.DHIS2_AGENCY )
+                    && identifier.getContext().equalsIgnoreCase( Identifier.DHIS2_UID_CONTEXT ) )
+                {
+                    organisationUnit.setUid( identifier.getId() );
                 }
             }
         }

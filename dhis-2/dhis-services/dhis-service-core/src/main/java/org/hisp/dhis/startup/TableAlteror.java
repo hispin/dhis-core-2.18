@@ -377,7 +377,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicatorgroup DROP COLUMN uuid" );
         executeSql( "ALTER TABLE indicatorgroupset DROP COLUMN uuid" );
         executeSql( "ALTER TABLE indicatortype DROP COLUMN uuid" );
-        executeSql( "ALTER TABLE organisationunit DROP COLUMN uuid" );
+        // executeSql( "ALTER TABLE organisationunit DROP COLUMN uuid" );
         executeSql( "ALTER TABLE orgunitgroup DROP COLUMN uuid" );
         executeSql( "ALTER TABLE orgunitgroupset DROP COLUMN uuid" );
         executeSql( "ALTER TABLE orgunitlevel DROP COLUMN uuid" );
