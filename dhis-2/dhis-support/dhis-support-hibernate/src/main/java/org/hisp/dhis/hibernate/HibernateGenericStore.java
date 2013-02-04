@@ -305,6 +305,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @Deprecated
     public final T getByName( String name )
     {
         T object = getObject( Restrictions.eq( "name", name ) );
@@ -320,6 +321,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @Deprecated
     public final T getByShortName( String shortName )
     {
         T object = getObject( Restrictions.eq( "shortName", shortName ) );
@@ -390,7 +392,69 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    public Collection<T> getAllEqName( String name )
+    {
+        Query query = sharingEnabled() ? getQueryAllEqNameACL( name ) : getQueryAllEqName( name );
+
+        return query.list();
+    }
+
+    private Query getQueryAllEqNameACL( String name )
+    {
+        String hql = "select distinct c from " + clazz.getName() + " c"
+            + " where name = :name and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
+            + " or exists "
+            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
+            + " ) order by c.name";
+
+        Query query = getQuery( hql );
+        query.setEntity( "user", currentUserService.getCurrentUser() );
+        query.setString( "name", name );
+
+        return query;
+    }
+
+    private Query getQueryAllEqName( String name )
+    {
+        Query query = getQuery( "from " + clazz.getName() + " c where name = :name order by c.name" );
+        query.setString( "name", name );
+
+        return query;
+    }
+
+    @Override
+    public Collection<T> getAllEqShortName( String shortName )
+    {
+        Query query = sharingEnabled() ? getQueryAllEqShortNameACL( shortName ) : getQueryAllEqShortName( shortName );
+
+        return query.list();
+    }
+
+    private Query getQueryAllEqShortNameACL( String shortName )
+    {
+        String hql = "select distinct c from " + clazz.getName() + " c"
+            + " where shortName = :shortName and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
+            + " or exists "
+            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
+            + " ) order by c.shortName";
+
+        Query query = getQuery( hql );
+        query.setEntity( "user", currentUserService.getCurrentUser() );
+        query.setString( "shortName", shortName );
+
+        return query;
+    }
+
+    private Query getQueryAllEqShortName( String shortName )
+    {
+        Query query = getQuery( "from " + clazz.getName() + " c where shortName = :shortName order by c.shortName" );
+        query.setString( "shortName", shortName );
+
+        return query;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getAllLikeName( String name )
     {
         Query query = sharingEnabled() ? getQueryAllLikeNameACL( name ) : getQueryAllLikeName( name );
@@ -415,7 +479,7 @@ public class HibernateGenericStore<T>
 
     private Query getQueryAllLikeName( String name )
     {
-        Query query = getQuery( "from " + clazz.getName() + " c where lower(name) like :name" );
+        Query query = getQuery( "from " + clazz.getName() + " c where lower(name) like :name order by c.name" );
         query.setString( "name", "%" + name.toLowerCase() + "%" );
 
         return query;
@@ -446,7 +510,7 @@ public class HibernateGenericStore<T>
 
     private Query getQueryAllOrderedName()
     {
-        return getQuery( "from " + clazz.getName() + " c order by name" );
+        return getQuery( "from " + clazz.getName() + " c order by c.name" );
     }
 
     @Override
@@ -797,6 +861,28 @@ public class HibernateGenericStore<T>
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         return criteria.list();
+    }
+
+    //----------------------------------------------------------------------------------------------------------------
+    // No ACL (unfiltered methods)
+    //----------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public int getCountEqNameNoAcl( String name )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.name = :name" );
+        query.setParameter( "name", name );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int getCountEqShortNameNoAcl( String shortName )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.shortName = :shortName" );
+        query.setParameter( "shortName", shortName );
+
+        return ((Long) query.uniqueResult()).intValue();
     }
 
     //----------------------------------------------------------------------------------------------------------------

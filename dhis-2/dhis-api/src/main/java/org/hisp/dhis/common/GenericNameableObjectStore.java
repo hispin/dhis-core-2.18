@@ -27,6 +27,8 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -41,4 +43,23 @@ public interface GenericNameableObjectStore<T>
      * @return the object with the given short name.
      */
     T getByShortName( String shortName );
+
+    /**
+     * Return the number of objects where the name is equal the given name.
+     * <p/>
+     * This count is _unfiltered_ (no ACL!), so this is not the same as
+     * getAllEqShortName().size().
+     *
+     * @param shortName the name.
+     * @return Count of objects.
+     */
+    int getCountEqShortNameNoAcl( String shortName );
+
+    /**
+     * Retrieves a Collection of objects where the name is like the given name.
+     *
+     * @param shortName the name.
+     * @return a Collection of objects.
+     */
+    Collection<T> getAllEqShortName( String shortName );
 }
