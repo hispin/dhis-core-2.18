@@ -280,7 +280,7 @@ Ext.onReady( function() {
 
 				groupSets.push({
 					id: gs.id,
-					name: 'Group set: ' + gs.name //i18n
+					name: gs.name
 				});
 			}
 
@@ -445,10 +445,6 @@ Ext.onReady( function() {
 			}
 		});
 
-		value = Ext.create('Ext.form.Label', {
-			text: 'Value = DHIS 2 data value'
-		});
-
 		selectPanel = Ext.create('Ext.panel.Panel', {
 			bodyStyle: 'border:0 none',
 			items: [
@@ -464,8 +460,7 @@ Ext.onReady( function() {
 					layout: 'column',
 					bodyStyle: 'border:0 none',
 					items: [
-						row,
-						value
+						row
 					]
 				}
 			]
@@ -502,6 +497,13 @@ Ext.onReady( function() {
 					handler: function() {
 						window.hide();
 					}
+				},
+				{
+					text: '<b>Update</b>',
+					handler: function() {
+						pt.viewport.update();
+						window.hide();
+					}
 				}
 			],
 			listeners: {
@@ -521,6 +523,7 @@ Ext.onReady( function() {
 			var viewport,
 				westRegion,
 				centerRegion,
+				accordion,
 
 				indicatorAvailable,
 				indicatorSelected,
@@ -538,7 +541,7 @@ Ext.onReady( function() {
 				fixedPeriod,
 				organisationUnit,
 				getOrganisationUnitGroupSetPanels,
-				accordion,
+				update,
 
 				addListeners;
 
@@ -1871,7 +1874,7 @@ Ext.onReady( function() {
 					});
 
 					panel = Ext.create('Ext.panel.Panel', {
-						title: '<div class="pt-panel-title-organisationunit">Group set: ' + groupSet.name + '</div>', //i18n
+						title: '<div class="pt-panel-title-organisationunit">' + groupSet.name + '</div>', //i18n
 						hideCollapseTool: true,
 						getData: function() {
 							var data = {
@@ -1937,6 +1940,14 @@ Ext.onReady( function() {
 
 				return getPanels();
 			};
+
+			update = function() {
+				var settings = pt.api.Settings(pt.util.pivot.getSettingsConfig());
+
+				if (settings && Ext.isObject(settings)) {
+					pt.util.pivot.getTable(settings, pt, centerRegion);
+				}
+			};				
 
 			accordion = Ext.create('Ext.panel.Panel', {
 				bodyStyle: 'border-style:none; padding:3px;',
@@ -2013,11 +2024,7 @@ Ext.onReady( function() {
 						{
 							text: '<b>Update</b>',
 							handler: function() {
-								var settings = pt.api.Settings(pt.util.pivot.getSettingsConfig());
-
-								if (settings && Ext.isObject(settings)) {
-									pt.util.pivot.getTable(settings, pt, centerRegion);
-								}
+								update();
 							}
 						}
 					]
@@ -2039,6 +2046,7 @@ Ext.onReady( function() {
 
 			viewport.westRegion = westRegion;
 			viewport.centerRegion = centerRegion;
+			viewport.update = update;
 
 			addListeners = function() {
 				pt.store.indicatorAvailable.on('load', function() {

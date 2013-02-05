@@ -389,6 +389,7 @@ PT.core.getUtils = function(pt) {
 			var getDimensionItemsFromSettings,
 				getParamStringFromDimensionItems,
 
+				validateResponse,
 				extendResponse,
 				extendDims,
 				getDims,
@@ -438,6 +439,15 @@ PT.core.getUtils = function(pt) {
 				return paramString;
 			};
 
+			validateResponse = function(response) {
+				if (response.width < 1 || response.height < 1 || response.rows.length < 1) {
+					alert('No values');
+					return false;
+				}
+
+				return true;
+			};
+		
 			extendResponse = function(dimensionItems) {
 				var response = pt.response,
 					headers = response.headers,
@@ -920,15 +930,17 @@ PT.core.getUtils = function(pt) {
 				Ext.data.JsonP.request({
 					method: 'GET',
 					url: pt.init.contextPath + '/api/analytics.jsonp' + paramString,
-					//params: {
-						//filter: getFilterParamStringFromSettings()
-					//},
+					callbackName: 'analytics',
 					headers: {
 						'Content-Type': 'application/json',
 						'Accept': 'application/json'
 					},
 					disableCaching: false,
 					success: function(r) {
+						if (!validateResponse(r)) {
+							return;
+						}
+						
 						pt.response = r;
 
 						pt.response.metaData['PT59n8BQbqM'] = 'Female < 10';
