@@ -17,8 +17,6 @@ var currentOptionComboId = '$!{optionComboId}';
 		        <img id="followup" src="../images/marked.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup()" style="cursor:pointer"/>
 			#elseif ( $dataValue )
 		        <img id="followup" src="../images/unmarked.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup()" style="cursor:pointer"/>
-			#else
-			    <img id="followup" src="../images/unmarked.png"/>
 			#end			
 			</div>
 		</td>
