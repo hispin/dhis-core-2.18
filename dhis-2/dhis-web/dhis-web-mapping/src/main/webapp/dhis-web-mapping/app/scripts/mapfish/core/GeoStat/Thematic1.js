@@ -118,7 +118,7 @@ mapfish.GeoStat.Thematic1 = OpenLayers.Class(mapfish.GeoStat, {
 			parent = orgUnit ? orgUnit.name : '',
 			level = orgUnitLevel ? orgUnitLevel.name : '',
 			what = indicator ? indicator.name : (dataElement ? dataElement.name : ''),
-			when = period ? period.name : '',
+			when = period ? period.id : '',
 			where = parent + ' / ' + level;
 
 		return {
@@ -238,6 +238,7 @@ mapfish.GeoStat.Thematic1 = OpenLayers.Class(mapfish.GeoStat, {
 			config = this.getLegendConfig();
 
         for (var key in config) {
+console.log(key, config[key]);
 			if (config.hasOwnProperty(key)) {
 				child = document.createElement("div");
 				child.style.height = "14px";

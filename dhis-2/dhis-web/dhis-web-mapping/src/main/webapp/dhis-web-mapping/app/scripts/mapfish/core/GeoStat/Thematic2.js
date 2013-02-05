@@ -118,7 +118,7 @@ mapfish.GeoStat.Thematic2 = OpenLayers.Class(mapfish.GeoStat, {
 			parent = orgUnit ? orgUnit.name : '',
 			level = orgUnitLevel ? orgUnitLevel.name : '',
 			what = indicator ? indicator.name : (dataElement ? dataElement.name : ''),
-			when = period ? period.name : '',
+			when = period ? period.id : '',
 			where = parent + ' / ' + level;
 
 		return {
