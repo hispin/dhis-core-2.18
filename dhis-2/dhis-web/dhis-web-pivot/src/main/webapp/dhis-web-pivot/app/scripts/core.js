@@ -943,8 +943,8 @@ PT.core.getUtils = function(pt) {
 						
 						pt.response = r;
 
-						pt.response.metaData['PT59n8BQbqM'] = 'Female < 10';
-						pt.response.metaData['pq2XI5kz2BY'] = 'Female > 10';
+						pt.response.metaData['PT59n8BQbqM'] = '(Outreach)';
+						pt.response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 
 						extendResponse(dimensionItems);
 
