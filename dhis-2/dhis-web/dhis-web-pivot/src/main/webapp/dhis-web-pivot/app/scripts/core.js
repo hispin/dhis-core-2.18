@@ -897,7 +897,7 @@ PT.core.getUtils = function(pt) {
 			};
 
 			createTablePanel = function(items) {
-				var html = '<table>';
+				var html = '<table class="pivot">';
 
 				for (var i = 0; i < items.length; i++) {
 					html += '<tr>' + items[i].join('') + '</tr>';
