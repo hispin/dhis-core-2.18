@@ -27,13 +27,12 @@ package org.hisp.dhis.dataadmin.action.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.user.CurrentUserService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -43,7 +42,7 @@ public class GenerateResourceTableAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( GenerateResourceTableAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -61,11 +60,11 @@ public class GenerateResourceTableAction
     {
         this.resourceTableService = resourceTableService;
     }
-    
+
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private boolean organisationUnit;
 
     public void setOrganisationUnit( boolean organisationUnit )
@@ -79,7 +78,7 @@ public class GenerateResourceTableAction
     {
         this.dataElementGroupSetStructure = dataElementGroupSetStructure;
     }
-    
+
     private boolean indicatorGroupSetStructure;
 
     public void setIndicatorGroupSetStructure( boolean indicatorGroupSetStructure )
@@ -93,7 +92,7 @@ public class GenerateResourceTableAction
     {
         this.organisationUnitGroupSetStructure = organisationUnitGroupSetStructure;
     }
-    
+
     private boolean categoryStructure;
 
     public void setCategoryStructure( boolean categoryStructure )
@@ -101,20 +100,20 @@ public class GenerateResourceTableAction
         this.categoryStructure = categoryStructure;
     }
 
-    private boolean categoryOptionComboName; 
+    private boolean categoryOptionComboName;
 
     public void setCategoryOptionComboName( boolean categoryOptionComboName )
     {
         this.categoryOptionComboName = categoryOptionComboName;
     }
-    
+
     private boolean dataElementStructure;
 
     public void setDataElementStructure( boolean dataElementStructure )
     {
         this.dataElementStructure = dataElementStructure;
     }
-    
+
     private boolean periodStructure;
 
     public void setPeriodStructure( boolean periodStructure )
@@ -129,63 +128,72 @@ public class GenerateResourceTableAction
         this.currentUserService = currentUserService;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() 
+    public String execute()
         throws Exception
     {
         sqlViewService.dropAllSqlViewTables();
-        
+
         log.info( "'" + currentUserService.getCurrentUsername() + "': Dropped all sql views" );
-        
+
         if ( organisationUnit )
         {
             resourceTableService.generateOrganisationUnitStructures();
         }
-        
+
         if ( dataElementGroupSetStructure )
         {
             resourceTableService.generateDataElementGroupSetTable();
         }
-        
+
         if ( indicatorGroupSetStructure )
         {
             resourceTableService.generateIndicatorGroupSetTable();
         }
-        
+
         if ( organisationUnitGroupSetStructure )
         {
             resourceTableService.generateOrganisationUnitGroupSetTable();
         }
-        
+
         if ( categoryStructure )
         {
             resourceTableService.generateCategoryTable();
         }
-        
+
         if ( categoryOptionComboName )
         {
             resourceTableService.generateCategoryOptionComboNames();
         }
-        
+
         if ( dataElementStructure )
         {
             resourceTableService.generateDataElementTable();
         }
-        
+
         if ( periodStructure )
         {
             resourceTableService.generatePeriodTable();
         }
-        
+
         log.info( "'" + currentUserService.getCurrentUsername() + "': Generated resource tables" );
-        
+
         sqlViewService.createAllViewTables();
-        
+
         log.info( "'" + currentUserService.getCurrentUsername() + "': Created all views" );
-        
+
+        message = "Generated resource tables";
+
         return SUCCESS;
     }
 }
