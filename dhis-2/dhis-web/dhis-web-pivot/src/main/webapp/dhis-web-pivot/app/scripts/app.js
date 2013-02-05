@@ -1056,14 +1056,13 @@ Ext.onReady( function() {
 				}
 			};
 
-			rewind = {
-				xtype: 'checkbox',
+			rewind = Ext.create('Ext.form.field.Checkbox', {
 				paramName: 'rewind',
 				boxLabel: 'Rewind one period',
 				xable: function() {
 					this.setDisabled(pt.util.checkbox.isAllFalse());
 				}
-			};
+			});
 
 			relativePeriod = {
 				xtype: 'panel',

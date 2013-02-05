@@ -407,7 +407,6 @@ PT.core.getUtils = function(pt) {
 				getColItems,
 				getRowItems,
 				createTableArray,
-				addClasses,
 				initialize;
 
 			getDimensionItemsFromSettings = function() {
@@ -432,6 +431,13 @@ PT.core.getUtils = function(pt) {
 						}
 						else {
 							dim = dimensionItems[key];
+
+							if (!(dim && Ext.isArray(dim) && dim.length)) {
+								pt.util.mask.hideMask();
+								alert('Empty dimension');
+								return;
+							}
+							
 							paramString += 'dimension=' + key + ':' + dim.join(';') + '&';
 						}
 					}
@@ -451,7 +457,7 @@ PT.core.getUtils = function(pt) {
 
 			validateResponse = function(response) {
 				if (response.width < 1 || response.height < 1 || response.rows.length < 1) {
-					alert('No values');
+					alert('No values found');
 					return false;
 				}
 
@@ -733,38 +739,40 @@ PT.core.getUtils = function(pt) {
 			};
 
 			getEmptyItem = function() {
-				return {
-					colspan: pt.config.rows.dims,
-					rowspan: pt.config.cols.dims,
-					baseCls: 'pivot-empty'
-				};
+				//return {
+					//colspan: pt.config.rows.dims,
+					//rowspan: pt.config.cols.dims,
+					//baseCls: 'pivot-empty'
+				//};
+
+				return '<td class="pivot-empty" colspan="' + pt.config.rows.dims + '" rowspan="' + pt.config.cols.dims + '"></td>';
 			};
 
 			getColItems = function() {
 				var response = pt.response,
+					rows = pt.config.rows,
 					cols = pt.config.cols,
 					colItems = [];
 
-				for (var i = 0, dimItems, colSpan; i < cols.dims; i++) {
+				for (var i = 0, dimItems, colSpan, rowArray; i < cols.dims; i++) {
 					dimItems = cols.items.gui[i];
 					colSpan = cols.span[i];
+					rowArray = [];
+
+					if (i === 0) {
+						rowArray.push(getEmptyItem());
+					}
 
 					for (var j = 0, id; j < dimItems.length; j++) {
-						id = dimItems[j];
-						colItems.push({
-							html: response.metaData[id],
-							colspan: colSpan,
-							baseCls: 'pivot-dim'
-						});
+						id = dimItems[j];						
+						rowArray.push('<td class="pivot-dim" colspan="' + colSpan + '">' + response.metaData[id] + '</td>');
 
 						if (i === 0 && j === (dimItems.length - 1)) {
-							colItems.push({
-								html: 'Total',
-								rowspan: cols.dims,
-								baseCls: 'pivot-dimtotal'
-							});
+							rowArray.push('<td class="pivot-dimtotal" rowspan="' + cols.dims + '">Total</td>');
 						}
 					}
+
+					colItems.push(rowArray);
 				}
 
 				return colItems;
@@ -812,13 +820,7 @@ PT.core.getUtils = function(pt) {
 							//cls = value < 5000 ? 'bad' : (value < 20000 ? 'medium' : 'good'); //basic legendset
 						//}
 
-						row.push({
-							id: id,
-							value: value,
-							html: value.toString(),
-							baseCls: 'pivot-value',
-							cls: cls
-						});
+						row.push('<td id="' + id + '" class="pivot-value">' + value + '</td>');
 					}
 
 					valueHtmlItems.push(row);
@@ -834,11 +836,7 @@ PT.core.getUtils = function(pt) {
 				for (var i = 0, rowSum; i < totalRowItems.length; i++) {
 					rowSum = totalRowItems[i];
 
-					totalRowHtmlItems.push({
-						value: rowSum,
-						html: rowSum.toString(),
-						baseCls: 'pivot-valuetotal'
-					});
+					totalRowHtmlItems.push('<td class="pivot-valuetotal">' + rowSum.toString() + '</td>');
 				}
 
 				// Total col items
@@ -856,109 +854,86 @@ PT.core.getUtils = function(pt) {
 				for (var i = 0, colSum; i < totalColItems.length; i++) {
 					colSum = totalColItems[i];
 
-					totalColHtmlItems.push({
-						value: colSum,
-						html: colSum.toString(),
-						baseCls: 'pivot-valuetotal'
-					});
+					totalColHtmlItems.push('<td class="pivot-valuetotal">' + colSum.toString() + '</td>');
 				}
 
 				// Grand total item
 				grandTotalItem = Ext.Array.sum(totalColItems);
 
 				// Grand total html item
-				grandTotalHtmlItem = {
-					value: grandTotalItem,
-					html: grandTotalItem.toString(),
-					baseCls: 'pivot-valuegrandtotal'
-				};
+				grandTotalHtmlItem = '<td class="pivot-valuegrandtotal">' + grandTotalItem.toString() + '</td>';
 
 				// GUI
 
 				// Dim html items
-				for (var i = 0; i < size; i++) {
+				for (var i = 0, row; i < size; i++) {
+					row = [];
+					
 					for (var j = 0, object; j < dims; j++) {
 						object = allObjects[j][i];
 
 						if (object.rowSpan) {
-							dimHtmlItems.push({
-								html: response.metaData[object.id],
-								rowspan: object.rowSpan,
-								baseCls: 'pivot-dim'
-							});
+							row.push('<td class="pivot-dim" rowspan="' + object.rowSpan + '">' + response.metaData[object.id] + '</td>');
 						}
 					}
 
-					dimHtmlItems = dimHtmlItems.concat(valueHtmlItems[i]);
-					dimHtmlItems = dimHtmlItems.concat(totalRowHtmlItems[i]);
+					row = row.concat(valueHtmlItems[i]);
+					row = row.concat(totalRowHtmlItems[i]);
+
+					dimHtmlItems.push(row);
 				}
 
 				// Final row
-				dimHtmlItems.push({
-					html: 'Total',
-					colspan: rows.dims,
-					baseCls: 'pivot-dimtotal'
-				});
+				var finalRow = [];
 
-				dimHtmlItems = dimHtmlItems.concat(totalColHtmlItems);
+				finalRow.push('<td class="pivot-dimtotal" colspan="' + rows.dims + '">Total</td>');
 
-				dimHtmlItems.push(grandTotalHtmlItem);
+				finalRow = finalRow.concat(totalColHtmlItems);
+				finalRow = finalRow.concat(grandTotalHtmlItem);
+
+				dimHtmlItems.push(finalRow);
 
 				return dimHtmlItems;
 			};
 
-			createTablePanel = function() {
-				var config = {
-					layout: {
-						type: 'table',
-						columns: pt.config.cols.size + pt.config.rows.dims + 1
-					},
-					autoScroll: true,
-					bodyStyle: 'border:0 none',
-					defaults: {
-						baseCls: 'td'
-					},
-					listeners: {
-						resize: function(p) {
-							addTdClasses(p);
-						}
-					}
-				};
+			createTablePanel = function(items) {
+				var html = '<table>';
 
-				if (pt.el) {
-					config.renderTo = pt.el;
-				};
-
-				return Ext.create('Ext.panel.Panel', config);
-			};
-
-			addTdClasses = function(panel) {
-				var items = panel.items.items;
-
-				for (var i = 0, td, div; i < items.length; i++) {
-					div = items[i].el;
-					td = div.parent('td');
-					
-					if (div.hasCls('pivot-empty')) {
-						td.addCls('pivot-empty-body');
-					}
-					else if (div.hasCls('pivot-dim')) {
-						td.addCls('pivot-dim-body');
-					}
-					else if (div.hasCls('pivot-dimtotal')) {
-						td.addCls('pivot-dimtotal-body');
-					}
-					else if (div.hasCls('pivot-value')) {
-						td.addCls('pivot-value-body');
-					}
-					else if (div.hasCls('pivot-valuetotal')) {
-						td.addCls('pivot-valuetotal-body');
-					}
-					else if (div.hasCls('pivot-valuegrandtotal')) {
-						td.addCls('pivot-valuegrandtotal-body');
-					}
+				for (var i = 0; i < items.length; i++) {
+					html += '<tr>' + items[i].join('') + '</tr>';
 				}
-			};				
+
+				html += '</table>';
+
+				return Ext.create('Ext.panel.Panel', {
+					bodyStyle: 'border:0 none',
+					autoScroll: true,
+					html: html
+				});
+				
+				//var config = {
+					//layout: {
+						//type: 'table',
+						//columns: pt.config.cols.size + pt.config.rows.dims + 1
+					//},
+					//autoScroll: true,
+					//bodyStyle: 'border:0 none',
+					//defaults: {
+						//baseCls: 'td'
+					//},
+					//listeners: {
+						//resize: function(p) {
+							//addTdClasses(p);
+						//}
+					//}
+				//};
+
+				//if (pt.el) {
+					//config.renderTo = pt.el;
+				//};
+
+				//return Ext.create('Ext.panel.Panel', config);
+			};
 			
 			initialize = function() {
 				var dimensionItems,
@@ -1004,20 +979,16 @@ pt.response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 						pt.config = getDims();
 						extendRowDims(pt.config.rows);
 
-						items.push(getEmptyItem(pt));						
-						items = items.concat(getColItems(pt));
-						items = items.concat(getRowItems(pt));
+						items = getColItems();						
+						items = items.concat(getRowItems());
 						
-						panel = createTablePanel(pt);
-						panel.add(items);
+						panel = createTablePanel(items);
 
 						if (!pt.el) {
 							container.removeAll(true);
 							container.add(panel);
 						}
 						
-						addTdClasses(panel);
-
 						pt.util.mask.hideMask();
 					}
 				});
