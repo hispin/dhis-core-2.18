@@ -11,11 +11,6 @@ public class SMSConsumer
 
     private MessageQueue messageQueue;
 
-    public void setMessageQueue( MessageQueue messageQueue )
-    {
-        this.messageQueue = messageQueue;
-    }
-
     SMSConsumerThread thread;
 
     public void start()
@@ -26,11 +21,6 @@ public class SMSConsumer
             thread = new SMSConsumerThread();
             thread.start();
         }
-    }
-
-    public void setParserManager( ParserManager parserManager )
-    {
-        this.parserManager = parserManager;
     }
 
     public void stop()
@@ -70,10 +60,16 @@ public class SMSConsumer
         private void fetchAndParseSMS()
         {
             IncomingSms message = messageQueue.get();
+            System.out.println("starter å spise meldinger..");
             while ( message != null )
             {
-                parserManager.parse( message );
-                messageQueue.remove( message );
+                try{
+                    parserManager.parse( message );
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
+
+                messageQueue.remove( message ); 
                 message = messageQueue.get();
             }
         }
@@ -84,5 +80,16 @@ public class SMSConsumer
         }
 
     }
+    
+    public void setMessageQueue( MessageQueue messageQueue )
+    {
+        this.messageQueue = messageQueue;
+    }
+    
+    public void setParserManager( ParserManager parserManager )
+    {
+        this.parserManager = parserManager;
+    }
+
 
 }
