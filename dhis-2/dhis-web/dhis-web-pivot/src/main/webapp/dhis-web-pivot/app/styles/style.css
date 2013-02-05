@@ -81,35 +81,36 @@ table {
 	border: 0 none;
 }
 td {
-	padding: 0;
+	padding: 5px;
 	border: 1px solid #888;
 	background-color: #dae6f8;
+	text-align: center;
 }
 
 td div div {
 	padding: 5px;
 	text-align: center;
-	font-size: 12px;
+	font-size: 11px;
 }
 
-.pivot-empty-body {
+.pivot-empty {
 	background-color: #e6efff;
 }
 
-.pivot-dim-body {
+.pivot-dim {
 	background-color: #dae6f8;
 }
-.pivot-dimtotal-body {
+.pivot-dimtotal {
 	background-color: #b0c4de;
 }
 
-.pivot-value-body {
+.pivot-value {
 	background-color: #fff;
 }
-.pivot-valuetotal-body {
+.pivot-valuetotal {
 	background-color: #eee;
 }
-.pivot-valuegrandtotal-body {
+.pivot-valuegrandtotal {
 	background-color: #ccc;
 }
 
