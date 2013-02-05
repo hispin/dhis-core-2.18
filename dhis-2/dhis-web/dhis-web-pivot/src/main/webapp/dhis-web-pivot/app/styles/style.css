@@ -75,22 +75,15 @@ body {
  * Pivot
  *--------------------------------------------------------------------------*/
 
-table {
+table.pivot {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	border: 0 none;
 }
-td {
+.pivot td {
 	padding: 5px;
 	border: 1px solid #888;
-	background-color: #dae6f8;
 	text-align: center;
-}
-
-td div div {
-	padding: 5px;
-	text-align: center;
-	font-size: 11px;
 }
 
 .pivot-empty {
