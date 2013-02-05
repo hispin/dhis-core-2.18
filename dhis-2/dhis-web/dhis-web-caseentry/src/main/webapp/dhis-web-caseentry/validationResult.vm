@@ -37,7 +37,7 @@
 							#set($rightsideValue = "NULL")
 							#if($result.rightsideValue) #set($rightsideValue = $result.rightsideValue ) #end
 							
-							<td style="height:32px">$encoder.htmlEncode( $result.programValidation.description )</td>
+							<td style="height:32px">$encoder.htmlEncode( $result.programValidation.name )</td>
 							<td>$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $i18n.getString( $result.programValidation.operator.mathematicalOperator ) ) $!encoder.htmlEncode( $rightFormula )</td>
 							<td>$!encoder.htmlEncode( $result.programValidation.leftSide.description )</td>
 							<td>$leftsideValue</td>
