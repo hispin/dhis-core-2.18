@@ -1925,8 +1925,8 @@ function StorageManager()
      */
     this.saveDataValue = function( dataValue )
     {
-        var id = this.getDataValueIdentifier( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId,
-                dataValue.organisationUnitId );
+        var id = this.getDataValueIdentifier( dataValue.dataElementId, 
+        		dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
 
         var dataValues = {};
 
@@ -1942,9 +1942,10 @@ function StorageManager()
             localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 
             log( 'Successfully stored data value' );
-        } catch ( e )
+        } 
+        catch ( e )
         {
-            log( 'Max local storage quota reached, ignored data value' );
+            log( 'Max local storage quota reached, not storing data value locally' );
         }
     };
 
@@ -2083,7 +2084,16 @@ function StorageManager()
             completeDataSets[completeDataSetId] = json;
         }
 
-        localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+        try
+        {
+        	localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+        	
+        	log( 'Successfully stored complete registration' );
+        }
+        catch ( e )
+        {
+        	log( 'Max local storage quota reached, not storing complete registration locally' );
+        }
     };
 
     /**
