@@ -200,7 +200,7 @@ public class DefaultAnalyticsService
                             
                             grid.addRow();
                             grid.addValues( DimensionOption.getOptionIdentifiers( row ) );
-                            grid.addValue( value );
+                            grid.addValue( MathUtils.getRounded( value, 1 ) );
                         }
                     }                    
                 }

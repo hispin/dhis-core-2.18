@@ -78,7 +78,7 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE ); //TODO        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params );        
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
@@ -96,7 +96,7 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE ); //TODO        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toXml( grid, response.getOutputStream() );
     }
@@ -112,7 +112,7 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE ); //TODO        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
@@ -128,7 +128,7 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.NO_CACHE ); //TODO        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toHtml( grid, response.getWriter() );
     }
