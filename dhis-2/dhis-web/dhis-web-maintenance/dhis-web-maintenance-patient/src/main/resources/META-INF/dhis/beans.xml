@@ -519,9 +519,6 @@
 		<property name="dataEntryFormService">
 			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		</property>
-		<property name="patientRegistrationFormService">
-			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
-		</property>
 	</bean>
 
 	<bean

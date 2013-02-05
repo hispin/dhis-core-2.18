@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.dataentryform;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.patient.PatientRegistrationFormService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,13 +49,6 @@ public class ShowPatientRegistrationFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-    }
-
-    private PatientRegistrationFormService patientRegistrationFormService;
-
-    public void setPatientRegistrationFormService( PatientRegistrationFormService patientRegistrationFormService )
-    {
-        this.patientRegistrationFormService = patientRegistrationFormService;
     }
 
     // -------------------------------------------------------------------------
