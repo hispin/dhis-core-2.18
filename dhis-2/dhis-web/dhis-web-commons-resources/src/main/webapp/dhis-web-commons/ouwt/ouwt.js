@@ -104,9 +104,9 @@ function Selection()
 
             organisationUnits = JSON.parse( localStorage["organisationUnits"] );
 
-            if ( sessionStorage["organisationUnits"] !== undefined )
+            if ( sessionStorage['organisationUnits'] !== undefined )
             {
-                $.extend(organisationUnits, JSON.parse( sessionStorage["organisationUnits"] ))
+                $.extend( organisationUnits, JSON.parse( sessionStorage["organisationUnits"] ) );
             }
 
             selection.sync();
@@ -434,6 +434,11 @@ function Selection()
             if( includeChildren )
             {
                 children = organisationUnits[selected].c;
+            }
+
+            if ( sessionStorage['organisationUnits'] !== undefined )
+            {
+                $.extend( organisationUnits, JSON.parse( sessionStorage["organisationUnits"] ) );
             }
 
             var name = organisationUnits[selected].n;
