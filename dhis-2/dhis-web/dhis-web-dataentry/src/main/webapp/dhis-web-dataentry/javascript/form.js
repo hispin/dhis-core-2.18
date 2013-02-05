@@ -399,6 +399,26 @@ function addEventListeners()
         $( this ).css( 'width', '100%' );
     } );
     
+    $( '[name="commentlink"]' ).each( function( i )
+    {
+        var id = $( this ).attr( 'id' );
+        var split = splitFieldId( id );
+
+        var dataElementId = split.dataElementId;
+        var optionComboId = split.optionComboId;
+
+        $( this ).unbind( 'click' );
+        
+        $( this ).attr( "src", "../images/comment.png" );
+        $( this ).attr( "title", i18n_view_comment );
+        
+        $( this ).css( "cursor", "pointer" );
+        
+        $( this ).click ( function() {
+        	viewHist( dataElementId, optionComboId );
+        } );
+    } );
+    
     $( '[name="dynselect"]' ).each( function( i )
     {
     	var id = $( this ).attr( 'id' );
@@ -1536,27 +1556,30 @@ function viewHist( dataElementId, optionComboId )
 {
     var periodId = $( '#selectedPeriodId' ).val();
 
-    var dataElementName = getDataElementName( dataElementId );
-    var optionComboName = getOptionComboName( optionComboId );
-    var operandName = dataElementName + ' ' + optionComboName;
-
-    $( '#historyDiv' ).load( 'viewHistory.action', {
-        dataElementId : dataElementId,
-        optionComboId : optionComboId,
-        periodId : periodId,
-        organisationUnitId : currentOrganisationUnitId
-    }, 
-    function( response, status, xhr )
-    {
-        if ( status == 'error' )
-        {
-            window.alert( i18n_operation_not_available_offline );
-        }
-        else
-        {
-            displayHistoryDialog( operandName );
-        }
-    } );
+	if ( dataElementId && optionComboId && periodId && periodId != -1 )
+	{
+	    var dataElementName = getDataElementName( dataElementId );
+	    var optionComboName = getOptionComboName( optionComboId );
+	    var operandName = dataElementName + ' ' + optionComboName;
+	
+	    $( '#historyDiv' ).load( 'viewHistory.action', {
+	        dataElementId : dataElementId,
+	        optionComboId : optionComboId,
+	        periodId : periodId,
+	        organisationUnitId : currentOrganisationUnitId
+	    }, 
+	    function( response, status, xhr )
+	    {
+	        if ( status == 'error' )
+	        {
+	            window.alert( i18n_operation_not_available_offline );
+	        }
+	        else
+	        {
+	            displayHistoryDialog( operandName );
+	        }
+	    } );
+	}
 }
 
 function closeCurrentSelection()
