@@ -437,7 +437,8 @@ PT.core.getUtils = function(pt) {
 								alert('Empty dimension');
 								return;
 							}
-							
+
+							Ext.Array.sort(dim);
 							paramString += 'dimension=' + key + ':' + dim.join(';') + '&';
 						}
 					}
@@ -739,12 +740,6 @@ PT.core.getUtils = function(pt) {
 			};
 
 			getEmptyItem = function() {
-				//return {
-					//colspan: pt.config.rows.dims,
-					//rowspan: pt.config.cols.dims,
-					//baseCls: 'pivot-empty'
-				//};
-
 				return '<td class="pivot-empty" colspan="' + pt.config.rows.dims + '" rowspan="' + pt.config.cols.dims + '"></td>';
 			};
 
@@ -910,29 +905,6 @@ PT.core.getUtils = function(pt) {
 					autoScroll: true,
 					html: html
 				});
-				
-				//var config = {
-					//layout: {
-						//type: 'table',
-						//columns: pt.config.cols.size + pt.config.rows.dims + 1
-					//},
-					//autoScroll: true,
-					//bodyStyle: 'border:0 none',
-					//defaults: {
-						//baseCls: 'td'
-					//},
-					//listeners: {
-						//resize: function(p) {
-							//addTdClasses(p);
-						//}
-					//}
-				//};
-
-				//if (pt.el) {
-					//config.renderTo = pt.el;
-				//};
-
-				//return Ext.create('Ext.panel.Panel', config);
 			};
 			
 			initialize = function() {
@@ -956,7 +928,6 @@ PT.core.getUtils = function(pt) {
 					disableCaching: false,
 					failure: function() {
 						pt.util.mask.hideMask();
-						console.log(arguments);
 						alert('Data request failed');
 					},						
 					success: function(r) {
