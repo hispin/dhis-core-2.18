@@ -85,32 +85,37 @@ td {
 	background-color: #dae6f8;
 }
 
-
 td div div {
 	padding: 5px;
 	text-align: center;
 	font-size: 12px;
 }
 
-td .empty-body {
-	background-color: #dae6f8;
+.pivot-empty-body,
+td .pivot-empty-body {
+	background-color: #fff;
 	border: 0 none;
 }
 
-td .dim-body {
+.pivot-dim-body,
+td .pivot-dim-body {
 	background-color: #dae6f8;
 }
-td .dimtotal-body {
+.pivot-dimtotal-body,
+td .pivot-dimtotal-body {
 	background-color: #b0c4de;
 }
 
-td .value-body {
+.pivot-value-body,
+td .pivot-value-body {
 	background-color: #fff;
 }
-td .valuetotal-body {
+.pivot-valuetotal-body,
+td .pivot-valuetotal-body {
 	background-color: #eee;
 }
-td .valuegrandtotal-body {
+.pivot-valuegrandtotal-body,
+td .pivot-valuegrandtotal-body {
 	background-color: #ccc;
 }
 
