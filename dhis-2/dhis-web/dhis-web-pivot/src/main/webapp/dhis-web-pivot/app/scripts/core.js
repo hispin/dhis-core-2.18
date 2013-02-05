@@ -398,6 +398,7 @@ PT.core.getUtils = function(pt) {
 				getColItems,
 				getRowItems,
 				createTableArray,
+				addClasses,
 				initialize;
 
 			getDimensionItemsFromSettings = function() {
@@ -726,7 +727,7 @@ PT.core.getUtils = function(pt) {
 				return {
 					colspan: pt.config.rows.dims,
 					rowspan: pt.config.cols.dims,
-					baseCls: 'empty'
+					baseCls: 'pivot-empty'
 				};
 			};
 
@@ -744,14 +745,14 @@ PT.core.getUtils = function(pt) {
 						colItems.push({
 							html: response.metaData[id],
 							colspan: colSpan,
-							baseCls: 'dim'
+							baseCls: 'pivot-dim'
 						});
 
 						if (i === 0 && j === (dimItems.length - 1)) {
 							colItems.push({
 								html: 'Total',
 								rowspan: cols.dims,
-								baseCls: 'dimtotal'
+								baseCls: 'pivot-dimtotal'
 							});
 						}
 					}
@@ -808,7 +809,7 @@ PT.core.getUtils = function(pt) {
 							id: id,
 							value: value,
 							html: value.toString(),
-							baseCls: 'value',
+							baseCls: 'pivot-value',
 							cls: cls
 						});
 					}
@@ -829,7 +830,7 @@ PT.core.getUtils = function(pt) {
 					totalRowHtmlItems.push({
 						value: rowSum,
 						html: rowSum.toString(),
-						baseCls: 'valuetotal'
+						baseCls: 'pivot-valuetotal'
 					});
 				}
 
@@ -851,7 +852,7 @@ PT.core.getUtils = function(pt) {
 					totalColHtmlItems.push({
 						value: colSum,
 						html: colSum.toString(),
-						baseCls: 'valuetotal'
+						baseCls: 'pivot-valuetotal'
 					});
 				}
 
@@ -862,7 +863,7 @@ PT.core.getUtils = function(pt) {
 				grandTotalHtmlItem = {
 					value: grandTotalItem,
 					html: grandTotalItem.toString(),
-					baseCls: 'valuegrandtotal'
+					baseCls: 'pivot-valuegrandtotal'
 				};
 
 				// GUI
@@ -876,7 +877,7 @@ PT.core.getUtils = function(pt) {
 							dimHtmlItems.push({
 								html: response.metaData[object.id],
 								rowspan: object.rowSpan,
-								baseCls: 'dim'
+								baseCls: 'pivot-dim'
 							});
 						}
 					}
@@ -889,7 +890,7 @@ PT.core.getUtils = function(pt) {
 				dimHtmlItems.push({
 					html: 'Total',
 					colspan: rows.dims,
-					baseCls: 'dimtotal'
+					baseCls: 'pivot-dimtotal'
 				});
 
 				dimHtmlItems = dimHtmlItems.concat(totalColHtmlItems);
@@ -919,6 +920,34 @@ PT.core.getUtils = function(pt) {
 				return Ext.create('Ext.panel.Panel', config);
 			};
 
+			addClasses = function() {
+				var a = document.getElementsByTagName('td');
+
+				for (var i = 0, td, div; i < a.length; i++) {
+					td = Ext.get(a[i]);
+					div = td.child('*');
+					
+					if (div.hasCls('pivot-empty')) {
+						td.addCls('pivot-empty-body');
+					}
+					else if (div.hasCls('pivot-dim')) {
+						td.addCls('pivot-dim-body');
+					}
+					else if (div.hasCls('pivot-dimtotal')) {
+						td.addCls('pivot-dimtotal-body');
+					}
+					else if (div.hasCls('pivot-value')) {
+						td.addCls('pivot-value-body');
+					}
+					else if (div.hasCls('pivot-valuetotal')) {
+						td.addCls('pivot-valuetotal-body');
+					}
+					else if (div.hasCls('pivot-valuegrandtotal')) {
+						td.addCls('pivot-valuegrandtotal-body');
+					}					
+				}
+			};				
+			
 			initialize = function() {
 				var dimensionItems,
 					paramString;
@@ -965,6 +994,8 @@ PT.core.getUtils = function(pt) {
 							container.removeAll();
 							container.add(panel);
 						}
+
+						addClasses();
 					}
 				});
 
