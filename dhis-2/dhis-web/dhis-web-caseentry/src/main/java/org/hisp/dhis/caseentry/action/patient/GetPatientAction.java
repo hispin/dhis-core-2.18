@@ -166,10 +166,10 @@ public class GetPatientAction
         else
         {
             Program program = programService.getProgram( programId );
-            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
-                false );
+            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program, false );
 
             ProgramInstance programInstance = null;
+            
             if ( programInstances.iterator().hasNext() )
             {
                 programInstance = programInstances.iterator().next();
@@ -177,8 +177,12 @@ public class GetPatientAction
             
             PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
                 .getPatientRegistrationForm( program );
-            customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
-                .getDataEntryForm().getHtmlCode(), healthWorkers, patient, programInstance, i18n, format );
+            
+            if ( patientRegistrationForm != null )
+            {
+                customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
+                    .getDataEntryForm().getHtmlCode(), healthWorkers, patient, programInstance, i18n, format );
+            }
         }
 
         if ( customRegistrationForm == null )
@@ -207,6 +211,7 @@ public class GetPatientAction
             for ( PatientAttribute patientAttribute : patientAttributes )
             {
                 PatientAttributeGroup attributeGroup = patientAttribute.getPatientAttributeGroup();
+                
                 if ( attributeGroup != null )
                 {
                     if ( attributeGroupsMap.containsKey( attributeGroup ) )
