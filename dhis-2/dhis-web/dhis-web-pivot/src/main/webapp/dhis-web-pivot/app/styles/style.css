@@ -23,6 +23,7 @@
  * Grid
  * Button
  * Tooltip
+ * LoadMask
  *
  * PT Window
  * PT Label
@@ -91,30 +92,24 @@ td div div {
 	font-size: 12px;
 }
 
-.pivot-empty-body,
-td .pivot-empty-body {
+.pivot-empty-body {
 	background-color: #e6efff;
 }
 
-.pivot-dim-body,
-td .pivot-dim-body {
+.pivot-dim-body {
 	background-color: #dae6f8;
 }
-.pivot-dimtotal-body,
-td .pivot-dimtotal-body {
+.pivot-dimtotal-body {
 	background-color: #b0c4de;
 }
 
-.pivot-value-body,
-td .pivot-value-body {
+.pivot-value-body {
 	background-color: #fff;
 }
-.pivot-valuetotal-body,
-td .pivot-valuetotal-body {
+.pivot-valuetotal-body {
 	background-color: #eee;
 }
-.pivot-valuegrandtotal-body,
-td .pivot-valuegrandtotal-body {
+.pivot-valuegrandtotal-body {
 	background-color: #ccc;
 }
 
@@ -494,6 +489,26 @@ td .bad div {
 
 .x-tip-anchor {
 	border-bottom-color: #111;
+}
+
+
+/*----------------------------------------------------------------------------
+ * LoadMask
+ *--------------------------------------------------------------------------*/
+
+.x-mask-msg {
+	padding: 0;
+	border: 0 none;
+	background-image: none;
+	background-color: transparent;
+}
+.x-mask-msg .x-mask-loading {
+	border: 0 none;
+	background-color: #000;
+	color: #fff;
+	border-radius: 2px;
+	padding: 10px 9px 10px 25px;
+	opacity: 0.65;
 }
 
 

@@ -339,11 +339,20 @@ PT.core.getUtils = function(pt) {
 	};
 
 	util.mask = {
-		showMask: function(cmp, str) {
+		showMask: function(cmp, msg) {
+			cmp = cmp || pt.viewport;
+			msg = msg || 'Loading..';
+			
 			if (pt.viewport.mask) {
 				pt.viewport.mask.destroy();
 			}
-			pt.viewport.mask = new Ext.LoadMask(cmp, {msg: str});
+			pt.viewport.mask = new Ext.create('Ext.LoadMask', cmp, {
+				id: 'pt-loadmask',
+				shadow: false,
+				msg: msg,
+				style: 'box-shadow:0',
+				bodyStyle: 'box-shadow:0'
+			});
 			pt.viewport.mask.show();
 		},
 		hideMask: function() {
@@ -908,6 +917,11 @@ PT.core.getUtils = function(pt) {
 					bodyStyle: 'border:0 none',
 					defaults: {
 						baseCls: 'td'
+					},
+					listeners: {
+						resize: function(p) {
+							addTdClasses(p);
+						}
 					}
 				};
 
@@ -918,12 +932,12 @@ PT.core.getUtils = function(pt) {
 				return Ext.create('Ext.panel.Panel', config);
 			};
 
-			addClasses = function() {
-				var a = document.getElementsByTagName('td');
+			addTdClasses = function(panel) {
+				var items = panel.items.items;
 
-				for (var i = 0, td, div; i < a.length; i++) {
-					td = Ext.get(a[i]);
-					div = td.child('*');
+				for (var i = 0, td, div; i < items.length; i++) {
+					div = items[i].el;
+					td = div.parent('td');
 					
 					if (div.hasCls('pivot-empty')) {
 						td.addCls('pivot-empty-body');
@@ -942,13 +956,15 @@ PT.core.getUtils = function(pt) {
 					}
 					else if (div.hasCls('pivot-valuegrandtotal')) {
 						td.addCls('pivot-valuegrandtotal-body');
-					}					
+					}
 				}
 			};				
 			
 			initialize = function() {
 				var dimensionItems,
 					paramString;
+
+				pt.util.mask.showMask();
 
 				dimensionItems = getDimensionItemsFromSettings(settings);
 
@@ -963,36 +979,46 @@ PT.core.getUtils = function(pt) {
 						'Accept': 'application/json'
 					},
 					disableCaching: false,
+					failure: function() {
+						pt.util.mask.hideMask();
+						console.log(arguments);
+						alert('Data request failed');
+					},						
 					success: function(r) {
+						var panel,
+							items = [];
+
 						if (!validateResponse(r)) {
+							pt.util.mask.hideMask();
+							console.log(r);
+							alert('Data response invalid');
 							return;
 						}
 						
 						pt.response = r;
-
+//todo
 pt.response.metaData['PT59n8BQbqM'] = '(Outreach)';
 pt.response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 
 						extendResponse(dimensionItems);
-
 						pt.config = getDims();
-
 						extendRowDims(pt.config.rows);
 
-						var panel = createTablePanel(pt);
-
-						panel.add(getEmptyItem(pt));
-
-						panel.add(getColItems(pt));
-
-						panel.add(getRowItems(pt));
+						items.push(getEmptyItem(pt));						
+						items = items.concat(getColItems(pt));
+						items = items.concat(getRowItems(pt));
+						
+						panel = createTablePanel(pt);
+						panel.add(items);
 
 						if (!pt.el) {
-							container.removeAll();
+							container.removeAll(true);
 							container.add(panel);
 						}
+						
+						addTdClasses(panel);
 
-						addClasses();
+						pt.util.mask.hideMask();
 					}
 				});
 
