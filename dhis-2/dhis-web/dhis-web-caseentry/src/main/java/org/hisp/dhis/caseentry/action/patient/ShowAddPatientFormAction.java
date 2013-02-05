@@ -38,7 +38,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
@@ -188,8 +187,12 @@ public class ShowAddPatientFormAction
             Program program = programService.getProgram( programId );
             PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
                 .getPatientRegistrationForm( program );
-            customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
-                .getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
+            
+            if ( patientRegistrationForm != null )
+            {
+                customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
+                    .getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
+            }
         }
 
         if ( customRegistrationForm == null )
@@ -229,7 +232,6 @@ public class ShowAddPatientFormAction
                     }
                 }
             }
-
         }
 
         return SUCCESS;
