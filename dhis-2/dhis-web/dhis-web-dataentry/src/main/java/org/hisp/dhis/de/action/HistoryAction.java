@@ -115,12 +115,22 @@ public class HistoryAction
 
     private String dataElementId;
 
+    public String getDataElementId()
+    {
+        return dataElementId;
+    }
+
     public void setDataElementId( String dataElementId )
     {
         this.dataElementId = dataElementId;
     }
 
     private String optionComboId;
+
+    public String getOptionComboId()
+    {
+        return optionComboId;
+    }
 
     public void setOptionComboId( String optionComboId )
     {

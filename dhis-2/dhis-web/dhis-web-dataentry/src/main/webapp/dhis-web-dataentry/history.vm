@@ -1,8 +1,6 @@
 <script type="text/javascript">
-#if( $dataElementHistory )
-var currentDataElementId = $!{dataElementHistory.dataElement.id};
-var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
-#end
+var currentDataElementId = '$!{dataElementId}';
+var currentOptionComboId = '$!{optionComboId}';
 </script>
 
 #set( $width = 40 * $dataElementHistory.historyLength )

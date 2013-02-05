@@ -59,7 +59,7 @@
     #set( $dataEntryId = "${dataElement.uid}-${optionCombo.uid}-val" )
     #set( $commentId = "${dataElement.uid}-${optionCombo.uid}-comment" )
     #set( $greyedField = false )
-    #set( $greyedField = $greyedFields.get( "$dataElement.uid:$optionCombo.uid" ) )  
+    #set( $greyedField = $greyedFields.get( "${dataElement.uid}:${optionCombo.uid}" ) )  
     #if( $dataElement.type == "bool" )
     <td><select name="entryselect" id="$dataEntryId" tabindex="$tabIndex"#if( $greyedField || !$hasAccess ) disabled="disabled"#end>
       <option value="">[$i18n.getString( "no_value" )]</option>
@@ -67,7 +67,7 @@
       <option value="false">$i18n.getString( "no" )</option>
     </select><img name="commentlink" id="${commentId}"></td>
     #else
-    <td><input name="entryfield" id="${dataEntryId}" type="text" tabindex="$tabIndex"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
+    <td><input name="entryfield" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
     #end
     </td>
     #set( $tabIndex = $tabIndex + 1 )
