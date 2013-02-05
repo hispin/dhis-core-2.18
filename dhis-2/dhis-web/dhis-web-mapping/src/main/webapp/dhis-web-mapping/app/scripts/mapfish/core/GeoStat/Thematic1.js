@@ -238,7 +238,6 @@ mapfish.GeoStat.Thematic1 = OpenLayers.Class(mapfish.GeoStat, {
 			config = this.getLegendConfig();
 
         for (var key in config) {
-console.log(key, config[key]);
 			if (config.hasOwnProperty(key)) {
 				child = document.createElement("div");
 				child.style.height = "14px";

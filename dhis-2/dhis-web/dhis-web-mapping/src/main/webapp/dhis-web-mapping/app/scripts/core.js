@@ -1069,6 +1069,8 @@ GIS.core.LayerLoaderBoundary = function(gis, layer) {
 			}
 			return gis.conf.finals.widget.loadtype_organisationunit;
 		}
+
+        gis.olmap.mask.hide();
 	};
 
     loadOrganisationUnits = function(view) {
@@ -1284,6 +1286,8 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 				return gis.conf.finals.widget.loadtype_legend;
 			}
 		}
+
+        gis.olmap.mask.hide();
 	};
 
     loadOrganisationUnits = function(view) {
@@ -1572,6 +1576,8 @@ GIS.core.LayerLoaderFacility = function(gis, layer) {
 			}
 			return gis.conf.finals.widget.loadtype_legend;
 		}
+
+        gis.olmap.mask.hide();
 	};
 
     loadOrganisationUnits = function(view) {
