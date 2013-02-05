@@ -4248,9 +4248,10 @@ Ext.onReady( function() {
 		};
 
 		setGui = function(view) {
-
 			// Components
-			groupSet.setValue(view.organisationUnitGroupSet.id);
+            gis.store.groupSets.loadFn( function() {
+                groupSet.setValue(view.organisationUnitGroupSet.id);
+            });
 
 			gis.store.organisationUnitLevels.loadFn( function() {
 				level.setValue(view.organisationUnitLevel.id);
