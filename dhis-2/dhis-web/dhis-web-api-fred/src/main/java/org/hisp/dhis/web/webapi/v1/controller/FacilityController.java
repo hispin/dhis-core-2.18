@@ -65,6 +65,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -325,6 +326,12 @@ public class FacilityController
         HttpServletRequest request )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+
+        if ( organisationUnit == null )
+        {
+            throw new HttpServerErrorException( HttpStatus.NOT_FOUND );
+        }
+
         List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
         Facility facility = conversionService.convert( organisationUnit, Facility.class );
