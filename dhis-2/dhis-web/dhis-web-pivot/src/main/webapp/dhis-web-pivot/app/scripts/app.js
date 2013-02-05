@@ -646,7 +646,8 @@ Ext.onReady( function() {
 				}
 			});
 
-			indicator = Ext.create('Ext.panel.Panel', {
+			indicator = {
+				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">Indicators</div>', //i18n
 				hideCollapseTool: true,
 				getData: function() {
@@ -748,7 +749,7 @@ Ext.onReady( function() {
 						);
 					}
 				}
-			});
+			};
 
 			dataElementAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 				cls: 'pt-toolbar-multiselect-left',
@@ -829,7 +830,8 @@ Ext.onReady( function() {
 				}
 			});
 
-			dataElement = Ext.create('Ext.panel.Panel', {
+			dataElement = {
+				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">Data elements</div>', //i18n
 				hideCollapseTool: true,
 				getData: function() {
@@ -931,7 +933,7 @@ Ext.onReady( function() {
 						);
 					}
 				}
-			});
+			};
 
 			dataSetAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 				cls: 'pt-toolbar-multiselect-left',
@@ -1012,7 +1014,8 @@ Ext.onReady( function() {
 				}
 			});
 
-			dataSet = Ext.create('Ext.panel.Panel', {
+			dataSet = {
+				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">Reporting rates</div>', //i18n
 				hideCollapseTool: true,
 				getData: function() {
@@ -1051,17 +1054,19 @@ Ext.onReady( function() {
 						);
 					}
 				}
-			});
+			};
 
-			rewind = Ext.create('Ext.form.field.Checkbox', {
+			rewind = {
+				xtype: 'checkbox',
 				paramName: 'rewind',
 				boxLabel: 'Rewind one period',
 				xable: function() {
 					this.setDisabled(pt.util.checkbox.isAllFalse());
 				}
-			});
+			};
 
-			relativePeriod = Ext.create('Ext.panel.Panel', {
+			relativePeriod = {
+				xtype: 'panel',
 				hideCollapseTool: true,
 				autoScroll: true,
 				bodyStyle: 'border:0 none',
@@ -1248,7 +1253,7 @@ Ext.onReady( function() {
 						]
 					}
 				]
-			});
+			};
 
 			fixedPeriodAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 				cls: 'pt-toolbar-multiselect-left',
@@ -1333,7 +1338,8 @@ Ext.onReady( function() {
 				}
 			});
 
-			period = Ext.create('Ext.panel.Panel', {
+			period = {
+				xtype: 'panel',
 				title: '<div class="pt-panel-title-period">Periods</div>',
 				hideCollapseTool: true,
 				getData: function() {
@@ -1443,9 +1449,10 @@ Ext.onReady( function() {
 						);
 					}
 				}
-			});
+			};
 
-			organisationUnit = Ext.create('Ext.panel.Panel', {
+			organisationUnit = {
+				xtype: 'panel',
 				title: '<div class="pt-panel-title-organisationunit">Organisation units</div>', //i18n pt.i18n.organisation_units
 				hideCollapseTool: true,
 				collapsed: false,
@@ -1741,14 +1748,15 @@ Ext.onReady( function() {
 						//pt.cmp.dimension.organisationUnit.treepanel.selectRootIf();
 					}
 				}
-			});
+			};
 
-			options = Ext.create('Ext.panel.Panel', {
+			options = {
+				xtype: 'panel',
 				title: '<div class="pt-panel-title-options">Options</div>', //i18n pt.i18n.chart_options
 				hideCollapseTool: true,
 				cls: 'pt-accordion-options',
 				items: []
-			});
+			};
 
 			getOrganisationUnitGroupSetPanels = function() {
 				var	getAvailableStore,
@@ -1972,7 +1980,8 @@ Ext.onReady( function() {
 				}
 			};				
 
-			accordion = Ext.create('Ext.panel.Panel', {
+			accordion = {
+				xtype: 'panel',
 				bodyStyle: 'border-style:none; padding:3px;',
 				layout: 'fit',
 				items: [
@@ -2004,7 +2013,7 @@ Ext.onReady( function() {
 						pt.cmp.dimension.panel = this;
 					}
 				}
-			});
+			};
 
 			westRegion = Ext.create('Ext.panel.Panel', {
 				region: 'west',
@@ -2012,17 +2021,7 @@ Ext.onReady( function() {
 				collapsible: true,
 				collapseMode: 'mini',
 				width: pt.conf.layout.west_width,
-				items: accordion,
-                listeners: {
-                    collapse: function() {
-                        this.collapsed = true;
-                        pt.cmp.toolbar.resizewest.setText('>>>');
-                    },
-                    expand: function() {
-                        this.collapsed = false;
-                        pt.cmp.toolbar.resizewest.setText('<<<');
-                    }
-                }
+				items: accordion
 			});
 
 			centerRegion = Ext.create('Ext.panel.Panel', {
@@ -2034,6 +2033,16 @@ Ext.onReady( function() {
                         height: 26
                     },
 					items: [
+						{
+							text: '<<<',
+							handler: function(b) {
+								var text = b.getText();
+								text = text === '<<<' ? '>>>' : '<<<';
+								b.setText(text);
+								
+								westRegion.toggleCollapse();
+							}
+						},								
 						{
 							text: 'Settings',
 							handler: function() {
