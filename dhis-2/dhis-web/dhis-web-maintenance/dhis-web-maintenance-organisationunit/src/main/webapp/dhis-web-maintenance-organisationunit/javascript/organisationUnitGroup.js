@@ -30,7 +30,7 @@ function removeOrganisationUnitGroup( unitGroupId, unitGroupName )
 function openSymbolDialog()
 {
 	$( "#symbolDiv" ).dialog( {
-		height: 290,
+		height: 294,
 		width: 250,
 		modal: true,
 		resizable: false,
