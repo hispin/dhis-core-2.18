@@ -254,6 +254,7 @@ Ext.onReady( function() {
 
 			getData,
 			getStore,
+			getStoreKeys,
 			getCmpHeight,
 			getSetup,
 
@@ -269,10 +270,7 @@ Ext.onReady( function() {
 		getData = function() {
 			var groupSets = [],
 				data = [
-					{ id: 'dx', name: 'Data' },
-					{ id: 'coc', name: 'Categories' },
-					{ id: 'pe', name: 'Periods' },
-					{ id: 'ou', name: 'Organisation units' }
+					{id: 'coc', name: 'Categories'}
 				];
 
 			for (var i = 0; i < pt.init.ougs.length; i++) {
@@ -288,16 +286,40 @@ Ext.onReady( function() {
 		};
 
 		getStore = function(data) {
-			return Ext.create('Ext.data.Store', {
-				fields: ['id', 'name'],
-				data: data || []
-			});
+			var config = {};
+				
+			config.fields = ['id', 'name'];
+
+			if (data) {
+				config.data = data;
+			}
+
+			return Ext.create('Ext.data.Store', config);
 		};
 
+		getStoreKeys = function(store) {
+			var keys = [],
+				items = store.data.items;
+
+			if (items) {
+				for (var i = 0; i < items.length; i++) {
+					keys.push(items[i].data.id);
+				}
+			}
+			
+			return keys;
+		};				
+
 		dimensionStore = getStore(getData());
+
 		rowStore = getStore();
+		rowStore.add({id: 'pe', name: 'Periods'}); //i18n
+		
 		colStore = getStore();
+		colStore.add({id: 'dx', name: 'Data'}); //i18n
+		
 		filterStore = getStore();
+		filterStore.add({id: 'ou', name: 'Organisation units'}); //i18n
 
 		getCmpHeight = function() {
 			var size = dimensionStore.totalCount,
@@ -468,9 +490,9 @@ Ext.onReady( function() {
 
 		getSetup = function() {
 			return {
-				col: colStore.data.keys,
-				row: rowStore.data.keys,
-				filter: filterStore.data.keys
+				col: getStoreKeys(colStore),
+				row: getStoreKeys(rowStore),
+				filter: getStoreKeys(filterStore)
 			};
 		};
 
@@ -479,6 +501,7 @@ Ext.onReady( function() {
 			layout: 'fit',
 			bodyStyle: 'background-color:#fff; padding:8px 8px 3px',
 			closeAction: 'hide',
+			autoShow: true,
 			modal: true,
 			resizable: false,
 			getSetup: getSetup,
@@ -508,7 +531,7 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				afterrender: function(w) {
-					w.setPosition(w.getPosition()[0], 100);
+					w.setPosition(w.getPosition()[0], 100);					
 				}
 			}
 		});
@@ -2075,6 +2098,9 @@ Ext.onReady( function() {
 		pt.cmp = PT.app.getCmp();
 
 		pt.viewport = createViewport();
+
+		pt.viewport.settingsWindow = PT.app.SettingsWindow(pt);
+		pt.viewport.settingsWindow.hide();
 	};
 
 	Ext.Ajax.request({

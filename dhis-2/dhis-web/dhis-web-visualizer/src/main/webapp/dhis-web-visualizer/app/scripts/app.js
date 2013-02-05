@@ -1635,11 +1635,11 @@ Ext.onReady( function() {
 							f.relativePeriods.reportingQuarter = f.relativePeriods.lastQuarter;
 							delete f.relativePeriods.lastMonth;
 							delete f.relativePeriods.lastQuarter;
-	
+
 							DV.c.relativeperiod.rp = f.relativePeriods;
 							DV.c.relativeperiod.rewind = f.rewindRelativePeriods;
 						}
-						
+
 						if (f.periods) {
 							for (var i = 0; i < f.periods.length; i++) {
 								DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});

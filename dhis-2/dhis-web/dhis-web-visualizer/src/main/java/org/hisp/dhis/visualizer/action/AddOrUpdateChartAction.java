@@ -441,11 +441,12 @@ public class AddOrUpdateChartAction
                 chart.getDataSets().add( dataSetService.getDataSet( id ) );
             }
         }
+        
+        RelativePeriods rp = new RelativePeriods();
 
         if ( reportingMonth || last12Months || last3Months || reportingQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
             || lastYear || last5Years )
         {
-            RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( reportingMonth );
             rp.setLast12Months( last12Months );
             rp.setLast3Months( last3Months );
@@ -456,9 +457,9 @@ public class AddOrUpdateChartAction
             rp.setThisYear( thisYear );
             rp.setLastYear( lastYear );
             rp.setLast5Years( last5Years );
-
-            chart.setRelatives( rp );
         }
+
+        chart.setRelatives( rp );
 
         chart.setRewindRelativePeriods( rewind );
 

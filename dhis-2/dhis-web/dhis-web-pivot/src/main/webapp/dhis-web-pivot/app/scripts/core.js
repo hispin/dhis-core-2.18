@@ -785,8 +785,6 @@ PT.core.getUtils = function(pt) {
 					for (var j = 0, id, value, row; j < pt.config.cols.size; j++) {
 						id = cols.ids[j] + rows.ids[i];
 						value = response.idValueMap[id] ? parseFloat(response.idValueMap[id]) : 0;
-//console.log(value);
-						//value = Ext.isNumber(value) ? value : 0;
 						row.push(value);
 					}
 
@@ -972,13 +970,12 @@ PT.core.getUtils = function(pt) {
 						
 						pt.response = r;
 
-						pt.response.metaData['PT59n8BQbqM'] = '(Outreach)';
-						pt.response.metaData['pq2XI5kz2BY'] = '(Fixed)';
+pt.response.metaData['PT59n8BQbqM'] = '(Outreach)';
+pt.response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 
 						extendResponse(dimensionItems);
 
 						pt.config = getDims();
-						console.log(pt);
 
 						extendRowDims(pt.config.rows);
 
