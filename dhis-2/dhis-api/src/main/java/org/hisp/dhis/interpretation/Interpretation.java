@@ -68,7 +68,7 @@ public class Interpretation
     
     private Period period; // Applicable to report table and data set report
     
-    private OrganisationUnit organisationUnit; // Applicable to report table and data set report
+    private OrganisationUnit organisationUnit; // Applicable to chart, report table and data set report
     
     private String text;
 
@@ -84,9 +84,10 @@ public class Interpretation
         this.created = new Date();
     }
 
-    public Interpretation( Chart chart, String text )
+    public Interpretation( Chart chart, OrganisationUnit organisationUnit, String text )
     {
         this.chart = chart;
+        this.organisationUnit = organisationUnit;
         this.text = text;
         this.created = new Date();
     }

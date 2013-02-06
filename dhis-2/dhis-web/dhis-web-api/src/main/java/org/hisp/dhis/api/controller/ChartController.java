@@ -84,13 +84,16 @@ public class ChartController
     @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date date,
+        @RequestParam( value = "ou", required = false ) String ou,
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
         HttpServletResponse response ) throws IOException, I18nManagerException
     {
         Chart chart = chartService.getChart( uid );
 
-        JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, i18nManager.getI18nFormat() );
+        OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
+        
+        JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, unit, i18nManager.getI18nFormat() );
 
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
 
