@@ -82,9 +82,9 @@ public class InterpretationServiceTest
         chartA = new Chart( "ChartA" );
         chartService.addChart( chartA );
         
-        interpretationA = new Interpretation( chartA, "Interpration of chart A" );
-        interpretationB = new Interpretation( chartA, "Interpration of chart B" );
-        interpretationC = new Interpretation( chartA, "Interpration of chart C" );
+        interpretationA = new Interpretation( chartA, null, "Interpration of chart A" );
+        interpretationB = new Interpretation( chartA, null, "Interpration of chart B" );
+        interpretationC = new Interpretation( chartA, null, "Interpration of chart C" );
     }
     
     @Test
