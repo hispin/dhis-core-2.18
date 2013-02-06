@@ -119,6 +119,19 @@ and (
   or cast(substring(coordinates from '\[(.+?\..+?),.+?\..+?\]') as double precision) > 43
 );
 
+-- Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
+
+insert into usersetting (userinfoid, name, value)
+select userinfoid, 'dashboardConfig', (
+  select value
+  from usersetting
+  where userinfoid=7666) as value
+from userinfo
+where userinfoid not in (
+  select userinfoid
+  from usersetting
+  where name='dashboardConfig')
+
 -- Insert random org unit codes
 
 create function setrandomcode() returns integer AS $$
