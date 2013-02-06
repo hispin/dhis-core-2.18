@@ -70,6 +70,11 @@
 
 </div>
 
+<div id="loading-bar" class="hidden" align='center'>
+	<p>Validation rules are being processed, please wait ...<br>
+	<img src='../images/ajax-loader-circle.gif'></p>
+</div>
+
 <div id='validateProgramDiv'></div>
 
 <script>
