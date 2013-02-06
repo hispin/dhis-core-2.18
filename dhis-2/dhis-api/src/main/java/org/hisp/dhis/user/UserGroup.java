@@ -109,11 +109,6 @@ public class UserGroup
         return name.equals( userGroup.getName() );
     }
 
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
