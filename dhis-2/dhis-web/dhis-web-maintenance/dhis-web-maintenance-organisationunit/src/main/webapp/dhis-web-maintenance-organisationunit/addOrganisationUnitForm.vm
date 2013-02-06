@@ -11,7 +11,7 @@
 			'rules' : getValidationRules("organisationUnit")
 		});
 
-        checkValueIsExist("name", "validateOrganisationUnit.action");
+        checkValueIsExistWarning("name", "validateOrganisationUnit.action");
         checkValueIsExist("code", "validateOrganisationUnit.action");
         datePickerValid('openingDate', false);
 

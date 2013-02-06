@@ -1188,7 +1188,8 @@ function validation2( formId, submitHandler, kwargs )
 	var rules = kwargs["rules"];
 	var validator = jQuery( "#" + formId ).validate( {
 		meta: "validate",
-		errorElement: "span",
+        errorElement: "span",
+        warningElement: "span",
 		beforeValidateHandler: beforeValidateHandler,
 		submitHandler: submitHandler,
 		rules: rules,
@@ -1260,6 +1261,17 @@ function checkValueIsExist( inputId, url, params )
 {
 	jQuery("#" + inputId).rules("add",{
 		remote: {
+			url:url,
+			type:'post',
+			data:params
+		}
+	});
+}
+
+function checkValueIsExistWarning( inputId, url, params )
+{
+	jQuery("#" + inputId).rules("add",{
+		remoteWarning: {
 			url:url,
 			type:'post',
 			data:params

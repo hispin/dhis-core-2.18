@@ -1,3 +1,71 @@
+
+jQuery.validator.addMethod("remoteWarning", function(value, element, param) {
+    if ( this.optional(element) )
+        return "dependency-mismatch";
+
+    var previous = this.previousValue(element);
+    if (!this.settings.messages[element.name] )
+        this.settings.messages[element.name] = {};
+    previous.originalMessage = this.settings.messages[element.name].remote;
+    this.settings.messages[element.name].remote = previous.message;
+
+    param = typeof param == "string" && {url:param} || param;
+
+    if ( this.pending[element.name] ) {
+        return "pending";
+    }
+    if ( previous.old === value ) {
+        return previous.valid;
+    }
+
+    previous.old = value;
+    var validator = this;
+    this.startRequest(element);
+    var data = {};
+    data[element.name] = value;
+    $.ajax($.extend(true, {
+        url: param,
+        mode: "abort",
+        port: "validate" + element.name,
+        dataType: "json",
+        data: data,
+        success: function(response) {
+            validator.settings.messages[element.name].remote = previous.originalMessage;
+            var valid = response.response === 'success';
+
+            if ( valid ) {
+                console.log("is valid")
+                var submitted = validator.formSubmitted;
+                validator.prepareElement(element);
+                validator.formSubmitted = submitted;
+                validator.successList.push(element);
+                validator.showErrors();
+            } else {
+                var message = (previous.message = response.message || validator.defaultMessage( element, "remote" ));
+                alert(message);
+
+                var submitted = validator.formSubmitted;
+                validator.prepareElement(element);
+                validator.formSubmitted = submitted;
+                validator.successList.push(element);
+                validator.showErrors();
+
+                /*
+                var errors = {};
+                var message = (previous.message = response.message || validator.defaultMessage( element, "remote" ));
+
+                errors[element.name] = previous.message = $.isFunction(message) ? message(value) : message;
+                validator.showErrors(errors);
+                */
+            }
+
+            previous.valid = true;
+            validator.stopRequest(element, true);
+        }
+    }, param));
+    return "pending";
+});
+
 methods_en_GB = function() {
     jQuery.validator.addMethod("dateI", function(value, element, params) {
         var check = false;
