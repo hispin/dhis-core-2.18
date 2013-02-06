@@ -176,10 +176,10 @@ public class DefaultChartService
 
     public JFreeChart getJFreeChart( Chart chart, I18nFormat format )
     {
-        return getJFreeChart( chart, null, format );
+        return getJFreeChart( chart, null, null, format );
     }
 
-    public JFreeChart getJFreeChart( Chart chart, Date date, I18nFormat format )
+    public JFreeChart getJFreeChart( Chart chart, Date date, OrganisationUnit unit, I18nFormat format )
     {
         if ( chart.getRelatives() != null )
         {
@@ -190,12 +190,16 @@ public class DefaultChartService
             chart.setRelativePeriods( periodService.reloadPeriods( periods ) );
         }
 
-        User user = currentUserService.getCurrentUser();
+        User currentUser = currentUserService.getCurrentUser();
 
-        if ( user != null && user.getOrganisationUnit() != null )
+        if ( currentUser != null && chart.hasUserOrgUnit() && 
+            ( currentUser.getOrganisationUnit() != null || unit != null ) )
         {
-            OrganisationUnit unit = user.getOrganisationUnit();
-
+            if ( unit == null )
+            {
+                unit = currentUser.getOrganisationUnit();
+            }
+            
             if ( chart.isUserOrganisationUnit() )
             {
                 chart.getRelativeOrganisationUnits().add( unit );

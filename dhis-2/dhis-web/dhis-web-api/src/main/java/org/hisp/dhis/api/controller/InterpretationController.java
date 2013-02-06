@@ -50,6 +50,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,6 +87,9 @@ public class InterpretationController
     
     @Autowired
     private MappingService mappingService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
     
     @Override
     protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options )
@@ -127,7 +132,16 @@ public class InterpretationController
             return;
         }
         
-        Interpretation interpretation = new Interpretation( chart, text );
+        User user = currentUserService.getCurrentUser();
+
+        // ---------------------------------------------------------------------
+        // When chart has user org unit, store current user org unit with
+        // interpretation so chart will refer to the original org unit later
+        // ---------------------------------------------------------------------
+
+        OrganisationUnit unit = chart.hasUserOrgUnit() && user.hasOrganisationUnit() ? user.getOrganisationUnit() : null;
+        
+        Interpretation interpretation = new Interpretation( chart, unit, text );
         
         interpretationService.saveInterpretation( interpretation );
 
