@@ -426,8 +426,16 @@ function doComplete(isCreateEvent){
 	
 	if(getFieldValue('validCompleteOnly')=="true")
 	{
+		$('#loading-bar').show();
+		$('#loading-bar').dialog({
+			modal:true,
+			width: 330
+		});
+		$("#loading-bar").siblings(".ui-dialog-titlebar").hide(); 
+		
 		jQuery.get( 'validateProgram.action'
 			, function(html){ 
+				$( "#loading-bar" ).dialog( "close" );
 				$('#validateProgramDiv').html(html);
 				if(getFieldValue('violateValidation')=='true'){
 					$('#validateProgramDiv' ).dialog({
@@ -637,7 +645,17 @@ function entryFormContainerOnReady()
 
 function runValidation()
 {
-	$('#validateProgramDiv' ).load( 'validateProgram.action' ).dialog({
+	$('#loading-bar').show();
+	$('#loading-bar').dialog({
+		modal:true,
+		width: 330
+	});
+	$("#loading-bar").siblings(".ui-dialog-titlebar").hide(); 
+	
+	$('#validateProgramDiv' ).load( 'validateProgram.action',
+		function(){
+			$( "#loading-bar" ).dialog( "close" );
+		}).dialog({
 			title: i18n_violate_validation,
 			maximize: true, 
 			closable: true,
