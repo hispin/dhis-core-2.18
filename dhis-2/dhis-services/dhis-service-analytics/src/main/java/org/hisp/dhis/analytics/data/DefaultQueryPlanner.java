@@ -32,6 +32,7 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
@@ -89,11 +90,16 @@ public class DefaultQueryPlanner
             throw new IllegalQueryException( "At least one period must be specified as dimension or filter" );
         }
         
-        if ( params.getFilters() != null && params.getFilters().contains( new Dimension( INDICATOR_DIM_ID ) ) )
+        if ( params.getFilters().contains( new Dimension( INDICATOR_DIM_ID ) ) )
         {
             throw new IllegalQueryException( "Indicators cannot be specified as filter" );
         }
-                
+        
+        if ( params.getFilters().contains( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID ) ) )
+        {
+            throw new IllegalQueryException( "Category option combos cannot be specified as filter" );
+        }
+        
         //TODO check if any dimension occur more than once
     }
     

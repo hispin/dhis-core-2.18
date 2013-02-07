@@ -140,11 +140,13 @@ public class DefaultAnalyticsService
         
         queryPlanner.validate( params );
         
-        Grid grid = new ListGrid();
-
+        params.conform();
+        
         // ---------------------------------------------------------------------
         // Headers and meta-data
         // ---------------------------------------------------------------------
+
+        Grid grid = new ListGrid();
 
         grid.setMetaData( getUidNameMap( params ) );
         
