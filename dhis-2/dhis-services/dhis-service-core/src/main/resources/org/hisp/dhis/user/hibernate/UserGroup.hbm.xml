@@ -13,6 +13,8 @@
     </id>
     &identifiableProperties;
 
+    <property name="name" column="name" not-null="true" unique="true" length="230" />
+
     <set name="members" table="usergroupmembers">
       <key column="usergroupid" foreign-key="fk_usergroupmembers_usergroupid" />
       <many-to-many column="userid" class="org.hisp.dhis.user.User" foreign-key="fk_usergroup_userid" />

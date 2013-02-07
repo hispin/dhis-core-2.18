@@ -11,8 +11,8 @@
 	        'rules' : getValidationRules( "indicator" )
 	    } );
 
-	    checkValueIsExist( "name", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
-	    checkValueIsExist( "shortName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
+	    // checkValueIsExist( "name", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
+	    // checkValueIsExist( "shortName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	    checkValueIsExist( "code", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	} );
 </script>

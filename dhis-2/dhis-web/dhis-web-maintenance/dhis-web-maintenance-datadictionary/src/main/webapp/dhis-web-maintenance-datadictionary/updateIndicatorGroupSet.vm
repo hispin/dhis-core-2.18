@@ -17,7 +17,7 @@
 			}
 		});
 
-		checkValueIsExist( "name", "validateIndicatorGroupSet.action", {id: $indicatorGroupSet.id});			
+		// checkValueIsExist( "name", "validateIndicatorGroupSet.action", {id: $indicatorGroupSet.id});
 	});
 </script>
 
