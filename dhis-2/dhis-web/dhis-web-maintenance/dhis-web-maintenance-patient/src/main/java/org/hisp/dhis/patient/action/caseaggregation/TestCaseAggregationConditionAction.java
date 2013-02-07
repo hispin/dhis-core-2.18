@@ -33,6 +33,7 @@ import java.util.Date;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_COUNT;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -61,6 +62,13 @@ public class TestCaseAggregationConditionAction
         this.aggregationConditionService = aggregationConditionService;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -86,6 +94,13 @@ public class TestCaseAggregationConditionAction
         this.operator = operator;
     }
 
+    private Integer deSumId;
+
+    public void setDeSumId( Integer deSumId )
+    {
+        this.deSumId = deSumId;
+    }
+
     private String message;
 
     public String getMessage()
@@ -101,8 +116,11 @@ public class TestCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        CaseAggregationCondition aggCondition = new CaseAggregationCondition( "", operator, condition, null,
-            null );
+        CaseAggregationCondition aggCondition = new CaseAggregationCondition( "", operator, condition, null, null );
+        if ( deSumId != null )
+        {
+            aggCondition.setDeSum( dataElementService.getDataElement( deSumId ) );
+        }
 
         Collection<Program> programs = aggregationConditionService.getProgramsInCondition( condition );
 

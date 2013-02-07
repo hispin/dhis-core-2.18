@@ -47,9 +47,15 @@ public class CaseAggregationCondition
 
     public static final String AGGRERATION_COUNT = "COUNT";
 
-    public static final String AGGRERATION_SUM = "SUM";
+    public static final String AGGRERATION_SUM = "times";
     
-    public static final String AGGRERATION_SUM_VALUE = "SUM_VALUE";
+    public static final String AGGRERATION_SUM_VALUE = "sum";
+    
+    public static final String AGGRERATION_AVG_VALUE = "avg";
+    
+    public static final String AGGRERATION_AVG_MIN = "min";
+    
+    public static final String AGGRERATION_AVG_MAX = "max";
 
     public static final String OPERATOR_AND = "AND";
 

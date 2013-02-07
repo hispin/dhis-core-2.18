@@ -193,6 +193,8 @@ public class TableAlteror
             executeSql( "ALTER TABLE patientdatavalue DROP COLUMN organisationUnitid" );
             executeSql( "ALTER TABLE patientdatavalue DROP COLUMN providedByAnotherFacility" );
             executeSql( "ALTER TABLE patientdatavalue ADD PRIMARY KEY ( programstageinstanceid, dataelementid )" );
+            
+            executeSql( "update caseaggregationcondition set \"operator\"='times' where \"operator\"='SUM'" );
         }
         catch ( Exception ex )
         {
