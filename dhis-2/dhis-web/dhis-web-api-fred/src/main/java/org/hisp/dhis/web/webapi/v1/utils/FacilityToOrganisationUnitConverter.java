@@ -58,8 +58,6 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
     public OrganisationUnit convert( Facility facility )
     {
         OrganisationUnit organisationUnit = new OrganisationUnit();
-
-        organisationUnit.setUid( facility.getId() );
         organisationUnit.setName( facility.getName() );
 
         if ( facility.getName() != null && facility.getName().length() > 49 )
