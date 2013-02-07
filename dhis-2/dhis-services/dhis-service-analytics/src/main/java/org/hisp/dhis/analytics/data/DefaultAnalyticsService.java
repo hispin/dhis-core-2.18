@@ -144,8 +144,6 @@ public class DefaultAnalyticsService
         
         Integer cocIndex = params.getDeQueryCocIndex();
         
-        log.info( "Category option combo index: " + cocIndex );
-        
         // ---------------------------------------------------------------------
         // Headers and meta-data
         // ---------------------------------------------------------------------
@@ -211,8 +209,6 @@ public class DefaultAnalyticsService
                                 // ---------------------------------------------
 
                                 row.add( cocIndex, null );
-                                
-                                System.out.println("setting coc at indeex " + cocIndex);
                             }
                             
                             grid.addRow();
