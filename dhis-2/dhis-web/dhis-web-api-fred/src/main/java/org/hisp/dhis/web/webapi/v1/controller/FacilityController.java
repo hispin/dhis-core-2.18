@@ -500,8 +500,8 @@ public class FacilityController
         }
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
     {
         HttpHeaders headers = new HttpHeaders();
@@ -531,7 +531,7 @@ public class FacilityController
         if ( constraintViolations.isEmpty() )
         {
             OrganisationUnit organisationUnitUpdate = conversionService.convert( facility, OrganisationUnit.class );
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( facility.getId() );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUpdate.getUid() );
 
             if ( request.getHeader( "ETag" ) != null )
             {
@@ -599,8 +599,8 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('F_FRED_DELETE') or hasRole('ALL')")
     public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -619,7 +619,7 @@ public class FacilityController
     // EXCEPTION HANDLERS
     //--------------------------------------------------------------------------
 
-    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
+    @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
     public ResponseEntity<String> exceptionHandler( Exception ex )
     {
         return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
