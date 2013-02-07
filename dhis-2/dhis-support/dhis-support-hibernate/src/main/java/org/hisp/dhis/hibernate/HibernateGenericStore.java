@@ -366,7 +366,7 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public final Collection<T> getAll()
+    public final List<T> getAll()
     {
         Query query = sharingEnabled() ? getQueryAllACL() : getQueryAll();
 
@@ -516,8 +516,8 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<T> getAllLikeName( String name )
+    @SuppressWarnings("unchecked")
+    public List<T> getAllLikeName( String name )
     {
         Query query = sharingEnabled() ? getQueryAllLikeNameACL( name ) : getQueryAllLikeName( name );
 
@@ -549,7 +549,7 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public final Collection<T> getAllOrderedName()
+    public final List<T> getAllOrderedName()
     {
         Query query = sharingEnabled() ? getQueryAllOrderedNameACL() : getQueryAllOrderedName();
 
@@ -577,7 +577,7 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public Collection<T> getAllOrderedName( int first, int max )
+    public List<T> getAllOrderedName( int first, int max )
     {
         Query query = sharingEnabled() ? getQueryAllOrderedNameACL() : getQueryAllOrderedName();
 
@@ -620,7 +620,7 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public Collection<T> getAllLikeNameOrderedName( String name, int first, int max )
+    public List<T> getAllLikeNameOrderedName( String name, int first, int max )
     {
         Query query = sharingEnabled() ? getQueryAllLikeNameOrderedNameACL( name ) : getQueryAllLikeNameOrderedName( name );
 
@@ -839,7 +839,7 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public Collection<T> getByUser( User user )
+    public List<T> getByUser( User user )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where user = :user" );
         query.setEntity( "user", user );

@@ -28,10 +28,6 @@ package org.hisp.dhis.user.hibernate;
  */
 
 
-import java.util.Collection;
-import java.util.Iterator;
-
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -40,6 +36,10 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -54,8 +54,8 @@ public class HibernateUserStore
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<User> getAllOrderedName( int first, int max )
+    @SuppressWarnings("unchecked")
+    public List<User> getAllOrderedName( int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
@@ -65,8 +65,8 @@ public class HibernateUserStore
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<User> getAllLikeNameOrderedName( String name, int first, int max )
+    @SuppressWarnings("unchecked")
+    public List<User> getAllLikeNameOrderedName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
@@ -77,9 +77,9 @@ public class HibernateUserStore
         return criteria.list();
     }
 
-    public Collection<User> getUsersWithoutOrganisationUnit()
+    public List<User> getUsersWithoutOrganisationUnit()
     {
-        Collection<User> users = getAll();
+        List<User> users = getAll();
 
         Iterator<User> iterator = users.iterator();
 
@@ -94,8 +94,8 @@ public class HibernateUserStore
         return users;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<User> getUsersByPhoneNumber( String phoneNumber )
+    @SuppressWarnings("unchecked")
+    public List<User> getUsersByPhoneNumber( String phoneNumber )
     {
         String hql = "from User u where u.phoneNumber = :phoneNumber";
 
@@ -105,8 +105,8 @@ public class HibernateUserStore
         return query.list();
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits )
+    @SuppressWarnings("unchecked")
+    public List<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits )
     {
         String hql = "select distinct u from User u join u.organisationUnits o where o.id in (:ids)";
 
@@ -121,15 +121,14 @@ public class HibernateUserStore
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<User> getUsersByName( String name )
+    @SuppressWarnings("unchecked")
+    public List<User> getUsersByName( String name )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ),
             Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
-        
-        return criteria.list();  
+
+        return criteria.list();
     }
-    
 }

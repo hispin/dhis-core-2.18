@@ -27,7 +27,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -57,18 +56,18 @@ public interface GenericNameableObjectStore<T>
     int getCountEqShortNameNoAcl( String shortName );
 
     /**
-     * Retrieves a Collection of objects where the name is like the given name.
+     * Retrieves a List of objects where the name is like the given name.
      *
      * @param shortName the name.
-     * @return a Collection of objects.
+     * @return a List of objects.
      */
     List<T> getAllEqShortName( String shortName );
 
     /**
-     * Retrieves a Collection of objects where the name is like the given name (ignore case).
+     * Retrieves a List of objects where the name is like the given name (ignore case).
      *
      * @param shortName the name.
-     * @return a Collection of objects.
+     * @return a List of objects.
      */
     List<T> getAllEqShortNameIgnoreCase( String shortName );
 }

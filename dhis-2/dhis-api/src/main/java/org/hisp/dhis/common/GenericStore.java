@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -73,11 +74,11 @@ public interface GenericStore<T>
     T load( int id );
 
     /**
-     * Retrieves a Collection of all objects.
+     * Retrieves a List of all objects.
      *
-     * @return a Collection of all objects.
+     * @return a List of all objects.
      */
-    Collection<T> getAll();
+    List<T> getAll();
 
     /**
      * Removes the given object instance.
