@@ -249,7 +249,7 @@ public class DefaultCaseAggregationConditionService
             sql = sql + " AND pdv.programstageinstanceid in ( "
                 + convertCondition( aggregationCondition, orgunit, period ) + " ) ";
         }
-System.out.println("\n\n --- \n " + sql );
+
         Collection<Integer> ids = aggregationConditionStore.executeSQL( sql );
         return (ids == null) ? null : ids.iterator().next();
     }
@@ -313,16 +313,39 @@ System.out.println("\n\n --- \n " + sql );
         OrganisationUnit orgunit, Period period )
     {
         Collection<ProgramStageInstance> result = new HashSet<ProgramStageInstance>();
-        aggregationCondition.setOperator( AGGRERATION_SUM );
 
         // get params
         int orgunitId = orgunit.getId();
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
         String endDate = DateUtils.getMediumDateString( period.getEndDate() );
 
-        String sql = createSQL( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
-            orgunitId, startDate, endDate );
+        String operator = aggregationCondition.getOperator();
+        String sql = "";
+        if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT )
+            || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
+        {
+            aggregationCondition.setOperator( AGGRERATION_SUM );
+            sql = createSQL( aggregationCondition.getAggregationExpression(),
+                aggregationCondition.getOperator(), orgunitId, startDate, endDate );
+        }
+        else
+        {
+            sql = "SELECT psi.programstageinstanceid ";
+            sql += "FROM patientdatavalue pdv ";
+            sql += "    INNER JOIN programstageinstance psi  ";
+            sql += "    ON psi.programstageinstanceid = pdv.programstageinstanceid ";
+            sql += "WHERE executiondate >='" + DateUtils.getMediumDateString( period.getStartDate() ) + "'  ";
+            sql += "    AND executiondate <='" + DateUtils.getMediumDateString( period.getEndDate() )
+                + "' AND pdv.dataelementid=" + aggregationCondition.getDeSum().getId();
 
+            if ( aggregationCondition.getAggregationExpression() != null
+                && !aggregationCondition.getAggregationExpression().isEmpty() )
+            {
+                sql = sql + " AND pdv.programstageinstanceid in ( "
+                    + convertCondition( aggregationCondition, orgunit, period ) + " ) ";
+            }
+        }
+        
         Collection<Integer> stageInstanceIds = aggregationConditionStore.executeSQL( sql );
 
         for ( Integer stageInstanceId : stageInstanceIds )
