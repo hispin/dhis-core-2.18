@@ -103,30 +103,11 @@ public class ValidateOrganisationUnitGroupAction
         {
             List<OrganisationUnitGroup> organisationUnitGroups = organisationUnitGroupService.getOrganisationUnitGroupByName( name );
 
-            if ( !organisationUnitGroups.isEmpty() && id == null )
+            if ( !organisationUnitGroups.isEmpty() && (id == null || organisationUnitGroups.get( 0 ).getId() != id) )
             {
-                message = i18n.getString( "name_exists" );
+                message = i18n.getString( "name_in_use" );
 
                 return ERROR;
-            }
-            else if ( !organisationUnitGroups.isEmpty() )
-            {
-                boolean found = false;
-
-                for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroups )
-                {
-                    if ( organisationUnitGroup.getId() == id )
-                    {
-                        found = true;
-                    }
-                }
-
-                if ( !found )
-                {
-                    message = i18n.getString( "name_exists" );
-
-                    return ERROR;
-                }
             }
         }
 
