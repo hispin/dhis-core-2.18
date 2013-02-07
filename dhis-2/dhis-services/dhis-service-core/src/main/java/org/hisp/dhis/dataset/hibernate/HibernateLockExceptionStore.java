@@ -45,7 +45,7 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -93,11 +93,11 @@ public class HibernateLockExceptionStore
     }
 
     @Override
-    public Collection<LockException> getCombinations()
+    public List<LockException> getCombinations()
     {
         final String sql = "select distinct datasetid, periodid from lockexception";
 
-        final Collection<LockException> lockExceptions = new ArrayList<LockException>();
+        final List<LockException> lockExceptions = new ArrayList<LockException>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
@@ -135,7 +135,7 @@ public class HibernateLockExceptionStore
 
     @Override
     @SuppressWarnings("unchecked")
-    public Collection<LockException> getAllOrderedName( int first, int max )
+    public List<LockException> getAllOrderedName( int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.setFirstResult( first );

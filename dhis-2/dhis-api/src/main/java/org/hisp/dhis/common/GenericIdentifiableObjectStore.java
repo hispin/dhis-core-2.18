@@ -64,34 +64,34 @@ public interface GenericIdentifiableObjectStore<T>
     T getByCode( String code );
 
     /**
-     * Retrieves a Collection of all objects (sorted on name).
+     * Retrieves a List of all objects (sorted on name).
      *
-     * @return a Collection of all objects.
+     * @return a List of all objects.
      */
-    Collection<T> getAllOrderedName();
+    List<T> getAllOrderedName();
 
     /**
      * Retrieves the objects determined by the given first result and max result.
      *
      * @param first the first result object to return.
      * @param max   the max number of result objects to return.
-     * @return collection of objects.
+     * @return list of objects.
      */
-    Collection<T> getAllOrderedName( int first, int max );
+    List<T> getAllOrderedName( int first, int max );
 
     /**
-     * Retrieves a Collection of objects where the name is equal the given name.
+     * Retrieves a List of objects where the name is equal the given name.
      *
      * @param name the name.
-     * @return a Collection of objects.
+     * @return a List of objects.
      */
     List<T> getAllEqName( String name );
 
     /**
-     * Retrieves a Collection of objects where the name is equal the given name (ignore case).
+     * Retrieves a List of objects where the name is equal the given name (ignore case).
      *
      * @param name the name.
-     * @return a Collection of objects.
+     * @return a List of objects.
      */
     List<T> getAllEqNameIgnoreCase( String name );
 
@@ -107,12 +107,12 @@ public interface GenericIdentifiableObjectStore<T>
     int getCountEqNameNoAcl( String name );
 
     /**
-     * Retrieves a Collection of objects where the name is like the given name.
+     * Retrieves a List of objects where the name is like the given name.
      *
      * @param name the name.
-     * @return a Collection of objects.
+     * @return a List of objects.
      */
-    Collection<T> getAllLikeName( String name );
+    List<T> getAllLikeName( String name );
 
     /**
      * Retrieves the objects determined by the given first result and max result.
@@ -120,7 +120,7 @@ public interface GenericIdentifiableObjectStore<T>
      *
      * @param first the first result object to return.
      * @param max   the max number of result objects to return.
-     * @return collection of objects.
+     * @return List of objects.
      */
     List<T> getAllOrderedLastUpdated( int first, int max );
 
@@ -131,9 +131,9 @@ public interface GenericIdentifiableObjectStore<T>
      * @param name  the name which result object names must be like.
      * @param first the first result object to return.
      * @param max   the max number of result objects to return.
-     * @return collection of objects.
+     * @return List of objects.
      */
-    Collection<T> getAllLikeNameOrderedName( String name, int first, int max );
+    List<T> getAllLikeNameOrderedName( String name, int first, int max );
 
     /**
      * Gets the count of objects which name is like the given name.
@@ -144,9 +144,9 @@ public interface GenericIdentifiableObjectStore<T>
     int getCountLikeName( String name );
 
     /**
-     * Retrieves a list of objects referenced by the given collection of uids.
+     * Retrieves a list of objects referenced by the given List of uids.
      *
-     * @param uids a collection of uids.
+     * @param uids a List of uids.
      * @return a list of objects.
      */
     List<T> getByUid( Collection<String> uids );
@@ -190,7 +190,7 @@ public interface GenericIdentifiableObjectStore<T>
      * @param user the user.
      * @return list of objects.
      */
-    Collection<T> getByUser( User user );
+    List<T> getByUser( User user );
 
     /**
      * Retrieves objects which are accessible to the given user, which includes
