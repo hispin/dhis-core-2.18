@@ -29,9 +29,13 @@ package org.hisp.dhis.organisationunit.hibernate;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.AuditLogUtil;
+import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -39,7 +43,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,13 +65,31 @@ public class HibernateOrganisationUnitStore
     extends HibernateIdentifiableObjectStore<OrganisationUnit>
     implements OrganisationUnitStore
 {
+    private static final Log log = LogFactory.getLog( HibernateOrganisationUnitStore.class );
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
 
+    @Override
+    public OrganisationUnit getByUuid( String uuid )
+    {
+        OrganisationUnit object = getObject( Restrictions.eq( "uuid", uuid ) );
+
+        if ( !SharingUtils.canRead( currentUserService.getCurrentUser(), object ) )
+        {
+            AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
+            throw new AccessDeniedException( "You do not have read access to object with uuid " + uuid );
+        }
+
+        return object;
+    }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getAllOrganisationUnitsByStatus( boolean active )
     {
         Query query = getQuery( "from OrganisationUnit o where o.active is :active" );
@@ -80,7 +105,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getAllOrganisationUnitsByStatusLastUpdated( boolean active, Date lastUpdated )
     {
         return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).add( Restrictions.eq( "active", active ) ).list();
@@ -93,21 +118,21 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
         return getQuery( "from OrganisationUnit o where o.parent is null" ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
         return getQuery( "from OrganisationUnit o where o.groups.size = 0" ).list();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query,
         Collection<OrganisationUnitGroup> groups, boolean limit )
     {
@@ -210,7 +235,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getBetweenByStatus( boolean status, int first, int max )
     {
         Criteria criteria = getCriteria().add( Restrictions.eq( "active", status ) );
@@ -221,7 +246,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getBetweenByLastUpdated( Date lastUpdated, int first, int max )
     {
         Criteria criteria = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) );
@@ -232,7 +257,7 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max )
     {
         Criteria criteria = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).add( Restrictions.eq( "active", status ) );

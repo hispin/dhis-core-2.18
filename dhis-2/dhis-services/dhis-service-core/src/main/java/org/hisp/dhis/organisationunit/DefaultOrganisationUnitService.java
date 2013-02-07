@@ -225,6 +225,11 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getByUid( uid );
     }
 
+    public OrganisationUnit getOrganisationUnitByUuid( String uuid )
+    {
+        return organisationUnitStore.getByUid( uuid );
+    }
+
     public List<OrganisationUnit> getOrganisationUnitByName( String name )
     {
         return organisationUnitStore.getAllEqName( name );

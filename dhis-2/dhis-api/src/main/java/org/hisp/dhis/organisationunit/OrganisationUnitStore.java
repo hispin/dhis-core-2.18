@@ -50,6 +50,14 @@ public interface OrganisationUnitStore
     // -------------------------------------------------------------------------
 
     /**
+     * Retrieves the object with the given uid.
+     *
+     * @param uuid the uid.
+     * @return the object with the given uid.
+     */
+    OrganisationUnit getByUuid( String uuid );
+
+    /**
      * Returns all OrganisationUnits by status.
      *
      * @param active Get active or inactive
@@ -144,7 +152,7 @@ public interface OrganisationUnitStore
      * Retrieves the objects determined by the given first result and max result
      * which status is like the current status, and lastUpdated is larger or equal.
      *
-     * @param status the name which result object names must be like.
+     * @param status      the name which result object names must be like.
      * @param lastUpdated the name which result object names must be like.
      * @param first       the first result object to return.
      * @param max         the max number of result objects to return.
