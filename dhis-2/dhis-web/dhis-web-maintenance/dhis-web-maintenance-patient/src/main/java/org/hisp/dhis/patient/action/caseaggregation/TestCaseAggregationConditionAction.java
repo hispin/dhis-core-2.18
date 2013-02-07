@@ -101,7 +101,7 @@ public class TestCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        CaseAggregationCondition aggCondition = new CaseAggregationCondition( "", AGGRERATION_COUNT, condition, null,
+        CaseAggregationCondition aggCondition = new CaseAggregationCondition( "", operator, condition, null,
             null );
 
         Collection<Program> programs = aggregationConditionService.getProgramsInCondition( condition );

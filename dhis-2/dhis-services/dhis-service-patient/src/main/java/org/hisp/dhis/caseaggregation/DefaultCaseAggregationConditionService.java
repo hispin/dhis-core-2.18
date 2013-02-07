@@ -29,6 +29,7 @@ package org.hisp.dhis.caseaggregation;
 
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_COUNT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM_VALUE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY;
@@ -226,15 +227,31 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-        
-        Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
+        String operator = aggregationCondition.getOperator();
 
-        if ( patientIds == null )
+        if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT )
+            || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
-            return null;
+            Collection<Integer> ids = aggregationConditionStore.executeSQL( sql );
+            return (ids == null) ? null : ids.size();
         }
 
-        return calValue( patientIds, aggregationCondition.getOperator() );
+        String sumSql = "SELECT sum( cast( pdv.value as DOUBLE PRECISION ) ) ";
+        sumSql += "FROM patientdatavalue pdv ";
+        sumSql += "    INNER JOIN programstageinstance psi  ";
+        sumSql += "    ON psi.programstageinstanceid = pdv.programstageinstanceid ";
+        sumSql += "WHERE executiondate >= '" + DateUtils.getMediumDateString( period.getStartDate() ) + "'  ";
+        sumSql += "    AND executiondate>='" + DateUtils.getMediumDateString( period.getStartDate() )
+            + "' AND pdv.dataelementid=" + aggregationCondition.getDeSum().getId();
+       
+        if ( !sql.trim().isEmpty() )
+        {
+            sql = sumSql + " AND pdv.programstageinstanceid in ( " + sql + " ) ";
+        }
+        
+        Collection<Integer> ids = aggregationConditionStore.executeSQL( sql );
+
+        return (ids == null) ? null : ids.iterator().next();
     }
 
     @Override
@@ -328,7 +345,7 @@ public class DefaultCaseAggregationConditionService
         {
             String match = matcher.group();
             match = match.replaceAll( "[\\[\\]]", "" );
-            
+
             String[] info = match.split( SEPARATOR_OBJECT );
 
             if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
@@ -388,8 +405,8 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
-                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getDisplayName()
-                        + "]" );
+                    matcher.appendReplacement( description,
+                        "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getDisplayName() + "]" );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
                 {
@@ -785,7 +802,7 @@ public class DefaultCaseAggregationConditionService
             from = "FROM programstageinstance as psi "
                 + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid ";
         }
-
+        
         sql += from + " WHERE pd.dataelementid=" + dataElementId + "  AND psi.organisationunitid=" + orgunitId
             + "             AND psi.executionDate>='" + startDate + "' AND psi.executionDate <= '" + endDate + "'";
 
@@ -820,7 +837,7 @@ public class DefaultCaseAggregationConditionService
         String where = "WHERE pi.organisationunitid=" + orgunitId + "  AND pi.registrationdate>= '" + startDate + "' "
             + "AND pi.registrationdate <= '" + endDate + "'";
 
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM ) || operator.equals( AGGRERATION_SUM_VALUE ) )
         {
             sql = "SELECT psi.programstageinstanceid ";
             from = "FROM programstageinstance psi inner join programinstance pi "
@@ -863,13 +880,13 @@ public class DefaultCaseAggregationConditionService
         String sql = "SELECT distinct(pi.patientid) ";
         String from = "FROM programinstance pi INNER JOIN programstageinstance psi "
             + "ON psi.programinstanceid=pi.programinstanceid ";
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM ) || operator.equals( AGGRERATION_SUM_VALUE ) )
         {
             sql = "SELECT psi.programstageinstance ";
             from = "FROM programstageinstance psi ";
         }
-        
-        from +=  "inner join patient p on p.patientid=pi.patientid ";
+
+        from += "inner join patient p on p.patientid=pi.patientid ";
 
         sql += from + "WHERE executionDate>='" + startDate + "' and executionDate<='" + endDate + "' and "
             + propertyName;
@@ -881,7 +898,7 @@ public class DefaultCaseAggregationConditionService
     {
         String sql = "SELECT pi.patientid FROM programinstance as pi ";
 
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM ) || operator.equals( AGGRERATION_SUM_VALUE ) )
         {
             sql = "SELECT psi.programstageinstanceid FROM programinstance as pi "
                 + "INNER JOIN programstageinstance psi ON psi.programinstanceid=pi.programinstanceid ";
@@ -895,9 +912,9 @@ public class DefaultCaseAggregationConditionService
         String endDate )
     {
         String sql = "SELECT distinct(pi.patientid) FROM programinstance as pi "
-        	   + "inner join patient psi on psi.patientid=pi.patientid ";
+            + "inner join patient psi on psi.patientid=pi.patientid ";
 
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM )|| operator.equals( AGGRERATION_SUM_VALUE )  )
         {
             sql = "SELECT psi.programstageinstanceid FROM programinstance as pi "
                 + "INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
@@ -912,7 +929,7 @@ public class DefaultCaseAggregationConditionService
     {
         String select = "SELECT distinct(pi.patientid) ";
 
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM ) || operator.equals( AGGRERATION_SUM_VALUE ) )
         {
             select = "SELECT psi.programstageinstanceid ";
         }
@@ -928,7 +945,7 @@ public class DefaultCaseAggregationConditionService
     {
         String select = "SELECT distinct(pi.patientid) ";
 
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM ) || operator.equals( AGGRERATION_SUM_VALUE ) )
         {
             select = "SELECT psi.programstageinstanceid ";
         }
@@ -955,7 +972,7 @@ public class DefaultCaseAggregationConditionService
     {
         String select = "SELECT distinct(pi.patientid) ";
 
-        if ( operator.equals( AGGRERATION_SUM ) )
+        if ( operator.equals( AGGRERATION_SUM ) || operator.equals( AGGRERATION_SUM_VALUE ) )
         {
             select = "SELECT psi.programstageinstanceid ";
         }

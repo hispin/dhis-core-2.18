@@ -181,6 +181,7 @@ function getParams()
 function getPatientDataElements()
 {
 	clearListById( 'dataElements' );
+	clearListById( 'deSumId' );
 	var programStageId = getFieldValue('programStageId');
 	
 	jQuery.getJSON( 'getPatientDataElements.action',
@@ -197,9 +198,14 @@ function getPatientDataElements()
 				disable('programStageProperty');
 			}
 			var dataElements = jQuery('#dataElements');
+			var deSumId = jQuery('#deSumId');
 			for ( i in json.dataElements )
 			{ 
 				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+				if( json.dataElements[i].type=='int')
+				{
+					deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+				}
 			}
 			
 		});
@@ -265,7 +271,7 @@ function showCaseAggregationDetails( caseAggregationId )
 		setInnerHTML( 'aggregationDataElementField', json.caseAggregation.aggregationDataElement );
 		setInnerHTML( 'optionComboField', json.caseAggregation.optionCombo );	
 		setInnerHTML( 'aggregationExpressionField', json.caseAggregation.aggregationExpression );
-		
+		setInnerHTML( 'deSumField', json.caseAggregation.deSum );
 		showDetails();
 	});
 }
@@ -386,4 +392,14 @@ function getCaseAggConditionByDataset()
 function showAddCaseAggregationForm()
 {
 	window.location.href='showAddCaseAggregationForm.action?dataSetId=' + getFieldValue( 'dataSetId' );
+}
+
+function operatorOnchange(operator)
+{
+	if(operator=='SUM_VALUE'){
+		enable('deSumId');
+	}
+	else{
+		disable('deSumId');
+	}
 }
