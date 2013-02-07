@@ -133,8 +133,8 @@ public class DataQueryParams
 
     /**
      * Returns the index of the category option combo dimension as it will appear
-     * in the data value query for data elements. Returns null if this query
-     * does not contain the category option combo dimension.
+     * in the data element query. Returns null if this query does not contain 
+     * the category option combo dimension.
      */
     public Integer getDeQueryCocIndex()
     {
