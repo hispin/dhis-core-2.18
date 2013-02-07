@@ -111,7 +111,7 @@ public class DimensionOption
         {
             for ( DimensionOption option : options )
             {
-                optionUids.add( option.getOption().getUid() );
+                optionUids.add( option != null ? option.getOption().getUid() : null );
             }
         }
         

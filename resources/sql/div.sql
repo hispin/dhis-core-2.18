@@ -125,7 +125,8 @@ insert into usersetting (userinfoid, name, value)
 select userinfoid, 'dashboardConfig', (
   select value
   from usersetting
-  where userinfoid=7666) as value
+  where userinfoid=7666
+  and name='dashboardConfig') as value
 from userinfo
 where userinfoid not in (
   select userinfoid

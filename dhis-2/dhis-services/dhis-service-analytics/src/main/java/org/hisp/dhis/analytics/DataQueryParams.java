@@ -130,6 +130,23 @@ public class DataQueryParams
             removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
         }
     }
+
+    /**
+     * Returns the index of the category option combo dimension as it will appear
+     * in the data value query for data elements. Returns null if this query
+     * does not contain the category option combo dimension.
+     */
+    public Integer getDeQueryCocIndex()
+    {
+        List<Dimension> list = new ArrayList<Dimension>( dimensions );
+                
+        list.remove( new Dimension( INDICATOR_DIM_ID ) );
+        list.remove( new Dimension( DATASET_DIM_ID ) );
+        
+        int index = list.indexOf( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID ) );
+        
+        return index == -1 ? null : index;
+    }
     
     /**
      * Creates a list of dimensions for use as headers. Will replace any of
