@@ -122,11 +122,17 @@ public class DataQueryParams
     /**
      * Creates a list of dimensions for use as headers. Will replace any of
      * the indicator, data element or data set dimensions with the common
-     * data x dimension.
+     * data x dimension. If the category option combo dimension is given but
+     * not the data element dimension, the former will be removed.
      */
     public List<Dimension> getHeaderDimensions()
     {
         List<Dimension> list = new ArrayList<Dimension>( dimensions );
+        
+        if ( list.contains( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID ) ) && !list.contains( new Dimension( DATAELEMENT_DIM_ID ) ) )
+        {
+            list.remove( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID ) );
+        }
         
         ListIterator<Dimension> iter = list.listIterator();
         
