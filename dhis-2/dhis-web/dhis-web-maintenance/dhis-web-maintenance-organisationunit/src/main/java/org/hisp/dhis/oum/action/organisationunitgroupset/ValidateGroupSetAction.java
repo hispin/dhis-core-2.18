@@ -32,7 +32,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
 import org.hisp.dhis.system.util.ListUtils;
 
 import java.util.ArrayList;
@@ -116,30 +115,11 @@ public class ValidateGroupSetAction
         {
             List<OrganisationUnitGroupSet> organisationUnitGroupSets = organisationUnitGroupService.getOrganisationUnitGroupSetByName( name );
 
-            if ( !organisationUnitGroupSets.isEmpty() && id == null )
+            if ( !organisationUnitGroupSets.isEmpty() && (id == null || organisationUnitGroupSets.get( 0 ).getId() != id) )
             {
-                message = i18n.getString( "name_exists" );
+                message = i18n.getString( "name_in_use" );
 
                 return ERROR;
-            }
-            else if ( !organisationUnitGroupSets.isEmpty() )
-            {
-                boolean found = false;
-
-                for ( OrganisationUnitGroupSet organisationUnitGroupSet : organisationUnitGroupSets )
-                {
-                    if ( organisationUnitGroupSet.getId() == id )
-                    {
-                        found = true;
-                    }
-                }
-
-                if ( !found )
-                {
-                    message = i18n.getString( "name_exists" );
-
-                    return ERROR;
-                }
             }
         }
 

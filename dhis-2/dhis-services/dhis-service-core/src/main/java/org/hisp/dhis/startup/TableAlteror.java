@@ -508,8 +508,8 @@ public class TableAlteror
 
         // remove name/shortName uniqueness
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_name_key" );
-        executeSql( "ALTER TABLE orgunitgroup DROP CONSTRAINT orgunitgroup_name_key" );
-        executeSql( "ALTER TABLE orgunitgroupset DROP CONSTRAINT orgunitgroupset_name_key" );
+        executeSql( "ALTER TABLE orgunitgroup ADD CONSTRAINT orgunitgroup_name_key UNIQUE (name)" );
+        executeSql( "ALTER TABLE orgunitgroupset ADD CONSTRAINT orgunitgroupset_name_key UNIQUE (name)" );
 
         executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_name_key" );
         executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_shortname_key" );
