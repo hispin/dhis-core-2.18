@@ -301,6 +301,7 @@ function testCaseAggregationCondition()
 	$.postUTF8( 'testCaseAggregationCondition.action', 
 		{ 
 			condition: getFieldValue('aggregationCondition'),
+			deSumId: getFieldValue('deSumId'),
 			operator: operator
 		},function (json)
 		{
@@ -396,7 +397,8 @@ function showAddCaseAggregationForm()
 
 function operatorOnchange(operator)
 {
-	if(operator=='SUM_VALUE'){
+	if( operator=='sum' || operator=='avg' 
+		|| operator=='min' || operator=='max' ){
 		enable('deSumId');
 	}
 	else{

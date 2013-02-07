@@ -52,8 +52,11 @@
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
 			<input type="radio" id="operator" name="operator" value="COUNT" checked onchange='operatorOnchange(this.value)'>$i18n.getString('number_of_patients')<br>
-			<input type="radio" id="operator" name="operator" value="SUM" onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_visits')<br>
-			<input type="radio" id="operator" name="operator" value="SUM_VALUE" onchange='operatorOnchange(this.value)'> $i18n.getString('sum_dataelement_value')
+			<input type="radio" id="operator" name="operator" value="times" onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_visits')<br>
+			<input type="radio" id="operator" name="operator" value="sum" onchange='operatorOnchange(this.value)'> $i18n.getString('sum_dataelement_value')<br>
+			<input type="radio" id="operator" name="operator" value="avg" onchange='operatorOnchange(this.value)'> $i18n.getString('avg_dataelement_value')<br>
+			<input type="radio" id="operator" name="operator" value="min" onchange='operatorOnchange(this.value)'> $i18n.getString('min_dataelement_value')<br>
+			<input type="radio" id="operator" name="operator" value="max" onchange='operatorOnchange(this.value)'> $i18n.getString('max_dataelement_value')
 		</td>
 	</tr>
 	
@@ -82,7 +85,7 @@
 	
 	<tr>
 		<td>
-			<label for="deSumId">$i18n.getString( "data_element_for_summary" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
+			<label for="deSumId">$i18n.getString( "data_element_for_sum_avg" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
 		<td>
 			<select id="deSumId" name="deSumId" disabled class="{validate:{required:true}}"></select>
