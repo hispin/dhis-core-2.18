@@ -46,7 +46,6 @@ import java.util.Map;
 public class Facility
 {
     // Internal system identifier
-    @Null(groups = Create.class)
     @NotNull(groups = Update.class)
     @Length(min = 36, max = 36)
     private String id;

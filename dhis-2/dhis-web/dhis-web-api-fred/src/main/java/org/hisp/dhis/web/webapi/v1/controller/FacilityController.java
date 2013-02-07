@@ -72,6 +72,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,15 +83,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-controller-" + FredController.PREFIX )
-@RequestMapping( FacilityController.RESOURCE_PATH )
-@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
+@Controller(value = "facility-controller-" + FredController.PREFIX)
+@RequestMapping(FacilityController.RESOURCE_PATH)
+@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
@@ -236,13 +238,13 @@ public class FacilityController
         return facility;
     }
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
-    public String readFacilities( Model model, @RequestParam( required = false ) Boolean active,
-        @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
-        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields,
-        @RequestParam( value = "limit", required = false ) Integer limit,
-        @RequestParam( value = "offset", required = false, defaultValue = "0" ) Integer offset,
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String readFacilities( Model model, @RequestParam(required = false) Boolean active,
+        @RequestParam(value = "updatedSince", required = false) Date lastUpdated,
+        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
+        @RequestParam(value = "fields", required = false) String fields,
+        @RequestParam(value = "limit", required = false) Integer limit,
+        @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
         HttpServletRequest request )
     {
         Facilities facilities = new Facilities();
@@ -319,10 +321,10 @@ public class FacilityController
         return FredController.PREFIX + "/layout";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String readFacility( Model model, @PathVariable String id,
-        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields,
+        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
+        @RequestParam(value = "fields", required = false) String fields,
         HttpServletRequest request )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -398,10 +400,15 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.POST )
-    @PreAuthorize( "hasRole('F_FRED_CREATE') or hasRole('ALL')" )
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('F_FRED_CREATE') or hasRole('ALL')")
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws Exception
     {
+        if ( facility.getId() == null )
+        {
+            facility.setId( UUID.randomUUID().toString() );
+        }
+
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
@@ -420,10 +427,6 @@ public class FacilityController
             if ( organisationUnitService.getOrganisationUnit( organisationUnit.getUid() ) != null )
             {
                 return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that UID already exists." ), headers, HttpStatus.CONFLICT );
-            }
-            else if ( organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() ) != null )
-            {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "An object with that name already exists." ), headers, HttpStatus.CONFLICT );
             }
             else if ( organisationUnit.getCode() != null && organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() ) != null )
             {
@@ -465,7 +468,7 @@ public class FacilityController
         return builder.toString();
     }
 
-    protected void checkUidIdentifier( Facility facility, String id )
+    protected void checkUidIdentifier( Facility facility, String id ) throws IOException
     {
         Identifier identifier = new Identifier();
 
@@ -501,13 +504,29 @@ public class FacilityController
     @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
+        // getId == null is not legal, but will be catched by bean validation
+        if ( facility.getId() != null )
+        {
+            String uuid = facility.getId();
+
+            try
+            {
+                UUID.fromString( uuid );
+            }
+            catch ( IllegalArgumentException ignored )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "Bad id: (does not match expected UUID string format)" ),
+                    headers, HttpStatus.PRECONDITION_FAILED );
+            }
+        }
+
         checkUidIdentifier( facility, id );
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Update.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
         if ( constraintViolations.isEmpty() )
         {
