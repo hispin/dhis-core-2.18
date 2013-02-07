@@ -3,7 +3,7 @@
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
   [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
->
+  >
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.program.Program" table="program">
@@ -11,8 +11,9 @@
     <id name="id" column="programid">
       <generator class="native" />
     </id>
+    &identifiableProperties;
 
-	&identifiableProperties;
+    <property name="name" column="name" not-null="true" unique="true" length="230" />
 
     <property name="description" type="text" />
 
@@ -29,39 +30,41 @@
 
     <set name="organisationUnits" table="program_organisationunits">
       <key column="programid" foreign-key="fk_program_organisationunits_programid" />
-      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_program_organisationunits_organisationunitid" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        foreign-key="fk_program_organisationunits_organisationunitid" />
     </set>
 
     <set name="patientValidationCriteria" table="program_criteria">
       <key column="programid" foreign-key="fk_program_criteria_programid" />
-      <many-to-many column="validationcriteriaid" class="org.hisp.dhis.validation.ValidationCriteria" foreign-key="fk_program_criteria_validationcriteriaid" />
+      <many-to-many column="validationcriteriaid" class="org.hisp.dhis.validation.ValidationCriteria"
+        foreign-key="fk_program_criteria_validationcriteriaid" />
     </set>
 
     <property name="type" />
-    
+
     <property name="displayProvidedOtherFacility" />
-    
+
     <property name="displayIncidentDate" />
-    
+
     <list name="patientIdentifierTypes" table="program_patientIdentifierTypes">
-		<key column="programid" foreign-key="fk_program_patientIdentifierTypes_programid" />
-		<list-index column="sort_order" base="0" />
-		<many-to-many column="patientidentifiertypeid" class="org.hisp.dhis.patient.PatientIdentifierType" 
-			foreign-key="fk_program_patientIdentifierTypes_patientidentifiertypeid" />
-	</list>
-	
-	<list name="patientAttributes" table="program_patientAttributes">
-		<key column="programid" foreign-key="fk_program_patientAttributes_programid" />
-      	<list-index column="sort_order" base="0" />
-		<many-to-many column="patientattributeid" class="org.hisp.dhis.patient.PatientAttribute" 
-			foreign-key="fk_program_patientAttributes_patientattributeid" />
-	</list>
-    
+      <key column="programid" foreign-key="fk_program_patientIdentifierTypes_programid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="patientidentifiertypeid" class="org.hisp.dhis.patient.PatientIdentifierType"
+        foreign-key="fk_program_patientIdentifierTypes_patientidentifiertypeid" />
+    </list>
+
+    <list name="patientAttributes" table="program_patientAttributes">
+      <key column="programid" foreign-key="fk_program_patientAttributes_programid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="patientattributeid" class="org.hisp.dhis.patient.PatientAttribute"
+        foreign-key="fk_program_patientAttributes_patientattributeid" />
+    </list>
+
     <property name="generatedByEnrollmentDate" />
-    
+
     <property name="ignoreOverdueEvents" />
-    
+
     <property name="blockEntryForm" />
-   
+
   </class>
 </hibernate-mapping>

@@ -12,7 +12,7 @@
             'rules' : getValidationRules( "indicatorGroup" )
         } );
 
-        checkValueIsExist( "name", "validateIndicatorGroup.action" );
+        // checkValueIsExist( "name", "validateIndicatorGroup.action" );
 
         var nameField = document.getElementById( 'name' );
         nameField.select();

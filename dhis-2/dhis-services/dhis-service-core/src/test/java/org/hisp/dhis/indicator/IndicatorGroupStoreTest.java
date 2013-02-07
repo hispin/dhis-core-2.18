@@ -27,58 +27,45 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Collection;
-
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
+@SuppressWarnings("unchecked")
 public class IndicatorGroupStoreTest
     extends DhisSpringTest
 {
     private GenericIdentifiableObjectStore<IndicatorGroup> indicatorGroupStore;
-    
+
     @Override
     public void setUpTest()
     {
         indicatorGroupStore = (GenericIdentifiableObjectStore<IndicatorGroup>) getBean( "org.hisp.dhis.indicator.IndicatorGroupStore" );
     }
-    
+
     @Test
     public void testAddIndicatorGroup()
         throws Exception
-    {        
+    {
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
         IndicatorGroup groupC = new IndicatorGroup( "IndicatorGroupA" );
-        
+
         int idA = indicatorGroupStore.save( groupA );
         int idB = indicatorGroupStore.save( groupB );
-        
-        try
-        {
-            indicatorGroupStore.save( groupC );
-            fail( "Expected unique constraint exception" );
-        }
-        catch ( Exception ex )
-        {
-        }
 
         groupA = indicatorGroupStore.get( idA );
         assertNotNull( groupA );
         assertEquals( idA, groupA.getId() );
-        
+
         groupB = indicatorGroupStore.get( idB );
         assertNotNull( groupB );
         assertEquals( idB, groupB.getId() );
@@ -92,7 +79,7 @@ public class IndicatorGroupStoreTest
         int idA = indicatorGroupStore.save( groupA );
         groupA = indicatorGroupStore.get( idA );
         assertEquals( groupA.getName(), "IndicatorGroupA" );
-        
+
         groupA.setName( "IndicatorGroupB" );
         indicatorGroupStore.update( groupA );
         groupA = indicatorGroupStore.get( idA );
@@ -106,13 +93,13 @@ public class IndicatorGroupStoreTest
     {
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        
+
         int idA = indicatorGroupStore.save( groupA );
         int idB = indicatorGroupStore.save( groupB );
-        
+
         assertNotNull( indicatorGroupStore.get( idA ) );
         assertNotNull( indicatorGroupStore.get( idB ) );
-        
+
         indicatorGroupStore.delete( groupA );
 
         assertNull( indicatorGroupStore.get( idA ) );
@@ -121,7 +108,7 @@ public class IndicatorGroupStoreTest
         indicatorGroupStore.delete( groupB );
 
         assertNull( indicatorGroupStore.get( idA ) );
-        assertNull( indicatorGroupStore.get( idB ) );        
+        assertNull( indicatorGroupStore.get( idB ) );
     }
 
     @Test
@@ -130,12 +117,12 @@ public class IndicatorGroupStoreTest
     {
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        
+
         indicatorGroupStore.save( groupA );
         indicatorGroupStore.save( groupB );
-        
+
         Collection<IndicatorGroup> groups = indicatorGroupStore.getAll();
-        
+
         assertEquals( groups.size(), 2 );
         assertTrue( groups.contains( groupA ) );
         assertTrue( groups.contains( groupB ) );
@@ -147,17 +134,17 @@ public class IndicatorGroupStoreTest
     {
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        
+
         int idA = indicatorGroupStore.save( groupA );
         int idB = indicatorGroupStore.save( groupB );
-        
+
         assertNotNull( indicatorGroupStore.get( idA ) );
         assertNotNull( indicatorGroupStore.get( idB ) );
-        
+
         groupA = indicatorGroupStore.getByName( "IndicatorGroupA" );
         assertNotNull( groupA );
         assertEquals( groupA.getId(), idA );
-        
+
         IndicatorGroup groupC = indicatorGroupStore.getByName( "IndicatorGroupC" );
         assertNull( groupC );
     }
