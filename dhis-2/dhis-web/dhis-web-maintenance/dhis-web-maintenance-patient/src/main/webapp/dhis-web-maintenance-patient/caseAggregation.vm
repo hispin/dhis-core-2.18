@@ -52,6 +52,7 @@
                 <p><label class="bold">$i18n.getString( "operator" ):</label><br><span id="operatorField"></span></p>
                 <p><label class="bold">$i18n.getString( "aggregation_data_element" ):</label><br><span id="aggregationDataElementField"></span></p>
 				<p><label class="bold">$i18n.getString( "option_combo" ):</label><br><span id="optionComboField"></span></p>
+                <p><label class="bold">$i18n.getString( "data_element_for_summary" ):</label><br><span id="deSumField"></span></p>
                 <p><label class="bold">$i18n.getString( "aggregation_expression" ):</label><br><span id="aggregationExpressionField"></span></p>
 			</div>
 

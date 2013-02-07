@@ -49,8 +49,9 @@
 	<tr>
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" #if($caseAggregation.operator=="COUNT") checked #end >  $i18n.getString('number_of_patients')
-			<input type="radio" id="operator" name="operator" value="SUM" #if($caseAggregation.operator=="SUM") checked #end > $i18n.getString('number_of_visits')
+			<input type="radio" id="operator" name="operator" value="COUNT" onchange='operatorOnchange(this.value)' #if($caseAggregation.operator=="COUNT") checked #end >  $i18n.getString('number_of_patients')<br>
+			<input type="radio" id="operator" name="operator" value="SUM" onchange='operatorOnchange(this.value)' #if($caseAggregation.operator=="SUM") checked #end > $i18n.getString('number_of_visits')<br>
+			<input type="radio" id="operator" name="operator" value="SUM_VALUE" onchange='operatorOnchange(this.value)' #if($caseAggregation.operator=="SUM_VALUE") checked #end > $i18n.getString('sum_dataelement_value')
 		</td>
 	</tr>
 	<tr>
@@ -73,6 +74,19 @@
 		</td>
 		<td>
 			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();"></select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="deSumId">$i18n.getString( "data_element_for_summary" )  <em title="$i18n.getString( "required" )" class="required">*</em></label>
+		</td>
+		<td>
+			<select id="deSumId" name="deSumId" class="{validate:{required:true}}" #if( $caseAggregation.deSum ) #else disabled #end>
+				#if( $caseAggregation.deSum )
+				<option value='$caseAggregation.deSum.id'>$caseAggregation.deSum.displayName</option>
+				#end
+			</select>
 		</td>
 	</tr>
 	

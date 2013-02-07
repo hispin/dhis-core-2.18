@@ -23,6 +23,10 @@
 
     <many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="optionComboid"
       foreign-key="fk_caseaggregationcondition_categoryoptioncomboid" />
+      
+      <many-to-one name="deSum" class="org.hisp.dhis.dataelement.DataElement" column="deSum"
+      foreign-key="fk_caseaggregationcondition_deSum" />
+      
 
   </class>
 </hibernate-mapping>

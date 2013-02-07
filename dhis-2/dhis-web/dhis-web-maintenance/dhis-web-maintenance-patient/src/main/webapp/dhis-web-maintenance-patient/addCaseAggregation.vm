@@ -33,7 +33,7 @@
 			<select id="dataSets" name="dataSets" onChange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $dataSet in $dataSets)
-					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end>$dataSet.displayNamew</option>
+					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end>$dataSet.displayName</option>
 				#end
 			</select>
 		</td>				
@@ -51,8 +51,9 @@
 	<tr>
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" checked >$i18n.getString('number_of_patients')
-			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString('number_of_visits')
+			<input type="radio" id="operator" name="operator" value="COUNT" checked onchange='operatorOnchange(this.value)'>$i18n.getString('number_of_patients')<br>
+			<input type="radio" id="operator" name="operator" value="SUM" onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_visits')<br>
+			<input type="radio" id="operator" name="operator" value="SUM_VALUE" onchange='operatorOnchange(this.value)'> $i18n.getString('sum_dataelement_value')
 		</td>
 	</tr>
 	
@@ -76,6 +77,15 @@
 		</td>
 		<td>
 			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();"></select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="deSumId">$i18n.getString( "data_element_for_summary" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
+		</td>
+		<td>
+			<select id="deSumId" name="deSumId" disabled class="{validate:{required:true}}"></select>
 		</td>
 	</tr>
 	
