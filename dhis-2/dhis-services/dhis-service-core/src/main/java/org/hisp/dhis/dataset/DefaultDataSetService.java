@@ -27,19 +27,6 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
@@ -50,6 +37,16 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -135,14 +132,14 @@ public class DefaultDataSetService
         return dataSet;
     }
 
-    public DataSet getDataSetByName( String name )
+    public List<DataSet> getDataSetByName( String name )
     {
-        return i18n( i18nService, dataSetStore.getByName( name ) );
+        return new ArrayList<DataSet>( i18n( i18nService, dataSetStore.getAllEqName( name ) ) );
     }
 
-    public DataSet getDataSetByShortName( String shortName )
+    public List<DataSet> getDataSetByShortName( String shortName )
     {
-        return i18n( i18nService, dataSetStore.getByShortName( shortName ) );
+        return new ArrayList<DataSet>( i18n( i18nService, dataSetStore.getAllEqShortName( shortName ) ) );
     }
 
     public DataSet getDataSetByCode( String code )
