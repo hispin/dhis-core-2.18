@@ -8,6 +8,7 @@
 		});
 		
 		jQuery("#searchObjectId [value=prg]").remove();
+		registration = false;
 		hideById('addPatientBtn');
 		disable('advancedSearchBtn');
 	});	

@@ -94,7 +94,7 @@ public class ShowAddPatientFormAction
     {
         this.patientRegistrationFormService = patientRegistrationFormService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -162,6 +162,13 @@ public class ShowAddPatientFormAction
         return customRegistrationForm;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -184,14 +191,14 @@ public class ShowAddPatientFormAction
         }
         else
         {
-            Program program = programService.getProgram( programId );
+            program = programService.getProgram( programId );
             PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
                 .getPatientRegistrationForm( program );
-            
+
             if ( patientRegistrationForm != null )
             {
-                customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
-                    .getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
+                customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
+                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
             }
         }
 
