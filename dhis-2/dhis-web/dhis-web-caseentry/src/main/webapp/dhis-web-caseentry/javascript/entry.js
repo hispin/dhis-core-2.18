@@ -206,7 +206,7 @@ function getNextEntryField( field )
 function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 {
     var dataElementId = dataElementId_;
-	var providedElsewhereId = getFieldValue('programStageId') + "_" + dataElementId_ + "_facility";
+	var providedElsewhereId = getFieldValue('programStageId') + "-" + dataElementId_ + "-facility";
 	var value = value_;
 	var type = dataElementType_;
     var resultColor = resultColor_;
@@ -655,14 +655,16 @@ function runValidation()
 	$('#validateProgramDiv' ).load( 'validateProgram.action',
 		function(){
 			$( "#loading-bar" ).dialog( "close" );
-		}).dialog({
-			title: i18n_violate_validation,
-			maximize: true, 
-			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 450
+			
+			$('#validateProgramDiv' ).dialog({
+				title: i18n_violate_validation,
+				maximize: true, 
+				closable: true,
+				modal:true,
+				overlay:{background:'#000000', opacity:0.1},
+				width: 800,
+				height: 450
+			});
 		});
 }
 

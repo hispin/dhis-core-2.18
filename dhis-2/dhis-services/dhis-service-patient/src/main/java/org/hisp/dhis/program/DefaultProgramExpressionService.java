@@ -32,15 +32,15 @@ import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_OBJECT;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -125,16 +125,16 @@ public class DefaultProgramExpressionService
 
     @Override
     public String getProgramExpressionValue( ProgramExpression programExpression,
-        ProgramStageInstance programStageInstance, I18nFormat format )
+        ProgramStageInstance programStageInstance, Map<String, String> patientDataValueMap )
     {
         String value = "";
         if ( ProgramExpression.DUE_DATE.equals( programExpression.getExpression() ) )
         {
-            value = format.formatDate( programStageInstance.getDueDate() );
+            value = DateUtils.getMediumDateString( programStageInstance.getDueDate() );
         }
         else if ( ProgramExpression.REPORT_DATE.equals( programExpression.getExpression() ) )
         {
-            value = format.formatDate( programStageInstance.getExecutionDate() );
+            value = DateUtils.getMediumDateString( programStageInstance.getExecutionDate() );
         }
         else
         {
@@ -144,16 +144,16 @@ public class DefaultProgramExpressionService
             Matcher matcher = pattern.matcher( programExpression.getExpression() );
             while ( matcher.find() )
             {
-                String match = matcher.group();
+                String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( SEPARATOR_OBJECT )[1];
 
-                PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
+                String dataValue = patientDataValueMap.get( key );
 
                 if ( dataValue == null )
                 {
                     return null;
                 }
 
-                matcher.appendReplacement( description, dataValue.getValue() );
+                matcher.appendReplacement( description, dataValue );
             }
 
             matcher.appendTail( description );
@@ -189,7 +189,8 @@ public class DefaultProgramExpressionService
                 return INVALID_CONDITION;
             }
 
-            matcher.appendReplacement( description, programStage.getDisplayName() + SEPARATOR_ID + dataElement.getName() );
+            matcher.appendReplacement( description,
+                programStage.getDisplayName() + SEPARATOR_ID + dataElement.getName() );
         }
 
         matcher.appendTail( description );
@@ -197,22 +198,4 @@ public class DefaultProgramExpressionService
         return description.toString();
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private PatientDataValue getPatientDataValue( String expression, ProgramStageInstance programStageInstance )
-    {
-        expression = expression.replaceAll( "[\\[\\]]", "" );
-
-        String[] info = expression.split( SEPARATOR_OBJECT );
-        String[] ids = info[1].split( SEPARATOR_ID );
-
-        int dataElementId = Integer.parseInt( ids[1] );
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-        PatientDataValue dataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
-
-        return dataValue;
-    }
 }
