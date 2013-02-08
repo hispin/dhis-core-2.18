@@ -38,7 +38,7 @@ function selectTableForm()
 
     selectAllById( "selectedPeriods" );
     selectAllById( "selectedOrganisationUnits" );
-    
+
     if ( isNotEmpty( "selectedOrganisationUnitGroups" ) )
     {
         selectAllById( "selectedOrganisationUnitGroups" );
@@ -108,7 +108,7 @@ function isTrue( elementId )
 
 function organisationUnitReportParamsChecked()
 {
-    return ( isChecked( "paramGrandParentOrganisationUnit" ) 
+    return ( isChecked( "paramGrandParentOrganisationUnit" )
     	|| isChecked( "paramParentOrganisationUnit" ) || isChecked( "paramOrganisationUnit" ) );
 }
 
@@ -170,7 +170,7 @@ function toggleRegression()
 
         disable( "doOrganisationUnits" );
         disable( "doPeriods" );
-    } 
+    }
     else
     {
         enable( "doOrganisationUnits" );

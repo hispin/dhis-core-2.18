@@ -510,16 +510,14 @@ public class TableAlteror
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_name_key" );
         executeSql( "ALTER TABLE orgunitgroup ADD CONSTRAINT orgunitgroup_name_key UNIQUE (name)" );
         executeSql( "ALTER TABLE orgunitgroupset ADD CONSTRAINT orgunitgroupset_name_key UNIQUE (name)" );
-
         executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_name_key" );
         executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_shortname_key" );
         executeSql( "ALTER TABLE indicatorgroup DROP CONSTRAINT indicatorgroup_name_key" );
         executeSql( "ALTER TABLE indicatorgroupset DROP CONSTRAINT indicatorgroupset_name_key" );
-
         executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_name_key" );
         executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_shortname_key" );
-
         executeSql( "ALTER TABLE document DROP CONSTRAINT document_name_key" );
+        executeSql( "ALTER TABLE reporttable DROP CONSTRAINT reporttable_name_key" );
 
         log.info( "Tables updated" );
     }
