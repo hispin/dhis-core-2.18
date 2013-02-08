@@ -3369,11 +3369,12 @@ Ext.onReady( function() {
 			listConfig: {loadMask: false},
 			store: indicatorsByGroupStore,
 			listeners: {
-				select: function() {
+				select: function(cb) {
 					Ext.Ajax.request({
 						url: gis.baseUrl + gis.conf.url.path_api + 'indicators/' + this.getValue() + '.json?links=false',
 						success: function(r) {
 							r = Ext.decode(r.responseText);
+
 							if (Ext.isDefined(r.legendSet) && r.legendSet && r.legendSet.id) {
 								legendType.setValue(gis.conf.finals.widget.legendtype_predefined);
 								legendTypeToggler(gis.conf.finals.widget.legendtype_predefined);

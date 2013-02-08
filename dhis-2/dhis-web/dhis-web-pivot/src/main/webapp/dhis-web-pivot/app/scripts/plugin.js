@@ -1,10 +1,15 @@
-/*
+//format
 
-DHIS.getPivot({
-	de: [aaa, bbb, ccc],
-	pe: [201201, 201202],
-	ou: [111, 222, 333],
-	userOrganisationUnit: false,
-	userOrganisationUnitChildren: false,
-	categories: false
+DHIS.getPivotTable({
+	col: [
+		{name: 'dx', items: ['Uvn6LCg7dVU', 'OdiHJayrsKo', 'sB79w2hiLp8']},
+		{name: 'coc'}
+	],
+	row: [
+		{name: 'pe', items: ['201201', '201202', '201203']},
+		{name: 'Bpx0589u8y0', items: ['MAs88nJc9nL', 'PVLOW4bCshG']}
+	],
+	filter: [
+		{name: 'ou', items: ['ImspTQPwCqd']}
+	]
 });
