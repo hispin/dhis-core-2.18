@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,8 +139,16 @@ public class DefaultProgramValidationService
         // Get patient-data-values
         // ---------------------------------------------------------------------
 
-        Collection<PatientDataValue> patientDataValues = patientDataValueService
-            .getPatientDataValues( programStageInstance );
+        Program program = programStageInstance.getProgramInstance().getProgram();
+        Collection<PatientDataValue> patientDataValues = null;
+        if ( program.isSingleEvent() )
+        {
+            patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
+        }
+        else
+        {
+            patientDataValues = patientDataValueService.getPatientDataValues(  programStageInstance.getProgramInstance().getProgramStageInstances() );
+        }
 
         Map<String, String> patientDataValueMap = new HashMap<String, String>( patientDataValues.size() );
 
