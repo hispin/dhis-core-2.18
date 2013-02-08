@@ -51,14 +51,9 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;"/>
-			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" />
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>			
-			<input type="submit" class="button" value="$i18n.getString( 'add_patient_and_add_new' )" style="width:260px;" onclick="isContinue=true;"/>
+			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:80px;" />
+			<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:160px;" onclick="isContinue=true;"/>
+			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" style="width:80px;" />
 		</td>
 	</tr>
 </table>

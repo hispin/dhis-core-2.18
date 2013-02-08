@@ -472,21 +472,26 @@ function checkDuplicateCompleted( messageElement, divname )
 }
 
 function enableBtn(){
-	var programIdAddPatient = getFieldValue('programIdAddPatient');
-	if( programIdAddPatient!='' ){
-		enable('listPatientBtn');
-		enable('advancedSearchBtn');
-		jQuery('#advanced-search :input').each( function( idx, item ){
-			enable(this.id);
-		});
-	}
-	else
+	if(registration==undefined || !registration)
 	{
-		disable('listPatientBtn');
-		disable('advancedSearchBtn');
-		jQuery('#advanced-search :input').each( function( idx, item ){
-			disable(this.id);
-		});
+		var programIdAddPatient = getFieldValue('programIdAddPatient');
+		if( programIdAddPatient!='' ){
+			enable('listPatientBtn');
+			enable('addPatientBtn');
+			enable('advancedSearchBtn');
+			jQuery('#advanced-search :input').each( function( idx, item ){
+				enable(this.id);
+			});
+		}
+		else
+		{
+			disable('listPatientBtn');
+			disable('addPatientBtn');
+			disable('advancedSearchBtn');
+			jQuery('#advanced-search :input').each( function( idx, item ){
+				disable(this.id);
+			});
+		}
 	}
 }
 

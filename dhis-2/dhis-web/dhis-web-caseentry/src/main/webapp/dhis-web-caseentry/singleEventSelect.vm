@@ -9,6 +9,7 @@
 		disable('advancedSearchBtn');
 		hideById('removeEventLink');
 		setFieldValue('isSearchByProgram', true);
+		registration = false;
 		$("#searchObjectId option[value='prg']").remove();
 	});
 </script>

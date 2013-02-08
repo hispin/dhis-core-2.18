@@ -104,6 +104,7 @@
 	unSave = false;
 	isAjax = true;
 	contentDiv = '';
+	registration = true;
 	
 	// ----------------------------------------------------------------
 	// Search field

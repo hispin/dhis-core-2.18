@@ -219,6 +219,27 @@
 			#end
 		#end
 	#end
+	
+	<!-- PROGRAM ENROLLMENT -->
+	
+	#if($!program)
+		<tr><td>&nbsp;</td></tr>
+		<tr><th colspan="2" class="heading-column">$i18n.getString( "program_enrollment" )</th></tr>
+		<tr>
+			<tr>
+			<td class='text-column'><label for="enrollmentDate">$encoder.htmlEncode($program.dateOfEnrollmentDescription) <em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
+			<td colspan='2' class='input-column'><input type="text" id="enrollmentDate" name="enrollmentDate" class="{validate:{required:true}}"></td>
+		</tr>
+		#if($!program.displayIncidentDate=='true')
+			<tr>
+				<td class='text-column'><label for="dateOfIncident">$encoder.htmlEncode($program.dateOfIncidentDescription) <em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
+				<td colspan='2' class='input-column'><input type="text" id="dateOfIncident" name="dateOfIncident"  class="{validate:{required:true}}"></td>
+			</tr>
+			<script>datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );</script>
+		#else
+			<script>datePickerValid( 'enrollmentDate', false );</script>
+		#end
+	#end
 
 #end
 
