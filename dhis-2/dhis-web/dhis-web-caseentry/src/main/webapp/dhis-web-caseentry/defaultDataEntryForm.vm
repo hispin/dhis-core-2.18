@@ -72,7 +72,7 @@
 		</td> 
 		#if( $programStage.program.displayProvidedOtherFacility=='true' )
 		<td style='width:20px;' align='center'>
-			#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
+			#set( $id = $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-facility' )
 			#if( $programStageDataElement.allowProvidedElsewhere == 'true')
 			<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($patientDataValue.providedElsewhere == 'true') checked #end />
 			#end

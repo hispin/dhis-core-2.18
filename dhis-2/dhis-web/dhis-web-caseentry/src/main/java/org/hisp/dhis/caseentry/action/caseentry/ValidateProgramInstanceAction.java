@@ -70,7 +70,7 @@ public class ValidateProgramInstanceAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<ProgramValidationResult> programValidationResults;
+    private Collection<ProgramValidationResult> programValidationResults;
 
     private Map<Integer, String> leftsideFormulaMap = new HashMap<Integer, String>();
 
@@ -105,7 +105,7 @@ public class ValidateProgramInstanceAction
         return rightsideFormulaMap;
     }
 
-    public List<ProgramValidationResult> getProgramValidationResults()
+    public Collection<ProgramValidationResult> getProgramValidationResults()
     {
         return programValidationResults;
     }
@@ -135,9 +135,14 @@ public class ValidateProgramInstanceAction
         // Check validations for dataelement into multi-stages
         // ---------------------------------------------------------------------
 
-        runProgramValidation( programValidationService.getProgramValidation( programStageInstance.getProgramStage() ),
-            programStageInstance );
+        // runProgramValidation( programValidationService.getProgramValidation(
+        // programStageInstance.getProgramStage() ),
+        // programStageInstance );
 
+        Collection<ProgramValidation> validation = programValidationService.getProgramValidation( programStageInstance
+            .getProgramStage() );
+        programValidationResults = programValidationService.validate( validation, programStageInstance );
+        
         return SUCCESS;
     }
 
@@ -148,28 +153,31 @@ public class ValidateProgramInstanceAction
     private void runProgramValidation( Collection<ProgramValidation> validations,
         ProgramStageInstance programStageInstance )
     {
-        if ( validations != null )
-        {
-            for ( ProgramValidation validation : validations )
-            {
-                ProgramValidationResult validationResult = programValidationService.validate( validation,
-                    programStageInstance, format );
-
-                if ( validationResult != null )
-                {
-                    programValidationResults.add( validationResult );
-                    
-                    leftsideFormulaMap.put(
-                        validationResult.getProgramValidation().getId(),
-                        programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
-                            .getLeftSide().getExpression() ) );
-                    
-                    rightsideFormulaMap.put(
-                        validationResult.getProgramValidation().getId(),
-                        programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
-                            .getRightSide().getExpression() ) );
-                }
-            }
-        }
+        // if ( validations != null )
+        // {
+        // for ( ProgramValidation validation : validations )
+        // {
+        // ProgramValidationResult validationResult =
+        // programValidationService.validate( validation,
+        // programStageInstance, format );
+        //
+        // if ( validationResult != null )
+        // {
+        // programValidationResults.add( validationResult );
+        //
+        // leftsideFormulaMap.put(
+        // validationResult.getProgramValidation().getId(),
+        // programExpressionService.getExpressionDescription(
+        // validationResult.getProgramValidation()
+        // .getLeftSide().getExpression() ) );
+        //
+        // rightsideFormulaMap.put(
+        // validationResult.getProgramValidation().getId(),
+        // programExpressionService.getExpressionDescription(
+        // validationResult.getProgramValidation()
+        // .getRightSide().getExpression() ) );
+        // }
+        // }
+        // }
     }
 }

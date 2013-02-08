@@ -512,7 +512,7 @@ public class DefaultProgramDataEntryService
     private String addProvidedElsewherCheckbox( String appendCode, PatientDataValue patientDataValue,
         ProgramStage programStage )
     {
-        String id = "$PROGRAMSTAGEID_$DATAELEMENTID_facility";
+        String id = "$PROGRAMSTAGEID-$DATAELEMENTID-facility";
         appendCode += "<div id=\"span_"
             + id
             + "\" class=\"provided-elsewhere\"><input name=\"providedByAnotherFacility\" title=\"is provided by another Facility ?\"  id=\""

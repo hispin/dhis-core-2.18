@@ -55,6 +55,6 @@ public interface ProgramValidationService
 
     Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );
 
-    ProgramValidationResult validate( ProgramValidation validation,
-        ProgramStageInstance programStageInstance, I18nFormat format );
+    Collection<ProgramValidationResult> validate( Collection<ProgramValidation> validation,
+        ProgramStageInstance programStageInstance );
 }

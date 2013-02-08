@@ -28,31 +28,32 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nFormat;
 
-
 /**
  * @author Chau Thu Tran
- *
+ * 
  * @version ProgramExpressionService.java 2:59:58 PM Nov 8, 2012 $
  */
 public interface ProgramExpressionService
 {
     String ID = ProgramExpressionService.class.getName();
-    
-    int addProgramExpression(ProgramExpression programExpression );
-    
-    void updateProgramExpression(ProgramExpression programExpression );
-    
-    void deleteProgramExpression ( ProgramExpression programExpression );
-    
+
+    int addProgramExpression( ProgramExpression programExpression );
+
+    void updateProgramExpression( ProgramExpression programExpression );
+
+    void deleteProgramExpression( ProgramExpression programExpression );
+
     ProgramExpression getProgramExpression( int id );
-    
+
     Collection<ProgramExpression> getAllProgramExpressions();
-    
-    String getProgramExpressionValue( ProgramExpression programExpression, ProgramStageInstance programStageInstance, I18nFormat format );
-    
+
+    String getProgramExpressionValue( ProgramExpression programExpression, ProgramStageInstance programStageInstance,
+        Map<String, String> patientDataValueMap );
+
     String getExpressionDescription( String programExpression );
-    
+
 }
