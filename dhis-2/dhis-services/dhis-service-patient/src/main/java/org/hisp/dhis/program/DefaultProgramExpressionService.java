@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,14 +73,7 @@ public class DefaultProgramExpressionService
     {
         this.programStageService = programStageService;
     }
-
-    private PatientDataValueService patientDataValueService;
-
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
-    {
-        this.patientDataValueService = patientDataValueService;
-    }
-
+    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )

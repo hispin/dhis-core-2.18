@@ -239,7 +239,6 @@
 	<bean id="org.hisp.dhis.program.ProgramExpressionService" class="org.hisp.dhis.program.DefaultProgramExpressionService">
 		<property name="programExpressionStore" ref="org.hisp.dhis.program.ProgramExpressionStore" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
