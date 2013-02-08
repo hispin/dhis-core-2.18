@@ -393,10 +393,37 @@ PT.core.getUtils = function(pt) {
 		}
 	};
 
+	util.array = {
+		sortDimensions: function(dimensions) {
+
+			// Sort object order
+			Ext.Array.sort(dimensions, function(a,b) {
+				if (a.name < b.name) {
+					return -1;
+				}
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			});
+
+			// Sort object items order
+			for (var i = 0, dim; i < dimensions.length; i++) {
+				dim = dimensions[i];
+
+				if (dim.items) {
+					dimensions[i].items.sort();
+				}
+			}
+
+			return dimensions;
+		}
+	};
+
 	util.pivot = {
 		getTable: function(settings, pt, container) {
-			var getDimensionItemsFromSettings,
-				getParamStringFromDimensionItems,
+			var getDimensionsFromSettings,
+				getParamStringFromDimensions,
 
 				validateResponse,
 				extendResponse,
@@ -409,47 +436,47 @@ PT.core.getUtils = function(pt) {
 				createTableArray,
 				initialize;
 
-			getDimensionItemsFromSettings = function() {
-				var col = settings.col,
-					row = settings.row,
-					dimensionItems;
+			getDimensionsFromSettings = function() {
+				var dimensions = [];
 
-				dimensionItems = Ext.clone(col);
-				Ext.apply(dimensionItems, row);
-
-				return dimensionItems;
+				if (settings.col) {
+					dimensions = dimensions.concat(settings.col);
+				}
+				if (settings.row) {
+					dimensions = dimensions.concat(settings.row);
+				}
+				
+				return dimensions;
 			};
 
-			getParamStringFromDimensionItems = function(dimensionItems) {
+			getParamStringFromDimensions = function(dimensions) {
 				var paramString = '?',
+					filterDimensions = [],
 					dim;
 
-				for (var key in dimensionItems) {
-					if (dimensionItems.hasOwnProperty(key)) {
-						if (key === pt.conf.finals.dimension.category.paramname) {
-							paramString += 'dimension=' + key + '&';
-						}
-						else {
-							dim = dimensionItems[key];
+				dimensions = pt.util.array.sortDimensions(dimensions);
 
-							if (!(dim && Ext.isArray(dim) && dim.length)) {
-								pt.util.mask.hideMask();
-								alert('Empty dimension');
-								return;
-							}
+				for (var i = 0; i < dimensions.length; i++) {
+					dim = dimensions[i];
 
-							Ext.Array.sort(dim);
-							paramString += 'dimension=' + key + ':' + dim.join(';') + '&';
-						}
+					paramString += 'dimension=' + dim.name;
+
+					if (dim.name !== pt.conf.finals.dimension.category.paramname) {
+						paramString += ':' + dim.items.join(';');
+					}
+
+					if (i < (dimensions.length - 1)) {
+						paramString += '&';
 					}
 				}
 
-				paramString = paramString.substring(0, paramString.length-1);
+				if (settings.filter) {
+					filterDimensions = pt.util.array.sortDimensions(settings.filter.slice(0));
 
-				for (var key in settings.filter) {
-					if (settings.filter.hasOwnProperty(key)) {
-						dim = settings.filter[key];
-						paramString += '&filter=' + key + ':' + dim.join(';');
+					for (var i = 0, filterDim; i < filterDimensions.length; i++) {
+						filterDim = filterDimensions[i];
+						
+						paramString += '&filter=' + filterDim.name + ':' + filterDim.items.join(';');
 					}
 				}
 
@@ -457,8 +484,25 @@ PT.core.getUtils = function(pt) {
 			};
 
 			validateResponse = function(response) {
-				if (response.width < 1 || response.height < 1 || response.rows.length < 1) {
+				if (!(response && Ext.isObject(response))) {
+					alert('Data invalid');
+					return false;
+				}
+
+				if (!(response.headers && Ext.isArray(response.headers) && response.headers.length)) {
+					alert('Data invalid');
+					return false;
+				}
+				
+				if (!(Ext.isNumber(response.width) && response.width > 0 &&
+					  Ext.isNumber(response.height) && response.height > 0 &&
+					  Ext.isArray(response.rows) && response.rows.length > 0)) {
 					alert('No values found');
+					return false;
+				}
+
+				if (response.headers.length !== response.rows[0].length) {
+					alert('Data invalid');
 					return false;
 				}
 
@@ -678,28 +722,15 @@ PT.core.getUtils = function(pt) {
 				var response = pt.response,
 					col = settings.col,
 					row = settings.row,
-					getUniqueColsArray,
-					getUniqueRowsArray;
+					getUniqueDimensionsNames;
 
-				getUniqueColsArray = function() {
+				getUniqueDimensionsNames = function(axis) {
 					var a = [];
 
-					for (var dim in col) {
-						if (col.hasOwnProperty(dim)) {
-							a.push(response.nameHeaderMap[dim].items);
-						}
-					}
-
-					return a;
-				};
-
-				getUniqueRowsArray = function() {
-					var a = [];
-
-					for (var dim in row) {
-						if (row.hasOwnProperty(dim)) {
-							a.push(response.nameHeaderMap[dim].items);
-						}
+					for (var i = 0, dim; i < axis.length; i++) {
+						dim = axis[i];
+						
+						a.push(response.nameHeaderMap[dim.name].items);
 					}
 
 					return a;
@@ -708,8 +739,8 @@ PT.core.getUtils = function(pt) {
 				// aUniqueCols ->  [[p1, p2, p3], [ou1, ou2, ou3, ou4]]
 
 				return {
-					cols: extendDims(getUniqueColsArray()),
-					rows: extendDims(getUniqueRowsArray())
+					cols: extendDims(getUniqueDimensionsNames(col)),
+					rows: extendDims(getUniqueDimensionsNames(row))
 				};
 			};
 
@@ -911,11 +942,11 @@ PT.core.getUtils = function(pt) {
 				var dimensionItems,
 					paramString;
 
-				pt.util.mask.showMask();
+				pt.util.mask.showMask(container);
 
-				dimensionItems = getDimensionItemsFromSettings(settings);
+				dimensions = getDimensionsFromSettings();
 
-				paramString = getParamStringFromDimensionItems(dimensionItems);
+				paramString = getParamStringFromDimensions(dimensions);
 
 				Ext.data.JsonP.request({
 					method: 'GET',
@@ -937,7 +968,6 @@ PT.core.getUtils = function(pt) {
 						if (!validateResponse(r)) {
 							pt.util.mask.hideMask();
 							console.log(r);
-							alert('Data response invalid');
 							return;
 						}
 						
@@ -978,38 +1008,86 @@ PT.core.getAPI = function(pt) {
 		var col,
 			row,
 			filter,
-			settings = {};
+			settings = {},
 
-		if (!(config && Ext.isObject(config))) {
-			alert('Settings config is not an object'); //i18n
-			return;
-		}
+			removeEmptyDimensions,
+			isAxisValid,
+			initialize;
 
-		col = (config.col && Ext.isObject(config.col) && pt.util.object.getLength(config.col)) ? config.col : null;
+		removeEmptyDimensions = function(axis) {			
+			if (!axis) {
+				return;
+			}
+			
+			for (var i = 0, dimension, remove; i < axis.length; i++) {
+				remove = false;
+				dimension = axis[i];
+				
+				if (dimension.name !== 'coc') {
+					if (!(Ext.isArray(dimension.items) && dimension.items.length)) {
+						remove = true;
+					}
+					else {
+						for (var j = 0; j < dimension.items.length; j++) {
+							if (!Ext.isString(dimension.items[j])) {
+								remove = true;
+							}
+						}
+					}
+				}
 
-		row = (config.row && Ext.isObject(config.row) && pt.util.object.getLength(config.row)) ? config.row : null;
+				if (remove) {
+					axis = Ext.Array.erase(axis, i, 1);
+					i = i - 1;
+				}
+			}
 
-		if (!(col || row)) {
-			alert('No col or row items selected'); //i18n
-			return;
-		}
+			return axis;
+		};
 
-		filter = config.filter;
+		getValidatedAxis = function(axis) {
+			if (!(axis && Ext.isArray(axis) && axis.length)) {
+				return;
+			}
 
-		if (!(filter === undefined || Ext.isObject(filter))) {
-			alert('Illegal filter type'); //i18n
-			return;
-		}
+			for (var i = 0, dimension; i < axis.length; i++) {
+				dimension = axis[i];
 
-		if (col) {
-			settings.col = col;
-		}
+				if (!(Ext.isObject(dimension) && Ext.isString(dimension.name))) {
+					return;
+				}
+			}
+			
+			axis = removeEmptyDimensions(axis);
 
-		if (row) {
-			settings.row = row;
-		}
+			return axis.length ? axis : null;
+		};
 
-		settings.filter = filter;
+		initialize = function() {
+			if (!(config && Ext.isObject(config))) {
+				alert('Settings config is not an object'); //i18n
+				return;
+			}
+			
+			col = getValidatedAxis(config.col);
+			row = getValidatedAxis(config.row);
+			filter = getValidatedAxis(config.filter);
+
+			if (!(col || row)) {
+				alert('Invalid column/row configuration'); //i18n
+				return;
+			}
+
+			if (col) {
+				settings.col = col;
+			}
+			if (row) {
+				settings.row = row;
+			}
+			if (filter) {
+				settings.filter = filter;
+			}
+		}();
 
 		return settings;
 	};
