@@ -107,6 +107,6 @@ public class DocumentServiceTest
         documentService.saveDocument( documentB );
         documentService.saveDocument( documentC );
 
-        assertEquals( documentA, documentService.getDocumentByName( "DocumentA" ) );
+        assertEquals( documentA, documentService.getDocumentByName( "DocumentA" ).get( 0 ) );
     }
 }

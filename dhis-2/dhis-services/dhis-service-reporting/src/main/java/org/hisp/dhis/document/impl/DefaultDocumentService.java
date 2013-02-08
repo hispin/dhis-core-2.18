@@ -27,12 +27,13 @@ package org.hisp.dhis.document.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -77,14 +78,14 @@ public class DefaultDocumentService
         documentStore.delete( document );
     }
 
-    public Collection<Document> getAllDocuments()
+    public List<Document> getAllDocuments()
     {
         return documentStore.getAll();
     }
 
-    public Document getDocumentByName( String name )
+    public List<Document> getDocumentByName( String name )
     {
-        return documentStore.getByName( name );
+        return documentStore.getAllEqName( name );
     }
 
     public int getDocumentCount()
@@ -97,12 +98,12 @@ public class DefaultDocumentService
         return documentStore.getCountLikeName( name );
     }
 
-    public Collection<Document> getDocumentsBetween( int first, int max )
+    public List<Document> getDocumentsBetween( int first, int max )
     {
         return documentStore.getAllOrderedName( first, max );
     }
 
-    public Collection<Document> getDocumentsBetweenByName( String name, int first, int max )
+    public List<Document> getDocumentsBetweenByName( String name, int first, int max )
     {
         return documentStore.getAllLikeNameOrderedName( name, first, max );
     }

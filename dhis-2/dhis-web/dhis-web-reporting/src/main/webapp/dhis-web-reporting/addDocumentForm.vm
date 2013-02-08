@@ -5,7 +5,7 @@
 		},function(){
 		});	
 	
-		checkValueIsExist( "name", "validateDocument.action", {id: "$!document.id"} );
+		// checkValueIsExist( "name", "validateDocument.action", {id: "$!document.id"} );
 	
 		toggleExternal();
 	});	

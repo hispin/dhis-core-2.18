@@ -519,6 +519,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_name_key" );
         executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_shortname_key" );
 
+        executeSql( "ALTER TABLE document DROP CONSTRAINT document_name_key" );
+
         log.info( "Tables updated" );
     }
 
