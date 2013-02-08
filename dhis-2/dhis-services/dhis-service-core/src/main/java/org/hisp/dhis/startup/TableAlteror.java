@@ -516,6 +516,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicatorgroup DROP CONSTRAINT indicatorgroup_name_key" );
         executeSql( "ALTER TABLE indicatorgroupset DROP CONSTRAINT indicatorgroupset_name_key" );
 
+        executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_name_key" );
+        executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_shortname_key" );
+
         log.info( "Tables updated" );
     }
 
