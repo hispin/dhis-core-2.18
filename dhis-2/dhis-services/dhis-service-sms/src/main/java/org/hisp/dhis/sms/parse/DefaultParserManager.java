@@ -73,7 +73,13 @@ public class DefaultParserManager
     {
         try
         {
-            parse( sms.getOriginator(), sms.getText() );
+            /* Temporarily hack for Uganda.. will need to configure this at the gateway */
+            String text = sms.getText();
+            if(sms.getText() != null && sms.getText().startsWith( "dhis" )){
+                text = sms.getText().substring( 5 );
+            }
+            
+            parse( sms.getOriginator(), text );
         }
         catch ( SMSParserException e )
         {
@@ -354,7 +360,9 @@ public class DefaultParserManager
 
         String value = parsedMessage.get( upperCaseCode );
 
-        if ( value != null )
+
+        
+        if ( value != null)
         {
             if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) )
             {
@@ -407,7 +415,6 @@ public class DefaultParserManager
             CalendarPeriodType cpt = (CalendarPeriodType) period.getPeriodType();
             period = cpt.getPreviousPeriod( period );
 
-            
             if ( date != null )
             {
                 period = cpt.createPeriod( date );
@@ -429,10 +436,10 @@ public class DefaultParserManager
             storedBy = "[unknown] from [" + sender + "]";
         }
 
-        // if new values are submitted re-register as complete 
+        // if new values are submitted re-register as complete
         deregisterCompleteDataSet( command.getDataset(), period, orgunit );
         registerCompleteDataSet( command.getDataset(), period, orgunit, storedBy );
-        
+
     }
 
     private boolean completeForm( SMSCommand command, Map<String, String> parsedMessage )
