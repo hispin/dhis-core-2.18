@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -401,8 +400,6 @@ public class SaveProgramStageFormAction
         return validated;
     }
 
-    private I18nFormat format;
-
     private List<ProgramValidationResult> programValidationResults;
 
     public List<ProgramValidationResult> getProgramValidationResults()
@@ -567,11 +564,11 @@ public class SaveProgramStageFormAction
 
         if ( validations != null )
         {
-            for ( ProgramValidation validation : validations )
+            Collection<ProgramValidationResult> validationResults = programValidationService.validate( validations,
+                programStageInstance );
+            
+            for ( ProgramValidationResult validationResult : validationResults )
             {
-                ProgramValidationResult validationResult = programValidationService.validate( validation,
-                    programStageInstance, format );
-
                 if ( validationResult != null )
                 {
                     programValidationResults.add( validationResult );
