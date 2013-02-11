@@ -9,7 +9,7 @@
     #foreach ( $style in $stylesheets )
     <link type="text/css" rel="stylesheet" href="$style">
     #end    
-    <link type="image/png" rel="icon" href="../images/favicon.png" />
+    <link rel="shortcut icon" href="../favicon.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript">
