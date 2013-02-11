@@ -403,7 +403,50 @@ public class HibernateProgramStageInstanceStore
 
         Grid grid = new ListGrid();
         grid.setTitle( programStage.getProgram().getDisplayName() );
-        grid.setSubtitle( programStage.getDisplayName() );
+
+        // ---------------------------------------------------------------------
+        // Set Sub-title is filter value
+        // ---------------------------------------------------------------------
+
+        String subTitle = " ";
+        if ( deSum != null )
+        {
+            subTitle = i18n.getString( "group_by" ) + ": "
+                + dataElementService.getDataElement( deSum ).getDisplayName();
+        }
+
+        // Filter is orgunit
+        if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD
+            || position == PatientAggregateReport.POSITION_ROW_PERIOD
+            || position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD )
+        {
+            grid.setSubtitle( subTitle + "; " + i18n.getString( "orgunit" ) + ": "
+                + getFilterOrgunitDescription( orgunitIds ) );
+        }
+
+        // Filter is period
+        if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT
+            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT )
+        {
+            grid.setSubtitle( subTitle + "; " + i18n.getString( "period" ) + ": "
+                + getFilterPeriodDescription( periods, format ) );
+        }
+
+        // Filter is data
+        if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD
+            || position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT
+            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD
+            || position == PatientAggregateReport.POSITION_ROW_PERIOD
+            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
+        {
+            grid.setSubtitle( subTitle + "; " + i18n.getString( "data_filter" ) + ": "
+                + getFilterDataDescription( deFilters ) );
+        }
 
         // ---------------------------------------------------------------------
         // Get SQL and build grid
@@ -413,7 +456,7 @@ public class HibernateProgramStageInstanceStore
         if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD )
         {
             sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, periods,
-                aggregateType, useCompletedEvents, format );
+                aggregateType, limit, useCompletedEvents, format );
         }
         // Type = 2
         if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT )
@@ -423,28 +466,28 @@ public class HibernateProgramStageInstanceStore
             // ---------------------------------------------------------------------
 
             sql = getAggregateReportSQL12( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, periods,
-                aggregateType, useCompletedEvents, format );
+                aggregateType, limit, useCompletedEvents, format );
 
         }
         // Type = 3
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD )
         {
             sql = getAggregateReportSQL3( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum,
-                periods, aggregateType, useCompletedEvents, format );
+                periods, aggregateType, limit, useCompletedEvents, format );
         }
         // Type = 4
         else if ( position == PatientAggregateReport.POSITION_ROW_PERIOD )
         {
             sql = getAggregateReportSQL4( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum,
-                periods, aggregateType, useCompletedEvents, format );
+                periods, aggregateType, limit, useCompletedEvents, format );
         }
         // type = 5
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
         {
             List<Period> firstPeriod = new ArrayList<Period>();
             firstPeriod.add( periods.iterator().next() );
-            sql = getAggregateReportSQL5( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, periods
-                .iterator().next(), aggregateType, useCompletedEvents, format );
+            sql = getAggregateReportSQL5( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum,
+                periods.iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
 
         // Type = 6 && With group-by
@@ -453,8 +496,8 @@ public class HibernateProgramStageInstanceStore
         {
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
-            sql = getAggregateReportSQL6( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy, deSum,
-                deValues, periods, aggregateType, useCompletedEvents, format );
+            sql = getAggregateReportSQL6( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy,
+                deSum, deValues, periods, aggregateType, limit, useCompletedEvents, format );
         }
 
         // Type = 6 && NOT group-by
@@ -462,7 +505,7 @@ public class HibernateProgramStageInstanceStore
             && deGroupBy == null )
         {
             sql = getAggregateReportSQL6WithoutGroup( programStage, orgunitIds.iterator().next(), facilityLB,
-                filterSQL, deSum, periods, aggregateType, useCompletedEvents, format );
+                filterSQL, deSum, periods, aggregateType, limit, useCompletedEvents, format );
         }
 
         // Type = 7 && Group-by
@@ -471,17 +514,16 @@ public class HibernateProgramStageInstanceStore
         {
             deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
 
-            sql = getAggregateReportSQL7( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, deValues, periods
-                .iterator().next(), aggregateType, useCompletedEvents, format );
+            sql = getAggregateReportSQL7( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum, deValues,
+                periods.iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
 
         // Type = 7 && NOT group-by
         else if ( (position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT)
             && deGroupBy == null )
         {
-            sql = getAggregateReportSQL7WithoutGroup( programStage, orgunitIds, facilityLB, filterSQL, periods
-                .iterator().next(), aggregateType, useCompletedEvents, format );
-
+            sql = getAggregateReportSQL7WithoutGroup( programStage, orgunitIds, facilityLB, filterSQL, deSum, periods
+                .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
 
         // type = 8 && With group-by
@@ -695,7 +737,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL12( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods, String aggregateType,
-        Boolean useCompletedEvents, I18nFormat format )
+        Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -763,8 +805,12 @@ public class HibernateProgramStageInstanceStore
             sql += " UNION ";
         }
 
-        sql = sql.substring( 0, sql.length() - 6 ) + " ";
-        sql += "ORDER BY orgunit asc";
+        sql = sql.substring( 0, sql.length() - 6 );
+        sql += " ORDER BY orgunit asc ";
+        if ( limit != null )
+        {
+            sql += "LIMIT " + limit;
+        }
 
         return sql;
     }
@@ -775,7 +821,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL3( int position, ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
-        String aggregateType, Boolean useCompletedEvents, I18nFormat format )
+        String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -831,14 +877,17 @@ public class HibernateProgramStageInstanceStore
                 }
                 sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                 sql += "     psi_1.executiondate <= '" + endDate + "' ";
-                sql += filterSQL + " ) as " + aggregateType + "  ) ";
+                sql += filterSQL + " LIMIT 1 ) as " + aggregateType + "  ) ";
                 sql += " UNION ";
             }
         }
 
         sql = sql.substring( 0, sql.length() - 6 ) + " ";
-
-        sql += "ORDER BY orgunit asc";
+        sql += " ORDER BY orgunit asc ";
+        if ( limit != null )
+        {
+            sql += "LIMIT " + limit;
+        }
 
         return sql;
     }
@@ -849,7 +898,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL4( int position, ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
-        String aggregateType, Boolean useCompletedEvents, I18nFormat format )
+        String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -904,12 +953,16 @@ public class HibernateProgramStageInstanceStore
                 }
                 sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                 sql += "     psi_1.executiondate <= '" + endDate + "' ";
-                sql += filterSQL + " )  as " + aggregateType + ") ";
+                sql += filterSQL + " LIMIT 1 )  as " + aggregateType + ") ";
                 sql += " UNION ";
             }
         }
 
         sql = sql.substring( 0, sql.length() - 6 );
+        if ( limit != null )
+        {
+            sql += " LIMIT " + limit;
+        }
 
         return sql;
     }
@@ -920,7 +973,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL5( int position, ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Period period, String aggregateType,
-        Boolean useCompletedEvents, I18nFormat format )
+        Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -963,13 +1016,16 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += " AND psi_1.completed = true ";
             }
-            sql += " ) as " + aggregateType + "  ) ";
+            sql += " LIMIT 1 ) as " + aggregateType + "  ) ";
             sql += " UNION ";
         }
 
         sql = sql.substring( 0, sql.length() - 6 ) + " ";
-
-        sql += "ORDER BY orgunit asc";
+        sql += " ORDER BY orgunit asc ";
+        if ( limit != null )
+        {
+            sql += " LIMIT " + limit;
+        }
 
         return sql;
     }
@@ -980,7 +1036,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL6( ProgramStage programStage, Integer root, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Collection<String> deValues, Collection<Period> periods,
-        String aggregateType, Boolean useCompletedEvents, I18nFormat format )
+        String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -1025,7 +1081,7 @@ public class HibernateProgramStageInstanceStore
                 sql += "        (SELECT value from patientdatavalue ";
                 sql += "        WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
                 sql += "              dataelementid=" + deGroupBy + ") = '" + deValue + "' ";
-                sql += ") as \"" + deValue + "\",";
+                sql += "        LIMIT 1 ) as \"" + deValue + "\",";
             }
             sql = sql.substring( 0, sql.length() - 1 ) + " ";
 
@@ -1045,7 +1101,13 @@ public class HibernateProgramStageInstanceStore
 
         }
 
-        return sql.substring( 0, sql.length() - 6 );
+        sql = sql.substring( 0, sql.length() - 6 );
+        if ( limit != null )
+        {
+            sql += " LIMIT " + limit;
+        }
+
+        return sql;
     }
 
     /**
@@ -1053,7 +1115,7 @@ public class HibernateProgramStageInstanceStore
      * without group-by
      **/
     private String getAggregateReportSQL6WithoutGroup( ProgramStage programStage, Integer root, String facilityLB,
-        String filterSQL, Integer deSum, Collection<Period> periods, String aggregateType,
+        String filterSQL, Integer deSum, Collection<Period> periods, String aggregateType, Integer limit,
         Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
@@ -1094,7 +1156,7 @@ public class HibernateProgramStageInstanceStore
                 + "     ) AND ";
             sql += "    psi_1.executiondate >= '" + startDate + "' AND ";
             sql += "    psi_1.executiondate <= '" + endDate + "' ";
-            sql += filterSQL + ") as \"" + aggregateType + "\",";
+            sql += filterSQL + "  LIMIT 1 ) as \"" + aggregateType + "\",";
 
             sql = sql.substring( 0, sql.length() - 1 ) + " ";
 
@@ -1113,7 +1175,13 @@ public class HibernateProgramStageInstanceStore
             sql += ") UNION ";
         }
 
-        return sql.substring( 0, sql.length() - 6 );
+        sql = sql.substring( 0, sql.length() - 6 );
+        if ( limit != null )
+        {
+            sql += " LIMIT " + limit;
+        }
+
+        return sql;
     }
 
     /**
@@ -1122,7 +1190,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL7( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, List<String> deValues, Period period, String aggregateType,
-        Boolean useCompletedEvents, I18nFormat format )
+        Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
 
@@ -1163,7 +1231,7 @@ public class HibernateProgramStageInstanceStore
                 sql += "   WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
                 sql += "     dataelementid= pdv_1.dataelementid AND ";
                 sql += "     dataelementid=" + deGroupBy + "  ) = '" + deValue + "' ";
-                sql += ") as \"" + deValue + "\",";
+                sql += "   LIMIT 1 ) as \"" + deValue + "\",";
             }
 
             sql = sql.substring( 0, sql.length() - 1 ) + " ) ";
@@ -1171,6 +1239,10 @@ public class HibernateProgramStageInstanceStore
         }
 
         sql = sql.substring( 0, sql.length() - 6 );
+        if ( limit != null )
+        {
+            sql += " LIMIT " + limit;
+        }
 
         return sql;
     }
@@ -1180,8 +1252,8 @@ public class HibernateProgramStageInstanceStore
      * 
      **/
     private String getAggregateReportSQL7WithoutGroup( ProgramStage programStage, Collection<Integer> roots,
-        String facilityLB, String filterSQL, Period period, String aggregateType, Boolean useCompletedEvents,
-        I18nFormat format )
+        String facilityLB, String filterSQL, Integer deSum, Period period, String aggregateType, Integer limit,
+        Boolean useCompletedEvents, I18nFormat format )
     {
 
         String sql = "";
@@ -1193,7 +1265,19 @@ public class HibernateProgramStageInstanceStore
             sql += "(SELECT ";
             sql += "( SELECT ou.name FROM organisationunit ou WHERE ou.organisationunitid=" + root + " ) as orgunit, ";
 
-            sql += "( SELECT " + aggregateType + "(value) FROM patientdatavalue pdv_1 ";
+            if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
+            {
+                sql += "( SELECT " + aggregateType + "(value) ";
+            }
+            else
+            {
+                sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
+                    + statementBuilder.getDoubleColumnType() + " ))";
+                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid=" + deSum
+                    + " ) ";
+            }
+
+            sql += "FROM patientdatavalue pdv_1 ";
             sql += "        inner join programstageinstance psi_1 ";
             sql += "          on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
             sql += "WHERE ";
@@ -1205,12 +1289,18 @@ public class HibernateProgramStageInstanceStore
             }
             sql += "        psi_1.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ") AND ";
             sql += "        psi_1.programstageid=" + programStage.getId() + " ";
-            sql += filterSQL + ") as \"" + aggregateType + "\" ) ";
+            sql += filterSQL + " LIMIT 1 ) as \"" + aggregateType + "\" ) ";
 
             sql += " UNION ";
         }
 
-        return sql.substring( 0, sql.length() - 6 );
+        sql = sql.substring( 0, sql.length() - 6 );
+        if ( limit != null )
+        {
+            sql += " LIMIT " + limit;
+        }
+
+        return sql;
     }
 
     /**
@@ -1249,12 +1339,10 @@ public class HibernateProgramStageInstanceStore
         }
 
         sql = sql.substring( 0, sql.length() - 6 ) + " ";
-
         sql += "ORDER BY  \"" + aggregateType + "\" desc ";
-
         if ( limit != null )
         {
-            sql += "LIMIT " + limit;
+            sql += " LIMIT " + limit;
         }
 
         return sql;
@@ -1368,6 +1456,64 @@ public class HibernateProgramStageInstanceStore
         }
 
         return filter;
+    }
+
+    private String getFilterOrgunitDescription( Collection<Integer> orgunitIds )
+    {
+        String description = "";
+        for ( Integer orgunit : orgunitIds )
+        {
+            description += organisationUnitService.getOrganisationUnit( orgunit ).getDisplayName() + " AND ";
+        }
+
+        return description.substring( 0, description.length() - 5 );
+    }
+
+    private String getFilterPeriodDescription( Collection<Period> periods, I18nFormat format )
+    {
+        String description = "";
+        for ( Period period : periods )
+        {
+            String startDate = format.formatDate( period.getStartDate() );
+            String endDate = format.formatDate( period.getEndDate() );
+            if ( period.getPeriodType() != null )
+            {
+                description += format.formatPeriod( period );
+            }
+            else
+            {
+                description += startDate + " -> " + endDate;
+            }
+            description += " AND ";
+        }
+
+        return description.substring( 0, description.length() - 5 );
+    }
+
+    private String getFilterDataDescription( Map<Integer, Collection<String>> deFilters )
+    {
+        String description = "";
+
+        if ( deFilters != null )
+        {
+            // Get filter criteria
+            Iterator<Integer> iterFilter = deFilters.keySet().iterator();
+            while ( iterFilter.hasNext() )
+            {
+                Integer id = iterFilter.next();
+                String deName = dataElementService.getDataElement( id ).getDisplayName();
+                for ( String filterValue : deFilters.get( id ) )
+                {
+                    int index = filterValue.indexOf( PatientAggregateReport.SEPARATE_FILTER );
+                    String operator = (filterValue.substring( 0, index ));
+                    String value = filterValue.substring( index + 1, filterValue.length() );
+
+                    description += deName + " " + operator + " " + value + " AND ";
+                }
+            }
+        }
+
+        return description.substring( 0, description.length() - 5 );
     }
 
     // ---------------------------------------------------------------------

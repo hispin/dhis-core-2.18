@@ -1,6 +1,7 @@
 #set( $noRows = $grid.getRows().size() )
 {
 "message": "$!message",
+"title": "$!encoder.jsonEncode(${grid.subtitle})",
 #set( $noHeader = $grid.getHeaders().size() )
 "columns":[
   #foreach( $col in $grid.getHeaders() )

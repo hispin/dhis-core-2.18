@@ -6,6 +6,7 @@
 "message": "$!message",
 "total": "$total",
 "totalRecords": "$totalRecords",
+"title": "$!encoder.jsonEncode(${grid.subtitle})",
 "columns":[
   #set($index = 0)
   #foreach( $col in $grid.getHeaders() )
