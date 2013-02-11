@@ -1831,6 +1831,7 @@ Ext.onReady( function() {
 								TR.util.notification.error(TR.i18n.error, json.message);
 							}
 							else{
+								TR.value.title = json.title;
 								TR.value.columns = json.columns;
 								TR.value.values = json.items;
 								// Get fields
@@ -2199,12 +2200,6 @@ Ext.onReady( function() {
 						return false;	
 					}
 					
-					if( Ext.getCmp('limitOption').getValue() && periodInt>1)
-					{
-						TR.util.notification.error(TR.i18n.select_only_one_period, TR.i18n.select_only_one_period);
-						return false;
-					}
-					
 					if( Ext.getCmp('aggregateType').getValue().aggregateType != 'count'
 						&& ( Ext.getCmp('deSumCbx').getValue() == null || Ext.getCmp('deSumCbx').getValue=='')){
 						TR.util.notification.error(TR.i18n.select_a_dataelement_for_sum_avg_operator, TR.i18n.select_a_dataelement_for_sum_avg_operator );
@@ -2234,6 +2229,7 @@ Ext.onReady( function() {
    };
     
     TR.value = {
+		title: '',
 		columns: [],
 		fields: [],
 		values: [],
@@ -2287,6 +2283,10 @@ Ext.onReady( function() {
 
 			// title
 			var title = TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report;
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='false')
+			{
+				title = TR.value.title;
+			}
 			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
