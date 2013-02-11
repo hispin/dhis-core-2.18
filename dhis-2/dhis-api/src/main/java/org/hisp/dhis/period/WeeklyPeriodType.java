@@ -228,7 +228,10 @@ public class WeeklyPeriodType
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         int year = cal.get( Calendar.YEAR);
         int week = cal.get( Calendar.WEEK_OF_YEAR);
+        int month = cal.get( Calendar.MONTH);
 
+        if (week == 1 && month == Calendar.DECEMBER) ++year; 
+        
         String periodString = year + "W" + week;
         return periodString;
     }
