@@ -423,6 +423,18 @@ PT.core.getUtils = function(pt) {
 		}
 	};
 
+	util.number = {
+		getNumberOfDecimals: function(x) {
+			var tmp = new String(x);
+			return (tmp.indexOf(".") > -1) ? (tmp.length - tmp.indexOf(".") - 1) : 0;
+		},
+
+		roundIf: function(x, fix) {
+			var dec = pt.util.number.getNumberOfDecimals(x);
+			return parseFloat(dec > fix ? x.toFixed(fix) : x);
+		}
+	};
+
 	util.pivot = {
 		getTable: function(settings, pt, container) {
 			var getParamStringFromDimensions,
@@ -1006,7 +1018,8 @@ PT.core.getUtils = function(pt) {
 
 						// Total row html items
 						for (var i = 0, rowSum; i < totalRowItems.length; i++) {
-							rowSum = totalRowItems[i];
+							rowSum = totalRowItems[i];							
+							rowSum = pt.util.number.roundIf(rowSum, 1);
 
 							a.push(['<td id="nissa" class="pivot-valuetotal">' + rowSum.toString() + '</td>']);
 						}
@@ -1028,13 +1041,14 @@ PT.core.getUtils = function(pt) {
 							for (var j = 0; j < valueItems.length; j++) {
 								colSum += valueItems[j][i];
 							}
-
+							
 							totalColItems.push(colSum);
 						}
 
 						// Total col html items
 						for (var i = 0, colSum; i < totalColItems.length; i++) {
 							colSum = totalColItems[i];
+							colSum = pt.util.number.roundIf(colSum, 1);
 
 							a.push('<td class="pivot-valuetotal">' + colSum.toString() + '</td>');
 						}
@@ -1044,13 +1058,14 @@ PT.core.getUtils = function(pt) {
 				};
 
 				getGrandTotalHtmlArray = function() {
-					var grandTotalItem,
+					var grandTotalSum,
 						a = [];
 
 					if (xColAxis && xRowAxis) {
-						grandTotalItem = Ext.Array.sum(totalColItems) || 0;
+						grandTotalSum = Ext.Array.sum(totalColItems) || 0;
+						grandTotalSum = pt.util.number.roundIf(grandTotalSum, 1);
 
-						a.push('<td class="pivot-valuegrandtotal">' + grandTotalItem.toString() + '</td>');
+						a.push('<td class="pivot-valuegrandtotal">' + grandTotalSum.toString() + '</td>');
 					}
 
 					return a;
