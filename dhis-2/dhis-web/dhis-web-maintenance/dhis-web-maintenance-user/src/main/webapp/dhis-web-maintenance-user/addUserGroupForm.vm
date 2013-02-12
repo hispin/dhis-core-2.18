@@ -13,7 +13,7 @@
         } );
 
         /* remote validation */
-        checkValueIsExist( "name", "validateUserGroup.action" );
+        // checkValueIsExist( "name", "validateUserGroup.action" );
 
 		jQuery("#availableUsersList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getUsers.action",

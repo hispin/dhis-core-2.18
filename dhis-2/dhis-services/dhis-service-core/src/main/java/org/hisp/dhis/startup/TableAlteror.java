@@ -503,7 +503,6 @@ public class TableAlteror
         executeSql( "UPDATE userroleauthorities SET authority='F_USERGROUP_LIST' WHERE authority='F_USER_GRUP_LIST'" );
 
         // update denominator of indicator which has indicatortype as 'number'
-
         executeSql( "UPDATE indicator SET denominator = 1, denominatordescription = '' WHERE indicatortypeid IN (SELECT DISTINCT indicatortypeid FROM indicatortype WHERE indicatornumber = true) AND denominator IS NULL" );
 
         // remove name/shortName uniqueness
@@ -518,6 +517,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataset DROP CONSTRAINT dataset_shortname_key" );
         executeSql( "ALTER TABLE document DROP CONSTRAINT document_name_key" );
         executeSql( "ALTER TABLE reporttable DROP CONSTRAINT reporttable_name_key" );
+        executeSql( "ALTER TABLE report DROP CONSTRAINT report_name_key" );
+        executeSql( "ALTER TABLE usergroup DROP CONSTRAINT usergroup_name_key" );
+        executeSql( "ALTER TABLE datadictionary DROP CONSTRAINT datadictionary_name_key" );
 
         log.info( "Tables updated" );
     }

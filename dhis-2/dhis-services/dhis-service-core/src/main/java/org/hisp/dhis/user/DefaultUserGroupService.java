@@ -27,10 +27,11 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
 
 @Transactional
 public class DefaultUserGroupService implements UserGroupService
@@ -38,9 +39,9 @@ public class DefaultUserGroupService implements UserGroupService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private GenericIdentifiableObjectStore<UserGroup> userGroupStore;
-    
+
     public void setUserGroupStore( GenericIdentifiableObjectStore<UserGroup> userGroupStore )
     {
         this.userGroupStore = userGroupStore;
@@ -68,7 +69,7 @@ public class DefaultUserGroupService implements UserGroupService
         userGroupStore.update( userGroup );
     }
 
-    
+
     @Override
     public Collection<UserGroup> getAllUserGroups()
     {
@@ -88,9 +89,9 @@ public class DefaultUserGroupService implements UserGroupService
     }
 
     @Override
-    public UserGroup getUserGroupByName( String name )
+    public List<UserGroup> getUserGroupByName( String name )
     {
-        return userGroupStore.getByName( name );
+        return userGroupStore.getAllEqName( name );
     }
 
     @Override
@@ -106,13 +107,13 @@ public class DefaultUserGroupService implements UserGroupService
     }
 
     @Override
-    public Collection<UserGroup> getUserGroupsBetween( int first, int max )
+    public List<UserGroup> getUserGroupsBetween( int first, int max )
     {
         return userGroupStore.getAllOrderedName( first, max );
     }
 
     @Override
-    public Collection<UserGroup> getUserGroupsBetweenByName( String name, int first, int max )
+    public List<UserGroup> getUserGroupsBetweenByName( String name, int first, int max )
     {
         return userGroupStore.getAllLikeNameOrderedName( name, first, max );
     }

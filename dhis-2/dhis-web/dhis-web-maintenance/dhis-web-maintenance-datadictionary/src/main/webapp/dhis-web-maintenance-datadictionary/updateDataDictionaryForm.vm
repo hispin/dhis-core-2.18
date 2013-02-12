@@ -43,7 +43,7 @@
 			}
 		});
 
-		checkValueIsExist( "name", "validateDataDictionary.action", {id: $dataDictionary.id});
+		// checkValueIsExist( "name", "validateDataDictionary.action", {id: $dataDictionary.id});
 	});
 </script>
 
