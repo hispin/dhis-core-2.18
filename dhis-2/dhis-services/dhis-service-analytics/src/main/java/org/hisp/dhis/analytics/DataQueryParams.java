@@ -46,6 +46,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ListMap;
+import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 
@@ -379,11 +380,13 @@ public class DataQueryParams
         {
             List<String> keys = new ArrayList<String>( Arrays.asList( key.split( DIMENSION_SEP ) ) );
             
-            String de = keys.get( getDataElementDimensionIndex() );
-            String coc = keys.get( getCategoryOptionComboDimensionIndex() );
+            int deInx = getDataElementDimensionIndex();
+            int cocInx = getCategoryOptionComboDimensionIndex();
             
-            keys.remove( getDataElementDimensionIndex() );
-            keys.remove( getCategoryOptionComboDimensionIndex() - 1 );
+            String de = keys.get( deInx );
+            String coc = keys.get( cocInx );
+            
+            ListUtils.removeAll( keys, deInx, cocInx );
             
             String permKey = StringUtils.join( keys, DIMENSION_SEP );
             

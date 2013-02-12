@@ -28,6 +28,7 @@ package org.hisp.dhis.system.util;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,6 +41,28 @@ import java.util.Set;
  */
 public class ListUtils
 {
+    /**
+     * Removes from the given list the elements at the given indexes.
+     * 
+     * @param list the list to remove elements from.
+     * @param indexes the indexes for the elements to remove.
+     */
+    public static <T> void removeAll( List<T> list, Integer... indexes )
+    {
+        if ( list == null || indexes == null )
+        {
+            return;
+        }
+        
+        List<Integer> inx = new ArrayList<Integer>( Arrays.asList( indexes ) );
+        Collections.sort( inx, Collections.reverseOrder() );
+        
+        for ( Integer index : inx )
+        {            
+            list.remove( (int) index );
+        }
+    }
+    
     /**
      * Checks whether the given list contains duplicates. List entries are compared
      * using the given comparator.
