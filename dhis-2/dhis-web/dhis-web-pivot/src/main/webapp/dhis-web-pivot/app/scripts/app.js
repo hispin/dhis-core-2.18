@@ -1292,7 +1292,7 @@ Ext.onReady( function() {
 						icon: 'images/arrowrightdouble.png',
 						width: 22,
 						handler: function() {
-							pt.util.multiselect.selectAll(fixedPeriodAvailable, fixedPeriodSelected);
+							pt.util.multiselect.selectAll(fixedPeriodAvailable, fixedPeriodSelected, true);
 						}
 					},
 					' '
@@ -1724,7 +1724,8 @@ Ext.onReady( function() {
 								}
 								v.menu = Ext.create('Ext.menu.Menu', {
 									id: 'treepanel-contextmenu',
-									showSeparator: false
+									showSeparator: false,
+									shadow: false
 								});
 								if (!r.data.leaf) {
 									v.menu.add({
