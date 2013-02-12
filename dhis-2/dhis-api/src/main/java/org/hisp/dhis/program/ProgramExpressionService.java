@@ -30,8 +30,6 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.i18n.I18nFormat;
-
 /**
  * @author Chau Thu Tran
  * 
