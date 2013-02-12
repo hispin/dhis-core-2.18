@@ -412,40 +412,91 @@ public class HibernateProgramStageInstanceStore
         if ( deSum != null )
         {
             subTitle = i18n.getString( "group_by" ) + ": "
-                + dataElementService.getDataElement( deSum ).getDisplayName();
+                + dataElementService.getDataElement( deSum ).getDisplayName() + "; ";
         }
 
-        // Filter is orgunit
-        if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA
-            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD
-            || position == PatientAggregateReport.POSITION_ROW_PERIOD
-            || position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA
-            || position == PatientAggregateReport.POSITION_ROW_DATA
-            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD )
+        // Filter is only one orgunit
+        if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
         {
-            grid.setSubtitle( subTitle + "; " + i18n.getString( "orgunit" ) + ": "
-                + getFilterOrgunitDescription( orgunitIds ) );
+            String orgunitName = organisationUnitService.getOrganisationUnit( orgunitIds.iterator().next() )
+                .getDisplayName();
+            grid.setSubtitle( subTitle + i18n.getString( "orgunit" ) + ": " + orgunitName );
         }
-
-        // Filter is period
-        if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT
-            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA
-            || position == PatientAggregateReport.POSITION_ROW_DATA
-            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT )
+        // Filter is only one period
+        else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA )
         {
-            grid.setSubtitle( subTitle + "; " + i18n.getString( "period" ) + ": "
-                + getFilterPeriodDescription( periods, format ) );
+
+            Period period = periods.iterator().next();
+            String periodName = "";
+            if ( period.getPeriodType() != null )
+            {
+                periodName += format.formatPeriod( period );
+            }
+            else
+            {
+                String startDate = format.formatDate( period.getStartDate() );
+                String endDate = format.formatDate( period.getEndDate() );
+                periodName += startDate + " -> " + endDate;
+            }
+            grid.setSubtitle( subTitle + i18n.getString( "period" ) + ": " + periodName );
         }
-
-        // Filter is data
-        if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD
-            || position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT
-            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD
-            || position == PatientAggregateReport.POSITION_ROW_PERIOD
-            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
+        else
         {
-            grid.setSubtitle( subTitle + "; " + i18n.getString( "data_filter" ) + ": "
-                + getFilterDataDescription( deFilters ) );
+            // Orgunit filter description
+            String filterOrgunitDes = "";
+            if ( position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD
+                || position == PatientAggregateReport.POSITION_ROW_PERIOD
+                || position == PatientAggregateReport.POSITION_ROW_DATA
+                || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD )
+            {
+                filterOrgunitDes = getFilterOrgunitDescription( orgunitIds );
+
+                if ( !filterOrgunitDes.isEmpty() )
+                {
+                    filterOrgunitDes = i18n.getString( "orgunit" ) + ": " + filterOrgunitDes + "; ";
+                }
+            }
+
+            // Period filter description
+            String filterPeriodDes = "";
+            if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT
+                || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA
+                || position == PatientAggregateReport.POSITION_ROW_DATA
+                || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT )
+            {
+                filterPeriodDes = getFilterPeriodDescription( periods, format );
+
+                if ( !filterPeriodDes.isEmpty() )
+                {
+                    filterPeriodDes = i18n.getString( "period" ) + ": " + filterPeriodDes + "; ";
+                }
+            }
+
+            // Data filter description
+            String filterDataDes = "";
+            if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD
+                || position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT
+                || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD
+                || position == PatientAggregateReport.POSITION_ROW_PERIOD
+                || position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
+            {
+                filterDataDes = getFilterDataDescription( deFilters );
+                if ( !filterDataDes.isEmpty() )
+                {
+                    filterDataDes = i18n.getString( "data_filter" ) + ": " + filterDataDes + "; ";
+                }
+            }
+
+            subTitle += filterOrgunitDes + filterPeriodDes + filterDataDes;
+            if ( subTitle.isEmpty() )
+            {
+                grid.setSubtitle( i18n.getString( "filter" ) + ": [" + i18n.getString( "none" ) + "]");
+            }
+            else
+            {
+                grid.setSubtitle( subTitle );
+            }
         }
 
         // ---------------------------------------------------------------------
@@ -1511,9 +1562,10 @@ public class HibernateProgramStageInstanceStore
                     description += deName + " " + operator + " " + value + " AND ";
                 }
             }
+            description = description.substring( 0, description.length() - 5 );
         }
 
-        return description.substring( 0, description.length() - 5 );
+        return description;
     }
 
     // ---------------------------------------------------------------------

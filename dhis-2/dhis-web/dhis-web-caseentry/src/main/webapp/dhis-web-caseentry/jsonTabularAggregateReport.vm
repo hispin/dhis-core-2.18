@@ -75,7 +75,7 @@
 		#foreach( ${dataElement} in $!{selectedDataElements} )
 			{
 				"id": "de_${dataElement.id}",
-				"name": "$!encoder.jsonEncode( ${dataElement.name} )",
+				"name": "$!encoder.jsonEncode( ${dataElement.displayName} )",
 				"compulsory": "${dataElement.compulsory}",
 				"valueType": #if( $dataElement.optionSet )
 								"list"
@@ -90,7 +90,8 @@
 	"limitRecords": "$!aggregateReport.limitRecords",
 	"position": "${aggregateReport.position}",
 	"deGroupBy": #if($!aggregateReport.deGroupBy) "de_$!aggregateReport.deGroupBy.id" #else "" #end,
-	"deSum": #if($!aggregateReport.deSum) "de_$!aggregateReport.deSum.id" #else "" #end,
+	"deSumId": #if($!aggregateReport.deSum) "de_$!aggregateReport.deSum.id" #else "" #end,
+	"deSumName": #if($!aggregateReport.deSum) "$!encoder.jsonEncode( ${aggregateReport.deSum.displayName})" #else "" #end,
 	"aggregateType": "${aggregateReport.aggregateType}",
 	"useCompletedEvents": "$!aggregateReport.useCompletedEvents",
 	"userOrganisationUnit": "$!aggregateReport.userOrganisationUnit",

@@ -1230,7 +1230,11 @@ Ext.onReady( function() {
 								Ext.getCmp('deSumCbx').setValue( f.deSum );
 								Ext.getCmp('aggregateType').setValue( f.aggregateType );
 								Ext.getCmp('levelCombobox').setValue( f.level );
-																
+													
+								TR.store.aggregateDataelement.add(
+									{'value': f.deSumId,'name': deSumName}
+								);				
+
 								// Program stage									
 								var storeProgramStage = TR.store.programStage;
 								storeProgramStage.parent = f.programStageId;
