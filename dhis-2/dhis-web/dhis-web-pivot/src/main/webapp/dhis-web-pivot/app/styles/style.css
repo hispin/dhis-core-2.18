@@ -87,7 +87,7 @@ table.pivot {
 }
 
 .pivot-empty {
-	background-color: #dae6f8;
+	background-color: #deeafc;
 }
 
 .pivot-dim {
@@ -647,10 +647,10 @@ td .bad div {
 
 	/* Treepanel contextmenu */
 #treepanel-contextmenu {
-    border-radius: 2px;
+    border-radius: 3px;
     border-width: 1px;
     border-style: solid;
-    border-color: #aaa;
+    border-color: #ddd;
 }
 
 
