@@ -547,7 +547,6 @@ PT.core.getUtils = function(pt) {
 				}
 			};
 				
-			
 			getParamString = function(xSettings) {
 				var sortedDimensions = xSettings.sortedDimensions,
 					sortedFilterDimensions = xSettings.sortedFilterDimensions,
@@ -861,7 +860,7 @@ PT.core.getUtils = function(pt) {
 				return xRowAxis;
 			};
 
-			getTableHtmlArrays = function(xColAxis, xRowAxis, xResponse) {
+			getTableHtml = function(xColAxis, xRowAxis, xResponse) {
 				var getEmptyHtmlArray,
 					getColAxisHtmlArray,
 					getRowAxisHtmlArray,
@@ -871,6 +870,7 @@ PT.core.getUtils = function(pt) {
 					getGrandTotalHtmlArray,
 					getRowHtmlArray,
 					getTotalHtmlArray,
+					getHtml,
 
 					valueItems = [],
 					totalColItems = [],
@@ -950,32 +950,34 @@ PT.core.getUtils = function(pt) {
 
 				getValueHtmlArray = function() {
 					var a = [],
-						items = [],
+						htmlValueItems = [],
 						colSize = xColAxis ? xColAxis.size : 1,
 						rowSize = xRowAxis ? xRowAxis.size : 1;						
 
 					// Value items
-					for (var i = 0, itemRow, valueItemRow; i < rowSize; i++) {
-						itemRow = [];
+					for (var i = 0, valueItemRow, htmlValueItemRow; i < rowSize; i++) {
 						valueItemRow = [];
+						htmlValueItemRow = [];
 
 						for (var j = 0, id, value; j < colSize; j++) {
 							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
 							value = xResponse.idValueMap[id] ? parseFloat(xResponse.idValueMap[id]) : 0; //todo
-							itemRow.push({id: id, value: value});
+							htmlValue = xResponse.idValueMap[id] ? parseFloat(xResponse.idValueMap[id]) : '-'; //todo
+
 							valueItemRow.push(value);
+							htmlValueItemRow.push({id: id, value: htmlValue});
 						}
 
-						items.push(itemRow);
 						valueItems.push(valueItemRow);
+						htmlValueItems.push(htmlValueItemRow);
 					}
 
 					// Value html items
-					for (var i = 0, row; i < items.length; i++) {
+					for (var i = 0, row; i < htmlValueItems.length; i++) {
 						row = [];
 
-						for (var j = 0, item, cls; j < items[i].length; j++) {
-							item = items[i][j];
+						for (var j = 0, item, cls; j < htmlValueItems[i].length; j++) {
+							item = htmlValueItems[i][j];
 
 							//if (Ext.isNumber(value)) {
 								//cls = value < 5000 ? 'bad' : (value < 20000 ? 'medium' : 'good'); //basic legendset
@@ -1088,25 +1090,29 @@ PT.core.getUtils = function(pt) {
 					return a;
 				};
 
-				var htmlArray = [].concat(getColAxisHtmlArray(), getRowHtmlArray(), getTotalHtmlArray());
+				getHtml = function() {
+					var s = '<table class="pivot">';
+
+					for (var i = 0; i < htmlArray.length; i++) {
+						s += '<tr>' + htmlArray[i].join('') + '</tr>';
+					}
+
+					s += '</table>';
+
+					return s;
+				};					
+				
+				htmlArray = [].concat(getColAxisHtmlArray(), getRowHtmlArray(), getTotalHtmlArray());
 				htmlArray = Ext.Array.clean(htmlArray);
 
-				return htmlArray;
+				return getHtml(htmlArray);
 			};
 
-			getTablePanel = function(tableHtmlArrays) {
-				var tableHtml = '<table class="pivot">';
-
-				for (var i = 0; i < tableHtmlArrays.length; i++) {
-					tableHtml += '<tr>' + tableHtmlArrays[i].join('') + '</tr>';
-				}
-
-				tableHtml += '</table>';
-
+			getTablePanel = function(html) {
 				return Ext.create('Ext.panel.Panel', {
 					bodyStyle: 'border:0 none',
 					autoScroll: true,
-					html: tableHtml
+					html: html
 				});
 			};
 			
@@ -1134,7 +1140,7 @@ PT.core.getUtils = function(pt) {
 						alert('Data request failed');
 					},						
 					success: function(response) {
-						var tableHtmlArrays,
+						var html,
 							tablePanel;
 
 						if (!validateResponse(response)) {
@@ -1158,9 +1164,9 @@ response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 						xColAxis = extendAxis(xSettings.col, xResponse);
 						xRowAxis = extendRowAxis(xSettings.row, xResponse);
 						
-						tableHtmlArrays = getTableHtmlArrays(xColAxis, xRowAxis, xResponse);
+						html = getTableHtml(xColAxis, xRowAxis, xResponse);
 						
-						tablePanel = getTablePanel(tableHtmlArrays);
+						tablePanel = getTablePanel(html);
 
 						if (!pt.el) {
 							container.removeAll(true);
