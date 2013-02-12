@@ -480,6 +480,73 @@ PT.core.getUtils = function(pt) {
 				
 				return xSettings;
 			};
+
+			getSyncedXSettings = function(xSettings, response) {
+				var getHeaderNames,
+				
+					headerNames,
+					newSettings;
+
+				getHeaderNames = function() {
+					var a = [];
+
+					for (var i = 0; i < response.headers.length; i++) {
+						a.push(response.headers[i].name);
+					}
+
+					return a;
+				};
+
+				removeDimensionFromSettings = function(dimensionName) {
+					var getCleanAxis;
+
+					getAxis = function(axis) {
+						var axis = Ext.clone(axis),
+							dimension;
+						
+						for (var i = 0; i < axis.length; i++) {
+							if (axis[i].name === dimensionName) {
+								dimension = axis[i];
+							}
+						}
+
+						if (dimension) {
+							Ext.Array.remove(axis, dimension);
+						}
+
+						return axis;
+					};
+
+					if (settings.col) {
+						settings.col = getAxis(settings.col);
+					}
+					if (settings.row) {
+						settings.row = getAxis(settings.row);
+					}
+					if (settings.filter) {
+						settings.filter = getAxis(settings.filter);
+					}						
+				};
+				
+				headerNames = getHeaderNames();
+				
+				// remove coc from settings if it does not exist in response
+				if (Ext.Array.contains(xSettings.dimensionNames, 'coc') && !(Ext.Array.contains(headerNames, 'coc'))) {
+					removeDimensionFromSettings('coc');
+					
+					newSettings = pt.api.Settings(settings);
+
+					if (!newSettings) {
+						return;
+					}
+
+					return extendSettings(newSettings);
+				}
+				else {
+					return xSettings;
+				}
+			};
+				
 			
 			getParamString = function(xSettings) {
 				var sortedDimensions = xSettings.sortedDimensions,
@@ -546,7 +613,7 @@ PT.core.getUtils = function(pt) {
 				response.idValueMap = {};
 
 				var extendHeaders = function() {
-					var dimensions = xSettings.dimensions;
+					//var dimensions = xSettings.dimensions;
 
 					// Extend headers: index, items (ordered), size
 					for (var i = 0, header, settingsItems, responseItems, orderedResponseItems; i < headers.length; i++) {
@@ -1078,6 +1145,13 @@ PT.core.getUtils = function(pt) {
 //todo
 response.metaData['PT59n8BQbqM'] = '(Outreach)';
 response.metaData['pq2XI5kz2BY'] = '(Fixed)';
+
+						xSettings = getSyncedXSettings(xSettings, response);
+
+						if (!xSettings) {
+							pt.util.mask.hideMask();
+							return;
+						}
 
 						xResponse = extendResponse(response, xSettings);
 

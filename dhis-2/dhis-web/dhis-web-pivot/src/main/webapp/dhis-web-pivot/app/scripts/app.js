@@ -623,6 +623,7 @@ Ext.onReady( function() {
 				width: (pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding) / 2,
 				valueField: 'id',
 				displayField: 'name',
+				ddReorder: true,
 				store: pt.store.indicatorSelected,
 				tbar: [
 					{
@@ -1312,7 +1313,7 @@ Ext.onReady( function() {
 				height: 180,
 				valueField: 'id',
 				displayField: 'name',
-				ddReorder: false,
+				ddReorder: true,
 				store: pt.store.fixedPeriodSelected,
 				tbar: [
 					' ',
@@ -1983,10 +1984,31 @@ Ext.onReady( function() {
 				return getPanels();
 			};
 
+			validateSpecialCases = function(settings) {
+				// indicator as filter
+				if (settings.filter && pt.store.indicatorSelected.data.length) {
+					for (var i = 0; i < settings.filter.length; i++) {
+						if (settings.filter[i].name === 'dx') {
+							alert('Indicators not accepted as filter');
+							return;
+						}
+					}
+				}
+
+				return true;
+			};
+
 			update = function() {
 				var config = pt.util.pivot.getSettingsConfig(),
 					settings = pt.api.Settings(config);
 
+				if (!settings) {
+					return;
+				}
+				if (!validateSpecialCases(settings)) {
+					return;
+				}
+					
 				if (settings) {
 					pt.util.pivot.getTable(settings, pt, centerRegion);
 				}
