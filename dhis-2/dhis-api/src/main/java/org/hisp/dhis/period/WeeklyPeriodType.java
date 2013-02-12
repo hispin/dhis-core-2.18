@@ -230,7 +230,10 @@ public class WeeklyPeriodType
         int week = cal.get( Calendar.WEEK_OF_YEAR);
         int month = cal.get( Calendar.MONTH);
 
-        if (week == 1 && month == Calendar.DECEMBER) ++year; 
+        if ( week == 1 && month == Calendar.DECEMBER )
+        {
+            ++year; 
+        }
         
         String periodString = year + "W" + week;
         return periodString;

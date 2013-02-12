@@ -84,7 +84,6 @@ public class IndicatorStoreTest
     {
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
-        IndicatorType typeC = new IndicatorType( "IndicatorTypeA", 100, false );
 
         int idA = indicatorTypeStore.save( typeA );
         int idB = indicatorTypeStore.save( typeB );
@@ -191,7 +190,6 @@ public class IndicatorStoreTest
 
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
-        Indicator indicatorC = createIndicator( 'A', type );
 
         int idA = indicatorStore.save( indicatorA );
         int idB = indicatorStore.save( indicatorB );

@@ -27,13 +27,16 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -57,7 +60,6 @@ public class IndicatorGroupStoreTest
     {
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        IndicatorGroup groupC = new IndicatorGroup( "IndicatorGroupA" );
 
         int idA = indicatorGroupStore.save( groupA );
         int idB = indicatorGroupStore.save( groupB );

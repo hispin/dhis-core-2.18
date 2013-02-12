@@ -27,7 +27,6 @@ package org.hisp.dhis.document;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 
 /**
