@@ -28,6 +28,7 @@ package org.hisp.dhis.user;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 public interface UserGroupService
 {
@@ -45,11 +46,11 @@ public interface UserGroupService
 
     Collection<UserGroup> getAllUserGroups();
 
-    UserGroup getUserGroupByName( String name );
+    List<UserGroup> getUserGroupByName( String name );
 
-    Collection<UserGroup> getUserGroupsBetween( int first, int max );
+    List<UserGroup> getUserGroupsBetween( int first, int max );
 
-    Collection<UserGroup> getUserGroupsBetweenByName( String name, int first, int max );
+    List<UserGroup> getUserGroupsBetweenByName( String name, int first, int max );
 
     int getUserGroupCount();
 

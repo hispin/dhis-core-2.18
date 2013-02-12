@@ -26,9 +26,9 @@
 		});
 
 		/* remote validation */
-		checkValueIsExist( "name", "validateUserGroup.action", {
+		/* checkValueIsExist( "name", "validateUserGroup.action", {
 			id : $group.id
-		} );
+		} ); */
 	});
 </script>
 

@@ -35,6 +35,7 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -226,7 +227,7 @@ public class DefaultReportService
         reportStore.delete( report );
     }
 
-    public Collection<Report> getAllReports()
+    public List<Report> getAllReports()
     {
         return reportStore.getAll();
     }
@@ -254,20 +255,20 @@ public class DefaultReportService
     }
     
     @Override
-    public Collection<Report> getReportsBetween( int first, int max )
+    public List<Report> getReportsBetween( int first, int max )
     {
         return reportStore.getAllOrderedName( first, max );
     }
 
     @Override
-    public Collection<Report> getReportsBetweenByName( String name, int first, int max )
+    public List<Report> getReportsBetweenByName( String name, int first, int max )
     {
         return reportStore.getAllLikeNameOrderedName( name, first, max );
     }
 
-    public Report getReportByName( String name )
+    public List<Report> getReportByName( String name )
     {
-        return reportStore.getByName( name );
+        return reportStore.getAllEqName( name );
     }
 
     public Collection<Report> getReports( final Collection<Integer> identifiers )
