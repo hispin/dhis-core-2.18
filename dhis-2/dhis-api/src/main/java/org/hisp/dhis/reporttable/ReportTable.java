@@ -955,6 +955,12 @@ public class ReportTable
     // Get- and set-methods for persisted properties
     // -------------------------------------------------------------------------
 
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )

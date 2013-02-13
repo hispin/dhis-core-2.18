@@ -150,6 +150,12 @@ public class UserGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     @JsonIgnore
     public User getUser()
     {

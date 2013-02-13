@@ -157,6 +157,13 @@ public class IndicatorGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
+
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     @JsonProperty( value = "indicators" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
