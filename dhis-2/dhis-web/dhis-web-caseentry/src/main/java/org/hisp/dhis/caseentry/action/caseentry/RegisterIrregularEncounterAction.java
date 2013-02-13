@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -35,11 +36,8 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Chau Thu Tran
- * 
  * @version $Id: AddIrregularEncounterAction.java Oct 27, 2011 10:58:23 AM $
  */
 public class RegisterIrregularEncounterAction
@@ -50,14 +48,14 @@ public class RegisterIrregularEncounterAction
     // -------------------------------------------------------------------------
 
     private ProgramInstanceService programInstanceService;
-    
+
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
     }
 
     private ProgramStageService programStageService;
-    
+
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
@@ -69,7 +67,7 @@ public class RegisterIrregularEncounterAction
     {
         this.programStageInstanceService = programStageInstanceService;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -118,17 +116,16 @@ public class RegisterIrregularEncounterAction
         throws Exception
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
-        
-        ProgramStage progamStage = programStageService.getProgramStage( programStageId );
-        
+
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
+
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( programInstance );
-        programStageInstance.setProgramStage( progamStage );
+        programStageInstance.setProgramStage( programStage );
         programStageInstance.setDueDate( format.parseDate( dueDate ) );
 
-        int id = programStageInstanceService.addProgramStageInstance( programStageInstance );
-        message = id + "";
-        
+        message = Integer.toString( programStageInstanceService.addProgramStageInstance( programStageInstance ) );
+
         return SUCCESS;
     }
 }

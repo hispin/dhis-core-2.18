@@ -26,12 +26,12 @@
  */
 package org.hisp.dhis.program;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.patient.PatientReminder;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -85,9 +85,9 @@ public class ProgramStage
     private Boolean autoGenerateEvent = true;
 
     private Boolean validCompleteOnly = false;
-    
+
     private Boolean displayGenerateEventBox = true;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

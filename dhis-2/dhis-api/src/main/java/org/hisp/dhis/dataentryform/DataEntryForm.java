@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
 /**
  * @author Bharath Kumar
  */
-@JacksonXmlRootElement( localName = "dataEntryForm", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement(localName = "dataEntryForm", namespace = Dxf2Namespace.NAMESPACE)
 public class DataEntryForm
     implements Serializable, ImportableObject
 {
@@ -52,9 +52,9 @@ public class DataEntryForm
     public static final String STYLE_REGULAR = "regular";
     public static final String STYLE_COMPACT = "compact";
     public static final String STYLE_NONE = "none";
-    
+
     public static final int CURRENT_FORMAT = 2;
-    
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -72,7 +72,7 @@ public class DataEntryForm
      * Name of DataEntryForm. Required and unique.
      */
     private String name;
-    
+
     /**
      * The display style to use to render the form.
      */
@@ -82,7 +82,7 @@ public class DataEntryForm
      * HTML Code of DataEntryForm
      */
     private String htmlCode;
-    
+
     /**
      * The format of the DataEntryForm.
      */
@@ -165,7 +165,7 @@ public class DataEntryForm
             throw new IllegalArgumentException( message );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -214,8 +214,8 @@ public class DataEntryForm
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getName()
     {
         return name;
@@ -227,8 +227,8 @@ public class DataEntryForm
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getStyle()
     {
         return style;
@@ -240,8 +240,8 @@ public class DataEntryForm
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getHtmlCode()
     {
         return htmlCode;
@@ -253,8 +253,8 @@ public class DataEntryForm
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public int getFormat()
     {
         return format;
