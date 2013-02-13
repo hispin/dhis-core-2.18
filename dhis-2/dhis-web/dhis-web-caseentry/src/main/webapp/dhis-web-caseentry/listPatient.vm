@@ -41,7 +41,7 @@
 	  <tr>
 		<th>#</th>
 		#foreach( $identifierType in $identifierTypes)
-			<th>$encoder.htmlEncode($identifierType.name)</th>
+			<th>$encoder.htmlEncode($identifierType.displayName)</th>
 		#end
 		#if( $identifierTypes.size()==0 )
 			<th>$i18n.getString( "full_name" )</th>          

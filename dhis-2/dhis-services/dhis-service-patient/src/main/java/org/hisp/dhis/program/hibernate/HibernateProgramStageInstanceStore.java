@@ -1244,7 +1244,6 @@ public class HibernateProgramStageInstanceStore
             sql += "FROM  programstageinstance psi JOIN patientdatavalue pdv ";
             sql += "    on psi.programstageinstanceid = pdv.programstageinstanceid ";
             sql += "WHERE ";
-            sql += "    psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
             sql += "    psi.programstageid=" + programStage.getId() + " ";
             if ( useCompletedEvents )
             {

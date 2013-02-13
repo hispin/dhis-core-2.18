@@ -55,7 +55,7 @@
 				#foreach( $identifier in $identifiers )
 				<tr>
 					#if($!identifier.identifierType)
-						<td>$identifier.identifierType.name</td>
+						<td>$identifier.identifierType.displayName</td>
 					#else
 						<td>$i18n.getString("system_identifier")</td>
 					#end

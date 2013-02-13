@@ -87,7 +87,7 @@
 						<select name="identifierTypeId" id="identifierTypeId" style='width:18em' >
 							<option value="">[$i18n.getString( "please_select" )]</option>       
 							#foreach($identifierType in $identifierTypes)
-								<option value="$identifierType.id">$identifierType.name</option>
+								<option value="$identifierType.id">$identifierType.displayName</option>
 							#end
 						</select>
 					</td>

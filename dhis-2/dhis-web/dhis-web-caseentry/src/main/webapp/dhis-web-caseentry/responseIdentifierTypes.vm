@@ -4,7 +4,7 @@
 	#foreach( $identifierType in $identifierTypes )
 	  {
 		"id":  ${identifierType.id} ,
-		"name": "$!encoder.jsonEncode( ${identifierType.name} )"
+		"name": "$!encoder.jsonEncode( ${identifierType.displayName} )"
 	  }#if( $velocityCount < $size ),#end
 	#end],
 	
