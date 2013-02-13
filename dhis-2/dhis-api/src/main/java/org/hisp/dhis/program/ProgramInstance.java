@@ -26,12 +26,12 @@
  */
 package org.hisp.dhis.program;
 
+import org.hisp.dhis.patient.Patient;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.hisp.dhis.patient.Patient;
 
 /**
  * @author Abyot Asalefew
@@ -99,12 +99,12 @@ public class ProgramInstance
     {
         final int prime = 31;
         int result = 1;
-        
-        result = prime * result + ( ( dateOfIncident == null) ? 0 : dateOfIncident.hashCode() );
-        result = prime * result + ( ( enrollmentDate == null) ? 0 : enrollmentDate.hashCode() );
-        result = prime * result + ( ( patient == null) ? 0 : patient.hashCode() );
-        result = prime * result + ( ( program == null) ? 0 : program.hashCode() );
-        
+
+        result = prime * result + ((dateOfIncident == null) ? 0 : dateOfIncident.hashCode());
+        result = prime * result + ((enrollmentDate == null) ? 0 : enrollmentDate.hashCode());
+        result = prime * result + ((patient == null) ? 0 : patient.hashCode());
+        result = prime * result + ((program == null) ? 0 : program.hashCode());
+
         return result;
     }
 
@@ -115,19 +115,19 @@ public class ProgramInstance
         {
             return true;
         }
-        
+
         if ( obj == null )
         {
             return false;
         }
-        
+
         if ( getClass() != obj.getClass() )
         {
             return false;
         }
-        
+
         final ProgramInstance other = (ProgramInstance) obj;
-        
+
         if ( dateOfIncident == null )
         {
             if ( other.dateOfIncident != null )
@@ -139,7 +139,7 @@ public class ProgramInstance
         {
             return false;
         }
-        
+
         if ( enrollmentDate == null )
         {
             if ( other.enrollmentDate != null )
@@ -151,7 +151,7 @@ public class ProgramInstance
         {
             return false;
         }
-        
+
         if ( patient == null )
         {
             if ( other.patient != null )
@@ -163,7 +163,7 @@ public class ProgramInstance
         {
             return false;
         }
-        
+
         if ( program == null )
         {
             if ( other.program != null )
@@ -175,7 +175,7 @@ public class ProgramInstance
         {
             return false;
         }
-        
+
         return true;
     }
 

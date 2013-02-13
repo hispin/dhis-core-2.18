@@ -31,7 +31,6 @@ import java.io.Serializable;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version PatientReminder.java 1:07:58 PM Sep 18, 2012 $
  */
 public class PatientReminder
@@ -40,7 +39,7 @@ public class PatientReminder
     private static final long serialVersionUID = 3101502417481903219L;
 
     private int id;
-    
+
     private String name;
 
     private Integer daysAllowedSendMessage;
@@ -50,7 +49,7 @@ public class PatientReminder
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
-    
+
     public PatientReminder()
     {
 
@@ -66,7 +65,7 @@ public class PatientReminder
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-    
+
     public int getId()
     {
         return id;

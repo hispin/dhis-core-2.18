@@ -27,10 +27,6 @@
 
 package org.hisp.dhis.program;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -38,6 +34,10 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.validation.ValidationCriteria;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -79,13 +79,13 @@ public class Program
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
 
     private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
-    
+
     private Integer type;
 
     private Boolean displayProvidedOtherFacility;
 
     private Boolean displayIncidentDate;
-    
+
     private Boolean generatedByEnrollmentDate;
 
     private Boolean ignoreOverdueEvents;
@@ -93,9 +93,9 @@ public class Program
     private List<PatientIdentifierType> patientIdentifierTypes;
 
     private List<PatientAttribute> patientAttributes;
-    
+
     private Boolean blockEntryForm = false;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -216,7 +216,7 @@ public class Program
     {
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
     }
-    
+
     public String getDateOfIncidentDescription()
     {
         return dateOfIncidentDescription;
@@ -291,7 +291,7 @@ public class Program
         return null;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public ValidationCriteria isValid( Patient patient )
     {
         try
@@ -347,7 +347,7 @@ public class Program
     {
         this.generatedByEnrollmentDate = generatedByEnrollmentDate;
     }
-    
+
     public Boolean getIgnoreOverdueEvents()
     {
         return ignoreOverdueEvents;

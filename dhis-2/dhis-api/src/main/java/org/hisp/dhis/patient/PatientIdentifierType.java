@@ -27,15 +27,15 @@
 
 package org.hisp.dhis.patient;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-
-@XmlRootElement( name = "patientIdentifierType", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@XmlRootElement(name = "patientIdentifierType", namespace = Dxf2Namespace.NAMESPACE)
+@XmlAccessorType(value = XmlAccessType.NONE)
 public class PatientIdentifierType
     extends BaseIdentifiableObject
 {
@@ -63,7 +63,7 @@ public class PatientIdentifierType
     private String type;
 
     private Boolean personDisplayName;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -194,5 +194,5 @@ public class PatientIdentifierType
     {
         this.personDisplayName = personDisplayName;
     }
-    
+
 }
