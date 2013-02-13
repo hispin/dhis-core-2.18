@@ -102,7 +102,7 @@ public interface ProgramStageInstanceStore
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max );
 
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters, Collection<Period> periods,
+        String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters, List<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n );
 
 }

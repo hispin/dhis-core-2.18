@@ -1232,7 +1232,7 @@ Ext.onReady( function() {
 								Ext.getCmp('levelCombobox').setValue( f.level );
 													
 								TR.store.aggregateDataelement.add(
-									{'value': f.deSumId,'name': deSumName}
+									{'value': f.deSumId,'name': f.deSumName}
 								);				
 
 								// Program stage									
@@ -2208,6 +2208,36 @@ Ext.onReady( function() {
 						&& ( Ext.getCmp('deSumCbx').getValue() == null || Ext.getCmp('deSumCbx').getValue=='')){
 						TR.util.notification.error(TR.i18n.select_a_dataelement_for_sum_avg_operator, TR.i18n.select_a_dataelement_for_sum_avg_operator );
 						return false;	
+					}
+				
+					// Check orgunit by period
+					if( Ext.getCmp('positionOrgunitCbx').getValue() == 3 
+						&& ( TR.state.orgunitIds.length > 1 
+						|| Ext.getCmp('userOrgunitChildren').getValue() ))
+					{
+						TR.util.notification.error(TR.i18n.multiple_orgunits_selected_as_filter, TR.i18n.multiple_orgunits_selected_as_filter);
+					}
+				
+					// Check filter by period
+					if( Ext.getCmp('positionPeriodCbx').getValue() == 3 )
+					{
+						var noPeriod = TR.store.dateRange.data.length + TR.cmp.params.fixedperiod.selected.store.data.length;
+						
+						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
+						Ext.Array.each(relativePeriodList, function(item) {
+							if(item.getValue() && !item.hidden 
+								&&( item.paramName=='last3Months' 
+								  || item.paramName=='last12Months' 
+								  || item.paramName=='last4Quarters' 
+								  || item.paramName=='last2SixMonths' 
+								  || item.paramName=='last5Years' ) ){
+								noPeriod += 2;
+							}
+						});
+						
+						if( noPeriod > 1 ){
+							TR.util.notification.error(TR.i18n.multiple_periods_selected_as_filter, TR.i18n.multiple_periods_selected_as_filter);
+						}
 					}
 				
 					return true;
@@ -3763,7 +3793,7 @@ Ext.onReady( function() {
 																		
 																		TR.state.orgunitIds = [];
 																		for( var i in r.childNodes){
-																			 TR.state.orgunitIds.push( r.childNodes[0].data.localid );
+																			 TR.state.orgunitIds.push( r.childNodes[i].data.localid );
 																		}
 																	});
 																}
