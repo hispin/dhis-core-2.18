@@ -598,6 +598,13 @@ public class OrganisationUnit
     // Getters and setters
     // -------------------------------------------------------------------------
 
+
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     public String getUuid()
     {
         return uuid;

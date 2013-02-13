@@ -198,6 +198,12 @@ public class BaseIdentifiableObject
         this.name = name;
     }
 
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return true;
+    }
+
     @JsonProperty
     @JsonView({ DetailedView.class, BasicView.class, ExportView.class })
     @JacksonXmlProperty(isAttribute = true)

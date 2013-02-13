@@ -49,6 +49,8 @@ public interface IdentifiableObject
 
     String getName();
 
+    boolean haveUniqueNames();
+
     String getCode();
 
     Date getCreated();
