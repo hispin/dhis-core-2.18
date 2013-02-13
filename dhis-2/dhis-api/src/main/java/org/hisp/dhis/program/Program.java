@@ -197,7 +197,7 @@ public class Program
 
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnit> getOrganisationUnits()
@@ -205,20 +205,23 @@ public class Program
         return organisationUnits;
     }
 
-    public void setProgramInstances( Set<ProgramInstance> programInstances )
-    {
-        this.programInstances = programInstances;
-    }
-
-    // TODO expose as xml/json
+    @JsonProperty( value = "programInstances" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "programInstances", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramInstance> getProgramInstances()
     {
         return programInstances;
     }
 
+    public void setProgramInstances( Set<ProgramInstance> programInstances )
+    {
+        this.programInstances = programInstances;
+    }
+
     @JsonProperty( value = "programStages" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "programStages", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "programStage", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramStage> getProgramStages()
@@ -283,7 +286,7 @@ public class Program
 
     @JsonProperty( value = "identifierTypes" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "identifierTypes", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "identifierType", namespace = DxfNamespaces.DXF_2_0 )
     public List<PatientIdentifierType> getPatientIdentifierTypes()
@@ -298,7 +301,7 @@ public class Program
 
     @JsonProperty( value = "attributes" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
     public List<PatientAttribute> getPatientAttributes()
