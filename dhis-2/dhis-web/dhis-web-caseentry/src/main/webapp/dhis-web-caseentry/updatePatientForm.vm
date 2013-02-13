@@ -62,17 +62,19 @@
 <input type="hidden" id="relationshipTypeId" name='relationshipTypeId' value="$!relationship.relationshipType.id"/>
 <input type="hidden" id="id" name="id" value="$patient.id">
 
-<table>		
-	<tr>
-		<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
-	</tr>	
-	<tr>
-		<td></td>
-		<td>$!systemIdentifier</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>	
+<table>	
+	#if($!systemIdentifier)
+		<tr>
+			<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
+		</tr>	
+		<tr>
+			<td></td>
+			<td>$!systemIdentifier</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>	
+	#end
 
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	
