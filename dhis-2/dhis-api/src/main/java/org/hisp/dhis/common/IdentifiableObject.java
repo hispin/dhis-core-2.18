@@ -40,7 +40,7 @@ public interface IdentifiableObject
 
     enum IdentifiableProperty
     {
-        ID, UID, NAME, CODE
+        ID, UID, UUID, NAME, CODE
     }
 
     int getId();
