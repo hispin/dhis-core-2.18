@@ -42,7 +42,7 @@
 		#foreach( ${identifier} in $!{identifiers} )
 			{
 				"id": "iden_${identifier.id}",
-				"name": "${identifier.name}"
+				"name": "${identifier.displayName}"
 			},
 		#end
 		#set( $size = ${tabularReport.attributes.size()} )

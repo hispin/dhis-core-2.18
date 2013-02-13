@@ -34,7 +34,7 @@
   #foreach( ${identifierType} in $!{identifierTypes} )
   {
 	"id": "iden_${identifierType.id}",
-	"name": "$!encoder.jsonEncode( ${identifierType.name} )"
+	"name": "$!encoder.jsonEncode( ${identifierType.displayName} )"
   },
   #end
   #set( $size = $!{patientAttributes.size()} )

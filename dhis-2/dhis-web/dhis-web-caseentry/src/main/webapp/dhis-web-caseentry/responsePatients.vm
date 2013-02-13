@@ -12,7 +12,7 @@
   	#if( $identifier.identifierType )
 	    <identifier>
 	    	<id>$identifier.identifierType.id</id>
-	        <name>$!encoder.xmlEncode( $identifier.identifierType.name )</name>
+	        <name>$!encoder.xmlEncode( $identifier.identifierType.displayName )</name>
 	        <value>$!encoder.xmlEncode( $identifier.identifier )</value>
 	    </identifier>
     #else

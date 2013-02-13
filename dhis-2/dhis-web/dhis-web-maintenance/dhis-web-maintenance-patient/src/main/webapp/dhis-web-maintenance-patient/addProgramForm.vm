@@ -110,10 +110,10 @@
 		<td>
 			<select style="width:100%;" size="15" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();">
 				#foreach( $identifier in $availableIdentifierTypes )
-					<option value="iden_$identifier.id">$identifier.name</option>
+					<option value="iden_$identifier.id">$identifier.displayName</option>
 				#end
 				#foreach( $attribute in $availableAttributes )
-					<option value="attr_$attribute.id">$attribute.name</option>
+					<option value="attr_$attribute.id">$attribute.displayName</option>
 				#end
 			</select>
 		</td>

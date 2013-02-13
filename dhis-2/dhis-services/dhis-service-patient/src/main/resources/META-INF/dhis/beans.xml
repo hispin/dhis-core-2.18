@@ -266,6 +266,7 @@
 		class="org.hisp.dhis.patient.DefaultPatientIdentifierTypeService">
 		<property name="patientIdentifierTypeStore"
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">

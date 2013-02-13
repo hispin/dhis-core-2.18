@@ -33,7 +33,7 @@
 	#foreach( $patientIdentifier in $partner.identifiers )
 	<tr>
 		<td>
-				#if($!patientIdentifier.identifierType)  $!patientIdentifier.identifierType.name
+				#if($!patientIdentifier.identifierType)  $!patientIdentifier.identifierType.displayName
 				#else $i18n.getString( "patient_system_id") #end 
 		</td>
 		<td>: $patientIdentifier.identifier</td>

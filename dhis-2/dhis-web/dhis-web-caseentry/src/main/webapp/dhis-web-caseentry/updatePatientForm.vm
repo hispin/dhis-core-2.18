@@ -111,7 +111,7 @@
 		</tr>
 		#foreach( $patientIdentifier in $representative.identifiers )
 		  <tr>  
-			<td class="bold text-column">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name: #else $i18n.getString("system_identifier"): #end</td>      
+			<td class="bold text-column">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.displayName: #else $i18n.getString("system_identifier"): #end</td>      
 			  <td> $!patientIdentifier.identifier </td>
 		   </tr>
 		#end
