@@ -30,7 +30,7 @@ package org.hisp.dhis.system.notification;
 import java.util.Date;
 
 import org.hisp.dhis.common.CodeGenerator;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.scheduling.TaskCategory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,7 +40,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "notification", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "notification", namespace = DxfNamespaces.DXF_2_0 )
 public class Notification
 {
     private String uid;
@@ -79,7 +79,7 @@ public class Notification
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public NotificationLevel getLevel()
     {
         return level;
@@ -91,7 +91,7 @@ public class Notification
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getUid()
     {
         return uid;
@@ -103,7 +103,7 @@ public class Notification
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public TaskCategory getCategory()
     {
         return category;
@@ -115,7 +115,7 @@ public class Notification
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getTime()
     {
         return time;
@@ -127,7 +127,7 @@ public class Notification
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getMessage()
     {
         return message;
@@ -139,7 +139,7 @@ public class Notification
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isCompleted()
     {
         return completed;

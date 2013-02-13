@@ -1,6 +1,6 @@
 package org.hisp.dhis.aggregation;
 
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -35,7 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "dxf2", namespace = DxfNamespaces.DXF_2_0)
 public class AggregatedMapValue
 {
     private int organisationUnitId;

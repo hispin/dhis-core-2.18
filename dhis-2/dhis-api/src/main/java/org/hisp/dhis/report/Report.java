@@ -28,7 +28,7 @@ package org.hisp.dhis.report;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -45,7 +45,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "report", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "report", namespace = DxfNamespaces.DXF_2_0 )
 public class Report
     extends BaseIdentifiableObject
 {
@@ -188,7 +188,7 @@ public class Report
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
     {
         return type;
@@ -201,7 +201,7 @@ public class Report
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDesignContent()
     {
         return designContent;
@@ -215,7 +215,7 @@ public class Report
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ReportTable getReportTable()
     {
         return reportTable;
@@ -228,7 +228,7 @@ public class Report
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getUsingOrgUnitGroupSets()
     {
         return usingOrgUnitGroupSets;
@@ -241,7 +241,7 @@ public class Report
 
     @JsonProperty( value = "relativePeriods" )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public RelativePeriods getRelatives()
     {
         return relatives;
@@ -254,7 +254,7 @@ public class Report
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ReportParams getReportParams()
     {
         return reportParams;

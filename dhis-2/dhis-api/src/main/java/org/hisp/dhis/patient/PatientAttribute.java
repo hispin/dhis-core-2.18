@@ -56,7 +56,6 @@ public class PatientAttribute
 
     public static final String TYPE_CALCULATED = "CALCULATED";
 
-
     private String description;
 
     private String valueType;

@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Weighted;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
@@ -48,7 +48,7 @@ import java.util.Date;
 /**
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "period", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "period", namespace = DxfNamespaces.DXF_2_0)
 public class Period
     extends BaseNameableObject
     implements Weighted
@@ -309,7 +309,7 @@ public class Period
     @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
     @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public PeriodType getPeriodType()
     {
         return periodType;

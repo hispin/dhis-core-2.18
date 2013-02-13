@@ -33,7 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -54,7 +54,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "interpretation", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "interpretation", namespace = DxfNamespaces.DXF_2_0)
 public class Interpretation
     extends BaseIdentifiableObject
 {
@@ -164,7 +164,7 @@ public class Interpretation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Chart getChart()
     {
         return chart;
@@ -178,7 +178,7 @@ public class Interpretation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Map getMap()
     {
         return map;
@@ -192,7 +192,7 @@ public class Interpretation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public ReportTable getReportTable()
     {
         return reportTable;
@@ -206,7 +206,7 @@ public class Interpretation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public DataSet getDataSet()
     {
         return dataSet;
@@ -220,7 +220,7 @@ public class Interpretation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Period getPeriod()
     {
         return period;
@@ -234,7 +234,7 @@ public class Interpretation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -247,7 +247,7 @@ public class Interpretation
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getText()
     {
         return text;
@@ -260,8 +260,8 @@ public class Interpretation
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "comments", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "comment", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "comments", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "comment", namespace = DxfNamespaces.DXF_2_0)
     public List<InterpretationComment> getComments()
     {
         return comments;

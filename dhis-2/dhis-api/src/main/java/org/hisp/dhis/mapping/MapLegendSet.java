@@ -33,7 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * @author Jan Henrik Overland
  */
-@JacksonXmlRootElement(localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE)
+@JacksonXmlRootElement(localName = "mapLegendSet", namespace = DxfNamespaces.DXF_2_0)
 public class MapLegendSet
     extends BaseIdentifiableObject
 {
@@ -116,7 +116,7 @@ public class MapLegendSet
 
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getSymbolizer()
     {
         return symbolizer;
@@ -130,8 +130,8 @@ public class MapLegendSet
     @JsonProperty
     // @JsonDeserialize( using = JacksonMapLegendsDeserializer.class )
     @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "mapLegends", namespace = Dxf2Namespace.NAMESPACE)
-    @JacksonXmlProperty(localName = "mapLegend", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlElementWrapper(localName = "mapLegends", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "mapLegend", namespace = DxfNamespaces.DXF_2_0)
     public Set<MapLegend> getMapLegends()
     {
         return mapLegends;

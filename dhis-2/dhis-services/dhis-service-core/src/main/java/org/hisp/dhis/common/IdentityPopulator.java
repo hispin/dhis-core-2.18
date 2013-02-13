@@ -55,7 +55,7 @@ public class IdentityPopulator
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
         "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
-        "maplegendset", "maplayer", "section", "optionset"
+        "maplegendset", "maplayer", "section", "optionset", "program", "programstage"
     };
 
     // -------------------------------------------------------------------------

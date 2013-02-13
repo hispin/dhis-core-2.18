@@ -28,7 +28,7 @@ package org.hisp.dhis.period;
  */
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -40,7 +40,7 @@ import java.util.*;
  *
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "periodType", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "periodType", namespace = DxfNamespaces.DXF_2_0)
 public abstract class PeriodType
     implements Serializable
 {

@@ -27,7 +27,7 @@ package org.hisp.dhis.api.webdomain.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -36,7 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "dashboard", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "dashboard", namespace = DxfNamespaces.DXF_2_0 )
 public class Dashboard
 {
     private long unreadMessageConversation;
@@ -48,7 +48,7 @@ public class Dashboard
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public long getUnreadMessageConversation()
     {
         return unreadMessageConversation;
@@ -60,7 +60,7 @@ public class Dashboard
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public long getUnreadInterpretations()
     {
         return unreadInterpretations;

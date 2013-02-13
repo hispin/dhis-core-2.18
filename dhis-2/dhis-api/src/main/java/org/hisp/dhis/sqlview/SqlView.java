@@ -39,7 +39,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -47,7 +47,7 @@ import org.hisp.dhis.common.view.ExportView;
 /**
  * @author Dang Duy Hieu
  */
-@JacksonXmlRootElement( localName = "sqlView", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "sqlView", namespace = DxfNamespaces.DXF_2_0 )
 public class SqlView
     extends BaseIdentifiableObject
 {
@@ -172,7 +172,7 @@ public class SqlView
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -185,7 +185,7 @@ public class SqlView
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSqlQuery()
     {
         return sqlQuery;

@@ -27,10 +27,14 @@
 
 package org.hisp.dhis.validation;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@JacksonXmlRootElement( localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0 )
 public class ValidationCriteria
 {
     public static final int OPERATOR_LESS_THAN = -1;

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -47,7 +47,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "map", namespace = DxfNamespaces.DXF_2_0 )
 public class Map
     extends BaseIdentifiableObject
 {
@@ -83,7 +83,7 @@ public class Map
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Double getLongitude()
     {
         return longitude;
@@ -96,7 +96,7 @@ public class Map
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Double getLatitude()
     {
         return latitude;
@@ -109,7 +109,7 @@ public class Map
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getZoom()
     {
         return zoom;
@@ -122,8 +122,8 @@ public class Map
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "mapViews", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "mapViews", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "mapView", namespace = DxfNamespaces.DXF_2_0 )
     public List<MapView> getMapViews()
     {
         return mapViews;

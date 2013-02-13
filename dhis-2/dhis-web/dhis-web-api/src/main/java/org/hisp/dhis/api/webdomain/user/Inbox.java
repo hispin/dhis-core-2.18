@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.message.MessageConversation;
 
@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "inbox", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "inbox", namespace = DxfNamespaces.DXF_2_0 )
 public class Inbox
 {
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
@@ -53,8 +53,8 @@ public class Inbox
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "messageConversations", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "messageConversations", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "messageConversation", namespace = DxfNamespaces.DXF_2_0 )
     public List<MessageConversation> getMessageConversations()
     {
         return messageConversations;
@@ -66,8 +66,8 @@ public class Inbox
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "interpretations", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "interpretation", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "interpretations", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "interpretation", namespace = DxfNamespaces.DXF_2_0 )
     public List<Interpretation> getInterpretations()
     {
         return interpretations;

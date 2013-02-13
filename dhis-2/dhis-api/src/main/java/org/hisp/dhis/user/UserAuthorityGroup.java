@@ -34,7 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * @author Nguyen Hong Duc
  */
-@JacksonXmlRootElement( localName = "userRole", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "userRole", namespace = DxfNamespaces.DXF_2_0 )
 public class UserAuthorityGroup
     extends BaseIdentifiableObject
 {
@@ -125,7 +125,7 @@ public class UserAuthorityGroup
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -138,8 +138,8 @@ public class UserAuthorityGroup
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "authorities", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "authority", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "authorities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "authority", namespace = DxfNamespaces.DXF_2_0 )
     public Set<String> getAuthorities()
     {
         return authorities;
@@ -163,8 +163,8 @@ public class UserAuthorityGroup
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataSet> getDataSets()
     {
         return dataSets;

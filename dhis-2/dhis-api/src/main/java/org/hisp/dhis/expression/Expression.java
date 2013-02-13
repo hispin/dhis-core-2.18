@@ -36,7 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -64,7 +64,7 @@ import java.util.Set;
  * @author Margrethe Store
  * @version $Id: Expression.java 5011 2008-04-24 20:41:28Z larshelg $
  */
-@JacksonXmlRootElement( localName = "expression", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "expression", namespace = DxfNamespaces.DXF_2_0)
 public class Expression
     implements Serializable
 {

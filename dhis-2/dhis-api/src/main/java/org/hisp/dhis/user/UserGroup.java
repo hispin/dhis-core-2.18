@@ -36,7 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -45,7 +45,7 @@ import org.hisp.dhis.common.view.ExportView;
 import java.util.HashSet;
 import java.util.Set;
 
-@JacksonXmlRootElement(localName = "userGroup", namespace = Dxf2Namespace.NAMESPACE)
+@JacksonXmlRootElement(localName = "userGroup", namespace = DxfNamespaces.DXF_2_0)
 public class UserGroup
     extends BaseIdentifiableObject
 {
@@ -171,8 +171,8 @@ public class UserGroup
     @JsonProperty(value = "users")
     @JsonSerialize(contentAs = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "users", namespace = Dxf2Namespace.NAMESPACE)
-    @JacksonXmlProperty(localName = "user", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlElementWrapper(localName = "users", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "user", namespace = DxfNamespaces.DXF_2_0)
     public Set<User> getMembers()
     {
         return members;
@@ -185,8 +185,8 @@ public class UserGroup
 
     @JsonProperty(value = "attributes")
     @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "attributes", namespace = Dxf2Namespace.NAMESPACE)
-    @JacksonXmlProperty(localName = "attribute", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlElementWrapper(localName = "attributes", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "attribute", namespace = DxfNamespaces.DXF_2_0)
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

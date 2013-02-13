@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -45,7 +45,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "recipients", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "recipients", namespace = DxfNamespaces.DXF_2_0 )
 public class Recipients
 {
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
@@ -60,8 +60,8 @@ public class Recipients
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -74,8 +74,8 @@ public class Recipients
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "user", namespace = DxfNamespaces.DXF_2_0 )
     public Set<User> getUsers()
     {
         return users;
@@ -88,8 +88,8 @@ public class Recipients
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "userGroups", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "userGroup", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "userGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "userGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserGroup> getUserGroups()
     {
         return userGroups;
