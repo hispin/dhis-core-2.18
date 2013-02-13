@@ -39,7 +39,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
@@ -52,7 +52,7 @@ import org.hisp.dhis.system.util.MathUtils;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "dxf2", namespace = DxfNamespaces.DXF_2_0)
 public class DataQueryParams
 {
     public static final String DATA_X_DIM_ID = "dx"; // IN, DE, DS

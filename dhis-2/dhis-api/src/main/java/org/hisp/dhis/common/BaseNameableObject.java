@@ -39,7 +39,7 @@ import org.hisp.dhis.common.view.ShortNameView;
 /**
  * @author Bob Jolliffe
  */
-@JacksonXmlRootElement( localName = "nameableObject", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "nameableObject", namespace = DxfNamespaces.DXF_2_0)
 public class BaseNameableObject
     extends BaseIdentifiableObject
     implements NameableObject
@@ -125,7 +125,7 @@ public class BaseNameableObject
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getDescription()
     {
         return description;

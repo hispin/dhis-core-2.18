@@ -36,7 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -52,7 +52,7 @@ import java.util.Set;
 /**
  * @author Abyot Aselefew
  */
-@JacksonXmlRootElement(localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE)
+@JacksonXmlRootElement(localName = "categoryOptionCombo", namespace = DxfNamespaces.DXF_2_0)
 public class DataElementCategoryOptionCombo
     extends BaseNameableObject
 {
@@ -353,7 +353,7 @@ public class DataElementCategoryOptionCombo
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -367,8 +367,8 @@ public class DataElementCategoryOptionCombo
     @JsonProperty
     @JsonSerialize(contentAs = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "categoryOptions", namespace = Dxf2Namespace.NAMESPACE)
-    @JacksonXmlProperty(localName = "categoryOption", namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlElementWrapper(localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0)
     public Set<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;

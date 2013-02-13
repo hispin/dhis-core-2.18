@@ -34,7 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
@@ -46,7 +46,7 @@ import java.util.*;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "messageConversation", namespace = DxfNamespaces.DXF_2_0)
 public class MessageConversation
     extends BaseIdentifiableObject
 {
@@ -279,7 +279,7 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getSubject()
     {
         return subject;
@@ -293,7 +293,7 @@ public class MessageConversation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public User getLastSender()
     {
         return lastSender;
@@ -306,7 +306,7 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Date getLastMessage()
     {
         return lastMessage;
@@ -319,8 +319,8 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "userMessages", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "userMessage", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "userMessages", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "userMessage", namespace = DxfNamespaces.DXF_2_0)
     public Set<UserMessage> getUserMessages()
     {
         return userMessages;
@@ -333,8 +333,8 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "messages", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "message", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "messages", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "message", namespace = DxfNamespaces.DXF_2_0)
     public List<Message> getMessages()
     {
         return messages;

@@ -31,13 +31,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "organisationUnitLevel", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "organisationUnitLevel", namespace = DxfNamespaces.DXF_2_0)
 public class OrganisationUnitLevel
     extends BaseIdentifiableObject
 {

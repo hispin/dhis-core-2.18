@@ -34,7 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -50,7 +50,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Nguyen Hong Duc
  */
-@JacksonXmlRootElement( localName = "userCredentials", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "userCredentials", namespace = DxfNamespaces.DXF_2_0)
 public class UserCredentials
     implements Serializable
 {
@@ -394,8 +394,8 @@ public class UserCredentials
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "userAuthorityGroups", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "userAuthorityGroup", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "userAuthorityGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "userAuthorityGroup", namespace = DxfNamespaces.DXF_2_0)
     public Set<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
@@ -408,7 +408,7 @@ public class UserCredentials
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getUsername()
     {
         return username;

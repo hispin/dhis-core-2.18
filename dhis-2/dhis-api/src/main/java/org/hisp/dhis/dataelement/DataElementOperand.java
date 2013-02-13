@@ -34,7 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.expression.ExpressionService;
@@ -51,7 +51,7 @@ import java.util.regex.Matcher;
  *
  * @author Abyot Asalefew
  */
-@JacksonXmlRootElement( localName = "dataElementOperand", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0)
 public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>
 {

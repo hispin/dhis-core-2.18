@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.program;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.patient.Patient;
 
 import java.io.Serializable;
@@ -37,6 +39,7 @@ import java.util.Set;
  * @author Abyot Asalefew
  * @version $Id$
  */
+@JacksonXmlRootElement( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramInstance
     implements Serializable
 {

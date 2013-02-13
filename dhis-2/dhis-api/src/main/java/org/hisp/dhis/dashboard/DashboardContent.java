@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.document.Document;
@@ -53,7 +53,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  *
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "dashboardContent", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "dashboardContent", namespace = DxfNamespaces.DXF_2_0)
 public class DashboardContent
 {
     private final static int MAX_DASHBOARD_ELEMENTS = 6;

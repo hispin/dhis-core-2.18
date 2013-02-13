@@ -34,7 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "linkableObject", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "linkableObject", namespace = DxfNamespaces.DXF_2_0)
 public class BaseLinkableObject
     implements LinkableObject
 {

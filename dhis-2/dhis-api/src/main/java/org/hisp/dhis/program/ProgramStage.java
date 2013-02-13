@@ -26,7 +26,15 @@
  */
 package org.hisp.dhis.program;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.patient.PatientReminder;
 
@@ -36,6 +44,7 @@ import java.util.Set;
 /**
  * @author Abyot Asalefew
  */
+@JacksonXmlRootElement( localName = "programStage", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramStage
     extends BaseIdentifiableObject
 {
@@ -166,6 +175,9 @@ public class ProgramStage
         this.dataEntryForm = dataEntryForm;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -181,6 +193,9 @@ public class ProgramStage
         this.programStageSections = programStageSections;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getStandardInterval()
     {
         return standardInterval;
@@ -196,6 +211,9 @@ public class ProgramStage
         this.description = description;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getIrregular()
     {
         return irregular;
@@ -206,6 +224,9 @@ public class ProgramStage
         this.irregular = irregular;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getMinDaysFromStart()
     {
         return minDaysFromStart;
@@ -216,16 +237,21 @@ public class ProgramStage
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    public void setProgram( Program program )
-    {
-        this.program = program;
-    }
-
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Program getProgram()
     {
         return program;
     }
 
+    public void setProgram( Program program )
+    {
+        this.program = program;
+    }
+
+    // TODO expose as xml/json
     public Set<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;
@@ -236,6 +262,9 @@ public class ProgramStage
         this.programStageDataElements = programStageDataElements;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getReportDateDescription()
     {
         return reportDateDescription;
@@ -246,6 +275,9 @@ public class ProgramStage
         this.reportDateDescription = reportDateDescription;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getAutoGenerateEvent()
     {
         return autoGenerateEvent;
@@ -256,6 +288,9 @@ public class ProgramStage
         this.autoGenerateEvent = autoGenerateEvent;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getValidCompleteOnly()
     {
         return validCompleteOnly;
@@ -266,6 +301,9 @@ public class ProgramStage
         this.validCompleteOnly = validCompleteOnly;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayGenerateEventBox()
     {
         return displayGenerateEventBox;
@@ -276,6 +314,9 @@ public class ProgramStage
         this.displayGenerateEventBox = displayGenerateEventBox;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDataEntryType()
     {
         if ( dataEntryForm != null )
@@ -291,6 +332,9 @@ public class ProgramStage
         return TYPE_DEFAULT;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDefaultTemplateMessage()
     {
         return "Dear {person-name}, please come to your appointment on {program-stage-name} at {due-date}";

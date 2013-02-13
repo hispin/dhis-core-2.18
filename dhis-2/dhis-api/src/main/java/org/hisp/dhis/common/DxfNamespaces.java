@@ -6,7 +6,7 @@ package org.hisp.dhis.common;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Dxf2Namespace
+public class DxfNamespaces
 {
-    public static final String NAMESPACE = "http://dhis2.org/schema/dxf/2.0";
+    public static final String DXF_2_0 = "http://dhis2.org/schema/dxf/2.0";
 }

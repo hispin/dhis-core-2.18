@@ -1,7 +1,7 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.api.controller.patient;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,28 +27,18 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.program.ProgramStage;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "rows", namespace = DxfNamespaces.DXF_2_0)
-public class GridRows
+@Controller
+@RequestMapping( value = ProgramStageController.RESOURCE_PATH )
+public class ProgramStageController
+    extends AbstractCrudController<ProgramStage>
 {
-    private List<GridRow> rows = new ArrayList<GridRow>();
-
-    @JsonProperty
-    public List<GridRow> getRows()
-    {
-        return rows;
-    }
-
-    public void setRows( List<GridRow> rows )
-    {
-        this.rows = rows;
-    }
+    public static final String RESOURCE_PATH = "/programStages";
 }
