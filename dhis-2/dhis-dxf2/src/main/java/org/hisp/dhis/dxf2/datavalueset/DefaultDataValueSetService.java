@@ -260,7 +260,16 @@ public class DefaultDataValueSetService
 
         Period outerPeriod = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
 
-        OrganisationUnit outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
+        OrganisationUnit outerOrgUnit;
+
+        if ( orgUnitIdScheme.equals( IdentifiableProperty.UUID ) )
+        {
+            outerOrgUnit = dataValueSet.getOrgUnit() == null ? null : organisationUnitService.getOrganisationUnitByUuid( dataValueSet.getOrgUnit() );
+        }
+        else
+        {
+            outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
+        }
 
         if ( dataSet != null && completeDate != null )
         {
