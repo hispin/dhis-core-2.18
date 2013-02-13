@@ -968,7 +968,6 @@ function showUpdatePatientForm( patientId )
 			programId: getFieldValue('programIdAddPatient')
 		}, function()
 		{
-			jQuery('#searchPatientsDiv').dialog('close');
 			jQuery('#loaderDiv').hide();
 			showById('editPatientDiv');
 		});

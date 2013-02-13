@@ -36,11 +36,8 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -256,7 +253,8 @@ public class DefaultPatientRegistrationFormService
                 String value = "";
                 if ( programInstance != null )
                 {
-                    value = format.formatDate( ((Date) getValueFromProgram( property, programInstance )) );
+                    value = format.formatDate( ((Date) getValueFromProgram( StringUtils.capitalize( property ),
+                        programInstance )) );
                 }
 
                 inputHtml = "<input id=\"" + property + "\" name=\"" + property + "\" tabindex=\"" + index
@@ -480,7 +478,7 @@ public class DefaultPatientRegistrationFormService
     {
         try
         {
-            return Patient.class.getMethod( "get" + property ).invoke( programInstance );
+            return ProgramInstance.class.getMethod( "get" + property ).invoke( programInstance );
         }
         catch ( Exception ex )
         {
