@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -281,7 +283,7 @@ public class GenerateAggregateReportAction
         // Get periods
         // ---------------------------------------------------------------------
 
-        Collection<Period> periods = new HashSet<Period>();
+        List<Period> periods = new ArrayList<Period>();
 
         // Create period from start-date and end-date
 
@@ -349,64 +351,64 @@ public class GenerateAggregateReportAction
         if ( relativePeriods.contains( "reportingMonth" ) )
         {
             rp.clear().setReportingMonth( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "last3Months" ) )
         {
             rp.clear().setLast3Months( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "last12Months" ) )
         {
             rp.clear().setLast12Months( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "reportingQuarter" ) )
         {
             rp.clear().setReportingQuarter( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "last4Quarters" ) )
         {
             rp.clear().setLast4Quarters( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "lastSixMonth" ) )
         {
             rp.clear().setLastSixMonth( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "last2SixMonths" ) )
         {
             rp.clear().setLast2SixMonths( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "thisYear" ) )
         {
             rp.clear().setThisYear( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "lastYear" ) )
         {
             rp.clear().setLastYear( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
         if ( relativePeriods.contains( "last5Years" ) )
         {
             rp.clear().setLast5Years( true );
-            periods.addAll( periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) ) );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
-
-        return periods;
+ 
+        return setNames(periods);
     }
 
     private List<Period> setNames( List<Period> periods )

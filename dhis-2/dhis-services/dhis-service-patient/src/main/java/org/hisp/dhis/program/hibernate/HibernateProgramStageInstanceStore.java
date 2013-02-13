@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.program.hibernate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,6 +69,7 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
@@ -394,7 +397,7 @@ public class HibernateProgramStageInstanceStore
 
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
-        Collection<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
+        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
         I18n i18n )
     {
         String sql = "";
@@ -420,10 +423,18 @@ public class HibernateProgramStageInstanceStore
         {
             String orgunitName = organisationUnitService.getOrganisationUnit( orgunitIds.iterator().next() )
                 .getDisplayName();
-            grid.setSubtitle( subTitle + i18n.getString( "orgunit" ) + ": " + orgunitName );
+            
+            String filterDataDes = getFilterDataDescription( deFilters );
+            if ( !filterDataDes.isEmpty() )
+            {
+                filterDataDes = "; " + i18n.getString( "data_filter" ) + ": " + filterDataDes;
+            }
+            grid.setSubtitle( subTitle + i18n.getString( "orgunit" ) + ": " + orgunitName + filterDataDes);
         }
         // Filter is only one period
-        else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA
+        else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT
+            || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_DATA
+            || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT
             || position == PatientAggregateReport.POSITION_ROW_DATA )
         {
 
@@ -439,7 +450,14 @@ public class HibernateProgramStageInstanceStore
                 String endDate = format.formatDate( period.getEndDate() );
                 periodName += startDate + " -> " + endDate;
             }
-            grid.setSubtitle( subTitle + i18n.getString( "period" ) + ": " + periodName );
+            
+            String filterDataDes = getFilterDataDescription( deFilters );
+            if ( !filterDataDes.isEmpty() )
+            {
+                filterDataDes = "; " + i18n.getString( "data_filter" ) + ": " + filterDataDes;
+            }
+            
+            grid.setSubtitle( subTitle + i18n.getString( "period" ) + ": " + periodName + filterDataDes);
         }
         else
         {
@@ -491,7 +509,7 @@ public class HibernateProgramStageInstanceStore
             subTitle += filterOrgunitDes + filterPeriodDes + filterDataDes;
             if ( subTitle.isEmpty() )
             {
-                grid.setSubtitle( i18n.getString( "filter" ) + ": [" + i18n.getString( "none" ) + "]");
+                grid.setSubtitle( i18n.getString( "filter" ) + ": [" + i18n.getString( "none" ) + "]" );
             }
             else
             {
@@ -535,8 +553,6 @@ public class HibernateProgramStageInstanceStore
         // type = 5
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
         {
-            List<Period> firstPeriod = new ArrayList<Period>();
-            firstPeriod.add( periods.iterator().next() );
             sql = getAggregateReportSQL5( position, programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, deSum,
                 periods.iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
@@ -545,10 +561,8 @@ public class HibernateProgramStageInstanceStore
         else if ( (position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD)
             && deGroupBy != null )
         {
-            deValues = dataElementService.getDataElement( deGroupBy ).getOptionSet().getOptions();
-
             sql = getAggregateReportSQL6( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy,
-                deSum, deValues, periods, aggregateType, limit, useCompletedEvents, format );
+                deSum, periods, aggregateType, limit, useCompletedEvents, format );
         }
 
         // Type = 6 && NOT group-by
@@ -583,7 +597,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-
+        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         // Type ==2 && ==9 && ==10
@@ -1086,13 +1100,30 @@ public class HibernateProgramStageInstanceStore
      * with group-by
      **/
     private String getAggregateReportSQL6( ProgramStage programStage, Integer root, String facilityLB,
-        String filterSQL, Integer deGroupBy, Integer deSum, Collection<String> deValues, Collection<Period> periods,
+        String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
-
         Collection<Integer> orgunitIds = getOrganisationUnits( root, facilityLB );
 
+        String dataValueSql = "select DISTINCT(value) from patientdatavalue where dataelementid=" + deGroupBy;
+        Collection<String> deValues = new HashSet<String>();
+        try
+        {
+            deValues = jdbcTemplate.query( dataValueSql, new RowMapper<String>()
+            {
+                public String mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    return rs.getString( 1 );
+                }
+            } );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        
         for ( Period period : periods )
         {
             String periodName = "";
@@ -1139,7 +1170,6 @@ public class HibernateProgramStageInstanceStore
             sql += "FROM  programstageinstance psi JOIN patientdatavalue pdv ";
             sql += "    on psi.programstageinstanceid = pdv.programstageinstanceid ";
             sql += "WHERE ";
-            sql += "    psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
             sql += "    psi.programstageid=" + programStage.getId() + " ";
             if ( useCompletedEvents )
             {
@@ -1157,7 +1187,7 @@ public class HibernateProgramStageInstanceStore
         {
             sql += " LIMIT " + limit;
         }
-
+        
         return sql;
     }
 
