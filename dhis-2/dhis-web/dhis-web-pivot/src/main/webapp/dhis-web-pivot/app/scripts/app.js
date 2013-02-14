@@ -19,7 +19,7 @@ Ext.onReady( function() {
 
 	var pt = PT.core.getInstance();
 
-	PT.instance = pt;
+	PT.app.instances = [pt];
 
 	PT.app.getInits = function(r) {
 		var init = Ext.decode(r.responseText);
@@ -207,7 +207,7 @@ Ext.onReady( function() {
 
 		store.periodType = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			data: pt.conf.period.periodtypes
+			data: pt.conf.period.periodTypes
 		});
 
 		store.fixedPeriodAvailable = Ext.create('Ext.data.Store', {
@@ -2134,13 +2134,9 @@ Ext.onReady( function() {
 		};
 
 		pt.init = PT.app.getInits(r);
-
 		pt.util = PT.app.getUtils();
-
 		pt.store = PT.app.getStores();
-
 		pt.cmp = PT.app.getCmp();
-
 		pt.viewport = createViewport();
 
 		pt.viewport.settingsWindow = PT.app.SettingsWindow(pt);

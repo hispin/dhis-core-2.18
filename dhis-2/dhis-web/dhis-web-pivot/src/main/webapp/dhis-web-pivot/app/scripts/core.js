@@ -95,7 +95,7 @@ PT.core.getConfigs = function() {
 	};
 
 	conf.period = {
-		relativeperiodunits: {
+		relativePeriods: {
 			LAST_MONTH: 1,
 			LAST_3_MONTHS: 3,
 			LAST_12_MONTHS: 12,
@@ -107,7 +107,7 @@ PT.core.getConfigs = function() {
 			LAST_YEAR: 1,
 			LAST_5_YEARS: 5
 		},
-		periodtypes: [
+		periodTypes: [
 			{id: 'Daily', name: 'Daily'},
 			{id: 'Weekly', name: 'Weekly'},
 			{id: 'Monthly', name: 'Monthly'},
@@ -130,7 +130,7 @@ PT.core.getConfigs = function() {
         west_fill_accordion_dataelement: 77,
         west_fill_accordion_dataset: 45,
         west_fill_accordion_period: 270,
-        //west_fill_accordion_fixedperiod: 77,        
+        //west_fill_accordion_fixedperiod: 77,
         west_fill_accordion_organisationunit: 103,
         west_maxheight_accordion_indicator: 478,
         west_maxheight_accordion_dataelement: 478,
@@ -209,31 +209,6 @@ PT.core.getUtils = function(pt) {
 				}
 			}
 			return unescape(output);
-		}
-	};
-
-	util.viewport = {
-		getSize: function() {
-			return {x: PT.cmp.region.center.getWidth(), y: PT.cmp.region.center.getHeight()};
-		},
-		getXY: function() {
-			return {x: PT.cmp.region.center.x + 15, y: PT.cmp.region.center.y + 43};
-		},
-		getPageCenterX: function(cmp) {
-			return ((screen.width/2)-(cmp.width/2));
-		},
-		getPageCenterY: function(cmp) {
-			return ((screen.height/2)-((cmp.height/2)-100));
-		},
-		resizeDimensions: function() {
-			var a = [PT.cmp.dimension.indicator.panel, PT.cmp.dimension.dataelement.panel, PT.cmp.dimension.dataset.panel,
-					PT.cmp.dimension.relativePeriod.panel, PT.cmp.dimension.fixedperiod.panel, PT.cmp.dimension.organisationUnit.panel,
-					PT.cmp.dimension.organisationUnitGroup.panel, PT.cmp.options.panel];
-			for (var i = 0; i < a.length; i++) {
-				if (!a[i].collapsed) {
-					a[i].fireEvent('expand');
-				}
-			}
 		}
 	};
 
@@ -648,8 +623,14 @@ PT.core.getUtils = function(pt) {
 								for (var j = 0, item; j < settingsItems.length; j++) {
 									item = settingsItems[j];
 
-									if (Ext.Array.contains(responseItems, item)) {
-										orderedResponseItems.push(item);
+									if (header.name === 'pe' && pt.conf.period.relativePeriods[item]) {
+										orderedResponseItems = responseItems;
+										orderedResponseItems.sort();
+									}
+									else {
+										if (Ext.Array.contains(responseItems, item)) {
+											orderedResponseItems.push(item);
+										}
 									}
 								}
 							}
@@ -961,8 +942,7 @@ console.log("aColIds", aColIds);
 						valueItemRow = [];
 						htmlValueItemRow = [];
 
-						for (var j = 0, id, value; j < colSize; j++) {
-//console.log((xColAxis ? xColAxis.ids[j] : ''), (xRowAxis ? xRowAxis.ids[i] : ''));							
+						for (var j = 0, id, value; j < colSize; j++) {						
 							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
 							value = xResponse.idValueMap[id] ? parseFloat(xResponse.idValueMap[id]) : 0; //todo
 							htmlValue = xResponse.idValueMap[id] ? parseFloat(xResponse.idValueMap[id]) : '-'; //todo
@@ -1129,6 +1109,7 @@ console.log("aColIds", aColIds);
 					xRowAxis;
 
 				pt.util.mask.showMask(container);
+				
 
 				xSettings = extendSettings(settings);
 
@@ -1197,7 +1178,6 @@ PT.core.getAPI = function(pt) {
 		var col,
 			row,
 			filter,
-			settings,
 
 			removeEmptyDimensions,
 			getValidatedAxis,
@@ -1280,7 +1260,7 @@ PT.core.getAPI = function(pt) {
 			return true;
 		};
 		
-		settings = function() {
+		return function() {
 			var obj = {};
 			
 			if (!(config && Ext.isObject(config))) {
@@ -1308,8 +1288,6 @@ PT.core.getAPI = function(pt) {
 
 			return obj;
 		}();
-
-		return settings;
 	};
 
 	return api;
