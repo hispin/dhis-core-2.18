@@ -510,7 +510,7 @@ Ext.onReady( function() {
 		window = Ext.create('Ext.window.Window', {
 			title: 'Pivot settings', //i18n
 			layout: 'fit',
-			bodyStyle: 'background-color:#fff; padding:8px 8px 3px',
+			bodyStyle: 'background-color:#fff; padding:5px 5px 0px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -541,8 +541,9 @@ Ext.onReady( function() {
 				}
 			],
 			listeners: {
-				afterrender: function(w) {
-					w.setPosition(w.getPosition()[0], 100);					
+				show: function(w) {
+					var x = (pt.viewport.getWidth() / 2) - (w.getWidth() / 2);
+					w.setPosition(x, 60);					
 				}
 			}
 		});
