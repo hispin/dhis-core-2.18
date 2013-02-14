@@ -273,7 +273,11 @@ public class Program
         this.type = type;
     }
 
-    // TODO expose as xml/json
+    @JsonProperty( value = "validationCriterias" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "validationCriterias", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ValidationCriteria> getPatientValidationCriteria()
     {
         return patientValidationCriteria;
