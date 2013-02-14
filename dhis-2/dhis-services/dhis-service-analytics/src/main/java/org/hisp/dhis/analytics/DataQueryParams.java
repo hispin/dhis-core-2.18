@@ -39,7 +39,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
-import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
@@ -50,9 +49,6 @@ import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-@JacksonXmlRootElement( localName = "dxf2", namespace = DxfNamespaces.DXF_2_0)
 public class DataQueryParams
 {
     public static final String DATA_X_DIM_ID = "dx"; // IN, DE, DS
@@ -121,12 +117,15 @@ public class DataQueryParams
     // -------------------------------------------------------------------------
 
     /**
-     * Ensures conformity for this query. Removes the category option combo
-     * dimension if it exists and if the data element dimension does not exist.
+     * Ensures conformity for this query. The category option combo dimension
+     * can only be present if the data element dimension exists and the indicator
+     * and data set dimensions do not exist.
      */
     public void conform()
     {
-        if ( !dimensions.contains( new Dimension( DATAELEMENT_DIM_ID ) ) )
+        if ( !dimensions.contains( new Dimension( DATAELEMENT_DIM_ID ) ) ||
+            dimensions.contains( new Dimension( INDICATOR_DIM_ID ) ) ||
+            dimensions.contains( new Dimension( DATASET_DIM_ID ) ) )
         {
             removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
         }
@@ -135,7 +134,7 @@ public class DataQueryParams
     /**
      * Returns the index of the category option combo dimension as it will appear
      * in the data element query. Returns null if this query does not contain 
-     * the category option combo dimension.
+     * the category option combo dimension. Currently unused.
      */
     public Integer getDeQueryCocIndex()
     {

@@ -142,8 +142,6 @@ public class DefaultAnalyticsService
         
         params.conform();
         
-        Integer cocIndex = params.getDeQueryCocIndex();
-        
         // ---------------------------------------------------------------------
         // Headers and meta-data
         // ---------------------------------------------------------------------
@@ -201,16 +199,7 @@ public class DefaultAnalyticsService
                             List<DimensionOption> row = new ArrayList<DimensionOption>( options );
                             
                             row.add( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
-                            
-                            if ( cocIndex != null )
-                            {
-                                // ---------------------------------------------
-                                // Add null to get same number of columns
-                                // ---------------------------------------------
-
-                                row.add( cocIndex, null );
-                            }
-                            
+                                                        
                             grid.addRow();
                             grid.addValues( DimensionOption.getOptionIdentifiers( row ) );
                             grid.addValue( MathUtils.getRounded( value, 1 ) );
@@ -257,15 +246,6 @@ public class DefaultAnalyticsService
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
                 List<String> row = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
-
-                if ( cocIndex != null )
-                {
-                    // ---------------------------------------------------------
-                    // Add null to get same number of columns
-                    // ---------------------------------------------------------
-
-                    row.add( cocIndex, null );
-                }
                 
                 grid.addRow();
                 grid.addValues( row.toArray() );
