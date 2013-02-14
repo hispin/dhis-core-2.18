@@ -493,7 +493,7 @@ PT.core.getUtils = function(pt) {
 				return xSettings;
 			};
 
-			getSyncedXSettings = function(xSettings, response) {
+			getSyncronizedXSettings = function(xSettings, response) {
 				var getHeaderNames,
 				
 					headerNames,
@@ -624,7 +624,6 @@ PT.core.getUtils = function(pt) {
 				response.idValueMap = {};
 
 				var extendHeaders = function() {
-					//var dimensions = xSettings.dimensions;
 
 					// Extend headers: index, items (ordered), size
 					for (var i = 0, header, settingsItems, responseItems, orderedResponseItems; i < headers.length; i++) {
@@ -712,10 +711,9 @@ PT.core.getUtils = function(pt) {
 					aGuiItems = [],
 					aAllItems = [],
 					aColIds = [],
-					aUniqueIds,
-					getUniqueIds;
+					aUniqueIds;
 					
-				getUniqueIds = function() {
+				aUniqueIds = function() {
 					var a = [];
 
 					for (var i = 0, dim; i < axis.length; i++) {
@@ -725,15 +723,13 @@ PT.core.getUtils = function(pt) {
 					}
 
 					return a;
-				};
+				}();
 
-				aUniqueIds = getUniqueIds();
+console.log("aUniqueIds", aUniqueIds);
 
-				console.log("aUniqueIds", aUniqueIds);
-				
-				//aUniqueIds	= [ [de1, de2, de3],
-				//					[p1],
-				//					[ou1, ou2, ou3, ou4] ]
+//aUniqueIds	= [ [de1, de2, de3],
+//					[p1],
+//					[ou1, ou2, ou3, ou4] ]
 
 				for (var i = 0, dim; i < aUniqueIds.length; i++) {
 					nNumCols = aUniqueIds[i].length;
@@ -743,22 +739,22 @@ PT.core.getUtils = function(pt) {
 					aAccNumCols.push(nCols);
 				}
 
-			console.log("");
-			console.log("aNumCols", aNumCols);
-			console.log("nCols", nCols);
-			console.log("aAccNumCols", aAccNumCols);
+console.log("");
+console.log("aNumCols", aNumCols);
+console.log("nCols", nCols);
+console.log("aAccNumCols", aAccNumCols);
 
-				//aNumCols		= [3, 1, 4]
-				//nCols			= 12 (3 * 1 * 4)
-				//aAccNumCols	= [3, 3, 12]
+	//aNumCols		= [3, 1, 4]
+	//nCols			= 12 (3 * 1 * 4)
+	//aAccNumCols	= [3, 3, 12]
 
 				for (var i = 0; i < aUniqueIds.length; i++) {
 					aSpan.push(aNumCols[i] === 1 ? nCols : nCols / aAccNumCols[i]); //if one, span all
 				}
 
-			console.log("aSpan", aSpan);
+console.log("aSpan", aSpan);
 
-				//aSpan			= [10, 2, 1]
+	//aSpan			= [10, 2, 1]
 
 				aGuiItems.push(aUniqueIds[0]);
 
@@ -775,40 +771,34 @@ PT.core.getUtils = function(pt) {
 					}
 				}
 
-			console.log("aGuiItems", aGuiItems);
-				//aGuiItems	= [ [d1, d2, d3], (3)
-				//				[p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5], (15)
-				//				[o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2...] (30)
-				//		  	  ]
+console.log("aGuiItems", aGuiItems);
+	//aGuiItems	= [ [d1, d2, d3], (3)
+	//				[p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5], (15)
+	//				[o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2...] (30)
+	//		  	  ]
 
-
-				for (var i = 0, dimItems, span; i < aUniqueIds.length; i++) {
-					dimItems = [];
+				for (var i = 0, aAllRow, aUniqueRow, span, factor; i < aUniqueIds.length; i++) {
+					aAllRow = [];
+					aUniqueRow = aUniqueIds[i];
 					span = aSpan[i];
+					factor = nCols / (span * aUniqueRow.length);
 
-					if (i === 0) {
-						for (var j = 0; j < aUniqueIds[i].length; j++) {
-							for (var k = 0; k < span; k++) {
-								dimItems.push(aUniqueIds[i][j]);
+					for (var j = 0; j < factor; j++) {
+						for (var k = 0; k < aUniqueRow.length; k++) {
+							for (var l = 0; l < span; l++) {
+								aAllRow.push(aUniqueRow[k]);
 							}
 						}
 					}
-					else {
-						var factor = nCols / aUniqueIds[i].length;
 
-						for (var k = 0; k < factor; k++) {
-							dimItems = dimItems.concat(aUniqueIds[i]);
-						}
-					}
-
-					aAllItems.push(dimItems);
+					aAllItems.push(aAllRow);
 				}
 
-			console.log("aAllItems", aAllItems);
-				//aAllItems	= [ [d1, d1, d1, d1, d1, d1, d1, d1, d1, d1, d2, d2, d2, d2, d2, d2, d2, d2, d2, d2, d3, d3, d3, d3, d3, d3, d3, d3, d3, d3], (30)
-				//				[p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5], (30)
-				//				[o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2] (30)
-				//		  	  ]
+console.log("aAllItems", aAllItems);
+	//aAllItems	= [ [d1, d1, d1, d1, d1, d1, d1, d1, d1, d1, d2, d2, d2, d2, d2, d2, d2, d2, d2, d2, d3, d3, d3, d3, d3, d3, d3, d3, d3, d3], (30)
+	//				[p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5, p1, p2, p3, p4, p5], (30)
+	//				[o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2, o1, o2] (30)
+	//		  	  ]
 
 				for (var i = 0, id; i < nCols; i++) {
 					id = '';
@@ -820,8 +810,8 @@ PT.core.getUtils = function(pt) {
 					aColIds.push(id);
 				}
 
-			console.log("aColIds", aColIds);
-				//aColIds	= [ aaaaaaaaBBBBBBBBccccccc, aaaaaaaaaccccccccccbbbbbbbbbb, ... ]
+console.log("aColIds", aColIds);
+	//aColIds	= [ aaaaaaaaBBBBBBBBccccccc, aaaaaaaaaccccccccccbbbbbbbbbb, ... ]
 
 
 			console.log("");
@@ -972,6 +962,7 @@ PT.core.getUtils = function(pt) {
 						htmlValueItemRow = [];
 
 						for (var j = 0, id, value; j < colSize; j++) {
+//console.log((xColAxis ? xColAxis.ids[j] : ''), (xRowAxis ? xRowAxis.ids[i] : ''));							
 							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
 							value = xResponse.idValueMap[id] ? parseFloat(xResponse.idValueMap[id]) : 0; //todo
 							htmlValue = xResponse.idValueMap[id] ? parseFloat(xResponse.idValueMap[id]) : '-'; //todo
@@ -1167,7 +1158,7 @@ PT.core.getUtils = function(pt) {
 response.metaData['PT59n8BQbqM'] = '(Outreach)';
 response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 
-						xSettings = getSyncedXSettings(xSettings, response);
+						xSettings = getSyncronizedXSettings(xSettings, response);
 
 						if (!xSettings) {
 							pt.util.mask.hideMask();
