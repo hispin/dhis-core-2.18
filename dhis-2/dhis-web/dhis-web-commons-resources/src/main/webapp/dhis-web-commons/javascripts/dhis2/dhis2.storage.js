@@ -67,7 +67,6 @@ dhis2.storage.Store.adapter = function ( id, obj ) {
         throw 'Adapter \'' + id + '\' does not meet interface requirements, missing: ' + missing_functions.join( ' ' );
     }
 
-    // for now just assume that all adapters follow the interface requirements
     obj['id'] = id;
     Store.adapters.splice( 0, 0, obj );
 };
