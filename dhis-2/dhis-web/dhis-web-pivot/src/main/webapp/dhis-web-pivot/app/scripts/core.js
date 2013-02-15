@@ -1248,12 +1248,12 @@ PT.core.getAPI = function(pt) {
 			}
 
 			if (!Ext.Array.contains(names, 'dx')) {
-				alert('No indicators, data elements or data sets selected');
+				alert('At least one indicator, data element or dataset must be specified as column, row or filter');
 				return;
 			}
 
 			if (!Ext.Array.contains(names, 'pe')) {
-				alert('No periods selected');
+				alert('At least one period must be specified as column, row or filter');
 				return;
 			}
 			
