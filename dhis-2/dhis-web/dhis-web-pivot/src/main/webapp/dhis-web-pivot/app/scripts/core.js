@@ -1077,7 +1077,7 @@ console.log("aColIds", aColIds);
 				};
 
 				getHtml = function() {
-					var s = '<table class="pivot">';
+					var s = '<table id="pivottable" class="pivot">';
 
 					for (var i = 0; i < htmlArray.length; i++) {
 						s += '<tr>' + htmlArray[i].join('') + '</tr>';
@@ -1128,7 +1128,7 @@ console.log("aColIds", aColIds);
 					},						
 					success: function(response) {
 						var html,
-							tablePanel;
+							el;
 
 						if (!validateResponse(response)) {
 							pt.util.mask.hideMask();
@@ -1152,12 +1152,15 @@ response.metaData['pq2XI5kz2BY'] = '(Fixed)';
 						xRowAxis = extendRowAxis(xSettings.row, xResponse);
 						
 						html = getTableHtml(xColAxis, xRowAxis, xResponse);
-						
-						tablePanel = getTablePanel(html);
 
-						if (!pt.el) {
-							container.removeAll(true);
-							container.add(tablePanel);
+						if (!pt.el && container) {
+							el = Ext.get('pivottable');
+							
+							if (el) {
+								el.destroy();
+							}
+														
+							container.update(html);
 						}
 						
 						pt.util.mask.hideMask();
