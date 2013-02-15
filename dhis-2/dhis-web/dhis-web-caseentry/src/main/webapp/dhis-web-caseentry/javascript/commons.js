@@ -971,8 +971,6 @@ function showUpdatePatientForm( patientId )
 			jQuery('#loaderDiv').hide();
 			showById('editPatientDiv');
 		});
-		
-	jQuery('#resultSearchDiv').dialog('close');
 }
 
 function validateUpdatePatient()
