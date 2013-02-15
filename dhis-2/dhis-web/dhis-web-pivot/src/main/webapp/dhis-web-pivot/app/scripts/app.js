@@ -516,6 +516,10 @@ Ext.onReady( function() {
 			modal: true,
 			resizable: false,
 			getSetup: getSetup,
+			dimensionStore: dimensionStore,
+			rowStore: rowStore,
+			colStore: colStore,
+			filterStore: filterStore,			
 			items: {
 				layout: 'column',
 				bodyStyle: 'border:0 none',
@@ -1986,16 +1990,22 @@ Ext.onReady( function() {
 			};
 
 			validateSpecialCases = function(settings) {
+
 				// indicator as filter
 				if (settings.filter && pt.store.indicatorSelected.data.length) {
 					for (var i = 0; i < settings.filter.length; i++) {
 						if (settings.filter[i].name === 'dx') {
-							alert('Indicators not accepted as filter');
+							alert('Indicators cannot be specified as filter');
 							return;
 						}
 					}
 				}
 
+				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById('coc')) {
+					alert('Categories cannot be specified as filter');
+					return;
+				}
+				
 				return true;
 			};
 
