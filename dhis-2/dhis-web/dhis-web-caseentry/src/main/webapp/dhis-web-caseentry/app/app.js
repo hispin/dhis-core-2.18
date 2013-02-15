@@ -3571,7 +3571,7 @@ Ext.onReady( function() {
 												items: [
 													{
 														xtype: 'label',
-														text: 'Auto-select organisation units by',
+														text: TR.i18n.auto_select_orgunit_by,
 														style: 'padding-left:8px; color:#666; line-height:24px'
 													},
 													'->',
@@ -3660,6 +3660,10 @@ Ext.onReady( function() {
 												multipleSelectIf: function() {
 													if (this.recordsToSelect.length === this.numberOfRecords) {
 														this.getSelectionModel().select(this.recordsToSelect);
+														TR.state.orgunitIds = [];
+														for( var i in this.recordsToSelect){
+															TR.state.orgunitIds.push( this.recordsToSelect[i].data.localid );
+														}
 														this.recordsToSelect = [];
 														this.numberOfRecords = 0;
 													}
