@@ -7,6 +7,7 @@ dhis2.storage.Store = function ( options, callback ) {
     var Store = dhis2.storage.Store;
 
     this.name = options.name || 'records';
+    this.dbname = options.dbname || 'dhis2';
     this.record = options.record || 'record';
 
     if ( arguments.length <= 2 && arguments.length > 0 ) {
@@ -52,10 +53,9 @@ dhis2.storage.Store.adapters = [];
 
 dhis2.storage.Store.adapter = function ( id, obj ) {
     var Store = dhis2.storage.Store;
-    var adapter_interface = "init save remove exists load all".split( ' ' );
+    var adapter_interface = "init add remove exists fetch fetchAll destroy".split( ' ' );
 
     var missing_functions = [];
-
     // verify adapter
     for ( var i in adapter_interface ) {
         if ( !obj.hasOwnProperty( adapter_interface[i] ) || typeof obj[adapter_interface[i]] !== 'function' ) {
