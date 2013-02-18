@@ -41,21 +41,13 @@
 	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 	<input type="hidden" id="programStageId" name="programStageId" value='$programStage.id'/>
 	
-	<table>
-		<tbody id='patientForm'>
-		#parse( "/dhis-web-caseentry/patientForm.vm" )
-		</tbody>
-		<tr><td>&nbsp;</td><tr>
-		#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
-		<tr><td>&nbsp;</td><tr>
-		<tr>
-			<td></td>
-			<td>
-				<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick='_continue=false;'/>
-				<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backEventList();"/>
-			</td>
-		</tr>
-	</table>
+	<div id='patientForm'>#parse( "/dhis-web-caseentry/patientForm.vm" )</div>
+	<div id="entryForm"> #parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )</div>
+	<p>
+		<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick='_continue=false;' style="width:80px;"/>
+		<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:160px;" onclick="_continue=true;"/>
+		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" style="width:80px;"/>
+	</p>
 </form>
 
 <script>
