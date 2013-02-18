@@ -1,3 +1,6 @@
+#if( $customDataEntryFormCode )
+	$customDataEntryFormCode
+#else
 <tbody id="entryForm">
 	<tr>
 		<th colspan='2'>$programStage.program.displayName</th>
@@ -87,7 +90,7 @@
 	#set( $tabIndex = $tabIndex + 1 )
 #end	
 </tbody>
-
+#end
 <script>
 	entryFormContainerOnReady();
 </script>

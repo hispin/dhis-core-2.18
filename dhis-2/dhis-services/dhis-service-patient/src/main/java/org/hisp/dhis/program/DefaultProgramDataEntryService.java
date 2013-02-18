@@ -310,6 +310,188 @@ public class DefaultProgramDataEntryService
         return populateI18nStrings( sb.toString(), i18n );
     }
 
+    @Override
+    public String prepareDataEntryFormForAdd( String htmlCode, I18n i18n, ProgramStage programStage )
+    {
+        // ---------------------------------------------------------------------
+        // Inline Javascript to add to HTML before outputting
+        // ---------------------------------------------------------------------
+
+        final String jQueryCalendar = "<script>datePicker(\"$PROGRAMSTAGEID-$DATAELEMENTID-val\", false);</script>";
+
+        StringBuffer sb = new StringBuffer();
+
+        // ---------------------------------------------------------------------
+        // Pattern to match data elements in the HTML code
+        // ---------------------------------------------------------------------
+
+        Matcher dataElementMatcher = INPUT_PATTERN.matcher( htmlCode );
+        int tabindex = 0;
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields
+        // ---------------------------------------------------------------------
+
+        Map<Integer, DataElement> dataElementMap = getDataElementMap( programStage );
+
+        while ( dataElementMatcher.find() )
+        {
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
+            String compulsory = "null";
+            boolean allowProvidedElsewhere = false;
+            String inputHTML = dataElementMatcher.group( 1 );
+
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( inputHTML );
+
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                // -------------------------------------------------------------
+                // Get data element ID of data element
+                // -------------------------------------------------------------
+
+                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+
+                DataElement dataElement = null;
+
+                String programStageName = programStage.getDisplayName();
+
+                if ( programStageId != programStage.getId() )
+                {
+                    dataElement = dataElementService.getDataElement( dataElementId );
+
+                    ProgramStage otherProgramStage = programStageService.getProgramStage( programStageId );
+                    programStageName = otherProgramStage != null ? otherProgramStage.getDisplayName() : "N/A";
+                }
+                else
+                {
+                    dataElement = dataElementMap.get( dataElementId );
+                    if ( dataElement == null )
+                    {
+                        return i18n.getString( "some_data_element_not_exist" );
+                    }
+
+                    ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
+
+                    compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
+                    allowProvidedElsewhere = psde.getAllowProvidedElsewhere();
+                }
+
+                if ( dataElement == null )
+                {
+                    continue;
+                }
+
+                // -------------------------------------------------------------
+                // Find type of data element
+                // -------------------------------------------------------------
+
+                String dataElementType = dataElement.getDetailedNumberType();
+
+                // -------------------------------------------------------------
+                // Find existing value of data element in data set
+                // -------------------------------------------------------------
+
+                PatientDataValue patientDataValue = null;
+
+                String dataElementValue = EMPTY;
+
+                // -------------------------------------------------------------
+                // Insert title information - Data element id, name, type, min,
+                // max
+                // -------------------------------------------------------------
+
+                if ( inputHTML.contains( "title=\"\"" ) )
+                {
+                    inputHTML = inputHTML.replace( "title=\"\"",
+                        "title=\"" + dataElement.getId() + "." + dataElement.getName() + " (" + dataElementType
+                            + ")\" " );
+                }
+                else
+                {
+                    inputHTML += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " ("
+                        + dataElementType + ")\" ";
+                }
+
+                // -------------------------------------------------------------
+                // Set field for dataElement
+                // -------------------------------------------------------------
+
+                tabindex++;
+
+                if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
+                    || DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() )
+                    || DataElement.VALUE_TYPE_USER_NAME.equals( dataElement.getType() ) )
+                {
+                    inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML, dataElementValue );
+                }
+                else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
+                {
+                    inputHTML = populateCustomDataEntryForDate( inputHTML, dataElementValue );
+                }
+                else if ( DataElement.VALUE_TYPE_TRUE_ONLY.equals( dataElement.getType() ) )
+                {
+                    inputHTML = populateCustomDataEntryForTrueOnly( dataElement, inputHTML, dataElementValue );
+                }
+                else if ( DataElement.VALUE_TYPE_BOOL.equals( dataElement.getType() ) )
+                {
+                    inputHTML = populateCustomDataEntryForBoolean( dataElement, inputHTML, dataElementValue, i18n );
+                }
+
+                // -----------------------------------------------------------
+                // Check if this dataElement is from another programStage then
+                // disable
+                // If programStagsInstance is completed then disabled it
+                // -----------------------------------------------------------
+
+                String disabled = "";
+                if ( programStageId != programStage.getId() )
+                {
+                    disabled = "disabled=\"\"";
+                }
+                else
+                {
+                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
+                    {
+                        inputHTML += jQueryCalendar;
+                    }
+
+                    if ( allowProvidedElsewhere )
+                    {
+                        // Add ProvidedByOtherFacility checkbox
+                        inputHTML = addProvidedElsewherCheckbox( inputHTML, patientDataValue, programStage );
+                    }
+                }
+
+                // -----------------------------------------------------------
+                //
+                // -----------------------------------------------------------
+
+                inputHTML = inputHTML.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                inputHTML = inputHTML.replace( "$VALUE", dataElementValue );
+                inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
+                inputHTML = inputHTML.replace( "$PROGRAMSTAGENAME", programStageName );
+                inputHTML = inputHTML.replace( "$DATAELEMENTNAME", dataElement.getName() );
+                inputHTML = inputHTML.replace( "$DATAELEMENTTYPE", dataElementType );
+                inputHTML = inputHTML.replace( "$DISABLED", disabled );
+                inputHTML = inputHTML.replace( "$COMPULSORY", compulsory );
+                inputHTML = inputHTML.replace( "$SAVEMODE", "false" );
+                inputHTML = inputHTML.replace( "$TABINDEX", tabindex + "" );
+                inputHTML = inputHTML.replaceAll( "\\$", "\\\\\\$" );
+
+                dataElementMatcher.appendReplacement( sb, inputHTML );
+            }
+        }
+
+        dataElementMatcher.appendTail( sb );
+
+        return populateI18nStrings( sb.toString(), i18n );
+    }
+
     public String prepareDataEntryFormForEdit( String htmlCode )
     {
         // ---------------------------------------------------------------------
@@ -332,7 +514,7 @@ public class DefaultProgramDataEntryService
         {
             String inputHTML = inputMatcher.group();
             inputHTML = inputHTML.replace( ">", "" );
-            
+
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
@@ -349,11 +531,11 @@ public class DefaultProgramDataEntryService
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
+
                 inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML );
-                
+
                 inputHTML = inputHTML + ">";
-                
+
                 inputMatcher.appendReplacement( sb, inputHTML );
 
             }
@@ -372,19 +554,21 @@ public class DefaultProgramDataEntryService
     {
         if ( dataElement != null )
         {
-            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, " value=\"[" + dataElement.getDisplayName() +"]\"" )
-                : inputHTML + " value=\"[" + dataElement.getDisplayName() + "]\" ";
+            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, " value=\"["
+                + dataElement.getDisplayName() + "]\"" ) : inputHTML + " value=\"[" + dataElement.getDisplayName()
+                + "]\" ";
 
-            String displayTitle = dataElement.getId() + " - " + dataElement.getName() + " - " + dataElement.getDetailedNumberType() + " - ";
-            inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, " title=\"" + displayTitle + "\"" )
-                : inputHTML + " title=\"" + displayTitle + "\"";
+            String displayTitle = dataElement.getId() + " - " + dataElement.getName() + " - "
+                + dataElement.getDetailedNumberType() + " - ";
+            inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, " title=\""
+                + displayTitle + "\"" ) : inputHTML + " title=\"" + displayTitle + "\"";
         }
         else
         {
             inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? " value=\"[" + DATA_ELEMENT_DOES_NOT_EXIST + "]\" "
                 : " value=\"[ " + DATA_ELEMENT_DOES_NOT_EXIST + " ]\"";
         }
-        
+
         return inputHTML;
     }
 

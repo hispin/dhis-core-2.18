@@ -144,9 +144,8 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction"
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction"
 		scope="prototype">
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -201,11 +200,17 @@
 		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="patientIdentifierTypeService"
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="patientRegistrationFormService"
+			ref="org.hisp.dhis.patient.PatientRegistrationFormService" />
+		<property name="programDataEntryService"
+			ref="org.hisp.dhis.program.ProgramDataEntryService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="attributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction"
@@ -284,7 +289,8 @@
 		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
 		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
 		scope="prototype">
-		<property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		<property name="aggregationConditionService"
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 	</bean>
 
 	<bean
@@ -433,8 +439,7 @@
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientRegistrationFormService"
 			ref="org.hisp.dhis.patient.PatientRegistrationFormService" />
-		<property name="programInstanceService"
-			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="attributeGroupService">
 			<ref bean="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		</property>
@@ -1056,8 +1061,7 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="programService"
-			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<!-- Comment -->

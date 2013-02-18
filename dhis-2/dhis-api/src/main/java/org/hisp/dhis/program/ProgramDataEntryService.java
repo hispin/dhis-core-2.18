@@ -42,16 +42,18 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 public interface ProgramDataEntryService
 {
     final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-    
+
     final Pattern IDENTIFIER_PATTERN_FIELD = Pattern.compile( "id=\"(\\d+)-(\\d+)-val\"" );
-    
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // ProgramDataEntryService
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+
     String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, String disabled,
         I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit );
-    
+
+    String prepareDataEntryFormForAdd( String htmlCode, I18n i18n, ProgramStage programStage );
+
     String prepareDataEntryFormForEdit( String htmlCode );
 }
