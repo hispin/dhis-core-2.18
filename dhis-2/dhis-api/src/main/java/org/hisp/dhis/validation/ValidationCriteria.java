@@ -31,6 +31,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -39,8 +41,9 @@ import org.hisp.dhis.common.view.ExportView;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@JacksonXmlRootElement(localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0 )
 public class ValidationCriteria
+    extends BaseIdentifiableObject
 {
     public static final int OPERATOR_LESS_THAN = -1;
 
@@ -51,10 +54,6 @@ public class ValidationCriteria
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
-
-    private int id;
-
-    private String name;
 
     private String description;
 
@@ -103,29 +102,6 @@ public class ValidationCriteria
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
