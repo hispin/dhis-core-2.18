@@ -410,7 +410,7 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_PROGRAM ) )
             {
-                sql += "(select programid from patient_programs where patientid=p.patientid and programid=" + keys[1]
+                sql += "(select programid from patient_programs where patientid=p.patientid and programid=" + id
                     + " ) as " + Patient.PREFIX_PROGRAM + "_" + id + ",";
                 otherWhere += operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
                 operator = " and ";

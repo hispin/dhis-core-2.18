@@ -32,15 +32,33 @@ function listAllPatient()
 	
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
-	jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
-			listAll:true
-		},
-		function(){
-			setTableStyles();
-			statusSearching = 0;
-			showById('listPatientDiv');
-			jQuery('#loaderDiv').hide();
-		});
+	if( getFieldValue('programIdAddPatient')=='')
+	{
+		jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
+				listAll:true
+			},
+			function(){
+				setTableStyles();
+				statusSearching = 0;
+				showById('listPatientDiv');
+				jQuery('#loaderDiv').hide();
+			});
+	}
+	else 
+	{
+		jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
+				listAll:false,
+				searchBySelectedOrgunit: true,
+				programIds: getFieldValue('programIdAddPatient'),
+				searchTexts: 'prg_' + getFieldValue('programIdAddPatient')
+			},
+			function(){
+				setTableStyles();
+				statusSearching = 0;
+				showById('listPatientDiv');
+				jQuery('#loaderDiv').hide();
+			});
+	}
 	hideLoader();
 }
 
