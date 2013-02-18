@@ -1486,9 +1486,10 @@ Ext.onReady( function() {
 		getURLParams: function( type, isSorted ){
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 			{
-				return this.caseBasedReport.getURLParams( type, isSorted );
+				this.caseBasedReport.getURLParams( type, isSorted );
+				return;
 			}
-			return this.aggregateReport.getURLParams( type );
+			this.aggregateReport.getURLParams( type );
 		},
 		paramChanged: function() {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -1510,7 +1511,10 @@ Ext.onReady( function() {
 				// Export to XLS 
 				if( type)
 				{
-					window.location.href = url + "?type=" + type + "&" + TR.state.caseBasedReport.getURLParams( isSorted );
+					TR.state.caseBasedReport.getURLParams();
+  				    var exportForm = document.getElementById('exportForm');
+					exportForm.action = url + "?type=" + type;
+					exportForm.submit();
 				}
 				// Show report on grid
 				else
@@ -1624,27 +1628,25 @@ Ext.onReady( function() {
 				return p;
 			},
 			getURLParams: function( isSorted ) {
-				var p = "";
 				
-				p += "startDate=" + TR.cmp.settings.startDate.rawValue;
-				p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
-				p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
-				p += "&level=" + Ext.getCmp('levelCombobox').getValue();
+				document.getElementById('startDate').value = TR.cmp.settings.startDate.rawValue;
+				document.getElementById('endDate').value = TR.cmp.settings.endDate.rawValue;
+				document.getElementById('facilityLB').value =  TR.cmp.settings.facilityLB.getValue();
+				document.getElementById('level').value = Ext.getCmp('levelCombobox').getValue();
+				document.getElementById('orderByOrgunitAsc').value = this.orderByOrgunitAsc;
+				document.getElementById('orderByExecutionDateByAsc').value = this.orderByExecutionDateByAsc;
+				document.getElementById('programStageId').value = TR.cmp.params.programStage.getValue();				
 				
-				// orders
-				p += "&orderByOrgunitAsc=" + this.orderByOrgunitAsc;
-				p += "&orderByExecutionDateByAsc=" + this.orderByExecutionDateByAsc;
-				
-				p += "&programStageId=" + TR.cmp.params.programStage.getValue();
-				p += "&currentPage=" + this.currentPage;
-				
-				// organisation unit
-				for( var i=0; i<TR.state.orgunitIds.length; i++ )
-				{
-					p += "&orgunitIds=" + TR.state.orgunitIds[i];
+				// orgunits
+				var orgunitIdList = document.getElementById('orgunitIds');
+				TR.util.list.clearList(orgunitIdList);
+				for( var i in TR.state.orgunitIds){
+					TR.util.list.addOptionToList(orgunitIdList, TR.state.orgunitIds[i], '');
 				}
 				
 				// Get searching values
+				var searchingValues = document.getElementById('searchingValues');
+				TR.util.list.clearList(searchingValues);
 				if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
 				{
 					var cols = TR.datatable.datatable.columns;
@@ -1655,7 +1657,7 @@ Ext.onReady( function() {
 						{
 							var params = TR.state.getFilterValueByColumn(col.name);
 							for(var i in params){
-								p += "&searchingValues=" + params[i];
+								TR.util.list.addOptionToList(startDateList, params[i], '');
 							}
 						}
 					}
@@ -1664,11 +1666,9 @@ Ext.onReady( function() {
 				{
 					// Data elements
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
-						p += "&searchingValues=" + r.data.id +  '_false_';
+						TR.util.list.addOptionToList(searchingValues, r.data.id + '_false_', '');
 					});
 				}
-				
-				return p;
 			},
 			getFilterValueByColumn: function( colname ) {
 				var grid = TR.datatable.datatable;
@@ -1856,9 +1856,6 @@ Ext.onReady( function() {
 					});
 				}
 				TR.util.notification.ok();
-			},
-			filter: function() {
-			
 			},
 			getPosition: function() {
 				// 1 - Rows

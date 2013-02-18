@@ -221,13 +221,16 @@ public class HibernateProgramStageInstanceStore
 
     public Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         Collection<Integer> orgUnits, List<TabularReportColumn> columns, int level, int maxLevel, Date startDate,
-        Date endDate, boolean descOrder, Boolean completed, Integer min, Integer max )
+        Date endDate, boolean descOrder, Boolean completed, Integer min, Integer max, I18n i18n )
     {
         // ---------------------------------------------------------------------
         // Headers cols
         // ---------------------------------------------------------------------
 
         Grid grid = new ListGrid();
+        grid.setTitle( programStage.getDisplayName() );
+        grid.setSubtitle( i18n.getString( "from" ) + " " + DateUtils.getMediumDateString( startDate ) + " "
+            + i18n.getString( "to" ) + " " + DateUtils.getMediumDateString( endDate ) );
 
         grid.addHeader( new GridHeader( "id", true, true ) );
         grid.addHeader( new GridHeader( programStage.getReportDateDescription(), false, true ) );
@@ -1127,7 +1130,7 @@ public class HibernateProgramStageInstanceStore
         }
         dataValueSql = dataValueSql.substring( 0, dataValueSql.length() - 3 );
         dataValueSql += ") ORDER BY value asc";
-        
+
         Collection<String> deValues = new HashSet<String>();
         try
         {
@@ -1524,7 +1527,8 @@ public class HibernateProgramStageInstanceStore
                 }
                 else
                 {
-                    sql += "( SELECT " + aggregateType + "( cast( value as " + statementBuilder.getDoubleColumnType() + " ))";
+                    sql += "( SELECT " + aggregateType + "( cast( value as " + statementBuilder.getDoubleColumnType()
+                        + " ))";
                     sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
                         + deSum + " ";
                 }
@@ -1544,7 +1548,7 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " AND psi_1.completed = true ";
                 }
-                
+
                 sql += ") as \"" + periodName + "\",";
             }
             sql = sql.substring( 0, sql.length() - 1 );
