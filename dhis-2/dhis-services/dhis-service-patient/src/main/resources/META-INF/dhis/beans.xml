@@ -180,6 +180,7 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="statementBuilder" ref="statementBuilder" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.relationship.RelationshipService" class="org.hisp.dhis.relationship.DefaultRelationshipService">
