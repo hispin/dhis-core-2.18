@@ -28,7 +28,9 @@ package org.hisp.dhis.patient;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,6 +93,11 @@ public class DefaultPatientAttributeGroupService
     public Collection<PatientAttributeGroup> getAllPatientAttributeGroups()
     {
         return i18n( i18nService, patientAttributeGroupStore.getAll() );
+    }
+
+    public List<PatientAttribute> getPatientAttributes( PatientAttributeGroup patientAttributeGroup )
+    {
+        return new ArrayList<PatientAttribute>( i18n( i18nService, patientAttributeGroup.getAttributes() ) );
     }
 
 }
