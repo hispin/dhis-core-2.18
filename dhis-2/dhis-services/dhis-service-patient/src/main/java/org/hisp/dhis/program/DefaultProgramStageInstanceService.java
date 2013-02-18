@@ -178,14 +178,14 @@ public class DefaultProgramStageInstanceService
 
     public Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Integer min, Integer max )
+        Boolean completed, Integer min, Integer max, I18n i18n )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
 
         return programStageInstanceStore.getTabularReport( programStage, orgUnitLevelMap, organisationUnits, columns,
-            level, maxLevel, startDate, endDate, descOrder, completed, min, max );
+            level, maxLevel, startDate, endDate, descOrder, completed, min, max, i18n );
     }
 
     public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
@@ -288,8 +288,8 @@ public class DefaultProgramStageInstanceService
     {
 
         Grid grid = new ListGrid();
-        grid.setTitle( program.getDisplayName() + " ( " + format.formatDate( startDate ) + " - " + format.formatDate( endDate )
-            + " )" );
+        grid.setTitle( program.getDisplayName() + " ( " + format.formatDate( startDate ) + " - "
+            + format.formatDate( endDate ) + " )" );
 
         int total = programInstanceService.countProgramInstances( program, orgunitIds, startDate, endDate );
         grid.setSubtitle( i18n.getString( "total_persons_enrolled" ) + ": " + total );
@@ -347,11 +347,12 @@ public class DefaultProgramStageInstanceService
 
     @Override
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters, List<Period> periods,
-        String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n )
+        String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
+        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
+        I18n i18n )
     {
-        return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, facilityLB,
-            deGroupBy, deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, format, i18n );
+        return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, facilityLB, deGroupBy,
+            deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, format, i18n );
     }
 
 }
