@@ -41,6 +41,7 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROG
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,6 +53,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -125,9 +127,12 @@ public class DefaultCaseAggregationConditionService
 
     private StatementBuilder statementBuilder;
 
+    private I18nService i18nService;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
@@ -163,6 +168,11 @@ public class DefaultCaseAggregationConditionService
         this.dataElementService = dataElementService;
     }
 
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Methods
     // -------------------------------------------------------------------------
@@ -192,13 +202,13 @@ public class DefaultCaseAggregationConditionService
     @Override
     public Collection<CaseAggregationCondition> getAllCaseAggregationCondition()
     {
-        return aggregationConditionStore.getAll();
+        return i18n( i18nService, aggregationConditionStore.getAll());
     }
 
     @Override
     public CaseAggregationCondition getCaseAggregationCondition( int id )
     {
-        return aggregationConditionStore.get( id );
+        return i18n( i18nService, aggregationConditionStore.get( id ));
 
     }
 
@@ -211,14 +221,14 @@ public class DefaultCaseAggregationConditionService
     @Override
     public Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement )
     {
-        return aggregationConditionStore.get( dataElement );
+        return i18n( i18nService, aggregationConditionStore.get( dataElement ));
     }
 
     @Override
     public CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement,
         DataElementCategoryOptionCombo optionCombo )
     {
-        return aggregationConditionStore.get( dataElement, optionCombo );
+        return i18n( i18nService, aggregationConditionStore.get( dataElement, optionCombo ));
     }
 
     @Override
@@ -325,8 +335,8 @@ public class DefaultCaseAggregationConditionService
             || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
             aggregationCondition.setOperator( AGGRERATION_SUM );
-            sql = createSQL( aggregationCondition.getAggregationExpression(),
-                aggregationCondition.getOperator(), orgunitId, startDate, endDate );
+            sql = createSQL( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
+                orgunitId, startDate, endDate );
         }
         else
         {
@@ -345,7 +355,7 @@ public class DefaultCaseAggregationConditionService
                     + convertCondition( aggregationCondition, orgunit, period ) + " ) ";
             }
         }
-        
+
         Collection<Integer> stageInstanceIds = aggregationConditionStore.executeSQL( sql );
 
         for ( Integer stageInstanceId : stageInstanceIds )
@@ -551,7 +561,7 @@ public class DefaultCaseAggregationConditionService
 
     public Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements )
     {
-        return aggregationConditionStore.get( dataElements );
+        return i18n( i18nService, aggregationConditionStore.get( dataElements ));
     }
 
     // -------------------------------------------------------------------------
