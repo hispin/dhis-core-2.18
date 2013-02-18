@@ -67,6 +67,7 @@ function validateData()
 {
 	var params = "programId=" + getFieldValue('programIdAddPatient') + "&" + getParamsForDiv('patientForm');
 	$("#patientForm :input").attr("disabled", true);
+	$("#entryForm :input").attr("disabled", true);
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
@@ -126,13 +127,16 @@ function addData( programId, patientId )
 		url: 'saveValues.action',
 		data: params,
 		success: function(json) {
-			$("#patientForm :input").attr("disabled", true);
-			jQuery("#resultSearchDiv").dialog("close");
 			if( _continue==true )
 			{
+				$("#patientForm :input").attr("disabled", false);
+				$("#entryForm :input").attr("disabled", false);
 				jQuery('#patientForm :input').each(function()
 				{
 					var type=$( this ).attr('type');
+					if(type=='checkbox'){
+						this.checked = false;
+					}
 					if(type!='button'){
 						$( this ).val('');
 					}
@@ -151,6 +155,7 @@ function addData( programId, patientId )
 			}
 			else
 			{
+				setInnerHTML('singleProgramName','');
 				hideById('addNewDiv');
 				if( getFieldValue('listAll')=='true'){
 					listAllPatient();
