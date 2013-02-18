@@ -139,10 +139,10 @@
 
 	<!-- ATTRIBUTES IN GROUPS -->
 	
-	#foreach ($attributeGroup in $attributeGroupsMap.keySet() )
+	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>
 		<tr><th colspan="2" class="heading-column">$attributeGroup.displayName</th></tr>
-		#set($attributes = $attributeGroupsMap.get($attributeGroup))
+		#set($attributes = $attributeGroupsMap.get($attributeGroup.id))
 		#foreach($attribute in $attributes )
 			#set($value = "")
 			#set($value = $patientAttributeValueMap.get($attribute.id))

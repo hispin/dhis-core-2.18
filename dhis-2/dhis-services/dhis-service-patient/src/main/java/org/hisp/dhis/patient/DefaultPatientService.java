@@ -351,10 +351,7 @@ public class DefaultPatientService
     @Override
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
     {
-        // List<PatientAttributeValue> patientsSortedByAttribute = new
-        // ArrayList<PatientAttributeValue>();
-
-        Collection<Patient> sortedPatients = new ArrayList<Patient>();
+         Collection<Patient> sortedPatients = new ArrayList<Patient>();
 
         // ---------------------------------------------------------------------
         // Better to fetch all attribute values at once than fetching the

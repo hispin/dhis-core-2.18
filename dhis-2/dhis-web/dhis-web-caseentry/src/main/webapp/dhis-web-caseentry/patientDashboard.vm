@@ -1,3 +1,6 @@
+$identifierMap
+
+
 <h3>
  <a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
  &#8226; $i18n.getString( 'patient_dashboard' )
@@ -52,34 +55,27 @@
 						#end
 					</td>
 				</tr>
-				#foreach( $identifier in $identifiers )
+				#foreach( $identifierTypeName in $identifierMap.ketSet() )
 				<tr>
-					#if($!identifier.identifierType)
-						<td>$identifier.identifierType.displayName</td>
+					#if($!identifier)
+						<td>$identifierTypeName</td>
 					#else
 						<td>$i18n.getString("system_identifier")</td>
 					#end
-					<td>$identifier.identifier</td>
+					<td>$identifierMap.get($identifierTypeName)</td>
 				</tr>
 				#end
-				#foreach( $attributeName in $calAttributeValueMap.keySet() )
-				<tr class="bold">
-					<td>$attributeName</td>
-					<td>$calAttributeValueMap.get($attributeName)</td>
-				</tr>
-				#end
-				#foreach( $attributeValue in $attributeValues )
+				#foreach( $attributeName in $attributeMap.keySet() )
 				<tr>
-					<td>$attributeValue.patientAttribute.displayName</td>
+					#set( $attributeValue=$$attributeMap.get($attributeName) )
+					<td>$attributeName</td>
 					<td>
-						#if($attributeValue.patientAttribute.valueType=='YES/NO')
-							#if($attributeValue.value=='true')
-								$i18n.getString("yes")
-							#else
-								$i18n.getString("no")
-							#end
+						#if($attributeValue=='true')
+							$i18n.getString("yes")
+						#elseif( $attributeValue=='false')
+							$i18n.getString("no")
 						#else
-							$encoder.htmlEncode($attributeValue.value)
+							$encoder.htmlEncode($attributeValue)
 						#end	
 					</td>
 				</tr>
@@ -118,7 +114,7 @@
 							#if($programInstance.program.type==1)
 							<tr>
 								<td id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
-									<a>&#8226; $programStageInstance.programStage.displayName ($format.formatDate($programStageInstance.dueDate))</a>
+									<a>&#8226; $programMap.get($programInstance.program.id) ($format.formatDate($programStageInstance.dueDate))</a>
 								</td>
 							</tr>
 							#end
