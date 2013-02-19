@@ -9,8 +9,9 @@
 
 <h3>$i18n.getString( "statistical_program_report" )</h3>
 
-<form id="reportForm" name="reportForm" method="post">
+<form id="reportForm" name="reportForm" action="generateStatisticalProgramReport.action" method="post">
 	<input type="hidden" id="status" name="status">
+	<input type="hidden" id="type" name="type">
 	<input type="hidden" id="total" name="total">
 	<div class="inputCriteria" style="width:600px;height:180px;margin-bottom:20px;">
 		<table>	
@@ -51,8 +52,10 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" style="width:10em" />
-					<input type="button" value="$i18n.getString( 'cancel' )" onclick="hideById('reportForm');" style="width:10em"/>
+				<td>
+					<input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" onclick='setFieldValue("type","")' style="width:7em" />
+					<input type="submit" id='exportBtn' name='exportBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'export_xls' )" onclick='setFieldValue("type","xls")' style="width:7em" />
+					<input type="button" value="$i18n.getString( 'cancel' )" onclick="hideById('reportForm');" style="width:7em"/>
 				</td>
 			</tr>	                		
 		</table>

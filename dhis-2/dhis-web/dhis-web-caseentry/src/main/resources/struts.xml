@@ -354,6 +354,7 @@
       class="org.hisp.dhis.caseentry.action.report.GenerateStatisticalProgramReportAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/statisticalProgramReport.vm</param>
+      <result name="xls" type="gridXlsResult" />
       <param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
     </action>
 
