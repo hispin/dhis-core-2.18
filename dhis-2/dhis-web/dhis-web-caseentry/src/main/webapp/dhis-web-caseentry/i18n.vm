@@ -161,4 +161,6 @@ sum_avg_of: '$encoder.jsEscape($i18n.getString( 'sum_avg_of' ) , "'")',
 select_a_dataelement_for_sum_avg_operator: '$encoder.jsEscape($i18n.getString( 'select_a_dataelement_for_sum_avg_operator' ) , "'")',
 multiple_periods_selected_as_filter: '$encoder.jsEscape($i18n.getString( 'multiple_periods_selected_as_filter' ) , "'")',
 multiple_orgunits_selected_as_filter: '$encoder.jsEscape($i18n.getString( 'multiple_orgunits_selected_as_filter' ) , "'")',
+please_select_one_position_for_row: '$encoder.jsEscape($i18n.getString( 'please_select_one_position_for_row' ) , "'")',
+please_select_one_position_for_filter: '$encoder.jsEscape($i18n.getString( 'please_select_one_position_for_filter' ) , "'")'
 };

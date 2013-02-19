@@ -2194,14 +2194,30 @@ Ext.onReady( function() {
 					
 					var position = TR.state.aggregateReport.getPosition();
 					if( position==''){
-						TR.util.notification.error(TR.i18n.invalid_position, TR.i18n.invalid_position);
-						return false;	
+						var o = TR.cmp.settings.positionOrgunit.value;
+						var p = TR.cmp.settings.positionPeriod.value;
+						var d = TR.cmp.settings.positionData.value;
+
+						if( o!='1' && p!='1' && d!='1')
+						{
+							TR.util.notification.error(TR.i18n.please_select_one_position_for_row, TR.i18n.please_select_one_position_for_row);
+							return false;
+						}
+						if( o!='3' && p!='3' && d!='3')
+						{
+							TR.util.notification.error(TR.i18n.please_select_one_position_for_filter, TR.i18n.please_select_one_position_for_filter);
+							return false;
+						}
+						else {
+							TR.util.notification.error(TR.i18n.invalid_position, TR.i18n.invalid_position);
+							return false;
+						}
 					}
 					
 					if( Ext.getCmp('aggregateType').getValue().aggregateType != 'count'
 						&& ( Ext.getCmp('deSumCbx').getValue() == null || Ext.getCmp('deSumCbx').getValue=='')){
 						TR.util.notification.error(TR.i18n.select_a_dataelement_for_sum_avg_operator, TR.i18n.select_a_dataelement_for_sum_avg_operator );
-						return false;	
+						return false;
 					}
 				
 					// Check orgunit by period
