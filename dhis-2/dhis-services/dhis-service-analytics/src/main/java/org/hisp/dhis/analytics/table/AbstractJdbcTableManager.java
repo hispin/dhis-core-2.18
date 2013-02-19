@@ -29,10 +29,12 @@ package org.hisp.dhis.analytics.table;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.analytics.AnalyticsIndex;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -80,20 +82,25 @@ public abstract class AbstractJdbcTableManager
     }
     
     @Async
-    public Future<?> createIndexesAsync( String tableName, List<String> columns )
+    public Future<?> createIndexesAsync( ConcurrentLinkedQueue<AnalyticsIndex> indexes )
     {
-        for ( String column : columns )
-        {        
-            final String index = PREFIX_INDEX + column + "_" + tableName + "_" + CodeGenerator.generateCode();
+        taskLoop : while ( true )
+        {
+            AnalyticsIndex inx = indexes.poll();
             
-            final String sql = "create index " + index + " on " + tableName + " (" + column + ")";
+            if ( inx == null )
+            {
+                break taskLoop;
+            }
+            
+            final String index = PREFIX_INDEX + inx.getColumn() + "_" + inx.getTable() + "_" + CodeGenerator.generateCode();
+            
+            final String sql = "create index " + index + " on " + inx.getTable() + " (" + inx.getColumn() + ")";
                 
             executeSilently( sql );
             
             log.info( "Created index: " + index );
         }
-        
-        log.info( "Indexes created" );
         
         return null;
     }
@@ -148,13 +155,23 @@ public abstract class AbstractJdbcTableManager
     }
 
     @Async
-    public Future<?> vacuumTableAsync( String tableName )
+    public Future<?> vacuumTablesAsync( ConcurrentLinkedQueue<String> tables )
     {
-        final String sql = statementBuilder.getVacuum( tableName );
-        
-        log.info( "Vacuum SQL: " + sql );
-        
-        jdbcTemplate.execute( sql );
+        taskLoop : while ( true )
+        {
+            String table = tables.poll();
+            
+            if ( table == null )
+            {
+                break taskLoop;
+            }
+            
+            final String sql = statementBuilder.getVacuum( table );
+            
+            log.info( "Vacuum SQL: " + sql );
+            
+            jdbcTemplate.execute( sql );
+        }
         
         return null;
     }

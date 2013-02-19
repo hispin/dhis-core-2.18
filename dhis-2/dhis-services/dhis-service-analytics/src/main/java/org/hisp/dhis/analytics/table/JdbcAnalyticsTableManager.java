@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.DataQueryParams;
@@ -97,17 +98,29 @@ public class JdbcAnalyticsTableManager
     }
     
     @Async
-    public Future<?> populateTableAsync( String tableName, Period period )
+    public Future<?> populateTableAsync( ConcurrentLinkedQueue<String> tables )
     {
-        Date startDate = period.getStartDate();
-        Date endDate = period.getEndDate();
-        
-        populateTable( tableName, startDate, endDate, "cast(dv.value as double precision)", "int", "dv.value != ''" );
-        
-        populateTable( tableName, startDate, endDate, "1" , "bool", "dv.value = 'true'" );
-
-        populateTable( tableName, startDate, endDate, "0" , "bool", "dv.value = 'false'" );
-        
+        taskLoop : while ( true )
+        {
+            String table = tables.poll();
+                
+            if ( table == null )
+            {
+                break taskLoop;
+            }
+            
+            Period period = PartitionUtils.getPeriod( table );
+            
+            Date startDate = period.getStartDate();
+            Date endDate = period.getEndDate();
+            
+            populateTable( table, startDate, endDate, "cast(dv.value as double precision)", "int", "dv.value != ''" );
+            
+            populateTable( table, startDate, endDate, "1" , "bool", "dv.value = 'true'" );
+    
+            populateTable( table, startDate, endDate, "0" , "bool", "dv.value = 'false'" );
+        }
+    
         return null;
     }
     
@@ -221,26 +234,39 @@ public class JdbcAnalyticsTableManager
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
     
-    public void applyAggregationLevels( String tableName, Collection<String> dataElements, int aggregationLevel )
+    @Async
+    public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<String> tables, Collection<String> dataElements, int aggregationLevel )
     {
-        StringBuilder sql = new StringBuilder( "update " + tableName + " set " );
-        
-        for ( int i = 0; i < aggregationLevel; i++ )
+        taskLoop : while ( true )
         {
-            int level = i + 1;
+            String table = tables.poll();
+                
+            if ( table == null )
+            {
+                break taskLoop;
+            }
             
-            String column = DataQueryParams.LEVEL_PREFIX + level;
+            StringBuilder sql = new StringBuilder( "update " + table + " set " );
             
-            sql.append( column + " = null," );
+            for ( int i = 0; i < aggregationLevel; i++ )
+            {
+                int level = i + 1;
+                
+                String column = DataQueryParams.LEVEL_PREFIX + level;
+                
+                sql.append( column + " = null," );
+            }
+            
+            sql.deleteCharAt( sql.length() - ",".length() );
+            
+            sql.append( " where level > " + aggregationLevel );
+            sql.append( " and de in (" + getQuotedCommaDelimitedString( dataElements ) + ")" );
+            
+            log.info( "Aggregation level SQL: " + sql.toString() );
+            
+            jdbcTemplate.execute( sql.toString() );
         }
-        
-        sql.deleteCharAt( sql.length() - ",".length() );
-        
-        sql.append( " where level > " + aggregationLevel );
-        sql.append( " and de in (" + getQuotedCommaDelimitedString( dataElements ) + ")" );
-        
-        log.info( "Aggregation level SQL: " + sql.toString() );
-        
-        jdbcTemplate.execute( sql.toString() );
+
+        return null;
     }
 }
