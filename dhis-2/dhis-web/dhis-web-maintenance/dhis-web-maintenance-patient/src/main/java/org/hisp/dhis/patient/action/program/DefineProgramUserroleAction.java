@@ -24,37 +24,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.caseentry.action.caseentry;
+
+package org.hisp.dhis.patient.action.program;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version DefineProgramUserroleAction.java 12:43:40 PM Feb 19, 2013 $
  */
-public class DataRecordingSelectAction
+public class DefineProgramUserroleAction
     implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
+{// -------------------------------------------------------------------------
+ // Dependency
+ // -------------------------------------------------------------------------
 
     private ProgramService programService;
 
@@ -63,59 +56,53 @@ public class DataRecordingSelectAction
         this.programService = programService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private UserService userService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setUserService( UserService userService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private Integer id;
 
-    public void setPatientId( Integer patientId )
+    public void setId( Integer id )
     {
-        this.patientId = patientId;
+        this.id = id;
     }
 
-    private Patient patient;
+    private Collection<Integer> userRoleIds = new HashSet<Integer>();
 
-    public Patient getPatient()
+    public void setUserRoleIds( Collection<Integer> userRoleIds )
     {
-        return patient;
-    }
-
-    private Collection<Program> programs = new HashSet<Program>();
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
+        this.userRoleIds = userRoleIds;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        Program program = programService.getProgram( id );
 
-        patient = patientService.getPatient( patientId );
+        Set<UserAuthorityGroup> userAutorities = new HashSet<UserAuthorityGroup>();
 
-        // ---------------------------------------------------------------------
-        // Get programs which patient enrolls
-        // ---------------------------------------------------------------------
+        for ( Integer userRoleId : this.userRoleIds )
+        {
+            userAutorities.add( userService.getUserAuthorityGroup( userRoleId ) );
+        }
 
-        programs = programService.getPrograms( orgunit );
-        programs.retainAll( patient.getPrograms() );
-        programs.retainAll( programService.getProgramsByCurrentUser());
-        
-        selectedStateManager.setSelectedPatient( patient );
+        program.setUserRoles( userAutorities );
+
+        programService.updateProgram( program );
 
         return SUCCESS;
     }
+
 }

@@ -45,4 +45,6 @@ public interface ProgramStore
     Collection<Program> getByType( int type );
     
     Collection<Program> get( int type, OrganisationUnit orgunit );
+    
+    Collection<Program> getByCurrentUser();
 }

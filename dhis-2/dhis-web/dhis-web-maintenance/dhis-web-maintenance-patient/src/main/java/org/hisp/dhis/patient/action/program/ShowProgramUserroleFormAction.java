@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,47 +25,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.report;
+package org.hisp.dhis.patient.action.program;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $TabularInitializeAction.java Apr 5, 2012 9:44:37 AM$
+ * @version ShowProgramUserroleFormAction.java 12:44:19 PM Feb 19, 2013 $
  */
-public class TabularInitializeAction
+public class ShowProgramUserroleFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private UserService userService;
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setUserService( UserService userService )
     {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.userService = userService;
     }
 
     private ProgramService programService;
@@ -76,46 +63,43 @@ public class TabularInitializeAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private Collection<Program> programs;
+    private Integer id;
 
-    public Collection<Program> getPrograms()
+    public void setId( Integer id )
     {
-        return programs;
+        this.id = id;
     }
 
-    private List<OrganisationUnitLevel> levels;
+    private Collection<UserAuthorityGroup> userRoles;
 
-    public List<OrganisationUnitLevel> getLevels()
+    public Collection<UserAuthorityGroup> getUserRoles()
     {
-        return levels;
+        return userRoles;
     }
 
-    private List<OrganisationUnitGroup> orgunitGroups;
+    private Program program;
 
-    public List<OrganisationUnitGroup> getOrgunitGroups()
+    public Program getProgram()
     {
-        return orgunitGroups;
+        return program;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
-        throws Exception
     {
-        orgunitGroups = new ArrayList<OrganisationUnitGroup>(
-            organisationUnitGroupService.getAllOrganisationUnitGroups() );
-        Collections.sort( orgunitGroups, IdentifiableObjectNameComparator.INSTANCE );
-        
-        programs = programService.getAllPrograms();
-        programs.retainAll( programService.getProgramsByCurrentUser());
-        
-        levels = organisationUnitService.getOrganisationUnitLevels();
+        program = programService.getProgram( id );
+
+        userRoles = userService.getAllUserAuthorityGroups();
+        userRoles.removeAll( program.getUserRoles() );
 
         return SUCCESS;
     }
+
 }

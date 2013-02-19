@@ -112,6 +112,8 @@ public class LoadAnonymousProgramsAction
         {
             programs = new ArrayList<Program>( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION,
                 orgunit ) );
+            programs.retainAll( programService.getProgramsByCurrentUser());
+            
             Collections.sort( programs, new ProgramDisplayNameComparator() );
         }
 

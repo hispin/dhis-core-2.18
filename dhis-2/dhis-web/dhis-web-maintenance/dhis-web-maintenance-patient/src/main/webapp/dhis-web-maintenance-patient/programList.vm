@@ -9,7 +9,7 @@
 		
 		<table class="listTable" id="listTable">
 			  <col>          
-			  <col width="200">
+			  <col width="230">
 			<thead>			  
 			  <tr>            
 				<th>$i18n.getString( "name" )</th>
@@ -24,6 +24,7 @@
 					
 					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_orgunits' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program_to_orgunits' )"></a>					  
+					  <a href="showProgramUserroleForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_userroles' )"><img src="images/userrole.png" alt="$i18n.getString( 'assign_program_to_userroles' )"></a>					  
 					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_rule_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'program_validation_rule_management' )"></a>					  
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					  <a href="javascript:translate( 'Program', '$program.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>

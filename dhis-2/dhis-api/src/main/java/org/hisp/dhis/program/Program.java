@@ -42,8 +42,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.comparator.UserRoleComparator;
 import org.hisp.dhis.validation.ValidationCriteria;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -105,6 +108,8 @@ public class Program
     private List<PatientAttribute> patientAttributes;
 
     private Boolean blockEntryForm = false;
+
+    private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -446,4 +451,15 @@ public class Program
     {
         return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type);
     }
+
+    public Set<UserAuthorityGroup> getUserRoles()
+    {
+        return userRoles;
+    }
+
+    public void setUserRoles( Set<UserAuthorityGroup> userRoles )
+    {
+        this.userRoles = userRoles;
+    }
+
 }

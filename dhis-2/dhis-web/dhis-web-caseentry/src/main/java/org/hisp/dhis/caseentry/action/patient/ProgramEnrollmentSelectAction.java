@@ -111,16 +111,15 @@ public class ProgramEnrollmentSelectAction
     public String execute()
         throws Exception
     {
+        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
         patient = patientService.getPatient( id );
 
         // Get all programs
         programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
-
-        // Check single-event with registration
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
-
         programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit ) );
+        programs.retainAll( programService.getProgramsByCurrentUser());
         programs.removeAll( patient.getPrograms() );
+        
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, false );
 
         for ( ProgramInstance programInstance : programInstances )
