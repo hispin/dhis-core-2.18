@@ -893,7 +893,7 @@
 
     <action name="generateAggregateReport"
       class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction">
-      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonAggregateReportResult.vm
+      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularAggregateReportResult.vm
       </result>
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
