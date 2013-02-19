@@ -266,6 +266,17 @@ public class DataQueryParams
     }
     
     /**
+     * Returns the index of the category option combo dimension. Returns null
+     * if this dimension is not present.
+     */
+    public Integer getCocIndex()
+    {
+        int index = dimensions.indexOf( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID ) );
+        
+        return index == -1 ? null : index;
+    }
+    
+    /**
      * Indicates whether this object is of the given aggregation type.
      */
     public boolean isAggregationType( AggregationType aggregationType )

@@ -392,6 +392,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> getAllEqName( String name )
     {
         Query query = sharingEnabled() ? getQueryAllEqNameACL( name ) : getQueryAllEqName( name );
@@ -423,6 +424,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> getAllEqNameIgnoreCase( String name )
     {
         Query query = sharingEnabled() ? getQueryAllEqNameACLIgnoreCase( name ) : getQueryAllEqNameIgnoreCase( name );
@@ -454,6 +456,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> getAllEqShortName( String shortName )
     {
         Query query = sharingEnabled() ? getQueryAllEqShortNameACL( shortName ) : getQueryAllEqShortName( shortName );
@@ -485,6 +488,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> getAllEqShortNameIgnoreCase( String shortName )
     {
         Query query = sharingEnabled() ? getQueryAllEqShortNameACLIgnoreCase( shortName ) : getQueryAllEqShortNameIgnoreCase( shortName );
