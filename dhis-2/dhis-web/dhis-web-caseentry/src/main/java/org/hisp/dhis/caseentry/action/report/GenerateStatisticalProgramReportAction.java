@@ -132,6 +132,13 @@ public class GenerateStatisticalProgramReportAction
         this.facilityLB = facilityLB;
     }
 
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
     public Collection<ProgramInstance> getProgramInstances()
@@ -145,7 +152,7 @@ public class GenerateStatisticalProgramReportAction
     {
         return grid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -166,7 +173,7 @@ public class GenerateStatisticalProgramReportAction
         // ---------------------------------------------------------------------
 
         Collection<Integer> orgunitIds = new HashSet<Integer>();
-        
+
         if ( facilityLB.equals( "selected" ) )
         {
             orgunitIds.add( organisationUnit.getId() );
@@ -188,6 +195,6 @@ public class GenerateStatisticalProgramReportAction
             grid = programStageInstanceService.getStatisticalReport( program, orgunitIds, sDate, eDate, i18n, format );
         }
 
-        return SUCCESS;
+        return (type == null) ? SUCCESS : type;
     }
 }
