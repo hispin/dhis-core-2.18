@@ -52,7 +52,7 @@
 			<tr>
 				<td></td>
 				<td><input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" style="width:10em" />
-					<input type="button" value="$i18n.getString( 'cancel' )" onclick="showStatisticalReportForm();" style="width:10em"/>
+					<input type="button" value="$i18n.getString( 'cancel' )" onclick="hideById('reportForm');" style="width:10em"/>
 				</td>
 			</tr>	                		
 		</table>
@@ -71,4 +71,5 @@
 	var i18n_total_result = '$encoder.jsEscape( $i18n.getString( "total_result" ), "'")'; 	
 	var i18n_reports = '$encoder.jsEscape( $i18n.getString( "reports" ), "'")';
 	var i18n_start = '$encoder.jsEscape( $i18n.getString( "start" ), "'")';
+	var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_items" ), "'")';
 </script>   
