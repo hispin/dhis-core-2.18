@@ -183,23 +183,6 @@ public class DefaultAnalyticsTableService
         }
     }
     
-    private void vacuumTables( List<String> tables )
-    {
-        List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( getProcessNo() ).getPages();
-        
-        for ( List<String> tablePage : tablePages )
-        {
-            List<Future<?>> futures = new ArrayList<Future<?>>();
-            
-            for ( String table : tablePage )
-            {
-                futures.add( tableManager.vacuumTableAsync( table ) );
-            }
-            
-            ConcurrentUtils.waitForCompletion( futures );
-        }
-    }
-    
     private void createIndexes( List<String> tables )
     {
         for ( String table : tables )
@@ -211,6 +194,23 @@ public class DefaultAnalyticsTableService
             for ( List<String> columnPage : columnPages )
             {
                 futures.add( tableManager.createIndexesAsync( table, columnPage ) );
+            }
+            
+            ConcurrentUtils.waitForCompletion( futures );
+        }
+    }
+
+    private void vacuumTables( List<String> tables )
+    {
+        List<List<String>> tablePages = new PaginatedList<String>( tables ).setPageSize( getProcessNo() ).getPages();
+        
+        for ( List<String> tablePage : tablePages )
+        {
+            List<Future<?>> futures = new ArrayList<Future<?>>();
+            
+            for ( String table : tablePage )
+            {
+                futures.add( tableManager.vacuumTableAsync( table ) );
             }
             
             ConcurrentUtils.waitForCompletion( futures );

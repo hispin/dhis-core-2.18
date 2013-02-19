@@ -164,8 +164,10 @@ public class DefaultQueryPlanner
         }
 
         // ---------------------------------------------------------------------
-        // Group by organisation unit
+        // Group by data element
         // ---------------------------------------------------------------------
+        
+        //TODO change order
         
         queries = splitByDimensionOrFilter( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
 
@@ -175,10 +177,12 @@ public class DefaultQueryPlanner
         }
 
         // ---------------------------------------------------------------------
-        // Group by data element
+        // Group by organiastion unit
         // ---------------------------------------------------------------------
         
-        return splitByDimensionOrFilter( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
+        queries = splitByDimensionOrFilter( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
+        
+        return queries;
     }
         
     public boolean canQueryFromDataMart( DataQueryParams params )
@@ -195,7 +199,7 @@ public class DefaultQueryPlanner
      */
     private List<DataQueryParams> splitByDimensionOrFilter( List<DataQueryParams> queries, String dimension, int optimalQueries )
     {
-        int optimalForSubQuery = MathUtils.divideToCeil( optimalQueries, queries.size() );
+        int optimalForSubQuery = MathUtils.divideToFloor( optimalQueries, queries.size() );
         
         List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
         

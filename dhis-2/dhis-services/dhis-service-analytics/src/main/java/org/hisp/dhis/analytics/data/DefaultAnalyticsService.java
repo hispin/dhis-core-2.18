@@ -97,6 +97,7 @@ public class DefaultAnalyticsService
     private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
     
     private static final String VALUE_HEADER_NAME = "Value";
+    private static final int MAX_QUERIES = 6;
     
     //TODO completeness
     //TODO make sure data x dims are successive
@@ -141,6 +142,7 @@ public class DefaultAnalyticsService
         queryPlanner.validate( params );
         
         params.conform();
+        
         
         // ---------------------------------------------------------------------
         // Headers and meta-data
@@ -279,7 +281,7 @@ public class DefaultAnalyticsService
         
         Timer t = new Timer().start();
 
-        int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, 6 );
+        int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, MAX_QUERIES );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, tableName );
         
