@@ -144,6 +144,11 @@ public class DefaultExpressionService
     public Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
         Map<String, Double> constantMap, Integer days )
     {
+        if ( indicator == null || indicator.getNumerator() == null || indicator.getDenominator() == null )
+        {
+            return null;
+        }
+        
         final double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(), valueMap, constantMap, days, false ) );
         
         if ( !isEqual( denominatorValue, 0d ) )
@@ -244,8 +249,18 @@ public class DefaultExpressionService
         
         for ( Indicator indicator : indicators )
         {
-            dataElements.addAll( getDataElementsInExpression( indicator.getNumerator() ) );
-            dataElements.addAll( getDataElementsInExpression( indicator.getDenominator() ) );
+            Set<DataElement> numerator = getDataElementsInExpression( indicator.getNumerator() );
+            Set<DataElement> denominator = getDataElementsInExpression( indicator.getDenominator() );
+            
+            if ( numerator != null )
+            {
+                dataElements.addAll( numerator );
+            }
+            
+            if ( denominator != null )
+            {
+                dataElements.addAll( denominator );
+            }
         }
         
         return dataElements;
