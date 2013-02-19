@@ -2116,7 +2116,15 @@ Ext.onReady( function() {
 							handler: function() {
 								update();
 							}
-						}
+						},
+                        '->',
+                        {
+                            xtype: 'button',
+                            text: 'Exit',
+                            handler: function() {
+                                window.location.href = '../../dhis-web-commons-about/redirect.action';
+                            }
+                        }
 					]
 				},
 				listeners: {
