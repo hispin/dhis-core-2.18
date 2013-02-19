@@ -427,7 +427,8 @@ function showSharingDialog( type, uid ) {
             $( '#sharingPublicAccess' ).attr( 'disabled', true );
         }
 
-        $( '.removeUserGroupAccess' ).unbind( 'click' ).bind( 'click', removeUserGroupAccess );
+        $( '.removeUserGroupAccess' ).unbind( 'click' )
+        $( document ).on( 'click', '.removeUserGroupAccess', removeUserGroupAccess );
         $( '#addUserGroupAccess' ).unbind( 'click' ).bind( 'click', addUserGroupAccessSelectedItem );
 
         $( '#sharingFindUserGroup' ).autocomplete( {
@@ -507,7 +508,7 @@ function showSharingDialog( type, uid ) {
             </tr>
 
             <tr>
-                <td><input style="width: 100%;" id="sharingFindUserGroup" /></td>
+                <td><input style="width: 100%;" id="sharingFindUserGroup" placeholder="Search for user groups"/></td>
                 <td style="width: 24px;"><button id="addUserGroupAccess" disabled="disabled" style="width: 24px; text-align: center;">+</button></td>
             </tr>
         </tbody>
