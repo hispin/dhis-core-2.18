@@ -70,6 +70,9 @@ body {
     display: none;
 }
 
+.fixed {
+	position: fixed;
+}
 
 /*----------------------------------------------------------------------------
  * Pivot
@@ -764,7 +767,7 @@ td .bad div {
 
 	/* accordion item body */
 .pt-accordion .x-accordion-body {
-	padding: 8px 8px 2px 8px;
+	padding: 8px 6px 0px 6px;
 	border-top: 1px solid #c5c5c5 !important;
 }
 

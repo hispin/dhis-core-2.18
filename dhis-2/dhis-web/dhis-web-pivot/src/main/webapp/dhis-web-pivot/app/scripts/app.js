@@ -90,7 +90,7 @@ Ext.onReady( function() {
 						items: data[name]
 					});
 				}
-				
+
 				for (var i = 0, name; i < setup.row.length; i++) {
 					name = setup.row[i];
 					config.row.push({
@@ -98,7 +98,7 @@ Ext.onReady( function() {
 						items: data[name]
 					});
 				}
-				
+
 				for (var i = 0, name; i < setup.filter.length; i++) {
 					name = setup.filter[i];
 					config.filter.push({
@@ -107,7 +107,7 @@ Ext.onReady( function() {
 					});
 				}
 			}();
-			
+
 			return config;
 		};
 
@@ -298,7 +298,7 @@ Ext.onReady( function() {
 
 		getStore = function(data) {
 			var config = {};
-				
+
 			config.fields = ['id', 'name'];
 
 			if (data) {
@@ -317,18 +317,18 @@ Ext.onReady( function() {
 					keys.push(items[i].data.id);
 				}
 			}
-			
+
 			return keys;
-		};				
+		};
 
 		dimensionStore = getStore(getData());
 
 		rowStore = getStore();
 		rowStore.add({id: 'pe', name: 'Periods'}); //i18n
-		
+
 		colStore = getStore();
 		colStore.add({id: 'dx', name: 'Data'}); //i18n
-		
+
 		filterStore = getStore();
 		filterStore.add({id: 'ou', name: 'Organisation units'}); //i18n
 
@@ -519,7 +519,7 @@ Ext.onReady( function() {
 			dimensionStore: dimensionStore,
 			rowStore: rowStore,
 			colStore: colStore,
-			filterStore: filterStore,			
+			filterStore: filterStore,
 			items: {
 				layout: 'column',
 				bodyStyle: 'border:0 none',
@@ -547,7 +547,7 @@ Ext.onReady( function() {
 			listeners: {
 				show: function(w) {
 					var x = (pt.viewport.getWidth() / 2) - (w.getWidth() / 2);
-					w.setPosition(x, 60);					
+					w.setPosition(x, 60);
 				}
 			}
 		});
@@ -666,6 +666,7 @@ Ext.onReady( function() {
 			indicator = {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">Indicators</div>', //i18n
+				layout: 'fit',
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
@@ -679,80 +680,84 @@ Ext.onReady( function() {
 
 					return data.items.length ? data : null;
 				},
-				items: [
-					{
-						xtype: 'combobox',
-						cls: 'pt-combo',
-						style: 'margin-bottom:8px',
-						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
-						valueField: 'id',
-						displayField: 'name',
-						fieldLabel: 'Select group', //i18n pt.i18n.select_group
-						labelStyle: 'padding-left:7px',
-						editable: false,
-						store: {
-							xtype: 'store',
-							fields: ['id', 'name', 'index'],
-							proxy: {
-								type: 'ajax',
-								url: pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicatorgroup_get,
-								reader: {
-									type: 'json',
-									root: 'indicatorGroups'
+				items: {
+					xtype: 'panel',
+					bodyStyle: 'border:0 none; padding:0',
+					items: [
+						{
+							xtype: 'combobox',
+							cls: 'pt-combo',
+							style: 'margin-bottom:6px',
+							width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
+							valueField: 'id',
+							displayField: 'name',
+							fieldLabel: 'Select group', //i18n pt.i18n.select_group
+							labelStyle: 'padding-left:7px',
+							editable: false,
+							store: {
+								xtype: 'store',
+								fields: ['id', 'name', 'index'],
+								proxy: {
+									type: 'ajax',
+									url: pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicatorgroup_get,
+									reader: {
+										type: 'json',
+										root: 'indicatorGroups'
+									}
+								},
+								listeners: {
+									load: function(s) {
+										s.add({
+											id: 0,
+											name: 'All indicator groups', //i18n pt.i18n.all_indicator_groups
+											index: -1
+										});
+										s.sort([
+											{
+												property: 'index',
+												direction: 'ASC'
+											},
+											{
+												property: 'name',
+												direction: 'ASC'
+											}
+										]);
+									}
 								}
 							},
 							listeners: {
-								load: function(s) {
-									s.add({
-										id: 0,
-										name: 'All indicator groups', //i18n pt.i18n.all_indicator_groups
-										index: -1
-									});
-									s.sort([
-										{
-											property: 'index',
-											direction: 'ASC'
-										},
-										{
-											property: 'name',
-											direction: 'ASC'
+								select: function(cb) {
+									var store = pt.store.indicatorAvailable;
+									store.parent = cb.getValue();
+
+									if (pt.util.store.containsParent(store)) {
+										pt.util.store.loadFromStorage(store);
+										pt.util.multiselect.filterAvailable(indicatorAvailable, indicatorSelected);
+									}
+									else {
+										if (cb.getValue() === 0) {
+											store.proxy.url = pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicator_getall;
+											store.load();
 										}
-									]);
+										else {
+											store.proxy.url = pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicator_get + cb.getValue() + '.json';
+											store.load();
+										}
+									}
 								}
 							}
 						},
-						listeners: {
-							select: function(cb) {
-								var store = pt.store.indicatorAvailable;
-								store.parent = cb.getValue();
-
-								if (pt.util.store.containsParent(store)) {
-									pt.util.store.loadFromStorage(store);
-									pt.util.multiselect.filterAvailable(indicatorAvailable, indicatorSelected);
-								}
-								else {
-									if (cb.getValue() === 0) {
-										store.proxy.url = pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicator_getall;
-										store.load();
-									}
-									else {
-										store.proxy.url = pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicator_get + cb.getValue() + '.json';
-										store.load();
-									}
-								}
-							}
+						{
+							xtype: 'panel',
+							layout: 'column',
+							bodyStyle: 'border-style:none',
+							items: [
+								indicatorAvailable,
+								indicatorSelected
+							]
 						}
-					},
-					{
-						xtype: 'panel',
-						layout: 'column',
-						bodyStyle: 'border-style:none',
-						items: [
-							indicatorAvailable,
-							indicatorSelected
-						]
-					}
-				],
+					]
+				},
 				listeners: {
 					added: function() {
 						pt.cmp.dimension.panels.push(this);
@@ -867,7 +872,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'combobox',
 						cls: 'pt-combo',
-						style: 'margin-bottom:8px',
+						style: 'margin-bottom:6px',
 						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
 						valueField: 'id',
 						displayField: 'name',
@@ -1386,12 +1391,12 @@ Ext.onReady( function() {
 							{
 								xtype: 'combobox',
 								cls: 'pt-combo',
-								style: 'margin-bottom:8px',
-								width: 261,
+								style: 'margin-bottom:6px',
+								width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 62 - 62 - 7,
 								valueField: 'id',
 								displayField: 'name',
 								fieldLabel: 'Select type', //i18n pt.i18n.select_type,
-								labelStyle: 'padding-left:7px',
+								labelStyle: 'padding-left:6px',
 								editable: false,
 								queryMode: 'remote',
 								store: pt.store.periodType,
@@ -1444,7 +1449,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'panel',
 						layout: 'column',
-						bodyStyle: 'border-style:none; padding-bottom:10px',
+						bodyStyle: 'border-style:none; padding-bottom:6px',
 						items: [
 							fixedPeriodAvailable,
 							fixedPeriodSelected
@@ -1470,6 +1475,7 @@ Ext.onReady( function() {
 			organisationUnit = {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-organisationunit">Organisation units</div>', //i18n pt.i18n.organisation_units
+				bodyStyle: 'padding-top:6px',
 				hideCollapseTool: true,
 				collapsed: false,
 				getData: function() {
@@ -1488,7 +1494,7 @@ Ext.onReady( function() {
 				items: [
 					{
 						layout: 'column',
-						bodyStyle: 'border:0 none; padding-bottom:4px',
+						bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:3px',
 						items: [
 							{
 								xtype: 'checkbox',
@@ -1526,7 +1532,7 @@ Ext.onReady( function() {
 						id: 'organisationunit_t',
 						xtype: 'toolbar',
 						style: 'margin-bottom: 5px',
-						width: pt.conf.layout.west_fieldset_width - 18,
+						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
 						xable: function(checked, value) {
 							if (checked || value) {
 								this.disable();
@@ -2005,7 +2011,7 @@ Ext.onReady( function() {
 					alert('Categories cannot be specified as filter');
 					return;
 				}
-				
+
 				return true;
 			};
 
@@ -2019,15 +2025,15 @@ Ext.onReady( function() {
 				if (!validateSpecialCases(settings)) {
 					return;
 				}
-					
+
 				if (settings) {
 					pt.util.pivot.getTable(settings, pt, centerRegion);
 				}
-			};				
+			};
 
 			accordion = {
 				xtype: 'panel',
-				bodyStyle: 'border-style:none; padding:3px;',
+				bodyStyle: 'border-style:none; padding:2px;',
 				layout: 'fit',
 				items: [
 					{
@@ -2051,11 +2057,18 @@ Ext.onReady( function() {
 
 							return panels;
 						}(),
+						listeners: {
+							added: function() {
+								pt.cmp.dimension.panel = this;
+								pacc = this;
+							}
+						}
 					}
 				],
 				listeners: {
 					added: function() {
-						pt.cmp.dimension.panel = this;
+						//pt.cmp.dimension.panel = this;
+						acc = this;
 					}
 				}
 			};
@@ -2084,10 +2097,10 @@ Ext.onReady( function() {
 								var text = b.getText();
 								text = text === '<<<' ? '>>>' : '<<<';
 								b.setText(text);
-								
+
 								westRegion.toggleCollapse();
 							}
-						},								
+						},
 						{
 							text: 'Settings',
 							handler: function() {
@@ -2105,6 +2118,63 @@ Ext.onReady( function() {
 							}
 						}
 					]
+				},
+				listeners: {
+					afterrender: function(p) {
+						//var top,
+							//left,
+							//width,
+							//height,
+							//fixedElStyle,
+							//setFixed = function(item, i) {
+								//if (!item.hasCls('fixed')) {
+									//item.addCls('fixed');
+									//item.setTop(fixedElStyle[i].top + 'px');
+									//item.setLeft(fixedElStyle[i].left + 'px');
+									//item.setWidth(fixedElStyle[i].width + 'px');
+									//item.setHeight(fixedElStyle[i].height + 'px');
+
+									//if (i > 0) {
+										//item.setStyle('border-left', 0);
+									//}
+
+								//}
+							//};
+
+						//p.body.dom.addEventListener('scroll', function() {
+							//var fixedEl = document.getElementsByClassName('scroll-fixed-tr'),
+								//relativeEl = document.getElementsByClassName('scroll-relative'),
+								//relativeElStyle	= [],
+								//el;
+
+							//fixedElStyle = [];
+
+							//for (var i = 0; i < fixedEl.length; i++) {
+								////alert(Ext.get(relativeEl[i]).getWidth());
+								//el = Ext.get(fixedEl[i]);
+								//fixedElStyle.push({
+									//top: el.getTop() + 1,
+									//left: el.getLeft(),
+									//width: el.getWidth(),
+									//height: el.getHeight()
+								//});
+							//}
+
+							//for (var i = 0; i < relativeEl.length; i++) {
+								////alert(Ext.get(relativeEl[i]).getWidth());
+								//relativeElStyle.push(Ext.get(relativeEl[i]).getWidth());
+							//}
+
+							//for (var i = 0; i < fixedEl.length; i++) {
+								//setFixed(Ext.get(fixedEl[i]), i);
+							//}
+
+							//for (var i = 0; i < relativeEl.length; i++) {
+								////alert(Ext.get(relativeEl[i]).getWidth());
+								//Ext.get(relativeEl[i]).setWidth(relativeElStyle[i]);
+							//}
+						//});
+					}
 				}
 			});
 
