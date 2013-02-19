@@ -1,0 +1,13 @@
+{ "metaData": {
+"programs": {
+#set( $psize = $programs.size() )
+#foreach( $program in $programs )
+"${program.id}":{"name":"$encoder.jsonEncode( ${program.displayName} )"}
+#if( $velocityCount < $psize ),#end
+#end },
+"programAssociations": {
+#set( $psize = $programAssociations.size() )
+#foreach( $ou in $programAssociations.keySet() )
+"${ou}":$programAssociations.get(${ou})#if( $velocityCount < $psize ),#end
+#end
+}}}

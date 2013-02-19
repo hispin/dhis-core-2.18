@@ -355,6 +355,11 @@
 			ref="org.hisp.dhis.program.ProgramExpressionService" />
 	</bean>
 
+  <bean id="org.hisp.dhis.caseentry.action.GetProgramMetaDataAction" class="org.hisp.dhis.caseentry.action.GetProgramMetaDataAction"
+    scope="prototype">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction"
