@@ -1018,7 +1018,11 @@ Ext.onReady( function() {
 								TR.store.dataelement.selected.removeAll();
 								if (f.dataElements) {
 									for (var i = 0; i < f.dataElements.length; i++) {
-										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name), compulsory: f.dataElements[i].compulsory, valueType:f.dataElements[i].valueType });
+										var name = TR.util.string.getEncodedString(f.dataElements[i].name);
+										var compulsory = f.dataElements[i].compulsory;
+										var valueType = f.dataElements[i].valueType;
+										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
+										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType );
 									}
 									TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
 									
@@ -1484,12 +1488,12 @@ Ext.onReady( function() {
 			return this.aggregateReport.getParams();
 		},
 		getURLParams: function( type, isSorted ){
-			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
-			{
+			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
 				this.caseBasedReport.getURLParams( type, isSorted );
-				return;
 			}
-			this.aggregateReport.getURLParams( type );
+			else{
+				this.aggregateReport.getURLParams( type );
+			}
 		},
 		paramChanged: function() {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -1603,7 +1607,44 @@ Ext.onReady( function() {
 				
 				// Get searching values
 				p.searchingValues = [];
-				if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
+				
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+						var valueType = r.data.valueType;
+						var deId = r.data.id;
+						var length = Ext.getCmp('p_' + deId).items.length/4;
+						var hidden = TR.state.caseBasedReport.isColHidden(deId);
+						
+						for(var idx=0;idx<length;idx++)
+						{
+							var id = deId + '_' + idx;
+							var filterValue = Ext.getCmp('filter_' + id).rawValue;
+							var filter = deId + '_' + hidden 
+							if( filterValue!=''){
+								var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+								filter += '_' + filterOpt + ' ';
+							
+								if( filterOpt == 'IN' )
+								{
+									var filterValues = filterValue.split(";");
+									filter +="(";
+									for(var i=0;i<filterValues.length;i++)
+									{
+										filter += "'"+ filterValues[i] +"',";
+									}
+									filter = filter.substr(0,filter.length - 1) + ")";
+								}
+								else
+								{
+									filter += "'" + filterValue + "'";
+								}
+							}
+							p.searchingValues.push( filter );
+						}
+					});
+				
+				
+				
+				/* if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
 				{
 					var cols = TR.datatable.datatable.columns;
 					for( var k in cols )
@@ -1624,7 +1665,8 @@ Ext.onReady( function() {
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
 						p.searchingValues.push( r.data.id +  '_false_' );
 					});
-				}
+				} */
+				
 				return p;
 			},
 			getURLParams: function( isSorted ) {
@@ -1670,48 +1712,17 @@ Ext.onReady( function() {
 					});
 				}
 			},
-			getFilterValueByColumn: function( colname ) {
+			isColHidden: function( colname ) {
 				var grid = TR.datatable.datatable;
-				var cols = grid.columns;
-				var editor = grid.getStore().getAt(0);
-				var params = [];
-				for( var i=0; i<cols.length; i++ )
-				{
-					var col = cols[i];
-					var p = "";
-					if( col.name && col.name == colname )
-					{
-						var filters = grid.filters.getFilterData();
-						var value = "";
-						for( var i=0; i<filters.length; i++ )
-						{
-							var filter = filters[i];
-							if(col.dataIndex == filter.field)
-							{
-								var compare = '=';
-								if( filter.data.comparison == 'lt')
-									compare = '<' ;
-								else if( filter.data.comparison == 'gt' )
-									compare = '>' ;
-								value = compare + "'"+ filter.data.value + "'";
-								var hidden = (col.hidden==undefined)? false : col.hidden;
-								if( value!=null && value!= ''){	
-									var value = TR.util.getValueFormula(value);
-									p = colname + '_' + hidden + "_" + value;
-								}
-								params.push(p);
-							}
+				if( grid != null ){
+					var cols = grid.columns;
+					for (var i = 0; i < cols.length; i++) {
+						if (cols[i].name == colname) {
+							return(cols[i].hidden==undefined)? false : cols[i].hidden;
 						}
-						if (value=='')
-						{
-							p = colname + '_' + col.hidden + "_";
-							params.push(p);
-						}
-						return params;
 					}
-				}		
-				params.push(colname + "_false_");
-				return params
+				} 
+				return false;
 			},
 			isParamChanged: function() {
 				if( TR.store.datatable && TR.store.datatable.data.length > 0 )
@@ -2809,6 +2820,7 @@ Ext.onReady( function() {
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
 													Ext.getCmp('dateRangeDiv').expand();
+													Ext.getCmp('filterPanel').setHeight(155);
 												}
 											}
 										}
@@ -2840,6 +2852,7 @@ Ext.onReady( function() {
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(true);
 													Ext.getCmp('datePeriodRangeDiv').expand();
+													Ext.getCmp('filterPanel').setHeight(105);
 												}
 											}
 										}
@@ -4048,7 +4061,12 @@ Ext.onReady( function() {
 																		Ext.getCmp('selectedDEBar').setVisible(false);
 																		Ext.getCmp('availableDataelements').setVisible(false);
 																		Ext.getCmp('selectedDataelements').setVisible(false);
-																		Ext.getCmp('filterPanel').setHeight(260);
+																		if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
+																			Ext.getCmp('filterPanel').setHeight(300);
+																		}
+																		else{
+																			Ext.getCmp('filterPanel').setHeight(255);
+																		}
 																		this.setIcon('images/arrowdown.png');
 																		this.up = false;
 																	}
@@ -4057,7 +4075,12 @@ Ext.onReady( function() {
 																		Ext.getCmp('selectedDEBar').setVisible(true);
 																		Ext.getCmp('availableDataelements').setVisible(true);
 																		Ext.getCmp('selectedDataelements').setVisible(true);
-																		Ext.getCmp('filterPanel').setHeight(110);
+																		if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
+																			Ext.getCmp('filterPanel').setHeight(155);
+																		}
+																		else{
+																			Ext.getCmp('filterPanel').setHeight(105);
+																		}
 																		this.setIcon('images/arrowup.png');
 																		this.up = true;
 																	}
@@ -4073,7 +4096,7 @@ Ext.onReady( function() {
 														autoScroll: true,
 														overflowX: 'hidden',
 														overflowY: 'auto',
-														height: 110,
+														height: 160,
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) ,
 														items: []
 													}
