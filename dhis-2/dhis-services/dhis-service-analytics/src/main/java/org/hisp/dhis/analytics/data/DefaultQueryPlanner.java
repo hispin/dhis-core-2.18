@@ -167,9 +167,7 @@ public class DefaultQueryPlanner
         // Group by data element
         // ---------------------------------------------------------------------
         
-        //TODO change order
-        
-        queries = splitByDimensionOrFilter( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
+        queries = splitByDimensionOrFilter( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
 
         if ( queries.size() >= optimalQueries )
         {
@@ -177,10 +175,10 @@ public class DefaultQueryPlanner
         }
 
         // ---------------------------------------------------------------------
-        // Group by organiastion unit
+        // Group by organisation unit
         // ---------------------------------------------------------------------
         
-        queries = splitByDimensionOrFilter( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
+        queries = splitByDimensionOrFilter( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
         
         return queries;
     }

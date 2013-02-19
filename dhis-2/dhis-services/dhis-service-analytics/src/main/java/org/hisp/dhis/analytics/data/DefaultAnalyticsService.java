@@ -97,7 +97,7 @@ public class DefaultAnalyticsService
     private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
     
     private static final String VALUE_HEADER_NAME = "Value";
-    private static final int MAX_QUERIES = 6;
+    private static final int MAX_QUERIES = 6; //TODO increase?
     
     //TODO completeness
     //TODO make sure data x dims are successive
