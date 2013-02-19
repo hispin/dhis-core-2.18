@@ -445,4 +445,18 @@ public class MathUtils
         
         return result.intValue();
     }
+    
+    /**
+     * Performs a division and rounds downwards to the next integer.
+     * 
+     * @param numerator the numerator.
+     * @param denominator the denominator.
+     * @return an integer value.
+     */
+    public static int divideToFloor( int numerator, int denominator )
+    {
+        Double result = Math.floor( (double) numerator / denominator );
+        
+        return result.intValue();
+    }
 }

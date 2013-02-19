@@ -68,6 +68,9 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
     
+    //TODO create stack with index tasks for partition and column
+    //     run continuously from stack until empty
+    
     public String getTableName()
     {
         return "analytics";
@@ -194,10 +197,10 @@ public class JdbcAnalyticsTableManager
         }
         
         String[] de = { "de", "character(11) not null", "de.uid" };
-        String[] co = { "coc", "character(11) not null", "coc.uid" };
+        String[] coc = { "coc", "character(11) not null", "coc.uid" };
         String[] level = { "level", "integer", "ous.level" };
         
-        columns.addAll( Arrays.asList( de, co, level ) );
+        columns.addAll( Arrays.asList( de, coc, level ) );
         
         return columns;
     }
