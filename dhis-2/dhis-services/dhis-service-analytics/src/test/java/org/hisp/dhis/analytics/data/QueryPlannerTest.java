@@ -323,7 +323,7 @@ public class QueryPlannerTest
     
     /**
      * Query spans 2 partitions. Splits in 2 queries for each partition, then
-     * splits in 2 queries on organisation units to satisfy optimal for a total 
+     * splits in 2 queries on data elements to satisfy optimal for a total 
      * of 4 queries.
      */
     @Test
@@ -355,7 +355,7 @@ public class QueryPlannerTest
     public void planQueryB()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setDataElements( getList( deA ) );
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ) ) );
         
@@ -394,7 +394,7 @@ public class QueryPlannerTest
         organisationUnitService.updateOrganisationUnit( ouE );
         
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( getList( deA, deB, deC, deD ) );
+        params.setDataElements( getList( deA ) );
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ) ) );
         
@@ -495,7 +495,7 @@ public class QueryPlannerTest
 
     /**
      * Query filters span 2 partitions. Splits in 2 queries for each partition, 
-     * then splits in 2 queries on organisation units to satisfy optimal for a 
+     * then splits in 2 queries on data elements to satisfy optimal for a 
      * total of 4 queries.
      */
     @Test

@@ -594,10 +594,15 @@ public class OrganisationUnit
         return name.equals( other.getName() );
     }
 
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
 
     @Override
     public boolean haveUniqueNames()
