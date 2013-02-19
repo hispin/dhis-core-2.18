@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -47,7 +47,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-@JacksonXmlRootElement( localName = "orgUnitPrototypeGroup", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "orgUnitPrototypeGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class OrganisationUnitPrototypeGroup
     extends BaseIdentifiableObject
 {
@@ -139,8 +139,8 @@ public class OrganisationUnitPrototypeGroup
     @JsonProperty( value = "orgUnitPrototypes" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "orgUnitPrototypes", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "orgUnitPrototype", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "orgUnitPrototypes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "orgUnitPrototype", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnitPrototype> getMembers()
     {
         return members;

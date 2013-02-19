@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -39,7 +39,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-@JacksonXmlRootElement( localName = "orgUnitProtoype", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "orgUnitProtoype", namespace = DxfNamespaces.DXF_2_0 )
 public class OrganisationUnitPrototype
     extends BaseNameableObject
 {
