@@ -1694,7 +1694,7 @@ Ext.onReady( function() {
 								filter += "'" + filterValue + "'";
 							}
 						}
-						TR.util.list.addOptionToList(startDateList, filter, '');
+						TR.util.list.addOptionToList(searchingValues, filter, '');
 					}
 				});
 			},
