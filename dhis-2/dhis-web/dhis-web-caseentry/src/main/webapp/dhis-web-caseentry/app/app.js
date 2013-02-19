@@ -1609,64 +1609,39 @@ Ext.onReady( function() {
 				p.searchingValues = [];
 				
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
-						var valueType = r.data.valueType;
-						var deId = r.data.id;
-						var length = Ext.getCmp('p_' + deId).items.length/4;
-						var hidden = TR.state.caseBasedReport.isColHidden(deId);
-						
-						for(var idx=0;idx<length;idx++)
-						{
-							var id = deId + '_' + idx;
-							var filterValue = Ext.getCmp('filter_' + id).rawValue;
-							var filter = deId + '_' + hidden 
-							if( filterValue!=''){
-								var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-								filter += '_' + filterOpt + ' ';
-							
-								if( filterOpt == 'IN' )
-								{
-									var filterValues = filterValue.split(";");
-									filter +="(";
-									for(var i=0;i<filterValues.length;i++)
-									{
-										filter += "'"+ filterValues[i] +"',";
-									}
-									filter = filter.substr(0,filter.length - 1) + ")";
-								}
-								else
-								{
-									filter += "'" + filterValue + "'";
-								}
-							}
-							p.searchingValues.push( filter );
-						}
-					});
-				
-				
-				
-				/* if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
-				{
-					var cols = TR.datatable.datatable.columns;
-					for( var k in cols )
+					var valueType = r.data.valueType;
+					var deId = r.data.id;
+					var length = Ext.getCmp('p_' + deId).items.length/4;
+					var hidden = TR.state.caseBasedReport.isColHidden(deId);
+					
+					for(var idx=0;idx<length;idx++)
 					{
-						var col = cols[k];
-						if( col.name )
-						{
-							var params = TR.state.getFilterValueByColumn(col.name);
-							for(var i in params){
-								p.searchingValues.push(params[i]);
+						var id = deId + '_' + idx;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filter = deId + '_' + hidden 
+						if( filterValue!=''){
+							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+							filter += '_' + filterOpt + ' ';
+						
+							if( filterOpt == 'IN' )
+							{
+								var filterValues = filterValue.split(";");
+								filter +="(";
+								for(var i=0;i<filterValues.length;i++)
+								{
+									filter += "'"+ filterValues[i] +"',";
+								}
+								filter = filter.substr(0,filter.length - 1) + ")";
+							}
+							else
+							{
+								filter += "'" + filterValue + "'";
 							}
 						}
+						p.searchingValues.push( filter );
 					}
-				}
-				else
-				{
-					// Data elements
-					TR.cmp.params.dataelement.selected.store.each( function(r) {
-						p.searchingValues.push( r.data.id +  '_false_' );
-					});
-				} */
-				
+				});
+					
 				return p;
 			},
 			getURLParams: function( isSorted ) {
@@ -1689,28 +1664,39 @@ Ext.onReady( function() {
 				// Get searching values
 				var searchingValues = document.getElementById('searchingValues');
 				TR.util.list.clearList(searchingValues);
-				if( !TR.state.caseBasedReport.isParamChanged() || isSorted )
-				{
-					var cols = TR.datatable.datatable.columns;
-					for( var k in cols )
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					var valueType = r.data.valueType;
+					var deId = r.data.id;
+					var length = Ext.getCmp('p_' + deId).items.length/4;
+					var hidden = TR.state.caseBasedReport.isColHidden(deId);
+					
+					for(var idx=0;idx<length;idx++)
 					{
-						var col = cols[k];
-						if( col.name )
-						{
-							var params = TR.state.getFilterValueByColumn(col.name);
-							for(var i in params){
-								TR.util.list.addOptionToList(startDateList, params[i], '');
+						var id = deId + '_' + idx;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filter = deId + '_' + hidden 
+						if( filterValue!=''){
+							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+							filter += '_' + filterOpt + ' ';
+						
+							if( filterOpt == 'IN' )
+							{
+								var filterValues = filterValue.split(";");
+								filter +="(";
+								for(var i=0;i<filterValues.length;i++)
+								{
+									filter += "'"+ filterValues[i] +"',";
+								}
+								filter = filter.substr(0,filter.length - 1) + ")";
+							}
+							else
+							{
+								filter += "'" + filterValue + "'";
 							}
 						}
+						TR.util.list.addOptionToList(startDateList, filter, '');
 					}
-				}
-				else
-				{
-					// Data elements
-					TR.cmp.params.dataelement.selected.store.each( function(r) {
-						TR.util.list.addOptionToList(searchingValues, r.data.id + '_false_', '');
-					});
-				}
+				});
 			},
 			isColHidden: function( colname ) {
 				var grid = TR.datatable.datatable;
