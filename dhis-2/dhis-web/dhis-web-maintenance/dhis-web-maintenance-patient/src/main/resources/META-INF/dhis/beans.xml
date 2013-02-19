@@ -238,6 +238,20 @@
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.program.ShowProgramUserroleFormAction"
+		class="org.hisp.dhis.patient.action.program.ShowProgramUserroleFormAction"
+		scope="prototype">
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.program.DefineProgramUserroleAction"
+		class="org.hisp.dhis.patient.action.program.DefineProgramUserroleAction"
+		scope="prototype">
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
 
 	<!-- Program_OrganisationUnit Association -->
 

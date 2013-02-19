@@ -115,8 +115,8 @@ public class SelectAction
     {
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        programs = new ArrayList<Program>( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
-        programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
+        programs = new ArrayList<Program>(programService.getProgramsByCurrentUser());
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         
         Collections.sort( programs, new ProgramDisplayNameComparator() );
 

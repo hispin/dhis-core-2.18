@@ -53,6 +53,8 @@ public interface ProgramService
     Collection<Program> getAllPrograms();
 
     Collection<Program> getPrograms( OrganisationUnit organisationUnit );
+    
+    Collection<Program> getProgramsByCurrentUser();
 
     Collection<Program> getPrograms( ValidationCriteria validationCriteria );
 

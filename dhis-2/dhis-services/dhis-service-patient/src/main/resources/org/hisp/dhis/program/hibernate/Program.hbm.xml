@@ -66,5 +66,11 @@
 
     <property name="blockEntryForm" />
 
+	<set name="userRoles" table="program_userroles">
+		<key column="programid" />
+		<many-to-many class="org.hisp.dhis.user.UserAuthorityGroup"
+			column="userroleid" foreign-key="fk_program_userroles"/>
+	</set>
+		
   </class>
 </hibernate-mapping>

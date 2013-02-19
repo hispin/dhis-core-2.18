@@ -138,4 +138,9 @@ public class DefaultProgramService
         return i18n( i18nService, programStore.get( type, orgunit ) );
     }
 
+    public Collection<Program> getProgramsByCurrentUser()
+    {
+        return i18n( i18nService, programStore.getByCurrentUser() );
+    }
+    
 }

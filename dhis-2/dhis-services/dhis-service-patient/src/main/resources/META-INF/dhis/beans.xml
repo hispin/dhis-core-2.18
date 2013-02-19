@@ -57,6 +57,8 @@
 	<bean id="org.hisp.dhis.program.ProgramStore" class="org.hisp.dhis.program.hibernate.HibernateProgramStore">
 		<property name="clazz" value="org.hisp.dhis.program.Program" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramValidationStore"
