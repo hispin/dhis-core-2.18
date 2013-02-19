@@ -520,7 +520,7 @@ function showSharingDialog( type, uid ) {
                 <td style="width: 300px;">Public Access</td>
                 <td>
                     <select id="sharingPublicAccess" style="width: 150px;">
-                        <option value="--------">None</option>
+                        <option selected="selected" value="--------">None</option>
                         <option value="r-------">Read Only</option>
                         <option value="rw------">Read and Write</option>
                     </select>
