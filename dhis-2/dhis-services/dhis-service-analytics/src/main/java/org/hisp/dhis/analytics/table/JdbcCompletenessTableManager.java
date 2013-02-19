@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -69,46 +70,58 @@ public class JdbcCompletenessTableManager
     }
     
     @Async
-    public Future<?> populateTableAsync( String tableName, Period period )
+    public Future<?> populateTableAsync( ConcurrentLinkedQueue<String> tables )
     {
-        final String start = DateUtils.getMediumDateString( period.getStartDate() );
-        final String end = DateUtils.getMediumDateString( period.getEndDate() );
-        
-        String insert = "insert into " + tableName + " (";
-        
-        for ( String[] col : getDimensionColumns() )
+        taskLoop : while ( true )
         {
-            insert += col[0] + ",";
+            String table = tables.poll();
+                
+            if ( table == null )
+            {
+                break taskLoop;
+            }
+            
+            Period period = PartitionUtils.getPeriod( table );
+            
+            final String start = DateUtils.getMediumDateString( period.getStartDate() );
+            final String end = DateUtils.getMediumDateString( period.getEndDate() );
+        
+            String insert = "insert into " + table + " (";
+            
+            for ( String[] col : getDimensionColumns() )
+            {
+                insert += col[0] + ",";
+            }
+            
+            insert += "value) ";
+            
+            String select = "select ";
+            
+            for ( String[] col : getDimensionColumns() )
+            {
+                select += col[2] + ",";
+            }
+            
+            select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix TODO remove
+            
+            select += 
+                "cdr.date as value " +
+                "from completedatasetregistration cdr " +
+                "left join _organisationunitgroupsetstructure ougs on cdr.sourceid=ougs.organisationunitid " +
+                "left join _orgunitstructure ous on cdr.sourceid=ous.organisationunitid " +
+                "left join _periodstructure ps on cdr.periodid=ps.periodid " +
+                "left join period pe on cdr.periodid=pe.periodid " +
+                "left join dataset ds on cdr.datasetid=ds.datasetid " +
+                "where pe.startdate >= '" + start + "' " +
+                "and pe.startdate <= '" + end + "'" +
+                "and cdr.date is not null";
+    
+            final String sql = insert + select;
+            
+            log.info( "Populate SQL: "+ sql );
+            
+            jdbcTemplate.execute( sql );
         }
-        
-        insert += "value) ";
-        
-        String select = "select ";
-        
-        for ( String[] col : getDimensionColumns() )
-        {
-            select += col[2] + ",";
-        }
-        
-        select = select.replace( "organisationunitid", "sourceid" ); // Legacy fix TODO remove
-        
-        select += 
-            "cdr.date as value " +
-            "from completedatasetregistration cdr " +
-            "left join _organisationunitgroupsetstructure ougs on cdr.sourceid=ougs.organisationunitid " +
-            "left join _orgunitstructure ous on cdr.sourceid=ous.organisationunitid " +
-            "left join _periodstructure ps on cdr.periodid=ps.periodid " +
-            "left join period pe on cdr.periodid=pe.periodid " +
-            "left join dataset ds on cdr.datasetid=ds.datasetid " +
-            "where pe.startdate >= '" + start + "' " +
-            "and pe.startdate <= '" + end + "'" +
-            "and cdr.date is not null";
-
-        final String sql = insert + select;
-        
-        log.info( "Populate SQL: "+ sql );
-        
-        jdbcTemplate.execute( sql );
         
         return null;
     }
@@ -165,9 +178,10 @@ public class JdbcCompletenessTableManager
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
-    
-    public void applyAggregationLevels( String tableName, Collection<String> dataElements, int aggregationLevel )
+
+    @Async
+    public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<String> tables, Collection<String> dataElements, int aggregationLevel )
     {
-        // Not relevant
+        return null; // Not relevant
     }
 }
