@@ -94,7 +94,7 @@ public class SmsMessageSender
         }
         else
         {
-            phones = getRecipients( (Set<User>) recipients );
+            phones = getRecipientsWithoutNotification( (Set<User>) recipients );
         }
 
         if ( !phones.isEmpty() && phones.size() > 0 )
@@ -122,6 +122,23 @@ public class SmsMessageSender
             String phoneNumber = user.getPhoneNumber();
 
             if ( smsNotification && phoneNumber != null && !phoneNumber.trim().isEmpty() )
+            {
+                recipients.add( phoneNumber );
+            }
+        }
+
+        return recipients;
+    }
+
+    private Set<String> getRecipientsWithoutNotification( Set<User> users )
+    {
+        Set<String> recipients = new HashSet<String>();
+
+        for ( User user : users )
+        {
+            String phoneNumber = user.getPhoneNumber();
+
+            if ( phoneNumber != null && !phoneNumber.trim().isEmpty() )
             {
                 recipients.add( phoneNumber );
             }
