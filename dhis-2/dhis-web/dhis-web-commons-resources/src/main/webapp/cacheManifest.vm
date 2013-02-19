@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.11-SNAPSHOT V6
+# 2.11-SNAPSHOT V8
 NETWORK:
 *
 CACHE:
@@ -26,6 +26,9 @@ javascripts/dhis2/dhis2.array.js
 javascripts/dhis2/dhis2.select.js
 javascripts/dhis2/dhis2.comparator.js
 javascripts/dhis2/dhis2.availability.js
+javascripts/dhis2/dhis2.storage.js
+javascripts/dhis2/dhis2.storage.dom.js
+javascripts/dhis2/dhis2.storage.idb.js
 javascripts/jQuery/jquery.cookie.js
 ../main.js
 ouwt/ouwt.js 
@@ -50,4 +53,3 @@ fonts/LiberationSans-Bold-webfont.svg
 ../images/ajax-loader-bar.gif
 ../dhis-web-dataentry/javascript/form.js
 ../dhis-web-dataentry/javascript/entry.js
-../dhis-web-dataentry/javascript/history.js

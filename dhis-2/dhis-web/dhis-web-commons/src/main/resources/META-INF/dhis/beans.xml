@@ -49,7 +49,7 @@
         <value>page</value>
         <value>menu</value>
         <value>hideMenu</value>
-        <value>offline</value>
+        <value>manifest</value>
       </set>
     </property>
     <property name="commaSeparatedParams">

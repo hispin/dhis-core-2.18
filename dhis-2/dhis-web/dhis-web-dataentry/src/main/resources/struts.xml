@@ -15,7 +15,7 @@
       <param name="menu">/dhis-web-dataentry/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js,javascript/history.js</param>
       <param name="stylesheets">style/dhis-web-dataentry.css</param>
-      <param name="offline">true</param>
+      <param name="manifest">../dhis-web-commons/cacheManifest.action</param>
     </action>
 
     <action name="getMetaData" class="org.hisp.dhis.de.action.GetMetaDataAction">
