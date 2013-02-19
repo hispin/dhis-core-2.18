@@ -45,8 +45,10 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,6 +70,8 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -86,6 +90,7 @@ import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
@@ -116,6 +121,9 @@ public class DefaultAnalyticsService
     private DataElementService dataElementService;
     
     @Autowired
+    private DataElementCategoryService categoryService;
+    
+    @Autowired
     private DataSetService dataSetService;
     
     @Autowired
@@ -142,8 +150,7 @@ public class DefaultAnalyticsService
         queryPlanner.validate( params );
         
         params.conform();
-        
-        
+                
         // ---------------------------------------------------------------------
         // Headers and meta-data
         // ---------------------------------------------------------------------
@@ -269,6 +276,17 @@ public class DefaultAnalyticsService
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
                 grid.addValue( entry.getValue() );
             }
+        }
+        
+        // ---------------------------------------------------------------------
+        // Category option combo meta-data
+        // ---------------------------------------------------------------------
+        
+        Integer cocIndex = params.getCocIndex();
+        
+        if ( cocIndex != null )
+        {
+            addCocMetaData( grid, cocIndex );
         }
         
         return grid;
@@ -550,5 +568,17 @@ public class DefaultAnalyticsService
         }
         
         return map;
+    }
+    
+    private void addCocMetaData( Grid grid, Integer cocIndex )
+    {
+        Set<String> uids = new HashSet<String>( ConversionUtils.<String>cast( grid.getColumn( cocIndex ) ) );
+        
+        Collection<DataElementCategoryOptionCombo> cocs = categoryService.getDataElementCategoryOptionCombosByUid( uids );
+        
+        for ( DataElementCategoryOptionCombo coc : cocs )
+        {
+            grid.addMetaData( coc.getUid(), coc.getName() );
+        }
     }
 }

@@ -229,6 +229,11 @@ public class ListGrid
         this.metaData = metaData;
     }
 
+    public void addMetaData( String key, String value )
+    {
+        this.metaData.put( key, value );
+    }
+    
     public int getVisibleWidth()
     {
         verifyGridState();

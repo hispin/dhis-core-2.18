@@ -85,6 +85,11 @@ public interface Grid
     void setMetaData( Map<String, String> metaData );
     
     /**
+     * Adds a key-value pair to meta-data.
+     */
+    void addMetaData( String key, String value );
+    
+    /**
      * Returns all visible headers, ie. headers which are not hidden.
      */
     List<GridHeader> getVisibleHeaders();

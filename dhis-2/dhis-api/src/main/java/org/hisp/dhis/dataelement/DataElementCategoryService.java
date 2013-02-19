@@ -302,6 +302,8 @@ public interface DataElementCategoryService
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers );
+    
+    Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosByUid( Collection<String> uids );
 
     /**
      * Retrieves the DataElementCategoryOptionCombo with the given Collection

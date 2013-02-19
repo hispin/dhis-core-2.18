@@ -308,11 +308,10 @@ public class DataElementCategoryOptionCombo
             name.append( "(" );
 
             Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
-            DataElementCategoryOption dataElementCategoryOption = iterator.next();
-
-            if ( dataElementCategoryOption != null )
+            
+            if ( iterator.hasNext() )
             {
-                name.append( dataElementCategoryOption.getDisplayName() );
+                name.append( iterator.next().getDisplayName() );
             }
 
             while ( iterator.hasNext() )

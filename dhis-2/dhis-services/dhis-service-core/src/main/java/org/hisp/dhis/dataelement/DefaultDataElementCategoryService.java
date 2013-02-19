@@ -325,6 +325,11 @@ public class DefaultDataElementCategoryService
                 }
             } );
     }
+    
+    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosByUid( Collection<String> uids )
+    {
+        return dataElementCategoryOptionComboStore.getByUid( uids );
+    }
 
     public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
         Collection<DataElementCategoryOption> categoryOptions )
