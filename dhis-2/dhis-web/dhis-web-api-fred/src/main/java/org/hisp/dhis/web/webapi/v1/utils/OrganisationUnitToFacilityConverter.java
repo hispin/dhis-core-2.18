@@ -27,6 +27,7 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -38,6 +39,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -100,9 +102,13 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
             facility.getIdentifiers().add( identifier );
         }
 
+        // make sure that dataSets always come in the same order. This is a must for safe ETag generation.
+        List<DataSet> ouDataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        Collections.sort( ouDataSets, new IdentifiableObjectNameComparator() );
+
         List<String> dataSets = new ArrayList<String>();
 
-        for ( DataSet dataSet : organisationUnit.getDataSets() )
+        for ( DataSet dataSet : ouDataSets )
         {
             dataSets.add( dataSet.getUid() );
         }
