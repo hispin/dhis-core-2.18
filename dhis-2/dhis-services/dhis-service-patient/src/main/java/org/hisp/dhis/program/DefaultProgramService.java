@@ -143,4 +143,8 @@ public class DefaultProgramService
         return i18n( i18nService, programStore.getByCurrentUser() );
     }
     
+    public Program getProgram( String uid )
+    {
+        return i18n( i18nService, programStore.getByUid( uid ) );
+    }
 }

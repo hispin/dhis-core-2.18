@@ -1,3 +1,5 @@
+#sharingDialog()
+
 <h3>$i18n.getString( "program_management" ) #openHelp( "program" )</h3>
 
 <table class="mainPageTable">
@@ -9,7 +11,7 @@
 		
 		<table class="listTable" id="listTable">
 			  <col>          
-			  <col width="230">
+			  <col width="270">
 			<thead>			  
 			  <tr>            
 				<th>$i18n.getString( "name" )</th>
@@ -23,13 +25,42 @@
 					<td onclick="showProgramDetails( $program.id )">$encoder.htmlEncode( $program.displayName )</td>                
 					
 					<td style="text-align:center">
+					  #if( $security.canUpdate( $program ) )
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_orgunits' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program_to_orgunits' )"></a>					  
-					  <a href="showProgramUserroleForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_userroles' )"><img src="images/userrole.png" alt="$i18n.getString( 'assign_program_to_userroles' )"></a>					  
+					  #else
+					  <img src="../images/assign-denied.png">
+					  #end
+					  
+					  #if ( $security.canManage( $program ) )
+					  <a href="javascript:showSharingDialog('program', '$program.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+					  #else
+					  <img src="../images/relationship-denied.png">
+					  #end
+					  
+					  #if( $security.canUpdate( $program ) )
+					  <a href="showProgramUserroleForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_userroles' )"><img src="images/userrole.png" alt="$i18n.getString( 'assign_program_to_userroles' )"></a>
+					  #else
+					  <img src="images/userrole-defined.png">
+					  #end
+					  
+					  #if( $security.canUpdate( $program ) )
 					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_rule_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'program_validation_rule_management' )"></a>					  
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					  <a href="javascript:translate( 'Program', '$program.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 					  <a href="programStage.action?id=$program.id" title="$i18n.getString( 'view_program_stages' )"><img src="../images/add_section.png" alt="$i18n.getString( 'view_stage_management' )"></a>
+					  #else
+						<img src="../images/assign_b-denied.png">
+						<img src="../images/edit-denied.png">
+						<img src="../images/i18n-denied.png">
+						<img src="images/programstage-denied.png">
+					  #end
+					  
+					  #if( $security.canDelete( $program ) )
 					  <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.displayName )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+                      #else
+                      <img src="../images/delete-denied.png">
+                      #end
+					 
 					  <a href="javascript:showProgramDetails( $program.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 					</td>
 					

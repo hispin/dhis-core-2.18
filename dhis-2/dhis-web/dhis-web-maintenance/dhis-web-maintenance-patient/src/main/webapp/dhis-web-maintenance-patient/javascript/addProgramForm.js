@@ -23,5 +23,5 @@ jQuery(document).ready(	function(){
 	});
 	
 	
-	checkValueIsExist( "name", "validateProgram.action");
+	//checkValueIsExist( "name", "validateProgram.action");
 });	

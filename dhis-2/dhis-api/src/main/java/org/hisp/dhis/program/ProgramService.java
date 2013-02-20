@@ -61,11 +61,7 @@ public interface ProgramService
     Collection<Program> getPrograms( int type );
     
     Collection<Program> getPrograms( int type, OrganisationUnit orgunit );
-
-//    Collection<Program> getPrograms( boolean singleEvent );
-//
-//    Collection<Program> getPrograms( boolean singleEvent, boolean anonymous );
-//
-//    Collection<Program> getPrograms( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit );
+    
+    Program getProgram( String uid );
 
 }
