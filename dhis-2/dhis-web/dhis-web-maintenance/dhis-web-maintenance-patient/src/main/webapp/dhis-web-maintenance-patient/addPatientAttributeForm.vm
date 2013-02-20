@@ -59,11 +59,22 @@
 	</tr>
 
 	<tr id="calculatedAttrTR" class="hidden">
-		<td>$i18n.getString( "params" )</td>
+		<td>$i18n.getString( "properties" )</td>
 		<td>
 			<select multiple id="availableAttribute" name="availableAttribute" ondblclick="insertTextCommon( 'expression', this.value);getConditionDescription();"></select>
 		</td>
 	</tr>
+	
+	<tr id="operatorTR" class="hidden">
+		<td></td>
+		<td>
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" />
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "-" );' value="-" />
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "*" );' value="*" />
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "/" );' value="/" />
+		</td>
+	</tr>
+	
 	<tr id="expressionTR" class="hidden">
 		<td>$i18n.getString( "expression" )</td>
 		<td>

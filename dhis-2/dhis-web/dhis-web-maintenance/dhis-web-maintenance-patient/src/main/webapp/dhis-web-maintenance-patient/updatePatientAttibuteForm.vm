@@ -69,17 +69,29 @@
 	</tr>
 	
 	<tr id="calculatedAttrTR">
-		<td>$i18n.getString( "params" )</td>
+		<td>$i18n.getString( "properties" )</td>
 		<td>
 			<select multiple id="availableAttribute" name="availableAttribute" ondblclick="insertTextCommon( 'expression', this.value);getConditionDescription();" ></select>
 		</td>
 	</tr>
+	
+	<tr id="operatorTR" class="hidden">
+		<td></td>
+		<td>
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" />
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "-" );' value="-" />
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "*" );' value="*" />
+			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "/" );' value="/" />
+		</td>
+	</tr>
+	
 	<tr id="expressionTR" >
 		<td>$i18n.getString( "expression" )</td>
 		<td>
 			<textarea id="expression" name="expression" onkeyup='getConditionDescription();' style="width:320px;" >$!patientAttribute.expression</textarea>
 		</td>
 	</tr>
+	
 	<tr id="descriptionTR">
 		<td></td>
 		<td>

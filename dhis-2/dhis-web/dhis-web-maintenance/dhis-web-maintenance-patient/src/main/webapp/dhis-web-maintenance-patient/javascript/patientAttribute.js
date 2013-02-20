@@ -36,6 +36,7 @@ ATTRIBUTE_OPTION =
 		{
 			hideById("calculatedAttrTR");
 			hideById("expressionTR");
+			hideById("operatorTR");
 			showById("attributeComboRow");
 			if( jQuery("#attrOptionContainer").find("input").length ==0 ) 
 			{
@@ -67,6 +68,7 @@ ATTRIBUTE_OPTION =
 			}
 			hideById("attributeComboRow");
 			showById("calculatedAttrTR");
+			showById("operatorTR");
 			showById("expressionTR");
 			showById("descriptionTR");
 		}
@@ -74,6 +76,7 @@ ATTRIBUTE_OPTION =
 		{
 			hideById("attributeComboRow");
 			hideById("calculatedAttrTR");
+			hideById("operatorTR");
 			hideById("expressionTR");
 			hideById("descriptionTR");
 		}
@@ -140,4 +143,10 @@ function getConditionDescription()
 		{
 			setInnerHTML('expDescription', html);
 		});
+}
+
+function insertOperator( value )
+{
+	insertTextCommon('expression', ' ' + value + ' ' );
+	getConditionDescription();
 }
