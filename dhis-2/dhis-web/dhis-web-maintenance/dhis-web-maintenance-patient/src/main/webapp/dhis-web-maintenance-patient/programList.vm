@@ -32,7 +32,7 @@
 					  #end
 					  
 					  #if ( $security.canManage( $program ) )
-					  <a href="javascript:showSharingDialog('program', '$program.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+					  <a href="javascript:showSharingDialog('program', '$program.uid');" title="$i18n.getString( 'sharing_settings' )"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
 					  #else
 					  <img src="../images/relationship-denied.png">
 					  #end

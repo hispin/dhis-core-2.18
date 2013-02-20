@@ -19,8 +19,8 @@
           </select>
 		</td>
 		<td>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'userRoleIds', 'availableList' )" class="filterButton" /><br/>
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableList', 'userRoleIds' )" class="filterButton" />
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableList', 'userRoleIds' )" class="filterButton" /><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'userRoleIds', 'availableList' )" class="filterButton" />
 		</td>
 		<td>
 			<select id="userRoleIds" name="userRoleIds" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'userRoleIds', 'availableList' )">
