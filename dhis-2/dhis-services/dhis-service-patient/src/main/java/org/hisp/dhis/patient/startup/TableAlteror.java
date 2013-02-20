@@ -164,6 +164,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE programvalidation RENAME description TO name" );
         
         executeSql( "UPDATE program SET blockEntryForm=false WHERE blockEntryForm is null" );
+        executeSql( "ALTER TABLE dataset DROP CONSTRAINT program_name_key" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_PROGRAM_PUBLIC_ADD' WHERE authority='F_PROGRAM_ADD'" );
         
         updateUid();
     }
