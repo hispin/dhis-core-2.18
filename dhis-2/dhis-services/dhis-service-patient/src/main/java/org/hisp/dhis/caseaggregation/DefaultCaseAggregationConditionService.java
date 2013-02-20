@@ -202,13 +202,13 @@ public class DefaultCaseAggregationConditionService
     @Override
     public Collection<CaseAggregationCondition> getAllCaseAggregationCondition()
     {
-        return i18n( i18nService, aggregationConditionStore.getAll());
+        return i18n( i18nService, aggregationConditionStore.getAll() );
     }
 
     @Override
     public CaseAggregationCondition getCaseAggregationCondition( int id )
     {
-        return i18n( i18nService, aggregationConditionStore.get( id ));
+        return i18n( i18nService, aggregationConditionStore.get( id ) );
 
     }
 
@@ -221,14 +221,14 @@ public class DefaultCaseAggregationConditionService
     @Override
     public Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement )
     {
-        return i18n( i18nService, aggregationConditionStore.get( dataElement ));
+        return i18n( i18nService, aggregationConditionStore.get( dataElement ) );
     }
 
     @Override
     public CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement,
         DataElementCategoryOptionCombo optionCombo )
     {
-        return i18n( i18nService, aggregationConditionStore.get( dataElement, optionCombo ));
+        return i18n( i18nService, aggregationConditionStore.get( dataElement, optionCombo ) );
     }
 
     @Override
@@ -438,8 +438,12 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
-                    matcher.appendReplacement( description,
-                        "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getDisplayName() + "]" );
+                    String programDes = OBJECT_PROGRAM + SEPARATOR_ID + program.getDisplayName();
+                    if ( ids.length == 2 )
+                    {
+                        programDes += SEPARATOR_OBJECT + ids[1];
+                    }
+                    matcher.appendReplacement( description, "[" + programDes + "]" );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
                 {
@@ -454,7 +458,6 @@ public class DefaultCaseAggregationConditionService
                     String count = (ids.length == 2) ? SEPARATOR_ID + ids[1] : "";
                     matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT
                         + programStage.getDisplayName() + count + "]" );
-
                 }
             }
 
@@ -561,7 +564,7 @@ public class DefaultCaseAggregationConditionService
 
     public Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements )
     {
-        return i18n( i18nService, aggregationConditionStore.get( dataElements ));
+        return i18n( i18nService, aggregationConditionStore.get( dataElements ) );
     }
 
     // -------------------------------------------------------------------------
