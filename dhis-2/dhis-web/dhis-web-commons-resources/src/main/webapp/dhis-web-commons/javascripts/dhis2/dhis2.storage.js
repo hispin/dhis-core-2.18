@@ -53,7 +53,7 @@ dhis2.storage.Store.adapters = [];
 
 dhis2.storage.Store.adapter = function ( id, obj ) {
     var Store = dhis2.storage.Store;
-    var adapter_interface = "init add remove exists fetch fetchAll destroy".split( ' ' );
+    var adapter_interface = "init add addAll remove exists fetch fetchAll destroy".split( ' ' );
 
     var missing_functions = [];
     // verify adapter

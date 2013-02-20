@@ -22,9 +22,18 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
         return getTransaction( IDB.TransactionModes.READ_WRITE ).objectStore( IDB.options.name );
     }
 
+    function defaultErrorHandler() {
+        console.log( "error:", e );
+    }
+
+    function defaultBlockingHandler() {
+        console.log( "blocked:", e );
+    }
+
     return {
         valid: function () {
-            return !!(window.indexedDB && window.IDBTransaction && window.IDBKeyRange);
+            return false;
+            // return !!(window.indexedDB && window.IDBTransaction && window.IDBKeyRange);
         },
 
         init: function ( options, callback ) {
@@ -47,13 +56,8 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
                 if ( callback ) callback.call( that, that );
             };
 
-            request.onerror = function ( e ) {
-                console.log( "error:", e );
-            };
-
-            request.onblocked = function ( e ) {
-                console.log( "blocked:", e );
-            };
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
         },
 
         add: function ( key, obj, callback ) {
@@ -63,6 +67,25 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
             request.onsuccess = function ( e ) {
                 if ( callback ) callback.call( that, that, obj );
             };
+
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
+        },
+
+        addAll: function ( keys, objs, callback ) {
+            var that = this;
+
+            if ( keys.length == 0 || objs.length == 0 ) {
+                if ( callback ) callback.call( that, that );
+                return;
+            }
+
+            var key = keys.pop();
+            var obj = objs.pop();
+
+            this.add( key, obj, function ( store ) {
+                that.addAll( keys, objs, callback );
+            } );
         },
 
         remove: function ( key, callback ) {
@@ -72,6 +95,9 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
             request.onsuccess = function ( e ) {
                 if ( callback ) callback.call( that, that );
             };
+
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
         },
 
         exists: function ( key, callback ) {
@@ -81,6 +107,9 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
             request.onsuccess = function ( e ) {
                 if ( callback ) callback.call( that, that, e.target.result != null );
             };
+
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
         },
 
         fetch: function ( key, callback ) {
@@ -90,6 +119,9 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
             request.onsuccess = function ( e ) {
                 if ( callback ) callback.call( that, that, e.target.result );
             };
+
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
         },
 
         fetchAll: function ( callback ) {
@@ -107,6 +139,9 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
                     if ( callback ) callback.call( that, that, records );
                 }
             };
+
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
         },
 
         destroy: function ( callback ) {
@@ -117,6 +152,9 @@ dhis2.storage.Store.adapter( 'indexed-db', (function () {
             request.onsuccess = function ( e ) {
                 if ( callback ) callback.call( that, that );
             }
+
+            request.onerror = defaultErrorHandler;
+            request.onblocked = defaultBlockingHandler;
         }
     };
 })() );
