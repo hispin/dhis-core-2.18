@@ -65,6 +65,22 @@ dhis2.storage.Store.adapter( 'dom', (function () {
             return this;
         },
 
+        addAll: function ( keys, objs, callback ) {
+            var that = this;
+
+            if ( keys.length == 0 || objs.length == 0 ) {
+                if ( callback ) callback.call( that, that );
+                return;
+            }
+
+            var key = keys.pop();
+            var obj = objs.pop();
+
+            this.add( key, obj, function ( store ) {
+                that.addAll( keys, objs, callback );
+            } );
+        },
+
         remove: function ( key, callback ) {
             var key = this.dbname + '.' + this.name + '.' + key;
             this.indexer.remove( key );
@@ -94,23 +110,33 @@ dhis2.storage.Store.adapter( 'dom', (function () {
         },
 
         fetch: function ( key, callback ) {
-            var key = this.dbname + '.' + this.name + '.' + key;
-            var obj = storage.getItem( key );
+            var arr = [];
+            var keys = $.isArray( key ) ? key : [ key ];
 
-            if ( obj ) {
-                obj = JSON.parse( obj );
-                if ( callback ) callback.call( this, this, obj );
+            for ( var k = 0; k < keys.length; k++ ) {
+                var storage_key = this.dbname + '.' + this.name + '.' + keys[k];
+                var obj = storage.getItem( storage_key );
+
+                if ( obj ) {
+                    obj = JSON.parse( obj );
+                    obj.key = keys[k];
+                    arr.push( obj );
+                }
             }
+
+            if ( callback ) callback.call( this, this, arr );
 
             return this;
         },
 
         fetchAll: function ( callback ) {
-            var idx = this.indexer.all();
             var arr = [];
+            var idx = this.indexer.all();
 
             for ( var k = 0; k < idx.length; k++ ) {
-                arr.push( JSON.parse( storage.getItem( idx[k] ) ) );
+                var obj = JSON.parse( storage.getItem( idx[k] ) );
+                obj.key = idx[k].replace( that.dbname + '.' + that.name + '.', '' );
+                arr.push( obj );
             }
 
             if ( callback ) callback.call( this, this, arr );
