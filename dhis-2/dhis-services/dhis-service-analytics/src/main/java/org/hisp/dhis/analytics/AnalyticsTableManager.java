@@ -38,6 +38,7 @@ public interface AnalyticsTableManager
     public static final String TABLE_TEMP_SUFFIX = "_temp";
     public static final String ANALYTICS_TABLE_NAME = "analytics";
     public static final String COMPLETENESS_TABLE_NAME = "completeness";
+    public static final String COMPLETENESS_TARGET_TABLE_NAME = "completenesstarget";
     
     /**
      * Returns the base table name.

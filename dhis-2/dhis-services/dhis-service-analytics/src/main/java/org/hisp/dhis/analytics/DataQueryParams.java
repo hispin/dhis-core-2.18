@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.DimensionType.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +69,8 @@ public class DataQueryParams
     public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
+    private static final List<DimensionType> COMPLETENESS_DIMENSION_TYTPES = Arrays.asList( DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
+    
     private static final DimensionOption[] DIM_OPT_ARR = new DimensionOption[0];
     private static final DimensionOption[][] DIM_OPT_2D_ARR = new DimensionOption[0][];
     
@@ -91,6 +94,8 @@ public class DataQueryParams
     
     private transient PeriodType dataPeriodType;
     
+    private transient boolean skipPartitioning;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -110,6 +115,7 @@ public class DataQueryParams
         this.periodType = params.getPeriodType();
         this.organisationUnitLevel = params.getOrganisationUnitLevel();
         this.dataPeriodType = params.getDataPeriodType();
+        this.skipPartitioning = params.isSkipPartitioning();
     }
 
     // -------------------------------------------------------------------------
@@ -167,6 +173,42 @@ public class DataQueryParams
         List<Dimension> list = new ArrayList<Dimension>( dimensions );
         
         list.remove( new Dimension( INDICATOR_DIM_ID ) );
+        
+        return list;
+    }
+    
+    /**
+     * Creates a list of dimensions which are relevant to completeness queries.
+     */
+    public List<Dimension> getCompletenessDimensions()
+    {
+        List<Dimension> list = new ArrayList<Dimension>();
+        
+        for ( Dimension dim : dimensions )
+        {
+            if ( COMPLETENESS_DIMENSION_TYTPES.contains( dim.getType() ) )
+            {
+                list.add( dim );
+            }
+        }
+        
+        return list;
+    }
+
+    /**
+     * Creates a list of dimensions which are relevant to completeness queries.
+     */
+    public List<Dimension> getCompletenessFilters()
+    {
+        List<Dimension> list = new ArrayList<Dimension>();
+        
+        for ( Dimension dim : filters )
+        {
+            if ( COMPLETENESS_DIMENSION_TYTPES.contains( dim.getType() ) )
+            {
+                list.add( dim );
+            }
+        }
         
         return list;
     }
@@ -689,7 +731,17 @@ public class DataQueryParams
     {
         this.dataPeriodType = dataPeriodType;
     }
-    
+
+    public boolean isSkipPartitioning()
+    {
+        return skipPartitioning;
+    }
+
+    public void setSkipPartitioning( boolean skipPartitioning )
+    {
+        this.skipPartitioning = skipPartitioning;
+    }
+
     // -------------------------------------------------------------------------
     // Get and set helpers for dimensions or filter
     // -------------------------------------------------------------------------

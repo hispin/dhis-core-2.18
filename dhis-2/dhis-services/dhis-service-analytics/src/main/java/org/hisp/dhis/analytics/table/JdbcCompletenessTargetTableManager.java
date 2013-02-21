@@ -59,7 +59,7 @@ public class JdbcCompletenessTargetTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate = sqlCreate.substring( 0, sqlCreate.length() - 1 ) + ")";
+        sqlCreate += "value double precision)";
         
         log.info( "Create SQL: " + sqlCreate );
         
@@ -85,18 +85,15 @@ public class JdbcCompletenessTargetTableManager
                 sql += col[0] + ",";
             }
     
-            sql = sql.substring( 0, sql.length() - 1 );
-            
-            sql += ") select ";
+            sql += "value) select ";
     
             for ( String[] col : getDimensionColumns() )
             {
                 sql += col[2] + ",";
             }
-            
-            sql = sql.substring( 0, sql.length() - 1 ) + " ";
-            
+                        
             sql +=
+                "1 as value " +
                 "from datasetsource dss " +
                 "left join dataset ds on dss.datasetid=ds.datasetid " +
                 "left join _orgunitstructure ous on dss.sourceid=ous.organisationunitid " +
