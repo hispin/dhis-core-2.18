@@ -82,7 +82,7 @@
 	
 	<tr>
 		<td>
-			<label for="deSumId">$i18n.getString( "data_element_for_sum_avg" )  <em title="$i18n.getString( "required" )" class="required">*</em></label>
+			<label for="deSumId">$i18n.getString( "data_element_for_sum_avg_min_max" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
 		<td>
 			<select id="deSumId" name="deSumId" class="{validate:{required:true}}" #if( $caseAggregation.deSum ) #else disabled #end>
