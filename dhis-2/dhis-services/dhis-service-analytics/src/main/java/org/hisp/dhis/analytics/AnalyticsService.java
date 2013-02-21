@@ -38,7 +38,10 @@ public interface AnalyticsService
     Grid getAggregatedDataValues( DataQueryParams params ) 
         throws IllegalQueryException, Exception;
     
-    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName ) 
+    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params ) 
+        throws IllegalQueryException, Exception;
+
+    Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params ) 
         throws IllegalQueryException, Exception;
     
     DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 

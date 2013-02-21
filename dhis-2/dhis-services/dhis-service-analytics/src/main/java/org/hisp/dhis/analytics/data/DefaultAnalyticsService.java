@@ -106,7 +106,6 @@ public class DefaultAnalyticsService
     
     //TODO completeness
     //TODO make sure data x dims are successive
-    //TODO check if partition table exists before query
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -181,7 +180,7 @@ public class DefaultAnalyticsService
             
             dataSourceParams = replaceIndicatorsWithDataElements( dataSourceParams, indicatorIndex );
 
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, ANALYTICS_TABLE_NAME );
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
 
             Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = dataSourceParams.getPermutationOperandValueMap( aggregatedDataMap );
             
@@ -228,7 +227,7 @@ public class DefaultAnalyticsService
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATASET_DIM_ID );
             
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, ANALYTICS_TABLE_NAME );
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams );
             
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
@@ -250,7 +249,7 @@ public class DefaultAnalyticsService
             dataSourceParams.removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
             dataSourceParams.setAggregationType( AggregationType.COUNT );
 
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( dataSourceParams, COMPLETENESS_TABLE_NAME );
+            Map<String, Double> aggregatedDataMap = getAggregatedCompletenessValueMap( dataSourceParams );
 
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
@@ -268,7 +267,7 @@ public class DefaultAnalyticsService
 
         if ( params.getIndicators() == null && params.getDataElements() == null && params.getDataSets() == null )
         {
-            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( new DataQueryParams( params ), ANALYTICS_TABLE_NAME );
+            Map<String, Double> aggregatedDataMap = getAggregatedDataValueMap( new DataQueryParams( params ) );
             
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
@@ -292,7 +291,24 @@ public class DefaultAnalyticsService
         return grid;
     }
     
-    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params, String tableName )
+    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params )
+        throws IllegalQueryException, Exception
+    {
+        return getAggregatedValueMap( params, ANALYTICS_TABLE_NAME );
+    }
+    
+    public Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params )
+        throws IllegalQueryException, Exception
+    {
+        return getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME );
+    }
+    
+    /**
+     * Generates a mapping between a dimension key and the aggregated value. The
+     * dimension key is a concatenation of the identifiers in for the dimensions
+     * separated by "-".
+     */
+    private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )
         throws IllegalQueryException, Exception
     {
         queryPlanner.validate( params );
