@@ -30,6 +30,8 @@ package org.hisp.dhis.patient.scheduling;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
@@ -38,7 +40,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -69,17 +70,14 @@ public class CaseAggregateConditionTask
     private DataElementService dataElementService;
 
     private DataElementCategoryService categoryService;
-
-    private DataSetService dataSetService;
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     public CaseAggregateConditionTask( OrganisationUnitService organisationUnitService,
         CaseAggregationConditionService aggregationConditionService, DataValueService dataValueService,
-        JdbcTemplate jdbcTemplate, DataElementService dataElementService, DataElementCategoryService categoryService,
-        DataSetService dataSetService )
+        JdbcTemplate jdbcTemplate, DataElementService dataElementService, DataElementCategoryService categoryService )
     {
         this.organisationUnitService = organisationUnitService;
         this.aggregationConditionService = aggregationConditionService;
@@ -87,7 +85,6 @@ public class CaseAggregateConditionTask
         this.jdbcTemplate = jdbcTemplate;
         this.dataElementService = dataElementService;
         this.categoryService = categoryService;
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -99,8 +96,18 @@ public class CaseAggregateConditionTask
     {
         Collection<OrganisationUnit> orgunits = organisationUnitService.getAllOrganisationUnits();
 
-        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
+        Set<DataSet> dataSets = new HashSet<DataSet>();
+        
+        Collection<CaseAggregationCondition> aggConditions = aggregationConditionService
+            .getAllCaseAggregationCondition();
 
+        for ( CaseAggregationCondition aggCondition : aggConditions )
+        {
+            DataElement dataElement = aggCondition.getAggregationDataElement();
+
+            dataSets.addAll( dataElement.getDataSets() );
+        }
+        
         for ( DataSet dataSet : dataSets )
         {
             Period period = getPeriod( dataSet.getPeriodType().getName() );
