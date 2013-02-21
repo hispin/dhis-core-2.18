@@ -11,6 +11,14 @@ function toggleSMSGUI( _value )
 	if ( _value == "phone" ) 
 	{
 		showById( 'phoneType' );
+		showById( 'trRawPhone' );
+		hideById( 'orgunitType' );
+		hideById( 'trUserGroup' );
+	}
+	else if ( _value == "userGroup" )
+	{
+		showById( 'trUserGroup' );
+		hideById( 'trRawPhone' );
 		hideById( 'orgunitType' );
 	}
 	else if ( _value == "user" || _value == "unit" )
@@ -18,8 +26,10 @@ function toggleSMSGUI( _value )
 		selectionTree.clearSelectedOrganisationUnits();
 		selectionTree.buildSelectionTree();
 	
-		hideById( 'phoneType' );
 		showById( 'orgunitType' );
+		hideById( 'phoneType' );
+		hideById( 'trRawPhone' );
+		hideById( 'trUserGroup' );
 	}
 	else {
 		window.location.href = "showBeneficiarySMSForm.action";

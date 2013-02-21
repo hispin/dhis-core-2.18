@@ -50,8 +50,9 @@
 			
 			<tr>
 				<td>$i18n.getString( "send_sms_to_target" ): 
-					<select id="sendTarget" name="sendTarget" onchange="javascript:toggleBasicSMSGUI();">
+					<select id="sendTarget" name="sendTarget" onchange="javascript:toggleBasicSMSGUI( this.value );">
 						<option value="phone">$i18n.getString( "raw_phone_number" )</option>
+						<option value="userGroup">$i18n.getString( "user_group" )</option>
 						<option value="user">$i18n.getString( "assigned_user_number" )</option>
 						<option value="unit">$i18n.getString( "stakeholder_number" )</option>
 						<option value="patient" selected="true">$i18n.getString( "patient_number" )</option>
@@ -136,9 +137,9 @@
 
 	var isOrgunitSelected = false;
 
-	function toggleBasicSMSGUI()
+	function toggleBasicSMSGUI( _value )
 	{
-		window.location.href = "showSMSForm.action";
+		window.location.href = "showSMSForm.action?sendTo=" + _value;
 	}
 
 	function selectedOrganisationUnitSendSMS( unitIds )

@@ -47,6 +47,8 @@ import org.hisp.dhis.sms.MessageSender;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -70,6 +72,9 @@ public class ProcessingSendSMSAction
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private UserGroupService userGroupService;
 
     @Autowired
     private MessageSender messageSender;
@@ -107,6 +112,13 @@ public class ProcessingSendSMSAction
     public void setSendTarget( String sendTarget )
     {
         this.sendTarget = sendTarget;
+    }
+
+    private Integer userGroup;
+
+    public void setUserGroup( Integer userGroup )
+    {
+        this.userGroup = userGroup;
     }
 
     private Set<String> recipients = new HashSet<String>();
@@ -157,6 +169,8 @@ public class ProcessingSendSMSAction
             return ERROR;
         }
 
+        User currentUser = currentUserService.getCurrentUser();
+
         if ( sendTarget != null && sendTarget.equals( "phone" ) )
         {
             try
@@ -179,8 +193,28 @@ public class ProcessingSendSMSAction
                 e.printStackTrace();
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
-                recipients, gatewayId );
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+        }
+        else if ( sendTarget.equals( "userGroup" ) )
+        {
+            UserGroup group = userGroupService.getUserGroup( userGroup );
+
+            if ( group == null )
+            {
+                message = "selected_user_group_is_unavailable";
+
+                return ERROR;
+            }
+
+            if ( group.getMembers() == null || group.getMembers().isEmpty() )
+            {
+                message = "selected_user_group_has_no_member";
+
+                return ERROR;
+            }
+
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, group.getMembers(),
+                gatewayId );
         }
         else if ( sendTarget.equals( "user" ) )
         {
@@ -195,8 +229,14 @@ public class ProcessingSendSMSAction
                     users.addAll( unit.getUsers() );
                 }
 
-                message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(),
-                    false, users, gatewayId );
+                if ( users.isEmpty() )
+                {
+                    message = "there_is_no_user_assigned_to_selected_units";
+
+                    return ERROR;
+                }
+
+                message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, users, gatewayId );
             }
         }
         else if ( sendTarget.equals( "unit" ) )
@@ -209,8 +249,14 @@ public class ProcessingSendSMSAction
                 }
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
-                recipients, gatewayId );
+            if ( recipients.isEmpty() )
+            {
+                message = "selected_units_have_no_phone_number";
+
+                return ERROR;
+            }
+
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
         }
         else
         {
@@ -247,8 +293,14 @@ public class ProcessingSendSMSAction
                 }
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
-                phones, gatewayId );
+            if ( phones.isEmpty() )
+            {
+                message = "selected_persons_have_no_phone_number";
+
+                return ERROR;
+            }
+
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, phones, gatewayId );
         }
 
         if ( message != null && !message.equals( "success" ) )
