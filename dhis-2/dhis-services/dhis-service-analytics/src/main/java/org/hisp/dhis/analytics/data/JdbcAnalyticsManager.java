@@ -59,6 +59,7 @@ import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.scheduling.annotation.Async;
@@ -140,10 +141,21 @@ public class JdbcAnalyticsManager
         sql += "group by " + getCommaDelimitedString( queryDimensions );
     
         log.info( sql );
-        
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
+
         Map<String, Double> map = new HashMap<String, Double>();
+        
+        SqlRowSet rowSet = null;
+        
+        try
+        {
+            rowSet = jdbcTemplate.queryForRowSet( sql );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            log.info( "Query failed, likely because the requested analytics table does not exist", ex );
+            
+            return new AsyncResult<Map<String, Double>>( map );
+        }
         
         while ( rowSet.next() )
         {
