@@ -114,7 +114,7 @@ $identifierMap
 							#if($programInstance.program.type==1)
 							<tr>
 								<td id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
-									<a>&#8226; $programMap.get($programInstance.program.id) ($format.formatDate($programStageInstance.dueDate))</a>
+									<a>&#8226; $programStageInstance.programStage.displayName ($format.formatDate($programStageInstance.dueDate))</a>
 								</td>
 							</tr>
 							#end
@@ -126,7 +126,7 @@ $identifierMap
 						programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
 						onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", false)' >
 						<td id='td_$programInstance.id'>
-							<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
+							<a><span id='infor_$programInstance.id'>$programStageInstance.programStage.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
 						</td>
 					</tr>
 					#end
