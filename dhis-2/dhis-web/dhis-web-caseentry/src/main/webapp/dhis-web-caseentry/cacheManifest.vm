@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.11-SNAPSHOT V3
+# 2.11-SNAPSHOT V5
 NETWORK:
 *
 CACHE:
@@ -29,6 +29,8 @@ CACHE:
 ../dhis-web-commons/javascripts/dhis2/dhis2.storage.dom.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js
 ../dhis-web-commons/javascripts/jQuery/jquery.cookie.js
+../dhis-web-commons/javascripts/jQuery/jquery.validate.js
+../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js
 ../main.js
 ../dhis-web-commons/ouwt/ouwt.js
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
@@ -54,6 +56,7 @@ CACHE:
 ../images/ajax-loader-bar.gif
 
 # jquery-ui 1.9.1
+../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png

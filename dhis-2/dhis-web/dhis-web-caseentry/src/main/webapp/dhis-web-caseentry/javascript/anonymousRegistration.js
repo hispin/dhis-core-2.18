@@ -6,25 +6,26 @@ $( document ).ready( function () {
         cache: false
     } );
 
-    jQuery.getJSON( "getProgramMetaData.action", {}, function ( data ) {
-        DAO.programs = new dhis2.storage.Store( {name: 'programs'}, function ( store ) {
-            var keys = _.keys( data.metaData.programs );
-            var objs = _.values( data.metaData.programs );
-
-            store.addAll( keys, objs, function ( store ) {
-            } );
-        } );
-
+    // initialize the stores, and then try and add the data
+    DAO.programs = new dhis2.storage.Store( {name: 'programs'}, function ( store ) {
         DAO.programAssociations = new dhis2.storage.Store( {name: 'programAssociations'}, function ( store ) {
-            var keys = _.keys( data.metaData.programAssociations );
-            var objs = _.values( data.metaData.programAssociations );
+            jQuery.getJSON( "getProgramMetaData.action", {}, function ( data ) {
+                var keys = _.keys( data.metaData.programs );
+                var objs = _.values( data.metaData.programs );
 
-            store.addAll( keys, objs, function ( store ) {
-                // wait until the stores have been populated until the listener is set
+                DAO.programs.addAll( keys, objs, function ( store ) {
+                    var keys = _.keys( data.metaData.programAssociations );
+                    var objs = _.values( data.metaData.programAssociations );
+
+                    DAO.programAssociations.addAll( keys, objs, function ( store ) {
+                        selection.setListenerFunction( organisationUnitSelected );
+                    } );
+                } );
+            } ).fail(function() {
                 selection.setListenerFunction( organisationUnitSelected );
-            } );
-        } );
-    } );
+            });
+        });
+    });
 } );
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
