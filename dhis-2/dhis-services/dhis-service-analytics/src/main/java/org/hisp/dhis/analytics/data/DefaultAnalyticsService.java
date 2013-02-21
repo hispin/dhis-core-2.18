@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.data;
 
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
 import static org.hisp.dhis.analytics.DataQueryParams.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
@@ -242,15 +243,22 @@ public class DefaultAnalyticsService
         // ---------------------------------------------------------------------
 
         if ( params.getDataSets() != null )
-        {
+        {            
             DataQueryParams dataSourceParams = new DataQueryParams( params );
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
-            dataSourceParams.removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
             dataSourceParams.setAggregationType( AggregationType.COUNT );
 
             Map<String, Double> aggregatedDataMap = getAggregatedCompletenessValueMap( dataSourceParams );
 
+            DataQueryParams dataTargetParams = new DataQueryParams( params );
+            dataTargetParams.setDimensions( dataTargetParams.getCompletenessDimensions() );
+            dataTargetParams.setFilters( dataTargetParams.getCompletenessFilters() );
+            dataTargetParams.setAggregationType( AggregationType.COUNT );
+            dataTargetParams.setSkipPartitioning( true );
+
+            Map<String, Double> targetMap = getAggregatedCompletenessTargetMap( dataTargetParams ); //TODO
+            
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
                 List<String> row = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
@@ -301,6 +309,12 @@ public class DefaultAnalyticsService
         throws IllegalQueryException, Exception
     {
         return getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME );
+    }
+
+    private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
+        throws IllegalQueryException, Exception
+    {
+        return getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME );
     }
     
     /**

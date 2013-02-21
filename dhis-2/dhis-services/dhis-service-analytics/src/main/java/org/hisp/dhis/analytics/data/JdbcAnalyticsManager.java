@@ -92,19 +92,19 @@ public class JdbcAnalyticsManager
     {
         ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
-        
+                
         params.populateDimensionNames();
-        
-        List<Dimension> queryDimensions = params.getQueryDimensions();
-        
+
+        List<Dimension> dimensions = params.getQueryDimensions();
+
         SqlHelper sqlHelper = new SqlHelper();
 
-        int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
-        
-        String sql = "select " + getCommaDelimitedString( queryDimensions ) + ", ";
+        String sql = "select " + getCommaDelimitedString( dimensions ) + ", ";
         
         if ( params.isAggregationType( AVERAGE_INT ) )
         {
+            int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
+            
             sql += "sum(daysxvalue) / " + days;
         }
         else if ( params.isAggregationType( AVERAGE_BOOL ) )
@@ -119,10 +119,10 @@ public class JdbcAnalyticsManager
         {
             sql += "sum(value)";
         }
-        
+                
         sql += " as value from " + params.getTableName() + " ";
         
-        for ( Dimension dim : queryDimensions )
+        for ( Dimension dim : dimensions )
         {
             if ( !dim.isAllOptions() )
             {
@@ -138,7 +138,7 @@ public class JdbcAnalyticsManager
             }
         }
         
-        sql += "group by " + getCommaDelimitedString( queryDimensions );
+        sql += "group by " + getCommaDelimitedString( dimensions );
     
         log.info( sql );
 
@@ -168,7 +168,7 @@ public class JdbcAnalyticsManager
             
             StringBuilder key = new StringBuilder();
             
-            for ( Dimension dim : queryDimensions )
+            for ( Dimension dim : dimensions )
             {
                 key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
             }

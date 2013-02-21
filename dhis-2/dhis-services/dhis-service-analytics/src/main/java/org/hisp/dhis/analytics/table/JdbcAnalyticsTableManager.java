@@ -69,8 +69,7 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
     
-    //TODO create stack with index tasks for partition and column
-    //     run continuously from stack until empty
+    //TODO use statement builder for double column type
     
     public String getTableName()
     {
@@ -129,23 +128,21 @@ public class JdbcAnalyticsTableManager
         final String start = DateUtils.getMediumDateString( startDate );
         final String end = DateUtils.getMediumDateString( endDate );
         
-        String insert = "insert into " + tableName + " (";
+        String sql = "insert into " + tableName + " (";
         
         for ( String[] col : getDimensionColumns() )
         {
-            insert += col[0] + ",";
+            sql += col[0] + ",";
         }
         
-        insert += "daysxvalue, daysno, value) ";
-        
-        String select = "select ";
+        sql += "daysxvalue, daysno, value) select ";
         
         for ( String[] col : getDimensionColumns() )
         {
-            select += col[2] + ",";
+            sql += col[2] + ",";
         }
         
-        select += 
+        sql += 
             valueExpression + " * ps.daysno as daysxvalue, " +
             "ps.daysno as daysno, " +
             valueExpression + " as value " +
@@ -163,8 +160,6 @@ public class JdbcAnalyticsTableManager
             "and dv.value is not null " + 
             "and " + clause;
 
-        final String sql = insert + select;
-        
         log.info( "Populate SQL: "+ sql );
         
         jdbcTemplate.execute( sql );

@@ -85,7 +85,7 @@ public class DefaultQueryPlanner
             throw new IllegalQueryException( "Dimensions cannot be specified as dimension and filter simultaneously: " + params.dimensionsAsFilters() );
         }
         
-        if ( !params.hasPeriods() )
+        if ( !params.hasPeriods() && !params.isSkipPartitioning() )
         {
             throw new IllegalQueryException( "At least one period must be specified as dimension or filter" );
         }
@@ -112,7 +112,7 @@ public class DefaultQueryPlanner
         // ---------------------------------------------------------------------
         
         params = new DataQueryParams( params );
-
+        
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
         
         List<DataQueryParams> groupedByPartition = groupByPartition( params, tableName );
@@ -233,7 +233,12 @@ public class DefaultQueryPlanner
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
-        if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
+        if ( params.isSkipPartitioning() )
+        {
+            params.setTableName( tableName );
+            queries.add( params );
+        }
+        else if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
             ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getPeriods(), tableName );
             
@@ -273,7 +278,11 @@ public class DefaultQueryPlanner
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
-        if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
+        if ( params.isSkipPartitioning() )
+        {
+            queries.add( params );
+        }
+        else if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
             ListMap<String, IdentifiableObject> periodTypePeriodMap = getPeriodTypePeriodMap( params.getPeriods() );
     
