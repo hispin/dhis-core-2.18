@@ -1,6 +1,6 @@
-// dom storage support (localStorage)
-dhis2.storage.Store.adapter( 'dom', (function () {
-    var storage = window.localStorage;
+// dom storage support (sessionStorage)
+dhis2.storage.Store.adapter( 'dom-ss', (function () {
+    var storage = window.sessionStorage;
 
     var indexer = function ( dbname, name ) {
         return {
