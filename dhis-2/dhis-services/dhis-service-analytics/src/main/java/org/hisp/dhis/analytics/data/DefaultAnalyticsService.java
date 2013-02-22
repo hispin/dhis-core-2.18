@@ -55,6 +55,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
@@ -92,6 +93,7 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
@@ -107,6 +109,7 @@ public class DefaultAnalyticsService
     
     //TODO completeness
     //TODO make sure data x dims are successive
+    //TODO max value limit, 5000?
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -213,7 +216,7 @@ public class DefaultAnalyticsService
                             grid.addValues( DimensionOption.getOptionIdentifiers( row ) );
                             grid.addValue( MathUtils.getRounded( value, 1 ) );
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -252,20 +255,34 @@ public class DefaultAnalyticsService
             Map<String, Double> aggregatedDataMap = getAggregatedCompletenessValueMap( dataSourceParams );
 
             DataQueryParams dataTargetParams = new DataQueryParams( params );
-            dataTargetParams.setDimensions( dataTargetParams.getCompletenessDimensions() );
-            dataTargetParams.setFilters( dataTargetParams.getCompletenessFilters() );
+            dataTargetParams.setDimensions( ListUtils.getAll( dataTargetParams.getDimensions(), dataTargetParams.getCompletenessDimensionIndexes() ) );
+            dataTargetParams.setFilters( ListUtils.getAll( dataTargetParams.getFilters(), dataTargetParams.getCompletenessFilterIndexes() ) );
             dataTargetParams.setAggregationType( AggregationType.COUNT );
             dataTargetParams.setSkipPartitioning( true );
 
             Map<String, Double> targetMap = getAggregatedCompletenessTargetMap( dataTargetParams ); //TODO
             
+            Integer periodIndex = dataSourceParams.getPeriodDimensionIndex();
+            Integer dataSetIndex = dataSourceParams.getDataSetDimensionIndex();
+            
+            //TODO time aggregation for completeness, use data set period type and period.getPeriodSpan
+            
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
                 List<String> row = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
                 
-                grid.addRow();
-                grid.addValues( row.toArray() );
-                grid.addValue( entry.getValue() );
+                List<String> targetRow = ListUtils.getAll( row, dataTargetParams.getCompletenessDimensionIndexes() );
+                String targetKey = StringUtils.join( targetRow, DIMENSION_SEP );
+                Double target = targetMap.get( targetKey );
+                             
+                if ( target != null && entry.getValue() != null )
+                {
+                    double value = entry.getValue() / target;
+                    
+                    grid.addRow();
+                    grid.addValues( row.toArray() );
+                    grid.addValue( value );
+                }
             }
         }
 

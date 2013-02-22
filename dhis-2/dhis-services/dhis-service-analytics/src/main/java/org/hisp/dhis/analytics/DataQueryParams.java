@@ -178,39 +178,39 @@ public class DataQueryParams
     }
     
     /**
-     * Creates a list of dimensions which are relevant to completeness queries.
+     * Creates a list of dimension indexes which are relevant to completeness queries.
      */
-    public List<Dimension> getCompletenessDimensions()
+    public List<Integer> getCompletenessDimensionIndexes()
     {
-        List<Dimension> list = new ArrayList<Dimension>();
+        List<Integer> indexes = new ArrayList<Integer>();
         
-        for ( Dimension dim : dimensions )
+        for ( int i = 0; i < dimensions.size(); i++ )
         {
-            if ( COMPLETENESS_DIMENSION_TYTPES.contains( dim.getType() ) )
+            if ( COMPLETENESS_DIMENSION_TYTPES.contains( dimensions.get( i ).getType() ) )
             {
-                list.add( dim );
+                indexes.add( i );
             }
         }
         
-        return list;
+        return indexes;
     }
 
     /**
-     * Creates a list of dimensions which are relevant to completeness queries.
+     * Creates a list of filter indexes which are relevant to completeness queries.
      */
-    public List<Dimension> getCompletenessFilters()
+    public List<Integer> getCompletenessFilterIndexes()
     {
-        List<Dimension> list = new ArrayList<Dimension>();
+        List<Integer> indexes = new ArrayList<Integer>();
         
-        for ( Dimension dim : filters )
+        for ( int i = 0; i < filters.size(); i++ )
         {
-            if ( COMPLETENESS_DIMENSION_TYTPES.contains( dim.getType() ) )
+            if ( COMPLETENESS_DIMENSION_TYTPES.contains( filters.get( i ).getType() ) )
             {
-                list.add( dim );
+                indexes.add( i );
             }
         }
         
-        return list;
+        return indexes;
     }
 
     /**
@@ -235,6 +235,14 @@ public class DataQueryParams
     public int getDataElementDimensionIndex()
     {
         return getInputDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
+    }
+    
+    /**
+     * Returns the index of the data set dimension in the dimension map.
+     */
+    public int getDataSetDimensionIndex()
+    {
+        return getInputDimensionNamesAsList().indexOf( DATASET_DIM_ID );
     }
 
     /**
