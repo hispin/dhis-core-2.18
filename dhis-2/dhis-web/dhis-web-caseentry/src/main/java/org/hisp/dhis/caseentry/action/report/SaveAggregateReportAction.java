@@ -229,6 +229,9 @@ public class SaveAggregateReportAction
     public String execute()
         throws Exception
     {
+        userOrganisationUnit = (userOrganisationUnit == null) ? false : userOrganisationUnit;
+        userOrganisationUnitChildren = (userOrganisationUnitChildren = null) ? false : userOrganisationUnitChildren;
+
         PatientAggregateReport aggregateReport = new PatientAggregateReport();
 
         aggregateReport.setName( name );
@@ -262,7 +265,7 @@ public class SaveAggregateReportAction
         {
             aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
         }
-        
+
         if ( deSum != null )
         {
             aggregateReport.setDeSum( dataElementService.getDataElement( deSum ) );
@@ -273,15 +276,9 @@ public class SaveAggregateReportAction
             aggregateReport.setUseCompletedEvents( useCompletedEvents );
         }
 
-        if ( userOrganisationUnit != null )
-        {
-            aggregateReport.setUserOrganisationUnit( userOrganisationUnit );
-        }
 
-        if ( userOrganisationUnitChildren != null )
-        {
-            aggregateReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
-        }
+        aggregateReport.setUserOrganisationUnit( userOrganisationUnit );
+        aggregateReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
 
         aggregateReport.setAggregateType( aggregateType );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
