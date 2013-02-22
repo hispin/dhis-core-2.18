@@ -19,7 +19,9 @@
 	});
 	
 	var i18n_no_recipient = '$encoder.jsEscape( $i18n.getString( "no_recipient" ) , "'")';
+	var i18n_person_list_empty = '$encoder.jsEscape( $i18n.getString( "person_list_empty" ) , "'")';
 	var i18n_please_verify_phone = '$encoder.jsEscape( $i18n.getString( "please_verify_phone" ) , "'")';
+	var i18n_please_select_user_group = '$encoder.jsEscape( $i18n.getString( "please_select_user_group" ) , "'")';
 	var i18n_please_select_orgunit = '$encoder.jsEscape( $i18n.getString( "please_select_orgunit" ) , "'")';
 </script>
 
