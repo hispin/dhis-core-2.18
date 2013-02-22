@@ -620,17 +620,34 @@
 
     <!-- CategoryOption -->
 
+	<action name="categoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+    </action>
+    
+    <action name="showAddDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryOptionForm.vm</param>
+      <param name="javascripts">javascript/categoryOption.js</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+    </action>
+    
     <action name="addDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonCategoryOption.vm
-      </result>
+      <result name="success" type="redirect">categoryOption.action</result>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
+	<action name="showUpdateDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
+      <param name="javascripts">javascript/category.js</param>
+      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+    </action>
+
     <action name="updateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
+      <result name="success" type="redirect">categoryOption.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -639,6 +656,13 @@
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
+    </action>
+    
+    <action name="getDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonDataElementCategoryOption.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <!-- CategoryCombo -->

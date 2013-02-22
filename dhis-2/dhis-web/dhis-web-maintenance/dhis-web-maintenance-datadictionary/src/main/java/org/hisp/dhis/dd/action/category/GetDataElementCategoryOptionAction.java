@@ -1,7 +1,5 @@
-package org.hisp.dhis.dd.action.category;
-
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +25,26 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dd.action.category;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
+ * 
+ * @version GetDataElementCategoryOptionList.java 8:47:42 AM Feb 22, 2013 $
  */
-public class AddDataElementCategoryOptionAction
-    implements Action
+public class GetDataElementCategoryOptionAction
+    extends ActionPagingSupport<DataElementCategoryOption>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -59,40 +65,15 @@ public class AddDataElementCategoryOptionAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private Integer categoryId;
+    private Integer id;
 
-    public void setCategoryId( Integer categoryId )
+    public void setId( Integer id )
     {
-        this.categoryId = categoryId;
+        this.id = id;
     }
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    private String code;
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
-    private Integer conceptId;
-
-    public void setConceptId( Integer conceptId )
-    {
-        this.conceptId = conceptId;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
 
     private DataElementCategoryOption dataElementCategoryOption;
 
@@ -101,31 +82,26 @@ public class AddDataElementCategoryOptionAction
         return dataElementCategoryOption;
     }
 
+    private List<Concept> concepts;
+
+    public List<Concept> getConcepts()
+    {
+        return concepts;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        dataElementCategoryOption = dataElementCategoryService.getDataElementCategoryOption( id );
 
-        dataElementCategoryOption = new DataElementCategoryOption( name );
-        dataElementCategoryOption.setCode( code );
-        dataElementCategoryOption.setConcept( conceptService.getConcept( conceptId ) );
+        concepts = new ArrayList<Concept>( conceptService.getAllConcepts() );
+
+        Collections.sort( concepts, IdentifiableObjectNameComparator.INSTANCE );
         
-        if ( categoryId != null )
-        {
-            DataElementCategory category = dataElementCategoryService.getDataElementCategory( categoryId );
-            dataElementCategoryOption.setCategory( category );
-            category.getCategoryOptions().add( dataElementCategoryOption );
-            dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
-            dataElementCategoryService.updateDataElementCategory( category );
-            dataElementCategoryService.updateOptionCombos( category );
-        }
-        else
-        {
-            dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
-        }
-
         return SUCCESS;
     }
+
 }

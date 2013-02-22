@@ -152,7 +152,8 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategory getDataElementCategoryByName( String name )
     {
-        List<DataElementCategory> dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryStore.getAllEqName( name ) );
+        List<DataElementCategory> dataElementCategories = new ArrayList<DataElementCategory>(
+            dataElementCategoryStore.getAllEqName( name ) );
 
         if ( dataElementCategories.isEmpty() )
         {
@@ -183,24 +184,25 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategoryOption getDataElementCategoryOption( int id )
     {
-        return dataElementCategoryOptionStore.get( id );
+        return i18n( i18nService, dataElementCategoryOptionStore.get( id ) );
     }
 
     public DataElementCategoryOption getDataElementCategoryOption( String uid )
     {
-        return dataElementCategoryOptionStore.getByUid( uid );
+        return i18n( i18nService, dataElementCategoryOptionStore.getByUid( uid ) );
     }
 
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
-        List<DataElementCategoryOption> dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>( dataElementCategoryOptionStore.getAllEqName( name ) );
+        List<DataElementCategoryOption> dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
+            dataElementCategoryOptionStore.getAllEqName( name ) );
 
         if ( dataElementCategoryOptions.isEmpty() )
         {
             return null;
         }
 
-        return dataElementCategoryOptions.get( 0 );
+        return i18n( i18nService, dataElementCategoryOptions.get( 0 ) );
     }
 
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( final Collection<Integer> identifiers )
@@ -219,7 +221,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()
     {
-        return dataElementCategoryOptionStore.getAll();
+        return i18n( i18nService, dataElementCategoryOptionStore.getAll() );
     }
 
     // -------------------------------------------------------------------------
@@ -272,7 +274,8 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
     {
-        List<DataElementCategoryCombo> dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboStore.getAllEqName( name ) );
+        List<DataElementCategoryCombo> dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>(
+            dataElementCategoryComboStore.getAllEqName( name ) );
 
         if ( dataElementCategoryCombos.isEmpty() )
         {
@@ -325,7 +328,7 @@ public class DefaultDataElementCategoryService
                 }
             } );
     }
-    
+
     public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosByUid( Collection<String> uids )
     {
         return dataElementCategoryOptionComboStore.getByUid( uids );
@@ -650,13 +653,13 @@ public class DefaultDataElementCategoryService
     @Override
     public Collection<DataElementCategoryOption> getDataElementCategoryOptionsBetween( int first, int max )
     {
-        return dataElementCategoryOptionStore.getAllOrderedName( first, max );
+        return i18n( i18nService, dataElementCategoryOptionStore.getAllOrderedName( first, max ) );
     }
 
     @Override
     public Collection<DataElementCategoryOption> getDataElementCategoryOptionsBetweenByName( String name, int first,
         int max )
     {
-        return dataElementCategoryOptionStore.getAllLikeNameOrderedName( name, first, max );
+        return i18n( i18nService, dataElementCategoryOptionStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 }

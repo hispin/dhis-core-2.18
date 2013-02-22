@@ -1,7 +1,5 @@
-package org.hisp.dhis.dd.action.category;
-
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +25,26 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.dataelement.DataElementCategory;
+package org.hisp.dhis.dd.action.category;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
+ * 
+ * @version GetDataElementCategoryOptionListAction.java 8:47:42 AM Feb 22, 2013 $
  */
-public class AddDataElementCategoryOptionAction
-    implements Action
+public class GetDataElementCategoryOptionListAction
+    extends ActionPagingSupport<DataElementCategoryOption>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -51,54 +57,27 @@ public class AddDataElementCategoryOptionAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     // -------------------------------------------------------------------------
-    // Input
+    // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private Integer categoryId;
+    private List<DataElementCategoryOption> dataElementCategoryOptions;
 
-    public void setCategoryId( Integer categoryId )
+    public List<DataElementCategoryOption> getDataElementCategoryOptions()
     {
-        this.categoryId = categoryId;
+        return dataElementCategoryOptions;
     }
 
-    private String name;
+    private String key;
 
-    public void setName( String name )
+    public String getKey()
     {
-        this.name = name;
+        return key;
     }
 
-    private String code;
-
-    public void setCode( String code )
+    public void setKey( String key )
     {
-        this.code = code;
-    }
-
-    private Integer conceptId;
-
-    public void setConceptId( Integer conceptId )
-    {
-        this.conceptId = conceptId;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private DataElementCategoryOption dataElementCategoryOption;
-
-    public DataElementCategoryOption getDataElementCategoryOption()
-    {
-        return dataElementCategoryOption;
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -107,25 +86,25 @@ public class AddDataElementCategoryOptionAction
 
     public String execute()
     {
-
-        dataElementCategoryOption = new DataElementCategoryOption( name );
-        dataElementCategoryOption.setCode( code );
-        dataElementCategoryOption.setConcept( conceptService.getConcept( conceptId ) );
-        
-        if ( categoryId != null )
+        if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            DataElementCategory category = dataElementCategoryService.getDataElementCategory( categoryId );
-            dataElementCategoryOption.setCategory( category );
-            category.getCategoryOptions().add( dataElementCategoryOption );
-            dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
-            dataElementCategoryService.updateDataElementCategory( category );
-            dataElementCategoryService.updateOptionCombos( category );
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryOptionCountByName( key ) );
+
+            dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
+                dataElementCategoryService.getDataElementCategoryOptionsBetweenByName( key, paging.getStartPos(),
+                    paging.getPageSize() ) );
         }
         else
         {
-            dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCount() );
+
+            dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
+                dataElementCategoryService.getDataElementCategoryOptionsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
+
+        Collections.sort( dataElementCategoryOptions, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
+
 }
