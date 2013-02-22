@@ -63,7 +63,7 @@
 	<tr>
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 		<td class="input-column">
-			<input type="text" id="phoneNumber" name="phoneNumber" #if( $!patient.phoneNumber ) value="$!patient.phoneNumber" #else value="$!phoneNumberAreaCode" #end class="{validate:{phone:true}}"/>
+			<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}"/>
 		</td>
 	</tr>
 
@@ -250,5 +250,11 @@
 	#else
 		hideById('age');
 		showById('birthDate');
+	#end
+	
+	#if( $!patient.phoneNumber ) 
+		setFieldValue('phoneNumber',"$!patient.phoneNumber")
+	#else 
+		setFieldValue('phoneNumber',"$!phoneNumberAreaCode")
 	#end
 </script>
