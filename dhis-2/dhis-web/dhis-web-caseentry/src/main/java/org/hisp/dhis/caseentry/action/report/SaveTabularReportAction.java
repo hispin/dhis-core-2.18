@@ -232,6 +232,9 @@ public class SaveTabularReportAction
     public String execute()
         throws Exception
     {
+        userOrganisationUnit = (userOrganisationUnit == null) ? false : userOrganisationUnit;
+        userOrganisationUnitChildren = (userOrganisationUnitChildren = null) ? false : userOrganisationUnitChildren;
+
         Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
             organisationUnitService.getOrganisationUnits( orgunitIds ) );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
@@ -254,15 +257,8 @@ public class SaveTabularReportAction
             tabularReport.setUseCompletedEvents( useCompletedEvents );
         }
 
-        if ( userOrganisationUnit != null )
-        {
-            tabularReport.setUserOrganisationUnit( userOrganisationUnit );
-        }
-
-        if ( userOrganisationUnitChildren != null )
-        {
-            tabularReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
-        }
+        tabularReport.setUserOrganisationUnit( userOrganisationUnit );
+        tabularReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
 
         // ---------------------------------------------------------------------
         // Get searching-keys
