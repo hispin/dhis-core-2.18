@@ -1,11 +1,11 @@
 <script type="text/javascript">
-	jQuery(document).ready(	function() {
-		validation2( 'editDataElementCategoryOptionForm', function( form ){ form.submit()}, {
+    jQuery(document).ready(	function() {
+	    validation2( 'editDataElementCategoryOptionForm', function( form ){ form.submit()}, {
 			'beforeValidateHandler': function() { listValidator( 'memberValidator', 'categoryOptions' ); },
 			'rules': getValidationRules("dateElementCategoryOption")
 		}); 
 
-		checkValueIsExist( "name", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
+        checkValueIsExist( "name", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
         checkValueIsExist( "code", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.code} );
 	});
 

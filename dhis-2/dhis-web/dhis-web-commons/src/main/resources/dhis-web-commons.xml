@@ -614,6 +614,13 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getDataElementCategoryOptions" class="org.hisp.dhis.commons.action.GetCategoryOptionsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonDataElementCategoryOptions.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getDataSet" class="org.hisp.dhis.commons.action.GetDataSetAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonDataSet.vm

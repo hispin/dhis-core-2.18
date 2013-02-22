@@ -1,4 +1,4 @@
-package org.hisp.dhis.dd.action.category;
+package org.hisp.dhis.commons.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -32,79 +32,42 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew
- * @version $Id GetDataElementCategoryAction.java Aug 30, 2010 ddhieu$
+ * @author Lars Helge Overland
  */
-public class GetDataElementCategoryAction
+public class GetCategoryOptionsAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+    @Autowired
+    private DataElementCategoryService categoryService;
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private DataElementCategory dataElementCategory;
+    private List<DataElementCategoryOption> categoryOptions;
 
-    public DataElementCategory getDataElementCategory()
+    public List<DataElementCategoryOption> getCategoryOptions()
     {
-        return dataElementCategory;
-    }
-
-    private List<Concept> concepts;
-
-    public List<Concept> getConcepts()
-    {
-        return concepts;
+        return categoryOptions;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action
     // -------------------------------------------------------------------------
-
+    
     public String execute()
     {
-        dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
+        categoryOptions = new ArrayList<DataElementCategoryOption>( categoryService.getAllDataElementCategoryOptions() );
         
-        concepts = new ArrayList<Concept>( conceptService.getAllConcepts() );
-
-        Collections.sort( concepts, IdentifiableObjectNameComparator.INSTANCE );
-
+        Collections.sort( categoryOptions, IdentifiableObjectNameComparator.INSTANCE );
+        
         return SUCCESS;
     }
 }

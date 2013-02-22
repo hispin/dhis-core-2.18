@@ -317,6 +317,8 @@
     scope="prototype">
   </bean>
 
+  <bean id="org.hisp.dhis.commons.action.GetCategoryOptionsAction" class="org.hisp.dhis.commons.action.GetCategoryOptionsAction" scope="prototype"/>
+
   <bean id="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction" class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction"
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
