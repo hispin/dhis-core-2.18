@@ -73,6 +73,16 @@ function sendSMSMessage( _form )
 			}
 		}
 	}
+	else if ( _target == "userGroup" )
+	{
+		var userGroup = getFieldValue( _target );
+
+		if ( userGroup == null )
+		{
+			showErrorMessage( i18n_please_select_user_group );
+			return;
+		}
+	}
 	else if ( _target == "user" || _target == "unit" )
 	{
 		if ( !isOrgunitSelected )
@@ -91,7 +101,7 @@ function sendSMSMessage( _form )
 				p.recipients.push( item.value );
 			});
 		}
-		else { markInvalid( "recipients", i18n_list_empty ); }
+		else { markInvalid( "recipients", i18n_person_list_empty ); }
 	}
 
 	jQuery.postUTF8( _form.action,
@@ -99,7 +109,8 @@ function sendSMSMessage( _form )
 		recipients: JSON.stringify( p.recipients ),
 		gatewayId: getFieldValue( 'gatewayId' ),
 		smsMessage: getFieldValue( 'smsMessage' ),
-		sendTarget: getFieldValue( 'sendTarget' )
+		sendTarget: getFieldValue( 'sendTarget' ),
+		userGroup: getFieldValue( 'userGroup' )
 	}, function ( json )
 	{
 		if ( json.response == "success" ) {
