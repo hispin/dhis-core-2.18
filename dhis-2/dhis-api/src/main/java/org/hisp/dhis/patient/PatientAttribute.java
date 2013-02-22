@@ -150,11 +150,6 @@ public class PatientAttribute
         return inherit;
     }
 
-    public Boolean isGroupBy()
-    {
-        return groupBy;
-    }
-
     public void setGroupBy( Boolean groupBy )
     {
         this.groupBy = groupBy;
