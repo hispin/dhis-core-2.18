@@ -50,7 +50,7 @@ xSettings = {
 		'pe': ['201201', '201202', '201203'],
 		'Bpx0589u8y0': ['MAs88nJc9nL', 'PVLOW4bCshG'],
 		'ou': ['ImspTQPwCqd']
-	}		
+	}
 };
 
 xResponse = {
@@ -64,7 +64,7 @@ xResponse = {
 			index: 0,
 			size: 3,
 			items: [
-			
+
 		}
 	],
 	metaData: {
@@ -94,7 +94,35 @@ xResponse = {
 			index: 0,
 			size: 3,
 			items: [
-			
+
 		}
+	}
+};
+
+xAxis = {
+	dims: 2,
+	size: 15,
+	ids: ["O3qECFGrzeFeT1vvFVhLHc", "O3qECFGrzeFio8xTtlZV18", x15],
+	span: [5, 1],
+	items: [
+		{
+			name: 'dx',
+			items: ["O3qECFGrzeF", "t3QKFZbCf2B", "OLlWZUfLtsR"]
+		},
+		etc
+	],
+	xItems: {
+		all: [
+			[x15, "O3qECFGrzeF"],
+			[x15, "eT1vvFVhLHc"]
+		],
+		gui: [
+			[x3],
+			[x15]
+		],
+		unique: [
+			[x3],
+			[x5]
+		]
 	}
 };
