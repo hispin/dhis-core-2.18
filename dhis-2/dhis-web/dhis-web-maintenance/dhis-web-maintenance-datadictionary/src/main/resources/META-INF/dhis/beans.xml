@@ -474,14 +474,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- CategoryOption -->
 
+  <bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionListAction" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionListAction"
+    scope="prototype">
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  
   <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction"
@@ -489,6 +496,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
+ <bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction"
+    scope="prototype">
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
+  </bean>
+  
   <!-- CategoryCombo -->
 
   <bean id="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction"
