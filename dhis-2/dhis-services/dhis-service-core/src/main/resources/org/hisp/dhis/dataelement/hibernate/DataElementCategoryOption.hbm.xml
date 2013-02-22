@@ -27,10 +27,11 @@
         foreign-key="fk_categoryoption_categoryoptioncomboid" />
     </set>
 
-    <join table="categories_categoryoptions" inverse="true">
+    <set name="categories" table="categories_categoryoptions" inverse="true">
+      <cache usage="read-write" />
       <key column="categoryoptionid" />
-      <many-to-one column="categoryid" name="category" />
-    </join>
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementCategory" column="categoryid" />
+    </set>
 
   </class>
 </hibernate-mapping>

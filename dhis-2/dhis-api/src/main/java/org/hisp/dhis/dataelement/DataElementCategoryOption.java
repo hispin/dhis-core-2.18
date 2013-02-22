@@ -59,7 +59,7 @@ public class DataElementCategoryOption
 
     public static final String DEFAULT_NAME = "default";
 
-    private DataElementCategory category;
+    private Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
 
     private Concept concept;
 
@@ -157,14 +157,14 @@ public class DataElementCategoryOption
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public DataElementCategory getCategory()
+    public Set<DataElementCategory> getCategories()
     {
-        return category;
+        return categories;
     }
 
-    public void setCategory( DataElementCategory category )
+    public void setCategories( Set<DataElementCategory> categories )
     {
-        this.category = category;
+        this.categories = categories;
     }
 
     @JsonProperty
