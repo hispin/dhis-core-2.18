@@ -54,6 +54,13 @@ body,
 
 body {
     font-size: 10px;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .pt-accordion-options .x-panel-body-default {
@@ -74,6 +81,10 @@ body {
 	position: fixed;
 }
 
+.nobreak {
+	white-space: nowrap;
+}
+
 /*----------------------------------------------------------------------------
  * Pivot
  *--------------------------------------------------------------------------*/
@@ -82,6 +93,13 @@ table.pivot {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	border: 0 none;
+
+	-webkit-touch-callout: all;
+	-webkit-user-select: all;
+	-khtml-user-select: all;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
 }
 .pivot td {
 	padding: 5px;
@@ -89,25 +107,42 @@ table.pivot {
 	text-align: center;
 }
 
-.pivot-empty {
-	background-color: #deeafc;
-}
-
 .pivot-dim {
 	background-color: #dae6f8;
 }
-.pivot-dimtotal {
-	background-color: #b0c4de;
+.pivot-dim-subtotal {
+	background-color: #cad6e8;
+}
+.pivot-dim-total {
+	background-color: #bac6d8;
+}
+.pivot-dim-empty {
+	background-color: #dae6f8;
 }
 
 .pivot-value {
 	background-color: #fff;
+	white-space: nowrap;
 }
-.pivot-valuetotal {
-	background-color: #eaeaea;
+.pivot-value-subtotal {
+	background-color: #f5f5f5;
+	white-space: nowrap;
 }
-.pivot-valuegrandtotal {
-	background-color: #ccc;
+.pivot-value-subtotal-total {
+	background-color: #e8e8e8;
+	white-space: nowrap;
+}
+.pivot-value-total {
+	background-color: #e4e4e4;
+	white-space: nowrap;
+}
+.pivot-value-total-subgrandtotal {
+	background-color: #d9d9d9;
+	white-space: nowrap;
+}
+.pivot-value-grandtotal {
+	background-color: #c8c8c8;
+	white-space: nowrap;
 }
 
 td .good div {
@@ -351,7 +386,6 @@ td .bad div {
 .pt-toolbar-btn-menu {
 	margin-top: 5px;
 }
-
 
 /*----------------------------------------------------------------------------
  * Menu
@@ -710,15 +744,12 @@ td .bad div {
  *--------------------------------------------------------------------------*/
 
 	/* accordion title bar, shared */
-.pt-accordion .x-accordion-item .x-accordion-hd, .pt-accordion .pt-accordion-options .x-accordion-hd {
+.pt-accordion .x-accordion-item .x-accordion-hd {
 	padding: 6px 5px 4px 8px;
 	border: 0 none;
 	cursor: pointer;
 	border-top-left-radius: 1px;
 	border-top-right-radius: 1px;
-}
-	/* accordion title dock, default */
-.pt-accordion .x-accordion-item .x-accordion-hd {
     background-image: none;
     background-color: #e0e0e0;
     background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dcdcdc), color-stop(100%, #e5e5e5)) !important;
@@ -728,24 +759,13 @@ td .bad div {
     background-image: -ms-linear-gradient(top, #dcdcdc, #e5e5e5) !important;
     background-image: linear-gradient(top, #dcdcdc, #e5e5e5) !important;
 }
-	/* accordion title dock, options */
-.pt-accordion .pt-accordion-options .x-accordion-hd {
-    background-image: none;
-    background-color: #d0d0d0;
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cccccc), color-stop(100%, #d3d3d3)) !important;
-    background-image: -webkit-linear-gradient(top, #cccccc, #d3d3d3) !important;
-    background-image: -moz-linear-gradient(top, #cccccc, #d3d3d3) !important;
-    background-image: -o-linear-gradient(top, #cccccc, #d3d3d3) !important;
-    background-image: -ms-linear-gradient(top, #cccccc, #d3d3d3) !important;
-    background-image: linear-gradient(top, #cccccc, #d3d3d3) !important;
-}
 	/* accordion title dock, default, collapsed */
 .pt-accordion .collapsed .x-accordion-hd {
 	padding-bottom: 5px !important;
 }
 
 	/* accordion title dock outer, shared */
-.pt-accordion .x-accordion-item, .pt-accordion-options .x-accordion-item {
+.pt-accordion .x-accordion-item {
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 }
@@ -754,9 +774,9 @@ td .bad div {
 	border: 1px solid #c5c5c5;
 	border-bottom: 0 none;
 }
-	/* accordion title dock outer, options */
-.pt-accordion .pt-accordion-options {
-	border: 1px solid #c0c0c0;
+	/* accordion title dock outer, last */
+.pt-accordion .pt-accordion-last {
+	border: 1px solid #c5c5c5;
 }
 
 	/* accordion title dock text, shared */
@@ -767,7 +787,7 @@ td .bad div {
 
 	/* accordion item body */
 .pt-accordion .x-accordion-body {
-	padding: 8px 6px 0px 6px;
+	padding: 5px 3px 0px;
 	border-top: 1px solid #c5c5c5 !important;
 }
 
