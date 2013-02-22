@@ -27,19 +27,18 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.ShortNameView;
 
 /**
  * @author Bob Jolliffe
  */
-@JacksonXmlRootElement( localName = "nameableObject", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "nameableObject", namespace = DxfNamespaces.DXF_2_0)
 public class BaseNameableObject
     extends BaseIdentifiableObject
     implements NameableObject
@@ -78,7 +77,7 @@ public class BaseNameableObject
     }
 
     public BaseNameableObject( int id, String uid, String name, String shortName,
-                               String code, String description )
+        String code, String description )
     {
         super( id, uid, name );
         this.shortName = shortName;
@@ -111,8 +110,8 @@ public class BaseNameableObject
     }
 
     @JsonProperty
-    @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( isAttribute = true )
+    @JsonView({ ShortNameView.class, DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(isAttribute = true)
     public String getShortName()
     {
         return shortName;
@@ -124,8 +123,8 @@ public class BaseNameableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getDescription()
     {
         return description;
