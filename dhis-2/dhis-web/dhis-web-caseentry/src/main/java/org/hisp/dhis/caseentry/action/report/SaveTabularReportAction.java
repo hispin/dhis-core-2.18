@@ -154,6 +154,12 @@ public class SaveTabularReportAction
 
     private String facilityLB;
 
+    private Boolean useCompletedEvents;
+
+    private Boolean userOrganisationUnit;
+
+    private Boolean userOrganisationUnitChildren;
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -203,6 +209,21 @@ public class SaveTabularReportAction
         this.programStageId = programStageId;
     }
 
+    public void setUseCompletedEvents( Boolean useCompletedEvents )
+    {
+        this.useCompletedEvents = useCompletedEvents;
+    }
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -211,8 +232,8 @@ public class SaveTabularReportAction
     public String execute()
         throws Exception
     {
-        Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>( organisationUnitService
-            .getOrganisationUnits( orgunitIds ) );
+        Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
+            organisationUnitService.getOrganisationUnits( orgunitIds ) );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
         // ---------------------------------------------------------------------
@@ -227,6 +248,21 @@ public class SaveTabularReportAction
         tabularReport.setFacilityLB( facilityLB );
         tabularReport.setSortedOrgunitAsc( orderByOrgunitAsc );
         tabularReport.setUser( currentUserService.getCurrentUser() );
+
+        if ( useCompletedEvents != null )
+        {
+            tabularReport.setUseCompletedEvents( useCompletedEvents );
+        }
+
+        if ( userOrganisationUnit != null )
+        {
+            tabularReport.setUserOrganisationUnit( userOrganisationUnit );
+        }
+
+        if ( userOrganisationUnitChildren != null )
+        {
+            tabularReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
+        }
 
         // ---------------------------------------------------------------------
         // Get searching-keys
