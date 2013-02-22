@@ -27,6 +27,7 @@ javascripts/dhis2/dhis2.select.js
 javascripts/dhis2/dhis2.comparator.js
 javascripts/dhis2/dhis2.availability.js
 javascripts/dhis2/dhis2.storage.js
+javascripts/dhis2/dhis2.storage.dom-ss.js
 javascripts/dhis2/dhis2.storage.dom.js
 javascripts/dhis2/dhis2.storage.idb.js
 javascripts/jQuery/jquery.cookie.js
