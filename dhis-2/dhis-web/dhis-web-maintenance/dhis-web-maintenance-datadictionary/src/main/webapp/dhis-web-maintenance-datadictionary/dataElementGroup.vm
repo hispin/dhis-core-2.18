@@ -38,7 +38,7 @@
 					<td onclick="showDataElementGroupDetails( $dataElementGroup.id )">$encoder.htmlEncode( $dataElementGroup.displayName )</td>
 					<td style="text-align:right">
 
-                        #if ( $security.canManage( $document ) )
+                        #if ( $security.canManage( $dataElementGroup ) )
                         <a href="javascript:showSharingDialog('dataElementGroup', '$dataElementGroup.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
                         #else
                         <img src="../images/relationship-denied.png">
