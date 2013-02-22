@@ -194,15 +194,12 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
-        List<DataElementCategoryOption> dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
-            dataElementCategoryOptionStore.getAllEqName( name ) );
+        return i18n( i18nService, dataElementCategoryOptionStore.getByName( name ) );
+    }
 
-        if ( dataElementCategoryOptions.isEmpty() )
-        {
-            return null;
-        }
-
-        return i18n( i18nService, dataElementCategoryOptions.get( 0 ) );
+    public DataElementCategoryOption getDataElementCategoryOptionByCode( String code )
+    {
+        return i18n( i18nService, dataElementCategoryOptionStore.getByCode( code ) );
     }
 
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( final Collection<Integer> identifiers )
@@ -274,15 +271,7 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
     {
-        List<DataElementCategoryCombo> dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>(
-            dataElementCategoryComboStore.getAllEqName( name ) );
-
-        if ( dataElementCategoryCombos.isEmpty() )
-        {
-            return null;
-        }
-
-        return i18n( i18nService, dataElementCategoryCombos.get( 0 ) );
+        return i18n( i18nService, dataElementCategoryComboStore.getByName( name ) );
     }
 
     // -------------------------------------------------------------------------

@@ -5,7 +5,8 @@
 			'rules': getValidationRules("dateElementCategoryOption")
 		}); 
 
-		checkValueIsExist( "name", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id});		
+		checkValueIsExist( "name", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
+        checkValueIsExist( "code", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.code} );
 	});
 
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_category_option" ) , "'")';

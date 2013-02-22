@@ -4,7 +4,8 @@
 		form.submit();
 	});
 
-		checkValueIsExist( "name", "validateDataElementCategoryOption.action");	
+		checkValueIsExist( "name", "validateDataElementCategoryOption.action" );	
+        checkValueIsExist( "code", "validateDataElementCategoryOption.action" ); 
 	});
 
     var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
