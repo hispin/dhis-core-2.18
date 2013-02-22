@@ -6,10 +6,11 @@
 
 		var target = '${sendTo}';
 		
-		jQuery( "#sendTarget > option" ).each( function( item ) {
-			
+		jQuery( "#sendTarget > option" ).each( function( i, item )
+		{
 			if ( item.value == target )
 			{
+			
 				item.selected = true;
 			}
 		} );
