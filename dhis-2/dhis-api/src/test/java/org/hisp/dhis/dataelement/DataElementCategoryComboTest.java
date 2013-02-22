@@ -78,12 +78,12 @@ public class DataElementCategoryComboTest
         categoryC.getCategoryOptions().add( categoryOptionE );
         categoryC.getCategoryOptions().add( categoryOptionF );
         
-        categoryOptionA.setCategory( categoryA );
-        categoryOptionB.setCategory( categoryA );
-        categoryOptionC.setCategory( categoryB );
-        categoryOptionD.setCategory( categoryB );
-        categoryOptionE.setCategory( categoryC );
-        categoryOptionF.setCategory( categoryC );
+        categoryOptionA.getCategories().add( categoryA );
+        categoryOptionB.getCategories().add( categoryA );
+        categoryOptionC.getCategories().add( categoryB );
+        categoryOptionD.getCategories().add( categoryB );
+        categoryOptionE.getCategories().add( categoryC );
+        categoryOptionF.getCategories().add( categoryC );
         
         categoryCombo = new DataElementCategoryCombo( "CategoryCombo" );
         

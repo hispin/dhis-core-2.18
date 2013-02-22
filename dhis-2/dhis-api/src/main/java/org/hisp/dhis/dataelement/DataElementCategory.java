@@ -101,17 +101,20 @@ public class DataElementCategory
     public void addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
         categoryOptions.add( dataElementCategoryOption );
-        dataElementCategoryOption.setCategory( this );
+        dataElementCategoryOption.getCategories().add( this );
     }
 
+    public void removeDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
+    {
+        categoryOptions.remove( dataElementCategoryOption );
+        dataElementCategoryOption.getCategories().remove( this );
+    }
+    
     public void removeAllCategoryOptions()
     {
-        for ( DataElementCategoryOption dataElementCategoryOption : categoryOptions )
+        for ( DataElementCategoryOption categoryOption : categoryOptions )
         {
-            if ( dataElementCategoryOption.getCategory() == this )
-            {
-                dataElementCategoryOption.setCategory( null );
-            }
+            categoryOption.getCategories().remove( this );
         }
 
         categoryOptions.clear();

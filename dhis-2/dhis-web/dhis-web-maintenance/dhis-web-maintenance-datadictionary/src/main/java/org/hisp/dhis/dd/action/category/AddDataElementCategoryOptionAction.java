@@ -28,7 +28,6 @@ package org.hisp.dhis.dd.action.category;
  */
 
 import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
@@ -61,13 +60,6 @@ public class AddDataElementCategoryOptionAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private Integer categoryId;
-
-    public void setCategoryId( Integer categoryId )
-    {
-        this.categoryId = categoryId;
-    }
 
     private String name;
 
@@ -107,24 +99,11 @@ public class AddDataElementCategoryOptionAction
 
     public String execute()
     {
-
         dataElementCategoryOption = new DataElementCategoryOption( name );
         dataElementCategoryOption.setCode( code );
         dataElementCategoryOption.setConcept( conceptService.getConcept( conceptId ) );
         
-        if ( categoryId != null )
-        {
-            DataElementCategory category = dataElementCategoryService.getDataElementCategory( categoryId );
-            dataElementCategoryOption.setCategory( category );
-            category.getCategoryOptions().add( dataElementCategoryOption );
-            dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
-            dataElementCategoryService.updateDataElementCategory( category );
-            dataElementCategoryService.updateOptionCombos( category );
-        }
-        else
-        {
-            dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
-        }
+        dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
 
         return SUCCESS;
     }
