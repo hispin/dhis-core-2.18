@@ -9,6 +9,10 @@
 		#else
 			"false",
 		#end
+	#if( $tabularReport.programStage)
+		#set($programStage = $tabularReport.programStage)
+	#end
+	
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
 	"programStageName": "$!encoder.jsonEncode( ${programStage.displayName} )",
@@ -17,6 +21,9 @@
 	"level": "${tabularReport.level}",
 	"sortedOrgunitAsc": "${tabularReport.sortedOrgunitAsc}",
 	"facilityLB": "${tabularReport.facilityLB}",
+	"useCompletedEvents": "$!tabularReport.useCompletedEvents",
+	"userOrganisationUnit": "$!tabularReport.userOrganisationUnit",
+	"userOrganisationUnitChildren": "$!tabularReport.userOrganisationUnitChildren",
 	"orgunitIds": [
 		#set( $size = $tabularReport.organisationUnits.size() )
 		#set( $organisationUnits = ${tabularReport.organisationUnits} )

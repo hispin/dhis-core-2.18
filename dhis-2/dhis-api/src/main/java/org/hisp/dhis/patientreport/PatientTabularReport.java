@@ -85,6 +85,12 @@ public class PatientTabularReport
 
     private String facilityLB;
 
+    private Boolean useCompletedEvents;
+
+    private Boolean userOrganisationUnit;
+
+    private Boolean userOrganisationUnitChildren;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -201,4 +207,35 @@ public class PatientTabularReport
     {
         this.facilityLB = facilityLB;
     }
+
+    public Boolean getUserOrganisationUnit()
+    {
+        return userOrganisationUnit;
+    }
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    public Boolean getUserOrganisationUnitChildren()
+    {
+        return userOrganisationUnitChildren;
+    }
+
+    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
+    public Boolean getUseCompletedEvents()
+    {
+        return useCompletedEvents;
+    }
+
+    public void setUseCompletedEvents( Boolean useCompletedEvents )
+    {
+        this.useCompletedEvents = useCompletedEvents;
+    }
+
 }

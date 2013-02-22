@@ -1001,6 +1001,9 @@ Ext.onReady( function() {
 								Ext.getCmp('endDate').setValue( f.endDate );
 								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
 								Ext.getCmp('levelCombobox').setValue( f.level );
+								Ext.getCmp('userOrgunit').setValue( f.userOrganisationUnit );
+								Ext.getCmp('userOrgunitChildren').setValue( f.userOrganisationUnitChildren );								
+								Ext.getCmp('completedEventsOpt').setValue(f.useCompletedEvents);
 								
 								// Orgunits
 								
@@ -1162,7 +1165,6 @@ Ext.onReady( function() {
 									};
 								}
 								TR.store.fixedperiod.selected.loadData(periods);
-																
 								
 								// Orgunits
 								
@@ -1604,6 +1606,9 @@ Ext.onReady( function() {
 				
 				// organisation unit
 				p.orgunitIds = TR.state.orgunitIds;
+				p.userOrganisationUnit = Ext.getCmp('userOrgunit').getValue();
+				p.userOrganisationUnitChildren = Ext.getCmp('userOrgunitChildren').getValue();
+				p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
 				
 				// Get searching values
 				p.searchingValues = [];
@@ -1653,7 +1658,10 @@ Ext.onReady( function() {
 				document.getElementById('orderByOrgunitAsc').value = this.orderByOrgunitAsc;
 				document.getElementById('orderByExecutionDateByAsc').value = this.orderByExecutionDateByAsc;
 				document.getElementById('programStageId').value = TR.cmp.params.programStage.getValue();				
-				
+				document.getElementById('userOrganisationUnit').value = Ext.getCmp('userOrgunit').getValue();
+				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
+				document.getElementById('useCompletedEvents').value = Ext.getCmp('completedEventsOpt').getValue();
+
 				// orgunits
 				var orgunitIdList = document.getElementById('orgunitIds');
 				TR.util.list.clearList(orgunitIdList);
@@ -1769,7 +1777,9 @@ Ext.onReady( function() {
 						return false;
 					}
 				
-					if (TR.state.orgunitIds.length == 0) {
+					if (TR.state.orgunitIds.length == 0 
+						&& TR.cmp.aggregateFavorite.userorganisationunit.getValue() == 'false'
+						&& TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue() == 'false' ) {
 						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
 						return false;
 					}
@@ -1997,7 +2007,6 @@ Ext.onReady( function() {
 				
 				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 				p.position = position;
-				
 				p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
 				
 				return p;
@@ -2811,7 +2820,6 @@ Ext.onReady( function() {
 													Ext.getCmp('downloadPdfIcon').setVisible(false);
 													Ext.getCmp('downloadCvsIcon').setVisible(false);
 													Ext.getCmp('positionField').setVisible(false);
-													Ext.getCmp('completedEventsOpt').setVisible(false);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 													Ext.getCmp('datePeriodRangeDiv').setVisible(false);
 													Ext.getCmp('deSumCbx').setVisible(false);
@@ -2844,7 +2852,6 @@ Ext.onReady( function() {
 													Ext.getCmp('downloadCvsIcon').setVisible(true);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(true);
 													Ext.getCmp('positionField').setVisible(true);
-													Ext.getCmp('completedEventsOpt').setVisible(true);
 													Ext.getCmp('deSumCbx').setVisible(true);
 													Ext.getCmp('dateRangeDiv').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(false);
@@ -5611,7 +5618,6 @@ Ext.onReady( function() {
 				Ext.getCmp('downloadPdfIcon').setVisible(false);
 				Ext.getCmp('downloadCvsIcon').setVisible(false);
 				Ext.getCmp('positionField').setVisible(false);
-				Ext.getCmp('completedEventsOpt').setVisible(false);
 				Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 				Ext.getCmp('datePeriodRangeDiv').setVisible(false);
 				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);

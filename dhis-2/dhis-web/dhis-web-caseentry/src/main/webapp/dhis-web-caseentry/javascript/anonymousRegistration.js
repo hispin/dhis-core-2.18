@@ -385,7 +385,7 @@ function searchEvents( listAll )
 		params += '&endDate=' + getFieldValue('endDate');
 		if(byId("incompleted").checked)
 		{
-			params += '&completed=false';
+			params += '&useCompletedEvents=false';
 		}
 		jQuery( '#advancedSearchTB tr' ).each( function(index, row){
 			if( index>1 )
@@ -417,6 +417,8 @@ function searchEvents( listAll )
 	params += '&orgunitIds=' + getFieldValue('orgunitId');
 	params += '&programStageId=' + jQuery('#programId option:selected').attr('psid');
 	params += '&orderByOrgunitAsc=false';
+	params += '&userOrganisationUnit=false';
+	params += '&userOrganisationUnitChildren=false';
 
 	contentDiv = 'listDiv';
 	showLoader();

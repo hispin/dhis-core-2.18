@@ -55,6 +55,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.TextUtils;
+import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Chau Thu Tran
@@ -96,11 +97,18 @@ public class GenerateTabularReportAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Collection<Integer> orgunitIds;
+    private Collection<Integer> orgunitIds = new HashSet<Integer>();
 
     public void setOrgunitIds( Collection<Integer> orgunitIds )
     {
@@ -156,6 +164,20 @@ public class GenerateTabularReportAction
         this.level = level;
     }
 
+    private Boolean userOrganisationUnit;
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    private Boolean userOrganisationUnitChildren;
+
+    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
     private Grid grid;
 
     public Grid getGrid()
@@ -196,11 +218,11 @@ public class GenerateTabularReportAction
         this.format = format;
     }
 
-    private Boolean completed;
+    private Boolean useCompletedEvents;
 
-    public void setCompleted( Boolean completed )
+    public void setUseCompletedEvents( Boolean useCompletedEvents )
     {
-        this.completed = completed;
+        this.useCompletedEvents = useCompletedEvents;
     }
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -253,6 +275,38 @@ public class GenerateTabularReportAction
         throws Exception
     {
         // ---------------------------------------------------------------------
+        // Get user orgunits
+        // ---------------------------------------------------------------------
+
+        if ( userOrganisationUnit || userOrganisationUnitChildren )
+        {
+            Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
+            orgunitIds = new HashSet<Integer>();
+
+            if ( userOrganisationUnit )
+            {
+                for ( OrganisationUnit userOrgunit : userOrgunits )
+                {
+                    orgunitIds.add( userOrgunit.getId() );
+                }
+            }
+
+            if ( userOrganisationUnitChildren )
+            {
+                for ( OrganisationUnit userOrgunit : userOrgunits )
+                {
+                    if ( userOrgunit.hasChild() )
+                    {
+                        for ( OrganisationUnit childOrgunit : userOrgunit.getSortedChildren() )
+                        {
+                            orgunitIds.add( childOrgunit.getId() );
+                        }
+                    }
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
         // Get orgunitIds
         // ---------------------------------------------------------------------
 
@@ -276,17 +330,8 @@ public class GenerateTabularReportAction
         {
             for ( Integer orgunitId : orgunitIds )
             {
-                OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-
-                if ( selectedOrgunit.getParent() == null )
-                {
-                    organisationUnits = null; // Ignore unit criteria when root
-                }
-                else
-                {
-                    organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
-                        orgunitId ) );
-                }
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy()
+                    .getChildren( orgunitId ) );
             }
         }
 
@@ -324,20 +369,21 @@ public class GenerateTabularReportAction
             if ( type == null ) // Tabular report
             {
                 totalRecords = programStageInstanceService.getTabularReportCount( programStage, columns,
-                    organisationUnits, level, completed, startValue, endValue );
+                    organisationUnits, level, useCompletedEvents, startValue, endValue );
 
                 total = getNumberOfPages( totalRecords );
 
                 this.paging = createPaging( totalRecords );
 
                 grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, completed, getStartPos(), paging.getPageSize(), i18n );
+                    startValue, endValue, !orderByOrgunitAsc, useCompletedEvents, getStartPos(), paging.getPageSize(),
+                    i18n );
             }
             else
             // Download as Excel
             {
                 grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, completed, null, null, i18n );
+                    startValue, endValue, !orderByOrgunitAsc, useCompletedEvents, null, null, i18n );
             }
         }
         catch ( SQLGrammarException ex )
