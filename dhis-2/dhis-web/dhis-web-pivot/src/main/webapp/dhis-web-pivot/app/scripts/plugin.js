@@ -11,7 +11,12 @@ settings = {
 	],
 	filter: [
 		{name: 'ou', items: ['ImspTQPwCqd']}
-	]
+	],
+	options: {
+		showSubTotals: false,
+		cellPadding: 'normal',
+		fontSize: 'normal'
+	}
 };
 
 xSettings = {
@@ -50,6 +55,11 @@ xSettings = {
 		'pe': ['201201', '201202', '201203'],
 		'Bpx0589u8y0': ['MAs88nJc9nL', 'PVLOW4bCshG'],
 		'ou': ['ImspTQPwCqd']
+	},
+	options: {
+		showSubTotals: false,
+		cellPadding: 'normal',
+		fontSize: 'normal'
 	}
 };
 
