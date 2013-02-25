@@ -4394,6 +4394,7 @@ Ext.onReady( function() {
 						text: TR.i18n.sort_by,
 						id: 'btnSortBy',
 						disabled: true,
+						menu: {},
 						listeners: {
 							afterrender: function(b) {
 								this.menu = Ext.create('Ext.menu.Menu', {
@@ -4429,6 +4430,7 @@ Ext.onReady( function() {
 						cls: 'tr-toolbar-btn-2',
 						id: 'caseBasedFavoriteBtn',
 						text: TR.i18n.favorites + '..',
+						menu: {},
 						hidden: true,
 						listeners: {
 							afterrender: function(b) {
@@ -4933,6 +4935,7 @@ Ext.onReady( function() {
 						cls: 'tr-toolbar-btn-2',
 						id: 'aggregateFavoriteBtn',
 						text: TR.i18n.favorites + '..',
+						menu: {},
 						listeners: {
 							afterrender: function(b) {
 								this.menu = Ext.create('Ext.menu.Menu', {
@@ -5432,6 +5435,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'button',
 						text: TR.i18n.download + '..',
+						menu: {},
 						execute: function(type) {
 							TR.exe.execute( type );
 						},
