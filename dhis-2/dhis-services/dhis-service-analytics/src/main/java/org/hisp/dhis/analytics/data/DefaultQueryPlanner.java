@@ -278,7 +278,7 @@ public class DefaultQueryPlanner
         }
         else
         {
-            throw new IllegalQueryException( "Query does not contain any period dimension options" );
+            throw new IllegalQueryException( "Query does not contain any period dimension items" );
         }
         
         return queries;
@@ -322,7 +322,7 @@ public class DefaultQueryPlanner
         }
         else
         {
-            throw new IllegalQueryException( "Query does not contain any period dimension options" );
+            throw new IllegalQueryException( "Query does not contain any period dimension items" );
         }
         
         return queries;        
@@ -389,7 +389,7 @@ public class DefaultQueryPlanner
      * meaningful to split on multiple data element group sets.
      * 
      * If the aggregation type is already set/overridden in the request, the
-     * query will be returned unchanged. If there are no dimension options specified
+     * query will be returned unchanged. If there are no dimension items specified
      * the aggregation type will fall back to sum.
      */
     private List<DataQueryParams> groupByAggregationType( DataQueryParams params )
@@ -419,11 +419,11 @@ public class DefaultQueryPlanner
             }
         }
         else if ( params.getDataElementGroupSets() != null && !params.getDataElementGroupSets().isEmpty() &&
-            ( groupSet = params.getDataElementGroupSets().iterator().next() ).getOptions() != null && !groupSet.getOptions().isEmpty() )
+            ( groupSet = params.getDataElementGroupSets().iterator().next() ).getItems() != null && !groupSet.getItems().isEmpty() )
         {
             PeriodType periodType = PeriodType.getPeriodTypeByName( params.getPeriodType() );
             
-            ListMap<AggregationType, IdentifiableObject> aggregationTypeDataElementGroupMap = getAggregationTypeDataElementGroupMap( groupSet.getOptions(), periodType );
+            ListMap<AggregationType, IdentifiableObject> aggregationTypeDataElementGroupMap = getAggregationTypeDataElementGroupMap( groupSet.getItems(), periodType );
 
             for ( AggregationType aggregationType : aggregationTypeDataElementGroupMap.keySet() )
             {
