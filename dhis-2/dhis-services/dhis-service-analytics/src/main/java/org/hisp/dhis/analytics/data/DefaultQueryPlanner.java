@@ -36,6 +36,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.CATEGORYOPTIONCOMBO_DIM_ID
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.analytics.DataQueryParams.MAX_DIM_OPT_PERM;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -98,6 +99,11 @@ public class DefaultQueryPlanner
         if ( params.getFilters().contains( new Dimension( CATEGORYOPTIONCOMBO_DIM_ID ) ) )
         {
             throw new IllegalQueryException( "Category option combos cannot be specified as filter" );
+        }
+        
+        if ( params.getNumberOfDimensionOptionPermutations() > MAX_DIM_OPT_PERM )
+        {
+            throw new IllegalQueryException( "Table exceeds max number of cells: " + MAX_DIM_OPT_PERM );
         }
         
         //TODO check if any dimension occur more than once
