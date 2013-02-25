@@ -322,6 +322,7 @@ td .bad div {
 .x-form-cb-label-after {
     padding-left: 1px;
     font-size: 11px;
+    color: #333;
 }
 
 	/* Icons */
@@ -787,7 +788,7 @@ td .bad div {
 
 	/* accordion item body */
 .pt-accordion .x-accordion-body {
-	padding: 5px 3px 0px;
+	padding: 2px 2px 0px;
 	border-top: 1px solid #c5c5c5 !important;
 }
 
