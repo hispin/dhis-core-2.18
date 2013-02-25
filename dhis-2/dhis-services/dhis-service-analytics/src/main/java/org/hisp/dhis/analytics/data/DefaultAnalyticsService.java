@@ -110,7 +110,6 @@ public class DefaultAnalyticsService
     
     //TODO completeness on time
     //TODO make sure data x dims are successive
-    //TODO max value limit, 5000?
     
     @Autowired
     private AnalyticsManager analyticsManager;

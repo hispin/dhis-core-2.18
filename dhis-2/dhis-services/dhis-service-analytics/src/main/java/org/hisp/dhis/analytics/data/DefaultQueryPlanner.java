@@ -81,9 +81,9 @@ public class DefaultQueryPlanner
             throw new IllegalQueryException( "At least one dimension must be specified" );
         }
         
-        if ( !params.dimensionsAsFilters().isEmpty() )
+        if ( !params.getDimensionsAsFilters().isEmpty() )
         {
-            throw new IllegalQueryException( "Dimensions cannot be specified as dimension and filter simultaneously: " + params.dimensionsAsFilters() );
+            throw new IllegalQueryException( "Dimensions cannot be specified as dimension and filter simultaneously: " + params.getDimensionsAsFilters() );
         }
         
         if ( !params.hasPeriods() && !params.isSkipPartitioning() )
@@ -106,7 +106,15 @@ public class DefaultQueryPlanner
             throw new IllegalQueryException( "Table exceeds max number of cells: " + MAX_DIM_OPT_PERM );
         }
         
-        //TODO check if any dimension occur more than once
+        if ( !params.getDuplicateDimensions().isEmpty() )
+        {
+            throw new IllegalQueryException( "Dimensions cannot be specified more than once: " + params.getDuplicateDimensions() );
+        }
+        
+        if ( params.hasDimensionOrFilter( DataQueryParams.DATASET_DIM_ID ) && !params.getDataElementGroupSets().isEmpty() )
+        {
+            throw new IllegalQueryException( "Data sets and data element group sets cannot be specified simultaneously" );
+        }
     }
     
     public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName )

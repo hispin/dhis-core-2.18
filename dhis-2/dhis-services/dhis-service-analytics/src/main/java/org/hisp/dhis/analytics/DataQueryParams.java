@@ -34,9 +34,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
@@ -301,11 +303,11 @@ public class DataQueryParams
      * Returns the dimensions which are part of dimensions and filters. If any
      * such dimensions exist this object is in an illegal state.
      */
-    public Collection<Dimension> dimensionsAsFilters()
+    public Collection<Dimension> getDimensionsAsFilters()
     {
         return CollectionUtils.intersection( dimensions, filters );
     }
-    
+        
     /**
      * Indicates whether periods are present as a dimension or as a filter. If
      * not this object is in an illegal state.
@@ -331,6 +333,25 @@ public class DataQueryParams
         }
         
         return total;
+    }
+    
+    /**
+     * Returns a list of dimensions which occur more than once.
+     */
+    public List<Dimension> getDuplicateDimensions()
+    {
+        Set<Dimension> dims = new HashSet<Dimension>();
+        List<Dimension> duplicates = new ArrayList<Dimension>();
+        
+        for ( Dimension dim : dimensions )
+        {
+            if ( !dims.add( dim ) )
+            {
+                duplicates.add( dim );
+            }
+        }
+        
+        return duplicates;
     }
     
     /**
@@ -807,6 +828,11 @@ public class DataQueryParams
         }
     }
     
+    public boolean hasDimensionOrFilter( String key )
+    {
+        return dimensions.indexOf( new Dimension( key ) ) != -1 || filters.indexOf( new Dimension( key ) ) != -1;
+    }
+    
     // -------------------------------------------------------------------------
     // Get and set helpers for dimensions
     // -------------------------------------------------------------------------
@@ -872,6 +898,8 @@ public class DataQueryParams
                 list.add( dimension );
             }
         }
+        
+        //TODO filters?
         
         return list;
     }
