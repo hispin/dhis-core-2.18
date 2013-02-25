@@ -1054,8 +1054,8 @@ Ext.onReady( function() {
 								storeProgramStage.load({params: {programId: f.programId}});
 								
 								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
-								
 								TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
+				
 								TR.exe.execute();
 							}
 						});
@@ -1854,7 +1854,9 @@ Ext.onReady( function() {
 								TR.value.title = json.title;
 								TR.value.columns = json.columns;
 								TR.value.values = json.items;
+								
 								// Get fields
+								
 								var fields = [];
 								for( var index=0; index < TR.value.columns.length; index++ )
 								{
@@ -1862,7 +1864,15 @@ Ext.onReady( function() {
 								}
 								TR.value.fields = fields;
 								
+								if(TR.cmp.params.dataelement.selected.store.data.length>0){
+									Ext.getCmp('btnClean').enable();
+								}
+								else{
+									Ext.getCmp('btnClean').disable();
+								}
+								
 								// Set data for grid
+								
 								TR.store.getDataTableStore();
 								TR.datatable.getDataTable();
 								TR.datatable.hidePagingBar();
@@ -4377,15 +4387,25 @@ Ext.onReady( function() {
 						id: 'btnClean',
 						disabled: true,
 						handler: function() {
-							TR.cmp.params.dataelement.selected.store.each( function(r) {
-								var deId = r.data.id;
-								var length = Ext.getCmp('p_' + deId).items.length/4;
-								for(var idx=0;idx<length;idx++)
-								{					
-									var id = deId + '_' + idx;
-									Ext.getCmp('filter_' + id).setValue('');
-								}
-							});
+							if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+							{
+							
+								TR.cmp.params.dataelement.selected.store.each( function(r) {
+									var deId = r.data.id;
+									var length = Ext.getCmp('p_' + deId).items.length/4;
+									for(var idx=0;idx<length;idx++)
+									{					
+										var id = deId + '_' + idx;
+										Ext.getCmp('filter_' + id).setValue('');
+									}
+								});
+							}
+							else
+							{
+								TR.store.dataelement.selected.removeAll();
+								Ext.getCmp('filterPanel').removeAll();
+								Ext.getCmp('filterPanel').doLayout();
+							}
 							TR.exe.execute();
 						}
 					},
