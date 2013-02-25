@@ -51,7 +51,7 @@ public class MobileClientController
         return orgUnits;
     }
     
-    @RequestMapping( method = RequestMethod.GET, value = "/{version}" )
+    @RequestMapping( method = RequestMethod.GET, value = "/{version}/" )
     @ResponseBody
     public OrgUnits getOrgUnitsForUser( HttpServletRequest request, @PathVariable String version )
         throws NotAllowedException
@@ -71,7 +71,7 @@ public class MobileClientController
             unitList.add( getOrgUnit( unit, request ) );
         }
         OrgUnits orgUnits = new OrgUnits( unitList );
-        orgUnits.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
+        orgUnits.setClientVersion( version );
         return orgUnits;
     }
 
@@ -91,6 +91,7 @@ public class MobileClientController
         orgUnit.setSearchUrl( getUrl( request, unit.getId(), "search" ) );
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
         orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
+        orgUnit.setUploadProgramStageUrl( getUrl( request, unit.getId(), "uploadProgramStage" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );

@@ -18,6 +18,7 @@ import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.SMSCode;
 import org.hisp.dhis.api.mobile.model.SMSCommand;
 import org.hisp.dhis.i18n.I18nService;
@@ -42,6 +43,8 @@ public class MobileOrganisationUnitController
     private static final String ACTIVITY_REPORT_UPLOADED = "activity_report_uploaded";
 
     private static final String DATASET_REPORT_UPLOADED = "dataset_report_uploaded";
+
+    private static final String PROGRAM_STAGE_UPLOADED = "program_stage_uploaded";
 
     @Autowired
     private ActivityReportingService activityReportingService;
@@ -274,10 +277,19 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/findPatient" )
     @ResponseBody
-    public Patient findPatientByName( @PathVariable int id, @RequestHeader( "name" ) String fullName)
-    throws NotAllowedException
+    public Patient findPatientByName( @PathVariable int id, @RequestHeader( "name" ) String fullName )
+        throws NotAllowedException
     {
         return activityReportingService.findPatient( fullName );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/uploadProgramStage" )
+    @ResponseBody
+    public String saveProgramStage( @PathVariable int id, @RequestBody ProgramStage programStage )
+        throws NotAllowedException
+    {
+        activityReportingService.saveProgramStage( programStage );
+        return PROGRAM_STAGE_UPLOADED;
     }
 
     // Supportive methods

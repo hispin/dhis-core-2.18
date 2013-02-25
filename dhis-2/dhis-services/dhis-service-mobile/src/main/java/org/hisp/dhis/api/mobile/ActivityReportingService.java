@@ -30,6 +30,7 @@ package org.hisp.dhis.api.mobile;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -50,4 +51,8 @@ public interface ActivityReportingService
 
     public Patient findPatient( String name )
         throws NotAllowedException;
+
+    public void saveProgramStage( ProgramStage programStage )
+        throws NotAllowedException;
+
 }
