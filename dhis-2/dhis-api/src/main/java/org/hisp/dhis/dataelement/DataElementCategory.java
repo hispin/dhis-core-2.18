@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -109,7 +110,7 @@ public class DataElementCategory
         categoryOptions.remove( dataElementCategoryOption );
         dataElementCategoryOption.getCategories().remove( this );
     }
-    
+
     public void removeAllCategoryOptions()
     {
         for ( DataElementCategoryOption categoryOption : categoryOptions )
@@ -195,6 +196,7 @@ public class DataElementCategory
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonInclude( JsonInclude.Include.NON_NULL )
     public Concept getConcept()
     {
         return concept;
