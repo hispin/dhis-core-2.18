@@ -1501,13 +1501,6 @@ Ext.onReady( function() {
 				this.aggregateReport.getURLParams( type );
 			}
 		},
-		paramChanged: function() {
-			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
-			{
-				return this.caseBasedReport.isParamChanged();
-			}
-			return true;
-		},
 		
 		caseBasedReport: {
 			generate: function( type, isSorted ) {
@@ -1569,30 +1562,6 @@ Ext.onReady( function() {
 					});
 				}
 				TR.util.notification.ok();
-			},
-			filter: function() {
-				TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
-				TR.state.isFilter = true;
-				var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
-				Ext.Ajax.request({
-					url: url,
-					method: "POST",
-					scope: this,
-					params: this.getParams(),
-					success: function(r) {
-						var json = Ext.JSON.decode(r.responseText);
-						TR.value.values = json.items;
-						TR.state.total = json.total;
-						TR.state.totalRecords = json.totalRecords
-						TR.value.columns = json.columns;
-						TR.store.datatable.loadData(TR.value.values,false);
-						
-						TR.datatable.setPagingToolbarStatus();
-							
-						TR.util.notification.ok();
-						TR.util.mask.hideMask();
-					}
-				});
 			},
 			getParams: function(isSorted) {
 				var p = {};
@@ -1721,43 +1690,6 @@ Ext.onReady( function() {
 					}
 				} 
 				return false;
-			},
-			isParamChanged: function() {
-				if( TR.store.datatable && TR.store.datatable.data.length > 0 )
-				{
-					var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
-					var orgUnitColsInTable =  ( TR.datatable.datatable.columns.length 
-										- TR.cmp.params.dataelement.selected.store.data.length - 2 );
-					if( orgUnitCols!=orgUnitColsInTable )
-					{
-						return true;
-					}
-					
-					var colNames=[];
-					TR.cmp.params.dataelement.selected.store.each( function(r) {
-						colNames.push( r.data.id );
-					});
-						
-					var cols = TR.datatable.datatable.columns;
-					var colDataLen = 0;
-					for( var i=0; i<cols.length; i++ )
-					{
-						var col = cols[i];
-						if( col.name && col.name.indexOf('meta_')==-1 )
-						{
-							colDataLen ++;
-							if( colNames.indexOf(col.name) == -1 )
-								return true;
-						}
-					}
-					if( colDataLen < colNames.length )
-					{
-						return true;
-					}
-					
-					return !TR.state.isFilter;
-				}
-				return true;
 			},
 			validation: {
 				objects: function() {
@@ -2650,20 +2582,12 @@ Ext.onReady( function() {
 		execute: function( type, isSorted ) {
 			TR.state.generateReport( type, isSorted );
 		},
-		filter: function() {
-			TR.state.isFilter = true;
-			TR.state.filterReport();
-		},
 		paging: function( currentPage )
 		{
 			TR.state.currentPage = currentPage;
 			TR.state.filterReport();
 			Ext.getCmp('currentPage').setValue( currentPage );	
 			TR.datatable.setPagingToolbarStatus();
-		},
-		reset: function() {
-			TR.store.datatable.loadData([],false);
-			this.execute();
 		},
 		datatable: function() {
 			TR.store.getDataTableStore();
@@ -4371,14 +4295,7 @@ Ext.onReady( function() {
 						cls: 'tr-toolbar-btn-1',
 						text: TR.i18n.update,
 						handler: function() {
-							if( !TR.state.paramChanged() )
-							{
-								TR.exe.filter();
-							}
-							else
-							{
-								TR.exe.execute();
-							}
+							TR.exe.execute();
 						}
 					},
 					{
