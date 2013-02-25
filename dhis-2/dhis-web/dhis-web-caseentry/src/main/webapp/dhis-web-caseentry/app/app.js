@@ -1017,6 +1017,10 @@ Ext.onReady( function() {
 								}
 								
 								// Data element
+								
+								Ext.getCmp('filterPanel').removeAll();
+								Ext.getCmp('filterPanel').doLayout();
+	
 								TR.cmp.params.dataelement.objects = [];
 								TR.store.dataelement.selected.removeAll();
 								if (f.dataElements) {
@@ -1789,6 +1793,11 @@ Ext.onReady( function() {
 						return false;
 					}
 					
+					if(TR.cmp.params.dataelement.selected.store.data.items.length == 0 )
+					{
+						TR.util.notification.error(TR.i18n.em_no_data_element, TR.i18n.em_no_data_element);
+						return false;
+					}
 					return true;
 				},
 				response: function(r) {
