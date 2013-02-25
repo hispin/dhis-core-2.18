@@ -281,12 +281,12 @@ public class DataElementCategoryOptionCombo
     public static Map<Integer, String> getCategoryOptionComboMap( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         Map<Integer, String> map = new HashMap<Integer, String>();
-        
+
         for ( DataElementCategoryOptionCombo coc : categoryOptionCombos )
         {
             map.put( coc.getId(), coc.getName() );
         }
-        
+
         return map;
     }
     // -------------------------------------------------------------------------
@@ -308,7 +308,7 @@ public class DataElementCategoryOptionCombo
             name.append( "(" );
 
             Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
-            
+
             if ( iterator.hasNext() )
             {
                 name.append( iterator.next().getDisplayName() );
@@ -350,9 +350,9 @@ public class DataElementCategoryOptionCombo
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
