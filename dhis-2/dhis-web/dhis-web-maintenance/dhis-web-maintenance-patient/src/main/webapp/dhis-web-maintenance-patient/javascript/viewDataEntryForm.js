@@ -132,7 +132,6 @@ function filterDataElements( filter, container, list )
 
 function insertDataElement( source, programStageId )
 {
-	var oEditor = jQuery("#designTextarea").ckeditorGet();
 	var dataElement = JSON.parse( jQuery( source + ' #dataElementIds').val() );
 
 	if( dataElement == null )
@@ -177,10 +176,11 @@ function insertDataElement( source, programStageId )
 		jQuery( source + " #message_").html( "<span class='bold'>" + i18n_dataelement_is_inserted + "</span>" );
 		return;
 	}else{
+		var oEditor = jQuery("#designTextarea").ckeditorGet();
+		oEditor.insertHtml( htmlCode );
 		jQuery( source + " #message_").html("");
 	}
 
-	oEditor.insertHtml( htmlCode );
 }
 
 
