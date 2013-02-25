@@ -106,7 +106,7 @@ public class DefaultAnalyticsService
     
     private static final String VALUE_HEADER_NAME = "Value";
     private static final int PERCENT = 100;
-    private static final int MAX_QUERIES = 6; //TODO increase?
+    private static final int MAX_QUERIES = 8; //TODO increase?
     
     //TODO completeness on time
     //TODO make sure data x dims are successive
