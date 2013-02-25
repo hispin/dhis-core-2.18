@@ -126,7 +126,7 @@ public class JdbcAnalyticsManager
         {
             if ( !dim.isAllOptions() )
             {
-                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getOptions() ) ) + " ) ";
+                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + " ) ";
             }
         }
 
@@ -134,7 +134,7 @@ public class JdbcAnalyticsManager
         {
             if ( !filter.isAllOptions() )
             {
-                sql += sqlHelper.whereAnd() + " " + filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getOptions() ) ) + " ) ";
+                sql += sqlHelper.whereAnd() + " " + filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + " ) ";
             }
         }
         

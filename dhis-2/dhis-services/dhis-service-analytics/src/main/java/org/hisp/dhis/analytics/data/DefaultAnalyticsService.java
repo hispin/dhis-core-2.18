@@ -40,7 +40,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.PERIOD_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.getDimensionFromParam;
-import static org.hisp.dhis.analytics.DataQueryParams.getDimensionOptionsFromParam;
+import static org.hisp.dhis.analytics.DataQueryParams.getDimensionItemsFromParam;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 
@@ -63,7 +63,7 @@ import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Dimension;
-import org.hisp.dhis.analytics.DimensionOption;
+import org.hisp.dhis.analytics.DimensionItem;
 import org.hisp.dhis.analytics.DimensionType;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
@@ -188,32 +188,32 @@ public class DefaultAnalyticsService
 
             Map<String, Map<DataElementOperand, Double>> permutationOperandValueMap = dataSourceParams.getPermutationOperandValueMap( aggregatedDataMap );
             
-            List<List<DimensionOption>> dimensionOptionPermutations = dataSourceParams.getDimensionOptionPermutations();
+            List<List<DimensionItem>> dimensionItemPermutations = dataSourceParams.getDimensionItemPermutations();
 
             Map<String, Double> constantMap = constantService.getConstantMap();
 
             for ( Indicator indicator : indicators )
             {
-                for ( List<DimensionOption> options : dimensionOptionPermutations )
+                for ( List<DimensionItem> options : dimensionItemPermutations )
                 {
-                    String permKey = DimensionOption.asOptionKey( options );
+                    String permKey = DimensionItem.asItemKey( options );
 
                     Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( permKey );
                     
                     if ( valueMap != null )
                     {
-                        Period period = (Period) DimensionOption.getPeriodOption( options );
+                        Period period = (Period) DimensionItem.getPeriodItem( options );
                         
                         Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
                         
                         if ( value != null )
                         {
-                            List<DimensionOption> row = new ArrayList<DimensionOption>( options );
+                            List<DimensionItem> row = new ArrayList<DimensionItem>( options );
                             
-                            row.add( indicatorIndex, new DimensionOption( INDICATOR_DIM_ID, indicator ) );
+                            row.add( indicatorIndex, new DimensionItem( INDICATOR_DIM_ID, indicator ) );
                                                         
                             grid.addRow();
-                            grid.addValues( DimensionOption.getOptionIdentifiers( row ) );
+                            grid.addValues( DimensionItem.getItemIdentifiers( row ) );
                             grid.addValue( MathUtils.getRounded( value, 1 ) );
                         }
                     }
@@ -395,7 +395,7 @@ public class DefaultAnalyticsService
             for ( String param : dimensionParams )
             {
                 String dimension = getDimensionFromParam( param );
-                List<String> options = getDimensionOptionsFromParam( param );
+                List<String> options = getDimensionItemsFromParam( param );
                 
                 if ( dimension != null && options != null )
                 {
@@ -409,7 +409,7 @@ public class DefaultAnalyticsService
             for ( String param : filterParams )
             {
                 String dimension = DataQueryParams.getDimensionFromParam( param );
-                List<String> options = DataQueryParams.getDimensionOptionsFromParam( param );
+                List<String> options = DataQueryParams.getDimensionItemsFromParam( param );
                 
                 if ( dimension != null && options != null )
                 {
@@ -593,7 +593,7 @@ public class DefaultAnalyticsService
         
         for ( Dimension dimension : dimensions )
         {
-            List<IdentifiableObject> options = new ArrayList<IdentifiableObject>( dimension.getOptions() );
+            List<IdentifiableObject> options = new ArrayList<IdentifiableObject>( dimension.getItems() );
 
             // -----------------------------------------------------------------
             // If dimension is not fixed and has no options, insert all options
