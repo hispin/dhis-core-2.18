@@ -42,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
@@ -313,6 +314,24 @@ public class DataQueryParams
         List<IdentifiableObject> filterOpts = getFilterOptions( PERIOD_DIM_ID );
         
         return ( dimOpts != null && !dimOpts.isEmpty() ) || ( filterOpts != null && !filterOpts.isEmpty() );
+    }
+    
+    /**
+     * Returns a mapping between identifier and period type for all data sets
+     * in this query.
+     */
+    public Map<String, PeriodType> getDataSetPeriodTypeMap()
+    {
+        Map<String, PeriodType> map = new HashMap<String, PeriodType>();
+        
+        for ( IdentifiableObject dataSet : getDataSets() )
+        {
+            DataSet ds = (DataSet) dataSet;
+            
+            map.put( ds.getUid(), ds.getPeriodType() );
+        }
+        
+        return map;
     }
     
     /**
