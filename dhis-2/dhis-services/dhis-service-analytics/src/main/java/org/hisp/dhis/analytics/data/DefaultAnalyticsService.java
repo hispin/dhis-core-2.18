@@ -105,9 +105,10 @@ public class DefaultAnalyticsService
     private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
     
     private static final String VALUE_HEADER_NAME = "Value";
+    private static final int PERCENT = 100;
     private static final int MAX_QUERIES = 6; //TODO increase?
     
-    //TODO completeness
+    //TODO completeness on time
     //TODO make sure data x dims are successive
     //TODO max value limit, 5000?
     
@@ -260,28 +261,35 @@ public class DefaultAnalyticsService
             dataTargetParams.setAggregationType( AggregationType.COUNT );
             dataTargetParams.setSkipPartitioning( true );
 
-            Map<String, Double> targetMap = getAggregatedCompletenessTargetMap( dataTargetParams ); //TODO
+            Map<String, Double> targetMap = getAggregatedCompletenessTargetMap( dataTargetParams );
+            
+            Map<String, PeriodType> dsPtMap = dataSourceParams.getDataSetPeriodTypeMap();
             
             Integer periodIndex = dataSourceParams.getPeriodDimensionIndex();
             Integer dataSetIndex = dataSourceParams.getDataSetDimensionIndex();
             
-            //TODO time aggregation for completeness, use data set period type and period.getPeriodSpan
+            List<Integer> completenessDimIndexes = dataTargetParams.getCompletenessDimensionIndexes();
             
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
                 List<String> row = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
                 
-                List<String> targetRow = ListUtils.getAll( row, dataTargetParams.getCompletenessDimensionIndexes() );
+                List<String> targetRow = ListUtils.getAll( row, completenessDimIndexes );
                 String targetKey = StringUtils.join( targetRow, DIMENSION_SEP );
                 Double target = targetMap.get( targetKey );
                              
                 if ( target != null && entry.getValue() != null )
                 {
-                    double value = entry.getValue() / target;
+                    PeriodType queryPt = PeriodType.getPeriodTypeFromIsoString( row.get( periodIndex ) );
+                    PeriodType dataPt = dsPtMap.get( row.get( dataSetIndex ) );
+                    
+                    target = target * queryPt.getPeriodSpan( dataPt );
+                    
+                    double value = entry.getValue() * PERCENT / target;
                     
                     grid.addRow();
                     grid.addValues( row.toArray() );
-                    grid.addValue( value );
+                    grid.addValue( MathUtils.getRounded( value, 1 ) );
                 }
             }
         }
