@@ -909,4 +909,12 @@ public class ActivityReportingServiceImpl
             return patient;
         }
     }
+
+    @Override
+    public void saveProgramStage( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage programStage )
+        throws NotAllowedException
+    {
+        System.out.println("name: "+programStage.getName());
+        
+    }
 }

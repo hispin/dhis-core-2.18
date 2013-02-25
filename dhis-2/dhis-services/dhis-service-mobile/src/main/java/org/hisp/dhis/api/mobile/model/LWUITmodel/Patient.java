@@ -371,7 +371,7 @@ public class Patient
     }
 
     @Override
-    public void serializeVerssion2_8( DataOutputStream out )
+    public void serializeVersion2_8( DataOutputStream out )
         throws IOException
     {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -450,7 +450,7 @@ public class Patient
         dout.writeInt( identifiers.size() );
         for ( PatientIdentifier each : identifiers )
         {
-            each.serializeVerssion2_8( dout );
+            each.serializeVersion2_8( dout );
         }
 
         bout.flush();
@@ -458,7 +458,7 @@ public class Patient
     }
 
     @Override
-    public void serializeVerssion2_9( DataOutputStream dout )
+    public void serializeVersion2_9( DataOutputStream dout )
         throws IOException
     {
         dout.writeInt( this.getId() );
@@ -534,15 +534,12 @@ public class Patient
         dout.writeInt( identifiers.size() );
         for ( PatientIdentifier each : identifiers )
         {
-            each.serializeVerssion2_9( dout );
+            each.serializeVersion2_9( dout );
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.hisp.dhis.api.mobile.model.DataStreamSerializable#serializeVerssion2_10(java.io.DataOutputStream)
-     */
     @Override
-    public void serializeVerssion2_10( DataOutputStream dataOutputStream )
+    public void serializeVersion2_10( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub

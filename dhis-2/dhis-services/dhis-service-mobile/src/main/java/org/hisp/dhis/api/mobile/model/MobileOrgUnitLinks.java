@@ -65,6 +65,8 @@ public class MobileOrgUnitLinks
     private String updateContactUrl;
     
     private String findPatientUrl;
+    
+    private String uploadProgramStageUrl;
 
     @XmlAttribute
     public int getId()
@@ -198,6 +200,16 @@ public class MobileOrgUnitLinks
         this.findPatientUrl = findPatientUrl;
     }
 
+    public String getUploadProgramStageUrl()
+    {
+        return uploadProgramStageUrl;
+    }
+
+    public void setUploadProgramStageUrl( String uploadProgramStageUrl )
+    {
+        this.uploadProgramStageUrl = uploadProgramStageUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
 
         throws IOException
@@ -214,6 +226,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.updateContactUrl );
         dataOutputStream.writeUTF( this.findPatientUrl );
+        dataOutputStream.writeUTF( this.uploadProgramStageUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -231,10 +244,11 @@ public class MobileOrgUnitLinks
         this.updateNewVersionUrl = dataInputStream.readUTF();
         this.updateContactUrl = dataInputStream.readUTF();
         this.findPatientUrl = dataInputStream.readUTF();
+        this.uploadProgramStageUrl = dataInputStream.readUTF();
     }
 
     @Override
-    public void serializeVerssion2_8( DataOutputStream dataOutputStream )
+    public void serializeVersion2_8( DataOutputStream dataOutputStream )
         throws IOException
     {
         dataOutputStream.writeInt( this.id );
@@ -249,7 +263,24 @@ public class MobileOrgUnitLinks
     }
 
     @Override
-    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
+    public void serializeVersion2_9( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        dataOutputStream.writeInt( this.id );
+        dataOutputStream.writeUTF( this.name );
+        dataOutputStream.writeUTF( this.downloadAllUrl );
+        dataOutputStream.writeUTF( this.updateActivityPlanUrl );
+        dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
+        dataOutputStream.writeUTF( this.uploadActivityReportUrl );
+        dataOutputStream.writeUTF( this.updateDataSetUrl );
+        dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
+        dataOutputStream.writeUTF( this.searchUrl );
+        dataOutputStream.writeUTF( this.updateNewVersionUrl );
+        dataOutputStream.writeUTF( this.updateContactUrl );
+    }
+
+    @Override
+    public void serializeVersion2_10( DataOutputStream dataOutputStream )
         throws IOException
     {
         dataOutputStream.writeInt( this.id );
@@ -264,13 +295,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.updateContactUrl );
         dataOutputStream.writeUTF( this.findPatientUrl );
-    }
-
-    @Override
-    public void serializeVerssion2_10( DataOutputStream dataOutputStream )
-        throws IOException
-    {
-        // TODO Auto-generated method stub
+        dataOutputStream.writeUTF( this.uploadProgramStageUrl );
         
     }
 
