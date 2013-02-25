@@ -2349,16 +2349,6 @@ Ext.onReady( function() {
 				scroll: 'both',
 				title: title,
 				selType: 'cellmodel',
-				features: [{
-					ftype: 'filters',
-					autoReload: true,
-					encode: true,
-					local: false,
-					buildQuery : function (filters) {
-						TR.exe.filter();
-					},
-					filters: []
-				}],
 				bbar: [
 					{
 						xtype: 'button',
@@ -2396,22 +2386,6 @@ Ext.onReady( function() {
 						listeners: {
 							added: function() {
 								TR.cmp.settings.currentPage = this;
-							},						
-							specialkey: function( textfield, e, eOpts ){
-								
-								if (e.keyCode == e.ENTER)
-								{
-									var oldValue = TR.state.currentPage;
-									var newValue = textfield.rawValue;
-									if( newValue < 1 || newValue > TR.state.total )
-									{
-										textfield.setValue(oldValue);
-									}
-									else
-									{
-										TR.exe.paging( newValue );
-									}
-								}
 							}
 						},
 					},
@@ -2557,75 +2531,11 @@ Ext.onReady( function() {
 			params.isEditAllowed = true;
 			params.compulsory = compulsory;
 			
-			params.editor = {}; 
-			params.editor.xtype = TR.value.covertXType( type ); 
-			params.editor.editable = true;
-
-			params.filter = {};
-			params.filter.type = TR.value.covertValueType( type );
-				
 			type = type.toLowerCase();
 			if( type == 'date' )
 			{
 				params.renderer = Ext.util.Format.dateRenderer( TR.i18n.format_date );
-				params.filter.dateFormat = TR.i18n.format_date;
-				params.filter.beforeText = TR.i18n.before;
-				params.filter.afterText = TR.i18n.after;
-				params.filter.onText = TR.i18n.on;
-				
-				params.editor.format = TR.i18n.format_date;
 			}
-			else if( type == 'bool' || type == 'trueonly' )
-			{
-				params.editor.xtype = 'combobox';
-				params.editor.queryMode = 'local';
-				params.editor.editable = true;
-				params.editor.valueField = 'value';
-				params.editor.displayField = 'name';
-				params.editor.selectOnFocus = true;
-				if( type.toLowerCase() == 'bool' ){
-					params.editor.store = new Ext.data.ArrayStore({
-						fields: ['value', 'name'],
-						data: [['', ''],['true', TR.i18n.true_value], ['false', TR.i18n.false_value]]
-					});
-				}
-				else{
-					params.editor.store = new Ext.data.ArrayStore({
-						fields: ['value', 'name'],
-						data: [['', ''], ['true', TR.i18n.true_value]]
-					});
-				}
-			}
-			else if( type == 'list' )
-			{
-				params.editor.xtype = 'combobox';
-				params.editor.typeAhead = true;
-				params.editor.selectOnFocus = true;
-				params.editor.triggerAction = 'all';
-				params.editor.transform = 'light';
-				params.editor.lazyRender = true;
-				params.editor.forceSelection = true;
-				params.editor.hideTrigger = true;
-				params.editor.validateOnBlur = true;
-				params.editor.queryMode = 'remote';
-				params.editor.valueField = 'o';
-				params.editor.displayField = 'o';
-				params.editor.store = Ext.create('Ext.data.Store', {
-					fields: ['o'],
-					data:[],
-					expandData: true,
-					proxy: {
-						type: 'ajax',
-						url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.suggested_dataelement_get,
-						extraParams:{id: objectId},
-						reader: {
-							type: 'json',
-							root: 'options'
-						}
-					}
-				})		
-			}
-			
 			return params;
 		},
         setPagingToolbarStatus: function() {
@@ -2827,6 +2737,7 @@ Ext.onReady( function() {
 													Ext.getCmp('levelCombobox').setVisible(true);
 													
 													Ext.getCmp('dateRangeDiv').setVisible(true);
+													Ext.getCmp('btnSortBy').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
 													Ext.getCmp('dateRangeDiv').expand();
@@ -2856,6 +2767,7 @@ Ext.onReady( function() {
 													Ext.getCmp('dateRangeDiv').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
+													Ext.getCmp('btnSortBy').setVisible(false);
 													
 													Ext.getCmp('datePeriodRangeDiv').setVisible(true);
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
@@ -4456,17 +4368,15 @@ Ext.onReady( function() {
 						id: 'btnClean',
 						disabled: true,
 						handler: function() {
-							var grid = TR.datatable.datatable;
-							var cols = grid.columns;
-							var editor = grid.getStore().getAt(0);
-							var colLen = cols.length;
-							for( var i=1; i<colLen; i++ )
-							{
-								var col = cols[i];
-								var dataIndex = col.dataIndex;
-								TR.store.datatable.first().data[dataIndex] = "";
-							}
-							
+							TR.cmp.params.dataelement.selected.store.each( function(r) {
+								var deId = r.data.id;
+								var length = Ext.getCmp('p_' + deId).items.length/4;
+								for(var idx=0;idx<length;idx++)
+								{					
+									var id = deId + '_' + idx;
+									Ext.getCmp('filter_' + id).setValue('');
+								}
+							});
 							TR.exe.execute();
 						}
 					},
