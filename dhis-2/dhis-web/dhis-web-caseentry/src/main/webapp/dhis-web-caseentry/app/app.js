@@ -1598,11 +1598,11 @@ Ext.onReady( function() {
 				p.level = Ext.getCmp('levelCombobox').getValue();
 				
 				// orders
-				p.orderByOrgunitAsc = this.orderByOrgunitAsc;
-				p.orderByExecutionDateByAsc= this.orderByExecutionDateByAsc;
+				p.orderByOrgunitAsc = TR.state.orderByOrgunitAsc;
+				p.orderByExecutionDateByAsc= TR.state.orderByExecutionDateByAsc;
 				
 				p.programStageId = TR.cmp.params.programStage.getValue();
-				p.currentPage = this.currentPage;
+				p.currentPage = TR.state.currentPage;
 				
 				// organisation unit
 				p.orgunitIds = TR.state.orgunitIds;
@@ -4385,9 +4385,6 @@ Ext.onReady( function() {
 						text: TR.i18n.sort_by,
 						id: 'btnSortBy',
 						disabled: true,
-						execute: function() {
-							TR.exe.execute(false, true );
-						},
 						listeners: {
 							afterrender: function(b) {
 								this.menu = Ext.create('Ext.menu.Menu', {
@@ -4401,7 +4398,7 @@ Ext.onReady( function() {
 											minWidth: 105,
 											handler: function() {
 												TR.state.orderByOrgunitAsc = "true";
-												b.execute();
+												TR.exe.execute(false, true );
 											}
 										},
 										{
@@ -4410,7 +4407,7 @@ Ext.onReady( function() {
 											minWidth: 105,
 											handler: function() {
 												TR.state.orderByOrgunitAsc = "false";
-												b.execute();
+												TR.exe.execute(false, true );
 											}
 										}
 									]                                            
