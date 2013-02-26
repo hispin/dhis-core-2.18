@@ -422,6 +422,9 @@
 			ref="org.hisp.dhis.program.ProgramDataEntryService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
+		</property>
 	</bean>
 
 	<bean
