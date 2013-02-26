@@ -347,7 +347,7 @@ public interface DataElementService
      * @param uids the uid collection.
      * @return the data element groups with the given uids.
      */
-    Collection<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids );    
+    List<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids );    
     
     /**
      * Returns the DataElementGroup with the given UID.

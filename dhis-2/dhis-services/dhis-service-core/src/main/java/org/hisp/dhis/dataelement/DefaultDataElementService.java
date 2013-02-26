@@ -413,7 +413,7 @@ public class DefaultDataElementService
         } );
     }
 
-    public Collection<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids )
+    public List<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids )
     {
         return dataElementGroupStore.getByUid( uids );
     }
