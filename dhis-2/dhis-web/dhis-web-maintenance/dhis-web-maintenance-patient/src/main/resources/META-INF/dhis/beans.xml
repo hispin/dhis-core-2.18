@@ -551,6 +551,9 @@
 		<property name="patientRegistrationFormService">
 			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		</property>
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
+		</property>
 	</bean>
 
 	<!-- Patient Attribute Group -->

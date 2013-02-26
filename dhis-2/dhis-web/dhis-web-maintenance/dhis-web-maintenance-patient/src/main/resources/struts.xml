@@ -574,6 +574,11 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
+		
+		<action name="delRegistrationEntryFormAction"
+			class="org.hisp.dhis.patient.action.dataentryform.DelRegistrationFormAction">
+			<result name="success" type="redirect">patientRegistrationForm.action</result>
+		</action>
 
 		<action name="showPatientRegistrationForm"
 			class="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction">

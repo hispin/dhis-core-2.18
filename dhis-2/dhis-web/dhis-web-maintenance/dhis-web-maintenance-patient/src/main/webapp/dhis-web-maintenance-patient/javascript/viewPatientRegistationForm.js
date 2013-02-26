@@ -1,6 +1,30 @@
 
-function openPropertiesSelector()
+$( document ).ready( function() 
 {
+	$(":button").button();
+	$(":submit").button();
+	$("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
+	$("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
+	$("#deleteButton").button("option", "icons", { primary: "ui-icon-trash" });
+	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
+	$("#propertiesButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	$("#insertImagesButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	
+	$("#imageDialog").bind("dialogopen", function(event, ui) {
+		$("#insertImagesButton").button("disable");
+	})
+	$("#imageDialog").bind("dialogclose", function(event, ui) {
+		$("#insertImagesButton").button("enable");
+	})
+	
+	$("#insertImagesButton").click(function() {
+		$("#imageDialog").dialog();
+	});
+});
+	
+function openPropertiesSelector()
+{	
+	$("#propertiesButton").addClass("ui-state-active2");
 	$('#selectionDialog' ).dialog(
 		{
 			title:i18n_properties,
@@ -9,12 +33,23 @@ function openPropertiesSelector()
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width:500,
-			height:460
+			height:460,
+			close: function(ev, ui) { 
+				$("#propertiesButton").removeClass("ui-state-active2"); 
+			}
 		});
 }
 
 function fixAttrOnClick()
 {
+	$("#insertButton").click(function() {
+		insertElement( 'fixedAttr' );
+	});	
+	
+	$("#fixAttrButton").addClass("ui-state-active2");
+	$("#identifierTypeButton").removeClass("ui-state-active2");
+	$("#attributesButton").removeClass("ui-state-active2");
+	$("#programAttrButton").removeClass("ui-state-active2");
 	hideById('attributeTab');
 	hideById('identifierTypeTab');
 	hideById('programAttrTab');
@@ -23,6 +58,14 @@ function fixAttrOnClick()
 
 function identifierTypeOnClick()
 {
+	$("#insertButton").click(function() {
+		insertElement( 'iden' )
+	});
+	
+	$("#fixAttrButton").removeClass("ui-state-active2");
+	$("#identifierTypeButton").addClass("ui-state-active2");
+	$("#attributesButton").removeClass("ui-state-active2");
+	$("#programAttrButton").removeClass("ui-state-active2");
 	hideById('attributeTab');
 	hideById('fixedAttrTab');
 	hideById('programAttrTab');
@@ -31,6 +74,14 @@ function identifierTypeOnClick()
 
 function attributesOnClick()
 {
+	$("#insertButton").click(function() {
+		insertElement( 'attr' );
+	});	
+	
+	$("#fixAttrButton").removeClass("ui-state-active2");
+	$("#identifierTypeButton").removeClass("ui-state-active2");
+	$("#attributesButton").addClass("ui-state-active2");
+	$("#programAttrButton").removeClass("ui-state-active2");
 	hideById('identifierTypeTab');
 	hideById('fixedAttrTab');
 	hideById('programAttrTab');
@@ -39,6 +90,14 @@ function attributesOnClick()
 
 function programAttrOnClick()
 {
+	$("#insertButton").click(function() {
+		insertElement( 'prg' );
+	});	
+	
+	$("#fixAttrButton").removeClass("ui-state-active2");
+	$("#identifierTypeButton").removeClass("ui-state-active2");
+	$("#attributesButton").removeClass("ui-state-active2");
+	$("#programAttrButton").addClass("ui-state-active2");
 	hideById('attributeTab');
 	hideById('identifierTypeTab');
 	hideById('fixedAttrTab');
@@ -175,23 +234,32 @@ function insertElement( type )
 {
 	var id = '';
 	var value = '';
+	
 	if( type == 'fixedAttr' ){
 		var element = jQuery('#fixedAttrSelector option:selected');
+		if( element.length == 0 ) return;
+		
 		id = 'fixedattributeid="' + element.attr('value') + '"';
 		value = element.text();
 	}
 	else if( type == 'iden' ){
 		var element = jQuery('#identifiersSelector option:selected');
+		if( element.length == 0 ) return;
+		
 		id = 'identifierid="' + element.attr('value') + '"';
 		value = element.text();
 	}
 	else if( type == 'attr' ){
 		var element = jQuery('#attributesSelector option:selected');
+		if( element.length == 0 ) return;
+		
 		id = 'attributeid="' + element.attr('value') + '"';
 		value = element.text();
 	}
 	else if( type == 'prg' ){
 		var element = jQuery('#programAttrSelector option:selected');
+		if( element.length == 0 ) return;
+		
 		id = 'programid="' + element.attr('value') + '"';
 		value = element.text();
 	}
@@ -207,4 +275,20 @@ function insertElement( type )
 		setMessage("");
 	}
 
+}
+
+function deleteRegistrationForm( id, name )
+{
+	var result = window.confirm( i18n_confirm_delete + '\n\n' + name );
+	if ( result )
+	{
+		window.location.href = 'delRegistrationEntryFormAction.action?id=' + id;
+	}
+}
+
+function insertImage() {
+	var image = $("#imageDialog :selected").val();
+	var html = "<img src=\"" + image + "\" title=\"" + $("#imageDialog :selected").text() + "\">";
+	var oEditor = $("#designTextarea").ckeditorGet();
+	oEditor.insertHtml( html );
 }
