@@ -200,7 +200,7 @@ public class DefaultDataMartEngine
         
         Clock clock = new Clock().startClock().logTime( "Data mart export process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
         notifier.clear( id, DATAMART ).notify( id, DATAMART, "Data mart export process started" );
-
+ 
         // ---------------------------------------------------------------------
         // Recreate temporary tables
         // ---------------------------------------------------------------------
@@ -235,7 +235,7 @@ public class DefaultDataMartEngine
         final Map<String, Integer> dataElementUidIdMap = dataElementService.getDataElementUidIdMap();
         final Map<String, Integer> categoryOptionComboUidIdMap = categoryService.getDataElementCategoryOptionComboUidIdMap();
         
-        clock.logTime( "Retrieved meta-data objects" );
+        clock.logTime( "Retrieved meta-data objects, using periods: " + periods );
         notifier.notify( id, DATAMART, "Filtering meta-data" );
 
         // ---------------------------------------------------------------------
