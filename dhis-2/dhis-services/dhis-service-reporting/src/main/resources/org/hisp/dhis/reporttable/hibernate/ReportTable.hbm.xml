@@ -65,6 +65,14 @@
         foreign-key="fk_reporttable_organisationunits_organisationunitid" />
     </list>
 
+    <list name="dataElementGroups" table="reporttable_dataelementgroups">
+      <cache usage="read-write" />
+      <key column="reporttableid" foreign-key="fk_reporttable_dataelementgroups_reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="dataelementgroupid" class="org.hisp.dhis.dataelement.DataElementGroup"
+        foreign-key="fk_reporttable_dataelementgroups_dataelementgroupid" />
+    </list>
+
     <list name="organisationUnitGroups" table="reporttable_orgunitgroups">
       <cache usage="read-write" />
       <key column="reporttableid" foreign-key="fk_reporttable_orgunitunitgroups_reporttableid" />
@@ -110,6 +118,12 @@
     <property name="sortOrder" />
 
     <property name="topLimit" />
+    
+    <property name="subtotals" />
+    
+    <property name="displayDensity" />
+    
+    <property name="fontSize" />
 
     <!-- Access properties -->
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_reporttable_userid" />
