@@ -196,6 +196,12 @@ function addPatient( isContinue )
 					}
 				});
 			}
+			else
+			{
+				$("#patientForm :input").attr("disabled", false);
+				$("#patientForm").find("select").attr("disabled", false);
+				showPatientDashboardForm( patientId );
+			}
 		}
       }
      });
