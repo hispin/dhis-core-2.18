@@ -41,7 +41,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -50,7 +49,6 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
-import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -81,12 +79,6 @@ public class PatientDashboardAction
 
     private PatientAttributeService patientAttributeService;
 
-    private PatientIdentifierTypeService identifierTypeService;
-
-    private ProgramService programService;
-
-    private RelationshipTypeService relationshipTypeService;
-
     private I18nFormat format;
 
     // -------------------------------------------------------------------------
@@ -109,13 +101,9 @@ public class PatientDashboardAction
 
     private Collection<PatientAudit> patientAudits;
 
-    private Map<String, String> attributeMap = new HashMap<String, String>();
-
-    private Map<String, String> identifierMap = new HashMap<String, String>();
-
-    private Map<Integer, String> programMap = new HashMap<Integer, String>();
-
-    private Map<String, Relationship> relationshipMap = new HashMap<String, Relationship>();
+    private Map<PatientAttribute, String> attributeMap = new HashMap<PatientAttribute, String>();
+    
+    Collection<Relationship> relationships = new HashSet<Relationship>();
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -125,57 +113,17 @@ public class PatientDashboardAction
     {
         this.patientAuditService = patientAuditService;
     }
-
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
-    {
-        this.identifierTypeService = identifierTypeService;
-    }
-
-    public Map<String, String> getAttributeMap()
+    
+    public Map<PatientAttribute, String> getAttributeMap()
     {
         return attributeMap;
     }
-
-    public Map<String, String> getIdentifierMap()
-    {
-        return identifierMap;
-    }
-
-    public Map<Integer, String> getProgramMap()
-    {
-        return programMap;
-    }
-
-    public Map<String, Relationship> getRelationshipMap()
-    {
-        return relationshipMap;
-    }
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
-    {
-        this.relationshipTypeService = relationshipTypeService;
-    }
-
+    
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
-
-    public void setAttributeValues( Collection<PatientAttributeValue> attributeValues )
-    {
-        this.attributeValues = attributeValues;
-    }
-
-    public void setActiveProgramInstances( Collection<ProgramInstance> activeProgramInstances )
-    {
-        this.activeProgramInstances = activeProgramInstances;
-    }
-
+    
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
@@ -262,13 +210,6 @@ public class PatientDashboardAction
 
         attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
 
-        for ( PatientAttributeValue attributeValue : attributeValues )
-        {
-            Integer id = attributeValue.getPatientAttribute().getId();
-            attributeMap.put( patientAttributeService.getPatientAttribute( id ).getDisplayName(),
-                attributeValue.getValue() );
-        }
-
         Collection<PatientAttribute> calAttributes = patientAttributeService
             .getPatientAttributesByValueType( PatientAttribute.TYPE_CALCULATED );
 
@@ -278,7 +219,7 @@ public class PatientDashboardAction
                 format );
             if ( value != null )
             {
-                attributeMap.put( calAttribute.getDisplayName(), value + "" );
+                attributeMap.put( calAttribute, value + "" );
             }
         }
 
@@ -288,32 +229,12 @@ public class PatientDashboardAction
 
         identifiers = patient.getIdentifiers();
 
-        for ( PatientIdentifier identifier : identifiers )
-        {
-            if ( identifier.getIdentifierType() != null )
-            {
-                identifierMap.put(
-                    identifierTypeService.getPatientIdentifierType( identifier.getIdentifierType().getId() )
-                        .getDisplayName(), identifier.getIdentifier() );
-            }
-            else
-            {
-                identifierMap.put( null, identifier.getIdentifier() );
-            }
-        }
-
         // ---------------------------------------------------------------------
         // Get relationship
         // ---------------------------------------------------------------------
 
-        Collection<Relationship> relationships = relationshipService.getRelationshipsForPatient( patient );
-
-        for ( Relationship relationship : relationships )
-        {
-            relationshipMap.put( relationshipTypeService.getRelationshipType( relationship.getId() ).getDisplayName(),
-                relationship );
-        }
-
+        relationships = relationshipService.getRelationshipsForPatient( patient );
+        
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
 
         activeProgramInstances = new HashSet<ProgramInstance>();
@@ -329,12 +250,6 @@ public class PatientDashboardAction
             else
             {
                 activeProgramInstances.add( programInstance );
-            }
-
-            Integer programId = programInstance.getProgram().getId();
-            if ( !programMap.containsKey( programId ) )
-            {
-                programMap.put( programId, programService.getProgram( programId ).getDisplayName() );
             }
         }
 
