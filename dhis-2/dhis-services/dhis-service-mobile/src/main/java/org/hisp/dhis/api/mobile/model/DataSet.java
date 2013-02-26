@@ -47,8 +47,6 @@ public class DataSet
 
     private int version;
 
-    private SMSCommand smsCommand;
-
     public DataSet()
     {
     }
@@ -210,16 +208,6 @@ public class DataSet
                 section.setClientVersion( TWO_POINT_TEN );
                 section.serialize( dout );
             }
-        }
-
-        if ( this.smsCommand != null )
-        {
-            dout.writeInt( 1 );
-            smsCommand.serialize( dout );
-        }
-        else
-        {
-            dout.writeInt( 0 );
         }
     }
 
