@@ -535,7 +535,7 @@ public class ReportTable
     /**
      * Populates the presentation properties based on the persisted properties.
      */
-    public ReportTable populatePresentationProperties()
+    public ReportTable populatePresentationProps()
     {
         ListMap<String, DataElementGroup> degs = new ListMap<String, DataElementGroup>();
         
@@ -562,7 +562,7 @@ public class ReportTable
     /**
      * Sets the persisted properties based on the presentation properties.
      */
-    public ReportTable readPresentationProperties()
+    public ReportTable readPresentationProps()
     {
         dataElementGroups.clear();        
         organisationUnitGroups.clear();
