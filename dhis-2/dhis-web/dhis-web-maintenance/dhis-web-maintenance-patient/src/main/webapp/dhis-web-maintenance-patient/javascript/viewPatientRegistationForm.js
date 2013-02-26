@@ -3,7 +3,7 @@ function openPropertiesSelector()
 {
 	$('#selectionDialog' ).dialog(
 		{
-			title:'fafds',
+			title:i18n_properties,
 			maximize:true, 
 			closable:true,
 			modal:false,
@@ -45,31 +45,38 @@ function programAttrOnClick()
 	showById('programAttrTab');
 }
 
-function validateForm()
+function getRequiredFields()
 {
-	var result = false;
-	var html = jQuery("#designTextarea").ckeditorGet().getData();
+	var requiredFields = {};
 	
-	var requiredFields = new Array();
-	requiredFields.push('fixedattributeid=registrationDate');
-	requiredFields.push('fixedattributeid=fullName');
-	requiredFields.push('fixedattributeid=gender');
-	requiredFields.push('fixedattributeid=birthDate');
-	
+	requiredFields['fixedattributeid=registrationDate'] = i18n_registration_date;
+	requiredFields['fixedattributeid=fullName'] = i18n_full_name;
+	requiredFields['fixedattributeid=gender'] = i18n_gender;
+	requiredFields['fixedattributeid=birthDate'] = i18n_date_of_birth;
+		
 	jQuery('#identifiersSelector option').each(function() {
 		var item = jQuery(this);
 		if( item.attr('mandatory')=='true'){
-			requiredFields.push('identifierid=' + item.val());
+			requiredFields['identifierid=' + item.val()] = item.text();
 		}
 	});
 
 	jQuery('#attributesSelector option').each(function() {
 		var item = jQuery(this);
 		if( item.attr('mandatory')=='true'){
-			requiredFields.push('attributeid=' + item.val());
+			requiredFields['attributeid=' + item.val()] = item.text();
 		}
 	});
+	
+	return requiredFields;
+}
 
+function validateForm()
+{
+	var result = false;
+	var html = jQuery("#designTextarea").ckeditorGet().getData();
+	requiredFields = getRequiredFields();
+	
 	var input = jQuery( html ).find("input");
 	if( input.length > 0 )
 	{
@@ -93,18 +100,35 @@ function validateForm()
 				key = 'programid=' + inputKey
 			}
 			
-			for (var idx=0; idx<requiredFields.length; idx++){
-				var field = requiredFields[idx];
-				if( key == field)
+			for (var idx in requiredFields){
+				//var field = requiredFields[idx];
+				if( key == idx)
 				{
-					requiredFields.splice(idx,1);
+					//requiredFields.splice(idx,1);
+					delete requiredFields[idx];
 				}
 			}
 		});
 	
 	}
-	if( requiredFields.length > 0 ) {
+	if( Object.keys(requiredFields).length > 0 ) {
 		setFieldValue('requiredField','');
+		var violate = '<h3>' + i18n_please_insert_all_required_fields + '<h3>';
+		for (var idx in requiredFields){
+			violate += " - " + requiredFields[idx] + '<br>';
+		}
+		
+		setInnerHTML('validateDiv', violate);
+		jQuery('#validateDiv').dialog({
+			title:i18n_required_fields_valivation,
+			maximize:true, 
+			closable:true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width:500,
+			height:300
+		});
+		
 		return false;
 	}
 	else{
