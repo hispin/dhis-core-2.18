@@ -27,6 +27,18 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
@@ -34,17 +46,21 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,14 +68,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -79,6 +87,9 @@ public class ReportTableController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
     @Autowired
     private IndicatorService indicatorService;
@@ -90,11 +101,41 @@ public class ReportTableController
     private DataSetService dataSetService;
 
     @Autowired
+    private PeriodService periodService;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
     private I18nManager i18nManager;
 
     @Autowired
     private ContextUtils contextUtils;
 
+    //--------------------------------------------------------------------------
+    // CRUD
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        ReportTable reportTable = JacksonUtils.fromJson( input, ReportTable.class );
+        
+        reportTable.readPresentationProps();
+
+        mergeReportTable( reportTable );
+        
+        reportTableService.saveReportTable( reportTable );
+
+        ContextUtils.createdResponse( response, "Report table created", RESOURCE_PATH + "/" + reportTable.getUid() );
+    }
+    
+    @Override
+    protected void postProcessEntity( ReportTable reportTable )
+    {
+        reportTable.populatePresentationProps();
+    }
+    
     //--------------------------------------------------------------------------
     // GET - Dynamic data
     //--------------------------------------------------------------------------
@@ -367,5 +408,27 @@ public class ReportTableController
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
 
         return reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
+    }
+
+    //--------------------------------------------------------------------------
+    // Supportive methods
+    //--------------------------------------------------------------------------
+
+    // TODO use generic import service
+    
+    private void mergeReportTable( ReportTable reportTable )
+    {
+        reportTable.setDataElements( dataElementService.getDataElementsByUid( getUids( reportTable.getDataElements() ) ) );
+        reportTable.setIndicators( indicatorService.getIndicatorsByUid( getUids( reportTable.getIndicators() ) ) );
+        reportTable.setDataSets( dataSetService.getDataSetsByUid( getUids( reportTable.getDataSets() ) ) );
+        reportTable.setOrganisationUnits( organisationUnitService.getOrganisationUnitsByUid( getUids( reportTable.getOrganisationUnits() ) ) );
+        reportTable.setPeriods( periodService.reloadPeriods( reportTable.getPeriods() ) );
+        reportTable.setDataElementGroups( dataElementService.getDataElementGroupsByUid( getUids( reportTable.getDataElementGroups() ) ) );
+        reportTable.setOrganisationUnitGroups( organisationUnitGroupService.getOrganisationUnitGroupsByUid( getUids( reportTable.getOrganisationUnitGroups() ) ) );
+        
+        if ( reportTable.getUser() != null )
+        {
+            reportTable.setUser( userService.getUser( reportTable.getUser().getUid() ) );
+        }
     }
 }
