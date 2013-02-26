@@ -59,6 +59,8 @@
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
 
 <h3>$i18n.getString( "add_patient_registration_form" )</h3>
+<h4>$!program.displayName</h4>
+
 <div class="container" >
 	<table id="detailsList" width="100%">
 		<col/>
