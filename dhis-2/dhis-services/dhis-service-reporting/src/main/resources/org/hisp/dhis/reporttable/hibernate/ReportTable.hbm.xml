@@ -57,7 +57,7 @@
         foreign-key="fk_reporttable_periods_periodid" />
     </list>
 
-    <list name="units" table="reporttable_organisationunits">
+    <list name="organisationUnits" table="reporttable_organisationunits">
       <cache usage="read-write" />
       <key column="reporttableid" foreign-key="fk_reporttable_organisationunits_reporttableid" />
       <list-index column="sort_order" base="0" />
