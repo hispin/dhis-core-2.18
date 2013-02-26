@@ -25,6 +25,7 @@ import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -316,18 +317,21 @@ public class MobileOrganisationUnitController
         {
             SMSCommand mobileSMSCommand = new SMSCommand();
             List<SMSCode> smsCodes = new ArrayList<SMSCode>();
-            mobileSMSCommand.setCodeSeparator( normalSMSCommand.getSeparator() );
-            mobileSMSCommand.setDataSetId( normalSMSCommand.getDataset().getId() );
+            
+            mobileSMSCommand.setParserType( normalSMSCommand.getParserType().name() );
             mobileSMSCommand.setCodeSeparator( normalSMSCommand.getCodeSeparator() );
+            mobileSMSCommand.setDataSetId( normalSMSCommand.getDataset().getId() );
+            mobileSMSCommand.setSeparator( normalSMSCommand.getSeparator() );
+            
             for ( org.hisp.dhis.smscommand.SMSCode normalSMSCode : normalSMSCommand.getCodes() )
             {
                 SMSCode smsCode = new SMSCode();
+                
                 smsCode.setCode( normalSMSCode.getCode() );
                 smsCode.setDataElementId( normalSMSCode.getDataElement().getId() );
                 smsCode.setOptionId( normalSMSCode.getId() );
                 smsCodes.add( smsCode );
             }
-            mobileSMSCommand.setSmsCodes( smsCodes );
             smsCommands.add( mobileSMSCommand );
         }
         return smsCommands;
