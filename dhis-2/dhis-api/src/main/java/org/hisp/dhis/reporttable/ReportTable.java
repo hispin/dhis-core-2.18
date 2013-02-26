@@ -219,7 +219,7 @@ public class ReportTable
      * The list of OrganisationUnits the ReportTable contains.
      */
     @Scanned
-    private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
     /**
      * The list of OrganisationUnitGroups the ReportTable contains.
@@ -370,26 +370,23 @@ public class ReportTable
     /**
      * Default constructor.
      *
-     * @param name            the name.
-     * @param dataElements    the data elements.
-     * @param indicators      the indicators.
-     * @param dataSets        the datasets.
-     * @param periods         the periods. These periods cannot have the name property
-     *                        set.
+     * @param name the name.
+     * @param dataElements the data elements.
+     * @param indicators the indicators.
+     * @param dataSets the data sets.
+     * @param periods the periods. Cannot have the name property set.
      * @param relativePeriods the relative periods. These periods must have the
      *                        name property set. Not persisted.
-     * @param units           the organisation units.
-     * @param relativeUnits   the organisation units. Not persisted.
-     * @param doIndicators    indicating whether indicators should be
-     *                        crosstabulated.
-     * @param doPeriods       indicating whether periods should be crosstabulated.
-     * @param doUnits         indicating whether organisation units should be
-     *                        crosstabulated.
-     * @param relatives       the relative periods.
-     * @param i18nFormat      the i18n format. Not persisted.
+     * @param organisationUnits the organisation units.
+     * @param relativeUnits the organisation units. Not persisted.
+     * @param doIndicators indicating whether indicators should be crosstabulated.
+     * @param doPeriods indicating whether periods should be crosstabulated.
+     * @param doUnits indicating whether organisation units should be crosstabulated.
+     * @param relatives the relative periods.
+     * @param i18nFormat the i18n format. Not persisted.
      */
     public ReportTable( String name, List<DataElement> dataElements, List<Indicator> indicators,
-                        List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
+                        List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> organisationUnits,
                         List<OrganisationUnit> relativeUnits, List<OrganisationUnitGroup> organisationUnitGroups,
                         DataElementCategoryCombo categoryCombo, boolean doIndicators,
                         boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
@@ -401,7 +398,7 @@ public class ReportTable
         this.dataSets = dataSets;
         this.periods = periods;
         this.relativePeriods = relativePeriods;
-        this.units = units;
+        this.organisationUnits = organisationUnits;
         this.relativeUnits = relativeUnits;
         this.organisationUnitGroups = organisationUnitGroups;
         this.categoryCombo = categoryCombo;
@@ -423,7 +420,7 @@ public class ReportTable
         verify( nonEmptyLists( dataElements, indicators, dataSets ) > 0,
             "Must contain dataelements, indicators or datasets" );
         verify( nonEmptyLists( periods, relativePeriods ) > 0, "Must contain periods or relative periods" );
-        verify( nonEmptyLists( units, relativeUnits, organisationUnitGroups ) > 0,
+        verify( nonEmptyLists( organisationUnits, relativeUnits, organisationUnitGroups ) > 0,
             "Must contain organisation units, relative organisation units or organisation unit groups" );
         verify( !(doTotal() && regression), "Cannot have regression columns with total columns" );
         verify( i18nFormat != null, "I18n format must be set" );
@@ -459,7 +456,7 @@ public class ReportTable
         }
         else
         {
-            allUnits.addAll( units );
+            allUnits.addAll( organisationUnits );
             allUnits.addAll( relativeUnits );
             allUnits = removeDuplicates( allUnits );
         }
@@ -776,7 +773,7 @@ public class ReportTable
 
     public void removeAllOrganisationUnits()
     {
-        units.clear();
+        organisationUnits.clear();
     }
 
     public void removeAllOrganisationUnitGroups()
@@ -1053,14 +1050,14 @@ public class ReportTable
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0)
-    public List<OrganisationUnit> getUnits()
+    public List<OrganisationUnit> getOrganisationUnits()
     {
-        return units;
+        return organisationUnits;
     }
 
-    public void setUnits( List<OrganisationUnit> units )
+    public void setOrganisationUnits( List<OrganisationUnit> units )
     {
-        this.units = units;
+        this.organisationUnits = units;
     }
 
     @JsonProperty
@@ -1333,7 +1330,7 @@ public class ReportTable
             organisationUnitGroups.addAll( reportTable.getOrganisationUnitGroups() );
 
             removeAllOrganisationUnits();
-            units.addAll( reportTable.getUnits() );
+            organisationUnits.addAll( reportTable.getOrganisationUnits() );
 
             removeAllPeriods();
             periods.addAll( reportTable.getPeriods() );

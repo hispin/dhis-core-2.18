@@ -257,7 +257,7 @@ public class ReportTableController
 
         table.setIndicators( indicators_ );
         table.setDataElements( dataElements_ );
-        table.setUnits( organisationUnits );
+        table.setOrganisationUnits( organisationUnits );
 
         table.setDoIndicators( crossTab != null && crossTab.contains( "data" ) );
         table.setDoPeriods( crossTab != null && crossTab.contains( "periods" ) );
