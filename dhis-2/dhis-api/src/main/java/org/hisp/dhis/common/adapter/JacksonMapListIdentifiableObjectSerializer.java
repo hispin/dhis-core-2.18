@@ -27,40 +27,45 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import org.hisp.dhis.common.IdentifiableObject;
 
-public class ParametersMapXmlAdapter
-    extends XmlAdapter<Parameters, Map<String, String>>
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+
+/**
+ * @author Lars Helge Overland
+ */
+public class JacksonMapListIdentifiableObjectSerializer
+    extends JsonSerializer<Map<String, List<IdentifiableObject>>>
 {
     @Override
-    public Parameters marshal( Map<String, String> v )
-        throws Exception
+    public void serialize( Map<String, List<IdentifiableObject>> value, JsonGenerator jgen, SerializerProvider provider )
+        throws IOException
     {
-        ArrayList<Parameter> list = new ArrayList<Parameter>();
-
-        for ( Map.Entry<String, String> e : v.entrySet() )
+        if ( value != null )
         {
-
-            list.add( new Parameter( e.getKey(), e.getValue() ) );
+            jgen.writeStartObject();
+            
+            for ( String key : value.keySet() )
+            {
+                jgen.writeArrayFieldStart( key );
+                
+                for ( IdentifiableObject object : value.get( key ) )
+                {
+                    jgen.writeStartObject();
+                    jgen.writeStringField( "id", object.getUid() );
+                    jgen.writeEndObject();
+                }
+                
+                jgen.writeEndArray();                
+            }
+            
+            jgen.writeEndObject();
         }
-        return new Parameters( list );
-    }
-
-    @Override
-    public Map<String, String> unmarshal( Parameters v )
-        throws Exception
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        
-        for ( Parameter p : v.getParameters() )
-        {
-            map.put( p.getKey(), p.getValue() );
-        }
-        
-        return map;
     }
 }

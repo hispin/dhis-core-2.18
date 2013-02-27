@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.*;
+import org.hisp.dhis.common.adapter.JacksonMapListIdentifiableObjectSerializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodSerializer;
 import org.hisp.dhis.common.annotation.Scanned;
@@ -555,7 +556,7 @@ public class ReportTable
         
         for ( OrganisationUnitGroup group : organisationUnitGroups )
         {
-            ougs.putValue( group.getUid(), group );
+            ougs.putValue( group.getGroupSet().getUid(), group );
         }
         
         dataElementGroupSets.clear();
@@ -1337,9 +1338,10 @@ public class ReportTable
     // Get- and set-methods for presentation properties
     // -------------------------------------------------------------------------
 
-    @JsonProperty( value = "dataElementGroupSets" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonProperty
+    @JsonSerialize( using = JacksonMapListIdentifiableObjectSerializer.class )
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Map<String, List<DataElementGroup>> getDataElementGroupSets()
     {
         return dataElementGroupSets;
@@ -1350,9 +1352,10 @@ public class ReportTable
         this.dataElementGroupSets = dataElementGroupSets;
     }
 
-    @JsonProperty( value = "organisationUnitGroupSets" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonProperty
+    @JsonSerialize( using = JacksonMapListIdentifiableObjectSerializer.class )
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Map<String, List<OrganisationUnitGroup>> getOrganisationUnitGroupSets()
     {
         return organisationUnitGroupSets;
