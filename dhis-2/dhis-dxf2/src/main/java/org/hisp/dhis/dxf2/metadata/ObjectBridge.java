@@ -75,7 +75,7 @@ public interface ObjectBridge
     <T> Collection<T> getObjects( T object );
 
     /**
-     * Get all objects for a specified class. These objects might not be a persisted object
+     * Get all objects for a specified class. These objects might not be persisted
      * depending on the flag {@code writeEnabled}.
      *
      * @param clazz Clazz to match against
