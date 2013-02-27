@@ -263,10 +263,10 @@ public class PatientDashboardAction
         long dateOnly = (currentTime / millisInDay) * millisInDay;
         Date date = new Date( dateOnly );
         String visitor = currentUserService.getCurrentUsername();
-        PatientAudit patientAudit = patientAuditService.getPatientAudit( patient, visitor, date );
+        PatientAudit patientAudit = patientAuditService.getPatientAudit( patientId, visitor, date, PatientAudit.MODULE_PATIENT_DASHBOARD );
         if ( patientAudit == null )
         {
-            patientAudit = new PatientAudit( patient, date, visitor );
+            patientAudit = new PatientAudit( patient, visitor, date, PatientAudit.MODULE_PATIENT_DASHBOARD );
             patientAuditService.savePatientAudit( patientAudit );
         }
 

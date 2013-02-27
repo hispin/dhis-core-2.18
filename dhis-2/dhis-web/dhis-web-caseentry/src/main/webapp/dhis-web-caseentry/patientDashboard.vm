@@ -197,21 +197,24 @@
 <br>
 <div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>
-<div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;height:250px;width:300px;">
-	<table width="300px;">
+<div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;height:250px;width:400px;">
+	<table width="400px;">
 		<colgroup>
-			<col width="150px">
+			<col width="100px">
+			<col width="100px">
 			<col>
 		</colgroup>
 		<tr>
 			<th>$i18n.getString("date")</th>
 			<th>$i18n.getString("visitor")</th>
+			<th>$i18n.getString("accessed_module")</th>
 		</tr>
 	</table>
-	<div style="height:200px;width:300px;overflow:auto">
-		<table width='280px'>
+	<div style="height:200px;width:450px;overflow:auto">
+		<table width='400px'>
 			<colgroup>
-				<col width="150px">
+				<col width="100px">
+				<col width="100px">
 				<col>
 			</colgroup>
 			#set( $mark = false )
@@ -219,6 +222,7 @@
 			<tr #alternate( $mark )>
 				<td>$format.formatDate($patientAudit.date)</td>
 				<td>$encoder.htmlEncode($patientAudit.visitor)</td>
+				<td>$i18n.getString($patientAudit.accessedModule)</td>
 			</tr>
 			#set( $mark = !$mark )
 			#end

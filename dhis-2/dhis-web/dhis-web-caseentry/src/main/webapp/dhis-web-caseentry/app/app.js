@@ -40,6 +40,7 @@ TR.conf = {
             path_api: '../../api/',
             path_images: 'images/',
 			initialize: 'tabularInitialize.action',
+			patientproperties_get: 'loadPatientProperties.action',
 			programstages_get: 'loadReportProgramStages.action',
 			dataelements_get: 'loadDataElements.action',
 			organisationunitchildren_get: 'getOrganisationUnitChildren.action',
@@ -170,7 +171,17 @@ TR.conf = {
         window_favorite_ypos: 100,
         window_confirm_width: 250,
 		window_record_width: 450,
-		window_record_height: 300
+		window_record_height: 300,
+		west_dataelements_multiselect: 120,
+		west_dataelements_filter_panel: 135,
+		west_dataelements_expand_filter_panel: 280,
+		west_dataelements_collapse_filter_panel: 130,
+		west_dataelements_expand_aggregate_filter_panel: 230,
+		west_dataelements_collapse_aggregate_filter_panel: 80,
+		west_properties_multiselect: 150,
+		west_properties_filter_panel: 130,
+		west_properties_expand_filter_panel: 280,
+		west_properties_collapse_filter_panel: 135
     },
 	util: {
 		jsonEncodeString: function(str) {
@@ -213,6 +224,7 @@ Ext.onReady( function() {
         params: {
             program:{},
 			programStage: {},
+			patientProperty: {},
 			dataelement: {},
 			organisationunit: {},
 			relativeperiod: {
@@ -282,7 +294,8 @@ Ext.onReady( function() {
                 return ((screen.height/2)-((cmp.height/2)-100));
             },
             resizeParams: function() {
-				var a = [TR.cmp.params.dataelement.panel, 
+				var a = [TR.cmp.params.patientProperty.panel,
+						 TR.cmp.params.dataelement.panel, 
 						 TR.cmp.params.organisationunit.treepanel];
 				for (var i = 0; i < a.length; i++) {
 					if (!a[i].collapsed) {
@@ -308,9 +321,9 @@ Ext.onReady( function() {
                 }
                 this.filterAvailable(a, s);
 				
-				if(f)
+				if(f!=undefined)
 				{
-					this.addFilterField( 'filterPanel', selected[0], name, valueType );
+					this.addFilterField( f, selected[0], name, valueType );
 				}
             },
             selectAll: function(a, s, f) {
@@ -325,7 +338,10 @@ Ext.onReady( function() {
 						var valueType = a.store.getAt(i).data.valueType;
 						
 						array.push({id: id, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
-						this.addFilterField( 'filterPanel', id, name, valueType );
+						if(f!=undefined)
+						{
+							this.addFilterField( f, id, name, valueType );
+						}
 					}
 				}
 				s.store.add(array);
@@ -339,9 +355,9 @@ Ext.onReady( function() {
                     });                    
                     this.filterAvailable(a, s);
                 }
-				if(f)
+				if(f!=undefined)
 				{
-					this.removeFilterField( 'filterPanel', selected[0], a.store.getAt(a.store.findExact('id', selected)).data.valueType );
+					this.removeFilterField( f, selected[0], a.store.getAt(a.store.findExact('id', selected)).data.valueType );
 				}
             },
             unselectAll: function(a, s, f) {
@@ -352,7 +368,10 @@ Ext.onReady( function() {
 					if( elements[index].style.display != 'none' )
 					{
 					  arr.push(item.data.id);
-					  TR.util.multiselect.removeFilterField( 'filterPanel', item.data.id, item.data.valueType );
+					  if(f!=undefined)
+					  {
+						TR.util.multiselect.removeFilterField( f, item.data.id, item.data.valueType );
+					  }
 					}
 					index++;
 				}); 
@@ -1016,6 +1035,28 @@ Ext.onReady( function() {
 									TR.state.orgunitIds.push( f.orgunitIds[i].localid );
 								}
 								
+								 // Patient properties
+								 TR.store.patientProperty.selected.removeAll();
+								 
+								 // programs with registration
+								 if (f.patientProperties && f.type != "3" ) {
+										 for (var i = 0; i < f.patientProperties.length; i++) {
+												 TR.cmp.params.patientProperty.objects.push({id: f.patientProperties[i].id, name: TR.util.string.getEncodedString(f.patientProperties[i].name)});
+										 }
+										 TR.store.patientProperty.selected.add(TR.cmp.params.patientProperty.objects);
+								 
+										 var storePatientProperty = TR.store.patientProperty.available;
+										 storePatientProperty.parent = f.programId;
+										 if (TR.util.store.containsParent(storePatientProperty)) {
+												 TR.util.store.loadFromStorage(storePatientProperty);
+												 TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
+										 }
+										 else {
+												 storePatientProperty.load({params: {programId: f.programId}});
+										 }
+								 
+								 }
+                                                         
 								// Data element
 								
 								Ext.getCmp('filterPanel').removeAll();
@@ -1275,6 +1316,32 @@ Ext.onReady( function() {
 				}
 			}
 		}),
+		patientProperty: {
+			available: Ext.create('Ext.data.Store', {
+				 fields: ['id', 'name', 'valueType'],
+				 proxy: {
+					 type: 'ajax',
+					 url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.patientproperties_get,
+					 reader: {
+						 type: 'json',
+						 root: 'patientProperties'
+					 }
+				 },
+				 isloaded: false,
+				 storage: {},
+				 listeners: {
+					 load: function(s) {
+						 this.isloaded = true;
+						 TR.util.store.addToStorage(s);
+						 TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
+					 }
+				 }
+			 }),
+			 selected: Ext.create('Ext.data.Store', {
+				 fields: ['id', 'name'],
+				 data: []
+			 })
+		},
 		programStage: Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			proxy: {
@@ -1586,6 +1653,42 @@ Ext.onReady( function() {
 				// Get searching values
 				p.searchingValues = [];
 				
+				// Patient properties
+				TR.cmp.params.patientProperty.selected.store.each( function(r) {
+					//p.searchingValues.push( r.data.id + '_false_' );
+					
+					var propId = r.data.id;
+					var valueType = r.data.valueType;
+					var length = Ext.getCmp('p_' + propId).items.length/4;
+					var hidden = TR.state.caseBasedReport.isColHidden(propId);
+					
+					for(var idx=0;idx<length;idx++)
+					{
+						var id = propId + '_' + idx;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filter = propId + '_' + hidden 
+						if( filterValue!=''){
+							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+							filter += '_' + filterOpt + ' ';
+							if( filterOpt == 'IN' )
+							{
+								var filterValues = filterValue.split(";");
+								filter +="(";
+								for(var i=0;i<filterValues.length;i++)
+								{
+									filter += "'"+ filterValues[i] +"',";
+								}
+								filter = filter.substr(0,filter.length - 1) + ")";
+							}
+							else
+							{
+								filter += "'" + filterValue + "'";
+							}
+						}
+						p.searchingValues.push( filter );
+					}
+				});
+				
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
@@ -1600,7 +1703,6 @@ Ext.onReady( function() {
 						if( filterValue!=''){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
-						
 							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
@@ -1897,7 +1999,12 @@ Ext.onReady( function() {
 					p.deGroupBy = Ext.getCmp('dataElementGroupByCbx').getValue().split('_')[1];
 				}
 				
-				// Filter values
+				// Filter values for patient-properties
+				TR.cmp.params.patientProperty.selected.store.each( function(r) {
+					p.searchingValues.push( r.data.id + '_false_' );
+				});
+				
+				// Filter values for data-elements
 				
 				p.deFilters = [];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
@@ -2445,6 +2552,19 @@ Ext.onReady( function() {
 					}
 				}
 				
+				// Patient properties columns
+			
+				TR.cmp.params.patientProperty.selected.store.each( function(r) {
+					cols[++index] = {
+						header: r.data.name, 
+						dataIndex: 'col' + index,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: r.data.id,
+						sortable: false,
+						draggable: false
+					}
+				});
+				
 				// Data element columns
 				
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
@@ -2753,6 +2873,28 @@ Ext.onReady( function() {
 											TR.state.isFilter = false;
 											var pId = cb.getValue();
 											
+											// Registration programs
+											if( cb.displayTplData[0].type !='3' )
+											{
+												// IDENTIFIER TYPE && PATIENT ATTRIBUTES
+												var storePatientProperty = TR.store.patientProperty.available;
+												TR.store.patientProperty.selected.removeAll();
+												storePatientProperty.parent = pId;
+												
+												if (TR.util.store.containsParent(storePatientProperty)) {
+													TR.util.store.loadFromStorage(storePatientProperty);
+													TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
+												}
+												else {
+													storePatientProperty.load({params: {programId: pId}});
+												}
+											}
+											else
+											{
+												TR.store.patientProperty.available.removeAll();
+												TR.store.patientProperty.selected.removeAll();
+											}
+										
 											// PROGRAM-STAGE										
 											var storeProgramStage = TR.store.programStage;
 											TR.store.dataelement.available.removeAll();
@@ -3273,7 +3415,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowright.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.select(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+																	TR.util.multiselect.select(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected,'filterPropPanel');
 																}
 															},
 															{
@@ -3281,7 +3423,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowrightdouble.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.selectAll(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
+																	TR.util.multiselect.selectAll(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected,'filterPropPanel');
 																}
 															},
 															' '
@@ -3696,6 +3838,192 @@ Ext.onReady( function() {
 										}
 									},
 									
+									// IDENTIFIER TYPE AND PATIENT-ATTRIBUTE
+									
+									{
+										title: '<div style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.identifiers_and_attributes + '</div>',
+										hideCollapseTool: true,
+										items: [
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none',
+												items: [
+													{
+														xtype: 'multiselect',
+														id: 'availablePatientProperties',
+														name: 'availablePatientProperties',
+														cls: 'tr-toolbar-multiselect-left',
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+														height: TR.conf.layout.west_properties_multiselect,
+														displayField: 'name',
+														valueField: 'id',
+														queryMode: 'local',
+														store: TR.store.patientProperty.available,
+														tbar: [
+															{
+																xtype: 'label',
+																text: TR.i18n.available,
+																cls: 'tr-toolbar-multiselect-left-label'
+															},
+															'->',
+															{
+																xtype: 'button',
+																icon: 'images/arrowright.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.select(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected,'filterPropPanel');
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/arrowrightdouble.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.selectAll(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected,'filterPropPanel');
+																}
+															},
+															' '
+														],
+														listeners: {
+															added: function() {
+																TR.cmp.params.patientProperty.available = this;
+															},                                                                
+															afterrender: function() {
+																this.boundList.on('itemdblclick', function() {
+																	TR.util.multiselect.select(this, TR.cmp.params.patientProperty.selected,'filterPropPanel');
+																}, this);
+															}
+														}
+													},                                            
+													{
+														xtype: 'multiselect',
+														id: 'selectedPatientProperties',
+														name: 'selectedPatientProperties',
+														cls: 'tr-toolbar-multiselect-right',
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+														height: TR.conf.layout.west_properties_multiselect,
+														displayField: 'name',
+														valueField: 'id',
+														ddReorder: true,
+														queryMode: 'local',
+														store: TR.store.patientProperty.selected,
+														tbar: [
+															' ',
+															{
+																xtype: 'button',
+																icon: 'images/arrowleftdouble.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.unselectAll(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected,'filterPropPanel');
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/arrowleft.png',
+																width: 22,
+																handler: function() {
+																	TR.util.multiselect.unselect(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected,'filterPropPanel');
+																}
+															},
+															'->',
+															{
+																xtype: 'label',
+																text: TR.i18n.selected,
+																cls: 'tr-toolbar-multiselect-right-label'
+															}
+														],
+														listeners: {
+															added: function() {
+																TR.cmp.params.patientProperty.selected = this;
+															},          
+															afterrender: function() {
+																this.boundList.on('itemdblclick', function() {
+																	TR.util.multiselect.unselect(TR.cmp.params.patientProperty.available, this,'filterPropPanel');
+																}, this);
+															}
+														}
+													},
+													{
+														xtype: 'toolbar',
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor),
+														cls: 'tr-toolbar-multiselect-left',
+														style: 'margin-top:10px;',
+														items: [
+															{
+																xtype: 'label',	
+																text: TR.i18n.filter_values,
+																cls: 'tr-toolbar-multiselect-left-label'
+															},
+															'->',
+															{
+																xtype: 'button',
+																icon: 'images/arrowup.png',
+																tooltip: TR.i18n.show_hide_filter_values,
+																up: true,
+																width: 22,
+																handler: function() {
+																	if(this.up==true){
+																		Ext.getCmp('availablePatientProperties').setVisible(false);
+																		Ext.getCmp('selectedPatientProperties').setVisible(false);
+																		if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
+																			Ext.getCmp('filterPropPanel').setHeight(TR.conf.layout.west_properties_expand_filter_panel);
+																		}
+																		else{
+																			Ext.getCmp('filterPropPanel').setHeight(TR.conf.layout.west_properties_collapse_filter_panel);
+																		}
+																		this.setIcon('images/arrowdown.png');
+																		this.up = false;
+																	}
+																	else{
+																		Ext.getCmp('availablePatientProperties').setVisible(true);
+																		Ext.getCmp('selectedPatientProperties').setVisible(true);
+																		if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
+																			Ext.getCmp('filterPropPanel').setHeight(TR.conf.layout.west_properties_collapse_filter_panel);
+																		}
+																		else{
+																			Ext.getCmp('filterPropPanel').setHeight(TR.conf.layout.west_properties_expand_filter_panel);
+																		}
+																		this.setIcon('images/arrowup.png');
+																		this.up = true;
+																	}
+																}
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'column',
+														id: 'filterPropPanel',
+														height: TR.conf.layout.west_properties_filter_panel,
+														bodyStyle: 'background-color:transparent; padding:10px 10px 0px 3px',
+														autoScroll: true,
+														overflowX: 'hidden',
+														overflowY: 'auto',
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) ,
+														items: []
+													}
+												]
+											}
+											
+										],
+										listeners: {
+											added: function() {
+												TR.cmp.params.patientProperty.panel = this;
+											},
+											expand: function() {
+												var programId = TR.cmp.settings.program.getValue();	
+												if( programId != null )
+												{
+													var programType = TR.cmp.settings.program.displayTplData[0].type;											
+													if (programId != null && !TR.store.patientProperty.available.isloaded && programType !='3') {
+														TR.store.patientProperty.available.load({params: {programId: programId}});
+													}
+												}
+											}
+										}
+									},
+									
 									// DATA ELEMENTS
 									{
 										title: '<div id="dataElementTabTitle" style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.data_filter + '</div>',
@@ -3723,7 +4051,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowright.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.select(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
+																	TR.util.multiselect.select(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, 'filterPanel');
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}
 															},
@@ -3732,7 +4060,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowrightdouble.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.selectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
+																	TR.util.multiselect.selectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, 'filterPanel');
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}
 															},
@@ -3778,7 +4106,7 @@ Ext.onReady( function() {
 														name: 'availableDataelements',
 														cls: 'tr-toolbar-multiselect-left',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 120,
+														height: TR.conf.layout.west_dataelements_multiselect,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'remote',
@@ -3830,7 +4158,7 @@ Ext.onReady( function() {
 															},                                                                
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.select(this, TR.cmp.params.dataelement.selected, true);
+																	TR.util.multiselect.select(this, TR.cmp.params.dataelement.selected, 'filterPanel');
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}, this);																
 															}
@@ -3842,7 +4170,7 @@ Ext.onReady( function() {
 														name: 'selectedDataelements',
 														cls: 'tr-toolbar-multiselect-right',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 120,
+														height: TR.conf.layout.west_dataelements_multiselect,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -3926,10 +4254,10 @@ Ext.onReady( function() {
 																		Ext.getCmp('availableDataelements').setVisible(false);
 																		Ext.getCmp('selectedDataelements').setVisible(false);
 																		if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
-																			Ext.getCmp('filterPanel').setHeight(300);
+																			Ext.getCmp('filterPanel').setHeight(TR.conf.layout.west_dataelements_expand_filter_panel);
 																		}
 																		else{
-																			Ext.getCmp('filterPanel').setHeight(255);
+																			Ext.getCmp('filterPanel').setHeight(TR.conf.layout.west_dataelements_expand_aggregate_filter_panel);
 																		}
 																		this.setIcon('images/arrowdown.png');
 																		this.up = false;
@@ -3940,10 +4268,10 @@ Ext.onReady( function() {
 																		Ext.getCmp('availableDataelements').setVisible(true);
 																		Ext.getCmp('selectedDataelements').setVisible(true);
 																		if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
-																			Ext.getCmp('filterPanel').setHeight(155);
+																			Ext.getCmp('filterPanel').setHeight(TR.conf.layout.west_dataelements_collapse_filter_panel);
 																		}
 																		else{
-																			Ext.getCmp('filterPanel').setHeight(105);
+																			Ext.getCmp('filterPanel').setHeight(TR.conf.layout.west_dataelements_collapse_aggregate_filter_panel);
 																		}
 																		this.setIcon('images/arrowup.png');
 																		this.up = true;
@@ -3960,7 +4288,7 @@ Ext.onReady( function() {
 														autoScroll: true,
 														overflowX: 'hidden',
 														overflowY: 'auto',
-														height: 160,
+														height: TR.conf.layout.west_dataelements_filter_panel,
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) ,
 														items: []
 													}

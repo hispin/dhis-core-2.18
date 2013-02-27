@@ -6,10 +6,10 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	$('#contentDataRecord').html('');
 	setFieldValue('orgunitName', orgUnitNames[0]);
 	setFieldValue('orgunitId', orgUnits[0]);
+	jQuery( '#programIdAddPatient').append( '<option value="">' + i18n_please_select + '</option>' );
 	jQuery.get("getPrograms.action",{}, 
 		function(json)
 		{
-			jQuery( '#programIdAddPatient').append( '<option value="">' + i18n_please_select + '</option>' );
 			for ( i in json.programs ) {
 				if(json.programs[i].type==1){
 					jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );

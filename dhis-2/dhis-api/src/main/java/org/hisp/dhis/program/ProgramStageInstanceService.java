@@ -91,7 +91,7 @@ public interface ProgramStageInstanceService
 
     Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Integer min, Integer max, I18n i18n );
+        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n );
 
     int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Boolean completed, Date startDate, Date endDate );
