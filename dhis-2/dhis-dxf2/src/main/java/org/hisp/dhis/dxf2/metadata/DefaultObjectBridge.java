@@ -75,6 +75,8 @@ public class DefaultObjectBridge
 
     private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> codeMap;
 
+    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> nameMap;
+
     private boolean writeEnabled = true;
 
     //-------------------------------------------------------------------------------------------------------
@@ -100,6 +102,7 @@ public class DefaultObjectBridge
         periodTypeMap = new HashMap<String, PeriodType>();
         uidMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
         codeMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+        nameMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
 
         for ( Class<?> type : registeredTypes )
         {
@@ -107,6 +110,7 @@ public class DefaultObjectBridge
             populateIdentifiableObjectMap( type );
             populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.UID );
             populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.CODE );
+            populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.NAME );
         }
 
         log.info( "Finished updating lookup maps at " + new Date() );
@@ -118,6 +122,7 @@ public class DefaultObjectBridge
         masterMap = null;
         uidMap = null;
         codeMap = null;
+        nameMap = null;
         periodTypeMap = null;
 
         writeEnabled = true;
@@ -162,6 +167,24 @@ public class DefaultObjectBridge
             else if ( property == IdentifiableObject.IdentifiableProperty.CODE )
             {
                 codeMap.put( (Class<? extends IdentifiableObject>) clazz, map );
+            }
+            else if ( property == IdentifiableObject.IdentifiableProperty.NAME )
+            {
+                try
+                {
+                    IdentifiableObject identifiableObject = (IdentifiableObject) clazz.newInstance();
+
+                    if ( identifiableObject.haveUniqueNames() )
+                    {
+                        nameMap.put( (Class<? extends IdentifiableObject>) clazz, map );
+                    }
+                }
+                catch ( InstantiationException ignored )
+                {
+                }
+                catch ( IllegalAccessException ignored )
+                {
+                }
             }
         }
     }
@@ -245,11 +268,13 @@ public class DefaultObjectBridge
 
             if ( objects.size() > 1 )
             {
-                log.debug( "Multiple objects found for " + objectName + ", object discarded, returning null." );
+                log.debug( "Multiple objects found for " +
+                    (objectName == null ? objectName : "UNKNOWN_NAME (" + object.getClass().getName() + ")") + ", object discarded, returning null." );
             }
             else
             {
-                log.debug( "No object found for " + objectName + ", returning null." );
+                log.debug( "No object found for " +
+                    (objectName == null ? objectName : "UNKNOWN_NAME (" + object.getClass().getName() + ")") + ", returning null." );
             }
         }
 
@@ -334,6 +359,16 @@ public class DefaultObjectBridge
                     objects.add( (T) match );
                 }
             }
+
+            if ( identifiableObject.haveUniqueNames() && identifiableObject.getName() != null )
+            {
+                IdentifiableObject match = getNameMatch( identifiableObject );
+
+                if ( match != null )
+                {
+                    objects.add( (T) match );
+                }
+            }
         }
 
         return objects;
@@ -392,6 +427,18 @@ public class DefaultObjectBridge
         if ( map != null )
         {
             return map.get( identifiableObject.getCode() );
+        }
+
+        return null;
+    }
+
+    private IdentifiableObject getNameMatch( IdentifiableObject identifiableObject )
+    {
+        Map<String, IdentifiableObject> map = nameMap.get( identifiableObject.getClass() );
+
+        if ( map != null )
+        {
+            return map.get( identifiableObject.getName() );
         }
 
         return null;

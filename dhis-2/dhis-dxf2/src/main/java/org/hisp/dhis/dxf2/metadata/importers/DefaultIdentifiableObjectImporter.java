@@ -39,7 +39,12 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.metadata.*;
+import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
+import org.hisp.dhis.dxf2.metadata.ImportUtils;
+import org.hisp.dhis.dxf2.metadata.Importer;
+import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
 import org.hisp.dhis.expression.Expression;
@@ -54,7 +59,12 @@ import org.hisp.dhis.system.util.functional.Function1;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.hisp.dhis.system.util.PredicateUtils.idObjectCollectionsWithScanned;
 import static org.hisp.dhis.system.util.PredicateUtils.idObjects;
@@ -91,7 +101,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -164,7 +174,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 if ( expression != null )
                 {
-                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[] { null } );
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
                 }
             }
 
@@ -344,9 +354,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( !options.isDryRun() )
         {
-            sessionFactory.getCurrentSession().flush();
+            // sessionFactory.getCurrentSession().flush();
             nonIdentifiableObjects.save( object );
-            sessionFactory.getCurrentSession().flush();
+            // sessionFactory.getCurrentSession().flush();
         }
 
         log.debug( "Save successful." );
@@ -380,13 +390,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         log.debug( "Starting update of object " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass()
             .getSimpleName() + ")" );
 
+        if ( persistedObject.getName().contains( "java" ) )
+        {
+            System.err.println( "clazz: " + persistedObject.getClass().getName() + ", persistedObject: " + persistedObject );
+        }
+
         objectBridge.updateObject( persistedObject );
 
         if ( !options.isDryRun() )
         {
-            sessionFactory.getCurrentSession().flush();
+            // sessionFactory.getCurrentSession().flush();
             nonIdentifiableObjects.save( persistedObject );
-            sessionFactory.getCurrentSession().flush();
+            //sessionFactory.getCurrentSession().flush();
         }
 
         log.debug( "Update successful." );
@@ -427,9 +442,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         for ( T object : objects )
         {
             ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
-
             importObjectLocal( object );
-
             ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
         }
 
@@ -634,7 +647,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( ref != null )
                 {
                     fieldMap.put( field, ref );
-                    ReflectionUtils.invokeSetterMethod( field.getName(), object, new Object[] { null } );
+                    ReflectionUtils.invokeSetterMethod( field.getName(), object, new Object[]{ null } );
                 }
             }
         } );

@@ -42,7 +42,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,7 +63,7 @@ public class DefaultImportService
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
     @Autowired
@@ -117,6 +123,8 @@ public class DefaultImportService
             log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
         }
 
+        long totalStartTime = System.nanoTime();
+
         for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getImportMap().entrySet() )
         {
             Object value = ReflectionUtils.invokeGetterMethod( entry.getValue(), metaData );
@@ -140,7 +148,15 @@ public class DefaultImportService
                             log.info( message );
                         }
 
+                        long startTime = System.nanoTime();
                         ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
+                        // TODO do we need this?
+                        sessionFactory.getCurrentSession().flush();
+                        long endTime = System.nanoTime();
+                        long duration = endTime - startTime;
+                        double seconds = (double) duration / 1000000000.0;
+
+                        System.err.println( "Duration: " + seconds );
 
                         if ( importTypeSummary != null )
                         {
@@ -159,6 +175,12 @@ public class DefaultImportService
                 log.warn( "Can not find getter for '" + entry.getValue() + "'." );
             }
         }
+
+        long endTime = System.nanoTime();
+        long duration = endTime - totalStartTime;
+        double seconds = (double) duration / 1000000000.0;
+
+        System.err.println( "Total Duration: " + seconds );
 
         if ( importOptions.isDryRun() )
         {

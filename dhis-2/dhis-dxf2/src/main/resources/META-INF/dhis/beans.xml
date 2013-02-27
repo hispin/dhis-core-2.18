@@ -106,6 +106,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.indicator.IndicatorGroupSet" />
   </bean>
 
+  <bean id="mapImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.mapping.Map" />
+  </bean>
+
   <bean id="mapViewImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.mapping.MapView" />
   </bean>

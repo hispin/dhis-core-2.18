@@ -213,16 +213,16 @@ public class DataSet
     // Logic
     // -------------------------------------------------------------------------
 
-    public void addOrganisationUnit( OrganisationUnit unit )
+    public void addOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        sources.add( unit );
-        unit.getDataSets().add( this );
+        sources.add( organisationUnit );
+        organisationUnit.getDataSets().add( this );
     }
 
-    public void removeOrganisationUnit( OrganisationUnit unit )
+    public void removeOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        sources.remove( unit );
-        unit.getDataSets().remove( this );
+        sources.remove( organisationUnit );
+        organisationUnit.getDataSets().remove( this );
     }
 
     public void removeAllOrganisationUnits()
@@ -379,9 +379,11 @@ public class DataSet
         this.periodType = periodType;
     }
 
+    /*
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    */
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
