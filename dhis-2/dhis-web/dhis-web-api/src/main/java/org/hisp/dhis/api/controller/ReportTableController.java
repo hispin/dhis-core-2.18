@@ -62,12 +62,14 @@ import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -116,6 +118,7 @@ public class ReportTableController
     // CRUD
     //--------------------------------------------------------------------------
 
+    @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
@@ -128,6 +131,46 @@ public class ReportTableController
         reportTableService.saveReportTable( reportTable );
 
         ContextUtils.createdResponse( response, "Report table created", RESOURCE_PATH + "/" + reportTable.getUid() );
+    }
+    
+    @Override
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        if ( reportTable == null )
+        {
+            ContextUtils.notFoundResponse( response, "Report table does not exist: " + uid );
+            return;
+        }        
+
+        ReportTable newReportTable = JacksonUtils.fromJson( input, ReportTable.class );
+        
+        newReportTable.readPresentationProps();
+        
+        mergeReportTable( newReportTable );
+
+        reportTable.mergeWith( newReportTable );
+        
+        reportTableService.updateReportTable( reportTable );
+    }
+    
+    @Override
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        if ( reportTable == null )
+        {
+            ContextUtils.notFoundResponse( response, "Report table does not exist: " + uid );
+            return;
+        }
+        
+        reportTableService.deleteReportTable( reportTable );
     }
     
     @Override
@@ -414,8 +457,6 @@ public class ReportTableController
     // Supportive methods
     //--------------------------------------------------------------------------
 
-    // TODO use generic import service
-    
     private void mergeReportTable( ReportTable reportTable )
     {
         reportTable.setDataElements( dataElementService.getDataElementsByUid( getUids( reportTable.getDataElements() ) ) );
