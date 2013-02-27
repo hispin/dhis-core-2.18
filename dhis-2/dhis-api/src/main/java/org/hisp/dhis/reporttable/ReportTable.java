@@ -225,6 +225,7 @@ public class ReportTable
     /**
      * The list of DataElementGroups the ReportTable contains.
      */
+    @Scanned
     private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
     
     /**
@@ -304,8 +305,14 @@ public class ReportTable
     // Presentation properties
     // -------------------------------------------------------------------------
 
+    /**
+     * Map of data element group set uids and data element groups.
+     */
     private Map<String, List<DataElementGroup>> dataElementGroupSets = new HashMap<String, List<DataElementGroup>>();
     
+    /**
+     * Map of organisation unit group uids and organisation unit groups.
+     */
     private Map<String, List<OrganisationUnitGroup>> organisationUnitGroupSets = new HashMap<String, List<OrganisationUnitGroup>>();
     
     // -------------------------------------------------------------------------
@@ -864,6 +871,11 @@ public class ReportTable
         organisationUnits.clear();
     }
 
+    public void removeAllDataElementGroups()
+    {
+        dataElementGroups.clear();
+    }
+    
     public void removeAllOrganisationUnitGroups()
     {
         organisationUnitGroups.clear();
@@ -1325,9 +1337,9 @@ public class ReportTable
     // Get- and set-methods for presentation properties
     // -------------------------------------------------------------------------
 
-    @JsonProperty
+    @JsonProperty( value = "dataElementGroupSets" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Map<String, List<DataElementGroup>> getDataElementGroupSets()
     {
         return dataElementGroupSets;
@@ -1338,9 +1350,9 @@ public class ReportTable
         this.dataElementGroupSets = dataElementGroupSets;
     }
 
-    @JsonProperty
+    @JsonProperty( value = "organisationUnitGroupSets" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Map<String, List<OrganisationUnitGroup>> getOrganisationUnitGroupSets()
     {
         return organisationUnitGroupSets;
@@ -1499,9 +1511,20 @@ public class ReportTable
             reportParams = reportTable.getReportParams() == null ? reportParams : reportTable.getReportParams();
             sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();
             topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
+            subtotals = reportTable.isSubtotals();
+            displayDensity = reportTable.getDisplayDensity();
+            fontSize = reportTable.getFontSize();
+            userOrganisationUnit = reportTable.isUserOrganisationUnit();
+            userOrganisationUnitChildren = reportTable.isUserOrganisationUnitChildren();
 
-            removeAllOrganisationUnitGroups();
-            organisationUnitGroups.addAll( reportTable.getOrganisationUnitGroups() );
+            removeAllDataElements();
+            dataElements.addAll( reportTable.getDataElements() );
+
+            removeAllIndicators();
+            indicators.addAll( reportTable.getIndicators() );
+
+            removeAllDataSets();
+            dataSets.addAll( reportTable.getDataSets() );
 
             removeAllOrganisationUnits();
             organisationUnits.addAll( reportTable.getOrganisationUnits() );
@@ -1509,14 +1532,11 @@ public class ReportTable
             removeAllPeriods();
             periods.addAll( reportTable.getPeriods() );
 
-            removeAllDataSets();
-            dataSets.addAll( reportTable.getDataSets() );
-
-            removeAllIndicators();
-            indicators.addAll( reportTable.getIndicators() );
-
-            removeAllDataElements();
-            dataElements.addAll( reportTable.getDataElements() );
+            removeAllDataElementGroups();
+            dataElementGroups.addAll( reportTable.getDataElementGroups() );
+            
+            removeAllOrganisationUnitGroups();
+            organisationUnitGroups.addAll( reportTable.getOrganisationUnitGroups() );
         }
     }
 }
