@@ -178,14 +178,14 @@ public class DefaultProgramStageInstanceService
 
     public Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Integer min, Integer max, I18n i18n )
+        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
 
         return programStageInstanceStore.getTabularReport( programStage, orgUnitLevelMap, organisationUnits, columns,
-            level, maxLevel, startDate, endDate, descOrder, completed, min, max, i18n );
+            level, maxLevel, startDate, endDate, descOrder, completed, accessPrivateInfo, min, max, i18n );
     }
 
     public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
