@@ -27,19 +27,19 @@ package org.hisp.dhis.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.system.startup.AbstractStartupRoutine;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -175,10 +175,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE organisationunit DROP COLUMN hasPatients" );
 
         executeSql( "update dataelement set texttype='text' where valuetype='string' and texttype is null" );
-
-        // ---------------------------------------------------------------------
-        // Update tables for dimensional model
-        // ---------------------------------------------------------------------
 
         // categories_categoryoptions
         // set to 0 temporarily
@@ -524,9 +520,56 @@ public class TableAlteror
         executeSql( "ALTER TABLE usergroup DROP CONSTRAINT usergroup_name_key" );
         executeSql( "ALTER TABLE datadictionary DROP CONSTRAINT datadictionary_name_key" );
 
+        upgradeReportTableColumns();
+        
         log.info( "Tables updated" );
     }
 
+    private void upgradeReportTableColumns()
+    {
+        try
+        {
+            String sql = "select reporttableid, doindicators, doperiods, dounits from reporttable";
+            
+            ResultSet rs = statementManager.getHolder().getStatement().executeQuery( sql );
+            
+            while ( rs.next() )
+            {
+                int id = rs.getInt( "reporttableid" );
+                boolean doIndicators = rs.getBoolean( "doindicators" );
+                boolean doPeriods = rs.getBoolean( "doperiods" );
+                boolean doUnits = rs.getBoolean( "dounits" );
+                
+                int sortOrder = 0;
+                
+                if ( doIndicators )
+                {
+                    executeSql( "insert into reporttable_columns (reporttableid, dimension, sort_order) values (" + id + ",'dx'," + sortOrder + ");" );
+                    sortOrder++;
+                }
+                
+                if ( doPeriods )
+                {
+                    executeSql( "insert into reporttable_columns (reporttableid, dimension, sort_order) values (" + id + ",'pe'," + sortOrder + ");" );
+                    sortOrder++;
+                }
+                
+                if ( doUnits )
+                {
+                    executeSql( "insert into reporttable_columns (reporttableid, dimension, sort_order) values (" + id + ",'ou'," + sortOrder + ");" );
+                }
+            }
+            
+            executeSql( "alter table reporttable drop column doindicators" );
+            executeSql( "alter table reporttable drop column doperiods" );
+            executeSql( "alter table reporttable drop column dounits" );   
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+    }
+    
     private List<Integer> getDistinctIdList( String table, String col1 )
     {
         StatementHolder holder = statementManager.getHolder();
@@ -686,7 +729,6 @@ public class TableAlteror
 
             if ( isUpdated.next() )
             {
-
                 ResultSet resultSet = statement
                     .executeQuery( "SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'programstage'" );
 
@@ -707,7 +749,5 @@ public class TableAlteror
         {
             holder.close();
         }
-
     }
-
 }
