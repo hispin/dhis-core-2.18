@@ -25,6 +25,13 @@
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
         foreign-key="fk_orgunitgroup_organisationunitid" />
     </set>
+	
+	<set name="dataSets" table="orgunitgroupdatasets">
+	  <cache usage="read-write" />
+	  <key column="orgunitgroupid" foreign-key="fk_orgunitgroupdatasets_orgunitgroupid" />
+	  <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid"
+	    foreign-key="fk_orgunitgroup_datasetid" />
+	</set>
 
     <!-- Dynamic attribute values -->
 
