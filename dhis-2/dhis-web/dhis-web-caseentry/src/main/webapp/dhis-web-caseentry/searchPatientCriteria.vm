@@ -87,7 +87,7 @@
 					<input type="button" class='normal-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
 				<td rowspan='30' valign='bottom' align="right" >
-					<input type="button" class='large-button hidden' id='sendSmsToListBtn' value="$i18n.getString('send_message')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
+					<input type="button" class='normal-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
 				</td>
 			</tr>
 			<tr id='advSearchBox0'>	       
@@ -106,7 +106,7 @@
 				  <em title="$i18n.getString( 'required' )" class="required">*</em></label>
 				</td>		
 				<td>
-					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
+					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
 					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
 				</td>
 			</tr>
@@ -130,7 +130,7 @@
 	datePicker( 'startDueDate', true );
 	datePicker( 'endDueDate', true );
 	
-	var searchTextBox = '<input type="text" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );">';
+	var searchTextBox = '<input type="text" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:200px;">';
 	var programComboBox = '<select class="search-field" id="searchText" name="searchText" >';
 	#foreach ( $program in $programs ) 
 		programComboBox += '<option value="$program.id">$program.displayName</option>';
