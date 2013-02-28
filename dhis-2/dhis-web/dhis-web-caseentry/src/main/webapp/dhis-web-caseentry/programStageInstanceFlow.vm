@@ -75,9 +75,9 @@
 		</tr>
 		<tr>
 			<td>$i18n.getString( 'due_date' )</td>
-			<td><input id='dueDateNewEncounter_$programInstance.id' name='dueDateNewEncounter_$!programInstance.id' style='width:260px;'></td>
+			<td><input id='dueDateNewEncounter_$!programInstance.id' name='dueDateNewEncounter_$!programInstance.id' style='width:260px;'></td>
 			<script type="text/javascript">
-			   datePickerFuture( 'dueDateNewEncounter_$programInstance.id', false );
+			   datePickerFuture( 'dueDateNewEncounter_$!programInstance.id', false );
 			</script>
 		</tr>
 		<tr>
