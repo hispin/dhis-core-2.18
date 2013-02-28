@@ -1078,15 +1078,22 @@ function datePickerInRangeValid( startdate, enddate, setCurrentStartDate, setCur
 	jQuery( ".ui-datepicker-trigger").hide();
 	addRemoveDateButton( startdate );
 	addRemoveDateButton( enddate );
-	
-	
-    $("#ui-datepicker-div").hide();
 }
 
 function addRemoveDateButton( id )
 {
-	jQuery("#" + id).after(function() {
-	  return ' <img src="../images/calendar-delete.png" align="justify" id="delete_' + id + '" onclick="jQuery( \'#' + id + '\').val(\'\');jQuery( \'#' + id + '\').change();"> ';
+	var removeId = 'delete_' + id;
+	if( jQuery("#" + removeId).length == 0 )
+	{
+		jQuery("#" + id).after(function() {
+		  return ' <img src="../images/calendar-delete.png" align="justify" id="'+ removeId +'" onclick="jQuery( \'#' + id + '\').val(\'\');jQuery( \'#' + id + '\').change();"> ';
+		});
+	}
+	jQuery( "#" + id).click(function() {
+		$("#ui-datepicker-div").show();
+	});
+	jQuery( "#" + id).change(function() {
+		$("#ui-datepicker-div").hide();
 	});
 }
 
