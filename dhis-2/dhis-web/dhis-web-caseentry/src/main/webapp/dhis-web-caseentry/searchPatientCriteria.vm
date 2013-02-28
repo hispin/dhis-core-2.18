@@ -81,10 +81,10 @@
 				<td></td>
 				<td></td>
 				<td rowspan='30' valign='bottom'>
-					<input type="button" class='large-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
+					<input type="button" class='normal-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
 				</td>
 				<td rowspan='30' valign='bottom' align="right" >
-					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
+					<input type="button" class='normal-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
 				<td rowspan='30' valign='bottom' align="right" >
 					<input type="button" class='large-button hidden' id='sendSmsToListBtn' value="$i18n.getString('send_message')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
@@ -107,13 +107,12 @@
 				</td>		
 				<td>
 					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
-					<input type="button" class='large-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
+					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
 				</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td></td>
-				
 			</tr>
 		</tbody>
 	</table>
