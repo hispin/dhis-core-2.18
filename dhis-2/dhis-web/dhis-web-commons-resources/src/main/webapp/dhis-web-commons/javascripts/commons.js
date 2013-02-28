@@ -879,6 +879,9 @@ function datePicker( id )
         yearRange: '-100:+100'
 	});
 	jQuery( "#" + id ).attr("readonly", true );
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( id );
+	
 	s = jQuery("#" + id );		
 	if( s.val()=='' ) s.val( getCurrentDate() );		
 }
@@ -899,6 +902,8 @@ function datePicker( id, today )
         yearRange: '-100:+100'
 	});
 	jQuery( "#" + id ).attr("readonly", true );
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( id );
 	
 	if( today == undefined ) today = false;
 	
@@ -924,6 +929,8 @@ function datePickerjQuery( jQueryString )
         yearRange: '-100:+100'
 	});		
 	jQuery( "#" + id ).attr("readonly", true );
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( id );
 }
 
 /**
@@ -948,7 +955,9 @@ function datePickerValid( id, today )
         yearRange: '-100:+100'
 	});
 	jQuery( "#" + id ).attr("readonly", true );
-	
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( id );
+
 	if ( today == undefined )
 	{
 		today = false;
@@ -978,6 +987,8 @@ function datePickerFuture( id, today )
         yearRange: '-100:+100'
 	});
 	jQuery( "#" + id ).attr("readonly", true );
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( id );
 	
 	if ( today == undefined )
 	{
@@ -1033,7 +1044,10 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 
 	jQuery( "#" + startdate ).attr("readonly", true );
 	jQuery( "#" + enddate ).attr("readonly", true );
-
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( startdate );
+	addRemoveDateButton( enddate );
+	
     $("#ui-datepicker-div").hide();
 }
 
@@ -1075,10 +1089,20 @@ function datePickerInRangeValid( startdate, enddate, setCurrentStartDate, setCur
 
 	jQuery( "#" + startdate ).attr("readonly", true );
 	jQuery( "#" + enddate ).attr("readonly", true );
-
+	jQuery( ".ui-datepicker-trigger").hide();
+	addRemoveDateButton( startdate );
+	addRemoveDateButton( enddate );
+	
+	
     $("#ui-datepicker-div").hide();
 }
 
+function addRemoveDateButton( id )
+{
+	jQuery("#" + id).after(function() {
+	  return ' <img src="../images/calendar-delete.png" align="justify" id="delete_' + id + '" onclick="jQuery( \'#' + id + '\').val(\'\');jQuery( \'#' + id + '\').change();"> ';
+	});
+}
 
 function getCurrentDate()
 {	
