@@ -511,20 +511,42 @@ Ext.onReady( function() {
 				else if( xtype == 'combobox' )
 				{
 					var deId = id.split('_')[1];
+					var fixedId = id.substring(0, id.lastIndexOf('_') );
 					params.typeAhead = true;
 					params.forceSelection = true;
-					if( valueType == 'bool')
+					if( valueType == 'bool' || fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
 					{
 						params.queryMode = 'local';
 						params.valueField = 'value';
 						params.displayField = 'name';
 						params.editable = false;
 						params.value = 'true';
-						params.store = new Ext.data.ArrayStore({
-							fields: ['value', 'name'],
-							data: [['true', TR.i18n.yes], 
-								['false', TR.i18n.no]]
-						});
+						if( fixedId=='fixedAttr_gender')
+						{
+							params.store = new Ext.data.ArrayStore({
+								fields: ['value', 'name'],
+								data: [['M', TR.i18n.male], 
+									['F', TR.i18n.female],
+									['T', TR.i18n.transgender]]
+							});
+						}
+						else if( fixedId=='fixedAttr_dobType')
+						{
+							params.store = new Ext.data.ArrayStore({
+								fields: ['value', 'name'],
+								data: [['V', TR.i18n.verified], 
+									['D', TR.i18n.declared],
+									['A', TR.i18n.approximated]]
+							});
+						}
+						else if (valueType == 'bool')
+						{
+							params.store = new Ext.data.ArrayStore({
+								fields: ['value', 'name'],
+								data: [['true', TR.i18n.yes], 
+									['false', TR.i18n.no]]
+							});
+						}
 					}
 					else if( valueType == 'trueOnly')
 					{
@@ -1036,25 +1058,29 @@ Ext.onReady( function() {
 								}
 								
 								 // Patient properties
+								 Ext.getCmp('filterPropPanel').removeAll();
+								 Ext.getCmp('filterPropPanel').doLayout(); 
 								 TR.store.patientProperty.selected.removeAll();
 								 
 								 // programs with registration
+								 TR.cmp.params.patientProperty.objects = [];
 								 if (f.patientProperties && f.type != "3" ) {
-										 for (var i = 0; i < f.patientProperties.length; i++) {
-												 TR.cmp.params.patientProperty.objects.push({id: f.patientProperties[i].id, name: TR.util.string.getEncodedString(f.patientProperties[i].name)});
-										 }
-										 TR.store.patientProperty.selected.add(TR.cmp.params.patientProperty.objects);
-								 
-										 var storePatientProperty = TR.store.patientProperty.available;
-										 storePatientProperty.parent = f.programId;
-										 if (TR.util.store.containsParent(storePatientProperty)) {
-												 TR.util.store.loadFromStorage(storePatientProperty);
-												 TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-										 }
-										 else {
-												 storePatientProperty.load({params: {programId: f.programId}});
-										 }
-								 
+									 for (var i = 0; i < f.patientProperties.length; i++) {
+										var name = TR.util.string.getEncodedString(f.patientProperties[i].name);
+										TR.cmp.params.patientProperty.objects.push({id: f.patientProperties[i].id, name: name});
+										TR.util.multiselect.addFilterField( 'filterPropPanel', f.patientProperties[i].id, name, f.patientProperties[i].valueType );
+									 }
+									 TR.store.patientProperty.selected.add(TR.cmp.params.patientProperty.objects);
+							 
+									 var storePatientProperty = TR.store.patientProperty.available;
+									 storePatientProperty.parent = f.programId;
+									 if (TR.util.store.containsParent(storePatientProperty)) {
+										 TR.util.store.loadFromStorage(storePatientProperty);
+										 TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
+									 }
+									 else {
+										 storePatientProperty.load({params: {programId: f.programId}});
+									 }
 								 }
                                                          
 								// Data element
@@ -1654,9 +1680,8 @@ Ext.onReady( function() {
 				p.searchingValues = [];
 				
 				// Patient properties
+				
 				TR.cmp.params.patientProperty.selected.store.each( function(r) {
-					//p.searchingValues.push( r.data.id + '_false_' );
-					
 					var propId = r.data.id;
 					var valueType = r.data.valueType;
 					var length = Ext.getCmp('p_' + propId).items.length/4;
@@ -1666,8 +1691,12 @@ Ext.onReady( function() {
 					{
 						var id = propId + '_' + idx;
 						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						if( valueType == 'bool' || propId=='fixedAttr_gender' || propId=='fixedAttr_dobType')
+						{
+							filterValue = Ext.getCmp('filter_' + id).getValue();
+						}
 						var filter = propId + '_' + hidden 
-						if( filterValue!=''){
+						if( filterValue!=null && filterValue!=''){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
 							if( filterOpt == 'IN' )
@@ -1745,8 +1774,46 @@ Ext.onReady( function() {
 				}
 				
 				// Get searching values
+				
 				var searchingValues = document.getElementById('searchingValues');
 				TR.util.list.clearList(searchingValues);
+				
+				
+				// Patient properties
+				
+				TR.cmp.params.patientProperty.selected.store.each( function(r) {
+					var propId = r.data.id;
+					var valueType = r.data.valueType;
+					var length = Ext.getCmp('p_' + propId).items.length/4;
+					var hidden = TR.state.caseBasedReport.isColHidden(propId);
+					
+					for(var idx=0;idx<length;idx++)
+					{
+						var id = propId + '_' + idx;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filter = propId + '_' + hidden 
+						if( filterValue!=''){
+							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+							filter += '_' + filterOpt + ' ';
+							if( filterOpt == 'IN' )
+							{
+								var filterValues = filterValue.split(";");
+								filter +="(";
+								for(var i=0;i<filterValues.length;i++)
+								{
+									filter += "'"+ filterValues[i] +"',";
+								}
+								filter = filter.substr(0,filter.length - 1) + ")";
+							}
+							else
+							{
+								filter += "'" + filterValue + "'";
+							}
+						}
+						TR.util.list.addOptionToList(searchingValues, filter, '');
+					}
+				});
+				
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
@@ -1998,11 +2065,6 @@ Ext.onReady( function() {
 				if( Ext.getCmp('dataElementGroupByCbx').getValue() != null ){
 					p.deGroupBy = Ext.getCmp('dataElementGroupByCbx').getValue().split('_')[1];
 				}
-				
-				// Filter values for patient-properties
-				TR.cmp.params.patientProperty.selected.store.each( function(r) {
-					p.searchingValues.push( r.data.id + '_false_' );
-				});
 				
 				// Filter values for data-elements
 				
@@ -2800,6 +2862,7 @@ Ext.onReady( function() {
 													Ext.getCmp('levelCombobox').setVisible(true);
 													
 													Ext.getCmp('dateRangeDiv').setVisible(true);
+													Ext.getCmp('patientPropertiesDiv').setVisible(true);
 													Ext.getCmp('btnSortBy').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
@@ -2831,6 +2894,7 @@ Ext.onReady( function() {
 													Ext.getCmp('levelCombobox').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
 													Ext.getCmp('btnSortBy').setVisible(false);
+													Ext.getCmp('patientPropertiesDiv').setVisible(false);
 													
 													Ext.getCmp('datePeriodRangeDiv').setVisible(true);
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
@@ -3839,9 +3903,9 @@ Ext.onReady( function() {
 									},
 									
 									// IDENTIFIER TYPE AND PATIENT-ATTRIBUTE
-									
 									{
 										title: '<div style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.identifiers_and_attributes + '</div>',
+										id:'patientPropertiesDiv',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -5807,6 +5871,7 @@ Ext.onReady( function() {
 				Ext.getCmp('datePeriodRangeDiv').setVisible(false);
 				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 				Ext.getCmp('levelCombobox').setVisible(true);
+				Ext.getCmp('patientPropertiesDiv').setVisible(true);
 				
 				Ext.getCmp('dateRangeDiv').setVisible(true);
 				Ext.getCmp('relativePeriodsDiv').setVisible(false); 
