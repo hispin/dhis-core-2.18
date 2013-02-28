@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "patient_registration_form_management" ) #openHelp( "program" )</h3>
 
-<table class="mainPageTable">
+<table width="70%">
 	#set($display = 'block')
 	#foreach( $registrationForm in $registrationForms )
 		#if( $!registrationForm.program )
