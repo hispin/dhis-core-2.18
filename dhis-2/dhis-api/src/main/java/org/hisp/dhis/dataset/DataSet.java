@@ -48,6 +48,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 
@@ -57,7 +58,7 @@ import java.util.Set;
 /**
  * This class is used for defining the standardized DataSets. A DataSet consists
  * of a collection of DataElements.
- *
+ * 
  * @author Kristian Nordal
  */
 @JacksonXmlRootElement( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
@@ -65,8 +66,11 @@ public class DataSet
     extends BaseNameableObject
 {
     public static final String TYPE_DEFAULT = "default";
+
     public static final String TYPE_SECTION = "section";
+
     public static final String TYPE_CUSTOM = "custom";
+
     public static final String TYPE_SECTION_MULTIORG = "multiorg_section";
 
     public static final int NO_EXPIRY = 0;
@@ -88,8 +92,8 @@ public class DataSet
     private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     /**
-     * Indicators associated with this data set. Indicators are used for view and
-     * output purposes, such as calculated fields in forms and reports.
+     * Indicators associated with this data set. Indicators are used for view
+     * and output purposes, such as calculated fields in forms and reports.
      */
     @Scanned
     private Set<Indicator> indicators = new HashSet<Indicator>();
@@ -107,6 +111,11 @@ public class DataSet
     private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
 
     /**
+     * All OrganisationUnitGroup that register data with this DataSet.
+     */
+    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
+
+    /**
      * The Sections associated with the DataSet.
      */
     private Set<Section> sections = new HashSet<Section>();
@@ -117,7 +126,8 @@ public class DataSet
     private Integer sortOrder;
 
     /**
-     * Property indicating if the dataset could be collected using mobile data entry.
+     * Property indicating if the dataset could be collected using mobile data
+     * entry.
      */
     private boolean mobile;
 
@@ -142,12 +152,14 @@ public class DataSet
     private boolean skipAggregation;
 
     /**
-     * User group which will receive notifications when data set is marked complete.
+     * User group which will receive notifications when data set is marked
+     * complete.
      */
     private UserGroup notificationRecipients;
 
     /**
-     * Indicating whether the user completing this data set should be sent a notification.
+     * Indicating whether the user completing this data set should be sent a
+     * notification.
      */
     private boolean notifyCompletingUser;
 
@@ -156,7 +168,8 @@ public class DataSet
     // -------------------------------------------------------------------------
 
     /**
-     * Property indicating whether it should allow to enter data for future periods.
+     * Property indicating whether it should allow to enter data for future
+     * periods.
      */
     private boolean allowFuturePeriods;
 
@@ -166,12 +179,14 @@ public class DataSet
     private boolean fieldCombinationRequired;
 
     /**
-     * Property indicating that all validation rules must pass before the form can be completed.
+     * Property indicating that all validation rules must pass before the form
+     * can be completed.
      */
     private boolean validCompleteOnly;
 
     /**
-     * Property indicating whether offline storage is enabled for this dataSet or not
+     * Property indicating whether offline storage is enabled for this dataSet
+     * or not
      */
     private boolean skipOffline;
 
@@ -227,6 +242,11 @@ public class DataSet
 
     public void removeAllOrganisationUnits()
     {
+        for ( OrganisationUnit unit : sources )
+        {
+            unit.getDataSets().remove( this );
+        }
+
         sources.clear();
     }
 
@@ -243,6 +263,44 @@ public class DataSet
         for ( OrganisationUnit unit : updates )
         {
             addOrganisationUnit( unit );
+        }
+    }
+
+    public void addOrganisationUnitGroup( OrganisationUnitGroup group )
+    {
+        organisationUnitGroups.add( group );
+        group.getDataSets().add( this );
+    }
+
+    public void removeOrganisationUnitGroup( OrganisationUnitGroup group )
+    {
+        organisationUnitGroups.remove( group );
+        group.getDataSets().remove( this );
+    }
+
+    public void removeAllOrganisationUnitGroups()
+    {
+        for ( OrganisationUnitGroup group : organisationUnitGroups )
+        {
+            group.getDataSets().remove( this );
+        }
+
+        organisationUnitGroups.clear();
+    }
+
+    public void updateOrganisationUnitGroups( Set<OrganisationUnitGroup> updates )
+    {
+        for ( OrganisationUnitGroup group : new HashSet<OrganisationUnitGroup>( organisationUnitGroups ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeOrganisationUnitGroup( group );
+            }
+        }
+        
+        for ( OrganisationUnitGroup group : updates )
+        {
+            addOrganisationUnitGroup( group );
         }
     }
 
@@ -451,6 +509,21 @@ public class DataSet
     public void setSources( Set<OrganisationUnit> sources )
     {
         this.sources = sources;
+    }
+
+    @JsonProperty( value = "organisationUnitGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
+    public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
+
+    public void setOrganisationUnitGroups( Set<OrganisationUnitGroup> organisationUnitGroups )
+    {
+        this.organisationUnitGroups = organisationUnitGroups;
     }
 
     public Integer getSortOrder()

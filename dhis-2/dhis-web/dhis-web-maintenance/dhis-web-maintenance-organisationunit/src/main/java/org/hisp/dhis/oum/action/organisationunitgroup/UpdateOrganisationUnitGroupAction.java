@@ -29,6 +29,8 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -38,6 +40,7 @@ import org.hisp.dhis.system.util.AttributeUtils;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -69,6 +72,13 @@ public class UpdateOrganisationUnitGroupAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -103,6 +113,13 @@ public class UpdateOrganisationUnitGroupAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private Collection<String> selectedDataSetsList;
+
+    public void setSelectedDataSetsList( Collection<String> selectedDataSetsList )
+    {
+        this.selectedDataSetsList = selectedDataSetsList;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -115,15 +132,25 @@ public class UpdateOrganisationUnitGroupAction
         organisationUnitGroup.setName( name );
         organisationUnitGroup.setSymbol( symbol );
 
-        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
+            .getReloadedSelectedOrganisationUnits();
 
         organisationUnitGroup.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
 
         if ( jsonAttributeValues != null )
         {
-            AttributeUtils.updateAttributeValuesFromJson( organisationUnitGroup.getAttributeValues(), jsonAttributeValues,
-                attributeService );
+            AttributeUtils.updateAttributeValuesFromJson( organisationUnitGroup.getAttributeValues(),
+                jsonAttributeValues, attributeService );
         }
+
+        Set<DataSet> dataSets = new HashSet<DataSet>();
+
+        for ( String id : selectedDataSetsList )
+        {
+            dataSets.add( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+        }
+        
+        organisationUnitGroup.updateDataSets( dataSets );
 
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
 
