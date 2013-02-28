@@ -176,7 +176,7 @@
 		</p>
 		<div class="contentProviderTable">
 			<table>
-				#foreach( $rel in $relationship )
+				#foreach( $rel in $relationships )
 					#if($rel.patientA.id==$patient.id)
 						<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
 							<td><a href='#'>$rel.relationshipType.bIsToA</a></td>

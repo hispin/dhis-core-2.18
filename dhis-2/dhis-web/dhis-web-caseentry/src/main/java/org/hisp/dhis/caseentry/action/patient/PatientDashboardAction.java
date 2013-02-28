@@ -92,8 +92,6 @@ public class PatientDashboardAction
 
     private Collection<PatientAttributeValue> attributeValues;
 
-    private Collection<Relationship> relationship;
-
     private Collection<ProgramInstance> activeProgramInstances;
 
     private Collection<ProgramInstance> completedProgramInstances;
@@ -101,8 +99,8 @@ public class PatientDashboardAction
     private Collection<PatientAudit> patientAudits;
 
     private Map<PatientAttribute, String> attributeMap = new HashMap<PatientAttribute, String>();
-    
-    Collection<Relationship> relationships = new HashSet<Relationship>();
+
+    private Collection<Relationship> relationships = new HashSet<Relationship>();
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -112,17 +110,17 @@ public class PatientDashboardAction
     {
         this.patientAuditService = patientAuditService;
     }
-    
+
     public Map<PatientAttribute, String> getAttributeMap()
     {
         return attributeMap;
     }
-    
+
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
-    
+
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
@@ -158,6 +156,11 @@ public class PatientDashboardAction
         this.relationshipService = relationshipService;
     }
 
+    public Collection<Relationship> getRelationships()
+    {
+        return relationships;
+    }
+
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
@@ -176,11 +179,6 @@ public class PatientDashboardAction
     public Collection<PatientAttributeValue> getAttributeValues()
     {
         return attributeValues;
-    }
-
-    public Collection<Relationship> getRelationship()
-    {
-        return relationship;
     }
 
     public void setPatientService( PatientService patientService )
@@ -233,7 +231,7 @@ public class PatientDashboardAction
         // ---------------------------------------------------------------------
 
         relationships = relationshipService.getRelationshipsForPatient( patient );
-        
+
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
 
         activeProgramInstances = new HashSet<ProgramInstance>();
@@ -263,7 +261,8 @@ public class PatientDashboardAction
         long dateOnly = (currentTime / millisInDay) * millisInDay;
         Date date = new Date( dateOnly );
         String visitor = currentUserService.getCurrentUsername();
-        PatientAudit patientAudit = patientAuditService.getPatientAudit( patientId, visitor, date, PatientAudit.MODULE_PATIENT_DASHBOARD );
+        PatientAudit patientAudit = patientAuditService.getPatientAudit( patientId, visitor, date,
+            PatientAudit.MODULE_PATIENT_DASHBOARD );
         if ( patientAudit == null )
         {
             patientAudit = new PatientAudit( patient, visitor, date, PatientAudit.MODULE_PATIENT_DASHBOARD );
