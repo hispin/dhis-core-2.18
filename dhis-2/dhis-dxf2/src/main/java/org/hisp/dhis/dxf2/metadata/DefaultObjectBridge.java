@@ -132,7 +132,7 @@ public class DefaultObjectBridge
     // Populate Helpers
     //-------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private void populateIdentifiableObjectMap( Class<?> clazz )
     {
         Collection<IdentifiableObject> map = new ArrayList<IdentifiableObject>();
@@ -148,7 +148,7 @@ public class DefaultObjectBridge
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private void populateIdentifiableObjectMap( Class<?> clazz, IdentifiableObject.IdentifiableProperty property )
     {
         Map<String, IdentifiableObject> map = new HashMap<String, IdentifiableObject>();
@@ -218,6 +218,8 @@ public class DefaultObjectBridge
             {
                 manager.save( (IdentifiableObject) object );
             }
+
+            _updateInternalMaps( object );
         }
         else
         {
@@ -288,7 +290,7 @@ public class DefaultObjectBridge
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public <T> Collection<T> getAllObjects( Class<T> clazz )
     {
         return (Collection<T>) masterMap.get( clazz );
@@ -320,7 +322,7 @@ public class DefaultObjectBridge
     // Internal Methods
     //-------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private <T> Collection<T> _findMatches( T object )
     {
         Collection<T> objects = new HashSet<T>();
@@ -401,6 +403,19 @@ public class DefaultObjectBridge
                 {
                     // might be dynamically sub-classed by javassist or cglib, fetch superclass and try again
                     map = codeMap.get( identifiableObject.getClass().getSuperclass() );
+                }
+
+                map.put( identifiableObject.getCode(), identifiableObject );
+            }
+
+            if ( identifiableObject.haveUniqueNames() && identifiableObject.getName() != null )
+            {
+                Map<String, IdentifiableObject> map = nameMap.get( identifiableObject.getClass() );
+
+                if ( map == null )
+                {
+                    // might be dynamically sub-classed by javassist or cglib, fetch superclass and try again
+                    map = nameMap.get( identifiableObject.getClass().getSuperclass() );
                 }
 
                 map.put( identifiableObject.getCode(), identifiableObject );

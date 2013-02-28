@@ -14,7 +14,7 @@
   <bean id="org.hisp.dhis.dxf2.datavalueset.DataValueSetStore"
       class="org.hisp.dhis.dxf2.datavalueset.SpringDataValueSetStore" />
 
-  <!-- register object handlers -->
+  <!-- register idObject handlers -->
 
   <bean id="organisationUnitObjectHandler"
       class="org.hisp.dhis.dxf2.metadata.handlers.OrganisationUnitObjectHandler" scope="prototype"/>
