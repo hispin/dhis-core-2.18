@@ -150,7 +150,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteAttributeValues( object );
                 deleteExpression( object, "leftSide" );
                 deleteExpression( object, "rightSide" );
-                // deleteDataElementOperands( object, "compulsoryDataElementOperands" );
+                // deleteDataElementOperands( idObject, "compulsoryDataElementOperands" );
                 deleteDataElementOperands( object, "greyedFields" );
             }
         }
@@ -160,7 +160,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveAttributeValues( object, attributeValues );
             saveExpression( object, "leftSide", leftSide );
             saveExpression( object, "rightSide", rightSide );
-            // saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+            // saveDataElementOperands( idObject, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
         }
 
@@ -326,7 +326,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     /**
-     * Called every time a new object is to be imported.
+     * Called every time a new idObject is to be imported.
      *
      * @param object Object to import
      * @return An ImportConflict instance if there was a conflict, otherwise null
@@ -365,10 +365,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     /**
-     * Update object from old => new.
+     * Update idObject from old => new.
      *
      * @param object          Object to import
-     * @param persistedObject The current version of the object
+     * @param persistedObject The current version of the idObject
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
     protected boolean updateObject( T object, T persistedObject )
@@ -457,7 +457,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         this.options = options;
         this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
 
+        ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
         importObjectLocal( object );
+        ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
 
         return summaryType;
     }
@@ -701,7 +703,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return collectionFields;
     }
 
-    private void reattachCollectionFields( final Object object, Map<Field, Collection<Object>> collectionFields )
+    private void reattachCollectionFields( final Object idObject, Map<Field, Collection<Object>> collectionFields )
     {
         for ( Field field : collectionFields.keySet() )
         {
@@ -721,9 +723,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     }
                     else
                     {
-                        if ( ExchangeClasses.getImportMap().get( object.getClass() ) != null )
+                        if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
                         {
-                            reportReferenceError( object, object );
+                            reportReferenceError( idObject, object );
                         }
                     }
                 }
@@ -731,7 +733,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( !options.isDryRun() )
             {
-                ReflectionUtils.invokeSetterMethod( field.getName(), object, objects );
+                ReflectionUtils.invokeSetterMethod( field.getName(), idObject, objects );
             }
         }
     }
@@ -751,13 +753,32 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return new ImportConflict( ImportUtils.getDisplayName( object ), "Object already exists." );
     }
 
-    private void reportReferenceError( Object object, Object idObject )
+    public String identifiableObjectToString( Object object )
     {
-        String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
-        String objectName = object != null ? object.getClass().getSimpleName() : "null";
+        if ( IdentifiableObject.class.isInstance( object ) )
+        {
+            IdentifiableObject identifiableObject = (IdentifiableObject) object;
 
-        String logMsg = "Unknown reference to " + idObject + " (" + referenceName + ")" +
-            " on object " + object + " (" + objectName + ").";
+            return "IdentifiableObject{" +
+                "id=" + identifiableObject.getId() +
+                ", uid='" + identifiableObject.getUid() + '\'' +
+                ", code='" + identifiableObject.getCode() + '\'' +
+                ", name='" + identifiableObject.getName() + '\'' +
+                ", created=" + identifiableObject.getCreated() +
+                ", lastUpdated=" + identifiableObject.getLastUpdated() +
+                '}';
+        }
+
+        return object.toString();
+    }
+
+    private void reportReferenceError( Object object, Object reference )
+    {
+        String objectName = object != null ? object.getClass().getSimpleName() : "null";
+        String referenceName = reference != null ? reference.getClass().getSimpleName() : "null";
+
+        String logMsg = "Unknown reference to " + identifiableObjectToString( reference ) + " (" + referenceName + ")" +
+            " on object " + identifiableObjectToString( object ) + " (" + objectName + ").";
 
         log.warn( logMsg );
 
