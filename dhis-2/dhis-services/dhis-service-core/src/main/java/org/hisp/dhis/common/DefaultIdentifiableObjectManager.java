@@ -332,18 +332,18 @@ public class DefaultIdentifiableObjectManager
                     map.put( object.getUid(), object );
                 }
             }
-            else if ( IdentifiableProperty.NAME.equals( property ) )
-            {
-                if ( object.getName() != null )
-                {
-                    map.put( object.getName(), object );
-                }
-            }
             else if ( IdentifiableProperty.CODE.equals( property ) )
             {
                 if ( object.getCode() != null )
                 {
                     map.put( object.getCode(), object );
+                }
+            }
+            else if ( IdentifiableProperty.NAME.equals( property ) )
+            {
+                if ( object.getName() != null )
+                {
+                    map.put( object.getName(), object );
                 }
             }
         }

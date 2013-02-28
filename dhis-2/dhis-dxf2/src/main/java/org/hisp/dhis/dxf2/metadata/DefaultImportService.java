@@ -123,8 +123,6 @@ public class DefaultImportService
             log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
         }
 
-        long totalStartTime = System.nanoTime();
-
         for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getImportMap().entrySet() )
         {
             Object value = ReflectionUtils.invokeGetterMethod( entry.getValue(), metaData );
@@ -148,15 +146,9 @@ public class DefaultImportService
                             log.info( message );
                         }
 
-                        long startTime = System.nanoTime();
                         ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
                         // TODO do we need this?
                         sessionFactory.getCurrentSession().flush();
-                        long endTime = System.nanoTime();
-                        long duration = endTime - startTime;
-                        double seconds = (double) duration / 1000000000.0;
-
-                        System.err.println( "Duration: " + seconds );
 
                         if ( importTypeSummary != null )
                         {
@@ -175,12 +167,6 @@ public class DefaultImportService
                 log.warn( "Can not find getter for '" + entry.getValue() + "'." );
             }
         }
-
-        long endTime = System.nanoTime();
-        long duration = endTime - totalStartTime;
-        double seconds = (double) duration / 1000000000.0;
-
-        System.err.println( "Total Duration: " + seconds );
 
         if ( importOptions.isDryRun() )
         {

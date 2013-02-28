@@ -102,7 +102,6 @@ public class DataElementCategoryOptionCombo
         int result = 1;
 
         result = prime * result + ((categoryCombo == null) ? 0 : categoryCombo.hashCode());
-
         result = prime * result + ((categoryOptions == null) ? 0 : categoryOptions.hashCode());
 
         return result;
