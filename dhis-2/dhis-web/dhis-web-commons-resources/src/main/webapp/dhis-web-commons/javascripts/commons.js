@@ -873,8 +873,7 @@ function datePicker( id )
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showOn: 'both',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		createButton: false,
 		constrainInput: true,
         yearRange: '-100:+100'
 	});
@@ -895,9 +894,7 @@ function datePicker( id, today )
 		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
-		showOn: 'both',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		createButton: false,
 		constrainInput: true,
         yearRange: '-100:+100'
 	});
@@ -922,8 +919,6 @@ function datePickerjQuery( jQueryString )
 		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
-		showOn: 'both',
-		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
         yearRange: '-100:+100'
@@ -947,9 +942,7 @@ function datePickerValid( id, today )
 		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
-		showOn: 'both',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		createButton: false,
 		maxDate: '+0d +0w',
 		constrainInput: true,
         yearRange: '-100:+100'
@@ -979,9 +972,7 @@ function datePickerFuture( id, today )
 		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
-		showOn: 'both',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		createButton: false,
 		minDate: '+0d +0w',
 		constrainInput: true,
         yearRange: '-100:+100'
@@ -1028,9 +1019,7 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showAnim: '',
-		showOn: 'both',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		createButton: false,
 		constrainInput: true,
         yearRange: '-100:+100',
 		onSelect: function(selectedDate)
@@ -1068,14 +1057,11 @@ function datePickerInRangeValid( startdate, enddate, setCurrentStartDate, setCur
 		changeMonth: true,
 		changeYear: true,
 		numberOfMonths: 1,
-		
 		maxDate: '+0d +0w',
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showAnim: '',
-		showOn: 'both',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,
+		createButton: false,
 		constrainInput: true,
         yearRange: '-100:+100',
 		onSelect: function(selectedDate)
