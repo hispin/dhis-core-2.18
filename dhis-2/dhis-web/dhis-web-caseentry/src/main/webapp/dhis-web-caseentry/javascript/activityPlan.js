@@ -1,3 +1,4 @@
+isAjax = true;
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {
