@@ -97,12 +97,6 @@ public class OrganisationUnitGroup
         return name;
     }
 
-    @Override
-    public String getCode()
-    {
-        return (name != null && name.length() > 50) ? name.substring( 0, 50 ) : name;
-    }
-
     public void addOrganisationUnit( OrganisationUnit organisationUnit )
     {
         members.add( organisationUnit );

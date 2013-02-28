@@ -58,7 +58,7 @@ import java.util.Set;
 /**
  * This class is used for defining the standardized DataSets. A DataSet consists
  * of a collection of DataElements.
- * 
+ *
  * @author Kristian Nordal
  */
 @JacksonXmlRootElement( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
@@ -297,7 +297,7 @@ public class DataSet
                 removeOrganisationUnitGroup( group );
             }
         }
-        
+
         for ( OrganisationUnitGroup group : updates )
         {
             addOrganisationUnitGroup( group );

@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,7 +68,7 @@ public class DefaultObjectBridge
 
     private static final List<Class<?>> registeredTypes = new ArrayList<Class<?>>();
 
-    private Map<Class<?>, Collection<?>> masterMap;
+    private HashMap<Class<?>, Set<?>> masterMap;
 
     private Map<String, PeriodType> periodTypeMap;
 
@@ -98,7 +99,7 @@ public class DefaultObjectBridge
     {
         log.info( "Started updating lookup maps at " + new Date() );
 
-        masterMap = new HashMap<Class<?>, Collection<?>>();
+        masterMap = new HashMap<Class<?>, Set<?>>();
         periodTypeMap = new HashMap<String, PeriodType>();
         uidMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
         codeMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
@@ -135,17 +136,14 @@ public class DefaultObjectBridge
     @SuppressWarnings( "unchecked" )
     private void populateIdentifiableObjectMap( Class<?> clazz )
     {
-        Collection<IdentifiableObject> map = new ArrayList<IdentifiableObject>();
+        Set<IdentifiableObject> map = new HashSet<IdentifiableObject>();
 
         if ( IdentifiableObject.class.isAssignableFrom( clazz ) )
         {
-            map = manager.getAll( (Class<IdentifiableObject>) clazz );
+            map = new HashSet<IdentifiableObject>( manager.getAll( (Class<IdentifiableObject>) clazz ) );
         }
 
-        if ( map != null )
-        {
-            masterMap.put( clazz, map );
-        }
+        masterMap.put( clazz, map );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -202,7 +200,7 @@ public class DefaultObjectBridge
             }
         }
 
-        masterMap.put( clazz, periodTypes );
+        masterMap.put( clazz, new HashSet<Object>( periodTypes ) );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -219,7 +217,7 @@ public class DefaultObjectBridge
                 manager.save( (IdentifiableObject) object );
             }
 
-            _updateInternalMaps( object );
+            // _updateInternalMaps( object );
         }
         else
         {
@@ -248,7 +246,7 @@ public class DefaultObjectBridge
     @Override
     public <T> T getObject( T object )
     {
-        Collection<T> objects = _findMatches( object );
+        Set<T> objects = _findMatches( object );
 
         if ( objects.size() == 1 )
         {
@@ -284,26 +282,16 @@ public class DefaultObjectBridge
     }
 
     @Override
-    public <T> Collection<T> getObjects( T object )
+    public <T> Set<T> getObjects( T object )
     {
         return _findMatches( object );
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public <T> Collection<T> getAllObjects( Class<T> clazz )
+    public <T> Set<T> getAllObjects( Class<T> clazz )
     {
-        return (Collection<T>) masterMap.get( clazz );
-    }
-
-    public Map<Class<?>, Collection<?>> getMasterMap()
-    {
-        return masterMap;
-    }
-
-    public void setMasterMap( Map<Class<?>, Collection<?>> masterMap )
-    {
-        this.masterMap = masterMap;
+        return (Set<T>) masterMap.get( clazz );
     }
 
     @Override
@@ -323,9 +311,9 @@ public class DefaultObjectBridge
     //-------------------------------------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    private <T> Collection<T> _findMatches( T object )
+    private <T> Set<T> _findMatches( T object )
     {
-        Collection<T> objects = new HashSet<T>();
+        Set<T> objects = new HashSet<T>();
 
         if ( PeriodType.class.isInstance( object ) )
         {
@@ -418,7 +406,7 @@ public class DefaultObjectBridge
                     map = nameMap.get( identifiableObject.getClass().getSuperclass() );
                 }
 
-                map.put( identifiableObject.getCode(), identifiableObject );
+                map.put( identifiableObject.getName(), identifiableObject );
             }
         }
     }

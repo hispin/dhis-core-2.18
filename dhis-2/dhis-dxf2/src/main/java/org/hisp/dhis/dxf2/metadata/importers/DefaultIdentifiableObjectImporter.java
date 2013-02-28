@@ -1,7 +1,7 @@
 package org.hisp.dhis.dxf2.metadata.importers;
 
 /*
- * Copyright (c) 2012, University of Oslo
+ * Copyright (c) 2012-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,8 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -93,6 +95,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private ExpressionService expressionService;
 
     @Autowired
+    private DataEntryFormService dataEntryFormService;
+
+    @Autowired
     private DataElementOperandService dataElementOperandService;
 
     @Autowired
@@ -101,7 +106,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -134,11 +139,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
         private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
 
+        private DataEntryForm dataEntryForm;
+
         public void extract( T object )
         {
             attributeValues = extractAttributeValues( object );
             leftSide = extractExpression( object, "leftSide" );
             rightSide = extractExpression( object, "rightSide" );
+            dataEntryForm = extractDataEntryForm( object, "dataEntryForm" );
             compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
             greyedFields = extractDataElementOperands( object, "greyedFields" );
         }
@@ -150,8 +158,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteAttributeValues( object );
                 deleteExpression( object, "leftSide" );
                 deleteExpression( object, "rightSide" );
+                // deleteDataEntryForm( object, "dataEntryForm" );
                 // deleteDataElementOperands( idObject, "compulsoryDataElementOperands" );
                 deleteDataElementOperands( object, "greyedFields" );
+
+                sessionFactory.getCurrentSession().flush();
             }
         }
 
@@ -160,8 +171,50 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveAttributeValues( object, attributeValues );
             saveExpression( object, "leftSide", leftSide );
             saveExpression( object, "rightSide", rightSide );
+            // saveDataEntryForm( object, "dataEntryForm", dataEntryForm );
             // saveDataElementOperands( idObject, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
+        }
+
+        private void saveDataEntryForm( T object, String fieldName, DataEntryForm dataEntryForm )
+        {
+            if ( dataEntryForm != null )
+            {
+                Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( dataEntryForm );
+                reattachCollectionFields( dataEntryForm, identifiableObjectCollections );
+
+                dataEntryForm.setId( 0 );
+                dataEntryFormService.addDataEntryForm( dataEntryForm );
+
+                ReflectionUtils.invokeSetterMethod( fieldName, object, dataEntryForm );
+            }
+        }
+
+        private DataEntryForm extractDataEntryForm( T object, String fieldName )
+        {
+            DataEntryForm dataEntryForm = null;
+
+            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
+            {
+                dataEntryForm = ReflectionUtils.invokeGetterMethod( fieldName, object );
+
+                if ( dataEntryForm != null )
+                {
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
+                }
+            }
+
+            return dataEntryForm;
+        }
+
+        private void deleteDataEntryForm( T object, String fieldName )
+        {
+            DataEntryForm dataEntryForm = extractDataEntryForm( object, fieldName );
+
+            if ( dataEntryForm != null )
+            {
+                dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+            }
         }
 
         private Expression extractExpression( T object, String fieldName )
@@ -354,9 +407,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( !options.isDryRun() )
         {
-            // sessionFactory.getCurrentSession().flush();
             nonIdentifiableObjects.save( object );
-            // sessionFactory.getCurrentSession().flush();
         }
 
         log.debug( "Save successful." );
@@ -399,9 +450,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( !options.isDryRun() )
         {
-            // sessionFactory.getCurrentSession().flush();
             nonIdentifiableObjects.save( persistedObject );
-            //sessionFactory.getCurrentSession().flush();
         }
 
         log.debug( "Update successful." );
@@ -631,7 +680,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return period;
         }
 
-        return objectBridge.getObject( identifiableObject );
+        IdentifiableObject reference = objectBridge.getObject( identifiableObject );
+
+        return reference;
     }
 
     private Map<Field, Object> detachFields( final Object object )
@@ -662,9 +713,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         for ( Field field : fields.keySet() )
         {
             IdentifiableObject idObject = (IdentifiableObject) fields.get( field );
-            IdentifiableObject ref = findObjectByReference( idObject );
+            IdentifiableObject reference = findObjectByReference( idObject );
 
-            if ( ref == null )
+            if ( reference == null )
             {
                 if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
                 {
@@ -674,7 +725,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( !options.isDryRun() )
             {
-                ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
+                ReflectionUtils.invokeSetterMethod( field.getName(), object, reference );
             }
         }
     }
