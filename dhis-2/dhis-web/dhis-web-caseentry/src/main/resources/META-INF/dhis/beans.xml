@@ -701,8 +701,6 @@
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetPartnerAction"
 		class="org.hisp.dhis.caseentry.action.patient.GetPartnerAction" scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
