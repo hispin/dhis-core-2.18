@@ -116,6 +116,7 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<bean

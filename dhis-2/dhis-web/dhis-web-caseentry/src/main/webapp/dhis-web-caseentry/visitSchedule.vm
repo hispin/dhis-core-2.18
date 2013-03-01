@@ -107,5 +107,10 @@
 	#end
 	#if( $programInstance.completed=='false')
 		datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
+	#else
+		jQuery(":input").attr('disabled', true);
+		jQuery("img").removeAttr("onclick");
 	#end
+	
+	var i18n_insert_a_due_date = '$encoder.jsEscape( $i18n.getString( "insert_a_due_date" ) , "'")';
 </script>

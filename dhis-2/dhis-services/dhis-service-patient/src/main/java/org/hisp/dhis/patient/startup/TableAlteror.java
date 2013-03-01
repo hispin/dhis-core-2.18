@@ -178,6 +178,8 @@ public class TableAlteror
         executeSql( "UPDATE patientattribute SET valueType='calculated' WHERE valueType='CALCULATED'" );
         executeSql( "UPDATE patientidentifiertype SET type='string' WHERE type='text'" );
 
+        executeSql( "UPDATE program SET onlyEnrollOnce='false' WHERE onlyEnrollOnce is null" );
+
         updateUid();
     }
 
