@@ -662,8 +662,8 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction"
-		class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction"
+	<bean id="org.hisp.dhis.caseentry.action.patient.SetProgramInstanceStatusAction"
+		class="org.hisp.dhis.caseentry.action.patient.SetProgramInstanceStatusAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />

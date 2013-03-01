@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class RemoveEnrollmentAction
+public class SetProgramInstanceStatusAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -61,6 +61,8 @@ public class RemoveEnrollmentAction
     private Integer programInstanceId;
 
     private Collection<Program> programs = new ArrayList<Program>();
+
+    private boolean completed;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -86,6 +88,11 @@ public class RemoveEnrollmentAction
         this.programInstanceId = programInstanceId;
     }
 
+    public void setCompleted( boolean completed )
+    {
+        this.completed = completed;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -98,24 +105,27 @@ public class RemoveEnrollmentAction
         Patient patient = programInstance.getPatient();
 
         Program program = programInstance.getProgram();
-
-        // ---------------------------------------------------------------------
-        // Update Information of programInstance
-        // ---------------------------------------------------------------------
-
-        programInstance.setEndDate( new Date() );
-        programInstance.setCompleted( true );
-        programInstanceService.updateProgramInstance( programInstance );
-
-        // ---------------------------------------------------------------------
-        // Set Completed status all program-instaces of Death case
-        // ---------------------------------------------------------------------
-
-        if ( !program.getOnlyEnrollOnce() )
+        programInstance.setCompleted( completed );
+        
+        if ( completed )
         {
-            patient.getPrograms().remove( program );
+            programInstance.setEndDate( new Date() );
+            
+            if ( !program.getOnlyEnrollOnce() )
+            {
+                patient.getPrograms().remove( program );
+                patientService.updatePatient( patient );
+            }
+        }
+        else
+        {
+            programInstance.setEndDate( null );
+            
+            patient.getPrograms().add( program );
             patientService.updatePatient( patient );
         }
+
+        programInstanceService.updateProgramInstance( programInstance );
         
         return SUCCESS;
     }

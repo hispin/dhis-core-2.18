@@ -630,8 +630,8 @@
       <param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
     </action>
 
-    <action name="removeEnrollment"
-      class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction">
+    <action name="setProgramInstanceStatus"
+      class="org.hisp.dhis.caseentry.action.patient.SetProgramInstanceStatusAction">
       <result name="success" type="velocity-xml">status.vm</result>
       <param name="requiredAuthorities">F_PROGRAM_UNENROLLMENT</param>
     </action>
