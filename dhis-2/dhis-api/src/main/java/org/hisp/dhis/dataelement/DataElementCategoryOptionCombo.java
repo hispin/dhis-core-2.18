@@ -293,6 +293,12 @@ public class DataElementCategoryOptionCombo
     // -------------------------------------------------------------------------
 
     @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
+    @Override
     public String getName()
     {
         if ( name != null )

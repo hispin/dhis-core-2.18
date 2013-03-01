@@ -149,6 +149,12 @@ public class DataElementCategoryOption
     // -------------------------------------------------------------------------
 
     @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
+    @Override
     @JsonIgnore
     public String getShortName()
     {
