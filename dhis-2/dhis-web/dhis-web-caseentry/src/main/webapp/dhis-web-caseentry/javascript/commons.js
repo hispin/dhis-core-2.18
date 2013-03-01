@@ -693,6 +693,10 @@ function saveDueDate( programInstanceId, programStageInstanceId, programStageIns
 
 function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 {
+	if(dueDate_='')
+	{
+		alert(i18n_insert_a_due_date);
+	}
 	var programStageInstanceId = programStageInstanceId_;	
 	var dueDate = dueDate_;
 	var resultColor = resultColor_;	

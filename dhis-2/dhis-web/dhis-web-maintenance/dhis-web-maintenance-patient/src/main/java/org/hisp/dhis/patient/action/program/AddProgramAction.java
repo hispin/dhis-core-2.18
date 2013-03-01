@@ -182,6 +182,13 @@ public class AddProgramAction
     {
         this.blockEntryForm = blockEntryForm;
     }
+    
+    private Boolean onlyEnrollOnce = false;
+    
+    public void setOnlyEnrollOnce( Boolean onlyEnrollOnce )
+    {
+        this.onlyEnrollOnce = onlyEnrollOnce;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -195,6 +202,7 @@ public class AddProgramAction
         generateBydEnrollmentDate = (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
+        onlyEnrollOnce = (onlyEnrollOnce == null) ? false : onlyEnrollOnce;
 
         Program program = new Program();
 
@@ -207,6 +215,8 @@ public class AddProgramAction
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setBlockEntryForm( blockEntryForm );
+        program.setOnlyEnrollOnce( onlyEnrollOnce );
+        
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );

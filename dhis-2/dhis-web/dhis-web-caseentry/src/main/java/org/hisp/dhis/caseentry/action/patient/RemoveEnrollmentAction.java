@@ -80,7 +80,7 @@ public class RemoveEnrollmentAction
     {
         return programs;
     }
-    
+
     public void setProgramInstanceId( Integer programInstanceId )
     {
         this.programInstanceId = programInstanceId;
@@ -111,9 +111,12 @@ public class RemoveEnrollmentAction
         // Set Completed status all program-instaces of Death case
         // ---------------------------------------------------------------------
 
-        patient.getPrograms().remove( program );
-        patientService.updatePatient( patient );
-
+        if ( !program.getOnlyEnrollOnce() )
+        {
+            patient.getPrograms().remove( program );
+            patientService.updatePatient( patient );
+        }
+        
         return SUCCESS;
     }
 }
