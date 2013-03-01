@@ -59,7 +59,7 @@
         <td style="height:35px"><label for="symbol">$i18n.getString( "symbol" )</td>
         <td style="width:130px"><a href="javascript:openSymbolDialog()">$i18n.getString( "select_symbol" )</a></td>
         <td><img id="symbolImg" style="padding-left:20px;"
-            #if( $organisationUnitGroup.symbol )
+            #if( $organisationUnitGroup.hasSymbol() )
             src="../images/orgunitgroup/${organisationUnitGroup.symbol}"
             #else
             src="../images/transparent.png"
