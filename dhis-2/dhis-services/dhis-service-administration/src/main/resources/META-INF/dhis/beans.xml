@@ -16,6 +16,7 @@
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
   </bean>
   
@@ -52,7 +53,7 @@
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
   
-  <!-- Databrowser Grid -->
+  <!-- Data browser -->
 
   <bean id="org.hisp.dhis.databrowser.DataBrowserGridStore" class="org.hisp.dhis.databrowser.jdbc.JDBCDataBrowserStore">
     <property name="statementBuilder" ref="statementBuilder" />

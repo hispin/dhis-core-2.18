@@ -65,6 +65,7 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
+import org.hisp.dhis.sqlview.SqlViewService;
 
 /**
  * @author Lars Helge Overland
@@ -125,6 +126,13 @@ public class DefaultResourceTableService
         this.periodService = periodService;
     }
 
+    private SqlViewService sqlViewService;
+    
+    public void setSqlViewService( SqlViewService sqlViewService )
+    {
+        this.sqlViewService = sqlViewService;
+    }
+
     private BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
@@ -132,6 +140,26 @@ public class DefaultResourceTableService
         this.batchHandlerFactory = batchHandlerFactory;
     }
 
+    // -------------------------------------------------------------------------
+    // All
+    // -------------------------------------------------------------------------
+
+    public void generateAll()
+    {
+        sqlViewService.dropAllSqlViewTables();
+        
+        generateCategoryOptionComboNames();
+        generateCategoryTable();
+        generateDataElementGroupSetTable();
+        generateDataElementTable();
+        generateIndicatorGroupSetTable();
+        generateOrganisationUnitGroupSetTable();
+        generateOrganisationUnitStructures();
+        generatePeriodTable();
+        
+        sqlViewService.createAllViewTables();
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------

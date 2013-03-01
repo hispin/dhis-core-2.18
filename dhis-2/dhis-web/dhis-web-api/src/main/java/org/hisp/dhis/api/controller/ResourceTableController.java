@@ -63,7 +63,7 @@ public class ResourceTableController
         
     @Autowired
     private SqlViewService sqlViewService;
-    
+
     @RequestMapping( value = "/analytics", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void analytics( HttpServletResponse response )
@@ -95,18 +95,7 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void resourceTables( HttpServletResponse response )
     {
-        sqlViewService.dropAllSqlViewTables();
-        
-        resourceTableService.generateCategoryOptionComboNames();
-        resourceTableService.generateCategoryTable();
-        resourceTableService.generateDataElementGroupSetTable();
-        resourceTableService.generateDataElementTable();
-        resourceTableService.generateIndicatorGroupSetTable();
-        resourceTableService.generateOrganisationUnitGroupSetTable();
-        resourceTableService.generateOrganisationUnitStructures();
-        resourceTableService.generatePeriodTable();
-        
-        sqlViewService.createAllViewTables();
+        resourceTableService.generateAll();
         
         ContextUtils.okResponse( response, "All resource tables updated" );
     }
