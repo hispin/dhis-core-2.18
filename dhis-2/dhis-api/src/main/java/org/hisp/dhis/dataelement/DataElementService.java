@@ -375,10 +375,10 @@ public interface DataElementService
     
     
     /**
-     * Returns a DataElementGroup with a given shortName.
+     * Returns a DataElementGroup with a given short name.
      *
-     * @param shortName the shortName of the DataElementGroup to return.
-     * @return the DataElementGroup with the given shortName, or null if no match.
+     * @param shortName the short name of the DataElementGroup to return.
+     * @return the DataElementGroup with the given short name, or null if no match.
      */
     DataElementGroup getDataElementGroupByShortName( String shortName );
     

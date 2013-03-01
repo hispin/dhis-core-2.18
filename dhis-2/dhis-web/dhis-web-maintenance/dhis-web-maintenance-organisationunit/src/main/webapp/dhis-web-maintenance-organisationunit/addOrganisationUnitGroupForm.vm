@@ -28,6 +28,9 @@ jQuery( document ).ready( function()
 	});
 
     checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );
+	checkValueIsExist( "shortName", "validateOrganisationUnitGroup.action" );
+	checkValueIsExist( "code", "validateOrganisationUnitGroup.action" );
+		
 } );
 </script>
 
@@ -45,6 +48,14 @@ jQuery( document ).ready( function()
         <td style="width:120px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan="2"><input type="text" id="name" name="name"></td>
     </tr>
+	<tr>
+		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="shortName" name="shortName" /></td>
+	</tr>
+	<tr>
+		<td><label for="code">$i18n.getString( "code" )</label></td>
+		<td><input type="text" id="code" name="code" /></td>
+	</tr>
     <tr>
     	<td style="height:35px"><label for="symbol">$i18n.getString( "symbol" )</td>
     	<td style="width:130px"><a href="javascript:openSymbolDialog()">$i18n.getString( "select_symbol" )</a></td>
