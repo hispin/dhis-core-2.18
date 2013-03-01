@@ -265,7 +265,13 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true,
             "rangelength" : [ 2, 160 ]
-        }
+        },
+        "shortName" : {
+            "required" : true,
+            "rangelength" : [ 2, 40 ],
+            "alphanumericwithbasicpuncspaces" : true,
+            "notOnlyDigits" : true
+        },
     },
     "dataElementGroupSet" : {
         "name" : {
