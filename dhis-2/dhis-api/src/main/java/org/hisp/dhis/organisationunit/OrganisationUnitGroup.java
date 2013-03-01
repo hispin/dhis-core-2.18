@@ -91,12 +91,6 @@ public class OrganisationUnitGroup
     // Logic
     // -------------------------------------------------------------------------
 
-    @Override
-    public String getShortName()
-    {
-        return name;
-    }
-
     public void addOrganisationUnit( OrganisationUnit organisationUnit )
     {
         members.add( organisationUnit );
