@@ -1395,23 +1395,77 @@ function unenrollmentForm( programInstanceId )
 	{
 		$.ajax({
 			type: "POST",
-			url: 'removeEnrollment.action',
-			data: "programInstanceId=" + programInstanceId,
+			url: 'setProgramInstanceStatus.action',
+			data: "programInstanceId=" + programInstanceId + "&completed=false",
 			success: function( json ) 
 			{
-				var completed  = "<tr onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + ");' >";
-					completed += "<td><a><span id='infor_" + programInstanceId + "'>" + jQuery('#tr1_' + programInstanceId + " span" ).html() + "</span></a></td></tr>";
+				var type=jQuery("#tr1_" + programInstanceId ).attr('type');
+				var programStageInstanceId=jQuery("#tr1_" + programInstanceId ).attr('programStageInstanceId');
+				
+				var completed  = "<tr id='tr1_" + programInstanceId + "' type='" + type + "' programStageInstanceId='" + programStageInstanceId + "' onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + ");' >";
+					completed += jQuery('#td_' + programInstanceId).parent().html() + "</tr>";
+				
+				var activeEvent2 = jQuery("#tr2_" + programInstanceId );
+				if( activeEvent2.length>0 )
+				{
+					completed += "<tr class='hidden'>" + activeEvent2.parent().html() + "</tr>";
+				}
 				jQuery('#completedTB' ).prepend( completed );
-				jQuery('#tr1_' + programInstanceId ).remove();
-				jQuery('#tr2_' + programInstanceId ).remove();
+				
+				jQuery('#activeTB [id=tr1_' + programInstanceId + ']').remove();
+				jQuery('#activeTB [id=tr2_' + programInstanceId + ']').remove();
 				
 				jQuery("[id=tab-2] :input").prop('disabled', true);
 				jQuery("[id=tab-3] :input").prop('disabled', true);
 				jQuery("[id=tab-4] :input").prop('disabled', true);
 				jQuery("[id=tab-5] :input").prop('disabled', true);
 				jQuery("[id=tab-3] :input").datepicker("destroy");
+				jQuery("#completeProgram").attr('disabled', true);
+				jQuery("#incompleteProgram").attr('disabled', false);
 				
 				showSuccessMessage( i18n_unenrol_success );
+			}
+		});
+	
+	}
+	
+}
+
+function reenrollmentForm( programInstanceId )
+{	
+	if( confirm(i18n_incomplete_confirm_message) )
+	{
+		$.ajax({
+			type: "POST",
+			url: 'setProgramInstanceStatus.action',
+			data: "programInstanceId=" + programInstanceId + "&completed=true",
+			success: function( json ) 
+			{
+				var type=jQuery("#tr1_" + programInstanceId ).attr('type');
+				var programStageInstanceId=jQuery("#tr1_" + programInstanceId ).attr('programStageInstanceId');
+				
+				var completed  = "<tr type='" + type + "' programStageInstanceId='" + programStageInstanceId + "' onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + ");' >";
+					completed += jQuery('#td_' + programInstanceId).parent().html() + "</tr>";
+				
+				var activeEvent = jQuery("#tr2_" + programInstanceId );
+				if( activeEvent.length>0 )
+				{
+					completed += "<tr>" + activeEvent.parent().html() + "</tr>";
+				}
+				jQuery('#activeTB' ).prepend( completed );
+				
+				jQuery('#completedTB [id=tr1_' + programInstanceId + ']').remove();
+				jQuery('#completedTB [id=tr2_' + programInstanceId + ']').remove();
+				
+				jQuery("[id=tab-2] :input").prop('disabled', false);
+				jQuery("[id=tab-3] :input").prop('disabled', false);
+				jQuery("[id=tab-4] :input").prop('disabled', false);
+				jQuery("[id=tab-5] :input").prop('disabled', false);
+				jQuery("#completeProgram").attr('disabled', false);
+				jQuery("#incompleteProgram").attr('disabled', true);
+				jQuery("[id=tab-3] :input").datepicker("destroy");
+				
+				showSuccessMessage( i18n_reenrol_success );
 			}
 		});
 	
