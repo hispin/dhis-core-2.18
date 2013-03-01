@@ -161,8 +161,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteDataEntryForm( object, "dataEntryForm" );
                 // deleteDataElementOperands( idObject, "compulsoryDataElementOperands" );
                 deleteDataElementOperands( object, "greyedFields" );
-
-                sessionFactory.getCurrentSession().flush();
             }
         }
 
@@ -214,6 +212,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( dataEntryForm != null )
             {
                 dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+                sessionFactory.getCurrentSession().flush();
             }
         }
 
