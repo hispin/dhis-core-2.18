@@ -372,7 +372,25 @@ public interface DataElementService
      *         no DataElementGroups exist.
      */
     Collection<DataElementGroup> getAllDataElementGroups();
+    
+    
+    /**
+     * Returns a DataElementGroup with a given shortName.
+     *
+     * @param shortName the shortName of the DataElementGroup to return.
+     * @return the DataElementGroup with the given shortName, or null if no match.
+     */
+    DataElementGroup getDataElementGroupByShortName( String shortName );
+    
+    /**
+     * Returns a DataElementGroup with a given code.
+     *
+     * @param code the shortName of the DataElementGroup to return.
+     * @return the DataElementGroup with the given code, or null if no match.
+     */
+    DataElementGroup getDataElementGroupByCode( String code );
 
+    
     /**
      * Returns all DataElementGroups which contain the given DataElement.
      *
