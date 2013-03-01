@@ -152,6 +152,14 @@
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.SaveCoordinatesEventAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveCoordinatesEventAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+	
 	<!-- Multi DataEntry -->
 
 	<bean
