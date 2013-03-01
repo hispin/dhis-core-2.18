@@ -59,7 +59,7 @@ public class DataQueryParams
     public static final String INDICATOR_DIM_ID = "in";
     public static final String DATAELEMENT_DIM_ID = "de";
     public static final String DATASET_DIM_ID = "ds";
-    public static final String CATEGORYOPTIONCOMBO_DIM_ID = "coc";
+    public static final String CATEGORYOPTIONCOMBO_DIM_ID = "co";
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
     public static final String VALUE_ID = "value";    

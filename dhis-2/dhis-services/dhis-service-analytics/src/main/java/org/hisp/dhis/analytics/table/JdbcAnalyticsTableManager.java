@@ -152,7 +152,7 @@ public class JdbcAnalyticsTableManager
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _periodstructure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
-            "left join categoryoptioncombo coc on dv.categoryoptioncomboid=coc.categoryoptioncomboid " +
+            "left join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype='" + valueType + "' " +
             "and pe.startdate >= '" + start + "' " +
@@ -205,10 +205,10 @@ public class JdbcAnalyticsTableManager
         }
         
         String[] de = { "de", "character(11) not null", "de.uid" };
-        String[] coc = { "coc", "character(11) not null", "coc.uid" };
+        String[] co = { "co", "character(11) not null", "co.uid" };
         String[] level = { "level", "integer", "ous.level" };
         
-        columns.addAll( Arrays.asList( de, coc, level ) );
+        columns.addAll( Arrays.asList( de, co, level ) );
         
         return columns;
     }
