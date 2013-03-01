@@ -27,6 +27,8 @@
 		});
 		
 		checkValueIsExist( "name", "validateOrganisationUnitGroup.action", {id:$!organisationUnitGroup.id} );
+		checkValueIsExist( "shortName", "validateOrganisationUnitGroup.action", {id:$!organisationUnitGroup.id} );
+		checkValueIsExist( "code", "validateOrganisationUnitGroup.action", {id:$!organisationUnitGroup.id} );
 	});
 </script>
 
@@ -45,6 +47,14 @@
         <td style="width:120px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan="2"><input type="text" id="name" name="name" value="$!organisationUnitGroup.name"/></td>
     </tr>
+	<tr>
+		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $organisationUnitGroup.shortName )"></td>
+	</tr>
+	<tr>
+		<td><label for="code">$i18n.getString( "code" )</label></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnitGroup.code )"></td>
+	</tr>
     <tr>
         <td style="height:35px"><label for="symbol">$i18n.getString( "symbol" )</td>
         <td style="width:130px"><a href="javascript:openSymbolDialog()">$i18n.getString( "select_symbol" )</a></td>

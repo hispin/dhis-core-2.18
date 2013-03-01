@@ -99,6 +99,20 @@ public class UpdateOrganisationUnitGroupAction
         this.name = name;
     }
 
+    private String shortName;
+
+    public void setShortName( String shortName )
+    {
+        this.shortName = shortName;
+    }
+
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String symbol;
 
     public void setSymbol( String symbol )
@@ -127,9 +141,13 @@ public class UpdateOrganisationUnitGroupAction
     public String execute()
         throws Exception
     {
+        code = (code != null && code.trim().length() == 0) ? null : code;
+
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id );
 
         organisationUnitGroup.setName( name );
+        organisationUnitGroup.setShortName( shortName );
+        organisationUnitGroup.setCode( code );
         organisationUnitGroup.setSymbol( symbol );
 
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
@@ -143,14 +161,21 @@ public class UpdateOrganisationUnitGroupAction
                 jsonAttributeValues, attributeService );
         }
 
-        Set<DataSet> dataSets = new HashSet<DataSet>();
-
-        for ( String id : selectedDataSetsList )
+        if ( selectedDataSetsList != null )
         {
-            dataSets.add( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+            Set<DataSet> dataSets = new HashSet<DataSet>();
+
+            for ( String id : selectedDataSetsList )
+            {
+                dataSets.add( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+            }
+
+            organisationUnitGroup.updateDataSets( dataSets );
         }
-        
-        organisationUnitGroup.updateDataSets( dataSets );
+        else
+        {
+            organisationUnitGroup.getDataSets().clear();
+        }
 
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
 

@@ -90,6 +90,20 @@ public class AddOrganisationUnitGroupAction
         this.name = name;
     }
 
+    private String shortName;
+
+    public void setShortName( String shortName )
+    {
+        this.shortName = shortName;
+    }
+
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String symbol;
 
     public void setSymbol( String symbol )
@@ -118,8 +132,12 @@ public class AddOrganisationUnitGroupAction
     public String execute()
         throws Exception
     {
+        code = (code != null && code.trim().length() == 0) ? null : code;
+
         OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup();
         organisationUnitGroup.setName( name );
+        organisationUnitGroup.setShortName( shortName );
+        organisationUnitGroup.setCode( code );
         organisationUnitGroup.setSymbol( symbol );
 
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
@@ -136,9 +154,12 @@ public class AddOrganisationUnitGroupAction
                 jsonAttributeValues, attributeService );
         }
 
-        for ( String id : selectedDataSetsList )
+        if ( selectedDataSetsList != null )
         {
-            organisationUnitGroup.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+            for ( String id : selectedDataSetsList )
+            {
+                organisationUnitGroup.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+            }
         }
 
         organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
