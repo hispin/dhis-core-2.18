@@ -487,7 +487,7 @@ public class DefaultIdentifiableObjectManager
     //--------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getAllAccessible( Class<T> clazz )
     {
         User user = currentUserService.getCurrentUser();
@@ -503,7 +503,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getAccessibleLikeName( Class<T> clazz, String name )
     {
         User user = currentUserService.getCurrentUser();
@@ -519,7 +519,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getAccessibleBetween( Class<T> clazz, int first, int max )
     {
         User user = currentUserService.getCurrentUser();
@@ -535,7 +535,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getAccessibleBetweenLikeName( Class<T> clazz, String name, int first, int max )
     {
         User user = currentUserService.getCurrentUser();
@@ -551,7 +551,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getAccessibleByLastUpdated( Class<T> clazz, Date lastUpdated )
     {
         User user = currentUserService.getCurrentUser();

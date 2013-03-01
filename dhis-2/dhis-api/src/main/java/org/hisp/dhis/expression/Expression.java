@@ -302,8 +302,10 @@ public class Expression
         expression = other.getExpression() == null ? expression : other.getExpression();
         description = other.getDescription() == null ? description : other.getDescription();
         nullIfBlank = other.isNullIfBlank();
+
         dataElementsInExpression = other.getDataElementsInExpression() == null ?
             dataElementsInExpression : new HashSet<DataElement>( other.getDataElementsInExpression() );
+
         optionCombosInExpression = other.getOptionCombosInExpression() == null ?
             optionCombosInExpression : new HashSet<DataElementCategoryOptionCombo>( other.getOptionCombosInExpression() );
     }
