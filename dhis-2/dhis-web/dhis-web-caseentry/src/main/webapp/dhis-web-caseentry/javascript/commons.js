@@ -1914,3 +1914,18 @@ function refreshZebraStripes( $tbody )
      $tbody.find( 'tr:visible:even' ).removeClass( 'listRow' ).removeClass( 'listAlternateRow' ).addClass( 'listRow' );
      $tbody.find( 'tr:visible:odd' ).removeClass( 'listRow' ).removeClass( 'listAlternateRow' ).addClass( 'listAlternateRow' );
 }
+
+function saveCoordinatesEvent(programStageInstanceId)
+{
+	jQuery.postJSON( "saveCoordinatesEvent.action",
+		{ 
+			programStageInstanceId:programStageInstanceId,
+			longitude: getFieldValue('longitude'),
+			latitude: getFieldValue('latitude')
+		}, 
+		function( json ) 
+		{   
+			 byId('longitude').style.backgroundColor = SUCCESS_COLOR;
+             byId('latitude').style.backgroundColor = SUCCESS_COLOR;
+		});
+}
