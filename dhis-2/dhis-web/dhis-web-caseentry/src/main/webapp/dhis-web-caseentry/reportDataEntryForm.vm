@@ -46,7 +46,6 @@
 				</script>  
 			<th class='coordinates1' id="dueDateLbl"><label for="dueDate"> $i18n.getString( "due_date" )</label> </th>
 			<th class='coordinates2' id="dueDateField"><input type="text" class='criteria' id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"> </th>
-			<th></th>
 		</tr>
 	</table>
 	#end

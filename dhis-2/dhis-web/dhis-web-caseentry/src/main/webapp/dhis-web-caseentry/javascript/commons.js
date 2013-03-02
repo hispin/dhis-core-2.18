@@ -1921,7 +1921,10 @@ function saveCoordinatesEvent(programStageInstanceId)
 	var latitude = jQuery.trim(getFieldValue('latitude'));
 	var isValid = true;
 	
-	if(longitude=='' || latitude==''){
+	if(longitude=='' && latitude==''){
+		isValid = true;
+	}
+	else if(longitude=='' || latitude==''){
 		alert(i18n_enter_values_for_longitude_and_latitude_fields);
 		isValid = false;
 	}	

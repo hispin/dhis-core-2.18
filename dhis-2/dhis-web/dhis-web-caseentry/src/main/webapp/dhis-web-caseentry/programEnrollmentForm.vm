@@ -40,7 +40,6 @@
 								</th>
 								<th class='coordinates1'><label for="dueDate">$i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
 								<th class='coordinates2'><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > </th>
-								<th></th>
 							</tr>
 						</table>
 					</div>
