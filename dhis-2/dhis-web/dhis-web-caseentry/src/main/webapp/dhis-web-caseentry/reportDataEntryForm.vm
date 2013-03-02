@@ -4,8 +4,8 @@
 </div>
 
 <div id='patientInforTB' name="patientInforTB" style="display:none;">
-	<table>
-		#if( $patient )
+	#if( $patient )
+		<table>
 			<tr>            
 				<td>
 					<span class='bold' id="patientName">$i18n.getString( "full_name" ):</span>
@@ -33,20 +33,23 @@
 			</tr>
 			#end
 			<tr><td>&nbsp;</td></tr>
-		#end
+		</table>
+	#end
 		
-		#if( $programStageInstance )
-			<tr>
-				<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription <em title="$i18n.getString( "required" )" class="required">*</em>&nbsp;&nbsp;&nbsp;</label></th>
-				<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.programInstance.program.id, $programStageInstance.id, byId('executionDate') )" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-					<script type="text/javascript">
-					   datePickerValid( 'executionDate', false );
-					</script>  
-				<th id="dueDateLbl"><label for="dueDate"> $i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;</label></th>
-				<th id="dueDateField"><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;</th>
-			</tr>
-		#end
+	#if( $programStageInstance )
+	<table style="width:740px;" class="listTable">
+		<tr>
+			<th class='coordinates1'><label for="executionDate">$programStageInstance.programStage.reportDateDescription <em title="$i18n.getString( "required" )" class="required">*</em> </label></th>
+			<th class='coordinates2'><input type="text" class='criteria' id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.programInstance.program.id, $programStageInstance.id, byId('executionDate') )" > </th>
+				<script type="text/javascript">
+				   datePickerValid( 'executionDate', false );
+				</script>  
+			<th class='coordinates1' id="dueDateLbl"><label for="dueDate"> $i18n.getString( "due_date" )</label> </th>
+			<th class='coordinates2' id="dueDateField"><input type="text" class='criteria' id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"> </th>
+			<th></th>
+		</tr>
 	</table>
+	#end
 </div>
 
 <input type='hidden' id="programId" name="programId" type="text" readonly="readonly" value="$encoder.htmlEncode( $program.displayName )" style="min-width:350px">		

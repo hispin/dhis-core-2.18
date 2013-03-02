@@ -19,7 +19,7 @@ input.small-button[type="button"]
 	height: 30px;
 }
 
-input.normal-button[type="button"] 
+input.normal-button[type="button"] , input.normal-button[type="submit"] 
 {
     width: 60px;
 }
@@ -171,7 +171,7 @@ div.actions
 
 input.criteria
 {
-	width: 150px;
+	width: 130px;
 	margin-right: 5px;
 }
 
@@ -513,4 +513,17 @@ div.link-area-tracking
     border-width: 1px;
     border-style: solid;
     border-color: #aaa;
+}
+
+
+/* --------------------------------------------------------------
+// Capture Coordinates
+// -------------------------------------------------------------- */
+
+.coordinates1{
+    width: 120px;
+}
+
+.coordinates2{
+    width: 180px;
 }

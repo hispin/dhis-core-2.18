@@ -11,9 +11,6 @@
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#end
 		
-		validation( 'coordinatesForm', function(form){
-			saveCoordinatesEvent($!programStageInstance.id);
-		});
 		entryFormContainerOnReady();
 		
 	});
@@ -34,27 +31,17 @@
 <input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!programStageInstance.programInstance.program.blockEntryForm'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
-	<form id='coordinatesForm'>
-		#if($programStageInstance.programStage.captureCoordinates=='true')
-		<fieldset style="width:570px;">
-			<legend>$i18n.getString('coordinates')</legend>
-			<table>
-				<tr>
-					<td><label for="longitude">$i18n.getString( "longitude" )</label></td>
-					<td><input type="text" id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}"></td>
-				</tr>
-				<tr>
-					<td><label for="latitude">$i18n.getString( "latitude" )</label></td>
-					<td><input type="text" id="latitude" name="latitude" value="$!{latitude}" class="{validate:{number:true,min:-90,max:90}}"></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><input type='submit' value='$i18n.getString("save")' onclick="" /></td>
-				</tr>
-			</table>
-		</fieldset>
-		#end
-	</form>
+	#if($programStageInstance.programStage.captureCoordinates=='true')
+		<table style="width:740px;margin-top:-9px" class="listTable">
+			<tr>
+				<th class='coordinates1'><label for="longitude">$i18n.getString( "longitude" )</label></th>
+				<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>
+				<th class='coordinates1'><label for="latitude">$i18n.getString( "latitude" )</label></th>
+				<th class='coordinates2'><input type="text" class='criteria' id="latitude" name="latitude" value="$!{latitude}" class="{validate:{number:true,min:-90,max:90}}" placeholder='$i18n.getString("enter_a_number")' ></th>
+				<th><input type='button' value='$i18n.getString("save")' class='normal-button' onclick='saveCoordinatesEvent($!programStageInstance.id);' /></th>
+			</tr>
+		</table>
+	#end
 	
 	<br>
 	
@@ -107,6 +94,13 @@
 
 <script>
 	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
+	var i18n_enter_a_value_less_than_or_equal_to_180 = '$encoder.jsEscape( $i18n.getString( "enter_a_value_less_than_or_equal_to_180" ) , "'" )';
+	var i18n_enter_a_value_greater_than_or_equal_to_nagetive_180 = '$encoder.jsEscape( $i18n.getString( "enter_a_value_greater_than_or_equal_to_nagetive_180" ) , "'" )';
+	var i18n_enter_a_value_less_than_or_equal_to_90 = '$encoder.jsEscape( $i18n.getString( "enter_a_value_less_than_or_equal_to_90" ) , "'" )';
+	var i18n_enter_a_value_greater_than_or_equal_to_nagetive_90 = '$encoder.jsEscape( $i18n.getString( "enter_a_value_greater_than_or_equal_to_nagetive_90" ) , "'" )';
+	var i18n_enter_values_for_longitude_and_latitude_fields = '$encoder.jsEscape( $i18n.getString( "enter_values_for_longitude_and_latitude_fields" ) , "'" )';
+	var i18n_enter_a_valid_number = '$encoder.jsEscape( $i18n.getString( "enter_a_valid_number" ) , "'" )';
+	
 	#if( $programStageInstance.programInstance.program.type=='1' && $programStageInstance.programInstance.completed=="true")
 		jQuery("[id=entryFormContainer] :input").prop('disabled', true);
 		jQuery("[id=entryFormContainer] :input").datepicker("destroy");
