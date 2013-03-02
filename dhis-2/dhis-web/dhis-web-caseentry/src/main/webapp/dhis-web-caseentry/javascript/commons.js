@@ -1917,15 +1917,56 @@ function refreshZebraStripes( $tbody )
 
 function saveCoordinatesEvent(programStageInstanceId)
 {
-	jQuery.postJSON( "saveCoordinatesEvent.action",
-		{ 
-			programStageInstanceId:programStageInstanceId,
-			longitude: getFieldValue('longitude'),
-			latitude: getFieldValue('latitude')
-		}, 
-		function( json ) 
-		{   
-			 byId('longitude').style.backgroundColor = SUCCESS_COLOR;
-             byId('latitude').style.backgroundColor = SUCCESS_COLOR;
-		});
+	var longitude = jQuery.trim(getFieldValue('longitude'));
+	var latitude = jQuery.trim(getFieldValue('latitude'));
+	var isValid = true;
+	
+	if(longitude=='' || latitude==''){
+		alert(i18n_enter_values_for_longitude_and_latitude_fields);
+		isValid = false;
+	}	
+	else if(!isInt(longitude)){
+		byId('longitude').style.backgroundColor = '#ffcc00';
+		alert(i18n_enter_a_valid_number);
+		isValid = false;
+	}
+	else if(!isInt(latitude)){
+		byId('latitude').style.backgroundColor = '#ffcc00';
+		alert(i18n_enter_a_valid_number);
+		isValid = false;
+	}
+	else if(eval(longitude)>180){
+		byId('longitude').style.backgroundColor = '#ffcc00';
+		alert(i18n_enter_a_value_less_than_or_equal_to_180);
+		isValid = false;
+	}
+	else if(eval(longitude)<-180){
+		byId('longitude').style.backgroundColor = '#ffcc00';
+		alert(i18n_enter_a_value_greater_than_or_equal_to_nagetive_180);
+		isValid = false;
+	}
+	else if(eval(latitude)>90){
+		byId('latitude').style.backgroundColor = '#ffcc00';
+		alert(i18n_enter_a_value_less_than_or_equal_to_90);
+		isValid = false;
+	}
+	else if(eval(latitude)<-90){
+		byId('latitude').style.backgroundColor = '#ffcc00';
+		alert(i18n_enter_a_value_greater_than_or_equal_to_nagetive_90);
+		isValid = false;
+	}
+	
+	if( isValid ){
+		jQuery.postJSON( "saveCoordinatesEvent.action",
+			{ 
+				programStageInstanceId:programStageInstanceId,
+				longitude: longitude,
+				latitude: latitude
+			}, 
+			function( json ) 
+			{   
+				 byId('longitude').style.backgroundColor = SUCCESS_COLOR;
+				 byId('latitude').style.backgroundColor = SUCCESS_COLOR;
+			});
+	}
 }
