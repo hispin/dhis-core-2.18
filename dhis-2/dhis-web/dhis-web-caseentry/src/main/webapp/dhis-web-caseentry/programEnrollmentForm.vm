@@ -30,7 +30,7 @@
 					<div id='programInstanceDiv'>
 						#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
 						<br>		
-						<table style="width:740px;" class="listTable">
+						<table style="width:600px;" class="listTable">
 							<tr id='executionDateTB' name="executionDateTB" class='hidden'>
 								<th class='coordinates1'><span id="reportDateDescriptionField">$i18n.getString( "report_date" )</span> <em title="$i18n.getString( "required" )" class="required">*</em> </th>
 								<th class='coordinates2'><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )">

@@ -674,8 +674,14 @@ function disableCompletedButton( disabled )
 
 function saveDueDate( programInstanceId, programStageInstanceId, programStageInstanceName )
 {
-	var field = document.getElementById( 'value_' + programStageInstanceId + '_date' );
+	var field = byId( 'value_' + programStageInstanceId + '_date' );
 	var dateOfIncident = new Date( byId('dateOfIncident').value );
+	
+	if(field.value==''){
+		field.style.backgroundColor = '#FFCC00';
+		alert( i18n_insert_a_due_date );
+		return;
+	}	
 	var dueDate = new Date(field.value);
 	
 	if( dueDate < dateOfIncident )
@@ -693,10 +699,6 @@ function saveDueDate( programInstanceId, programStageInstanceId, programStageIns
 
 function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 {
-	if(dueDate_='')
-	{
-		alert(i18n_insert_a_due_date);
-	}
 	var programStageInstanceId = programStageInstanceId_;	
 	var dueDate = dueDate_;
 	var resultColor = resultColor_;	
