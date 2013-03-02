@@ -32,7 +32,7 @@
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	#if($programStageInstance.programStage.captureCoordinates=='true')
-		<table style="width:740px;margin-top:-9px" class="listTable">
+		<table style="width:600px;margin-top:-9px" class="listTable">
 			<tr>
 				<th class='coordinates1'><label for="longitude">$i18n.getString( "longitude" )</label></th>
 				<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>

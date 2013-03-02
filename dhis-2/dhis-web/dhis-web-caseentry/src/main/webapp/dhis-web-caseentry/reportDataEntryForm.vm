@@ -37,7 +37,7 @@
 	#end
 		
 	#if( $programStageInstance )
-	<table style="width:740px;" class="listTable">
+	<table style="width:600px;" class="listTable">
 		<tr>
 			<th class='coordinates1'><label for="executionDate">$programStageInstance.programStage.reportDateDescription <em title="$i18n.getString( "required" )" class="required">*</em> </label></th>
 			<th class='coordinates2'><input type="text" class='criteria' id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.programInstance.program.id, $programStageInstance.id, byId('executionDate') )" > </th>
@@ -56,7 +56,7 @@
 
 <p></p>
 #parse( "dhis-web-commons/loader/loader.vm" )
-<form id='dataEntryFormDiv' name='dataEntryFormDiv' >
+<form id='dataEntryFormDiv' name='dataEntryFormDiv' #if($!programStageInstance.executionDate) #else class='hidden' #end >
 	#parse( "dhis-web-caseentry/dataEntryForm.vm" )
 </form>
 

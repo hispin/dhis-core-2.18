@@ -58,7 +58,7 @@
 					<td>$i18n.getString( "due_date" )</td>        
 					#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
 					<td>        
-						<input type="text" id="$duedateId" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.displayName )' )" />
+						<input type="text" id="$duedateId" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programStageInstance.programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.displayName )' )" />
 						<input type="hidden" name="enrollmentDate" id="enrollmentDate" value="$!format.formatDate( $programInstance.enrollmentDate )">
 						<input type="hidden" name="dateOfIncident" id="dateOfIncident" value="$!format.formatDate( $programInstance.dateOfIncident )">
 						<script type="text/javascript">
