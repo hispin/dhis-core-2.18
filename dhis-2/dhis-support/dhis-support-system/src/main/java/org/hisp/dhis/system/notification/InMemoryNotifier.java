@@ -77,11 +77,14 @@ public class InMemoryNotifier
     {
         Notification notification = new Notification( level, category, new Date(), message, completed );
         
-        notifications.get( id ).add( 0, notification );
-        
-        if ( notifications.get( id ).size() > MAX_SIZE )
+        if ( id != null )
         {
-            notifications.get( id ).remove( MAX_SIZE );
+            notifications.get( id ).add( 0, notification );
+            
+            if ( notifications.get( id ).size() > MAX_SIZE )
+            {
+                notifications.get( id ).remove( MAX_SIZE );
+            }
         }
 
         log.info( notification );

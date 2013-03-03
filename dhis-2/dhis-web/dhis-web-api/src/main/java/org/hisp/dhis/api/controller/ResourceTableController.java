@@ -33,7 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.resourcetable.ResourceTableService;
-import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.system.scheduling.Scheduler;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -60,15 +61,18 @@ public class ResourceTableController
     
     @Autowired
     private ResourceTableService resourceTableService;
-        
+    
     @Autowired
-    private SqlViewService sqlViewService;
-
+    private CurrentUserService currentUserService;
+    
+    @Autowired
+    private Scheduler scheduler;
+    
     @RequestMapping( value = "/analytics", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
-    public void analytics( HttpServletResponse response )
+    public void data( HttpServletResponse response )
     {
-        analyticsTableService.update();
+        analyticsTableService.update( null );
         
         ContextUtils.okResponse( response, "Initiated analytics table update" );
     }
@@ -77,7 +81,7 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void completeness( HttpServletResponse response )
     {
-        completenessTableService.update();
+        completenessTableService.update( null );
         
         ContextUtils.okResponse( response, "Initiated completeness table update" );
     }
@@ -86,7 +90,7 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void completenessTarget( HttpServletResponse response )
     {
-        completenessTargetTableService.update();
+        completenessTargetTableService.update( null );
         
         ContextUtils.okResponse( response, "Initiated completeness target table update" );
     }
