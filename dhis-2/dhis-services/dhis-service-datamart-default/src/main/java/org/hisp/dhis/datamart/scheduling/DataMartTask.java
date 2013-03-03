@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.scheduling;
+package org.hisp.dhis.datamart.scheduling;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
