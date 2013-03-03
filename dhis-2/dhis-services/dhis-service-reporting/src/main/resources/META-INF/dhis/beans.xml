@@ -256,12 +256,7 @@
   <bean id="abstractDataMartTask" class="org.hisp.dhis.system.scheduling.DataMartTask" scope="prototype">
     <constructor-arg ref="org.hisp.dhis.datamart.DataMartEngine" />
     <constructor-arg ref="org.hisp.dhis.completeness.DataSetCompletenessEngine" />
-    <constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
-    <constructor-arg ref="org.hisp.dhis.indicator.IndicatorService" />
 	<constructor-arg ref="org.hisp.dhis.period.PeriodService" />
-    <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    <constructor-arg ref="org.hisp.dhis.dataset.DataSetService" />
 	<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
   
