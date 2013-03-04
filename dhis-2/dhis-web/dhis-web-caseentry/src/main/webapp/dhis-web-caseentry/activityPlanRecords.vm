@@ -17,11 +17,16 @@
 		#set( $programStage = '' )
 		#foreach( $programStageInstance in $programStageInstances )
 			#set( $eventName = $programStageInstance.programStage.displayName )
+			#set( $patient = $programStageInstance.programInstance.patient)
 			#if( $eventName != $programStage)
 				<tr><td colspan='3' class='bold'>$i18n.getString('for') $eventName</td></tr>
 				<tr>
 					<th>#</th>
 					<th>$i18n.getString('full_name')</th>
+					<th>$i18n.getString( "gender" )</th>
+					<th>$i18n.getString( "date_of_birth" )</th> 
+					<th>$i18n.getString( "age" )</th>
+					<th>$i18n.getString( "phone_number" )</th>
 					<th>$i18n.getString('date_scheduled')</th>
 				#set( $mark = false ) 
 				#set( $nr = 0 ) 
@@ -32,7 +37,15 @@
 					#set( $nr = $nr + 1 )
 					$nr
 				</td>
-				<td>$programStageInstance.programInstance.patient.getFullName()</td>
+				<td>$patient.getFullName()</td>
+				<td>$i18n.getString($!patient.gender)</td>
+				
+				<td>$format.formatDate( $!patient.birthDate)</td>
+				
+				<td>$!patient.getAge()</td>
+				
+				<td>$!patient.phoneNumber</td>
+				
 				<td><a href="javascript:loadDataEntry( $programStageInstance.id );">
 					#if($!programStageInstance.executionDate)
 						$format.formatDate($!programStageInstance.executionDate)

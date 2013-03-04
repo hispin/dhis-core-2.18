@@ -375,6 +375,10 @@ public class DefaultProgramStageInstanceService
 
         // Header
         grid.addHeader( new GridHeader( i18n.getString( "full_name" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "gender" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "date_of_birth" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "age" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "date_scheduled" ), false, false ) );
 
         String programStage = "";
@@ -386,10 +390,19 @@ public class DefaultProgramStageInstanceService
                 grid.addRow();
                 grid.addValue( eventName );
                 grid.addValue( "" );
+                grid.addValue( "" );
+                grid.addValue( "" );
+                grid.addValue( "" );
+                grid.addValue( "" );
                 programStage = eventName;
             }
             grid.addRow();
-            grid.addValue( stageInstance.getProgramInstance().getPatient().getFullName() );
+            Patient patient = stageInstance.getProgramInstance().getPatient();
+            grid.addValue( patient.getFullName() );
+            grid.addValue( patient.getGender() );
+            grid.addValue( DateUtils.getMediumDateString( patient.getBirthDate() ) );
+            grid.addValue( patient.getAge() );
+            grid.addValue( patient.getPhoneNumber() );
             grid.addValue( DateUtils.getMediumDateString( stageInstance.getDueDate() ) );
         }
 

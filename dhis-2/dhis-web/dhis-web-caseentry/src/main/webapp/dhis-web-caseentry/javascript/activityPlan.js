@@ -77,10 +77,12 @@ function exportActitityList( type )
 	var params  = "programId=" + getFieldValue('programIdAddPatient');
 	params += "&startDate=" + getFieldValue('startDueDate');
 	params += "&endDue=" + getFieldValue('endDueDate');
+	params += "&type=xls";
+	var statusEvent = getFieldValue('statusEvent').split('_');
 	for( var i in statusEvent){
 		params += "&statusList=" + statusEvent[i];
 	}
-	var url = "exportActitityList.action?" + params;
+	var url = "getActivityPlanRecords.action?" + params;
 	window.location.href = url;
 }
 
