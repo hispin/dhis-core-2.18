@@ -196,6 +196,7 @@ public class ShowAddPatientFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
+        Program program = null;
 
         if ( programId == null )
         {
@@ -227,10 +228,12 @@ public class ShowAddPatientFormAction
 
             Collection<PatientAttribute> patientAttributesInProgram = new HashSet<PatientAttribute>();
             Collection<Program> programs = programService.getAllPrograms();
-            for ( Program program : programs )
+            programs.remove(program);
+            
+            for ( Program _program : programs )
             {
-                identifierTypes.removeAll( program.getPatientIdentifierTypes() );
-                patientAttributesInProgram.addAll( program.getPatientAttributes() );
+                identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
+                patientAttributesInProgram.addAll( _program.getPatientAttributes() );
             }
 
             attributeGroups = new ArrayList<PatientAttributeGroup>(
