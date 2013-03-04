@@ -41,6 +41,7 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -61,6 +62,7 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -681,6 +683,24 @@ public class HibernateProgramStageInstanceStore
         }
 
         return grid;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public List<ProgramStageInstance> getActiveInstance( Program program, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, Collection<Integer> statusList, Integer max, Integer min )
+    {
+        return getActiveInstanceCriteria( program, orgunitIds, startDate, endDate, statusList, max, min ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public int getActiveInstanceCount( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Collection<Integer> statusList )
+    {
+        Criteria criteria = getActiveInstanceCriteria( program, orgunitIds, startDate, endDate, statusList, null, null );
+
+        List<ProgramStageInstance> list = criteria.list();
+       
+        return list != null ? list.size() : 0;
     }
 
     // -------------------------------------------------------------------------
@@ -1752,7 +1772,7 @@ public class HibernateProgramStageInstanceStore
         return orgunitIds;
     }
 
-    public void fillDataInGrid( Grid grid, SqlRowSet rs, I18n i18n )
+    private void fillDataInGrid( Grid grid, SqlRowSet rs, I18n i18n )
     {
         int cols = rs.getMetaData().getColumnCount();
         int dataCols = 0;
@@ -1920,4 +1940,61 @@ public class HibernateProgramStageInstanceStore
         }
     }
 
+    public Criteria getActiveInstanceCriteria( Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Collection<Integer> statusList, Integer max, Integer min )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.createAlias( "programStage", "programStage" );
+        criteria.createAlias( "programInstance.patient", "patient" );
+        criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+        criteria.add( Restrictions.eq( "programInstance.program", program ) );
+        criteria.add( Restrictions.isNull( "programInstance.endDate" ) );
+
+        Disjunction disjunction = Restrictions.disjunction();
+
+        for ( Integer status : statusList )
+        {
+            switch ( status )
+            {
+            case ProgramStageInstance.COMPLETED_STATUS:
+                disjunction.add( Restrictions.and( Restrictions.eq( "completed", true ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) );
+                break;
+            case ProgramStageInstance.VISITED_STATUS:
+                disjunction.add( Restrictions.and( Restrictions.eq( "completed", false ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) );
+                break;
+            case ProgramStageInstance.FUTURE_VISIT_STATUS:
+                disjunction.add( Restrictions.and(
+                    Restrictions.isNull( "executionDate" ), 
+                    Restrictions.between( "dueDate", new Date(), endDate ),
+                    Restrictions.in( "regOrgunit.id", orgunitIds ) ) );
+                break;
+            case ProgramStageInstance.LATE_VISIT_STATUS:
+                disjunction.add( Restrictions.and(
+                    Restrictions.isNull( "executionDate" ), 
+                    Restrictions.between( "dueDate", startDate, new Date() ),
+                    Restrictions.in( "regOrgunit.id", orgunitIds ) ) );
+                break;
+            default:
+                break;
+            }
+        }
+
+        criteria.add( disjunction );
+        
+        if ( min != null && max != null )
+        {
+            criteria.setFirstResult( min );
+            criteria.setMaxResults( max );
+        }
+
+        criteria.addOrder( Order.asc( "programStage.minDaysFromStart" ) );
+        criteria.addOrder( Order.desc( "dueDate" ) );
+
+        return criteria;
+    }
 }

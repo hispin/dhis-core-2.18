@@ -48,6 +48,7 @@ import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -355,4 +356,49 @@ public class DefaultProgramStageInstanceService
             deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, format, i18n );
     }
 
+    public List<ProgramStageInstance> activityPlanList( Program program, Collection<Integer> orgunitIds,
+        Date startDate, Date endDate, Collection<Integer> statusList, Integer min, Integer max )
+    {
+        return programStageInstanceStore.getActiveInstance( program, orgunitIds, startDate, endDate, statusList, max,
+            min );
+    }
+
+    @Override
+    public Grid activityPlans( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Collection<Integer> statusList, Integer min, Integer max, I18n i18n )
+    {
+        List<ProgramStageInstance> stageInstances = programStageInstanceStore.getActiveInstance( program, orgunitIds,
+            startDate, endDate, statusList, max, min );
+
+        Grid grid = new ListGrid();
+        grid.setTitle( program.getDisplayName() );
+
+        // Header
+        grid.addHeader( new GridHeader( i18n.getString( "full_name" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "date_scheduled" ), false, false ) );
+
+        String programStage = "";
+        for ( ProgramStageInstance stageInstance : stageInstances )
+        {
+            String eventName = stageInstance.getProgramStage().getDisplayName();
+            if ( !programStage.equals( eventName ) )
+            {
+                grid.addRow();
+                grid.addValue( eventName );
+                grid.addValue( "" );
+                programStage = eventName;
+            }
+            grid.addRow();
+            grid.addValue( stageInstance.getProgramInstance().getPatient().getFullName() );
+            grid.addValue( DateUtils.getMediumDateString( stageInstance.getDueDate() ) );
+        }
+
+        return grid;
+    }
+
+    public int getActiveInstanceCount( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Collection<Integer> statusList )
+    {
+        return programStageInstanceStore.getActiveInstanceCount( program, orgunitIds, startDate, endDate, statusList );
+    }
 }

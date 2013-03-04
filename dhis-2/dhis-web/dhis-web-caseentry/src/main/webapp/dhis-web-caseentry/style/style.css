@@ -527,3 +527,22 @@ div.link-area-tracking
 .coordinates2{
     width: 150px;
 }
+
+
+.visit-schedule
+{
+  overflow-y: auto;
+  overflow-x:hidden;
+}
+
+.visit-schedule table
+{
+	width:100%;
+}
+
+.visit-schedule td
+{
+  padding-top:3px;
+  padding-bottom:3px;
+  border-bottom:1px solid #cad5e5;
+}
