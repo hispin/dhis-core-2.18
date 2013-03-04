@@ -331,7 +331,7 @@ Ext.onReady( function() {
 		getData = function() {
 			var data = [{id: 'coc', name: 'Categories'}];
 
-			return data.concat(pt.init.ougs);
+			return data.concat(pt.init.ougs, pt.init.degs);
 		};
 
 		getStore = function(data) {
@@ -595,6 +595,7 @@ Ext.onReady( function() {
 
 	PT.app.OptionsWindow = function() {
 		var showSubTotals,
+			hideEmptyRows,
 			cellPadding,
 			fontSize,
 
@@ -603,7 +604,11 @@ Ext.onReady( function() {
 			window;
 
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Show sub totals'
+			boxLabel: 'Show sub totals' //i18n
+		});
+
+		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: 'Hide empty rows' //i18n
 		});
 
 		cellPadding = Ext.create('Ext.form.field.ComboBox', {
@@ -649,7 +654,8 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				showSubTotals
+				showSubTotals,
+				hideEmptyRows
 			]
 		};
 
@@ -672,6 +678,7 @@ Ext.onReady( function() {
 			getOptions: function() {
 				return {
 					showSubTotals: showSubTotals.getValue(),
+					hideEmptyRows: hideEmptyRows.getValue(),
 					cellPadding: cellPadding.getValue(),
 					fontSize: fontSize.getValue()
 				};
@@ -1654,7 +1661,6 @@ Ext.onReady( function() {
 			};
 
 			organisationUnit = {
-				//id: 'organisationunit_t',
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-organisationunit">Organisation units</div>', //i18n pt.i18n.organisation_units
 				bodyStyle: 'padding-top:5px',
@@ -1804,6 +1810,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'treepanel',
 						cls: 'pt-tree',
+						style: 'border-top: 1px solid #ddd; padding-top: 1px',
 						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
 						rootVisible: false,
 						autoScroll: true,
@@ -1957,24 +1964,17 @@ Ext.onReady( function() {
 				}
 			};
 
-			getOrganisationUnitGroupSetPanels = function() {
+			getGroupSetPanels = function(groupSets, url) {
 				var	getAvailableStore,
 					getSelectedStore,
 
 					createPanel,
 					getPanels;
 
-				getAvailableStore = function(groupSetId) {
+				getAvailableStore = function(groupSet) {
 					return Ext.create('Ext.data.Store', {
 						fields: ['id', 'name'],
-						proxy: {
-							type: 'ajax',
-							url: pt.conf.finals.ajax.path_api + 'organisationUnitGroupSets/' + groupSetId + '.json?links=false&paging=false',
-							reader: {
-								type: 'json',
-								root: 'organisationUnitGroups'
-							}
-						},
+						data: groupSet.items,
 						isLoaded: false,
 						storage: {},
 						sortStore: function() {
@@ -2093,7 +2093,7 @@ Ext.onReady( function() {
 						});
 					};
 
-					availableStore = getAvailableStore(groupSet.id);
+					availableStore = getAvailableStore(groupSet);
 					selectedStore = getSelectedStore();
 
 					available = getAvailable(availableStore);
@@ -2157,21 +2157,17 @@ Ext.onReady( function() {
 				};
 
 				getPanels = function() {
-					var ougs = pt.init.ougs,
-						panels = [],
+					var panels = [],
 						groupSet,
 						last;
 
-					for (var i = 0, panel; i < ougs.length; i++) {
-						groupSet = ougs[i];
+					for (var i = 0, panel; i < groupSets.length; i++) {
+						groupSet = groupSets[i];
 
 						panel = createPanel(groupSet);
 
 						panels.push(panel);
 					}
-
-					last = panels[panels.length - 1];
-					last.cls = 'pt-accordion-last';
 
 					return panels;
 				};
@@ -2211,7 +2207,7 @@ Ext.onReady( function() {
 				}
 
 				if (settings) {
-					pt.util.pivot.getTable(settings, pt, centerRegion);
+					pt.util.pivot.getTable(settings, pt);
 				}
 			};
 
@@ -2236,7 +2232,12 @@ Ext.onReady( function() {
 								organisationUnit
 							];
 
-							panels = panels.concat(getOrganisationUnitGroupSetPanels());
+							panels = panels.concat(getGroupSetPanels(pt.init.ougs, 'organisationUnitGroupSets'));
+
+							panels = panels.concat(getGroupSetPanels(pt.init.degs, 'dataElementGroupSets'));
+
+							last = panels[panels.length - 1];
+							last.cls = 'pt-accordion-last';
 
 							return panels;
 						}(),
@@ -2277,9 +2278,9 @@ Ext.onReady( function() {
 			optionsButton = Ext.create('Ext.button.Button', {
 				text: 'Options',
 				handler: function() {
-					//if (!pt.viewport.optionsWindow) {
-						//pt.viewport.optionsWindow = PT.app.OptionsWindow(pt);
-					//}
+					if (!pt.viewport.optionsWindow) {
+						pt.viewport.optionsWindow = PT.app.OptionsWindow();
+					}
 
 					pt.viewport.optionsWindow.show();
 				}
@@ -2427,6 +2428,8 @@ Ext.onReady( function() {
 					s.sort('name', 'ASC');
 				});
 			}();
+
+			pt.container = centerRegion;
 
 			return viewport;
 		};
