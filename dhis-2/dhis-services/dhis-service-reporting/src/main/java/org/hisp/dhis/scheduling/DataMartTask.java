@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.scheduling;
+package org.hisp.dhis.scheduling;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -45,6 +45,8 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -54,25 +56,18 @@ public class DataMartTask
 {
     private static final Log log = LogFactory.getLog( DataMartTask.class );
     
+    @Autowired
     private DataMartEngine dataMartEngine;
 
+    @Autowired
     private DataSetCompletenessEngine completenessEngine;
-    
+
+    @Autowired
     private PeriodService periodService;
-        
+
+    @Autowired
     private SystemSettingManager systemSettingManager;
     
-    // -------------------------------------------------------------------------
-    // Params
-    // -------------------------------------------------------------------------
-
-    private TaskId taskId;
-
-    public void setTaskId( TaskId taskId )
-    {
-        this.taskId = taskId;
-    }
-
     private List<Period> periods;
     
     public void setPeriods( List<Period> periods )
@@ -95,6 +90,17 @@ public class DataMartTask
     }
 
     // -------------------------------------------------------------------------
+    // Must be set externally
+    // -------------------------------------------------------------------------
+
+    private User user;
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
@@ -102,23 +108,16 @@ public class DataMartTask
     {
     }
     
-    public DataMartTask( DataMartEngine dataMartEngine, DataSetCompletenessEngine completenessEngine, 
-        PeriodService periodService, SystemSettingManager systemSettingManager )
-    {
-        this.dataMartEngine = dataMartEngine;
-        this.completenessEngine = completenessEngine;
-        this.periodService = periodService;
-        this.systemSettingManager = systemSettingManager;
-    }
-
     // -------------------------------------------------------------------------
     // Runnable implementation
     // -------------------------------------------------------------------------
 
-    @Override  
+    @Override
     @SuppressWarnings("unchecked")  
     public void run()
     {
+        TaskId taskId = new TaskId( TaskCategory.DATAMART, user );
+        
         Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
         
         List<Period> periods = getPeriods( periodTypes );

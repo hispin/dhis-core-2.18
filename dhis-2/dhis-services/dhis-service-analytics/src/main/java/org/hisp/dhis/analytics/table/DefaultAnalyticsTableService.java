@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
@@ -80,13 +82,14 @@ public class DefaultAnalyticsTableService
     // -------------------------------------------------------------------------
     
     @Async
-    public Future<?> update( TaskId taskId )
+    public Future<?> update( boolean last3YearsOnly, TaskId taskId )
     {
         Clock clock = new Clock().startClock().logTime( "Starting update" );
         
         try
         {
-            final Date earliest = tableManager.getEarliestData();
+            final Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
+            final Date earliest = last3YearsOnly ? threeYrsAgo : tableManager.getEarliestData();
             final Date latest = tableManager.getLatestData();
             final String tableName = tableManager.getTableName();
             final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );        
