@@ -1060,7 +1060,6 @@
       <param name="javascripts">
         ../dhis-web-commons/ouwt/ouwt.js,
         javascript/commons.js,
-        javascript/patient.js,
         javascript/activityPlan.js
       </param>
       <param name="requiredAuthorities">F_ACTIVITY_PLAN</param>

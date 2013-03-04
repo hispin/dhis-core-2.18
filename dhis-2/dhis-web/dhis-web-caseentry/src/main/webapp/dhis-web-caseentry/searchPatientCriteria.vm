@@ -30,7 +30,7 @@
 	</tr>
 </table>
 
-<div id='advanced-search' class='hidden'>
+<div id='advanced-search' class='hidden advanced-search'>
 	<table>	
 		<tr id='programStageAddPatientTR' class='hidden'>
 			<td>$i18n.getString('status')</td>

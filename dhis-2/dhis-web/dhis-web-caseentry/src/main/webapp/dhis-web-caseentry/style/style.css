@@ -113,7 +113,7 @@ table.information, td.information
 	background-color: #FFCFCF
 }
 
-#advanced-search 
+.advanced-search 
 {
   position: relative;
   border: 1px solid #a4d2a3;
