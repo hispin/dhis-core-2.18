@@ -524,8 +524,8 @@ public class OrganisationUnit
         return set;
     }
 
-    @JsonProperty("level")
-    @JacksonXmlProperty(localName = "level", isAttribute = true)
+    @JsonProperty( "level" )
+    @JacksonXmlProperty( localName = "level", isAttribute = true )
     public int getOrganisationUnitLevel()
     {
         int currentLevel = 1;
@@ -564,6 +564,18 @@ public class OrganisationUnit
         }
 
         return builder.toString();
+    }
+
+    public Set<DataSet> getAllDataSets()
+    {
+        Set<DataSet> allDataSets = new HashSet<DataSet>( dataSets );
+
+        for ( OrganisationUnitGroup organisationUnitGroup : groups )
+        {
+            allDataSets.addAll( organisationUnitGroup.getDataSets() );
+        }
+
+        return allDataSets;
     }
 
     // -------------------------------------------------------------------------
@@ -836,10 +848,10 @@ public class OrganisationUnit
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class })
-    @JacksonXmlElementWrapper(localName = "dataSets", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "dataSet", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataSet> getDataSets()
     {
         return dataSets;
