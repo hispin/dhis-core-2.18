@@ -29,16 +29,14 @@ package org.hisp.dhis.web.webapi.v1.domain;
 
 import org.hibernate.validator.constraints.Length;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
-import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -77,7 +75,7 @@ public class Facility
 
     // Implementation specific custom properties
     @ValidProperties
-    private Map<String, Object> properties = new HashMap<String, Object>();
+    private Map<String, Object> properties = new TreeMap<String, Object>();
 
     public Facility()
     {
