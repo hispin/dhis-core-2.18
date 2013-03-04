@@ -40,7 +40,15 @@ public class ScheduledTasks
     
     public void addTask( Runnable task )
     {
-        this.tasks.add( task );
+        if ( task != null )
+        {
+            this.tasks.add( task );
+        }
+    }
+    
+    public boolean isEmpty()
+    {
+        return tasks == null || tasks.size() == 0;
     }
     
     @Override
