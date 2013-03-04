@@ -280,7 +280,7 @@ public class FacilityController
         }
         else if ( active == null )
         {
-            if ( limit != null )
+            if ( limitValue != null )
             {
                 allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
                     getOrganisationUnitsBetweenByLastUpdated( lastUpdated, offset, limitValue ) );
@@ -303,7 +303,7 @@ public class FacilityController
         }
         else
         {
-            if ( limit != null )
+            if ( limitValue != null )
             {
                 allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
                     getOrganisationUnitsBetweenByStatusLastUpdated( active, lastUpdated, offset, limitValue ) );
