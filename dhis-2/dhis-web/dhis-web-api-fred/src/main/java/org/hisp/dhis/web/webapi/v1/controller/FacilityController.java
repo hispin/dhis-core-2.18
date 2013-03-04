@@ -344,7 +344,16 @@ public class FacilityController
         @RequestParam( value = "fields", required = false ) String fields,
         HttpServletRequest request )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        OrganisationUnit organisationUnit;
+
+        if ( id.length() == 11 )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        }
+        else
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
+        }
 
         if ( organisationUnit == null )
         {

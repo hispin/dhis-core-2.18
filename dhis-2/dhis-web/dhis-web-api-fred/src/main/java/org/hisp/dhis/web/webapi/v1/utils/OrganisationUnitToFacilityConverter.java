@@ -30,6 +30,7 @@ package org.hisp.dhis.web.webapi.v1.utils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.controller.FacilityController;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
@@ -119,6 +120,21 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
         }
 
         facility.getProperties().put( "level", organisationUnit.getOrganisationUnitLevel() );
+
+        for ( OrganisationUnitGroup group : organisationUnit.getGroups() )
+        {
+            if ( group.getGroupSet() == null )
+            {
+                continue;
+            }
+
+            String name = group.getGroupSet().getName();
+
+            if ( name.equalsIgnoreCase( "Ownership" ) || name.equalsIgnoreCase( "Type" ) )
+            {
+                facility.getProperties().put( name.toLowerCase(), group.getName() );
+            }
+        }
 
         return facility;
     }
