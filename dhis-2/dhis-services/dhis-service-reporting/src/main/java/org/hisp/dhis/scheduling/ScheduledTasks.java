@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics;
+package org.hisp.dhis.scheduling;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,17 +27,28 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.concurrent.Future;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.scheduling.TaskId;
-
-public interface AnalyticsTableService
+/**
+ * @author Lars Helge Overland
+ */
+public class ScheduledTasks
+    implements Runnable
 {
-    /**
-     * Rebuilds the analytics tables.
-     * 
-     * @param last3Years whether to update last 3 years of data only or all.
-     * @param taskId the TaskId.
-     */
-    Future<?> update( boolean last3Years, TaskId id );
+    private List<Runnable> tasks = new ArrayList<Runnable>();
+    
+    public void addTask( Runnable task )
+    {
+        this.tasks.add( task );
+    }
+    
+    @Override
+    public void run()
+    {
+        for ( Runnable task : tasks )
+        {
+            task.run();
+        }
+    }    
 }

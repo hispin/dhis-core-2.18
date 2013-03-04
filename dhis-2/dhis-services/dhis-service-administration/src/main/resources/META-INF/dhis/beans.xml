@@ -130,4 +130,8 @@
     <property name="sqlViewExpandStore" ref="org.hisp.dhis.sqlview.SqlViewExpandStore" />
   </bean>
   
+  <!-- Scheduled tasks -->
+  
+  <bean id="resourceTableTask" class="org.hisp.dhis.resourcetable.scheduling.ResourceTableTask" />
+  
 </beans>
