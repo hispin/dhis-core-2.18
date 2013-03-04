@@ -42,6 +42,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.patientreport.TabularReportColumn;
@@ -373,37 +375,35 @@ public class DefaultProgramStageInstanceService
         Grid grid = new ListGrid();
         grid.setTitle( program.getDisplayName() );
 
-        // Header
-        grid.addHeader( new GridHeader( i18n.getString( "full_name" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "gender" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "date_of_birth" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "age" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "date_scheduled" ), false, false ) );
+        List<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
 
-        String programStage = "";
+        // Header
+        grid.addHeader( new GridHeader( i18n.getString( "date_scheduled" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "full_name" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, false ) );
+
         for ( ProgramStageInstance stageInstance : stageInstances )
         {
-            String eventName = stageInstance.getProgramStage().getDisplayName();
-            if ( !programStage.equals( eventName ) )
-            {
-                grid.addRow();
-                grid.addValue( eventName );
-                grid.addValue( "" );
-                grid.addValue( "" );
-                grid.addValue( "" );
-                grid.addValue( "" );
-                grid.addValue( "" );
-                programStage = eventName;
-            }
-            grid.addRow();
             Patient patient = stageInstance.getProgramInstance().getPatient();
-            grid.addValue( patient.getFullName() );
-            grid.addValue( patient.getGender() );
-            grid.addValue( DateUtils.getMediumDateString( patient.getBirthDate() ) );
-            grid.addValue( patient.getAge() );
-            grid.addValue( patient.getPhoneNumber() );
+            String displayPatientName = patient.getFullName();
+            for ( PatientIdentifierType identifierType : identifierTypes )
+            {
+                for ( PatientIdentifier identifier : patient.getIdentifiers() )
+                {
+                    if ( identifier.getIdentifierType()!=null && identifier.getIdentifierType().getId() == identifierType.getId() )
+                    {
+                        displayPatientName = identifier.getIdentifier();
+                        break;
+                    }
+                }
+            }
+
+            grid.addRow();
             grid.addValue( DateUtils.getMediumDateString( stageInstance.getDueDate() ) );
+            grid.addValue( displayPatientName );
+            grid.addValue( patient.getPhoneNumber() );
+            grid.addValue( stageInstance.getProgramStage().getDisplayName() );
         }
 
         return grid;

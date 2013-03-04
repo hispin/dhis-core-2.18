@@ -1992,9 +1992,10 @@ public class HibernateProgramStageInstanceStore
             criteria.setMaxResults( max );
         }
 
-        criteria.addOrder( Order.asc( "programStage.minDaysFromStart" ) );
+        criteria.addOrder( Order.desc( "executionDate" ) );
         criteria.addOrder( Order.desc( "dueDate" ) );
-
+        criteria.addOrder( Order.asc( "programStage.minDaysFromStart" ) );
+        
         return criteria;
     }
 }

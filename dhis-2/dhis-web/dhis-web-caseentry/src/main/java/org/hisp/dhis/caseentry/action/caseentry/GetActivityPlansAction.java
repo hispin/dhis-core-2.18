@@ -37,6 +37,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -142,6 +143,13 @@ public class GetActivityPlansAction
         return program;
     }
 
+    private List<PatientIdentifierType> identifierTypes;
+
+    public List<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
     private List<ProgramStageInstance> programStageInstances;
 
     public List<ProgramStageInstance> getProgramStageInstances()
@@ -169,13 +177,15 @@ public class GetActivityPlansAction
         orgunitIds.add( orgunit.getId() );
 
         program = programService.getProgram( programId );
-
+        
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
 
         if ( type == null )
         {
+            identifierTypes = program.getPatientIdentifierTypes();
+            
             total = programStageInstanceService.getActiveInstanceCount( program, orgunitIds,
                 format.parseDate( startDate ), format.parseDate( endDate ), statusList );
 

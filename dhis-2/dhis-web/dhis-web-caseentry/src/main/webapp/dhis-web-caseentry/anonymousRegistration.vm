@@ -71,7 +71,7 @@
 				</td>
 			</tr>
 		</table>
-		<table id='advanced-search' class='hidden'>
+		<table id='advanced-search' class='hidden advanced-search'>
 			<col/>
 			<col/>
 			<col/>
