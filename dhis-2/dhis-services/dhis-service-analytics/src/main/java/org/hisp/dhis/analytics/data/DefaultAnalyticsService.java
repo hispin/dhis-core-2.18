@@ -579,9 +579,9 @@ public class DefaultAnalyticsService
         return params;
     }
     
-    private Map<String, String> getUidNameMap( DataQueryParams params )
+    private Map<Object, String> getUidNameMap( DataQueryParams params )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<Object, String> map = new HashMap<Object, String>();
         map.putAll( getUidNameMap( params.getDimensions() ) );
         map.putAll( getUidNameMap( params.getFilters() ) );        
         return map;
