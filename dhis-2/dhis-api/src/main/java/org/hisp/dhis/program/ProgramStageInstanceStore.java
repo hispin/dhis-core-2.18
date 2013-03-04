@@ -105,4 +105,14 @@ public interface ProgramStageInstanceStore
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters, List<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format, I18n i18n );
 
+    // -------------------------------------------------------------------------
+    // Activity plans
+    // -------------------------------------------------------------------------
+
+    List<ProgramStageInstance> getActiveInstance( Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Collection<Integer> statusList, Integer max, Integer min );
+    
+   int getActiveInstanceCount( Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Collection<Integer> statusList );
+
 }

@@ -1067,10 +1067,12 @@
     </action>
 
     <action name="getActivityPlanRecords"
-      class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
+      class="org.hisp.dhis.caseentry.action.caseentry.GetActivityPlansAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/activityPlanRecords.vm</param>
       <param name="stylesheets">style/style.css</param>
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
     </action>
 
     <action name="exportActitityList"

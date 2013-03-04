@@ -5,8 +5,12 @@
 
 function saveVal( dataElementId )
 {
-	if( jQuery('#entryFormContainer [id=programStageId]') == null) return;
+
 	var programStageId = jQuery('.stage-object-selected').attr('psid');
+	if(programStageId==undefined){
+		if( jQuery('#entryFormContainer [id=programStageId]') == null) return;
+		else programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
+	}
         
 	var fieldId = programStageId + '-' + dataElementId + '-val';
 	

@@ -1095,5 +1095,17 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
+	
+	<!-- Activity plans -->
+	
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetActivityPlansAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetActivityPlansAction"
+		scope="prototype">
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
 
 </beans>
