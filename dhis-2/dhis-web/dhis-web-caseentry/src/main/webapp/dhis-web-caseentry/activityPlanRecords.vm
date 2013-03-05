@@ -39,7 +39,21 @@
 					#end
 				</td>
 				
-				<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">$patient.getFullName()</a></td>
+				<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
+					#set($value="")
+					#foreach( $identifierType in $identifierTypes)
+						#foreach( $identifier in $patient.identifiers)
+							#if($identifier.identifierType.id==$identifierType.id)
+								#set($value=$identifier.identifier)
+							#end
+						#end
+					#end
+					#if($value=="")
+						#set($value=$patient.getFullName())
+					#end
+					
+					$value
+				</a></td>
 				
 				<td>$!patient.phoneNumber</td>
 				

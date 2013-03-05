@@ -37,7 +37,7 @@ function displayCadendar()
 		showById('showEventUpTo');
 		hideById('startDueDate');
 		hideById('endDueDate');
-		jQuery('#delete_startDueDate').remove();
+		jQuery('#delete_endDueDate').remove();
 		jQuery('#delete_endDueDate').remove();
 		jQuery('#startDueDate').datepicker("destroy");
 		jQuery('#endDueDate').datepicker("destroy");
@@ -205,23 +205,3 @@ function setDateRangeAll()
 }
 
 function entryFormContainerOnReady (){}
-
-// ----------------------------------------------------------------
-// Click Back to main form
-// ----------------------------------------------------------------
-
-function onClickBackBtn()
-{
-	hideById('patientDashboard');
-	hideById('editPatientDiv');
-	hideById('resultSearchDiv');
-	hideById('enrollmentDiv');
-	hideById('listRelationshipDiv');
-	hideById('addRelationshipDiv');
-	hideById('migrationPatientDiv');
-	showById('mainLinkLbl');
-	showById('selectDiv');
-	showById('listPatientDiv');
-	showActitityList();
-}
-

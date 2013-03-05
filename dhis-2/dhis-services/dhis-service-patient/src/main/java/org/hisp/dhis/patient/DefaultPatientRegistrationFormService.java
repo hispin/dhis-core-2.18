@@ -195,55 +195,73 @@ public class DefaultPatientRegistrationFormService
                 Integer id = Integer.parseInt( identifierMatcher.group( 1 ) );
                 PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( id );
 
-                // Get value
-                String value = "";
-                if ( patient != null )
+                if ( identifierType == null )
                 {
-                    PatientIdentifier patientIdentifier = identifierService.getPatientIdentifier( identifierType,
-                        patient );
-                    if ( patientIdentifier != null )
+                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + id
+                        + "]' title='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + id + "]'>/";
+                }
+                else
+                {
+                    // Get value
+                    String value = "";
+                    if ( patient != null )
                     {
-                        value = patientIdentifier.getIdentifier();
+                        PatientIdentifier patientIdentifier = identifierService.getPatientIdentifier( identifierType,
+                            patient );
+                        if ( patientIdentifier != null )
+                        {
+                            value = patientIdentifier.getIdentifier();
+                        }
                     }
-                }
 
-                inputHtml = "<input id=\"iden" + id + "\" name=\"iden" + id + "\" tabindex=\"" + index + "\" value=\""
-                    + value + "\" ";
+                    inputHtml = "<input id=\"iden" + id + "\" name=\"iden" + id + "\" tabindex=\"" + index
+                        + "\" value=\"" + value + "\" ";
 
-                inputHtml += "class=\"{validate:{required:" + identifierType.isMandatory() + ",";
-                if ( identifierType.getNoChars() != null )
-                {
-                    inputHtml += "maxlength:" + identifierType.getNoChars() + ",";
-                }
+                    inputHtml += "class=\"{validate:{required:" + identifierType.isMandatory() + ",";
+                    if ( identifierType.getNoChars() != null )
+                    {
+                        inputHtml += "maxlength:" + identifierType.getNoChars() + ",";
+                    }
 
-                if ( PatientIdentifierType.VALUE_TYPE_NUMBER.equals( identifierType.getType() ) )
-                {
-                    inputHtml += "number:true";
+                    if ( PatientIdentifierType.VALUE_TYPE_NUMBER.equals( identifierType.getType() ) )
+                    {
+                        inputHtml += "number:true";
+                    }
+                    else if ( PatientIdentifierType.VALUE_TYPE_LETTER.equals( identifierType.getType() ) )
+                    {
+                        inputHtml += "lettersonly:true";
+                    }
+                    inputHtml += "}}\" " + TAG_CLOSE;
                 }
-                else if ( PatientIdentifierType.VALUE_TYPE_LETTER.equals( identifierType.getType() ) )
-                {
-                    inputHtml += "lettersonly:true";
-                }
-                inputHtml += "}}\" " + TAG_CLOSE;
             }
             else if ( dynamicAttrMatcher.find() && dynamicAttrMatcher.groupCount() > 0 )
             {
                 Integer id = Integer.parseInt( dynamicAttrMatcher.group( 1 ) );
                 PatientAttribute attribute = attributeService.getPatientAttribute( id );
 
-                // Get value
-                String value = "";
-                if ( patient != null )
+                if ( attribute == null )
                 {
-                    PatientAttributeValue attributeValue = attributeValueService.getPatientAttributeValue( patient,
-                        attribute );
-                    if ( attributeValue != null )
+                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_attribute" ) + " " + id
+                        + "]' title='[" + i18n.getString( "missing_patient_attribute" ) + " " + id + "]'>/";
+                }
+                else
+                {
+
+                    // Get value
+                    String value = "";
+                    if ( patient != null )
                     {
-                        value = attributeValue.getValue();
+                        PatientAttributeValue attributeValue = attributeValueService.getPatientAttributeValue( patient,
+                            attribute );
+                        if ( attributeValue != null )
+                        {
+                            value = attributeValue.getValue();
+                        }
                     }
+
+                    inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index );
                 }
 
-                inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index );
             }
             else if ( programMatcher.find() && programMatcher.groupCount() > 0 )
             {
