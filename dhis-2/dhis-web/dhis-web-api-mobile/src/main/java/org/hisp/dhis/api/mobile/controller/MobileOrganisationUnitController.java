@@ -329,9 +329,10 @@ public class MobileOrganisationUnitController
                 
                 smsCode.setCode( normalSMSCode.getCode() );
                 smsCode.setDataElementId( normalSMSCode.getDataElement().getId() );
-                smsCode.setOptionId( normalSMSCode.getId() );
+                smsCode.setOptionId( normalSMSCode.getOptionId());
                 smsCodes.add( smsCode );
             }
+            mobileSMSCommand.setSmsCodes( smsCodes );
             smsCommands.add( mobileSMSCommand );
         }
         return smsCommands;
