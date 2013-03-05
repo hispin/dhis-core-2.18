@@ -27,6 +27,8 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -45,7 +47,6 @@ import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
-import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
@@ -54,8 +55,6 @@ import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-
-import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;;
 
 public class DefaultAnalyticsTableService
     implements AnalyticsTableService
@@ -74,9 +73,6 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private DataElementService dataElementService;
-    
-    @Autowired
-    private ResourceTableService resourceTableService;
     
     @Autowired
     private Notifier notifier;
