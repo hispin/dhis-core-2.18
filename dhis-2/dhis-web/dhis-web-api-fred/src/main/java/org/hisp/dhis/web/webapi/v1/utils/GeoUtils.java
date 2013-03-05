@@ -1,7 +1,7 @@
 package org.hisp.dhis.web.webapi.v1.utils;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-final public class GeoUtils
+public final class GeoUtils
 {
     public static enum CoordinateOrder
     {
@@ -118,5 +118,9 @@ final public class GeoUtils
         }
 
         return d;
+    }
+
+    private GeoUtils()
+    {
     }
 }
