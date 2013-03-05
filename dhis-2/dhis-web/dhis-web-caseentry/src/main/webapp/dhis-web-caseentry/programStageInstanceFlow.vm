@@ -7,7 +7,10 @@
 			<div id='flow_$!programInstance.id' class="stage-flow">
 				<table class="table-flow">											
 					<tr id='programStageIdTR_$!programInstance.id'>
-						#foreach( $programStageInstance in $programInstance.programStageInstances )
+						#if( $programInstance)
+							#set( $programStageInstances = $programInstance.programStageInstances)
+						#end
+						#foreach( $programStageInstance in $programStageInstances )
 						<td id='arrow_$programStageInstance.id' style='font-size:25px;'>&rarr;</td>
 						<td>
 							#set($valueDate=$format.formatDate( $programStageInstance.dueDate ))
