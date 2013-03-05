@@ -270,6 +270,8 @@ public class JdbcResourceTableStore
         
         sql += ")";
         
+        log.info( "Create period structure SQL: " + sql );
+        
         jdbcTemplate.update( sql );
     }
 }

@@ -30,14 +30,12 @@ package org.hisp.dhis.analytics.scheduling;
 import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
-import java.util.concurrent.ExecutionException;
-
 import javax.annotation.Resource;
 
 import org.hisp.dhis.analytics.AnalyticsTableService;
+import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
-import org.hisp.dhis.system.util.DebugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -54,6 +52,9 @@ public class AnalyticsTableTask
     
     @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
     private AnalyticsTableService completenessTargetTableService;
+    
+    @Autowired
+    private ResourceTableService resourceTableService;
     
     @Autowired
     private Notifier notifier;
@@ -79,29 +80,22 @@ public class AnalyticsTableTask
     @Override
     public void run()
     {
-        try
-        {
-            notifier.clear( taskId, DATAMART ).notify( taskId, DATAMART, "Updating analytics tables" );
-            
-            analyticsTableService.update( last3Years, taskId ).get();
-            
-            notifier.notify( taskId, DATAMART, "Updating completeness tables" );
-            
-            completenessTableService.update( last3Years, taskId ).get();
+        notifier.clear( taskId, DATAMART ).notify( taskId, DATAMART, "Updating resource tables" );
+        
+        resourceTableService.generateAll();
 
-            notifier.notify( taskId, DATAMART, "Updating compeleteness target table" );
-            
-            completenessTargetTableService.update( last3Years, taskId ).get();
-            
-            notifier.notify( taskId, DATAMART, INFO, "Analytics tables updated", true );
-        }
-        catch ( ExecutionException ex )
-        {
-            throw new RuntimeException( "Failed to execute task: " + DebugUtils.getStackTrace( ex ), ex );
-        }
-        catch ( InterruptedException ex )
-        {
-            throw new RuntimeException( "Task was interrupted: " + DebugUtils.getStackTrace( ex ), ex );
-        }        
+        notifier.notify( taskId, DATAMART, "Updating analytics tables" );
+        
+        analyticsTableService.update( last3Years, taskId );
+        
+        notifier.notify( taskId, DATAMART, "Updating completeness tables" );
+        
+        completenessTableService.update( last3Years, taskId );
+
+        notifier.notify( taskId, DATAMART, "Updating compeleteness target table" );
+        
+        completenessTargetTableService.update( last3Years, taskId );
+        
+        notifier.notify( taskId, DATAMART, INFO, "Analytics tables updated", true );
     }
 }
