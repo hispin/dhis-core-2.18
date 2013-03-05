@@ -13,7 +13,7 @@
 							<col id="deCol">
 							<col id="entryCol">
 							#if( $programStage.program.displayProvidedOtherFacility=='true')
-							<col width="18%" />
+							<col width="5%" />
 							#end
 						</colgroup>
 					
