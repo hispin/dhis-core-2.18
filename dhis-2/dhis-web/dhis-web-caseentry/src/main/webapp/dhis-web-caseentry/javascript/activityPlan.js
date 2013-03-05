@@ -38,7 +38,7 @@ function displayCadendar()
 		hideById('startDueDate');
 		hideById('endDueDate');
 		jQuery('#delete_endDueDate').remove();
-		jQuery('#delete_endDueDate').remove();
+		jQuery('#delete_startDueDate').remove();
 		jQuery('#startDueDate').datepicker("destroy");
 		jQuery('#endDueDate').datepicker("destroy");
 	}
@@ -68,7 +68,7 @@ function showActitityList()
 		{
 			showById('colorHelpLink');
 			showById('listPatientDiv');
-			resize();
+			setTableStyles();
 			hideLoader();
 		});
 }
@@ -112,6 +112,33 @@ function loadDataEntryDialog( programStageInstanceId )
 			width:850,
 			height:500
 		});
+}
+
+
+function statusEventOnChange()
+{
+	if( !byId('useCalendar').checked )
+	{
+		var statusEvent = getFieldValue("statusEvent");
+		
+		if( statusEvent == '1_2_3_4' 
+			|| statusEvent == '3_4' 
+			|| statusEvent == '2_3_4' ){
+			enable('showEventSince');
+			enable('showEventUpTo');
+			setDateRange();
+		}
+		else if( statusEvent == '3' ){
+			disable('showEventSince');
+			enable('showEventUpTo');
+			setDateRange();
+		}
+		else{
+			enable('showEventSince');
+			disable('showEventUpTo');
+			setDateRange();
+		}
+	}
 }
 
 function setDateRange()

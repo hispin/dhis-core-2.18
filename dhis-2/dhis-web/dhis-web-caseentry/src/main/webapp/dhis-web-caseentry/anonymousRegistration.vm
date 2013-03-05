@@ -66,8 +66,8 @@
 			<tr id='minimized-advanced-search' class="hidden">
 				<td align='right' colspan='5' height="50px">
 					$i18n.getString('you_have_active_filters')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" class='large-button' value="$i18n.getString('show_all')" onclick='showFilterForm()'>
-					<input type="button" class='large-button' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>&nbsp;
+					<input type="button" class='normal-button' value="$i18n.getString('show_all')" onclick='showFilterForm()'>
+					<input type="button" class='normal-button' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>&nbsp;
 				</td>
 			</tr>
 		</table>
@@ -94,7 +94,7 @@
                     </td>
                     <td>
                         <input type="text" id="searchText" name="searchText" value="$!searchText">
-                        <input type="button" class='large-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
+                        <input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
                     </td>
                 </tr>
 
@@ -102,8 +102,8 @@
             <tfoot>
             <tr>
                 <td colspan="2">
-                    <input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('add')" onclick='addAttributeOption()' />
-                    <input type="button" class='large-button' id='clearAllBtn' name='clearAllBtnaddSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()' />
+                    <input type="button" class='normal-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('add')" onclick='addAttributeOption()' />
+                    <input type="button" class='normal-button' id='clearAllBtn' name='clearAllBtnaddSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()' />
                 </td>
             </tr>
             </tfoot>
