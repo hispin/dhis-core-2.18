@@ -17,7 +17,6 @@
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
-    <property name="batchHandlerFactory" ref="batchHandlerFactory" />
   </bean>
   
   <!-- Data integrity -->
