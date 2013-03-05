@@ -1,6 +1,6 @@
 <script type="text/javascript">
     jQuery( document ).ready( function () {
-        datePickerInRange( 'startDate', 'endDate', false, false );
+        datePickerInRange( 'startDate', 'endDate', true, true );
         disableCriteriaDiv();
     } );
 </script>

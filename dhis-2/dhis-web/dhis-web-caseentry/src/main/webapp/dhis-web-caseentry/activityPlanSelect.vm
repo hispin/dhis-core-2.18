@@ -126,7 +126,7 @@
 <div class='hidden'>
 	<input type='textbox' id='currentDate' name='currentDate'>
 	<script>
-		datePicker( 'currentDate' );
+		datePicker( 'currentDate', false );
 	</script>
 </div>
 
