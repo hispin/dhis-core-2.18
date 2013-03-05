@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -71,9 +73,12 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Lars Helge Overland
  */
+@Transactional
 public class DefaultResourceTableService
     implements ResourceTableService
 {
+    private static final Log log = LogFactory.getLog( DefaultResourceTableService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -138,19 +143,33 @@ public class DefaultResourceTableService
     // All
     // -------------------------------------------------------------------------
 
-    @Transactional
     public void generateAll()
     {
         sqlViewService.dropAllSqlViewTables();
 
         generateOrganisationUnitStructures();
+        log.info( "Organisation unit structure table generated" );
+        
         generateCategoryOptionComboNames();
-        generateCategoryTable();
+        log.info( "Category option combo name table generated" );
+        
         generateDataElementGroupSetTable();
-        generateDataElementTable();
+        log.info( "Data element group set table generated" );
+        
         generateIndicatorGroupSetTable();
+        log.info( "Indicator group set table generated" );
+
         generateOrganisationUnitGroupSetTable();
+        log.info( "Organisation unit group set table generated" );
+
+        generateCategoryTable();
+        log.info( "Category table generated" );
+
+        generateDataElementTable();
+        log.info( "Data element table generated" );
+        
         generatePeriodTable();
+        log.info( "Period table generated" );
         
         sqlViewService.createAllViewTables();
     }
