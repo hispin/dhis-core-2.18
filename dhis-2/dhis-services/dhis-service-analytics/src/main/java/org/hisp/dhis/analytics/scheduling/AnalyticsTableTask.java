@@ -27,7 +27,7 @@ package org.hisp.dhis.analytics.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.scheduling.TaskCategory.ANALYTICS_UPDATE;
+import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 import java.util.concurrent.ExecutionException;
@@ -79,23 +79,21 @@ public class AnalyticsTableTask
     @Override
     public void run()
     {
-        notifier.clear( taskId, ANALYTICS_UPDATE );
-        
         try
         {
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Updating analytics tables" );
+            notifier.clear( taskId, DATAMART ).notify( taskId, DATAMART, "Updating analytics tables" );
             
             analyticsTableService.update( last3Years, taskId ).get();
             
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Updating completeness tables" );
+            notifier.notify( taskId, DATAMART, "Updating completeness tables" );
             
             completenessTableService.update( last3Years, taskId ).get();
 
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Updating compeleteness target table" );
+            notifier.notify( taskId, DATAMART, "Updating compeleteness target table" );
             
             completenessTargetTableService.update( last3Years, taskId ).get();
             
-            notifier.notify( taskId, ANALYTICS_UPDATE, INFO, "Analytics tables updated", true );            
+            notifier.notify( taskId, DATAMART, INFO, "Analytics tables updated", true );
         }
         catch ( ExecutionException ex )
         {

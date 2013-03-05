@@ -45,6 +45,7 @@ import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
@@ -54,7 +55,7 @@ import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
-import static org.hisp.dhis.scheduling.TaskCategory.ANALYTICS_UPDATE;
+import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;;
 
 public class DefaultAnalyticsTableService
     implements AnalyticsTableService
@@ -73,6 +74,9 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private ResourceTableService resourceTableService;
     
     @Autowired
     private Notifier notifier;
@@ -95,44 +99,44 @@ public class DefaultAnalyticsTableService
             final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );        
             clock.logTime( "Got partition tables: " + tables + ", earliest: " + earliest + ", latest: " + latest );
             
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Creating analytics tables" );
+            notifier.notify( taskId, DATAMART, "Creating analytics tables" );
             
             createTables( tables );
             
             clock.logTime( "Created analytics tables" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Populating analytics tables" );
+            notifier.notify( taskId, DATAMART, "Populating analytics tables" );
             
             populateTables( tables );
             
             clock.logTime( "Populated analytics tables" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Pruned analytics tables" );
+            notifier.notify( taskId, DATAMART, "Pruned analytics tables" );
             
             pruneTables( tables );
             
             clock.logTime( "Pruned analytics tables" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Applying aggregation levels" );
+            notifier.notify( taskId, DATAMART, "Applying aggregation levels" );
             
             applyAggregationLevels( tables );
             
             clock.logTime( "Applied aggregation levels" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Creating indexes" );
+            notifier.notify( taskId, DATAMART, "Creating indexes" );
             
             createIndexes( tables );
             
             clock.logTime( "Created indexes" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Vacuuming tables" );
+            notifier.notify( taskId, DATAMART, "Vacuuming tables" );
             
             vacuumTables( tables );
             
             clock.logTime( "Vacuumed tables" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Swapping analytics tables" );
+            notifier.notify( taskId, DATAMART, "Swapping analytics tables" );
             
             swapTables( tables );
             
             clock.logTime( "Swapped analytics tables" );
             
             clock.logTime( "Table update done" );
-            notifier.notify( taskId, ANALYTICS_UPDATE, "Table update done" );
+            notifier.notify( taskId, DATAMART, "Table update done" );
         }
         catch ( Exception ex )
         {
