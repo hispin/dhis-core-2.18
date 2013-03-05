@@ -65,6 +65,29 @@ public class JdbcResourceTableStore
     }
 
     // -------------------------------------------------------------------------
+    // ResourceTableStore implementation
+    // -------------------------------------------------------------------------
+
+    public void batchUpdate( int columns, String tableName, List<Object[]> batchArgs )
+    {
+        if ( columns == 0 || tableName == null )
+        {
+            return;
+        }
+        
+        StringBuilder builder = new StringBuilder( "insert into " + tableName + " values (" );
+        
+        for ( int i = 0; i < columns; i++ )
+        {
+            builder.append( "?," );
+        }
+        
+        builder.deleteCharAt( builder.length() - 1 ).append( ")" );
+        
+        jdbcTemplate.batchUpdate( builder.toString(), batchArgs );
+    }
+    
+    // -------------------------------------------------------------------------
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
 
