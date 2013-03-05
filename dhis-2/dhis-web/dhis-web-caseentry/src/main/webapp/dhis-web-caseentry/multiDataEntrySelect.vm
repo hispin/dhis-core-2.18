@@ -6,7 +6,6 @@
 				item.remove();
 			}
 		});
-		hideById('searchBySelectedUnitTD');
 		showById('dueDateTR');
 		showById('programStageAddPatientTR');
 		jQuery("#searchObjectId [value=prg]").remove();

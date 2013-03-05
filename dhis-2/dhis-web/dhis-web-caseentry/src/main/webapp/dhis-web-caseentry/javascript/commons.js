@@ -215,10 +215,14 @@ function getSearchParams()
 	if( getFieldValue('searchByProgramStage') == "true" ){
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
 		var startDueDate = getFieldValue('startDueDate');
+		var orgunitid = getFieldValue('orgunitId');
+		if( byId('searchInAllFacility').checked ){
+			orgunitid = 0;
+		}
 		var endDueDate = getFieldValue('endDueDate');
 		params = '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
 			   + '_' + startDueDate + '_' + endDueDate
-			   + "_" + getFieldValue('orgunitId')
+			   + "_" + orgunitid
 			   + '_false_' + statusEvent;
 	}
 	

@@ -38,7 +38,7 @@
 	#set( $mark = false ) 
 	#foreach( $programStageInstance in $programStageInstances )
 		#set($patient = $programStageInstance.programInstance.patient)
-		<tr id='tr$programStageInstance.id'>
+		<tr id='tr$programStageInstance.id' #alternate( $mark )>
 			<td>
 				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 				$nr
@@ -79,6 +79,7 @@
 			</td>
 			
 		</tr>
+	#set( $mark = !$mark ) 
 	#end
 	</tbody>
 </table>
