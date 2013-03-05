@@ -381,6 +381,7 @@ public class DefaultProgramStageInstanceService
 
         // Header
         grid.addHeader( new GridHeader( i18n.getString( "date_scheduled" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "orgunit" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "full_name" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, false ) );
@@ -404,6 +405,14 @@ public class DefaultProgramStageInstanceService
 
             grid.addRow();
             grid.addValue( DateUtils.getMediumDateString( stageInstance.getDueDate() ) );
+            if( stageInstance.getExecutionDate() != null )
+            {
+                grid.addValue( stageInstance.getOrganisationUnit().getName() );
+            }
+            else
+            {
+                grid.addValue( patient.getOrganisationUnit().getName() );
+            }
             grid.addValue( displayPatientName );
             grid.addValue( patient.getPhoneNumber() );
             grid.addValue( stageInstance.getProgramStage().getDisplayName() );
@@ -412,9 +421,11 @@ public class DefaultProgramStageInstanceService
         return grid;
     }
 
+    @Override
     public int getActiveInstanceCount( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         Collection<Integer> statusList )
     {
         return programStageInstanceStore.getActiveInstanceCount( program, orgunitIds, startDate, endDate, statusList );
     }
+    
 }

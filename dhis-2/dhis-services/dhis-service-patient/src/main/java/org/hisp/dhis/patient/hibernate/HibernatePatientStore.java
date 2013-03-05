@@ -256,7 +256,7 @@ public class HibernatePatientStore
                 {
                     return get( rs.getInt( 1 ) );
                 }
-            });
+            } );
         }
         catch ( Exception ex )
         {
@@ -281,7 +281,7 @@ public class HibernatePatientStore
                     String phoneNumber = rs.getString( "phonenumber" );
                     return (phoneNumber == null || phoneNumber.isEmpty()) ? "0" : phoneNumber;
                 }
-            });
+            } );
         }
         catch ( Exception ex )
         {
@@ -291,11 +291,11 @@ public class HibernatePatientStore
     }
 
     @Override
-    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
-        Integer min, Integer max )
+    public List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
-        Collection<Integer> programStageInstanceIds = new HashSet<Integer>();
+        List<Integer> programStageInstanceIds = new ArrayList<Integer>();
         try
         {
             programStageInstanceIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
@@ -305,7 +305,7 @@ public class HibernatePatientStore
                 {
                     return rs.getInt( "programstageinstanceid" );
                 }
-            });
+            } );
         }
         catch ( Exception ex )
         {
@@ -336,7 +336,7 @@ public class HibernatePatientStore
 
         return grid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -421,7 +421,6 @@ public class HibernatePatientStore
                 isPriorityEvent = Boolean.parseBoolean( keys[5] );
                 patientWhere += patientOperator + "pgi.patientid=p.patientid and ";
                 patientWhere += "pgi.programid=" + id + " and ";
-                patientWhere += "psi.duedate>='" + keys[2] + "' and psi.duedate<='" + keys[3] + "' and ";
                 patientWhere += "pgi.completed = false ";
 
                 String operatorStatus = "";
@@ -433,23 +432,29 @@ public class HibernatePatientStore
                     switch ( statusEvent )
                     {
                     case ProgramStageInstance.COMPLETED_STATUS:
-                        patientWhere += condition + operatorStatus + "("
-                            + " psi.completed=true and psi.organisationunitid=" + keys[4] + ")";
-                        condition = "";
+                        patientWhere += condition + operatorStatus
+                            + "( psi.executiondate is not null and  psi.executiondate>='" + keys[2]
+                            + "' and psi.executiondate<='" + keys[3]
+                            + "' and psi.completed=true and psi.organisationunitid=" + keys[4] + ")";
                         operatorStatus = " OR ";
+                        condition = "";
                         continue;
                     case ProgramStageInstance.VISITED_STATUS:
-                        patientWhere += condition + operatorStatus + "("
-                            + " psi.executiondate is not null and psi.completed=false and psi.organisationunitid="
-                            + keys[4] + ")";
+                        patientWhere += condition + operatorStatus
+                            + "( psi.executiondate is not null and psi.executiondate>='" + keys[2]
+                            + "' and psi.executiondate<='" + keys[3]
+                            + "' and psi.completed=false and psi.organisationunitid=" + keys[4] + ")";
                         operatorStatus = " OR ";
                         condition = "";
                         continue;
                     case ProgramStageInstance.FUTURE_VISIT_STATUS:
                         patientWhere += condition
                             + operatorStatus
-                            + "("
-                            + " psi.status is null and psi.executiondate is null and (DATE(now()) - DATE(psi.duedate) <= 0) and p.organisationunitid="
+                            + "( psi.executiondate is null and psi.duedate>='"
+                            + keys[2]
+                            + "' and psi.duedate<='"
+                            + keys[3]
+                            + "' and psi.status is null and (DATE(now()) - DATE(psi.duedate) <= 0) and p.organisationunitid="
                             + keys[4] + ")";
                         operatorStatus = " OR ";
                         condition = "";
@@ -457,9 +462,18 @@ public class HibernatePatientStore
                     case ProgramStageInstance.LATE_VISIT_STATUS:
                         patientWhere += condition
                             + operatorStatus
-                            + "("
-                            + " psi.status is null and psi.executiondate is null and (DATE(now()) - DATE(psi.duedate) > 0) and p.organisationunitid="
+                            + "( psi.executiondate is null and  psi.duedate>='"
+                            + keys[2]
+                            + "' and psi.duedate<='"
+                            + keys[3]
+                            + "' and psi.status is null  and (DATE(now()) - DATE(psi.duedate) > 0) and p.organisationunitid="
                             + keys[4] + ")";
+                        operatorStatus = " OR ";
+                        condition = "";
+                        continue;
+                    case ProgramStageInstance.SKIPPED_STATUS:
+                        patientWhere += condition + operatorStatus + "( psi.status=5 and  psi.duedate>='" + keys[2]
+                            + "' and psi.duedate<='" + keys[3] + "' and p.organisationunitid=" + keys[4] + ")";
                         operatorStatus = " OR ";
                         condition = "";
                         continue;
@@ -559,7 +573,7 @@ public class HibernatePatientStore
     {
         String hql = "select p from Patient p where p.phoneNumber like '%" + phoneNumber + "%'";
         Query query = getQuery( hql );
-        
+
         if ( min != null && max != null )
         {
             query.setFirstResult( min ).setMaxResults( max );
@@ -595,5 +609,5 @@ public class HibernatePatientStore
 
         return patients;
     }
-    
+
 }

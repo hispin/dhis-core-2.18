@@ -211,7 +211,7 @@ public interface PatientService
     
     Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
 
-    Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
     
     Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, I18n i18n );
 

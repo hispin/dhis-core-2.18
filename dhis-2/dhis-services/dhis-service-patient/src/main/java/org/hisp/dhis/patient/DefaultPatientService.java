@@ -540,7 +540,7 @@ public class DefaultPatientService
         return patientStore.getPatientPhoneNumbers( searchKeys, orgunit, min, max );
     }
 
-    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+    public List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
         Integer min, Integer max )
     {
         return patientStore.getProgramStageInstances( searchKeys, orgunit, min, max );

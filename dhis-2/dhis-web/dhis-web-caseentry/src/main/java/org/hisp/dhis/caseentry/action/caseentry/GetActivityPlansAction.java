@@ -36,6 +36,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
@@ -74,6 +75,13 @@ public class GetActivityPlansAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private I18n i18n;
@@ -120,6 +128,13 @@ public class GetActivityPlansAction
     public void setEndDate( String endDate )
     {
         this.endDate = endDate;
+    }
+
+    private String facilityLB;
+
+    public void setFacilityLB( String facilityLB )
+    {
+        this.facilityLB = facilityLB;
     }
 
     private String type;
@@ -173,19 +188,36 @@ public class GetActivityPlansAction
     {
         OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
 
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
-        orgunitIds.add( orgunit.getId() );
+        // ---------------------------------------------------------------------
+        // Get orgunitIds
+        // ---------------------------------------------------------------------
 
-        program = programService.getProgram( programId );
-        
+        Collection<Integer> orgunitIds = new HashSet<Integer>();
+
+        if ( facilityLB.equals( "selected" ) )
+        {
+            orgunitIds.add( orgunit.getId() );
+        }
+        else if ( facilityLB.equals( "childrenOnly" ) )
+        {
+            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
+            orgunitIds.remove( orgunit.getId() );
+        }
+        else
+        {
+            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
+        }
+
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
 
+        program = programService.getProgram( programId );
+
         if ( type == null )
         {
             identifierTypes = program.getPatientIdentifierTypes();
-            
+
             total = programStageInstanceService.getActiveInstanceCount( program, orgunitIds,
                 format.parseDate( startDate ), format.parseDate( endDate ), statusList );
 

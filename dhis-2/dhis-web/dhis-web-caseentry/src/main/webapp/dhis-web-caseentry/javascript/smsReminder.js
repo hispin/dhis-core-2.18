@@ -75,7 +75,7 @@ function listAllPatient()
 			setInnerHTML('searchInforLbl',i18n_list_all_patients);
 			showById('colorHelpLink');
 			showById('listEventDiv');
-			resize();
+			setTableStyles();
 			hideLoader();
 		});
 }
@@ -97,11 +97,11 @@ function advancedSearch( params )
 		type:"POST",
 		data: params,
 		success: function( html ){
+			setTableStyles();
 			jQuery('#listEventDiv').html(html);
 			showById('colorHelpLink');
 			showById('listEventDiv');
 			eventList = 2;
-			resize();
 			hideLoader();
 		}
 	});

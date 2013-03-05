@@ -14,7 +14,7 @@
 		<td rowspan='2' valign='bottom'>
 			<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" disabled >
 			<input type="button" class='large-button' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" disabled >
-			<input type="button" class='large-button' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" disabled>
+			<input type="button" style='width:120px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" disabled>
 		</td>
 	</tr> 
 	<tr id='programAddPatientTR'>
@@ -40,6 +40,7 @@
 					<option value='2'>$i18n.getString("incomplete")</option>
 					<option value='1'>$i18n.getString("completed")</option>
 					<option value='3'>$i18n.getString("scheduled_in_future")</option> 
+					<option value='5'>$i18n.getString("skipped")</option> 
 				</select>
 			</td>
 		</tr>
