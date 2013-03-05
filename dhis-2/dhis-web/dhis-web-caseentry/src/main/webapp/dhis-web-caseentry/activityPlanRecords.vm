@@ -18,6 +18,7 @@
 		<tr>
 			<th>#</th>
 			<th>$i18n.getString('date_scheduled')</th>
+			<th>$i18n.getString('orgunit')</th>
 			<th>$i18n.getString('full_name')</th>
 			<th>$i18n.getString('phone_number')</th>
 			<th>$i18n.getString( "program_stage" )</th>
@@ -32,11 +33,20 @@
 				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 				$nr
 			</td>
+			
 			<td>
 				#if($!programStageInstance.executionDate)
 					$format.formatDate($!programStageInstance.executionDate)
 				#else
 					$format.formatDate($!programStageInstance.dueDate)
+				#end
+			</td>
+			
+			<td>
+				#if($!programStageInstance.executionDate)
+					$!programStageInstance.organisationUnit.name
+				#else
+					$patient.organisationUnit.name
 				#end
 			</td>
 			
@@ -61,7 +71,6 @@
 			<td><a href="javascript:loadDataEntryDialog( $programStageInstance.id );">$programStageInstance.programStage.displayName</a></td>
 			
 		</tr>
-		#set( $mark = !$mark )
 	#end
 	</tbody>
 </table>

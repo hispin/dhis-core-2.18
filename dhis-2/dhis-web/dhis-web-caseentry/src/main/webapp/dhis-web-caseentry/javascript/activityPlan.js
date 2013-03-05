@@ -62,7 +62,8 @@ function showActitityList()
 		{
 			programId:getFieldValue('programIdAddPatient'),
 			startDate:getFieldValue('startDueDate'),
-			endDue:getFieldValue('endDueDate')
+			endDue:getFieldValue('endDueDate'),
+			facilityLB: $('input[name=facilityLB]:checked').val()
 		}, 
 		function()
 		{
@@ -79,6 +80,8 @@ function exportActitityList( type )
 	params += "&startDate=" + getFieldValue('startDueDate');
 	params += "&endDue=" + getFieldValue('endDueDate');
 	params += "&type=xls";
+	params += "&facilityLB=" + $('input[name=facilityLB]:checked').val();
+	
 	var statusEvent = getFieldValue('statusEvent').split('_');
 	for( var i in statusEvent){
 		params += "&statusList=" + statusEvent[i];

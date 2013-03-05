@@ -973,6 +973,7 @@
       <param name="javascripts">
         ../dhis-web-commons/ouwt/ouwt.js,
         javascript/commons.js,
+        javascript/patient.js,
         javascript/relationshipPatient.js,
         javascript/entry.js,
         javascript/smsReminder.js
@@ -1076,13 +1077,6 @@
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
     </action>
-
-    <action name="exportActitityList"
-      class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
-      <result name="xls" type="gridXlsResult" />
-      <result name="pdf" type="gridPdfResult" />
-      <param name="requiredAuthorities">F_ACTIVITY_PLAN_EXPORT</param>
-    </action>
-
+	
   </package>
 </struts>
