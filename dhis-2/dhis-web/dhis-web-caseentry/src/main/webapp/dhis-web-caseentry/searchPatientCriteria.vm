@@ -57,8 +57,8 @@
 		<tr id='dueDateTR' class='hidden'>
 			<td>$i18n.getString('due_date_from_to')</td>
 			<td>
-				<input type='text' id='startDueDate' name='startDueDate' style='width:105px;'>
-				<input type='text' id='endDueDate' name='endDueDate' style='width:105px;'>
+				<input type='text' id='startDueDate' name='startDueDate' style='width:127px;'>
+				<input type='text' id='endDueDate' name='endDueDate' style='width:127px;'>
 			</td>
 		</tr>
 		<tr>

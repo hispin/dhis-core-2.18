@@ -8,6 +8,7 @@
 		});
 		showById('dueDateTR');
 		showById('programStageAddPatientTR');
+		hideById('addPatientBtn');
 		jQuery("#searchObjectId [value=prg]").remove();
 		registration = false;
 	});	

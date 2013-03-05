@@ -94,8 +94,9 @@ function searchObjectOnChange( this_ )
 	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
 	
 	jQuery('#searchText_' + container).removeAttr('readonly', false);
+	jQuery('#dateOperator_' + container).remove();
 	jQuery('#searchText_' + container).val("");
-	if( attributeId == 'fixedAttr_birthDate' )
+	if( attributeId == 'fixedAttr_birthDate' || valueType=='date')
 	{
 		element.replaceWith( getDateField( container ) );
 		datePickerValid( 'searchText_' + container );
@@ -116,7 +117,7 @@ function searchObjectOnChange( this_ )
 	{
 		element.replaceWith( getAgeTextBox() );
 	}
-	else if ( valueType=='YES/NO' )
+	else if ( valueType=='bool' )
 	{
 		element.replaceWith( getTrueFalseBox() );
 	}
@@ -154,7 +155,7 @@ function getAgeTextBox( container )
 
 function getDateField( container )
 {
-	var dateField = '<select id="dateOperator" name="dateOperator" style="width:40px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
+	var dateField = '<select id="dateOperator_' + container + '" name="dateOperator" style="width:40px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
 	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:200px;" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }

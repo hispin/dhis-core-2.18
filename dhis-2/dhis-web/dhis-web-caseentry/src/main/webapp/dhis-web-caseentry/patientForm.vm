@@ -156,7 +156,7 @@
 					#elseif( $attribute.valueType == "date" )
 						<input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value='$value' class=' #validate( "default"  $attribute.mandatory )'/>
 						<script type="text/javascript">
-							datePickerValid( 'attr$attribute.id' );
+							datePickerValid( 'attr$attribute.id', false, false );
 						</script>                    
 					#elseif( $attribute.valueType == "combo" )  
 						<select  id="attr$attribute.id"  name="attr$attribute.id" inherit="$!attribute.inherit" class='#validate( "default"  $attribute.mandatory )'>
@@ -198,7 +198,7 @@
 					#elseif( $attribute.valueType == "date" )
 						<input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value="$!attributeValue" class=' #validate( "default"  $attribute.mandatory )'>
 						<script type="text/javascript">
-							datePickerValid( 'attr$attribute.id' );
+							datePickerValid( 'attr$attribute.id', false, false );
 						</script>                    
 					#elseif( $attribute.valueType == "combo" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id" inherit="$!attribute.inherit" class=' #validate( "default"  $attribute.mandatory )' >

@@ -33,7 +33,7 @@
 		#else
 			datePickerValid( 'patientForm [id=registrationDate]' );
 			datePickerValid( 'patientForm [id=birthDate]' );
-			datePickerValid( 'patientForm [id=deathDate]' );
+			datePickerValid( 'patientForm [id=deathDate]', false );
 		#end
 		addEventForPatientForm( 'patientForm' );
 	});	

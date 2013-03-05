@@ -29,7 +29,7 @@ function displayCadendar()
 		hideById('showEventUpTo');
 		showById('startDueDate');
 		showById('endDueDate');
-		datePickerInRange( 'startDueDate' , 'endDueDate' );
+		datePickerInRange( 'startDueDate' , 'endDueDate', false );
 	}
 	else
 	{
