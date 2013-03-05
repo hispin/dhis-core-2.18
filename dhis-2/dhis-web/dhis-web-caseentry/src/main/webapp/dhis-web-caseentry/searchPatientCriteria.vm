@@ -32,6 +32,16 @@
 
 <div id='advanced-search' class='hidden advanced-search'>
 	<table>	
+		#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+			<tr id='searchBySelectedUnitTD'>
+				<td>
+					$i18n.getString('search_in_all_facilities') 
+					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />&nbsp;&nbsp;&nbsp;
+				</td>
+			</tr>
+		#else
+			<input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' />
+		#end
 		<tr id='programStageAddPatientTR' class='hidden'>
 			<td>$i18n.getString('status')</td>
 			<td>
@@ -51,16 +61,6 @@
 				<input type='text' id='endDueDate' name='endDueDate' style='width:105px;'>
 			</td>
 		</tr>
-		#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
-			<tr id='searchBySelectedUnitTD'>
-				<td>
-					$i18n.getString('search_in_all_facilities') 
-					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />&nbsp;&nbsp;&nbsp;
-				</td>
-			</tr>
-		#else
-			<input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' />
-		#end
 		<tr>
 			<td id='searchingAttributeIdTD' class="hidden">
 			  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">

@@ -40,7 +40,6 @@ selection.setListenerFunction( orgunitSelected );
 
 function listAllPatient()
 {
-	setFieldValue('listAll', "true");
 	hideById('listEventDiv');
 	hideById('advanced-search');
 	setFieldValue('statusEvent', "4");
