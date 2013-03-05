@@ -3,7 +3,7 @@
 		<col id="deCol">
 		<col id="entryCol">
 		#if( $!programStageInstance.programStage.program.displayProvidedOtherFacility=='true')
-		<col width="18%" />
+		<col width="5%" />
 		#end
 	</colgroup>
 
