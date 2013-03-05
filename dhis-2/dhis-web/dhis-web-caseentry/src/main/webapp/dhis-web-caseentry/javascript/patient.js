@@ -278,8 +278,7 @@ function loadDataEntry( programStageInstanceId )
 	$('#executionDate').change(function() {
 		saveExecutionDate( getFieldValue('programId'), programStageInstanceId, byId('executionDate') );
 	});
-		
-		
+	
 	jQuery(".stage-object-selected").removeClass('stage-object-selected');
 	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
 	selectedProgramStageInstance.addClass('stage-object-selected');

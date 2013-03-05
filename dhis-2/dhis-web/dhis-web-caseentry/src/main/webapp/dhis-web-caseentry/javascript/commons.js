@@ -680,12 +680,6 @@ function saveDueDate( programInstanceId, programStageInstanceId, programStageIns
 {
 	var field = byId( 'value_' + programStageInstanceId + '_date' );
 	var dateOfIncident = new Date( byId('dateOfIncident').value );
-	
-	if(field.value==''){
-		field.style.backgroundColor = '#FFCC00';
-		alert( i18n_insert_a_due_date );
-		return;
-	}	
 	var dueDate = new Date(field.value);
 	
 	if( dueDate < dateOfIncident )
@@ -878,7 +872,6 @@ function resetActiveEvent( programInstanceId )
 		jQuery('#tr2_' + programInstanceId).html("");
 		jQuery('#tr2_' + programInstanceId).attr("onClick", "");
 		
-		//hideById('entryForm');
 		hideById('executionDateTB');
 		hideById('inputCriteriaDiv');
 	}
