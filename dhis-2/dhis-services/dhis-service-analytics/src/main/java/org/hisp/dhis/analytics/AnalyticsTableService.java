@@ -27,8 +27,6 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.concurrent.Future;
-
 import org.hisp.dhis.scheduling.TaskId;
 
 public interface AnalyticsTableService
@@ -39,5 +37,5 @@ public interface AnalyticsTableService
      * @param last3Years whether to update last 3 years of data only or all.
      * @param taskId the TaskId.
      */
-    Future<?> update( boolean last3Years, TaskId id );
+    void update( boolean last3Years, TaskId id );
 }
