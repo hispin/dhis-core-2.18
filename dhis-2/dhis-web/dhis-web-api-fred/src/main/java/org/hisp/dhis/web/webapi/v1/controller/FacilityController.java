@@ -559,7 +559,7 @@ public class FacilityController
             OrganisationUnit organisationUnitUpdate = conversionService.convert( facility, OrganisationUnit.class );
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUpdate.getUid() );
 
-            if ( request.getHeader( "ETag" ) != null )
+            if ( request.getHeader( "If-Match" ) != null )
             {
                 Facility old_facility = conversionService.convert( organisationUnit, Facility.class );
                 List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
@@ -568,7 +568,7 @@ public class FacilityController
 
                 String ETag = generateETagHeaderValue( body.getBytes() );
 
-                if ( !ETag.equals( request.getHeader( "ETag" ) ) )
+                if ( !ETag.equals( request.getHeader( "If-Match" ) ) )
                 {
                     return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( "ETag provided does not match current ETag of facility" ),
                         headers, HttpStatus.PRECONDITION_FAILED );
