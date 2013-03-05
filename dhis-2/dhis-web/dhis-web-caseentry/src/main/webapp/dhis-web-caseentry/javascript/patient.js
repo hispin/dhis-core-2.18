@@ -253,6 +253,10 @@ function loadPatientList()
 	{
 		validateAdvancedSearch();
 	}
+	else if( statusSearching == 3 )
+	{
+		showById('listPatientDiv');
+	}
 }
 
 //------------------------------------------------------------------------------

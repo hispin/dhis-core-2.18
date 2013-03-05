@@ -24,27 +24,59 @@ function listAllPatient()
 {
 	hideById('listPatientDiv');
 	hideById('advanced-search');
-	
+	hideById('contentDataRecord');
 	contentDiv = 'listPatientDiv';
-	$('#contentDataRecord').html('');
+	setFieldValue('statusEvent', "4");
+	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
+	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
+	var programId = getFieldValue('programIdAddPatient');
+	var searchTexts = "stat_" + programId + "_" 
+				+ startDate + "_" + endDate + "_" 
+				+ getFieldValue('orgunitId') + "_false_4_3";
+	
 	showLoader();
 	jQuery('#listPatientDiv').load('getDataRecords.action',
 		{
-			programId:getFieldValue('programIdAddPatient'),
-			listAll:true
+			programId:programId,
+			listAll:false,
+			searchBySelectedOrgunit: false,
+			searchTexts: searchTexts
 		}, 
 		function()
 		{
-			showById('colorHelpLink');
+			setInnerHTML('searchInforLbl',i18n_list_all_patients);
 			showById('listPatientDiv');
-			resize();
+			setTableStyles();
 			hideLoader();
 		});
 }
 
+// --------------------------------------------------------------------
+// Search events
+// --------------------------------------------------------------------
+
 function advancedSearch( params )
 {
-	$('#contentDataRecord').html('');
+	hideById('contentDataRecord');
+	hideById('listPatientDiv');
+	showLoader();
+	params += "&programId=" + getFieldValue('programIdAddPatient');
+	$.ajax({
+		url: 'getDataRecords.action',
+		type:"POST",
+		data: params,
+		success: function( html ){
+			setTableStyles();
+			jQuery('#listPatientDiv').html(html);
+			showById('listPatientDiv');
+			hideLoader();
+		}
+	});
+}
+
+
+function advancedSearch( params )
+{
 	params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
 	params += "&programId=" + getFieldValue('programIdAddPatient');
 	$.ajax({
@@ -60,7 +92,7 @@ function advancedSearch( params )
 	});
 }
 
-function loadDataEntry( programStageInstanceId ) 
+function loadDataEntryDialog( programStageInstanceId ) 
 {
 	jQuery("#patientList input[name='programStageBtn']").each(function(i,item){
 		jQuery(item).removeClass('stage-object-selected');
