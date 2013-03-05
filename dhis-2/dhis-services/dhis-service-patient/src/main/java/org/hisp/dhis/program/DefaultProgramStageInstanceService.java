@@ -374,6 +374,8 @@ public class DefaultProgramStageInstanceService
 
         Grid grid = new ListGrid();
         grid.setTitle( program.getDisplayName() );
+        grid.setSubtitle( i18n.getString( "from" ) + " : " + DateUtils.getMediumDateString( startDate ) + " "
+            + i18n.getString( "to" ) + " : " + DateUtils.getMediumDateString( endDate ) );
 
         List<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
 
@@ -391,7 +393,8 @@ public class DefaultProgramStageInstanceService
             {
                 for ( PatientIdentifier identifier : patient.getIdentifiers() )
                 {
-                    if ( identifier.getIdentifierType()!=null && identifier.getIdentifierType().getId() == identifierType.getId() )
+                    if ( identifier.getIdentifierType() != null
+                        && identifier.getIdentifierType().getId() == identifierType.getId() )
                     {
                         displayPatientName = identifier.getIdentifier();
                         break;
