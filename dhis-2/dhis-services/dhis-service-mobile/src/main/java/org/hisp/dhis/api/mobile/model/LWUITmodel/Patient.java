@@ -77,6 +77,8 @@ public class Patient
     private List<Program> programs;
 
     private List<Relationship> relationships;
+    
+    private List<Program> enrollmentPrograms;
 
     public List<PatientIdentifier> getIdentifiers()
     {
@@ -106,6 +108,16 @@ public class Patient
     public void setRelationships( List<Relationship> relationships )
     {
         this.relationships = relationships;
+    }
+
+    public List<Program> getEnrollmentPrograms()
+    {
+        return enrollmentPrograms;
+    }
+
+    public void setEnrollmentPrograms( List<Program> enrollmentPrograms )
+    {
+        this.enrollmentPrograms = enrollmentPrograms;
     }
 
     public String getFullName()
@@ -344,7 +356,7 @@ public class Patient
         {
             each.serialize( dout );
         }
-
+        
         // Write Relationships
         dout.writeInt( relationships.size() );
         for ( Relationship each : relationships )
@@ -352,6 +364,13 @@ public class Patient
             each.serialize( dout );
         }
 
+        // Write Available Program To Enroll
+        dout.writeInt( enrollmentPrograms.size() );
+        for ( Program each : enrollmentPrograms )
+        {
+            each.serialize( dout );
+        }
+        
         bout.flush();
         bout.writeTo( out );
     }

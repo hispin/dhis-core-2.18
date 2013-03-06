@@ -67,6 +67,9 @@ public class MobileOrgUnitLinks
     private String findPatientUrl;
     
     private String uploadProgramStageUrl;
+    
+    private String enrollProgramUrl;
+    
 
     @XmlAttribute
     public int getId()
@@ -210,6 +213,16 @@ public class MobileOrgUnitLinks
         this.uploadProgramStageUrl = uploadProgramStageUrl;
     }
 
+    public String getEnrollProgramUrl()
+    {
+        return enrollProgramUrl;
+    }
+
+    public void setEnrollProgramUrl( String enrollProgramUrl )
+    {
+        this.enrollProgramUrl = enrollProgramUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
 
         throws IOException
@@ -227,6 +240,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateContactUrl );
         dataOutputStream.writeUTF( this.findPatientUrl );
         dataOutputStream.writeUTF( this.uploadProgramStageUrl );
+        dataOutputStream.writeUTF( this.enrollProgramUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -245,6 +259,7 @@ public class MobileOrgUnitLinks
         this.updateContactUrl = dataInputStream.readUTF();
         this.findPatientUrl = dataInputStream.readUTF();
         this.uploadProgramStageUrl = dataInputStream.readUTF();
+        this.enrollProgramUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -296,7 +311,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateContactUrl );
         dataOutputStream.writeUTF( this.findPatientUrl );
         dataOutputStream.writeUTF( this.uploadProgramStageUrl );
-        
+        dataOutputStream.writeUTF( this.enrollProgramUrl );
     }
 
 }

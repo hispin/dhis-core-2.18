@@ -85,6 +85,7 @@ public class OrgUnitsTest
         unit.setUpdateContactUrl( "updateContactUrl" );
         unit.setFindPatientUrl( "findPatientUrl" );
         unit.setUploadProgramStageUrl( "uploadProgramStageUrl" );
+        unit.setEnrollProgramUrl( "enrollProgramUrl" );
         return unit;
     }
 }
