@@ -50,6 +50,7 @@ Ext.onReady( function() {
 			panel: {
 				setHeight: function(mx) {
 					var h = pt.viewport.westRegion.getHeight() - pt.conf.layout.west_fill;
+					mx = mx + (pt.cmp.dimension.panels.length * 28);
 					pt.cmp.dimension.panel.setHeight(h > mx ? mx : h);
 				},
 
@@ -104,7 +105,7 @@ Ext.onReady( function() {
 					dim = panels[i].getData();
 
 					if (dim) {
-						if (dim.name === pt.conf.finals.dimension.data.paramname) {
+						if (dim.name === pt.conf.finals.dimension.data.paramName) {
 							dxItems = dxItems.concat(dim.items);
 						}
 						else {
@@ -114,7 +115,7 @@ Ext.onReady( function() {
 				}
 
 				if (dxItems.length) {
-					data[pt.conf.finals.dimension.data.paramname] = dxItems;
+					data[pt.conf.finals.dimension.data.paramName] = dxItems;
 				}
 			}();
 
@@ -315,10 +316,12 @@ Ext.onReady( function() {
 			margin = 2,
 			defaultWidth = 160,
 			defaultHeight = 158,
-			maxHeight = (pt.viewport.getHeight() - 100) / 2;
+			maxHeight = (pt.viewport.getHeight() - 100) / 2,
+
+			dimConf = pt.conf.finals.dimension;
 
 		dimensionOrder = function() {
-			var order = ['dx', 'coc', 'pe', 'ou'],
+			var order = [dimConf.data.paramName, dimConf.category.paramName, dimConf.period.paramName, dimConf.organisationUnit.paramName],
 				ougsOrder = [];
 
 			for (var i = 0; i < pt.init.ougs.length; i++) {
@@ -329,7 +332,7 @@ Ext.onReady( function() {
 		}();
 
 		getData = function() {
-			var data = [{id: 'coc', name: 'Categories'}];
+			var data = [{id: dimConf.category.paramName, name: dimConf.category.rawValue}];
 
 			return data.concat(pt.init.ougs, pt.init.degs);
 		};
@@ -362,13 +365,13 @@ Ext.onReady( function() {
 		dimensionStore = getStore(getData());
 
 		rowStore = getStore();
-		rowStore.add({id: 'pe', name: 'Periods'}); //i18n
+		rowStore.add({id: dimConf.period.paramName, name: dimConf.period.rawValue}); //i18n
 
 		colStore = getStore();
-		colStore.add({id: 'dx', name: 'Data'}); //i18n
+		colStore.add({id: dimConf.data.paramName, name: dimConf.data.rawValue}); //i18n
 
 		filterStore = getStore();
-		filterStore.add({id: 'ou', name: 'Organisation units'}); //i18n
+		filterStore.add({id: dimConf.organisationUnit.paramName, name: dimConf.organisationUnit.rawValue}); //i18n
 
 		getCmpHeight = function() {
 			var size = dimensionStore.totalCount,
@@ -841,7 +844,7 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.indicator.paramname,
+						name: pt.conf.finals.dimension.indicator.paramName,
 						items: []
 					};
 
@@ -1032,7 +1035,7 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.indicator.paramname,
+						name: pt.conf.finals.dimension.indicator.paramName,
 						items: []
 					};
 
@@ -1219,7 +1222,7 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.indicator.paramname,
+						name: pt.conf.finals.dimension.indicator.paramName,
 						items: []
 					};
 
@@ -1287,6 +1290,7 @@ Ext.onReady( function() {
 								bodyStyle: 'border-style:none; padding:0 0 0 10px',
 								defaults: {
 									labelSeparator: '',
+									style: 'margin-bottom:2px',
 									listeners: {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
@@ -1328,6 +1332,7 @@ Ext.onReady( function() {
 								bodyStyle: 'border-style:none; padding:0 0 0 32px',
 								defaults: {
 									labelSeparator: '',
+									style: 'margin-bottom:2px',
 									listeners: {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
@@ -1363,6 +1368,7 @@ Ext.onReady( function() {
 								bodyStyle: 'border-style:none; padding:0 0 0 32px',
 								defaults: {
 									labelSeparator: '',
+									style: 'margin-bottom:2px',
 									listeners: {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
@@ -1405,6 +1411,7 @@ Ext.onReady( function() {
 								bodyStyle: 'border-style:none; padding:5px 0 0 10px',
 								defaults: {
 									labelSeparator: '',
+									style: 'margin-bottom:2px',
 									listeners: {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
@@ -1444,7 +1451,8 @@ Ext.onReady( function() {
 								layout: 'anchor',
 								bodyStyle: 'border-style:none; padding:5px 0 0 46px',
 								defaults: {
-									labelSeparator: ''
+									labelSeparator: '',
+									style: 'margin-bottom:2px',
 								},
 								items: [
 									{
@@ -1549,7 +1557,7 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.period.paramname,
+						name: pt.conf.finals.dimension.period.paramName,
 							items: []
 						},
 						chb = pt.cmp.dimension.relativePeriod.checkbox;
@@ -2176,18 +2184,19 @@ Ext.onReady( function() {
 			};
 
 			validateSpecialCases = function(settings) {
+				var dimConf = pt.conf.finals.dimension;
 
 				// indicator as filter
 				if (settings.filter && pt.store.indicatorSelected.data.length) {
 					for (var i = 0; i < settings.filter.length; i++) {
-						if (settings.filter[i].name === 'dx') {
+						if (settings.filter[i].name === dimConf.data.paramName) {
 							alert('Indicators cannot be specified as filter');
 							return;
 						}
 					}
 				}
 
-				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById('coc')) {
+				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById(dimConf.category.paramName)) {
 					alert('Categories cannot be specified as filter');
 					return;
 				}
