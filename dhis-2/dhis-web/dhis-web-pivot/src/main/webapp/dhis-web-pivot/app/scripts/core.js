@@ -130,7 +130,7 @@ PT.core.getConfigs = function() {
         west_fill_accordion_indicator: 63,
         west_fill_accordion_dataelement: 63,
         west_fill_accordion_dataset: 33,
-        west_fill_accordion_period: 240,
+        west_fill_accordion_period: 256,
         west_fill_accordion_organisationunit: 62,
         west_maxheight_accordion_indicator: 400,
         west_maxheight_accordion_dataelement: 400,
@@ -406,6 +406,23 @@ PT.core.getUtils = function(pt) {
 			}
 
 			return dimensions;
+		},
+
+		sortObjectsByString: function(array, key) {
+			key = key || 'name';
+			array.sort( function(a, b) {
+				var nameA = a[key].toLowerCase(),
+					nameB = b[key].toLowerCase();
+
+				if (nameA < nameB) {
+					return -1;
+				}
+				if (nameA > nameB) {
+					return 1;
+				}
+				return 0;
+			});
+			return array;
 		}
 	};
 
@@ -461,7 +478,7 @@ PT.core.getUtils = function(pt) {
 				extendRowAxis,
 				getTableHtmlArrays,
 				initialize,
-									
+
 				dimConf = pt.conf.finals.dimension;
 
 			extendSettings = function(settings) {
@@ -903,15 +920,12 @@ PT.core.getUtils = function(pt) {
 			};
 
 			getTableHtml = function(xColAxis, xRowAxis, xResponse) {
-				var getEmptyHtmlArray,
+				var doSubTotals,
 					getColAxisHtmlArray,
-					getRowAxisHtmlArray,
-					rowAxisHtmlArray,
 					getRowHtmlArray,
-					getRowTotalHtmlArray,
+					rowAxisHtmlArray,
 					getColTotalHtmlArray,
 					getGrandTotalHtmlArray,
-					getRowHtmlArray,
 					getTotalHtmlArray,
 					getHtml,
 
@@ -1091,16 +1105,22 @@ PT.core.getUtils = function(pt) {
 
 					// Value total objects
 					if (xColAxis) {
-						valueItemsCopy = Ext.clone(valueItems);
+						for (var i = 0, empty, total; i < valueObjects.length; i++) {
+							empty = [];
+							total = 0;
 
-						for (var i = 0, rowSum; i < valueItemsCopy.length; i++) {
-							rowSum = Ext.Array.sum(valueItemsCopy[i]);
-							rowSum = pt.util.number.roundIf(rowSum, 1);
+							for (j = 0, obj; j < valueObjects[i].length; j++) {
+								obj = valueObjects[i][j];
+
+								empty.push(obj.empty);
+								total += obj.value;
+							}
+
 							totalValueObjects.push({
 								type: 'valueTotal',
-								value: rowSum,
-								htmlValue: rowSum,
-								cls: 'pivot-value-total'
+								cls: 'pivot-value-total',
+								value: total,
+								htmlValue: pt.util.number.roundIf(total, 1) || '-'
 							});
 						}
 					}
@@ -1152,7 +1172,7 @@ PT.core.getUtils = function(pt) {
 
 								if (colCount === colUniqueFactor) {
 									rowSubTotal = pt.util.number.roundIf(rowSubTotal, 1);
-									
+
 									row.push({
 										type: 'valueSubtotal',
 										value: rowSubTotal,
@@ -1233,7 +1253,7 @@ PT.core.getUtils = function(pt) {
 
 								if (rowCount === rowUniqueFactor) {
 									subTotal = pt.util.number.roundIf(subTotal, 1);
-									
+
 									tmpValueObjects[tmpCount++].push({
 										type: item.cls === 'pivot-value-subtotal' ? 'valueSubtotal' : 'valueSubtotalTotal',
 										value: subTotal,
@@ -1258,7 +1278,7 @@ PT.core.getUtils = function(pt) {
 
 							if (count === xRowAxis.span[0]) {
 								subTotal = pt.util.number.roundIf(subTotal, 1);
-								
+
 								tmpTotalValueObjects.push({
 									type: 'valueTotalSubgrandtotal',
 									cls: 'pivot-value-total-subgrandtotal',
@@ -1281,7 +1301,7 @@ PT.core.getUtils = function(pt) {
 					// Merge dim, value, total
 					for (var i = 0, row; i < valueObjects.length; i++) {
 						row = [];
-						
+
 						if (xRowAxis) {
 							row = row.concat(axisObjects[i]);
 						}
@@ -1339,14 +1359,14 @@ PT.core.getUtils = function(pt) {
 								subTotal += item.value;
 								colCount++;
 
-								if (colCount === colUniqueFactor) {									
+								if (colCount === colUniqueFactor) {
 									tmp.push({
 										type: 'valueTotalSubgrandtotal',
 										value: subTotal,
 										htmlValue: subTotal,
 										cls: 'pivot-value-total-subgrandtotal'
 									});
-									
+
 									subTotal = 0;
 									colCount = 0;
 								}
@@ -1431,19 +1451,31 @@ PT.core.getUtils = function(pt) {
 			};
 
 			initialize = function() {
-				var xSettings,
+				var url,
+					xSettings,
 					xResponse,
 					xColAxis,
 					xRowAxis;
 
-				pt.util.mask.showMask(pt.viewport);
-
 				xSettings = extendSettings(settings);
+
+				pt.paramString = getParamString(xSettings);
+				url = pt.init.contextPath + '/api/analytics.jsonp' + pt.paramString;
+
+				if (url.length > 2000) {
+					var percent = ((url.length - 2000) / url.length) * 100;
+
+					alert('Too many parameters selected. Please reduce the number of parameters by minimum ' + percent.toFixed(0) + '%');
+					return;
+				}
+
+				pt.util.mask.showMask(pt.viewport);
 
 				Ext.data.JsonP.request({
 					method: 'GET',
-					url: pt.init.contextPath + '/api/analytics.jsonp' + getParamString(xSettings),
+					url: url,
 					callbackName: 'analytics',
+					timeout: 60000,
 					headers: {
 						'Content-Type': 'application/json',
 						'Accept': 'application/json'
@@ -1470,19 +1502,21 @@ PT.core.getUtils = function(pt) {
 						}
 
 						xResponse = extendResponse(response, xSettings);
-console.log("xResponse", xResponse);
 
 						xColAxis = extendAxis('col', xSettings.col, xResponse);
 						xRowAxis = extendAxis('row', xSettings.row, xResponse);
-console.log("xColAxis", xColAxis);
-console.log("xRowAxis", xRowAxis);
 
 						html = getTableHtml(xColAxis, xRowAxis, xResponse);
 
 						pt.container.removeAll(true);
 						pt.container.update(html);
 
+						// After table success
 						pt.util.mask.hideMask();
+
+						if (pt.viewport.downloadButton) {
+							pt.viewport.downloadButton.enable();
+						}
 					}
 				});
 
