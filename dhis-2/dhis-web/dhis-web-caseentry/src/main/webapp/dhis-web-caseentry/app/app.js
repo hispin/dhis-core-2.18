@@ -410,7 +410,7 @@ Ext.onReady( function() {
 				}
 			},
 			addFilterField: function( p, id, name, valueType ){
-				var panelid = 'p_' + id;
+				var panelid = p + '_' + id;
 				var idx = 0;
 				var subPanel = Ext.getCmp(panelid);
 				if( subPanel == undefined )
@@ -443,7 +443,7 @@ Ext.onReady( function() {
 				items[1] = this.createOperatorField(valueType, fieldid);
 				items[2] = this.createFilterField( valueType, fieldid );
 				if( idx == 0 ){
-					items[3] = this.addFieldBtn( panelid, id, name, valueType, idx );
+					items[3] = this.addFieldBtn( p, id, name, valueType, idx );
 				}
 				else
 				{
@@ -453,9 +453,8 @@ Ext.onReady( function() {
 				subPanel.add(items);
 			},
 			removeFilterField: function( p, id ){
-				var e = Ext.getCmp( 'p_' + id );
-				Ext.getCmp(p).remove(e);
-				Ext.getCmp(p).doLayout();
+				var e1 = Ext.getCmp( p + '_' + id );
+				Ext.getCmp(p).remove(e1);
 			},
 			createOperatorField: function( valueType, id ){
 				var params = {};
@@ -616,7 +615,7 @@ Ext.onReady( function() {
 				params.xtype = 'button';
 				params.id = 'filter_rmv_' + id;	
 				params.text = "-";
-				params.tooltip = TR.i18n.add,
+				params.tooltip = TR.i18n.remove,
 				params.handler = function() {
 					var e1 = Ext.getCmp( 'filter_' + id );
 					var e2 = Ext.getCmp( 'filter_opt_' + id );	
@@ -1287,7 +1286,7 @@ Ext.onReady( function() {
 										var fitlerId = 'de_' + filter[0];
 										if(id==fitlerId){
 											TR.util.multiselect.addFilterField( 'filterPanel', fitlerId, name, valueType );
-											var idx = Ext.getCmp('p_' + fitlerId).items.length/4 - 1;
+											var idx = Ext.getCmp('filterPanel_' + fitlerId).items.length/4 - 1;
 											var value = filter[2].replace('(','').replace(')','').replace(/,/g, ';').replace(/'/g, '');
 											
 											if(valueType=='list'){
@@ -1576,7 +1575,7 @@ Ext.onReady( function() {
 		filterReport: function() {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 			{
-				this.caseBasedReport.filter();
+				this.caseBasedReport.generate();
 			}
 		},
 		getParams: function(isSorted){
@@ -1684,7 +1683,7 @@ Ext.onReady( function() {
 				TR.cmp.params.patientProperty.selected.store.each( function(r) {
 					var propId = r.data.id;
 					var valueType = r.data.valueType;
-					var length = Ext.getCmp('p_' + propId).items.length/4;
+					var length = Ext.getCmp('filterPropPanel_' + propId).items.length/4;
 					var hidden = TR.state.caseBasedReport.isColHidden(propId);
 					
 					for(var idx=0;idx<length;idx++)
@@ -1721,7 +1720,7 @@ Ext.onReady( function() {
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
-					var length = Ext.getCmp('p_' + deId).items.length/4;
+					var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
 					var hidden = TR.state.caseBasedReport.isColHidden(deId);
 					
 					for(var idx=0;idx<length;idx++)
@@ -1784,7 +1783,7 @@ Ext.onReady( function() {
 				TR.cmp.params.patientProperty.selected.store.each( function(r) {
 					var propId = r.data.id;
 					var valueType = r.data.valueType;
-					var length = Ext.getCmp('p_' + propId).items.length/4;
+					var length = Ext.getCmp('filterPropPanel_' + propId).items.length/4;
 					var hidden = TR.state.caseBasedReport.isColHidden(propId);
 					
 					for(var idx=0;idx<length;idx++)
@@ -1817,7 +1816,7 @@ Ext.onReady( function() {
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
-					var length = Ext.getCmp('p_' + deId).items.length/4;
+					var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
 					var hidden = TR.state.caseBasedReport.isColHidden(deId);
 					
 					for(var idx=0;idx<length;idx++)
@@ -2072,7 +2071,7 @@ Ext.onReady( function() {
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
-					var length = Ext.getCmp('p_' + deId).items.length/4;
+					var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
 					
 					for(var idx=0;idx<length;idx++)
 					{
@@ -2176,7 +2175,7 @@ Ext.onReady( function() {
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					var valueType = r.data.valueType;
 					var deId = r.data.id;
-					var length = Ext.getCmp('p_' + deId).items.length/4;
+					var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
 					
 					for(var idx=0;idx<length;idx++)
 					{
@@ -2289,7 +2288,7 @@ Ext.onReady( function() {
 					var isValid = true;
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
 						var deId = r.data.id;
-						var length = Ext.getCmp('p_' + deId).items.length/4;
+						var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
 						for(var idx=0;idx<length;idx++)
 						{
 							var id = deId + '_' + idx;
@@ -4143,7 +4142,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowleftdouble.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.unselectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
+																	TR.util.multiselect.unselectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, 'filterPanel');
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															},
@@ -4152,7 +4151,7 @@ Ext.onReady( function() {
 																icon: 'images/arrowleft.png',
 																width: 22,
 																handler: function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, true);
+																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected, 'filterPanel');
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															},
@@ -4287,7 +4286,7 @@ Ext.onReady( function() {
 															},
 															afterrender: function() {
 																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, this, true);
+																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, this, 'filterPanel');
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}, this);
 															}
@@ -4701,7 +4700,7 @@ Ext.onReady( function() {
 							
 								TR.cmp.params.dataelement.selected.store.each( function(r) {
 									var deId = r.data.id;
-									var length = Ext.getCmp('p_' + deId).items.length/4;
+									var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
 									for(var idx=0;idx<length;idx++)
 									{					
 										var id = deId + '_' + idx;
