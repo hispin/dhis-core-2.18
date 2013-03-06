@@ -92,6 +92,7 @@ public class MobileClientController
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
         orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
         orgUnit.setUploadProgramStageUrl( getUrl( request, unit.getId(), "uploadProgramStage" ) );
+        orgUnit.setEnrollProgramUrl( getUrl( request, unit.getId(), "enrollProgram" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );
@@ -105,7 +106,14 @@ public class MobileClientController
     private static String getUrl( HttpServletRequest request, int id, String path )
     {
         String url = UrlUtils.buildFullRequestUrl( request );
-        url = url + "/orgUnits/" + id + "/" + path;
+        if( url.endsWith( "/" ))
+        {
+            url = url + "orgUnits/" + id + "/" + path;
+        }
+        else
+        {
+            url = url + "/orgUnits/" + id + "/" + path;
+        }
         return url;
     }
 }

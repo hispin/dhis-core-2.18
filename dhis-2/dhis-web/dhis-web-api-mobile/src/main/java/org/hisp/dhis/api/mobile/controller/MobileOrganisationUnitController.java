@@ -281,7 +281,7 @@ public class MobileOrganisationUnitController
     public Patient findPatientByName( @PathVariable int id, @RequestHeader( "name" ) String fullName )
         throws NotAllowedException
     {
-        return activityReportingService.findPatient( fullName );
+        return activityReportingService.findPatient( fullName, id );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/uploadProgramStage" )
@@ -289,8 +289,15 @@ public class MobileOrganisationUnitController
     public String saveProgramStage( @PathVariable int id, @RequestBody ProgramStage programStage )
         throws NotAllowedException
     {
-        activityReportingService.saveProgramStage( programStage );
-        return PROGRAM_STAGE_UPLOADED;
+        return activityReportingService.saveProgramStage( programStage );
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/enrollProgram" )
+    @ResponseBody
+    public Patient enrollProgram( @PathVariable int id, @RequestHeader( "enrollInfo" ) String enrollInfo )
+        throws NotAllowedException
+    {
+        return activityReportingService.enrollProgram( enrollInfo, id );
     }
 
     // Supportive methods
