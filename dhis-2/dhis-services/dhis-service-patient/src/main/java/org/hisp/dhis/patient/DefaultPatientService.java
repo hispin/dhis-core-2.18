@@ -590,28 +590,9 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientByFullname( String fullName, int orgUnitId )
+    public Collection<Patient> getPatientByFullname( String fullName, Integer orgunitId )
     {
-        Collection<Patient> patients = new HashSet<Patient>();
-        
-        patients = patientStore.getByFullName( fullName );
-        
-        if ( orgUnitId != 0 )
-        {
-            Set<Patient> toRemoveList = new HashSet<Patient>();
-
-            for ( Patient patient : patients )
-            {
-                if ( patient.getOrganisationUnit().getId() != orgUnitId )
-                {
-                    toRemoveList.add( patient );
-                }
-            }
-
-            patients.removeAll( toRemoveList );
-        }
-        
-        return patients;
+        return patientStore.getByFullName( fullName, orgunitId );
     }
 
 }
