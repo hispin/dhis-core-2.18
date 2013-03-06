@@ -576,7 +576,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-        
+
         return sql;
     }
 
@@ -596,13 +596,17 @@ public class HibernatePatientStore
     }
 
     @Override
-    public Collection<Patient> getByFullName( String fullName )
+    public Collection<Patient> getByFullName( String fullName, Integer orgunitId )
     {
         List<Patient> patients = new ArrayList<Patient>();
 
         fullName = fullName.toLowerCase();
-        String sql = "SELECT patientid FROM patient " + "where lower( " + statementBuilder.getPatientFullName() + ") "
+        String sql = "SELECT patientid FROM patient where lower( " + statementBuilder.getPatientFullName() + ") "
             + "='" + fullName + "'";
+        if ( orgunitId != null )
+        {
+            sql += " and organisationunitid=" + orgunitId;
+        }
 
         try
         {
