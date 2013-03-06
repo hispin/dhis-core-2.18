@@ -674,7 +674,7 @@ function runValidation()
 function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField );
-	input.parent().width( input.width() + 200 );
+	input.parent().width( input.width() + 50 );
 	var dataElementId = input.attr('id').split('-')[1];
 	
 	input.autocomplete({
@@ -762,7 +762,7 @@ function autocompletedField( idField )
 function autocompletedUsernameField( idField )
 {
 	var input = jQuery( "#" +  idField );
-	input.parent().width( input.width() + 200 );
+	input.parent().width( input.width() + 50 );
 	var dataElementId = input.attr('id').split('-')[1];
 	
 	input.autocomplete({
