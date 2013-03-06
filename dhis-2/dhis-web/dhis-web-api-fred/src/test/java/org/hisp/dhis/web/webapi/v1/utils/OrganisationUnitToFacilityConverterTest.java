@@ -140,6 +140,7 @@ public class OrganisationUnitToFacilityConverterTest
 
         List<String> dataSets = (List<String>) facility.getProperties().get( "dataSets" );
 
+        Assert.assertEquals( 3, dataSets.size() );
         Assert.assertTrue( dataSets.contains( dataSet1.getUid() ) );
         Assert.assertTrue( dataSets.contains( dataSet2.getUid() ) );
         Assert.assertTrue( dataSets.contains( dataSet3.getUid() ) );
