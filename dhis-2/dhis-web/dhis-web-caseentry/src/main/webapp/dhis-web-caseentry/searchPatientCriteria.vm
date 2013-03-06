@@ -21,7 +21,7 @@
 		<td>$i18n.getString('program')</td>
 		<td>
 			<select id='programIdAddPatient' name='programIdAddPatient' onchange='enableBtn();'>
-				<option value='' type='2'>[$i18n.getString("please_select")]</option>
+				<option value='' type='2'>[$i18n.getString("view_all")]</option>
 				#foreach($program in $programs)
 					<option value="$program.id" type='$program.type'>$program.displayName</option>
 				#end
@@ -83,13 +83,13 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td rowspan='30' valign='bottom'>
+				<td name='addAndSearchBtn' rowspan='2' valign='bottom'>
 					<input type="button" class='normal-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
 				</td>
-				<td rowspan='30' valign='bottom' align="right" >
+				<td name='addAndSearchBtn' rowspan='2' valign='bottom' align="right" >
 					<input type="button" class='normal-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
-				<td rowspan='30' valign='bottom' align="right" >
+				<td name='addAndSearchBtn' rowspan='2' valign='bottom' align="right" >
 					<input type="button" class='normal-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
 				</td>
 			</tr>
@@ -114,10 +114,6 @@
 					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
 					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
 				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
 			</tr>
 		</tbody>
 	</table>
