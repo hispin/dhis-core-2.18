@@ -618,7 +618,8 @@ Ext.onReady( function() {
 			window;
 
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Show sub totals' //i18n
+			boxLabel: 'Show sub totals', //i18n
+			checked: true
 		});
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
