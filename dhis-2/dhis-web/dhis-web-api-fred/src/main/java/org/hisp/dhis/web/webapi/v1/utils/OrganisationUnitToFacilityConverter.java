@@ -63,7 +63,14 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
         facility.setActive( organisationUnit.isActive() );
         facility.setCreatedAt( organisationUnit.getCreated() );
         facility.setUpdatedAt( organisationUnit.getLastUpdated() );
-        facility.setUrl( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toString() );
+
+        try
+        {
+            facility.setUrl( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toString() );
+        }
+        catch ( IllegalStateException ignored )
+        {
+        }
 
         if ( organisationUnit.getFeatureType() != null && organisationUnit.getFeatureType().equalsIgnoreCase( "POINT" )
             && organisationUnit.getCoordinates() != null )
