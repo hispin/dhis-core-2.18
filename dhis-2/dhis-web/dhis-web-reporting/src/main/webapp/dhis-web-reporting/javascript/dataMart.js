@@ -31,3 +31,15 @@ function pingNotificationsTimeout()
 	pingNotifications( 'DATAMART', 'notificationTable' );
 	setTimeout( "pingNotificationsTimeout()", 2500 );
 }
+
+function toggleDataMart()
+{
+	if ( $( '#dataMart' ).is( ':checked' ) )
+	{
+		$( '.dataMart' ).attr( 'disabled', 'disabled' );
+	}
+	else
+	{
+		$( '.dataMart' ).removeAttr( 'disabled' );
+	}
+}
