@@ -30,7 +30,7 @@
 								reportDateDes="$programStageInstance.programStage.reportDateDescription"
 								dueDate="$format.formatDate( $programStageInstance.dueDate )"
 								class="stage-object" 
-								value="$programStageInstance.programStage.displayName&#13;&#10;$valueDate" 
+								value="$programStageInstance.programStage.displayName&#13;&#10;&nbsp;$valueDate" 
 								onclick="javascript:loadDataEntry( $programStageInstance.id );">
 							<script>	
 								var status = $programStageInstance.getEventStatus();

@@ -31,30 +31,27 @@
 <input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!programStageInstance.programInstance.program.blockEntryForm'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
-	#if($programStageInstance.programStage.captureCoordinates=='true')
-		<table style="width:600px;margin-top:-9px" class="listTable">
-			<tr>
-				<th class='coordinates1'><label for="longitude">$i18n.getString( "longitude" )</label></th>
-				<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>
-				<th class='coordinates1'><label for="latitude">$i18n.getString( "latitude" )</label></th>
-				<th class='coordinates2'>
-					<input type="text" class='criteria' id="latitude" name="latitude" value="$!{latitude}" class="{validate:{number:true,min:-90,max:90}}" placeholder='$i18n.getString("enter_a_number")' >
-					<img style='cursor:pointer' src='images/save.png' title='$i18n.getString("save")' onclick='saveCoordinatesEvent($!programStageInstance.id);' />
-				</th>
-			</tr>
-		</table>
-	#end
-	
-	<br>
-	
-	<table id="postCommentTbl" class="hidden">
+	<table style="width:600px;margin-top:-9px" class="listTable">
+		#if($programStageInstance.programStage.captureCoordinates=='true')
 		<tr>
-			<td class="text-column">$i18n.getString('post_comment'):</td>
-			<td><input type="text" class="{validate:{maxlength:160}}" name="comment_$programStageInstance.id" id="comment_$programStageInstance.id" style="width:450px;" onkeypress="keypressOnComent(event,this,$programStageInstance.id);"></td>
+			<th class='coordinates1'><label for="longitude">$i18n.getString( "longitude" )</label></th>
+			<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>
+			<th class='coordinates1'><label for="latitude">&nbsp;$i18n.getString( "latitude" )</label></th>
+			<th class='coordinates2'>
+				<input type="text" class='criteria' id="latitude" name="latitude" value="$!{latitude}" class="{validate:{number:true,min:-90,max:90}}" placeholder='$i18n.getString("enter_a_number")' >
+				<img style='cursor:pointer' src='images/save.png' title='$i18n.getString("save")' onclick='saveCoordinatesEvent($!programStageInstance.id);' />
+			</th>
+		</tr>
+		#end
+		<tr>
+			<th class='coordinates1'><label for="postComment">$i18n.getString('post_comment'):</label></td>
+			<th colspan='3'>
+				<input type="text" class="{validate:{maxlength:160}} criteria" name="comment_$programStageInstance.id" id="comment_$programStageInstance.id" style="width:430px;#if($programStageInstance.programStage.captureCoordinates=='false') margin-left:10px; #end " onkeypress="keypressOnComent(event,this,$programStageInstance.id);">
+			</td>
 		</tr>
 		
 		<tr>
-			<td></td>
+			<td class='coordinates1'></td>
 			<td colspan='3'>
 				<table>
 					<tbody id="commentTB">
@@ -62,7 +59,7 @@
 						<tr>
 							<td>$format.formatDateTime($comment.createdDate) </td>
 							<td>$comment.creator </td>
-							<td>$comment.commentText</td>
+							<td>$!comment.commentText</td>
 						</tr>
 						#end
 					</tbody>
@@ -70,6 +67,10 @@
 			</td>
 		</tr>
 	</table>
+	</table>
+	
+	<br>
+	
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
 	#elseif( $sections && $sections.size() > 0 )
