@@ -546,6 +546,8 @@
 		id="org.hisp.dhis.caseentry.action.patient.ShowAddRepresentativeAction"
 		class="org.hisp.dhis.caseentry.action.patient.ShowAddRepresentativeAction"
 		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientIdentifierTypeService"

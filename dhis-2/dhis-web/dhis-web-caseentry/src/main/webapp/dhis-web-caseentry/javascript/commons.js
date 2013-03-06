@@ -72,14 +72,18 @@ function addAttributeOption()
 		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
 
 	jQuery('#advancedSearchTB').append( contend );
+	var rowspan = eval( jQuery('[name=addAndSearchBtn]').attr('rowspan') );
+	jQuery('[name=addAndSearchBtn]').attr('rowspan', rowspan + 1);
 }	
 
 function removeAttributeOption( rowId )
 {
 	jQuery( '#' + rowId ).remove();
-	if( jQuery( '#advancedSearchTB tr' ).length == 3 ){
+	if( jQuery( '#advancedSearchTB tr' ).length == 2 ){
 		jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', true);
-	}	
+	}
+	var rowspan = eval( jQuery('[name=addAndSearchBtn]').attr('rowspan') );
+	jQuery('[name=addAndSearchBtn]').attr('rowspan', rowspan - 1);
 }	
 
 //------------------------------------------------------------------------------
@@ -189,7 +193,7 @@ function validateAdvancedSearch()
 	
 	if (getFieldValue('searchByProgramStage') == "false" 
 		|| ( getFieldValue('searchByProgramStage') == "true"  
-			&& jQuery( '#advancedSearchTB tr' ).length > 2) ){
+			&& jQuery( '#advancedSearchTB tr' ).length > 1) ){
 		jQuery("#searchDiv :input").each( function( i, item )
 		{
 			var elementName = $(this).attr('name');

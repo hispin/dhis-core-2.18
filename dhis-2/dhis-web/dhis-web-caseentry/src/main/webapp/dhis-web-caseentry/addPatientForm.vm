@@ -31,7 +31,7 @@
 		
 		#if($!customRegistrationForm)
 		#else
-			datePickerValid( 'patientForm [id=registrationDate]' );
+			datePickerValid( 'patientForm [id=registrationDate]', true );
 			datePickerValid( 'patientForm [id=birthDate]' );
 			datePickerValid( 'patientForm [id=deathDate]', false );
 		#end
