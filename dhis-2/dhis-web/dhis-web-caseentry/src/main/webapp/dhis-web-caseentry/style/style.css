@@ -104,7 +104,7 @@ table.information, td.information
 .text-column 
 {
     padding-left: 5px;
-    padding-right: 10px;
+    padding-right: 6px;
     text-align: left;
 }
 
@@ -164,7 +164,7 @@ div.actions
 .entryScreen
 {
 	margin-bottom: 20px;
-	width: 90%;
+	width: 100%;
 	font-size: 13px; 
 	line-height: 18px;
 }

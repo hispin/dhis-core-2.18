@@ -501,7 +501,6 @@ function runCompleteEvent( isCreateEvent )
 					jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
-					disableCompletedButton(true);
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					var displayGenerateEventBox = jQuery('#entryFormContainer [name=displayGenerateEventBox]').val();
 					var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
@@ -518,16 +517,17 @@ function runCompleteEvent( isCreateEvent )
 						jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
 					}
 					
-					var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
-					eventBox.attr('status',1);
-					resetActiveEvent( eventBox.attr("pi") );
-			
-			
 					var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
 					if( blocked=='true' ){
 						blockEntryForm();
 					}
 					
+					disableCompletedButton(true);
+					enable('validationBtn');
+					var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
+					eventBox.attr('status',1);
+					resetActiveEvent( eventBox.attr("pi") );
+			
 					hideLoader();
 					
 					if( isCreateEvent ){
@@ -550,12 +550,11 @@ function doUnComplete( isCreateEvent )
 			{
 				jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
 				jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
+				unblockEntryForm();
 				disableCompletedButton(false);
 				var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
 				eventBox.attr('status',2);
 				resetActiveEvent( eventBox.attr("pi") );
-				
-				unblockEntryForm();
 			});
 	}
     

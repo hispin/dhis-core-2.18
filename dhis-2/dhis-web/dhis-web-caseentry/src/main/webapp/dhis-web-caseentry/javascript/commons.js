@@ -878,7 +878,6 @@ function resetActiveEvent( programInstanceId )
 		jQuery('#tr2_' + programInstanceId).attr("onClick", "");
 		
 		hideById('executionDateTB');
-		hideById('inputCriteriaDiv');
 	}
 }
 
