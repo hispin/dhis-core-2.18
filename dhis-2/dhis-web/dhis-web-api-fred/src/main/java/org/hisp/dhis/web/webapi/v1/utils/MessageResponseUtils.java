@@ -50,12 +50,12 @@ public final class MessageResponseUtils
 
     public static String jsonMessage( String message ) throws IOException
     {
-        return messageToJson( new MessageResponse( message, null ) );
+        return messageToJson( new MessageResponse( null, message ) );
     }
 
-    public static String jsonMessage( String message, String moreInfo ) throws IOException
+    public static String jsonMessage( String code, String message ) throws IOException
     {
-        return messageToJson( new MessageResponse( message, moreInfo ) );
+        return messageToJson( new MessageResponse( code, message ) );
     }
 
     public static String messageToJson( MessageResponse messageResponse ) throws IOException
