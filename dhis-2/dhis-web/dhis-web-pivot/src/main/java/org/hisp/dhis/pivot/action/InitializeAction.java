@@ -210,9 +210,9 @@ public class InitializeAction
             rootNodes.add( new OrganisationUnit() );
         }
 
-        organisationUnitGroupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
+        organisationUnitGroupSets = organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets();
         
-        dataElementGroupSets = dataElementService.getAllDataElementGroupSets();
+        dataElementGroupSets = dataElementService.getCompulsoryDataElementGroupSets();
 
         RelativePeriods rp = new RelativePeriods();
 
