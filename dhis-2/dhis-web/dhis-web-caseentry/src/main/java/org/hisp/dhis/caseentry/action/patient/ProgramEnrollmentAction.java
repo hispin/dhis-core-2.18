@@ -91,6 +91,8 @@ public class ProgramEnrollmentAction
 
     private List<PatientAttribute> patientAttributes;
 
+    private ProgramInstance programInstance;
+
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
@@ -160,6 +162,11 @@ public class ProgramEnrollmentAction
         return patientAttributes;
     }
 
+    public ProgramInstance getProgramInstance()
+    {
+        return programInstance;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -173,10 +180,10 @@ public class ProgramEnrollmentAction
         // Load active ProgramInstance, completed = false
         // ---------------------------------------------------------------------
 
-        ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
-        
-        programStageInstances = new ArrayList<ProgramStageInstance>(programInstance.getProgramStageInstances());
-        
+        programInstance = programInstanceService.getProgramInstance( programInstanceId );
+
+        programStageInstances = new ArrayList<ProgramStageInstance>( programInstance.getProgramStageInstances() );
+
         Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
 
         loadIdentifierTypes( programInstance );
