@@ -51,9 +51,33 @@ public class MobileClientController
         return orgUnits;
     }
     
-    @RequestMapping( method = RequestMethod.GET, value = "/{version}/" )
+    @RequestMapping( method = RequestMethod.GET, value = "/{version}" )
     @ResponseBody
     public OrgUnits getOrgUnitsForUser( HttpServletRequest request, @PathVariable String version )
+        throws NotAllowedException
+    {
+        User user = currentUserService.getCurrentUser();
+
+        if ( user == null )
+        {
+            throw NotAllowedException.NO_USER;
+        }
+
+        Collection<OrganisationUnit> units = user.getOrganisationUnits();
+
+        List<MobileOrgUnitLinks> unitList = new ArrayList<MobileOrgUnitLinks>();
+        for ( OrganisationUnit unit : units )
+        {
+            unitList.add( getOrgUnit( unit, request ) );
+        }
+        OrgUnits orgUnits = new OrgUnits( unitList );
+        orgUnits.setClientVersion( version );
+        return orgUnits;
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "/{version}/" )
+    @ResponseBody
+    public OrgUnits getOrgUnitsForUserLWUIT( HttpServletRequest request, @PathVariable String version )
         throws NotAllowedException
     {
         User user = currentUserService.getCurrentUser();
