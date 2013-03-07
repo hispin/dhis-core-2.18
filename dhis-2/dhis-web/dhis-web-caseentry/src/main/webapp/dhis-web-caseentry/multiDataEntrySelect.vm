@@ -15,6 +15,10 @@
 			enable('listPatientBtn');
 			enable('advancedSearchBtn');
 		}
+		var i18n_scheduled_today = '$encoder.jsEscape( $i18n.getString( "scheduled_today" ) , "'")';
+		setFieldValue('listPatientBtn', i18n_scheduled_today);
+		showById('scheduled7DaysBtn');
+		showById('scheduled30DaysBtn');
 	});	
 </script>
 

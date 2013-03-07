@@ -16,6 +16,8 @@
 			enable('addPatientBtn');
 			enable('advancedSearchBtn');
 		}
+		setFieldValue('startDueDate','');
+		setFieldValue('endDueDate','');
 	});
 </script>
 

@@ -22,6 +22,48 @@ selection.setListenerFunction( multiDataEntryOrgunitSelected );
 
 function listAllPatient()
 {
+	var today = getCurrentDate();
+	var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" 
+				+ today + "_" + today + "_" 
+				+ getFieldValue('orgunitId') + "_false_4_3";
+	
+	getPatientList(searchTexts);
+}
+
+function scheduled7Days()
+{
+	var today = getCurrentDate();
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y= date.getFullYear();
+	var last7day = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d-7) ) ;
+	
+	var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" 
+				+ last7day + "_" + today + "_" 
+				+ getFieldValue('orgunitId') + "_false_4_3";
+				
+	getPatientList(searchTexts);
+}
+
+function scheduled30Days()
+{
+	var today = getCurrentDate();
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y= date.getFullYear();
+	var last30day = jQuery.datepicker.formatDate( dateFormat, new Date(y, m-1, d) ) ;
+	
+	var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" 
+				+ last30day + "_" + today + "_" 
+				+ getFieldValue('orgunitId') + "_false_4_3";
+				
+	getPatientList(searchTexts);
+}
+
+function getPatientList(searchTexts)
+{
 	hideById('listPatientDiv');
 	hideById('advanced-search');
 	hideById('contentDataRecord');
@@ -30,9 +72,6 @@ function listAllPatient()
 	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
 	var programId = getFieldValue('programIdAddPatient');
-	var searchTexts = "stat_" + programId + "_" 
-				+ startDate + "_" + endDate + "_" 
-				+ getFieldValue('orgunitId') + "_false_4_3";
 	
 	showLoader();
 	jQuery('#listPatientDiv').load('getDataRecords.action',
