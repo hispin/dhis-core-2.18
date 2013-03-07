@@ -54,8 +54,7 @@ public class Facility
     private String name;
 
     // Active = true/false indicates whether the facility is active or not
-    @NotNull
-    private Boolean active;
+    private Boolean active = true;
 
     // URL link to the unique ID API resource for the facility
     private String url;
@@ -79,6 +78,24 @@ public class Facility
 
     public Facility()
     {
+    }
+
+    public Facility( String name )
+    {
+        this.name = name;
+    }
+
+    public Facility( String name, Boolean active )
+    {
+        this.name = name;
+        this.active = active;
+    }
+
+    public Facility( String name, Boolean active, List<Double> coordinates )
+    {
+        this.name = name;
+        this.active = active;
+        this.coordinates = coordinates;
     }
 
     public String getId()

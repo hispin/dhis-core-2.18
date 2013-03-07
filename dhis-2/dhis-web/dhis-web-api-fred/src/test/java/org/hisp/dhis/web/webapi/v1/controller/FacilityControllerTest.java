@@ -27,9 +27,11 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hamcrest.Matchers;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.FredSpringWebTest;
+import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -121,6 +123,20 @@ public class FacilityControllerTest extends FredSpringWebTest
         mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
+            .andExpect( header().string( "ETag", Matchers.notNullValue() ) )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testGetFacilityVerifyPresenceOfETag() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( header().string( "ETag", Matchers.notNullValue() ) )
             .andExpect( status().isOk() );
     }
 
@@ -145,5 +161,34 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( put( "/v1/facilities/abc123" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isNotFound() );
+    }
+
+    @Test
+    public void testPostName() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        Facility facility = new Facility( "FacilityA" );
+
+        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
+            .andExpect( status().isCreated() );
+    }
+
+    @Test
+    public void testPostNameActive() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        Facility facility = new Facility( "FacilityA", false );
+
+        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
+            .andExpect( jsonPath( "$.active" ).value( false ) )
+            .andExpect( status().isCreated() );
     }
 }
