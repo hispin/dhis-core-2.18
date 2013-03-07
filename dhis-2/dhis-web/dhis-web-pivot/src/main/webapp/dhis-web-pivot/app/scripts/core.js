@@ -460,7 +460,7 @@ PT.core.getUtils = function(pt) {
 			cls += config.collapsed ? ' td-collapsed' : '';
 			colSpan = config.colSpan ? 'colspan="' + config.colSpan + '"' : '';
 			rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '"' : '';
-			htmlValue = config.collapsed ? '' : config.htmlValue || config.value || '&nbsp;';
+			htmlValue = config.collapsed ? '&nbsp;' : config.htmlValue || config.value || '&nbsp;';
 			htmlValue = config.type !== 'dimension' ? pt.util.number.pp(htmlValue) : htmlValue;
 			cellPadding = pt.conf.pivot.cellPadding[config.cellPadding] || pt.conf.pivot.cellPadding[options.cellPadding];
 			fontSize = pt.conf.pivot.fontSize[config.fontSize] || pt.conf.pivot.fontSize[options.fontSize];
@@ -1078,24 +1078,31 @@ PT.core.getUtils = function(pt) {
 					}
 
 					// Value objects
-					for (var i = 0, valueItemsRow, valueObjectsRow; i < rowSize; i++) {
+					for (var i = 0, valueItemsRow, valueObjectsRow, map = Ext.clone(xResponse.idValueMap); i < rowSize; i++) {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
-						for (var j = 0, id, value; j < colSize; j++) {
+						for (var j = 0, id, value, htmlValue, empty; j < colSize; j++) {
 							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
-							value = xResponse.idValueMap[id];
+							empty = false;
 
-							value = value ? parseFloat(value) : 0; //todo
-							htmlValue = value || '-'; //todo
+							if (map[id]) {
+								value = parseFloat(map[id]);
+								htmlValue = pt.util.number.roundIf(map[id], 1).toString();
+							}
+							else {
+								value = 0;
+								htmlValue = '&nbsp;';
+								empty = true;
+							}
 
 							valueItemsRow.push(value);
 							valueObjectsRow.push({
 								type: 'value',
 								cls: 'pivot-value',
 								value: value,
-								htmlValue: pt.util.number.roundIf(htmlValue, 1),
-								empty: !!(htmlValue === '-')
+								htmlValue: htmlValue,
+								empty: empty
 							});
 						}
 
@@ -1120,7 +1127,7 @@ PT.core.getUtils = function(pt) {
 								type: 'valueTotal',
 								cls: 'pivot-value-total',
 								value: total,
-								htmlValue: pt.util.number.roundIf(total, 1) || '-'
+								htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(total, 1).toString() : '&nbsp;'
 							});
 						}
 					}
@@ -1162,9 +1169,10 @@ PT.core.getUtils = function(pt) {
 							rowSubTotal = 0;
 							colCount = 0;
 
-							for (var j = 0, item, collapsed = []; j < valueObjects[i].length; j++) {
+							for (var j = 0, item, collapsed = [], empty = []; j < valueObjects[i].length; j++) {
 								item = valueObjects[i][j];
 								rowSubTotal += item.value;
+								empty.push(!!item.empty);
 								collapsed.push(!!item.collapsed);
 								colCount++;
 
@@ -1175,13 +1183,14 @@ PT.core.getUtils = function(pt) {
 
 									row.push({
 										type: 'valueSubtotal',
-										value: rowSubTotal,
-										htmlValue: rowSubTotal === 0 ? '-' : rowSubTotal.toString(),
 										cls: 'pivot-value-subtotal',
+										value: rowSubTotal,
+										htmlValue: Ext.Array.contains(empty, false) ? rowSubTotal.toString() : '&nbsp',
 										collapsed: !Ext.Array.contains(collapsed, false)
 									});
 									colCount = 0;
 									rowSubTotal = 0;
+									empty = [];
 									collapsed = [];
 								}
 							}
@@ -1241,24 +1250,22 @@ PT.core.getUtils = function(pt) {
 
 						// Populate tmp value object arrays
 						for (var i = 0; i < valueObjects[0].length; i++) {
-							for (var j = 0, rowCount = 0, tmpCount = 0, subTotal = 0, empty, item; j < valueObjects.length; j++) {
+							for (var j = 0, rowCount = 0, tmpCount = 0, subTotal = 0, collapsed, item; j < valueObjects.length; j++) {
 								item = valueObjects[j][i];
 								tmpValueObjects[tmpCount++].push(item);
 								subTotal += item.value;
 								rowCount++;
 
 								if (rowCount === 1) {
-									empty = !!tmpAxisObjects[j][0].collapsed;
+									collapsed = !!tmpAxisObjects[j][0].collapsed;
 								}
 
 								if (rowCount === rowUniqueFactor) {
-									subTotal = pt.util.number.roundIf(subTotal, 1);
-
 									tmpValueObjects[tmpCount++].push({
 										type: item.cls === 'pivot-value-subtotal' ? 'valueSubtotal' : 'valueSubtotalTotal',
 										value: subTotal,
-										htmlValue: subTotal,
-										collapsed: empty,
+										htmlValue: pt.util.number.roundIf(subTotal, 1).toString(),
+										collapsed: collapsed,
 										cls: item.cls === 'pivot-value-subtotal' ? 'pivot-value-subtotal-total' : 'pivot-value-subtotal'
 									});
 									rowCount = 0;
@@ -1277,13 +1284,11 @@ PT.core.getUtils = function(pt) {
 							count++;
 
 							if (count === xRowAxis.span[0]) {
-								subTotal = pt.util.number.roundIf(subTotal, 1);
-
 								tmpTotalValueObjects.push({
 									type: 'valueTotalSubgrandtotal',
 									cls: 'pivot-value-total-subgrandtotal',
 									value: subTotal,
-									htmlValue: subTotal,
+									htmlValue: pt.util.number.roundIf(subTotal, 1).toString(),
 									collapsed: !Ext.Array.contains(collapsed, false)
 								});
 
@@ -1345,7 +1350,7 @@ PT.core.getUtils = function(pt) {
 							totalColItems.push({
 								type: 'valueTotal',
 								value: colSum,
-								htmlValue: colSum,
+								htmlValue: pt.util.number.roundIf(colSum, 1).toString(),
 								cls: 'pivot-value-total'
 							});
 						}
@@ -1363,7 +1368,7 @@ PT.core.getUtils = function(pt) {
 									tmp.push({
 										type: 'valueTotalSubgrandtotal',
 										value: subTotal,
-										htmlValue: subTotal,
+										htmlValue: pt.util.number.roundIf(subTotal, 1).toString(),
 										cls: 'pivot-value-total-subgrandtotal'
 									});
 
@@ -1378,11 +1383,11 @@ PT.core.getUtils = function(pt) {
 						// Total col html items
 						for (var i = 0, item; i < totalColItems.length; i++) {
 							item = totalColItems[i];
-							item.htmlValue = pt.util.number.roundIf(item.htmlValue, 1);
+							item.htmlValue = pt.util.number.roundIf(item.htmlValue, 1).toString();
 
 							a.push(pt.util.pivot.getTdHtml(options, {
 								cls: item.cls,
-								htmlValue: pt.util.number.pp(item.htmlValue)
+								htmlValue: item.htmlValue
 							}));
 						}
 					}
@@ -1400,12 +1405,11 @@ PT.core.getUtils = function(pt) {
 					}
 
 					if (xColAxis && xRowAxis) {
-						grandTotalSum = Ext.Array.sum(values) || 0;
-						grandTotalSum = pt.util.number.roundIf(grandTotalSum, 1);
+						grandTotalSum = Ext.Array.sum(values);
 
 						a.push(pt.util.pivot.getTdHtml(options, {
 							cls: 'pivot-value-grandtotal',
-							htmlValue: pt.util.number.pp(grandTotalSum)
+							htmlValue: pt.util.number.roundIf(grandTotalSum, 1).toString()
 						}));
 					}
 
