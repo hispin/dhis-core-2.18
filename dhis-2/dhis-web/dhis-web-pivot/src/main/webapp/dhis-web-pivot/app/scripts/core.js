@@ -1094,7 +1094,7 @@ PT.core.getUtils = function(pt) {
 								type: 'value',
 								cls: 'pivot-value',
 								value: value,
-								htmlValue: htmlValue,
+								htmlValue: pt.util.number.roundIf(htmlValue, 1),
 								empty: !!(htmlValue === '-')
 							});
 						}
