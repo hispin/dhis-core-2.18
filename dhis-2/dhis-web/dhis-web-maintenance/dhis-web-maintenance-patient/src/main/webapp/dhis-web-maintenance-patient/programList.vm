@@ -25,10 +25,24 @@
 					<td onclick="showProgramDetails( $program.id )">$encoder.htmlEncode( $program.displayName )</td>                
 					
 					<td style="text-align:center">
+					  <!-- assign orgunit -->
 					  #if( $security.canUpdate( $program ) )
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_orgunits' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program_to_orgunits' )"></a>					  
 					  #else
 					  <img src="../images/assign-denied.png">
+					  #end
+					  
+					  #if( $security.canUpdate( $program ) )
+					   <!-- assign userrole -->
+					  <a href="showProgramUserroleForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_userroles' )"><img src="images/userrole.png" alt="$i18n.getString( 'assign_program_to_userroles' )"></a>
+					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+					  <a href="programStage.action?id=$program.id" title="$i18n.getString( 'view_program_stages' )"><img src="../images/add_section.png" alt="$i18n.getString( 'view_stage_management' )"></a>
+					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_rule_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'program_validation_rule_management' )"></a>					  
+					  #else
+					  <img src="images/userrole-defined.png">
+					  <img src="../images/edit-denied.png">
+					  <img src="images/programstage-denied.png">
+					  <img src="../images/assign_b-denied.png">
 					  #end
 					  
 					  #if ( $security.canManage( $program ) )
@@ -38,21 +52,9 @@
 					  #end
 					  
 					  #if( $security.canUpdate( $program ) )
-					  <a href="showProgramUserroleForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_userroles' )"><img src="images/userrole.png" alt="$i18n.getString( 'assign_program_to_userroles' )"></a>
-					  #else
-					  <img src="images/userrole-defined.png">
-					  #end
-					  
-					  #if( $security.canUpdate( $program ) )
-					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_rule_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'program_validation_rule_management' )"></a>					  
-					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					  <a href="javascript:translate( 'Program', '$program.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-					  <a href="programStage.action?id=$program.id" title="$i18n.getString( 'view_program_stages' )"><img src="../images/add_section.png" alt="$i18n.getString( 'view_stage_management' )"></a>
 					  #else
-						<img src="../images/assign_b-denied.png">
-						<img src="../images/edit-denied.png">
 						<img src="../images/i18n-denied.png">
-						<img src="images/programstage-denied.png">
 					  #end
 					  
 					  #if( $security.canDelete( $program ) )
