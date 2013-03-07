@@ -76,7 +76,7 @@
 				<tr>
 					<td>$attributeValue.patientAttribute.displayName</td>
 					<td>
-						#if($attributeValue.patientAttribute.valueType=='YES/NO')
+						#if($attributeValue.patientAttribute.valueType=='bool')
 							#if($attributeValue.value)
 								$i18n.getString("yes")
 							#else
