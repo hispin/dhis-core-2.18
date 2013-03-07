@@ -145,16 +145,16 @@ public class DefaultExpressionService
     public Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
         Map<String, Double> constantMap, Integer days )
     {
-        if ( indicator == null || indicator.getNumerator() == null || indicator.getDenominator() == null )
+        if ( indicator == null || indicator.getExplodedNumeratorFallback() == null || indicator.getExplodedDenominatorFallback() == null )
         {
             return null;
         }
         
-        final double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(), valueMap, constantMap, days, false ) );
+        final double denominatorValue = calculateExpression( generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, days, false ) );
         
         if ( !isEqual( denominatorValue, 0d ) )
         {
-            final double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), valueMap, constantMap, days, false ) );
+            final double numeratorValue = calculateExpression( generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, days, false ) );
             
             final double annualizationFactor = period != null ? DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() ) : 1d;
             final double factor = indicator.getIndicatorType().getFactor();

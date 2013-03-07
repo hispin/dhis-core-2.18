@@ -106,7 +106,7 @@ public class DefaultAnalyticsService
     
     private static final String VALUE_HEADER_NAME = "Value";
     private static final int PERCENT = 100;
-    private static final int MAX_QUERIES = 8; //TODO increase?
+    private static final int MAX_QUERIES = 8;
     
     //TODO completeness on time
     //TODO make sure data x dims are successive
@@ -177,7 +177,9 @@ public class DefaultAnalyticsService
         {   
             int indicatorIndex = params.getIndicatorDimensionIndex();
             List<Indicator> indicators = asTypedList( params.getIndicators() );
-                  
+            
+            expressionService.explodeAndSubstituteExpressions( indicators, null );
+            
             DataQueryParams dataSourceParams = new DataQueryParams( params );
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
             dataSourceParams.removeDimension( DATASET_DIM_ID );
