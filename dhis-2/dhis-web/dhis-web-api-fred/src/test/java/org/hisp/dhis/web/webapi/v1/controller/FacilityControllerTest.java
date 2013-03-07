@@ -27,13 +27,15 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.FredSpringWebTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -41,6 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class FacilityControllerTest extends FredSpringWebTest
 {
+    @Autowired
+    private IdentifiableObjectManager manager;
+
     @Test
     public void testRedirectedToV1() throws Exception
     {
@@ -51,11 +56,83 @@ public class FacilityControllerTest extends FredSpringWebTest
     }
 
     @Test
-    public void testGetFacilities() throws Exception
+    public void testGetFacilitiesWithALL() throws Exception
     {
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.facilities" ).isArray() )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testGetFacilitiesWithModuleRights() throws Exception
+    {
+        MockHttpSession session = getSession( "M_dhis-web-api-fred" );
+
+        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.facilities" ).isArray() )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testGetFacilitiesNoAccess() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "DUMMY" );
+
+        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isForbidden() );
+    }
+
+    @Test
+    public void testGetFacilitiesWithContent() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.facilities" ).isArray() )
+            .andExpect( jsonPath( "$.facilities[0].name" ).value( "OrgUnitA" ) )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testGetFacility404() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( get( "/v1/facilities/abc123" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isNotFound() );
+    }
+
+    @Test
+    public void testGetFacilityUid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testGetFacilityUuid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( get( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
             .andExpect( status().isOk() );
     }
 }

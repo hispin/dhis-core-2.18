@@ -27,6 +27,7 @@ package org.hisp.dhis.web;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -125,6 +127,20 @@ public abstract class FredSpringWebTest
     protected Object getBean( String beanId )
     {
         return wac.getBean( beanId );
+    }
+
+    protected OrganisationUnit createOrganisationUnit( char identifier )
+    {
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setAutoFields();
+        organisationUnit.setName( "OrgUnit" + identifier );
+        organisationUnit.setShortName( organisationUnit.getName() );
+        organisationUnit.setCreated( new Date() );
+        organisationUnit.setLastUpdated( organisationUnit.getCreated() );
+        organisationUnit.setActive( true );
+        organisationUnit.setLevel( 1 );
+
+        return organisationUnit;
     }
 
     // -------------------------------------------------------------------------

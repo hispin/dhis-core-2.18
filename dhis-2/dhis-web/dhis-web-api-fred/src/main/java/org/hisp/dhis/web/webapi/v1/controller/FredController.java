@@ -43,8 +43,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller(value = "fred-controller-" + FredController.PREFIX)
-@RequestMapping( value = FredController.PREFIX )
-@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
+@RequestMapping(value = FredController.PREFIX)
+@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
 public class FredController
 {
     public static final String PREFIX = "v1";

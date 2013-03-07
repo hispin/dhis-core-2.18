@@ -65,7 +65,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -357,7 +359,7 @@ public class FacilityController
 
         if ( organisationUnit == null )
         {
-            throw new HttpServerErrorException( HttpStatus.NOT_FOUND );
+            throw new HttpClientErrorException( HttpStatus.NOT_FOUND );
         }
 
         List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
@@ -583,7 +585,8 @@ public class FacilityController
 
             if ( organisationUnit == null )
             {
-                throw new HttpServerErrorException( HttpStatus.NOT_FOUND );
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
+                    "Facility with that ID not found" ), headers, HttpStatus.NOT_FOUND );
             }
 
             checkIdentifier( facility, organisationUnit.getUid() );
@@ -674,8 +677,14 @@ public class FacilityController
     // EXCEPTION HANDLERS
     //--------------------------------------------------------------------------
 
+    @ExceptionHandler( { HttpClientErrorException.class, HttpServerErrorException.class } )
+    public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex )
+    {
+        return new ResponseEntity<String>( ex.getMessage(), ex.getStatusCode() );
+    }
+
     @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
-    public ResponseEntity<String> exceptionHandler( Exception ex )
+    public ResponseEntity<String> dhisExceptionHandler( Exception ex )
     {
         return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
     }
