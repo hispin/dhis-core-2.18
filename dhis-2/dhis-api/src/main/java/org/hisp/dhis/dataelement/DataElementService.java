@@ -30,8 +30,8 @@ package org.hisp.dhis.dataelement;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.period.PeriodType;
@@ -286,7 +286,13 @@ public interface DataElementService
 
     int getDataElementCountByName( String name );
 
-    Map<String, Set<String>> getDataElementCategoryOptionCombos();
+    /**
+     * Returns a mapping of data element uid and associated category option combo
+     * uids.
+     * 
+     * @return a ListMap.
+     */
+    ListMap<String, String> getDataElementCategoryOptionComboMap();
     
     Map<String, Integer> getDataElementUidIdMap();
 

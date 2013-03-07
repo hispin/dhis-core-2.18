@@ -46,6 +46,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -448,7 +449,7 @@ public class DefaultExpressionService
                 indicator.setExplodedDenominator( substituteExpression( indicator.getDenominator(), days ) );
             }
 
-            final Map<String, Set<String>> dataElementMap = dataElementService.getDataElementCategoryOptionCombos();
+            final ListMap<String, String> dataElementMap = dataElementService.getDataElementCategoryOptionComboMap();
             
             for ( Indicator indicator : indicators )
             {
@@ -458,7 +459,7 @@ public class DefaultExpressionService
         }
     }
     
-    private String explodeExpression( String expression, Map<String, Set<String>> dataElementMap )
+    private String explodeExpression( String expression, ListMap<String, String> dataElementMap )
     {
         if ( expression == null || expression.isEmpty() )
         {
