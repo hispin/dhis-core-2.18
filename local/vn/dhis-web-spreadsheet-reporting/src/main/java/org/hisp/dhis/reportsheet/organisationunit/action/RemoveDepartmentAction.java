@@ -27,6 +27,7 @@ package org.hisp.dhis.reportsheet.organisationunit.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -37,19 +38,12 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class RenameOrganisationUnitAction
+public class RemoveDepartmentAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -58,8 +52,15 @@ public class RenameOrganisationUnitAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
 
     private String id;
@@ -69,12 +70,9 @@ public class RenameOrganisationUnitAction
         this.id = id;
     }
 
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
     private String message;
 
@@ -82,7 +80,7 @@ public class RenameOrganisationUnitAction
     {
         return message;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -91,27 +89,26 @@ public class RenameOrganisationUnitAction
         throws Exception
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnitByUuid( id );
-
+        
         if ( unit == null )
         {
             unit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
         }
         
-        if ( unit == null )
+        try
         {
-            message = i18n.getString( "org_unit_not_available" );
-
-            return ERROR;
+            organisationUnitService.deleteOrganisationUnit( unit );
         }
-
-        // ---------------------------------------------------------------------
-        // Update organisation unit
-        // ---------------------------------------------------------------------
-
-        unit.setName( name );
-
-        organisationUnitService.updateOrganisationUnit( unit );
-
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+                
+                return ERROR;
+            }
+        }        
+        
         return SUCCESS;
     }
 }
