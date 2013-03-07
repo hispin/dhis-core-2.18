@@ -90,7 +90,6 @@ public class ReportTable
     private static final long serialVersionUID = 5618655666320890565L;
     
     public static final String DATA_X_DIM_ID = "dx"; // IN, DE, DS
-    public static final String CATEGORYOPTIONCOMBO_DIM_ID = "coc";
     public static final String PERIOD_DIM_ID = "pe";
     public static final String ORGUNIT_DIM_ID = "ou";
     
