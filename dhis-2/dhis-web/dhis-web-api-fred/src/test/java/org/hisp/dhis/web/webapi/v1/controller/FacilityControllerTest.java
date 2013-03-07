@@ -137,4 +137,13 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
             .andExpect( status().isOk() );
     }
+
+    @Test
+    public void testPutFacility404() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/abc123" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isNotFound() );
+    }
 }

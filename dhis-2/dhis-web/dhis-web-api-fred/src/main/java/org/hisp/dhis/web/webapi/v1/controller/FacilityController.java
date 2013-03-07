@@ -549,6 +549,23 @@ public class FacilityController
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
+        OrganisationUnit organisationUnit;
+
+        if ( id.length() == 11 )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        }
+        else
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
+        }
+
+        if ( organisationUnit == null )
+        {
+            return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
+                "Facility with that ID not found" ), headers, HttpStatus.NOT_FOUND );
+        }
+
         // getId == null is not legal, but will be catched by bean validation
         if ( facility.getId() != null )
         {
@@ -572,23 +589,6 @@ public class FacilityController
         if ( constraintViolations.isEmpty() )
         {
             OrganisationUnit organisationUnitUpdate = conversionService.convert( facility, OrganisationUnit.class );
-            OrganisationUnit organisationUnit;
-
-            if ( id.length() == 11 )
-            {
-                organisationUnit = organisationUnitService.getOrganisationUnit( id );
-            }
-            else
-            {
-                organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
-            }
-
-            if ( organisationUnit == null )
-            {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
-                    "Facility with that ID not found" ), headers, HttpStatus.NOT_FOUND );
-            }
-
             checkIdentifier( facility, organisationUnit.getUid() );
 
             if ( request.getHeader( "If-Match" ) != null )
