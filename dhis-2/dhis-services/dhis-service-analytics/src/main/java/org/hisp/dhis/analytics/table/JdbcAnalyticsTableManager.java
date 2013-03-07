@@ -113,7 +113,9 @@ public class JdbcAnalyticsTableManager
             Date startDate = period.getStartDate();
             Date endDate = period.getEndDate();
             
-            populateTable( table, startDate, endDate, "cast(dv.value as double precision)", "int", "dv.value != ''" );
+            String intClause = "dv.value != '' and dv.value != 'true' and dv.value != 'false' and dv.value not like '%-%'";
+            
+            populateTable( table, startDate, endDate, "cast(dv.value as double precision)", "int", intClause );
             
             populateTable( table, startDate, endDate, "1" , "bool", "dv.value = 'true'" );
     
@@ -170,10 +172,10 @@ public class JdbcAnalyticsTableManager
         List<String[]> columns = new ArrayList<String[]>();
 
         Collection<DataElementGroupSet> dataElementGroupSets =
-            dataElementService.getCompulsoryDataElementGroupSets();
+            dataElementService.getAllDataElementGroupSets();
         
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
-            organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets();
+            organisationUnitGroupService.getAllOrganisationUnitGroupSets();
         
         Collection<OrganisationUnitLevel> levels =
             organisationUnitService.getOrganisationUnitLevels();
