@@ -102,8 +102,8 @@
 				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableDataSetsList' );"/><br/>
 				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedDataSetsList' );"/>
 			</td>			
-			<td>$organisationUnitGroup.dataSets.size()
-				<select id="selectedDataSetsList" name="selectedDataSetsList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;">
+			<td>
+				<select id="selectedDataSetsList" name="selectedDataSetsList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 24px;">
 				#foreach( $dataSet in $organisationUnitGroup.dataSets )
 					<option value="$dataSet.id">$!encoder.htmlEncode( $dataSet.displayName )</option>
 				#end
