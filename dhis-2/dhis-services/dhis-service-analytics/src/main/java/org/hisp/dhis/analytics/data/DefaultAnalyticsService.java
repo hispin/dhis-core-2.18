@@ -93,6 +93,7 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
@@ -145,11 +146,8 @@ public class DefaultAnalyticsService
     // Implementation
     // -------------------------------------------------------------------------
 
-    public Grid getAggregatedDataValues( DataQueryParams params )
-        throws IllegalQueryException, Exception
+    public Grid getAggregatedDataValues( DataQueryParams params )        
     {
-        log.info( "Query: " + params );
-        
         queryPlanner.validate( params );
         
         params.conform();
@@ -326,19 +324,16 @@ public class DefaultAnalyticsService
     }
     
     public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params )
-        throws IllegalQueryException, Exception
     {
         return getAggregatedValueMap( params, ANALYTICS_TABLE_NAME );
     }
     
     public Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params )
-        throws IllegalQueryException, Exception
     {
         return getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME );
     }
 
     private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
-        throws IllegalQueryException, Exception
     {
         return getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME );
     }
@@ -348,8 +343,7 @@ public class DefaultAnalyticsService
      * dimension key is a concatenation of the identifiers in for the dimensions
      * separated by "-".
      */
-    private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )
-        throws IllegalQueryException, Exception
+    private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )        
     {
         queryPlanner.validate( params );
         
@@ -372,11 +366,21 @@ public class DefaultAnalyticsService
         
         for ( Future<Map<String, Double>> future : futures )
         {
-            Map<String, Double> taskValues = future.get();
-            
-            if ( taskValues != null )
+            try
             {
-                map.putAll( taskValues );
+                Map<String, Double> taskValues = future.get();
+                
+                if ( taskValues != null )
+                {
+                    map.putAll( taskValues );
+                }
+            }
+            catch ( Exception ex )
+            {
+                log.error( DebugUtils.getStackTrace( ex ) );
+                log.error( DebugUtils.getStackTrace( ex.getCause() ) );
+                
+                throw new RuntimeException( "Error during execution of aggregation query task", ex );
             }
         }
         
