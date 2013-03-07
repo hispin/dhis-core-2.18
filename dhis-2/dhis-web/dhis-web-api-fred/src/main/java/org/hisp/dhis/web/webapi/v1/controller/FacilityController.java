@@ -386,12 +386,23 @@ public class FacilityController
 
     private void setAccessRights( Model model )
     {
-        Set<String> authorities = currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities();
+        // TODO fix this, a proper mock currentuserservice should be implemented
+        if ( currentUserService != null && currentUserService.getCurrentUser() != null )
+        {
+            Set<String> authorities = currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities();
 
-        model.addAttribute( "canCreate", authorities.contains( "F_FRED_CREATE" ) || currentUserService.currentUserIsSuper() );
-        model.addAttribute( "canRead", authorities.contains( "M-dhis-web-api-fred" ) || currentUserService.currentUserIsSuper() );
-        model.addAttribute( "canUpdate", authorities.contains( "F_FRED_UPDATE" ) || currentUserService.currentUserIsSuper() );
-        model.addAttribute( "canDelete", authorities.contains( "F_FRED_DELETE" ) || currentUserService.currentUserIsSuper() );
+            model.addAttribute( "canCreate", authorities.contains( "F_FRED_CREATE" ) || currentUserService.currentUserIsSuper() );
+            model.addAttribute( "canRead", authorities.contains( "M-dhis-web-api-fred" ) || currentUserService.currentUserIsSuper() );
+            model.addAttribute( "canUpdate", authorities.contains( "F_FRED_UPDATE" ) || currentUserService.currentUserIsSuper() );
+            model.addAttribute( "canDelete", authorities.contains( "F_FRED_DELETE" ) || currentUserService.currentUserIsSuper() );
+        }
+        else
+        {
+            model.addAttribute( "canCreate", false );
+            model.addAttribute( "canRead", false );
+            model.addAttribute( "canUpdate", false );
+            model.addAttribute( "canDelete", false );
+        }
     }
 
     private void addHierarchyPropertyToFacility( List<OrganisationUnitLevel> organisationUnitLevels, OrganisationUnit organisationUnit, Facility facility )

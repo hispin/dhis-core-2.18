@@ -30,6 +30,14 @@ package org.hisp.dhis.web;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -39,6 +47,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -50,17 +60,55 @@ import java.lang.reflect.Method;
 )
 @WebAppConfiguration
 @Transactional
-public class FredSpringWebTest
+public abstract class FredSpringWebTest extends DhisConvenienceTest
 {
+    @Autowired
+    protected FilterChainProxy filterChainProxy;
+
     @Autowired
     protected WebApplicationContext wac;
 
     protected MockMvc mvc;
 
+    public MockHttpSession getSession( String... authorities )
+    {
+        SecurityContextHolder.getContext().setAuthentication( getPrincipal( authorities ) );
+        MockHttpSession session = new MockHttpSession();
+
+        session.setAttribute(
+            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+            SecurityContextHolder.getContext() );
+
+        return session;
+    }
+
+    public UsernamePasswordAuthenticationToken getPrincipal( String... authorities )
+    {
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+
+        for ( String authority : authorities )
+        {
+            grantedAuthorities.add( new SimpleGrantedAuthority( authority ) );
+        }
+
+        UserDetails userDetails = new User( "admin", "district", true, true, true, true, grantedAuthorities );
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            userDetails,
+            userDetails.getPassword(),
+            userDetails.getAuthorities()
+        );
+
+        return authenticationToken;
+    }
+
     @Before
     public void setup() throws Exception
     {
-        mvc = MockMvcBuilders.webAppContextSetup( wac ).build();
+        mvc = MockMvcBuilders.webAppContextSetup( wac )
+            .addFilter( filterChainProxy )
+            .build();
+
         executeStartupRoutines();
 
         setUpTest();
