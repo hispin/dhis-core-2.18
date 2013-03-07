@@ -78,9 +78,6 @@ public class FacilityControllerTest extends FredSpringWebTest
     @Test
     public void testGetFacilitiesNoAccess() throws Exception
     {
-        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
-        manager.save( organisationUnit );
-
         MockHttpSession session = getSession( "DUMMY" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
