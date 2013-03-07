@@ -55,12 +55,12 @@ public class FredSpringWebTest
     @Autowired
     protected WebApplicationContext wac;
 
-    protected MockMvc mockMvc;
+    protected MockMvc mvc;
 
     @Before
-    public final void setup() throws Exception
+    public void setup() throws Exception
     {
-        mockMvc = MockMvcBuilders.webAppContextSetup( wac ).build();
+        mvc = MockMvcBuilders.webAppContextSetup( wac ).build();
         executeStartupRoutines();
 
         setUpTest();
