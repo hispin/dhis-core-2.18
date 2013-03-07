@@ -316,6 +316,10 @@ public class FacilityController
             }
         }
 
+        facilities.getMeta().put( "limit", limitValue );
+        facilities.getMeta().put( "offset", offset );
+        facilities.getMeta().put( "total", organisationUnitService.getNumberOfOrganisationUnits() );
+
         Collections.sort( allOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
         List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
