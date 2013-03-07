@@ -132,4 +132,7 @@
 		disable('addPatientBtn');
 		disable('advancedSearchBtn');
 	#end
+	setFieldValue('startDueDate','');
+	setFieldValue('endDueDate','');
+	
 </script>

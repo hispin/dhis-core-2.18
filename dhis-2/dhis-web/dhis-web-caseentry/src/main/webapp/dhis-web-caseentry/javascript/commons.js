@@ -191,18 +191,20 @@ function validateAdvancedSearch()
 	var flag = true;
 	var dateOperator = '';
 	
-	if (getFieldValue('searchByProgramStage') == "false" 
-		|| ( getFieldValue('searchByProgramStage') == "true"  
-			&& jQuery( '#advancedSearchTB tr' ).length > 1) ){
-		jQuery("#searchDiv :input").each( function( i, item )
-		{
-			var elementName = $(this).attr('name');
-			if( elementName=='searchText' && jQuery( item ).val() == '')
+	if( getFieldValue('startDueDate')=='' && getFieldValue('endDueDate')=='' ){
+		if (getFieldValue('searchByProgramStage') == "false" 
+			|| ( getFieldValue('searchByProgramStage') == "true"  
+				&& jQuery( '#advancedSearchTB tr' ).length > 1) ){
+			jQuery("#searchDiv :input").each( function( i, item )
 			{
-				showWarningMessage( i18n_specify_search_criteria );
-				flag = false;
-			}
-		});
+				var elementName = $(this).attr('name');
+				if( elementName=='searchText' && jQuery( item ).val() == '')
+				{
+					showWarningMessage( i18n_specify_search_criteria );
+					flag = false;
+				}
+			});
+		}
 	}
 	
 	if(flag){
