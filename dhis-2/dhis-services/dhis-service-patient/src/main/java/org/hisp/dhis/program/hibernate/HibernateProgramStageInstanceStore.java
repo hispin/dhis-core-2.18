@@ -971,7 +971,7 @@ public class HibernateProgramStageInstanceStore
         {
             sql += "LIMIT " + limit;
         }
-        System.out.println( "\n\n === \n " + sql );
+        
         return sql;
     }
 
