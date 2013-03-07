@@ -58,7 +58,7 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
     public Facility convert( OrganisationUnit organisationUnit )
     {
         Facility facility = new Facility();
-        facility.setId( organisationUnit.getUuid() );
+        facility.setUuid( organisationUnit.getUuid() );
         facility.setName( organisationUnit.getDisplayName() );
         facility.setActive( organisationUnit.isActive() );
         facility.setCreatedAt( organisationUnit.getCreated() );
@@ -66,7 +66,7 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
 
         try
         {
-            facility.setUrl( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toString() );
+            facility.setHref( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toString() );
         }
         catch ( IllegalStateException ignored )
         {
