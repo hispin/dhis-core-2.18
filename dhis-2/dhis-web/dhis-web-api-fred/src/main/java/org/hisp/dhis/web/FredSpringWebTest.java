@@ -60,7 +60,7 @@ import java.util.List;
 )
 @WebAppConfiguration
 @Transactional
-public abstract class FredSpringWebTest extends DhisConvenienceTest
+public abstract class FredSpringWebTest
 {
     @Autowired
     protected FilterChainProxy filterChainProxy;
