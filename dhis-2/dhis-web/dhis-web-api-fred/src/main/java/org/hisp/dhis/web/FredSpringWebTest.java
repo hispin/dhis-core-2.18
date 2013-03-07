@@ -27,7 +27,9 @@ package org.hisp.dhis.web;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.web.webapi.v1.utils.ObjectMapperFactoryBean;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -71,6 +75,8 @@ public abstract class FredSpringWebTest
     protected WebApplicationContext wac;
 
     protected MockMvc mvc;
+
+    protected ObjectMapper objectMapper;
 
     public MockHttpSession getSession( String... authorities )
     {
@@ -107,8 +113,14 @@ public abstract class FredSpringWebTest
     @Before
     public void setup() throws Exception
     {
+        objectMapper = new ObjectMapperFactoryBean().getObject();
+
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding( "UTF-8" );
+        characterEncodingFilter.setForceEncoding( true );
+
         mvc = MockMvcBuilders.webAppContextSetup( wac )
-            .addFilter( filterChainProxy )
+            .addFilters( characterEncodingFilter, new ShallowEtagHeaderFilter(), filterChainProxy )
             .build();
 
         executeStartupRoutines();
