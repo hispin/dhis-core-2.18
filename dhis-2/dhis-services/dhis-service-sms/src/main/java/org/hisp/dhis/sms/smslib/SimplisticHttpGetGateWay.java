@@ -28,6 +28,7 @@ package org.hisp.dhis.sms.smslib;
  */
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +59,9 @@ import org.springframework.web.client.RestTemplate;
  * </ul>
  * 
  * An example usage with bulksms.com would be this template:<br/>
- * http://bulksms.vsms.net:5567/eapi/submission/send_sms/2/2.0?username={username}&amp;password={password}&amp;message={message}&amp;msisdn={recipient}<br/>
+ * http://bulksms.vsms.net:5567/eapi/submission/send_sms/2/2.0?username={
+ * username
+ * }&amp;password={password}&amp;message={message}&amp;msisdn={recipient}<br/>
  * With the following parameters provided:
  * <ul>
  * <li>username
@@ -115,7 +118,7 @@ public class SimplisticHttpGetGateWay
 
         Map<String, String> requestParameters = new HashMap<String, String>( parameters );
 
-        requestParameters.put( MESSAGE, msg.getText() );
+        requestParameters.put( MESSAGE, URLEncoder.encode( msg.getText(), "UTF-8" ) );
         requestParameters.put( RECIPIENT, msg.getRecipient() );
         String sender = msg.getFrom();
         if ( sender != null )
