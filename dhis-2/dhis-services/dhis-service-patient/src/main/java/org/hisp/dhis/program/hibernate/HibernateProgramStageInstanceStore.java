@@ -932,8 +932,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                         + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
-                        + deSum + " ) ";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
+                        + " ) ";
                 }
                 sql += "FROM programstageinstance psi_1 ";
                 sql += "        JOIN patientdatavalue pdv_1 ";
@@ -970,7 +971,7 @@ public class HibernateProgramStageInstanceStore
         {
             sql += "LIMIT " + limit;
         }
-
+        System.out.println( "\n\n === \n " + sql );
         return sql;
     }
 
@@ -1014,8 +1015,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                         + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
-                        + deSum + " ) ";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
+                        + " ) ";
                 }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
@@ -1090,8 +1092,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                         + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
-                        + deSum + " ) ";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
+                        + " ) ";
                 }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
@@ -1153,7 +1156,8 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                     + statementBuilder.getDoubleColumnType() + " ))";
-                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid=" + deSum
+                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                    + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
                     + " ) ";
             }
             sql += "FROM ";
@@ -1257,7 +1261,8 @@ public class HibernateProgramStageInstanceStore
                     {
                         sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                             + statementBuilder.getDoubleColumnType() + " ))";
-                        sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
+                        sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                            + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid="
                             + deSum + " ) ";
                     }
                     sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
@@ -1337,7 +1342,8 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                     + statementBuilder.getDoubleColumnType() + " ))";
-                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid=" + deSum
+                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                    + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
                     + " ) ";
             }
             sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
@@ -1399,8 +1405,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                         + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
-                        + deSum + " ) ";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
+                        + " ) ";
                 }
                 sql += "FROM patientdatavalue pdv_1 ";
                 sql += "        inner join programstageinstance psi_1 ";
@@ -1462,7 +1469,8 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
                     + statementBuilder.getDoubleColumnType() + " ))";
-                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid=" + deSum
+                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                    + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
                     + " ) ";
             }
 
@@ -1611,8 +1619,8 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += "( SELECT " + aggregateType + "( cast( value as " + statementBuilder.getDoubleColumnType()
                         + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and dataelementid="
-                        + deSum + " ";
+                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
+                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum + " ";
                 }
 
                 sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
@@ -1798,21 +1806,28 @@ public class HibernateProgramStageInstanceStore
         {
             grid.addRow();
 
-            int total = 0;
+            double total = 0;
             for ( int i = 1; i <= cols; i++ )
             {
-                // values
+                // meta column
                 if ( rs.getMetaData().getColumnType( i ) == Types.VARCHAR )
                 {
                     grid.addValue( rs.getObject( i ) );
                 }
-                // meta column
-                else
+                // values
+                else if ( rs.getMetaData().getColumnType( i ) == Types.INTEGER )
                 {
                     Integer value = rs.getInt( i );
                     sumRow[i] += value;
                     grid.addValue( value );
-                    total += rs.getInt( i );
+                    total += value;
+                }
+                else
+                {
+                    double value = rs.getDouble( i );
+                    sumRow[i] += value;
+                    grid.addValue( value );
+                    total += value;
                 }
             }
 
@@ -1847,7 +1862,7 @@ public class HibernateProgramStageInstanceStore
         {
             int cols = rowSet.getMetaData().getColumnCount();
             int rows = 0;
-            int total = 0;
+            double total = 0;
             Map<Integer, List<Object>> columnValues = new HashMap<Integer, List<Object>>();
             int index = 2;
 
@@ -1868,8 +1883,17 @@ public class HibernateProgramStageInstanceStore
                     // Total value of the column
                     if ( rowSet.getMetaData().getColumnType( i ) != Types.VARCHAR )
                     {
-                        total += rowSet.getInt( i );
+                        // values
+                        if ( rowSet.getMetaData().getColumnType( i ) == Types.INTEGER )
+                        {
+                            total += rowSet.getInt( i );
+                        }
+                        else
+                        {
+                            total += rowSet.getDouble( i );
+                        }
                     }
+
                 }
 
                 // Add total value of the column
@@ -1921,7 +1945,7 @@ public class HibernateProgramStageInstanceStore
                     {
                         if ( rowSet.getMetaData().getColumnType( j + 2 ) != Types.VARCHAR )
                         {
-                            total += (Long) columnValues.get( i ).get( j );
+                            total += (Double) columnValues.get( i ).get( j );
                         }
                     }
                     column.add( total );
