@@ -118,7 +118,7 @@ public class SimplisticHttpGetGateWay
 
         Map<String, String> requestParameters = new HashMap<String, String>( parameters );
 
-        requestParameters.put( MESSAGE, URLEncoder.encode( msg.getText(), "UTF-8" ) );
+        requestParameters.put( MESSAGE, msg.getText() );
         requestParameters.put( RECIPIENT, msg.getRecipient() );
         String sender = msg.getFrom();
         if ( sender != null )
@@ -128,9 +128,8 @@ public class SimplisticHttpGetGateWay
         }
         try
         {
-            ResponseEntity<String> response = restTemplate.getForEntity( urlTemplate, String.class, requestParameters );
-
-            if ( response.getStatusCode().series() != HttpStatus.Series.SUCCESSFUL )
+            ResponseEntity<String> response = restTemplate.getForEntity( urlTemplate, String.class, requestParameters, "UTF-8" );
+            if ( response.getStatusCode().series() != HttpStatus.Series.SUCCESSFUL )    
             {
                 Logger.getInstance().logWarn( "Couldn't send message, got response " + response, null, getGatewayId() );
                 return false;
