@@ -2212,21 +2212,39 @@ Ext.onReady( function() {
 			};
 
 			validateSpecialCases = function(settings) {
-				var dimConf = pt.conf.finals.dimension;
+				var dimConf = pt.conf.finals.dimension,
+					settingsNames = [],
+					settingsObjects = [].concat(Ext.clone(settings.col || []), Ext.clone(settings.row || []), Ext.clone(settings.filter || []));
 
-				// indicator as filter
+				// Settings names
+				for (var i = 0; i < settingsObjects.length; i++) {
+					settingsNames.push(settingsObjects[i].name);
+				}
+
+				// Indicator as filter
 				if (settings.filter && pt.store.indicatorSelected.data.length) {
 					for (var i = 0; i < settings.filter.length; i++) {
 						if (settings.filter[i].name === dimConf.data.paramName) {
-							alert('Indicators cannot be specified as filter');
+							alert('Indicators cannot be specified as filter'); //i18n
 							return;
 						}
 					}
 				}
 
+				// Categories as filter
 				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById(dimConf.category.paramName)) {
 					alert('Categories cannot be specified as filter');
 					return;
+				}
+
+				// Degs and datasets in the same query
+				if (Ext.Array.contains(settingsNames, dimConf.data.paramName) && pt.store.dataSetSelected.data.length) {
+					for (var i = 0; i < pt.init.degs.length; i++) {
+						if (Ext.Array.contains(settingsNames, pt.init.degs[i].id)) {
+							alert('Data element group sets cannot be specified together with data sets');
+							return;
+						}
+					}
 				}
 
 				return true;

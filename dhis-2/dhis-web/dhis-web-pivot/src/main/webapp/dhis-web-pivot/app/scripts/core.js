@@ -1612,20 +1612,21 @@ PT.core.getAPI = function(pt) {
 				dimConf = pt.conf.finals.dimension;
 
 			if (!(col || row)) {
-				alert('No column or row dimensions selected'); //i18n
+				alert('At least one dimension must be specified as row or column'); //i18n
 				return;
 			}
 
+			// Selected dimensions
 			for (var i = 0; i < a.length; i++) {
 				if (a[i]) {
 					names.push(a[i].name);
 				}
 			}
 
-			if (!Ext.Array.contains(names, dimConf.data.paramName)) {
-				alert('At least one indicator, data element or dataset must be specified as column, row or filter');
-				return;
-			}
+			//if (!Ext.Array.contains(names, dimConf.data.paramName)) {
+				//alert('At least one indicator, data element or dataset must be specified as column, row or filter');
+				//return;
+			//}
 
 			if (!Ext.Array.contains(names, dimConf.period.paramName)) {
 				alert('At least one period must be specified as column, row or filter');
