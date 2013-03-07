@@ -497,7 +497,7 @@ public class FacilityController
         return builder.toString();
     }
 
-    protected void checkUidIdentifier( Facility facility, String id ) throws IOException
+    protected void checkIdentifier( Facility facility, String id ) throws IOException
     {
         Identifier identifier = new Identifier();
 
@@ -552,7 +552,6 @@ public class FacilityController
             }
         }
 
-        checkUidIdentifier( facility, id );
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Update.class );
 
         String json = ValidationUtils.constraintViolationsToJson( constraintViolations );
@@ -560,7 +559,23 @@ public class FacilityController
         if ( constraintViolations.isEmpty() )
         {
             OrganisationUnit organisationUnitUpdate = conversionService.convert( facility, OrganisationUnit.class );
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUpdate.getUid() );
+            OrganisationUnit organisationUnit;
+
+            if ( id.length() == 11 )
+            {
+                organisationUnit = organisationUnitService.getOrganisationUnit( id );
+            }
+            else
+            {
+                organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
+            }
+
+            if ( organisationUnit == null )
+            {
+                throw new HttpServerErrorException( HttpStatus.NOT_FOUND );
+            }
+
+            checkIdentifier( facility, organisationUnit.getUid() );
 
             if ( request.getHeader( "If-Match" ) != null )
             {
