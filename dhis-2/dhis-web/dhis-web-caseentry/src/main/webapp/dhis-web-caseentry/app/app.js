@@ -1203,6 +1203,7 @@ Ext.onReady( function() {
 								Ext.getCmp('programCombobox').setValue( f.programId );
 								
 								// Program-Stage
+								
 								TR.store.programStage.removeAll();
 								TR.store.programStage.add({'id': f.programStageId, 'name': f.programStageName});
 								
@@ -1298,18 +1299,38 @@ Ext.onReady( function() {
 									}
 								}
 								
+								TR.util.positionFilter.convert( f.position );
+								
 								Ext.getCmp('completedEventsOpt').setValue(f.useCompletedEvents);
 								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
 								Ext.getCmp('limitOption').setValue( f.limitRecords );
-								TR.util.positionFilter.convert( f.position );
-								Ext.getCmp('dataElementGroupByCbx').setValue( f.deGroupBy );
-								Ext.getCmp('deSumCbx').setValue( f.deSum );
-								Ext.getCmp('aggregateType').setValue( f.aggregateType );
 								Ext.getCmp('levelCombobox').setValue( f.level );
-													
-								TR.store.aggregateDataelement.add(
-									{'value': f.deSumId,'name': f.deSumName}
-								);				
+								Ext.getCmp('aggregateType').setValue( f.aggregateType );
+								
+								if(f.aggregateType=='sum' ){
+									Ext.getCmp('aggregateType').items.items[1].setValue(true);
+								}else if(f.aggregateType=='avg' ){
+									Ext.getCmp('aggregateType').items.items[2].setValue(true);
+								}
+								else{
+									Ext.getCmp('aggregateType').items.items[0].setValue(true);
+								}
+								
+								if( TR.store.dataelement.available.data.items.length == 0 )
+								{
+									TR.store.dataelement.available.add(
+										{'value': f.deGroupBy,'name': f.deGroupByName}
+									);
+								}
+								Ext.getCmp('dataElementGroupByCbx').setValue( f.deGroupBy );
+
+								if( TR.store.aggregateDataelement.data.items.length == 0 )
+								{
+									TR.store.aggregateDataelement.add(
+										{'id': f.deSumId,'name': f.deSumName}
+									);
+								}
+								Ext.getCmp('deSumCbx').setValue( f.deSumId );
 
 								// Program stage									
 								var storeProgramStage = TR.store.programStage;
@@ -2293,7 +2314,7 @@ Ext.onReady( function() {
 						{
 							var id = deId + '_' + idx;
 							var filterValue = Ext.getCmp('filter_' + id).getValue();
-							if( filterValue == null || filterValue == '' ){
+							if( filterValue == null || ( filterValue == '' && filterValue != 0 )){
 								isValid = false;
 							}
 						}
