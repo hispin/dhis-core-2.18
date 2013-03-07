@@ -100,23 +100,7 @@ public class AnalyticsController
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toXml( grid, response.getOutputStream() );
     }
-    
-    @RequestMapping( value = RESOURCE_PATH + ".csv", method = RequestMethod.GET )
-    public void getCsv( 
-        @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        Model model,
-        HttpServletResponse response ) throws Exception
-    {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING );
-        Grid grid = analyticsService.getAggregatedDataValues( params );
-        GridUtils.toCsv( grid.substituteMetaData(), response.getOutputStream() );
-    }
-    
     @RequestMapping( value = RESOURCE_PATH + ".html", method = RequestMethod.GET )
     public void getHtml( 
         @RequestParam Set<String> dimension,
@@ -133,6 +117,22 @@ public class AnalyticsController
         GridUtils.toHtml( grid.substituteMetaData(), response.getWriter() );
     }
 
+    @RequestMapping( value = RESOURCE_PATH + ".csv", method = RequestMethod.GET )
+    public void getCsv( 
+        @RequestParam Set<String> dimension,
+        @RequestParam(required = false) Set<String> filter,
+        @RequestParam(required = false) AggregationType aggregationType,
+        @RequestParam(required = false) String measureCriteria,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
+
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.csv", true );
+        Grid grid = analyticsService.getAggregatedDataValues( params );
+        GridUtils.toCsv( grid.substituteMetaData(), response.getOutputStream() );
+    }
+    
     @RequestMapping( value = RESOURCE_PATH + ".xls", method = RequestMethod.GET )
     public void getXls( 
         @RequestParam Set<String> dimension,
@@ -144,7 +144,7 @@ public class AnalyticsController
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, i18nManager.getI18nFormat() );
 
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.xls", true );
         Grid grid = analyticsService.getAggregatedDataValues( params );
         GridUtils.toXls( grid.substituteMetaData(), response.getOutputStream() );
     }
