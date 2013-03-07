@@ -61,6 +61,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( status().isOk() );
     }
@@ -71,6 +72,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "M_dhis-web-api-fred" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( status().isOk() );
     }
@@ -93,6 +95,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( jsonPath( "$.facilities[0].name" ).value( "OrgUnitA" ) )
             .andExpect( status().isOk() );
@@ -116,6 +119,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
             .andExpect( status().isOk() );
     }
@@ -129,6 +133,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
             .andExpect( status().isOk() );
     }
