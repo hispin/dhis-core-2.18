@@ -191,4 +191,24 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( jsonPath( "$.active" ).value( false ) )
             .andExpect( status().isCreated() );
     }
+
+    @Test
+    public void testPostNameDuplicate() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        Facility facility = new Facility( "FacilityA" );
+
+        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
+            .andExpect( status().isCreated() );
+
+        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
+            .andExpect( status().isCreated() );
+    }
 }
