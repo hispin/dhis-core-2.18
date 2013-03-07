@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "patient_registration_form_management" ) #openHelp( "program" )</h3>
+<h3>$i18n.getString( "patient_registration_form_management" ) #openHelp( "person_registration_form" )</h3>
 
 <table width="70%">
 	#set($display = 'block')

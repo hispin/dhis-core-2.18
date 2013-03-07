@@ -192,13 +192,13 @@ public class DefaultPatientRegistrationFormService
             }
             else if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                Integer id = Integer.parseInt( identifierMatcher.group( 1 ) );
-                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( id );
+                String uid = identifierMatcher.group( 1 );
+                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( uid );
 
                 if ( identifierType == null )
                 {
-                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + id
-                        + "]' title='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + id + "]'>/";
+                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + uid
+                        + "]' title='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + uid + "]'>/";
                 }
                 else
                 {
@@ -214,7 +214,7 @@ public class DefaultPatientRegistrationFormService
                         }
                     }
 
-                    inputHtml = "<input id=\"iden" + id + "\" name=\"iden" + id + "\" tabindex=\"" + index
+                    inputHtml = "<input id=\"iden" + uid + "\" name=\"iden" + uid + "\" tabindex=\"" + index
                         + "\" value=\"" + value + "\" ";
 
                     inputHtml += "class=\"{validate:{required:" + identifierType.isMandatory() + ",";
@@ -236,13 +236,13 @@ public class DefaultPatientRegistrationFormService
             }
             else if ( dynamicAttrMatcher.find() && dynamicAttrMatcher.groupCount() > 0 )
             {
-                Integer id = Integer.parseInt( dynamicAttrMatcher.group( 1 ) );
-                PatientAttribute attribute = attributeService.getPatientAttribute( id );
+                String uid = dynamicAttrMatcher.group( 1 );
+                PatientAttribute attribute = attributeService.getPatientAttribute( uid );
 
                 if ( attribute == null )
                 {
-                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_attribute" ) + " " + id
-                        + "]' title='[" + i18n.getString( "missing_patient_attribute" ) + " " + id + "]'>/";
+                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_attribute" ) + " " + uid
+                        + "]' title='[" + i18n.getString( "missing_patient_attribute" ) + " " + uid + "]'>/";
                 }
                 else
                 {

@@ -151,7 +151,7 @@
 			<td>
 				<select id="identifiersSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'iden' )">
 					#foreach( $identifierType in $identifierTypes )
-						<option value="$identifierType.id" mandatory='$identifierType.mandatory' #if($identifierType.mandatory=='true') class="bold" #end >$encoder.htmlEncode($identifierType.displayName)</option>
+						<option value="$identifierType.uid" mandatory='$identifierType.mandatory' #if($identifierType.mandatory=='true') class="bold" #end >$encoder.htmlEncode($identifierType.displayName)</option>
 					#end
 				</select>
 			</td>
@@ -169,7 +169,7 @@
 			<td>
 				<select id="attributesSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'attr' )">
 				#foreach( $attribute in $attributes )
-					<option value="$attribute.id" mandatory='$attribute.mandatory' #if($attribute.mandatory=='true') class="bold" #end >$encoder.htmlEncode($attribute.displayName)</option>
+					<option value="$attribute.uid" mandatory='$attribute.mandatory' #if($attribute.mandatory=='true') class="bold" #end >$encoder.htmlEncode($attribute.displayName)</option>
 				#end
 				</select>
 			</td>
