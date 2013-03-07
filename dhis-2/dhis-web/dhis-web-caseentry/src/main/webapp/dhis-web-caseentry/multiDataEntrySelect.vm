@@ -2,7 +2,7 @@
 	jQuery(document).ready(	function(){
 		jQuery("#programIdAddPatient option").each(function(){
 			var item = jQuery(this);
-			if( item.attr('type')!=1 && item.val()!='' ){
+			if( item.attr('type')!=1 || item.val()=='' ){
 				item.remove();
 			}
 		});
@@ -11,6 +11,10 @@
 		hideById('addPatientBtn');
 		jQuery("#searchObjectId [value=prg]").remove();
 		registration = false;
+		if(jQuery("#programIdAddPatient option").length > 0){
+			enable('listPatientBtn');
+			enable('advancedSearchBtn');
+		}
 	});	
 </script>
 

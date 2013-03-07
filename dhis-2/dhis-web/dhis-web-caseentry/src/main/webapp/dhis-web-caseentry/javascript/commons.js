@@ -142,7 +142,7 @@ function getTrueFalseBox()
 	
 function getGenderSelector()
 {
-	var genderSelector = '<select id="searchText" name="searchText">';
+	var genderSelector = '<select id="searchText" name="searchText" style="width:200px;">';
 		genderSelector += '<option value="M">' + i18n_male + '</option>';
 		genderSelector += '<option value="F">' + i18n_female + '</option>';
 		genderSelector += '<option value="T">' + i18n_transgender + '</option>';
@@ -153,14 +153,14 @@ function getGenderSelector()
 function getAgeTextBox( container )
 {
 	var ageField = '<select id="dateOperator" name="dateOperator" style="width:40px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
-	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:220px;">';
+	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:160px;">';
 	return ageField;
 }
 
 function getDateField( container )
 {
 	var dateField = '<select id="dateOperator_' + container + '" name="dateOperator" style="width:40px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
-	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:200px;" onkeyup="searchPatientsOnKeyUp( event );">';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:160px;" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
 
