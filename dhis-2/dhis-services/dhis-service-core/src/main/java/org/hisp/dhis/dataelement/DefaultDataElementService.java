@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboSizeComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nService;
@@ -341,11 +342,11 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsByAggregationLevel( aggregationLevel ) );
     }
 
-    public Map<String, Set<String>> getDataElementCategoryOptionCombos()
+    public ListMap<String, String> getDataElementCategoryOptionComboMap()
     {
-        return dataElementStore.getDataElementCategoryOptionCombos();
+        return dataElementStore.getDataElementCategoryOptionComboMap();
     }
-
+    
     public Map<String, Integer> getDataElementUidIdMap()
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
