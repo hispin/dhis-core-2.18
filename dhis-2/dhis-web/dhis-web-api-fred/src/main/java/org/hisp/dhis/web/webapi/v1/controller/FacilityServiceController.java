@@ -175,7 +175,7 @@ public class FacilityServiceController
         if ( constraintViolations.isEmpty() )
         {
             OrganisationUnit organisationUnit = conversionService.convert( facility, OrganisationUnit.class );
-            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getId() );
+            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( facility.getUuid() );
 
             if ( ou == null )
             {

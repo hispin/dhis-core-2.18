@@ -46,7 +46,7 @@ public class Facility
     // Internal system identifier
     @NotNull(groups = Update.class)
     @Length(min = 36, max = 36)
-    private String id;
+    private String uuid;
 
     // Name of the facility
     @NotNull
@@ -57,7 +57,7 @@ public class Facility
     private Boolean active = true;
 
     // URL link to the unique ID API resource for the facility
-    private String url;
+    private String href;
 
     // ISO 8601 timestamp, including timezone, of when the facility was created
     private Date createdAt;
@@ -98,14 +98,14 @@ public class Facility
         this.coordinates = coordinates;
     }
 
-    public String getId()
+    public String getUuid()
     {
-        return id;
+        return uuid;
     }
 
-    public void setId( String id )
+    public void setUuid( String uuid )
     {
-        this.id = id;
+        this.uuid = uuid;
     }
 
     public String getName()
@@ -128,14 +128,14 @@ public class Facility
         this.active = active;
     }
 
-    public String getUrl()
+    public String getHref()
     {
-        return url;
+        return href;
     }
 
-    public void setUrl( String url )
+    public void setHref( String href )
     {
-        this.url = url;
+        this.href = href;
     }
 
     public Date getCreatedAt()
@@ -192,10 +192,10 @@ public class Facility
     public String toString()
     {
         return "Facility{" +
-            "id='" + id + '\'' +
+            "id='" + uuid + '\'' +
             ", name='" + name + '\'' +
             ", active=" + active +
-            ", url='" + url + '\'' +
+            ", url='" + href + '\'' +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             ", coordinates=" + coordinates +

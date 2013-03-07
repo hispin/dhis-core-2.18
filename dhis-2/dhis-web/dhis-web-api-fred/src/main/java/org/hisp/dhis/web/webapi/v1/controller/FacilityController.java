@@ -173,7 +173,7 @@ public class FacilityController
         // simple field filtering
         if ( !strings.contains( "id" ) )
         {
-            facility.setId( null );
+            facility.setUuid( null );
         }
 
         if ( !strings.contains( "name" ) )
@@ -203,7 +203,7 @@ public class FacilityController
 
         if ( !strings.contains( "url" ) )
         {
-            facility.setUrl( null );
+            facility.setHref( null );
         }
 
         if ( !strings.contains( "identifiers" ) )
@@ -447,9 +447,9 @@ public class FacilityController
     @PreAuthorize( "hasRole('F_FRED_CREATE') or hasRole('ALL')" )
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws Exception
     {
-        if ( facility.getId() == null )
+        if ( facility.getUuid() == null )
         {
-            facility.setId( UUID.randomUUID().toString() );
+            facility.setUuid( UUID.randomUUID().toString() );
         }
 
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
@@ -571,9 +571,9 @@ public class FacilityController
         }
 
         // getId == null is not legal, but will be catched by bean validation
-        if ( facility.getId() != null )
+        if ( facility.getUuid() != null )
         {
-            String uuid = facility.getId();
+            String uuid = facility.getUuid();
 
             try
             {
