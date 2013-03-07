@@ -670,6 +670,7 @@
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.SetProgramInstanceStatusAction"

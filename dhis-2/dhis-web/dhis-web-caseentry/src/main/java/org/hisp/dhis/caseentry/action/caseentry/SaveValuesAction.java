@@ -61,8 +61,6 @@ public class SaveValuesAction
     implements Action
 {
     private static final Log LOG = LogFactory.getLog( SaveValueAction.class );
-    
-    private static final String PREFIX_DATA_ELEMENT = "DE";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -196,13 +194,14 @@ public class SaveValuesAction
         {
             String dataElementFieldId = programStage.getId() + "-" + psDataElement.getDataElement().getId() + "-val";
             String value = request.getParameter( dataElementFieldId );
-            if ( value != null && value.trim().length()>0)
+            if ( value != null && value.trim().length() > 0 )
             {
                 String providedElsewhereId = programStage.getId() + "_" + psDataElement.getDataElement().getId()
                     + "_facility";
                 boolean providedElsewhere = (request.getParameter( providedElsewhereId ) == null) ? false : true;
 
-                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, psDataElement.getDataElement(), new Date(), value.trim() );
+                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance,
+                    psDataElement.getDataElement(), new Date(), value.trim() );
                 patientDataValue.setStoredBy( storedBy );
                 patientDataValue.setProvidedElsewhere( providedElsewhere );
                 patientDataValueService.savePatientDataValue( patientDataValue );
