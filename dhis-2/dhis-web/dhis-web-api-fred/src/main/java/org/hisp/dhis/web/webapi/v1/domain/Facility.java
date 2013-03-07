@@ -27,6 +27,7 @@ package org.hisp.dhis.web.webapi.v1.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 import org.hibernate.validator.constraints.Length;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -41,11 +42,12 @@ import java.util.TreeMap;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@JsonPropertyOrder( value = { "uuid", "name", "active", "href", "createdAt", "updatedAt", "coordinates", "identifiers", "properties" } )
 public class Facility
 {
     // Internal system identifier
-    @NotNull(groups = Update.class)
-    @Length(min = 36, max = 36)
+    @NotNull( groups = Update.class )
+    @Length( min = 36, max = 36 )
     private String uuid;
 
     // Name of the facility
