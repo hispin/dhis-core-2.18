@@ -450,6 +450,9 @@ public class TableAlteror
         executeSql( "update users set disabled = false where disabled is null" );
         executeSql( "update dataentryform set format = 1 where format is null" );
 
+        executeSql( "update dataelementgroup set shortname=name where shortname is null and length(name)<=50" );
+        executeSql( "update orgunitgroup set shortname=name where shortname is null and length(name)<=50" );
+        
         // report, reporttable, chart groups
 
         executeSql( "DROP TABLE reportgroupmembers" );
