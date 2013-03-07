@@ -32,7 +32,8 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -40,8 +41,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FacilityControllerTest extends FredSpringWebTest
 {
     @Test
+    public void testRedirectedToV1() throws Exception
+    {
+        mvc.perform( get( "/api-fred" ) ).andExpect( redirectedUrl( "/api-fred/v1" ) );
+        mvc.perform( get( "/api-fred/" ) ).andExpect( redirectedUrl( "/api-fred/v1" ) );
+    }
+
+    @Test
+    public void testGetFacilities() throws Exception
+    {
+        // TODO auth issues
+        //mvc.perform( get( "/v1" ) )
+        //    .andDo( print() )
+        //    .andReturn();
+    }
+
+    @Test
     public void testBogusIsNotFound() throws Exception
     {
-        mockMvc.perform( get( "/bogus" ).accept( MediaType.ALL ) ).andExpect( status().isNotFound() );
+        mvc.perform( get( "/bogus" ).accept( MediaType.ALL ) ).andExpect( status().isNotFound() );
     }
 }
