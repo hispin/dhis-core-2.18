@@ -196,7 +196,6 @@ public class ShowAddPatientFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
-        Program program = null;
 
         if ( programId == null )
         {
