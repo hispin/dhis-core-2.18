@@ -571,7 +571,12 @@ function blockEntryForm()
 	{
 		jQuery(this).addClass('hidden');
 	});
-	
+	jQuery('.auto-field').removeClass('optionset');
+	jQuery('.date-field').each(function(){
+		var id = jQuery(this).attr('id');
+		jQuery('#delete_' + id ).hide();
+	});
+	jQuery('.date-field').removeClass('datefield');
 }
 
 function unblockEntryForm()
@@ -584,6 +589,12 @@ function unblockEntryForm()
 	{
 		jQuery(this).removeClass('hidden');
 	});
+	jQuery('.auto-field').addClass('optionset');
+	jQuery('.date-field').each(function(){
+		var id = jQuery(this).attr('id');
+		jQuery('#delete_' + id ).show();
+	});
+	jQuery('.date-field').addClass('datefield');
 }
 
 TOGGLE = {
