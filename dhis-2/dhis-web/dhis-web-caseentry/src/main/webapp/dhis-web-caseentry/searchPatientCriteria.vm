@@ -131,8 +131,8 @@
 	datePicker( 'startDueDate', true );
 	datePicker( 'endDueDate', true );
 	
-	var searchTextBox = '<input type="text" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:200px;">';
-	var programComboBox = '<select class="search-field" id="searchText" name="searchText" >';
+	var searchTextBox = '<input type="text" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:202px;">';
+	var programComboBox = '<select class="search-field" id="searchText" name="searchText" style="width:205px;">';
 	#foreach ( $program in $programs ) 
 		programComboBox += '<option value="$program.id">$program.displayName</option>';
 	#end
