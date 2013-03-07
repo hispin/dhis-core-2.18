@@ -8,7 +8,7 @@
         #foreach( $facility in $entity.facilities )
         {
             id: "$facility.uuid",
-            url: "$facility.href",
+            href: "$facility.href",
             name: "$esc.escapeEcmaScript($facility.name)",
             coordinates: "$facility.coordinates"
         },
