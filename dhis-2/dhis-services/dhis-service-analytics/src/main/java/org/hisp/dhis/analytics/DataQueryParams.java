@@ -74,7 +74,7 @@ public class DataQueryParams
     
     public static final int MAX_DIM_OPT_PERM = 5000;
     
-    private static final List<DimensionType> COMPLETENESS_DIMENSION_TYTPES = Arrays.asList( DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
+    private static final List<DimensionType> COMPLETENESS_DIMENSION_TYPES = Arrays.asList( DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
     
     private static final DimensionItem[] DIM_OPT_ARR = new DimensionItem[0];
     private static final DimensionItem[][] DIM_OPT_2D_ARR = new DimensionItem[0][];
@@ -83,6 +83,8 @@ public class DataQueryParams
     
     private List<Dimension> filters = new ArrayList<Dimension>();
 
+    private ListMap<String, Dimension> filterMap = new ListMap<String, Dimension>();
+    
     private AggregationType aggregationType;
     
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
@@ -188,7 +190,7 @@ public class DataQueryParams
         
         for ( int i = 0; i < dimensions.size(); i++ )
         {
-            if ( COMPLETENESS_DIMENSION_TYTPES.contains( dimensions.get( i ).getType() ) )
+            if ( COMPLETENESS_DIMENSION_TYPES.contains( dimensions.get( i ).getType() ) )
             {
                 indexes.add( i );
             }
@@ -206,7 +208,7 @@ public class DataQueryParams
         
         for ( int i = 0; i < filters.size(); i++ )
         {
-            if ( COMPLETENESS_DIMENSION_TYTPES.contains( filters.get( i ).getType() ) )
+            if ( COMPLETENESS_DIMENSION_TYPES.contains( filters.get( i ).getType() ) )
             {
                 indexes.add( i );
             }
@@ -707,6 +709,16 @@ public class DataQueryParams
         this.filters = filters;
     }
 
+    public ListMap<String, Dimension> getFilterMap()
+    {
+        return filterMap;
+    }
+
+    public void setFilterMap( ListMap<String, Dimension> filterMap )
+    {
+        this.filterMap = filterMap;
+    }
+
     public AggregationType getAggregationType()
     {
         return aggregationType;
@@ -778,18 +790,6 @@ public class DataQueryParams
     public List<IdentifiableObject> getDimensionOrFilter( String key )
     {
         return getDimensionOptions( key ) != null ? getDimensionOptions( key ) : getFilterOptions( key );
-    }
-    
-    public void resetDimensionOrFilter( Dimension dimension, List<IdentifiableObject> options )
-    {
-        if ( dimensions.contains( dimension ) )
-        {
-            setDimensionOptions( dimension.getDimension(), dimension.getType(), dimension.getDimensionName(), options );
-        }
-        else if ( filters.contains( dimension ) )
-        {
-            setFilterOptions( dimension.getDimension(), dimension.getType(), dimension.getDimensionName(), options );
-        }
     }
     
     public boolean hasDimensionOrFilter( String key )

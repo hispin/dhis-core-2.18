@@ -192,7 +192,7 @@ public class DefaultQueryPlanner
         // Group by data element
         // ---------------------------------------------------------------------
         
-        queries = splitByDimensionOrFilter( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
+        queries = splitByDimension( queries, DataQueryParams.DATAELEMENT_DIM_ID, optimalQueries );
 
         if ( queries.size() >= optimalQueries )
         {
@@ -203,7 +203,7 @@ public class DefaultQueryPlanner
         // Group by organisation unit
         // ---------------------------------------------------------------------
         
-        queries = splitByDimensionOrFilter( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
+        queries = splitByDimension( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
 
         return queries;
     }
@@ -220,7 +220,7 @@ public class DefaultQueryPlanner
     /**
      * Splits the given list of queries in sub queries on the given dimension.
      */
-    private List<DataQueryParams> splitByDimensionOrFilter( List<DataQueryParams> queries, String dimension, int optimalQueries )
+    private List<DataQueryParams> splitByDimension( List<DataQueryParams> queries, String dimension, int optimalQueries )
     {
         int optimalForSubQuery = MathUtils.divideToFloor( optimalQueries, queries.size() );
         
@@ -228,28 +228,32 @@ public class DefaultQueryPlanner
         
         for ( DataQueryParams query : queries )
         {
-            List<IdentifiableObject> values = query.getDimensionOrFilter( dimension );
+            Dimension dim = query.getDimension( dimension );
 
-            if ( values == null || values.isEmpty() )
+            List<IdentifiableObject> values = null;
+
+            if ( dim == null || ( values = dim.getItems() ) == null || values.isEmpty() )
             {
                 subQueries.add( new DataQueryParams( query ) );
                 continue;
             }
 
-            Dimension dim = query.getDimension( dimension );
-            
             List<List<IdentifiableObject>> valuePages = new PaginatedList<IdentifiableObject>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
             
             for ( List<IdentifiableObject> valuePage : valuePages )
             {
                 DataQueryParams subQuery = new DataQueryParams( query );
-                subQuery.resetDimensionOrFilter( dim, valuePage );
+                subQuery.setDimensionOptions( dim.getDimension(), dim.getType(), dim.getDimensionName(), valuePage );
                 subQueries.add( subQuery );
             }
         }
 
         return subQueries;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive - group by methods
+    // -------------------------------------------------------------------------
     
     /**
      * Groups the given query into sub queries based on its periods and which 
@@ -456,6 +460,10 @@ public class DefaultQueryPlanner
         
         return queries;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive - get mapping methods
+    // -------------------------------------------------------------------------
     
     /**
      * Creates a mapping between period type name and period for the given periods.
