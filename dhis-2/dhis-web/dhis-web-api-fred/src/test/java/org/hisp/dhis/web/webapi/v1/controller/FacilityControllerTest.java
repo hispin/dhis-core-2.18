@@ -32,6 +32,7 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.FredSpringWebTest;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.webapi.v1.utils.OrganisationUnitToFacilityConverter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -169,6 +170,46 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( put( "/v1/facilities/abc123" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isNotFound() );
+    }
+
+    @Test
+    public void testPutFacilityUid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        Facility facility = new OrganisationUnitToFacilityConverter().convert( organisationUnit );
+        facility.setName( "FacilityB" );
+        facility.setActive( false );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "FacilityB" ) )
+            .andExpect( jsonPath( "$.active" ).value( false ) )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testPutFacilityUuid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        Facility facility = new OrganisationUnitToFacilityConverter().convert( organisationUnit );
+        facility.setName( "FacilityB" );
+        facility.setActive( false );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.name" ).value( "FacilityB" ) )
+            .andExpect( jsonPath( "$.active" ).value( false ) )
+            .andExpect( status().isOk() );
     }
 
     //---------------------------------------------------------------------------------------------
