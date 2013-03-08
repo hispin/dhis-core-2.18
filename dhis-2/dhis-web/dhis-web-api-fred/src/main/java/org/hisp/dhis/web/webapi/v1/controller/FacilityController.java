@@ -452,6 +452,20 @@ public class FacilityController
         {
             facility.setUuid( UUID.randomUUID().toString() );
         }
+        else
+        {
+            String uuid = facility.getUuid();
+
+            try
+            {
+                UUID.fromString( uuid );
+            }
+            catch ( IllegalArgumentException ignored )
+            {
+                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
+                    "Bad id: (does not match expected UUID string format)" ), HttpStatus.PRECONDITION_FAILED );
+            }
+        }
 
         Set<ConstraintViolation<Facility>> constraintViolations = validator.validate( facility, Default.class, Create.class );
 
