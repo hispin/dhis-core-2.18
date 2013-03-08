@@ -341,6 +341,16 @@ public class FacilityController
         model.addAttribute( "pageName", "facilities" );
         model.addAttribute( "page", FredController.PREFIX + "/facilities.vm" );
 
+        if ( offset == 0 )
+        {
+            model.addAttribute( "prevDisabled", true );
+        }
+
+        if ( (offset + limitValue) >= organisationUnitService.getNumberOfOrganisationUnits() )
+        {
+            model.addAttribute( "nextDisabled", true );
+        }
+
         return FredController.PREFIX + "/layout";
     }
 
