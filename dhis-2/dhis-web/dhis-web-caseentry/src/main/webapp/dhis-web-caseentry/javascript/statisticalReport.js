@@ -15,8 +15,8 @@ function generatedStatisticalProgramReport()
 		jQuery( "#statisticalReportDiv" ).load( "generateStatisticalProgramReport.action",
 		{
 			programId: getFieldValue('programId'),
-			startDate: getFieldValue('startDate') + ' 00:00',
-			endDate: getFieldValue( 'endDate' ) + ' 23:59',
+			startDate: getFieldValue('startDateField') + ' 00:00',
+			endDate: getFieldValue( 'endDateField' ) + ' 23:59',
 			facilityLB: $('input[name=facilityLB]:checked').val(),
 		}, function() 
 		{ 
@@ -29,6 +29,8 @@ function generatedStatisticalProgramReport()
 	}
 	else
 	{
+		setFieldValue('startDate', getFieldValue('startDateField') + ' 00:00');
+		setFieldValue('endDate', getFieldValue( 'endDateField' ) + ' 23:59');
 		byId('reportForm').submit();
 	}
 	

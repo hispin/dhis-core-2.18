@@ -3,7 +3,7 @@
 		validation( 'reportForm', function(form){
 			generatedStatisticalProgramReport();
 		}); 
-		datePickerInRange( 'startDate' , 'endDate' );
+		datePickerInRange( 'startDateField' , 'endDateField' );
 	});		
 </script>
 
@@ -13,6 +13,8 @@
 	<input type="hidden" id="status" name="status">
 	<input type="hidden" id="type" name="type">
 	<input type="hidden" id="total" name="total">
+	<input type="hidden" id="startDate" name="startDate">
+	<input type="hidden" id="endDate" name="endDate">
 	<input type="button" id='showDataBtn' value="$i18n.getString('data')" onclick="showById('inputCriteria');hideById('showDataBtn')" class="hidden">
 	<div class="inputCriteria" id='inputCriteria' style="width:600px;height:180px;margin-bottom:20px;">
 		<table>	
@@ -34,13 +36,13 @@
 			<tr>
 				<td><label>$i18n.getString( "start_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td>
-					<input type="text" id="startDate" name="startDate" />
+					<input type="text" id="startDateField" name="startDateField" />
 				</td>
 			</tr>
 			<tr>
 				<td><label>$i18n.getString( "end_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td>
-					<input type="text" id="endDate" name="endDate" />
+					<input type="text" id="endDateField" name="endDateField" />
 				</td>      
 			</tr>
 			<tr>
