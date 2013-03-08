@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -272,14 +273,30 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         Facility facility = new OrganisationUnitToFacilityConverter().convert( organisationUnit );
         facility.setUuid( "DUMMY_UUID" );
-        facility.setName( "FacilityB" );
-        facility.setActive( false );
 
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isPreconditionFailed() );
+    }
+
+    // TODO: this should fail, need to figure out which code to return
+    @Test
+    public void testPutChangeUuidShouldFail() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        organisationUnit.setUuid( "ddccbbaa-bbaa-bbaa-bbaa-ffeeddccbbaa" );
+        manager.save( organisationUnit );
+
+        Facility facility = new OrganisationUnitToFacilityConverter().convert( organisationUnit );
+        facility.setUuid( "aabbccdd-aabb-aabb-aabb-aabbccddeeff" );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isOk() );
     }
 
     //---------------------------------------------------------------------------------------------
