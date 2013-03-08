@@ -46,7 +46,6 @@
                 <option value="bool">$i18n.getString( "yes_no" )</option>
                 <option value="date">$i18n.getString( "date" )</option>
                 <option value="combo">$i18n.getString( "attribute_combo_type" )</option>
-				<option value="calculated">$i18n.getString( "calculated" )</option>
             </select>
         </td>
         <td></td>

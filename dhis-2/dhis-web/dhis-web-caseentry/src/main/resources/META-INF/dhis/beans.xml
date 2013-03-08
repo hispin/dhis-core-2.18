@@ -101,10 +101,6 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="programStageSectionService"
 			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 	</bean>
@@ -1075,8 +1071,6 @@
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
 
 	<!-- Comment -->

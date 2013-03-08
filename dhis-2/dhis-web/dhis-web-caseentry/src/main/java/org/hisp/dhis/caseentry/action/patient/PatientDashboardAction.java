@@ -34,10 +34,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -76,10 +74,6 @@ public class PatientDashboardAction
 
     private CurrentUserService currentUserService;
 
-    private PatientAttributeService patientAttributeService;
-
-    private I18nFormat format;
-
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -115,17 +109,7 @@ public class PatientDashboardAction
     {
         return attributeMap;
     }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
-
+    
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
@@ -206,19 +190,6 @@ public class PatientDashboardAction
         // ---------------------------------------------------------------------
 
         attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
-
-        Collection<PatientAttribute> calAttributes = patientAttributeService
-            .getPatientAttributesByValueType( PatientAttribute.TYPE_CALCULATED );
-
-        for ( PatientAttribute calAttribute : calAttributes )
-        {
-            Double value = patientAttributeValueService.getCalculatedPatientAttributeValue( patient, calAttribute,
-                format );
-            if ( value != null )
-            {
-                attributeMap.put( calAttribute, value + "" );
-            }
-        }
 
         // ---------------------------------------------------------------------
         // Get patient-identifiers

@@ -49,7 +49,6 @@
                 <option value="bool" #if( $patientAttribute.valueType == 'bool' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
                 <option value="date" #if( $patientAttribute.valueType == 'date' ) selected="selected" #end>$i18n.getString( "date" )</option>
                 <option value="combo" #if( $patientAttribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
-				<option value="calculated" #if( $patientAttribute.valueType == 'calculated' ) selected="selected" #end>$i18n.getString( "calculated" )</option>
             </select>
         </td>
     </tr>
