@@ -6590,7 +6590,7 @@ It supports to filter events by each person attributes and data elements. The se
           <para>To save parameters on the left panel, click <emphasis role="italic">Favorites</emphasis> button on toolbar. The select <emphasis role="italic">Manage favorites</emphasis> option. A form is shown to enter name for favorite and click <emphasis role="italic">Save</emphasis> button.</para>
           <para>To export the result to excel file, click <emphasis role="italic">Download</emphasis> button, select  XLS option. For the aggregate report, the system supports more two types of file as PDF and CSV.</para>
         </section>
-        <section>
+        <section id='program_statistics'>
           <title>Program Statistics </title>
           <para>The tool provides a tool for generating a statistics  report by program.</para>
           <para>To access <emphasis role="italic">Program Statistics</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records </emphasis>option. Select <emphasis role="italic">Program Statistics </emphasis>option on left menu. Program statistics is opened. </para>
