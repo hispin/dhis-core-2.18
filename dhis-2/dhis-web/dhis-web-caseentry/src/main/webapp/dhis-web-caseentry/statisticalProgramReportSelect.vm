@@ -7,7 +7,7 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "statistical_program_report" )</h3>
+<h3>$i18n.getString( "statistical_program_report" ) #openHelp( "program_statistics" )</h3>
 
 <form id="reportForm" name="reportForm" action="generateStatisticalProgramReport.action" method="post">
 	<input type="hidden" id="status" name="status">
