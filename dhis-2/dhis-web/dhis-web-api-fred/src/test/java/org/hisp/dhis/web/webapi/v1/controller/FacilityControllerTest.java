@@ -168,8 +168,34 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/abc123" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
+        mvc.perform( put( "/v1/facilities/INVALID_IDENTIFIER" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isNotFound() );
+    }
+
+    @Test
+    public void testPutInvalidJsonUid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( "INVALID JSON" )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isBadRequest() );
+    }
+
+    @Test
+    public void testPutInvalidJsonUuid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( "INVALID JSON" )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isBadRequest() );
     }
 
     @Test
@@ -227,6 +253,7 @@ public class FacilityControllerTest extends FredSpringWebTest
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
+            .andExpect( jsonPath( "$.active" ).value( true ) )
             .andExpect( status().isCreated() );
     }
 
@@ -265,6 +292,15 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( status().isCreated() );
     }
 
+    @Test
+    public void testPostInvalidJson() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( post( "/v1/facilities" ).content( "INVALID JSON" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isBadRequest() );
+    }
+
     //---------------------------------------------------------------------------------------------
     // Test DELETE
     //---------------------------------------------------------------------------------------------
@@ -274,7 +310,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( delete( "/v1/facilities/abc123" ).session( session ) )
+        mvc.perform( delete( "/v1/facilities/INVALID_IDENTIFIER" ).session( session ) )
             .andExpect( status().isNotFound() );
     }
 
