@@ -4439,7 +4439,7 @@ Ext.onReady( function() {
 																	['2', TR.i18n.columns], 
 																	['3', TR.i18n.filters] ]
 														}),
-														value: '1',
+														value: '3',
 														listeners: {
 															added: function() {
 																TR.cmp.settings.positionOrgunit = this;
@@ -4464,7 +4464,7 @@ Ext.onReady( function() {
 																	['2', TR.i18n.columns], 
 																	['3', TR.i18n.filters] ]
 														}),
-														value: '2',
+														value: '3',
 														listeners: {
 															added: function() {
 																TR.cmp.settings.positionPeriod = this;
@@ -4489,7 +4489,7 @@ Ext.onReady( function() {
 																	['2', TR.i18n.columns], 
 																	['3', TR.i18n.filters] ]
 														}),
-														value: '3',
+														value: '1',
 														listeners: {
 															added: function() {
 																TR.cmp.settings.positionData = this;
@@ -4643,11 +4643,6 @@ Ext.onReady( function() {
 													listeners: {
 														added: function() {
 															TR.cmp.settings.dataElementGroupBy = this;
-														},
-														select: function(cb) {
-															if(cb.getValue() != null && cb.getValue()!=''){
-																Ext.getCmp('positionDataCbx').setValue( 1 );
-															}
 														}
 													}
 												},
