@@ -264,6 +264,24 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( status().isOk() );
     }
 
+    @Test
+    public void testPutInvalidUuidShouldFail() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        Facility facility = new OrganisationUnitToFacilityConverter().convert( organisationUnit );
+        facility.setUuid( "DUMMY_UUID" );
+        facility.setName( "FacilityB" );
+        facility.setActive( false );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isPreconditionFailed() );
+    }
+
     //---------------------------------------------------------------------------------------------
     // Test POST
     //---------------------------------------------------------------------------------------------
@@ -291,6 +309,19 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
             .andExpect( status().isCreated() );
+    }
+
+    @Test
+    public void testPostInvalidUuidShouldFail() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        Facility facility = new Facility( "FacilityA" );
+        facility.setUuid( "DUMMY_UUID" );
+
+        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isPreconditionFailed() );
     }
 
     @Test
