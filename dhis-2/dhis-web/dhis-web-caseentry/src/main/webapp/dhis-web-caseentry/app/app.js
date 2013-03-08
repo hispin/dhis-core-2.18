@@ -1316,9 +1316,9 @@ Ext.onReady( function() {
 									Ext.getCmp('aggregateType').items.items[0].setValue(true);
 								}
 								
-								if( TR.store.dataelement.available.data.items.length == 0 )
+								if( TR.store.groupbyDataelement.data.items.length == 0 )
 								{
-									TR.store.dataelement.available.add(
+									TR.store.groupbyDataelement.add(
 										{'value': f.deGroupBy,'name': f.deGroupByName}
 									);
 								}
@@ -1466,6 +1466,19 @@ Ext.onReady( function() {
 								});
 							}
 						});
+						
+						TR.store.groupbyDataelement.loadData([],false);
+						TR.store.groupbyDataelement.add({
+								'id': '',
+								'name': TR.i18n.please_select
+							});
+						
+						TR.cmp.params.dataelement.available.store.each( function(r) {
+							TR.store.groupbyDataelement.add({
+								'id': r.data.id,
+								'name': r.data.name
+							});
+						});
                     }
 				}
             }),
@@ -1570,6 +1583,10 @@ Ext.onReady( function() {
 			data: []
 		}),
 		aggregateDataelement: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name'],
+			data: []
+		}),
+		groupbyDataelement: Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			data: []
 		})
@@ -4541,6 +4558,7 @@ Ext.onReady( function() {
 													emptyText: TR.i18n.please_select,
 													queryMode: 'local',
 													editable: true,
+													typeAhead: true,
 													valueField: 'id',
 													displayField: 'name',
 													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
@@ -4616,14 +4634,20 @@ Ext.onReady( function() {
 													labelWidth: 135,
 													emptyText: TR.i18n.please_select,
 													queryMode: 'local',
+													typeAhead: true,
 													editable: true,
 													valueField: 'id',
 													displayField: 'name',
 													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-													store: TR.store.dataelement.available,
+													store: TR.store.groupbyDataelement,
 													listeners: {
 														added: function() {
 															TR.cmp.settings.dataElementGroupBy = this;
+														},
+														select: function(cb) {
+															if(cb.getValue() != null && cb.getValue()!=''){
+																Ext.getCmp('positionDataCbx').setValue( 1 );
+															}
 														}
 													}
 												},
