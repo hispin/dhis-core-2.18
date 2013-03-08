@@ -13,7 +13,8 @@
 	<input type="hidden" id="status" name="status">
 	<input type="hidden" id="type" name="type">
 	<input type="hidden" id="total" name="total">
-	<div class="inputCriteria" style="width:600px;height:180px;margin-bottom:20px;">
+	<input type="button" id='showDataBtn' value="$i18n.getString('data')" onclick="showById('inputCriteria');hideById('showDataBtn')" class="hidden">
+	<div class="inputCriteria" id='inputCriteria' style="width:600px;height:180px;margin-bottom:20px;">
 		<table>	
 			<tr>
 			  <td><label>$i18n.getString( "orgunit_boundary" )</label></td>
@@ -55,7 +56,7 @@
 				<td>
 					<input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" onclick='setFieldValue("type","")' style="width:7em" />
 					<input type="submit" id='exportBtn' name='exportBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'export_xls' )" onclick='setFieldValue("type","xls")' style="width:7em" />
-					<input type="button" value="$i18n.getString( 'cancel' )" onclick="hideById('reportForm');" style="width:7em"/>
+					<input type="button" value="$i18n.getString( 'cancel' )" onclick="hideById('inputCriteria');showById('showDataBtn');" style="width:7em"/>
 				</td>
 			</tr>	                		
 		</table>

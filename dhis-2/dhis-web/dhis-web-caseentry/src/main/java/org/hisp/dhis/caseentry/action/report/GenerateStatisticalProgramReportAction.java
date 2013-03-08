@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -164,10 +165,9 @@ public class GenerateStatisticalProgramReportAction
 
         Program program = programService.getProgram( programId );
 
-        Date sDate = format.parseDate( startDate );
-
-        Date eDate = format.parseDate( endDate );
-
+        Date sDate = format.parseDateTime( startDate );
+        Date eDate = format.parseDateTime( endDate );
+        
         // ---------------------------------------------------------------------
         // Get orgunitIds
         // ---------------------------------------------------------------------

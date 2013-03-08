@@ -15,13 +15,13 @@ function generatedStatisticalProgramReport()
 		jQuery( "#statisticalReportDiv" ).load( "generateStatisticalProgramReport.action",
 		{
 			programId: getFieldValue('programId'),
-			startDate: getFieldValue('startDate'),
-			endDate: getFieldValue( 'endDate' ),
+			startDate: getFieldValue('startDate') + ' 00:00',
+			endDate: getFieldValue( 'endDate' ) + ' 23:59',
 			facilityLB: $('input[name=facilityLB]:checked').val(),
 		}, function() 
 		{ 
-			setTableStyles();
-			hideById('reportForm');
+			hideById('inputCriteria');
+			showById('showDataBtn');
 			showById('statisticalReportDiv');
 			showById('reportTbl');
 			hideLoader();
