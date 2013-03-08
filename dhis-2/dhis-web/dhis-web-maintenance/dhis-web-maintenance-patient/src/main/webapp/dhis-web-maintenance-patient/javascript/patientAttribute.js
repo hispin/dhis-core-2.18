@@ -121,20 +121,3 @@ ATTRIBUTE_OPTION =
 		return "<tr><td><input type='text' name='attrOptions' /><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
 }
-
-function getConditionDescription()
-{
-	$.postUTF8( 'getCaseAggregationDescription.action', 
-		{ 
-			condition:getFieldValue('expression') 
-		},function(html)
-		{
-			setInnerHTML('expDescription', html);
-		});
-}
-
-function insertOperator( value )
-{
-	insertTextCommon('expression', ' ' + value + ' ' );
-	getConditionDescription();
-}
