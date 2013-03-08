@@ -64,6 +64,14 @@ public class Dimension
         this.items = items;
     }
 
+    public Dimension( String dimension, DimensionType type, String dimensionName, List<IdentifiableObject> items )
+    {
+        this.dimension = dimension;
+        this.type = type;
+        this.dimensionName = dimensionName;
+        this.items = items;
+    }
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -101,6 +109,9 @@ public class Dimension
         this.type = type;
     }
 
+    /**
+     * Returns dimension name with fall back to dimension.
+     */
     public String getDimensionName()
     {
         return dimensionName != null ? dimensionName : dimension;

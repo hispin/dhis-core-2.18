@@ -31,7 +31,7 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.SUM;
-import static org.hisp.dhis.analytics.DataQueryParams.CATEGORYOPTIONCOMBO_DIM_ID;
+import static org.hisp.dhis.analytics.DataQueryParams.*;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.MAX_DIM_OPT_PERM;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
@@ -47,6 +47,7 @@ import org.apache.commons.logging.Log;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Dimension;
+import org.hisp.dhis.analytics.DimensionType;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.table.PartitionUtils;
@@ -146,15 +147,15 @@ public class DefaultQueryPlanner
         for ( DataQueryParams byPartition : groupedByPartition )
         {
             List<DataQueryParams> groupedByOrgUnitLevel = groupByOrgUnitLevel( byPartition );
-            
+
             for ( DataQueryParams byOrgUnitLevel : groupedByOrgUnitLevel )
             {
                 List<DataQueryParams> groupedByPeriodType = groupByPeriodType( byOrgUnitLevel );
-                
+
                 for ( DataQueryParams byPeriodType : groupedByPeriodType )
                 {
                     List<DataQueryParams> groupedByAggregationType = groupByAggregationType( byPeriodType );
-                    
+
                     for ( DataQueryParams byAggregationType : groupedByAggregationType )
                     {
                         if ( AVERAGE_INT_DISAGGREGATION.equals( byAggregationType.getAggregationType() ) )
@@ -164,7 +165,6 @@ public class DefaultQueryPlanner
                             for ( DataQueryParams byDataPeriodType : groupedByDataPeriodType )
                             {
                                 byDataPeriodType.setTableName( byPartition.getTableName() );
-                                byDataPeriodType.setOrganisationUnitLevel( byOrgUnitLevel.getOrganisationUnitLevel() );
                                 byDataPeriodType.setPeriodType( byPeriodType.getPeriodType() );
                                 byDataPeriodType.setAggregationType( byAggregationType.getAggregationType() );
                                 
@@ -174,7 +174,6 @@ public class DefaultQueryPlanner
                         else
                         {
                             byAggregationType.setTableName( byPartition.getTableName() );
-                            byAggregationType.setOrganisationUnitLevel( byOrgUnitLevel.getOrganisationUnitLevel() );
                             byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
                             
                             queries.add( byAggregationType );
@@ -205,7 +204,7 @@ public class DefaultQueryPlanner
         // ---------------------------------------------------------------------
         
         queries = splitByDimensionOrFilter( queries, DataQueryParams.ORGUNIT_DIM_ID, optimalQueries );
-        
+
         return queries;
     }
         
@@ -236,13 +235,15 @@ public class DefaultQueryPlanner
                 subQueries.add( new DataQueryParams( query ) );
                 continue;
             }
+
+            Dimension dim = query.getDimension( dimension );
             
             List<List<IdentifiableObject>> valuePages = new PaginatedList<IdentifiableObject>( values ).setNumberOfPages( optimalForSubQuery ).getPages();
             
             for ( List<IdentifiableObject> valuePage : valuePages )
             {
                 DataQueryParams subQuery = new DataQueryParams( query );
-                subQuery.resetDimensionOrFilter( dimension, valuePage );
+                subQuery.resetDimensionOrFilter( dim, valuePage );
                 subQueries.add( subQuery );
             }
         }
@@ -276,7 +277,7 @@ public class DefaultQueryPlanner
                 queries.add( query );            
             }
         }
-        else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
+        else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() ) //TODO fix
         {
             ListMap<String, IdentifiableObject> tablePeriodMap = PartitionUtils.getTablePeriodMap( params.getFilterPeriods(), tableName );
             
@@ -315,7 +316,7 @@ public class DefaultQueryPlanner
             for ( String periodType : periodTypePeriodMap.keySet() )
             {
                 DataQueryParams query = new DataQueryParams( params );
-                query.setPeriods( periodTypePeriodMap.get( periodType ) );
+                query.setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, periodType, periodTypePeriodMap.get( periodType ) );
                 query.setPeriodType( periodType );
                 queries.add( query );
             }
@@ -327,7 +328,7 @@ public class DefaultQueryPlanner
             for ( String periodType : periodTypePeriodMap.keySet() )
             {
                 DataQueryParams query = new DataQueryParams( params );
-                query.setFilterPeriods( periodTypePeriodMap.get( periodType ) );
+                query.setFilterOptions( PERIOD_DIM_ID, DimensionType.PERIOD, periodType, periodTypePeriodMap.get( periodType ) );
                 query.setPeriodType( periodType );
                 queries.add( query );
             }
@@ -355,8 +356,7 @@ public class DefaultQueryPlanner
             for ( Integer level : levelOrgUnitMap.keySet() )
             {
                 DataQueryParams query = new DataQueryParams( params );
-                query.setOrganisationUnits( levelOrgUnitMap.get( level ) );
-                query.setOrganisationUnitLevel( level );
+                query.setDimensionOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, LEVEL_PREFIX + level, levelOrgUnitMap.get( level ) );
                 queries.add( query );
             }
         }
@@ -367,8 +367,7 @@ public class DefaultQueryPlanner
             for ( Integer level : levelOrgUnitMap.keySet() )
             {
                 DataQueryParams query = new DataQueryParams( params );
-                query.setFilterOrganisationUnits( levelOrgUnitMap.get( level ) );
-                query.setOrganisationUnitLevel( level );
+                query.setFilterOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, LEVEL_PREFIX + level, levelOrgUnitMap.get( level ) );
                 queries.add( query );
             }
         }
@@ -392,13 +391,6 @@ public class DefaultQueryPlanner
      * that the period type of the data elements have lower frequency than the
      * aggregation period type. Average bool means that the data elements have the
      * average aggregation operator and the bool value type.
-     * 
-     * The query is grouped on data elements if any exists, then on data element
-     * group sets if any exists. In the case where multiple data element group
-     * sets exists, the query will be grouped on the data element groups of the
-     * first group set found. A constraint for data element groups is that they
-     * must contain data elements with equal aggregation type. Hence it is not
-     * meaningful to split on multiple data element group sets.
      * 
      * If the aggregation type is already set/overridden in the request, the
      * query will be returned unchanged. If there are no dimension items specified

@@ -92,9 +92,7 @@ public class JdbcAnalyticsManager
     {
         ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
-                
-        params.populateDimensionNames();
-
+        
         List<Dimension> dimensions = params.getQueryDimensions();
 
         SqlHelper sqlHelper = new SqlHelper();
@@ -119,7 +117,7 @@ public class JdbcAnalyticsManager
         {
             sql += "sum(value)";
         }
-                
+        
         sql += " as value from " + params.getTableName() + " ";
         
         for ( Dimension dim : dimensions )
