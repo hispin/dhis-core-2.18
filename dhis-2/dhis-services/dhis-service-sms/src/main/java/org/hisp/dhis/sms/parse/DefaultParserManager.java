@@ -367,8 +367,6 @@ public class DefaultParserManager
                 dv.setDataElement( code.getDataElement() );
                 dv.setPeriod( period );
                 dv.setComment( "" );
-                dv.setTimestamp( new java.util.Date() );
-                dv.setStoredBy( storedBy );
                 newDataValue = true;
             }
 
@@ -385,6 +383,8 @@ public class DefaultParserManager
             }
 
             dv.setValue( value );
+            dv.setTimestamp( new java.util.Date() );
+            dv.setStoredBy( storedBy );
 
             if ( newDataValue )
             {
