@@ -46,459 +46,574 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  * @version $ Patient.java Jan 22, 2013 $
  */
 
-public class Patient implements DataStreamSerializable {
+public class Patient
+    implements DataStreamSerializable
+{
 
-	private String clientVersion;
+    private String clientVersion;
 
-	private int id;
+    private int id;
 
-	private String firstName;
+    private String firstName;
 
-	private String middleName;
+    private String middleName;
 
-	private String lastName;
+    private String lastName;
 
-	private int age;
+    private int age;
 
-	private List<PatientAttribute> patientAttValues;
+    private List<PatientAttribute> patientAttValues;
 
-	private PatientAttribute groupAttribute;
+    private PatientAttribute groupAttribute;
 
-	private List<PatientIdentifier> identifiers;
+    private List<PatientIdentifier> identifiers;
 
-	private String gender;
+    private String gender;
 
-	private Date birthDate;
+    private Date birthDate;
 
-	private Date registrationDate;
+    private Date registrationDate;
 
-	private Character dobType;
+    private Character dobType;
 
-	private List<Program> programs;
+    private List<Program> programs;
 
-	private List<Relationship> relationships;
+    private List<Relationship> relationships;
+
+    private String phoneNumber;
 
-	private String phoneNumber;
-
-	private OrganisationUnit organisationUnit;
-
-	public List<PatientIdentifier> getIdentifiers() {
-		return identifiers;
-	}
-
-	public void setIdentifiers(List<PatientIdentifier> identifiers) {
-		this.identifiers = identifiers;
-	}
-
-	public List<Program> getPrograms() {
-		return programs;
-	}
-
-	public void setPrograms(List<Program> programs) {
-		this.programs = programs;
-	}
-
-	public List<Relationship> getRelationships() {
-		return relationships;
-	}
-
-	public void setRelationships(List<Relationship> relationships) {
-		this.relationships = relationships;
-	}
-
-	public String getFullName() {
-		boolean space = false;
-		String name = "";
-
-		if (firstName != null && firstName.length() != 0) {
-			name = firstName;
-			space = true;
-		}
-		if (middleName != null && middleName.length() != 0) {
-			if (space)
-				name += " ";
-			name += middleName;
-			space = true;
-		}
-		if (lastName != null && lastName.length() != 0) {
-			if (space)
-				name += " ";
-			name += lastName;
-		}
-		return name;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public Date getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	public Character getDobType() {
-		return dobType;
-	}
-
-	public void setDobType(Character dobType) {
-		this.dobType = dobType;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public PatientAttribute getGroupAttribute() {
-		return groupAttribute;
-	}
-
-	public void setGroupAttribute(PatientAttribute groupAttribute) {
-		this.groupAttribute = groupAttribute;
-	}
-
-	public List<PatientAttribute> getPatientAttValues() {
-		return patientAttValues;
-	}
-
-	public void setPatientAttValues(List<PatientAttribute> patientAttValues) {
-		this.patientAttValues = patientAttValues;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getClientVersion() {
-		return clientVersion;
-	}
-
-	public void setClientVersion(String clientVersion) {
-		this.clientVersion = clientVersion;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public OrganisationUnit getOrganisationUnit() {
-		return organisationUnit;
-	}
-
-	public void setOrganisationUnit(OrganisationUnit organisationUnit) {
-		this.organisationUnit = organisationUnit;
-	}
-
-	@Override
-	public void serialize(DataOutputStream out) throws IOException {
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		DataOutputStream dout = new DataOutputStream(bout);
-
-		dout.writeInt(this.getId());
-		dout.writeUTF(this.getFirstName());
-		dout.writeUTF(this.getMiddleName());
-		dout.writeUTF(this.getLastName());
-		dout.writeInt(this.getAge());
-		dout.writeUTF(this.getPhoneNumber());
-		dout.writeUTF(this.getGender());
-
-		if (gender != null) {
-			dout.writeBoolean(true);
-			dout.writeUTF(gender);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (dobType != null) {
-			dout.writeBoolean(true);
-			dout.writeChar(dobType);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (birthDate != null) {
-			dout.writeBoolean(true);
-			dout.writeLong(birthDate.getTime());
-		} else {
-			dout.writeBoolean(false);
-		}
-		// doesn't transfer blood group to client
-		dout.writeBoolean(false);
-
-		if (registrationDate != null) {
-			dout.writeBoolean(true);
-			dout.writeLong(registrationDate.getTime());
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (phoneNumber != null) {
-			dout.writeBoolean(true);
-			dout.writeUTF(phoneNumber);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		/*
-		 * Write attribute which is used as group factor of beneficiary - false:
-		 * no group factor, true: with group factor
-		 */
-		if (this.getGroupAttribute() != null) {
-			dout.writeBoolean(true);
-			this.getGroupAttribute().serialize(dout);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		List<PatientAttribute> atts = this.getPatientAttValues();
-		dout.writeInt(atts.size());
-		for (PatientAttribute att : atts) {
-			dout.writeUTF(att.getName() + ":" + att.getValue());
-		}
-
-		// Write PatientIdentifier
-		dout.writeInt(identifiers.size());
-		for (PatientIdentifier each : identifiers) {
-			each.serialize(dout);
-		}
-
-		// Write Enrolled Programs
-
-		dout.writeInt(programs.size());
-		for (Program each : programs) {
-			each.serialize(dout);
-		}
-
-		// Write Relationships
-		dout.writeInt(relationships.size());
-		for (Relationship each : relationships) {
-			each.serialize(dout);
-		}
-
-		bout.flush();
-		bout.writeTo(out);
-	}
-
-	@Override
-	public void deSerialize(DataInputStream din) throws IOException {
-		this.setId(din.readInt());
-		this.setFirstName(din.readUTF());
-		this.setGender(din.readUTF());
-		this.setPhoneNumber(din.readUTF());
-
-		if (din.readBoolean()) {
-			char dobTypeDeserialized = din.readChar();
-			this.setDobType(new Character(dobTypeDeserialized));
-		} else {
-			this.setDobType(null);
-		}
-
-		if (din.readBoolean()) {
-			this.setBirthDate(new Date(din.readLong()));
-		} else {
-			this.setBirthDate(null);
-		}
-
-		if (din.readBoolean()) {
-			this.setRegistrationDate(new Date(din.readLong()));
-		} else {
-			this.setRegistrationDate(null);
-		}
-
-	}
-
-	@Override
-	public boolean equals(Object otherObject) {
-		Beneficiary otherBeneficiary = (Beneficiary) otherObject;
-		return this.getId() == otherBeneficiary.getId();
-	}
-
-	@Override
-	public void serializeVersion2_8(DataOutputStream out) throws IOException {
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		DataOutputStream dout = new DataOutputStream(bout);
-
-		dout.writeInt(this.getId());
-		dout.writeUTF(this.getFirstName());
-		dout.writeUTF(this.getMiddleName());
-		dout.writeUTF(this.getLastName());
-		dout.writeInt(this.getAge());
-
-		if (gender != null) {
-			dout.writeBoolean(true);
-			dout.writeUTF(gender);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (dobType != null) {
-			dout.writeBoolean(true);
-			dout.writeChar(dobType);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (birthDate != null) {
-			dout.writeBoolean(true);
-			dout.writeLong(birthDate.getTime());
-		} else {
-			dout.writeBoolean(false);
-		}
-		// doesn't transfer blood group to client
-		dout.writeBoolean(false);
-
-		if (registrationDate != null) {
-			dout.writeBoolean(true);
-			dout.writeLong(registrationDate.getTime());
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		/*
-		 * Write attribute which is used as group factor of beneficiary - false:
-		 * no group factor, true: with group factor
-		 */
-		if (this.getGroupAttribute() != null) {
-			dout.writeBoolean(true);
-			this.getGroupAttribute().serialize(dout);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		List<PatientAttribute> atts = this.getPatientAttValues();
-		dout.writeInt(atts.size());
-		for (PatientAttribute att : atts) {
-			dout.writeUTF(att.getName() + ":" + att.getValue());
-		}
-
-		// Write PatientIdentifier
-		dout.writeInt(identifiers.size());
-		for (PatientIdentifier each : identifiers) {
-			each.serializeVersion2_8(dout);
-		}
-
-		bout.flush();
-		bout.writeTo(out);
-	}
-
-	@Override
-	public void serializeVersion2_9(DataOutputStream dout) throws IOException {
-		dout.writeInt(this.getId());
-		dout.writeUTF(this.getFirstName());
-		dout.writeUTF(this.getMiddleName());
-		dout.writeUTF(this.getLastName());
-		dout.writeInt(this.getAge());
-
-		if (gender != null) {
-			dout.writeBoolean(true);
-			dout.writeUTF(gender);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (dobType != null) {
-			dout.writeBoolean(true);
-			dout.writeChar(dobType);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		if (birthDate != null) {
-			dout.writeBoolean(true);
-			dout.writeLong(birthDate.getTime());
-		} else {
-			dout.writeBoolean(false);
-		}
-		// doesn't transfer blood group to client
-		dout.writeBoolean(false);
-
-		if (registrationDate != null) {
-			dout.writeBoolean(true);
-			dout.writeLong(registrationDate.getTime());
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		/*
-		 * Write attribute which is used as group factor of beneficiary - false:
-		 * no group factor, true: with group factor
-		 */
-		if (this.getGroupAttribute() != null) {
-			dout.writeBoolean(true);
-			this.getGroupAttribute().serialize(dout);
-		} else {
-			dout.writeBoolean(false);
-		}
-
-		List<PatientAttribute> atts = this.getPatientAttValues();
-		dout.writeInt(atts.size());
-		for (PatientAttribute att : atts) {
-			dout.writeUTF(att.getName() + ":" + att.getValue());
-		}
-
-		// Write PatientIdentifier
-		dout.writeInt(identifiers.size());
-		for (PatientIdentifier each : identifiers) {
-			each.serializeVersion2_9(dout);
-		}
-	}
-
-	@Override
-	public void serializeVersion2_10(DataOutputStream dataOutputStream)
-			throws IOException {
-		// TODO Auto-generated method stub
-
-	}
+    private OrganisationUnit organisationUnit;
+
+    public List<PatientIdentifier> getIdentifiers()
+    {
+        return identifiers;
+    }
+
+    public void setIdentifiers( List<PatientIdentifier> identifiers )
+    {
+        this.identifiers = identifiers;
+    }
+
+    public List<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    public void setPrograms( List<Program> programs )
+    {
+        this.programs = programs;
+    }
+
+    public List<Relationship> getRelationships()
+    {
+        return relationships;
+    }
+
+    public void setRelationships( List<Relationship> relationships )
+    {
+        this.relationships = relationships;
+    }
+
+    public String getFullName()
+    {
+        boolean space = false;
+        String name = "";
+
+        if ( firstName != null && firstName.length() != 0 )
+        {
+            name = firstName;
+            space = true;
+        }
+        if ( middleName != null && middleName.length() != 0 )
+        {
+            if ( space )
+                name += " ";
+            name += middleName;
+            space = true;
+        }
+        if ( lastName != null && lastName.length() != 0 )
+        {
+            if ( space )
+                name += " ";
+            name += lastName;
+        }
+        return name;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
+    }
+
+    public Date getBirthDate()
+    {
+        return birthDate;
+    }
+
+    public void setBirthDate( Date birthDate )
+    {
+        this.birthDate = birthDate;
+    }
+
+    public Date getRegistrationDate()
+    {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate( Date registrationDate )
+    {
+        this.registrationDate = registrationDate;
+    }
+
+    public Character getDobType()
+    {
+        return dobType;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
+    }
+
+    public void setAge( int age )
+    {
+        this.age = age;
+    }
+
+    public PatientAttribute getGroupAttribute()
+    {
+        return groupAttribute;
+    }
+
+    public void setGroupAttribute( PatientAttribute groupAttribute )
+    {
+        this.groupAttribute = groupAttribute;
+    }
+
+    public List<PatientAttribute> getPatientAttValues()
+    {
+        return patientAttValues;
+    }
+
+    public void setPatientAttValues( List<PatientAttribute> patientAttValues )
+    {
+        this.patientAttValues = patientAttValues;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName()
+    {
+        return middleName;
+    }
+
+    public void setMiddleName( String middleName )
+    {
+        this.middleName = middleName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName( String lastName )
+    {
+        this.lastName = lastName;
+    }
+
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
+
+    @Override
+    public void serialize( DataOutputStream out )
+        throws IOException
+    {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getFirstName() );
+        dout.writeUTF( this.getMiddleName() );
+        dout.writeUTF( this.getLastName() );
+        dout.writeInt( this.getAge() );
+        dout.writeUTF( this.getPhoneNumber() );
+        dout.writeUTF( this.getGender() );
+
+        if ( gender != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( gender );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( dobType != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeChar( dobType );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( birthDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( birthDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+        // doesn't transfer blood group to client
+        dout.writeBoolean( false );
+
+        if ( registrationDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( registrationDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( phoneNumber != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( phoneNumber );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        /*
+         * Write attribute which is used as group factor of beneficiary - false:
+         * no group factor, true: with group factor
+         */
+        if ( this.getGroupAttribute() != null )
+        {
+            dout.writeBoolean( true );
+            this.getGroupAttribute().serialize( dout );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        List<PatientAttribute> atts = this.getPatientAttValues();
+        dout.writeInt( atts.size() );
+        for ( PatientAttribute att : atts )
+        {
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
+        }
+
+        // Write PatientIdentifier
+        dout.writeInt( identifiers.size() );
+        for ( PatientIdentifier each : identifiers )
+        {
+            each.serialize( dout );
+        }
+
+        // Write Enrolled Programs
+
+        dout.writeInt( programs.size() );
+        for ( Program each : programs )
+        {
+            each.serialize( dout );
+        }
+
+        // Write Relationships
+        dout.writeInt( relationships.size() );
+        for ( Relationship each : relationships )
+        {
+            each.serialize( dout );
+        }
+
+        bout.flush();
+        bout.writeTo( out );
+    }
+
+    @Override
+    public void deSerialize( DataInputStream din )
+        throws IOException
+    {
+        this.setId( din.readInt() );
+        this.setFirstName( din.readUTF() );
+        this.setGender( din.readUTF() );
+        this.setPhoneNumber( din.readUTF() );
+
+        if ( din.readBoolean() )
+        {
+            char dobTypeDeserialized = din.readChar();
+            this.setDobType( new Character( dobTypeDeserialized ) );
+        }
+        else
+        {
+            this.setDobType( null );
+        }
+
+        if ( din.readBoolean() )
+        {
+            this.setBirthDate( new Date( din.readLong() ) );
+        }
+        else
+        {
+            this.setBirthDate( null );
+        }
+
+        if ( din.readBoolean() )
+        {
+            this.setRegistrationDate( new Date( din.readLong() ) );
+        }
+        else
+        {
+            this.setRegistrationDate( null );
+        }
+
+    }
+
+    @Override
+    public boolean equals( Object otherObject )
+    {
+        Beneficiary otherBeneficiary = (Beneficiary) otherObject;
+        return this.getId() == otherBeneficiary.getId();
+    }
+
+    @Override
+    public void serializeVersion2_8( DataOutputStream out )
+        throws IOException
+    {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getFirstName() );
+        dout.writeUTF( this.getMiddleName() );
+        dout.writeUTF( this.getLastName() );
+        dout.writeInt( this.getAge() );
+
+        if ( gender != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( gender );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( dobType != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeChar( dobType );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( birthDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( birthDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+        // doesn't transfer blood group to client
+        dout.writeBoolean( false );
+
+        if ( registrationDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( registrationDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        /*
+         * Write attribute which is used as group factor of beneficiary - false:
+         * no group factor, true: with group factor
+         */
+        if ( this.getGroupAttribute() != null )
+        {
+            dout.writeBoolean( true );
+            this.getGroupAttribute().serialize( dout );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        List<PatientAttribute> atts = this.getPatientAttValues();
+        dout.writeInt( atts.size() );
+        for ( PatientAttribute att : atts )
+        {
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
+        }
+
+        // Write PatientIdentifier
+        dout.writeInt( identifiers.size() );
+        for ( PatientIdentifier each : identifiers )
+        {
+            each.serializeVersion2_8( dout );
+        }
+
+        bout.flush();
+        bout.writeTo( out );
+    }
+
+    @Override
+    public void serializeVersion2_9( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getFirstName() );
+        dout.writeUTF( this.getMiddleName() );
+        dout.writeUTF( this.getLastName() );
+        dout.writeInt( this.getAge() );
+
+        if ( gender != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( gender );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( dobType != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeChar( dobType );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( birthDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( birthDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+        // doesn't transfer blood group to client
+        dout.writeBoolean( false );
+
+        if ( registrationDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( registrationDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        /*
+         * Write attribute which is used as group factor of beneficiary - false:
+         * no group factor, true: with group factor
+         */
+        if ( this.getGroupAttribute() != null )
+        {
+            dout.writeBoolean( true );
+            this.getGroupAttribute().serialize( dout );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        List<PatientAttribute> atts = this.getPatientAttValues();
+        dout.writeInt( atts.size() );
+        for ( PatientAttribute att : atts )
+        {
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
+        }
+
+        // Write PatientIdentifier
+        dout.writeInt( identifiers.size() );
+        for ( PatientIdentifier each : identifiers )
+        {
+            each.serializeVersion2_9( dout );
+        }
+    }
+
+    @Override
+    public void serializeVersion2_10( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+
+    }
 
 }

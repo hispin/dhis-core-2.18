@@ -80,8 +80,6 @@ import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ActivityReportingServiceImpl
@@ -603,7 +601,8 @@ public class ActivityReportingServiceImpl
             enrollmentProgramMobile.setProgramStages( null );
             enrollmentProgramListMobileList.add( enrollmentProgramMobile );
         }
-        patientModel.setEnrollmentPrograms( enrollmentProgramListMobileList );
+        
+        patientModel.setPrograms( enrollmentProgramListMobileList );
         
         return patientModel;
     }
@@ -1008,7 +1007,6 @@ public class ActivityReportingServiceImpl
         Patient patient = patientService.getPatient( patientId );
         Program program = programService.getProgram( programId );
         
-        DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
         ProgramInstance programInstance = new ProgramInstance();
         //programInstance.setEnrollmentDate( sdf.parseDateTime( enrollmentDate ).toDate() );
         //programInstance.setDateOfIncident( sdf.parseDateTime( incidentDate ).toDate() );
