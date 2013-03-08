@@ -13,7 +13,6 @@ function showPatientAttributeDetails( patientAttributeId )
 			var inherit = ( json.patientAttribute.inherit == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'inheritField', inherit );
 			setInnerHTML( 'valueTypeField', json.patientAttribute.valueType );    
-			setInnerHTML( 'expressionField', json.patientAttribute.expression ); 
 			
 			showDetails();
 	});
@@ -32,7 +31,7 @@ ATTRIBUTE_OPTION =
 {
 	selectValueType : 	function (this_)
 	{
-		if ( jQuery(this_).val() == "COMBO" )
+		if ( jQuery(this_).val() == "combo" )
 		{
 			hideById("calculatedAttrTR");
 			hideById("expressionTR");
