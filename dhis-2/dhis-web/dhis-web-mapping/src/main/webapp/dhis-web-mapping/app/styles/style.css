@@ -491,6 +491,9 @@ html * {
 .gis-grid .x-grid-row { /* middle align text in row with image */
 	vertical-align: middle;
 }
+.gis-grid .x-grid-row .x-grid-cell { /* remove blurry borders */
+	border-top: 0 none;
+}
 
 .gis-grid .link,
 .gis-grid .link * {

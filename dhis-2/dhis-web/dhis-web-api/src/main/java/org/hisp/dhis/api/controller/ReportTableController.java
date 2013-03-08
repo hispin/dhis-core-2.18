@@ -47,13 +47,16 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -176,9 +179,24 @@ public class ReportTableController
     }
     
     @Override
-    protected void postProcessEntity( ReportTable reportTable )
+    protected void postProcessEntity( ReportTable reportTable ) throws Exception
     {
+        I18nFormat format = i18nManager.getI18nFormat();
+        
         reportTable.populatePresentationProps();
+        
+        for ( OrganisationUnit organisationUnit : reportTable.getOrganisationUnits() )
+        {
+            reportTable.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+        }
+        
+        if ( reportTable.getPeriods() != null && !reportTable.getPeriods().isEmpty() )
+        {
+            for ( Period period : reportTable.getPeriods() )
+            {
+                period.setName( format.formatPeriod( period ) );
+            }
+        }
     }
     
     //--------------------------------------------------------------------------

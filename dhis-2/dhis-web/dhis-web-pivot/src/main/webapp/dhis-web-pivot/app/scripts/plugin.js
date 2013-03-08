@@ -14,7 +14,7 @@ settings = {
 	],
 	options: {
 		showSubTotals: false,
-		cellPadding: 'normal',
+		displayDensity: 'normal',
 		fontSize: 'normal'
 	}
 };
@@ -58,7 +58,7 @@ xSettings = {
 	},
 	options: {
 		showSubTotals: false,
-		cellPadding: 'normal',
+		displayDensity: 'normal',
 		fontSize: 'normal'
 	}
 };

@@ -418,6 +418,11 @@ public class ReportTable
      */
     private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
+    /**
+     * Map linking organisation unit uids and parent graphs.
+     */
+    private Map<String, String> parentGraphMap = new HashMap<String, String>();
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -1633,5 +1638,17 @@ public class ReportTable
             removeAllFilterDimensions();
             filterDimensions.addAll( reportTable.getFilterDimensions() );
         }
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    public Map<String, String> getParentGraphMap()
+    {
+        return parentGraphMap;
+    }
+
+    public void setParentGraphMap( Map<String, String> parentGraphMap )
+    {
+        this.parentGraphMap = parentGraphMap;
     }
 }

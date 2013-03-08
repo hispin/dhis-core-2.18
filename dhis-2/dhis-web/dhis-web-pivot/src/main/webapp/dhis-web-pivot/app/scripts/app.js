@@ -94,7 +94,8 @@ Ext.onReady( function() {
 			config = {
 				col: [],
 				row: [],
-				filter: []
+				filter: [],
+				objects: []
 			};
 
 			getData = function() {
@@ -105,42 +106,44 @@ Ext.onReady( function() {
 					dim = panels[i].getData();
 
 					if (dim) {
-						if (dim.name === pt.conf.finals.dimension.data.paramName) {
+						config.objects.push(dim);
+
+						if (dim.dimensionName === pt.conf.finals.dimension.data.dimensionName) {
 							dxItems = dxItems.concat(dim.items);
 						}
 						else {
-							data[dim.name] = dim.items;
+							data[dim.dimensionName] = dim.items;
 						}
 					}
 				}
 
 				if (dxItems.length) {
-					data[pt.conf.finals.dimension.data.paramName] = dxItems;
+					data[pt.conf.finals.dimension.data.dimensionName] = dxItems;
 				}
 			}();
 
 			extendSettings = function() {
-				for (var i = 0, name; i < setup.col.length; i++) {
-					name = setup.col[i];
+				for (var i = 0, dimensionName; i < setup.col.length; i++) {
+					dimensionName = setup.col[i];
 					config.col.push({
-						name: name,
-						items: data[name]
+						dimensionName: dimensionName,
+						items: data[dimensionName]
 					});
 				}
 
-				for (var i = 0, name; i < setup.row.length; i++) {
-					name = setup.row[i];
+				for (var i = 0, dimensionName; i < setup.row.length; i++) {
+					dimensionName = setup.row[i];
 					config.row.push({
-						name: name,
-						items: data[name]
+						dimensionName: dimensionName,
+						items: data[dimensionName]
 					});
 				}
 
-				for (var i = 0, name; i < setup.filter.length; i++) {
-					name = setup.filter[i];
+				for (var i = 0, dimensionName; i < setup.filter.length; i++) {
+					dimensionName = setup.filter[i];
 					config.filter.push({
-						name: name,
-						items: data[name]
+						dimensionName: dimensionName,
+						items: data[dimensionName]
 					});
 				}
 			}();
@@ -267,6 +270,48 @@ Ext.onReady( function() {
 			data: []
 		});
 
+		store.tables = Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'lastUpdated'],
+			proxy: {
+				type: 'ajax',
+				reader: {
+					type: 'json',
+					root: 'reportTables'
+				}
+			},
+			isLoaded: false,
+			pageSize: 10,
+			page: 1,
+			defaultUrl: pt.baseUrl + '/api/reportTables.json?links=false',
+			loadStore: function(url) {
+				this.proxy.url = url || this.defaultUrl;
+
+				this.load({
+					params: {
+						pageSize: this.pageSize,
+						page: this.page
+					}
+				});
+			},
+			loadFn: function(fn) {
+				if (this.isLoaded) {
+					fn.call();
+				}
+				else {
+					this.load(fn);
+				}
+			},
+			listeners: {
+				load: function() {
+					if (!this.isLoaded) {
+						this.isLoaded = true;
+					}
+
+					this.sort('name', 'ASC');
+				}
+			}
+		});
+
 		return store;
 	};
 
@@ -321,7 +366,7 @@ Ext.onReady( function() {
 			dimConf = pt.conf.finals.dimension;
 
 		dimensionOrder = function() {
-			var order = [dimConf.data.paramName, dimConf.category.paramName, dimConf.period.paramName, dimConf.organisationUnit.paramName],
+			var order = [dimConf.data.dimensionName, dimConf.category.dimensionName, dimConf.period.dimensionName, dimConf.organisationUnit.dimensionName],
 				ougsOrder = [];
 
 			for (var i = 0; i < pt.init.ougs.length; i++) {
@@ -331,8 +376,19 @@ Ext.onReady( function() {
 			return order.concat(ougsOrder);
 		}();
 
-		getData = function() {
-			var data = [{id: dimConf.category.paramName, name: dimConf.category.rawValue}];
+		getData = function(all) {
+			var data = [];
+
+			if (all) {
+				data.push({id: dimConf.data.dimensionName, name: dimConf.data.rawValue});
+			}
+
+			data.push({id: dimConf.category.dimensionName, name: dimConf.category.rawValue});
+
+			if (all) {
+				data.push({id: dimConf.period.dimensionName, name: dimConf.period.rawValue});
+				data.push({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.rawValue});
+			}
 
 			return data.concat(pt.init.ougs, pt.init.degs);
 		};
@@ -363,15 +419,23 @@ Ext.onReady( function() {
 		};
 
 		dimensionStore = getStore(getData());
+		dimensionStore.reset = function(all) {
+			dimensionStore.removeAll();
+			dimensionStore.add(getData(all));
+		};
+		pt.viewport.dimensionStore = dimensionStore;
 
 		rowStore = getStore();
-		rowStore.add({id: dimConf.period.paramName, name: dimConf.period.rawValue}); //i18n
+		pt.viewport.rowStore = rowStore;
+		rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.rawValue}); //i18n
 
 		colStore = getStore();
-		colStore.add({id: dimConf.data.paramName, name: dimConf.data.rawValue}); //i18n
+		pt.viewport.colStore = colStore;
+		colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.rawValue}); //i18n
 
 		filterStore = getStore();
-		filterStore.add({id: dimConf.organisationUnit.paramName, name: dimConf.organisationUnit.rawValue}); //i18n
+		pt.viewport.filterStore = filterStore;
+		filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.rawValue}); //i18n
 
 		getCmpHeight = function() {
 			var size = dimensionStore.totalCount,
@@ -610,7 +674,7 @@ Ext.onReady( function() {
 	PT.app.OptionsWindow = function() {
 		var showSubTotals,
 			hideEmptyRows,
-			cellPadding,
+			displayDensity,
 			fontSize,
 
 			data,
@@ -618,15 +682,17 @@ Ext.onReady( function() {
 			window;
 
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Show sub totals', //i18n
+			boxLabel: 'Show sub-totals', //i18n
 			checked: true
 		});
+		pt.viewport.showSubTotals = showSubTotals;
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: 'Hide empty rows' //i18n
 		});
+		pt.viewport.hideEmptyRows = hideEmptyRows;
 
-		cellPadding = Ext.create('Ext.form.field.ComboBox', {
+		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			fieldLabel: 'Display density',
 			labelStyle: 'color:#333',
 			cls: 'pt-combo',
@@ -644,6 +710,7 @@ Ext.onReady( function() {
 				]
 			})
 		});
+		pt.viewport.displayDensity = displayDensity;
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			xtype: 'combobox',
@@ -664,6 +731,7 @@ Ext.onReady( function() {
 				]
 			})
 		});
+		pt.viewport.fontSize = fontSize;
 
 		data = {
 			bodyStyle: 'border:0 none',
@@ -678,7 +746,7 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				cellPadding,
+				displayDensity,
 				fontSize
 			]
 		};
@@ -694,7 +762,7 @@ Ext.onReady( function() {
 				return {
 					showSubTotals: showSubTotals.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
-					cellPadding: cellPadding.getValue(),
+					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue()
 				};
 			},
@@ -760,6 +828,9 @@ Ext.onReady( function() {
 		// Instances
 			nameWindow,
 
+		// Functions
+			getBody,
+
 		// Components
 			addButton,
 			searchTextfield,
@@ -778,13 +849,121 @@ Ext.onReady( function() {
 
 			mapWindow;
 
-		pt.store.maps.on('load', function(store, records) {
+		pt.store.tables.on('load', function(store, records) {
 			info.setText(records.length + ' favorite' + (records.length !== 1 ? 's' : '') + ' available');
 		});
 
+		getBody = function() {
+			var name = nameTextfield.getValue(),
+				system = systemCheckbox.getValue(),
+				favorite;
+
+			if (pt.xSettings) {
+				favorite = Ext.clone(pt.xSettings.options);
+
+				favorite.name = name;
+				favorite.user = system ? null : {id: 'currentUser'};
+
+				// Dimensions
+				for (var i = 0, obj, key, items; i < pt.xSettings.objects.length; i++) {
+					obj = pt.xSettings.objects[i];
+
+					if (obj.objectName === pt.conf.finals.dimension.period.objectName) {
+						for (var j = 0, item; j < obj.items.length; j++) {
+							item = obj.items[j];
+
+							if (pt.conf.period.relativePeriodValueKeys[item]) {
+								key = pt.conf.finals.dimension.relativePeriod.value;
+
+								if (!favorite[key]) {
+									favorite[key] = {};
+								}
+
+								favorite[key][pt.conf.period.relativePeriodValueKeys[item]] = true;
+							}
+							else {
+								key = pt.conf.finals.dimension.fixedPeriod.value;
+
+								if (!favorite[key]) {
+									favorite[key] = [];
+								}
+
+								favorite[key].push({
+									id: item
+								});
+							}
+						}
+					}
+					else if (obj.objectName === pt.conf.finals.dimension.organisationUnitGroupSet.objectName ||
+							 obj.objectName === pt.conf.finals.dimension.dataElementGroupSet.objectName) {
+						key = pt.conf.finals.dimension.objectNameMap[obj.objectName].value;
+
+						if (!favorite[key]) {
+							favorite[key] = {};
+						}
+
+						favorite[key][obj.dimensionName] = [];
+
+						for (var j = 0, item; j < obj.items.length; j++) {
+							item = obj.items[j];
+
+							favorite[key][obj.dimensionName].push({
+								id: item
+							});
+						}
+					}
+					else {
+						key = pt.conf.finals.dimension.objectNameMap[obj.objectName].value;
+						favorite[key] = [];
+
+						for (var j = 0, item; j < obj.items.length; j++) {
+							item = obj.items[j];
+
+							favorite[key].push({
+								id: item
+							});
+						}
+					}
+				}
+
+				// Setup
+				if (pt.xSettings.col) {
+					var a = [];
+
+					for (var i = 0; i < pt.xSettings.col.length; i++) {
+						a.push(pt.xSettings.col[i].dimensionName);
+					}
+
+					favorite['columnDimensions'] = a;
+				}
+
+				if (pt.xSettings.row) {
+					var a = [];
+
+					for (var i = 0; i < pt.xSettings.row.length; i++) {
+						a.push(pt.xSettings.row[i].dimensionName);
+					}
+
+					favorite['rowDimensions'] = a;
+				}
+
+				if (pt.xSettings.filter) {
+					var a = [];
+
+					for (var i = 0; i < pt.xSettings.filter.length; i++) {
+						a.push(pt.xSettings.filter[i].dimensionName);
+					}
+
+					favorite['filterDimensions'] = a;
+				}
+			}
+
+			return favorite;
+		};
+
 		NameWindow = function(id) {
 			var window,
-				record = gis.store.maps.getById(id);
+				record = pt.store.tables.getById(id);
 
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
@@ -804,72 +983,36 @@ Ext.onReady( function() {
 				labelWidth: 70,
 				fieldLabel: 'System', //i18n
 				style: 'margin-bottom: 0',
-				disabled: !gis.init.security.isAdmin,
+				disabled: !pt.init.user.isAdmin,
 				checked: !id ? false : (record.data.user ? false : true)
 			});
 
 			createButton = Ext.create('Ext.button.Button', {
 				text: 'Create', //i18n
 				handler: function() {
-					var name = nameTextfield.getValue(),
-						system = systemCheckbox.getValue(),
-						layers = gis.util.map.getVisibleVectorLayers(),
-						layer,
-						lonlat = gis.olmap.getCenter(),
-						views = [],
-						view,
-						map;
+					var favorite = getBody();
 
-					if (layers.length) {
-						if (name) {
-							for (var i = 0; i < layers.length; i++) {
-								layer = layers[i];
-								view = layer.widget.getView();
+					if (favorite) {
+						Ext.Ajax.request({
+							url: pt.baseUrl + '/api/reportTables/',
+							method: 'POST',
+							headers: {'Content-Type': 'application/json'},
+							params: Ext.encode(favorite),
+							success: function(r) {
+								var id = r.getAllResponseHeaders().location.split('/').pop();
 
-								// add
-								view.layer = layer.id;
+								pt.favorite = favorite;
 
-								// remove
-								delete view.periodType;
-								views.push(view);
+								pt.store.tables.loadStore();
+
+								//pt.viewport.interpretationButton.enable();
+
+								window.destroy();
 							}
-
-							map = {
-								name: name,
-								longitude: lonlat.lon,
-								latitude: lonlat.lat,
-								zoom: gis.olmap.getZoom(),
-								mapViews: views
-							};
-
-							if (!system) {
-								map.user = {
-									id: 'currentUser'
-								};
-							}
-
-							Ext.Ajax.request({
-								url: gis.baseUrl + gis.conf.url.path_api + 'maps/',
-								method: 'POST',
-								headers: {'Content-Type': 'application/json'},
-								params: Ext.encode(map),
-								success: function(r) {
-									var id = r.getAllResponseHeaders().location.split('/').pop();
-
-									gis.store.maps.loadStore();
-
-									gis.viewport.interpretationButton.enable();
-
-									window.destroy();
-								}
-							});
-						}
-						else {
-							alert('Please enter a name');
-						}
+						});
 					}
 					else {
-						alert('Please create a map first');
+						alert('Please create a table first');
 					}
 				}
 			});
@@ -881,9 +1024,9 @@ Ext.onReady( function() {
 						system = systemCheckbox.getValue();
 
 					Ext.Ajax.request({
-						url: gis.baseUrl + gis.conf.url.path_gis + 'renameMap.action?id=' + id + '&name=' + name + '&user=' + !system,
+						url: pt.baseUrl + pt.conf.finals.ajax.path_pivot + 'renameMap.action?id=' + id + '&name=' + name + '&user=' + !system,
 						success: function() {
-							gis.store.maps.loadStore();
+							pt.store.tables.loadStore();
 
 							window.destroy();
 						}
@@ -900,8 +1043,8 @@ Ext.onReady( function() {
 
 			window = Ext.create('Ext.window.Window', {
 				title: id ? 'Rename favorite' : 'Create new favorite',
-				iconCls: 'gis-window-title-icon-favorite',
-				cls: 'gis-container-default',
+				//iconCls: 'pt-window-title-icon-favorite',
+				bodyStyle: 'padding:8px; background:#fff',
 				resizable: false,
 				modal: true,
 				items: [
@@ -914,8 +1057,8 @@ Ext.onReady( function() {
 					id ? updateButton : createButton
 				],
 				listeners: {
-					show: function() {
-						this.setPosition(mapWindow.x + 14, mapWindow.y + 67);
+					show: function(w) {
+						pt.util.window.setAnchorPosition(w, pt.viewport.favoriteButton);
 					}
 				}
 			});
@@ -938,7 +1081,7 @@ Ext.onReady( function() {
 		searchTextfield = Ext.create('Ext.form.field.Text', {
 			width: 340,
 			height: 26,
-			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb',
+			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
 			emptyText: 'Search for favorites', //i18n
 			enableKeyEvents: true,
 			currentValue: '',
@@ -948,8 +1091,8 @@ Ext.onReady( function() {
 						this.currentValue = this.getValue();
 
 						var value = this.getValue(),
-							url = value ? gis.baseUrl + gis.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
-							store = gis.store.maps;
+							url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
+							store = pt.store.tables;
 
 						store.page = 1;
 						store.loadStore(url);
@@ -962,8 +1105,8 @@ Ext.onReady( function() {
 			text: 'Prev', //i18n
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.baseUrl + gis.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
-					store = gis.store.maps;
+					url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
+					store = pt.store.tables;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
 				store.loadStore(url);
@@ -974,8 +1117,8 @@ Ext.onReady( function() {
 			text: 'Next', //i18n
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.baseUrl + gis.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
-					store = gis.store.maps;
+					url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
+					store = pt.store.tables;
 
 				store.page = store.page + 1;
 				store.loadStore(url);
@@ -983,15 +1126,17 @@ Ext.onReady( function() {
 		});
 
 		info = Ext.create('Ext.form.Label', {
-			cls: 'gis-label-info',
+			cls: 'pt-label-info',
 			width: 300,
 			height: 22
 		});
 
 		grid = Ext.create('Ext.grid.Panel', {
-			cls: 'gis-grid',
+			cls: 'pt-grid',
 			scroll: false,
 			hideHeaders: true,
+			bodyStyle: 'padding-bottom:1px solid red !important',
+			style: 'padding-bottom:1px solid red !important',
 			columns: [
 				{
 					dataIndex: 'name',
@@ -1003,9 +1148,9 @@ Ext.onReady( function() {
 							if (el) {
 								el = el.parent('td');
 								el.addClsOnOver('link');
-								el.gis = gis;
-								el.map = {id: record.data.id};
-								el.dom.setAttribute('onclick', 'Ext.get(this).gis.map = Ext.get(this).map; GIS.core.MapLoader(Ext.get(this).gis).load();');
+								el.pt = pt;
+								el.favoriteId = record.data.id;
+								el.dom.setAttribute('onclick', 'Ext.get(this).pt.util.pivot.loadTable(Ext.get(this).favoriteId);');
 							}
 						};
 
@@ -1020,20 +1165,20 @@ Ext.onReady( function() {
 					width: 80,
 					items: [
 						{
-							iconCls: 'gis-grid-row-icon-edit',
+							iconCls: 'pt-grid-row-icon-edit',
 							getClass: function(value, metaData, record) {
 								var system = !record.data.user,
-									isAdmin = gis.init.security.isAdmin;
+									isAdmin = pt.init.user.isAdmin;
 
 								if (isAdmin || (!isAdmin && !system)) {
-									return 'tooltip-map-edit';
+									return 'tooltip-favorite-edit';
 								}
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
 									id = record.data.id,
 									system = !record.data.user,
-									isAdmin = gis.init.security.isAdmin;
+									isAdmin = pt.init.user.isAdmin;
 
 								if (isAdmin || (!isAdmin && !system)) {
 									var id = this.up('grid').store.getAt(rowIndex).data.id;
@@ -1043,72 +1188,48 @@ Ext.onReady( function() {
 							}
 						},
 						{
-							iconCls: 'gis-grid-row-icon-overwrite',
+							iconCls: 'pt-grid-row-icon-overwrite',
 							getClass: function(value, metaData, record) {
 								var system = !record.data.user,
-									isAdmin = gis.init.security.isAdmin;
+									isAdmin = pt.init.user.isAdmin;
 
 								if (isAdmin || (!isAdmin && !system)) {
-									return 'tooltip-map-overwrite';
+									return 'tooltip-favorite-overwrite';
 								}
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
 									id = record.data.id,
 									name = record.data.name,
-									layers = gis.util.map.getVisibleVectorLayers(),
-									layer,
-									lonlat = gis.olmap.getCenter(),
-									views = [],
-									view,
-									map,
-									message = 'Overwrite favorite?\n\n' + name;
+									message = 'Overwrite favorite?\n\n' + name,
+									favorite = getBody();
 
-								if (layers.length) {
+								if (favorite) {
 									if (confirm(message)) {
-										for (var i = 0; i < layers.length; i++) {
-											layer = layers[i];
-											view = layer.core.view;
-
-											// add
-											view.layer = layer.id;
-
-											// remove
-											delete view.periodType;
-
-											views.push(view);
-										}
-
-										map = {
-											longitude: lonlat.lon,
-											latitude: lonlat.lat,
-											zoom: gis.olmap.getZoom(),
-											mapViews: views
-										};
-
 										Ext.Ajax.request({
-											url: gis.baseUrl + gis.conf.url.path_api + 'maps/' + id,
+											url: pt.baseUrl + '/api/reportTables/' + id,
 											method: 'PUT',
 											headers: {'Content-Type': 'application/json'},
-											params: Ext.encode(map),
+											params: Ext.encode(favorite),
 											success: function() {
-												gis.map = map;
-												gis.viewport.interpretationButton.enable();
+												pt.favorite = favorite;
 
-												gis.store.maps.loadStore();
+												//pt.viewport.interpretationButton.enable();
+
+												pt.store.tables.loadStore();
 											}
 										});
 									}
 								}
 								else {
-									alert('No layers to save'); //i18n
+									alert('Please create a table first'); //i18n
 								}
 							}
 						},
 						{
-							iconCls: 'gis-grid-row-icon-dashboard',
+							iconCls: 'pt-grid-row-icon-dashboard',
 							getClass: function() {
-								return 'tooltip-map-dashboard';
+								return 'tooltip-favorite-dashboard';
 							},
 							handler: function(grid, rowIndex) {
 								var record = this.up('grid').store.getAt(rowIndex),
@@ -1118,7 +1239,7 @@ Ext.onReady( function() {
 
 								if (confirm(message)) {
 									Ext.Ajax.request({
-										url: gis.baseUrl + gis.conf.url.path_gis + 'addMapViewToDashboard.action',
+										url: pt.baseUrl + pt.conf.finals.ajax.path_pivot + 'addMapViewToDashboard.action',
 										params: {
 											id: id
 										}
@@ -1127,13 +1248,13 @@ Ext.onReady( function() {
 							}
 						},
 						{
-							iconCls: 'gis-grid-row-icon-delete',
+							iconCls: 'pt-grid-row-icon-delete',
 							getClass: function(value, metaData, record) {
 								var system = !record.data.user,
-									isAdmin = gis.init.security.isAdmin;
+									isAdmin = pt.init.user.isAdmin;
 
 								if (isAdmin || (!isAdmin && !system)) {
-									return 'tooltip-map-delete';
+									return 'tooltip-favorite-delete';
 								}
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
@@ -1144,10 +1265,10 @@ Ext.onReady( function() {
 
 								if (confirm(message)) {
 									Ext.Ajax.request({
-										url: gis.baseUrl + gis.conf.url.path_api + 'maps/' + id,
+										url: pt.baseUrl + '/api/reportTables/' + id,
 										method: 'DELETE',
 										success: function() {
-											gis.store.maps.loadStore();
+											pt.store.tables.loadStore();
 										}
 									});
 								}
@@ -1155,8 +1276,8 @@ Ext.onReady( function() {
 						}
 					],
 					renderer: function(value, metaData, record) {
-						if (!gis.init.security.isAdmin && !record.data.user) {
-							metaData.tdCls = 'gis-grid-row-icon-disabled';
+						if (!pt.init.user.isAdmin && !record.data.user) {
+							metaData.tdCls = 'pt-grid-row-icon-disabled';
 						}
 					}
 				},
@@ -1165,7 +1286,7 @@ Ext.onReady( function() {
 					width: 6
 				}
 			],
-			store: gis.store.maps,
+			store: pt.store.tables,
 			bbar: [
 				info,
 				'->',
@@ -1174,15 +1295,15 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				added: function() {
-					gis.viewport.mapGrid = this;
+					pt.viewport.favoriteGrid = this;
 				},
 				render: function() {
-					var size = Math.floor((gis.viewport.centerRegion.getHeight() - 155) / gis.conf.layout.grid.row_height);
+					var size = Math.floor((pt.viewport.centerRegion.getHeight() - 155) / pt.conf.layout.grid_row_height);
 					this.store.pageSize = size;
 					this.store.page = 1;
 					this.store.loadStore();
 
-					gis.store.maps.on('load', function() {
+					pt.store.tables.on('load', function() {
 						if (this.isVisible()) {
 							this.fireEvent('afterrender');
 						}
@@ -1190,10 +1311,10 @@ Ext.onReady( function() {
 				},
 				afterrender: function() {
 					var fn = function() {
-						var editArray = document.getElementsByClassName('tooltip-map-edit'),
-							overwriteArray = document.getElementsByClassName('tooltip-map-overwrite'),
-							dashboardArray = document.getElementsByClassName('tooltip-map-dashboard'),
-							deleteArray = document.getElementsByClassName('tooltip-map-delete'),
+						var editArray = document.getElementsByClassName('tooltip-favorite-edit'),
+							overwriteArray = document.getElementsByClassName('tooltip-favorite-overwrite'),
+							dashboardArray = document.getElementsByClassName('tooltip-favorite-dashboard'),
+							deleteArray = document.getElementsByClassName('tooltip-favorite-delete'),
 							el;
 
 						for (var i = 0; i < deleteArray.length; i++) {
@@ -1252,10 +1373,10 @@ Ext.onReady( function() {
 			}
 		});
 
-		mapWindow = Ext.create('Ext.window.Window', {
+		favoriteWindow = Ext.create('Ext.window.Window', {
 			title: 'Manage favorites',
-			iconCls: 'gis-window-title-icon-favorite',
-			cls: 'gis-container-default',
+			//iconCls: 'pt-window-title-icon-favorite',
+			bodyStyle: 'padding: 8px; background-color:#fff',
 			resizable: false,
 			modal: true,
 			width: 450,
@@ -1264,7 +1385,7 @@ Ext.onReady( function() {
 					xtype: 'panel',
 					layout: 'hbox',
 					width: 422,
-					cls: 'gis-container-inner',
+					bodyStyle: 'border:0 none',
 					items: [
 						addButton,
 						{
@@ -1279,13 +1400,13 @@ Ext.onReady( function() {
 				grid
 			],
 			listeners: {
-				show: function() {
-					this.setPosition(115, 37);
+				show: function(w) {
+					pt.util.window.setAnchorPosition(w, pt.viewport.favoriteButton);
 				}
 			}
 		});
 
-		return mapWindow;
+		return favoriteWindow;
 	};
 
 	PT.app.init.onInitialize = function(r) {
@@ -1307,6 +1428,7 @@ Ext.onReady( function() {
 				fixedPeriodSelected,
 				period,
 				organisationUnit,
+				groupSetIdStoreMap,
 				getGroupSetPanels,
 				validateSpecialCases,
 				update,
@@ -1318,8 +1440,10 @@ Ext.onReady( function() {
 				accordion,
 				westRegion,
 				centerRegion,
-				viewport,
 
+				setFavorite,
+
+				viewport,
 				addListeners;
 
 			indicatorAvailable = Ext.create('Ext.ux.form.MultiSelect', {
@@ -1408,7 +1532,8 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.indicator.paramName,
+						dimensionName: pt.conf.finals.dimension.indicator.dimensionName,
+						objectName: pt.conf.finals.dimension.indicator.objectName,
 						items: []
 					};
 
@@ -1599,7 +1724,8 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.indicator.paramName,
+						dimensionName: pt.conf.finals.dimension.dataElement.dimensionName,
+						objectName: pt.conf.finals.dimension.dataElement.objectName,
 						items: []
 					};
 
@@ -1786,7 +1912,8 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.indicator.paramName,
+						dimensionName: pt.conf.finals.dimension.dataSet.dimensionName,
+						objectName: pt.conf.finals.dimension.dataSet.objectName,
 						items: []
 					};
 
@@ -1830,7 +1957,7 @@ Ext.onReady( function() {
 			};
 
 			rewind = Ext.create('Ext.form.field.Checkbox', {
-				paramName: 'rewind',
+				relativePeriodId: 'rewind',
 				boxLabel: 'Rewind one period',
 				xable: function() {
 					this.setDisabled(pt.util.checkbox.isAllFalse());
@@ -1842,6 +1969,7 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				autoScroll: true,
 				bodyStyle: 'border:0 none',
+				valueComponentMap: {},
 				items: [
 					{
 						xtype: 'panel',
@@ -1859,6 +1987,7 @@ Ext.onReady( function() {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
 												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
 											}
 										},
 										change: function() {
@@ -1874,17 +2003,17 @@ Ext.onReady( function() {
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_MONTH',
+										relativePeriodId: 'LAST_MONTH',
 										boxLabel: 'Last month', //i18n pt.i18n.last_month
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_3_MONTHS',
+										relativePeriodId: 'LAST_3_MONTHS',
 										boxLabel: 'Last 3 months', //i18n pt.i18n.last_3_months
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_12_MONTHS',
+										relativePeriodId: 'LAST_12_MONTHS',
 										boxLabel: 'Last 12 months', //i18n pt.i18n.last_12_months,
 										checked: true
 									}
@@ -1901,6 +2030,7 @@ Ext.onReady( function() {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
 												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
 											}
 										},
 										change: function() {
@@ -1916,12 +2046,12 @@ Ext.onReady( function() {
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_QUARTER',
+										relativePeriodId: 'LAST_QUARTER',
 										boxLabel: 'Last quarter', //i18n pt.i18n.last_quarter
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_4_QUARTERS',
+										relativePeriodId: 'LAST_4_QUARTERS',
 										boxLabel: 'Last 4 quarters', //i18n pt.i18n.last_4_quarters
 									}
 								]
@@ -1937,6 +2067,7 @@ Ext.onReady( function() {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
 												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
 											}
 										},
 										change: function() {
@@ -1952,12 +2083,12 @@ Ext.onReady( function() {
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_SIX_MONTH',
+										relativePeriodId: 'LAST_SIX_MONTH',
 										boxLabel: 'Last six-month', //i18n pt.i18n.last_six_month
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_2_SIXMONTHS',
+										relativePeriodId: 'LAST_2_SIXMONTHS',
 										boxLabel: 'Last two six-months', //i18n pt.i18n.last_two_six_month
 									}
 								]
@@ -1980,6 +2111,7 @@ Ext.onReady( function() {
 										added: function(chb) {
 											if (chb.xtype === 'checkbox') {
 												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
 											}
 										},
 										change: function() {
@@ -1995,17 +2127,17 @@ Ext.onReady( function() {
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'THIS_YEAR',
+										relativePeriodId: 'THIS_YEAR',
 										boxLabel: 'This year', //i18n pt.i18n.this_year
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_YEAR',
+										relativePeriodId: 'LAST_YEAR',
 										boxLabel: 'Last year', //i18n pt.i18n.last_year
 									},
 									{
 										xtype: 'checkbox',
-										paramName: 'LAST_5_YEARS',
+										relativePeriodId: 'LAST_5_YEARS',
 										boxLabel: 'Last 5 years', //i18n pt.i18n.last_5_years
 									}
 								]
@@ -2121,7 +2253,8 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
-						name: pt.conf.finals.dimension.period.paramName,
+							dimensionName: pt.conf.finals.dimension.period.dimensionName,
+							objectName: pt.conf.finals.dimension.period.objectName,
 							items: []
 						},
 						chb = pt.cmp.dimension.relativePeriod.checkbox;
@@ -2132,7 +2265,7 @@ Ext.onReady( function() {
 
 					for (var i = 0; i < chb.length; i++) {
 						if (chb[i].getValue()) {
-							data.items.push(chb[i].paramName);
+							data.items.push(chb[i].relativePeriodId);
 						}
 					}
 
@@ -2160,8 +2293,9 @@ Ext.onReady( function() {
 								width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 62 - 62 - 7,
 								valueField: 'id',
 								displayField: 'name',
-								fieldLabel: 'Select type', //i18n pt.i18n.select_type,
+								fieldLabel: 'Select period type', //i18n pt.i18n.select_type,
 								labelStyle: 'padding-left:8px',
+								labelWidth: 110,
 								editable: false,
 								queryMode: 'remote',
 								store: pt.store.periodType,
@@ -2241,7 +2375,8 @@ Ext.onReady( function() {
 				getData: function() {
 					var records = pt.cmp.dimension.organisationUnit.treepanel.getSelectionModel().getSelection(),
 						data = {
-							name: 'ou',
+							dimensionName: pt.conf.finals.dimension.organisationUnit.dimensionName,
+							objectName: pt.conf.finals.dimension.organisationUnit.objectName,
 							items: []
 						};
 
@@ -2486,6 +2621,7 @@ Ext.onReady( function() {
 						listeners: {
 							added: function() {
 								pt.cmp.dimension.organisationUnit.treepanel = this;
+								organisationUnit.treePanel = this;
 							},
 							render: function() {
 								this.rendered = true;
@@ -2536,7 +2672,9 @@ Ext.onReady( function() {
 				}
 			};
 
-			getGroupSetPanels = function(groupSets, iconCls) {
+			groupSetIdStoreMap = {};
+
+			getGroupSetPanels = function(groupSets, objectName, iconCls) {
 				var	getAvailableStore,
 					getSelectedStore,
 
@@ -2668,6 +2806,8 @@ Ext.onReady( function() {
 					availableStore = getAvailableStore(groupSet);
 					selectedStore = getSelectedStore();
 
+					groupSetIdStoreMap[groupSet.id] = selectedStore;
+
 					available = getAvailable(availableStore);
 					selected = getSelected(selectedStore);
 
@@ -2681,7 +2821,8 @@ Ext.onReady( function() {
 						hideCollapseTool: true,
 						getData: function() {
 							var data = {
-								name: groupSet.id,
+								dimensionName: groupSet.id,
+								objectName: objectName,
 								items: []
 							};
 
@@ -2749,18 +2890,18 @@ Ext.onReady( function() {
 
 			validateSpecialCases = function(settings) {
 				var dimConf = pt.conf.finals.dimension,
-					settingsNames = [],
+					dimensionNames = [],
 					settingsObjects = [].concat(Ext.clone(settings.col || []), Ext.clone(settings.row || []), Ext.clone(settings.filter || []));
 
 				// Settings names
 				for (var i = 0; i < settingsObjects.length; i++) {
-					settingsNames.push(settingsObjects[i].name);
+					dimensionNames.push(settingsObjects[i].dimensionName);
 				}
 
 				// Indicator as filter
 				if (settings.filter && pt.store.indicatorSelected.data.length) {
 					for (var i = 0; i < settings.filter.length; i++) {
-						if (settings.filter[i].name === dimConf.data.paramName) {
+						if (settings.filter[i].dimensionName === dimConf.data.dimensionName) {
 							alert('Indicators cannot be specified as filter'); //i18n
 							return;
 						}
@@ -2768,15 +2909,15 @@ Ext.onReady( function() {
 				}
 
 				// Categories as filter
-				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById(dimConf.category.paramName)) {
+				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById(dimConf.category.dimensionName)) {
 					alert('Categories cannot be specified as filter');
 					return;
 				}
 
 				// Degs and datasets in the same query
-				if (Ext.Array.contains(settingsNames, dimConf.data.paramName) && pt.store.dataSetSelected.data.length) {
+				if (Ext.Array.contains(dimensionNames, dimConf.data.dimensionName) && pt.store.dataSetSelected.data.length) {
 					for (var i = 0; i < pt.init.degs.length; i++) {
-						if (Ext.Array.contains(settingsNames, pt.init.degs[i].id)) {
+						if (Ext.Array.contains(dimensionNames, pt.init.degs[i].id)) {
 							alert('Data element group sets cannot be specified together with data sets');
 							return;
 						}
@@ -2828,8 +2969,8 @@ Ext.onReady( function() {
 							pt.util.array.sortObjectsByString(ougs);
 							pt.util.array.sortObjectsByString(degs);
 
-							panels = panels.concat(getGroupSetPanels(ougs, 'pt-panel-title-organisationunitgroupset'));
-							panels = panels.concat(getGroupSetPanels(degs, 'pt-panel-title-dataelementgroupset'));
+							panels = panels.concat(getGroupSetPanels(ougs, pt.conf.finals.dimension.organisationUnitGroupSet.objectName, 'pt-panel-title-organisationunitgroupset'));
+							panels = panels.concat(getGroupSetPanels(degs, pt.conf.finals.dimension.dataElementGroupSet.objectName, 'pt-panel-title-dataelementgroupset'));
 
 							last = panels[panels.length - 1];
 							last.cls = 'pt-accordion-last';
@@ -2880,6 +3021,19 @@ Ext.onReady( function() {
 					}
 
 					pt.viewport.optionsWindow.show();
+				}
+			});
+
+			favoriteButton = Ext.create('Ext.button.Button', {
+				text: 'Favorites',
+				menu: {},
+				handler: function() {
+					if (pt.viewport.favoriteWindow) {
+						pt.viewport.favoriteWindow.destroy();
+					}
+
+					pt.viewport.favoriteWindow = PT.app.FavoriteWindow();
+					pt.viewport.favoriteWindow.show();
 				}
 			});
 
@@ -2951,11 +3105,7 @@ Ext.onReady( function() {
 							height: 18,
 							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
 						},
-						{
-							text: 'Favorites',
-							handler: function() {
-							}
-						},
+						favoriteButton,
 						downloadButton,
                         '->',
                         {
@@ -2988,6 +3138,121 @@ Ext.onReady( function() {
 				}
 			});
 
+			setFavorite = function(r) {
+
+				// Indicators
+				if (Ext.isArray(r.indicators)) {
+					pt.store.indicatorSelected.removeAll();
+					pt.store.indicatorSelected.add(r.indicators);
+				}
+
+				// Data elements
+				if (Ext.isArray(r.dataElements)) {
+					pt.store.dataElementSelected.removeAll();
+					pt.store.dataElementSelected.add(r.dataElements);
+				}
+
+				// Data sets
+				if (Ext.isArray(r.dataSets)) {
+					pt.store.dataSetsSelected.removeAll();
+					pt.store.dataSetsSelected.add(r.dataSets);
+				}
+
+				// Fixed periods
+				if (Ext.isArray(r.periods)) {
+					pt.store.fixedPeriodSelected.removeAll();
+					pt.store.fixedPeriodSelected.add(r.periods);
+				}
+
+				// Relative periods
+				if (Ext.isObject(r.relativePeriods)) {
+
+					//todo
+					r.relativePeriods.reportingMonth = r.relativePeriods.lastMonth;
+					r.relativePeriods.reportingQuarter = r.relativePeriods.lastQuarter;
+
+					for (var key in r.relativePeriods) {
+						if (r.relativePeriods.hasOwnProperty(key) && pt.conf.period.relativePeriodParamKeys.hasOwnProperty(key)) {
+							var value = pt.conf.period.relativePeriodParamKeys[key];
+							relativePeriod.valueComponentMap[value].setValue(!!r.relativePeriods[key]);
+						}
+					}
+				}
+
+				// Organisation units
+				if (Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap)) {
+					for (var key in r.parentGraphMap) {
+						if (r.parentGraphMap.hasOwnProperty(key)) {
+							organisationUnit.treePanel.selectPath('/root' + r.parentGraphMap[key] + '/' + key);
+						}
+					}
+				}
+
+				// Organisation unit group sets
+				if (Ext.isObject(r.organisationUnitGroupSets)) {
+					for (var key in r.organisationUnitGroupSets) {
+						if (r.organisationUnitGroupSets.hasOwnProperty(key)) {
+							groupSetIdStoreMap[key].removeAll();
+							groupSetIdStoreMap[key].add(r.organisationUnitGroupSets[key]);
+						}
+					}
+				}
+
+				// Data element group sets
+				if (Ext.isObject(r.dataElementGroupSets)) {
+					for (var key in r.dataElementGroupSets) {
+						if (r.dataElementGroupSets.hasOwnProperty(key)) {
+							groupSetIdStoreMap[key].removeAll();
+							groupSetIdStoreMap[key].add(r.dataElementGroupSets[key]);
+						}
+					}
+				}
+
+				// Layout
+				pt.viewport.dimensionStore.reset(true);
+				pt.viewport.colStore.removeAll();
+				pt.viewport.rowStore.removeAll();
+				pt.viewport.filterStore.removeAll();
+
+				if (Ext.isArray(r.columnDimensions)) {
+					for (var i = 0, dim; i < r.columnDimensions.length; i++) {
+						dim = pt.conf.finals.dimension.objectNameMap[r.columnDimensions[i]];
+						pt.viewport.colStore.add({
+							id: dim.dimensionName,
+							name: dim.rawValue
+						});
+					}
+				}
+
+				if (Ext.isArray(r.rowDimensions)) {
+					for (var i = 0, dim; i < r.rowDimensions.length; i++) {
+						dim = pt.conf.finals.dimension.objectNameMap[r.rowDimensions[i]];
+						pt.viewport.rowStore.add({
+							id: dim.dimensionName,
+							name: dim.rawValue
+						});
+					}
+				}
+
+				if (Ext.isArray(r.filterDimensions)) {
+					for (var i = 0, dim; i < r.filterDimensions.length; i++) {
+						dim = pt.conf.finals.dimension.objectNameMap[r.filterDimensions[i]];
+						pt.viewport.filterStore.add({
+							id: dim.dimensionName,
+							name: dim.rawValue
+						});
+					}
+				}
+
+				// Options
+				pt.viewport.showSubTotals.setValue(!!r.subtotals);
+				pt.viewport.hideEmptyRows.setValue(!!r.hideEmptyRows);
+				pt.viewport.displayDensity.setValue(!!r.displayDensity);
+				pt.viewport.fontSize.setValue(!!r.fontSize);
+
+				update();
+			};
+
 			viewport = Ext.create('Ext.container.Viewport', {
 				layout: 'border',
 				westRegion: westRegion,
@@ -2995,7 +3260,10 @@ Ext.onReady( function() {
 				updateViewport: update,
 				layoutButton: layoutButton,
 				optionsButton: optionsButton,
+				favoriteButton: favoriteButton,
 				downloadButton: downloadButton,
+				setFavorite: setFavorite,
+				groupSetIdStoreMap: groupSetIdStoreMap,
 				items: [
 					westRegion,
 					centerRegion
@@ -3024,8 +3292,6 @@ Ext.onReady( function() {
 					s.sort('name', 'ASC');
 				});
 			}();
-
-			pt.container = centerRegion;
 
 			return viewport;
 		};

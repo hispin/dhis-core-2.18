@@ -115,7 +115,7 @@ public class MobileClientController
         orgUnit.setSearchUrl( getUrl( request, unit.getId(), "search" ) );
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
         orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
-        orgUnit.setRegisterPerson(getUrl(request, unit.getId(), "registerPerson"));
+        //orgUnit.setRegisterPerson(getUrl(request, unit.getId(), "registerPerson")); TODO
         orgUnit.setUploadProgramStageUrl( getUrl( request, unit.getId(), "uploadProgramStage" ) );
         orgUnit.setEnrollProgramUrl( getUrl( request, unit.getId(), "enrollProgram" ) );
 
