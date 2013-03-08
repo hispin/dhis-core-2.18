@@ -302,8 +302,11 @@ public class DefaultQueryPlanner
     }
     
     /**
-     * Groups the given query into sub queries based on the period type of its
-     * periods. Sets the period type name on each query.
+     * If periods appear as dimensions in the given query; groups the query into 
+     * sub queries based on the period type of the periods. Sets the period type 
+     * name on each query. If periods appear as filters; replaces the period filter
+     * with one filter for each period type. Sets the dimension names and filter
+     * names respectively.
      */
     private List<DataQueryParams> groupByPeriodType( DataQueryParams params )
     {
@@ -327,15 +330,18 @@ public class DefaultQueryPlanner
         }
         else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
         {
-            ListMap<String, IdentifiableObject> periodTypePeriodMap = getPeriodTypePeriodMap( params.getFilterPeriods() );
+            Dimension filter = params.getFilter( PERIOD_DIM_ID );
+            
+            ListMap<String, IdentifiableObject> periodTypePeriodMap = getPeriodTypePeriodMap( filter.getItems() );
+            
+            params.removeFilter( PERIOD_DIM_ID ).setPeriodType( periodTypePeriodMap.keySet().iterator().next() ); // Using first period type
             
             for ( String periodType : periodTypePeriodMap.keySet() )
             {
-                DataQueryParams query = new DataQueryParams( params );
-                query.setFilterOptions( PERIOD_DIM_ID, DimensionType.PERIOD, periodType, periodTypePeriodMap.get( periodType ) );
-                query.setPeriodType( periodType );
-                queries.add( query );
+                params.getFilters().add( new Dimension( filter.getDimension(), filter.getType(), periodType, periodTypePeriodMap.get( periodType ) ) );
             }
+            
+            queries.add( params );
         }
         else
         {
@@ -346,8 +352,11 @@ public class DefaultQueryPlanner
     }
     
     /**
-     * Groups the given query into sub queries based on the level of its organisation 
-     * units. Sets the organisation unit level on each query.
+     * If organisation units appear as dimensions; groups the given query into 
+     * sub queries based on the level of the organisation units. Sets the organisation 
+     * unit level on each query. If organisation units appear as filter; replaces
+     * the organisation unit filter with one filter for each level. Sets the dimension
+     * names and filter names respectively.
      */
     private List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params )
     {
@@ -366,14 +375,18 @@ public class DefaultQueryPlanner
         }
         else if ( params.getFilterOrganisationUnits() != null && !params.getFilterOrganisationUnits().isEmpty() )
         {
+            Dimension filter = params.getFilter( ORGUNIT_DIM_ID );
+            
             ListMap<Integer, IdentifiableObject> levelOrgUnitMap = getLevelOrgUnitMap( params.getFilterOrganisationUnits() );
+            
+            params.removeFilter( ORGUNIT_DIM_ID );
             
             for ( Integer level : levelOrgUnitMap.keySet() )
             {
-                DataQueryParams query = new DataQueryParams( params );
-                query.setFilterOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, LEVEL_PREFIX + level, levelOrgUnitMap.get( level ) );
-                queries.add( query );
+                params.getFilters().add( new Dimension( filter.getDimension(), filter.getType(), LEVEL_PREFIX + level, levelOrgUnitMap.get( level ) ) );
             }
+            
+            queries.add( params );
         }
         else
         {

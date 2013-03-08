@@ -122,20 +122,31 @@ public class JdbcAnalyticsManager
         
         for ( Dimension dim : dimensions )
         {
-            if ( !dim.isAllOptions() )
+            if ( !dim.isAllItems() )
             {
-                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + " ) ";
+                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
             }
         }
 
-        for ( Dimension filter : params.getFilters() )
-        {
-            if ( !filter.isAllOptions() )
-            {
-                sql += sqlHelper.whereAnd() + " " + filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + " ) ";
-            }
-        }
+        ListMap<String, Dimension> filters = params.getDimensionFilterMap();
         
+        //TODO check if any items for all filters
+        
+        for ( String dimension : filters.keySet() )
+        {
+            sql += sqlHelper.whereAnd() + " (";
+            
+            for ( Dimension filter : filters.get( dimension ) )
+            {
+                if ( filter != null && filter.hasItems() )
+                {
+                    sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                }
+            }
+            
+            sql = sql.substring( 0, sql.length() - " or ".length() ) + ") ";
+        }
+                
         sql += "group by " + getCommaDelimitedString( dimensions );
     
         log.info( sql );
