@@ -350,16 +350,7 @@ public class FacilityController
         @RequestParam( value = "fields", required = false ) String fields,
         HttpServletRequest request )
     {
-        OrganisationUnit organisationUnit;
-
-        if ( id.length() == 11 )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( id );
-        }
-        else
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
-        }
+        OrganisationUnit organisationUnit = getOrganisationUnit( id );
 
         if ( organisationUnit == null )
         {
@@ -506,46 +497,6 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    protected String generateETagHeaderValue( byte[] bytes )
-    {
-        StringBuilder builder = new StringBuilder( "\"0" );
-        DigestUtils.appendMd5DigestAsHex( bytes, builder );
-        builder.append( '"' );
-        return builder.toString();
-    }
-
-    protected void checkIdentifier( Facility facility, String id ) throws IOException
-    {
-        Identifier identifier = new Identifier();
-
-        identifier.setAgency( Identifier.DHIS2_AGENCY );
-        identifier.setContext( Identifier.DHIS2_UID_CONTEXT );
-        identifier.setId( id );
-
-        if ( facility.getIdentifiers().isEmpty() )
-        {
-            facility.getIdentifiers().add( identifier );
-        }
-        else
-        {
-            boolean found = false;
-
-            for ( Identifier i : facility.getIdentifiers() )
-            {
-                if ( i.getAgency().equals( Identifier.DHIS2_AGENCY ) && i.getContext().equals( Identifier.DHIS2_UID_CONTEXT ) )
-                {
-                    i.setId( id );
-                    found = true;
-                }
-            }
-
-            if ( !found )
-            {
-                facility.getIdentifiers().add( identifier );
-            }
-        }
-    }
-
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
@@ -553,16 +504,7 @@ public class FacilityController
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
-        OrganisationUnit organisationUnit;
-
-        if ( id.length() == 11 )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( id );
-        }
-        else
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
-        }
+        OrganisationUnit organisationUnit = getOrganisationUnit( id );
 
         if ( organisationUnit == null )
         {
@@ -665,16 +607,7 @@ public class FacilityController
     @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
     public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException
     {
-        OrganisationUnit organisationUnit;
-
-        if ( id.length() == 11 )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( id );
-        }
-        else
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
-        }
+        OrganisationUnit organisationUnit = getOrganisationUnit( id );
 
         if ( organisationUnit == null )
         {
@@ -701,5 +634,65 @@ public class FacilityController
     public ResponseEntity<String> dhisExceptionHandler( Exception ex )
     {
         return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
+    }
+
+    //--------------------------------------------------------------------------
+    // UTILS
+    //--------------------------------------------------------------------------
+
+    private OrganisationUnit getOrganisationUnit( String id )
+    {
+        OrganisationUnit organisationUnit;
+
+        if ( id.length() == 11 )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        }
+        else
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
+        }
+
+        return organisationUnit;
+    }
+
+    private String generateETagHeaderValue( byte[] bytes )
+    {
+        StringBuilder builder = new StringBuilder( "\"0" );
+        DigestUtils.appendMd5DigestAsHex( bytes, builder );
+        builder.append( '"' );
+        return builder.toString();
+    }
+
+    private void checkIdentifier( Facility facility, String id ) throws IOException
+    {
+        Identifier identifier = new Identifier();
+
+        identifier.setAgency( Identifier.DHIS2_AGENCY );
+        identifier.setContext( Identifier.DHIS2_UID_CONTEXT );
+        identifier.setId( id );
+
+        if ( facility.getIdentifiers().isEmpty() )
+        {
+            facility.getIdentifiers().add( identifier );
+        }
+        else
+        {
+            boolean found = false;
+
+            for ( Identifier i : facility.getIdentifiers() )
+            {
+                if ( i.getAgency().equals( Identifier.DHIS2_AGENCY ) && i.getContext().equals( Identifier.DHIS2_UID_CONTEXT ) )
+                {
+                    i.setId( id );
+                    found = true;
+                }
+            }
+
+            if ( !found )
+            {
+                facility.getIdentifiers().add( identifier );
+            }
+        }
     }
 }
