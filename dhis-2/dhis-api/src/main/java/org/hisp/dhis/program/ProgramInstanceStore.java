@@ -72,4 +72,11 @@ public interface ProgramInstanceStore
     int count( Program program, OrganisationUnit organisationUnit );
     
     int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    
+    int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean completed );
+
+    Collection<ProgramInstance> getUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    
+    int countUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    
 }

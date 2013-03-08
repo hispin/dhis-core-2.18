@@ -703,9 +703,121 @@ public class HibernateProgramStageInstanceStore
         return list != null ? list.size() : 0;
     }
 
+    public int getOverDueCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.createAlias( "programStage", "programStage" );
+        criteria.createAlias( "programInstance.patient", "patient" );
+        criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+        criteria.add( Restrictions.eq( "programStage", programStage ) );
+        criteria.add( Restrictions.isNull( "programInstance.endDate" ) );
+        criteria.add( Restrictions.and( Restrictions.isNull( "executionDate" ),
+            Restrictions.between( "dueDate", startDate, new Date() ), Restrictions.in( "regOrgunit.id", orgunitIds ) ) );
+        criteria.setProjection( Projections.rowCount() ).uniqueResult();
+
+        Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Boolean completed )
+    {
+        return getCriteria( program, orgunitIds, startDate, endDate, completed ).list();
+    }
+
+    public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate, Boolean completed )
+    {
+        Number rs = (Number) getCriteria( program, orgunitIds, startDate, endDate, completed ).setProjection(
+            Projections.rowCount() ).uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    public int count( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Boolean completed )
+    {
+        Number rs = (Number) getCriteria( programStage, orgunitIds, startDate, endDate, completed ).setProjection(
+            Projections.rowCount() ).uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    private Criteria getCriteria( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Boolean completed )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.add( Restrictions.eq( "programInstance.program", program ) );
+
+        if ( completed == null )
+        {
+            criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+        }
+        else
+        {
+            if ( completed )
+            {
+                criteria.add( Restrictions.and( Restrictions.eq( "completed", true ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) );
+            }
+            else
+            {
+                criteria.createAlias( "programInstance.patient", "patient" );
+                criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+                criteria.add( Restrictions.or( Restrictions.and( Restrictions.isNull( "executionDate" ),
+                    Restrictions.between( "dueDate", startDate, endDate ),
+                    Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
+                    Restrictions.eq( "completed", false ), Restrictions.isNotNull( "executionDate" ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) ) );
+            }
+        }
+
+        return criteria;
+    }
+
+    private Criteria getCriteria( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Boolean completed )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.add( Restrictions.eq( "programStage", programStage ) );
+
+        if ( completed == null )
+        {
+            criteria.add( Restrictions.between( "dueDate", startDate, endDate ) );
+        }
+        else
+        {
+            if ( completed )
+            {
+                criteria.add( Restrictions.and( Restrictions.eq( "completed", true ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) );
+            }
+            else
+            {
+                criteria.createAlias( "programInstance.patient", "patient" );
+                criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+                criteria.add( Restrictions.or( Restrictions.and( Restrictions.isNull( "executionDate" ),
+                    Restrictions.between( "dueDate", startDate, endDate ),
+                    Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
+                    Restrictions.eq( "completed", false ), Restrictions.isNotNull( "executionDate" ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) ) );
+            }
+        }
+
+        return criteria;
+    }
 
     private String getTabularReportSql( boolean count, ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> orgUnits, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
@@ -971,7 +1083,7 @@ public class HibernateProgramStageInstanceStore
         {
             sql += "LIMIT " + limit;
         }
-        
+
         return sql;
     }
 
@@ -1620,7 +1732,8 @@ public class HibernateProgramStageInstanceStore
                     sql += "( SELECT " + aggregateType + "( cast( value as " + statementBuilder.getDoubleColumnType()
                         + " ))";
                     sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum + " ";
+                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
+                        + " ";
                 }
 
                 sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
