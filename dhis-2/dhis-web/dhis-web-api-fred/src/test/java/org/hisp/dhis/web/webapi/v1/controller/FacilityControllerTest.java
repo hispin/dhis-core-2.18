@@ -199,6 +199,32 @@ public class FacilityControllerTest extends FredSpringWebTest
     }
 
     @Test
+    public void testPutFacilityWithoutRequiredPropertiesUid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( "{}" )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isUnprocessableEntity() );
+    }
+
+    @Test
+    public void testPutFacilityWithoutRequiredPropertiesUuid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( "{}" )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isUnprocessableEntity() );
+    }
+
+    @Test
     public void testPutFacilityUid() throws Exception
     {
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
@@ -241,6 +267,16 @@ public class FacilityControllerTest extends FredSpringWebTest
     //---------------------------------------------------------------------------------------------
     // Test POST
     //---------------------------------------------------------------------------------------------
+
+    @Test
+    public void testPostWithoutRequiredProperties() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( post( "/v1/facilities" ).content( "{}" )
+            .session( session ).contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isUnprocessableEntity() );
+    }
 
     @Test
     public void testPostName() throws Exception
