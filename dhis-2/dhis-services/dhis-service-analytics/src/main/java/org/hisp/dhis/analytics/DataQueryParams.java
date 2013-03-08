@@ -83,8 +83,6 @@ public class DataQueryParams
     
     private List<Dimension> filters = new ArrayList<Dimension>();
 
-    private ListMap<String, Dimension> filterMap = new ListMap<String, Dimension>();
-    
     private AggregationType aggregationType;
     
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
@@ -131,7 +129,7 @@ public class DataQueryParams
      * can only be present if the data element dimension exists and the indicator
      * and data set dimensions do not exist.
      */
-    public void conform()
+    public DataQueryParams conform()
     {
         if ( !dimensions.contains( new Dimension( DATAELEMENT_DIM_ID ) ) ||
             dimensions.contains( new Dimension( INDICATOR_DIM_ID ) ) ||
@@ -139,6 +137,23 @@ public class DataQueryParams
         {
             removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
         }
+        
+        return this;
+    }
+    
+    /**
+     * Creates a mapping between the dimension names and the filter dimensions.
+     */
+    public ListMap<String, Dimension> getDimensionFilterMap()
+    {
+        ListMap<String, Dimension> map = new ListMap<String, Dimension>();
+        
+        for ( Dimension filter : filters )
+        {
+            map.putValue( filter.getDimension(), filter );
+        }
+        
+        return map;
     }
     
     /**
@@ -220,9 +235,21 @@ public class DataQueryParams
     /**
      * Removes the dimension with the given identifier.
      */
-    public void removeDimension( String dimension )
+    public DataQueryParams removeDimension( String dimension )
     {
         this.dimensions.remove( new Dimension( dimension ) );
+        
+        return this;
+    }
+
+    /**
+     * Removes the filter with the given identifier.
+     */
+    public DataQueryParams removeFilter( String filter )
+    {
+        this.filters.remove( new Dimension( filter ) );
+        
+        return this;
     }
     
     /**
@@ -489,7 +516,7 @@ public class DataQueryParams
     /**
      * Sets the options for the given dimension.
      */
-    public void setDimensionOptions( String dimension, DimensionType type, String dimensionName, List<IdentifiableObject> options )
+    public DataQueryParams setDimensionOptions( String dimension, DimensionType type, String dimensionName, List<IdentifiableObject> options )
     {
         int index = dimensions.indexOf( new Dimension( dimension ) );
         
@@ -501,6 +528,8 @@ public class DataQueryParams
         {
             dimensions.add( new Dimension( dimension, type, dimensionName, options ) );
         }
+        
+        return this;
     }
     
     /**
@@ -512,11 +541,21 @@ public class DataQueryParams
         
         return index != -1 ? filters.get( index ).getItems() : null;
     }
+
+    /**
+     * Retrieves the filter with the given filter identifier.
+     */
+    public Dimension getFilter( String filter )
+    {
+        int index = filters.indexOf( new Dimension( filter ) );
+        
+        return index != -1 ? filters.get( index ) : null;
+    }
     
     /**
      * Sets the options for the given filter.
      */
-    public void setFilterOptions( String filter, DimensionType type, String dimensionName, List<IdentifiableObject> options )
+    public DataQueryParams setFilterOptions( String filter, DimensionType type, String dimensionName, List<IdentifiableObject> options )
     {
         int index = filters.indexOf( new Dimension( filter ) );
         
@@ -528,6 +567,8 @@ public class DataQueryParams
         {
             filters.add( new Dimension( filter, type, dimensionName, options ) );
         }
+        
+        return this;
     }
     
     // -------------------------------------------------------------------------
@@ -707,16 +748,6 @@ public class DataQueryParams
     public void setFilters( List<Dimension> filters )
     {
         this.filters = filters;
-    }
-
-    public ListMap<String, Dimension> getFilterMap()
-    {
-        return filterMap;
-    }
-
-    public void setFilterMap( ListMap<String, Dimension> filterMap )
-    {
-        this.filterMap = filterMap;
     }
 
     public AggregationType getAggregationType()
