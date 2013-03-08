@@ -61,20 +61,16 @@ public class MobileOrgUnitLinks
     public static double currentVersion = 2.9;
 
     private String updateNewVersionUrl;
-    
+
     private String updateContactUrl;
-    
+
     private String findPatientUrl;
 
-    
-    private String registerPersonUrl;
-
-    
     private String uploadProgramStageUrl;
-    
-    private String enrollProgramUrl;
-    
 
+    private String enrollProgramUrl;
+
+    private String registerPersonUrl;
 
     @XmlAttribute
     public int getId()
@@ -187,7 +183,7 @@ public class MobileOrgUnitLinks
     {
         this.updateNewVersionUrl = updateNewVersionUrl;
     }
-    
+
     public String getUpdateContactUrl()
     {
         return updateContactUrl;
@@ -208,18 +204,6 @@ public class MobileOrgUnitLinks
         this.findPatientUrl = findPatientUrl;
     }
 
-    
-    
-
-    public String getRegisterPerson() {
-		return registerPersonUrl;
-	}
-
-	public void setRegisterPerson(String registerPersonUrl) {
-		this.registerPersonUrl = registerPersonUrl;
-	}
-
-
     public String getUploadProgramStageUrl()
     {
         return uploadProgramStageUrl;
@@ -239,9 +223,18 @@ public class MobileOrgUnitLinks
     {
         this.enrollProgramUrl = enrollProgramUrl;
     }
+    
+    public String getRegisterPersonUrl()
+    {
+        return registerPersonUrl;
+    }
+
+    public void setRegisterPersonUrl( String registerPersonUrl )
+    {
+        this.registerPersonUrl = registerPersonUrl;
+    }
 
     public void serialize( DataOutputStream dataOutputStream )
-
 
         throws IOException
     {
@@ -257,7 +250,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.updateContactUrl );
         dataOutputStream.writeUTF( this.findPatientUrl );
-        dataOutputStream.writeUTF(this.registerPersonUrl);
+        dataOutputStream.writeUTF( this.registerPersonUrl );
         dataOutputStream.writeUTF( this.uploadProgramStageUrl );
         dataOutputStream.writeUTF( this.enrollProgramUrl );
     }
@@ -277,14 +270,10 @@ public class MobileOrgUnitLinks
         this.updateNewVersionUrl = dataInputStream.readUTF();
         this.updateContactUrl = dataInputStream.readUTF();
         this.findPatientUrl = dataInputStream.readUTF();
-		this.uploadProgramStageUrl = dataInputStream.readUTF();
-        this.registerPersonUrl = dataInputStream.readUTF();
         this.uploadProgramStageUrl = dataInputStream.readUTF();
+        this.registerPersonUrl = dataInputStream.readUTF();
         this.enrollProgramUrl = dataInputStream.readUTF();
     }
-
-
- 
 
     @Override
     public void serializeVersion2_8( DataOutputStream dataOutputStream )
@@ -335,10 +324,8 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateContactUrl );
         dataOutputStream.writeUTF( this.findPatientUrl );
         dataOutputStream.writeUTF( this.uploadProgramStageUrl );
-        dataOutputStream.writeUTF(this.registerPersonUrl);
+        dataOutputStream.writeUTF( this.registerPersonUrl );
         dataOutputStream.writeUTF( this.enrollProgramUrl );
     }
-
-
 
 }
