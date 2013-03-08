@@ -64,22 +64,6 @@
 		</td>
 	</tr>
 	
-	<tr id="operatorTR" class="hidden">
-		<td></td>
-		<td>
-			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "-" );' value="-" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "*" );' value="*" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "/" );' value="/" />
-		</td>
-	</tr>
-	
-	<tr id="expressionTR" class="hidden">
-		<td>$i18n.getString( "expression" )</td>
-		<td>
-			<textarea id="expression" name="expression" style="width:320px;" onkeyup='getConditionDescription();'></textarea>
-		</td>
-	</tr>
 	<tr id="descriptionTR" class="hidden">
 		<td></td>
 		<td>

@@ -34,8 +34,6 @@ ATTRIBUTE_OPTION =
 		if ( jQuery(this_).val() == "combo" )
 		{
 			hideById("calculatedAttrTR");
-			hideById("expressionTR");
-			hideById("operatorTR");
 			showById("attributeComboRow");
 			if( jQuery("#attrOptionContainer").find("input").length ==0 ) 
 			{
@@ -67,17 +65,11 @@ ATTRIBUTE_OPTION =
 			}
 			hideById("attributeComboRow");
 			showById("calculatedAttrTR");
-			showById("operatorTR");
-			showById("expressionTR");
-			showById("descriptionTR");
 		}
 		else
 		{
 			hideById("attributeComboRow");
 			hideById("calculatedAttrTR");
-			hideById("operatorTR");
-			hideById("expressionTR");
-			hideById("descriptionTR");
 		}
 		
 	},
