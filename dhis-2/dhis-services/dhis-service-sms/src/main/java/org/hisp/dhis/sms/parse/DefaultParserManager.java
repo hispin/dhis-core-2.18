@@ -57,7 +57,7 @@ public class DefaultParserManager
 
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
-    
+
     @Autowired
     private OutboundSmsTransportService transportService;
 
@@ -251,9 +251,7 @@ public class DefaultParserManager
             }
             else if ( dv != null )
             {
-
                 String value = dv.getValue();
-
                 if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_BOOL ) )
                 {
                     if ( "true".equals( value ) )
@@ -358,44 +356,44 @@ public class DefaultParserManager
         DataValue dv = dataValueService.getDataValue( orgunit, code.getDataElement(), period, optionCombo );
 
         String value = parsedMessage.get( upperCaseCode );
-
-        boolean newDataValue = false;
-        if ( dv == null )
+        if ( !StringUtils.isEmpty( value ) )
         {
-            dv = new DataValue();
-            dv.setOptionCombo( optionCombo );
-            dv.setSource( orgunit );
-            dv.setDataElement( code.getDataElement() );
-            dv.setPeriod( period );
-            dv.setComment( "" );
-            dv.setTimestamp( new java.util.Date() );
-            dv.setStoredBy( storedBy );
-            newDataValue = true;
-        }
-
-        if ( value != null && StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_BOOL ) )
-        {
-            if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) )
+            boolean newDataValue = false;
+            if ( dv == null )
             {
-                value = "true";
+                dv = new DataValue();
+                dv.setOptionCombo( optionCombo );
+                dv.setSource( orgunit );
+                dv.setDataElement( code.getDataElement() );
+                dv.setPeriod( period );
+                dv.setComment( "" );
+                dv.setTimestamp( new java.util.Date() );
+                dv.setStoredBy( storedBy );
+                newDataValue = true;
             }
-            else if ( "N".equals( value.toUpperCase() ) || "NO".equals( value.toUpperCase() ) )
+
+            if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_BOOL ) )
             {
-                value = "false";
+                if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) )
+                {
+                    value = "true";
+                }
+                else if ( "N".equals( value.toUpperCase() ) || "NO".equals( value.toUpperCase() ) )
+                {
+                    value = "false";
+                }
             }
-        }
 
-        dv.setValue( value );
-
-        if ( newDataValue )
-        {
-            dataValueService.addDataValue( dv );
-        }
-        else
-        {
             dv.setValue( value );
-            dv.setOptionCombo( optionCombo );
-            dataValueService.updateDataValue( dv );
+
+            if ( newDataValue )
+            {
+                dataValueService.addDataValue( dv );
+            }
+            else
+            {
+                dataValueService.updateDataValue( dv );
+            }
         }
 
     }
