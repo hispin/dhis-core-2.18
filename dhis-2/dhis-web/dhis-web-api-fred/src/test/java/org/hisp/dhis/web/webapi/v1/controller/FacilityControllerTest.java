@@ -57,6 +57,10 @@ public class FacilityControllerTest extends FredSpringWebTest
         mvc.perform( get( "/api-fred/" ).session( session ) ).andExpect( redirectedUrl( "/api-fred/v1" ) );
     }
 
+    //---------------------------------------------------------------------------------------------
+    // Test GET
+    //---------------------------------------------------------------------------------------------
+
     @Test
     public void testGetFacilitiesWithALL() throws Exception
     {
@@ -154,6 +158,10 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( status().isOk() );
     }
 
+    //---------------------------------------------------------------------------------------------
+    // Test PUT
+    //---------------------------------------------------------------------------------------------
+
     @Test
     public void testPutFacility404() throws Exception
     {
@@ -162,6 +170,10 @@ public class FacilityControllerTest extends FredSpringWebTest
         mvc.perform( put( "/v1/facilities/abc123" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isNotFound() );
     }
+
+    //---------------------------------------------------------------------------------------------
+    // Test POST
+    //---------------------------------------------------------------------------------------------
 
     @Test
     public void testPostName() throws Exception
@@ -210,5 +222,42 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( status().isCreated() );
+    }
+
+    //---------------------------------------------------------------------------------------------
+    // Test DELETE
+    //---------------------------------------------------------------------------------------------
+
+    @Test
+    public void testDeleteFacility404() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( delete( "/v1/facilities/abc123" ).session( session ) )
+            .andExpect( status().isNotFound() );
+    }
+
+    @Test
+    public void testDeleteFacilityUid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUid() ).session( session ) )
+            .andExpect( status().isOk() );
+    }
+
+    @Test
+    public void testDeleteFacilityUuid() throws Exception
+    {
+        OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
+        manager.save( organisationUnit );
+
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ) )
+            .andExpect( status().isOk() );
     }
 }

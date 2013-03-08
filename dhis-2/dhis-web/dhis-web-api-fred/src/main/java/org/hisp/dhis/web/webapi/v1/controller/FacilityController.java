@@ -663,18 +663,28 @@ public class FacilityController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
-    public ResponseEntity<Void> deleteFacility( @PathVariable String id ) throws HierarchyViolationException
+    public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        OrganisationUnit organisationUnit;
 
-        if ( organisationUnit != null )
+        if ( id.length() == 11 )
         {
-            organisationUnitService.deleteOrganisationUnit( organisationUnit );
-
-            return new ResponseEntity<Void>( HttpStatus.OK );
+            organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        }
+        else
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( id );
         }
 
-        return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
+        if ( organisationUnit == null )
+        {
+            return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
+                "Facility with that ID not found" ), HttpStatus.NOT_FOUND );
+        }
+
+        organisationUnitService.deleteOrganisationUnit( organisationUnit );
+
+        return new ResponseEntity<String>( HttpStatus.OK );
     }
 
     //--------------------------------------------------------------------------
