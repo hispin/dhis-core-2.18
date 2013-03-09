@@ -30,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,6 +62,7 @@ import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -705,17 +707,26 @@ public class HibernateProgramStageInstanceStore
 
     public int getOverDueCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add( Calendar.DATE, -1 );
+        CalendarPeriodType.clearTimeOfDay( yesterday );
+        Date now = yesterday.getTime();
+        
+        if ( endDate.before( now ) )
+        {
+            now = endDate;
+        }
+        
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
-        criteria.createAlias( "programStage", "programStage" );
         criteria.createAlias( "programInstance.patient", "patient" );
         criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
         criteria.add( Restrictions.eq( "programStage", programStage ) );
         criteria.add( Restrictions.isNull( "programInstance.endDate" ) );
-        criteria.add( Restrictions.and( Restrictions.isNull( "executionDate" ),
-            Restrictions.between( "dueDate", startDate, new Date() ), Restrictions.in( "regOrgunit.id", orgunitIds ) ) );
+        criteria.add( Restrictions.between( "dueDate", startDate, now ) );
+        criteria.add( Restrictions.in( "regOrgunit.id", orgunitIds ) );
         criteria.setProjection( Projections.rowCount() ).uniqueResult();
-
+        
         Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
