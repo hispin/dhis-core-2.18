@@ -1033,6 +1033,9 @@
 		scope="prototype">
 		<property name="schedulingManager"
 			ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
+		</property>
 	</bean>
 
 	<bean
@@ -1041,6 +1044,9 @@
 		scope="prototype">
 		<property name="schedulingManager"
 			ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
+		</property>
 	</bean>
 
 </beans>
