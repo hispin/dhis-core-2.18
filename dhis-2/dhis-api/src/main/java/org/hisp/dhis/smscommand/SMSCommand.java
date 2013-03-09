@@ -34,7 +34,7 @@ import org.hisp.dhis.sms.parse.ParserType;
 
 public class SMSCommand
 {
-    private int id; // id for this element
+    private int id;
 
     private String name;
 
@@ -52,8 +52,7 @@ public class SMSCommand
 
     private String defaultMessage;
 
-    private boolean currentPeriodUsedForReporting = false; // default is
-                                                           // previous
+    private boolean currentPeriodUsedForReporting = false; // default is prev
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
         Set<SMSCode> codes, String codeSeparator, String defaultMessage )
