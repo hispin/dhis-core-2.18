@@ -48,6 +48,7 @@ import org.hisp.dhis.web.webapi.v1.exception.ETagVerificationException;
 import org.hisp.dhis.web.webapi.v1.exception.FacilityNotFoundException;
 import org.hisp.dhis.web.webapi.v1.exception.UuidFormatException;
 import org.hisp.dhis.web.webapi.v1.utils.ContextUtils;
+import org.hisp.dhis.web.webapi.v1.utils.MessageUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -618,7 +619,7 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('F_FRED_DELETE') or hasRole('ALL')")
     public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException, FacilityNotFoundException
     {
@@ -631,7 +632,8 @@ public class FacilityController
 
         organisationUnitService.deleteOrganisationUnit( organisationUnit );
 
-        return new ResponseEntity<String>( HttpStatus.OK );
+        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.OK.toString(),
+            "{}" ), HttpStatus.OK );
     }
 
     //--------------------------------------------------------------------------

@@ -36,7 +36,9 @@ import org.hisp.dhis.web.webapi.v1.exception.ETagVerificationException;
 import org.hisp.dhis.web.webapi.v1.exception.FacilityNotFoundException;
 import org.hisp.dhis.web.webapi.v1.exception.UuidFormatException;
 import org.hisp.dhis.web.webapi.v1.utils.MessageUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -59,35 +61,50 @@ public class FacilityAdvice
     @ExceptionHandler( { HttpClientErrorException.class, HttpServerErrorException.class } )
     public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex ) throws IOException
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         return new ResponseEntity<String>( MessageUtils.jsonMessage( ex.getStatusText(),
-            ex.getMessage() ), ex.getStatusCode() );
+            ex.getMessage() ), headers, ex.getStatusCode() );
     }
 
     @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
     public ResponseEntity<String> handleForbidden( Exception ex ) throws IOException
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.FORBIDDEN.toString(),
-            ex.getMessage() ), HttpStatus.FORBIDDEN );
+            ex.getMessage() ), headers, HttpStatus.FORBIDDEN );
     }
 
     @ExceptionHandler( { ETagVerificationException.class, UuidFormatException.class } )
     public ResponseEntity<String> handlePreconditionFailed( Exception ex ) throws IOException
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
-            ex.getMessage() ), HttpStatus.PRECONDITION_FAILED );
+            ex.getMessage() ), headers, HttpStatus.PRECONDITION_FAILED );
     }
 
     @ExceptionHandler( { FacilityNotFoundException.class } )
     public ResponseEntity<String> handleNotFound( Exception ex ) throws IOException
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
-            ex.getMessage() ), HttpStatus.NOT_FOUND );
+            ex.getMessage() ), headers, HttpStatus.NOT_FOUND );
     }
 
     @ExceptionHandler( { DuplicateCodeException.class, DuplicateUidException.class, DuplicateUuidException.class } )
     public ResponseEntity<String> handleConflict( Exception ex ) throws IOException
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
         return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
-            ex.getMessage() ), HttpStatus.CONFLICT );
+            ex.getMessage() ), headers, HttpStatus.CONFLICT );
     }
 }
