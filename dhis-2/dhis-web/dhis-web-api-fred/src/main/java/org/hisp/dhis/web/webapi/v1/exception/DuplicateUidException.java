@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.webapi.v1.exception;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -27,43 +27,18 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.web.webapi.v1.domain.MessageResponse;
-
-import java.io.IOException;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public final class MessageResponseUtils
+public class DuplicateUidException extends Exception
 {
-    private static ObjectMapper objectMapper;
-
-    static
+    public DuplicateUidException()
     {
-        objectMapper = new ObjectMapper();
-        objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
-        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
+        super( "A facility with that UID already exists." );
     }
 
-    public static String jsonMessage( String message ) throws IOException
+    public DuplicateUidException( String message )
     {
-        return messageToJson( new MessageResponse( null, message ) );
-    }
-
-    public static String jsonMessage( String code, String message ) throws IOException
-    {
-        return messageToJson( new MessageResponse( code, message ) );
-    }
-
-    public static String messageToJson( MessageResponse messageResponse ) throws IOException
-    {
-        return objectMapper.writeValueAsString( messageResponse );
-    }
-
-    private MessageResponseUtils()
-    {
+        super( message );
     }
 }

@@ -42,9 +42,14 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.webapi.v1.domain.Facilities;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.domain.Identifier;
-import org.hisp.dhis.web.webapi.v1.exception.ETagDoesNotMatchException;
+import org.hisp.dhis.web.webapi.v1.exception.DuplicateCodeException;
+import org.hisp.dhis.web.webapi.v1.exception.DuplicateUidException;
+import org.hisp.dhis.web.webapi.v1.exception.DuplicateUuidException;
+import org.hisp.dhis.web.webapi.v1.exception.ETagVerificationException;
+import org.hisp.dhis.web.webapi.v1.exception.FacilityNotFoundException;
+import org.hisp.dhis.web.webapi.v1.exception.UuidFormatException;
 import org.hisp.dhis.web.webapi.v1.utils.ContextUtils;
-import org.hisp.dhis.web.webapi.v1.utils.MessageResponseUtils;
+import org.hisp.dhis.web.webapi.v1.utils.MessageUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ObjectMapperFactoryBean;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
@@ -467,8 +472,7 @@ public class FacilityController
             }
             catch ( IllegalArgumentException ignored )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
-                    "Bad id: (does not match expected UUID string format)" ), HttpStatus.PRECONDITION_FAILED );
+                throw new UuidFormatException();
             }
         }
 
@@ -485,18 +489,15 @@ public class FacilityController
 
             if ( organisationUnitService.getOrganisationUnit( organisationUnit.getUuid() ) != null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
-                    "An object with that UUID already exists." ), headers, HttpStatus.CONFLICT );
+                throw new DuplicateUuidException();
             }
             if ( organisationUnitService.getOrganisationUnit( organisationUnit.getUid() ) != null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
-                    "An object with that UID already exists." ), headers, HttpStatus.CONFLICT );
+                throw new DuplicateUidException();
             }
             else if ( organisationUnit.getCode() != null && organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() ) != null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
-                    "An object with that code already exists." ), headers, HttpStatus.CONFLICT );
+                throw new DuplicateCodeException();
             }
 
             organisationUnitService.addOrganisationUnit( organisationUnit );
@@ -537,8 +538,7 @@ public class FacilityController
 
         if ( organisationUnit == null )
         {
-            return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
-                "Facility with that ID not found" ), headers, HttpStatus.NOT_FOUND );
+            throw new FacilityNotFoundException();
         }
 
         // getId == null is not legal, but will be catched by bean validation
@@ -552,8 +552,7 @@ public class FacilityController
             }
             catch ( IllegalArgumentException ignored )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
-                    "Bad id: (does not match expected UUID string format)" ), headers, HttpStatus.PRECONDITION_FAILED );
+                throw new UuidFormatException();
             }
         }
 
@@ -577,7 +576,7 @@ public class FacilityController
 
                 if ( !ETag.equals( request.getHeader( "If-Match" ) ) )
                 {
-                    throw new ETagDoesNotMatchException();
+                    throw new ETagVerificationException();
                 }
             }
 
@@ -587,8 +586,7 @@ public class FacilityController
 
                 if ( ouByCode != null && !organisationUnit.getUid().equals( ouByCode.getUid() ) )
                 {
-                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
-                        "Another object with the same code already exists." ), headers, HttpStatus.CONFLICT );
+                    throw new DuplicateCodeException();
                 }
             }
 
@@ -628,14 +626,13 @@ public class FacilityController
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @PreAuthorize("hasRole('F_FRED_DELETE') or hasRole('ALL')")
-    public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException
+    public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException, FacilityNotFoundException
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
 
         if ( organisationUnit == null )
         {
-            return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
-                "Facility with that ID not found" ), HttpStatus.NOT_FOUND );
+            throw new FacilityNotFoundException();
         }
 
         organisationUnitService.deleteOrganisationUnit( organisationUnit );
@@ -648,21 +645,38 @@ public class FacilityController
     //--------------------------------------------------------------------------
 
     @ExceptionHandler({ HttpClientErrorException.class, HttpServerErrorException.class })
-    public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex )
+    public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex ) throws IOException
     {
-        return new ResponseEntity<String>( ex.getMessage(), ex.getStatusCode() );
+        return new ResponseEntity<String>( MessageUtils.jsonMessage( ex.getStatusText(),
+            ex.getMessage() ), ex.getStatusCode() );
     }
 
-    @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
-    public ResponseEntity<String> dhisExceptionHandler( Exception ex )
+    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
+    public ResponseEntity<String> handleForbidden( Exception ex ) throws IOException
     {
-        return new ResponseEntity<String>( ex.getMessage(), HttpStatus.FORBIDDEN );
+        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.FORBIDDEN.toString(),
+            ex.getMessage() ), HttpStatus.FORBIDDEN );
     }
 
-    public ResponseEntity<String> etagVerificationFailed( ETagDoesNotMatchException ex ) throws IOException
+    @ExceptionHandler( { ETagVerificationException.class, UuidFormatException.class } )
+    public ResponseEntity<String> handlePreconditionFailed( Exception ex ) throws IOException
     {
-        return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
-            "ETag provided does not match current ETag of facility" ), HttpStatus.PRECONDITION_FAILED );
+        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
+            ex.getMessage() ), HttpStatus.PRECONDITION_FAILED );
+    }
+
+    @ExceptionHandler( { FacilityNotFoundException.class } )
+    public ResponseEntity<String> handleNotFound( Exception ex ) throws IOException
+    {
+        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
+            ex.getMessage() ), HttpStatus.NOT_FOUND );
+    }
+
+    @ExceptionHandler( { DuplicateCodeException.class, DuplicateUidException.class, DuplicateUuidException.class } )
+    public ResponseEntity<String> handleConflict( Exception ex ) throws IOException
+    {
+        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
+            ex.getMessage() ), HttpStatus.CONFLICT );
     }
 
     //--------------------------------------------------------------------------
