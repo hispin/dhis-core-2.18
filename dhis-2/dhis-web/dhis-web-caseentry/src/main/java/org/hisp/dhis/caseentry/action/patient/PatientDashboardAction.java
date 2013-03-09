@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.relationship.Relationship;
@@ -227,10 +229,9 @@ public class PatientDashboardAction
 
         patientAudits = patientAuditService.getPatientAudits( patient );
 
-        long millisInDay = 60 * 60 * 24 * 1000;
-        long currentTime = new Date().getTime();
-        long dateOnly = (currentTime / millisInDay) * millisInDay;
-        Date date = new Date( dateOnly );
+        Calendar today = Calendar.getInstance();
+        CalendarPeriodType.clearTimeOfDay( today );
+        Date date = today.getTime();
         String visitor = currentUserService.getCurrentUsername();
         PatientAudit patientAudit = patientAuditService.getPatientAudit( patientId, visitor, date,
             PatientAudit.MODULE_PATIENT_DASHBOARD );

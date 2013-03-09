@@ -364,8 +364,7 @@ public class DefaultProgramStageInstanceService
         // Average number of stages for complete programs
 
         int stageCount = program.getProgramStages().size();
-        int stageCompleted = getProgramStageInstanceCount( program, orgunitIds, startDate, endDate, true );
-System.out.println("\n\n ===== \n stageCompleted : " + stageCompleted );    
+        int stageCompleted = getProgramStageInstanceCount( program, orgunitIds, startDate, endDate, true );    
         double average = 0.0;
         if ( total != 0 && stageCompleted != 0 )
         {
@@ -418,7 +417,7 @@ System.out.println("\n\n ===== \n stageCompleted : " + stageCompleted );
         grid.addValue( i18n.getString( "visits_overdue_percent" ) );
 
         // Add values for stage details
-
+        
         for ( ProgramStage programStage : program.getProgramStages() )
         {
             grid.addRow();
@@ -471,7 +470,7 @@ System.out.println("\n\n ===== \n stageCompleted : " + stageCompleted );
             }
             grid.addValue( format.formatValue( percent ) + "%" );
         }
-
+        
         return grid;
     }
 
