@@ -50,7 +50,7 @@ public class MobileClientController
         orgUnits.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
         return orgUnits;
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "/{version}" )
     @ResponseBody
     public OrgUnits getOrgUnitsForUser( HttpServletRequest request, @PathVariable String version )
@@ -74,7 +74,7 @@ public class MobileClientController
         orgUnits.setClientVersion( version );
         return orgUnits;
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "/{version}/" )
     @ResponseBody
     public OrgUnits getOrgUnitsForUserLWUIT( HttpServletRequest request, @PathVariable String version )
@@ -115,7 +115,7 @@ public class MobileClientController
         orgUnit.setSearchUrl( getUrl( request, unit.getId(), "search" ) );
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
         orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
-        //orgUnit.setRegisterPerson(getUrl(request, unit.getId(), "registerPerson")); TODO
+        orgUnit.setRegisterPersonUrl( getUrl( request, unit.getId(), "registerPerson" ) );
         orgUnit.setUploadProgramStageUrl( getUrl( request, unit.getId(), "uploadProgramStage" ) );
         orgUnit.setEnrollProgramUrl( getUrl( request, unit.getId(), "enrollProgram" ) );
 
@@ -124,14 +124,14 @@ public class MobileClientController
         String root = full.substring( 0, full.length() - UrlUtils.buildRequestUrl( request ).length() );
         String updateNewVersionUrl = root + "/dhis-web-api-mobile/updateClient.action";
         orgUnit.setUpdateNewVersionUrl( updateNewVersionUrl );
-        
+
         return orgUnit;
     }
 
     private static String getUrl( HttpServletRequest request, int id, String path )
     {
         String url = UrlUtils.buildFullRequestUrl( request );
-        if( url.endsWith( "/" ))
+        if ( url.endsWith( "/" ) )
         {
             url = url + "orgUnits/" + id + "/" + path;
         }
