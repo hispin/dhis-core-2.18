@@ -28,6 +28,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -113,6 +114,9 @@ public class FacilityController
 
     @Autowired
     private Validator validator;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @InitBinder
     protected void initBinder( WebDataBinder binder )
@@ -507,7 +511,7 @@ public class FacilityController
             facility = conversionService.convert( organisationUnit, Facility.class );
             List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
             addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnit, facility );
-            json = new ObjectMapperFactoryBean().getObject().writeValueAsString( facility );
+            json = objectMapper.writeValueAsString( facility );
 
             return new ResponseEntity<String>( json, headers, HttpStatus.CREATED );
         }
@@ -566,7 +570,7 @@ public class FacilityController
                 Facility old_facility = conversionService.convert( organisationUnit, Facility.class );
                 List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
                 addHierarchyPropertyToFacility( organisationUnitLevels, organisationUnitUpdate, old_facility );
-                String body = new ObjectMapperFactoryBean().getObject().writeValueAsString( old_facility );
+                String body = objectMapper.writeValueAsString( old_facility );
 
                 String ETag = generateETagHeaderValue( body.getBytes() );
 
