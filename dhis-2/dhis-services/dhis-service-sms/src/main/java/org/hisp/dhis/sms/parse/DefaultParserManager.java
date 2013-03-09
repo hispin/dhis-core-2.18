@@ -17,6 +17,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -60,6 +61,9 @@ public class DefaultParserManager
 
     @Autowired
     private OutboundSmsTransportService transportService;
+
+    @Autowired
+    private DataSetService dataSetService;
 
     @Transactional
     public void parse( IncomingSms sms )
@@ -155,19 +159,24 @@ public class DefaultParserManager
         }
 
         Map<String, String> parsedMessage = p.parse( message );
-
         Date date = lookForDate( message );
+        OrganisationUnit orgUnit = selectOrganisationUnit( orgUnits, parsedMessage );
+        Period period = getPeriod( command, date );
+
+        // Check if Data Set is locked
+        if ( dataSetService.isLocked( command.getDataset(), period, orgUnit, null ) )
+        {
+            throw new SMSParserException( "Dataset is locked for the period " + period.getStartDate() + " - "
+                + period.getEndDate() );
+        }
 
         boolean valueStored = false;
-
-        OrganisationUnit orgUnit = selectOrganisationUnit( orgUnits, parsedMessage );
-
         for ( SMSCode code : command.getCodes() )
         {
             if ( parsedMessage.containsKey( code.getCode().toUpperCase() ) )
             {
                 storeDataValue( sender, orgUnit, parsedMessage, code, command, date, command.getDataset(),
-                    completeForm( command, parsedMessage ) );
+                    formIsComplete( command, parsedMessage ) );
                 valueStored = true;
             }
         }
@@ -434,7 +443,7 @@ public class DefaultParserManager
 
     }
 
-    private boolean completeForm( SMSCommand command, Map<String, String> parsedMessage )
+    private boolean formIsComplete( SMSCommand command, Map<String, String> parsedMessage )
     {
         for ( SMSCode code : command.getCodes() )
         {
