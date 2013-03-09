@@ -577,12 +577,7 @@ public class FacilityController
                 }
             }
 
-            if ( organisationUnit == null )
-            {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
-                    "No object with that identifier exists." ), headers, HttpStatus.NOT_FOUND );
-            }
-            else if ( organisationUnitUpdate.getCode() != null )
+            if ( organisationUnitUpdate.getCode() != null )
             {
                 OrganisationUnit ouByCode = organisationUnitService.getOrganisationUnitByCode( organisationUnitUpdate.getCode() );
 
