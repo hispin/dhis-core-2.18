@@ -807,12 +807,10 @@ public class HibernateProgramStageInstanceStore
             {
                 criteria.createAlias( "programInstance.patient", "patient" );
                 criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
-                criteria.add( Restrictions.or( Restrictions.and( Restrictions.isNull( "executionDate" ),
-                    Restrictions.between( "dueDate", startDate, endDate ),
-                    Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
-                    Restrictions.eq( "completed", false ), Restrictions.isNotNull( "executionDate" ),
+                criteria.add( Restrictions.and( Restrictions.eq( "completed", false ),
+                    Restrictions.isNotNull( "executionDate" ),
                     Restrictions.between( "executionDate", startDate, endDate ),
-                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) ) );
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ) );
             }
         }
 

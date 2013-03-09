@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -366,6 +365,7 @@ public class DefaultProgramStageInstanceService
 
         int stageCount = program.getProgramStages().size();
         int stageCompleted = getProgramStageInstanceCount( program, orgunitIds, startDate, endDate, true );
+System.out.println("\n\n ===== \n stageCompleted : " + stageCompleted );    
         double average = 0.0;
         if ( total != 0 && stageCompleted != 0 )
         {
