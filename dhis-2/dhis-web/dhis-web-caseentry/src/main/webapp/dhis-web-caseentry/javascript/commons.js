@@ -1401,7 +1401,7 @@ function unenrollmentForm( programInstanceId )
 		$.ajax({
 			type: "POST",
 			url: 'setProgramInstanceStatus.action',
-			data: "programInstanceId=" + programInstanceId + "&completed=false",
+			data: "programInstanceId=" + programInstanceId + "&completed=true",
 			success: function( json ) 
 			{
 				var type=jQuery("#tr1_" + programInstanceId ).attr('type');
@@ -1443,7 +1443,7 @@ function reenrollmentForm( programInstanceId )
 		$.ajax({
 			type: "POST",
 			url: 'setProgramInstanceStatus.action',
-			data: "programInstanceId=" + programInstanceId + "&completed=true",
+			data: "programInstanceId=" + programInstanceId + "&completed=false",
 			success: function( json ) 
 			{
 				var type=jQuery("#tr1_" + programInstanceId ).attr('type');
