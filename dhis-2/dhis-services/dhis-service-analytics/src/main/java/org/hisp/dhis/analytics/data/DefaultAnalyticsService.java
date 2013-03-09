@@ -43,6 +43,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.getDimensionFromParam;
 import static org.hisp.dhis.analytics.DataQueryParams.getDimensionItemsFromParam;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +84,7 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -98,6 +100,8 @@ import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultAnalyticsService
@@ -142,6 +146,9 @@ public class DefaultAnalyticsService
     
     @Autowired
     private ConstantService constantService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -510,9 +517,32 @@ public class DefaultAnalyticsService
         
         if ( ORGUNIT_DIM_ID.equals( dimension ) )
         {
-            List<IdentifiableObject> ous = asList( organisationUnitService.getOrganisationUnitsByUid( options ) );
+            User user = currentUserService.getCurrentUser();
             
-            if ( ous == null || ous.isEmpty() )
+            List<IdentifiableObject> ous = new ArrayList<IdentifiableObject>();
+            
+            for ( String ou : options )
+            {
+                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                {
+                    ous.add( user.getOrganisationUnit() );
+                }
+                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                {
+                    ous.addAll( user.getOrganisationUnit().getSortedChildren() );
+                }
+                else
+                {
+                    OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
+                    
+                    if ( unit != null )
+                    {
+                        ous.add( unit );
+                    }
+                }
+            }
+            
+            if ( ous.isEmpty() )
             {
                 throw new IllegalQueryException( "Dimension ou is present in query without any valid dimension options" );
             }
@@ -524,22 +554,22 @@ public class DefaultAnalyticsService
         {
             List<Period> periods = new ArrayList<Period>();
             
-            periods : for ( String isoPeriod : options )
+            for ( String isoPeriod : options )
             {
-                Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
-                
-                if ( period != null )
-                {
-                    period.setName( format != null ? format.formatPeriod( period ) : null );
-                    periods.add( period );
-                    continue periods;
-                }
-                
                 if ( RelativePeriodEnum.contains( isoPeriod ) )
                 {
                     RelativePeriodEnum relativePeriod = RelativePeriodEnum.valueOf( isoPeriod );
                     periods.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, format, true ) );
-                    continue periods;
+                }
+                else
+                {
+                    Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
+                
+                    if ( period != null )
+                    {
+                        period.setName( format != null ? format.formatPeriod( period ) : null );
+                        periods.add( period );
+                    }
                 }
             }
             
