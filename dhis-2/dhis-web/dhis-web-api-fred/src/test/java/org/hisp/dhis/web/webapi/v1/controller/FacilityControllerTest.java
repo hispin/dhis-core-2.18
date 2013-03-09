@@ -475,4 +475,35 @@ public class FacilityControllerTest extends FredSpringWebTest
         mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ) )
             .andExpect( status().isOk() );
     }
+
+    //---------------------------------------------------------------------------------------------
+    // Test VERBS
+    //---------------------------------------------------------------------------------------------
+
+    @Test
+    public void testDeleteFacilities() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( delete( "/v1/facilities" ).session( session ) )
+            .andExpect( status().isMethodNotAllowed() );
+    }
+
+    @Test
+    public void testPutFacilities() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( put( "/v1/facilities" ).session( session ) )
+            .andExpect( status().isMethodNotAllowed() );
+    }
+
+    @Test
+    public void testPostFacilityID() throws Exception
+    {
+        MockHttpSession session = getSession( "ALL" );
+
+        mvc.perform( post( "/v1/facilities/1" ).session( session ) )
+            .andExpect( status().isMethodNotAllowed() );
+    }
 }
