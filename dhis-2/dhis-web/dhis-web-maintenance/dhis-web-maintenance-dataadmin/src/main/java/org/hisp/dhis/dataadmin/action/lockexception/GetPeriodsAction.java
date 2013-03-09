@@ -27,20 +27,20 @@ package org.hisp.dhis.dataadmin.action.lockexception;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -49,7 +49,7 @@ public class GetPeriodsAction
     implements Action
 {
     private static final int MAX_PERIODS = 24;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -112,7 +112,17 @@ public class GetPeriodsAction
             return new ArrayList<Period>();
         }
 
-        CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
+        CalendarPeriodType periodType;
+
+        if ( dataSet.getPeriodType().getName().equalsIgnoreCase( "Yearly" ) )
+        {
+            periodType = new YearlyPeriodType();
+        }
+        else
+        {
+            periodType = (CalendarPeriodType) dataSet.getPeriodType();
+        }
+
         List<Period> periods = periodType.generateLast5Years( new Date() );
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         Collections.reverse( periods );
