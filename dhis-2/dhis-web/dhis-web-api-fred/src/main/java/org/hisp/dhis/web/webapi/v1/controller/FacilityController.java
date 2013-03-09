@@ -30,7 +30,6 @@ package org.hisp.dhis.web.webapi.v1.controller;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
-import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -49,8 +48,6 @@ import org.hisp.dhis.web.webapi.v1.exception.ETagVerificationException;
 import org.hisp.dhis.web.webapi.v1.exception.FacilityNotFoundException;
 import org.hisp.dhis.web.webapi.v1.exception.UuidFormatException;
 import org.hisp.dhis.web.webapi.v1.utils.ContextUtils;
-import org.hisp.dhis.web.webapi.v1.utils.MessageUtils;
-import org.hisp.dhis.web.webapi.v1.utils.ObjectMapperFactoryBean;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -65,7 +62,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,8 +69,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -610,7 +604,7 @@ public class FacilityController
             facility = conversionService.convert( organisationUnit, Facility.class );
             List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
             addHierarchyPropertyToFacility( organisationUnitLevels, facility );
-            json = new ObjectMapperFactoryBean().getObject().writeValueAsString( facility );
+            json = objectMapper.writeValueAsString( facility );
 
             return new ResponseEntity<String>( json, headers, HttpStatus.OK );
         }
@@ -638,45 +632,6 @@ public class FacilityController
         organisationUnitService.deleteOrganisationUnit( organisationUnit );
 
         return new ResponseEntity<String>( HttpStatus.OK );
-    }
-
-    //--------------------------------------------------------------------------
-    // EXCEPTION HANDLERS
-    //--------------------------------------------------------------------------
-
-    @ExceptionHandler({ HttpClientErrorException.class, HttpServerErrorException.class })
-    public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex ) throws IOException
-    {
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( ex.getStatusText(),
-            ex.getMessage() ), ex.getStatusCode() );
-    }
-
-    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
-    public ResponseEntity<String> handleForbidden( Exception ex ) throws IOException
-    {
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.FORBIDDEN.toString(),
-            ex.getMessage() ), HttpStatus.FORBIDDEN );
-    }
-
-    @ExceptionHandler( { ETagVerificationException.class, UuidFormatException.class } )
-    public ResponseEntity<String> handlePreconditionFailed( Exception ex ) throws IOException
-    {
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.PRECONDITION_FAILED.toString(),
-            ex.getMessage() ), HttpStatus.PRECONDITION_FAILED );
-    }
-
-    @ExceptionHandler( { FacilityNotFoundException.class } )
-    public ResponseEntity<String> handleNotFound( Exception ex ) throws IOException
-    {
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
-            ex.getMessage() ), HttpStatus.NOT_FOUND );
-    }
-
-    @ExceptionHandler( { DuplicateCodeException.class, DuplicateUidException.class, DuplicateUuidException.class } )
-    public ResponseEntity<String> handleConflict( Exception ex ) throws IOException
-    {
-        return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
-            ex.getMessage() ), HttpStatus.CONFLICT );
     }
 
     //--------------------------------------------------------------------------
