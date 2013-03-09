@@ -200,6 +200,17 @@ public class DefaultQueryPlanner
         }
 
         // ---------------------------------------------------------------------
+        // Group by data set
+        // ---------------------------------------------------------------------
+        
+        queries = splitByDimension( queries, DataQueryParams.DATASET_DIM_ID, optimalQueries );
+
+        if ( queries.size() >= optimalQueries )
+        {
+            return queries;
+        }
+
+        // ---------------------------------------------------------------------
         // Group by organisation unit
         // ---------------------------------------------------------------------
         

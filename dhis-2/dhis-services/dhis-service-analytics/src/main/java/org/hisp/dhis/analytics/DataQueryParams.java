@@ -142,7 +142,7 @@ public class DataQueryParams
     }
     
     /**
-     * Creates a mapping between the dimension names and the filter dimensions.
+     * Creates a mapping between dimension identifiers and filter dimensions.
      */
     public ListMap<String, Dimension> getDimensionFilterMap()
     {
