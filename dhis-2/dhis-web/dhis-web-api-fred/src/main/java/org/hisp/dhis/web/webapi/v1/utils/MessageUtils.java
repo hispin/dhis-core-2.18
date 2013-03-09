@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.exception;
+package org.hisp.dhis.web.webapi.v1.utils;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -27,9 +27,43 @@ package org.hisp.dhis.web.webapi.v1.exception;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.web.webapi.v1.domain.MessageResponse;
+
+import java.io.IOException;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ETagDoesNotMatchException extends Exception
+public final class MessageUtils
 {
+    private static ObjectMapper objectMapper;
+
+    static
+    {
+        objectMapper = new ObjectMapper();
+        objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
+        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
+    }
+
+    public static String jsonMessage( String message ) throws IOException
+    {
+        return messageToJson( new MessageResponse( null, message ) );
+    }
+
+    public static String jsonMessage( String code, String message ) throws IOException
+    {
+        return messageToJson( new MessageResponse( code, message ) );
+    }
+
+    public static String messageToJson( MessageResponse messageResponse ) throws IOException
+    {
+        return objectMapper.writeValueAsString( messageResponse );
+    }
+
+    private MessageUtils()
+    {
+    }
 }

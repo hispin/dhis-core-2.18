@@ -33,7 +33,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
-import org.hisp.dhis.web.webapi.v1.utils.MessageResponseUtils;
+import org.hisp.dhis.web.webapi.v1.utils.MessageUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;
@@ -140,17 +140,17 @@ public class FacilityServiceController
 
             if ( organisationUnitService.getOrganisationUnit( organisationUnit.getUid() ) != null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
+                return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
                     "An object with that ID already exists." ), headers, HttpStatus.CONFLICT );
             }
             else if ( organisationUnitService.getOrganisationUnitByName( organisationUnit.getName() ) != null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
+                return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
                     "An object with that name already exists." ), headers, HttpStatus.CONFLICT );
             }
             else if ( organisationUnit.getCode() != null && organisationUnitService.getOrganisationUnitByCode( organisationUnit.getCode() ) != null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
+                return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
                     "An object with that code already exists." ), headers, HttpStatus.CONFLICT );
             }
 
@@ -179,7 +179,7 @@ public class FacilityServiceController
 
             if ( ou == null )
             {
-                return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
+                return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.NOT_FOUND.toString(),
                     "No object with that identifier exists." ), headers, HttpStatus.NOT_FOUND );
             }
             else if ( organisationUnit.getCode() != null )
@@ -188,7 +188,7 @@ public class FacilityServiceController
 
                 if ( ouByCode != null && !ou.getUid().equals( ouByCode.getUid() ) )
                 {
-                    return new ResponseEntity<String>( MessageResponseUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
+                    return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
                         "Another object with the same code already exists." ), headers, HttpStatus.CONFLICT );
                 }
             }

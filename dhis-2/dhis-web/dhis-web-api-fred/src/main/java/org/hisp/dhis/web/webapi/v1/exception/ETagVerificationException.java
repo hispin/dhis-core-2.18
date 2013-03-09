@@ -1,7 +1,7 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.web.webapi.v1.exception;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,28 +28,17 @@ package org.hisp.dhis.common;
  */
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DeleteNotAllowedException
-    extends RuntimeException
+public class ETagVerificationException extends Exception
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -4102764536406530234L;
-
-    public static final String ERROR_ASSOCIATED_BY_OTHER_OBJECTS = "Object associated by other objects";
-
-    private String errorCode;
-
-    public DeleteNotAllowedException( String errorCode, String message )
+    public ETagVerificationException()
     {
-        super( message );
-        this.errorCode = errorCode;
+        super( "ETag provided does not match current ETag of facility" );
     }
 
-    public String getErrorCode()
+    public ETagVerificationException( String message )
     {
-        return errorCode;
+        super( message );
     }
 }
