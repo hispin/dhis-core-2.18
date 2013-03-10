@@ -47,7 +47,7 @@ public class JacksonMapListIdentifiableObjectSerializer
     public void serialize( Map<String, List<IdentifiableObject>> value, JsonGenerator jgen, SerializerProvider provider )
         throws IOException
     {
-        if ( value != null && !value.isEmpty() )
+        if ( value != null )
         {
             jgen.writeStartObject();
             
