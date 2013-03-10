@@ -91,6 +91,7 @@ public class JdbcAnalyticsManager
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
         ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
+        
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
         
         List<Dimension> dimensions = params.getQueryDimensions();
@@ -118,7 +119,9 @@ public class JdbcAnalyticsManager
             sql += "sum(value)";
         }
         
-        sql += " as value from " + params.getTableName() + " ";
+        sql += " as value from ";
+        
+        sql += params.getTableName() + " ";
         
         for ( Dimension dim : dimensions )
         {
@@ -151,45 +154,22 @@ public class JdbcAnalyticsManager
     
         log.info( sql );
 
-        Map<String, Double> map = new HashMap<String, Double>();
-        
-        SqlRowSet rowSet = null;
+        Map<String, Double> map = null;
         
         try
         {
-            rowSet = jdbcTemplate.queryForRowSet( sql );
+            map = getKeyValueMap( params, sql );
         }
         catch ( BadSqlGrammarException ex )
         {
             log.info( "Query failed, likely because the requested analytics table does not exist", ex );
             
-            return new AsyncResult<Map<String, Double>>( map );
-        }
-        
-        while ( rowSet.next() )
-        {
-            Double value = rowSet.getDouble( VALUE_ID );
-
-            if ( !measureCriteriaSatisfied( params, value ) )
-            {
-                continue;
-            }
-            
-            StringBuilder key = new StringBuilder();
-            
-            for ( Dimension dim : dimensions )
-            {
-                key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
-            }
-            
-            key.deleteCharAt( key.length() - 1 );
-            
-            map.put( key.toString(), value );
+            return new AsyncResult<Map<String, Double>>( new HashMap<String, Double>() );
         }
         
         replaceDataPeriodsWithAggregationPeriods( map, params, dataPeriodAggregationPeriodMap );
         
-        return new AsyncResult<Map<String, Double>>( map );
+        return new AsyncResult<Map<String, Double>>( map );   
     }
 
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap )
@@ -232,7 +212,46 @@ public class JdbcAnalyticsManager
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    /**
+     * Retrieves data from the database based on the given query and SQL and puts
+     * into a value key and value mapping.
+     */
+    private Map<String, Double> getKeyValueMap( DataQueryParams params, String sql )
+        throws BadSqlGrammarException
+    {
+        Map<String, Double> map = new HashMap<String, Double>();
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        
+        while ( rowSet.next() )
+        {
+            Double value = rowSet.getDouble( VALUE_ID );
+
+            if ( !measureCriteriaSatisfied( params, value ) )
+            {
+                continue;
+            }
+            
+            StringBuilder key = new StringBuilder();
+            
+            for ( Dimension dim : params.getQueryDimensions() )
+            {
+                key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
+            }
+            
+            key.deleteCharAt( key.length() - 1 );
+            
+            map.put( key.toString(), value );
+        }
+        
+        return map;
+    }
     
+    /**
+     * Checks if the measure criteria specified for the given query are satisfied
+     * for the given value.
+     */
     private boolean measureCriteriaSatisfied( DataQueryParams params, Double value )
     {
         if ( value == null )
@@ -273,6 +292,10 @@ public class JdbcAnalyticsManager
         return true;
     }
     
+    /**
+     * Generates a comma-delimited string based on the dimension names of the
+     * given dimensions.
+     */
     private String getCommaDelimitedString( Collection<Dimension> dimensions )
     {
         final StringBuilder builder = new StringBuilder();
