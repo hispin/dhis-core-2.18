@@ -9,6 +9,7 @@
 	<h1> $i18n.getString( "manual_person_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
 	
 	<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
+		<input type='hidden' id='autoSave' name='autoSave' value='false' />
 		<table>
 			<tr>
 				<td>
@@ -63,10 +64,10 @@
 			</tr>
 
 			<tr>
-				<td>
-					<input type="submit" name="Aggregate" value="$i18n.getString( 'aggregate' )"/></td>
+				<td colspan='2'>
+					<input type="submit" name="aggregateAndSaveBtn" value="$i18n.getString( 'aggregate_and_save' )" onclick="setFieldValue('autoSave', true)" >
+					<input type="submit" name="aggregateBtn" value="$i18n.getString( 'preview' )" onclick="setFieldValue('autoSave', false)" >
 				</td>
-				<td></td>
 			</tr>
 		</table>
 	</form>

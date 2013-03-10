@@ -46,7 +46,8 @@ function caseAggregationResult()
 			facilityLB: getFieldValue('facilityLB'),
 			dataSetId: getFieldValue('dataSetId'),
 			startDate: getFieldValue('startDate'),
-			endDate: getFieldValue('endDate')
+			endDate: getFieldValue('endDate'),
+			autoSave: getFieldValue('autoSave')
 		}
 		, function(){
 			$( "#loaderDiv" ).hide();
