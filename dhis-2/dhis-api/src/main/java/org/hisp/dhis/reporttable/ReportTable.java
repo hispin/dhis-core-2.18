@@ -134,6 +134,14 @@ public class ReportTable
     public static final String TOTAL_COLUMN_NAME = "total";
     public static final String TOTAL_COLUMN_PRETTY_NAME = "Total";
 
+    public static final String DISPLAY_DENSITY_COMFORTABLE = "comfortable";
+    public static final String DISPLAY_DENSITY_NORMAL = "normal";
+    public static final String DISPLAY_DENSITY_COMPACT = "compact";
+    
+    public static final String FONT_SIZE_LARGE = "large";
+    public static final String FONT_SIZE_NORMAL = "normal";
+    public static final String FONT_SIZE_SMALL = "small";
+    
     public static final int ASC = -1;
     public static final int DESC = 1;
     public static final int NONE = 0;

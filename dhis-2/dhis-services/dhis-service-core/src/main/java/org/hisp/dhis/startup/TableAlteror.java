@@ -424,6 +424,8 @@ public class TableAlteror
         executeSql( "update reporttable set subtotals = false where subtotals is null" );
         executeSql( "update reporttable set userOrganisationUnit = false where userOrganisationUnit is null" );
         executeSql( "update reporttable set userOrganisationUnitChildren = false where userOrganisationUnitChildren is null" );
+        executeSql( "update reporttable set displaydensity = 'normal' where displaydensity is null" );
+        executeSql( "update reporttable set fontsize = 'normal' where fontsize is null" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
         executeSql( "update chart set reportingbimonth = false where reportingbimonth is null" );
