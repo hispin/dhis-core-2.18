@@ -116,6 +116,7 @@ public class DefaultAnalyticsService
     //TODO filter values must be merged if split
     //TODO completeness on time
     //TODO make sure data x dims are successive
+    //TODO optimize when in and de are specified, and in-de is part of de
     
     @Autowired
     private AnalyticsManager analyticsManager;
