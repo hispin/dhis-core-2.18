@@ -131,19 +131,22 @@ public class JdbcAnalyticsManager
             }
         }
 
-        ListMap<String, Dimension> filters = params.getDimensionFilterMap();
+        ListMap<String, Dimension> filterMap = params.getDimensionFilterMap();
         
-        //TODO check if any items for all filters
-        
-        for ( String dimension : filters.keySet() )
+        for ( String dimension : filterMap.keySet() )
         {
-            sql += sqlHelper.whereAnd() + " (";
+            List<Dimension> filters = filterMap.get( dimension );
             
-            for ( Dimension filter : filters.get( dimension ) )
+            if ( DataQueryParams.anyDimensionHasItems( filters ) )
             {
-                if ( filter != null && filter.hasItems() )
+                sql += sqlHelper.whereAnd() + " (";
+                
+                for ( Dimension filter : filters )
                 {
-                    sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                    if ( filter.hasItems() )
+                    {
+                        sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                    }
                 }
             }
             
