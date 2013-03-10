@@ -2,8 +2,10 @@
 #if($orgunits.size()>0)
 	<div>
 		<input type="button" value="$i18n.getString( 'back' )" onclick="backBtnOnClick();" style="width:10em">
+		#if($autoSave=='false')
 		<input type='button' value="$i18n.getString( 'save_selected_values' )" onclick='saveAggregateDataValues( false )' >
 		<input type='button' value="$i18n.getString( 'save_all_values' )" onclick='saveAggregateDataValues( true )' >
+		#end
 	</div>
 	<p></p>
 
@@ -23,8 +25,12 @@
 			
 				#set( $dataValues = $mapDataValues.get( $key ) ) 
 				<table class="formSection mainPageTable hidden" id='$periodDiv'>
-					<col width="40">          
+					<col width="40"> 
+					
+					#if($autoSave=='false')
 					<col>
+					#end
+					
 					<col>
 					<col>
 					<tbody>
@@ -32,7 +38,11 @@
 					#set($no = 1)
 						<tr>
 							<th>#</th>
+							
+							#if($autoSave=='false')
 							<th><input type='checkbox' onchange="toogleAllCheckBoxes( '$periodDiv', this.checked );"></th>
+							#end
+							
 							<th>$i18n.getString('name')</th>
 							<th>$i18n.getString('value')</th>
 							<th>$i18n.getString('status')</th>
@@ -42,10 +52,14 @@
 							#set( $statusKey = $key + '-' + $dataValue.dataElement.id )
 							<tr #alternate( $mark )>
 								<td>$no</td>
+								
+								#if($autoSave=='false')
 								<td>
 									#set( $item=$dataValue.dataElement.id + '_' + $dataValue.optionCombo.id + '_' + $period.periodType.name + '_' + $format.formatDate($period.startDate) + '_' + $orgunit.id + '_' + $dataValue.value )
 									<input type='checkbox' name='aggregateValues' value='$item'>
 								</td>
+								#end
+								
 								<td>$dataValue.dataElement.name</td>
 								<td>$dataValue.value</td>
 								<td>$!mapStatusValues.get( $statusKey )</td>
