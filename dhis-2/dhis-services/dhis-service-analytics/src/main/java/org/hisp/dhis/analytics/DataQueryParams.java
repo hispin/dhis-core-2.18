@@ -419,11 +419,11 @@ public class DataQueryParams
             
             if ( getPeriods() != null ) // Period is dimension
             {
-                setPeriods( new ArrayList<IdentifiableObject>( dataPeriodAggregationPeriodMap.keySet() ) );
+                setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, dataPeriodType.getName(), new ArrayList<IdentifiableObject>( dataPeriodAggregationPeriodMap.keySet() ) );
             }
             else // Period is filter
             {
-                setFilterPeriods( new ArrayList<IdentifiableObject>( dataPeriodAggregationPeriodMap.keySet() ) );
+                setFilterOptions( PERIOD_DIM_ID, DimensionType.PERIOD, dataPeriodType.getName(), new ArrayList<IdentifiableObject>( dataPeriodAggregationPeriodMap.keySet() ) );
             }
         }
     }

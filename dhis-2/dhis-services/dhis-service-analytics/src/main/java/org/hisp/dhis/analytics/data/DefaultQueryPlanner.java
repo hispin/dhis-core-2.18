@@ -457,7 +457,7 @@ public class DefaultQueryPlanner
         
         return queries;
     }
-        
+    
     /**
      * Groups the given query in sub queries based on the period type of its
      * data elements. Sets the data period type on each query.
