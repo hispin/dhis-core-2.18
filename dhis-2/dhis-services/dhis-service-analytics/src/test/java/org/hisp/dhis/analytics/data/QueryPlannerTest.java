@@ -517,9 +517,8 @@ public class QueryPlannerTest
     }
 
     /**
-     * Query filters span 2 partitions. Splits in 2 queries for each partition, 
-     * then splits in 2 queries on data elements to satisfy optimal for a 
-     * total of 4 queries.
+     * Query filters span 2 partitions. Splits in 4 queries on data elements to 
+     * satisfy optimal for a total of 4 queries.
      */
     @Test
     public void planQueryH()
@@ -535,9 +534,11 @@ public class QueryPlannerTest
 
         for ( DataQueryParams query : queries )
         {
-            assertTrue( samePeriodType( query.getFilterPeriods() ) );
-            assertTrue( samePartition( query.getFilterPeriods() ) );
             assertDimensionNameNotNull( query );
+
+            assertTrue( query.filterSpansMultiplePartitions() );
+            assertEquals( 2, query.getTableNamePeriodMap().size() );
+            assertEquals( 2, query.getPartitionFilterParams().size() );
         }
     }
 

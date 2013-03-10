@@ -74,11 +74,11 @@ public class PartitionUtils
         return tables;
     }
     
-    public static String getTable( Period period, String tableName )
+    public static String getTableName( Period period, String tableName )
     {
-        Period quarter = PERIODTYPE.createPeriod( period.getStartDate() );
+        Period year = PERIODTYPE.createPeriod( period.getStartDate() );
         
-        return tableName + SEP + quarter.getIsoDate();
+        return tableName + SEP + year.getIsoDate();
     }
     
     public static Period getPeriod( String tableName )
@@ -94,13 +94,13 @@ public class PartitionUtils
         return PeriodType.getPeriodFromIsoString( isoPeriod );
     }
     
-    public static ListMap<String, IdentifiableObject> getTablePeriodMap( Collection<IdentifiableObject> periods, String tableName )
+    public static ListMap<String, IdentifiableObject> getTableNamePeriodMap( Collection<IdentifiableObject> periods, String tableName )
     {
         ListMap<String, IdentifiableObject> map = new ListMap<String, IdentifiableObject>();
         
         for ( IdentifiableObject period : periods )
         {
-            map.putValue( getTable( (Period) period, tableName ), period );
+            map.putValue( getTableName( (Period) period, tableName ), period );
         }
         
         return map;

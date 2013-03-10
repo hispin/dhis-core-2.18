@@ -40,6 +40,7 @@ import static org.hisp.dhis.analytics.MeasureFilter.LE;
 import static org.hisp.dhis.analytics.MeasureFilter.LT;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -100,7 +101,14 @@ public class JdbcAnalyticsManager
         
         String sql = getSelectClause( params );
         
-        sql += getFromWhereClause( params );
+        if ( params.filterSpansMultiplePartitions() )
+        {
+            sql += getFromWhereClauseMultiplePartitionFilters( params );
+        }
+        else
+        {
+            sql += getFromWhereClause( params );
+        }
         
         sql += getGroupByClause( params );
     
@@ -197,6 +205,28 @@ public class JdbcAnalyticsManager
     }
     
     /**
+     * Generates the from clause of the SQL query. This method should be used for
+     * queries where the period filter spans multiple partitions.
+     */
+    private String getFromWhereClauseMultiplePartitionFilters( DataQueryParams params )
+    {
+        String sql = "from (";
+        
+        for ( DataQueryParams filterParams : params.getPartitionFilterParams() )
+        {
+            sql += "select " + getCommaDelimitedString( filterParams.getQueryDimensions() ) + ", value as value ";
+            
+            sql += getFromWhereClause( filterParams );
+            
+            sql += "union all ";
+        }
+        
+        sql = trimEnd( sql, "union all ".length() ) + ") as data ";
+        
+        return sql;
+    }
+    
+    /**
      * Generates the from clause of the query SQL.
      */
     private String getFromWhereClause( DataQueryParams params )
@@ -232,7 +262,7 @@ public class JdbcAnalyticsManager
                 }
             }
             
-            sql = sql.substring( 0, sql.length() - " or ".length() ) + ") ";
+            sql = trimEnd( sql, " or ".length() ) + ") ";
         }
         
         return sql;
