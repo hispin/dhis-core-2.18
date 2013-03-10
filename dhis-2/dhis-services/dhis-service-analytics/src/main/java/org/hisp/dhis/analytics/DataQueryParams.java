@@ -142,7 +142,8 @@ public class DataQueryParams
     }
     
     /**
-     * Creates a mapping between dimension identifiers and filter dimensions.
+     * Creates a mapping between dimension identifiers and filter dimensions. Filters 
+     * are guaranteed not to be null.
      */
     public ListMap<String, Dimension> getDimensionFilterMap()
     {
@@ -150,7 +151,10 @@ public class DataQueryParams
         
         for ( Dimension filter : filters )
         {
-            map.putValue( filter.getDimension(), filter );
+            if ( filter != null )
+            {
+                map.putValue( filter.getDimension(), filter );
+            }
         }
         
         return map;
@@ -641,6 +645,28 @@ public class DataQueryParams
         }
         
         return map;
+    }
+    
+    /**
+     * Indicates whether at least one of the given dimenions has at least one
+     * item.
+     */
+    public static boolean anyDimensionHasItems( Collection<Dimension> dimensions )
+    {
+        if ( dimensions == null || dimensions.isEmpty() )
+        {
+            return false;
+        }
+        
+        for ( Dimension dim : dimensions )
+        {
+            if ( dim.hasItems() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     // -------------------------------------------------------------------------
