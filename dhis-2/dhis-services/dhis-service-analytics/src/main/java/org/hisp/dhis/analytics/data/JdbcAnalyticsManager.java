@@ -27,15 +27,19 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
+import static org.hisp.dhis.analytics.MeasureFilter.EQ;
+import static org.hisp.dhis.analytics.MeasureFilter.GE;
+import static org.hisp.dhis.analytics.MeasureFilter.GT;
+import static org.hisp.dhis.analytics.MeasureFilter.LE;
+import static org.hisp.dhis.analytics.MeasureFilter.LT;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
-import static org.hisp.dhis.analytics.MeasureFilter.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,9 +56,9 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.MeasureFilter;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
@@ -94,66 +98,11 @@ public class JdbcAnalyticsManager
         
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
         
-        List<Dimension> dimensions = params.getQueryDimensions();
-
-        SqlHelper sqlHelper = new SqlHelper();
-
-        String sql = "select " + getCommaDelimitedString( dimensions ) + ", ";
+        String sql = getSelectClause( params );
         
-        if ( params.isAggregationType( AVERAGE_INT ) )
-        {
-            int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
-            
-            sql += "sum(daysxvalue) / " + days;
-        }
-        else if ( params.isAggregationType( AVERAGE_BOOL ) )
-        {
-            sql += "sum(daysxvalue) / sum(daysno) * 100";
-        }
-        else if ( params.isAggregationType( COUNT ) )
-        {
-            sql += "count(value)";
-        }
-        else // SUM, AVERAGE_DISAGGREGATION and undefined //TODO
-        {
-            sql += "sum(value)";
-        }
+        sql += getFromWhereClause( params );
         
-        sql += " as value from ";
-        
-        sql += params.getTableName() + " ";
-        
-        for ( Dimension dim : dimensions )
-        {
-            if ( !dim.isAllItems() )
-            {
-                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
-            }
-        }
-
-        ListMap<String, Dimension> filterMap = params.getDimensionFilterMap();
-        
-        for ( String dimension : filterMap.keySet() )
-        {
-            List<Dimension> filters = filterMap.get( dimension );
-            
-            if ( DataQueryParams.anyDimensionHasItems( filters ) )
-            {
-                sql += sqlHelper.whereAnd() + " (";
-                
-                for ( Dimension filter : filters )
-                {
-                    if ( filter.hasItems() )
-                    {
-                        sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
-                    }
-                }
-            }
-            
-            sql = sql.substring( 0, sql.length() - " or ".length() ) + ") ";
-        }
-                
-        sql += "group by " + getCommaDelimitedString( dimensions );
+        sql += getGroupByClause( params );
     
         log.info( sql );
 
@@ -174,7 +123,7 @@ public class JdbcAnalyticsManager
         
         return new AsyncResult<Map<String, Double>>( map );   
     }
-
+    
     public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap )
     {
         if ( params.isAggregationType( AVERAGE_INT_DISAGGREGATION ) )
@@ -215,6 +164,89 @@ public class JdbcAnalyticsManager
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    /**
+     * Generates the select clause of the query SQL.
+     */
+    private String getSelectClause( DataQueryParams params )
+    {
+        String sql = "select " + getCommaDelimitedString( params.getQueryDimensions() ) + ", ";
+        
+        if ( params.isAggregationType( AVERAGE_INT ) )
+        {
+            int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
+            
+            sql += "sum(daysxvalue) / " + days;
+        }
+        else if ( params.isAggregationType( AVERAGE_BOOL ) )
+        {
+            sql += "sum(daysxvalue) / sum(daysno) * 100";
+        }
+        else if ( params.isAggregationType( COUNT ) )
+        {
+            sql += "count(value)";
+        }
+        else // SUM, AVERAGE_DISAGGREGATION and undefined //TODO
+        {
+            sql += "sum(value)";
+        }
+        
+        sql += " as value ";
+        
+        return sql;        
+    }
+    
+    /**
+     * Generates the from clause of the query SQL.
+     */
+    private String getFromWhereClause( DataQueryParams params )
+    {
+        SqlHelper sqlHelper = new SqlHelper();
+
+        String sql = "from " + params.getTableName() + " ";
+        
+        for ( Dimension dim : params.getQueryDimensions() )
+        {
+            if ( !dim.isAllItems() )
+            {
+                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+            }
+        }
+
+        ListMap<String, Dimension> filterMap = params.getDimensionFilterMap();
+        
+        for ( String dimension : filterMap.keySet() )
+        {
+            List<Dimension> filters = filterMap.get( dimension );
+            
+            if ( DataQueryParams.anyDimensionHasItems( filters ) )
+            {
+                sql += sqlHelper.whereAnd() + " (";
+                
+                for ( Dimension filter : filters )
+                {
+                    if ( filter.hasItems() )
+                    {
+                        sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                    }
+                }
+            }
+            
+            sql = sql.substring( 0, sql.length() - " or ".length() ) + ") ";
+        }
+        
+        return sql;
+    }
+    
+    /**
+     * Generates the group by clause of the query SQL.
+     */
+    private String getGroupByClause( DataQueryParams params )
+    {
+        String sql = "group by " + getCommaDelimitedString( params.getQueryDimensions() );
+        
+        return sql;
+    }
 
     /**
      * Retrieves data from the database based on the given query and SQL and puts
