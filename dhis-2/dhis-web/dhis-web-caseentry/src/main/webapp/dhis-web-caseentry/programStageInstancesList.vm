@@ -1,3 +1,4 @@
+
 #if($message)
 	<span id='message' style="display:block;">$message</span>
 #else
@@ -28,7 +29,7 @@
 						#set($metaData = $noCols - $valueTypes.size() - 1)
 						#set($index = 0)
 						#foreach( $col in $grid.getHeaders() )
-							#if($index < $noCols - 1 )
+							#if($index < $noCols - 2 )
 								#if( $index==1 || $index > $metaData )
 									<th>$col.name</th>
 								#end
@@ -41,17 +42,17 @@
 		
 				<tbody id="list">
 					#foreach( $row in $grid.getRows() )
-						#set($index = 0)
 						<tr id="row">
 							<td>
 								#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 								$nr
 							</td>
 							#set($completed = "")
+							#set($index = 0)
 							#foreach( $col in $row )
 								#if( $index == 0 )
 									#set($psid = $col)
-								#elseif($index == $noCols - 1)
+								#elseif($velocityCount == $noCols - 1)
 									#set($completed = $col)
 								#elseif( $index==1 || $index > $metaData )
 									<td>$!col</td>
