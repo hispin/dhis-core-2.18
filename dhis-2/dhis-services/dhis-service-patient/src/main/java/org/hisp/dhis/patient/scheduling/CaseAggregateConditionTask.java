@@ -34,11 +34,9 @@ import static org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingM
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
@@ -121,7 +119,7 @@ public class CaseAggregateConditionTask
         {
             int datasetId = rsDataset.getInt( "datasetid" );
 
-            List<Period> periods = getPeriod( rsDataset.getString( "periodname" ), taskStrategy );
+            Collection<Period> periods = getPeriod( rsDataset.getString( "periodname" ), taskStrategy );
 
             for( Period period : periods )
             {
@@ -207,7 +205,7 @@ public class CaseAggregateConditionTask
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<Period> getPeriod( String periodTypeName, String taskStrategy )
+    private Collection<Period> getPeriod( String periodTypeName, String taskStrategy )
     {   
         Calendar calStartDate = Calendar.getInstance();
         
@@ -236,10 +234,6 @@ public class CaseAggregateConditionTask
 
         CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodTypeName );
 
-        List<Period> periods = new ArrayList<Period>();
-
-        periods.addAll( periodType.generatePeriods( startDate , endDate ) );
-
-        return periods;
+        return periodType.generatePeriods( startDate , endDate ) ;
     }
 }

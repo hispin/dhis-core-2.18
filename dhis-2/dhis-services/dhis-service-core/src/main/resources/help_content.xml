@@ -5715,7 +5715,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
         <para>To define a new relationship type, click <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Relationship Type Management </emphasis>window to go to <emphasis role="italic">Add new Relationship Type</emphasis> window.</para>
       </section>
       <section id="person_registration_form">
-        <title>Person Registration Form</title>
+        <title>Person registration form</title>
         <para>Person registration form section provides a mechanism for defining custom registration form for each available program in system or for normal registration form.</para>
         <para>To access the person registration form maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it and select <emphasis role="italic">Person Registration Form</emphasis> option.</para>
         <para>To define a custom program registration form, please select a program in list and click <emphasis role="italic">Add</emphasis> button.</para>
@@ -6029,13 +6029,18 @@ For example: the date in which a person enrolls to the system.</para>
       <section id="schedule_sending_message">
         <title>Schedule automated message reminder</title>
         <para>This function is used for scheduling message reminders to be automatically sent to enrolled persons XX days before scheduled appointments and/or XX days after a missed visit. When the schedule is started, messages for each person are generated based on templates defined in each stage at midnight (Ref.<emphasis role="italic"> Add program stage </emphasis>section for defining a template message). On the time, the scheduled messages are sent.</para>
-        <para>Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
+        <para>Click <emphasis role="italic">Start</emphasis> button to enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
         <para>Click <emphasis role="italic">Execute</emphasis> button to generate and send each message for each  person at the time the button clicked.</para>
       </section>
       <section id="scheduling_aggregation_query_builder">
-        <title>Schedule Automated Aggregation</title>
+        <title>Schedule automated aggregation</title>
         <para>The aggregation query builder jobs can be automatically scheduled to run on regular intervals. At midnight, this job runs and get all datasets which have data elements  defined into Aggregate Query Builder formulas. Based on the period types of datasets, the system runs formulas at the end of end-date of current period. E.g if today is on 1A.M. in 2013-02-01, the system gets a monthly dataset and other period-type datasets with aggregate formulas, then system will only run aggregate formulas of the monthly  dataset with period as Jan 2013.</para>
-        <para><emphasis role="italic"><emphasis role="italic">Click</emphasis> Start</emphasis> button will enable the scheduled job to run at mid-night or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
+        <para>Select an option in Task stragely to set way to get period list for aggregating. There four options - </para>
+        <para>1) <emphasis role="italic">Last month</emphasis> - Get period list by period-types of data sets from last month to current date.  E.g for daily datasets, if current date is <emphasis role="italic">2013-03-09</emphasis>, period list is get from <emphasis role="italic"> 2013-02-09</emphasis> to <emphasis role="italic"> 2013-03-09</emphasis>. For month datasets, periods list is <emphasis role="italic">Feb 2013</emphasis> and <emphasis role="italic">Mar 2013.</emphasis></para>
+        <para>2) <emphasis role="italic">Last 3 month</emphasis> - Get periods by from last 3 month to current date.</para>
+        <para>3) <emphasis role="italic">Last 6 month</emphasis> - Get periods by from last 6 month to current date</para>
+        <para>4) <emphasis role="italic">Last 12 month</emphasis> - Get periods by from last 12 month to current date</para>
+        <para><emphasis role="italic"><emphasis role="italic">Click</emphasis> Start</emphasis> button to enable the scheduled job to run at mid-night or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
       </section>
     </section>
     <section>
@@ -6590,7 +6595,7 @@ It supports to filter events by each person attributes and data elements. The se
           <para>To save parameters on the left panel, click <emphasis role="italic">Favorites</emphasis> button on toolbar. The select <emphasis role="italic">Manage favorites</emphasis> option. A form is shown to enter name for favorite and click <emphasis role="italic">Save</emphasis> button.</para>
           <para>To export the result to excel file, click <emphasis role="italic">Download</emphasis> button, select  XLS option. For the aggregate report, the system supports more two types of file as PDF and CSV.</para>
         </section>
-        <section id='program_statistics'>
+        <section id="program_statistics">
           <title>Program Statistics </title>
           <para>The tool provides a tool for generating a statistics  report by program.</para>
           <para>To access <emphasis role="italic">Program Statistics</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records </emphasis>option. Select <emphasis role="italic">Program Statistics </emphasis>option on left menu. Program statistics is opened. </para>
