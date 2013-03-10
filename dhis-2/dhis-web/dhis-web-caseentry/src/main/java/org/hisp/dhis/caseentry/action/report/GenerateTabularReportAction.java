@@ -479,6 +479,7 @@ public class GenerateTabularReportAction
                         .getPatientIdentifierType( column.getIdentifierAsInt() );
 
                     column.setName( identifierType.getName() );
+                    accessPrivateInfo = true;
                 }
                 else if ( PREFIX_PATIENT_ATTRIBUTE.equals( prefix ) )
                 {
@@ -489,6 +490,7 @@ public class GenerateTabularReportAction
                     mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
 
                     column.setName( attribute.getName() );
+                    accessPrivateInfo = true;
                 }
                 else if ( PREFIX_DATA_ELEMENT.equals( prefix ) )
                 {
