@@ -1018,7 +1018,7 @@ PT.core.getUtils = function(pt) {
 					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '"' : '';
 					htmlValue = config.collapsed ? '&nbsp;' : config.htmlValue || config.value || '&nbsp;';
 					htmlValue = config.type !== 'dimension' ? pt.util.number.pp(htmlValue) : htmlValue;
-					displayDensity = pt.conf.pivot.cellPadding[config.displayDensity] || pt.conf.pivot.displayDensity[options.displayDensity];
+					displayDensity = pt.conf.pivot.displayDensity[config.displayDensity] || pt.conf.pivot.displayDensity[options.displayDensity];
 					fontSize = pt.conf.pivot.fontSize[config.fontSize] || pt.conf.pivot.fontSize[options.fontSize];
 
 					return '<td class="' + cls + '" ' + colSpan + ' ' + rowSpan + ' style="padding:' + displayDensity + '; font-size:' + fontSize + ';">' + htmlValue + '</td>';
