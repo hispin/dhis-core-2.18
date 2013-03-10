@@ -35,8 +35,10 @@ import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.OrganisationUnitToFacilityConverter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -115,6 +117,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( get( "/v1/facilities/abc123" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
     }
 
@@ -181,6 +184,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( put( "/v1/facilities/INVALID_IDENTIFIER" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
     }
 
@@ -456,6 +460,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( delete( "/v1/facilities/INVALID_IDENTIFIER" ).session( session ) )
             .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
     }
 
