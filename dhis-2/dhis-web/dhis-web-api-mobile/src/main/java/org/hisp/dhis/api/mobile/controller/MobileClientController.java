@@ -74,8 +74,7 @@ public class MobileClientController
         orgUnits.setClientVersion( version );
         return orgUnits;
     }
-
-    @RequestMapping( method = RequestMethod.GET, value = "/{version}/" )
+    @RequestMapping( method = RequestMethod.GET, value = "/{version}/LWUIT" )
     @ResponseBody
     public OrgUnits getOrgUnitsForUserLWUIT( HttpServletRequest request, @PathVariable String version )
         throws NotAllowedException
