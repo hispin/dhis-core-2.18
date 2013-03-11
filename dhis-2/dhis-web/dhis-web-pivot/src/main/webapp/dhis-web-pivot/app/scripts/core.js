@@ -1613,7 +1613,7 @@ PT.core.getUtils = function(pt) {
 			}
 
 			Ext.Ajax.request({
-				url: pt.baseUrl + '/api/reportTables/' + id + '.jsonp?links=false',
+				url: pt.baseUrl + '/api/reportTables/' + id + '.json?links=false',
 				method: 'GET',
 				failure: function(r) {
 					pt.util.mask.hideMask();
