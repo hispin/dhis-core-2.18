@@ -109,7 +109,7 @@ public class DefaultQueryPlanner
         
         if ( params.getNumberOfDimensionOptionPermutations() > MAX_DIM_OPT_PERM )
         {
-            violation = "Table exceeds max number of cells: " + MAX_DIM_OPT_PERM;
+            violation = "Table exceeds max number of cells: " + MAX_DIM_OPT_PERM + " (" + params.getNumberOfDimensionOptionPermutations() + ")";
         }
         
         if ( !params.getDuplicateDimensions().isEmpty() )

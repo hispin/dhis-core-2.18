@@ -314,6 +314,29 @@ public class QueryPlannerTest
             assertEquals( PERIOD_DIM_ID, permutation.get( 1 ).getDimension() );
         }
     }
+
+    /**
+     * First, combines data elements and data sets into one data dimension and 
+     * returns (2 + 3) * 3 * 2 = 30. Second, ignores any data dimension and
+     * returns 3 * 2 = 6.
+     */
+    @Test
+    public void testGetNumberOfDimensionOptionPermutations()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( getList( deA, deB ) );
+        params.setDataSets( getList( dsA, dsB, dsC ) );
+        params.setOrganisationUnits( getList( ouA, ouB, ouC ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+        
+        assertEquals( 30, params.getNumberOfDimensionOptionPermutations() );
+
+        params = new DataQueryParams();
+        params.setOrganisationUnits( getList( ouA, ouB, ouC ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) ) );
+
+        assertEquals( 6, params.getNumberOfDimensionOptionPermutations() );
+    }
     
     @Test
     public void testGetDataPeriodAggregationPeriodMap()
