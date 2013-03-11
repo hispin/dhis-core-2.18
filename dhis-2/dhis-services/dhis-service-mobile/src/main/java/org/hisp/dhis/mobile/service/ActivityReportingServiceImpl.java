@@ -469,6 +469,7 @@ public class ActivityReportingServiceImpl
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
+        patientModel.setPhoneNumber( patient.getPhoneNumber() );
 
         this.setSetting( getSettings() );
 
@@ -602,7 +603,7 @@ public class ActivityReportingServiceImpl
             enrollmentProgramListMobileList.add( enrollmentProgramMobile );
         }
         
-        patientModel.setPrograms( enrollmentProgramListMobileList );
+        patientModel.setEnrollmentPrograms( enrollmentProgramListMobileList );
         
         return patientModel;
     }
