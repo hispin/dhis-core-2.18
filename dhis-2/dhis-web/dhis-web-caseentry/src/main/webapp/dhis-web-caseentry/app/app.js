@@ -1051,10 +1051,12 @@ Ext.onReady( function() {
 								var treepanel = TR.cmp.params.organisationunit.treepanel;
 								treepanel.getSelectionModel().deselectAll();
 								TR.state.orgunitIds = [];
+								var orgunitUids = [];
 								for (var i = 0; i < f.orgunitIds.length; i++) {
 									TR.state.orgunitIds.push( f.orgunitIds[i].localid );
+									orgunitUids.push( f.orgunitIds[i].id );
 								}
-								treepanel.selectByIds(TR.state.orgunitIds);
+								treepanel.selectByIds(orgunitUids);
 								
 								 // Patient properties
 								 Ext.getCmp('filterPropPanel').removeAll();
@@ -1242,11 +1244,12 @@ Ext.onReady( function() {
 								var treepanel = TR.cmp.params.organisationunit.treepanel;
 								treepanel.getSelectionModel().deselectAll();
 								TR.state.orgunitIds = [];
-								treepanel.numberOfRecords = f.orgunitIds.length;
+								var orgunitUids = [];
 								for (var i = 0; i < f.orgunitIds.length; i++) {
 									TR.state.orgunitIds.push( f.orgunitIds[i].localid );
+									orgunitUids.push( f.orgunitIds[i].id );
 								}
-								treepanel.selectByIds(TR.state.orgunitIds);
+								treepanel.selectByIds(orgunitUids);
 								
 								// Selected data elements
 								
