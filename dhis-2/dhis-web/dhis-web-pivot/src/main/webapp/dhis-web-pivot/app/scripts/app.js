@@ -45,8 +45,11 @@ Ext.onReady( function() {
 		}
 
 		init.afterRender = function() {
+
+			// Left gui
 			pt.cmp.dimension.panels[0].expand();
 
+			// Resize event handler
 			pt.viewport.westRegion.on('resize', function() {
 				var panel = pt.util.dimension.panel.getExpanded();
 
@@ -54,6 +57,13 @@ Ext.onReady( function() {
 					panel.onExpand();
 				}
 			});
+
+			// Load favorite from url
+			var id = pt.util.url.getUrlParam('id');
+
+			if (id) {
+				pt.util.pivot.loadTable(id);
+			}
 		};
 
 		return init;
@@ -179,6 +189,27 @@ Ext.onReady( function() {
 			config.options.userOrganisationUnitChildren = pt.viewport.userOrganisationUnitChildren.getValue();
 
 			return config;
+		};
+
+		util.url = {
+			getUrlParam: function(s) {
+				var output = '';
+				var href = window.location.href;
+				if (href.indexOf('?') > -1 ) {
+					var query = href.substr(href.indexOf('?') + 1);
+					var query = query.split('&');
+					for (var i = 0; i < query.length; i++) {
+						if (query[i].indexOf('=') > -1) {
+							var a = query[i].split('=');
+							if (a[0].toLowerCase() === s) {
+								output = a[1];
+								break;
+							}
+						}
+					}
+				}
+				return unescape(output);
+			}
 		};
 
 		return util;
