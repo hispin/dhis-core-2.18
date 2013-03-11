@@ -59,6 +59,7 @@ TR.conf = {
             aggregatefavorite_delete: 'deleteAggregateReport.action',
 			generateaggregatereport_get: 'generateAggregateReport.action',
 			username_dataelement_get: 'getUsernameList.action',
+			organisationunit_getbyids: 'getOrganisationUnitPaths.action',
 			redirect: 'index.action'
         },
         params: {
@@ -1050,11 +1051,10 @@ Ext.onReady( function() {
 								var treepanel = TR.cmp.params.organisationunit.treepanel;
 								treepanel.getSelectionModel().deselectAll();
 								TR.state.orgunitIds = [];
-								treepanel.numberOfRecords = f.orgunitIds.length;
 								for (var i = 0; i < f.orgunitIds.length; i++) {
-									treepanel.multipleExpand(f.orgunitIds[i].id, f.orgunitIds[i].path);
 									TR.state.orgunitIds.push( f.orgunitIds[i].localid );
 								}
+								treepanel.selectByIds(TR.state.orgunitIds);
 								
 								 // Patient properties
 								 Ext.getCmp('filterPropPanel').removeAll();
@@ -1244,9 +1244,9 @@ Ext.onReady( function() {
 								TR.state.orgunitIds = [];
 								treepanel.numberOfRecords = f.orgunitIds.length;
 								for (var i = 0; i < f.orgunitIds.length; i++) {
-									treepanel.multipleExpand(f.orgunitIds[i].id, f.orgunitIds[i].path);
 									TR.state.orgunitIds.push( f.orgunitIds[i].localid );
 								}
+								treepanel.selectByIds(TR.state.orgunitIds);
 								
 								// Selected data elements
 								
@@ -3873,17 +3873,12 @@ Ext.onReady( function() {
 														this.rendered = true;
 													},
 													afterrender: function( treePanel, eOpts ){
-														treePanel.getSelectionModel().select( treePanel.getRootNode() );
 														TR.state.orgunitIds = [];
-														var orgunitid = treePanel.getSelectionModel().getSelection()[0].data.localid;
-														if(orgunitid==0){
-															for( var i in TR.init.system.rootnodes){
-																 TR.state.orgunitIds.push( TR.init.system.rootnodes[i].localid );
-															}
+														for( var i in TR.init.system.rootnodes){
+															TR.state.orgunitIds.push( TR.init.system.rootnodes[i].localid );
+															var node = TR.cmp.params.organisationunit.treepanel.getRootNode().findChild('id', TR.init.system.rootnodes[i].id, true);
+															TR.cmp.params.organisationunit.treepanel.getSelectionModel().select(node);
 														}
-														else{
-															TR.state.orgunitIds.push( orgunitid );
-														}													
 													},
 													itemclick : function(view,rec,item,index,eventObj){
 														TR.state.orgunitIds = [];
@@ -3935,6 +3930,7 @@ Ext.onReady( function() {
 											},
 											expand: function() {
 												TR.cmp.params.organisationunit.treepanel.setHeight(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit - 60 );
+												TR.cmp.params.organisationunit.treepanel.selectRootIf();
 											}
 										}
 									},

@@ -204,6 +204,12 @@
       <result name="success" type="velocity-json">/dhis-web-caseentry/jsonUsernames.vm
       </result>
     </action>
+    
+   	<action name="getOrganisationUnitPaths"
+		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-caseentry/jsonminOrganisationUnitPaths.vm</result>
+	</action>
 
     <!-- save value -->
 

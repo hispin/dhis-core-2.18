@@ -934,6 +934,15 @@
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
+	
+	
+  <bean id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
+    class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
+    scope="prototype">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+	
 
 	<!-- Patient Aggregate Report -->
 
