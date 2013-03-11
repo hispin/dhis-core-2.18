@@ -418,7 +418,6 @@
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/caseAggregationResult.vm</param>
       <param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
-      <param name="javascripts">javascript/caseagg.js</param>
       <param name="requiredAuthorities">F_PATIENT_AGGREGATION</param>
     </action>
 

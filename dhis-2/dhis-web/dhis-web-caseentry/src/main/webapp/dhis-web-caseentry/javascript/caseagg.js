@@ -48,15 +48,36 @@ function caseAggregationResult()
 	}
 	else
 	{
-		runAggregate(autoSave);
+		previewAggregate(autoSave);
 	}
 }
 
 function runAggregate(autoSave)
 {
 	hideById('caseAggregationForm');
+	hideById('caseAggregationResult');
 	showLoader();
 	
+	$('#caseAggregationResult').load("caseAggregationResult.action", 
+		{
+			facilityLB: getFieldValue('facilityLB'),
+			dataSetId: getFieldValue('dataSetId'),
+			startDate: getFieldValue('startDate'),
+			endDate: getFieldValue('endDate'),
+			autoSave: getFieldValue('autoSave')
+		}
+		, function(){
+			$( "#loaderDiv" ).hide();
+			showById('caseAggregationForm');
+			setMessage(i18n_aggregate_successfully);
+		});
+}
+
+function previewAggregate(autoSave)
+{
+	hideById('caseAggregationForm');
+	hideById('message');
+	showLoader();
 	$('#caseAggregationResult').load("caseAggregationResult.action", 
 		{
 			facilityLB: getFieldValue('facilityLB'),
