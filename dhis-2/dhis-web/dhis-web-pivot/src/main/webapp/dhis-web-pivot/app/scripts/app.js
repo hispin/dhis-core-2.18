@@ -28,6 +28,22 @@ Ext.onReady( function() {
 			init.rootNodes[i].path = '/' + pt.conf.finals.root.id + '/' + init.rootNodes[i].id;
 		}
 
+		// Ougs
+		for (var i = 0, dim = pt.conf.finals.dimension, oug; i < init.ougs.length; i++) {
+			oug = init.ougs[i];
+			oug.dimensionName = oug.id;
+			oug.objectName = pt.conf.finals.dimension.organisationUnitGroupSet.objectName;
+			dim.objectNameMap[oug.id] = oug;
+		}
+
+		// Degs
+		for (var i = 0, dim = pt.conf.finals.dimension, deg; i < init.degs.length; i++) {
+			deg = init.degs[i];
+			deg.dimensionName = deg.id;
+			deg.objectName = pt.conf.finals.dimension.dataElementGroupSet.objectName;
+			dim.objectNameMap[deg.id] = deg;
+		}
+
 		init.afterRender = function() {
 			pt.cmp.dimension.panels[0].expand();
 
@@ -81,6 +97,15 @@ Ext.onReady( function() {
 				else {
 					w.setPosition(targetx, y);
 				}
+			},
+			addBlurHandler: function(w) {
+				var el = Ext.get(document.getElementsByClassName('x-mask')[0]);
+
+				el.on('click', function() {
+					w.hide();
+				});
+
+				w.hasBlurHandler = true;
 			}
 		};
 
@@ -149,6 +174,9 @@ Ext.onReady( function() {
 			}();
 
 			config.options = pt.viewport.optionsWindow.getOptions();
+
+			config.options.userOrganisationUnit = pt.viewport.userOrganisationUnit.getValue();
+			config.options.userOrganisationUnitChildren = pt.viewport.userOrganisationUnitChildren.getValue();
 
 			return config;
 		};
@@ -380,14 +408,14 @@ Ext.onReady( function() {
 			var data = [];
 
 			if (all) {
-				data.push({id: dimConf.data.dimensionName, name: dimConf.data.rawValue});
+				data.push({id: dimConf.data.dimensionName, name: dimConf.data.name});
 			}
 
-			data.push({id: dimConf.category.dimensionName, name: dimConf.category.rawValue});
+			data.push({id: dimConf.category.dimensionName, name: dimConf.category.name});
 
 			if (all) {
-				data.push({id: dimConf.period.dimensionName, name: dimConf.period.rawValue});
-				data.push({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.rawValue});
+				data.push({id: dimConf.period.dimensionName, name: dimConf.period.name});
+				data.push({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
 			}
 
 			return data.concat(pt.init.ougs, pt.init.degs);
@@ -427,15 +455,15 @@ Ext.onReady( function() {
 
 		rowStore = getStore();
 		pt.viewport.rowStore = rowStore;
-		rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.rawValue}); //i18n
+		rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name}); //i18n
 
 		colStore = getStore();
 		pt.viewport.colStore = colStore;
-		colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.rawValue}); //i18n
+		colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name}); //i18n
 
 		filterStore = getStore();
 		pt.viewport.filterStore = filterStore;
-		filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.rawValue}); //i18n
+		filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name}); //i18n
 
 		getCmpHeight = function() {
 			var size = dimensionStore.totalCount,
@@ -656,13 +684,7 @@ Ext.onReady( function() {
 					pt.util.window.setAnchorPosition(w, pt.viewport.layoutButton);
 
 					if (!w.hasBlurHandler) {
-						var el = Ext.get(document.getElementsByClassName('x-mask')[0]);
-
-						el.on('click', function() {
-							w.hide();
-						});
-
-						w.hasBlurHandler = true;
+						pt.util.window.addBlurHandler(w);
 					}
 				}
 			}
@@ -805,13 +827,7 @@ Ext.onReady( function() {
 					pt.util.window.setAnchorPosition(w, pt.viewport.optionsButton);
 
 					if (!w.hasBlurHandler) {
-						var el = Ext.get(document.getElementsByClassName('x-mask')[0]);
-
-						el.on('click', function() {
-							w.hide();
-						});
-
-						w.hasBlurHandler = true;
+						pt.util.window.addBlurHandler(w);
 					}
 				}
 			}
@@ -860,6 +876,9 @@ Ext.onReady( function() {
 
 			if (pt.xSettings) {
 				favorite = Ext.clone(pt.xSettings.options);
+
+				// server
+				favorite.subtotals = favorite.showSubTotals;
 
 				favorite.name = name;
 				favorite.user = system ? null : {id: 'currentUser'};
@@ -1079,7 +1098,7 @@ Ext.onReady( function() {
 		});
 
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: 340,
+			width: 350,
 			height: 26,
 			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
 			emptyText: 'Search for favorites', //i18n
@@ -1141,7 +1160,7 @@ Ext.onReady( function() {
 				{
 					dataIndex: 'name',
 					sortable: false,
-					width: 334,
+					width: 340,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
 							var el = Ext.get(record.data.id);
@@ -1150,7 +1169,10 @@ Ext.onReady( function() {
 								el.addClsOnOver('link');
 								el.pt = pt;
 								el.favoriteId = record.data.id;
-								el.dom.setAttribute('onclick', 'Ext.get(this).pt.util.pivot.loadTable(Ext.get(this).favoriteId);');
+								el.hideWindow = function() {
+									favoriteWindow.hide();
+								};
+								el.dom.setAttribute('onclick', 'Ext.get(this).hideWindow(); Ext.get(this).pt.util.pivot.loadTable(Ext.get(this).favoriteId);');
 							}
 						};
 
@@ -1376,7 +1398,7 @@ Ext.onReady( function() {
 		favoriteWindow = Ext.create('Ext.window.Window', {
 			title: 'Manage favorites',
 			//iconCls: 'pt-window-title-icon-favorite',
-			bodyStyle: 'padding: 8px; background-color:#fff',
+			bodyStyle: 'padding: 5px; background-color:#fff',
 			resizable: false,
 			modal: true,
 			width: 450,
@@ -1384,14 +1406,13 @@ Ext.onReady( function() {
 				{
 					xtype: 'panel',
 					layout: 'hbox',
-					width: 422,
 					bodyStyle: 'border:0 none',
 					items: [
 						addButton,
 						{
 							height: 24,
 							width: 1,
-							style: 'width: 1px; margin-left: 7px; margin-right: 7px; margin-top: 1px',
+							style: 'width: 1px; margin-left: 5px; margin-right: 5px; margin-top: 1px',
 							bodyStyle: 'border-left: 1px solid #aaa'
 						},
 						searchTextfield
@@ -1402,6 +1423,10 @@ Ext.onReady( function() {
 			listeners: {
 				show: function(w) {
 					pt.util.window.setAnchorPosition(w, pt.viewport.favoriteButton);
+
+					if (!w.hasBlurHandler) {
+						pt.util.window.addBlurHandler(w);
+					}
 				}
 			}
 		});
@@ -1427,6 +1452,9 @@ Ext.onReady( function() {
 				fixedPeriodAvailable,
 				fixedPeriodSelected,
 				period,
+				userOrganisationUnit,
+				userOrganisationUnitChildren,
+				treePanel,
 				organisationUnit,
 				groupSetIdStoreMap,
 				getGroupSetPanels,
@@ -2141,24 +2169,24 @@ Ext.onReady( function() {
 										boxLabel: 'Last 5 years', //i18n pt.i18n.last_5_years
 									}
 								]
-							},
-							{
-								xtype: 'panel',
-								layout: 'anchor',
-								bodyStyle: 'border-style:none; padding:5px 0 0 46px',
-								defaults: {
-									labelSeparator: '',
-									style: 'margin-bottom:2px',
-								},
-								items: [
-									{
-										xtype: 'label',
-										text: 'Options',
-										cls: 'pt-label-period-heading-options'
-									},
-									rewind
-								]
 							}
+							//{
+								//xtype: 'panel',
+								//layout: 'anchor',
+								//bodyStyle: 'border-style:none; padding:5px 0 0 46px',
+								//defaults: {
+									//labelSeparator: '',
+									//style: 'margin-bottom:2px',
+								//},
+								//items: [
+									//{
+										//xtype: 'label',
+										//text: 'Options',
+										//cls: 'pt-label-period-heading-options'
+									//},
+									//rewind
+								//]
+							//}
 						]
 					}
 				]
@@ -2366,6 +2394,176 @@ Ext.onReady( function() {
 				}
 			};
 
+			treePanel = Ext.create('Ext.tree.Panel', {
+				cls: 'pt-tree',
+				style: 'border-top: 1px solid #ddd; padding-top: 1px',
+				width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
+				rootVisible: false,
+				autoScroll: true,
+				multiSelect: true,
+				rendered: false,
+				reset: function() {
+					var rootNode = this.getRootNode().findChild('id', pt.init.rootNodes[0].id);
+					this.collapseAll();
+					this.expandPath(rootNode.getPath());
+					this.getSelectionModel().select(rootNode);
+				},
+				selectRootIf: function() {
+					if (this.getSelectionModel().getSelection().length < 1) {
+						var node = this.getRootNode().findChild('id', pt.init.rootNodes[0].id);
+						if (this.rendered) {
+							this.getSelectionModel().select(node);
+						}
+						return node;
+					}
+				},
+				numberOfRecords: 0,
+				recordsToSelect: [],
+				multipleSelectIf: function() {
+					if (this.recordsToSelect.length === this.numberOfRecords) {
+						this.getSelectionModel().select(this.recordsToSelect);
+						this.recordsToSelect = [];
+						this.numberOfRecords = 0;
+					}
+				},
+				multipleExpand: function(id, path) {
+					this.expandPath('/' + pt.conf.finals.root.id + path, 'id', '/', function() {
+						var record = this.getRootNode().findChild('id', id, true);
+						this.recordsToSelect.push(record);
+						this.multipleSelectIf();
+					}, this);
+				},
+				select: function(url, params) {
+					if (!params) {
+						params = {};
+					}
+					Ext.Ajax.request({
+						url: url,
+						method: 'GET',
+						params: params,
+						scope: this,
+						success: function(r) {
+							var a = Ext.decode(r.responseText).organisationUnits;
+							this.numberOfRecords = a.length;
+							for (var i = 0; i < a.length; i++) {
+								this.multipleExpand(a[i].id, a[i].path);
+							}
+						}
+					});
+				},
+				selectByGroup: function(id) {
+					if (id) {
+						var url = pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbygroup,
+							params = {id: id};
+						this.select(url, params);
+					}
+				},
+				selectByLevel: function(level) {
+					if (level) {
+						var url = pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbylevel,
+							params = {level: level};
+						this.select(url, params);
+					}
+				},
+				selectByIds: function(ids) {
+					if (ids) {
+						var url = pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbyids;
+						Ext.Array.each(ids, function(item) {
+							url = Ext.String.urlAppend(url, 'ids=' + item);
+						});
+						if (!this.rendered) {
+							pt.cmp.dimension.organisationUnit.panel.expand();
+						}
+						this.select(url);
+					}
+				},
+				store: Ext.create('Ext.data.TreeStore', {
+					proxy: {
+						type: 'ajax',
+						url: pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunitchildren_get
+					},
+					root: {
+						id: pt.conf.finals.root.id,
+						expanded: true,
+						children: pt.init.rootNodes
+					},
+					listeners: {
+						load: function(s, node, r) {
+							for (var i = 0; i < r.length; i++) {
+								r[i].data.text = pt.conf.util.jsonEncodeString(r[i].data.text);
+							}
+						}
+					}
+				}),
+				xable: function(checked, value) {
+					if (checked || value) {
+						this.disable();
+					}
+					else {
+						this.enable();
+					}
+				},
+				listeners: {
+					added: function() {
+						pt.cmp.dimension.organisationUnit.treepanel = this;
+					},
+					render: function() {
+						this.rendered = true;
+					},
+					afterrender: function() {
+						this.getSelectionModel().select(0);
+					},
+					itemcontextmenu: function(v, r, h, i, e) {
+						v.getSelectionModel().select(r, false);
+
+						if (v.menu) {
+							v.menu.destroy();
+						}
+						v.menu = Ext.create('Ext.menu.Menu', {
+							id: 'treepanel-contextmenu',
+							showSeparator: false,
+							shadow: false
+						});
+						if (!r.data.leaf) {
+							v.menu.add({
+								id: 'treepanel-contextmenu-item',
+								text: 'Select all children', //i18n pt.i18n.select_all_children,
+								icon: 'images/node-select-child.png',
+								handler: function() {
+									r.expand(false, function() {
+										v.getSelectionModel().select(r.childNodes, true);
+										v.getSelectionModel().deselect(r);
+									});
+								}
+							});
+						}
+						else {
+							return;
+						}
+
+						v.menu.showAt(e.xy);
+					}
+				}
+			});
+
+			userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
+				columnWidth: 0.5,
+				boxLabel: 'User organisation unit', //i18n pt.i18n.user_orgunit,
+				labelWidth: pt.conf.layout.form_label_width,
+				handler: function(chb, checked) {
+					treePanel.xable(checked, userOrganisationUnitChildren.getValue());
+				}
+			});
+
+			userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
+				columnWidth: 0.5,
+				boxLabel: 'User organisation unit children', //i18n pt.i18n.user_orgunit_children,
+				labelWidth: pt.conf.layout.form_label_width,
+				handler: function(chb, checked) {
+					treePanel.xable(checked, userOrganisationUnit.getValue());
+				}
+			});
+
 			organisationUnit = {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-organisationunit">Organisation units</div>', //i18n pt.i18n.organisation_units
@@ -2373,7 +2571,7 @@ Ext.onReady( function() {
 				hideCollapseTool: true,
 				collapsed: false,
 				getData: function() {
-					var records = pt.cmp.dimension.organisationUnit.treepanel.getSelectionModel().getSelection(),
+					var records = treePanel.getSelectionModel().getSelection(),
 						data = {
 							dimensionName: pt.conf.finals.dimension.organisationUnit.dimensionName,
 							objectName: pt.conf.finals.dimension.organisationUnit.objectName,
@@ -2388,279 +2586,18 @@ Ext.onReady( function() {
 				},
 				onExpand: function() {
 					pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_organisationunit);
-					pt.cmp.dimension.organisationUnit.treepanel.setHeight(this.getHeight() - pt.conf.layout.west_fill_accordion_organisationunit);
+					treePanel.setHeight(this.getHeight() - pt.conf.layout.west_fill_accordion_organisationunit);
 				},
 				items: [
 					{
 						layout: 'column',
 						bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:7px',
 						items: [
-							{
-								xtype: 'checkbox',
-								columnWidth: 0.5,
-								boxLabel: 'User organisation unit', //i18n pt.i18n.user_orgunit,
-								labelWidth: pt.conf.layout.form_label_width,
-								handler: function(chb, checked) {
-									//pt.cmp.dimension.organisationUnit.toolbar.xable(checked, pt.cmp.favorite.userOrganisationUnitChildren.getValue());
-									pt.cmp.dimension.organisationUnit.treepanel.xable(checked, pt.cmp.favorite.userOrganisationUnitChildren.getValue());
-								},
-								listeners: {
-									added: function() {
-										pt.cmp.favorite.userOrganisationUnit = this;
-									}
-								}
-							},
-							{
-								xtype: 'checkbox',
-								columnWidth: 0.5,
-								boxLabel: 'User organisation unit children', //i18n pt.i18n.user_orgunit_children,
-								labelWidth: pt.conf.layout.form_label_width,
-								handler: function(chb, checked) {
-									//pt.cmp.dimension.organisationUnit.toolbar.xable(checked, pt.cmp.favorite.userOrganisationUnit.getValue());
-									pt.cmp.dimension.organisationUnit.treepanel.xable(checked, pt.cmp.favorite.userOrganisationUnit.getValue());
-								},
-								listeners: {
-									added: function() {
-										pt.cmp.favorite.userOrganisationUnitChildren = this;
-									}
-								}
-							}
+							userOrganisationUnit,
+							userOrganisationUnitChildren
 						]
 					},
-					//{
-						//id: 'organisationunit_t',
-						//xtype: 'toolbar',
-						//style: 'margin-bottom: 4px',
-						//width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
-						//xable: function(checked, value) {
-							//if (checked || value) {
-								//this.disable();
-							//}
-							//else {
-								//this.enable();
-							//}
-						//},
-						//defaults: {
-							//height: 22
-						//},
-						//items: [
-							//{
-								//xtype: 'label',
-								//text: 'Auto-select organisation units by', //i18n
-								//style: 'padding-left:8px; color:#666; line-height:23px'
-							//},
-							//'->',
-							//{
-								//text: 'Group..',
-								//handler: function() {},
-								//listeners: {
-									//added: function() {
-										//this.menu = Ext.create('Ext.menu.Menu', {
-											//shadow: false,
-											//showSeparator: false,
-											//width: pt.conf.layout.treepanel_toolbar_menu_width_group,
-											//items: [
-												//{
-													//xtype: 'grid',
-													//cls: 'pt-menugrid',
-													//width: pt.conf.layout.treepanel_toolbar_menu_width_group,
-													//scroll: 'vertical',
-													//columns: [
-														//{
-															//dataIndex: 'name',
-															//width: pt.conf.layout.treepanel_toolbar_menu_width_group,
-															//style: 'display:none'
-														//}
-													//],
-													//setHeightInMenu: function(store) {
-														//var h = store.getCount() * 24,
-															//sh = pt.util.viewport.getSize().y * 0.6;
-														//this.setHeight(h > sh ? sh : h);
-														//this.doLayout();
-														//this.up('menu').doLayout();
-													//},
-													//store: pt.store.group,
-													//listeners: {
-														//itemclick: function(g, r) {
-															//g.getSelectionModel().select([], false);
-															//this.up('menu').hide();
-															//pt.cmp.dimension.organisationUnit.treepanel.selectByGroup(r.data.id);
-														//}
-													//}
-												//}
-											//],
-											//listeners: {
-												//show: function() {
-													//var store = pt.store.group;
-
-													//if (!store.isLoaded) {
-														//store.load({scope: this, callback: function() {
-															//this.down('grid').setHeightInMenu(store);
-														//}});
-													//}
-													//else {
-														//this.down('grid').setHeightInMenu(store);
-													//}
-												//}
-											//}
-										//});
-									//}
-								//}
-							//}
-						//],
-						//listeners: {
-							//added: function() {
-								//pt.cmp.dimension.organisationUnit.toolbar = this;
-							//}
-						//}
-					//},
-					{
-						xtype: 'treepanel',
-						cls: 'pt-tree',
-						style: 'border-top: 1px solid #ddd; padding-top: 1px',
-						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
-						rootVisible: false,
-						autoScroll: true,
-						multiSelect: true,
-						rendered: false,
-						selectRootIf: function() {
-							if (this.getSelectionModel().getSelection().length < 1) {
-								var node = this.getRootNode().findChild('id', pt.init.rootnodes[0].id, true);
-								if (this.rendered) {
-									this.getSelectionModel().select(node);
-								}
-								return node;
-							}
-						},
-						numberOfRecords: 0,
-						recordsToSelect: [],
-						multipleSelectIf: function() {
-							if (this.recordsToSelect.length === this.numberOfRecords) {
-								this.getSelectionModel().select(this.recordsToSelect);
-								this.recordsToSelect = [];
-								this.numberOfRecords = 0;
-							}
-						},
-						multipleExpand: function(id, path) {
-							this.expandPath('/' + pt.conf.finals.root.id + path, 'id', '/', function() {
-								var record = this.getRootNode().findChild('id', id, true);
-								this.recordsToSelect.push(record);
-								this.multipleSelectIf();
-							}, this);
-						},
-						select: function(url, params) {
-							if (!params) {
-								params = {};
-							}
-							Ext.Ajax.request({
-								url: url,
-								method: 'GET',
-								params: params,
-								scope: this,
-								success: function(r) {
-									var a = Ext.decode(r.responseText).organisationUnits;
-									this.numberOfRecords = a.length;
-									for (var i = 0; i < a.length; i++) {
-										this.multipleExpand(a[i].id, a[i].path);
-									}
-								}
-							});
-						},
-						selectByGroup: function(id) {
-							if (id) {
-								var url = pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbygroup,
-									params = {id: id};
-								this.select(url, params);
-							}
-						},
-						selectByLevel: function(level) {
-							if (level) {
-								var url = pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbylevel,
-									params = {level: level};
-								this.select(url, params);
-							}
-						},
-						selectByIds: function(ids) {
-							if (ids) {
-								var url = pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbyids;
-								Ext.Array.each(ids, function(item) {
-									url = Ext.String.urlAppend(url, 'ids=' + item);
-								});
-								if (!this.rendered) {
-									pt.cmp.dimension.organisationUnit.panel.expand();
-								}
-								this.select(url);
-							}
-						},
-						store: Ext.create('Ext.data.TreeStore', {
-							proxy: {
-								type: 'ajax',
-								url: pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunitchildren_get
-							},
-							root: {
-								id: pt.conf.finals.root.id,
-								expanded: true,
-								children: pt.init.rootNodes
-							},
-							listeners: {
-								load: function(s, node, r) {
-									for (var i = 0; i < r.length; i++) {
-										r[i].data.text = pt.conf.util.jsonEncodeString(r[i].data.text);
-									}
-								}
-							}
-						}),
-						xable: function(checked, value) {
-							if (checked || value) {
-								this.disable();
-							}
-							else {
-								this.enable();
-							}
-						},
-						listeners: {
-							added: function() {
-								pt.cmp.dimension.organisationUnit.treepanel = this;
-								organisationUnit.treePanel = this;
-							},
-							render: function() {
-								this.rendered = true;
-							},
-							afterrender: function() {
-								this.getSelectionModel().select(0);
-							},
-							itemcontextmenu: function(v, r, h, i, e) {
-								v.getSelectionModel().select(r, false);
-
-								if (v.menu) {
-									v.menu.destroy();
-								}
-								v.menu = Ext.create('Ext.menu.Menu', {
-									id: 'treepanel-contextmenu',
-									showSeparator: false,
-									shadow: false
-								});
-								if (!r.data.leaf) {
-									v.menu.add({
-										id: 'treepanel-contextmenu-item',
-										text: 'Select all children', //i18n pt.i18n.select_all_children,
-										icon: 'images/node-select-child.png',
-										handler: function() {
-											r.expand(false, function() {
-												v.getSelectionModel().select(r.childNodes, true);
-												v.getSelectionModel().deselect(r);
-											});
-										}
-									});
-								}
-								else {
-									return;
-								}
-
-								v.menu.showAt(e.xy);
-							}
-						}
-					}
+					treePanel
 				],
 				listeners: {
 					added: function() {
@@ -3141,26 +3078,26 @@ Ext.onReady( function() {
 			setFavorite = function(r) {
 
 				// Indicators
+				pt.store.indicatorSelected.removeAll();
 				if (Ext.isArray(r.indicators)) {
-					pt.store.indicatorSelected.removeAll();
 					pt.store.indicatorSelected.add(r.indicators);
 				}
 
 				// Data elements
+				pt.store.dataElementSelected.removeAll();
 				if (Ext.isArray(r.dataElements)) {
-					pt.store.dataElementSelected.removeAll();
 					pt.store.dataElementSelected.add(r.dataElements);
 				}
 
 				// Data sets
+				pt.store.dataSetSelected.removeAll();
 				if (Ext.isArray(r.dataSets)) {
-					pt.store.dataSetsSelected.removeAll();
-					pt.store.dataSetsSelected.add(r.dataSets);
+					pt.store.dataSetSelected.add(r.dataSets);
 				}
 
 				// Fixed periods
+				pt.store.fixedPeriodSelected.removeAll();
 				if (Ext.isArray(r.periods)) {
-					pt.store.fixedPeriodSelected.removeAll();
 					pt.store.fixedPeriodSelected.add(r.periods);
 				}
 
@@ -3181,12 +3118,20 @@ Ext.onReady( function() {
 
 				// Organisation units
 				if (Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap)) {
+					treePanel.numberOfRecords = pt.util.object.getLength(r.parentGraphMap);
+
 					for (var key in r.parentGraphMap) {
 						if (r.parentGraphMap.hasOwnProperty(key)) {
-							organisationUnit.treePanel.selectPath('/root' + r.parentGraphMap[key] + '/' + key);
+							treePanel.multipleExpand(key, r.parentGraphMap[key]);
 						}
 					}
 				}
+				else {
+					treePanel.reset();
+				}
+
+				userOrganisationUnit.setValue(r.userOrganisationUnit);
+				userOrganisationUnitChildren.setValue(r.userOrganisationUnitChildren);
 
 				// Organisation unit group sets
 				if (Ext.isObject(r.organisationUnitGroupSets)) {
@@ -3219,7 +3164,7 @@ Ext.onReady( function() {
 						dim = pt.conf.finals.dimension.objectNameMap[r.columnDimensions[i]];
 						pt.viewport.colStore.add({
 							id: dim.dimensionName,
-							name: dim.rawValue
+							name: dim.name
 						});
 					}
 				}
@@ -3229,7 +3174,7 @@ Ext.onReady( function() {
 						dim = pt.conf.finals.dimension.objectNameMap[r.rowDimensions[i]];
 						pt.viewport.rowStore.add({
 							id: dim.dimensionName,
-							name: dim.rawValue
+							name: dim.name
 						});
 					}
 				}
@@ -3239,16 +3184,16 @@ Ext.onReady( function() {
 						dim = pt.conf.finals.dimension.objectNameMap[r.filterDimensions[i]];
 						pt.viewport.filterStore.add({
 							id: dim.dimensionName,
-							name: dim.rawValue
+							name: dim.name
 						});
 					}
 				}
 
 				// Options
-				pt.viewport.showSubTotals.setValue(!!r.subtotals);
-				pt.viewport.hideEmptyRows.setValue(!!r.hideEmptyRows);
-				pt.viewport.displayDensity.setValue(!!r.displayDensity);
-				pt.viewport.fontSize.setValue(!!r.fontSize);
+				pt.viewport.showSubTotals.setValue(r.subtotals);
+				pt.viewport.hideEmptyRows.setValue(r.hideEmptyRows);
+				pt.viewport.displayDensity.setValue(r.displayDensity);
+				pt.viewport.fontSize.setValue(r.fontSize);
 
 				update();
 			};
@@ -3262,6 +3207,8 @@ Ext.onReady( function() {
 				optionsButton: optionsButton,
 				favoriteButton: favoriteButton,
 				downloadButton: downloadButton,
+				userOrganisationUnit: userOrganisationUnit,
+				userOrganisationUnitChildren: userOrganisationUnitChildren,
 				setFavorite: setFavorite,
 				groupSetIdStoreMap: groupSetIdStoreMap,
 				items: [

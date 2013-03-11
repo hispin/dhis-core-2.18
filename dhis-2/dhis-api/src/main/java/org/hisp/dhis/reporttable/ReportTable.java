@@ -303,6 +303,11 @@ public class ReportTable
      * Indicates rendering of sub-totals for the table.
      */
     private boolean subtotals;
+
+    /**
+     * Indicates rendering of empty rows for the table.
+     */
+    private boolean hideEmptyRows;
     
     /**
      * The display density of the text in the table.
@@ -1384,6 +1389,19 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isHideEmptyRows()
+    {
+        return hideEmptyRows;
+    }
+
+    public void setHideEmptyRows( boolean hideEmptyRows )
+    {
+        this.hideEmptyRows = hideEmptyRows;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getDisplayDensity()
     {
         return displayDensity;
@@ -1611,6 +1629,7 @@ public class ReportTable
             sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();
             topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
             subtotals = reportTable.isSubtotals();
+            hideEmptyRows = reportTable.isHideEmptyRows();
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
             userOrganisationUnit = reportTable.isUserOrganisationUnit();

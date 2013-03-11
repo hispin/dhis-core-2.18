@@ -136,9 +136,15 @@
     
     <property name="subtotals" />
     
+    <property name="hideEmptyRows" />
+    
     <property name="displayDensity" />
     
     <property name="fontSize" />
+    
+    <property name="userOrganisationUnit" />
+    
+    <property name="userOrganisationUnitChildren" />
 
     <!-- Access properties -->
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_reporttable_userid" />

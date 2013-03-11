@@ -13,9 +13,12 @@ settings = {
 		{name: 'ou', items: ['ImspTQPwCqd']}
 	],
 	options: {
-		showSubTotals: false,
+		showSubTotals: true,
+		hideEmptyRows: false,
 		displayDensity: 'normal',
-		fontSize: 'normal'
+		fontSize: 'normal',
+		userOrganisationUnit: true,
+		userOrganisationUnitChildren: false
 	}
 };
 
