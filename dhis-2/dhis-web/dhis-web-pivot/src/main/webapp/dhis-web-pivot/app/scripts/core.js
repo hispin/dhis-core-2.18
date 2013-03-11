@@ -965,7 +965,7 @@ PT.core.getUtils = function(pt) {
 			validateUrl = function(url) {
 				if (!Ext.isString(url) || url.length > 2000) {
 					var percent = ((url.length - 2000) / url.length) * 100;
-					alert('Too many parameters selected. Please reduce the number of parameters by minimum ' + percent.toFixed(0) + '%');
+					alert('Too many parameters selected. Please reduce the number of parameters by minimum ' + percent.toFixed(0) + '%.');
 					return;
 				}
 
@@ -1542,7 +1542,7 @@ PT.core.getUtils = function(pt) {
 				xSettings = extendSettings(settings);
 
 				pt.paramString = getParamString(xSettings);
-				url = pt.init.contextPath + '/api/analytics.jsonp' + pt.paramString;
+				url = pt.init.contextPath + '/api/analytics.json' + pt.paramString;
 
 				if (!validateUrl(url)) {
 					return;
@@ -1550,7 +1550,7 @@ PT.core.getUtils = function(pt) {
 
 				pt.util.mask.showMask(pt.viewport);
 
-				Ext.data.JsonP.request({
+				Ext.Ajax.request({
 					method: 'GET',
 					url: url,
 					callbackName: 'analytics',
@@ -1560,12 +1560,13 @@ PT.core.getUtils = function(pt) {
 						'Accept': 'application/json'
 					},
 					disableCaching: false,
-					failure: function() {
+					failure: function(r) {
 						pt.util.mask.hideMask();
-						alert('Data request failed');
+						alert(r.responseText);
 					},
-					success: function(response) {
-						var html;
+					success: function(r) {
+						var html,
+							response = Ext.decode(r.responseText);
 
 						if (!validateResponse(response)) {
 							pt.util.mask.hideMask();
@@ -1611,11 +1612,16 @@ PT.core.getUtils = function(pt) {
 				return;
 			}
 
-			Ext.data.JsonP.request({
+			Ext.Ajax.request({
 				url: pt.baseUrl + '/api/reportTables/' + id + '.jsonp?links=false',
 				method: 'GET',
+				failure: function(r) {
+					pt.util.mask.hideMask();
+					alert(r.responseText);
+				},
 				success: function(r) {
-					pt.viewport.setFavorite(r);
+					var response = Ext.decode(r.responseText);
+					pt.viewport.setFavorite(response);
 				}
 			});
 		}
