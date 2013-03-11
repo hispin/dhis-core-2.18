@@ -28,7 +28,10 @@ package org.hisp.dhis.analytics;
  */
 
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
-import static org.hisp.dhis.analytics.DimensionType.*;
+import static org.hisp.dhis.analytics.DimensionType.DATASET;
+import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT;
+import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT_GROUPSET;
+import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,12 +46,12 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
-import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
@@ -72,7 +75,7 @@ public class DataQueryParams
     public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
-    public static final int MAX_DIM_OPT_PERM = 5000;
+    public static final int MAX_DIM_OPT_PERM = 10000;
     
     private static final List<DimensionType> COMPLETENESS_DIMENSION_TYPES = Arrays.asList( DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
     
@@ -359,15 +362,28 @@ public class DataQueryParams
     }
     
     /**
-     * Returns the number of dimension option permutations.
+     * Returns the number of dimension option permutations. Merges the three data
+     * dimensions into one prior to the calculation.
      */
     public int getNumberOfDimensionOptionPermutations()
     {
         int total = 1;
         
-        for ( Dimension dim : dimensions )
+        DataQueryParams query = new DataQueryParams( this );
+        
+        query.getDimensions().add( new Dimension( DATA_X_DIM_ID ) );
+        
+        query.getDimension( DATA_X_DIM_ID ).getItems().addAll( emptyIfNull( query.getDimensionOptions( INDICATOR_DIM_ID ) ) );
+        query.getDimension( DATA_X_DIM_ID ).getItems().addAll( emptyIfNull( query.getDimensionOptions( DATAELEMENT_DIM_ID ) ) );
+        query.getDimension( DATA_X_DIM_ID ).getItems().addAll( emptyIfNull( query.getDimensionOptions( DATASET_DIM_ID ) ) );
+        
+        query.removeDimension( INDICATOR_DIM_ID );
+        query.removeDimension( DATAELEMENT_DIM_ID );
+        query.removeDimension( DATASET_DIM_ID );
+        
+        for ( Dimension dim : query.getDimensions() )
         {
-            total *= dim.getItems().size();
+            total *= Math.max( dim.getItems().size(), 1 );
         }
         
         return total;
