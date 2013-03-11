@@ -1714,7 +1714,7 @@ Ext.onReady( function() {
 				{
 					dataIndex: 'name',
 					sortable: false,
-					width: 334,
+					width: 340,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
 							var el = Ext.get(record.data.id);
@@ -1974,6 +1974,7 @@ Ext.onReady( function() {
 			title: 'Manage favorites',
 			iconCls: 'gis-window-title-icon-favorite',
 			cls: 'gis-container-default',
+			bodyStyle: 'padding:5px',
 			resizable: false,
 			modal: true,
 			width: 450,

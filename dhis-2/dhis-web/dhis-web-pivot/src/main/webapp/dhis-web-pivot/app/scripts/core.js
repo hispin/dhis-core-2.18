@@ -43,7 +43,7 @@ PT.core.getConfigs = function() {
         dimension: {
             data: {
                 value: 'data',
-                rawValue: 'Data', //i18n PT.i18n.data,
+                name: 'Data', //i18n PT.i18n.data,
                 dimensionName: 'dx',
                 objectName: 'dx',
                 warning: {
@@ -51,31 +51,31 @@ PT.core.getConfigs = function() {
 				}
             },
             category: {
-				rawValue: 'Categories',
+				name: 'Categories',
 				dimensionName: 'co',
                 objectName: 'co',
 			},
             indicator: {
                 value: 'indicators',
-                rawValue: 'Indicators', //i18n PT.i18n.indicator,
+                name: 'Indicators', //i18n PT.i18n.indicator,
                 dimensionName: 'dx',
                 objectName: 'in'
             },
             dataElement: {
                 value: 'dataElements',
-                rawValue: 'Data elements', //i18n PT.i18n.data_element,
+                name: 'Data elements', //i18n PT.i18n.data_element,
                 dimensionName: 'dx',
                 objectName: 'de'
             },
             dataSet: {
 				value: 'dataSets',
-                rawValue: 'Data sets', //i18n PT.i18n.dataset,
+                name: 'Data sets', //i18n PT.i18n.dataset,
                 dimensionName: 'dx',
                 objectName: 'ds'
 			},
             period: {
                 value: 'period',
-                rawValue: 'Periods', //i18n PT.i18n.period,
+                name: 'Periods', //i18n PT.i18n.period,
                 dimensionName: 'pe',
                 objectName: 'pe',
                 warning: {
@@ -90,9 +90,11 @@ PT.core.getConfigs = function() {
 			},
             organisationUnit: {
                 value: 'organisationUnits',
-                rawValue: 'Organisation units', //i18n PT.i18n.organisation_unit,
+                name: 'Organisation units', //i18n PT.i18n.organisation_unit,
                 dimensionName: 'ou',
                 objectName: 'ou',
+                userOrganisationUnit: 'USER_ORGUNIT',
+                userOrganisationUnitChildren: 'USER_ORGUNIT_CHILDREN',
                 warning: {
 					filter: '...'//PT.i18n.wm_multiple_filter_orgunit
 				}
@@ -121,6 +123,7 @@ PT.core.getConfigs = function() {
 	dim.objectNameMap[dim.indicator.objectName] = dim.indicator;
 	dim.objectNameMap[dim.dataElement.objectName] = dim.dataElement;
 	dim.objectNameMap[dim.dataSet.objectName] = dim.dataSet;
+	dim.objectNameMap[dim.category.objectName] = dim.category;
 	dim.objectNameMap[dim.period.objectName] = dim.period;
 	dim.objectNameMap[dim.organisationUnit.objectName] = dim.organisationUnit;
 	dim.objectNameMap[dim.organisationUnitGroupSet.objectName] = dim.organisationUnitGroupSet;
@@ -185,7 +188,7 @@ PT.core.getConfigs = function() {
         west_fill_accordion_indicator: 63,
         west_fill_accordion_dataelement: 63,
         west_fill_accordion_dataset: 33,
-        west_fill_accordion_period: 256,
+        west_fill_accordion_period: 240,
         west_fill_accordion_organisationunit: 62,
         west_maxheight_accordion_indicator: 400,
         west_maxheight_accordion_dataelement: 400,
@@ -490,8 +493,15 @@ PT.core.getUtils = function(pt) {
 		},
 
 		roundIf: function(x, fix) {
-			var dec = pt.util.number.getNumberOfDecimals(x);
-			return parseFloat(dec > fix ? x.toFixed(fix) : x);
+			if (Ext.isString(x)) {
+				x = parseFloat(x);
+			}
+
+			if (Ext.isNumber(x) && Ext.isNumber(fix)) {
+				var dec = pt.util.number.getNumberOfDecimals(x);
+				return parseFloat(dec > fix ? x.toFixed(fix) : x);
+			}
+			return x;
 		},
 
 		pp: function(x) {

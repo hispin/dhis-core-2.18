@@ -3930,10 +3930,7 @@ Ext.onReady( function() {
 														items: [
 															{
 																xtype: 'checkbox',
-																//style: 'margin-right:6px',
-																//columnWidth: 0.5,
 																boxLabel: DV.i18n.show_data,
-																//labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
 																	added: function() {
 																		DV.cmp.favorite.showdata = this;
@@ -3942,10 +3939,7 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																//style: 'margin-right:6px',
-																//columnWidth: 0.5,
 																boxLabel: DV.i18n.trend_line,
-																//labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
 																	added: function() {
 																		DV.cmp.favorite.trendline = this;
@@ -3961,9 +3955,7 @@ Ext.onReady( function() {
 														items: [
 															{
 																xtype: 'checkbox',
-																//width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 3,
 																boxLabel: DV.i18n.hide_legend,
-																//labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
 																	added: function() {
 																		DV.cmp.favorite.hidelegend = this;
@@ -3972,9 +3964,7 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																//width: ((DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding) / 2) - 1,
 																boxLabel: DV.i18n.hide_subtitle,
-																//labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
 																	added: function() {
 																		DV.cmp.favorite.hidesubtitle = this;
