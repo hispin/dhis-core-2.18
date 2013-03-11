@@ -38,6 +38,22 @@ function viewResultDetails( orgunitId, periodTypeName, startDate, aggregationCon
 
 function caseAggregationResult()
 {
+	var autoSave = getFieldValue('autoSave');
+	if(autoSave=='true')
+	{
+		if( confirm(i18n_confirm_data_values_aggregated_saved_into_database_directly) )
+		{
+			runAggregate(autoSave);
+		}
+	}
+	else
+	{
+		runAggregate(autoSave);
+	}
+}
+
+function runAggregate(autoSave)
+{
 	hideById('caseAggregationForm');
 	showLoader();
 	
