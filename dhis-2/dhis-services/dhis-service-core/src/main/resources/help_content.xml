@@ -6014,6 +6014,9 @@ For example: the date in which a person enrolls to the system.</para>
                   </imageobject>
                 </mediaobject>
               </screenshot>
+              <note>
+                <para>You can click  <emphasis role="italic">Aggregate and Save</emphasis> button to save data values aggregated into the database directly.</para>
+              </note>
             </listitem>
           </orderedlist>
         </section>
@@ -6029,13 +6032,13 @@ For example: the date in which a person enrolls to the system.</para>
       <section id="schedule_sending_message">
         <title>Schedule automated message reminder</title>
         <para>This function is used for scheduling message reminders to be automatically sent to enrolled persons XX days before scheduled appointments and/or XX days after a missed visit. When the schedule is started, messages for each person are generated based on templates defined in each stage at midnight (Ref.<emphasis role="italic"> Add program stage </emphasis>section for defining a template message). On the time, the scheduled messages are sent.</para>
-        <para>Click <emphasis role="italic">Start</emphasis> button to enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
+        <para>Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
         <para>Click <emphasis role="italic">Execute</emphasis> button to generate and send each message for each  person at the time the button clicked.</para>
       </section>
       <section id="scheduling_aggregation_query_builder">
         <title>Schedule automated aggregation</title>
         <para>The aggregation query builder jobs can be automatically scheduled to run on regular intervals. At midnight, this job runs and get all datasets which have data elements  defined into Aggregate Query Builder formulas. Based on the period types of datasets, the system runs formulas at the end of end-date of current period. E.g if today is on 1A.M. in 2013-02-01, the system gets a monthly dataset and other period-type datasets with aggregate formulas, then system will only run aggregate formulas of the monthly  dataset with period as Jan 2013.</para>
-        <para>Select an option in Task stragely to set way to get period list for aggregating. There four options - </para>
+        <para>Select an option in <emphasis role="italic">Task strategy </emphasis>to set way to get period list for aggregating. There four options - </para>
         <para>1) <emphasis role="italic">Last month</emphasis> - Get period list by period-types of data sets from last month to current date.  E.g for daily datasets, if current date is <emphasis role="italic">2013-03-09</emphasis>, period list is get from <emphasis role="italic"> 2013-02-09</emphasis> to <emphasis role="italic"> 2013-03-09</emphasis>. For month datasets, periods list is <emphasis role="italic">Feb 2013</emphasis> and <emphasis role="italic">Mar 2013.</emphasis></para>
         <para>2) <emphasis role="italic">Last 3 month</emphasis> - Get periods by from last 3 month to current date.</para>
         <para>3) <emphasis role="italic">Last 6 month</emphasis> - Get periods by from last 6 month to current date</para>
@@ -6659,7 +6662,7 @@ It supports to filter events by each person attributes and data elements. The se
           </listitem>
           <listitem>
             <para>Click on the 
-<emphasis role="italic">Aggregate</emphasis> button to execute aggregate function. The <emphasis>Person aggregation result</emphasis>page is shown after running successfully.</para>
+<emphasis role="italic">Aggregate and Save</emphasis> button to execute aggregate function and save data values into database directly. Besides, click Preview button to preview data values and you can check/select any data values you want to input them into database. The <emphasis>Person aggregation result </emphasis>page is shown after running successfully.</para>
           </listitem>
         </orderedlist>
         <screenshot>
@@ -6670,7 +6673,7 @@ It supports to filter events by each person attributes and data elements. The se
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>In <emphasis>Manual person aggregation result</emphasis> page -</para>
+        <para>In <emphasis>Manual person aggregation result</emphasis><emphasis role="italic"> preview</emphasis> page -</para>
         <itemizedlist>
           <listitem>
             <para>Click <emphasis role="italic">Save all values</emphasis> button to save all aggregated data values .</para>
