@@ -711,12 +711,12 @@ public class HibernateProgramStageInstanceStore
         yesterday.add( Calendar.DATE, -1 );
         CalendarPeriodType.clearTimeOfDay( yesterday );
         Date now = yesterday.getTime();
-        
+
         if ( endDate.before( now ) )
         {
             now = endDate;
         }
-        
+
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.createAlias( "programInstance.patient", "patient" );
@@ -726,7 +726,7 @@ public class HibernateProgramStageInstanceStore
         criteria.add( Restrictions.between( "dueDate", startDate, now ) );
         criteria.add( Restrictions.in( "regOrgunit.id", orgunitIds ) );
         criteria.setProjection( Projections.rowCount() ).uniqueResult();
-        
+
         Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
@@ -1923,7 +1923,7 @@ public class HibernateProgramStageInstanceStore
             grid.addHeader( new GridHeader( i18n.getString( "total" ), false, false ) );
         }
 
-        int[] sumRow = new int[rs.getMetaData().getColumnCount() + 1];
+        double[] sumRow = new double[rs.getMetaData().getColumnCount() + 1];
         while ( rs.next() )
         {
             grid.addRow();
@@ -1937,26 +1937,34 @@ public class HibernateProgramStageInstanceStore
                     grid.addValue( rs.getObject( i ) );
                 }
                 // values
-                else if ( rs.getMetaData().getColumnType( i ) == Types.INTEGER )
-                {
-                    Integer value = rs.getInt( i );
-                    sumRow[i] += value;
-                    grid.addValue( value );
-                    total += value;
-                }
                 else
                 {
                     double value = rs.getDouble( i );
                     sumRow[i] += value;
-                    grid.addValue( value );
                     total += value;
+
+                    if ( value == (int) value )
+                    {
+                        grid.addValue( (int) value );
+                    }
+                    else
+                    {
+                        grid.addValue( value );
+                    }
                 }
             }
 
             // total
             if ( dataCols > 1 )
             {
-                grid.addValue( total );
+                if ( total == (int) total )
+                {
+                    grid.addValue( (int) total );
+                }
+                else
+                {
+                    grid.addValue( total );
+                }
             }
         }
 
@@ -1968,12 +1976,26 @@ public class HibernateProgramStageInstanceStore
             int total = 0;
             for ( int i = cols - dataCols + 1; i <= cols; i++ )
             {
+                if ( sumRow[i] == (int) sumRow[i] )
+                {
+                    grid.addValue( (int) sumRow[i] );
+                }
+                else
+                {
+                    grid.addValue( sumRow[i] );
+                }
                 total += sumRow[i];
-                grid.addValue( sumRow[i] );
             }
             if ( cols > cols - dataCols + 1 )
             {
-                grid.addValue( total );
+                if ( total == (int) total )
+                {
+                    grid.addValue( (int) total );
+                }
+                else
+                {
+                    grid.addValue( total );
+                }
             }
         }
     }
@@ -2005,23 +2027,21 @@ public class HibernateProgramStageInstanceStore
                     // Total value of the column
                     if ( rowSet.getMetaData().getColumnType( i ) != Types.VARCHAR )
                     {
-                        // values
-                        if ( rowSet.getMetaData().getColumnType( i ) == Types.INTEGER )
-                        {
-                            total += rowSet.getInt( i );
-                        }
-                        else
-                        {
-                            total += rowSet.getDouble( i );
-                        }
+                        total += rowSet.getDouble( i );
                     }
-
                 }
 
                 // Add total value of the column
                 if ( cols > 2 )
                 {
-                    column.add( total );
+                    if ( total == (int) total )
+                    {
+                        column.add( (int) total );
+                    }
+                    else
+                    {
+                        column.add( total );
+                    }
                 }
 
                 columnValues.put( index, column );
@@ -2070,12 +2090,26 @@ public class HibernateProgramStageInstanceStore
                             total += (Double) columnValues.get( i ).get( j );
                         }
                     }
-                    column.add( total );
+                    if ( total == (int) total )
+                    {
+                        column.add( (int) total );
+                    }
+                    else
+                    {
+                        column.add( total );
+                    }
                     allTotal += total;
                 }
                 if ( cols > 2 )
                 {
-                    column.add( allTotal );
+                    if ( allTotal == (int) allTotal )
+                    {
+                        column.add( (int) allTotal );
+                    }
+                    else
+                    {
+                        column.add( allTotal );
+                    }
                 }
                 grid.addColumn( column );
             }
