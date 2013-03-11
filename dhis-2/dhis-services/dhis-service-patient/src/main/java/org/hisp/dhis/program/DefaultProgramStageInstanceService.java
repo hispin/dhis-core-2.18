@@ -336,11 +336,12 @@ public class DefaultProgramStageInstanceService
 
         // Total programs completed in this period
 
+        int totalDiscontinued = programInstanceService.countUnenrollment( program, orgunitIds, startDate, endDate );
         int totalCompleted = programInstanceService.countProgramInstances( program, orgunitIds, startDate, endDate,
             true );
         grid.addRow();
         grid.addValue( i18n.getString( "total_programs_completed_in_this_period" ) );
-        grid.addValue( totalCompleted );
+        grid.addValue( totalCompleted - totalDiscontinued );
         grid.addValue( "" );
         grid.addValue( "" );
         grid.addValue( "" );
@@ -350,7 +351,6 @@ public class DefaultProgramStageInstanceService
 
         // Total programs discontinued (un-enrollments)
 
-        int totalDiscontinued = programInstanceService.countUnenrollment( program, orgunitIds, startDate, endDate );
         grid.addRow();
         grid.addValue( i18n.getString( "total_programs_discontinued_unenrollments" ) );
         grid.addValue( totalDiscontinued );
