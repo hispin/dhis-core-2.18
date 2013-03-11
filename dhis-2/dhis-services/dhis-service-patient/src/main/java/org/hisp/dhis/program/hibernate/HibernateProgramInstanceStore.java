@@ -134,10 +134,13 @@ public class HibernateProgramInstanceStore
     public Collection<ProgramInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, int min, int max )
     {
-        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ),
-            Restrictions.ge( "enrollmentDate", startDate ), Restrictions.le( "enrollmentDate", endDate ) )
-            .createAlias( "patient", "patient" ).createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).addOrder( Order.asc( "patient.id" ) )
+        return getCriteria( Restrictions.eq( "program", program ), 
+            Restrictions.ge( "enrollmentDate", startDate ), 
+            Restrictions.le( "enrollmentDate", endDate ) )
+            .createAlias( "patient", "patient" )
+            .createAlias( "patient.organisationUnit", "organisationUnit" )
+            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) )
+            .addOrder( Order.asc( "patient.id" ) )
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 

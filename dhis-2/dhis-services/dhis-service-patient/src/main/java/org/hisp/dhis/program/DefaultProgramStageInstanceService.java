@@ -363,16 +363,10 @@ public class DefaultProgramStageInstanceService
 
         // Average number of stages for complete programs
 
-        int stageCount = program.getProgramStages().size();
-        int stageCompleted = getProgramStageInstanceCount( program, orgunitIds, startDate, endDate, true );    
-        double average = 0.0;
-        if ( total != 0 && stageCompleted != 0 )
-        {
-            average = stageCompleted * 100 / (stageCount * total);
-        }
+        int stageCompleted = averageNumberCompletedProgramInstance( program, orgunitIds, startDate, endDate, true );
         grid.addRow();
         grid.addValue( i18n.getString( "average_number_of_stages_for_complete_programs" ) );
-        grid.addValue( format.formatValue( average ) + "%" );
+        grid.addValue( stageCompleted );
         grid.addValue( "" );
         grid.addValue( "" );
         grid.addValue( "" );
@@ -417,7 +411,7 @@ public class DefaultProgramStageInstanceService
         grid.addValue( i18n.getString( "visits_overdue_percent" ) );
 
         // Add values for stage details
-        
+
         for ( ProgramStage programStage : program.getProgramStages() )
         {
             grid.addRow();
@@ -425,22 +419,23 @@ public class DefaultProgramStageInstanceService
 
             // Visits scheduled (All)
 
-            int totalAll = this.getProgramStageInstanceCount( program, orgunitIds, startDate, endDate, null );
-            grid.addValue( total );
+            int totalAll = this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate, null );
+            grid.addValue( totalAll );
 
             // Visits done (#) = Incomplete + Complete stages.
 
             int totalCompletedEvent = this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate,
                 true );
-            int totalVisit = this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate, false );
-            grid.addValue( totalCompletedEvent + totalVisit );
+            int totalVisit = totalCompletedEvent
+                + this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate, false );
+            grid.addValue( totalVisit );
 
             // Visits done (%)
 
             double percent = 0.0;
             if ( totalAll != 0 )
             {
-                percent = (totalCompletedEvent + totalVisit + 0.0) * 100 / totalAll;
+                percent = (totalVisit + 0.0) * 100 / totalAll;
             }
             grid.addValue( format.formatValue( percent ) + "%" );
 
@@ -470,7 +465,7 @@ public class DefaultProgramStageInstanceService
             }
             grid.addValue( format.formatValue( percent ) + "%" );
         }
-        
+
         return grid;
     }
 
@@ -568,4 +563,10 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.getOverDueCount( programStage, orgunitIds, startDate, endDate );
     }
 
+    @Override
+    public int averageNumberCompletedProgramInstance( Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Boolean completed )
+    {
+        return programStageInstanceStore.averageNumberCompleted( program, orgunitIds, startDate, endDate, completed );
+    }
 }
