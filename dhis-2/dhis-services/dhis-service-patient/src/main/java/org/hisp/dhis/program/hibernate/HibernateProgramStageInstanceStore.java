@@ -804,7 +804,24 @@ public class HibernateProgramStageInstanceStore
 
         if ( completed == null )
         {
-            criteria.add( Restrictions.between( "dueDate", startDate, endDate ) );
+            criteria.createAlias( "programInstance.patient", "patient" );
+            criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+            criteria.add( Restrictions.or(
+                Restrictions.and( Restrictions.eq( "completed", true ),
+                    Restrictions.between( "executionDate", startDate, endDate ),
+                    Restrictions.in( "organisationUnit.id", orgunitIds ) ),
+                Restrictions.and( Restrictions.eq( "completed", false ),
+                        Restrictions.isNotNull( "executionDate" ),
+                        Restrictions.between( "executionDate", startDate, endDate ),
+                        Restrictions.in( "organisationUnit.id", orgunitIds ) ),
+                Restrictions.and( Restrictions.eq( "completed", false ),
+                        Restrictions.isNull( "executionDate" ),
+                        Restrictions.between( "dueDate", startDate, endDate ),
+                        Restrictions.in( "regOrgunit.id", orgunitIds ) ),
+                Restrictions.and( Restrictions.eq( "status", ProgramStageInstance.SKIPPED_STATUS ),
+                         Restrictions.between( "dueDate", startDate, endDate ),
+                        Restrictions.in( "regOrgunit.id", orgunitIds ) )
+                ) );
         }
         else
         {
@@ -1875,6 +1892,23 @@ public class HibernateProgramStageInstanceStore
         }
 
         return description;
+    }
+
+    public int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Boolean completed )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.createAlias( "programStage", "programStage" );
+        criteria.createAlias( "programInstance.patient", "patient" );
+        criteria.add( Restrictions.eq( "programInstance.program", program ) );
+        criteria.add( Restrictions.eq( "programInstance.completed", completed ) );
+        criteria.add( Restrictions.in( "organisationUnit.id", orgunitIds ) );
+        criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+        criteria.add( Restrictions.eq( "completed", true ) );
+
+        Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 
     // ---------------------------------------------------------------------
