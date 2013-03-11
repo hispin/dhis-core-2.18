@@ -374,14 +374,7 @@
       <result name="xls" type="gridXlsResult" />
       <param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
     </action>
-
-    <action name="statisticalProgramDetailsReport"
-      class="org.hisp.dhis.caseentry.action.report.StatisticalProgramDetailsReportAction">
-      <result name="success" type="velocity">/content.vm</result>
-      <param name="page">/dhis-web-caseentry/statisticalProgramDetailsReport.vm</param>
-      <param name="requiredAuthorities">F_GENERATE_STATISTICAL_PROGRAM_REPORT</param>
-    </action>
-
+	
     <!-- i18n -->
 
     <action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">
