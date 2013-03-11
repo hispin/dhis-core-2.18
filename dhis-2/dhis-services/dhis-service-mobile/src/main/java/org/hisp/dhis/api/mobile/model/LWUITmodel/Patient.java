@@ -77,6 +77,8 @@ public class Patient
     private Character dobType;
 
     private List<Program> programs;
+    
+    private List<Program> enrollmentPrograms;
 
     private List<Relationship> relationships;
 
@@ -112,6 +114,16 @@ public class Patient
     public void setRelationships( List<Relationship> relationships )
     {
         this.relationships = relationships;
+    }
+
+    public List<Program> getEnrollmentPrograms()
+    {
+        return enrollmentPrograms;
+    }
+
+    public void setEnrollmentPrograms( List<Program> enrollmentPrograms )
+    {
+        this.enrollmentPrograms = enrollmentPrograms;
     }
 
     public String getFullName()
@@ -292,9 +304,7 @@ public class Patient
         dout.writeUTF( this.getMiddleName() );
         dout.writeUTF( this.getLastName() );
         dout.writeInt( this.getAge() );
-        dout.writeUTF( this.getPhoneNumber() );
-        dout.writeUTF( this.getGender() );
-
+        
         if ( gender != null )
         {
             dout.writeBoolean( true );
@@ -375,17 +385,24 @@ public class Patient
             each.serialize( dout );
         }
 
-        // Write Enrolled Programs
-
+        // Write Program
         dout.writeInt( programs.size() );
-        for ( Program each : programs )
+        for ( Program each: programs )
         {
             each.serialize( dout );
         }
-
+        
         // Write Relationships
         dout.writeInt( relationships.size() );
         for ( Relationship each : relationships )
+        {
+            each.serialize( dout );
+        }
+        
+        // Write Enrolled Programs
+
+        dout.writeInt( enrollmentPrograms.size() );
+        for ( Program each : enrollmentPrograms )
         {
             each.serialize( dout );
         }
