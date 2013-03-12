@@ -1,4 +1,4 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.outcoming;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo

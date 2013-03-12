@@ -1,5 +1,5 @@
-<script type="text/javascript" src="javascript/sendSMS.js"></script>
-<script type="text/javascript" src="javascript/patient.js"></script>
+<script type="text/javascript" src="../dhis-web-sms/javascript/sendSMS.js"></script>
+<script type="text/javascript" src="../dhis-web-sms/javascript/patient.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready( function() {
 		validation( "sendSMSForm", function( form ) { sendSMSMessage( form ); } );
@@ -99,7 +99,7 @@
 
 	function toggleBasicSMSGUI( _value )
 	{
-		window.location.href = "showSMSForm.action?sendTo=" + _value;
+		window.location.href = "showSendingSMSForm.action?sendTo=" + _value;
 	}
 
 	function selectedOrganisationUnitSendSMS( unitIds )
