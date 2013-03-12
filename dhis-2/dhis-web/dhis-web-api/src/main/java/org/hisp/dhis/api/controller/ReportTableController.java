@@ -125,8 +125,6 @@ public class ReportTableController
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         ReportTable reportTable = JacksonUtils.fromJson( input, ReportTable.class );
-        System.out.println("rt " + reportTable.getName());
-        System.out.println(reportTable.getColumnDimensions());
         
         reportTable.readPresentationProps();
 
