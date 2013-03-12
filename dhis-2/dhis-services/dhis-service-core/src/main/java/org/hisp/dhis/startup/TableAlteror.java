@@ -527,7 +527,13 @@ public class TableAlteror
         executeSql( "ALTER TABLE datadictionary DROP CONSTRAINT datadictionary_name_key" );
 
         upgradeReportTableColumns();
-        
+
+        // clear out sharing of de-group/de-group-set for now
+        executeSql( "UPDATE dataelementgroup SET userid=NULL WHERE userid IS NOT NULL" );
+        executeSql( "UPDATE dataelementgroup SET publicaccess=NULL WHERE userid IS NOT NULL" );
+        executeSql( "UPDATE dataelementgroupset SET userid=NULL WHERE userid IS NOT NULL" );
+        executeSql( "UPDATE dataelementgroupset SET publicaccess=NULL WHERE userid IS NOT NULL" );
+
         log.info( "Tables updated" );
     }
 
