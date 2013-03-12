@@ -134,13 +134,10 @@ public class HibernateProgramInstanceStore
     public Collection<ProgramInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, int min, int max )
     {
-        return getCriteria( Restrictions.eq( "program", program ), 
-            Restrictions.ge( "enrollmentDate", startDate ), 
-            Restrictions.le( "enrollmentDate", endDate ) )
-            .createAlias( "patient", "patient" )
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.ge( "enrollmentDate", startDate ),
+            Restrictions.le( "enrollmentDate", endDate ) ).createAlias( "patient", "patient" )
             .createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) )
-            .addOrder( Order.asc( "patient.id" ) )
+            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).addOrder( Order.asc( "patient.id" ) )
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
@@ -155,12 +152,9 @@ public class HibernateProgramInstanceStore
     public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
-            Restrictions.ge( "enrollmentDate", startDate ), 
-            Restrictions.le( "enrollmentDate", endDate ) )
-            .createAlias( "patient", "patient" )
-            .createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) )
-            .setProjection( Projections.rowCount() )
+            Restrictions.ge( "enrollmentDate", startDate ), Restrictions.le( "enrollmentDate", endDate ) )
+            .createAlias( "patient", "patient" ).createAlias( "patient.organisationUnit", "organisationUnit" )
+            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).setProjection( Projections.rowCount() )
             .uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
@@ -169,8 +163,7 @@ public class HibernateProgramInstanceStore
     public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean completed )
     {
         Criteria criteria = getCriteria( Restrictions.eq( "program", program ) );
-        criteria.createAlias( "patient", "patient" )
-            .createAlias( "patient.organisationUnit", "organisationUnit" )
+        criteria.createAlias( "patient", "patient" ).createAlias( "patient.organisationUnit", "organisationUnit" )
             .add( Restrictions.in( "organisationUnit.id", orgunitIds ) )
             .add( Restrictions.eq( "completed", completed ) );
         if ( completed )
@@ -194,8 +187,7 @@ public class HibernateProgramInstanceStore
             Restrictions.le( "enrollmentDate", endDate ) ).createAlias( "patient", "patient" )
             .createAlias( "programStageInstances", "programStageInstance" )
             .createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) )
-            .add( Restrictions.eq( "completed", true ) )
+            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "completed", true ) )
             .add( Restrictions.eq( "programStageInstance.completed", false ) ).list();
     }
 
@@ -207,8 +199,7 @@ public class HibernateProgramInstanceStore
             .createAlias( "patient.organisationUnit", "organisationUnit" )
             .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "completed", true ) )
             .add( Restrictions.eq( "programStageInstance.completed", false ) )
-            .setProjection( Projections.projectionList().add(Projections.countDistinct("id") ) )
-            .uniqueResult();
+            .setProjection( Projections.projectionList().add( Projections.countDistinct( "id" ) ) ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
