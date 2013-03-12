@@ -40,6 +40,8 @@ public class Dimension
 
     private String dimensionName;
 
+    private String displayName;
+    
     private List<IdentifiableObject> items = new ArrayList<IdentifiableObject>();
 
     // -------------------------------------------------------------------------
@@ -72,6 +74,15 @@ public class Dimension
         this.items = items;
     }
 
+    public Dimension( String dimension, DimensionType type, String dimensionName, String displayName, List<IdentifiableObject> items )
+    {
+        this.dimension = dimension;
+        this.type = type;
+        this.dimensionName = dimensionName;
+        this.displayName = displayName;
+        this.items = items;
+    }
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -100,7 +111,7 @@ public class Dimension
     {
         return dimensionName != null ? dimensionName : dimension;
     }
-
+    
     // -------------------------------------------------------------------------
     // Get and set methods
     // -------------------------------------------------------------------------
@@ -123,6 +134,16 @@ public class Dimension
     public void setType( DimensionType type )
     {
         this.type = type;
+    }
+
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName( String displayName )
+    {
+        this.displayName = displayName;
     }
 
     public List<IdentifiableObject> getItems()
