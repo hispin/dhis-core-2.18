@@ -87,6 +87,7 @@ public final class SharingUtils
         PUBLIC_AUTHORITIES.put( DataElement.class, "F_DATAELEMENT_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataElement.class, "F_DATAELEMENT_PRIVATE_ADD" );
 
+        /*
         SUPPORTED_TYPES.put( "dataElementGroup", DataElementGroup.class );
         PUBLIC_AUTHORITIES.put( DataElementGroup.class, "F_DATAELEMENTGROUP_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataElementGroup.class, "F_DATAELEMENTGROUP_PRIVATE_ADD" );
@@ -94,6 +95,7 @@ public final class SharingUtils
         SUPPORTED_TYPES.put( "dataElementGroupSet", DataElementGroupSet.class );
         PUBLIC_AUTHORITIES.put( DataElementGroupSet.class, "F_DATAELEMENTGROUPSET_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataElementGroupSet.class, "F_DATAELEMENTGROUPSET_PRIVATE_ADD" );
+        */
 
         SUPPORTED_TYPES.put( "indicator", Indicator.class );
         PUBLIC_AUTHORITIES.put( Indicator.class, "F_INDICATOR_PUBLIC_ADD" );
