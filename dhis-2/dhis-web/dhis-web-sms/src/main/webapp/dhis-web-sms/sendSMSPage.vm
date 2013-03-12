@@ -91,8 +91,7 @@
 		
 		<tbody>
 			<tr>
-				<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/>
-				<input type="button" name="viewSentSms" value="View Sent Sms" onclick="window.location='showSentPage.action'"/></td>				
+				<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/>				
 			</tr>
 		</tbody>
 	</table>

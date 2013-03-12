@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.outcoming;
 
 import java.util.Collection;
 import java.util.Map;

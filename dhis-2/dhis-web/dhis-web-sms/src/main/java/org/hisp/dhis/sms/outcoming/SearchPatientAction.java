@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.outcoming;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,8 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.mobile.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @version $Id SearchPatientAction.java copyright from SearchPatientAction in case-entry$
  */
 public class SearchPatientAction
     extends ActionPagingSupport<Patient>
@@ -55,7 +55,7 @@ public class SearchPatientAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
     @Autowired
     private PatientService patientService;
@@ -134,7 +134,7 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // List all patients
         if ( listAll )
