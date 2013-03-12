@@ -66,6 +66,7 @@ import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceStore;
@@ -138,6 +139,13 @@ public class HibernateProgramStageInstanceStore
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
     }
 
     // -------------------------------------------------------------------------
@@ -723,6 +731,7 @@ public class HibernateProgramStageInstanceStore
         criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
         criteria.add( Restrictions.eq( "programStage", programStage ) );
         criteria.add( Restrictions.isNull( "programInstance.endDate" ) );
+        criteria.add( Restrictions.isNull( "executionDate" ) );
         criteria.add( Restrictions.between( "dueDate", startDate, now ) );
         criteria.add( Restrictions.in( "regOrgunit.id", orgunitIds ) );
         criteria.setProjection( Projections.rowCount() ).uniqueResult();
@@ -806,22 +815,18 @@ public class HibernateProgramStageInstanceStore
         {
             criteria.createAlias( "programInstance.patient", "patient" );
             criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
-            criteria.add( Restrictions.or(
-                Restrictions.and( Restrictions.eq( "completed", true ),
-                    Restrictions.between( "executionDate", startDate, endDate ),
-                    Restrictions.in( "organisationUnit.id", orgunitIds ) ),
-                Restrictions.and( Restrictions.eq( "completed", false ),
-                        Restrictions.isNotNull( "executionDate" ),
-                        Restrictions.between( "executionDate", startDate, endDate ),
-                        Restrictions.in( "organisationUnit.id", orgunitIds ) ),
-                Restrictions.and( Restrictions.eq( "completed", false ),
-                        Restrictions.isNull( "executionDate" ),
-                        Restrictions.between( "dueDate", startDate, endDate ),
-                        Restrictions.in( "regOrgunit.id", orgunitIds ) ),
-                Restrictions.and( Restrictions.eq( "status", ProgramStageInstance.SKIPPED_STATUS ),
-                         Restrictions.between( "dueDate", startDate, endDate ),
-                        Restrictions.in( "regOrgunit.id", orgunitIds ) )
-                ) );
+            criteria.add( Restrictions.or( Restrictions.and( Restrictions.eq( "completed", true ),
+                Restrictions.between( "executionDate", startDate, endDate ),
+                Restrictions.in( "organisationUnit.id", orgunitIds ) ), Restrictions.and(
+                Restrictions.eq( "completed", false ), Restrictions.isNotNull( "executionDate" ),
+                Restrictions.between( "executionDate", startDate, endDate ),
+                Restrictions.in( "organisationUnit.id", orgunitIds ) ),
+                Restrictions.and( Restrictions.eq( "completed", false ), Restrictions.isNull( "executionDate" ),
+                    Restrictions.between( "dueDate", startDate, endDate ),
+                    Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
+                    Restrictions.eq( "status", ProgramStageInstance.SKIPPED_STATUS ),
+                    Restrictions.between( "dueDate", startDate, endDate ),
+                    Restrictions.in( "regOrgunit.id", orgunitIds ) ) ) );
         }
         else
         {
@@ -1897,6 +1902,8 @@ public class HibernateProgramStageInstanceStore
     public int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         Boolean completed )
     {
+        Collection<ProgramInstance> programInstances = programInstanceService.getUnenrollment( program, orgunitIds,
+            startDate, endDate );
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.createAlias( "programStage", "programStage" );
@@ -1904,8 +1911,12 @@ public class HibernateProgramStageInstanceStore
         criteria.add( Restrictions.eq( "programInstance.program", program ) );
         criteria.add( Restrictions.eq( "programInstance.completed", completed ) );
         criteria.add( Restrictions.in( "organisationUnit.id", orgunitIds ) );
-        criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+        criteria.add( Restrictions.between( "programInstance.endDate", startDate, endDate ) );
         criteria.add( Restrictions.eq( "completed", true ) );
+        if ( programInstances != null && programInstances.size() > 0 )
+        {
+            criteria.add( Restrictions.not( Restrictions.in( "programInstance", programInstances ) ) );
+        }
 
         Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
         return rs != null ? rs.intValue() : 0;

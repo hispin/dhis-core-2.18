@@ -363,10 +363,15 @@ public class DefaultProgramStageInstanceService
 
         // Average number of stages for complete programs
 
-        int stageCompleted = averageNumberCompletedProgramInstance( program, orgunitIds, startDate, endDate, true );
         grid.addRow();
         grid.addValue( i18n.getString( "average_number_of_stages_for_complete_programs" ) );
-        grid.addValue( stageCompleted );
+        double percent = 0.0;
+        if ( totalCompleted != 0 )
+        {
+            int stageCompleted = averageNumberCompletedProgramInstance( program, orgunitIds, startDate, endDate, true );
+            percent = (stageCompleted + 0.0) / totalCompleted;
+        }
+        grid.addValue( format.formatValue( percent ) );
         grid.addValue( "" );
         grid.addValue( "" );
         grid.addValue( "" );
@@ -432,7 +437,7 @@ public class DefaultProgramStageInstanceService
 
             // Visits done (%)
 
-            double percent = 0.0;
+            percent = 0.0;
             if ( totalAll != 0 )
             {
                 percent = (totalVisit + 0.0) * 100 / totalAll;
