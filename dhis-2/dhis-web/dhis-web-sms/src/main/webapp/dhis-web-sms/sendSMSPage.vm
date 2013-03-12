@@ -39,24 +39,11 @@
 #if ( $!gatewayMap && $!gatewayMap.size() > 0 )
 <form id="sendSMSForm" name="sendSMSForm" action="sendSMS.action">
 	<table id="detailsList">
-		<tbody>
-			<!--tr>
-				<th colspan="2">$i18n.getString( "gateway_type" )</th>
-			</tr>
+		<col width="90px"/>
+		<tbody>	
 			<tr>
-				<td width="328"><label for="type">$i18n.getString( "type" ):</label></td>
-				<td width="100">
-				#set( $keys = $!gatewayMap.keySet() )
-					<select id="gatewayId" name="gatewayId" style="width: 100%;">
-						#foreach( $key in $!keys )
-						<option value="$gatewayMap.get( $key )">$i18n.getString( $key )</option>
-						#end
-					</select>
-				</td>
-			</tr-->
-			
-			<tr>
-				<td>$i18n.getString( "send_sms_to_target" ):
+				<td>$i18n.getString( "send_sms_to_target" ):</td>
+				<td>
 					<select id="sendTarget" name="sendTarget" onchange="javascript:toggleSMSGUI( this.value );">
 						<option value="phone">$i18n.getString( "raw_phone_number" )</option>
 						<option value="userGroup">$i18n.getString( "user_group" )</option>
@@ -67,29 +54,24 @@
 				</td>
 			</tr>
 			<tr id="trUserGroup" style="display:none">
-				<td>$i18n.getString( "user_group" ):
-				<select id="userGroup" name="userGroup">
-				#foreach( $group in $userGroups )
-					<option value="$group.id">$!encoder.htmlEncode( $group.name )</option>
-				#end
-				</select></td>
+				<td>$i18n.getString( "user_group" ):</td>
+				<td>
+					<select id="userGroup" name="userGroup">
+					#foreach( $group in $userGroups )
+						<option value="$group.id">$!encoder.htmlEncode( $group.name )</option>
+					#end
+					</select>
+				</td>
 			</tr>
 			<tr id="trRawPhone">
-				<td>$i18n.getString( "phone_number" ): <input type="text" id="recipient" name="recipient" style="width:53%"/></td>
+				<td>$i18n.getString( "phone_number" ):</td>
+				<td><input type="text" id="recipient" name="recipient" style="width:65%"/></td>
 			</tr>
 			
-			<tr><th>$i18n.getString( "message" )</th></tr>
-			<tr><td><textarea id="smsMessage" name="smsMessage" cols="86" rows="5" class="{validate:{required:true}}"></textarea></td></tr>
-		</tbody>
-	</table>
-
-	<table id="detailsList">
-		<col width="300px"/>
-		<tbody id="orgunitType" style="display:none">
-			<tr><td>#organisationUnitSelectionTree( true, true, false )</td></tr>
-		</tbody>
-		
-		<tbody>
+			<tr id="orgunitType" style="display:none"><td colspan="2"><br/>#organisationUnitSelectionTree( true, true, false )</td></tr>
+			
+			<tr><th colspan="2">$i18n.getString( "message" )</th></tr>
+			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" cols="86" rows="5" class="{validate:{required:true}}"></textarea></td></tr>
 			<tr>
 				<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/>				
 			</tr>
