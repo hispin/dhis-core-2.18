@@ -205,7 +205,7 @@ public class FacilityController
             facility.setCoordinates( null );
         }
 
-        if ( !strings.contains( "url" ) )
+        if ( !strings.contains( "href" ) )
         {
             facility.setHref( null );
         }
@@ -434,7 +434,7 @@ public class FacilityController
             level.put( "id", organisationUnitLevel.getUid() );
 
             // temporary fix since ControllerLinkBuilder can't handle cross-servlet controllers
-            level.put( "url", linkTo( OrganisationUnitLevelController.class ).slash( organisationUnitLevel.getUid() ).toString()
+            level.put( "href", linkTo( OrganisationUnitLevelController.class ).slash( organisationUnitLevel.getUid() ).toString()
                 .replace( "/api-fred", "/api" ) );
 
             level.put( "name", organisationUnitLevel.getName() );
