@@ -68,6 +68,11 @@ public class DataQueryParams
     public static final String VALUE_ID = "value";    
     public static final String LEVEL_PREFIX = "uidlevel";
     
+    public static final String DISPLAY_NAME_DATA_X = "Data";
+    public static final String DISPLAY_NAME_CATEGORYOPTIONCOMBO = "Category";
+    public static final String DISPLAY_NAME_PERIOD = "Period";
+    public static final String DISPLAY_NAME_ORGUNIT = "Organisation unit";    
+    
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ";";
     public static final String DIMENSION_SEP = "-";
@@ -76,7 +81,7 @@ public class DataQueryParams
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
     public static final int MAX_DIM_OPT_PERM = 10000;
-    
+
     private static final List<DimensionType> COMPLETENESS_DIMENSION_TYPES = Arrays.asList( DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
     
     private static final DimensionItem[] DIM_OPT_ARR = new DimensionItem[0];
@@ -220,7 +225,7 @@ public class DataQueryParams
         {
             if ( DATA_DIMS.contains( iter.next().getDimension() ) )
             {
-                iter.set( new Dimension( DATA_X_DIM_ID, DimensionType.DATA_X ) );
+                iter.set( new Dimension( DATA_X_DIM_ID, DimensionType.DATA_X, null, DISPLAY_NAME_DATA_X, new ArrayList<IdentifiableObject>() ) );
                 break dimensions;
             }
         }

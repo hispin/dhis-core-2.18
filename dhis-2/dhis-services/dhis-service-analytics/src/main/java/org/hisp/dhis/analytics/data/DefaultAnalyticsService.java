@@ -35,6 +35,10 @@ import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATA_X_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
 import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
 import static org.hisp.dhis.analytics.DataQueryParams.INDICATOR_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.ORGUNIT_DIM_ID;
@@ -43,7 +47,8 @@ import static org.hisp.dhis.analytics.DataQueryParams.getDimensionFromParam;
 import static org.hisp.dhis.analytics.DataQueryParams.getDimensionItemsFromParam;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,7 +176,7 @@ public class DefaultAnalyticsService
         
         for ( Dimension col : params.getHeaderDimensions() )
         {
-            grid.addHeader( new GridHeader( col.getDimensionName(), col.getDimension(), String.class.getName(), false, true ) );
+            grid.addHeader( new GridHeader( col.getDimension(), col.getDisplayName(), String.class.getName(), false, true ) );
         }
         
         grid.addHeader( new GridHeader( DataQueryParams.VALUE_ID, VALUE_HEADER_NAME, Double.class.getName(), false, false ) );
@@ -513,7 +518,7 @@ public class DefaultAnalyticsService
         
         if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
         {
-            return Arrays.asList( new Dimension( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.CATEGORY_OPTION_COMBO, null, DISPLAY_NAME_CATEGORYOPTIONCOMBO, new ArrayList<IdentifiableObject>() ) );
         }
         
         if ( ORGUNIT_DIM_ID.equals( dimension ) )
@@ -548,7 +553,7 @@ public class DefaultAnalyticsService
                 throw new IllegalQueryException( "Dimension ou is present in query without any valid dimension options" );
             }
             
-            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT, ous ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, ous ) );
         }
         
         if ( PERIOD_DIM_ID.equals( dimension ) )
@@ -582,30 +587,30 @@ public class DefaultAnalyticsService
             List<Period> periodList = new ArrayList<Period>( periods );
             Collections.sort( periodList, PeriodComparator.INSTANCE );
             
-            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, asList( periodList ) ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, null, DISPLAY_NAME_PERIOD, asList( periodList ) ) );
         }
         
-        OrganisationUnitGroupSet orgUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
+        OrganisationUnitGroupSet ougs = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
             
-        if ( orgUnitGroupSet != null )
+        if ( ougs != null )
         {
             List<IdentifiableObject> ous = asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( options ) );
             
-            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, ous ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, null, ougs.getDisplayName(), ous ) );
         }
         
-        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( dimension );
+        DataElementGroupSet degs = dataElementService.getDataElementGroupSet( dimension );
         
-        if ( dataElementGroupSet != null )
+        if ( degs != null )
         {
             List<IdentifiableObject> des = asList( dataElementService.getDataElementGroupsByUid( options ) );
             
-            return Arrays.asList( new Dimension( dimension, DimensionType.DATAELEMENT_GROUPSET, des ) );
+            return Arrays.asList( new Dimension( dimension, DimensionType.DATAELEMENT_GROUPSET, null, degs.getDisplayName(), des ) );
         }
         
         throw new IllegalQueryException( "Dimension identifier does not reference any dimension: " + dimension );
     }
-    
+        
     private DataQueryParams replaceIndicatorsWithDataElements( DataQueryParams params, int indicatorIndex )
     {
         List<Indicator> indicators = asTypedList( params.getIndicators() );        
@@ -621,7 +626,9 @@ public class DefaultAnalyticsService
     {
         Map<Object, String> map = new HashMap<Object, String>();
         map.putAll( getUidNameMap( params.getDimensions() ) );
-        map.putAll( getUidNameMap( params.getFilters() ) );        
+        map.putAll( getUidNameMap( params.getFilters() ) );
+        map.put( DATA_X_DIM_ID, DISPLAY_NAME_DATA_X );
+        
         return map;
     }
     
@@ -656,6 +663,11 @@ public class DefaultAnalyticsService
             for ( IdentifiableObject idObject : options )
             {
                 map.put( idObject.getUid(), idObject.getDisplayName() );
+            }
+            
+            if ( dimension.getDisplayName() != null )
+            {
+                map.put( dimension.getDimension(), dimension.getDisplayName() );
             }
         }
         
