@@ -32,24 +32,11 @@
 <form id="sendSMSForm" name="sendSMSForm" action="sendSMS.action">
 	<input type="hidden" id="isShowPatientList" name="isShowPatientList" />
 	<table id="detailsList">
+		<col width="85px"/>
 		<tbody>
-			<!--tr>
-				<th colspan="2">$i18n.getString( "gateway_type" )</th>
-			</tr>
 			<tr>
-				<td><label for="type">$i18n.getString( "type" ):</label></td>
+				<td>$i18n.getString( "send_sms_to_target" ):<td>
 				<td>
-				#set( $keys = $!gatewayMap.keySet() )
-					<select id="gatewayId" name="gatewayId" style="width: 100%;">
-						#foreach( $key in $!keys )
-						<option value="$gatewayMap.get( $key )">$i18n.getString( $key )</option>
-						#end
-					</select>
-				</td>
-			</tr-->
-			
-			<tr>
-				<td>$i18n.getString( "send_sms_to_target" ): 
 					<select id="sendTarget" name="sendTarget" onchange="javascript:toggleBasicSMSGUI( this.value );">
 						<option value="phone">$i18n.getString( "raw_phone_number" )</option>
 						<option value="userGroup">$i18n.getString( "user_group" )</option>
@@ -62,7 +49,7 @@
 		</tbody>
 	</table>
 
-	#parse( "dhis-web-maintenance-mobile/searchPatientCritetia.vm" )
+	#parse( "dhis-web-sms/searchPatientCritetia.vm" )
 	
 	<!-- List searching patients -->
 	#parse( "dhis-web-commons/loader/loader.vm" )
