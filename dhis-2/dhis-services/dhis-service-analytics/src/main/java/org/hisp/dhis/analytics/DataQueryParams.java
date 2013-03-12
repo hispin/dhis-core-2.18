@@ -1022,16 +1022,6 @@ public class DataQueryParams
     // -------------------------------------------------------------------------
     // Get and set helpers for filters
     // -------------------------------------------------------------------------
-
-    public List<IdentifiableObject> getFilterDatElements()
-    {
-        return getFilterOptions( DATAELEMENT_DIM_ID );
-    }
-    
-    public void setFilterDataElements( List<IdentifiableObject> dataElements )
-    {
-        setFilterOptions( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, null, dataElements );
-    }
     
     public List<IdentifiableObject> getFilterPeriods()
     {
