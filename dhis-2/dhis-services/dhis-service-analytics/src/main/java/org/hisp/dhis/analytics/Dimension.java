@@ -125,11 +125,6 @@ public class Dimension
         this.type = type;
     }
 
-    public void setDimensionName( String dimensionName )
-    {
-        this.dimensionName = dimensionName;
-    }
-
     public List<IdentifiableObject> getItems()
     {
         return items;
