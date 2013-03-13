@@ -520,12 +520,12 @@ Ext.onReady( function() {
 						params.valueField = 'value';
 						params.displayField = 'name';
 						params.editable = false;
-						params.value = 'true';
 						if( fixedId=='fixedAttr_gender')
 						{
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['M', TR.i18n.male], 
+								data: [['', TR.i18n.please_select], 
+									['M', TR.i18n.male], 
 									['F', TR.i18n.female],
 									['T', TR.i18n.transgender]]
 							});
@@ -534,7 +534,8 @@ Ext.onReady( function() {
 						{
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['V', TR.i18n.verified], 
+								data: [['', TR.i18n.please_select],
+									['V', TR.i18n.verified], 
 									['D', TR.i18n.declared],
 									['A', TR.i18n.approximated]]
 							});
@@ -543,7 +544,8 @@ Ext.onReady( function() {
 						{
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['true', TR.i18n.yes], 
+								data: [['', TR.i18n.please_select], 
+									['true', TR.i18n.yes], 
 									['false', TR.i18n.no]]
 							});
 						}
@@ -554,10 +556,9 @@ Ext.onReady( function() {
 						params.valueField = 'value';
 						params.displayField = 'name';
 						params.editable = false;
-						params.value = 'true';
 						params.store = new Ext.data.ArrayStore({
 							fields: ['value', 'name'],
-							data: [['true', TR.i18n.yes]]
+							data: [['', TR.i18n.please_select],['true', TR.i18n.yes]]
 						});
 					}
 					else if(valueType=='username'){
@@ -598,6 +599,7 @@ Ext.onReady( function() {
 						});
 					}					
 				}
+				params.value = '';
 				return params;
 			},
 			addFieldBtn: function( p, id, name, valueType, idx ){
@@ -1767,9 +1769,13 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).getValue();
+						if(filterValue==null)
+						{
+							filterValue = Ext.getCmp('filter_' + id).rawValue;
+						}
 						var filter = deId + '_' + hidden 
-						if( filterValue!=''){
+						if( filterValue!='' && filterValue!=TR.i18n.please_select ){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
 							if( filterOpt == 'IN' )
@@ -1816,8 +1822,7 @@ Ext.onReady( function() {
 				// Get searching values
 				
 				var searchingValues = document.getElementById('searchingValues');
-				TR.util.list.clearList(searchingValues);
-				
+				TR.util.list.clearList(searchingValues);				
 				
 				// Patient properties
 				
@@ -1832,7 +1837,7 @@ Ext.onReady( function() {
 						var id = propId + '_' + idx;
 						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						var filter = propId + '_' + hidden 
-						if( filterValue!=''){
+						if( filterValue!='' && filterValue!=TR.i18n.please_select ){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
 							if( filterOpt == 'IN' )
@@ -1863,7 +1868,11 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).getValue();
+						if(filterValue==null)
+						{
+							filterValue = Ext.getCmp('filter_' + id).rawValue;
+						}
 						var filter = deId + '_' + hidden 
 						if( filterValue!=''){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
@@ -2118,24 +2127,31 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).getValue();
+						if(filterValue==null)
+						{
+							filterValue = Ext.getCmp('filter_' + id).rawValue;
+						}
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
-						if( valueType == 'list' )
+						if( filterValue!=TR.i18n.please_select)
 						{
-							var filterValues = filterValue.split(";");
-							filter +="(";
-							for(var i=0;i<filterValues.length;i++)
+							if( valueType == 'list' )
 							{
-								filter += "'"+ filterValues[i] +"',";
+								var filterValues = filterValue.split(";");
+								filter +="(";
+								for(var i=0;i<filterValues.length;i++)
+								{
+									filter += "'"+ filterValues[i] +"',";
+								}
+								filter = filter.substr(0,filter.length - 1) + ")";
 							}
-							filter = filter.substr(0,filter.length - 1) + ")";
+							else 
+							{
+								filter += "'" + filterValue + "'";
+							}
+							p.deFilters.push( filter );
 						}
-						else 
-						{
-							filter += "'" + filterValue + "'";
-						}
-						p.deFilters.push( filter );
 					}
 				});
 				
@@ -2222,24 +2238,31 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).getValue();
+						if(filterValue==null)
+						{
+							filterValue = Ext.getCmp('filter_' + id).rawValue;
+						}
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
-						if( valueType == 'list' )
+						if(filterValue!=TR.i18n.please_select)
 						{
-							var filterValues = filterValue.split(";");
-							filter +="(";
-							for(var i=0;i<filterValues.length;i++)
+							if( valueType == 'list' )
 							{
-								filter += "'"+ filterValues[i] +"',";
+								var filterValues = filterValue.split(";");
+								filter +="(";
+								for(var i=0;i<filterValues.length;i++)
+								{
+									filter += "'"+ filterValues[i] +"',";
+								}
+								filter = filter.substr(0,filter.length - 1) + ")";
 							}
-							filter = filter.substr(0,filter.length - 1) + ")";
+							else 
+							{
+								filter += "'" + filterValue + "'";
+							}
+							TR.util.list.addOptionToList(deFiltersList, filter, '');
 						}
-						else 
-						{
-							filter += "'" + filterValue + "'";
-						}
-						TR.util.list.addOptionToList(deFiltersList, filter, '');
 					}
 				});
 				
@@ -2334,7 +2357,8 @@ Ext.onReady( function() {
 						{
 							var id = deId + '_' + idx;
 							var filterValue = Ext.getCmp('filter_' + id).getValue();
-							if( filterValue == null || ( filterValue == '' && filterValue != 0 )){
+							if( filterValue == null || ( filterValue == '' && filterValue != 0 )
+							|| filterValue==TR.i18n.please_select ){
 								isValid = false;
 							}
 						}
@@ -3874,14 +3898,6 @@ Ext.onReady( function() {
 													},
 													render: function() {
 														this.rendered = true;
-													},
-													afterrender: function( treePanel, eOpts ){
-														TR.state.orgunitIds = [];
-														for( var i in TR.init.system.rootnodes){
-															TR.state.orgunitIds.push( TR.init.system.rootnodes[i].localid );
-															var node = TR.cmp.params.organisationunit.treepanel.getRootNode().findChild('id', TR.init.system.rootnodes[i].id, true);
-															TR.cmp.params.organisationunit.treepanel.getSelectionModel().select(node);
-														}
 													},
 													itemclick : function(view,rec,item,index,eventObj){
 														TR.state.orgunitIds = [];
@@ -5929,6 +5945,13 @@ Ext.onReady( function() {
 				Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 				Ext.getCmp('fixedPeriodsDiv').setVisible(false);
 				Ext.getCmp('dateRangeDiv').expand();
+				
+				TR.state.orgunitIds = [];
+				for( var i in TR.init.system.rootnodes){
+					TR.state.orgunitIds.push( TR.init.system.rootnodes[i].localid );
+					var node = TR.cmp.params.organisationunit.treepanel.getRootNode().findChild('id', TR.init.system.rootnodes[i].id, true);
+					TR.cmp.params.organisationunit.treepanel.getSelectionModel().select(node);
+				}
             },
             resize: function(vp) {
                 TR.cmp.region.west.setWidth(TR.conf.layout.west_width);
