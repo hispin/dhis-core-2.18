@@ -6605,9 +6605,6 @@ It supports to filter events by each person attributes and data elements. The se
           <para>To get statistics report for a program, please do as follows -</para>
           <orderedlist>
             <listitem>
-              <para>Select a program in list. </para>
-            </listitem>
-            <listitem>
               <para><emphasis role="italic">Program </emphasis>-  Specify program for generating report.</para>
             </listitem>
             <listitem>
