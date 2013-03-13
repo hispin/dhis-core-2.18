@@ -94,7 +94,6 @@ public class MapController
 
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Map map = JacksonUtils.fromJson( input, Map.class );
@@ -116,7 +115,6 @@ public class MapController
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         Map map = mappingService.getMap( uid );
@@ -160,7 +158,6 @@ public class MapController
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
         Map map = mappingService.getMap( uid );
