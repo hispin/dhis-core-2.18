@@ -42,10 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Nguyen Kim Lai
- * 
- * @version $ Patient.java Jan 22, 2013 $
  */
-
 public class Patient
     implements DataStreamSerializable
 {

@@ -37,8 +37,6 @@ import org.hisp.dhis.api.mobile.model.OptionSet;
 
  /**
  * @author Nguyen Kim Lai
- *
- * @version ProgramStageDataElement.java 11:21:39 AM Jan 30, 2013 $
  */
 public class ProgramStageDataElement extends Model
 {
