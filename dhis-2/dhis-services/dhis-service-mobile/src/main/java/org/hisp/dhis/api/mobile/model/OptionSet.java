@@ -92,7 +92,5 @@ public class OptionSet
             String option = dataInputStream.readUTF();
             options.add( option );
         }
-
     }
-
 }
