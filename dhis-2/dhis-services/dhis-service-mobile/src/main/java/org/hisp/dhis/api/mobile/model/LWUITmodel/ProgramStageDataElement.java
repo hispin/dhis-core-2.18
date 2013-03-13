@@ -33,7 +33,6 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.Model;
 import org.hisp.dhis.api.mobile.model.ModelList;
-import org.hisp.dhis.api.mobile.model.OptionSet;
 
  /**
  * @author Nguyen Kim Lai
@@ -45,6 +44,8 @@ public class ProgramStageDataElement extends Model
     private String clientVersion;
     
     private String type;
+    
+    private String numberType;
     
     private boolean compulsory;
 
@@ -60,6 +61,15 @@ public class ProgramStageDataElement extends Model
     {
         super.serialize( dout );
         dout.writeUTF( this.getType() );
+        if ( this.getNumberType() != null )
+        {    
+            dout.writeBoolean( true );
+            dout.writeUTF( this.getNumberType() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
         dout.writeBoolean( this.isCompulsory() );
         
         List<Model> cateOptCombos = this.getCategoryOptionCombos().getModels();
@@ -96,11 +106,19 @@ public class ProgramStageDataElement extends Model
     {
         super.deSerialize( dint );
         this.setType( dint.readUTF() );
+        if( dint.readBoolean() )
+        {
+            this.setNumberType( dint.readUTF() );
+        }
+        else
+        {
+            this.setNumberType( null );
+        }
         this.setCompulsory( dint.readBoolean() );
-        /*this.categoryOptionCombos = new ModelList();
+        this.categoryOptionCombos = new ModelList();
         this.categoryOptionCombos.deSerialize( dint );
         this.optionSet = new OptionSet();
-        this.optionSet.deSerialize( dint );*/
+        this.optionSet.deSerialize( dint );
         this.setValue( dint.readUTF() );
     }
     
@@ -164,4 +182,15 @@ public class ProgramStageDataElement extends Model
     {
         this.optionSet = optionSet;
     }
+
+    public String getNumberType()
+    {
+        return numberType;
+    }
+
+    public void setNumberType( String numberType )
+    {
+        this.numberType = numberType;
+    }
+    
 }
