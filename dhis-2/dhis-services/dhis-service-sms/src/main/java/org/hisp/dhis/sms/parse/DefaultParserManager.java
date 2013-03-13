@@ -104,6 +104,8 @@ public class DefaultParserManager
             return;
         }
 
+        sender = StringUtils.replace( sender, "+", "" );
+
         Collection<OrganisationUnit> orgUnits = getOrganisationUnitsByPhoneNumber( sender );
         if ( orgUnits == null || orgUnits.size() == 0 )
         {
@@ -534,9 +536,9 @@ public class DefaultParserManager
         }
         return user;
     }
-    
-    //Run the J2ME parser for mobile
-    
+
+    // Run the J2ME parser for mobile
+
     private void runJ2MEParser( String sender, String message, Collection<OrganisationUnit> orgUnits, SMSCommand command )
     {
         J2MEDataEntryParser j2meParser = new J2MEDataEntryParser();
