@@ -36,8 +36,6 @@ import org.hisp.dhis.api.mobile.model.Model;
 
 /**
  * @author Nguyen Kim Lai
- * 
- * @version Section.java 1:11:03 PM Jan 22, 2013 $
  */
 public class Section
     extends Model
