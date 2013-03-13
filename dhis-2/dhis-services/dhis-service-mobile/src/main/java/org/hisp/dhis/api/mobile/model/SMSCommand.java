@@ -8,7 +8,7 @@ import java.util.List;
 public class SMSCommand
     implements DataStreamSerializable
 {
-    private String parserType;
+    private String name;
 
     private String separator;
 
@@ -48,14 +48,14 @@ public class SMSCommand
         // does not exist in version 2.9
     }
 
-    public String getParserType()
+    public String getName()
     {
-        return parserType;
+        return name;
     }
 
-    public void setParserType( String parserType )
+    public void setName( String name )
     {
-        this.parserType = parserType;
+        this.name = name;
     }
 
     public String getSeparator()
@@ -112,7 +112,7 @@ public class SMSCommand
     public void serializeVersion2_10( DataOutputStream dataOutputStream )
         throws IOException
     {
-        dataOutputStream.writeUTF( this.parserType );
+        dataOutputStream.writeUTF( this.name );
         if ( this.separator != null )
         {
             dataOutputStream.writeUTF( this.separator );
