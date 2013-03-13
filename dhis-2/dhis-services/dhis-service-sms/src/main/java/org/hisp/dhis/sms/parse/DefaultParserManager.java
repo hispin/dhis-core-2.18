@@ -107,6 +107,7 @@ public class DefaultParserManager
         Collection<OrganisationUnit> orgUnits = getOrganisationUnitsByPhoneNumber( sender );
         if ( orgUnits == null || orgUnits.size() == 0 )
         {
+            log.info( "No user found for phone number: " + sender );
             throw new SMSParserException( "No user associated with this phone number. Please contact your supervisor." );
         }
 
@@ -115,8 +116,16 @@ public class DefaultParserManager
             throw new SMSParserException( "No command in SMS" );
         }
 
-        String commandString = message.substring( 0, message.indexOf( " " ) );
-        message = message.substring( commandString.length() );
+        String commandString = null;
+        if ( message.indexOf( " " ) > 0 )
+        {
+            commandString = message.substring( 0, message.indexOf( " " ) );
+            message = message.substring( commandString.length() );
+        }
+        else
+        {
+            commandString = message;
+        }
 
         boolean foundCommand = false;
 
