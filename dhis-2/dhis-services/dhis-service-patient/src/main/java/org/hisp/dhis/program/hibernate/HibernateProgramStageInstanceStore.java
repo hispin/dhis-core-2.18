@@ -1349,9 +1349,10 @@ public class HibernateProgramStageInstanceStore
 
         String dataValueSql = "SELECT DISTINCT(pdv.value) ";
         dataValueSql += "FROM patientdatavalue pdv JOIN programstageinstance psi";
-        dataValueSql += "         ON pdv.programstageinstanceid=psi.programstageinstanceid ";
-        dataValueSql += "WHERE pdv.dataelementid=" + deGroupBy + " ";
-        dataValueSql += " AND psi.programstageid=" + programStage.getId() + " AND ( ";
+        dataValueSql += "       ON pdv.programstageinstanceid=psi.programstageinstanceid ";
+        dataValueSql += "WHERE pdv.dataelementid=" + deGroupBy + " AND ";
+        dataValueSql += "       psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
+        dataValueSql += "       psi.programstageid=" + programStage.getId() + " AND ( ";
         for ( Period period : periods )
         {
             dataValueSql += " ( psi.executiondate >= '" + format.formatDate( period.getStartDate() ) + "' AND ";
@@ -1702,8 +1703,9 @@ public class HibernateProgramStageInstanceStore
         String dataValueSql = "SELECT DISTINCT(pdv.value) ";
         dataValueSql += "FROM patientdatavalue pdv JOIN programstageinstance psi";
         dataValueSql += "         ON pdv.programstageinstanceid=psi.programstageinstanceid ";
-        dataValueSql += "WHERE pdv.dataelementid=" + deGroupBy + " ";
-        dataValueSql += " AND psi.programstageid=" + programStage.getId() + " AND ( ";
+        dataValueSql += "WHERE pdv.dataelementid=" + deGroupBy + " AND ";
+        dataValueSql += "       psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
+         dataValueSql += "      psi.programstageid=" + programStage.getId() + " AND ( ";
         for ( Period period : periods )
         {
             dataValueSql += " ( psi.executiondate >= '" + format.formatDate( period.getStartDate() ) + "' AND ";
@@ -1802,7 +1804,7 @@ public class HibernateProgramStageInstanceStore
                 sql += " LIMIT " + limit;
             }
         }
-
+System.out.println("\n\n === \n " + sql );
         return sql;
     }
 
