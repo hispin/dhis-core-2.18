@@ -1073,11 +1073,7 @@ public class HibernateProgramStageInstanceStore
                 }
                 else
                 {
-                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                        + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                        + " ) ";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
                 }
                 sql += "FROM programstageinstance psi_1 ";
                 sql += "        JOIN patientdatavalue pdv_1 ";
@@ -1087,6 +1083,10 @@ public class HibernateProgramStageInstanceStore
                     + " )  AND ";
                 sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                 sql += "     psi_1.executiondate <= '" + endDate + "' AND ";
+                if ( deSum != null )
+                {
+                    sql += " dataelementid=" + deSum + " AND ";
+                }
                 if ( useCompletedEvents )
                 {
                     sql += " psi_1.completed = true AND ";
@@ -1156,11 +1156,7 @@ public class HibernateProgramStageInstanceStore
                 }
                 else
                 {
-                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                        + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                        + " ) ";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
                 }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
@@ -1169,6 +1165,10 @@ public class HibernateProgramStageInstanceStore
                 sql += "WHERE ";
                 sql += "    ou.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
                 sql += "    psi_1.programstageid=" + programStage.getId() + " AND ";
+                if ( deSum != null )
+                {
+                    sql += " dataelementid=" + deSum + " AND ";
+                }
                 if ( useCompletedEvents )
                 {
                     sql += " psi_1.completed = true AND ";
@@ -1233,11 +1233,7 @@ public class HibernateProgramStageInstanceStore
                 }
                 else
                 {
-                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                        + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                        + " ) ";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
                 }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
@@ -1246,6 +1242,10 @@ public class HibernateProgramStageInstanceStore
                 sql += "WHERE ";
                 sql += "    ou.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
                 sql += "    psi_1.programstageid=" + programStage.getId() + " AND ";
+                if ( deSum != null )
+                {
+                    sql += " dataelementid=" + deSum + " AND ";
+                }
                 if ( useCompletedEvents )
                 {
                     sql += " psi_1.completed = true AND ";
@@ -1297,11 +1297,7 @@ public class HibernateProgramStageInstanceStore
             }
             else
             {
-                sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                    + statementBuilder.getDoubleColumnType() + " ))";
-                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                    + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                    + " ) ";
+                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
             }
             sql += "FROM ";
             sql += "    patientdatavalue pdv_1 RIGHT JOIN programstageinstance psi_1 ";
@@ -1322,6 +1318,11 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += " AND psi_1.completed = true ";
             }
+            if ( deSum != null )
+            {
+                sql += " AND dataelementid=" + deSum + "  ";
+            }
+            
             sql += " LIMIT 1 ) as " + aggregateType + "  ) ";
             sql += " UNION ";
         }
@@ -1351,7 +1352,8 @@ public class HibernateProgramStageInstanceStore
         dataValueSql += "FROM patientdatavalue pdv JOIN programstageinstance psi";
         dataValueSql += "       ON pdv.programstageinstanceid=psi.programstageinstanceid ";
         dataValueSql += "WHERE pdv.dataelementid=" + deGroupBy + " AND ";
-        dataValueSql += "       psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
+        dataValueSql += "       psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds )
+            + " ) AND ";
         dataValueSql += "       psi.programstageid=" + programStage.getId() + " AND ( ";
         for ( Period period : periods )
         {
@@ -1403,11 +1405,7 @@ public class HibernateProgramStageInstanceStore
                     }
                     else
                     {
-                        sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                            + statementBuilder.getDoubleColumnType() + " ))";
-                        sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                            + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid="
-                            + deSum + " ) ";
+                        sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
                     }
                     sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
                     sql += "    on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
@@ -1428,6 +1426,10 @@ public class HibernateProgramStageInstanceStore
                 sql += "    on psi.programstageinstanceid = pdv.programstageinstanceid ";
                 sql += "WHERE ";
                 sql += "    psi.programstageid=" + programStage.getId() + " ";
+                if ( deSum != null )
+                {
+                    sql += " AND dataelementid=" + deSum + "  ";
+                }
                 if ( useCompletedEvents )
                 {
                     sql += " AND psi.completed = true ";
@@ -1484,11 +1486,7 @@ public class HibernateProgramStageInstanceStore
             }
             else
             {
-                sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                    + statementBuilder.getDoubleColumnType() + " ))";
-                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                    + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                    + " ) ";
+                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
             }
             sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
             sql += "    on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
@@ -1505,6 +1503,10 @@ public class HibernateProgramStageInstanceStore
             sql += "    on psi.programstageinstanceid = pdv.programstageinstanceid ";
             sql += "WHERE ";
             sql += "    psi.programstageid=" + programStage.getId() + " ";
+            if ( deSum != null )
+            {
+                sql += " AND dataelementid=" + deSum + "  ";
+            }
             if ( useCompletedEvents )
             {
                 sql += " AND psi.completed = true ";
@@ -1547,11 +1549,7 @@ public class HibernateProgramStageInstanceStore
                 }
                 else
                 {
-                    sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                        + statementBuilder.getDoubleColumnType() + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                        + " ) ";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
                 }
                 sql += "FROM patientdatavalue pdv_1 ";
                 sql += "        inner join programstageinstance psi_1 ";
@@ -1561,6 +1559,10 @@ public class HibernateProgramStageInstanceStore
                 sql += "        psi_1.executiondate <= '" + format.formatDate( period.getEndDate() ) + "' AND ";
                 sql += "        psi_1.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds )
                     + ") AND ";
+                if ( deSum != null )
+                {
+                    sql += " dataelementid=" + deSum + " AND ";
+                }
                 if ( useCompletedEvents )
                 {
                     sql += " psi_1.completed = true AND ";
@@ -1611,11 +1613,7 @@ public class HibernateProgramStageInstanceStore
             }
             else
             {
-                sql += "(SELECT ( SELECT " + aggregateType + "( cast( value as "
-                    + statementBuilder.getDoubleColumnType() + " ))";
-                sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                    + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                    + " ) ";
+                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
             }
 
             sql += "FROM patientdatavalue pdv_1 ";
@@ -1624,6 +1622,10 @@ public class HibernateProgramStageInstanceStore
             sql += "WHERE ";
             sql += "        psi_1.executiondate >= '" + format.formatDate( period.getStartDate() ) + "' AND ";
             sql += "        psi_1.executiondate <= '" + format.formatDate( period.getEndDate() ) + "' AND ";
+            if ( deSum != null )
+            {
+                sql += " dataelementid=" + deSum + " AND ";
+            }
             if ( useCompletedEvents )
             {
                 sql += " psi_1.completed = true AND ";
@@ -1704,8 +1706,9 @@ public class HibernateProgramStageInstanceStore
         dataValueSql += "FROM patientdatavalue pdv JOIN programstageinstance psi";
         dataValueSql += "         ON pdv.programstageinstanceid=psi.programstageinstanceid ";
         dataValueSql += "WHERE pdv.dataelementid=" + deGroupBy + " AND ";
-        dataValueSql += "       psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) AND ";
-         dataValueSql += "      psi.programstageid=" + programStage.getId() + " AND ( ";
+        dataValueSql += "       psi.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds )
+            + " ) AND ";
+        dataValueSql += "      psi.programstageid=" + programStage.getId() + " AND ( ";
         for ( Period period : periods )
         {
             dataValueSql += " ( psi.executiondate >= '" + format.formatDate( period.getStartDate() ) + "' AND ";
@@ -1780,6 +1783,10 @@ public class HibernateProgramStageInstanceStore
                 sql += "        (SELECT value from patientdatavalue ";
                 sql += "        WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
                 sql += "              dataelementid=" + deGroupBy + ") = '" + deValue + "' ";
+                if ( deSum != null )
+                {
+                    sql += " AND dataelementid=" + deSum + " ";
+                }
                 if ( useCompletedEvents )
                 {
                     sql += " AND psi_1.completed = true ";
@@ -1804,7 +1811,7 @@ public class HibernateProgramStageInstanceStore
                 sql += " LIMIT " + limit;
             }
         }
-System.out.println("\n\n === \n " + sql );
+
         return sql;
     }
 
