@@ -27,11 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -45,6 +41,11 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -68,10 +69,6 @@ public final class SharingUtils
         SUPPORTED_TYPES.put( "report", Report.class );
         PUBLIC_AUTHORITIES.put( Report.class, "F_REPORT_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( Report.class, "F_REPORT_PRIVATE_ADD" );
-
-        SUPPORTED_TYPES.put( "reportTable", ReportTable.class );
-        PUBLIC_AUTHORITIES.put( ReportTable.class, "F_REPORTTABLE_PUBLIC_ADD" );
-        PRIVATE_AUTHORITIES.put( ReportTable.class, "F_REPORTTABLE_PRIVATE_ADD" );
 
         SUPPORTED_TYPES.put( "dataSet", DataSet.class );
         PUBLIC_AUTHORITIES.put( DataSet.class, "F_DATASET_PUBLIC_ADD" );
@@ -97,13 +94,21 @@ public final class SharingUtils
         PUBLIC_AUTHORITIES.put( IndicatorGroupSet.class, "F_INDICATORGROUPSET_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( IndicatorGroupSet.class, "F_INDICATORGROUPSET_PRIVATE_ADD" );
 
-        SUPPORTED_TYPES.put( "userGroup", UserGroup.class );
-        PUBLIC_AUTHORITIES.put( UserGroup.class, "F_USERGROUP_PUBLIC_ADD" );
-        PRIVATE_AUTHORITIES.put( UserGroup.class, "F_USERGROUP_PRIVATE_ADD" );
-
         SUPPORTED_TYPES.put( "program", Program.class );
         PUBLIC_AUTHORITIES.put( Program.class, "F_PROGRAM_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( Program.class, "F_PROGRAM_PRIVATE_ADD" );
+
+        SUPPORTED_TYPES.put( "userGroup", UserGroup.class );
+        PUBLIC_AUTHORITIES.put( UserGroup.class, "F_USERGROUP_PUBLIC_ADD" );
+
+        SUPPORTED_TYPES.put( "reportTable", ReportTable.class );
+        PUBLIC_AUTHORITIES.put( ReportTable.class, "F_REPORTTABLE_PUBLIC_ADD" );
+
+        SUPPORTED_TYPES.put( "map", org.hisp.dhis.mapping.Map.class );
+        PUBLIC_AUTHORITIES.put( org.hisp.dhis.mapping.Map.class, "F_MAP_PUBLIC_ADD" );
+
+        SUPPORTED_TYPES.put( "chart", Chart.class );
+        PUBLIC_AUTHORITIES.put( Chart.class, "F_CHART_PUBLIC_ADD" );
     }
 
     public static boolean isSupported( String type )
@@ -155,7 +160,9 @@ public final class SharingUtils
     public static boolean canCreatePrivate( User user, IdentifiableObject object )
     {
         Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) );
+        return authorities.contains( SHARING_OVERRIDE_AUTHORITY )
+            || PRIVATE_AUTHORITIES.get( object.getClass() ) == null
+            || authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) );
     }
 
     /**
