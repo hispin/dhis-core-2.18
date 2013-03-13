@@ -674,7 +674,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-
+ System.out.println("\n\n === \n " + sql );       
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -1069,11 +1069,11 @@ public class HibernateProgramStageInstanceStore
 
                 if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
                 {
-                    sql += "(SELECT " + aggregateType + "(*) ";
+                    sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
                 }
                 else
                 {
-                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
                 }
                 sql += "FROM programstageinstance psi_1 ";
                 sql += "        JOIN patientdatavalue pdv_1 ";
@@ -1152,11 +1152,11 @@ public class HibernateProgramStageInstanceStore
 
                 if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
                 {
-                    sql += "( SELECT " + aggregateType + "(pdv_1.value) ";
+                    sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
                 }
                 else
                 {
-                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
                 }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
@@ -1197,7 +1197,7 @@ public class HibernateProgramStageInstanceStore
     }
 
     /**
-     * Aggregate report Period Rows - Orgunit Filter - Data Filter
+     * Aggregate report Orgunit Filter - Period Rows - Data Filter
      * 
      **/
     private String getAggregateReportSQL4( int position, ProgramStage programStage, Collection<Integer> roots,
@@ -1229,11 +1229,11 @@ public class HibernateProgramStageInstanceStore
 
                 if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
                 {
-                    sql += "( SELECT " + aggregateType + "(pdv_1.value) ";
+                    sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
                 }
                 else
                 {
-                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
                 }
                 sql += "FROM ";
                 sql += "   patientdatavalue pdv_1 JOIN programstageinstance psi_1 ";
@@ -1293,11 +1293,11 @@ public class HibernateProgramStageInstanceStore
 
             if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
             {
-                sql += "(select " + aggregateType + "(pdv_1.value)  ";
+                sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
             }
             else
             {
-                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
             }
             sql += "FROM ";
             sql += "    patientdatavalue pdv_1 RIGHT JOIN programstageinstance psi_1 ";
@@ -1401,11 +1401,11 @@ public class HibernateProgramStageInstanceStore
                 {
                     if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
                     {
-                        sql += "(SELECT " + aggregateType + "(value) ";
+                        sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
                     }
                     else
                     {
-                        sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                        sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
                     }
                     sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
                     sql += "    on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
@@ -1441,7 +1441,7 @@ public class HibernateProgramStageInstanceStore
             }
 
             sql = sql.substring( 0, sql.length() - 6 );
-            sql += "ORDER BY  \"" + deValues.iterator().next() + "\" desc ";
+            
             if ( limit != null )
             {
                 sql += " LIMIT " + limit;
@@ -1482,11 +1482,11 @@ public class HibernateProgramStageInstanceStore
 
             if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
             {
-                sql += "(SELECT " + aggregateType + "(value) ";
+                sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
             }
             else
             {
-                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
             }
             sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
             sql += "    on psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
@@ -1534,7 +1534,7 @@ public class HibernateProgramStageInstanceStore
         Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
-
+        
         for ( Integer root : roots )
         {
             Collection<Integer> orgunitIds = getOrganisationUnits( root, facilityLB );
@@ -1545,11 +1545,11 @@ public class HibernateProgramStageInstanceStore
             {
                 if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
                 {
-                    sql += "( SELECT " + aggregateType + "(value) ";
+                    sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
                 }
                 else
                 {
-                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
                 }
                 sql += "FROM patientdatavalue pdv_1 ";
                 sql += "        inner join programstageinstance psi_1 ";
@@ -1609,11 +1609,11 @@ public class HibernateProgramStageInstanceStore
 
             if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
             {
-                sql += "( SELECT " + aggregateType + "(value) ";
+                sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
             }
             else
             {
-                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION ))";
+                sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
             }
 
             sql += "FROM patientdatavalue pdv_1 ";
@@ -1735,10 +1735,12 @@ public class HibernateProgramStageInstanceStore
         }
 
         String firstPeriodName = "";
+        
+        String groupByName = dataElementService.getDataElement( deGroupBy ).getDisplayName();
         for ( String deValue : deValues )
         {
 
-            sql += "(SELECT DISTINCT '" + deValue + "' as devalue, ";
+            sql += "(SELECT DISTINCT '" + deValue + "' as \"" + groupByName +"\", ";
 
             for ( Period period : periods )
             {
@@ -1761,15 +1763,11 @@ public class HibernateProgramStageInstanceStore
 
                 if ( aggregateType.equals( PatientAggregateReport.AGGREGATE_TYPE_COUNT ) )
                 {
-                    sql += "( SELECT " + aggregateType + "(value) ";
+                    sql += "(SELECT count(DISTINCT psi_1.programstageinstanceid) ";
                 }
                 else
                 {
-                    sql += "( SELECT " + aggregateType + "( cast( value as " + statementBuilder.getDoubleColumnType()
-                        + " ))";
-                    sql += "    FROM patientdatavalue where dataelementid=pdv_1.dataelementid and "
-                        + "          programstageinstanceid=psi_1.programstageinstanceid and dataelementid=" + deSum
-                        + " ";
+                    sql += "(SELECT " + aggregateType + "( cast( value as DOUBLE PRECISION )) ";
                 }
 
                 sql += "FROM programstageinstance psi_1 JOIN patientdatavalue pdv_1 ";
@@ -1822,7 +1820,6 @@ public class HibernateProgramStageInstanceStore
         {
             // Get filter criteria
             Iterator<Integer> iterFilter = deFilters.keySet().iterator();
-            boolean flag = false;
             while ( iterFilter.hasNext() )
             {
                 Integer id = iterFilter.next();
@@ -1835,11 +1832,6 @@ public class HibernateProgramStageInstanceStore
                     filter += "AND (SELECT value ";
                     filter += "FROM patientdatavalue ";
                     filter += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
-                    if ( !flag )
-                    {
-                        filter += "dataelementid= pdv_1.dataelementid AND ";
-                        flag = true;
-                    }
                     filter += "dataelementid=" + id + "  ";
                     filter += ") " + operator + " " + value + " ";
                 }
