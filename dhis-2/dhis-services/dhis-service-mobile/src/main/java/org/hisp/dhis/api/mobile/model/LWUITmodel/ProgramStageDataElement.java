@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.Model;
 import org.hisp.dhis.api.mobile.model.ModelList;
+import org.hisp.dhis.api.mobile.model.OptionSet;
 
  /**
  * @author Nguyen Kim Lai
