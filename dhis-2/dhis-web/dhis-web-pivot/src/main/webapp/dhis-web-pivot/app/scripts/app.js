@@ -109,7 +109,7 @@ Ext.onReady( function() {
 				}
 			},
 			addBlurHandler: function(w) {
-				var el = Ext.get(document.getElementsByClassName('x-mask')[0]);
+				var el = Ext.get(Ext.query('.x-mask')[0]);
 
 				el.on('click', function() {
 					w.hide();
@@ -121,7 +121,7 @@ Ext.onReady( function() {
 
 		util.pivot.getSettingsConfig = function() {
 			var data = {},
-				setup = pt.viewport.settingsWindow.getSetup(),
+				setup = pt.viewport.settingsWindow ? pt.viewport.settingsWindow.getSetup() : {},
 				getData,
 				extendSettings,
 				config;
@@ -361,7 +361,7 @@ Ext.onReady( function() {
 				}
 			},
 			listeners: {
-				load: function() {
+				load: function(s) {
 					if (!this.isLoaded) {
 						this.isLoaded = true;
 					}
@@ -697,15 +697,23 @@ Ext.onReady( function() {
 				'->',
 				{
 					text: 'Hide',
-					handler: function() {
-						window.hide();
+					listeners: {
+						added: function(b) {
+							b.on('click', function() {
+								window.hide();
+							});
+						}
 					}
 				},
 				{
 					text: '<b>Update</b>',
-					handler: function() {
-						pt.viewport.updateViewport();
-						window.hide();
+					listeners: {
+						added: function(b) {
+							b.on('click', function() {
+								pt.viewport.updateViewport();
+								window.hide();
+							});
+						}
 					}
 				}
 			],
@@ -727,6 +735,7 @@ Ext.onReady( function() {
 	PT.app.OptionsWindow = function() {
 		var showSubTotals,
 			hideEmptyRows,
+			numberFormatting,
 			displayDensity,
 			fontSize,
 
@@ -745,8 +754,28 @@ Ext.onReady( function() {
 		});
 		pt.viewport.hideEmptyRows = hideEmptyRows;
 
+		numberFormatting = Ext.create('Ext.form.field.ComboBox', {
+			fieldLabel: 'Number formatting', //i18n
+			labelStyle: 'color:#333',
+			cls: 'pt-combo',
+			width: 230,
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 'space',
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 'comma', text: 'Comma'},
+					{id: 'space', text: 'Space'},
+					{id: 'none', text: 'None'}
+				]
+			})
+		});
+		pt.viewport.numberFormatting = numberFormatting;
+
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
-			fieldLabel: 'Display density',
+			fieldLabel: 'Display density', //i18n
 			labelStyle: 'color:#333',
 			cls: 'pt-combo',
 			width: 230,
@@ -767,7 +796,7 @@ Ext.onReady( function() {
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			xtype: 'combobox',
-			fieldLabel: 'Font size',
+			fieldLabel: 'Font size', //i18n
 			labelStyle: 'color:#333',
 			cls: 'pt-combo',
 			width: 230,
@@ -799,6 +828,7 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
+				numberFormatting,
 				displayDensity,
 				fontSize
 			]
@@ -815,6 +845,7 @@ Ext.onReady( function() {
 				return {
 					showSubTotals: showSubTotals.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
+					numberFormatting: numberFormatting.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue()
 				};
@@ -887,32 +918,41 @@ Ext.onReady( function() {
 			tbar,
 			bbar,
 			info,
-
 			nameTextfield,
-			systemCheckbox,
 			createButton,
 			updateButton,
 			cancelButton,
+			mapWindow,
 
-			mapWindow;
+		// Vars
+			windowWidth = 500,
+			windowCmpWidth = windowWidth - 22;
 
 		pt.store.tables.on('load', function(store, records) {
-			info.setText(records.length + ' favorite' + (records.length !== 1 ? 's' : '') + ' available');
+			var pager = store.proxy.reader.jsonData.pager;
+
+			info.setText('Page ' + pager.page + ' of ' + pager.pageCount);
+
+			prevButton.enable();
+			nextButton.enable();
+
+			if (pager.page === 1) {
+				prevButton.disable();
+			}
+
+			if (pager.page === pager.pageCount) {
+				nextButton.disable();
+			}
 		});
 
 		getBody = function() {
-			var name = nameTextfield.getValue(),
-				system = systemCheckbox.getValue(),
-				favorite;
+			var favorite;
 
 			if (pt.xSettings) {
 				favorite = Ext.clone(pt.xSettings.options);
 
-				// server
+				// Server sync
 				favorite.subtotals = favorite.showSubTotals;
-
-				favorite.name = name;
-				favorite.user = system ? null : {id: 'currentUser'};
 
 				// Dimensions
 				for (var i = 0, obj, key, items; i < pt.xSettings.objects.length; i++) {
@@ -1029,18 +1069,12 @@ Ext.onReady( function() {
 				}
 			});
 
-			systemCheckbox = Ext.create('Ext.form.field.Checkbox', {
-				labelWidth: 70,
-				fieldLabel: 'System', //i18n
-				style: 'margin-bottom: 0',
-				disabled: !pt.init.user.isAdmin,
-				checked: !id ? false : (record.data.user ? false : true)
-			});
-
 			createButton = Ext.create('Ext.button.Button', {
 				text: 'Create', //i18n
 				handler: function() {
 					var favorite = getBody();
+
+					favorite.name = nameTextfield.getValue();
 
 					if (favorite) {
 						Ext.Ajax.request({
@@ -1048,6 +1082,10 @@ Ext.onReady( function() {
 							method: 'POST',
 							headers: {'Content-Type': 'application/json'},
 							params: Ext.encode(favorite),
+							failure: function(r) {
+								pt.viewport.mask.show();
+								alert(r.responseText);
+							},
 							success: function(r) {
 								var id = r.getAllResponseHeaders().location.split('/').pop();
 
@@ -1071,16 +1109,37 @@ Ext.onReady( function() {
 				text: 'Update', //i18n
 				handler: function() {
 					var name = nameTextfield.getValue(),
-						system = systemCheckbox.getValue();
+						reportTable;
 
-					Ext.Ajax.request({
-						url: pt.baseUrl + pt.conf.finals.ajax.path_pivot + 'renameMap.action?id=' + id + '&name=' + name + '&user=' + !system,
-						success: function() {
-							pt.store.tables.loadStore();
+					if (id && name) {
+						Ext.Ajax.request({
+							url: pt.baseUrl + '/api/reportTables/' + id + '.json?links=false',
+							method: 'GET',
+							failure: function(r) {
+								pt.viewport.mask.show();
+								alert(r.responseText);
+							},
+							success: function(r) {
+								reportTable = Ext.decode(r.responseText);
+								reportTable.name = name;
 
-							window.destroy();
-						}
-					});
+								Ext.Ajax.request({
+									url: pt.baseUrl + '/api/reportTables/' + reportTable.id,
+									method: 'PUT',
+									headers: {'Content-Type': 'application/json'},
+									params: Ext.encode(reportTable),
+									failure: function(r) {
+										pt.viewport.mask.show();
+										alert(r.responseText);
+									},
+									success: function(r) {
+										pt.store.tables.loadStore();
+										window.destroy();
+									}
+								});
+							}
+						});
+					}
 				}
 			});
 
@@ -1098,8 +1157,7 @@ Ext.onReady( function() {
 				resizable: false,
 				modal: true,
 				items: [
-					nameTextfield,
-					systemCheckbox
+					nameTextfield
 				],
 				bbar: [
 					cancelButton,
@@ -1129,7 +1187,7 @@ Ext.onReady( function() {
 		});
 
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: 350,
+			width: windowCmpWidth - addButton.width - 11,
 			height: 26,
 			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
 			emptyText: 'Search for favorites', //i18n
@@ -1191,7 +1249,7 @@ Ext.onReady( function() {
 				{
 					dataIndex: 'name',
 					sortable: false,
-					width: 340,
+					width: windowCmpWidth - 88,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
 							var el = Ext.get(record.data.id);
@@ -1220,21 +1278,15 @@ Ext.onReady( function() {
 						{
 							iconCls: 'pt-grid-row-icon-edit',
 							getClass: function(value, metaData, record) {
-								var system = !record.data.user,
-									isAdmin = pt.init.user.isAdmin;
-
-								if (isAdmin || (!isAdmin && !system)) {
+								if (pt.init.user.isAdmin) {
 									return 'tooltip-favorite-edit';
 								}
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
-									id = record.data.id,
-									system = !record.data.user,
-									isAdmin = pt.init.user.isAdmin;
+									id = record.data.id;
 
-								if (isAdmin || (!isAdmin && !system)) {
-									var id = this.up('grid').store.getAt(rowIndex).data.id;
+								if (pt.init.user.isAdmin) {
 									nameWindow = new NameWindow(id);
 									nameWindow.show();
 								}
@@ -1243,10 +1295,7 @@ Ext.onReady( function() {
 						{
 							iconCls: 'pt-grid-row-icon-overwrite',
 							getClass: function(value, metaData, record) {
-								var system = !record.data.user,
-									isAdmin = pt.init.user.isAdmin;
-
-								if (isAdmin || (!isAdmin && !system)) {
+								if (pt.init.user.isAdmin) {
 									return 'tooltip-favorite-overwrite';
 								}
 							},
@@ -1258,6 +1307,8 @@ Ext.onReady( function() {
 									favorite = getBody();
 
 								if (favorite) {
+									favorite.name = name;
+
 									if (confirm(message)) {
 										Ext.Ajax.request({
 											url: pt.baseUrl + '/api/reportTables/' + id,
@@ -1280,24 +1331,30 @@ Ext.onReady( function() {
 							}
 						},
 						{
-							iconCls: 'pt-grid-row-icon-dashboard',
+							iconCls: 'pt-grid-row-icon-sharing',
 							getClass: function() {
-								return 'tooltip-favorite-dashboard';
+								return 'tooltip-favorite-sharing';
 							},
 							handler: function(grid, rowIndex) {
 								var record = this.up('grid').store.getAt(rowIndex),
 									id = record.data.id,
-									name = record.data.name,
-									message = 'Add to dashboard?\n\n' + name;
+									window;
+									//name = record.data.name,
+									//message = 'Add to dashboard?\n\n' + name;
 
-								if (confirm(message)) {
-									Ext.Ajax.request({
-										url: pt.baseUrl + pt.conf.finals.ajax.path_pivot + 'addMapViewToDashboard.action',
-										params: {
-											id: id
-										}
-									});
-								}
+								Ext.Ajax.request({
+									url: pt.baseUrl + '/api/sharing?type=reportTable&id=' + id,
+									method: 'GET',
+									failure: function(r) {
+										pt.viewport.mask.hide();
+										alert(r.responseText);
+									},
+									success: function(r) {
+										sharing = Ext.decode(r.responseText);
+										window = PT.app.SharingWindow(sharing);
+										window.show();
+									}
+								});
 							}
 						},
 						{
@@ -1367,6 +1424,7 @@ Ext.onReady( function() {
 						var editArray = document.getElementsByClassName('tooltip-favorite-edit'),
 							overwriteArray = document.getElementsByClassName('tooltip-favorite-overwrite'),
 							dashboardArray = document.getElementsByClassName('tooltip-favorite-dashboard'),
+							sharingArray = document.getElementsByClassName('tooltip-favorite-sharing'),
 							deleteArray = document.getElementsByClassName('tooltip-favorite-delete'),
 							el;
 
@@ -1409,6 +1467,17 @@ Ext.onReady( function() {
 								showDelay: 1000
 							});
 						}
+
+						for (var i = 0; i < sharingArray.length; i++) {
+							el = sharingArray[i];
+							Ext.create('Ext.tip.ToolTip', {
+								target: el,
+								html: 'Share with other people',
+								'anchor': 'bottom',
+								anchorOffset: -14,
+								showDelay: 1000
+							});
+						}
 					};
 
 					Ext.defer(fn, 100);
@@ -1432,7 +1501,7 @@ Ext.onReady( function() {
 			bodyStyle: 'padding: 5px; background-color:#fff',
 			resizable: false,
 			modal: true,
-			width: 450,
+			width: windowWidth,
 			items: [
 				{
 					xtype: 'panel',
@@ -1463,6 +1532,254 @@ Ext.onReady( function() {
 		});
 
 		return favoriteWindow;
+	};
+
+	PT.app.SharingWindow = function(sharing) {
+
+		// Objects
+		var UserGroupRow,
+
+		// Functions
+			getBody,
+
+		// Components
+			userGroupStore,
+			userGroupField,
+			userGroupButton,
+			userGroupRowContainer,
+			publicGroup,
+			window;
+
+		UserGroupRow = function(obj, isPublicAccess, disallowPublicAccess) {
+			var getData,
+				store,
+				getItems,
+				combo,
+				getAccess,
+				panel;
+
+			getData = function() {
+				var data = [
+					{id: 'r-------', name: 'Can view'}, //i18n
+					{id: 'rw------', name: 'Can edit and view'}
+				];
+
+				if (isPublicAccess) {
+					data.unshift({id: '-------', name: 'None'});
+				}
+
+				return data;
+			}
+
+			store = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				data: getData()
+			});
+
+			getItems = function() {
+				var items = [];
+
+				combo = Ext.create('Ext.form.field.ComboBox', {
+					fieldLabel: isPublicAccess ? 'Public access' : obj.name, //i18n
+					labelStyle: 'color:#333',
+					cls: 'pt-combo',
+					width: 380,
+					labelWidth: 250,
+					queryMode: 'local',
+					valueField: 'id',
+					displayField: 'name',
+					labelSeparator: null,
+					editable: false,
+					disabled: !!disallowPublicAccess,
+					value: obj.access,
+					store: store
+				});
+
+				items.push(combo);
+
+				if (!isPublicAccess) {
+					items.push(Ext.create('Ext.Img', {
+						src: 'images/grid-delete_16.png',
+						style: 'margin-top:2px; margin-left:7px',
+						overCls: 'pointer',
+						width: 16,
+						height: 16,
+						listeners: {
+							render: function(i) {
+								i.getEl().on('click', function(e) {
+									i.up('panel').destroy();
+									window.doLayout();
+								});
+							}
+						}
+					}));
+				}
+
+				return items;
+			};
+
+			getAccess = function() {
+				return {
+					id: obj.id,
+					name: obj.name,
+					access: combo.getValue()
+				};
+			};
+
+			panel = Ext.create('Ext.panel.Panel', {
+				layout: 'column',
+				bodyStyle: 'border:0 none',
+				getAccess: getAccess,
+				items: getItems()
+			});
+
+			return panel;
+		};
+
+		getBody = function() {
+			var body = {
+				object: {
+					id: sharing.object.id,
+					name: sharing.object.name,
+					publicAccess: publicGroup.down('combobox').getValue(),
+					user: {
+						id: pt.init.user.id,
+						name: pt.init.user.name
+					}
+				}
+			};
+
+			if (userGroupRowContainer.items.items.length > 1) {
+				body.object.userGroupAccesses = [];
+				for (var i = 1, item; i < userGroupRowContainer.items.items.length; i++) {
+					item = userGroupRowContainer.items.items[i];
+					body.object.userGroupAccesses.push(item.getAccess());
+				}
+			}
+
+			return body;
+		};
+
+		// Initialize
+		userGroupStore = Ext.create('Ext.data.Store', {
+			fields: ['id', 'name'],
+			proxy: {
+				type: 'ajax',
+				url: pt.baseUrl + '/api/sharing/search',
+				reader: {
+					type: 'json',
+					root: 'userGroups'
+				}
+			}
+		});
+
+		userGroupField = Ext.create('Ext.form.field.ComboBox', {
+			valueField: 'id',
+			displayField: 'name',
+			emptyText: 'Search for user groups', //i18n
+			queryParam: 'key',
+			queryDelay: 200,
+			minChars: 1,
+			hideTrigger: true,
+			fieldStyle: 'height:26px; padding-left:6px; border-radius:1px; font-size:11px',
+			style: 'margin-bottom:5px',
+			width: 380,
+			store: userGroupStore,
+			listeners: {
+				beforeselect: function(cb) { // beforeselect instead of select, fires regardless of currently selected item
+					userGroupButton.enable();
+				},
+				afterrender: function(cb) {
+					cb.inputEl.on('keyup', function() {
+						userGroupButton.disable();
+					});
+				}
+			}
+		});
+
+		userGroupButton = Ext.create('Ext.button.Button', {
+			text: '+',
+			style: 'margin-left:2px; padding-right:4px; padding-left:4px; border-radius:1px',
+			disabled: true,
+			height: 26,
+			handler: function(b) {
+				userGroupRowContainer.add(UserGroupRow({
+					id: userGroupField.getValue(),
+					name: userGroupField.getRawValue(),
+					access: 'r-------'
+				}));
+
+				userGroupField.clearValue();
+				b.disable();
+			}
+		});
+
+		userGroupRowContainer = Ext.create('Ext.container.Container', {
+			bodyStyle: 'border:0 none'
+		});
+
+		publicGroup = userGroupRowContainer.add(UserGroupRow({
+			id: sharing.object.id,
+			name: sharing.object.name,
+			access: sharing.object.publicAccess
+		}, true, !sharing.meta.allowPublicAccess));
+
+		if (Ext.isArray(sharing.object.userGroupAccesses)) {
+			for (var i = 0, userGroupRow; i < sharing.object.userGroupAccesses.length; i++) {
+				userGroupRow = UserGroupRow(sharing.object.userGroupAccesses[i]);
+				userGroupRowContainer.add(userGroupRow);
+			}
+		}
+
+		window = Ext.create('Ext.window.Window', {
+			title: 'Sharing settings',
+			bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
+			width: 434,
+			resizable: false,
+			modal: true,
+			items: [
+				{
+					html: sharing.object.name,
+					bodyStyle: 'border:0 none; font-weight:bold; color:#333',
+					style: 'margin-bottom:8px'
+				},
+				{
+					xtype: 'container',
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						userGroupField,
+						userGroupButton
+					]
+				},
+				userGroupRowContainer
+			],
+			bbar: [
+				'->',
+				{
+					text: 'Save',
+					handler: function() {
+						Ext.Ajax.request({
+							url: pt.baseUrl + '/api/sharing?type=reportTable&id=' + sharing.object.id,
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							params: Ext.encode(getBody())
+						});
+
+						window.destroy();
+					}
+				}
+			],
+			listeners: {
+				show: function(w) {
+					w.setPosition(w.getPosition()[0], 33);
+				}
+			}
+		});
+
+		return window;
 	};
 
 	PT.app.init.onInitialize = function(r) {
@@ -3031,6 +3348,24 @@ Ext.onReady( function() {
 									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.paramString;
 								}
 							}
+						},
+						{
+							text: 'JSON',
+							iconCls: 'pt-menu-item-csv',
+							handler: function() {
+								if (pt.baseUrl && pt.paramString) {
+									window.open(pt.baseUrl + '/api/analytics.json' + pt.paramString);
+								}
+							}
+						},
+						{
+							text: 'XML',
+							iconCls: 'pt-menu-item-csv',
+							handler: function() {
+								if (pt.baseUrl && pt.paramString) {
+									window.open(pt.baseUrl + '/api/analytics.xml' + pt.paramString);
+								}
+							}
 						}
 					],
 					listeners: {
@@ -3223,6 +3558,7 @@ Ext.onReady( function() {
 				// Options
 				pt.viewport.showSubTotals.setValue(r.subtotals);
 				pt.viewport.hideEmptyRows.setValue(r.hideEmptyRows);
+				pt.viewport.numberFormatting.setValue(r.numberFormatting);
 				pt.viewport.displayDensity.setValue(r.displayDensity);
 				pt.viewport.fontSize.setValue(r.fontSize);
 

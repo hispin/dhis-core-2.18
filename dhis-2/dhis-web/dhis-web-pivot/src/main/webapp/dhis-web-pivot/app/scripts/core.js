@@ -217,6 +217,10 @@ PT.core.getConfigs = function() {
     };
 
 	conf.pivot = {
+		numberFormatting: {
+			'comma': ',',
+			'space': ' '
+		},
 		displayDensity: {
 			'compact': '3px',
 			'normal': '5px',
@@ -504,8 +508,14 @@ PT.core.getUtils = function(pt) {
 			return x;
 		},
 
-		pp: function(x) {
-			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+		pp: function(x, nf) {
+			nf = nf || 'space';
+
+			if (nf === 'none') {
+				return x;
+			}
+
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, pt.conf.pivot.numberFormatting[nf]);
 		}
 	};
 
@@ -1027,7 +1037,7 @@ PT.core.getUtils = function(pt) {
 					colSpan = config.colSpan ? 'colspan="' + config.colSpan + '"' : '';
 					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '"' : '';
 					htmlValue = config.collapsed ? '&nbsp;' : config.htmlValue || config.value || '&nbsp;';
-					htmlValue = config.type !== 'dimension' ? pt.util.number.pp(htmlValue) : htmlValue;
+					htmlValue = config.type !== 'dimension' ? pt.util.number.pp(htmlValue, options.numberFormatting) : htmlValue;
 					displayDensity = pt.conf.pivot.displayDensity[config.displayDensity] || pt.conf.pivot.displayDensity[options.displayDensity];
 					fontSize = pt.conf.pivot.fontSize[config.fontSize] || pt.conf.pivot.fontSize[options.fontSize];
 
@@ -1570,7 +1580,6 @@ PT.core.getUtils = function(pt) {
 
 						if (!validateResponse(response)) {
 							pt.util.mask.hideMask();
-							console.log(response);
 							return;
 						}
 
@@ -1644,6 +1653,8 @@ PT.core.getAPI = function(pt) {
 
 			defaultOptions = {
 				showSubTotals: true,
+				hideEmptyRows: false,
+				numberFormatting: 'space',
 				displayDensity: 'normal',
 				fontSize: 'normal'
 			};
@@ -1704,6 +1715,8 @@ PT.core.getAPI = function(pt) {
 			}
 
 			options.showSubTotals = Ext.isDefined(options.showSubTotals) ? options.showSubTotals : defaultOptions.showSubTotals;
+			options.hideEmptyRows = Ext.isDefined(options.hideEmptyRows) ? options.hideEmptyRows : defaultOptions.hideEmptyRows;
+			options.numberFormatting = Ext.isDefined(options.numberFormatting) ? options.numberFormatting : defaultOptions.numberFormatting;
 			options.displayDensity = options.displayDensity || defaultOptions.displayDensity;
 			options.fontSize = options.fontSize || defaultOptions.fontSize;
 

@@ -141,6 +141,10 @@ public class ReportTable
     public static final String FONT_SIZE_LARGE = "large";
     public static final String FONT_SIZE_NORMAL = "normal";
     public static final String FONT_SIZE_SMALL = "small";
+
+    public static final String NUMBER_FORMATTING_COMMA = "comma";
+    public static final String NUMBER_FORMATTING_SPACE = "space";
+    public static final String NUMBER_FORMATTING_NONE = "none";
     
     public static final int ASC = -1;
     public static final int DESC = 1;
@@ -308,6 +312,11 @@ public class ReportTable
      * Indicates rendering of empty rows for the table.
      */
     private boolean hideEmptyRows;
+    
+    /**
+     * Indicates rendering of number formatting for the table.
+     */
+    private String numberFormatting;
     
     /**
      * The display density of the text in the table.
@@ -1402,6 +1411,19 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getNumberFormatting()
+    {
+        return numberFormatting;
+    }
+
+    public void setNumberFormatting( String numberFormatting )
+    {
+        this.numberFormatting = numberFormatting;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getDisplayDensity()
     {
         return displayDensity;
@@ -1630,6 +1652,7 @@ public class ReportTable
             topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
             subtotals = reportTable.isSubtotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
+            numberFormatting = reportTable.getNumberFormatting();
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
             userOrganisationUnit = reportTable.isUserOrganisationUnit();
