@@ -15,6 +15,7 @@ settings = {
 	options: {
 		showSubTotals: true,
 		hideEmptyRows: false,
+		numberFormatting: 'space',
 		displayDensity: 'normal',
 		fontSize: 'normal',
 		userOrganisationUnit: true,

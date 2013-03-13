@@ -83,6 +83,10 @@ body.x-windows {
 	position: fixed;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
 .td-nobreak {
 	white-space: nowrap;
 }
@@ -539,6 +543,7 @@ td .bad div {
 .pt-grid-row-icon-edit,
 .pt-grid-row-icon-overwrite,
 .pt-grid-row-icon-dashboard,
+.pt-grid-row-icon-sharing,
 .pt-grid-row-icon-delete {
 	width: 16px;
 	height: 16px;
@@ -555,6 +560,10 @@ td .bad div {
 	background: url('../images/grid-dashboard_16.png') no-repeat;
 	margin-left: 4px;
 }
+.pt-grid-row-icon-sharing {
+	background: url('../images/grid-sharing_16.png') no-repeat;
+	margin-left: 4px;
+}
 .pt-grid-row-icon-delete {
 	background: url('../images/grid-delete_16.png') no-repeat;
 	margin-left: 4px;
@@ -568,7 +577,8 @@ td .bad div {
 .pt-grid-row-icon-disabled * {
 	cursor: default !important;
 }
-.pt-grid-row-icon-disabled img.pt-grid-row-icon-dashboard {
+.pt-grid-row-icon-disabled img.pt-grid-row-icon-dashboard,
+.pt-grid-row-icon-disabled img.pt-grid-row-icon-sharing {
 	cursor: pointer !important;
 }
 

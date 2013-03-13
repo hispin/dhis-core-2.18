@@ -427,6 +427,7 @@ public class TableAlteror
         executeSql( "update reporttable set displaydensity = 'normal' where displaydensity is null" );
         executeSql( "update reporttable set fontsize = 'normal' where fontsize is null" );
         executeSql( "update reporttable set hideemptyrows = false where hideemptyrows is null" );
+        executeSql( "update reporttable set numberformatting = 'space' where numberformatting is null" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
         executeSql( "update chart set reportingbimonth = false where reportingbimonth is null" );

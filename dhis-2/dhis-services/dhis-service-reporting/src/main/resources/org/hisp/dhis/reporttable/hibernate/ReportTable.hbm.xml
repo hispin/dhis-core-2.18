@@ -138,6 +138,8 @@
     
     <property name="hideEmptyRows" />
     
+    <property name="numberFormatting" />
+    
     <property name="displayDensity" />
     
     <property name="fontSize" />
