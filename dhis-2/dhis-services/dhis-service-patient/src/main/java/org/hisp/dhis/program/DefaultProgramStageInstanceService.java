@@ -369,7 +369,7 @@ public class DefaultProgramStageInstanceService
         if ( totalCompleted != 0 )
         {
             int stageCompleted = averageNumberCompletedProgramInstance( program, orgunitIds, startDate, endDate, true );
-            percent = (stageCompleted + 0.0) / totalCompleted;
+            percent = (stageCompleted + 0.0) / ( totalCompleted - totalDiscontinued );
         }
         grid.addValue( format.formatValue( percent ) );
         grid.addValue( "" );
