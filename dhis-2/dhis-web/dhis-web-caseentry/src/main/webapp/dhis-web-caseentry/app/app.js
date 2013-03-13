@@ -514,6 +514,7 @@ Ext.onReady( function() {
 					var fixedId = id.substring(0, id.lastIndexOf('_') );
 					params.typeAhead = true;
 					params.forceSelection = true;
+					params.hideValue = true;
 					if( valueType == 'bool' || fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
 					{
 						params.queryMode = 'local';
@@ -524,7 +525,7 @@ Ext.onReady( function() {
 						{
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['', TR.i18n.please_select], 
+								data: [['', TR.i18n.filter_value], 
 									['M', TR.i18n.male], 
 									['F', TR.i18n.female],
 									['T', TR.i18n.transgender]]
@@ -534,7 +535,7 @@ Ext.onReady( function() {
 						{
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['', TR.i18n.please_select],
+								data: [['', TR.i18n.filter_value],
 									['V', TR.i18n.verified], 
 									['D', TR.i18n.declared],
 									['A', TR.i18n.approximated]]
@@ -544,7 +545,7 @@ Ext.onReady( function() {
 						{
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['', TR.i18n.please_select], 
+								data: [['', TR.i18n.filter_value], 
 									['true', TR.i18n.yes], 
 									['false', TR.i18n.no]]
 							});
@@ -558,7 +559,7 @@ Ext.onReady( function() {
 						params.editable = false;
 						params.store = new Ext.data.ArrayStore({
 							fields: ['value', 'name'],
-							data: [['', TR.i18n.please_select],['true', TR.i18n.yes]]
+							data: [['', TR.i18n.filter_value],['true', TR.i18n.yes]]
 						});
 					}
 					else if(valueType=='username'){
@@ -1716,8 +1717,10 @@ Ext.onReady( function() {
 				p.orgunitIds = TR.state.orgunitIds;
 				p.userOrganisationUnit = Ext.getCmp('userOrgunit').getValue();
 				p.userOrganisationUnitChildren = Ext.getCmp('userOrgunitChildren').getValue();
-				p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
-				
+				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
+				{
+					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
+				}
 				// Get searching values
 				p.searchingValues = [];
 				
@@ -1769,13 +1772,24 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
-						if(filterValue==null || filterValue==TR.i18n.please_select)
+						
+						var filterField = Ext.getCmp('filter_' + id);
+						var filterValue = "";
+						if( filterField.hideValue = true )
 						{
-							filterValue = Ext.getCmp('filter_' + id).getValue();
+							var values = Ext.getCmp('filter_' + id).getValue();
+							for( var i in values ){
+								filterValue += values[i] + ";";
+							}
+							filterValue = filterValue.substring(0,filterValue.length - 1  );
 						}
-						var filter = deId + '_' + hidden 
+						else{
+							filterValue = filterField.rawValue;
+						}
+						
+						var filter = deId + '_' + hidden + '_';
 						if( filterValue!='' ){
+							filterValue = filterValue.toLowerCase();
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
 							if( filterOpt == 'IN' )
@@ -1810,7 +1824,14 @@ Ext.onReady( function() {
 				document.getElementById('programStageId').value = TR.cmp.params.programStage.getValue();				
 				document.getElementById('userOrganisationUnit').value = Ext.getCmp('userOrgunit').getValue();
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
-				document.getElementById('useCompletedEvents').value = Ext.getCmp('completedEventsOpt').getValue();
+				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
+				{
+					document.getElementById('useCompletedEvents').value = 'true';
+				}
+				else
+				{
+					document.getElementById('useCompletedEvents').value = '';
+				}
 
 				// orgunits
 				var orgunitIdList = document.getElementById('orgunitIds');
@@ -1868,13 +1889,24 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
-						if(filterValue==null || filterValue==TR.i18n.please_select)
+						
+						var filterField = Ext.getCmp('filter_' + id);
+						var filterValue = "";
+						if( filterField.hideValue = true )
 						{
-							filterValue = Ext.getCmp('filter_' + id).getValue();
+							var values = Ext.getCmp('filter_' + id).getValue();
+							for( var i in values ){
+								filterValue += values[i] + ";";
+							}
+							filterValue = filterValue.substring(0,filterValue.length - 1  );
 						}
-						var filter = deId + '_' + hidden 
+						else{
+							filterValue = filterField.rawValue;
+						}
+						
+						var filter = deId + '_' + hidden + '_';
 						if( filterValue!=''){
+							filterValue = filterValue.toLowerCase();
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
 						
@@ -2127,11 +2159,21 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
-						if(filterValue==null || filterValue==TR.i18n.please_select)
+						
+						var filterField = Ext.getCmp('filter_' + id);
+						var filterValue = "";
+						if( filterField.hideValue = true )
 						{
-							filterValue = Ext.getCmp('filter_' + id).getValue();
+							var values = Ext.getCmp('filter_' + id).getValue();
+							for( var i in values ){
+								filterValue += values[i] + ";";
+							}
+							filterValue = filterValue.substring(0,filterValue.length - 1  );
 						}
+						else{
+							filterValue = filterField.rawValue;
+						}
+						
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
 						if( filterValue!=TR.i18n.please_select)
@@ -2183,7 +2225,10 @@ Ext.onReady( function() {
 				
 				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 				p.position = position;
-				p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
+				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
+				{
+					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
+				}
 				
 				return p;
 			},
@@ -2194,7 +2239,15 @@ Ext.onReady( function() {
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
 				document.getElementById('facilityLB').value = TR.cmp.settings.facilityLB.getValue();
 				document.getElementById('position').value = TR.state.aggregateReport.getPosition();
-				document.getElementById('useCompletedEvents').value = Ext.getCmp('completedEventsOpt').getValue();
+				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
+				{
+					document.getElementById('useCompletedEvents').value = true;
+				}
+				else
+				{
+					document.getElementById('useCompletedEvents').value = '';
+				}
+				
 				if( Ext.getCmp('dataElementGroupByCbx').getValue() != null 
 					&& Ext.getCmp('dataElementGroupByCbx').getValue() != '' ){
 					document.getElementById('deGroupBy').value = Ext.getCmp('dataElementGroupByCbx').getValue().split('_')[1];
@@ -2238,11 +2291,21 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
-						if(filterValue==null || filterValue==TR.i18n.please_select)
+						
+						var filterField = Ext.getCmp('filter_' + id);
+						var filterValue = "";
+						if( filterField.hideValue = true )
 						{
-							filterValue = Ext.getCmp('filter_' + id).getValue();
+							var values = Ext.getCmp('filter_' + id).getValue();
+							for( var i in values ){
+								filterValue += values[i] + ";";
+							}
+							filterValue = filterValue.substring(0,filterValue.length - 1  );
 						}
+						else{
+							filterValue = filterField.rawValue;
+						}
+						
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
 						if(filterValue!=TR.i18n.please_select)

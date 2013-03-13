@@ -24,15 +24,14 @@
 			<table class="listTable">
 				<thead>
 					<tr>
-						<th>#</th>
-						#set($noCols = $grid.getHeaders().size() )
-						#set($metaData = $noCols - $valueTypes.size() )
+						<th># </th>
 						#set($index = 0)
+						#set( $noHeader = $grid.getHeaders().size() )
+						#set( $metaData = $noHeader - $valueTypes.size() - 3 )
 						#foreach( $col in $grid.getHeaders() )
-							#if($index < $noCols - 2 )
-								#if( $index==1 || $index > $metaData )
-									<th>$col.name</th>
-								#end
+							#if( $index == 1 
+								|| ( $index > $metaData && $index < $noHeader - 2 ))
+								<th>$col.name</th>
 							#end
 							#set($index = $index + 1)
 						#end
@@ -54,7 +53,8 @@
 									#set($psid = $col)
 								#elseif($velocityCount == $noCols - 1)
 									#set($completed = $col)
-								#elseif( $index==1 || $index > $metaData )
+								#elseif( $index == 1 
+									|| ( $index > $metaData && $index < $noHeader - 2 ))
 									<td>$!col</td>
 								#end
 								#set($index = $index + 1)
