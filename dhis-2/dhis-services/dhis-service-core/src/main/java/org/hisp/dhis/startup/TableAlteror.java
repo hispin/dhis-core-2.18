@@ -534,6 +534,10 @@ public class TableAlteror
         executeSql( "UPDATE dataelementgroupset SET userid=NULL WHERE userid IS NOT NULL" );
         executeSql( "UPDATE dataelementgroupset SET publicaccess=NULL WHERE userid IS NOT NULL" );
 
+        // upgrade system charts/maps to public read-only sharing
+        executeSql( "UPDATE chart SET publicaccess='r-------' WHERE user IS NOT NULL;" );
+        executeSql( "UPDATE map SET publicaccess='r-------' WHERE user IS NOT NULL;" );
+
         log.info( "Tables updated" );
     }
 
