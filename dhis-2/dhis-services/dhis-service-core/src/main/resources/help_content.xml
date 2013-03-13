@@ -6611,7 +6611,10 @@ It supports to filter events by each person attributes and data elements. The se
               <para><emphasis role="italic">Program </emphasis>-  Specify program for generating report.</para>
             </listitem>
             <listitem>
-              <para>Select <emphasis role="italic">start-date</emphasis> and <emphasis role="italic">end-date</emphasis>. The system will aggregate report based on start-date and end-date.</para>
+              <para>Select <emphasis role="italic">start-date</emphasis> and <emphasis role="italic">end-date</emphasis> - The system will aggregate report based on start-date and end-date.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Use data from level(s)</emphasis> -  Specify the level which you need to get events. If the option is <emphasis role="italic">Children only</emphasis>, individual data will be aggregated from the children of the selected organisation unit. If the option is <emphasis role="italic">Selected</emphasis>, individual data  will be aggregated from the selected organisation unit. If the option is <emphasis role="italic">All</emphasis>, individual data will be aggregated  from both selected organisation unit and its children.</para>
             </listitem>
             <listitem>
               <para>Click <emphasis role="italic">Generate</emphasis> button to generate report. The result is displayed below. And click <emphasis role="italic">Export XLS</emphasis> button to export the result to excel file.</para>
@@ -6624,15 +6627,47 @@ It supports to filter events by each person attributes and data elements. The se
               </imageobject>
             </mediaobject>
           </screenshot>
-          <para><emphasis role="italic">Visits scheduled (All)</emphasis> column is the number of events of all stages, includes overdue, skipped,  incomplete and complete events.</para>
-          <para><emphasis role="italic">Visits done (#)</emphasis> column is the number of events  incomplete and complete.
+          <para><emphasis role="italic">In result -</emphasis></para>
+          <orderedlist>
+            <listitem>
+              <para><emphasis role="italic">Total new enrollments in this period</emphasis> - The number of persons who enrolled the selected program from start-date to end-date.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Total programs completed in this period </emphasis>- The number of programs completed.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Total programs discontinued (un-enrollments)</emphasis> - The number of programs un-enrolled.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Average number of stages for complete programs</emphasis> - The average number of stages per completed programs.</para>
+            </listitem>
+          </orderedlist>
+          <para>From<emphasis role="italic"> Summary by stage</emphasis> section -</para>
+          <orderedlist>
+            <listitem>
+              <para><emphasis role="italic">Visits scheduled (All)</emphasis> column is the number of events of all stages, includes overdue, skipped,  incomplete and complete events.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Visits done (#)</emphasis> column is the number of events  incomplete and complete.
 </para>
-          <para><emphasis role="italic">Visits done (%)</emphasis> column is percent of  visits done (#) events / the number of all visits scheduled.</para>
-          <para><emphasis role="italic">Forms completed</emphasis> column are stage instances where the user has clicked complete.
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Visits done (%)</emphasis> column is percent of  visits done (#) events / the number of all visits scheduled.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Forms completed</emphasis> column are the number of events completed.
 </para>
-          <para><emphasis role="italic">Forms completed (%) </emphasis>column is percent of completed events / the number of all visits scheduled.</para>
-          <para><emphasis role="italic">Visits overdue (#)</emphasis> column is the number of overdue visits.</para>
-          <para><emphasis role="italic">Visits overdue (%)</emphasis> column is percent of visits overdue (#) / the number of all visits scheduled.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Forms completed (%) </emphasis>column is percent of completed events / the number of all visits scheduled.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Visits overdue (#)</emphasis> column is the number of overdue visits</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Visits overdue (%)</emphasis> column is percent of visits overdue (#) / the number of all visits scheduled.</para>
+            </listitem>
+          </orderedlist>
         </section>
       </section>
       <section id="run_case_aggregation">
