@@ -1769,13 +1769,13 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).getValue();
-						if(filterValue==null)
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						if(filterValue==null || filterValue==TR.i18n.please_select)
 						{
-							filterValue = Ext.getCmp('filter_' + id).rawValue;
+							filterValue = Ext.getCmp('filter_' + id).getValue();
 						}
 						var filter = deId + '_' + hidden 
-						if( filterValue!='' && filterValue!=TR.i18n.please_select ){
+						if( filterValue!='' ){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += '_' + filterOpt + ' ';
 							if( filterOpt == 'IN' )
@@ -1868,10 +1868,10 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).getValue();
-						if(filterValue==null)
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						if(filterValue==null || filterValue==TR.i18n.please_select)
 						{
-							filterValue = Ext.getCmp('filter_' + id).rawValue;
+							filterValue = Ext.getCmp('filter_' + id).getValue();
 						}
 						var filter = deId + '_' + hidden 
 						if( filterValue!=''){
@@ -2127,10 +2127,10 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).getValue();
-						if(filterValue==null)
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						if(filterValue==null || filterValue==TR.i18n.please_select)
 						{
-							filterValue = Ext.getCmp('filter_' + id).rawValue;
+							filterValue = Ext.getCmp('filter_' + id).getValue();
 						}
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
@@ -2138,7 +2138,7 @@ Ext.onReady( function() {
 						{
 							if( valueType == 'list' )
 							{
-								var filterValues = filterValue.split(";");
+								var filterValues = filterValue.split(';');
 								filter +="(";
 								for(var i=0;i<filterValues.length;i++)
 								{
@@ -2238,10 +2238,10 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).getValue();
-						if(filterValue==null)
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						if(filterValue==null || filterValue==TR.i18n.please_select)
 						{
-							filterValue = Ext.getCmp('filter_' + id).rawValue;
+							filterValue = Ext.getCmp('filter_' + id).getValue();
 						}
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
@@ -2356,7 +2356,11 @@ Ext.onReady( function() {
 						for(var idx=0;idx<length;idx++)
 						{
 							var id = deId + '_' + idx;
-							var filterValue = Ext.getCmp('filter_' + id).getValue();
+							var filterValue = Ext.getCmp('filter_' + id).rawValue;
+							if(filterValue==null || filterValue==TR.i18n.please_select)
+							{
+								filterValue = Ext.getCmp('filter_' + id).getValue();
+							}
 							if( filterValue == null || ( filterValue == '' && filterValue != 0 )
 							|| filterValue==TR.i18n.please_select ){
 								isValid = false;
@@ -4671,6 +4675,16 @@ Ext.onReady( function() {
 																	Ext.getCmp('positionPeriodCbx').setValue('3');
 																}
 																Ext.getCmp('positionDataCbx').setValue('1');
+																Ext.getCmp('aggregateType').items.items[1].setValue(false);
+																Ext.getCmp('aggregateType').items.items[2].setValue(false);
+																Ext.getCmp('aggregateType').items.items[1].disable();
+																Ext.getCmp('aggregateType').items.items[2].disable();
+																Ext.getCmp('aggregateType').items.items[0].setValue(true);
+															}
+															else
+															{
+																Ext.getCmp('aggregateType').items.items[1].enable();
+																Ext.getCmp('aggregateType').items.items[2].enable();
 															}
 														}
 													}
@@ -5949,8 +5963,6 @@ Ext.onReady( function() {
 				TR.state.orgunitIds = [];
 				for( var i in TR.init.system.rootnodes){
 					TR.state.orgunitIds.push( TR.init.system.rootnodes[i].localid );
-					var node = TR.cmp.params.organisationunit.treepanel.getRootNode().findChild('id', TR.init.system.rootnodes[i].id, true);
-					TR.cmp.params.organisationunit.treepanel.getSelectionModel().select(node);
 				}
             },
             resize: function(vp) {

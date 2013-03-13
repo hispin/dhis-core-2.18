@@ -26,7 +26,7 @@
 					<tr>
 						<th>#</th>
 						#set($noCols = $grid.getHeaders().size() )
-						#set($metaData = $noCols - $valueTypes.size() - 1)
+						#set($metaData = $noCols - $valueTypes.size() )
 						#set($index = 0)
 						#foreach( $col in $grid.getHeaders() )
 							#if($index < $noCols - 2 )
