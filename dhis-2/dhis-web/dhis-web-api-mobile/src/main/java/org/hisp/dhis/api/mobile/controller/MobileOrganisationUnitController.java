@@ -288,7 +288,7 @@ public class MobileOrganisationUnitController
     {
         return activityReportingService.saveProgramStage( programStage );
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/enrollProgram" )
     @ResponseBody
     public Patient enrollProgram( @PathVariable int id, @RequestHeader( "enrollInfo" ) String enrollInfo )
@@ -321,19 +321,19 @@ public class MobileOrganisationUnitController
         {
             SMSCommand mobileSMSCommand = new SMSCommand();
             List<SMSCode> smsCodes = new ArrayList<SMSCode>();
-            
-            mobileSMSCommand.setParserType( normalSMSCommand.getParserType().name() );
+
+            mobileSMSCommand.setName( normalSMSCommand.getName() );
             mobileSMSCommand.setCodeSeparator( normalSMSCommand.getCodeSeparator() );
             mobileSMSCommand.setDataSetId( normalSMSCommand.getDataset().getId() );
             mobileSMSCommand.setSeparator( normalSMSCommand.getSeparator() );
-            
+
             for ( org.hisp.dhis.smscommand.SMSCode normalSMSCode : normalSMSCommand.getCodes() )
             {
                 SMSCode smsCode = new SMSCode();
-                
+
                 smsCode.setCode( normalSMSCode.getCode() );
                 smsCode.setDataElementId( normalSMSCode.getDataElement().getId() );
-                smsCode.setOptionId( normalSMSCode.getOptionId());
+                smsCode.setOptionId( normalSMSCode.getOptionId() );
                 smsCodes.add( smsCode );
             }
             mobileSMSCommand.setSmsCodes( smsCodes );
