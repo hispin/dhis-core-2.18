@@ -108,14 +108,27 @@ Ext.onReady( function() {
 					w.setPosition(targetx, y);
 				}
 			},
-			addBlurHandler: function(w) {
+			addHideOnBlurHandler: function(w) {
 				var el = Ext.get(Ext.query('.x-mask')[0]);
 
 				el.on('click', function() {
-					w.hide();
+					if (w.hideOnBlur) {
+						w.hide();
+					}
 				});
 
-				w.hasBlurHandler = true;
+				w.hasHideOnBlurHandler = true;
+			},
+			addDestroyOnBlurHandler: function(w) {
+				var el = Ext.get(Ext.query('.x-mask')[0]);
+
+				el.on('click', function() {
+					if (w.destroyOnBlur) {
+						w.destroy();
+					}
+				});
+
+				w.hasDestroyOnBlurHandler = true;
 			}
 		};
 
@@ -685,6 +698,7 @@ Ext.onReady( function() {
 			rowStore: rowStore,
 			colStore: colStore,
 			filterStore: filterStore,
+			hideOnBlur: true,
 			items: {
 				layout: 'column',
 				bodyStyle: 'border:0 none',
@@ -717,13 +731,12 @@ Ext.onReady( function() {
 					}
 				}
 			],
-			hasBlurHandler: false,
 			listeners: {
 				show: function(w) {
 					pt.util.window.setAnchorPosition(w, pt.viewport.layoutButton);
 
-					if (!w.hasBlurHandler) {
-						pt.util.window.addBlurHandler(w);
+					if (!w.hasHideOnBlurHandler) {
+						pt.util.window.addHideOnBlurHandler(w);
 					}
 				}
 			}
@@ -841,6 +854,7 @@ Ext.onReady( function() {
 			autoShow: true,
 			modal: true,
 			resizable: false,
+			hideOnBlur: true,
 			getOptions: function() {
 				return {
 					showSubTotals: showSubTotals.getValue(),
@@ -883,13 +897,12 @@ Ext.onReady( function() {
 					}
 				}
 			],
-			hasBlurHandler: false,
 			listeners: {
 				show: function(w) {
 					pt.util.window.setAnchorPosition(w, pt.viewport.optionsButton);
 
-					if (!w.hasBlurHandler) {
-						pt.util.window.addBlurHandler(w);
+					if (!w.hasHideOnBlurHandler) {
+						pt.util.window.addHideOnBlurHandler(w);
 					}
 				}
 			}
@@ -1057,10 +1070,10 @@ Ext.onReady( function() {
 
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
-				width: 300,
-				labelWidth: 70,
-				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
-				fieldLabel: 'Name', //i18n
+				width: 250,
+				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
+				style: 'margin-bottom:0',
+				emptyText: 'Favorite name',
 				value: id ? record.data.name : '',
 				listeners: {
 					afterrender: function() {
@@ -1073,10 +1086,9 @@ Ext.onReady( function() {
 				text: 'Create', //i18n
 				handler: function() {
 					var favorite = getBody();
-
 					favorite.name = nameTextfield.getValue();
 
-					if (favorite) {
+					if (favorite && favorite.name) {
 						Ext.Ajax.request({
 							url: pt.baseUrl + '/api/reportTables/',
 							method: 'POST',
@@ -1098,9 +1110,6 @@ Ext.onReady( function() {
 								window.destroy();
 							}
 						});
-					}
-					else {
-						alert('Please create a table first');
 					}
 				}
 			});
@@ -1153,12 +1162,11 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: id ? 'Rename favorite' : 'Create new favorite',
 				//iconCls: 'pt-window-title-icon-favorite',
-				bodyStyle: 'padding:8px; background:#fff',
+				bodyStyle: 'padding:5px; background:#fff',
 				resizable: false,
 				modal: true,
-				items: [
-					nameTextfield
-				],
+				items: nameTextfield,
+				destroyOnBlur: true,
 				bbar: [
 					cancelButton,
 					'->',
@@ -1166,7 +1174,16 @@ Ext.onReady( function() {
 				],
 				listeners: {
 					show: function(w) {
-						pt.util.window.setAnchorPosition(w, pt.viewport.favoriteButton);
+						pt.util.window.setAnchorPosition(w, addButton);
+
+						if (!w.hasDestroyBlurHandler) {
+							pt.util.window.addDestroyOnBlurHandler(w);
+						}
+
+						pt.viewport.favoriteWindow.destroyOnBlur = false;
+					},
+					destroy: function() {
+						pt.viewport.favoriteWindow.destroyOnBlur = true;
 					}
 				}
 			});
@@ -1180,6 +1197,7 @@ Ext.onReady( function() {
 			height: 26,
 			style: 'border-radius: 1px;',
 			menu: {},
+			disabled: !Ext.isObject(pt.xSettings),
 			handler: function() {
 				nameWindow = new NameWindow(null, 'create');
 				nameWindow.show();
@@ -1243,8 +1261,6 @@ Ext.onReady( function() {
 			cls: 'pt-grid',
 			scroll: false,
 			hideHeaders: true,
-			bodyStyle: 'padding-bottom:1px solid red !important',
-			style: 'padding-bottom:1px solid red !important',
 			columns: [
 				{
 					dataIndex: 'name',
@@ -1339,8 +1355,6 @@ Ext.onReady( function() {
 								var record = this.up('grid').store.getAt(rowIndex),
 									id = record.data.id,
 									window;
-									//name = record.data.name,
-									//message = 'Add to dashboard?\n\n' + name;
 
 								Ext.Ajax.request({
 									url: pt.baseUrl + '/api/sharing?type=reportTable&id=' + id,
@@ -1350,7 +1364,7 @@ Ext.onReady( function() {
 										alert(r.responseText);
 									},
 									success: function(r) {
-										sharing = Ext.decode(r.responseText);
+										var sharing = Ext.decode(r.responseText);
 										window = PT.app.SharingWindow(sharing);
 										window.show();
 									}
@@ -1421,47 +1435,29 @@ Ext.onReady( function() {
 				},
 				afterrender: function() {
 					var fn = function() {
-						var editArray = document.getElementsByClassName('tooltip-favorite-edit'),
-							overwriteArray = document.getElementsByClassName('tooltip-favorite-overwrite'),
-							dashboardArray = document.getElementsByClassName('tooltip-favorite-dashboard'),
-							sharingArray = document.getElementsByClassName('tooltip-favorite-sharing'),
-							deleteArray = document.getElementsByClassName('tooltip-favorite-delete'),
+						var editArray = Ext.query('.tooltip-favorite-edit'),
+							overwriteArray = Ext.query('.tooltip-favorite-overwrite'),
+							//dashboardArray = Ext.query('.tooltip-favorite-dashboard'),
+							sharingArray = Ext.query('.tooltip-favorite-sharing'),
+							deleteArray = Ext.query('.tooltip-favorite-delete'),
 							el;
 
-						for (var i = 0; i < deleteArray.length; i++) {
-							el = editArray[i];
+						for (var i = 0; i < editArray.length; i++) {
+							var el = editArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Rename',
-								'anchor': 'bottom',
-								anchorOffset: -14,
-								showDelay: 1000
-							});
-
-							el = overwriteArray[i];
-							Ext.create('Ext.tip.ToolTip', {
-								target: el,
-								html: 'Overwrite',
-								'anchor': 'bottom',
-								anchorOffset: -14,
-								showDelay: 1000
-							});
-
-							el = deleteArray[i];
-							Ext.create('Ext.tip.ToolTip', {
-								target: el,
-								html: 'Delete',
+								html: 'Rename', //i18n
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
 							});
 						}
 
-						for (var i = 0; i < dashboardArray.length; i++) {
-							el = dashboardArray[i];
+						for (var i = 0; i < overwriteArray.length; i++) {
+							el = overwriteArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Add to dashboard',
+								html: 'Overwrite', //i18n
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -1472,7 +1468,18 @@ Ext.onReady( function() {
 							el = sharingArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Share with other people',
+								html: 'Share with other people', //i18n
+								'anchor': 'bottom',
+								anchorOffset: -14,
+								showDelay: 1000
+							});
+						}
+
+						for (var i = 0; i < deleteArray.length; i++) {
+							el = deleteArray[i];
+							Ext.create('Ext.tip.ToolTip', {
+								target: el,
+								html: 'Delete', //i18n
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -1498,10 +1505,11 @@ Ext.onReady( function() {
 		favoriteWindow = Ext.create('Ext.window.Window', {
 			title: 'Manage favorites',
 			//iconCls: 'pt-window-title-icon-favorite',
-			bodyStyle: 'padding: 5px; background-color:#fff',
+			bodyStyle: 'padding:5px; background-color:#fff',
 			resizable: false,
 			modal: true,
 			width: windowWidth,
+			destroyOnBlur: true,
 			items: [
 				{
 					xtype: 'panel',
@@ -1512,7 +1520,7 @@ Ext.onReady( function() {
 						{
 							height: 24,
 							width: 1,
-							style: 'width: 1px; margin-left: 5px; margin-right: 5px; margin-top: 1px',
+							style: 'width:1px; margin-left:5px; margin-right:5px; margin-top:1px',
 							bodyStyle: 'border-left: 1px solid #aaa'
 						},
 						searchTextfield
@@ -1524,8 +1532,8 @@ Ext.onReady( function() {
 				show: function(w) {
 					pt.util.window.setAnchorPosition(w, pt.viewport.favoriteButton);
 
-					if (!w.hasBlurHandler) {
-						pt.util.window.addBlurHandler(w);
+					if (!w.hasDestroyOnBlurHandler) {
+						pt.util.window.addDestroyOnBlurHandler(w);
 					}
 				}
 			}
@@ -1737,6 +1745,7 @@ Ext.onReady( function() {
 			width: 434,
 			resizable: false,
 			modal: true,
+			destroyOnBlur: true,
 			items: [
 				{
 					html: sharing.object.name,
@@ -1774,7 +1783,17 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function(w) {
-					w.setPosition(w.getPosition()[0], 33);
+					var pos = pt.viewport.favoriteWindow.getPosition();
+					w.setPosition(pos[0] + 5, pos[1] + 5);
+
+					if (!w.hasDestroyOnBlurHandler) {
+						pt.util.window.addDestroyOnBlurHandler(w);
+					}
+
+					pt.viewport.favoriteWindow.destroyOnBlur = false;
+				},
+				destroy: function() {
+					pt.viewport.favoriteWindow.destroyOnBlur = true;
 				}
 			}
 		});
