@@ -227,7 +227,12 @@ public class HibernateGenericStore<T>
 
             if ( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject ) )
             {
-                identifiableObject.setPublicAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
+                String build = AccessStringHelper.newInstance()
+                    .enable( AccessStringHelper.Permission.READ )
+                    .enable( AccessStringHelper.Permission.WRITE )
+                    .build();
+
+                identifiableObject.setPublicAccess( build );
             }
             else if ( SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject ) )
             {
