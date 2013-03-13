@@ -674,7 +674,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
- System.out.println("\n\n === \n " + sql );       
+        System.out.println( "\n\n === \n " + sql );
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -1087,9 +1087,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " dataelementid=" + deSum + " AND ";
                 }
-                if ( useCompletedEvents )
+                if ( useCompletedEvents != null )
                 {
-                    sql += " psi_1.completed = true AND ";
+                    sql += " AND psi_1.completed = " + useCompletedEvents + " AND ";
                 }
                 if ( deGroupBy != null )
                 {
@@ -1169,9 +1169,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " dataelementid=" + deSum + " AND ";
                 }
-                if ( useCompletedEvents )
+                if ( useCompletedEvents != null )
                 {
-                    sql += " psi_1.completed = true AND ";
+                    sql += " psi_1.completed = " + useCompletedEvents + " AND ";
                 }
                 if ( deGroupBy != null )
                 {
@@ -1246,9 +1246,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " dataelementid=" + deSum + " AND ";
                 }
-                if ( useCompletedEvents )
+                if ( useCompletedEvents != null )
                 {
-                    sql += " psi_1.completed = true AND ";
+                    sql += " psi_1.completed = " + useCompletedEvents + " AND ";
                 }
                 if ( deGroupBy != null )
                 {
@@ -1314,15 +1314,15 @@ public class HibernateProgramStageInstanceStore
                 sql += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
                 sql += "      dataelementid=" + deGroupBy + ") is not null ";
             }
-            if ( useCompletedEvents )
+            if ( useCompletedEvents != null )
             {
-                sql += " AND psi_1.completed = true ";
+                sql += " AND psi_1.completed = " + useCompletedEvents + " ";
             }
             if ( deSum != null )
             {
                 sql += " AND dataelementid=" + deSum + "  ";
             }
-            
+
             sql += " LIMIT 1 ) as " + aggregateType + "  ) ";
             sql += " UNION ";
         }
@@ -1430,9 +1430,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " AND dataelementid=" + deSum + "  ";
                 }
-                if ( useCompletedEvents )
+                if ( useCompletedEvents != null )
                 {
-                    sql += " AND psi.completed = true ";
+                    sql += " AND psi.completed = " + useCompletedEvents + " ";
                 }
                 sql += "GROUP BY dataelementid ";
 
@@ -1441,7 +1441,7 @@ public class HibernateProgramStageInstanceStore
             }
 
             sql = sql.substring( 0, sql.length() - 6 );
-            
+
             if ( limit != null )
             {
                 sql += " LIMIT " + limit;
@@ -1507,9 +1507,9 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += " AND dataelementid=" + deSum + "  ";
             }
-            if ( useCompletedEvents )
+            if ( useCompletedEvents != null )
             {
-                sql += " AND psi.completed = true ";
+                sql += " AND psi.completed = " + useCompletedEvents + " ";
             }
             sql += "GROUP BY dataelementid ";
 
@@ -1534,7 +1534,7 @@ public class HibernateProgramStageInstanceStore
         Integer limit, Boolean useCompletedEvents, I18nFormat format )
     {
         String sql = "";
-        
+
         for ( Integer root : roots )
         {
             Collection<Integer> orgunitIds = getOrganisationUnits( root, facilityLB );
@@ -1563,9 +1563,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " dataelementid=" + deSum + " AND ";
                 }
-                if ( useCompletedEvents )
+                if ( useCompletedEvents != null )
                 {
-                    sql += " psi_1.completed = true AND ";
+                    sql += " psi_1.completed = " + useCompletedEvents + " AND ";
                 }
                 sql += "        psi_1.programstageid=" + programStage.getId() + " ";
                 sql += filterSQL + " AND ";
@@ -1626,9 +1626,9 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += " dataelementid=" + deSum + " AND ";
             }
-            if ( useCompletedEvents )
+            if ( useCompletedEvents != null )
             {
-                sql += " psi_1.completed = true AND ";
+                sql += " psi_1.completed = " + useCompletedEvents + " AND ";
             }
             sql += "        psi_1.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ") AND ";
             sql += "        psi_1.programstageid=" + programStage.getId() + " ";
@@ -1665,9 +1665,9 @@ public class HibernateProgramStageInstanceStore
             sql += "            ON psi_1.programstageinstanceid = pdv_1.programstageinstanceid ";
             sql += "WHERE ";
             sql += " psi_1.programstageid=" + programStage.getId() + " AND ";
-            if ( useCompletedEvents )
+            if ( useCompletedEvents != null )
             {
-                sql += " psi_1.completed = true AND ";
+                sql += " psi_1.completed = " + useCompletedEvents + " AND ";
             }
             sql += "    psi_1.executiondate >= '" + format.formatDate( period.getStartDate() ) + "' AND ";
             sql += "    psi_1.executiondate <= '" + format.formatDate( period.getEndDate() ) + "' AND ";
@@ -1735,12 +1735,12 @@ public class HibernateProgramStageInstanceStore
         }
 
         String firstPeriodName = "";
-        
+
         String groupByName = dataElementService.getDataElement( deGroupBy ).getDisplayName();
         for ( String deValue : deValues )
         {
 
-            sql += "(SELECT DISTINCT '" + deValue + "' as \"" + groupByName +"\", ";
+            sql += "(SELECT DISTINCT '" + deValue + "' as \"" + groupByName + "\", ";
 
             for ( Period period : periods )
             {
@@ -1785,9 +1785,9 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += " AND dataelementid=" + deSum + " ";
                 }
-                if ( useCompletedEvents )
+                if ( useCompletedEvents != null )
                 {
-                    sql += " AND psi_1.completed = true ";
+                    sql += " AND psi_1.completed = " + useCompletedEvents + " ";
                 }
 
                 sql += ") as \"" + periodName + "\",";
