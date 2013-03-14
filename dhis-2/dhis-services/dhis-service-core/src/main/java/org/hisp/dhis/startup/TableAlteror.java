@@ -535,8 +535,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE usergroup DROP CONSTRAINT usergroup_name_key" );
         executeSql( "ALTER TABLE datadictionary DROP CONSTRAINT datadictionary_name_key" );
 
-        upgradeReportTableColumns();
+        upgradeChartRelativePeriods();
         upgradeReportTableRelativePeriods();
+        upgradeReportTableColumns();
 
         // clear out sharing of de-group/de-group-set for now
         executeSql( "UPDATE dataelementgroup SET userid=NULL WHERE userid IS NOT NULL" );
@@ -551,6 +552,74 @@ public class TableAlteror
         log.info( "Tables updated" );
     }
 
+    private void upgradeChartRelativePeriods()
+    {
+        BatchHandler<RelativePeriods> batchHandler = batchHandlerFactory.createBatchHandler( RelativePeriodsBatchHandler.class ).init();
+        
+        try
+        {
+            String sql = "select reportingmonth, * from chart";
+
+            ResultSet rs = statementManager.getHolder().getStatement().executeQuery( sql );
+            
+            while ( rs.next() )
+            {
+                RelativePeriods r = new RelativePeriods( 
+                    rs.getBoolean( "reportingmonth" ), 
+                    false,
+                    rs.getBoolean( "reportingquarter" ), 
+                    rs.getBoolean( "lastsixmonth" ), 
+                    rs.getBoolean( "monthsthisyear" ), 
+                    rs.getBoolean( "quartersthisyear" ), 
+                    rs.getBoolean( "thisyear" ), 
+                    false, false,
+                    rs.getBoolean( "lastyear" ), 
+                    rs.getBoolean( "last5years" ), 
+                    rs.getBoolean( "last12months" ), 
+                    rs.getBoolean( "last3months" ), 
+                    false, 
+                    rs.getBoolean( "last4quarters" ), 
+                    rs.getBoolean( "last2sixmonths" ), 
+                    false, false, false,
+                    false, false, false );
+                
+                int chartId = rs.getInt( "chartid" );
+
+                if ( !r.isEmpty() )
+                {
+                    int relativePeriodsId = batchHandler.insertObject( r, true );
+                    
+                    String update = "update chart set relativeperiodsid=" + relativePeriodsId + " where chartid=" + chartId;
+
+                    executeSql( update );
+                    
+                    log.info( "Updated relative periods for chart with id: " + chartId );
+                }    
+            }
+
+            executeSql( "alter table chart drop column reportingmonth" );
+            executeSql( "alter table chart drop column reportingquarter" );
+            executeSql( "alter table chart drop column lastsixmonth" );
+            executeSql( "alter table chart drop column monthsthisyear" );
+            executeSql( "alter table chart drop column quartersthisyear" );
+            executeSql( "alter table chart drop column thisyear" );
+            executeSql( "alter table chart drop column lastyear" );
+            executeSql( "alter table chart drop column last5years" );
+            executeSql( "alter table chart drop column last12months" );
+            executeSql( "alter table chart drop column last3months" );
+            executeSql( "alter table chart drop column last4quarters" );
+            executeSql( "alter table chart drop column last2sixmonths" );
+        }
+        catch ( Exception ex )
+        {
+            log.warn( ex );
+        }
+        finally
+        {
+            batchHandler.flush();
+        }
+    }
+    
     private void upgradeReportTableRelativePeriods()
     {
         BatchHandler<RelativePeriods> batchHandler = batchHandlerFactory.createBatchHandler( RelativePeriodsBatchHandler.class ).init();
