@@ -476,6 +476,7 @@ Ext.onReady( function() {
 							fields: ['value','name'],
 							data: [ ['=','='],['in',TR.i18n.in] ]
 						});
+						params.value = 'in';
 					}
 					else
 					{
@@ -483,6 +484,7 @@ Ext.onReady( function() {
 							fields: ['value','name'],
 							data: [ ['=','='],['like',TR.i18n.like],['in',TR.i18n.in] ]
 						});
+						params.value = 'in';
 					}
 				}
 				else if( valueType == 'trueOnly' || valueType == 'bool' ){
@@ -502,6 +504,20 @@ Ext.onReady( function() {
 								['<=','<='],
 								['!=','!=' ] ]
 					});
+				}
+				
+				params.listeners={};
+				params.listeners.select = function(cb)  {
+					var opt = cb.getValue();
+					if(opt == 'in')
+					{
+						Ext.getCmp('filter_' + id).multiSelect = true;
+					}
+					else
+					{
+						Ext.getCmp('filter_' + id).clearValue();
+						Ext.getCmp('filter_' + id).multiSelect = false;
+					}
 				}
 				
 				return params;
@@ -533,8 +549,9 @@ Ext.onReady( function() {
 						params.editable = false;
 						if( fixedId=='fixedAttr_gender')
 						{
-							params.forceSelection = true;
 							params.multiSelect = true;
+							params.delimiter = ';';
+							params.forceSelection = true;
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
 								data: [['', TR.i18n.please_select], 
@@ -546,8 +563,9 @@ Ext.onReady( function() {
 						else if( fixedId=='fixedAttr_dobType')
 						{
 							params.forceSelection = true;
-							params.editable = false;
 							params.multiSelect = true;
+							params.delimiter = ';';
+							params.editable = false;
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
 								data: [['', TR.i18n.please_select],
@@ -567,8 +585,7 @@ Ext.onReady( function() {
 							});
 						}
 					}
-					else if( valueType == 'trueOnly')
-					{
+					else if( valueType == 'trueOnly'){
 						params.queryMode = 'local';
 						params.valueField = 'value';
 						params.displayField = 'name';
@@ -583,6 +600,7 @@ Ext.onReady( function() {
 						params.valueField = 'u';
 						params.displayField = 'u';
 						params.multiSelect = true;
+						params.delimiter = ';';
 						params.store = Ext.create('Ext.data.Store', {
 							fields: ['u'],
 							data:[],

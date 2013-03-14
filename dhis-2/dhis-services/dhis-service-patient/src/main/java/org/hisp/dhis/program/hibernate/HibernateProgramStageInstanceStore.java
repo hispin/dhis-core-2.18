@@ -674,7 +674,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-
+System.out.println("\n\n " + sql );        
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -1289,11 +1289,11 @@ public class HibernateProgramStageInstanceStore
                 sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                 sql += "     psi_1.executiondate <= '" + endDate + "' ";
                 sql += filterSQL + " LIMIT 1 )  as " + aggregateType + ") ";
-                sql += " UNION ";
+                sql += " UNION ALL ";
             }
         }
 
-        sql = sql.substring( 0, sql.length() - 6 );
+        sql = sql.substring( 0, sql.length() - 10 );
         if ( limit != null )
         {
             sql += " LIMIT " + limit;
@@ -1466,11 +1466,11 @@ public class HibernateProgramStageInstanceStore
                 }
                 sql += "GROUP BY dataelementid ";
 
-                sql += ") UNION ";
+                sql += ") UNION ALL ";
 
             }
 
-            sql = sql.substring( 0, sql.length() - 6 );
+            sql = sql.substring( 0, sql.length() - 10 );
 
             if ( limit != null )
             {
@@ -1543,10 +1543,10 @@ public class HibernateProgramStageInstanceStore
             }
             sql += "GROUP BY dataelementid ";
 
-            sql += ") UNION ";
+            sql += ") UNION ALL ";
         }
 
-        sql = sql.substring( 0, sql.length() - 6 );
+        sql = sql.substring( 0, sql.length() - 10 );
         if ( limit != null )
         {
             sql += " LIMIT " + limit;
@@ -1823,12 +1823,12 @@ public class HibernateProgramStageInstanceStore
                 sql += ") as \"" + periodName + "\",";
             }
             sql = sql.substring( 0, sql.length() - 1 );
-            sql += " ) UNION ";
+            sql += " ) UNION ALL ";
         }
 
         if ( !sql.isEmpty() )
         {
-            sql = sql.substring( 0, sql.length() - 6 );
+            sql = sql.substring( 0, sql.length() - 10 );
             if ( periods.size() == 1 )
             {
                 sql += "ORDER BY  \"" + firstPeriodName + "\" desc ";
@@ -2163,7 +2163,7 @@ public class HibernateProgramStageInstanceStore
                     {
                         if ( rowSet.getMetaData().getColumnType( j + 2 ) != Types.VARCHAR )
                         {
-                            total += (Double) columnValues.get( i ).get( j );
+                            total += (Long) columnValues.get( i ).get( j );
                         }
                     }
                     if ( total == (int) total )
