@@ -43,4 +43,6 @@ public interface SMSCommandService
     void save( Set<SMSCode> codes );
 
     void delete( SMSCommand cmd );
+    
+    Collection<SMSCommand> getJ2MESMSCommands();
 }
