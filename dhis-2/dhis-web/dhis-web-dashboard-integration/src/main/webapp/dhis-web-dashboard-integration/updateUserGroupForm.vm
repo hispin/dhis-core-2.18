@@ -23,11 +23,6 @@
 				return option;
 			}
 		});
-
-		/* remote validation */
-		/* checkValueIsExist( "name", "validateUserGroup.action", {
-			id : $group.id
-		} ); */
 	});
 </script>
 

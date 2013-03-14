@@ -157,9 +157,4 @@
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dashboard.usergroup.action.ValidateUserGroupAction" class="org.hisp.dhis.dashboard.usergroup.action.ValidateUserGroupAction"
-    scope="prototype">
-    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
-  </bean>
-
 </beans>

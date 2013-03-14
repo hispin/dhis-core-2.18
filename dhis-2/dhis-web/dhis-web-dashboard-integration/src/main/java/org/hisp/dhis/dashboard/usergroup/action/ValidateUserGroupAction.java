@@ -98,7 +98,7 @@ public class ValidateUserGroupAction
             }
         }
 
-        message = i18n.getString( "everything_is_ok" );
+        message = i18n.getString( "ok" );
 
         return SUCCESS;
     }
