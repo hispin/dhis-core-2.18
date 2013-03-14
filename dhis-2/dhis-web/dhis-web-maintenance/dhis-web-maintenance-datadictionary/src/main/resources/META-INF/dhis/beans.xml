@@ -406,11 +406,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction"
-    scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction"
     scope="prototype">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
