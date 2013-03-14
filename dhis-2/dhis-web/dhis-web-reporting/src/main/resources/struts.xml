@@ -43,12 +43,6 @@
       <param name="anyAuthorities">F_DOCUMENT_PUBLIC_ADD,F_DOCUMENT_PRIVATE_ADD</param>
     </action>
 
-    <action name="validateDocument" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="addDocumentToDashboard" class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
