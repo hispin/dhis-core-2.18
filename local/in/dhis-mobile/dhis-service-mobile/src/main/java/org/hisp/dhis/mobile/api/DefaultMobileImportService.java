@@ -109,7 +109,7 @@ public class DefaultMobileImportService
 
     private static final Log LOG = LogFactory.getLog( DefaultMobileImportService.class );
 
-	
+	public static final String ORGUNITAUTOFORMAT = "ORGUNITAUTOFORMAT";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -1414,7 +1414,7 @@ public class DefaultMobileImportService
 			
 		}
 		
-		 PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( PatientIdentifierType.ORGUNITAUTOFORMAT );
+		 PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( ORGUNITAUTOFORMAT );
          int fourDigitRunningNo = 1;
          String fourDigitRunningNumber = "0001";
          
@@ -1590,7 +1590,7 @@ public class DefaultMobileImportService
 		String[] elementIds = mappingString.split("\\,");
 		
 		
-		PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( PatientIdentifierType.ORGUNITAUTOFORMAT );
+		PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( ORGUNITAUTOFORMAT );
 	        
 		
 		Patient patient = patientIdentifierService.getPatient(patientIdentifierType, UID.trim());
