@@ -13,11 +13,12 @@ settings = {
 		{name: 'ou', items: ['ImspTQPwCqd']}
 	],
 	options: {
+		showTotals: true,
 		showSubTotals: true,
 		hideEmptyRows: false,
-		numberFormatting: 'space',
 		displayDensity: 'normal',
 		fontSize: 'normal',
+		digitGroupSeparator: 'space',
 		userOrganisationUnit: true,
 		userOrganisationUnitChildren: false
 	}
@@ -61,9 +62,12 @@ xSettings = {
 		'ou': ['ImspTQPwCqd']
 	},
 	options: {
-		showSubTotals: false,
+		showTotals: true,
+		showSubTotals: true,
+		hideEmptyRows: false,
 		displayDensity: 'normal',
-		fontSize: 'normal'
+		fontSize: 'normal',
+		digitGroupSeparator: 'space'
 	}
 };
 

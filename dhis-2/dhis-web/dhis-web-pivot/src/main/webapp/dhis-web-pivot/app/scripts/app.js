@@ -746,9 +746,10 @@ Ext.onReady( function() {
 	};
 
 	PT.app.OptionsWindow = function() {
-		var showSubTotals,
+		var showTotals,
+			showSubTotals,
 			hideEmptyRows,
-			numberFormatting,
+			digitGroupSeparator,
 			displayDensity,
 			fontSize,
 
@@ -756,22 +757,32 @@ Ext.onReady( function() {
 			style,
 			window;
 
+		showTotals = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: 'Show totals', //i18n
+			style: 'margin-bottom:4px',
+			checked: true
+		});
+		pt.viewport.showTotals = showTotals;
+
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: 'Show sub-totals', //i18n
+			style: 'margin-bottom:4px',
 			checked: true
 		});
 		pt.viewport.showSubTotals = showSubTotals;
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Hide empty rows' //i18n
+			boxLabel: 'Hide empty rows', //i18n
+			style: 'margin-bottom:4px',
 		});
 		pt.viewport.hideEmptyRows = hideEmptyRows;
 
-		numberFormatting = Ext.create('Ext.form.field.ComboBox', {
-			fieldLabel: 'Number formatting', //i18n
+		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
 			labelStyle: 'color:#333',
 			cls: 'pt-combo',
-			width: 230,
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: 'Digit group separator', //i18n
 			queryMode: 'local',
 			valueField: 'id',
 			editable: false,
@@ -785,13 +796,14 @@ Ext.onReady( function() {
 				]
 			})
 		});
-		pt.viewport.numberFormatting = numberFormatting;
+		pt.viewport.digitGroupSeparator = digitGroupSeparator;
 
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'pt-combo',
+			width: 250,
+			labelWidth: 130,
 			fieldLabel: 'Display density', //i18n
 			labelStyle: 'color:#333',
-			cls: 'pt-combo',
-			width: 230,
 			queryMode: 'local',
 			valueField: 'id',
 			editable: false,
@@ -808,11 +820,11 @@ Ext.onReady( function() {
 		pt.viewport.displayDensity = displayDensity;
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
-			xtype: 'combobox',
+			cls: 'pt-combo',
+			width: 250,
+			labelWidth: 130,
 			fieldLabel: 'Font size', //i18n
 			labelStyle: 'color:#333',
-			cls: 'pt-combo',
-			width: 230,
 			queryMode: 'local',
 			valueField: 'id',
 			editable: false,
@@ -832,6 +844,7 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
+				showTotals,
 				showSubTotals,
 				hideEmptyRows
 			]
@@ -841,9 +854,9 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				numberFormatting,
 				displayDensity,
-				fontSize
+				fontSize,
+				digitGroupSeparator
 			]
 		};
 
@@ -857,11 +870,12 @@ Ext.onReady( function() {
 			hideOnBlur: true,
 			getOptions: function() {
 				return {
+					showTotals: showTotals.getValue(),
 					showSubTotals: showSubTotals.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
-					numberFormatting: numberFormatting.getValue(),
 					displayDensity: displayDensity.getValue(),
-					fontSize: fontSize.getValue()
+					fontSize: fontSize.getValue(),
+					digitGroupSeparator: digitGroupSeparator.getValue()
 				};
 			},
 			items: [
@@ -965,6 +979,7 @@ Ext.onReady( function() {
 				favorite = Ext.clone(pt.xSettings.options);
 
 				// Server sync
+				favorite.totals = favorite.showTotals;
 				favorite.subtotals = favorite.showSubTotals;
 
 				// Dimensions
@@ -3575,11 +3590,12 @@ Ext.onReady( function() {
 				}
 
 				// Options
+				pt.viewport.showTotals.setValue(r.totals);
 				pt.viewport.showSubTotals.setValue(r.subtotals);
 				pt.viewport.hideEmptyRows.setValue(r.hideEmptyRows);
-				pt.viewport.numberFormatting.setValue(r.numberFormatting);
 				pt.viewport.displayDensity.setValue(r.displayDensity);
 				pt.viewport.fontSize.setValue(r.fontSize);
+				pt.viewport.digitGroupSeparator.setValue(r.digitGroupSeparator);
 
 				update();
 			};
