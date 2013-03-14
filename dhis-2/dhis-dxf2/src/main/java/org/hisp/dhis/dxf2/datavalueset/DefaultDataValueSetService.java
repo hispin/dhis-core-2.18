@@ -67,6 +67,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -251,7 +252,23 @@ public class DefaultDataValueSetService
         boolean skipExistingCheck = importOptions.isSkipExistingCheck();
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
-        Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
+
+        Map<String, OrganisationUnit> orgUnitMap = new HashMap<String, OrganisationUnit>();
+
+        if ( !orgUnitIdScheme.equals( IdentifiableProperty.UUID ) )
+        {
+            identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
+        }
+        else
+        {
+            Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
+
+            for ( OrganisationUnit organisationUnit : allOrganisationUnits )
+            {
+                orgUnitMap.put( organisationUnit.getUuid(), organisationUnit );
+            }
+        }
+
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
         Map<String, Period> periodMap = new HashMap<String, Period>();
 
