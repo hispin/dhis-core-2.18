@@ -2,7 +2,7 @@
 	jQuery(document).ready(	function(){
 		jQuery("#programIdAddPatient option").each(function(){
 			var item = jQuery(this);
-			if(item.attr('type')!=2 && item.val()==''){
+			if(item.attr('type')!=2 ){
 				item.remove();
 			}
 		});

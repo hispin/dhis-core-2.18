@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -83,9 +84,11 @@ public class HibernateProgramStore
     @Override
     public Collection<Program> get( int type, OrganisationUnit organisationUnit )
     {
-        final String hql = "from Program p where p.type = :type and :organisationUnit in elements(p.organisationUnits)";
-
-        return getQuery( hql ).setInteger( "type", type ).setEntity( "organisationUnit", organisationUnit ).list();
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "organisationUnits", "orgunit" );
+        criteria.add( Restrictions.eq( "type", type ) );
+        criteria.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
+        return criteria.list();
     }
 
     @Override
@@ -97,7 +100,7 @@ public class HibernateProgramStore
         {
             Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
                 .getUserAuthorityGroups();
-            
+
             for ( Program program : getAll() )
             {
                 if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
