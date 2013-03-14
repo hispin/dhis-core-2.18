@@ -2387,14 +2387,56 @@ Ext.onReady( function() {
 				valueComponentMap: {},
 				items: [
 					{
-						xtype: 'panel',
+						xtype: 'container',
 						layout: 'column',
 						bodyStyle: 'border-style:none',
 						items: [
 							{
 								xtype: 'panel',
-								layout: 'anchor',
-								bodyStyle: 'border-style:none; padding:0 0 0 10px',
+								columnWidth: 0.35,
+								bodyStyle: 'border-style:none; padding:0 0 0 8px',
+								defaults: {
+									labelSeparator: '',
+									style: 'margin-bottom:2px',
+									listeners: {
+										added: function(chb) {
+											if (chb.xtype === 'checkbox') {
+												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
+											}
+										},
+										change: function() {
+											rewind.xable();
+										}
+									}
+								},
+								items: [
+									{
+										xtype: 'label',
+										text: 'Weeks', //i18n pt.i18n.months,
+										cls: 'pt-label-period-heading'
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_WEEK',
+										boxLabel: 'Last week', //i18n pt.i18n.last_month
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_4_WEEKS',
+										boxLabel: 'Last 4 weeks', //i18n pt.i18n.last_3_months
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_12_WEEKS',
+										boxLabel: 'Last 12 weeks' //i18n pt.i18n.last_12_months,
+									}
+								]
+							},
+							{
+								xtype: 'panel',
+								columnWidth: 0.32,
+								bodyStyle: 'border-style:none',
 								defaults: {
 									labelSeparator: '',
 									style: 'margin-bottom:2px',
@@ -2436,8 +2478,8 @@ Ext.onReady( function() {
 							},
 							{
 								xtype: 'panel',
-								layout: 'anchor',
-								bodyStyle: 'border-style:none; padding:0 0 0 32px',
+								columnWidth: 0.33,
+								bodyStyle: 'border-style:none',
 								defaults: {
 									labelSeparator: '',
 									style: 'margin-bottom:2px',
@@ -2470,11 +2512,18 @@ Ext.onReady( function() {
 										boxLabel: 'Last 4 quarters', //i18n pt.i18n.last_4_quarters
 									}
 								]
-							},
+							}
+						]
+					},
+					{
+						xtype: 'container',
+						layout: 'column',
+						bodyStyle: 'border-style:none',
+						items: [
 							{
 								xtype: 'panel',
-								layout: 'anchor',
-								bodyStyle: 'border-style:none; padding:0 0 0 32px',
+								columnWidth: 0.35,
+								bodyStyle: 'border-style:none; padding:5px 0 0 10px',
 								defaults: {
 									labelSeparator: '',
 									style: 'margin-bottom:2px',
@@ -2504,21 +2553,14 @@ Ext.onReady( function() {
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_2_SIXMONTHS',
-										boxLabel: 'Last two six-months', //i18n pt.i18n.last_two_six_month
+										boxLabel: 'Last 2 six-months', //i18n pt.i18n.last_two_six_month
 									}
 								]
-							}
-						]
-					},
-					{
-						xtype: 'panel',
-						layout: 'column',
-						bodyStyle: 'border-style:none',
-						items: [
+							},
 							{
 								xtype: 'panel',
-								layout: 'anchor',
-								bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+								columnWidth: 0.32,
+								bodyStyle: 'border-style:none; padding:5px 0 0',
 								defaults: {
 									labelSeparator: '',
 									style: 'margin-bottom:2px',
@@ -2557,6 +2599,7 @@ Ext.onReady( function() {
 									}
 								]
 							}
+
 							//{
 								//xtype: 'panel',
 								//layout: 'anchor',
@@ -2763,7 +2806,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'panel',
 						layout: 'column',
-						bodyStyle: 'border-style:none; padding-bottom:6px',
+						bodyStyle: 'border-style:none; padding-bottom:4px',
 						items: [
 							fixedPeriodAvailable,
 							fixedPeriodSelected

@@ -131,18 +131,24 @@ PT.core.getConfigs = function() {
 
 	conf.period = {
 		relativePeriods: {
-			LAST_MONTH: 1,
-			LAST_3_MONTHS: 3,
-			LAST_12_MONTHS: 12,
-			LAST_QUARTER: 1,
-			LAST_4_QUARTERS: 4,
-			LAST_SIX_MONTH: 1,
-			LAST_2_SIXMONTHS: 2,
-			THIS_YEAR: 1,
-			LAST_YEAR: 1,
-			LAST_5_YEARS: 5
+			'LAST_WEEK': 1,
+			'LAST_4_WEEKS': 4,
+			'LAST_12_WEEKS': 12,
+			'LAST_MONTH': 1,
+			'LAST_3_MONTHS': 3,
+			'LAST_12_MONTHS': 12,
+			'LAST_QUARTER': 1,
+			'LAST_4_QUARTERS': 4,
+			'LAST_SIX_MONTH': 1,
+			'LAST_2_SIXMONTHS': 2,
+			'THIS_YEAR': 1,
+			'LAST_YEAR': 1,
+			'LAST_5_YEARS': 5
 		},
 		relativePeriodValueKeys: {
+			'LAST_WEEK': 'lastWeek',
+			'LAST_4_WEEKS': 'last4Weeks',
+			'LAST_12_WEEKS': 'last12Weeks',
 			'LAST_MONTH': 'reportingMonth',
 			'LAST_3_MONTHS': 'last3Months',
 			'LAST_12_MONTHS': 'last12Months',
@@ -155,6 +161,9 @@ PT.core.getConfigs = function() {
 			'LAST_5_YEARS': 'last5Years'
 		},
 		relativePeriodParamKeys: {
+			'lastWeek': 'LAST_WEEK',
+			'last4Weeks': 'LAST_4_WEEKS',
+			'last12Weeks': 'LAST_12_WEEKS',
 			'reportingMonth': 'LAST_MONTH',
 			'last3Months': 'LAST_3_MONTHS',
 			'last12Months': 'LAST_12_MONTHS',
