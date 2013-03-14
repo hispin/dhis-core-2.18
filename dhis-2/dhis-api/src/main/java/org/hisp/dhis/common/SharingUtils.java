@@ -78,10 +78,6 @@ public final class SharingUtils
         PUBLIC_AUTHORITIES.put( DataDictionary.class, "F_DATADICTIONARY_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( DataDictionary.class, "F_DATADICTIONARY_PRIVATE_ADD" );
 
-        SUPPORTED_TYPES.put( "dataElement", DataElement.class );
-        PUBLIC_AUTHORITIES.put( DataElement.class, "F_DATAELEMENT_PUBLIC_ADD" );
-        PRIVATE_AUTHORITIES.put( DataElement.class, "F_DATAELEMENT_PRIVATE_ADD" );
-
         SUPPORTED_TYPES.put( "indicator", Indicator.class );
         PUBLIC_AUTHORITIES.put( Indicator.class, "F_INDICATOR_PUBLIC_ADD" );
         PRIVATE_AUTHORITIES.put( Indicator.class, "F_INDICATOR_PRIVATE_ADD" );
