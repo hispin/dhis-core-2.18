@@ -159,7 +159,7 @@ public class DataQueryParams
      */
     public boolean filterSpansMultiplePartitions()
     {
-        return tableNamePeriodMap != null && !tableNamePeriodMap.isEmpty();
+        return tableNamePeriodMap != null && tableNamePeriodMap.size() > 1;
     }
     
     /**
