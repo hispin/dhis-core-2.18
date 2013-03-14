@@ -196,7 +196,7 @@ public class MobileOrganisationUnitController
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
         mobileModel.setServerCurrentDate( new Date() );
         mobileModel.setLocales( getLocalStrings( i18nService.getAvailableLocales() ) );
-        mobileModel.setSmsCommands( this.getMobileSMSCommands( smsCommandService.getSMSCommands() ) );
+        mobileModel.setSmsCommands( this.getMobileSMSCommands( smsCommandService.getJ2MESMSCommands() ) );
         return mobileModel;
     }
 
