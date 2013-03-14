@@ -65,7 +65,7 @@
 				</td>
 			</tr>
 
-			<tr><th colspan="2">$i18n.getString( "message" )</th></tr>
+			<tr><th colspan="2">$i18n.getString( "message" ) ($i18n.getString( "do_not_send_patient_confidential_messages_using_sms" ))</th></tr>
 			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" cols="95" rows="5" class="{validate:{required:true}}"></textarea></td></tr>
 		</tbody>
 		
