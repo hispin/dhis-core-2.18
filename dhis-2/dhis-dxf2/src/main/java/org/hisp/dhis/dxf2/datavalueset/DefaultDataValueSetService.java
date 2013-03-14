@@ -255,11 +255,7 @@ public class DefaultDataValueSetService
 
         Map<String, OrganisationUnit> orgUnitMap = new HashMap<String, OrganisationUnit>();
 
-        if ( !orgUnitIdScheme.equals( IdentifiableProperty.UUID ) )
-        {
-            identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
-        }
-        else
+        if ( orgUnitIdScheme == IdentifiableProperty.UUID )
         {
             Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
 
@@ -267,6 +263,10 @@ public class DefaultDataValueSetService
             {
                 orgUnitMap.put( organisationUnit.getUuid(), organisationUnit );
             }
+        }
+        else
+        {
+            orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         }
 
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
