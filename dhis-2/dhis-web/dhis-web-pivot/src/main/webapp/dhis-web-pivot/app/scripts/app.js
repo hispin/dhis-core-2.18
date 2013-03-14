@@ -132,11 +132,11 @@ Ext.onReady( function() {
 			}
 		};
 
-		util.pivot.getSettingsConfig = function() {
+		util.pivot.getLayoutConfig = function() {
 			var data = {},
-				setup = pt.viewport.settingsWindow ? pt.viewport.settingsWindow.getSetup() : {},
+				setup = pt.viewport.layoutWindow ? pt.viewport.layoutWindow.getSetup() : {},
 				getData,
-				extendSettings,
+				extendLayout,
 				config;
 
 			config = {
@@ -170,7 +170,7 @@ Ext.onReady( function() {
 				}
 			}();
 
-			extendSettings = function() {
+			extendLayout = function() {
 				for (var i = 0, dimensionName; i < setup.col.length; i++) {
 					dimensionName = setup.col[i];
 					config.col.push({
@@ -408,7 +408,7 @@ Ext.onReady( function() {
 		return cmp;
 	};
 
-	PT.app.SettingsWindow = function() {
+	PT.app.LayoutWindow = function() {
 		var dimension,
 			dimensionStore,
 			dimensionOrder,
@@ -532,8 +532,8 @@ Ext.onReady( function() {
 			style: 'margin-right:' + margin + 'px; margin-bottom:0px',
 			valueField: 'id',
 			displayField: 'name',
-			dragGroup: 'settingsDD',
-			dropGroup: 'settingsDD',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
 			ddReorder: false,
 			store: dimensionStore,
 			tbar: {
@@ -562,8 +562,8 @@ Ext.onReady( function() {
 			style: 'margin-bottom:0px',
 			valueField: 'id',
 			displayField: 'name',
-			dragGroup: 'settingsDD',
-			dropGroup: 'settingsDD',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
 			store: rowStore,
 			tbar: {
 				height: 25,
@@ -596,8 +596,8 @@ Ext.onReady( function() {
 			style: 'margin-bottom:' + margin + 'px',
 			valueField: 'id',
 			displayField: 'name',
-			dragGroup: 'settingsDD',
-			dropGroup: 'settingsDD',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
 			store: colStore,
 			tbar: {
 				height: 25,
@@ -630,8 +630,8 @@ Ext.onReady( function() {
 			style: 'margin-right:' + margin + 'px; margin-bottom:' + margin + 'px',
 			valueField: 'id',
 			displayField: 'name',
-			dragGroup: 'settingsDD',
-			dropGroup: 'settingsDD',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
 			store: filterStore,
 			tbar: {
 				height: 25,
@@ -975,16 +975,16 @@ Ext.onReady( function() {
 		getBody = function() {
 			var favorite;
 
-			if (pt.xSettings) {
-				favorite = Ext.clone(pt.xSettings.options);
+			if (pt.xLayout) {
+				favorite = Ext.clone(pt.xLayout.options);
 
 				// Server sync
 				favorite.totals = favorite.showTotals;
 				favorite.subtotals = favorite.showSubTotals;
 
 				// Dimensions
-				for (var i = 0, obj, key, items; i < pt.xSettings.objects.length; i++) {
-					obj = pt.xSettings.objects[i];
+				for (var i = 0, obj, key, items; i < pt.xLayout.objects.length; i++) {
+					obj = pt.xLayout.objects[i];
 
 					if (obj.objectName === pt.conf.finals.dimension.period.objectName) {
 						for (var j = 0, item; j < obj.items.length; j++) {
@@ -1044,32 +1044,37 @@ Ext.onReady( function() {
 					}
 				}
 
+				// Relative periods PUT workaround
+				if (!favorite.relativePeriods) {
+					favorite.relativePeriods = {};
+				}
+
 				// Setup
-				if (pt.xSettings.col) {
+				if (pt.xLayout.col) {
 					var a = [];
 
-					for (var i = 0; i < pt.xSettings.col.length; i++) {
-						a.push(pt.xSettings.col[i].dimensionName);
+					for (var i = 0; i < pt.xLayout.col.length; i++) {
+						a.push(pt.xLayout.col[i].dimensionName);
 					}
 
 					favorite['columnDimensions'] = a;
 				}
 
-				if (pt.xSettings.row) {
+				if (pt.xLayout.row) {
 					var a = [];
 
-					for (var i = 0; i < pt.xSettings.row.length; i++) {
-						a.push(pt.xSettings.row[i].dimensionName);
+					for (var i = 0; i < pt.xLayout.row.length; i++) {
+						a.push(pt.xLayout.row[i].dimensionName);
 					}
 
 					favorite['rowDimensions'] = a;
 				}
 
-				if (pt.xSettings.filter) {
+				if (pt.xLayout.filter) {
 					var a = [];
 
-					for (var i = 0; i < pt.xSettings.filter.length; i++) {
-						a.push(pt.xSettings.filter[i].dimensionName);
+					for (var i = 0; i < pt.xLayout.filter.length; i++) {
+						a.push(pt.xLayout.filter[i].dimensionName);
 					}
 
 					favorite['filterDimensions'] = a;
@@ -1101,7 +1106,7 @@ Ext.onReady( function() {
 				text: 'Create', //i18n
 				handler: function() {
 					var favorite = getBody();
-					favorite.name = nameTextfield.getValue();
+					favorite.name = nameTextfield.getValue	();
 
 					if (favorite && favorite.name) {
 						Ext.Ajax.request({
@@ -1212,7 +1217,7 @@ Ext.onReady( function() {
 			height: 26,
 			style: 'border-radius: 1px;',
 			menu: {},
-			disabled: !Ext.isObject(pt.xSettings),
+			disabled: !Ext.isObject(pt.xLayout),
 			handler: function() {
 				nameWindow = new NameWindow(null, 'create');
 				nameWindow.show();
@@ -1755,7 +1760,7 @@ Ext.onReady( function() {
 		}
 
 		window = Ext.create('Ext.window.Window', {
-			title: 'Sharing settings',
+			title: 'Sharing layout',
 			bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
 			width: 434,
 			resizable: false,
@@ -3207,20 +3212,20 @@ Ext.onReady( function() {
 				return getPanels();
 			};
 
-			validateSpecialCases = function(settings) {
+			validateSpecialCases = function(layout) {
 				var dimConf = pt.conf.finals.dimension,
 					dimensionNames = [],
-					settingsObjects = [].concat(Ext.clone(settings.col || []), Ext.clone(settings.row || []), Ext.clone(settings.filter || []));
+					layoutObjects = [].concat(Ext.clone(layout.col || []), Ext.clone(layout.row || []), Ext.clone(layout.filter || []));
 
-				// Settings names
-				for (var i = 0; i < settingsObjects.length; i++) {
-					dimensionNames.push(settingsObjects[i].dimensionName);
+				// Layout names
+				for (var i = 0; i < layoutObjects.length; i++) {
+					dimensionNames.push(layoutObjects[i].dimensionName);
 				}
 
 				// Indicator as filter
-				if (settings.filter && pt.store.indicatorSelected.data.length) {
-					for (var i = 0; i < settings.filter.length; i++) {
-						if (settings.filter[i].dimensionName === dimConf.data.dimensionName) {
+				if (layout.filter && pt.store.indicatorSelected.data.length) {
+					for (var i = 0; i < layout.filter.length; i++) {
+						if (layout.filter[i].dimensionName === dimConf.data.dimensionName) {
 							alert('Indicators cannot be specified as filter'); //i18n
 							return;
 						}
@@ -3228,7 +3233,7 @@ Ext.onReady( function() {
 				}
 
 				// Categories as filter
-				if (settings.filter && pt.viewport.settingsWindow.filterStore.getById(dimConf.category.dimensionName)) {
+				if (layout.filter && pt.viewport.layoutWindow.filterStore.getById(dimConf.category.dimensionName)) {
 					alert('Categories cannot be specified as filter');
 					return;
 				}
@@ -3247,18 +3252,18 @@ Ext.onReady( function() {
 			};
 
 			update = function() {
-				var config = pt.util.pivot.getSettingsConfig(),
-					settings = pt.api.Settings(config);
+				var config = pt.util.pivot.getLayoutConfig(),
+					layout = pt.api.Layout(config);
 
-				if (!settings) {
+				if (!layout) {
 					return;
 				}
-				if (!validateSpecialCases(settings)) {
+				if (!validateSpecialCases(layout)) {
 					return;
 				}
 
-				if (settings) {
-					pt.util.pivot.getTable(settings, pt);
+				if (layout) {
+					pt.util.pivot.getTable(layout, pt);
 				}
 			};
 
@@ -3323,11 +3328,11 @@ Ext.onReady( function() {
 				text: 'Layout',
 				menu: {},
 				handler: function() {
-					if (!pt.viewport.settingsWindow) {
-						pt.viewport.settingsWindow = PT.app.SettingsWindow(pt);
+					if (!pt.viewport.layoutWindow) {
+						pt.viewport.layoutWindow = PT.app.LayoutWindow(pt);
 					}
 
-					pt.viewport.settingsWindow.show();
+					pt.viewport.layoutWindow.show();
 				}
 			});
 
@@ -3656,8 +3661,8 @@ Ext.onReady( function() {
 
 		pt.viewport = createViewport();
 
-		pt.viewport.settingsWindow = PT.app.SettingsWindow();
-		pt.viewport.settingsWindow.hide();
+		pt.viewport.layoutWindow = PT.app.LayoutWindow();
+		pt.viewport.layoutWindow.hide();
 
 		pt.viewport.optionsWindow = PT.app.OptionsWindow();
 		pt.viewport.optionsWindow.hide();
