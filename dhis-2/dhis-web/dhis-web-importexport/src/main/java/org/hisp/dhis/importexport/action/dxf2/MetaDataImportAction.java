@@ -27,9 +27,10 @@ package org.hisp.dhis.importexport.action.dxf2;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
@@ -41,9 +42,7 @@ import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -51,8 +50,6 @@ import java.io.InputStream;
 public class MetaDataImportAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( MetaDataImportAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
