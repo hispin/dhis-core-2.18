@@ -53,7 +53,6 @@
           <col/>
           <col/>
           <col/>
-          <col/>
 		  #if($mapPatientOrgunit.size()!=0)
           <col/>
 		  #end
@@ -76,7 +75,8 @@
 				#end
 				<th>$i18n.getString( "gender" )</th>
 				<th>$i18n.getString( "date_of_birth" )</th> 
-				<th class="{sorter: false}">$i18n.getString( "age" )</th><th class="{sorter: false}">$i18n.getString( "phone_number" )</th>
+				<th class="{sorter: false}">$i18n.getString( "age" )</th>
+				
 				#if($mapPatientOrgunit.size()!=0)
 				<th>$i18n.getString( "hierachy_orgunit" )</th>
 				#end
@@ -134,7 +134,7 @@
 					<a href="javascript:addPhoneToList( 'recipients', '$patient.id', '$patient.getFullName()', '$!patient.phoneNumber' )" title='$i18n.getString( "add_phone_to_list" )'>
 					<img src="../images/move_down.png" alt='$i18n.getString( "add_phone_to_list" )' /></a>
 					#else
-					<img src="images/question.png" title='$i18n.getString( "no_phone" )' />
+					<img src="../dhis-web-sms/images/question.png" title='$i18n.getString( "no_phone" )' />
 					#end
 				</td>
 				

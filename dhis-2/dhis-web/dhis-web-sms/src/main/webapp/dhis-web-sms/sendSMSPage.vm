@@ -70,7 +70,7 @@
 			
 			<tr id="orgunitType" style="display:none"><td colspan="2"><br/>#organisationUnitSelectionTree( true, true, false )</td></tr>
 			
-			<tr><th colspan="2">$i18n.getString( "message" )</th></tr>
+			<tr><th colspan="2">$i18n.getString( "message" ) ($i18n.getString( "do_not_send_patient_confidential_messages_using_sms" ))</th></tr>
 			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" cols="86" rows="5" class="{validate:{required:true}}"></textarea></td></tr>
 			<tr>
 				<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/>				

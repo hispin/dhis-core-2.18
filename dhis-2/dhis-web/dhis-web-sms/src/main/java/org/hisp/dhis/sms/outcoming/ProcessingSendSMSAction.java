@@ -201,14 +201,14 @@ public class ProcessingSendSMSAction
 
             if ( group == null )
             {
-                message = "selected_user_group_is_unavailable";
+                message = i18n.getString( "selected_user_group_is_unavailable" );
 
                 return ERROR;
             }
 
             if ( group.getMembers() == null || group.getMembers().isEmpty() )
             {
-                message = "selected_user_group_has_no_member";
+                message = i18n.getString( "selected_user_group_has_no_member" );
 
                 return ERROR;
             }
@@ -231,7 +231,7 @@ public class ProcessingSendSMSAction
 
                 if ( users.isEmpty() )
                 {
-                    message = "there_is_no_user_assigned_to_selected_units";
+                    message = i18n.getString( "there_is_no_user_assigned_to_selected_units" );
 
                     return ERROR;
                 }
@@ -251,7 +251,7 @@ public class ProcessingSendSMSAction
 
             if ( recipients.isEmpty() )
             {
-                message = "selected_units_have_no_phone_number";
+                message = i18n.getString( "selected_units_have_no_phone_number" );
 
                 return ERROR;
             }
@@ -295,7 +295,7 @@ public class ProcessingSendSMSAction
 
             if ( phones.isEmpty() )
             {
-                message = "selected_persons_have_no_phone_number";
+                message = i18n.getString( "selected_persons_have_no_phone_number" );
 
                 return ERROR;
             }
