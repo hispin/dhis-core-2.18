@@ -581,7 +581,7 @@ public class TableAlteror
                     rs.getBoolean( "last4quarters" ), 
                     rs.getBoolean( "last2sixmonths" ), 
                     false, false, false,
-                    false, false, false );
+                    false, false, false, false );
                 
                 int chartId = rs.getInt( "chartid" );
 
@@ -652,7 +652,7 @@ public class TableAlteror
                     rs.getBoolean( "thisfinancialyear" ), 
                     rs.getBoolean( "lastfinancialyear" ), 
                     rs.getBoolean( "last5financialyears" ), 
-                    false, false, false );
+                    false, false, false, false );
                 
                 int reportTableId = rs.getInt( "reporttableid" );
                 
