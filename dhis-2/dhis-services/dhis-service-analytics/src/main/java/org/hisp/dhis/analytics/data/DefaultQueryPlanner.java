@@ -269,7 +269,8 @@ public class DefaultQueryPlanner
     /**
      * Groups the given query into sub queries based on its periods and which 
      * partition it should be executed against. Sets the partition table name on
-     * each query. Queries are grouped based on both dimensions and filters.
+     * each query. Queries are grouped based on periods if appearing as a 
+     * dimension.
      */
     private List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName )
     {
@@ -297,7 +298,8 @@ public class DefaultQueryPlanner
             ListMap<String, IdentifiableObject> tableNamePeriodMap = PartitionUtils.getTableNamePeriodMap( params.getFilterPeriods(), tableName );
             
             DataQueryParams query = new DataQueryParams( params );
-            query.setTableNamePeriodMap( tableNamePeriodMap );
+            query.setTableNamePeriodMap( tableNamePeriodMap );            
+            query.setTableName( tableNamePeriodMap.keySet().iterator().next() );
             queries.add( query );
         }
         else

@@ -339,16 +339,22 @@ public class DefaultAnalyticsService
     
     public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params )
     {
+        queryPlanner.validate( params );
+        
         return getAggregatedValueMap( params, ANALYTICS_TABLE_NAME );
     }
     
     public Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params )
     {
+        queryPlanner.validate( params );
+        
         return getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME );
     }
 
     private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
     {
+        queryPlanner.validate( params );
+        
         return getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME );
     }
     
@@ -359,8 +365,6 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )        
     {
-        queryPlanner.validate( params );
-        
         Timer t = new Timer().start();
 
         int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, MAX_QUERIES );
