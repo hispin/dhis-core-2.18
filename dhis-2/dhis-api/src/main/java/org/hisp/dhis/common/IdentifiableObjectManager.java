@@ -82,14 +82,4 @@ public interface IdentifiableObjectManager
     IdentifiableObject getObject( int id, String simpleClassName );
 
     <T extends IdentifiableObject> int getCount( Class<T> clazz );
-    
-    <T extends IdentifiableObject> List<T> getAllAccessible( Class<T> clazz );
-
-    <T extends IdentifiableObject> List<T> getAccessibleLikeName( Class<T> clazz, String name );
-
-    <T extends IdentifiableObject> List<T> getAccessibleBetween( Class<T> clazz, int first, int max );
-    
-    <T extends IdentifiableObject> List<T> getAccessibleBetweenLikeName( Class<T> clazz, String name, int first, int max );
-
-    <T extends IdentifiableObject> List<T> getAccessibleByLastUpdated( Class<T> clazz, Date lastUpdated );
 }
