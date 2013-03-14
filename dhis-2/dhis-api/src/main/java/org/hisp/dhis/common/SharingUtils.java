@@ -273,7 +273,22 @@ public final class SharingUtils
      */
     public static boolean canManage( User user, IdentifiableObject object )
     {
-        return sharingOverrideAuthority( user ) || canWrite( user, object );
+        if ( sharingOverrideAuthority( user ) || user.equals( object.getUser() ) ||
+            AccessStringHelper.canWrite( object.getPublicAccess() ) )
+        {
+            return true;
+        }
+
+        for ( UserGroupAccess userGroupAccess : object.getUserGroupAccesses() )
+        {
+            if ( AccessStringHelper.canWrite( userGroupAccess.getAccess() )
+                && userGroupAccess.getUserGroup().getMembers().contains( user ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static boolean sharingOverrideAuthority( User user )
