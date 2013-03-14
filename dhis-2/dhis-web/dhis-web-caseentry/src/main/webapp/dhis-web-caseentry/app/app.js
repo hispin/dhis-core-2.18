@@ -514,7 +514,6 @@ Ext.onReady( function() {
 					var fixedId = id.substring(0, id.lastIndexOf('_') );
 					params.typeAhead = true;
 					params.forceSelection = true;
-					params.hideValue = true;
 					if( valueType == 'bool' || fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
 					{
 						params.queryMode = 'local';
@@ -1775,7 +1774,7 @@ Ext.onReady( function() {
 						
 						var filterField = Ext.getCmp('filter_' + id);
 						var filterValue = "";
-						if( filterField.hideValue = true )
+						if( filterField.xtype == 'combobox' )
 						{
 							var values = Ext.getCmp('filter_' + id).getValue();
 							for( var i in values ){
@@ -1791,7 +1790,7 @@ Ext.onReady( function() {
 						if( filterValue!='' ){
 							filterValue = filterValue.toLowerCase();
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-							filter += '_' + filterOpt + ' ';
+							filter += filterOpt + ' ';
 							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
@@ -1892,7 +1891,7 @@ Ext.onReady( function() {
 						
 						var filterField = Ext.getCmp('filter_' + id);
 						var filterValue = "";
-						if( filterField.hideValue = true )
+						if( filterField.xtype == 'combobox' )
 						{
 							var values = Ext.getCmp('filter_' + id).getValue();
 							for( var i in values ){
@@ -1908,7 +1907,7 @@ Ext.onReady( function() {
 						if( filterValue!=''){
 							filterValue = filterValue.toLowerCase();
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-							filter += '_' + filterOpt + ' ';
+							filter += filterOpt + ' ';
 						
 							if( filterOpt == 'IN' )
 							{
@@ -2162,7 +2161,7 @@ Ext.onReady( function() {
 						
 						var filterField = Ext.getCmp('filter_' + id);
 						var filterValue = "";
-						if( filterField.hideValue = true )
+						if( filterField.xtype == 'combobox' )
 						{
 							var values = Ext.getCmp('filter_' + id).getValue();
 							for( var i in values ){
@@ -2294,7 +2293,7 @@ Ext.onReady( function() {
 						
 						var filterField = Ext.getCmp('filter_' + id);
 						var filterValue = "";
-						if( filterField.hideValue = true )
+						if( filterField.xtype == 'combobox' )
 						{
 							var values = Ext.getCmp('filter_' + id).getValue();
 							for( var i in values ){

@@ -27,10 +27,8 @@
 						<th># </th>
 						#set($index = 0)
 						#set( $noHeader = $grid.getHeaders().size() )
-						#set( $metaData = $noHeader - $valueTypes.size() - 3 )
 						#foreach( $col in $grid.getHeaders() )
-							#if( $index == 1 
-								|| ( $index > $metaData && $index < $noHeader - 2 ))
+							#if( $index == 1 || ( $index > 2 && $index < $noHeader - 2 ))
 								<th>$col.name</th>
 							#end
 							#set($index = $index + 1)
@@ -54,7 +52,7 @@
 								#elseif($velocityCount == $noCols - 1)
 									#set($completed = $col)
 								#elseif( $index == 1 
-									|| ( $index > $metaData && $index < $noHeader - 2 ))
+									|| ( $index > 2 && $index < $noHeader - 2 ))
 									<td>$!col</td>
 								#end
 								#set($index = $index + 1)
