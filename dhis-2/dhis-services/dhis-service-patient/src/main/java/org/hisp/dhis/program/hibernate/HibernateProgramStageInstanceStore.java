@@ -674,7 +674,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-        System.out.println( "\n\n === \n " + sql );
+        
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
