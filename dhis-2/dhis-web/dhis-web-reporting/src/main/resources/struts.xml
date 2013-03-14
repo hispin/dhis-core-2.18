@@ -113,12 +113,6 @@
       <result name="success" type="outputStreamResult" />
     </action>
 
-    <action name="validateReport" class="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="getReportTemplate" class="org.hisp.dhis.reporting.reportviewer.action.GetReportTemplateAction">
       <result name="success" type="outputStreamResult" />
     </action>
@@ -151,6 +145,7 @@
 
     <action name="saveTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction">
       <result name="success" type="redirect">displayManageTableForm.action</result>
+      <param name="anyAuthorities">F_REPORTTABLE_PUBLIC_ADD,F_REPORTTABLE_PRIVATE_ADD</param>
     </action>
 
     <action name="getReportParams" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction">
@@ -165,16 +160,11 @@
       <param name="page">/dhis-web-reporting/addTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/table.js,javascript/lists.js</param>
+      <param name="anyAuthorities">F_REPORTTABLE_PUBLIC_ADD,F_REPORTTABLE_PRIVATE_ADD</param>
     </action>
 
     <action name="getTable" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction">
       <result name="success" type="velocity-json">/dhis-web-reporting/jsonTable.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="validateTable" class="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
