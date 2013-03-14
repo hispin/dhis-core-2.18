@@ -27,11 +27,6 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -49,8 +44,12 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
@@ -64,7 +63,7 @@ public class DefaultMappingService
     // -------------------------------------------------------------------------
 
     private MapStore mapStore;
-    
+
     public void setMapStore( MapStore mapStore )
     {
         this.mapStore = mapStore;
@@ -151,9 +150,9 @@ public class DefaultMappingService
     /**
      * Returns the relevant OrganisationUnits for the given parent identifier
      * and / or level.
-     * 
+     *
      * @param parentOrganisationUnitId the OrganisationUnit level.
-     * @param level the OrganisationUnit level.
+     * @param level                    the OrganisationUnit level.
      * @return a collection of OrganisationUnits.
      */
     private Collection<OrganisationUnit> getOrganisationUnits( Integer parentOrganisationUnitId, Integer level )
@@ -187,12 +186,12 @@ public class DefaultMappingService
      * and level must be specified. Period should be specified with "real time"
      * aggregation strategy, any may be specified with "batch" aggregation
      * strategy.
-     * 
-     * @param indicatorId the Indicator identifier.
-     * @param periodId the Period identifier. Ignored if null.
+     *
+     * @param indicatorId              the Indicator identifier.
+     * @param periodId                 the Period identifier. Ignored if null.
      * @param parentOrganisationUnitId the parent OrganisationUnit identifier.
-     *        Ignored if null.
-     * @param level the OrganisationUnit level. Ignored if null.
+     *                                 Ignored if null.
+     * @param level                    the OrganisationUnit level. Ignored if null.
      * @return a collection of AggregatedMapValues.
      */
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
@@ -227,12 +226,12 @@ public class DefaultMappingService
      * and level must be specified. Period should be specified with "real time"
      * aggregation strategy, any may be specified with "batch" aggregation
      * strategy.
-     * 
-     * @param dataElementId the DataElement identifier.
-     * @param periodId the Period identifier. Ignored if null.
+     *
+     * @param dataElementId            the DataElement identifier.
+     * @param periodId                 the Period identifier. Ignored if null.
      * @param parentOrganisationUnitId the parent OrganisationUnit identifier.
-     *        Ignored if null.
-     * @param level the OrganisationUnit level. Ignored if null.
+     *                                 Ignored if null.
+     * @param level                    the OrganisationUnit level. Ignored if null.
      * @return a collection of AggregatedMapValues.
      */
     public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
@@ -302,7 +301,7 @@ public class DefaultMappingService
     {
         return mapLegendStore.save( mapLegend );
     }
-    
+
     public void deleteMapLegend( MapLegend mapLegend )
     {
         mapLegendStore.delete( mapLegend );
@@ -400,41 +399,37 @@ public class DefaultMappingService
     {
         return mapStore.save( map );
     }
-    
+
     public void updateMap( Map map )
     {
         mapStore.update( map );
     }
-    
+
     public Map getMap( int id )
     {
         return mapStore.get( id );
     }
-    
+
     public Map getMap( String uid )
     {
         return mapStore.getByUid( uid );
     }
-    
+
     public void deleteMap( Map map )
     {
         mapStore.delete( map );
     }
-    
+
     public Collection<Map> getSystemAndUserMaps()
     {
-        User user = currentUserService.getCurrentUser();
-        
-        return mapStore.getAccessibleByUser( user );
+        return mapStore.getAll();
     }
-    
-    public List<Map> getAccessibleMapsBetweenLikeName( String name, int first, int max )
+
+    public List<Map> getMapsBetweenLikeName( String name, int first, int max )
     {
-        User user = currentUserService.getCurrentUser();
-        
-        return mapStore.getAccessibleBetweenLikeName( user, name, first, max );
+        return mapStore.getAllLikeNameOrderedName( name, first, max );
     }
-        
+
     // -------------------------------------------------------------------------
     // MapView
     // -------------------------------------------------------------------------
@@ -443,7 +438,7 @@ public class DefaultMappingService
     {
         return mapViewStore.save( mapView );
     }
-    
+
     public void updateMapView( MapView mapView )
     {
         mapViewStore.update( mapView );
@@ -515,7 +510,7 @@ public class DefaultMappingService
             for ( MapView mapView : mapViews )
             {
                 //TODO poor performance, fix
-                
+
                 if ( mapView.getParentOrganisationUnit() != null )
                 {
                     mapView.getParentOrganisationUnit().setLevel(
@@ -526,7 +521,7 @@ public class DefaultMappingService
 
         return mapViews;
     }
-    
+
     public Collection<MapView> getMapViewsBetweenByName( String name, int first, int max )
     {
         return mapViewStore.getAllLikeNameOrderedName( name, first, max );
