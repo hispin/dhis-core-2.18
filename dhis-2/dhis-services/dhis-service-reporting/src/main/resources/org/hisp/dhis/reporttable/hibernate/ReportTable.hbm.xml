@@ -116,11 +116,13 @@
 
     <property name="topLimit" />
     
+    <property name="totals" />
+    
     <property name="subtotals" />
     
     <property name="hideEmptyRows" />
     
-    <property name="numberFormatting" />
+    <property name="digitGroupSeparator" />
     
     <property name="displayDensity" />
     

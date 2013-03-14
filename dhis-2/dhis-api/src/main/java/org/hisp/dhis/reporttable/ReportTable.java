@@ -306,6 +306,11 @@ public class ReportTable
     /**
      * Indicates rendering of sub-totals for the table.
      */
+    private boolean totals;
+
+    /**
+     * Indicates rendering of sub-totals for the table.
+     */
     private boolean subtotals;
 
     /**
@@ -316,7 +321,7 @@ public class ReportTable
     /**
      * Indicates rendering of number formatting for the table.
      */
-    private String numberFormatting;
+    private String digitGroupSeparator;
     
     /**
      * The display density of the text in the table.
@@ -1385,6 +1390,19 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isTotals()
+    {
+        return totals;
+    }
+
+    public void setTotals( boolean totals )
+    {
+        this.totals = totals;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public boolean isSubtotals()
     {
         return subtotals;
@@ -1411,14 +1429,14 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public String getNumberFormatting()
+    public String getDigitGroupSeparator()
     {
-        return numberFormatting;
+        return digitGroupSeparator;
     }
 
-    public void setNumberFormatting( String numberFormatting )
+    public void setDigitGroupSeparator( String digitGroupSeparator )
     {
-        this.numberFormatting = numberFormatting;
+        this.digitGroupSeparator = digitGroupSeparator;
     }
 
     @JsonProperty
@@ -1650,9 +1668,10 @@ public class ReportTable
             reportParams = reportTable.getReportParams() == null ? reportParams : reportTable.getReportParams();
             sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();
             topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
+            totals = reportTable.isTotals();
             subtotals = reportTable.isSubtotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
-            numberFormatting = reportTable.getNumberFormatting();
+            digitGroupSeparator = reportTable.getDigitGroupSeparator();
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
             userOrganisationUnit = reportTable.isUserOrganisationUnit();

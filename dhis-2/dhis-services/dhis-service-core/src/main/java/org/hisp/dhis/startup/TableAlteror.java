@@ -429,13 +429,14 @@ public class TableAlteror
         executeSql( "update reporttable set lastfinancialyear = false where lastfinancialyear is null" );
         executeSql( "update reporttable set last5financialyears = false where last5financialyears is null" );
         executeSql( "update reporttable set cumulative = false where cumulative is null" );
-        executeSql( "update reporttable set subtotals = false where subtotals is null" );
         executeSql( "update reporttable set userorganisationunit = false where userorganisationunit is null" );
         executeSql( "update reporttable set userorganisationunitchildren = false where userorganisationunitchildren is null" );
+        executeSql( "update reporttable set totals = true where totals is null" );
+        executeSql( "update reporttable set subtotals = true where subtotals is null" );
+        executeSql( "update reporttable set hideemptyrows = false where hideemptyrows is null" );
         executeSql( "update reporttable set displaydensity = 'normal' where displaydensity is null" );
         executeSql( "update reporttable set fontsize = 'normal' where fontsize is null" );
-        executeSql( "update reporttable set hideemptyrows = false where hideemptyrows is null" );
-        executeSql( "update reporttable set numberformatting = 'space' where numberformatting is null" );
+        executeSql( "update reporttable set digitgroupseparator = 'space' where digitgroupseparator is null" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
         executeSql( "update chart set reportingbimonth = false where reportingbimonth is null" );
