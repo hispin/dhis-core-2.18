@@ -214,9 +214,22 @@ public class JdbcAnalyticsManager
         
         for ( DataQueryParams filterParams : params.getPartitionFilterParams() )
         {
-            sql += "select " + getCommaDelimitedString( filterParams.getQueryDimensions() ) + ", value as value ";
+            sql += "select " + getCommaDelimitedString( filterParams.getQueryDimensions() ) + ", ";
             
-            sql += getFromWhereClause( filterParams );
+            if ( params.isAggregationType( AVERAGE_INT ) )
+            {
+                sql += "daysxvalue";
+            }
+            else if ( params.isAggregationType( AVERAGE_BOOL ) )
+            {
+                sql += "daysxvalue, daysno";
+            }
+            else
+            {
+                sql += "value";
+            }
+            
+            sql += " " + getFromWhereClause( filterParams );
             
             sql += "union all ";
         }
