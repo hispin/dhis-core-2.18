@@ -11,8 +11,6 @@
 	        'rules' : getValidationRules( "indicator" )
 	    } );
 
-	    // checkValueIsExist( "name", "validateIndicator.action" );
-	    // checkValueIsExist( "shortName", "validateIndicator.action" );
 	    checkValueIsExist( "code", "validateIndicator.action" );
 	} );
 
