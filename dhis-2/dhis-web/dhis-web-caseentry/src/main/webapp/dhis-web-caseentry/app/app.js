@@ -469,10 +469,21 @@ Ext.onReady( function() {
 				params.value = '=';
 				
 				if(valueType == 'string' || valueType == 'list' || valueType == 'username' ){
-					params.store = new Ext.data.ArrayStore({
-						fields: ['value','name'],
-						data: [ ['=','='],['like',TR.i18n.like],['in',TR.i18n.in] ]
-					});
+					var fixedId = id.substring(0, id.lastIndexOf('_') );
+					if( fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
+					{
+						params.store = new Ext.data.ArrayStore({
+							fields: ['value','name'],
+							data: [ ['=','='],['in',TR.i18n.in] ]
+						});
+					}
+					else
+					{
+						params.store = new Ext.data.ArrayStore({
+							fields: ['value','name'],
+							data: [ ['=','='],['like',TR.i18n.like],['in',TR.i18n.in] ]
+						});
+					}
 				}
 				else if( valueType == 'trueOnly' || valueType == 'bool' ){
 					params.store = new Ext.data.ArrayStore({
@@ -513,7 +524,7 @@ Ext.onReady( function() {
 					var deId = id.split('_')[1];
 					var fixedId = id.substring(0, id.lastIndexOf('_') );
 					params.typeAhead = true;
-					params.forceSelection = true;
+					params.editable = true;
 					if( valueType == 'bool' || fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
 					{
 						params.queryMode = 'local';
@@ -522,9 +533,11 @@ Ext.onReady( function() {
 						params.editable = false;
 						if( fixedId=='fixedAttr_gender')
 						{
+							params.forceSelection = true;
+							params.multiSelect = true;
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['', TR.i18n.filter_value], 
+								data: [['', TR.i18n.please_select], 
 									['M', TR.i18n.male], 
 									['F', TR.i18n.female],
 									['T', TR.i18n.transgender]]
@@ -532,9 +545,12 @@ Ext.onReady( function() {
 						}
 						else if( fixedId=='fixedAttr_dobType')
 						{
+							params.forceSelection = true;
+							params.editable = false;
+							params.multiSelect = true;
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['', TR.i18n.filter_value],
+								data: [['', TR.i18n.please_select],
 									['V', TR.i18n.verified], 
 									['D', TR.i18n.declared],
 									['A', TR.i18n.approximated]]
@@ -542,9 +558,10 @@ Ext.onReady( function() {
 						}
 						else if (valueType == 'bool')
 						{
+							params.forceSelection = true;
 							params.store = new Ext.data.ArrayStore({
 								fields: ['value', 'name'],
-								data: [['', TR.i18n.filter_value], 
+								data: [['', TR.i18n.please_select], 
 									['true', TR.i18n.yes], 
 									['false', TR.i18n.no]]
 							});
@@ -558,13 +575,14 @@ Ext.onReady( function() {
 						params.editable = false;
 						params.store = new Ext.data.ArrayStore({
 							fields: ['value', 'name'],
-							data: [['', TR.i18n.filter_value],['true', TR.i18n.yes]]
+							data: [['', TR.i18n.please_select],['true', TR.i18n.yes]]
 						});
 					}
 					else if(valueType=='username'){
 						params.queryMode = 'remote';
 						params.valueField = 'u';
 						params.displayField = 'u';
+						params.multiSelect = true;
 						params.store = Ext.create('Ext.data.Store', {
 							fields: ['u'],
 							data:[],
@@ -1720,6 +1738,7 @@ Ext.onReady( function() {
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
 				}
+				
 				// Get searching values
 				p.searchingValues = [];
 				
@@ -1734,11 +1753,20 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = propId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
-						if( valueType == 'bool' || propId=='fixedAttr_gender' || propId=='fixedAttr_dobType')
+						var filterField = Ext.getCmp('filter_' + id);
+						var filterValue = "";
+						if( filterField.xtype == 'combobox' )
 						{
-							filterValue = Ext.getCmp('filter_' + id).getValue();
+							var values = Ext.getCmp('filter_' + id).getValue();
+							for( var i in values ){
+								filterValue += values[i] + ";";
+							}
+							filterValue = filterValue.substring(0,filterValue.length - 1  );
 						}
+						else{
+							filterValue = filterField.rawValue;
+						}
+						
 						var filter = propId + '_' + hidden 
 						if( filterValue!=null && filterValue!=''){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
@@ -1772,24 +1800,12 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						
-						var filterField = Ext.getCmp('filter_' + id);
-						var filterValue = "";
-						if( filterField.xtype == 'combobox' )
-						{
-							var values = Ext.getCmp('filter_' + id).getValue();
-							for( var i in values ){
-								filterValue += values[i] + ";";
-							}
-							filterValue = filterValue.substring(0,filterValue.length - 1  );
-						}
-						else{
-							filterValue = filterField.rawValue;
-						}
-						
+						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;						
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						var filter = deId + '_' + hidden + '_';
+						
 						if( filterValue!='' ){
 							filterValue = filterValue.toLowerCase();
-							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += filterOpt + ' ';
 							if( filterOpt == 'IN' )
 							{
@@ -1888,20 +1904,9 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						
 						var filterField = Ext.getCmp('filter_' + id);
-						var filterValue = "";
-						if( filterField.xtype == 'combobox' )
-						{
-							var values = Ext.getCmp('filter_' + id).getValue();
-							for( var i in values ){
-								filterValue += values[i] + ";";
-							}
-							filterValue = filterValue.substring(0,filterValue.length - 1  );
-						}
-						else{
-							filterValue = filterField.rawValue;
-						}
+						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						
 						var filter = deId + '_' + hidden + '_';
 						if( filterValue!=''){
@@ -2158,21 +2163,7 @@ Ext.onReady( function() {
 					{
 						var id = deId + '_' + idx;
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						
-						var filterField = Ext.getCmp('filter_' + id);
-						var filterValue = "";
-						if( filterField.xtype == 'combobox' )
-						{
-							var values = Ext.getCmp('filter_' + id).getValue();
-							for( var i in values ){
-								filterValue += values[i] + ";";
-							}
-							filterValue = filterValue.substring(0,filterValue.length - 1  );
-						}
-						else{
-							filterValue = filterField.rawValue;
-						}
-						
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					
 						if( filterValue!=TR.i18n.please_select)
@@ -2289,21 +2280,8 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						
-						var filterField = Ext.getCmp('filter_' + id);
-						var filterValue = "";
-						if( filterField.xtype == 'combobox' )
-						{
-							var values = Ext.getCmp('filter_' + id).getValue();
-							for( var i in values ){
-								filterValue += values[i] + ";";
-							}
-							filterValue = filterValue.substring(0,filterValue.length - 1  );
-						}
-						else{
-							filterValue = filterField.rawValue;
-						}
+						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;						
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						
 						var filter = deId.split('_')[1] + "_" + filterOpt + '_';
 					

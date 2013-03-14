@@ -674,7 +674,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-        
+
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -875,7 +875,14 @@ public class HibernateProgramStageInstanceStore
 
                 if ( column.hasQuery() )
                 {
-                    where += operator + "lower(" + column.getIdentifier() + ") " + column.getQuery() + " ";
+                    if ( column.isDateType() )
+                    {
+                        where += operator + column.getIdentifier() + " " + column.getQuery() + " ";
+                    }
+                    else
+                    {
+                        where += operator + "lower(" + column.getIdentifier() + ") " + column.getQuery() + " ";
+                    }
                     operator = "and ";
                 }
             }
@@ -890,7 +897,15 @@ public class HibernateProgramStageInstanceStore
 
                 if ( column.hasQuery() )
                 {
-                    where += operator + "lower(identifier_" + column.getIdentifier() + ") " + column.getQuery() + " ";
+                    if ( column.isDateType() )
+                    {
+                        where += operator + "identifier_" + column.getIdentifier() + " " + column.getQuery() + " ";
+                    }
+                    else
+                    {
+                        where += operator + "lower(identifier_" + column.getIdentifier() + ") " + column.getQuery()
+                            + " ";
+                    }
                     operator = "and ";
                 }
             }
@@ -905,7 +920,15 @@ public class HibernateProgramStageInstanceStore
 
                 if ( column.hasQuery() )
                 {
-                    where += operator + "lower(attribute_" + column.getIdentifier() + ") " + column.getQuery() + " ";
+                    if ( column.isDateType() )
+                    {
+                        where += operator + "attribute_" + column.getIdentifier() + " " + column.getQuery() + " ";
+                    }
+                    else
+                    {
+                        where += operator + "lower(attribute_" + column.getIdentifier() + ") " + column.getQuery()
+                            + " ";
+                    }
                     operator = "and ";
                 }
             }
@@ -939,7 +962,14 @@ public class HibernateProgramStageInstanceStore
 
                 if ( column.hasQuery() )
                 {
-                    where += operator + "lower(element_" + column.getIdentifier() + ") " + column.getQuery() + " ";
+                    if ( column.isDateType() )
+                    {
+                        where += operator + "element_" + column.getIdentifier() + " " + column.getQuery() + " ";
+                    }
+                    else
+                    {
+                        where += operator + "lower(element_" + column.getIdentifier() + ") " + column.getQuery() + " ";
+                    }
                     operator = "and ";
                 }
             }
@@ -990,7 +1020,7 @@ public class HibernateProgramStageInstanceStore
         sql += where; // filters
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
         sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
-
+        
         return sql;
     }
 
