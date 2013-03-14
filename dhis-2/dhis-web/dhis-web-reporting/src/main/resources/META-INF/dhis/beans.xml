@@ -28,11 +28,6 @@
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.document.action.ValidateDocumentAction" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction"
-    scope="prototype">
-    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction" class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
