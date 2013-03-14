@@ -24,7 +24,7 @@ settings = {
 	}
 };
 
-xSettings = {
+xLayout = {
 	col: [
 		{name: 'dx', items: ['Uvn6LCg7dVU', 'OdiHJayrsKo', 'sB79w2hiLp8']},
 		{name: 'co'}

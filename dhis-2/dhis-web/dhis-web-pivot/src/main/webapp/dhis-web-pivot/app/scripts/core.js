@@ -522,8 +522,8 @@ PT.core.getUtils = function(pt) {
 	util.pivot = {
 		getTable: function(settings, pt) {
 			var options = settings.options,
-				extendSettings,
-				getSyncronizedXSettings,
+				extendLayout,
+				getSyncronizedXLayout,
 				getParamString,
 				validateResponse,
 				extendResponse,
@@ -534,39 +534,39 @@ PT.core.getUtils = function(pt) {
 
 				dimConf = pt.conf.finals.dimension;
 
-			extendSettings = function(settings) {
-				var xSettings = Ext.clone(settings),
+			extendLayout = function(settings) {
+				var xLayout = Ext.clone(settings),
 					addDimensions,
 					addDimensionNames,
 					addSortedDimensions,
 					addSortedFilterDimensions;
 
 				addDimensions = function() {
-					xSettings.dimensions = [].concat(Ext.clone(xSettings.col) || [], Ext.clone(xSettings.row) || []);
+					xLayout.dimensions = [].concat(Ext.clone(xLayout.col) || [], Ext.clone(xLayout.row) || []);
 				}();
 
 				addDimensionNames = function() {
 					var a = [],
-						dimensions = Ext.clone(xSettings.dimensions) || [];
+						dimensions = Ext.clone(xLayout.dimensions) || [];
 
 					for (var i = 0; i < dimensions.length; i++) {
 						a.push(dimensions[i].dimensionName);
 					}
 
-					xSettings.dimensionNames = a;
+					xLayout.dimensionNames = a;
 				}();
 
 				addSortedDimensions = function() {
-					xSettings.sortedDimensions = pt.util.array.sortDimensions(Ext.clone(xSettings.dimensions) || []);
+					xLayout.sortedDimensions = pt.util.array.sortDimensions(Ext.clone(xLayout.dimensions) || []);
 				}();
 
 				addSortedFilterDimensions = function() {
-						xSettings.sortedFilterDimensions = pt.util.array.sortDimensions(Ext.clone(xSettings.filter) || []);
+						xLayout.sortedFilterDimensions = pt.util.array.sortDimensions(Ext.clone(xLayout.filter) || []);
 				}();
 
 				addNameItemsMap = function() {
 					var map = {},
-						dimensions = Ext.clone(xSettings.dimensions) || [];
+						dimensions = Ext.clone(xLayout.dimensions) || [];
 
 					for (var i = 0, dim; i < dimensions.length; i++) {
 						dim = dimensions[i];
@@ -574,17 +574,17 @@ PT.core.getUtils = function(pt) {
 						map[dim.dimensionName] = dim.items || [];
 					}
 
-					xSettings.nameItemsMap = map;
+					xLayout.nameItemsMap = map;
 				}();
 
-				return xSettings;
+				return xLayout;
 			};
 
-			getSyncronizedXSettings = function(xSettings, response) {
+			getSyncronizedXLayout = function(xLayout, response) {
 				var getHeaderNames,
 
 					headerNames,
-					newSettings;
+					newLayout;
 
 				getHeaderNames = function() {
 					var a = [];
@@ -596,7 +596,7 @@ PT.core.getUtils = function(pt) {
 					return a;
 				};
 
-				removeDimensionFromSettings = function(dimensionName) {
+				removeDimensionFromLayout = function(dimensionName) {
 					var getCleanAxis;
 
 					getAxis = function(axis) {
@@ -630,25 +630,25 @@ PT.core.getUtils = function(pt) {
 				headerNames = getHeaderNames();
 
 				// remove co from settings if it does not exist in response
-				if (Ext.Array.contains(xSettings.dimensionNames, dimConf.category.dimensionName) && !(Ext.Array.contains(headerNames, dimConf.category.dimensionName))) {
-					removeDimensionFromSettings(dimConf.category.dimensionName);
+				if (Ext.Array.contains(xLayout.dimensionNames, dimConf.category.dimensionName) && !(Ext.Array.contains(headerNames, dimConf.category.dimensionName))) {
+					removeDimensionFromLayout(dimConf.category.dimensionName);
 
-					newSettings = pt.api.Settings(settings);
+					newLayout = pt.api.Layout(settings);
 
-					if (!newSettings) {
+					if (!newLayout) {
 						return;
 					}
 
-					return extendSettings(newSettings);
+					return extendLayout(newLayout);
 				}
 				else {
-					return xSettings;
+					return xLayout;
 				}
 			};
 
-			getParamString = function(xSettings) {
-				var sortedDimensions = xSettings.sortedDimensions,
-					sortedFilterDimensions = xSettings.sortedFilterDimensions,
+			getParamString = function(xLayout) {
+				var sortedDimensions = xLayout.sortedDimensions,
+					sortedFilterDimensions = xLayout.sortedFilterDimensions,
 					paramString = '?';
 
 				for (var i = 0, sortedDim; i < sortedDimensions.length; i++) {
@@ -702,7 +702,7 @@ PT.core.getUtils = function(pt) {
 				return true;
 			};
 
-			extendResponse = function(response, xSettings) {
+			extendResponse = function(response, xLayout) {
 				var headers = response.headers,
 					metaData = response.metaData,
 					rows = response.rows;
@@ -715,7 +715,7 @@ PT.core.getUtils = function(pt) {
 					// Extend headers: index, items (ordered), size
 					for (var i = 0, header, settingsItems, responseItems, orderedResponseItems; i < headers.length; i++) {
 						header = headers[i];
-						settingsItems = xSettings.nameItemsMap[header.name],
+						settingsItems = xLayout.nameItemsMap[header.name],
 						responseItems = [];
 						orderedResponseItems = [];
 
@@ -767,7 +767,7 @@ PT.core.getUtils = function(pt) {
 
 				var createValueIds = function() {
 					var valueHeaderIndex = response.nameHeaderMap[pt.conf.finals.dimension.value.value].index,
-						dimensionNames = xSettings.dimensionNames,
+						dimensionNames = xLayout.dimensionNames,
 						idIndexOrder = [];
 
 					// idIndexOrder
@@ -1557,14 +1557,14 @@ PT.core.getUtils = function(pt) {
 
 			initialize = function() {
 				var url,
-					xSettings,
+					xLayout,
 					xResponse,
 					xColAxis,
 					xRowAxis;
 
-				xSettings = extendSettings(settings);
+				xLayout = extendLayout(settings);
 
-				pt.paramString = getParamString(xSettings);
+				pt.paramString = getParamString(xLayout);
 				url = pt.init.contextPath + '/api/analytics.json' + pt.paramString;
 
 				if (!validateUrl(url)) {
@@ -1596,17 +1596,17 @@ PT.core.getUtils = function(pt) {
 							return;
 						}
 
-						xSettings = getSyncronizedXSettings(xSettings, response);
+						xLayout = getSyncronizedXLayout(xLayout, response);
 
-						if (!xSettings) {
+						if (!xLayout) {
 							pt.util.mask.hideMask();
 							return;
 						}
 
-						xResponse = extendResponse(response, xSettings);
+						xResponse = extendResponse(response, xLayout);
 
-						xColAxis = extendAxis('col', xSettings.col, xResponse);
-						xRowAxis = extendAxis('row', xSettings.row, xResponse);
+						xColAxis = extendAxis('col', xLayout.col, xResponse);
+						xRowAxis = extendAxis('row', xLayout.row, xResponse);
 
 						html = getTableHtml(xColAxis, xRowAxis, xResponse);
 
@@ -1620,7 +1620,7 @@ PT.core.getUtils = function(pt) {
 							pt.viewport.downloadButton.enable();
 						}
 
-						pt.xSettings = xSettings;
+						pt.xLayout = xLayout;
 						pt.xResponse = xResponse;
 					}
 				});
@@ -1655,14 +1655,14 @@ PT.core.getUtils = function(pt) {
 PT.core.getAPI = function(pt) {
 	var api = {};
 
-	api.Settings = function(config) {
+	api.Layout = function(config) {
 		var col,
 			row,
 			filter,
 
 			removeEmptyDimensions,
 			getValidatedAxis,
-			validateSettings,
+			validateLayout,
 
 			defaultOptions = {
 				showTotals: true,
@@ -1738,7 +1738,7 @@ PT.core.getAPI = function(pt) {
 			return options;
 		};
 
-		validateSettings = function() {
+		validateLayout = function() {
 			var a = [].concat(Ext.clone(col), Ext.clone(row), Ext.clone(filter)),
 				dimensionNames = [],
 				dimConf = pt.conf.finals.dimension;
@@ -1767,7 +1767,7 @@ PT.core.getAPI = function(pt) {
 			var obj = {};
 
 			if (!(config && Ext.isObject(config))) {
-				alert('Settings config is not an object'); //i18n
+				alert('Layout config is not an object'); //i18n
 				return;
 			}
 
@@ -1775,7 +1775,7 @@ PT.core.getAPI = function(pt) {
 			row = getValidatedAxis(config.row);
 			filter = getValidatedAxis(config.filter);
 
-			if (!validateSettings()) {
+			if (!validateLayout()) {
 				return;
 			}
 
