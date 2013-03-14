@@ -27,10 +27,6 @@
 
 package org.hisp.dhis.program.hibernate;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -42,9 +38,12 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version $Id: HibernateProgramStore.java Dec 14, 2011 9:24:21 AM $
  */
 public class HibernateProgramStore
@@ -73,14 +72,14 @@ public class HibernateProgramStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<Program> getByType( int type )
     {
         return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<Program> get( int type, OrganisationUnit organisationUnit )
     {
@@ -102,6 +101,31 @@ public class HibernateProgramStore
                 .getUserAuthorityGroups();
 
             for ( Program program : getAll() )
+            {
+                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
+                {
+                    programs.add( program );
+                }
+            }
+        }
+        else
+        {
+            programs = getAll();
+        }
+        return programs;
+    }
+
+    @Override
+    public Collection<Program> getByCurrentUser( int type )
+    {
+        Collection<Program> programs = new HashSet<Program>();
+
+        if ( !currentUserService.currentUserIsSuper() )
+        {
+            Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
+                .getUserAuthorityGroups();
+
+            for ( Program program : getByType( type ) )
             {
                 if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
                 {
