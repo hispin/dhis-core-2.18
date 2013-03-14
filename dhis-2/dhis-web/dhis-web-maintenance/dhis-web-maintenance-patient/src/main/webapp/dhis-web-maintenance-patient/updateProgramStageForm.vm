@@ -34,7 +34,7 @@
 				<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' #if( $programStage.autoGenerateEvent && $programStage.autoGenerateEvent=='true' ) checked #end /></td>
 			</tr>
 			
-			#if($programStage.program.type!=3)
+			#if($programStage.program.type==1)
 				<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>
 		
 				<tr>

@@ -299,7 +299,7 @@
     <!-- Single-event DataEntry -->
 
     <action name="singleEventSelect"
-      class="org.hisp.dhis.caseentry.action.patient.SelectAction">
+      class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/singleEventSelect.vm</param>
