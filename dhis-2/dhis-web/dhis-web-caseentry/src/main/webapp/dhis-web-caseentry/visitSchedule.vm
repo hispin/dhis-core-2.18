@@ -13,8 +13,8 @@
 			<td></td>
 			<td>
 				<input type="button" class='large-button' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.displayName")'/>
-				<input type="button" class='large-button' id='completeProgram' value="$i18n.getString( 'complete' )" onclick='unenrollmentForm($programInstance.id)' #if( $programInstance.completed=='true') disabled #end />
-				<input type="button" class='large-button' id='incompleteProgram' value="$i18n.getString( 'incomplete' )" onclick='reenrollmentForm($programInstance.id)' #if( $programInstance.completed=='false') disabled #end/>
+				<input type="button" class='large-button' id='completeProgram' value="$i18n.getString( 'complete_quit' )" onclick='unenrollmentForm($programInstance.id)' #if( $programInstance.completed=='true') disabled #end />
+				<input type="button" class='large-button' id='incompleteProgram' value="$i18n.getString( 're_enrol' )" onclick='reenrollmentForm($programInstance.id)' #if( $programInstance.completed=='false') disabled #end/>
 			</td>
 		</tr>
 	</table>
