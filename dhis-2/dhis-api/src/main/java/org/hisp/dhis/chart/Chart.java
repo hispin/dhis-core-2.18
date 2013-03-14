@@ -366,6 +366,11 @@ public class Chart
         return userOrganisationUnit || userOrganisationUnitChildren;
     }
     
+    public boolean hasRelativePeriods()
+    {
+        return relatives != null && !relatives.isEmpty();
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

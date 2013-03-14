@@ -29,108 +29,103 @@ package org.hisp.dhis.jdbc.batchhandler;
 
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
-import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.period.RelativePeriods;
 
-/**
- * @author Lars Helge Overland
- * @version $Id$
- */
-public class ReportTableBatchHandler
-    extends AbstractBatchHandler<ReportTable>
+public class RelativePeriodsBatchHandler
+    extends AbstractBatchHandler<RelativePeriods>
 {
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
  
-    public ReportTableBatchHandler( JdbcConfiguration config )
+    public RelativePeriodsBatchHandler( JdbcConfiguration configuration )
     {
-        super( config, false, false );
+        super( configuration, false, false );
     }
-
     // -------------------------------------------------------------------------
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
     protected void setTableName()
     {
-        statementBuilder.setTableName( "reporttable" );
+        statementBuilder.setTableName( "relativeperiods" );
     }
     
     @Override
     protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumn( "reporttableid" );
+        statementBuilder.setAutoIncrementColumn( "relativeperiodsid" );
     }
     
     @Override
     protected void setIdentifierColumns()
     {
-        statementBuilder.setIdentifierColumn( "reporttableid" );
+        statementBuilder.setIdentifierColumn( "relativeperiodsid" );
     }
     
     @Override
-    protected void setIdentifierValues( ReportTable reportTable )
+    protected void setIdentifierValues( RelativePeriods relatives )
     {        
-        statementBuilder.setIdentifierValue( reportTable.getId() );
+        statementBuilder.setIdentifierValue( relatives.getId() );
     }
 
     @Override
     protected void setUniqueColumns()
     {
-        statementBuilder.setUniqueColumn( "name" );
     }
 
     @Override
-    protected void setUniqueValues( ReportTable reportTable )
+    protected void setUniqueValues( RelativePeriods relatives )
     {        
-        statementBuilder.setUniqueValue( reportTable.getName() );
     }
 
     @Override
     protected void setColumns()
     {
-        statementBuilder.setColumn( "uid" );
-        statementBuilder.setColumn( "code" );
-        statementBuilder.setColumn( "name" );
-        statementBuilder.setColumn( "regression" );
-        statementBuilder.setColumn( "doindicators" );
-        statementBuilder.setColumn( "doperiods" );
-        statementBuilder.setColumn( "dounits" );
-        
         statementBuilder.setColumn( "reportingmonth" );
+        statementBuilder.setColumn( "reportingbimonth" );
+        statementBuilder.setColumn( "reportingquarter" );
+        statementBuilder.setColumn( "lastsixmonth" );
         statementBuilder.setColumn( "monthsthisyear" );
         statementBuilder.setColumn( "quartersthisyear" );
-        statementBuilder.setColumn( "thisyear" );
+        statementBuilder.setColumn( "thisyear" );        
         statementBuilder.setColumn( "monthslastyear" );
         statementBuilder.setColumn( "quarterslastyear" );
         statementBuilder.setColumn( "lastyear" );
-        
-        statementBuilder.setColumn( "paramreportingmonth" );
-        statementBuilder.setColumn( "paramparentorganisationunit" );
-        statementBuilder.setColumn( "paramorganisationunit" );
+        statementBuilder.setColumn( "last5years" );
+        statementBuilder.setColumn( "last12months" );
+        statementBuilder.setColumn( "last3months" );
+        statementBuilder.setColumn( "last6bimonths" );        
+        statementBuilder.setColumn( "last4quarters" );
+        statementBuilder.setColumn( "last2sixmonths" );
+        statementBuilder.setColumn( "thisfinancialyear" );
+        statementBuilder.setColumn( "lastfinancialyear" );
+        statementBuilder.setColumn( "last5financialyears" );
+        statementBuilder.setColumn( "last52weeks" );
     }
 
     @Override
-    protected void setValues( ReportTable reportTable )
+    protected void setValues( RelativePeriods relatives )
     {        
-        statementBuilder.setValue( reportTable.getUid() );
-        statementBuilder.setValue( reportTable.getCode() );
-        statementBuilder.setValue( reportTable.getName() );
-        statementBuilder.setValue( reportTable.isRegression() );
-        statementBuilder.setValue( reportTable.isDoIndicators() );
-        statementBuilder.setValue( reportTable.isDoPeriods() );
-        statementBuilder.setValue( reportTable.isDoUnits() );
-        
-        statementBuilder.setValue( reportTable.getRelatives().isReportingMonth() );
-        statementBuilder.setValue( reportTable.getRelatives().isMonthsThisYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isQuartersThisYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isThisYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isMonthsLastYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isQuartersLastYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isLastYear() );
-
-        statementBuilder.setValue( reportTable.getReportParams().isParamReportingMonth() );
-        statementBuilder.setValue( reportTable.getReportParams().isParamParentOrganisationUnit() );
-        statementBuilder.setValue( reportTable.getReportParams().isParamOrganisationUnit() );        
+        statementBuilder.setValue( relatives.isReportingMonth() );
+        statementBuilder.setValue( relatives.isReportingBimonth() );
+        statementBuilder.setValue( relatives.isReportingQuarter() );
+        statementBuilder.setValue( relatives.isLastSixMonth() );
+        statementBuilder.setValue( relatives.isMonthsThisYear() );
+        statementBuilder.setValue( relatives.isQuartersThisYear() );
+        statementBuilder.setValue( relatives.isThisYear() );
+        statementBuilder.setValue( relatives.isMonthsLastYear() );
+        statementBuilder.setValue( relatives.isQuartersLastYear() );
+        statementBuilder.setValue( relatives.isLastYear() );
+        statementBuilder.setValue( relatives.isLast5Years() );
+        statementBuilder.setValue( relatives.isLast12Months() );
+        statementBuilder.setValue( relatives.isLast3Months() );
+        statementBuilder.setValue( relatives.isLast6BiMonths() );
+        statementBuilder.setValue( relatives.isLast4Quarters() );
+        statementBuilder.setValue( relatives.isLast2SixMonths() );
+        statementBuilder.setValue( relatives.isThisFinancialYear() );
+        statementBuilder.setValue( relatives.isLastFinancialYear() );
+        statementBuilder.setValue( relatives.isLast5FinancialYears() );
+        statementBuilder.setValue( relatives.isLast52Weeks() );
     }
 }

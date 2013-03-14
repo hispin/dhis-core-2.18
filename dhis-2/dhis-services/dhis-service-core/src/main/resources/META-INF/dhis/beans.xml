@@ -720,7 +720,6 @@
   <!-- Startup routine definitions -->
 
   <bean id="org.hisp.dhis.startup.TableAlteror" class="org.hisp.dhis.startup.TableAlteror">
-    <property name="statementManager" ref="statementManager" />
     <property name="name" value="TableAlteror" />
     <property name="runlevel" value="1" />
     <property name="skipInTests" value="true" />

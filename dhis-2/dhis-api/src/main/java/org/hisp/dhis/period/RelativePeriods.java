@@ -285,6 +285,14 @@ public class RelativePeriods
 
         return this;
     }
+    
+    /**
+     * Indicates whether this object contains at least one relative period.
+     */
+    public boolean isEmpty()
+    {
+        return getRelativePeriods().isEmpty();
+    }
 
     /**
      * Returns the period type for the option with the lowest frequency.

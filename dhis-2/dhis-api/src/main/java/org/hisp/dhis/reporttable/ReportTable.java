@@ -897,7 +897,7 @@ public class ReportTable
      */
     public boolean hasRelativePeriods()
     {
-        return relatives != null && !relatives.getRelativePeriods().isEmpty();
+        return relatives != null && !relatives.isEmpty();
     }
 
     public boolean isDoIndicators()
