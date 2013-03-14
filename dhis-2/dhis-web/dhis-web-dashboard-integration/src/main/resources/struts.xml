@@ -234,14 +234,5 @@
 			</result>
 		</action>
 
-		<action name="validateUserGroup"
-			class="org.hisp.dhis.dashboard.usergroup.action.ValidateUserGroupAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
 	</package>
 </struts>
