@@ -536,7 +536,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE usergroup DROP CONSTRAINT usergroup_name_key" );
         executeSql( "ALTER TABLE datadictionary DROP CONSTRAINT datadictionary_name_key" );
 
-        executeSql( "ALTER TABLE relativeperiods set lastweek = false where lastweek is null" );
+        executeSql( "update relativeperiods set lastweek = false where lastweek is null" );
+        executeSql( "update relativeperiods set last4weeks = false where last4weeks is null" );
+        executeSql( "update relativeperiods set last12weeks = false where last12weeks is null" );
         
         upgradeChartRelativePeriods();
         upgradeReportTableRelativePeriods();
