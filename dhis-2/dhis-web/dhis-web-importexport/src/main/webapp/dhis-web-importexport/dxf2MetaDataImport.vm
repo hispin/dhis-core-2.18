@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "meta_data_import" )</h3>
+<h3>$i18n.getString( "metadata_import" )</h3>
 
 <div id="inputCriteria" class="inputCriteria" style="height:144px">
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action">
