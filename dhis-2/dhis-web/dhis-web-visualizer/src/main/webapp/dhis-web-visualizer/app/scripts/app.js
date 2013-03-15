@@ -4803,6 +4803,12 @@ Ext.onReady( function() {
 													render: function() {
 														this.rendered = true;
 													},
+													afterrender: function() {
+														var node = this.getRootNode().findChild('id', DV.init.system.rootnodes[0].id, true);
+														if (node && node.expand) {
+															node.expand();
+														}
+													},
 													itemcontextmenu: function(v, r, h, i, e) {
 														v.getSelectionModel().select(r, false);
 
