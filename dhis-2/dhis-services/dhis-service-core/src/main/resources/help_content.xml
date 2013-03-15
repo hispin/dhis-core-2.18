@@ -5827,6 +5827,9 @@ For example: the date in which a person enrolls to the system.</para>
           <para><emphasis role="italic">Form details</emphasis> section - </para>
           <itemizedlist>
             <listitem>
+              <para><emphasis role="italic">Capture coordinates</emphasis> - Many types of events may be recorded at a facility or be <emphasis role="italic">owned-by</emphasis> a health worker at a facility, but actually take place somewhere in the community. This field is checked to get coordinates of the place.</para>
+            </listitem>
+            <listitem>
               <para><emphasis role="italic">Complete allowed only if validation passes</emphasis> - The event created by this program stage is completed if all validation rules are passed.</para>
             </listitem>
             <listitem>
@@ -6181,6 +6184,9 @@ For example: the date in which a person enrolls to the system.</para>
                   </imageobject>
                 </mediaobject>
               </screenshot>
+              <para>Click <emphasis role="italic">Update</emphasis> button to update enrollment date and incident date and re-schedule visit plan by the new incident date.</para>
+              <para>Click <emphasis role="italic">Complete/Quit</emphasis> button to complete/quite the active program.</para>
+              <para>Click <emphasis role="italic">Re-enroll </emphasis>button to re-enroll a completed program.</para>
               <para>After entering a  message in the field, click on (+) button in <emphasis role="italic">Message</emphasis> column to add a comment for the event. For sending a reminder message, click on (&gt;&gt;) button.</para>
               <note>
                 <para>Only allow to edit due dates of events with status as overdue or scheduled in future.</para>
@@ -6208,7 +6214,7 @@ For example: the date in which a person enrolls to the system.</para>
           <para>The <emphasis role="italic">Relationship</emphasis> section consists of relationships of the person. Click on a person in list to open his/her dashboard. Besides, there are two link in this tab - </para>
           <orderedlist>
             <listitem>
-              <para>To open Relationship management section, click <emphasis role="italic">Management</emphasis> link.</para>
+              <para>To open <emphasis role="italic">Relationship management</emphasis> section, click <emphasis role="italic">Management</emphasis> link.</para>
             </listitem>
             <listitem>
               <para>To register new person for relationship, click <emphasis role="italic">Register new person</emphasis> link.</para>
@@ -6279,7 +6285,7 @@ The case update  is designed in the same manner so that services which are recei
           </screenshot>
           <para>To add relationship for a person, you have to click on <emphasis>Search available person</emphasis> link to navigate to <emphasis>search page.</emphasis></para>
           <para>To register a new person and create relationship with the selected person, click <emphasis role="italic">Register new person</emphasis> link.</para>
-          <para>To set a relative person as representative, click on the Set as representative icon, the first icon under <emphasis>Operations</emphasis> according to the person you would like.</para>
+          <para>To set a relative person as representative, click on the <emphasis role="italic">Set as representative</emphasis> icon, the first icon under <emphasis>Operations</emphasis> according to the person you would like.</para>
         </section>
         <section>
           <title>Change person location and View person details and history</title>
@@ -6325,9 +6331,22 @@ The case update  is designed in the same manner so that services which are recei
         <section id="visit_schedule">
           <title>Visit Schedule</title>
           <para>This will be used to provide the user at a facility or in an area with a list of upcoming visits to better plan for daily/weekly activities. This can also be used as quick navigation to the data entry screen when using the system as a live/real-time data entry system.</para>
-          <para>Clicking on an event to open the data entry screen, </para>
-          <para>After selecting organisation unit on the left panel, select a program in list. Then status which you would like. Select show events since ( if any) and Show events up to ( if any ). Finally, click <emphasis role="italic">Show Event List</emphasis> button to get events which are satisfied with searching criteria.</para>
-          <para>Click <emphasis role="italic">Export XLS</emphasis> button to export the result to excel file.</para>
+          <para>To access <emphasis role="italic">Visit Schedule </emphasis>module, from the <emphasis role="italic">Services</emphasis> menu, go to the<emphasis role="italic"> Individual Records </emphasis>option. Select <emphasis role="italic">Visit Schedule</emphasis> option on left menu. Visit schedule management  is opened. </para>
+          <para>To get visit schedule for a program, please do as follows - </para>
+          <orderedlist>
+            <listitem>
+              <para>Select a program - Specify program for getting events.</para>
+            </listitem>
+            <listitem>
+              <para>Select start-date and end-date - The system gets active events based on the these dates</para>
+            </listitem>
+            <listitem>
+              <para>Use data from level(s) - Specify the level which you need to get events. If the option is Children only, individual data will be get  from the children of the selected organisation unit. If the option is Selected, individual data will be get from the selected organisation unit. If the option is All, individual data will be get from both selected organisation unit and its children.</para>
+            </listitem>
+            <listitem>
+              <para>Click <emphasis role="italic">Generate</emphasis> button to generate visit schedule. The result is displayed below. And click <emphasis role="italic">Export XLS </emphasis>button to export the result to excel file</para>
+            </listitem>
+          </orderedlist>
           <screenshot>
             <mediaobject>
               <imageobject>
@@ -6335,13 +6354,26 @@ The case update  is designed in the same manner so that services which are recei
               </imageobject>
             </mediaobject>
           </screenshot>
+          <para>Click active event below <emphasis role="italic">Program stage </emphasis>column or <emphasis role="italic">second icon</emphasis>, corresponding to the event which you would like to open the data entry screen.</para>
+          <para>Click <emphasis role="italic">Person Dashboard</emphasis> icon, the <emphasis role="italic">first icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open dashboard of the person corresponding to the event.</para>
+          <para>Click <emphasis role="italic">Person details and history</emphasis> icon, the <emphasis role="italic">third icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open the person history.</para>
         </section>
         <section id="program_tracking">
           <title>Program Tracking</title>
           <para>This function supports the work practices around tracking persons within a health program that have not shown up for a scheduled visit, e.g. that are lost to follow-up.</para>
-          <para>After selecting organisation unit on the left panel,  select a program in list. And click on <emphasis role="italic">List All Person</emphasis> button to load all over-due events of persons.</para>
-          <para>Click on <emphasis role="italic">person&apos;s name</emphasis> or <emphasis role="italic">Edit profile</emphasis> icon, the first icon under <emphasis role="italic">Operations</emphasis> to open his/her dashboard.</para>
-          <para>Click on an <emphasis role="italic">event <emphasis role="italic">or</emphasis> the Reschedule and set status<emphasis role="italic"> icon</emphasis>, <emphasis role="italic">the second icon <emphasis role="italic">under</emphasis></emphasis> Operations</emphasis> to re-schedule and set status for the selected event or see all tracking history for this event.</para>
+          <para>To access <emphasis role="italic">Program Tracking </emphasis>module, from the <emphasis role="italic">Services</emphasis> menu, go to the<emphasis role="italic"> Individual Records </emphasis>option and select <emphasis role="italic">Program Tracking</emphasis> option on left menu. </para>
+          <para>To get tracking for a program, please do as follows - </para>
+          <orderedlist>
+            <listitem>
+              <para>Select organisation unit on the left panel.</para>
+            </listitem>
+            <listitem>
+              <para>Select a program in list on the main panel.</para>
+            </listitem>
+            <listitem>
+              <para>Click on <emphasis role="italic">Schedule today</emphasis> button to load  over-due events happen on current date. Besides, you can select on<emphasis role="italic"> Schedule 7 days </emphasis>or <emphasis role="italic">Schedule 30 days </emphasis>button to load over-due events happen in  date range corresponding.</para>
+            </listitem>
+          </orderedlist>
           <screenshot>
             <mediaobject>
               <imageobject>
@@ -6349,6 +6381,11 @@ The case update  is designed in the same manner so that services which are recei
               </imageobject>
             </mediaobject>
           </screenshot>
+          <para>Click on <emphasis role="italic">person&apos;s name</emphasis> link or <emphasis role="italic">Person Dashboard</emphasis> icon, the<emphasis role="italic"> first ico</emphasis>n under <emphasis role="italic">Operations</emphasis> to open his/her dashboard.</para>
+          <para>Click on an <emphasis role="italic">event <emphasis role="italic">or</emphasis> the Reschedule and set status<emphasis role="italic"> icon</emphasis>, <emphasis role="italic">the <emphasis role="italic">second icon </emphasis><emphasis role="italic">
+                  <emphasis role="italic">under</emphasis>
+                </emphasis></emphasis> Operations</emphasis> to re-schedule and set status for the selected event or see all tracking history for this event.</para>
+          <para>Click <emphasis role="italic">Person details and history</emphasis> icon, the <emphasis role="italic">third icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open the person history.</para>
           <para>To search events by status and  some criteria such as name, identifiers or attributes, click on <emphasis role="italic">Search</emphasis> button next to <emphasis role="italic">List All Persons</emphasis>. A advanced search criteria is shown. After to fill search key values, click on <emphasis role="italic">Search</emphasis> button on this form to display result or click on <emphasis role="italic">Send message</emphasis> button to send a reminder message for person in result.</para>
           <screenshot>
             <mediaobject>
@@ -6372,7 +6409,7 @@ The case update  is designed in the same manner so that services which are recei
               <para>The system loads multi events with registration which belong to the selected organisation unit.</para>
             </listitem>
             <listitem>
-              <para>Select a program in the list and click on <emphasis role="italic">List All Person </emphasis> button. An event list  of persons who enrolled into the selected program is shown.</para>
+              <para>Select a program in the list and click on <emphasis role="italic">List All Person </emphasis>button. An event list  of persons who enrolled into the selected program is shown.</para>
               <screenshot>
                 <mediaobject>
                   <imageobject>
@@ -6382,8 +6419,11 @@ The case update  is designed in the same manner so that services which are recei
               </screenshot>
             </listitem>
             <listitem>
-              <para>Click an event or click on <emphasis role="italic">Data entry</emphasis> icon, the second icon under <emphasis role="italic">Operations</emphasis> to open data entry form.</para>
-              <para>After filling and selecting data for a form. You have to click on <emphasis>Run validation</emphasis> button to check whether your inputs are valid. Then, click on <emphasis>Complete</emphasis> button to finish the entry.</para>
+              <para>Click on <emphasis role="italic">person&apos;s name</emphasis> link or <emphasis role="italic">Person Dashboard</emphasis> icon, the<emphasis role="italic"> first ico</emphasis>n under <emphasis role="italic">Operations</emphasis> to open his/her dashboard.</para>
+              <para>Click on an <emphasis role="italic">event <emphasis role="italic">or</emphasis> the Reschedule and set status<emphasis role="italic"> icon</emphasis>, <emphasis role="italic">the <emphasis role="italic">second icon </emphasis><emphasis role="italic">
+                      <emphasis role="italic">under</emphasis>
+                    </emphasis></emphasis> Operations</emphasis> to re-schedule and set status for the selected event or see all tracking history for this event.</para>
+              <para>To search events by status and  some criteria such as name, identifiers or attributes, click on <emphasis role="italic">Search</emphasis> button next to <emphasis role="italic">List All Persons</emphasis>. A advanced search criteria is shown. After to fill search key values, click on <emphasis role="italic">Search</emphasis> button on this form to display result or click on <emphasis role="italic">Send message</emphasis> button to send a reminder message for person in result.</para>
             </listitem>
           </orderedlist>
           <note>
