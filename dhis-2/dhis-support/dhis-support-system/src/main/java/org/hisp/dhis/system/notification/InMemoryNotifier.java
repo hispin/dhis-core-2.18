@@ -49,7 +49,7 @@ public class InMemoryNotifier
 {
     private static final Log log = LogFactory.getLog( InMemoryNotifier.class );
     
-    private int MAX_SIZE = 100;
+    private int MAX_SIZE = 75;
     
     private TaskLocalList<Notification> notifications;
     

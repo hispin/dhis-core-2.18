@@ -71,6 +71,11 @@ public class JdbcAnalyticsTableManager
     
     //TODO use statement builder for double column type
     
+    public boolean validState()
+    {
+        return jdbcTemplate.queryForRowSet( "select dataelementid from datavalue limit 1" ).next();
+    }
+    
     public String getTableName()
     {
         return "analytics";

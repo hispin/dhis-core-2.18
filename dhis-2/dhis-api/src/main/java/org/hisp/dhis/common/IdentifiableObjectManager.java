@@ -27,14 +27,13 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.hisp.dhis.common.NameableObject.NameableProperty;
-
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.NameableObject.NameableProperty;
 
 /**
  * @author Lars Helge Overland
