@@ -144,7 +144,7 @@ public class ImportDataValueAction
 
         TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
 
-        notifier.clear( taskId, TaskCategory.DATAVALUE_IMPORT );
+        notifier.clear( taskId );
         
         InputStream in = new FileInputStream( upload );
         

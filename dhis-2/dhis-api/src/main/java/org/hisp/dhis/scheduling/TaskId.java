@@ -40,7 +40,7 @@ public class TaskId
     
     private User user;
     
-    public TaskId()
+    protected TaskId()
     {
     }
     
@@ -60,6 +60,11 @@ public class TaskId
         }
         
         return id;
+    }
+    
+    public TaskCategory getCategory()
+    {
+        return category;
     }
     
     @Override

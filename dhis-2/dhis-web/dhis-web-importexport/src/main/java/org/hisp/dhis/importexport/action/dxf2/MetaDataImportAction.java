@@ -103,7 +103,7 @@ public class MetaDataImportAction
 
         TaskId taskId = new TaskId( TaskCategory.METADATA_IMPORT, currentUserService.getCurrentUser() );
 
-        notifier.clear( taskId, TaskCategory.METADATA_IMPORT );
+        notifier.clear( taskId );
         
         InputStream in = new FileInputStream( upload );
         in = StreamUtils.wrapAndCheckCompressionFormat( in );

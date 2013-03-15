@@ -29,11 +29,9 @@ package org.hisp.dhis.system.notification;
 
 import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;
 import static org.hisp.dhis.scheduling.TaskCategory.DATAVALUE_IMPORT;
-import static org.hisp.dhis.scheduling.TaskCategory.METADATA_EXPORT;
 import static org.hisp.dhis.scheduling.TaskCategory.METADATA_IMPORT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -61,23 +59,23 @@ public class NotifierTest
     @Test
     public void testNotifiy()
     {
-        notifier.notify( id1, DATAVALUE_IMPORT, "Import started" );
-        notifier.notify( id1, DATAVALUE_IMPORT, "Import working" );
-        notifier.notify( id1, DATAVALUE_IMPORT, "Import done" );
-        notifier.notify( id2, DATAMART, "Process started" );
-        notifier.notify( id2, DATAMART, "Process done" );
+        notifier.notify( id1, "Import started" );
+        notifier.notify( id1, "Import working" );
+        notifier.notify( id1, "Import done" );
+        notifier.notify( id2, "Process started" );
+        notifier.notify( id2, "Process done" );
         
-        List<Notification> notifications = notifier.getNotifications( id1, DATAVALUE_IMPORT, null );
+        List<Notification> notifications = notifier.getNotifications( id1, null );
         
         assertNotNull( notifications );
         assertEquals( 3, notifications.size() );
         
-        notifications = notifier.getNotifications( id2, DATAMART, null );
+        notifications = notifier.getNotifications( id2, null );
         
         assertNotNull( notifications );
         assertEquals( 2, notifications.size() );
 
-        notifications = notifier.getNotifications( id3, METADATA_IMPORT, null );
+        notifications = notifier.getNotifications( id3, null );
         
         assertNotNull( notifications );
         assertEquals( 0, notifications.size() );
@@ -86,37 +84,33 @@ public class NotifierTest
     @Test
     public void testClearNotifications()
     {
-        notifier.notify( id1, DATAVALUE_IMPORT, "Import started" );
-        notifier.notify( id1, DATAVALUE_IMPORT, "Import working" );
-        notifier.notify( id1, DATAVALUE_IMPORT, "Import done" );
-        notifier.notify( id2, DATAMART, "Process started" );
-        notifier.notify( id2, DATAMART, "Process done" );
+        notifier.clear( id1 );
         
-        assertEquals( 3, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
-        assertEquals( 2, notifier.getNotifications( id2, DATAMART, null ).size() );
+        notifier.notify( id1, "Import started" );
+        notifier.notify( id1, "Import working" );
+        notifier.notify( id1, "Import done" );
+        notifier.notify( id2, "Process started" );
+        notifier.notify( id2, "Process done" );
         
-        notifier.clear( id1, METADATA_EXPORT );
-
-        assertEquals( 3, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
-        assertEquals( 2, notifier.getNotifications( id2, DATAMART, null ).size() );
+        assertEquals( 3, notifier.getNotifications( id1, null ).size() );
+        assertEquals( 2, notifier.getNotifications( id2, null ).size() );
         
-        notifier.clear( id1, DATAVALUE_IMPORT );
+        notifier.clear( id1 );
 
-        assertEquals( 0, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
-        assertEquals( 2, notifier.getNotifications( id2, DATAMART, null ).size() );
+        assertEquals( 0, notifier.getNotifications( id1, null ).size() );
+        assertEquals( 2, notifier.getNotifications( id2, null ).size() );
 
-        notifier.clear( id2, DATAMART );
+        notifier.clear( id2 );
 
-        assertEquals( 0, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
-        assertEquals( 0, notifier.getNotifications( id2, DATAMART, null ).size() );        
+        assertEquals( 0, notifier.getNotifications( id1, null ).size() );
+        assertEquals( 0, notifier.getNotifications( id2, null ).size() );        
     }
     
     @Test
     public void testTaskSummary()
     {
-        notifier.addTaskSummary( id1, DATAVALUE_IMPORT, new Object() );
+        notifier.addTaskSummary( id1, new Object() );
         
-        assertNotNull( notifier.getTaskSummary( id1, DATAVALUE_IMPORT ) );
-        assertNull( notifier.getTaskSummary( id1, DATAMART ) );
+        assertNotNull( notifier.getTaskSummary( id1 ) );
     }
 }
