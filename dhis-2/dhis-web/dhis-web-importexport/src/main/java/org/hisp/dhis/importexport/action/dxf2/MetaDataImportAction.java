@@ -37,6 +37,7 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.action.util.ImportMetaDataTask;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -62,6 +63,9 @@ public class MetaDataImportAction
 
     @Autowired
     private Scheduler scheduler;
+    
+    @Autowired
+    private Notifier notifier;
 
     // -------------------------------------------------------------------------
     // Input
@@ -97,10 +101,12 @@ public class MetaDataImportAction
     {
         strategy = strategy != null ? strategy : ImportStrategy.NEW_AND_UPDATES;
 
+        TaskId taskId = new TaskId( TaskCategory.METADATA_IMPORT, currentUserService.getCurrentUser() );
+
+        notifier.clear( taskId, TaskCategory.METADATA_IMPORT );
+        
         InputStream in = new FileInputStream( upload );
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
-
-        TaskId taskId = new TaskId( TaskCategory.METADATA_IMPORT, currentUserService.getCurrentUser() );
 
         ImportOptions importOptions = new ImportOptions();
         importOptions.setStrategy( strategy.toString() );
