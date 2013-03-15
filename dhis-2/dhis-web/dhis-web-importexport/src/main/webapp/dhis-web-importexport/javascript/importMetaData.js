@@ -15,7 +15,7 @@ function importMetaData()
 function pingNotificationsTimeout()
 {
 	pingNotifications( 'METADATA_IMPORT', 'notificationTable', displaySummaryLink );
-	pingTimeout = setTimeout( "pingNotificationsTimeout()", 1500 );
+	pingTimeout = setTimeout( "pingNotificationsTimeout()", 2000 );
 }
 
 function displaySummaryLink()

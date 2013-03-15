@@ -27,6 +27,10 @@ package org.hisp.dhis.system.notification;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.scheduling.TaskCategory.DATAMART;
+import static org.hisp.dhis.scheduling.TaskCategory.DATAVALUE_IMPORT;
+import static org.hisp.dhis.scheduling.TaskCategory.METADATA_EXPORT;
+import static org.hisp.dhis.scheduling.TaskCategory.METADATA_IMPORT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -34,10 +38,7 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.system.notification.Notification;
-import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.user.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,41 +54,69 @@ public class NotifierTest
 
     private User user = createUser( 'A' );
     
-    private TaskId id1 = new TaskId( TaskCategory.DATAVALUE_IMPORT, user );
-    private TaskId id2 = new TaskId( TaskCategory.DATAMART, user );
-    private TaskId id3 = new TaskId( TaskCategory.METADATA_IMPORT, user );
+    private TaskId id1 = new TaskId( DATAVALUE_IMPORT, user );
+    private TaskId id2 = new TaskId( DATAMART, user );
+    private TaskId id3 = new TaskId( METADATA_IMPORT, user );
     
     @Test
     public void testNotifiy()
     {
-        notifier.notify( id1, TaskCategory.DATAVALUE_IMPORT, "Import started" );
-        notifier.notify( id1, TaskCategory.DATAVALUE_IMPORT, "Import working" );
-        notifier.notify( id1, TaskCategory.DATAVALUE_IMPORT, "Import done" );
-        notifier.notify( id2, TaskCategory.DATAMART, "Process started" );
-        notifier.notify( id2, TaskCategory.DATAMART, "Process done" );
+        notifier.notify( id1, DATAVALUE_IMPORT, "Import started" );
+        notifier.notify( id1, DATAVALUE_IMPORT, "Import working" );
+        notifier.notify( id1, DATAVALUE_IMPORT, "Import done" );
+        notifier.notify( id2, DATAMART, "Process started" );
+        notifier.notify( id2, DATAMART, "Process done" );
         
-        List<Notification> notifications = notifier.getNotifications( id1, TaskCategory.DATAVALUE_IMPORT, null );
+        List<Notification> notifications = notifier.getNotifications( id1, DATAVALUE_IMPORT, null );
         
         assertNotNull( notifications );
         assertEquals( 3, notifications.size() );
         
-        notifications = notifier.getNotifications( id2, TaskCategory.DATAMART, null );
+        notifications = notifier.getNotifications( id2, DATAMART, null );
         
         assertNotNull( notifications );
         assertEquals( 2, notifications.size() );
 
-        notifications = notifier.getNotifications( id3, TaskCategory.METADATA_IMPORT, null );
+        notifications = notifier.getNotifications( id3, METADATA_IMPORT, null );
         
         assertNotNull( notifications );
         assertEquals( 0, notifications.size() );
+    }
+
+    @Test
+    public void testClearNotifications()
+    {
+        notifier.notify( id1, DATAVALUE_IMPORT, "Import started" );
+        notifier.notify( id1, DATAVALUE_IMPORT, "Import working" );
+        notifier.notify( id1, DATAVALUE_IMPORT, "Import done" );
+        notifier.notify( id2, DATAMART, "Process started" );
+        notifier.notify( id2, DATAMART, "Process done" );
+        
+        assertEquals( 3, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
+        assertEquals( 2, notifier.getNotifications( id2, DATAMART, null ).size() );
+        
+        notifier.clear( id1, METADATA_EXPORT );
+
+        assertEquals( 3, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
+        assertEquals( 2, notifier.getNotifications( id2, DATAMART, null ).size() );
+        
+        notifier.clear( id1, DATAVALUE_IMPORT );
+
+        assertEquals( 0, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
+        assertEquals( 2, notifier.getNotifications( id2, DATAMART, null ).size() );
+
+        notifier.clear( id2, DATAMART );
+
+        assertEquals( 0, notifier.getNotifications( id1, DATAVALUE_IMPORT, null ).size() );
+        assertEquals( 0, notifier.getNotifications( id2, DATAMART, null ).size() );        
     }
     
     @Test
     public void testTaskSummary()
     {
-        notifier.addTaskSummary( id1, TaskCategory.DATAVALUE_IMPORT, new Object() );
+        notifier.addTaskSummary( id1, DATAVALUE_IMPORT, new Object() );
         
-        assertNotNull( notifier.getTaskSummary( id1, TaskCategory.DATAVALUE_IMPORT ) );
-        assertNull( notifier.getTaskSummary( id1, TaskCategory.DATAMART ) );
+        assertNotNull( notifier.getTaskSummary( id1, DATAVALUE_IMPORT ) );
+        assertNull( notifier.getTaskSummary( id1, DATAMART ) );
     }
 }
