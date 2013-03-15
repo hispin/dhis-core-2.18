@@ -27,9 +27,13 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.indicator.Indicator;
@@ -41,11 +45,6 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

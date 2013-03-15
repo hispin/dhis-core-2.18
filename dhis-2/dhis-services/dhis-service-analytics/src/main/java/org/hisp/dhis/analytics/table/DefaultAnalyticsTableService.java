@@ -83,12 +83,21 @@ public class DefaultAnalyticsTableService
     {
         Clock clock = new Clock().startClock().logTime( "Starting update" );
         
+        boolean valid = tableManager.validState();
+        
+        if ( !valid )
+        {
+            notifier.notify( taskId, DATAMART, "Table not valid, aborted update" );
+            return;
+        }
+        
         final Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
         final Date earliest = last3YearsOnly ? threeYrsAgo : tableManager.getEarliestData();
         final Date latest = tableManager.getLatestData();
         final String tableName = tableManager.getTableName();
         final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );        
-        clock.logTime( "Got partition tables: " + tables + ", earliest: " + earliest + ", latest: " + latest );
+        
+        clock.logTime( "Partition tables: " + tables + ", earliest: " + earliest + ", latest: " + latest + ", last 3 years: " + last3YearsOnly );
         
         notifier.notify( taskId, DATAMART, "Creating analytics tables" );
         

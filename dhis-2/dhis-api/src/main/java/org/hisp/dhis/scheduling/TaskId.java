@@ -36,7 +36,9 @@ public class TaskId
 {
     private static final String SEPARATOR = "-";
     
-    private String id;
+    private TaskCategory category;
+    
+    private User user;
     
     public TaskId()
     {
@@ -44,18 +46,26 @@ public class TaskId
     
     public TaskId( TaskCategory category, User user )
     {
-        this.id = category.toString() + SEPARATOR + user.getUserCredentials().getUsername();
+        this.category = category;
+        this.user = user;
     }
     
     public String getId()
     {
+        String id = category.toString();
+        
+        if ( user != null && user.getUserCredentials() != null )
+        {
+            id += SEPARATOR + user.getUserCredentials().getUsername();
+        }
+        
         return id;
     }
     
     @Override
     public int hashCode()
     {
-        return id.hashCode();
+        return getId().hashCode();
     }
 
     @Override
@@ -78,12 +88,12 @@ public class TaskId
         
         TaskId other = (TaskId) obj;
         
-        return id.equals( other.id );
+        return getId().equals( other.getId() );
     }
 
     @Override
     public String toString()
     {
-        return "[" + id + "]";
+        return "[" + getId() + "]";
     }
 }
