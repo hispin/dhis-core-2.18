@@ -1780,36 +1780,39 @@ function pingNotifications( category, tableId, completedCallback )
 	
 	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( notifications )
 	{
-		var html = '';
-		var isComplete = false;
+		var html = '', 
+			isComplete = false;
 		
-		$.each( notifications, function( i, notification )
+		if ( isDefined( notifications ) && notifications.length )
 		{
-			var first = i == 0;
-			var loaderHtml = '';			
-			
-			if ( notification.completed == "true" )
+			$.each( notifications, function( i, notification )
 			{
-				isComplete = true;
+				var first = i == 0,
+					loaderHtml = '';			
+				
+				if ( notification.completed == "true" )
+				{
+					isComplete = true;
+				}
+				
+				if ( first )
+				{
+					$( '#' + tableId ).prop( 'lastUid', notification.uid );
+					loaderHtml = _loading_bar_html;
+					$( '#loaderSpan' ).replaceWith ( '' ); // Hide previous loader bar
+				}
+				
+				html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
+				html += notification.completed == 'true' ?  '<img src="../images/completed.png">' : loaderHtml;
+				html += '</td></tr>';
+			} );
+		
+			$( '#' + tableId ).show().prepend( html );
+		
+			if ( isComplete && completedCallback && completedCallback.call )
+			{
+				completedCallback();				
 			}
-			
-			if ( first )
-			{
-				$( '#' + tableId ).prop( 'lastUid', notification.uid );
-				loaderHtml = _loading_bar_html;
-				$( '#loaderSpan' ).replaceWith ( '' ); // Hide previous loader bar
-			}		
-			
-			html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
-			html += notification.completed == "true" ?  '<img src="../images/completed.png">' : loaderHtml;
-			html += '</td></tr>';
-		} );
-		
-		$( '#' + tableId ).prepend( html );
-		
-		if ( isComplete && completedCallback && completedCallback.call )
-		{
-			completedCallback();				
 		}
 	} );
 }
