@@ -1280,11 +1280,18 @@ Ext.onReady( function() {
 								
 								// Relative periods
 								
+								Ext.Array.each(TR.cmp.params.relativeperiod.checkbox, function(item) {
+									if(item.getValue() && !item.hidden){
+										item.setValue(false);
+									}
+								});
 								for (var i = 0; i < f.relativePeriods.length; i++) {
 									TR.util.getCmp('checkbox[paramName="' + f.relativePeriods[i] + '"]').setValue(true);
 								}
 								
 								// Fixed periods
+								
+								TR.store.fixedperiod.selected.removeAll();
 								
 								var periods = [];
 								for (var i = 0; i < f.fixedPeriods.length; i++) {
