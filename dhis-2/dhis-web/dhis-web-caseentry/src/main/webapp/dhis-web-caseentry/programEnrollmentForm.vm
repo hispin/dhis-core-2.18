@@ -152,7 +152,7 @@
 			jQuery("[id=tab-3] :input").datepicker("destroy");
 			jQuery("#completeProgram").attr('disabled', true);
 			jQuery("#incompleteProgram").attr('disabled', false);
-			jQuery("img").removeAttr("onclick");
+			$('[id=tab-3]').find('img').parent().removeAttr("href");
 		#else
 			jQuery("#completeProgram").attr('disabled', false);
 			jQuery("#incompleteProgram").attr('disabled', true);
