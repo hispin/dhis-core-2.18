@@ -27,8 +27,6 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.scheduling.TaskCategory.METADATA_IMPORT;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -106,7 +104,7 @@ public class DefaultImportService
     @Override
     public ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions, TaskId taskId )
     {
-        notifier.clear( taskId, METADATA_IMPORT ).notify( taskId, METADATA_IMPORT, "Importing meta-data" );
+        notifier.clear( taskId ).notify( taskId, "Importing meta-data" );
         
         ImportSummary importSummary = new ImportSummary();
         
@@ -133,7 +131,7 @@ public class DefaultImportService
 
                         if ( taskId != null )
                         {
-                            notifier.notify( taskId, METADATA_IMPORT, message );
+                            notifier.notify( taskId, message );
                         }
                         else
                         {
@@ -173,8 +171,8 @@ public class DefaultImportService
 
         if ( taskId != null )
         {
-            notifier.notify( taskId, METADATA_IMPORT, NotificationLevel.INFO, "Import done", true ).
-                addTaskSummary( taskId, METADATA_IMPORT, importSummary );
+            notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).
+                addTaskSummary( taskId, importSummary );
         }
         else
         {

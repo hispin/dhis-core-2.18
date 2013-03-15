@@ -139,7 +139,7 @@ public class StartExportAction
     {
         TaskId taskId = new TaskId( TaskCategory.DATAMART, currentUserService.getCurrentUser() );
         
-        notifier.clear( taskId, TaskCategory.DATAMART );
+        notifier.clear( taskId );
         
         ScheduledTasks tasks = new ScheduledTasks();
 
