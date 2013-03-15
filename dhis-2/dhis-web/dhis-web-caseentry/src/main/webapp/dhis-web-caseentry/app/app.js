@@ -1214,18 +1214,18 @@ Ext.onReady( function() {
 						if (TR.store.aggregateFavorite.findExact('name', name) != -1) {
 							return;
 						}
-						TR.util.mask.showMask(TR.cmp.caseBasedFavorite.window, TR.i18n.renaming + '...');
-						var r = TR.cmp.caseBasedFavorite.grid.getSelectionModel().getSelection()[0];
+						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.renaming + '...');
+						var r = TR.cmp.aggregateFavorite.grid.getSelectionModel().getSelection()[0];
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_rename,
 							method: 'POST',
 							params: {id: r.data.id, name: name},
 							success: function() {
 								TR.store.aggregateFavorite.load({callback: function() {
-									TR.cmp.caseBasedFavorite.rename.window.close();
+									TR.cmp.aggregateFavorite.rename.window.close();
 									TR.util.mask.hideMask();
-									TR.cmp.caseBasedFavorite.grid.getSelectionModel().select(TR.store.aggregateFavorite.getAt(TR.store.caseBasedFavorite.findExact('name', name)));
-									TR.cmp.caseBasedFavorite.name.setValue(name);
+									TR.cmp.aggregateFavorite.grid.getSelectionModel().select(TR.store.aggregateFavorite.getAt(TR.store.aggregateFavorite.findExact('name', name)));
+									TR.cmp.aggregateFavorite.name.setValue(name);
 								}});
 							}
 						});
