@@ -1773,11 +1773,11 @@ function changePageSize( event )
 // -----------------------------------------------------------------------------
 
 function pingNotifications( category, tableId, completedCallback )
-{	
+{
 	var lastUid = $( '#' + tableId ).prop( 'lastUid' ); // Store on table property
 	
 	var param = lastUid ? '&lastUid=' + lastUid : '';
-		
+	
 	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( json )
 	{
 		var html = '';

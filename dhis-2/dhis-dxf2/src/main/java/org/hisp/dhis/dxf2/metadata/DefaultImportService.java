@@ -27,12 +27,20 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.scheduling.TaskCategory.METADATA_IMPORT;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -41,14 +49,6 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -106,21 +106,15 @@ public class DefaultImportService
     @Override
     public ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions, TaskId taskId )
     {
+        notifier.clear( taskId, METADATA_IMPORT ).notify( taskId, METADATA_IMPORT, "Importing meta-data" );
+        
         ImportSummary importSummary = new ImportSummary();
+        
         objectBridge.init();
 
         if ( importOptions.isDryRun() )
         {
             objectBridge.setWriteEnabled( false );
-        }
-
-        if ( taskId != null )
-        {
-            notifier.notify( taskId, TaskCategory.METADATA_IMPORT, "Importing meta-data" );
-        }
-        else
-        {
-            log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
         }
 
         for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getImportMap().entrySet() )
@@ -139,7 +133,7 @@ public class DefaultImportService
 
                         if ( taskId != null )
                         {
-                            notifier.notify( taskId, TaskCategory.METADATA_IMPORT, message );
+                            notifier.notify( taskId, METADATA_IMPORT, message );
                         }
                         else
                         {
@@ -147,6 +141,7 @@ public class DefaultImportService
                         }
 
                         ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
+                        
                         // TODO do we need this?
                         sessionFactory.getCurrentSession().flush();
 
@@ -178,8 +173,8 @@ public class DefaultImportService
 
         if ( taskId != null )
         {
-            notifier.notify( taskId, TaskCategory.METADATA_IMPORT, NotificationLevel.INFO, "Import done", true ).
-                addTaskSummary( taskId, TaskCategory.METADATA_IMPORT, importSummary );
+            notifier.notify( taskId, METADATA_IMPORT, NotificationLevel.INFO, "Import done", true ).
+                addTaskSummary( taskId, METADATA_IMPORT, importSummary );
         }
         else
         {
