@@ -150,6 +150,12 @@
 			jQuery("[id=tab-4] :input").prop('disabled', true);
 			jQuery("[id=tab-5] :input").prop('disabled', true);
 			jQuery("[id=tab-3] :input").datepicker("destroy");
+			jQuery("#completeProgram").attr('disabled', true);
+			jQuery("#incompleteProgram").attr('disabled', false);
+			jQuery("img").removeAttr("onclick");
+		#else
+			jQuery("#completeProgram").attr('disabled', false);
+			jQuery("#incompleteProgram").attr('disabled', true);
 		#end
 	});
 
