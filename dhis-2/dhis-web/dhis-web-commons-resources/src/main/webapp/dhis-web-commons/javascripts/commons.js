@@ -1778,12 +1778,12 @@ function pingNotifications( category, tableId, completedCallback )
 	
 	var param = lastUid ? '&lastUid=' + lastUid : '';
 	
-	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( json )
+	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( notifications )
 	{
 		var html = '';
 		var isComplete = false;
 		
-		$.each( json.notifications, function( i, notification )
+		$.each( notifications, function( i, notification )
 		{
 			var first = i == 0;
 			var loaderHtml = '';			
