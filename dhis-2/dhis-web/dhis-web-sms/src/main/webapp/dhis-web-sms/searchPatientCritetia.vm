@@ -5,9 +5,13 @@
 		</tr>
 		<tr>
 			<td><label>$i18n.getString( "registering_unit" )</label></td>
-			<td><input type="text" id='selectedOrgunitText' readonly style="min-width:16em"></td>
-			<td><input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='listAllPatient();'/>
-			<input type="button" class='large-button' id='advancedSearchBtn' value='$i18n.getString( "advance_search" )' onclick="jQuery('#advanced-search').toggle();" disabled="true" /></td>
+			<td>
+				<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.displayName )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
+			</td>
+			<td rowspan='2' valign='bottom'>
+				<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='listAllPatient();'/>
+				<input type="button" class='large-button' id='advancedSearchBtn' value='$i18n.getString( "advance_search" )' onclick="jQuery('#advanced-search').toggle();" disabled="true" />
+			</td>
 			<td><span id='warnmessage' style='color:red'></span></td>
 		</tr>
 		<tr id='programAddPatientTR'>
@@ -24,7 +28,7 @@
 	</tbody>
 </table>
 
-<div id="advanced-search" class='hidden'>
+<div id="advanced-search" class='hidden advanced-search'>
 	<table>
 		<tr id='programStageAddPatientTR' class='hidden'>
 			<td>$i18n.getString('status')</td>
