@@ -1056,7 +1056,7 @@
     <!-- Activity plan -->
 
     <action name="activityPlanSelect"
-      class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction">
+      class="org.hisp.dhis.caseentry.action.patient.SelectAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/activityPlanSelect.vm</param>
