@@ -1002,6 +1002,15 @@ Ext.onReady( function() {
 				
 				caseBasedReport:{
 					create: function(fn, isupdate) {
+						// Validation
+						
+						if( !TR.state.caseBasedReport.validation.objects() )
+						{
+							return;
+						}
+						
+						// Save favorite
+						
 						TR.util.mask.showMask(TR.cmp.caseBasedFavorite.window, TR.i18n.saving + '...');
 						var p = TR.state.caseBasedReport.getParams(false);
 						p.name = TR.cmp.caseBasedFavorite.name.getValue();
@@ -1170,6 +1179,15 @@ Ext.onReady( function() {
 				
 				aggregateReport:{
 					create: function(fn, isupdate) {
+						// Validation
+						
+						if( !TR.state.aggregateReport.validation.objects() )
+						{
+							return;
+						}
+						
+						// Save favorite
+						
 						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.saving + '...');
 						var p = TR.state.getParams();
 						p.name = TR.cmp.aggregateFavorite.name.getValue();
