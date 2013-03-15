@@ -29,11 +29,15 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
+import org.hisp.dhis.common.Access;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -67,11 +71,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     @Autowired
     protected IdentifiableObjectManager manager;
 
+    @Autowired
+    protected CurrentUserService currentUserService;
+
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET )
     public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -85,6 +92,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( metaData );
         }
 
+        if ( SharingUtils.isSupported( getEntityClass() ) )
+        {
+            for ( T object : entityList )
+            {
+                addAccessProperties( object );
+            }
+        }
+
         postProcessEntities( entityList );
         postProcessEntities( entityList, parameters );
 
@@ -94,7 +109,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
-    @RequestMapping(value = "/query/{query}", method = RequestMethod.GET)
+    @RequestMapping( value = "/query/{query}", method = RequestMethod.GET )
     public String query( @PathVariable String query, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -117,8 +132,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -135,6 +150,11 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( entity );
         }
 
+        if ( SharingUtils.isSupported( getEntityClass() ) )
+        {
+            addAccessProperties( entity );
+        }
+
         postProcessEntity( entity );
         postProcessEntity( entity, parameters );
 
@@ -144,7 +164,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/search/{query}", method = RequestMethod.GET)
+    @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
     public String search( @PathVariable String query, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
@@ -175,13 +195,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // POST
     //--------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.POST, consumes = { "application/xml", "text/xml" })
+    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -191,16 +211,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // PUT
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" })
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream input ) throws Exception
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream input ) throws Exception
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -209,9 +229,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // DELETE
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws Exception
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
@@ -312,6 +332,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return manager.get( getEntityClass(), uid );
     }
 
+    protected void addAccessProperties( T object )
+    {
+        Access access = new Access();
+        access.setManage( SharingUtils.canManage( currentUserService.getCurrentUser(), object ) );
+        access.setWrite( SharingUtils.canWrite( currentUserService.getCurrentUser(), object ) );
+        access.setRead( SharingUtils.canRead( currentUserService.getCurrentUser(), object ) );
+        access.setUpdate( SharingUtils.canUpdate( currentUserService.getCurrentUser(), object ) );
+        access.setDelete( SharingUtils.canDelete( currentUserService.getCurrentUser(), object ) );
+
+        ((BaseIdentifiableObject) object).setAccess( access );
+    }
+
     //--------------------------------------------------------------------------
     // Reflection helpers
     //--------------------------------------------------------------------------
@@ -322,7 +354,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     private String entitySimpleName;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected Class<T> getEntityClass()
     {
         if ( entityClass == null )
@@ -354,7 +386,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return entitySimpleName;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected T getEntityInstance()
     {
         try
