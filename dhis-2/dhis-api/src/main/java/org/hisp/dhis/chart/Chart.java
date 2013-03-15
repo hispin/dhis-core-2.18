@@ -758,8 +758,12 @@ public class Chart
             targetLineLabel = chart.getTargetLineLabel() == null ? targetLineLabel : chart.getTargetLineLabel();
             baseLineValue = chart.getBaseLineValue() == null ? baseLineValue : chart.getBaseLineValue();
             baseLineLabel = chart.getBaseLineLabel() == null ? baseLineLabel : chart.getBaseLineLabel();
-            relatives = chart.getRelatives() == null ? relatives : chart.getRelatives();
             userOrganisationUnit = chart.isUserOrganisationUnit();
+            userOrganisationUnitChildren = chart.isUserOrganisationUnitChildren();
+            showData = chart.isShowData();
+            rewindRelativePeriods = chart.isRewindRelativePeriods();
+            
+            relatives = chart.getRelatives() == null ? relatives : chart.getRelatives();
             user = chart.getUser() == null ? user : chart.getUser();
             organisationUnitGroupSet = chart.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : chart.getOrganisationUnitGroupSet();
 
