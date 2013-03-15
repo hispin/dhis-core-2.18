@@ -7,7 +7,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
 	enable('advancedSearchBtn');
 	
-	setFieldValue( "selectedOrgunitText", orgUnitNames[0] );
+	setFieldValue( "orgunitName", orgUnitNames[0] );
 }
 
 selection.setListenerFunction( organisationUnitSelected );
