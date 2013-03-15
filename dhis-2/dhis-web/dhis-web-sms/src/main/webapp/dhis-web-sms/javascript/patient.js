@@ -350,13 +350,14 @@ function getParamsForDiv( patientDiv)
 function listAllPatient()
 {
 	hideById( 'listPatientDiv' );
+	hideById( 'advanced-search' );
 	
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
 	
 	var programId = getFieldValue('programIdAddPatient');
 
-	if ( programId || programId == '' )
+	if ( !programId || programId == '' )
 	{
 		jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{ listAll:true },
 			function(){
