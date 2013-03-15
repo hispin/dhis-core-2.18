@@ -29,7 +29,7 @@ function startExport()
 function pingNotificationsTimeout()
 {
 	pingNotifications( 'DATAMART', 'notificationTable' );
-	setTimeout( "pingNotificationsTimeout()", 2000 );
+	setTimeout( "pingNotificationsTimeout()", 2500 );
 }
 
 function toggleDataMart()
