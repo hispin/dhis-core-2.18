@@ -568,6 +568,9 @@ function setSuggestedDueDate( programInstanceId )
 			lastVisit = reportDate;
 		}
 	});
+	if( lastVisit == ''){
+		lastVisit = getCurrentDate();
+	}
 	
 	var standardInterval = jQuery('#repeatableProgramStage_' + programInstanceId + ' option:selected').attr('standardInterval');
 	var date = $.datepicker.parseDate( dateFormat, lastVisit );
