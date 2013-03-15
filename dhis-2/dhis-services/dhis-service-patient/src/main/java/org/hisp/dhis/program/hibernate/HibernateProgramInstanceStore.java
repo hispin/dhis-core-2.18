@@ -40,6 +40,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceStore;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Abyot Asalefew
@@ -49,6 +50,21 @@ public class HibernateProgramInstanceStore
     extends HibernateGenericStore<ProgramInstance>
     implements ProgramInstanceStore
 {
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implemented methods
+    // -------------------------------------------------------------------------
+    
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( boolean completed )
     {
@@ -202,6 +218,15 @@ public class HibernateProgramInstanceStore
             .setProjection( Projections.projectionList().add( Projections.countDistinct( "id" ) ) ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
+    }
+
+    public void removeProgramEnrollment( ProgramInstance programInstance )
+    {
+        String sql = "delete from programstageinstance where programinstanceid=" + programInstance.getId();
+        jdbcTemplate.execute( sql );
+        
+        sql = "delete from programinstance where programinstanceid=" + programInstance.getId();
+        jdbcTemplate.execute( sql );
     }
 
 }

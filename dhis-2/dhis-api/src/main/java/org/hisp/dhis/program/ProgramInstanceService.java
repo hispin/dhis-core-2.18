@@ -98,5 +98,7 @@ public interface ProgramInstanceService
         Date endDate );
 
     int countUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    
+    void removeProgramEnrollment( ProgramInstance programInstance );
 
 }

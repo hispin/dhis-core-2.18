@@ -361,6 +361,11 @@ public class DefaultProgramInstanceService
         return programInstanceStore.countUnenrollment( program, orgunitIds, startDate, endDate );
     }
 
+    public void removeProgramEnrollment( ProgramInstance programInstance )
+    {
+        programInstanceStore.removeProgramEnrollment( programInstance );
+    }
+    
     // -------------------------------------------------------------------------
     // due-date && report-date
     // -------------------------------------------------------------------------
