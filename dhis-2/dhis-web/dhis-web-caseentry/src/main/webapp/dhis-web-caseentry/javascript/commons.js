@@ -1469,6 +1469,9 @@ function reenrollmentForm( programInstanceId )
 				jQuery('#completedTB [id=tr1_' + programInstanceId + ']').remove();
 				jQuery('#completedTB [id=tr2_' + programInstanceId + ']').remove();
 				
+				jQuery("[id=tab-1] :input").prop('disabled', false);
+				// Disable skipped events
+				jQuery("[id=tab-1] [status=5]").prop('disabled', true);
 				jQuery("[id=tab-2] :input").prop('disabled', false);
 				jQuery("[id=tab-3] :input").prop('disabled', false);
 				jQuery("[id=tab-4] :input").prop('disabled', false);
@@ -1478,7 +1481,7 @@ function reenrollmentForm( programInstanceId )
 				jQuery("[id=tab-3] :input").datepicker("destroy");
 				
 				// enable remove event icons
-				$('[id=tab-3]').find('img').parent().each(function(){
+				jQuery('[id=tab-3]').find('img').parent().each(function(){
 					var e = jQuery(this);
 					e.attr( 'href',e.attr("link") );
 				});

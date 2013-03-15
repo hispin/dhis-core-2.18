@@ -24,7 +24,7 @@
 #if( $programStageInstances.size() > 0 )
 	<table class='mainPageTable listTable' id='progarmStageListDiv' name='progarmStageListDiv' >
 		<colgroup>
-			<col width="10px">
+			<col width="20px">
 			<col width="200px">
 			<col width="150px">
 			<col width="100px">
@@ -33,7 +33,7 @@
 			<col>  
 		</colgroup>
 		<tr>
-			<th>$i18n.getString( "nr" )</th>
+			<th>$i18n.getString( "#" )</th>
 			<th>$i18n.getString( "program_stage" )</th>                   
 			<th>$i18n.getString( "due_date" )</th>       
 			<th>$i18n.getString( "status" )</th>
@@ -103,5 +103,13 @@
 #end
 
 <script>
+	#if( $programInstance.completed=='false')
+		datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
+		jQuery("#incompleteProgram").attr('disabled', true);
+	#else
+		jQuery(":input").attr('disabled', true);
+		jQuery("#incompleteProgram").attr('disabled', false);
+		$('[id=tab-3]').find('img').parent().removeAttr("href");
+	#end
 	var i18n_insert_a_due_date = '$encoder.jsEscape( $i18n.getString( "insert_a_due_date" ) , "'")';
 </script>
