@@ -1037,6 +1037,17 @@
       <param name="requiredAuthorities">F_PATIENT_DASHBOARD</param>
     </action>
 
+ 	<action name="removeProgramInstance"
+      class="org.hisp.dhis.caseentry.action.caseentry.RemoveProgramInstanceAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <param name="requiredAuthorities">F_PROGRAM_INSTANCE_DELETE</param>
+    </action>
+    
     <!-- Comment -->
 
     <action name="addPatientComment"

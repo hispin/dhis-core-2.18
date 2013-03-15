@@ -78,5 +78,6 @@ public interface ProgramInstanceStore
     Collection<ProgramInstance> getUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
     int countUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
-    
+   
+    void removeProgramEnrollment( ProgramInstance programInstance );
 }

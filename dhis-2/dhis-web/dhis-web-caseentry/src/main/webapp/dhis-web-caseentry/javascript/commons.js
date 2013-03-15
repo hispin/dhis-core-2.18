@@ -1497,6 +1497,22 @@ function reenrollmentForm( programInstanceId )
 	
 }
 
+function removeProgramInstance( programInstanceId )
+{	
+	if( confirm(i18n_remove_confirm_message) )
+	{
+		$.postJSON( 'removeProgramInstance.action', 
+		{
+			id: programInstanceId
+		}, function( json )
+		{
+			jQuery('#activeTB [id=tr1_' + programInstanceId + ']').remove();
+			jQuery('#activeTB [id=tr2_' + programInstanceId + ']').remove();
+			hideById('programEnrollmentDiv');
+		});
+	}
+}
+
 // ----------------------------------------------------------------
 // Identifiers && Attributes for selected program
 // ----------------------------------------------------------------

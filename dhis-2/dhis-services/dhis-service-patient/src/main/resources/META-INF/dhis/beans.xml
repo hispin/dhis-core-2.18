@@ -45,6 +45,7 @@
 		class="org.hisp.dhis.program.hibernate.HibernateProgramInstanceStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramInstance" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageStore" 
