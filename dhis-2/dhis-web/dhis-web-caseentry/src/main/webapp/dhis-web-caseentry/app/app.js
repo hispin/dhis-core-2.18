@@ -1711,8 +1711,13 @@ Ext.onReady( function() {
 				if( type)
 				{
 					TR.state.caseBasedReport.getURLParams();
+					var completedEvent='';
+					if( Ext.getCmp('completedEventsOpt').getValue() == true)
+					{
+						completedEvent = "&completedEventsOpt=true";
+					}
   				    var exportForm = document.getElementById('exportForm');
-					exportForm.action = url + "?type=" + type;
+					exportForm.action = url + "?type=" + type + completedEvent;
 					exportForm.submit();
 				}
 				// Show report on grid
@@ -1777,7 +1782,7 @@ Ext.onReady( function() {
 				p.orgunitIds = TR.state.orgunitIds;
 				p.userOrganisationUnit = Ext.getCmp('userOrgunit').getValue();
 				p.userOrganisationUnitChildren = Ext.getCmp('userOrgunitChildren').getValue();
-				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
+				if( Ext.getCmp('completedEventsOpt').getValue() == true )
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
 				}
@@ -1882,14 +1887,6 @@ Ext.onReady( function() {
 				document.getElementById('programStageId').value = TR.cmp.params.programStage.getValue();				
 				document.getElementById('userOrganisationUnit').value = Ext.getCmp('userOrgunit').getValue();
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
-				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
-				{
-					document.getElementById('useCompletedEvents').value = 'true';
-				}
-				else
-				{
-					document.getElementById('useCompletedEvents').value = '';
-				}
 
 				// orgunits
 				var orgunitIdList = document.getElementById('orgunitIds');
@@ -2061,8 +2058,13 @@ Ext.onReady( function() {
 				if( type)
 				{
 					TR.state.aggregateReport.getURLParams();
+  				    var completedEvent='';
+					if( Ext.getCmp('completedEventsOpt').getValue() == true )
+					{
+						completedEvent = "&completedEventsOpt=true";
+					}
   				    var exportForm = document.getElementById('exportForm');
-					exportForm.action = url + "?type=" + type;
+					exportForm.action = url + "?type=" + type + completedEvent;
 					exportForm.submit();
 				}
 				// Show report on grid
@@ -2258,7 +2260,7 @@ Ext.onReady( function() {
 				
 				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 				p.position = position;
-				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
+				if( Ext.getCmp('completedEventsOpt').getValue()== true )
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
 				}
@@ -2272,14 +2274,6 @@ Ext.onReady( function() {
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
 				document.getElementById('facilityLB').value = TR.cmp.settings.facilityLB.getValue();
 				document.getElementById('position').value = TR.state.aggregateReport.getPosition();
-				if( Ext.getCmp('completedEventsOpt').getValue() =='true')
-				{
-					document.getElementById('useCompletedEvents').value = true;
-				}
-				else
-				{
-					document.getElementById('useCompletedEvents').value = '';
-				}
 				
 				if( Ext.getCmp('dataElementGroupByCbx').getValue() != null 
 					&& Ext.getCmp('dataElementGroupByCbx').getValue() != '' ){
@@ -3011,7 +3005,10 @@ Ext.onReady( function() {
 													Ext.getCmp('deSumCbx').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(true);
-													
+													var level = Ext.getCmp('levelCombobox').getValue();
+													if( level==null || level!='' ){
+														Ext.getCmp('levelCombobox').setValue('1');
+													}
 													Ext.getCmp('dateRangeDiv').setVisible(true);
 													Ext.getCmp('patientPropertiesDiv').setVisible(true);
 													Ext.getCmp('btnSortBy').setVisible(true);
@@ -3019,6 +3016,7 @@ Ext.onReady( function() {
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
 													Ext.getCmp('dateRangeDiv').expand();
 													Ext.getCmp('filterPanel').setHeight(155);
+													
 												}
 											}
 										}
