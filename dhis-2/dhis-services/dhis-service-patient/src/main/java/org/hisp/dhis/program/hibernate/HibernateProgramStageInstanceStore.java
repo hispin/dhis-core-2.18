@@ -48,6 +48,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.i18n.I18n;
@@ -1855,11 +1856,20 @@ public class HibernateProgramStageInstanceStore
                 Integer id = iterFilter.next();
                 for ( String filterValue : deFilters.get( id ) )
                 {
+                    DataElement dataElement = dataElementService.getDataElement( id );
                     int index = filterValue.indexOf( PatientAggregateReport.SEPARATE_FILTER );
                     String operator = (filterValue.substring( 0, index ));
                     String value = filterValue.substring( index + 1, filterValue.length() );
-
-                    filter += "AND (SELECT value ";
+                    filter += "AND (SELECT ";
+                    if( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+                    {
+                        filter += "cast(value as " + statementBuilder.getDoubleColumnType()+ ") ";
+                        
+                    }
+                    else
+                    {
+                        filter += " value ";
+                    }
                     filter += "FROM patientdatavalue ";
                     filter += "WHERE programstageinstanceid=psi_1.programstageinstanceid AND ";
                     filter += "dataelementid=" + id + "  ";
