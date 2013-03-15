@@ -335,7 +335,7 @@ public class GenerateAggregateReportAction
                 }
             }
         }
-
+        
         grid = programStageInstanceService.getAggregateReport( position, programStage, orgunitIds, facilityLB,
             deGroupBy, deSum, deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, format, i18n );
 
