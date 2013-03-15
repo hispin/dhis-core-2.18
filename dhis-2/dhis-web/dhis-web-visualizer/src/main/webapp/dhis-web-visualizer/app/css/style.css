@@ -203,8 +203,9 @@ body {
 
 /* Tree panel */
 
-.dv-tree .x-tree-panel .x-grid-row .x-grid-cell-inner { /* node height */
+.dv-tree.x-tree-panel .x-grid-row .x-grid-cell-inner { /* node height, font size */
     height: 17px;
+    font-size: 10px;
 }
 
 .dv-tree .x-grid-row-selected .x-grid-cell,
@@ -519,6 +520,16 @@ body {
 /* Grid datatable first row border top */
 .dv-datatable .x-fit-item {
     border-top: 1px solid #d0d0d0;
+}
+
+.dv-datatable .x-grid-header-ct {
+	border-top: 0 none;
+	border-right: 0 none;
+	border-left: 0 none;
+}
+
+.dv-datatable .x-grid-cell-inner {
+	font-size: 10px;
 }
 
 /* Menu item icon */
