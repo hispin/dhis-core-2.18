@@ -557,6 +557,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             {
                 summaryType.incrementUpdated();
             }
+            else
+            {
+                summaryType.incrementIgnored();
+            }
         }
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
@@ -566,12 +570,20 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 {
                     summaryType.incrementUpdated();
                 }
+                else
+                {
+                    summaryType.incrementIgnored();
+                }
             }
             else
             {
                 if ( newObject( object ) )
                 {
                     summaryType.incrementImported();
+                }
+                else
+                {
+                    summaryType.incrementIgnored();
                 }
             }
         }
