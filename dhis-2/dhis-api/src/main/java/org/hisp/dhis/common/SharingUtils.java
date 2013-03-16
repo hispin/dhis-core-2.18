@@ -27,11 +27,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataset.DataSet;
@@ -45,6 +40,11 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -132,14 +132,24 @@ public final class SharingUtils
      * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
      * 2. Does user have the authority to create public instances of that object
      *
-     * @param user   User to check against
-     * @param object Object to check
+     * @param user  User to check against
+     * @param clazz Class to check
      * @return Result of test
      */
-    public static boolean canCreatePublic( User user, IdentifiableObject object )
+    public static <T extends IdentifiableObject> boolean canCreatePublic( User user, Class<T> clazz )
     {
         Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PUBLIC_AUTHORITIES.get( object.getClass() ) );
+        return authorities.contains( SHARING_OVERRIDE_AUTHORITY ) || authorities.contains( PUBLIC_AUTHORITIES.get( clazz ) );
+    }
+
+    public static boolean canCreatePublic( User user, IdentifiableObject identifiableObject )
+    {
+        return canCreatePublic( user, identifiableObject.getClass() );
+    }
+
+    public static boolean canCreatePublic( User user, String type )
+    {
+        return canCreatePublic( user, SUPPORTED_TYPES.get( type ) );
     }
 
     /**
@@ -148,16 +158,26 @@ public final class SharingUtils
      * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
      * 2. Does user have the authority to create private instances of that object
      *
-     * @param user   User to check against
-     * @param object Object to check
+     * @param user  User to check against
+     * @param clazz Class to check
      * @return Result of test
      */
-    public static boolean canCreatePrivate( User user, IdentifiableObject object )
+    public static <T extends IdentifiableObject> boolean canCreatePrivate( User user, Class<T> clazz )
     {
         Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
         return authorities.contains( SHARING_OVERRIDE_AUTHORITY )
-            || PRIVATE_AUTHORITIES.get( object.getClass() ) == null
-            || authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) );
+            || PRIVATE_AUTHORITIES.get( clazz ) == null
+            || authorities.contains( PRIVATE_AUTHORITIES.get( clazz ) );
+    }
+
+    public static boolean canCreatePrivate( User user, IdentifiableObject identifiableObject )
+    {
+        return canCreatePrivate( user, identifiableObject.getClass() );
+    }
+
+    public static boolean canCreatePrivate( User user, String type )
+    {
+        return canCreatePrivate( user, SUPPORTED_TYPES.get( type ) );
     }
 
     /**

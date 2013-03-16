@@ -19,6 +19,8 @@
 
 <h3>$i18n.getString( "create_new_indicator" )</h3>
 
+#sharingCreateNotification( "indicator" )
+
 <form id="addIndicatorForm" action="addIndicator.action" method="post" class="inputForm">
 
 <input type="hidden" id="numeratorDescription" name="numeratorDescription"/>	

@@ -15,6 +15,8 @@
 
 <h3>$i18n.getString( 'create_new_resource' )</h3>
 
+#sharingCreateNotification( "document" )
+
 <form id="documentForm" action="saveDocument.action" method="post" enctype="multipart/form-data" class="inputForm">
 <input type='hidden' id='id' name='id' value='$!document.id'/>
 <table>

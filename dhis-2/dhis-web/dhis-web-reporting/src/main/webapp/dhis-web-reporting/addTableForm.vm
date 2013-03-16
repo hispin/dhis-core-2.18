@@ -19,6 +19,8 @@
 
 <h3>$i18n.getString( "create_report_table" )</h3>
 
+#sharingCreateNotification( "reportTable" )
+
 <form id="tableForm" name="tableForm" method="post" action="saveTable.action">
 
 <input type="hidden" id="tableId" name="tableId" value="$!reportTable.id">
