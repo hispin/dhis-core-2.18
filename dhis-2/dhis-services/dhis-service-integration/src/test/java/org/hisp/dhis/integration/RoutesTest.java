@@ -133,7 +133,6 @@ public class RoutesTest
     }
 
     @Test
-    @Ignore
     public void testImportDataValueSetSDMX()
         throws Exception
     {
