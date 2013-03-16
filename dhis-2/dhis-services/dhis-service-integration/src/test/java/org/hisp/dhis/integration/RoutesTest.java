@@ -145,7 +145,6 @@ public class RoutesTest
     }
 
     @Test
-    @Ignore
     public void testImportDataValueSetXML()
         throws Exception
     {
