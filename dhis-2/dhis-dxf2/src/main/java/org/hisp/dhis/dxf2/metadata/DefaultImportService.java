@@ -27,13 +27,6 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -44,9 +37,18 @@ import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -84,30 +86,32 @@ public class DefaultImportService
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    public ImportSummary importMetaData( MetaData metaData, TaskId taskId )
+    public ImportSummary importMetaData( User user, MetaData metaData, TaskId taskId )
     {
-        return importMetaData( metaData, ImportOptions.getDefaultImportOptions(), taskId );
+        return importMetaData( user, metaData, ImportOptions.getDefaultImportOptions(), taskId );
     }
 
     @Override
-    public ImportSummary importMetaData( MetaData metaData )
+    public ImportSummary importMetaData( User user, MetaData metaData )
     {
-        return importMetaData( metaData, ImportOptions.getDefaultImportOptions() );
+        return importMetaData( user, metaData, ImportOptions.getDefaultImportOptions() );
     }
 
     @Override
-    public ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions )
+    public ImportSummary importMetaData( User user, MetaData metaData, ImportOptions importOptions )
     {
-        return importMetaData( metaData, importOptions, null );
+        return importMetaData( user, metaData, importOptions, null );
     }
 
     @Override
-    public ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions, TaskId taskId )
+    public ImportSummary importMetaData( User user, MetaData metaData, ImportOptions importOptions, TaskId taskId )
     {
+        log.info( "User '" + user.getUsername() + "' started import at " + new Date() );
+
         notifier.clear( taskId ).notify( taskId, "Importing meta-data" );
-        
+
         ImportSummary importSummary = new ImportSummary();
-        
+
         objectBridge.init();
 
         if ( importOptions.isDryRun() )
@@ -139,7 +143,7 @@ public class DefaultImportService
                         }
 
                         ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
-                        
+
                         // TODO do we need this?
                         sessionFactory.getCurrentSession().flush();
 
