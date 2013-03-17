@@ -382,11 +382,20 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     /**
      * Called every time a new idObject is to be imported.
      *
+     * @param user   User to check
      * @param object Object to import
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected boolean newObject( T object )
+    protected boolean newObject( User user, T object )
     {
+        if ( !SharingUtils.canCreatePublic( user, object ) || !SharingUtils.canCreatePrivate( user, object ) )
+        {
+            summaryType.getImportConflicts().add(
+                new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
+
+            return false;
+        }
+
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
 
@@ -419,7 +428,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     /**
      * Update idObject from old => new.
      *
-     * @param user
+     * @param user            User to check for access.
      * @param object          Object to import
      * @param persistedObject The current version of the idObject
      * @return An ImportConflict instance if there was a conflict, otherwise null
@@ -546,7 +555,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
-            if ( newObject( object ) )
+            if ( newObject( user, object ) )
             {
                 summaryType.incrementImported();
             }
@@ -577,7 +586,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                if ( newObject( object ) )
+                if ( newObject( user, object ) )
                 {
                     summaryType.incrementImported();
                 }
@@ -697,9 +706,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return period;
         }
 
-        IdentifiableObject reference = objectBridge.getObject( identifiableObject );
-
-        return reference;
+        return objectBridge.getObject( identifiableObject );
     }
 
     private Map<Field, Object> detachFields( final Object object )
