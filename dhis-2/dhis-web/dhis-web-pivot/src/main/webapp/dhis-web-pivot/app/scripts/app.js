@@ -444,7 +444,6 @@ Ext.onReady( function() {
 	PT.app.LayoutWindow = function() {
 		var dimension,
 			dimensionStore,
-			dimensionOrder,
 			row,
 			rowStore,
 			col,
@@ -470,17 +469,6 @@ Ext.onReady( function() {
 
 			dimConf = pt.conf.finals.dimension;
 
-		dimensionOrder = function() {
-			var order = [dimConf.data.dimensionName, dimConf.category.dimensionName, dimConf.period.dimensionName, dimConf.organisationUnit.dimensionName],
-				ougsOrder = [];
-
-			for (var i = 0; i < pt.init.ougs.length; i++) {
-				ougsOrder.push(pt.init.ougs[i].id);
-			}
-
-			return order.concat(ougsOrder);
-		}();
-
 		getData = function(all) {
 			var data = [];
 
@@ -495,7 +483,10 @@ Ext.onReady( function() {
 				data.push({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
 			}
 
-			return data.concat(pt.init.ougs, pt.init.degs);
+			return data.concat(
+				pt.util.array.sortObjectsByString(Ext.clone(pt.init.ougs)),
+				pt.util.array.sortObjectsByString(Ext.clone(pt.init.degs))
+			);
 		};
 
 		getStore = function(data) {
