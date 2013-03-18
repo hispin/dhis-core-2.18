@@ -306,7 +306,14 @@ public class GetPatientProgramListAction
         for ( Program program : programService.getPrograms( patient.getOrganisationUnit() ) )
 
         {
-            if ( (program.isSingleEvent() && program.isRegistration()) || !program.isSingleEvent() )
+            if ( program.isSingleEvent() && program.isRegistration() )
+            {
+                if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
+                {
+                    programs.add( program );
+                }
+            }
+            else if ( !program.isSingleEvent() )
             {
                 if ( programInstanceService.getProgramInstances( patient, program, false ).size() == 0 )
                 {
