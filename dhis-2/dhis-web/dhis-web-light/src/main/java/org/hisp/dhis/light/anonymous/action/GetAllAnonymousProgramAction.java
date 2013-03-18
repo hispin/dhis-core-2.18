@@ -77,6 +77,18 @@ public class GetAllAnonymousProgramAction
     {
         this.validated = validated;
     }
+    
+    private int orgUnitId;
+    
+    public int getOrgUnitId()
+    {
+        return orgUnitId;
+    }
+
+    public void setOrgUnitId( int orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
+    }
 
     // -------------------------------------------------------------------------
     // Implementation Action
