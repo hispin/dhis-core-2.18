@@ -108,7 +108,9 @@
 			</td>
 			<td>
 				<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
+				#if($!programInstance.patient.phoneNumber && $!programInstance.patient.phoneNumber!='')
 				<input type="button" value="&raquo;" class='tiny-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatient(byId('message_$programStageInstance.id'),'$programStageInstance.id');"/>
+				#end
 			</td>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
 			<td>
