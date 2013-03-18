@@ -65,9 +65,31 @@ body.x-windows {
 	-webkit-text-stroke: 0.2px #888;
 }
 
-.pt-accordion-options .x-panel-body-default {
+	/* Scrollbar */
+::-webkit-scrollbar {
+    width: 13px;
+    border: 0 none;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ddd;
+    border-radius: 1px;
+    margin: 2px 0;
+    border-right: 3px solid white;
+    border-left: 1px solid white;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #bbb;
+    border-radius: 1px;
+    border-right: 3px solid white;
+    border-left: 1px solid white;
+}
+
+.x-scroller-vertical {
 	border: 0 none;
 }
+
 
 	/* Disable class invisible */
 .pt-invisible .x-form-item-body {
