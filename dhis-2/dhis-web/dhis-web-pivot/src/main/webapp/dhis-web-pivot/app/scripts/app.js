@@ -46,9 +46,6 @@ Ext.onReady( function() {
 
 		init.afterRender = function() {
 
-			// Left gui
-			pt.cmp.dimension.panels[0].expand();
-
 			// Resize event handler
 			pt.viewport.westRegion.on('resize', function() {
 				var panel = pt.util.dimension.panel.getExpanded();
@@ -57,6 +54,29 @@ Ext.onReady( function() {
 					panel.onExpand();
 				}
 			});
+
+			// Left gui
+			var vph = pt.viewport.westRegion.getHeight(),
+				no = pt.init.ougs.length + pt.init.degs.length,
+				factor = 0;
+
+			console.log("westRegion.getHeight", vph);
+			console.log("no of degs and ougs", no);
+
+			if (vph > 535) {
+				var factor = (vph - 535) / 27;
+				console.log("factor", factor);
+			}
+
+			if (factor > 7) {
+				pt.viewport.accordion.setAutoScroll(false);
+				pt.viewport.westRegion.setWidth(pt.conf.layout.west_width);
+			}
+			else {
+				pt.viewport.westRegion.hasScrollbar = true;
+			}
+
+			pt.cmp.dimension.panels[0].expand();
 
 			// Load favorite from url
 			var id = pt.util.url.getUrlParam('id');
@@ -75,9 +95,19 @@ Ext.onReady( function() {
 		util.dimension = {
 			panel: {
 				setHeight: function(mx) {
-					var h = pt.viewport.westRegion.getHeight() - pt.conf.layout.west_fill;
-					mx = mx + (pt.cmp.dimension.panels.length * 28);
-					pt.cmp.dimension.panel.setHeight(h > mx ? mx : h);
+					var ph = pt.cmp.dimension.panels.length * 28,
+						h;
+
+					if (pt.viewport.westRegion.hasScrollbar) {
+						h = ph + mx;
+						pt.viewport.accordion.setHeight(pt.viewport.getHeight() - 2);
+						pt.viewport.accordionBody.setHeight(h);
+					}
+					else {
+						h = pt.viewport.westRegion.getHeight() - pt.conf.layout.west_fill;
+						mx += ph;
+						pt.viewport.accordion.setHeight(h > mx ? mx : h);
+					}
 				},
 
 				getExpanded: function() {
@@ -1959,7 +1989,9 @@ Ext.onReady( function() {
 					return data.items.length ? data : null;
 				},
 				onExpand: function() {
-					pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_indicator);
+					var h = pt.viewport.westRegion.hasScrollbar ?
+						pt.conf.layout.west_scrollbarheight_accordion_indicator : pt.conf.layout.west_maxheight_accordion_indicator;
+					pt.util.dimension.panel.setHeight(h);
 					pt.util.multiselect.setHeight(
 						[indicatorAvailable, indicatorSelected],
 						this,
@@ -2151,7 +2183,9 @@ Ext.onReady( function() {
 					return data.items.length ? data : null;
 				},
 				onExpand: function() {
-					pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_dataelement);
+					var h = pt.viewport.westRegion.hasScrollbar ?
+						pt.conf.layout.west_scrollbarheight_accordion_dataelement : pt.conf.layout.west_maxheight_accordion_dataelement;
+					pt.util.dimension.panel.setHeight(h);
 					pt.util.multiselect.setHeight(
 						[dataElementAvailable, dataElementSelected],
 						this,
@@ -2339,7 +2373,9 @@ Ext.onReady( function() {
 					return data.items.length ? data : null;
 				},
 				onExpand: function() {
-					pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_dataset);
+					var h = pt.viewport.westRegion.hasScrollbar ?
+						pt.conf.layout.west_scrollbarheight_accordion_dataset : pt.conf.layout.west_maxheight_accordion_dataset;
+					pt.util.dimension.panel.setHeight(h);
 					pt.util.multiselect.setHeight(
 						[dataSetAvailable, dataSetSelected],
 						this,
@@ -2393,7 +2429,7 @@ Ext.onReady( function() {
 						items: [
 							{
 								xtype: 'panel',
-								columnWidth: 0.35,
+								columnWidth: 0.34,
 								bodyStyle: 'border-style:none; padding:0 0 0 8px',
 								defaults: {
 									labelSeparator: '',
@@ -2435,7 +2471,7 @@ Ext.onReady( function() {
 							},
 							{
 								xtype: 'panel',
-								columnWidth: 0.32,
+								columnWidth: 0.33,
 								bodyStyle: 'border-style:none',
 								defaults: {
 									labelSeparator: '',
@@ -2498,18 +2534,18 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Quarters', //i18n pt.i18n.quarters,
+										text: 'Bi-months', //i18n
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
-										relativePeriodId: 'LAST_QUARTER',
-										boxLabel: 'Last quarter', //i18n pt.i18n.last_quarter
+										relativePeriodId: 'LAST_BIMONTH',
+										boxLabel: 'Last bi-month', //i18n
 									},
 									{
 										xtype: 'checkbox',
-										relativePeriodId: 'LAST_4_QUARTERS',
-										boxLabel: 'Last 4 quarters', //i18n pt.i18n.last_4_quarters
+										relativePeriodId: 'LAST_6_BIMONTHS',
+										boxLabel: 'Last 6 bi-months' //i18n
 									}
 								]
 							}
@@ -2522,8 +2558,45 @@ Ext.onReady( function() {
 						items: [
 							{
 								xtype: 'panel',
-								columnWidth: 0.35,
+								columnWidth: 0.34,
 								bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+								defaults: {
+									labelSeparator: '',
+									style: 'margin-bottom:2px',
+									listeners: {
+										added: function(chb) {
+											if (chb.xtype === 'checkbox') {
+												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
+											}
+										},
+										change: function() {
+											rewind.xable();
+										}
+									}
+								},
+								items: [
+									{
+										xtype: 'label',
+										text: 'Quarters', //i18n pt.i18n.quarters,
+										cls: 'pt-label-period-heading'
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_QUARTER',
+										boxLabel: 'Last quarter', //i18n pt.i18n.last_quarter
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_4_QUARTERS',
+										boxLabel: 'Last 4 quarters' //i18n pt.i18n.last_4_quarters
+									}
+								]
+							},
+							{
+								xtype: 'panel',
+								columnWidth: 0.33,
+								bodyStyle: 'border-style:none; padding:5px 0 0',
 								defaults: {
 									labelSeparator: '',
 									style: 'margin-bottom:2px',
@@ -2553,14 +2626,76 @@ Ext.onReady( function() {
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_2_SIXMONTHS',
-										boxLabel: 'Last 2 six-months', //i18n pt.i18n.last_two_six_month
+										boxLabel: 'Last 2 six-months' //i18n pt.i18n.last_two_six_month
 									}
 								]
 							},
 							{
 								xtype: 'panel',
-								columnWidth: 0.32,
+								columnWidth: 0.33,
 								bodyStyle: 'border-style:none; padding:5px 0 0',
+								defaults: {
+									labelSeparator: '',
+									style: 'margin-bottom:2px',
+									listeners: {
+										added: function(chb) {
+											if (chb.xtype === 'checkbox') {
+												pt.cmp.dimension.relativePeriod.checkbox.push(chb);
+												relativePeriod.valueComponentMap[chb.relativePeriodId] = chb;
+											}
+										},
+										change: function() {
+											rewind.xable();
+										}
+									}
+								},
+								items: [
+									{
+										xtype: 'label',
+										text: 'Financial years',
+										cls: 'pt-label-period-heading'
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_FINANCIAL_YEAR',
+										boxLabel: 'Last financial year',
+									},
+									{
+										xtype: 'checkbox',
+										relativePeriodId: 'LAST_5_FINANCIAL_YEARS',
+										boxLabel: 'Last 5 financial years'
+									}
+								]
+							}
+
+							//{
+								//xtype: 'panel',
+								//layout: 'anchor',
+								//bodyStyle: 'border-style:none; padding:5px 0 0 46px',
+								//defaults: {
+									//labelSeparator: '',
+									//style: 'margin-bottom:2px',
+								//},
+								//items: [
+									//{
+										//xtype: 'label',
+										//text: 'Options',
+										//cls: 'pt-label-period-heading-options'
+									//},
+									//rewind
+								//]
+							//}
+						]
+					},
+					{
+						xtype: 'container',
+						layout: 'column',
+						bodyStyle: 'border-style:none',
+						items: [
+							{
+								xtype: 'panel',
+								columnWidth: 0.35,
+								bodyStyle: 'border-style:none; padding:5px 0 0 10px',
 								defaults: {
 									labelSeparator: '',
 									style: 'margin-bottom:2px',
@@ -2595,28 +2730,10 @@ Ext.onReady( function() {
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_5_YEARS',
-										boxLabel: 'Last 5 years', //i18n pt.i18n.last_5_years
+										boxLabel: 'Last 5 years' //i18n pt.i18n.last_5_years
 									}
 								]
 							}
-
-							//{
-								//xtype: 'panel',
-								//layout: 'anchor',
-								//bodyStyle: 'border-style:none; padding:5px 0 0 46px',
-								//defaults: {
-									//labelSeparator: '',
-									//style: 'margin-bottom:2px',
-								//},
-								//items: [
-									//{
-										//xtype: 'label',
-										//text: 'Options',
-										//cls: 'pt-label-period-heading-options'
-									//},
-									//rewind
-								//]
-							//}
 						]
 					}
 				]
@@ -2730,7 +2847,9 @@ Ext.onReady( function() {
 					return data.items.length ? data : null;
 				},
 				onExpand: function() {
-					pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_period);
+					var h = pt.viewport.westRegion.hasScrollbar ?
+						pt.conf.layout.west_scrollbarheight_accordion_period : pt.conf.layout.west_maxheight_accordion_period;
+					pt.util.dimension.panel.setHeight(h);
 					pt.util.multiselect.setHeight(
 						[fixedPeriodAvailable, fixedPeriodSelected],
 						this,
@@ -2806,7 +2925,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'panel',
 						layout: 'column',
-						bodyStyle: 'border-style:none; padding-bottom:4px',
+						bodyStyle: 'border-style:none; padding-bottom:2px',
 						items: [
 							fixedPeriodAvailable,
 							fixedPeriodSelected
@@ -3015,7 +3134,9 @@ Ext.onReady( function() {
 					return data.items.length ? data : null;
 				},
 				onExpand: function() {
-					pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_organisationunit);
+					var h = pt.viewport.westRegion.hasScrollbar ?
+						pt.conf.layout.west_scrollbarheight_accordion_organisationunit : pt.conf.layout.west_maxheight_accordion_organisationunit;
+					pt.util.dimension.panel.setHeight(h);
 					treePanel.setHeight(this.getHeight() - pt.conf.layout.west_fill_accordion_organisationunit);
 				},
 				items: [
@@ -3204,7 +3325,9 @@ Ext.onReady( function() {
 								availableStore.load();
 							}
 
-							pt.util.dimension.panel.setHeight(pt.conf.layout.west_maxheight_accordion_dataset);
+							var h = pt.viewport.westRegion.hasScrollbar ?
+								pt.conf.layout.west_scrollbarheight_accordion_group : pt.conf.layout.west_maxheight_accordion_group;
+							pt.util.dimension.panel.setHeight(h);
 
 							pt.util.multiselect.setHeight(
 								[available, selected],
@@ -3310,60 +3433,54 @@ Ext.onReady( function() {
 				}
 			};
 
-			accordion = {
-				xtype: 'panel',
-				bodyStyle: 'border-style:none; padding:2px;',
+			accordionBody = Ext.create('Ext.panel.Panel', {
+				layout: 'accordion',
+				activeOnTop: true,
+				cls: 'pt-accordion',
+				bodyStyle: 'border:0 none; margin-bottom:2px',
+				height: 700,
+				items: function() {
+					var panels = [
+						indicator,
+						dataElement,
+						dataSet,
+						period,
+						organisationUnit
+					],
+					ougs = Ext.clone(pt.init.ougs),
+					degs = Ext.clone(pt.init.degs);
+
+					pt.util.array.sortObjectsByString(ougs);
+					pt.util.array.sortObjectsByString(degs);
+
+					panels = panels.concat(getGroupSetPanels(ougs, pt.conf.finals.dimension.organisationUnitGroupSet.objectName, 'pt-panel-title-organisationunitgroupset'));
+					panels = panels.concat(getGroupSetPanels(degs, pt.conf.finals.dimension.dataElementGroupSet.objectName, 'pt-panel-title-dataelementgroupset'));
+
+					last = panels[panels.length - 1];
+					last.cls = 'pt-accordion-last';
+
+					return panels;
+				}()
+			});
+
+			accordion = Ext.create('Ext.panel.Panel', {
+				//xtype: 'panel',
+				bodyStyle: 'border-style:none; padding:2px; padding-bottom:0; overflow-y:scroll',
 				layout: 'fit',
-				items: [
-					{
-						xtype: 'panel',
-						layout: 'accordion',
-						activeOnTop: true,
-						cls: 'pt-accordion',
-						bodyStyle: 'border:0 none',
-						height: 430,
-						items: function() {
-							var panels = [
-								indicator,
-								dataElement,
-								dataSet,
-								period,
-								organisationUnit
-							],
-							ougs = Ext.clone(pt.init.ougs),
-							degs = Ext.clone(pt.init.degs);
-
-							pt.util.array.sortObjectsByString(ougs);
-							pt.util.array.sortObjectsByString(degs);
-
-							panels = panels.concat(getGroupSetPanels(ougs, pt.conf.finals.dimension.organisationUnitGroupSet.objectName, 'pt-panel-title-organisationunitgroupset'));
-							panels = panels.concat(getGroupSetPanels(degs, pt.conf.finals.dimension.dataElementGroupSet.objectName, 'pt-panel-title-dataelementgroupset'));
-
-							last = panels[panels.length - 1];
-							last.cls = 'pt-accordion-last';
-
-							return panels;
-						}(),
-						listeners: {
-							added: function() {
-								pt.cmp.dimension.panel = this;
-							}
-						}
-					}
-				],
+				items: accordionBody,
 				listeners: {
 					added: function() {
-						pt.cmp.dimension.panel = this;
+						pt.cmp.dimension.accordion = this;
 					}
 				}
-			};
+			});
 
 			westRegion = Ext.create('Ext.panel.Panel', {
 				region: 'west',
 				preventHeader: true,
 				collapsible: true,
 				collapseMode: 'mini',
-				width: pt.conf.layout.west_width,
+				width: pt.conf.layout.west_width + 13,
 				items: accordion
 			});
 
@@ -3554,6 +3671,7 @@ Ext.onReady( function() {
 
 					//todo
 					r.relativePeriods.reportingMonth = r.relativePeriods.lastMonth;
+					r.relativePeriods.reportingBimonth = r.relativePeriods.lastBimonth;
 					r.relativePeriods.reportingQuarter = r.relativePeriods.lastQuarter;
 
 					for (var key in r.relativePeriods) {
@@ -3650,6 +3768,8 @@ Ext.onReady( function() {
 
 			viewport = Ext.create('Ext.container.Viewport', {
 				layout: 'border',
+				accordion: accordion,
+				accordionBody: accordionBody,
 				westRegion: westRegion,
 				centerRegion: centerRegion,
 				updateViewport: update,
@@ -3674,6 +3794,9 @@ Ext.onReady( function() {
 					}
 				}
 			});
+acc = accordion;
+
+wr = westRegion;
 
 			addListeners = function() {
 				pt.store.indicatorAvailable.on('load', function() {
