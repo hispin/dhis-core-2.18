@@ -107,9 +107,9 @@
 				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%">
 			</td>
 			<td>
-				<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
+				<img src='images/post_comment.png' class='img-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
 				#if($!programInstance.patient.phoneNumber && $!programInstance.patient.phoneNumber!='')
-				<input type="button" value="&raquo;" class='tiny-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatient(byId('message_$programStageInstance.id'),'$programStageInstance.id');"/>
+				<img src="images/send_sms.png" class='img-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatient(byId('message_$programStageInstance.id'),'$programStageInstance.id');"/>
 				#end
 			</td>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
