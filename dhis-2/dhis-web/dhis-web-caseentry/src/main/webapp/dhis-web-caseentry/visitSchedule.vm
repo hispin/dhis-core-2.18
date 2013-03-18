@@ -17,11 +17,17 @@
 				<input type="button" class='large-button' id='completeProgram' value="$i18n.getString( 'complete_quit' )" onclick='unenrollmentForm($programInstance.id)' />
 				<input type="button" style='width:80px' id='incompleteProgram' value="$i18n.getString( 're_enrol' )" onclick='reenrollmentForm($programInstance.id)' />
 				#set($allowRemove = 'true')
+				
+				
 				#foreach( $programStageInstance in $programStageInstances )
-					#if( $programStageInstance.executionDate )
+					#if( $!programStageInstance.executionDate 
+						|| $!programStageInstance.outboundSms.size() > 0 
+						|| $!programStageInstance.patientComments.size() > 0 )
+						
 						#set($allowRemove = 'false')
 					#end
 				#end
+				
 				#if($allowRemove == 'true')
 					<input type="button" style='width:80px' id='removeProgram' value="$i18n.getString( 'remove' )" onclick='removeProgramInstance($programInstance.id)' />
 					<script>
