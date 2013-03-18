@@ -60,17 +60,17 @@ Ext.onReady( function() {
 				no = pt.init.ougs.length + pt.init.degs.length,
 				factor = 0;
 
-			console.log("westRegion.getHeight", vph);
-			console.log("no of degs and ougs", no);
-
 			if (vph > 535) {
-				var factor = (vph - 535) / 27;
-				console.log("factor", factor);
+				var factor = (vph - 535) / 28;
 			}
 
 			if (factor > 7) {
-				pt.viewport.accordion.setAutoScroll(false);
-				pt.viewport.westRegion.setWidth(pt.conf.layout.west_width);
+				if (!Ext.isIE) {
+					pt.viewport.accordion.setAutoScroll(false);
+					pt.viewport.westRegion.setWidth(pt.conf.layout.west_width);
+					pt.viewport.accordion.getEl().setStyle('margin-right', '2px');
+					pt.viewport.accordion.doLayout();
+				}
 			}
 			else {
 				pt.viewport.westRegion.hasScrollbar = true;
@@ -280,6 +280,7 @@ Ext.onReady( function() {
 						r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
 					});
 					pt.util.store.addToStorage(s);
+					pt.util.multiselect.filterAvailable({store: s}, {store: store.indicatorSelected});
 				}
 			}
 		});
@@ -309,6 +310,7 @@ Ext.onReady( function() {
 						r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
 					});
 					pt.util.store.addToStorage(s);
+					pt.util.multiselect.filterAvailable({store: s}, {store: store.dataElementSelected});
 				}
 			}
 		});
@@ -340,6 +342,7 @@ Ext.onReady( function() {
 						r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
 					});
 					pt.util.store.addToStorage(s);
+					pt.util.multiselect.filterAvailable({store: s}, {store: store.dataSetSelected});
 				}
 			}
 		});
@@ -803,7 +806,7 @@ Ext.onReady( function() {
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: 'Hide empty rows', //i18n
-			style: 'margin-bottom:4px',
+			style: 'margin-bottom:4px'
 		});
 		pt.viewport.hideEmptyRows = hideEmptyRows;
 
@@ -1079,7 +1082,7 @@ Ext.onReady( function() {
 					favorite.relativePeriods = {};
 				}
 
-				// Setup
+				// Layout
 				if (pt.xLayout.col) {
 					var a = [];
 
@@ -1087,7 +1090,7 @@ Ext.onReady( function() {
 						a.push(pt.xLayout.col[i].dimensionName);
 					}
 
-					favorite['columnDimensions'] = a;
+					favorite.columnDimensions = a;
 				}
 
 				if (pt.xLayout.row) {
@@ -1097,7 +1100,7 @@ Ext.onReady( function() {
 						a.push(pt.xLayout.row[i].dimensionName);
 					}
 
-					favorite['rowDimensions'] = a;
+					favorite.rowDimensions = a;
 				}
 
 				if (pt.xLayout.filter) {
@@ -1107,7 +1110,7 @@ Ext.onReady( function() {
 						a.push(pt.xLayout.filter[i].dimensionName);
 					}
 
-					favorite['filterDimensions'] = a;
+					favorite.filterDimensions = a;
 				}
 			}
 
@@ -1873,7 +1876,8 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren,
 				treePanel,
 				organisationUnit,
-				groupSetIdStoreMap,
+				groupSetIdAvailableStoreMap,
+				groupSetIdSelectedStoreMap,
 				getGroupSetPanels,
 				validateSpecialCases,
 				update,
@@ -3160,7 +3164,8 @@ Ext.onReady( function() {
 				}
 			};
 
-			groupSetIdStoreMap = {};
+			groupSetIdAvailableStoreMap = {};
+			groupSetIdSelectedStoreMap = {};
 
 			getGroupSetPanels = function(groupSets, objectName, iconCls) {
 				var	getAvailableStore,
@@ -3177,6 +3182,11 @@ Ext.onReady( function() {
 						storage: {},
 						sortStore: function() {
 							this.sort('name', 'ASC');
+						},
+						reload: function() {
+							this.removeAll();
+							this.storage = {};
+							this.loadData(groupSet.items);
 						},
 						listeners: {
 							load: function(s) {
@@ -3294,7 +3304,8 @@ Ext.onReady( function() {
 					availableStore = getAvailableStore(groupSet);
 					selectedStore = getSelectedStore();
 
-					groupSetIdStoreMap[groupSet.id] = selectedStore;
+					groupSetIdAvailableStoreMap[groupSet.id] = availableStore;
+					groupSetIdSelectedStoreMap[groupSet.id] = selectedStore;
 
 					available = getAvailable(availableStore);
 					selected = getSelected(selectedStore);
@@ -3464,8 +3475,11 @@ Ext.onReady( function() {
 			});
 
 			accordion = Ext.create('Ext.panel.Panel', {
-				//xtype: 'panel',
-				bodyStyle: 'border-style:none; padding:2px; padding-bottom:0; overflow-y:scroll',
+				bodyStyle: function() {
+					var style = 'border-style:none; padding:2px; padding-bottom:0; overflow-y:scroll;';
+					style += Ext.isWebKit ? ' padding-right:0;' : '';
+					return style;
+				}(),
 				layout: 'fit',
 				items: accordionBody,
 				listeners: {
@@ -3480,7 +3494,7 @@ Ext.onReady( function() {
 				preventHeader: true,
 				collapsible: true,
 				collapseMode: 'mini',
-				width: pt.conf.layout.west_width + 13,
+				width: Ext.isWebKit ? pt.conf.layout.west_width + 7 : pt.conf.layout.west_width + 17,
 				items: accordion
 			});
 
@@ -3668,12 +3682,6 @@ Ext.onReady( function() {
 
 				// Relative periods
 				if (Ext.isObject(r.relativePeriods)) {
-
-					//todo
-					r.relativePeriods.reportingMonth = r.relativePeriods.lastMonth;
-					r.relativePeriods.reportingBimonth = r.relativePeriods.lastBimonth;
-					r.relativePeriods.reportingQuarter = r.relativePeriods.lastQuarter;
-
 					for (var key in r.relativePeriods) {
 						if (r.relativePeriods.hasOwnProperty(key) && pt.conf.period.relativePeriodParamKeys.hasOwnProperty(key)) {
 							var value = pt.conf.period.relativePeriodParamKeys[key];
@@ -3699,12 +3707,25 @@ Ext.onReady( function() {
 				userOrganisationUnit.setValue(r.userOrganisationUnit);
 				userOrganisationUnitChildren.setValue(r.userOrganisationUnitChildren);
 
+				// Reset groupset stores
+				for (var key in groupSetIdSelectedStoreMap) {
+					if (groupSetIdSelectedStoreMap.hasOwnProperty(key)) {
+						var a = groupSetIdAvailableStoreMap[key],
+							s = groupSetIdSelectedStoreMap[key];
+
+						if (s.getCount() > 0) {
+							a.reload();
+							s.removeAll();
+						}
+					}
+				}
+
 				// Organisation unit group sets
 				if (Ext.isObject(r.organisationUnitGroupSets)) {
 					for (var key in r.organisationUnitGroupSets) {
 						if (r.organisationUnitGroupSets.hasOwnProperty(key)) {
-							groupSetIdStoreMap[key].removeAll();
-							groupSetIdStoreMap[key].add(r.organisationUnitGroupSets[key]);
+							groupSetIdSelectedStoreMap[key].add(r.organisationUnitGroupSets[key]);
+							pt.util.multiselect.filterAvailable({store: groupSetIdAvailableStoreMap[key]}, {store: groupSetIdSelectedStoreMap[key]});
 						}
 					}
 				}
@@ -3713,8 +3734,8 @@ Ext.onReady( function() {
 				if (Ext.isObject(r.dataElementGroupSets)) {
 					for (var key in r.dataElementGroupSets) {
 						if (r.dataElementGroupSets.hasOwnProperty(key)) {
-							groupSetIdStoreMap[key].removeAll();
-							groupSetIdStoreMap[key].add(r.dataElementGroupSets[key]);
+							groupSetIdSelectedStoreMap[key].add(r.dataElementGroupSets[key]);
+							pt.util.multiselect.filterAvailable({store: groupSetIdAvailableStoreMap[key]}, {store: groupSetIdSelectedStoreMap[key]});
 						}
 					}
 				}
@@ -3728,30 +3749,40 @@ Ext.onReady( function() {
 				if (Ext.isArray(r.columnDimensions)) {
 					for (var i = 0, dim; i < r.columnDimensions.length; i++) {
 						dim = pt.conf.finals.dimension.objectNameMap[r.columnDimensions[i]];
+
 						pt.viewport.colStore.add({
 							id: dim.dimensionName,
 							name: dim.name
 						});
+
+						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
+
 					}
 				}
 
 				if (Ext.isArray(r.rowDimensions)) {
 					for (var i = 0, dim; i < r.rowDimensions.length; i++) {
 						dim = pt.conf.finals.dimension.objectNameMap[r.rowDimensions[i]];
+
 						pt.viewport.rowStore.add({
 							id: dim.dimensionName,
 							name: dim.name
 						});
+
+						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
 					}
 				}
 
 				if (Ext.isArray(r.filterDimensions)) {
 					for (var i = 0, dim; i < r.filterDimensions.length; i++) {
 						dim = pt.conf.finals.dimension.objectNameMap[r.filterDimensions[i]];
+
 						pt.viewport.filterStore.add({
 							id: dim.dimensionName,
 							name: dim.name
 						});
+
+						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
 					}
 				}
 
@@ -3780,7 +3811,7 @@ Ext.onReady( function() {
 				userOrganisationUnit: userOrganisationUnit,
 				userOrganisationUnitChildren: userOrganisationUnitChildren,
 				setFavorite: setFavorite,
-				groupSetIdStoreMap: groupSetIdStoreMap,
+				//groupSetIdStoreMap: groupSetIdStoreMap,
 				items: [
 					westRegion,
 					centerRegion
@@ -3794,9 +3825,6 @@ Ext.onReady( function() {
 					}
 				}
 			});
-acc = accordion;
-
-wr = westRegion;
 
 			addListeners = function() {
 				pt.store.indicatorAvailable.on('load', function() {
@@ -3840,4 +3868,3 @@ wr = westRegion;
 			PT.app.init.onInitialize(r);
 	}});
 });
-
