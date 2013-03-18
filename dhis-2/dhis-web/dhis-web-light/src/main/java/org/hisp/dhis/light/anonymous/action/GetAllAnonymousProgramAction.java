@@ -98,7 +98,7 @@ public class GetAllAnonymousProgramAction
     public String execute()
         throws Exception
     {
-        programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
+        programs = programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
         return SUCCESS;
     }
 }
