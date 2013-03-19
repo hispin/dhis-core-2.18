@@ -306,6 +306,12 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    public final T getByUidNoAcl( String uid )
+    {
+        return getObject( Restrictions.eq( "uid", uid ) );
+    }
+    
+    @Override
     @Deprecated
     public final T getByName( String name )
     {
