@@ -1697,7 +1697,10 @@ PT.core.getAPI = function(pt) {
 				hideEmptyRows: false,
 				displayDensity: 'normal',
 				fontSize: 'normal',
-				digitGroupSeparator: 'space'
+				digitGroupSeparator: 'space',
+				reportingPeriod: false,
+				organisationUnit: false,
+				parentOrganisationUnit: false
 			};
 
 		removeEmptyDimensions = function(axis) {
@@ -1761,6 +1764,9 @@ PT.core.getAPI = function(pt) {
 			options.displayDensity = options.displayDensity || defaultOptions.displayDensity;
 			options.fontSize = options.fontSize || defaultOptions.fontSize;
 			options.digitGroupSeparator = Ext.isDefined(options.digitGroupSeparator) ? options.digitGroupSeparator : defaultOptions.digitGroupSeparator;
+			options.reportingPeriod = Ext.isDefined(options.reportingPeriod) ? options.reportingPeriod : defaultOptions.reportingPeriod;
+			options.organisationUnit = Ext.isDefined(options.organisationUnit) ? options.organisationUnit : defaultOptions.organisationUnit;
+			options.parentOrganisationUnit = Ext.isDefined(options.parentOrganisationUnit) ? options.parentOrganisationUnit : defaultOptions.parentOrganisationUnit;
 
 			return options;
 		};
