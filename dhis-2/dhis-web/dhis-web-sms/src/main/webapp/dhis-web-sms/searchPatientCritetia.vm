@@ -20,7 +20,9 @@
 				<select id='programIdAddPatient' name='programIdAddPatient' onchange='enableBtn();'>
 					<option value='' type='2' id='emptyProgramOption'>[$i18n.getString("please_select")]</option>
 					#foreach($program in $programs)
+						#if( $program.type!='3')
 						<option value="$program.id" type='$program.type'>$program.displayName</option>
+						#end
 					#end
 				</select>
 			</td>
