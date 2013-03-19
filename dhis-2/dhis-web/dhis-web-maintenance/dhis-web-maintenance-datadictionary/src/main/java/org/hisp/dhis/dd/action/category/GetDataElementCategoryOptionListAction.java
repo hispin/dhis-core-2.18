@@ -91,18 +91,15 @@ public class GetDataElementCategoryOptionListAction
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryOptionCountByName( key ) );
 
             dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
-                dataElementCategoryService.getDataElementCategoryOptionsBetweenByName( key, paging.getStartPos(),
-                    paging.getPageSize() ) );
+                dataElementCategoryService.getDataElementCategoryOptionsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
-            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCount() );
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryOptionCount() );
 
             dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>(
                 dataElementCategoryService.getDataElementCategoryOptionsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-
-        Collections.sort( dataElementCategoryOptions, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
