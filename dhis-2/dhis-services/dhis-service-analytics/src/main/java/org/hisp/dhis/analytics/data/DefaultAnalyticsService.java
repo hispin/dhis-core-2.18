@@ -115,6 +115,7 @@ public class DefaultAnalyticsService
     private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
     
     private static final String VALUE_HEADER_NAME = "Value";
+    private static final String PERIOD_META_KEY = "periods";
     private static final int PERCENT = 100;
     private static final int MAX_QUERIES = 8;
     
@@ -577,7 +578,6 @@ public class DefaultAnalyticsService
                 
                     if ( period != null )
                     {
-                        period.setName( format != null ? format.formatPeriod( period ) : null );
                         periods.add( period );
                     }
                 }
@@ -586,6 +586,11 @@ public class DefaultAnalyticsService
             if ( periods.isEmpty() )
             {
                 throw new IllegalQueryException( "Dimension pe is present in query without any valid dimension options" );
+            }
+            
+            for ( Period period : periods )
+            {
+                period.setName( format != null ? format.formatPeriod( period ) : null );
             }
 
             List<Period> periodList = new ArrayList<Period>( periods );
