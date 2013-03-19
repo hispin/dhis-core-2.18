@@ -5414,9 +5414,33 @@ Ext.onReady( function() {
                             }
                         },
                         '->',
+						{
+							text: 'Table', //i18n
+                            toggleGroup: 'module',
+							handler: function(b) {
+                                window.location.href = '../../dhis-web-pivot/app/index.html';
+							}
+						},
+						{
+							text: 'Chart', //i18n
+                            toggleGroup: 'module',
+                            pressed: true
+						},
+						{
+							text: 'Map', //i18n
+                            toggleGroup: 'module',
+							handler: function(b) {
+                                window.location.href = '../../dhis-web-mapping/app/index.html';
+							}
+						},
+						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 6px; margin-left: 3px',
+						},
                         {
                             xtype: 'button',
-                            text: 'Exit',
+                            text: 'Home',
                             handler: function() {
                                 window.location.href = '../../dhis-web-commons-about/redirect.action';
                             }

@@ -58,10 +58,12 @@ Ext.onReady( function() {
 			// Left gui
 			var vph = pt.viewport.westRegion.getHeight(),
 				no = pt.init.ougs.length + pt.init.degs.length,
-				factor = 0;
+				factor = 0,
+				staticHeight = 535,
+				tabHeight = 28;
 
-			if (vph > 535) {
-				var factor = (vph - 535) / 28;
+			if (vph > staticHeight) {
+				var factor = (vph - staticHeight) / tabHeight;
 			}
 
 			if (factor > 7) {
@@ -776,9 +778,14 @@ Ext.onReady( function() {
 			digitGroupSeparator,
 			displayDensity,
 			fontSize,
+			reportingPeriod,
+			organisationUnit,
+			parentOrganisationUnit,
 
 			data,
 			style,
+			parameters,
+
 			window;
 
 		showTotals = Ext.create('Ext.form.field.Checkbox', {
@@ -801,29 +808,9 @@ Ext.onReady( function() {
 		});
 		pt.viewport.hideEmptyRows = hideEmptyRows;
 
-		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
-			labelStyle: 'color:#333',
-			cls: 'pt-combo',
-			width: 250,
-			labelWidth: 130,
-			fieldLabel: 'Digit group separator', //i18n
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'space',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'comma', text: 'Comma'},
-					{id: 'space', text: 'Space'},
-					{id: 'none', text: 'None'}
-				]
-			})
-		});
-		pt.viewport.digitGroupSeparator = digitGroupSeparator;
-
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'pt-combo',
+			style: 'margin-bottom:3px',
 			width: 250,
 			labelWidth: 130,
 			fieldLabel: 'Display density', //i18n
@@ -845,6 +832,7 @@ Ext.onReady( function() {
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'pt-combo',
+			style: 'margin-bottom:3px',
 			width: 250,
 			labelWidth: 130,
 			fieldLabel: 'Font size', //i18n
@@ -863,6 +851,46 @@ Ext.onReady( function() {
 			})
 		});
 		pt.viewport.fontSize = fontSize;
+
+		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
+			labelStyle: 'color:#333',
+			cls: 'pt-combo',
+			style: 'margin-bottom:3px',
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: 'Digit group separator', //i18n
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 'space',
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 'comma', text: 'Comma'},
+					{id: 'space', text: 'Space'},
+					{id: 'none', text: 'None'}
+				]
+			})
+		});
+		pt.viewport.digitGroupSeparator = digitGroupSeparator;
+
+		reportingPeriod = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: 'Reporting period', //i18n
+			style: 'margin-bottom:4px',
+		});
+		pt.viewport.reportingPeriod = reportingPeriod;
+
+		organisationUnit = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: 'Organisation unit', //i18n
+			style: 'margin-bottom:4px',
+		});
+		pt.viewport.organisationUnit = organisationUnit;
+
+		parentOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: 'Parent organisation unit', //i18n
+			style: 'margin-bottom:4px',
+		});
+		pt.viewport.parentOrganisationUnit = parentOrganisationUnit;
 
 		data = {
 			bodyStyle: 'border:0 none',
@@ -884,9 +912,19 @@ Ext.onReady( function() {
 			]
 		};
 
+		parameters = {
+			bodyStyle: 'border:0 none',
+			style: 'margin-left:14px',
+			items: [
+				reportingPeriod,
+				organisationUnit,
+				parentOrganisationUnit
+			]
+		};
+
 		window = Ext.create('Ext.window.Window', {
 			title: 'Table options', //i18n
-			bodyStyle: 'background-color:#fff; padding:8px 8px 3px',
+			bodyStyle: 'background-color:#fff; padding:8px 8px 8px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -899,12 +937,15 @@ Ext.onReady( function() {
 					hideEmptyRows: hideEmptyRows.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
-					digitGroupSeparator: digitGroupSeparator.getValue()
+					digitGroupSeparator: digitGroupSeparator.getValue(),
+					reportingPeriod: reportingPeriod.getValue(),
+					organisationUnit: organisationUnit.getValue(),
+					parentOrganisationUnit: parentOrganisationUnit.getValue()
 				};
 			},
 			items: [
 				{
-					bodyStyle: 'border:0 none; color:#444; font-size:12px; font-weight:bold',
+					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px',
 					html: 'Data'
 				},
@@ -913,11 +954,20 @@ Ext.onReady( function() {
 					bodyStyle: 'border:0 none; padding:7px'
 				},
 				{
-					bodyStyle: 'border:0 none; color:#444; font-size:12px; font-weight:bold',
+					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px',
 					html: 'Style'
 				},
-				style
+				style,
+				{
+					bodyStyle: 'border:0 none; padding:7px'
+				},
+				{
+					bodyStyle: 'border:0 none; color:#222; font-size:12px',
+					style: 'margin-bottom:6px',
+					html: '<b>Parameters</b> <span style="font-size:11px"> (for standard reports only)</span>'
+				},
+				parameters
 			],
 			bbar: [
 				'->',
@@ -1004,7 +1054,19 @@ Ext.onReady( function() {
 
 				// Server sync
 				favorite.totals = favorite.showTotals;
+				delete favorite.showTotals;
+
 				favorite.subtotals = favorite.showSubTotals;
+				delete favorite.showSubTotals;
+
+				favorite.reportParams = {
+					paramReportingMonth: favorite.reportingPeriod,
+					paramOrganisationUnit: favorite.organisationUnit,
+					paramParentOrganisationUnit: favorite.parentOrganisationUnit
+				};
+				delete favorite.reportingPeriod;
+				delete favorite.organisationUnit;
+				delete favorite.parentOrganisationUnit;
 
 				// Dimensions
 				for (var i = 0, obj, key, items; i < pt.xLayout.objects.length; i++) {
@@ -1867,16 +1929,18 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren,
 				treePanel,
 				organisationUnit,
-				groupSetIdAvailableStoreMap,
-				groupSetIdSelectedStoreMap,
+				groupSetIdAvailableStoreMap = {},
+				groupSetIdSelectedStoreMap = {},
 				getGroupSetPanels,
 				validateSpecialCases,
 				update,
 
 				layoutButton,
 				optionsButton,
+				favoriteButton,
 				downloadButton,
 
+				accordionBody,
 				accordion,
 				westRegion,
 				centerRegion,
@@ -3155,9 +3219,6 @@ Ext.onReady( function() {
 				}
 			};
 
-			groupSetIdAvailableStoreMap = {};
-			groupSetIdSelectedStoreMap = {};
-
 			getGroupSetPanels = function(groupSets, objectName, iconCls) {
 				var	getAvailableStore,
 					getSelectedStore,
@@ -3615,9 +3676,33 @@ Ext.onReady( function() {
 						favoriteButton,
 						downloadButton,
                         '->',
+						{
+							text: 'Table', //i18n
+                            toggleGroup: 'module',
+							pressed: true
+						},
+						{
+							text: 'Chart', //i18n
+                            toggleGroup: 'module',
+							handler: function(b) {
+                                window.location.href = '../../dhis-web-visualizer/app/index.html';
+							}
+						},
+						{
+							text: 'Map', //i18n
+                            toggleGroup: 'module',
+							handler: function(b) {
+                                window.location.href = '../../dhis-web-mapping/app/index.html';
+							}
+						},
+						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 6px; margin-left: 3px',
+						},
                         {
                             xtype: 'button',
-                            text: 'Exit',
+                            text: 'Home',
                             handler: function() {
                                 window.location.href = '../../dhis-web-commons-about/redirect.action';
                             }
@@ -3785,6 +3870,23 @@ Ext.onReady( function() {
 				pt.viewport.fontSize.setValue(r.fontSize);
 				pt.viewport.digitGroupSeparator.setValue(r.digitGroupSeparator);
 
+				if (Ext.isObject(r.reportParams)) {
+					pt.viewport.reportingPeriod.setValue(r.reportParams.paramReportingMonth);
+					pt.viewport.organisationUnit.setValue(r.reportParams.paramOrganisationUnit);
+					pt.viewport.parentOrganisationUnit.setValue(r.reportParams.paramParentOrganisationUnit);
+				}
+
+				// Upgrade fixes
+				if (!Ext.isArray(r.organisationUnits) || !r.organisationUnits.length) {
+					if (Ext.isObject(r.reportParams) && r.reportParams.paramOrganisationUnit) {
+						userOrganisationUnit.setValue(true);
+					}
+
+					if (Ext.isObject(r.reportParams) && r.reportParams.paramParentOrganisationUnit) {
+						userOrganisationUnit.setValue(true);
+					}
+				}
+
 				update();
 			};
 
@@ -3802,7 +3904,6 @@ Ext.onReady( function() {
 				userOrganisationUnit: userOrganisationUnit,
 				userOrganisationUnitChildren: userOrganisationUnitChildren,
 				setFavorite: setFavorite,
-				//groupSetIdStoreMap: groupSetIdStoreMap,
 				items: [
 					westRegion,
 					centerRegion
