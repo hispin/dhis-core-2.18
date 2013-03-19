@@ -204,7 +204,9 @@
 
 	var programComboBox = '<select class="search-field" id="searchText" name="searchText" >';
 	#foreach ( $program in $programs )
-		programComboBox += '<option value="$program.id">$program.displayName</option>';
+		#if( $program.type!='3')
+			programComboBox += '<option value="$program.id">$program.displayName</option>';
+		#end
 	#end
 	programComboBox += '</select>';
 	
