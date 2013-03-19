@@ -378,7 +378,7 @@ Ext.onReady( function() {
 		});
 
 		store.tables = Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'lastUpdated'],
+			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
 				type: 'ajax',
 				reader: {
@@ -1374,16 +1374,16 @@ Ext.onReady( function() {
 					width: windowCmpWidth - 88,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
-							var el = Ext.get(record.data.id);
-							if (el) {
-								el = el.parent('td');
-								el.addClsOnOver('link');
-								el.pt = pt;
-								el.favoriteId = record.data.id;
-								el.hideWindow = function() {
+							var element = Ext.get(record.data.id);
+
+							if (element) {
+								element = element.parent('td');
+								element.addClsOnOver('link');
+								element.load = function() {
 									favoriteWindow.hide();
+									pt.util.pivot.loadTable(record.data.id);
 								};
-								el.dom.setAttribute('onclick', 'Ext.get(this).hideWindow(); Ext.get(this).pt.util.pivot.loadTable(Ext.get(this).favoriteId);');
+								element.dom.setAttribute('onclick', 'Ext.get(this).load();');
 							}
 						};
 
@@ -1400,16 +1400,13 @@ Ext.onReady( function() {
 						{
 							iconCls: 'pt-grid-row-icon-edit',
 							getClass: function(value, metaData, record) {
-								if (pt.init.user.isAdmin) {
-									return 'tooltip-favorite-edit';
-								}
+								return 'tooltip-favorite-edit' + (!record.data.access.update ? ' disabled' : '');
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
-								var record = this.up('grid').store.getAt(rowIndex),
-									id = record.data.id;
+								var record = this.up('grid').store.getAt(rowIndex);
 
-								if (pt.init.user.isAdmin) {
-									nameWindow = new NameWindow(id);
+								if (record.data.access.update) {
+									nameWindow = new NameWindow(record.data.id);
 									nameWindow.show();
 								}
 							}
@@ -1417,99 +1414,92 @@ Ext.onReady( function() {
 						{
 							iconCls: 'pt-grid-row-icon-overwrite',
 							getClass: function(value, metaData, record) {
-								if (pt.init.user.isAdmin) {
-									return 'tooltip-favorite-overwrite';
-								}
+								return 'tooltip-favorite-overwrite' + (!record.data.access.update ? ' disabled' : '');
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
-									id = record.data.id,
-									name = record.data.name,
-									message = 'Overwrite favorite?\n\n' + name,
+									message,
+									favorite;
+
+								if (record.data.access.update) {
+									message = 'Overwrite favorite?\n\n' + record.data.name;
 									favorite = getBody();
 
-								if (favorite) {
-									favorite.name = name;
+									if (favorite) {
+										favorite.name = record.data.name;
 
-									if (confirm(message)) {
-										Ext.Ajax.request({
-											url: pt.baseUrl + '/api/reportTables/' + id,
-											method: 'PUT',
-											headers: {'Content-Type': 'application/json'},
-											params: Ext.encode(favorite),
-											success: function() {
-												pt.favorite = favorite;
+										if (confirm(message)) {
+											Ext.Ajax.request({
+												url: pt.baseUrl + '/api/reportTables/' + record.data.id,
+												method: 'PUT',
+												headers: {'Content-Type': 'application/json'},
+												params: Ext.encode(favorite),
+												success: function() {
+													pt.favorite = favorite;
 
-												//pt.viewport.interpretationButton.enable();
+													//pt.viewport.interpretationButton.enable();
 
-												pt.store.tables.loadStore();
-											}
-										});
+													pt.store.tables.loadStore();
+												}
+											});
+										}
 									}
-								}
-								else {
-									alert('Please create a table first'); //i18n
+									else {
+										alert('Please create a table first'); //i18n
+									}
 								}
 							}
 						},
 						{
 							iconCls: 'pt-grid-row-icon-sharing',
-							getClass: function() {
-								return 'tooltip-favorite-sharing';
+							getClass: function(value, metaData, record) {
+								return 'tooltip-favorite-sharing' + (!record.data.access.update ? ' disabled' : '');
 							},
 							handler: function(grid, rowIndex) {
-								var record = this.up('grid').store.getAt(rowIndex),
-									id = record.data.id,
-									window;
+								var record = this.up('grid').store.getAt(rowIndex);
 
-								Ext.Ajax.request({
-									url: pt.baseUrl + '/api/sharing?type=reportTable&id=' + id,
-									method: 'GET',
-									failure: function(r) {
-										pt.viewport.mask.hide();
-										alert(r.responseText);
-									},
-									success: function(r) {
-										var sharing = Ext.decode(r.responseText);
-										window = PT.app.SharingWindow(sharing);
-										window.show();
-									}
-								});
+								if (record.data.access.update) {
+									Ext.Ajax.request({
+										url: pt.baseUrl + '/api/sharing?type=reportTable&id=' + record.data.id,
+										method: 'GET',
+										failure: function(r) {
+											pt.viewport.mask.hide();
+											alert(r.responseText);
+										},
+										success: function(r) {
+											var sharing = Ext.decode(r.responseText),
+												window = PT.app.SharingWindow(sharing);
+											window.show();
+										}
+									});
+								}
 							}
 						},
 						{
 							iconCls: 'pt-grid-row-icon-delete',
 							getClass: function(value, metaData, record) {
-								var system = !record.data.user,
-									isAdmin = pt.init.user.isAdmin;
-
-								if (isAdmin || (!isAdmin && !system)) {
-									return 'tooltip-favorite-delete';
-								}
+								return 'tooltip-favorite-delete' + (!record.data.access['delete'] ? ' disabled' : '');
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
-									id = record.data.id,
-									name = record.data.name,
-									message = 'Delete favorite?\n\n' + name;
+									message;
 
-								if (confirm(message)) {
-									Ext.Ajax.request({
-										url: pt.baseUrl + '/api/reportTables/' + id,
-										method: 'DELETE',
-										success: function() {
-											pt.store.tables.loadStore();
-										}
-									});
+								if (record.data.access['delete']) {
+									message = 'Delete favorite?\n\n' + record.data.name;
+
+									if (confirm(message)) {
+										Ext.Ajax.request({
+											url: pt.baseUrl + '/api/reportTables/' + record.data.id,
+											method: 'DELETE',
+											success: function() {
+												pt.store.tables.loadStore();
+											}
+										});
+									}
 								}
 							}
 						}
-					],
-					renderer: function(value, metaData, record) {
-						if (!pt.init.user.isAdmin && !record.data.user) {
-							metaData.tdCls = 'pt-grid-row-icon-disabled';
-						}
-					}
+					]
 				},
 				{
 					sortable: false,
