@@ -49,7 +49,7 @@
 						<option value="userGroup">$i18n.getString( "user_group" )</option>
 						<option value="user">$i18n.getString( "assigned_user_number" )</option>
 						<option value="unit">$i18n.getString( "stakeholder_contact_person" )</option>
-						<option value="patient">$i18n.getString( "patient_registered" )</option>
+						<option value="patient">$i18n.getString( "patients_registered" )</option>
 					</select>
 				</td>
 			</tr>
