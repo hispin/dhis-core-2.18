@@ -123,7 +123,7 @@ select * from dataelementcategory where categoryid not in (select distinct categ
 
 select * from categorycombo where categorycomboid not in (select distinct categorycomboid from categorycombos_categories);
 
--- Get category options with count of memberships in categories (should only be 1)
+-- Get category options with count of memberships in categories
 
 select cc.categoryoptionid, co.name, (
 select count(categoryoptionid) from categories_categoryoptions where categoryoptionid=cc.categoryoptionid )
