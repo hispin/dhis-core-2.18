@@ -75,8 +75,8 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.DateUtils.setNames;
 
 @Controller
-@RequestMapping( value = ChartPluginController.RESOURCE_PATH )
-public class ChartPluginController
+@RequestMapping( value = ChartValueController.RESOURCE_PATH )
+public class ChartValueController
 {
     public static final String RESOURCE_PATH = "/chartValues";
 
