@@ -736,7 +736,7 @@ public class HibernateGenericStore<T>
 
         Query query = getQuery( hql );
         query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setDate( "lastUpdated", lastUpdated );
+        query.setTimestamp( "lastUpdated", lastUpdated );
 
         return query;
     }
@@ -744,7 +744,7 @@ public class HibernateGenericStore<T>
     private Query getQueryCountGeLastUpdated( Date lastUpdated )
     {
         Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where lastUpdated >= :lastUpdated" );
-        query.setDate( "lastUpdated", lastUpdated );
+        query.setTimestamp( "lastUpdated", lastUpdated );
 
         return query;
     }
@@ -768,7 +768,7 @@ public class HibernateGenericStore<T>
 
         Query query = getQuery( hql );
         query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setDate( "lastUpdated", lastUpdated );
+        query.setTimestamp( "lastUpdated", lastUpdated );
 
         return query;
     }
@@ -776,7 +776,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllGeLastUpdated( Date lastUpdated )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where c.lastUpdated >= :lastUpdated" );
-        query.setDate( "lastUpdated", lastUpdated );
+        query.setTimestamp( "lastUpdated", lastUpdated );
 
         return query;
     }
@@ -800,7 +800,7 @@ public class HibernateGenericStore<T>
 
         Query query = getQuery( hql );
         query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setDate( "created", created );
+        query.setTimestamp( "created", created );
 
         return query;
     }
@@ -808,7 +808,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllGeCreated( Date created )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where c.created >= :created" );
-        query.setDate( "created", created );
+        query.setTimestamp( "created", created );
 
         return query;
     }
@@ -832,7 +832,7 @@ public class HibernateGenericStore<T>
 
         Query query = getQuery( hql );
         query.setEntity( "user", currentUserService.getCurrentUser() );
-        query.setDate( "lastUpdated", lastUpdated );
+        query.setTimestamp( "lastUpdated", lastUpdated );
 
         return query;
     }
@@ -840,7 +840,7 @@ public class HibernateGenericStore<T>
     private Query getQueryAllGeLastUpdatedOrderedName( Date lastUpdated )
     {
         Query query = getQuery( "from " + clazz.getName() + " c where c.lastUpdated >= :lastUpdated order by c.name" );
-        query.setDate( "lastUpdated", lastUpdated );
+        query.setTimestamp( "lastUpdated", lastUpdated );
 
         return query;
     }
