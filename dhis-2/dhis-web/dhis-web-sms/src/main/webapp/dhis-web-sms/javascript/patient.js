@@ -201,7 +201,7 @@ function validateAdvancedSearch()
 	var dateOperator = '';
 
 	if (jQuery( '#advancedSearchTB tr' ).length > 1 ){
-		jQuery("#searchDiv :input").each( function( i, item )
+		jQuery("#advancedSearchTB :input").each( function( i, item )
 		{
 			var elementName = $(this).attr('name');
 			if( elementName=='searchText' && jQuery( item ).val() == '')
