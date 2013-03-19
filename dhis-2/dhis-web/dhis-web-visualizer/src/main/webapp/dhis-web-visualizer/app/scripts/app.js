@@ -2669,6 +2669,13 @@ Ext.onReady( function() {
 				favorite.regression = DV.c.trendline;
 				favorite.userOrganisationUnit = DV.c.userorganisationunit;
 				favorite.userOrganisationUnitChildren = DV.c.userorganisationunitchildren;
+				
+				favorite.domainAxisLabel = DV.c.domainaxislabel;
+				favorite.rangeAxisLabel = DV.c.rangeaxislabel;
+				favorite.targetLineValue = DV.c.targetlinevalue;
+				favorite.targetLineLabel = DV.c.targetlinelabel;
+				favorite.baseLineValue = DV.c.baselinevalue;
+				favorite.baseLineLabel = DV.c.baselinelabel;
 
 				// Options
 				if (DV.c.domainAxisLabel) {
