@@ -273,7 +273,6 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have read access to object with id " + id + "." );
         }
 
-        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         return object;
     }
 
@@ -289,7 +288,6 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have read access to object with id " + id );
         }
 
-        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         return object;
     }
 
@@ -304,7 +302,6 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have read access to object with uid " + uid );
         }
 
-        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         return object;
     }
 
@@ -320,7 +317,6 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have read access to object with name " + name );
         }
 
-        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         return object;
     }
 
@@ -336,7 +332,6 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have read access to object with shortName " + shortName );
         }
 
-        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         return object;
     }
 
@@ -351,7 +346,6 @@ public class HibernateGenericStore<T>
             throw new AccessDeniedException( "You do not have read access to object with code " + code );
         }
 
-        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
         return object;
     }
 
