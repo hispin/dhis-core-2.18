@@ -1023,7 +1023,7 @@ Ext.onReady( function() {
 			createButton,
 			updateButton,
 			cancelButton,
-			mapWindow,
+			favoriteWindow,
 
 		// Vars
 			windowWidth = 500,
@@ -1436,9 +1436,7 @@ Ext.onReady( function() {
 												params: Ext.encode(favorite),
 												success: function() {
 													pt.favorite = favorite;
-
 													//pt.viewport.interpretationButton.enable();
-
 													pt.store.tables.loadStore();
 												}
 											});

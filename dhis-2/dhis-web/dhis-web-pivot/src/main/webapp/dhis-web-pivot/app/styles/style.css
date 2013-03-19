@@ -107,13 +107,6 @@ body.x-windows {
 	cursor: default !important;
 }
 
-/*
-.pt-invisible .x-form-item-body {
-    display: none;
-}
-*/
-
-
 
 	/* Collapse splitter column */
 .x-splitter {
