@@ -572,6 +572,10 @@ Ext.onReady( function() {
 			updateItem: function(value) {
 				this.numberField.setDisabled(!value);
 				this.layer.setVisibility(value);
+
+				if (value && this.layer.layerType === gis.conf.finals.layer.type_base) {
+					gis.olmap.setBaseLayer(this.layer);
+				}
 			},
 			initComponent: function() {
 				var that = this,
@@ -583,13 +587,12 @@ Ext.onReady( function() {
 					listeners: {
 						change: function(chb, value) {
 							if (value && that.layer.layerType === gis.conf.finals.layer.type_base) {
-								var layers = gis.util.map.getLayersByType(gis.conf.finals.layer.type_base),
-									layer;
+								var layers = gis.util.map.getLayersByType(gis.conf.finals.layer.type_base);
+
 								for (var i = 0; i < layers.length; i++) {
-									layer = layers[i];
-									if (layer !== that.layer) {
-										layer.item.checkbox.suppressChange = true;
-										layer.item.disableItem();
+									if (layers[i] !== that.layer) {
+										layers[i].item.checkbox.suppressChange = true;
+										layers[i].item.disableItem();
 									}
 								}
 							}
@@ -4970,10 +4973,10 @@ Ext.onReady( function() {
 			afterRender = function() {
 
 				// Map tools
-				document.getElementsByClassName('zoomInButton')[0].innerHTML = '<img src="images/zoomin_24.png" />';
-				document.getElementsByClassName('zoomOutButton')[0].innerHTML = '<img src="images/zoomout_24.png" />';
-				document.getElementsByClassName('zoomVisibleButton')[0].innerHTML = '<img src="images/zoomvisible_24.png" />';
-				document.getElementsByClassName('measureButton')[0].innerHTML = '<img src="images/measure_24.png" />';
+				Ext.query('.zoomInButton')[0].innerHTML = '<img src="images/zoomin_24.png" />';
+				Ext.query('.zoomOutButton')[0].innerHTML = '<img src="images/zoomout_24.png" />';
+				Ext.query('.zoomVisibleButton')[0].innerHTML = '<img src="images/zoomvisible_24.png" />';
+				Ext.query('.measureButton')[0].innerHTML = '<img src="images/measure_24.png" />';
 
 				gis.olmap.events.register('click', null, function(e) {
 					if (gis.olmap.relocate.active) {
