@@ -1060,7 +1060,7 @@ Ext.onReady( function() {
 				delete favorite.showSubTotals;
 
 				favorite.reportParams = {
-					paramReportingMonth: favorite.reportingPeriod,
+					paramReportingPeriod: favorite.reportingPeriod,
 					paramOrganisationUnit: favorite.organisationUnit,
 					paramParentOrganisationUnit: favorite.parentOrganisationUnit
 				};
@@ -3859,7 +3859,7 @@ Ext.onReady( function() {
 				pt.viewport.digitGroupSeparator.setValue(r.digitGroupSeparator);
 
 				if (Ext.isObject(r.reportParams)) {
-					pt.viewport.reportingPeriod.setValue(r.reportParams.paramReportingMonth);
+					pt.viewport.reportingPeriod.setValue(r.reportParams.paramReportingPeriod);
 					pt.viewport.organisationUnit.setValue(r.reportParams.paramOrganisationUnit);
 					pt.viewport.parentOrganisationUnit.setValue(r.reportParams.paramParentOrganisationUnit);
 				}
