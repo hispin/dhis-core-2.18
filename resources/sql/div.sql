@@ -119,6 +119,27 @@ and (
   or cast(substring(coordinates from '\[(.+?\..+?),.+?\..+?\]') as double precision) > 43
 );
 
+-- Identify empty groups
+
+select 'Data element group' as type, o.name as name
+from dataelementgroup o
+where not exists (
+  select * from dataelementgroupmembers
+  where dataelementgroupid=o.dataelementgroupid)
+union all
+select 'Indicator group' as type, o.name as name
+from indicatorgroup o
+where not exists (
+  select * from indicatorgroupmembers
+  where indicatorgroupid=o.indicatorgroupid)
+union all
+select 'Organisation unit group' as type, o.name as name
+from orgunitgroup o
+where not exists (
+  select * from orgunitgroupmembers
+  where orgunitgroupid=o.orgunitgroupid)
+order by type,name;
+
 -- Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
 
 insert into usersetting (userinfoid, name, value)
