@@ -170,17 +170,11 @@ public class DefaultAnalyticsService
         params.conform();
                 
         // ---------------------------------------------------------------------
-        // Headers and meta-data
+        // Headers
         // ---------------------------------------------------------------------
 
         Grid grid = new ListGrid();
 
-        Map<Object, Object> metaData = new HashMap<Object, Object>();        
-        metaData.put( NAMES_META_KEY, getUidNameMap( params ) );
-        metaData.put( PERIODS_META_KEY, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
-        
-        grid.setMetaData( metaData );
-        
         for ( Dimension col : params.getHeaderDimensions() )
         {
             grid.addHeader( new GridHeader( col.getDimension(), col.getDisplayName(), String.class.getName(), false, true ) );
@@ -329,17 +323,19 @@ public class DefaultAnalyticsService
                 grid.addValue( entry.getValue() );
             }
         }
-        
+
         // ---------------------------------------------------------------------
-        // Category option combo meta-data
+        // Meta-data
         // ---------------------------------------------------------------------
-        
+
         Integer cocIndex = params.getCocIndex();
         
-        if ( cocIndex != null )
-        {
-            addCocMetaData( grid, cocIndex );
-        }
+        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        
+        metaData.put( NAMES_META_KEY, getUidNameMap( params, grid, cocIndex ) );
+        metaData.put( PERIODS_META_KEY, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
+        
+        grid.setMetaData( metaData );
         
         return grid;
     }
@@ -637,12 +633,13 @@ public class DefaultAnalyticsService
         return params;
     }
     
-    private Map<String, String> getUidNameMap( DataQueryParams params )
+    private Map<String, String> getUidNameMap( DataQueryParams params, Grid grid, Integer cocIndex )
     {
         Map<String, String> map = new HashMap<String, String>();
         map.putAll( getUidNameMap( params.getDimensions() ) );
         map.putAll( getUidNameMap( params.getFilters() ) );
         map.put( DATA_X_DIM_ID, DISPLAY_NAME_DATA_X );
+        map.putAll( getCocMetaData( grid, cocIndex ) );
         
         return map;
     }
@@ -689,15 +686,22 @@ public class DefaultAnalyticsService
         return map;
     }
     
-    private void addCocMetaData( Grid grid, Integer cocIndex )
+    private Map<String, String> getCocMetaData( Grid grid, Integer cocIndex )
     {
-        Set<String> uids = new HashSet<String>( ConversionUtils.<String>cast( grid.getColumn( cocIndex ) ) );
+        Map<String, String> metaData = new HashMap<String, String>();
         
-        Collection<DataElementCategoryOptionCombo> cocs = categoryService.getDataElementCategoryOptionCombosByUid( uids );
-        
-        for ( DataElementCategoryOptionCombo coc : cocs )
+        if ( grid != null && cocIndex != null )
         {
-            grid.addMetaData( coc.getUid(), coc.getName() );
+            Set<String> uids = new HashSet<String>( ConversionUtils.<String>cast( grid.getColumn( cocIndex ) ) );
+            
+            Collection<DataElementCategoryOptionCombo> cocs = categoryService.getDataElementCategoryOptionCombosByUid( uids );
+            
+            for ( DataElementCategoryOptionCombo coc : cocs )
+            {
+                metaData.put( coc.getUid(), coc.getName() );
+            }
         }
+        
+        return metaData;
     }
 }
