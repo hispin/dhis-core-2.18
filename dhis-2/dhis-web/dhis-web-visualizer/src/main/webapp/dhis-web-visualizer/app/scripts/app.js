@@ -190,49 +190,23 @@ DV.conf = {
     },
     period: {
 		relativePeriods: {
-			'LAST_WEEK': 1,
-			'LAST_4_WEEKS': 4,
-			'LAST_12_WEEKS': 12,
-			'LAST_MONTH': 1,
-			'LAST_3_MONTHS': 3,
-			'LAST_12_MONTHS': 12,
-			'LAST_QUARTER': 1,
-			'LAST_4_QUARTERS': 4,
-			'LAST_SIX_MONTH': 1,
-			'LAST_2_SIXMONTHS': 2,
-			'THIS_YEAR': 1,
-			'LAST_YEAR': 1,
-			'LAST_5_YEARS': 5
+			'lastWeek': 1,
+			'last4Weeks': 4,
+			'last12Weeks': 12,
+			'lastMonth': 1,
+			'last3Months': 3,
+			'last12Months': 12,
+			'lastQuarter': 1,
+			'last4Quarters': 4,
+			'lastSixMonth': 1,
+			'last2SixMonths': 2,
+			'thisYear': 1,
+			'lastYear': 1,
+			'last5Years': 5
 		},
-		relativePeriodValueKeys: {
-			'LAST_WEEK': 'lastWeek',
-			'LAST_4_WEEKS': 'last4Weeks',
-			'LAST_12_WEEKS': 'last12Weeks',
-			'LAST_MONTH': 'reportingMonth',
-			'LAST_3_MONTHS': 'last3Months',
-			'LAST_12_MONTHS': 'last12Months',
-			'LAST_QUARTER': 'reportingQuarter',
-			'LAST_4_QUARTERS': 'last4Quarters',
-			'LAST_SIX_MONTH': 'lastSixMonth',
-			'LAST_2_SIXMONTHS': 'last2SixMonths',
-			'THIS_YEAR': 'thisYear',
-			'LAST_YEAR': 'lastYear',
-			'LAST_5_YEARS': 'last5Years'
-		},
-		relativePeriodParamKeys: {
-			'lastWeek': 'LAST_WEEK',
-			'last4Weeks': 'LAST_4_WEEKS',
-			'last12Weeks': 'LAST_12_WEEKS',
-			'reportingMonth': 'LAST_MONTH',
-			'last3Months': 'LAST_3_MONTHS',
-			'last12Months': 'LAST_12_MONTHS',
-			'reportingQuarter': 'LAST_QUARTER',
-			'last4Quarters': 'LAST_4_QUARTERS',
-			'lastSixMonth': 'LAST_SIX_MONTH',
-			'last2SixMonths': 'LAST_2_SIXMONTHS',
-			'thisYear': 'THIS_YEAR',
-			'lastYear': 'LAST_YEAR',
-			'last5Years': 'LAST_5_YEARS'
+		relativePeriodsUrl: {
+			'lastMonth': 'reportingMonth',
+			'lastQuarter': 'reportingQuarter'
 		},
 		periodtypes: [
 			{id: 'Daily', name: 'Daily'},
@@ -613,7 +587,7 @@ Ext.onReady( function() {
 						count = 0;
                     for (var key in rp) {
                         if (rp[key]) {
-							count += DV.conf.period.relativePeriods[key] || DV.conf.period.relativePeriods[DV.conf.period.relativePeriodParamKeys[key]];
+							count += DV.conf.period.relativePeriods[key];
                         }
                     }
                     for (var i = 0; i < count; i++) {
@@ -673,8 +647,9 @@ Ext.onReady( function() {
 						rp = DV.c.relativeperiod.rp,
 						param;
 					for (var key in rp) {
-						if (rp[key]) {
-							a.push((DV.conf.period.relativePeriodValueKeys[key] || key) + '=true');
+						if (rp.hasOwnProperty(key) && rp[key]) {
+							key = DV.conf.period.relativePeriodsUrl[key] ? DV.conf.period.relativePeriodsUrl[key] : key;
+							a.push(key + '=true');
 						}
 					}
 
@@ -1204,7 +1179,7 @@ Ext.onReady( function() {
             setRelativePeriods: function(rp) {
 				if (rp) {
 					for (var key in rp) {
-						var cmp = DV.util.getCmp('checkbox[relativePeriodId="' + (DV.conf.period.relativePeriodParamKeys[key] || key) + '"]');
+						var cmp = DV.util.getCmp('checkbox[relativePeriodId="' + key + '"]');
 						if (cmp) {
 							cmp.setValue(rp[key]);
 						}
@@ -1705,11 +1680,6 @@ Ext.onReady( function() {
 						}
 
 						if (f.relativePeriods) {
-							f.relativePeriods.reportingMonth = f.relativePeriods.lastMonth;
-							f.relativePeriods.reportingQuarter = f.relativePeriods.lastQuarter;
-							delete f.relativePeriods.lastMonth;
-							delete f.relativePeriods.lastQuarter;
-
 							DV.c.relativeperiod.rp = f.relativePeriods;
 							DV.c.relativeperiod.rewind = f.rewindRelativePeriods;
 						}
@@ -1900,22 +1870,25 @@ Ext.onReady( function() {
 
 			DV.store.indicator.selected.removeAll();
 			if (DV.c.indicator.records) {
-				DV.store.indicator.selected.add(DV.c.indicator.records);
-				DV.util.store.addToStorage(DV.store.indicator.available, DV.c.indicator.records);
+				var clone = Ext.clone(DV.c.indicator.records);
+				DV.store.indicator.selected.add(clone);
+				DV.util.store.addToStorage(DV.store.indicator.available, clone);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
 			}
 
 			DV.store.dataelement.selected.removeAll();
 			if (DV.c.dataelement.records) {
-				DV.store.dataelement.selected.add(DV.c.dataelement.records);
-				DV.util.store.addToStorage(DV.store.dataelement.available, DV.c.dataelement.records);
+				var clone = Ext.clone(DV.c.dataelement.records);
+				DV.store.dataelement.selected.add(clone);
+				DV.util.store.addToStorage(DV.store.dataelement.available, clone);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
 			}
 
 			DV.store.dataset.selected.removeAll();
 			if (DV.c.dataset.records) {
-				DV.store.dataset.selected.add(DV.c.dataset.records);
-				DV.util.store.addToStorage(DV.store.dataset.available, DV.c.dataset.records);
+				var clone = Ext.clone(DV.c.dataset.records);
+				DV.store.dataset.selected.add(clone);
+				DV.util.store.addToStorage(DV.store.dataset.available, clone);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
 			}
 
@@ -1925,7 +1898,8 @@ Ext.onReady( function() {
 
 			DV.store.fixedperiod.selected.removeAll();
 			if (DV.c.fixedperiod.records) {
-				DV.store.fixedperiod.selected.add(DV.c.fixedperiod.records);
+				var clone = Ext.clone(DV.c.fixedperiod.records);
+				DV.store.fixedperiod.selected.add(clone);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
 			}
 
@@ -2669,8 +2643,8 @@ Ext.onReady( function() {
 				favorite.regression = DV.c.trendline;
 				favorite.userOrganisationUnit = DV.c.userorganisationunit;
 				favorite.userOrganisationUnitChildren = DV.c.userorganisationunitchildren;
-				
-				// Options				
+
+				// Options
 				if (DV.c.domainaxislabel) {
 					favorite.domainAxisLabel = DV.c.domainaxislabel;
 				}
@@ -2692,22 +2666,42 @@ Ext.onReady( function() {
 
 				// Indicators
 				if (Ext.isObject(DV.c.indicator) && Ext.isArray(DV.c.indicator.records) && DV.c.indicator.records.length) {
-					favorite.indicators = Ext.clone(DV.c.indicator.records);
+					favorite.indicators = [];
+
+					for (var i = 0, r; i < DV.c.indicator.records.length; i++) {
+						r = Ext.clone(DV.c.indicator.records[i]);
+						favorite.indicators.push({id: r.id, name: r.name});
+					}
 				}
 
 				// Data elements
 				if (Ext.isObject(DV.c.dataelement) && Ext.isArray(DV.c.dataelement.records) && DV.c.dataelement.records.length) {
-					favorite.dataElements = Ext.clone(DV.c.dataelement.records);
+					favorite.dataElements = [];
+
+					for (var i = 0, r; i < DV.c.dataelement.records.length; i++) {
+						r = Ext.clone(DV.c.dataelement.records[i]);
+						favorite.dataElements.push({id: r.id, name: r.name});
+					}
 				}
 
 				// Data sets
 				if (Ext.isObject(DV.c.dataset) && Ext.isArray(DV.c.dataset.records) && DV.c.dataset.records.length) {
-					favorite.dataSets = Ext.clone(DV.c.dataset.records);
+					favorite.dataSets = [];
+
+					for (var i = 0, r; i < DV.c.dataset.records.length; i++) {
+						r = Ext.clone(DV.c.dataset.records[i]);
+						favorite.dataSets.push({id: r.id, name: r.name});
+					}
 				}
 
 				// Fixed periods
 				if (Ext.isObject(DV.c.fixedperiod) && Ext.isArray(DV.c.fixedperiod.records) && DV.c.fixedperiod.records.length) {
-					favorite.periods = Ext.clone(DV.c.fixedperiod.records);
+					favorite.periods = [];
+
+					for (var i = 0, r; i < DV.c.period.records.length; i++) {
+						r = Ext.clone(DV.c.period.records[i]);
+						favorite.periods.push({id: r.id, name: r.name});
+					}
 				}
 
 				// Relative periods
@@ -2719,7 +2713,7 @@ Ext.onReady( function() {
 					if (Ext.isObject(DV.c.relativeperiod.rp)) {
 						for (var key in DV.c.relativeperiod.rp) {
 							if (DV.c.relativeperiod.rp.hasOwnProperty(key) && !!DV.c.relativeperiod.rp[key]) {
-								favorite.relativePeriods[DV.conf.period.relativePeriodValueKeys[key]] = true;
+								favorite.relativePeriods[key] = true;
 							}
 						}
 					}
@@ -2762,7 +2756,7 @@ Ext.onReady( function() {
 				text: 'Create', //i18n
 				handler: function() {
 					var favorite = getBody();
-					favorite.name = nameTextfield.getValue	();
+					favorite.name = nameTextfield.getValue();
 
 					if (favorite && favorite.name) {
 						Ext.Ajax.request({
@@ -2777,12 +2771,12 @@ Ext.onReady( function() {
 							success: function(r) {
 								var id = r.getAllResponseHeaders().location.split('/').pop();
 
-								//pt.favorite = favorite;
-
+								DV.c.currentFavorite = {
+									id: id,
+									name: favorite.name
+								};
+								DV.cmp.toolbar.share.xable();
 								DV.store.favorite.loadStore();
-
-								//pt.viewport.interpretationButton.enable();
-
 								window.destroy();
 							}
 						});
@@ -3004,8 +2998,11 @@ Ext.onReady( function() {
 												headers: {'Content-Type': 'application/json'},
 												params: Ext.encode(favorite),
 												success: function() {
-													//pt.favorite = favorite;
 													DV.cmp.toolbar.share.enable();
+													DV.c.currentFavorite = {
+														id: record.data.id,
+														name: favorite.name
+													};
 													DV.store.favorite.loadStore();
 												}
 											});
@@ -3056,7 +3053,7 @@ Ext.onReady( function() {
 
 									if (confirm(message)) {
 										Ext.Ajax.request({
-											url: pt.baseUrl + '/api/charts/' + record.data.id,
+											url: DV.init.contextPath + '/api/charts/' + record.data.id,
 											method: 'DELETE',
 											success: function() {
 												DV.store.favorite.loadStore();
@@ -3254,6 +3251,7 @@ Ext.onReady( function() {
 					fieldLabel: isPublicAccess ? 'Public access' : obj.name, //i18n
 					labelStyle: 'color:#333',
 					cls: 'pt-combo',
+					fieldStyle: 'padding-left:5px',
 					width: 380,
 					labelWidth: 250,
 					queryMode: 'local',
@@ -4327,17 +4325,17 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_WEEK',
+																relativePeriodId: 'lastWeek',
 																boxLabel: 'Last week', //i18n pt.i18n.last_month
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_4_WEEKS',
+																relativePeriodId: 'last4Weeks',
 																boxLabel: 'Last 4 weeks', //i18n pt.i18n.last_3_months
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_12_WEEKS',
+																relativePeriodId: 'last12Weeks',
 																boxLabel: 'Last 12 weeks' //i18n pt.i18n.last_12_months,
 															}
 														]
@@ -4368,17 +4366,17 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_MONTH',
+																relativePeriodId: 'lastMonth',
 																boxLabel: DV.i18n.last_month
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_3_MONTHS',
+																relativePeriodId: 'last3Months',
 																boxLabel: DV.i18n.last_3_months
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_12_MONTHS',
+																relativePeriodId: 'last12Months',
 																boxLabel: DV.i18n.last_12_months,
 																checked: true
 															}
@@ -4410,12 +4408,12 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_QUARTER',
+																relativePeriodId: 'lastQuarter',
 																boxLabel: DV.i18n.last_quarter
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_4_QUARTERS',
+																relativePeriodId: 'last4Quarters',
 																boxLabel: DV.i18n.last_4_quarters
 															}
 														]
@@ -4453,12 +4451,12 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_SIX_MONTH',
+																relativePeriodId: 'lastSixMonth',
 																boxLabel: DV.i18n.last_six_month
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_2_SIXMONTHS',
+																relativePeriodId: 'last2SixMonths',
 																boxLabel: DV.i18n.last_two_six_month
 															}
 														]
@@ -4489,17 +4487,17 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'THIS_YEAR',
+																relativePeriodId: 'thisYear',
 																boxLabel: DV.i18n.this_year
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_YEAR',
+																relativePeriodId: 'lastYear',
 																boxLabel: DV.i18n.last_year
 															},
 															{
 																xtype: 'checkbox',
-																relativePeriodId: 'LAST_5_YEARS',
+																relativePeriodId: 'last5Years',
 																boxLabel: DV.i18n.last_5_years
 															}
 														]
