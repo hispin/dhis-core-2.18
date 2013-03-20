@@ -94,8 +94,12 @@
 
     <global-results>
       <result name="exceptionDefault" type="velocity">/exception.vm</result>
-      <result name="accessDenied" type="velocity">/accessDenied.vm</result>
+      <result name="pageAccessDenied" type="velocity">/pageAccessDenied.vm</result>
       <result name="jsonAccessDenied" type="velocity">/dhis-web-commons/ajax/jsonAccessDenied.vm</result>
+      <result name="createAccessDenied" type="velocity">/createAccessDenied.vm</result>
+      <result name="readAccessDenied" type="velocity">/readAccessDenied.vm</result>
+      <result name="updateAccessDenied" type="velocity">/updateAccessDenied.vm</result>
+      <result name="deleteAccessDenied" type="velocity">/deleteAccessDenied.vm</result>
       <result name="plainTextError" type="plainTextErrorResult">
         <param name="parse">true</param>
         <param name="message">${exception.class.name}: ${exception.message}</param>

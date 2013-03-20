@@ -41,12 +41,15 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.SharingUtils;
+import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -212,7 +215,7 @@ public class HibernateGenericStore<T>
         if ( !isWriteAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE_DENIED );
-            throw new AccessDeniedException( "You do not have write access to object." );
+            throw new CreateAccessDeniedException( object.toString() );
         }
 
         if ( currentUserService.getCurrentUser() != null && SharingUtils.isSupported( clazz ) )
@@ -240,7 +243,7 @@ public class HibernateGenericStore<T>
             else
             {
                 AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE_DENIED );
-                throw new AccessDeniedException( "You are not allowed to create public or private objects of this kind." );
+                throw new CreateAccessDeniedException( object.toString() );
             }
         }
 
@@ -254,7 +257,7 @@ public class HibernateGenericStore<T>
         if ( !isUpdateAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE_DENIED );
-            throw new AccessDeniedException( "You do not have update access to object." );
+            throw new UpdateAccessDeniedException( object.toString() );
         }
 
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
@@ -270,7 +273,7 @@ public class HibernateGenericStore<T>
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new AccessDeniedException( "You do not have read access to object with id " + id + "." );
+            throw new ReadAccessDeniedException( object.toString() );
         }
 
         return object;
@@ -285,7 +288,7 @@ public class HibernateGenericStore<T>
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new AccessDeniedException( "You do not have read access to object with id " + id );
+            throw new ReadAccessDeniedException( object.toString() );
         }
 
         return object;
@@ -299,7 +302,7 @@ public class HibernateGenericStore<T>
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new AccessDeniedException( "You do not have read access to object with uid " + uid );
+            throw new ReadAccessDeniedException( object.toString() );
         }
 
         return object;
@@ -320,7 +323,7 @@ public class HibernateGenericStore<T>
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new AccessDeniedException( "You do not have read access to object with name " + name );
+            throw new ReadAccessDeniedException( object.toString() );
         }
 
         return object;
@@ -335,7 +338,7 @@ public class HibernateGenericStore<T>
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new AccessDeniedException( "You do not have read access to object with shortName " + shortName );
+            throw new ReadAccessDeniedException( object.toString() );
         }
 
         return object;
@@ -349,7 +352,7 @@ public class HibernateGenericStore<T>
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new AccessDeniedException( "You do not have read access to object with code " + code );
+            throw new ReadAccessDeniedException( object.toString() );
         }
 
         return object;
@@ -361,7 +364,7 @@ public class HibernateGenericStore<T>
         if ( !isDeleteAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_DELETE_DENIED );
-            throw new AccessDeniedException( "You do not have delete access to this object." );
+            throw new DeleteAccessDeniedException( object.toString() );
         }
 
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_DELETE );
