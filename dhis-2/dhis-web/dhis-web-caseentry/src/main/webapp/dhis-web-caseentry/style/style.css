@@ -41,7 +41,7 @@ input[type="text"]
 
 input.option
 {
-    width: 235px;
+    width: 240px;
 }
 
 select 
@@ -192,9 +192,8 @@ input.move-button
 
 input.optionset[type="text"]
 {
-	width:230px; 
+	width:240px; 
 }
-
 
 input.datefield[type="text"]
 {
