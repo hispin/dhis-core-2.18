@@ -119,7 +119,7 @@
 									<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
 								</td>
 							</tr>
-							#if($programInstance.program.type==1)
+							#if($programInstance.program.type==1 && $programStageInstance)
 							<tr>
 								<td id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
 									<a>&#8226; $programStageInstance.programStage.displayName ($format.formatDate($programStageInstance.dueDate))</a>
@@ -134,7 +134,7 @@
 						programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
 						onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", false)' >
 						<td id='td_$programInstance.id'>
-							<a><span id='infor_$programInstance.id'>$programStageInstance.programStage.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
+							<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
 						</td>
 					</tr>
 					#end
