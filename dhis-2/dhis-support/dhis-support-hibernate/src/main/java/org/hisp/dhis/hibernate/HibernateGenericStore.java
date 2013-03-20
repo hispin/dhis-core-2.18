@@ -275,7 +275,7 @@ public class HibernateGenericStore<T>
 
         return object;
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     public final T load( int id )
@@ -310,7 +310,7 @@ public class HibernateGenericStore<T>
     {
         return getObject( Restrictions.eq( "uid", uid ) );
     }
-    
+
     @Override
     @Deprecated
     public final T getByName( String name )
@@ -904,8 +904,8 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        return SharingUtils.isSupported( clazz ) && !( currentUserService.getCurrentUser() == null ||
-            currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities().contains( SharingUtils.SHARING_OVERRIDE_AUTHORITY ) );
+        return SharingUtils.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
+            currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities().contains( SharingUtils.SHARING_OVERRIDE_AUTHORITY ));
     }
 
     protected boolean isReadAllowed( T object )
