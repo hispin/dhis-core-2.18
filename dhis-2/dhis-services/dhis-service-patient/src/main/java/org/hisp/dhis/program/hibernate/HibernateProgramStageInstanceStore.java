@@ -675,7 +675,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-        
+
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -685,11 +685,11 @@ public class HibernateProgramStageInstanceStore
                 || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT
                 || (position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD && deGroupBy == null) )
             {
-                pivotTable( grid, rowSet, i18n );
+                pivotTable( grid, rowSet, i18n, format );
             }
             else
             {
-                fillDataInGrid( grid, rowSet, i18n );
+                fillDataInGrid( grid, rowSet, i18n, format );
             }
         }
 
@@ -1021,7 +1021,7 @@ public class HibernateProgramStageInstanceStore
         sql += where; // filters
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
         sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
-        
+
         return sql;
     }
 
@@ -1861,10 +1861,10 @@ public class HibernateProgramStageInstanceStore
                     String operator = (filterValue.substring( 0, index ));
                     String value = filterValue.substring( index + 1, filterValue.length() );
                     filter += "AND (SELECT ";
-                    if( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                     {
-                        filter += "cast(value as " + statementBuilder.getDoubleColumnType()+ ") ";
-                        
+                        filter += "cast(value as " + statementBuilder.getDoubleColumnType() + ") ";
+
                     }
                     else
                     {
@@ -1988,7 +1988,7 @@ public class HibernateProgramStageInstanceStore
         return orgunitIds;
     }
 
-    private void fillDataInGrid( Grid grid, SqlRowSet rs, I18n i18n )
+    private void fillDataInGrid( Grid grid, SqlRowSet rs, I18n i18n, I18nFormat format )
     {
         int cols = rs.getMetaData().getColumnCount();
         int dataCols = 0;
@@ -2028,29 +2028,14 @@ public class HibernateProgramStageInstanceStore
                     double value = rs.getDouble( i );
                     sumRow[i] += value;
                     total += value;
-
-                    if ( value == (int) value )
-                    {
-                        grid.addValue( (int) value );
-                    }
-                    else
-                    {
-                        grid.addValue( value );
-                    }
+                    grid.addValue( format.formatValue( value ) );
                 }
             }
 
             // total
             if ( dataCols > 1 )
             {
-                if ( total == (int) total )
-                {
-                    grid.addValue( (int) total );
-                }
-                else
-                {
-                    grid.addValue( total );
-                }
+                grid.addValue( format.formatValue( total ));
             }
         }
 
@@ -2062,31 +2047,18 @@ public class HibernateProgramStageInstanceStore
             int total = 0;
             for ( int i = cols - dataCols + 1; i <= cols; i++ )
             {
-                if ( sumRow[i] == (int) sumRow[i] )
-                {
-                    grid.addValue( (int) sumRow[i] );
-                }
-                else
-                {
-                    grid.addValue( sumRow[i] );
-                }
+                    grid.addValue( format.formatValue(sumRow[i] ));
+                
                 total += sumRow[i];
             }
             if ( cols > cols - dataCols + 1 )
             {
-                if ( total == (int) total )
-                {
-                    grid.addValue( (int) total );
-                }
-                else
-                {
-                    grid.addValue( total );
-                }
+                grid.addValue( format.formatValue( total ));
             }
         }
     }
 
-    private void pivotTable( Grid grid, SqlRowSet rowSet, I18n i18n )
+    private void pivotTable( Grid grid, SqlRowSet rowSet, I18n i18n, I18nFormat format )
     {
         try
         {
@@ -2120,14 +2092,7 @@ public class HibernateProgramStageInstanceStore
                 // Add total value of the column
                 if ( cols > 2 )
                 {
-                    if ( total == (int) total )
-                    {
-                        column.add( (int) total );
-                    }
-                    else
-                    {
-                        column.add( total );
-                    }
+                    grid.addValue( format.formatValue( total ));
                 }
 
                 columnValues.put( index, column );
@@ -2176,26 +2141,13 @@ public class HibernateProgramStageInstanceStore
                             total += (Long) columnValues.get( i ).get( j );
                         }
                     }
-                    if ( total == (int) total )
-                    {
-                        column.add( (int) total );
-                    }
-                    else
-                    {
-                        column.add( total );
-                    }
+                       column.add( format.formatValue( total ) );
+                    
                     allTotal += total;
                 }
                 if ( cols > 2 )
                 {
-                    if ( allTotal == (int) allTotal )
-                    {
-                        column.add( (int) allTotal );
-                    }
-                    else
-                    {
-                        column.add( allTotal );
-                    }
+                        column.add(format.formatValue(allTotal ));
                 }
                 grid.addColumn( column );
             }
