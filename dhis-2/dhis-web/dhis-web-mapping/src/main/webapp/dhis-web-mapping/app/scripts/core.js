@@ -209,6 +209,7 @@ GIS.core.getOLMap = function(gis) {
 			displayClass: 'olControlButton',
 			trigger: function() {
 				fn.call(gis.olmap);
+				gis.layer.googleHybrid.redraw();
 			}
 		});
 
