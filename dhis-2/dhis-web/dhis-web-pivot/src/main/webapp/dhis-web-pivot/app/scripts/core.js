@@ -741,7 +741,19 @@ PT.core.getUtils = function(pt) {
 						header.index = i;
 
 						if (header.meta) {
-							header.items = header.name === pt.conf.finals.dimension.period.dimensionName ? [].concat(response.metaData.periods) : xLayout.nameItemsMap[header.name];
+
+							// categories
+							if (header.name === pt.conf.finals.dimension.category.dimensionName) {
+								header.items = [].concat(response.metaData[pt.conf.finals.dimension.category.dimensionName]);
+							}
+							// periods
+							else if (header.name === pt.conf.finals.dimension.period.dimensionName) {
+								header.items = [].concat(response.metaData[pt.conf.finals.dimension.period.dimensionName]);
+							}
+							else {
+								header.items = xLayout.nameItemsMap[header.name];
+							}
+
 							header.size = header.items.length;
 						}
 					}
