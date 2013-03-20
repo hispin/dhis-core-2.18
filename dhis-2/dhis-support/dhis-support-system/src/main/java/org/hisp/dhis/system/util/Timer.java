@@ -55,7 +55,12 @@ public class Timer
         long endTime = System.nanoTime();
         
         long time = ( endTime - startTime ) / 1000;
-             
+        
+        if ( !printDisabled )
+        {
+            System.out.println( msg  + ": " + time + " micros" );
+        }
+        
         return time;
     }
 
