@@ -2670,8 +2670,7 @@ Ext.onReady( function() {
 				favorite.userOrganisationUnit = DV.c.userorganisationunit;
 				favorite.userOrganisationUnitChildren = DV.c.userorganisationunitchildren;
 				
-				// Options
-				
+				// Options				
 				if (DV.c.domainaxislabel) {
 					favorite.domainAxisLabel = DV.c.domainaxislabel;
 				}

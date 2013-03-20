@@ -450,8 +450,8 @@ public class DefaultQueryPlanner
         {
             DataQueryParams query = new DataQueryParams( params );
             query.setAggregationType( SUM );
-            queries.add( query );            
-        }        
+            queries.add( query );
+        }
         
         return queries;
     }
@@ -532,9 +532,11 @@ public class DefaultQueryPlanner
         
         for ( IdentifiableObject element : dataElements )
         {
-            DataElement dataElement = (DataElement) element;
+            DataElement de = (DataElement) element;
 
-            putByAggregationType( map, dataElement.getType(), dataElement.getAggregationOperator(), dataElement, aggregationPeriodType, dataElement.getPeriodType() );
+            AggregationType aggregationType = getAggregationType( de, de.getType(), de.getAggregationOperator(), aggregationPeriodType, de.getPeriodType() );
+            
+            map.putValue( aggregationType, de );
         }
         
         return map;
@@ -544,31 +546,35 @@ public class DefaultQueryPlanner
      * Puts the given element into the map according to the value type, aggregation
      * operator, aggregation period type and data period type.
      */
-    private void putByAggregationType( ListMap<AggregationType, IdentifiableObject> map, String valueType, String aggregationOperator, 
-        IdentifiableObject element, PeriodType aggregationPeriodType, PeriodType dataPeriodType )
+    private AggregationType getAggregationType( IdentifiableObject element, String valueType, String aggregationOperator, 
+        PeriodType aggregationPeriodType, PeriodType dataPeriodType )
     {
+        AggregationType aggregationType = null;
+        
         if ( AGGREGATION_OPERATOR_SUM.equals( aggregationOperator ) )
         {
-            map.putValue( SUM, element );
+            aggregationType = SUM;
         }
         else if ( AGGREGATION_OPERATOR_AVERAGE.equals( aggregationOperator ) )
         {
             if ( VALUE_TYPE_BOOL.equals( valueType ) )
             {
-                map.putValue( AVERAGE_BOOL, element );
+                aggregationType = AVERAGE_BOOL;
             }
             else
             {
                 if ( dataPeriodType == null || aggregationPeriodType == null || aggregationPeriodType.getFrequencyOrder() >= dataPeriodType.getFrequencyOrder() )
                 {
-                    map.putValue( AVERAGE_INT, element );
+                    aggregationType = AVERAGE_INT;
                 }
                 else
                 {
-                    map.putValue( AVERAGE_INT_DISAGGREGATION, element );
+                    aggregationType = AVERAGE_INT_DISAGGREGATION;
                 }
             }
         }
+        
+        return aggregationType;
     }
 
     /**
