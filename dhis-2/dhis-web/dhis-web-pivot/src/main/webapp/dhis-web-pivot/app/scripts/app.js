@@ -3534,7 +3534,7 @@ Ext.onReady( function() {
 				preventHeader: true,
 				collapsible: true,
 				collapseMode: 'mini',
-				width: Ext.isWebKit ? pt.conf.layout.west_width + 7 : pt.conf.layout.west_width + 17,
+				width: Ext.isWebKit ? pt.conf.layout.west_width + 8 : pt.conf.layout.west_width + 17,
 				items: accordion
 			});
 

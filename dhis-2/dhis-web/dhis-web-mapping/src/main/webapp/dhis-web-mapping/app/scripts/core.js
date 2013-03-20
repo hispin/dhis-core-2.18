@@ -348,7 +348,6 @@ GIS.core.getLayers = function(gis) {
 
 GIS.core.createSelectHandlers = function(gis, layer) {
 	var isRelocate = !!GIS.app ? (gis.init.user.isAdmin ? true : false) : false,
-		isInfo = !!GIS.app,
 
 		window,
 		infrastructuralPeriod,

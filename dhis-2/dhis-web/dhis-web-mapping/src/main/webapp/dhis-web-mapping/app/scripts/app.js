@@ -1814,7 +1814,6 @@ Ext.onReady( function() {
 				text: 'Create', //i18n
 				handler: function() {
 					var name = nameTextfield.getValue(),
-						system = systemCheckbox.getValue(),
 						layers = gis.util.map.getVisibleVectorLayers(),
 						layer,
 						lonlat = gis.olmap.getCenter(),
@@ -3021,7 +3020,7 @@ Ext.onReady( function() {
 		button = Ext.create('Ext.button.Button', {
 			text: 'Download', //i18n
 			handler: function() {
-				var title = textfield.getValue(),
+				var title = Ext.htmlEncode(textfield.getValue()),
 					svg = gis.util.svg.getString(title, gis.util.map.getVisibleVectorLayers()),
 					exportForm = document.getElementById('exportForm');
 
