@@ -116,7 +116,6 @@ public class DefaultAnalyticsService
     private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
     
     private static final String VALUE_HEADER_NAME = "Value";
-    private static final String PERIODS_META_KEY = "periods";
     private static final String NAMES_META_KEY = "names";
     private static final int PERCENT = 100;
     private static final int MAX_QUERIES = 8;
@@ -332,8 +331,18 @@ public class DefaultAnalyticsService
         
         Map<Object, Object> metaData = new HashMap<Object, Object>();
         
-        metaData.put( NAMES_META_KEY, getUidNameMap( params, grid, cocIndex ) );
-        metaData.put( PERIODS_META_KEY, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
+        Map<String, String> uidNameMap = getUidNameMap( params );
+        Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );
+        
+        uidNameMap.putAll( cocNameMap );
+        
+        metaData.put( NAMES_META_KEY, uidNameMap );
+        metaData.put( PERIOD_DIM_ID, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
+        
+        if ( cocIndex != null )
+        {
+            metaData.put( CATEGORYOPTIONCOMBO_DIM_ID, cocNameMap.keySet() );
+        }
         
         grid.setMetaData( metaData );
         
@@ -633,13 +642,12 @@ public class DefaultAnalyticsService
         return params;
     }
     
-    private Map<String, String> getUidNameMap( DataQueryParams params, Grid grid, Integer cocIndex )
+    private Map<String, String> getUidNameMap( DataQueryParams params )
     {
         Map<String, String> map = new HashMap<String, String>();
         map.putAll( getUidNameMap( params.getDimensions() ) );
         map.putAll( getUidNameMap( params.getFilters() ) );
         map.put( DATA_X_DIM_ID, DISPLAY_NAME_DATA_X );
-        map.putAll( getCocMetaData( grid, cocIndex ) );
         
         return map;
     }
@@ -686,7 +694,7 @@ public class DefaultAnalyticsService
         return map;
     }
     
-    private Map<String, String> getCocMetaData( Grid grid, Integer cocIndex )
+    private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
     {
         Map<String, String> metaData = new HashMap<String, String>();
         
