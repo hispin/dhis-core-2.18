@@ -1535,7 +1535,7 @@ Ext.onReady( function() {
 					labelSeparator: null,
 					editable: false,
 					disabled: !!disallowPublicAccess,
-					value: obj.access,
+					value: obj.access || 'rw------',
 					store: store
 				});
 
