@@ -1448,7 +1448,7 @@ function unenrollmentForm( programInstanceId )
 
 function reenrollmentForm( programInstanceId )
 {	
-	if( confirm(i18n_incomplete_confirm_message) )
+	if( confirm(i18n_reenrollment_confirm_message) )
 	{
 		$.ajax({
 			type: "POST",
@@ -1528,6 +1528,11 @@ function saveIdentifierAndAttribute( patientId, programId, paramsDiv)
 			data: params,
 			success: function(json) 
 			{
+				jQuery("[id=tab-2] :input").each(function(){
+					var input = jQuery(this);
+					var id = 'dashboard_' + input.attr('id');
+					setInnerHTML(id, input.val());
+				});
 				showSuccessMessage( i18n_save_success );
 			}
 		});
