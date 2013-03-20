@@ -3548,7 +3548,7 @@ Ext.onReady( function() {
                         xtype: 'toolbar',
                         id: 'chartsettings_tb',
                         style: 'padding-left: 2px;',
-                        height: 48,
+                        height: 47,
                         items: [
                             {
                                 xtype: 'panel',
