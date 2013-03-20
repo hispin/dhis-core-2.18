@@ -242,10 +242,10 @@ DV.conf = {
         west_fieldset_width: 416,
         west_width_padding: 4,
         west_fill: 101,
-        west_fill_accordion_indicator: 63,
-        west_fill_accordion_dataelement: 63,
+        west_fill_accordion_indicator: 59,
+        west_fill_accordion_dataelement: 59,
         west_fill_accordion_dataset: 33,
-        west_fill_accordion_period: 240,
+        west_fill_accordion_period: 232,
         west_fill_accordion_organisationunit: 62,
         west_maxheight_accordion_indicator: 500,
         west_maxheight_accordion_dataelement: 500,
@@ -2740,7 +2740,7 @@ Ext.onReady( function() {
 
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
-				width: 250,
+				width: 371,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
 				style: 'margin-bottom:0',
 				emptyText: 'Favorite name',
@@ -2832,7 +2832,7 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: id ? 'Rename favorite' : 'Create new favorite',
 				//iconCls: 'dv-window-title-icon-favorite',
-				bodyStyle: 'padding:5px; background:#fff',
+				bodyStyle: 'padding:2px; background:#fff',
 				resizable: false,
 				modal: true,
 				items: nameTextfield,
@@ -3402,8 +3402,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: 'Sharing layout',
-			bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
-			width: 434,
+			bodyStyle: 'padding:6px 6px 0px; background-color:#fff',
 			resizable: false,
 			modal: true,
 			destroyOnBlur: true,
@@ -3497,7 +3496,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'label',
                                 text: DV.i18n.chart_type,
-                                style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 7px'
+                                style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 6px'
                             },
                             {
 								xtype: 'button',
@@ -3548,7 +3547,7 @@ Ext.onReady( function() {
                         xtype: 'toolbar',
                         id: 'chartsettings_tb',
                         style: 'padding-left: 2px;',
-                        height: 47,
+                        height: 46,
                         items: [
                             {
                                 xtype: 'panel',
@@ -3655,7 +3654,7 @@ Ext.onReady( function() {
                     },
                     {
                         xtype: 'panel',
-                        bodyStyle: 'border-style:none; border-top:2px groove #eee; padding:2px;',
+                        bodyStyle: 'border-style:none; border-top:2px groove #eee; padding:1px 2px 2px;',
                         layout: 'fit',
                         items: [
 							{
@@ -3673,12 +3672,11 @@ Ext.onReady( function() {
 											{
 												xtype: 'combobox',
 												cls: 'dv-combo',
-												style: 'margin-bottom:4px; margin-top:2px',
+												style: 'margin-bottom:2px; margin-top:0px',
 												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												valueField: 'id',
 												displayField: 'name',
-												fieldLabel: DV.i18n.select_group,
-												labelStyle: 'padding-left:8px;',
+												emptyText: 'Select indicator group',
 												editable: false,
 												queryMode: 'remote',
 												store: Ext.create('Ext.data.Store', {
@@ -3843,12 +3841,11 @@ Ext.onReady( function() {
 											{
 												xtype: 'combobox',
 												cls: 'dv-combo',
-												style: 'margin-bottom:4px; margin-top:2px',
+												style: 'margin-bottom:2px; margin-top:0px',
 												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												valueField: 'id',
 												displayField: 'name',
-												fieldLabel: DV.i18n.select_group,
-												labelStyle: 'padding-left:8px',
+												emptyText: 'Select data element group',
 												editable: false,
 												queryMode: 'remote',
 												store: Ext.create('Ext.data.Store', {
@@ -4133,18 +4130,15 @@ Ext.onReady( function() {
 												xtype: 'panel',
 												layout: 'column',
 												bodyStyle: 'border-style:none',
-												style: 'margin-top:2px',
 												items: [
 													{
 														xtype: 'combobox',
 														cls: 'dv-combo',
-														style: 'margin-bottom:4px',
-														width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding - 62 - 62 - 7,
+														style: 'margin-bottom:2px; margin-top:0px',
+														width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding - 62 - 62 - 4,
 														valueField: 'id',
 														displayField: 'name',
-														fieldLabel: DV.i18n.select_type,
-														labelStyle: 'padding-left:8px;',
-														labelWidth: 110,
+														emptyText: 'Select period type',
 														editable: false,
 														queryMode: 'remote',
 														store: DV.store.periodtype,
@@ -4170,7 +4164,7 @@ Ext.onReady( function() {
 													{
 														xtype: 'button',
 														text: 'Prev year',
-														style: 'margin-left:4px; border-radius:2px',
+														style: 'margin-left:2px; border-radius:2px',
 														height: 24,
 														handler: function() {
 															var cb = this.up('panel').down('combobox');
@@ -4183,7 +4177,7 @@ Ext.onReady( function() {
 													{
 														xtype: 'button',
 														text: 'Next year',
-														style: 'margin-left:3px; border-radius:2px',
+														style: 'margin-left:2px; border-radius:2px',
 														height: 24,
 														handler: function() {
 															var cb = this.up('panel').down('combobox');
@@ -4199,7 +4193,7 @@ Ext.onReady( function() {
 
 												xtype: 'panel',
 												layout: 'column',
-												bodyStyle: 'border-style:none; padding-bottom:4px',
+												bodyStyle: 'border-style:none; padding-bottom:2px',
 												items: [
 													{
 														xtype: 'multiselect',
@@ -4855,9 +4849,7 @@ Ext.onReady( function() {
 												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_padding,
 												valueField: 'id',
 												displayField: 'name',
-												fieldLabel: 'Group set', //i18n
-												labelWidth: 85,
-												labelStyle: 'padding-left:7px;',
+												emptyText: 'Organisation unit group set',
 												editable: false,
 												queryMode: 'remote',
 												value: DV.i18n.none,
@@ -5155,6 +5147,11 @@ Ext.onReady( function() {
                                 DV.exe.execute();
                             }
                         },
+						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
+						},
                         {
                             text: DV.i18n.favorites,
                             menu: {},
@@ -5171,11 +5168,6 @@ Ext.onReady( function() {
 									DV.cmp.toolbar.favorite = this;
 								}
 							}
-						},
-						{
-							xtype: 'tbseparator',
-							height: 18,
-							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
 						},
                         {
                             xtype: 'button',
@@ -5421,7 +5413,7 @@ Ext.onReady( function() {
 						{
 							xtype: 'tbseparator',
 							height: 18,
-							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 6px; margin-left: 3px',
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 3px; margin-left: 0px',
 						},
                         {
                             xtype: 'button',
