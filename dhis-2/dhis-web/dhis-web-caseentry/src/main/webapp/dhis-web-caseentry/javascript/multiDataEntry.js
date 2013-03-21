@@ -80,7 +80,6 @@ function getPatientList(searchTexts)
 		{
 			programId:programId,
 			listAll:false,
-			searchBySelectedOrgunit: false,
 			searchTexts: searchTexts
 		}, 
 		function()
