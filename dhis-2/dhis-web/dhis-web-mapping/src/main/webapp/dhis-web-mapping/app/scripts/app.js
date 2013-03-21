@@ -1798,7 +1798,7 @@ Ext.onReady( function() {
 
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
-				width: 250,
+				width: 371,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
 				style: 'margin-bottom:0',
 				emptyText: 'Favorite name',
@@ -1898,7 +1898,7 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: id ? 'Rename favorite' : 'Create new favorite',
 				iconCls: 'gis-window-title-icon-favorite',
-				cls: 'gis-container-default',
+				bodyStyle: 'padding:2px; background:#fff',
 				resizable: false,
 				modal: true,
 				items: nameTextfield,
@@ -2114,10 +2114,10 @@ Ext.onReady( function() {
 
 								if (record.data.access.manage) {
 									Ext.Ajax.request({
-										url: pt.baseUrl + '/api/sharing?type=map&id=' + record.data.id,
+										url: gis.baseUrl + '/api/sharing?type=map&id=' + record.data.id,
 										method: 'GET',
 										failure: function(r) {
-											pt.viewport.mask.hide();
+                                            gis.olmap.mask.hide();
 											alert(r.responseText);
 										},
 										success: function(r) {
@@ -2166,7 +2166,7 @@ Ext.onReady( function() {
 
 									if (confirm(message)) {
 										Ext.Ajax.request({
-											url: pt.baseUrl + '/api/reportTables/' + record.data.id,
+											url: gis.baseUrl + '/api/maps/' + record.data.id,
 											method: 'DELETE',
 											success: function() {
 												gis.store.maps.loadStore();
@@ -2562,7 +2562,7 @@ Ext.onReady( function() {
 
 			legendSetName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
-				width: 422,
+				width: 428,
 				height: 25,
 				fieldStyle: 'padding-left: 6px; border-color: #bbb',
 				fieldLabel: 'Legend set name' //i18n
@@ -2571,13 +2571,13 @@ Ext.onReady( function() {
 			legendName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
 				fieldStyle: 'padding-left: 6px',
-				width: 404,
+				width: 415,
 				height: 23,
 				fieldLabel: 'Legend name' //i18n
 			});
 
 			startValue = Ext.create('Ext.form.field.Number', {
-				width: 148,
+				width: 153,
 				height: 23,
 				allowDecimals: false,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px',
@@ -2585,7 +2585,7 @@ Ext.onReady( function() {
 			});
 
 			endValue = Ext.create('Ext.form.field.Number', {
-				width: 148,
+				width: 154,
 				height: 23,
 				allowDecimals: false,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px',
@@ -2594,7 +2594,7 @@ Ext.onReady( function() {
 			});
 
 			color = Ext.create('Ext.ux.button.ColorButton', {
-				width: 299,
+				width: 310,
 				height: 23,
 				fieldLabel: 'Symbolizer', //i18n
 				style: 'border-radius: 1px',
@@ -2646,7 +2646,7 @@ Ext.onReady( function() {
 			legendGrid = Ext.create('Ext.grid.Panel', {
 				cls: 'gis-grid',
 				bodyStyle: 'border-top: 0 none',
-				width: 422,
+				width: 428,
 				height: 235,
 				scroll: 'vertical',
 				hideHeaders: true,
@@ -2655,7 +2655,7 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: 250
+						width: 256
 					},
 					{
 						sortable: false,
@@ -2747,7 +2747,7 @@ Ext.onReady( function() {
 						cls: 'gis-panel-html-separator'
 					},
 					{
-						bodyStyle: 'background-color: #f1f1f1; border: 1px solid #ccc; border-radius: 1px; padding: 8px',
+						bodyStyle: 'background-color:#f1f1f1; border:1px solid #ccc; border-radius:1px; padding:5px',
 						items: [
 							legendName,
 							{
@@ -2757,7 +2757,7 @@ Ext.onReady( function() {
 									{
 										html: 'Start / end value:', //i18n
 										width: 105,
-										bodyStyle: 'background: transparent; padding-top: 3px'
+										bodyStyle: 'background:transparent; padding-top:3px'
 									},
 									startValue,
 									endValue
@@ -2785,7 +2785,7 @@ Ext.onReady( function() {
 					{
 						cls: 'gis-container-inner',
 						bodyStyle: 'text-align: right',
-						width: 422,
+						width: 428,
 						items: addLegend
 					},
 					{
@@ -2979,7 +2979,7 @@ Ext.onReady( function() {
 		window = Ext.create('Ext.window.Window', {
 			title: 'Legend sets', //i18n
 			iconCls: 'gis-window-title-icon-legendset', //todo
-			cls: 'gis-container-default',
+            bodyStyle: 'padding:5px; background-color:#fff',
 			resizable: false,
 			width: 450,
 			modal: true,
