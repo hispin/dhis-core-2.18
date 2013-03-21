@@ -930,6 +930,7 @@ Ext.onReady( function() {
 			title: layer.name,
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-' + layer.id,
+            bodyStyle: 'padding:5px',
 			cls: 'gis-container-default',
 			closeAction: 'hide',
 			width: gis.conf.layout.widget.window_width,
@@ -2434,7 +2435,7 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: 363
+						width: 369
 					},
 					{
 						xtype: 'actioncolumn',
@@ -3044,6 +3045,7 @@ Ext.onReady( function() {
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-download',
 			cls: 'gis-container-default',
+            bodyStyle: 'padding:2px',
 			resizable: true,
 			modal: true,
 			items: textfield,
@@ -3077,7 +3079,7 @@ Ext.onReady( function() {
 		panel = Ext.create('Ext.panel.Panel', {
 			cls: 'gis-container-inner',
 			html: '<b>Link: </b>' + gis.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + gis.map.id, //todo
-			style: 'padding-top: 9px; padding-bottom: 2px'
+			style: 'padding:6px 0 6px 1px'
 		});
 
 		button = Ext.create('Ext.button.Button', {
@@ -3102,6 +3104,7 @@ Ext.onReady( function() {
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-interpretation',
 			cls: 'gis-container-default',
+            bodyStyle: 'padding:5px 5px 0',
 			width: 500,
 			resizable: true,
 			modal: true,
