@@ -33,6 +33,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.webdomain.sharing.Sharing;
 import org.hisp.dhis.api.webdomain.sharing.SharingUserGroupAccess;
 import org.hisp.dhis.api.webdomain.sharing.SharingUserGroups;
+import org.hisp.dhis.common.AccessStringHelper;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -110,7 +111,16 @@ public class SharingController
 
         sharing.getObject().setId( object.getUid() );
         sharing.getObject().setName( object.getDisplayName() );
-        sharing.getObject().setPublicAccess( object.getPublicAccess() );
+
+        if ( sharing.getObject().getPublicAccess() == null )
+        {
+            String rw = AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).enable( AccessStringHelper.Permission.WRITE ).build();
+            sharing.getObject().setPublicAccess( rw );
+        }
+        else
+        {
+            sharing.getObject().setPublicAccess( object.getPublicAccess() );
+        }
 
         if ( object.getUser() != null )
         {
@@ -131,7 +141,7 @@ public class SharingController
         JacksonUtils.toJson( response.getOutputStream(), sharing );
     }
 
-    @RequestMapping(value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json")
+    @RequestMapping( value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
     public void setSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( SharingUtils.classForType( type ), id );
