@@ -116,7 +116,6 @@ public class DefaultAnalyticsService
     private static final Log log = LogFactory.getLog( DefaultAnalyticsService.class );
     
     private static final String VALUE_HEADER_NAME = "Value";
-    private static final String NAMES_META_KEY = "names";
     private static final int PERCENT = 100;
     private static final int MAX_QUERIES = 8;
     
