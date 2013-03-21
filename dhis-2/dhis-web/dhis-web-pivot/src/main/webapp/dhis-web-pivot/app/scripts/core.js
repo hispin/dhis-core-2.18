@@ -838,14 +838,18 @@ PT.core.getUtils = function(pt) {
 
 	//nCols			= 12
 
-
 				for (var i = 0; i < aUniqueIds.length; i++) {
 					if (aNumCols[i] === 1) {
 						if (i === 0) {
-							aSpan.push(nCols); //if just one and top level, span all
+							aSpan.push(nCols); //if just one item and top level, span all
 						}
 						else {
-							aSpan.push(aSpan[0]); //if just one and not top level, span same as top level
+							if (options.hideEmptyRows && type === 'row') {	
+								aSpan.push(nCols / aAccNumCols[i]);
+							}
+							else {
+								aSpan.push(aSpan[0]); //if just one item and not top level, span same as top level
+							}
 						}
 					}
 					else {
@@ -924,12 +928,16 @@ PT.core.getUtils = function(pt) {
 					aAllObjects.push(allRow);
 				}
 
-				// add span
+				// add span and children
 				for (var i = 0; i < aAllObjects.length; i++) {
 					for (var j = 0, obj; j < aAllObjects[i].length; j += aSpan[i]) {
 						obj = aAllObjects[i][j];
+
+						// span
 						obj[spanType] = aSpan[i];
-						obj.children = aSpan[i] === 1 ? 0 : aSpan[i];
+
+						// children
+						obj.children = Ext.isDefined(aSpan[i + 1]) ? aSpan[i] / aSpan[i + 1] : 0;
 
 						if (i === 0) {
 							obj.root = true;
@@ -1143,8 +1151,7 @@ PT.core.getUtils = function(pt) {
 							obj.collapsed = true;
 
 							if (obj.parent) {
-								obj.parent.children--;
-								obj.parent.rowSpan = obj.parent.parent ? obj.parent.rowSpan-- : obj.parent.rowSpan;
+								obj.parent.children = obj.parent.children - 1;
 							}
 						}
 
@@ -1311,7 +1318,7 @@ PT.core.getUtils = function(pt) {
 								obj = {};
 								obj.type = 'dimensionSubtotal';
 								obj.cls = 'pivot-dim-subtotal';
-								obj.collapsed = !Ext.Array.contains(collapsed, false);
+								obj.hidden = Ext.Array.contains(collapsed, true);
 
 								if (i === 0) {
 									obj.htmlValue = '&nbsp;'; //i18n
