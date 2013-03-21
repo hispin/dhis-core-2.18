@@ -58,7 +58,7 @@ GIS.core.getConfigs = function() {
 			widget: {
 				item_width: 262,
 				itemlabel_width: 95,
-				window_width: 290
+				window_width: 284
 			},
 			tool: {
 				item_width: 222,
