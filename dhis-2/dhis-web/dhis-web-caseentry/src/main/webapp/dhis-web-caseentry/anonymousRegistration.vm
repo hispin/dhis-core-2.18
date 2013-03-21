@@ -186,4 +186,13 @@
 	var searchTextBox = '<input type="text" id="searchText" name="searchText">';	
 	setInnerHTML('reportDateDescriptionField', jQuery('#programId option:selected').attr('reportDateDes'));
 	setInnerHTML('reportDateDescriptionField2', jQuery('#programId option:selected').attr('reportDateDes'));
+	
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y= date.getFullYear();
+		
+	var	startDateSince = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d-7) ) ;
+	setFieldValue('startDate', startDateSince);
+	
 </script>
