@@ -676,9 +676,15 @@ public class HibernatePatientStore
     private Collection<Integer> getOrgunitChildren( OrganisationUnit orgunit )
     {
         Collection<Integer> orgunitIds = new HashSet<Integer>();
-        orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
-        orgunitIds.remove( orgunit.getId() );
-
+        if ( orgunit != null )
+        {
+            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
+            orgunitIds.remove( orgunit.getId() );
+        }
+        if ( orgunitIds.size() == 0 )
+        {
+            orgunitIds.add( 0 );
+        }
         return orgunitIds;
     }
 
