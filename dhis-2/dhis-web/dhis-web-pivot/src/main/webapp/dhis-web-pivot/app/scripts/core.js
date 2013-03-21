@@ -1318,7 +1318,7 @@ PT.core.getUtils = function(pt) {
 								obj = {};
 								obj.type = 'dimensionSubtotal';
 								obj.cls = 'pivot-dim-subtotal';
-								obj.hidden = Ext.Array.contains(collapsed, true);
+								obj.collapsed = Ext.Array.contains(collapsed, true);
 
 								if (i === 0) {
 									obj.htmlValue = '&nbsp;'; //i18n
