@@ -46,7 +46,7 @@
 			<tr>
 				<td><label>$i18n.getString('from')</label></td>
 				<td>
-					<input type="text" id='startDate' name='startDate' style="width:240px;" />
+					<input type="text" id='startDate' name='startDate' style="width:260px;" />
 				</td>
                 <td style="padding-left: 20px;">
                     <input type="checkbox" id="incompleted" name="incompleted" value="true">$i18n.getString("incomplete")</input>
@@ -55,7 +55,7 @@
             <tr>
 				<td><label>$i18n.getString('to')</label></td>
 				<td>
-					<input type="text" id='endDate' name='endDate' style="width:240px;" />
+					<input type="text" id='endDate' name='endDate' style="width:260px;" />
 				</td>
 				<td style="padding-left: 20px;">
 					<input type="button" class='large-button' style="width: 145px;" id='filterBtn' name="filterBtn" value='$i18n.getString( "show_filter" )' onclick="showFilterForm();" />
