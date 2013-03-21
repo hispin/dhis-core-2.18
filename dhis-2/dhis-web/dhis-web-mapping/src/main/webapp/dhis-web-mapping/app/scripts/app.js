@@ -2107,12 +2107,12 @@ Ext.onReady( function() {
 						{
 							iconCls: 'gis-grid-row-icon-sharing',
 							getClass: function(value, metaData, record) {
-								return 'tooltip-favorite-sharing' + (!record.data.access.update ? ' disabled' : '');
+								return 'tooltip-favorite-sharing' + (!record.data.access.manage ? ' disabled' : '');
 							},
 							handler: function(grid, rowIndex) {
 								var record = this.up('grid').store.getAt(rowIndex);
 
-								if (record.data.access.update) {
+								if (record.data.access.manage) {
 									Ext.Ajax.request({
 										url: pt.baseUrl + '/api/sharing?type=map&id=' + record.data.id,
 										method: 'GET',
