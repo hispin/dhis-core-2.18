@@ -5,7 +5,9 @@
 </h3>
 
 <div class='dashboard-area'>
-
+<table>
+<tr>
+<td>
 	<div class="link-area">
 		<p class='header'>
 			$i18n.getString("demographics")
@@ -83,6 +85,8 @@
 		</div>
 	</div>
 
+</td>
+<td>
 	<div class="link-area" id="activeDiv" name="activeDiv">
 		<p class='header'>
 			$i18n.getString("active_programs")
@@ -133,7 +137,11 @@
 			</table>
 		</div>
 	</div>
-			
+
+
+</td>
+<td>
+	
 	<div class="link-area" id="completedDiv" name="completedDiv" style="display:none;">
 		<p class="header">
 			<a href='javascript:viewPersonProgram( "activeDiv","completedDiv" )'>$i18n.getString("active_programs")</a>
@@ -159,6 +167,9 @@
 		</div>
 	</div>
 	
+</td>
+<td>
+
 	<div class="link-area">
 		<p class='header'>
 			$i18n.getString("relationships")
@@ -183,6 +194,10 @@
 			</table>
 		</div>
 	</div>
+
+</td>
+</tr>
+<table>
 
 </div>
 <br>
