@@ -487,11 +487,10 @@ function enableBtn(){
 	{
 		var programIdAddPatient = getFieldValue('programIdAddPatient');
 		if( programIdAddPatient!='' ){
-			enable('listPatientBtn');
+			disable('listPatientBtn');
 			enable('addPatientBtn');
 			enable('advancedSearchBtn');
-			enable('scheduled7DaysBtn');
-			enable('scheduled30DaysBtn');
+			enable('scheduledVisitDays');
 			jQuery('#advanced-search :input').each( function( idx, item ){
 				enable(this.id);
 			});
@@ -501,8 +500,7 @@ function enableBtn(){
 			disable('listPatientBtn');
 			disable('addPatientBtn');
 			disable('advancedSearchBtn');
-			disable('scheduled7DaysBtn');
-			disable('scheduled30DaysBtn');
+			disable('scheduledVisitDays');
 			jQuery('#advanced-search :input').each( function( idx, item ){
 				disable(this.id);
 			});

@@ -6,15 +6,15 @@
 				item.remove();
 			}
 		});
+		
+		hideById('addPatientBtn');
+		hideById('listPatientBtn');
 		showById('dueDateTR');
 		showById('programStageAddPatientTR');
-		hideById('addPatientBtn');
+		showById('scheduleVisitTR');
+		
 		jQuery("#searchObjectId [value=prg]").remove();
 		registration = false;
-		var i18n_scheduled_today = '$encoder.jsEscape( $i18n.getString( "scheduled_today" ) , "'")';
-		setFieldValue('listPatientBtn', i18n_scheduled_today);
-		showById('scheduled7DaysBtn');
-		showById('scheduled30DaysBtn');
 	});	
 </script>
 
