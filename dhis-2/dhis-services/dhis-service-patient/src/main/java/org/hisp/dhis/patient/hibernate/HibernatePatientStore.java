@@ -590,7 +590,7 @@ public class HibernatePatientStore
         String from = " from patient p ";
         if ( isSearchEvent )
         {
-            String subSQL = " , psi.programstageinstanceid as programstageinstanceid, pgs.name as programstagename, min(psi.duedate) as duedate ";
+            String subSQL = " , psi.programstageinstanceid as programstageinstanceid, pgs.name as programstagename, psi.duedate as duedate ";
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
                 + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) ";
@@ -599,7 +599,7 @@ public class HibernatePatientStore
                 sql += " inner join patientattributevalue pav on p.patientid=pav.patientid ";
             }
             patientGroupBy += ",psi.programstageinstanceid, pgs.name ";
-            orderBy = " ORDER BY duedate DESC ";
+            orderBy = " ORDER BY duedate asc ";
             from = " ";
         }
 
