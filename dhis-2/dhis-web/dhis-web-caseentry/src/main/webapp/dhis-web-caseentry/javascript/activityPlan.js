@@ -34,30 +34,41 @@ function displayCadendar()
 
 function showActitityList()
 {
+	setFieldValue('listAll', "true");
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
-	
-	var statusList = "";
-	var statusEvent = getFieldValue('statusEvent').split('_');
-	for( var i in statusEvent){
-		statusList += "&statusList=" + statusEvent[i];
-	}
-
 	$('#contentDataRecord').html('');
-	
+	var facilityLB = $('input[name=facilityLB]:checked').val();
+	var programId = getFieldValue('programIdAddPatient');
+	var searchTexts = "stat_" + programId
+					+ "_" + getFieldValue('startDueDate')
+					+ "_" + getFieldValue('endDueDate');
+	if(facilityLB=='selected')
+	{
+		searchTexts += "_" + getFieldValue('orgunitId');
+	}
+	else if(facilityLB=='all')
+	{
+		searchTexts += "_0";
+	}
+	else if(facilityLB=='childrenOnly'){
+		searchTexts += "_-1";
+	}
+	searchTexts += "_false_" + getFieldValue('statusEvent');
+		
 	showLoader();
-	jQuery('#listPatientDiv').load('getActivityPlanRecords.action?' + statusList,
+	jQuery('#listPatientDiv').load('getActivityPlanRecords.action',
 		{
-			programId:getFieldValue('programIdAddPatient'),
-			startDate:getFieldValue('startDueDate'),
-			endDue:getFieldValue('endDueDate'),
-			facilityLB: $('input[name=facilityLB]:checked').val()
+			programId:programId,
+			listAll:false,
+			searchBySelectedOrgunit: false,
+			searchTexts: searchTexts
 		}, 
 		function()
 		{
 			showById('colorHelpLink');
 			showById('listPatientDiv');
-			setTableStyles();
+			resize();
 			hideLoader();
 		});
 }

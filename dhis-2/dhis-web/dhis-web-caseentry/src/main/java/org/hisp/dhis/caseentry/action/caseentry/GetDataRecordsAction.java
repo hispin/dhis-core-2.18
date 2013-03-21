@@ -173,8 +173,6 @@ public class GetDataRecordsAction
         
         if ( searchTexts.size() > 0 )
         {
-            orgunit = (searchBySelectedOrgunit) ? orgunit : null;
-
             total = patientService.countSearchPatients( searchTexts, orgunit );
             this.paging = createPaging( total );
 
