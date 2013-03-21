@@ -230,11 +230,14 @@ public final class SharingUtils
      */
     public static boolean canRead( User user, IdentifiableObject object )
     {
+        System.err.println( "TRYING TO READ: " + object );
+
         if ( sharingOverrideAuthority( user )
             || object.getUser() == null
             || user.equals( object.getUser() )
             || AccessStringHelper.canRead( object.getPublicAccess() ) )
         {
+            System.err.println("CAN READ");
             return true;
         }
 
@@ -243,10 +246,12 @@ public final class SharingUtils
             if ( AccessStringHelper.canRead( userGroupAccess.getAccess() )
                 && userGroupAccess.getUserGroup().getMembers().contains( user ) )
             {
+                System.err.println("CAN READ");
                 return true;
             }
         }
 
+        System.err.println("CAN NOT READ");
         return false;
     }
 
