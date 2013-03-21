@@ -34,7 +34,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Transactional
-public class DefaultUserGroupService implements UserGroupService
+public class DefaultUserGroupService 
+    implements UserGroupService
 {
     // -------------------------------------------------------------------------
     // Dependencies
