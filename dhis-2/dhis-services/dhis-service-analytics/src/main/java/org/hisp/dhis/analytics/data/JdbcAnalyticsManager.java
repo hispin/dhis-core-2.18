@@ -112,7 +112,7 @@ public class JdbcAnalyticsManager
         
         sql += getGroupByClause( params );
     
-        log.info( sql );
+        log.debug( sql );
 
         Map<String, Double> map = null;
         

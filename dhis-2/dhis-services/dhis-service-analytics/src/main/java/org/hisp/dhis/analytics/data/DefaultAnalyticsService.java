@@ -105,7 +105,6 @@ import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
-import org.hisp.dhis.system.util.Timer;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -376,13 +375,9 @@ public class DefaultAnalyticsService
      */
     private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )        
     {
-        Timer t = new Timer().start();
-
         int optimalQueries = MathUtils.getWithin( SystemUtils.getCpuCores(), 1, MAX_QUERIES );
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, tableName );
-        
-        t.getTime( "Planned query for optimal: " + optimalQueries + ", got: " + queries.size() );
         
         List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
         
@@ -412,8 +407,6 @@ public class DefaultAnalyticsService
                 throw new RuntimeException( "Error during execution of aggregation query task", ex );
             }
         }
-        
-        t.getTime( "Got aggregated values" );
         
         return map;
     }
