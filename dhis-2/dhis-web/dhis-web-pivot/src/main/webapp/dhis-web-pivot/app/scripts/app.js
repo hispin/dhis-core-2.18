@@ -3011,18 +3011,22 @@ Ext.onReady( function() {
 				},
 				numberOfRecords: 0,
 				recordsToSelect: [],
-				multipleSelectIf: function() {
+				multipleSelectIf: function(doUpdate) {
 					if (this.recordsToSelect.length === this.numberOfRecords) {
 						this.getSelectionModel().select(this.recordsToSelect);
 						this.recordsToSelect = [];
 						this.numberOfRecords = 0;
+						
+						if (doUpdate) {
+							update();
+						}
 					}
 				},
-				multipleExpand: function(id, path) {
+				multipleExpand: function(id, path, doUpdate) {					
 					this.expandPath('/' + pt.conf.finals.root.id + path, 'id', '/', function() {
 						var record = this.getRootNode().findChild('id', id, true);
 						this.recordsToSelect.push(record);
-						this.multipleSelectIf();
+						this.multipleSelectIf(doUpdate);
 					}, this);
 				},
 				select: function(url, params) {
@@ -3753,10 +3757,9 @@ Ext.onReady( function() {
 				// Organisation units
 				if (Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap)) {
 					treePanel.numberOfRecords = pt.util.object.getLength(r.parentGraphMap);
-
 					for (var key in r.parentGraphMap) {
 						if (r.parentGraphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, r.parentGraphMap[key]);
+							treePanel.multipleExpand(key, r.parentGraphMap[key], true);
 						}
 					}
 				}
@@ -3871,7 +3874,10 @@ Ext.onReady( function() {
 					}
 				}
 
-				update();
+				// If fav has organisation units, execute from tree callback instead
+				if (!(Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap))) {
+					update();
+				}
 			};
 
 			viewport = Ext.create('Ext.container.Viewport', {
