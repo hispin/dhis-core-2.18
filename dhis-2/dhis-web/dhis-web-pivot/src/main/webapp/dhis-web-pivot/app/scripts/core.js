@@ -984,7 +984,7 @@ PT.core.getUtils = function(pt) {
 			validateUrl = function(url) {
 				if (!Ext.isString(url) || url.length > 2000) {
 					var percent = ((url.length - 2000) / url.length) * 100;
-					alert('Too many parameters selected. Please reduce the number of parameters by minimum ' + percent.toFixed(0) + '%.');
+					alert('Too many parameters selected. Please reduce the number of parameters by at least ' + percent.toFixed(0) + '%.');
 					return;
 				}
 
