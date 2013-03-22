@@ -3754,19 +3754,9 @@ Ext.onReady( function() {
 					}
 				}
 
-				// Organisation units
-				if (Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap)) {
-					treePanel.numberOfRecords = pt.util.object.getLength(r.parentGraphMap);
-					for (var key in r.parentGraphMap) {
-						if (r.parentGraphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, r.parentGraphMap[key], true);
-						}
-					}
-				}
-				else {
-					treePanel.reset();
-				}
+				// Organisation units: tree sync/async
 
+				// User orgunit
 				userOrganisationUnit.setValue(r.userOrganisationUnit);
 				userOrganisationUnitChildren.setValue(r.userOrganisationUnitChildren);
 
@@ -3826,7 +3816,7 @@ Ext.onReady( function() {
 				if (Ext.isArray(r.rowDimensions)) {
 					for (var i = 0, dim; i < r.rowDimensions.length; i++) {
 						dim = pt.conf.finals.dimension.objectNameMap[r.rowDimensions[i]];
-
+						
 						pt.viewport.rowStore.add({
 							id: dim.dimensionName,
 							name: dim.name
@@ -3874,8 +3864,17 @@ Ext.onReady( function() {
 					}
 				}
 
-				// If fav has organisation units, execute from tree callback instead
-				if (!(Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap))) {
+				// Organisation units: If fav has organisation units, execute from tree callback instead
+				if (Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap)) {
+					treePanel.numberOfRecords = pt.util.object.getLength(r.parentGraphMap);
+					for (var key in r.parentGraphMap) {
+						if (r.parentGraphMap.hasOwnProperty(key)) {
+							treePanel.multipleExpand(key, r.parentGraphMap[key], true);
+						}
+					}
+				}
+				else {
+					treePanel.reset();
 					update();
 				}
 			};
