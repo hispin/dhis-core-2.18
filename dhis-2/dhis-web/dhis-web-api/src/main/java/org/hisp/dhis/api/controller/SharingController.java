@@ -112,7 +112,7 @@ public class SharingController
         sharing.getObject().setId( object.getUid() );
         sharing.getObject().setName( object.getDisplayName() );
 
-        if ( sharing.getObject().getPublicAccess() == null )
+        if ( object.getPublicAccess() == null )
         {
             String access;
 
@@ -151,7 +151,7 @@ public class SharingController
         JacksonUtils.toJson( response.getOutputStream(), sharing );
     }
 
-    @RequestMapping( value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
+    @RequestMapping(value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json")
     public void setSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( SharingUtils.classForType( type ), id );
@@ -234,7 +234,7 @@ public class SharingController
         ContextUtils.okResponse( response, "Access control set" );
     }
 
-    @RequestMapping( value = "/search", produces = { "application/json", "text/*" } )
+    @RequestMapping(value = "/search", produces = { "application/json", "text/*" })
     public void searchUserGroups( @RequestParam String key, HttpServletResponse response ) throws IOException
     {
         SharingUserGroups sharingUserGroups = new SharingUserGroups();
