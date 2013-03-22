@@ -48,7 +48,7 @@
       <interceptor name="portalUserInterceptor" class="org.hisp.dhis.webportal.interceptor.XWorkPortalUserInterceptor" />
       <interceptor name="securityInterceptor" class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" />
       <interceptor name="postHttpMethodInterceptor" class="org.hisp.dhis.security.intercept.HttpMethodInterceptor" />
-      <interceptor name="loginInterceptor" class="loginInterceptor" />
+      <interceptor name="loginInterceptor" class="org.hisp.dhis.security.intercept.LoginInterceptor" />
 
       <interceptor-stack name="commonInterceptors">
         <interceptor-ref name="staticParams" />
