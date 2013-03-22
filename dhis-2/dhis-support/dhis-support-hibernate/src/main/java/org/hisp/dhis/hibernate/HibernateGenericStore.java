@@ -218,7 +218,7 @@ public class HibernateGenericStore<T>
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
-            // TODO we might want to allow setting sharing props on save, but for now.. we null them out
+            // TODO we might want to allow setting sharing props on save, but for now we null them out
             identifiableObject.setPublicAccess( null );
             identifiableObject.setUserGroupAccesses( new HashSet<UserGroupAccess>() );
 
