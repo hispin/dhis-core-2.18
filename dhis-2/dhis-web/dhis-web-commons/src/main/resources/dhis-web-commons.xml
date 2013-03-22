@@ -251,9 +251,7 @@
     </action>
 
     <action name="getOrganisationUnitsByName" class="org.hisp.dhis.ouwt.action.GetOrganisationUnitsByNameAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ouwt/responseSearch.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ouwt/responseSearch.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
