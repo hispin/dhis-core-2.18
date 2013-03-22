@@ -231,6 +231,7 @@ public final class SharingUtils
     public static boolean canRead( User user, IdentifiableObject object )
     {
         if ( sharingOverrideAuthority( user )
+            || UserGroup.class.isAssignableFrom( object.getClass() )
             || object.getUser() == null
             || user.equals( object.getUser() )
             || AccessStringHelper.canRead( object.getPublicAccess() ) )
