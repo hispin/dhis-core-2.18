@@ -207,7 +207,7 @@ public class SharingController
             }
         }
 
-        manager.update( object );
+        manager.updateNoAcl( object );
 
         StringBuilder builder = new StringBuilder();
 
