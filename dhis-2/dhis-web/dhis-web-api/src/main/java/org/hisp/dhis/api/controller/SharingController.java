@@ -114,8 +114,18 @@ public class SharingController
 
         if ( sharing.getObject().getPublicAccess() == null )
         {
-            String rw = AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).enable( AccessStringHelper.Permission.WRITE ).build();
-            sharing.getObject().setPublicAccess( rw );
+            String access;
+
+            if ( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), type ) )
+            {
+                access = AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).enable( AccessStringHelper.Permission.WRITE ).build();
+            }
+            else
+            {
+                access = AccessStringHelper.newInstance().build();
+            }
+
+            sharing.getObject().setPublicAccess( access );
         }
         else
         {
