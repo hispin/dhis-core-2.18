@@ -35,8 +35,8 @@ import static org.hisp.dhis.analytics.DataQueryParams.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATASET_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DATA_X_DIM_ID;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
 import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
@@ -98,7 +98,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DebugUtils;
@@ -573,7 +573,7 @@ public class DefaultAnalyticsService
         
         if ( PERIOD_DIM_ID.equals( dimension ) )
         {
-            List<Period> periods = new ArrayList<Period>();
+            Set<Period> periods = new HashSet<Period>();
             
             for ( String isoPeriod : options )
             {
@@ -604,7 +604,7 @@ public class DefaultAnalyticsService
             }
 
             List<Period> periodList = new ArrayList<Period>( periods );
-            Collections.sort( periodList, PeriodComparator.INSTANCE );
+            Collections.sort( periodList, AscendingPeriodComparator.INSTANCE );
             
             return Arrays.asList( new Dimension( dimension, DimensionType.PERIOD, null, DISPLAY_NAME_PERIOD, asList( periodList ) ) );
         }
