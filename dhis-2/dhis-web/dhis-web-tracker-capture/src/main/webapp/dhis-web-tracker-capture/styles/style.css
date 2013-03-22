@@ -7,33 +7,6 @@ input[type="button"], input[type="submit"]
     width: 130px;
 }
 
-input.tiny-button[type="button"] 
-{
-    width: 20px;
-    height: 20px;
-}
-
-input.small-button[type="button"] 
-{
-    width: 30px;
-    height: 30px;
-}
-
-input.normal-button[type="button"] , input.normal-button[type="submit"] 
-{
-    width: 60px;
-}
-
-input.large-button[type="button"] 
-{
-    width: 130px;
-}
-
-select.search-field
-{
-    width: 180px;
-}
-
 input[type="text"] 
 {
     width: 260px;
@@ -52,26 +25,6 @@ select
 textarea 
 {
     width: 264px;
-}
-
-.button-list 
-{
-    text-align:right;
-    padding-bottom:10px;
-    width:100%;
-}
-
-.incomplete-record
-{ 
-    color: black;
-    font-size: 21px;
-    font-weight: bold;
-}
-
-.img-button
-{
-    width:20px;
-    cursor:pointer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,33 +70,6 @@ table.information, td.information
 .errorCell
 {
     background-color: #FFCFCF
-}
-
-.search 
-{
-    position: relative;
-    border: 1px solid #a4d2a3;
-    background-color: #d5efd5;
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-bottom: 5px;
-    padding-left: 20px;
-    margin-bottom: 15px;
-    border-radius: 3px;
-    max-width: 570px;
-}
-
-#minimized-advanced-search 
-{
-    position: relative;
-    border: 1px solid #a4d2a3;
-    background-color: #d5efd5;
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-bottom: 5px;
-    padding-left: 20px;
-    margin-bottom: 15px;
-    border-radius: 3px;
 }
 
 .green-background 
@@ -194,233 +120,24 @@ div.actions
     line-height: 18px;
 }
 
-input.criteria
-{
-    width: 130px;
-    margin-right: 5px;
-}
-
-input.move-button
-{
-    width: 20px;
-    height: 60px;
-    border-color: #bbbbbb;
-    cursor: pointer;
-    border: 1px solid #aaa;
-    margin: 0px;
-}
-
-input.optionset[type="text"]
-{
-    width:240px; 
-}
-
-input.datefield[type="text"]
-{
-    width:240px; 
-}
-
-div.provided-elsewhere
-{
-    width:20px; 
-    height:20px; 
-}
-
-.ui-button
-{
-    max-height: 100px;
-}
-
-.ui-autocomplete
-{
-    max-height: 100px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.hidden
-{
-    display: none;
-}
-
-.colorHelpTable td
-{
-    height: 32px;
-}
-
 /* --------------------------------------------------------------
 // Dashboard
 // -------------------------------------------------------------- */
 
-div.dashboard-area 
-{
-    list-style: none inside;
-    margin: 50px 50px;
-    margin: 0;
-    padding: 0;
-}
-
-p.header
-{
-    background-color:#CBDDEB;
-    background-repeat:repeat-x;
-    border:1px solid #C8DBEA;
-    color:#39547D;
-    padding:6px;
-    margin:0px;
-    font-family: LiberationSansBold,arial;
-}
-
-table.link-area
-{
-    border:1px solid #d0d0d0;
-    padding-top:1px;
-    padding-right:1px;
-    padding-left:1px;
-    padding-bottom:0px;
-    height:120px;
-    overflow:hidden;
-    align:bottom;
-}
-
-div.link-area
-{
-    display:inline-block;
-    border:1px solid #d0d0d0;
-    padding-top:1px;
-    padding-right:1px;
-    padding-left:1px;
-    padding-bottom:0px;
-    height:172px;
-
-    overflow:hidden;
-}
-
-.contentProviderTable
-{
-    height: 140px;
-    overflow-y: auto;
-    overflow-x:hidden;
-}
-
-.contentProviderTable table
-{
-    width:100%;
-}
-
-.contentProviderTable td
-{
-    padding-top:3px;
-    padding-bottom:3px;
-    border-bottom:1px solid #cad5e5;
-}
-
-div.event-dashboard
-{
-    width:900px;
-    border:1px solid #d0d0d0;
-    position:relative;
-    top: 47px;
-}
-
-div.link-area-active
-{
-    width:900px;
-    border:10px solid #d0d0d0;
-    position:relative;
-    top: 47px;
-}
-
-div.event-flow-dashboard
-{
-    width:900px;
-    height:140px;
-    overflow-x:auto;
-    overflow-y:hidden;
-}
-
-#subMenu
-{
-    position:absolute;
-}
-
-#subMenu ul
-{
-    list-style-type:none;
-    margin: 0;
-}
-
-#subMenu li
-{
-    float:left;
-}
-
-#subMenu a
-{
-    padding: 6px 12px;
-    height: 25px;
-    border: 1px solid #aaa;
-    border-radius: 3px;
-    margin-right: 4px;
-    font-family: LiberationSansBold, arial;
-    font-size: 13px;
-    color: #606060;
-    background-color: #f3f3f3;
-}
-
-#subMenu a:hover
-{
-    text-decoration: none;
-    background-color: #f8f8f8;
-}
-
-.tooltip 
-{
-    border-bottom: dashed 1px #aaa;
-    text-decoration: none;
-    cursor: help;
-    text-align: left;
-}
-
-.tooltip-target {
-    width: 250px;
-    top: 29px;
-    left: 764px;
-    display: none;
-    padding: 10px;
-    background: #ffffff;
-    position: absolute;
-    display: none;
-    float: left;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    border: solid 1px #ddd;
-    z-index:1001;
-}
-
-.comment-table
-{
-    width:320px;
-    overflow-y: auto;
-    overflow-x:hidden;
-}
-
-.comment-table td
-{
-    padding-top:3px;
-    padding-bottom:3px;
-    border-bottom:1px solid #cad5e5;
-}
 
 /* --------------------------------------------------------------
 // program-stage-instances
 // -------------------------------------------------------------- */
 
+.data-entry{
+    overflow: scroll;
+}
+
 .arrow-container {
     font-size: 25px;
     width: 10px;
 }
+
 .stage-container
 {
     width:100%;
@@ -441,28 +158,61 @@ div.event-flow-dashboard
     overflow-y:hidden;
 }
 
-.arrow-left {
-    width:0; 
-    height:0; 
-    border-top:45px solid transparent;
-    border-bottom:45px solid transparent; 
-    border-right:30px solid #d0d0d0;
-    cursor:pointer;
-}
-
-.arrow-right {
-    width:0; 
-    height:0; 
-    border-top:45px solid transparent;
-    border-bottom:45px solid transparent;
-    border-left:30px solid #d0d0d0;
-    cursor:pointer;
-}
-
 div.orgunit-object
 {
     margin-left: 5px;
     width: 120px;
+}
+
+.orgunit-container
+{
+    text-align: center;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.stage-container
+{
+    display: inline-block;
+    width: 135px;
+    height: 60px;
+    cursor: pointer;
+    opacity: 1.0;
+    margin: 5px;
+    white-space: normal;
+    padding-top: 5px;
+    text-align: center;
+}
+
+.stage-container:hover
+{
+    border: 2px solid;
+}
+
+.stage-completed {
+    background-color: #b9ffb9;
+}
+
+.stage-on-time {
+    background-color: #fffe8c;
+}
+
+.stage-overdue {
+    background-color: #ff8a8a;
+}
+
+.current-stage{
+    border: 2px solid;
+}
+
+.current-stage-color{
+    color: #b94a48;
 }
 
 input.stage-object[type="button"]

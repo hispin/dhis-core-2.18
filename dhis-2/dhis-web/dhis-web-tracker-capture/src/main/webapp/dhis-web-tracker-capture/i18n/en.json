@@ -39,5 +39,7 @@
     "enrollment": "Enrollment",
     "notes": "Notes",
     "dataentry": "Data Entry",
-    "current_selections": "Current selections"
+    "current_selections": "Current selections",
+    "data_element": "Data element",
+    "value": "Value"
 }

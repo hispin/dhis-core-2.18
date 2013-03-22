@@ -84,6 +84,54 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };    
 })
 
+/*Orgunit service for local db */
+.service('OrgUnitService', function($window, $q){
+    
+    var indexedDB = $window.indexedDB;
+    var db = null;
+    
+    var open = function(){
+        var deferred = $q.defer();
+        
+        var request = indexedDB.open("dhis2ou");
+        
+        request.onsuccess = function(e) {
+          db = e.target.result;
+          deferred.resolve();
+        };
+
+        request.onerror = function(){
+          deferred.reject();
+        };
+
+        return deferred.promise;
+    };
+    
+    var get = function(uid){
+        
+        var deferred = $q.defer();
+        
+        if( db === null){
+            deferred.reject("DB not opened");
+        }
+        else{
+            var tx = db.transaction(["ou"]);
+            var store = tx.objectStore("ou");
+            var query = store.get(uid);
+                
+            query.onsuccess = function(e){
+                deferred.resolve(e.target.result);
+            };
+        }
+        return deferred.promise;
+    };
+    
+    return {
+        open: open,
+        get: get
+    };    
+})
+
 /* Service to deal with enrollment */
 .service('EnrollmentService', function($http) {
     
