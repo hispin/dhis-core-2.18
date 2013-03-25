@@ -172,7 +172,7 @@ public class CaseAggregateConditionTask
 
                             if ( dataValue == null )
                             {
-                                dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "", new Date(),
+                                dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, STORED_BY_DHIS_SYSTEM, new Date(),
                                     null, optionCombo );
                                 dataValueService.addDataValue( dataValue );
                             }
