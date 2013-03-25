@@ -2728,7 +2728,8 @@ Ext.onReady( function() {
 					draggable: false,
 					hidden: true,
 					hideable: false,
-					menuDisabled: true
+					menuDisabled: true,
+					locked: true
 				};
 				
 				// report date
@@ -2740,6 +2741,7 @@ Ext.onReady( function() {
 					sortable: false,
 					draggable: false,
 					hideable: false,
+					locked: true,
 					menuDisabled: true
 				};
 							
