@@ -127,4 +127,5 @@ public interface ProgramStageInstanceService
     int averageNumberCompletedProgramInstance( Program program , Collection<Integer> orgunitIds, Date startDate, Date endDate, Boolean completed );
     
     Collection<Integer> getOrganisationUnitIds ( Date startDate, Date endDate );
+    
 }

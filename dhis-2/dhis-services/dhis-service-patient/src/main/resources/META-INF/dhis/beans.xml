@@ -484,6 +484,7 @@
 		<constructor-arg ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		<constructor-arg ref="org.hisp.dhis.datavalue.DataValueService" />
 		<constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<constructor-arg ref="jdbcTemplate" />
 		<constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
 		<constructor-arg ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
