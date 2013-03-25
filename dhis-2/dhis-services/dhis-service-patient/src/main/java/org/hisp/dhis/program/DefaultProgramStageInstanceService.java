@@ -366,7 +366,7 @@ public class DefaultProgramStageInstanceService
         if ( totalCompleted != 0 )
         {
             int stageCompleted = averageNumberCompletedProgramInstance( program, orgunitIds, startDate, endDate, true );
-            percent = (stageCompleted + 0.0) / ( totalCompleted - totalDiscontinued );
+            percent = (stageCompleted + 0.0) / (totalCompleted - totalDiscontinued);
         }
         grid.addValue( format.formatValue( percent ) );
         grid.addValue( "" );
@@ -501,4 +501,11 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.averageNumberCompleted( program, orgunitIds, startDate, endDate, completed );
     }
+
+    @Override
+    public Collection<Integer> getOrganisationUnitIds( Date startDate, Date endDate )
+    {
+        return programStageInstanceStore.getOrgunitIds( startDate, endDate );
+    }
+
 }

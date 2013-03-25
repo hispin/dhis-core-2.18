@@ -125,4 +125,6 @@ public interface ProgramStageInstanceService
     int getOverDueEventCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     int averageNumberCompletedProgramInstance( Program program , Collection<Integer> orgunitIds, Date startDate, Date endDate, Boolean completed );
+    
+    Collection<Integer> getOrganisationUnitIds ( Date startDate, Date endDate );
 }

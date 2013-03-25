@@ -1944,6 +1944,17 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<Integer> getOrgunitIds( Date startDate, Date endDate )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+        criteria.createAlias( "organisationUnit", "orgunit" );
+        criteria.setProjection( Projections.distinct( Projections.projectionList().add(
+            Projections.property( "orgunit.id" ), "orgunitid" ) ) );
+        return criteria.list();
+    }
+
     // ---------------------------------------------------------------------
     // Get orgunitIds
     // ---------------------------------------------------------------------
@@ -2016,7 +2027,7 @@ public class HibernateProgramStageInstanceStore
             // total
             if ( dataCols > 1 )
             {
-                grid.addValue( format.formatValue( total ));
+                grid.addValue( format.formatValue( total ) );
             }
         }
 
@@ -2028,13 +2039,13 @@ public class HibernateProgramStageInstanceStore
             int total = 0;
             for ( int i = cols - dataCols + 1; i <= cols; i++ )
             {
-                    grid.addValue( format.formatValue(sumRow[i] ));
-                
+                grid.addValue( format.formatValue( sumRow[i] ) );
+
                 total += sumRow[i];
             }
             if ( cols > cols - dataCols + 1 )
             {
-                grid.addValue( format.formatValue( total ));
+                grid.addValue( format.formatValue( total ) );
             }
         }
     }
@@ -2073,7 +2084,7 @@ public class HibernateProgramStageInstanceStore
                 // Add total value of the column
                 if ( cols > 2 )
                 {
-                    grid.addValue( format.formatValue( total ));
+                    grid.addValue( format.formatValue( total ) );
                 }
 
                 columnValues.put( index, column );
@@ -2122,13 +2133,13 @@ public class HibernateProgramStageInstanceStore
                             total += (Long) columnValues.get( i ).get( j );
                         }
                     }
-                       column.add( format.formatValue( total ) );
-                    
+                    column.add( format.formatValue( total ) );
+
                     allTotal += total;
                 }
                 if ( cols > 2 )
                 {
-                        column.add(format.formatValue(allTotal ));
+                    column.add( format.formatValue( allTotal ) );
                 }
                 grid.addColumn( column );
             }
@@ -2138,5 +2149,5 @@ public class HibernateProgramStageInstanceStore
             ex.printStackTrace();
         }
     }
-    
+
 }
