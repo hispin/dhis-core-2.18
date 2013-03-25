@@ -2133,13 +2133,13 @@ Ext.onReady( function() {
 						{
 							iconCls: 'gis-grid-row-icon-dashboard',
 							getClass: function(value, metaData, record) {
-								return 'tooltip-favorite-dashboard' + (!record.data.access.update ? ' disabled' : '');
+								return 'tooltip-favorite-dashboard' + (!record.data.access.read ? ' disabled' : '');
 							},
 							handler: function(grid, rowIndex) {
 								var record = this.up('grid').store.getAt(rowIndex),
 									message;
 
-								if (record.data.access.update) {
+								if (record.data.access.read) {
 									message = 'Add to dashboard?\n\n' + record.data.name;
 
 									if (confirm(message)) {
