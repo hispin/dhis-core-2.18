@@ -1954,7 +1954,7 @@ public class HibernateProgramStageInstanceStore
             Projections.property( "orgunit.id" ), "orgunitid" ) ) );
         return criteria.list();
     }
-
+    
     // ---------------------------------------------------------------------
     // Get orgunitIds
     // ---------------------------------------------------------------------
