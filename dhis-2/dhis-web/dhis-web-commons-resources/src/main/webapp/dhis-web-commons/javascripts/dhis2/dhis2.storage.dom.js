@@ -55,32 +55,25 @@ dhis2.storage.Store.adapter( 'dom', (function () {
             this.indexer = indexer( this.dbname, this.name );
             if ( callback ) callback.call( this, this, options );
         },
-
-        add: function ( key, obj, callback ) {
-            var key = this.dbname + '.' + this.name + '.' + key;
-            if ( this.indexer.find( key ) == -1 ) this.indexer.add( key );
-            storage.setItem( key, JSON.stringify( obj ) );
-            if ( callback ) callback.call( this, this, obj );
-
-            return this;
-        },
-
-        addAll: function ( keys, objs, callback ) {
+ 
+		 add: function ( key, obj, callback ) {
+			var key = this.dbname + '.' + this.name + '.' + key;
+			if ( this.indexer.find( key ) == -1 ) this.indexer.add( key );
+			storage.setItem( key, JSON.stringify( obj ) );
+		 },
+		 
+		 addAll: function ( keys, objs, callback ) {
             var that = this;
 
-            if ( keys.length == 0 || objs.length == 0 ) {
-                if ( callback ) callback.call( that, that );
+			for( var i in keys)
+			{
+				this.add(keys[i], objs[i]);
+			}
+			
+			if ( callback ) callback.call( that, that );
                 return;
-            }
-
-            var key = keys.pop();
-            var obj = objs.pop();
-
-            this.add( key, obj, function ( store ) {
-                that.addAll( keys, objs, callback );
-            } );
         },
-
+ 
         remove: function ( key, callback ) {
             var key = this.dbname + '.' + this.name + '.' + key;
             this.indexer.remove( key );
