@@ -6,6 +6,8 @@ $( document ).ready( function () {
         cache: false
     } );
 
+    setHeaderMessage( "Loading.. please wait" );
+
     // initialize the stores, and then try and add the data
     DAO.programs = new dhis2.storage.Store( {name: 'programs'}, function ( store ) {
         DAO.programAssociations = new dhis2.storage.Store( {name: 'programAssociations'}, function ( store ) {
@@ -19,13 +21,15 @@ $( document ).ready( function () {
 
                     DAO.programAssociations.addAll( keys, objs, function ( store ) {
                         selection.setListenerFunction( organisationUnitSelected );
+                        hideHeaderMessage();
                     } );
                 } );
             } ).fail(function() {
                 selection.setListenerFunction( organisationUnitSelected );
+                hideHeaderMessage();
             });
         });
-    });
+    } );
 } );
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
@@ -48,7 +52,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	hideById('dataEntryInfor');
 
     DAO.programAssociations.fetch( orgUnits[0], function ( store, arr ) {
-        DAO.programs.fetch( arr, function ( store, arr ) {
+        DAO.programs.fetch( arr[0], function ( store, arr ) {
             jQuery( '#searchingAttributeIdTD [id=searchObjectId] option' ).remove();
             jQuery( '#advancedSearchTB [id=searchObjectId] option' ).remove();
             clearListById( 'displayInReports' );
