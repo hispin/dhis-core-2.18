@@ -8,28 +8,31 @@ $( document ).ready( function () {
 
     setHeaderMessage( "Loading.. please wait" );
 
-    // initialize the stores, and then try and add the data
-    DAO.programs = new dhis2.storage.Store( {name: 'programs'}, function ( store ) {
-        DAO.programAssociations = new dhis2.storage.Store( {name: 'programAssociations'}, function ( store ) {
-            jQuery.getJSON( "getProgramMetaData.action", {}, function ( data ) {
-                var keys = _.keys( data.metaData.programs );
-                var objs = _.values( data.metaData.programs );
+    $( "#orgUnitTree" ).one("ouwtLoaded", function() {
+        // initialize the stores, and then try and add the data
+        DAO.programs = new dhis2.storage.Store( {name: 'programs'}, function ( store ) {
+            DAO.programAssociations = new dhis2.storage.Store( {name: 'programAssociations'}, function ( store ) {
+                jQuery.getJSON( "getProgramMetaData.action", {},function ( data ) {
+                    var keys = _.keys( data.metaData.programs );
+                    var objs = _.values( data.metaData.programs );
 
-                DAO.programs.addAll( keys, objs, function ( store ) {
-                    var keys = _.keys( data.metaData.programAssociations );
-                    var objs = _.values( data.metaData.programAssociations );
+                    DAO.programs.addAll( keys, objs, function ( store ) {
+                        var keys = _.keys( data.metaData.programAssociations );
+                        var objs = _.values( data.metaData.programAssociations );
 
-                    DAO.programAssociations.addAll( keys, objs, function ( store ) {
-                        selection.setListenerFunction( organisationUnitSelected );
-                        hideHeaderMessage();
+                        DAO.programAssociations.addAll( keys, objs, function ( store ) {
+                            selection.setListenerFunction( organisationUnitSelected );
+                            hideHeaderMessage();
+                        } );
                     } );
+                } ).fail( function () {
+                    selection.setListenerFunction( organisationUnitSelected );
+                    hideHeaderMessage();
                 } );
-            } ).fail(function() {
-                selection.setListenerFunction( organisationUnitSelected );
-                hideHeaderMessage();
-            });
-        });
-    } );
+            } );
+        } );
+    });
+
 } );
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
