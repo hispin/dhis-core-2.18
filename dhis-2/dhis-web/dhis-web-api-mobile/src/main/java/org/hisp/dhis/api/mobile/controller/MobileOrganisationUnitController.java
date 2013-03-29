@@ -348,6 +348,16 @@ public class MobileOrganisationUnitController
     {
         return activityReportingService.getAllAnonymousProgram( id );
     }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findProgram" )
+    @ResponseBody
+    public Program findProgram( @PathVariable int id, @RequestHeader( "info" ) String keyword )
+        throws NotAllowedException
+    {
+        System.out.println(keyword);
+        //return activityReportingService.findPatient( keyword, id );
+        return null;
+    }
 
     // Supportive methods
 
