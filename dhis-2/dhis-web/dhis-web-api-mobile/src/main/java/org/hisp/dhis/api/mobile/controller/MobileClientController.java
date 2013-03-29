@@ -145,6 +145,8 @@ public class MobileClientController
         orgUnit.setRegisterPersonUrl( getUrl( request, unit.getId(), "registerPerson" ) );
         orgUnit.setUploadProgramStageUrl( getUrl( request, unit.getId(), "uploadProgramStage" ) );
         orgUnit.setEnrollProgramUrl( getUrl( request, unit.getId(), "enrollProgram" ) );
+        orgUnit.setAddRelationshipUrl( getUrl( request, unit.getId(), "addRelationship" ) );
+        orgUnit.setDownloadAnonymousProgramUrl( getUrl( request, unit.getId(), "downloadAnonymousProgramUrl" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );
