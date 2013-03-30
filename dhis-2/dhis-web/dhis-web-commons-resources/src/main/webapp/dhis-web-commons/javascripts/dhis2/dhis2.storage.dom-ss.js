@@ -1,5 +1,5 @@
 // dom storage support (sessionStorage)
-dhis2.storage.Store.adapter( 'dom', (function () {
+dhis2.storage.Store.adapter( 'dom-ss', (function () {
     var storage = window.sessionStorage;
 
     var indexer = function ( dbname, name ) {
