@@ -1,5 +1,5 @@
 // dom storage support (sessionStorage)
-dhis2.storage.Store.adapter( 'dom-ss', (function () {
+dhis2.storage.Store.adapter( 'dom', (function () {
     var storage = window.sessionStorage;
 
     var indexer = function ( dbname, name ) {
@@ -68,17 +68,18 @@ dhis2.storage.Store.adapter( 'dom-ss', (function () {
         addAll: function ( keys, objs, callback ) {
             var that = this;
 
-            if ( keys.length == 0 || objs.length == 0 ) {
-                if ( callback ) callback.call( that, that );
-                return;
+            while ( keys.length != 0 ) {
+                var key = keys.pop();
+                var obj = objs.pop();
+
+                try {
+                    that.add( key, obj );
+                } catch ( e ) {
+                    break;
+                }
             }
 
-            var key = keys.pop();
-            var obj = objs.pop();
-
-            this.add( key, obj, function ( store ) {
-                that.addAll( keys, objs, callback );
-            } );
+            if ( callback ) callback.call( that, that );
         },
 
         remove: function ( key, callback ) {
