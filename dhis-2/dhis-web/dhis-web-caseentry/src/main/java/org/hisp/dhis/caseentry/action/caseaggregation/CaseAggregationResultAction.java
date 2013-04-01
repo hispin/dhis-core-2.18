@@ -210,7 +210,6 @@ public class CaseAggregationResultAction
     public String execute()
         throws Exception
     {
-
         // ---------------------------------------------------------------------
         // Get CaseAggregateCondition list
         // ---------------------------------------------------------------------
@@ -277,7 +276,7 @@ public class CaseAggregationResultAction
 
                 for ( Period period : periods )
                 {
-                    Integer resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
+                    Double resultValue = aggregationConditionService.getAggregateValue( condition, orgUnit, period );
                     DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
 
                     String key = orgUnitId + "-" + format.formatPeriod( period );
