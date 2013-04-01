@@ -834,14 +834,7 @@ public class ActivityReportingServiceImpl
         {
             for ( ProgramInstance each : listOfProgramInstance )
             {
-                org.hisp.dhis.api.mobile.model.LWUITmodel.Program mobileProgram = new org.hisp.dhis.api.mobile.model.LWUITmodel.Program();
-                mobileProgram.setVersion( each.getProgram().getVersion() );
-                mobileProgram.setId( each.getId() );
-                mobileProgram.setName( each.getProgram().getName() );
-                mobileProgram.setCompleted( each.isCompleted() );
-                mobileProgram.setProgramStages( getMobileProgramStages( patient, each, each.getProgram() ) );
-
-                mobileProgramList.add( mobileProgram );
+                mobileProgramList.add( getMobileProgram( patient, each ));
             }
         }
 
@@ -902,13 +895,24 @@ public class ActivityReportingServiceImpl
         patientModel.setEnrollmentRelationships( enrollmentRelationshipMobileList );
         return patientModel;
     }
-
-    private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages( Patient patient,
-        ProgramInstance programInstance, Program program )
+    
+    private org.hisp.dhis.api.mobile.model.LWUITmodel.Program getMobileProgram( Patient patient, ProgramInstance programInstance)
+    {
+        org.hisp.dhis.api.mobile.model.LWUITmodel.Program mobileProgram = new org.hisp.dhis.api.mobile.model.LWUITmodel.Program();
+        
+        mobileProgram.setVersion( programInstance.getProgram().getVersion() );
+        mobileProgram.setId( programInstance.getId() );
+        mobileProgram.setName( programInstance.getProgram().getName() );
+        mobileProgram.setCompleted( programInstance.isCompleted() );
+        mobileProgram.setProgramStages( getMobileProgramStages( patient, programInstance ) );
+        return mobileProgram;
+    }
+    
+    private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages( Patient patient, ProgramInstance programInstance )
     {
 
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
-        for ( ProgramStage eachProgramStage : program.getProgramStages() )
+        for ( ProgramStage eachProgramStage : programInstance.getProgram().getProgramStages() )
         {
             ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
                 programInstance, eachProgramStage );
@@ -921,7 +925,7 @@ public class ActivityReportingServiceImpl
             mobileProgramStage.setRepeatable( eachProgramStage.getIrregular() );
 
             // is completed
-            mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, program, eachProgramStage ) );
+            mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, programInstance.getProgram(), eachProgramStage ) );
 
             // is single event
             mobileProgramStage.setSingleEvent( programInstance.getProgram().isSingleEvent() );
@@ -1170,6 +1174,29 @@ public class ActivityReportingServiceImpl
         else
         {
             throw NotAllowedException.NO_PROGRAM_FOUND;
+        }
+    }
+    
+
+    @Override
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Program findProgram( String programInfo )
+        throws NotAllowedException
+    {
+        if ( isNumber( programInfo ) == false )
+        {
+            return null;
+        }
+        else
+        {
+            Program program = programService.getProgram( Integer.parseInt( programInfo ) );
+            if( program.isSingleEvent() )
+            {
+                return getMobileAnonymousProgram( program );
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
