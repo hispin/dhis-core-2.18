@@ -351,12 +351,10 @@ public class MobileOrganisationUnitController
     
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findProgram" )
     @ResponseBody
-    public Program findProgram( @PathVariable int id, @RequestHeader( "info" ) String keyword )
+    public Program findProgram( @PathVariable int id, @RequestHeader( "info" ) String programInfo )
         throws NotAllowedException
     {
-        System.out.println(keyword);
-        //return activityReportingService.findPatient( keyword, id );
-        return null;
+        return activityReportingService.findProgram( programInfo );
     }
 
     // Supportive methods

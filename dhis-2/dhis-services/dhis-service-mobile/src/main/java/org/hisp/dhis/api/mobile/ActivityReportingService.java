@@ -27,8 +27,6 @@ package org.hisp.dhis.api.mobile;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
@@ -65,6 +63,9 @@ public interface ActivityReportingService
         throws NotAllowedException;
 
     public Program getAllAnonymousProgram( int orgUnitId )
+        throws NotAllowedException;
+    
+    public Program findProgram( String programInfo )
         throws NotAllowedException;
 
 }
