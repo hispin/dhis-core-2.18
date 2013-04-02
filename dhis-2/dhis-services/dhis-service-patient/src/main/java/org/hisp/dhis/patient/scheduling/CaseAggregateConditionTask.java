@@ -53,31 +53,38 @@ public class CaseAggregateConditionTask
     implements Runnable
 {
     private CaseAggregationConditionService aggregationConditionService;
-    
-    private JdbcTemplate jdbcTemplate;
-    
+
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    {
+        this.aggregationConditionService = aggregationConditionService;
+    }
+
     private SystemSettingManager systemSettingManager;
-    
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private Notifier notifier;
+
+    public void setNotifier( Notifier notifier )
+    {
+        this.notifier = notifier;
+    }
 
     private TaskId taskId;
 
     public void setTaskId( TaskId taskId )
     {
         this.taskId = taskId;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public CaseAggregateConditionTask( CaseAggregationConditionService aggregationConditionService,
-        JdbcTemplate jdbcTemplate, SystemSettingManager systemSettingManager, Notifier notifier )
-    {
-        this.aggregationConditionService = aggregationConditionService;
-        this.jdbcTemplate = jdbcTemplate;
-        this.systemSettingManager = systemSettingManager;
-        this.notifier = notifier;
     }
 
     // -------------------------------------------------------------------------
@@ -117,6 +124,5 @@ public class CaseAggregateConditionTask
         clock.logTime( "Improrted aggregate data completed " );
 
         notifier.notify( taskId, INFO, "Improrted aggregate data completed", true );
-    }
-    
+    }    
 }

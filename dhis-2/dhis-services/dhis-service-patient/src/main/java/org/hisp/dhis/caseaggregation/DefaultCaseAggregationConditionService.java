@@ -75,10 +75,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
- * @version DefaultPatientAggregationExpressionService.java Nov 17, 2010
- *          11:16:37 AM
  */
-
 @Transactional
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService

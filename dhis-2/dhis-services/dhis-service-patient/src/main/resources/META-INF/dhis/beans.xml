@@ -4,12 +4,11 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-  <!-- Store definitions -->
+    <!-- Store definitions -->
 
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
 		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionStore">
-		<property name="clazz"
-			value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
+		<property name="clazz" value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
@@ -39,8 +38,7 @@
 		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programInstanceService"
-			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceStore"
@@ -108,8 +106,7 @@
 
 	<bean id="org.hisp.dhis.patientattributevalue.PatientAttributeValueStore"
 		class="org.hisp.dhis.patientattributevalue.hibernate.HibernatePatientAttributeValueStore">
-		<property name="clazz"
-			value="org.hisp.dhis.patientattributevalue.PatientAttributeValue" />
+		<property name="clazz" value="org.hisp.dhis.patientattributevalue.PatientAttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
@@ -122,8 +119,7 @@
 
 	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueStore"
 		class="org.hisp.dhis.patientdatavalue.hibernate.HibernatePatientDataValueStore">
-		<property name="clazz"
-			value="org.hisp.dhis.patientdatavalue.PatientDataValue" />
+		<property name="clazz" value="org.hisp.dhis.patientdatavalue.PatientDataValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -163,17 +159,10 @@
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="programStageInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService" />
-		</property>
-		<property name="programStageService">
-			<ref bean="org.hisp.dhis.program.ProgramStageService" />
-		</property>
-		<property name="patientDataValueService">
-			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		</property>
-		<property name="programStageDataElementService"
-			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageDataElementService"	ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"
@@ -451,10 +440,10 @@
 
 	<bean id="abstractScheduledMessageTask"
 		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask">
-		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-		<constructor-arg ref="jdbcTemplate" />
-	</bean>
+		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+        <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
 
 	<bean id="sendMessageScheduled"
 		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask"
@@ -482,10 +471,10 @@
 
 	<bean id="abstractRunCaseAggregateConditionTask"
 		class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask">
-		<constructor-arg ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-		<constructor-arg ref="jdbcTemplate" />
-		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
-		<constructor-arg ref="notifier" />
+		<property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+        <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+        <property name="notifier" ref="notifier" />
 	</bean>
 
 	<bean id="aggregateQueryBuilder" class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask"
@@ -525,12 +514,10 @@
 		<property name="dataElementService"
 			ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataEntryFormService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
-		
+			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />		
 	</bean>
 
-	<bean
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject"
 			ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
 		<property name="targetMethod" value="addStartupRoutines" />
@@ -545,22 +532,18 @@
 
 	<!-- DeletionManager -->
 
-	<bean
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="deletionManager" />
 		<property name="targetMethod" value="addDeletionHandlers" />
 		<property name="arguments">
 			<list>
 				<list>
 					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
+					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
-					
+					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />					
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
@@ -568,9 +551,7 @@
 					<ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
-
-					<ref
-						local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" />
+					<ref local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" />
 				</list>
 			</list>
 		</property>
@@ -606,7 +587,6 @@
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.patient.PatientAuditService.delete*(..) )"
 				method="intercept" />
-
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.program.ProgramService.delete*(..) )"
 				method="intercept" />
@@ -637,7 +617,6 @@
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.validation.ValidationCriteriaService.delete*(..) )"
 				method="intercept" />
-
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.caseaggregation.CaseAggregationConditionService.delete*(..) )"
 				method="intercept" />

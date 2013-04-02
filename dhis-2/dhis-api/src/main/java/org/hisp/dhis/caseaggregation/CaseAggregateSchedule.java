@@ -29,8 +29,6 @@ package org.hisp.dhis.caseaggregation;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version CaseAggregateSchedule.java Apr 1, 2013 11:03:02 AM $
  */
 public class CaseAggregateSchedule
 {
@@ -41,8 +39,7 @@ public class CaseAggregateSchedule
     private String periodTypeName;
 
     public CaseAggregateSchedule()
-    {
-        
+    {        
     }
 
     public CaseAggregateSchedule( Integer dataSetId, String dataSetName, String periodTypeName )
@@ -81,5 +78,4 @@ public class CaseAggregateSchedule
     {
         this.periodTypeName = periodTypeName;
     }
-
 }
