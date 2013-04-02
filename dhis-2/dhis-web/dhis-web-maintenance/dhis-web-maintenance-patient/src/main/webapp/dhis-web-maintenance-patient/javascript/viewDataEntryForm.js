@@ -152,7 +152,7 @@ function filterDataElements( filter, container, list )
 	});	
 }
 
-function insertDataElement( source, programStageId )
+function insertDataElement( source, programStageUid )
 {
 	var dataElement = JSON.parse( jQuery( source + ' #dataElementIds').val() );
 
@@ -164,13 +164,13 @@ function insertDataElement( source, programStageId )
 		jQuery( source + " #message_").html( "" );
 	}
 
-	var dataElementId = dataElement.id;	
+	var dataElementUid = dataElement.uid;	
 	var dataElementName = dataElement.name;	
 	var dataElementType = dataElement.type;
 	
 	var htmlCode = "";
-	var id = programStageId + "-" + dataElementId + "-val" ;	
-	var titleValue = dataElementId + " - " + dataElementName + " - " + dataElementType;
+	var id = programStageUid + "-" + dataElementUid + "-val" ;	
+	var titleValue = dataElementUid + " - " + dataElementName + " - " + dataElementType;
 	
 	if ( dataElementType == "bool" )
 	{

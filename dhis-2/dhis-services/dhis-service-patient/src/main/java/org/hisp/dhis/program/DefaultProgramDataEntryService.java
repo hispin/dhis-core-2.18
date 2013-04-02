@@ -105,7 +105,7 @@ public class DefaultProgramDataEntryService
         String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit )
     {
-        Map<Integer, Collection<PatientDataValue>> mapDataValue = new HashMap<Integer, Collection<PatientDataValue>>();
+        Map<String, Collection<PatientDataValue>> mapDataValue = new HashMap<String, Collection<PatientDataValue>>();
 
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
@@ -126,7 +126,7 @@ public class DefaultProgramDataEntryService
         // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
-        Map<Integer, DataElement> dataElementMap = getDataElementMap( programStage );
+        Map<String, DataElement> dataElementMap = getDataElementMap( programStage );
 
         while ( dataElementMatcher.find() )
         {
@@ -139,31 +139,31 @@ public class DefaultProgramDataEntryService
             String inputHTML = dataElementMatcher.group( 1 );
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( inputHTML );
-
+            
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
 
-                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                String programStageUid = identifierMatcher.group( 1 );
 
-                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                String dataElementUid = identifierMatcher.group( 2 );
 
                 DataElement dataElement = null;
 
                 String programStageName = programStage.getDisplayName();
 
-                if ( programStageId != programStage.getId() )
+                if ( !programStageUid.equals( programStage.getUid() ) )
                 {
-                    dataElement = dataElementService.getDataElement( dataElementId );
+                    dataElement = dataElementService.getDataElement( dataElementUid );
 
-                    ProgramStage otherProgramStage = programStageService.getProgramStage( programStageId );
+                    ProgramStage otherProgramStage = programStageService.getProgramStage( programStageUid );
                     programStageName = otherProgramStage != null ? otherProgramStage.getDisplayName() : "N/A";
                 }
                 else
                 {
-                    dataElement = dataElementMap.get( dataElementId );
+                    dataElement = dataElementMap.get( dataElementUid );
                     if ( dataElement == null )
                     {
                         return i18n.getString( "some_data_element_not_exist" );
@@ -194,26 +194,26 @@ public class DefaultProgramDataEntryService
 
                 String dataElementValue = EMPTY;
 
-                if ( programStageId != programStage.getId() )
+                if ( !programStageUid.equals( programStage.getUid() ) )
                 {
-                    Collection<PatientDataValue> patientDataValues = mapDataValue.get( programStageId );
+                    Collection<PatientDataValue> patientDataValues = mapDataValue.get( programStageUid );
 
                     if ( patientDataValues == null )
                     {
-                        ProgramStage otherProgramStage = programStageService.getProgramStage( programStageId );
+                        ProgramStage otherProgramStage = programStageService.getProgramStage( programStageUid );
                         ProgramStageInstance otherProgramStageInstance = programStageInstanceService
                             .getProgramStageInstance( programStageInstance.getProgramInstance(), otherProgramStage );
                         patientDataValues = patientDataValueService.getPatientDataValues( otherProgramStageInstance );
-                        mapDataValue.put( programStageId, patientDataValues );
+                        mapDataValue.put( programStageUid, patientDataValues );
                     }
 
-                    patientDataValue = getValue( patientDataValues, dataElementId );
+                    patientDataValue = getValue( patientDataValues, dataElementUid );
 
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
                 {
-                    patientDataValue = getValue( dataValues, dataElementId );
+                    patientDataValue = getValue( dataValues, dataElementUid );
 
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
@@ -226,12 +226,12 @@ public class DefaultProgramDataEntryService
                 if ( inputHTML.contains( "title=\"\"" ) )
                 {
                     inputHTML = inputHTML.replace( "title=\"\"",
-                        "title=\"" + dataElement.getId() + "." + dataElement.getName() + " (" + dataElementType
+                        "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " (" + dataElementType
                             + ")\" " );
                 }
                 else
                 {
-                    inputHTML += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " ("
+                    inputHTML += "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " ("
                         + dataElementType + ")\" ";
                 }
 
@@ -267,7 +267,7 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 disabled = "";
-                if ( programStageId != programStage.getId() )
+                if ( !programStageUid.equals( programStage.getUid() ) )
                 {
                     disabled = "disabled=\"\"";
                 }
@@ -289,9 +289,9 @@ public class DefaultProgramDataEntryService
                 //
                 // -----------------------------------------------------------
 
-                inputHTML = inputHTML.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                inputHTML = inputHTML.replace( "$DATAELEMENTID", String.valueOf( dataElementUid ) );
                 inputHTML = inputHTML.replace( "$VALUE", dataElementValue );
-                inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
+                inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageUid ) );
                 inputHTML = inputHTML.replace( "$PROGRAMSTAGENAME", programStageName );
                 inputHTML = inputHTML.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 inputHTML = inputHTML.replace( "$DATAELEMENTTYPE", dataElementType );
@@ -332,7 +332,7 @@ public class DefaultProgramDataEntryService
         // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
-        Map<Integer, DataElement> dataElementMap = getDataElementMap( programStage );
+        Map<String, DataElement> dataElementMap = getDataElementMap( programStage );
 
         while ( dataElementMatcher.find() )
         {
@@ -352,24 +352,24 @@ public class DefaultProgramDataEntryService
                 // Get data element ID of data element
                 // -------------------------------------------------------------
 
-                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                String programStageUid = identifierMatcher.group( 1 );
 
-                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                String dataElementUid = identifierMatcher.group( 2 );
 
                 DataElement dataElement = null;
 
                 String programStageName = programStage.getDisplayName();
 
-                if ( programStageId != programStage.getId() )
+                if ( !programStageUid.equals( programStage.getUid() ) )
                 {
-                    dataElement = dataElementService.getDataElement( dataElementId );
+                    dataElement = dataElementService.getDataElement( dataElementUid );
 
-                    ProgramStage otherProgramStage = programStageService.getProgramStage( programStageId );
+                    ProgramStage otherProgramStage = programStageService.getProgramStage( programStageUid );
                     programStageName = otherProgramStage != null ? otherProgramStage.getDisplayName() : "N/A";
                 }
                 else
                 {
-                    dataElement = dataElementMap.get( dataElementId );
+                    dataElement = dataElementMap.get( dataElementUid );
                     if ( dataElement == null )
                     {
                         return i18n.getString( "some_data_element_not_exist" );
@@ -408,12 +408,12 @@ public class DefaultProgramDataEntryService
                 if ( inputHTML.contains( "title=\"\"" ) )
                 {
                     inputHTML = inputHTML.replace( "title=\"\"",
-                        "title=\"" + dataElement.getId() + "." + dataElement.getName() + " (" + dataElementType
+                        "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " (" + dataElementType
                             + ")\" " );
                 }
                 else
                 {
-                    inputHTML += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " ("
+                    inputHTML += "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " ("
                         + dataElementType + ")\" ";
                 }
 
@@ -449,7 +449,7 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 String disabled = "";
-                if ( programStageId != programStage.getId() )
+                if ( !programStageUid.equals( programStage.getUid() ) )
                 {
                     disabled = "disabled=\"\"";
                 }
@@ -471,9 +471,9 @@ public class DefaultProgramDataEntryService
                 //
                 // -----------------------------------------------------------
 
-                inputHTML = inputHTML.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                inputHTML = inputHTML.replace( "$DATAELEMENTID", String.valueOf( dataElementUid ) );
                 inputHTML = inputHTML.replace( "$VALUE", dataElementValue );
-                inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
+                inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageUid ) );
                 inputHTML = inputHTML.replace( "$PROGRAMSTAGENAME", programStageName );
                 inputHTML = inputHTML.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 inputHTML = inputHTML.replace( "$DATAELEMENTTYPE", dataElementType );
@@ -558,7 +558,7 @@ public class DefaultProgramDataEntryService
                 + dataElement.getDisplayName() + "]\"" ) : inputHTML + " value=\"[" + dataElement.getDisplayName()
                 + "]\" ";
 
-            String displayTitle = dataElement.getId() + " - " + dataElement.getName() + " - "
+            String displayTitle = dataElement.getUid() + " - " + dataElement.getName() + " - "
                 + dataElement.getDetailedNumberType() + " - ";
             inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, " title=\""
                 + displayTitle + "\"" ) : inputHTML + " title=\"" + displayTitle + "\"";
@@ -717,11 +717,11 @@ public class DefaultProgramDataEntryService
      * Returns the value of the PatientDataValue in the Collection of DataValues
      * with the given data element identifier.
      */
-    private PatientDataValue getValue( Collection<PatientDataValue> dataValues, int dataElementId )
+    private PatientDataValue getValue( Collection<PatientDataValue> dataValues, String dataElementUid )
     {
         for ( PatientDataValue dataValue : dataValues )
         {
-            if ( dataValue.getDataElement().getId() == dataElementId )
+            if ( dataValue.getDataElement().getUid().equals( dataElementUid ) )
             {
                 return dataValue;
             }
@@ -734,7 +734,7 @@ public class DefaultProgramDataEntryService
      * Returns a Map of all DataElements in the given ProgramStage where the key
      * is the DataElement identifier and the value is the DataElement.
      */
-    private Map<Integer, DataElement> getDataElementMap( ProgramStage programStage )
+    private Map<String, DataElement> getDataElementMap( ProgramStage programStage )
     {
         Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
 
@@ -742,11 +742,11 @@ public class DefaultProgramDataEntryService
         {
             return null;
         }
-        Map<Integer, DataElement> map = new HashMap<Integer, DataElement>();
+        Map<String, DataElement> map = new HashMap<String, DataElement>();
 
         for ( DataElement element : dataElements )
         {
-            map.put( element.getId(), element );
+            map.put( element.getUid(), element );
         }
 
         return map;
