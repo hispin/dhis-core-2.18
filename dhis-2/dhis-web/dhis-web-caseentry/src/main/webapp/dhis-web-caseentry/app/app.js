@@ -5888,7 +5888,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'button',
 						cls: 'tr-toolbar-btn-2',
-						text: 'Exit',
+						text: TR.i18n.home,
 						handler: function() {
 							window.location.href = TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.redirect;
 						}
