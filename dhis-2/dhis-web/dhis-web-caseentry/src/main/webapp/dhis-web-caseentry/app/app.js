@@ -317,7 +317,7 @@ Ext.onReady( function() {
                     var array = [];
                     Ext.Array.each(selected, function(item) {
 						var data = a.store.findExact('id', item);
-                        array.push({id: item, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
+                        array.push({id: item, uid:a.store.getAt(data).data.uid, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
                     });
                     s.store.add(array);
                 }
@@ -339,7 +339,7 @@ Ext.onReady( function() {
 						var name = a.store.getAt(i).data.name;
 						var valueType = a.store.getAt(i).data.valueType;
 						
-						array.push({id: id, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
+						array.push({id: id, uid:a.store.getAt(data).data.uid, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
 						if(f!=undefined)
 						{
 							this.addFilterField( f, id, name, valueType );
@@ -621,13 +621,15 @@ Ext.onReady( function() {
 						params.displayField = 'o';
 						params.multiSelect = true;
 						params.delimiter = ';';
+						var index = TR.store.dataelement.selected.findExact('id', 'de_' + deId);
+						var deUid = TR.store.dataelement.selected.getAt(index).data.uid;
 						params.store = Ext.create('Ext.data.Store', {
 							fields: ['o'],
 							data:[],
 							proxy: {
 								type: 'ajax',
 								url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.suggested_dataelement_get,
-								extraParams:{id: deId},
+								extraParams:{id: deUid},
 								reader: {
 									type: 'json',
 									root: 'options'
@@ -1489,7 +1491,7 @@ Ext.onReady( function() {
 		}),
 		dataelement: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'compulsory', 'valueType'],
+                fields: ['id', 'uid', 'name', 'compulsory', 'valueType'],
                 proxy: {
                     type: 'ajax',
                     url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.dataelements_get,
@@ -1532,7 +1534,7 @@ Ext.onReady( function() {
 				}
             }),
             selected: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'compulsory', 'valueType'],
+                fields: ['id', 'uid', 'name', 'compulsory', 'valueType'],
                 data: []
             })
         },
