@@ -33,8 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.program.ProgramExpressionService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationResult;
@@ -57,14 +55,6 @@ public class ValidateProgramInstanceAction
 
     private ProgramValidationService programValidationService;
 
-    private ProgramExpressionService programExpressionService;
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private I18nFormat format;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -79,19 +69,9 @@ public class ValidateProgramInstanceAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setProgramExpressionService( ProgramExpressionService programExpressionService )
-    {
-        this.programExpressionService = programExpressionService;
-    }
-
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     public Map<Integer, String> getLeftsideFormulaMap()
@@ -124,59 +104,13 @@ public class ValidateProgramInstanceAction
     {
         programValidationResults = new ArrayList<ProgramValidationResult>();
 
-        // ---------------------------------------------------------------------
-        // Get selected objects
-        // ---------------------------------------------------------------------
-
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-
-        // ---------------------------------------------------------------------
-        // Check validations for dataelement into multi-stages
-        // ---------------------------------------------------------------------
-
-        // runProgramValidation( programValidationService.getProgramValidation(
-        // programStageInstance.getProgramStage() ),
-        // programStageInstance );
 
         Collection<ProgramValidation> validation = programValidationService.getProgramValidation( programStageInstance
             .getProgramStage() );
         programValidationResults = programValidationService.validate( validation, programStageInstance );
-        
+
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Support method
-    // -------------------------------------------------------------------------
-
-    private void runProgramValidation( Collection<ProgramValidation> validations,
-        ProgramStageInstance programStageInstance )
-    {
-        // if ( validations != null )
-        // {
-        // for ( ProgramValidation validation : validations )
-        // {
-        // ProgramValidationResult validationResult =
-        // programValidationService.validate( validation,
-        // programStageInstance, format );
-        //
-        // if ( validationResult != null )
-        // {
-        // programValidationResults.add( validationResult );
-        //
-        // leftsideFormulaMap.put(
-        // validationResult.getProgramValidation().getId(),
-        // programExpressionService.getExpressionDescription(
-        // validationResult.getProgramValidation()
-        // .getLeftSide().getExpression() ) );
-        //
-        // rightsideFormulaMap.put(
-        // validationResult.getProgramValidation().getId(),
-        // programExpressionService.getExpressionDescription(
-        // validationResult.getProgramValidation()
-        // .getRightSide().getExpression() ) );
-        // }
-        // }
-        // }
-    }
 }
