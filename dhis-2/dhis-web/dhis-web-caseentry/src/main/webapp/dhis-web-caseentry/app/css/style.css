@@ -863,7 +863,11 @@ TR.utilbody {
 .tr-grid .x-grid-cell-inner * {
 	font-size: 10px !important;
 }
-.tr-grid .x-grid-cell-inner {
+.tr-grid {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.x-grid-cell-inner {
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
@@ -877,7 +881,7 @@ TR.utilbody {
 }
 .tr-grid .x-grid-body {
 	border: 1px solid #d0d0d0;
-	border-top: 0 none !important;
+	border-top: 1 solid #d0d0d0 !important;
 }
 
 .tr-grid .x-grid-dirty-cell { /* hide red "dirty" icon */
