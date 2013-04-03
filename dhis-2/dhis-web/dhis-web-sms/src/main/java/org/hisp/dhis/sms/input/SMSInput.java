@@ -16,22 +16,52 @@ public class SMSInput
 {
 
     private String sender, message;
+
+    private String phone, text;
+
     private IncomingSmsService incomingSmsService;
 
     @Override
     public String execute()
         throws Exception
     {
+        IncomingSms sms = new IncomingSms();
 
-        if(sender == null || message == null ){
+        // case 1 for sender and message
+        if ( sender != null || message != null )
+        {
+            if ( sender == null || message == null )
+            {
+                setNullToAll();
+                return ERROR;
+            }
+            else
+            {
+                sms.setText( message );
+                sms.setOriginator( sender );
+            }
+        }
+
+        // case 2 for phone and text
+        if ( phone != null || text != null )
+        {
+            if ( phone == null || text == null )
+            {
+                setNullToAll();
+                return ERROR;
+            }
+            else
+            {
+                sms.setText( text );
+                sms.setOriginator( phone );
+            }
+        }
+
+        // case 3 for all is null
+        if ( sender == null && message == null && phone == null && text == null )
+        {
             return ERROR;
         }
-        
-        System.out.println( "Sender: " + sender + ", Message: " + message );
-        IncomingSms sms = new IncomingSms();
-        sms.setText( message );
-        sms.setOriginator( sender );
-
         java.util.Date rec = new java.util.Date();
         sms.setReceivedDate( rec );
         sms.setSentDate( rec );
@@ -42,10 +72,17 @@ public class SMSInput
 
         incomingSmsService.save( sms );
 
+        setNullToAll();
+
+        return SUCCESS;
+    }
+
+    public void setNullToAll()
+    {
         sender = null;
         message = null;
-        
-        return SUCCESS;
+        phone = null;
+        text = null;
     }
 
     public String getMessage()
@@ -66,6 +103,16 @@ public class SMSInput
     public void setSender( String sender )
     {
         this.sender = sender;
+    }
+
+    public void setPhone( String phone )
+    {
+        this.phone = phone;
+    }
+
+    public void setText( String text )
+    {
+        this.text = text;
     }
 
     public void setIncomingSmsService( IncomingSmsService incomingSmsService )
