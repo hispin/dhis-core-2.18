@@ -568,10 +568,6 @@ public class ActivityReportingServiceImpl
         Program program = programService.getProgram( programId );
 
         ProgramInstance programInstance = new ProgramInstance();
-        // programInstance.setEnrollmentDate( sdf.parseDateTime( enrollmentDate
-        // ).toDate() );
-        // programInstance.setDateOfIncident( sdf.parseDateTime( incidentDate
-        // ).toDate() );
         programInstance.setEnrollmentDate( new Date() );
         programInstance.setDateOfIncident( new Date() );
         programInstance.setProgram( program );
@@ -587,9 +583,6 @@ public class ActivityReportingServiceImpl
                 ProgramStageInstance programStageInstance = new ProgramStageInstance();
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
-
-                // Date dateCreatedEvent = sdf.parseDateTime( incidentDate
-                // ).toDate();
                 Date dateCreatedEvent = new Date();
                 if ( program.getGeneratedByEnrollmentDate() )
                 {
