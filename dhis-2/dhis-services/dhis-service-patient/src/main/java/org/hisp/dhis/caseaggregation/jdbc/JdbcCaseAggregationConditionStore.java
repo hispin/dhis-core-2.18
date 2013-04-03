@@ -66,6 +66,7 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -134,6 +135,13 @@ public class JdbcCaseAggregationConditionStore
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     // -------------------------------------------------------------------------
@@ -205,7 +213,6 @@ public class JdbcCaseAggregationConditionStore
         return null;
     }
 
-
     public Double getAggregateValue( String caseExpression, String operator, String deType, Integer deSumId,
         Integer orgunitId, Period period )
     {
@@ -215,7 +222,7 @@ public class JdbcCaseAggregationConditionStore
         if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT )
             || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
-            String sql =  parseExpressionToSql( caseExpression, operator, deType, deSumId, orgunitId, startDate, endDate );
+            String sql = parseExpressionToSql( caseExpression, operator, deType, deSumId, orgunitId, startDate, endDate );
             Collection<Integer> ids = this.executeSQL( sql );
             return (ids == null) ? null : ids.size() + 0.0;
         }
@@ -231,13 +238,14 @@ public class JdbcCaseAggregationConditionStore
         if ( caseExpression != null && !caseExpression.isEmpty() )
         {
             sql = sql + " AND pdv.programstageinstanceid in ( "
-                + parseExpressionToSql( caseExpression, operator, deType, deSumId, orgunitId, startDate, endDate ) + " ) ";
+                + parseExpressionToSql( caseExpression, operator, deType, deSumId, orgunitId, startDate, endDate )
+                + " ) ";
         }
 
         Collection<Integer> ids = this.executeSQL( sql );
         return (ids == null) ? null : ids.iterator().next() + 0.0;
     }
-    
+
     public String parseExpressionToSql( String aggregationExpression, String operator, String deType, Integer deSumId,
         Integer orgunitId, String startDate, String endDate )
     {
@@ -278,7 +286,7 @@ public class JdbcCaseAggregationConditionStore
             IN_CONDITION_END_SIGN, ")" );
         return sql;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -317,6 +325,10 @@ public class JdbcCaseAggregationConditionStore
 
                 Collection<Integer> _orgunitIds = programStageInstanceService.getOrganisationUnitIds(
                     period.getStartDate(), period.getEndDate() );
+                Collection<Integer> _registrationOrgunit = patientService.getRegistrationOrgunitIds(
+                    period.getStartDate(), period.getEndDate() );
+                _orgunitIds.addAll( _registrationOrgunit );
+
                 if ( orgunitIds == null )
                 {
                     orgunitIds = new HashSet<Integer>();
@@ -326,6 +338,7 @@ public class JdbcCaseAggregationConditionStore
                 {
                     orgunitIds.retainAll( _orgunitIds );
                 }
+                
                 // ---------------------------------------------------------------------
                 // Aggregation
                 // ---------------------------------------------------------------------
