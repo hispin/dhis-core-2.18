@@ -27,26 +27,25 @@
 
 package org.hisp.dhis.caseaggregation;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Future;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version PatientAggregationExpressionStore.java Nov 18, 2010 9:27:59 AM
  */
-public interface CaseAggregationConditionStore
-    extends GenericNameableObjectStore<CaseAggregationCondition>
+public interface CaseAggregationConditionManager
 {
-    String ID = CaseAggregationConditionStore.class.getName();
-
-    Collection<CaseAggregationCondition> get( DataElement dataElement );
-
-    CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
-
-    Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements );
+    List<Integer> executeSQL( String sql );
     
+    Future<?> aggregate( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule, String taskStrategy );
+    
+    Double getAggregateValue( String caseExpression, String operator, String deType, Integer deSumId,
+        Integer orgunitId, Period period );
+   
+    String parseExpressionToSql( String aggregationExpression, String operator, String deType, Integer deSumId,
+        Integer orgunitId, String startDate, String endDate );
+   
 }

@@ -58,19 +58,13 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.caseaggregation.CaseAggregateSchedule;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
-import org.hisp.dhis.caseaggregation.CaseAggregationConditionStore;
-import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionManager;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.nfunk.jep.JEP;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -81,11 +75,10 @@ import org.springframework.scheduling.annotation.Async;
 /**
  * @author Chau Thu Tran
  * 
- * @version JdbcCaseAggregationConditionStore.java Nov 18, 2010 9:36:20 AM
+ * @version JdbcCaseAggregationConditionManager.java Nov 18, 2010 9:36:20 AM
  */
-public class JdbcCaseAggregationConditionStore
-    extends HibernateIdentifiableObjectStore<CaseAggregationCondition>
-    implements CaseAggregationConditionStore
+public class JdbcCaseAggregationConditionManager
+    implements CaseAggregationConditionManager
 {
     private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
         + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|"
@@ -105,6 +98,8 @@ public class JdbcCaseAggregationConditionStore
 
     private final String IN_CONDITION_COUNT_X_TIMES = "COUNT";
 
+    public static final String STORED_BY_DHIS_SYSTEM = "DHIS-System";
+
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -121,27 +116,6 @@ public class JdbcCaseAggregationConditionStore
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
-    }
-
-    private ProgramStageInstanceService programStageInstanceService;
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
     }
 
     // -------------------------------------------------------------------------
@@ -170,29 +144,6 @@ public class JdbcCaseAggregationConditionStore
             return null;
         }
     }
-
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<CaseAggregationCondition> get( DataElement dataElement )
-    {
-        return getCriteria( Restrictions.eq( "aggregationDataElement", dataElement ) ).list();
-    }
-
-    @Override
-    public CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
-    {
-        return (CaseAggregationCondition) getCriteria( Restrictions.eq( "aggregationDataElement", dataElement ),
-            Restrictions.eq( "optionCombo", optionCombo ) ).uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements )
-    {
-        return getCriteria( Restrictions.in( "aggregationDataElement", dataElements ) ).list();
-    }
-
-    public static final String STORED_BY_DHIS_SYSTEM = "DHIS-System";
 
     @Async
     public Future<?> aggregate( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule, String taskStrategy )
@@ -323,11 +274,9 @@ public class JdbcCaseAggregationConditionStore
                 String deType = rs.getString( "deType" );
                 int deSumId = rs.getInt( "desumid" );
 
-                Collection<Integer> _orgunitIds = programStageInstanceService.getOrganisationUnitIds(
-                    period.getStartDate(), period.getEndDate() );
-                Collection<Integer> _registrationOrgunit = patientService.getRegistrationOrgunitIds(
-                    period.getStartDate(), period.getEndDate() );
-                _orgunitIds.addAll( _registrationOrgunit );
+                Collection<Integer> _orgunitIds = getServiceOrgunit(
+                    DateUtils.getMediumDateString( period.getStartDate() ),
+                    DateUtils.getMediumDateString( period.getEndDate() ) );
 
                 if ( orgunitIds == null )
                 {
@@ -338,7 +287,7 @@ public class JdbcCaseAggregationConditionStore
                 {
                     orgunitIds.retainAll( _orgunitIds );
                 }
-                
+
                 // ---------------------------------------------------------------------
                 // Aggregation
                 // ---------------------------------------------------------------------
@@ -435,20 +384,36 @@ public class JdbcCaseAggregationConditionStore
         Date endDate = calEndDate.getTime();
 
         CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodTypeName );
-
+        String sql = "select periodtypeid from periodtype where name='" + periodTypeName + "'";
+        int periodTypeId = jdbcTemplate.queryForInt( sql );
+        
         Collection<Period> periods = periodType.generatePeriods( startDate, endDate );
 
         for ( Period period : periods )
         {
-            Period _period = periodService.getPeriod( period.getStartDate(), period.getEndDate(), periodType );
-            if ( _period == null )
+            String start = DateUtils.getMediumDateString( period.getStartDate() );
+            String end = DateUtils.getMediumDateString( period.getEndDate() );
+
+            sql = "select periodid from period where periodtypeid=" + periodTypeId + " and startdate='"
+                + start + "' and enddate='" + end + "'";
+            int periodid = 0;
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
+            if ( rs.next() )
             {
-                int id = periodService.addPeriod( period );
-                period.setId( id );
+                periodid = rs.getInt( "periodid" );
+            }
+
+            if ( periodid == 0 )
+            {
+                String insertSql = "insert into period (periodtypeid,startdate,enddate) " + " VALUES " + "("
+                    + periodTypeId + ",'" + start + "','" + end + "' )";
+                jdbcTemplate.execute( insertSql );
+
+                period.setId( jdbcTemplate.queryForInt( sql ) );
             }
             else
             {
-                period.setId( _period.getId() );
+                period.setId( periodid );
             }
         }
 
@@ -892,4 +857,24 @@ public class JdbcCaseAggregationConditionStore
         return sql;
     }
 
+    private Collection<Integer> getServiceOrgunit( String startDate, String endDate )
+    {
+        String sql = "(select organisationunitid from programstageinstance where executiondate>= '" + startDate
+            + "' and executiondate<='" + endDate + "')";
+        sql += " UNION ";
+        sql += "( select distinct organisationunitid from patient where registrationdate>='" + startDate
+            + "' and registrationdate<='" + endDate + "')";
+
+        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
+        {
+            public Integer mapRow( ResultSet rs, int rowNum )
+                throws SQLException
+            {
+                return rs.getInt( 1 );
+            }
+        } );
+
+        return orgunitIds;
+    }
 }

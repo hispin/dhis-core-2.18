@@ -690,13 +690,14 @@ function autocompletedField( idField )
 	var input = jQuery( "#" +  idField );
 	input.parent().width( input.width() + 50 );
 	var dataElementId = input.attr('id').split('-')[1];
+	var dataElementUid = input.attr('uid');
 	
 	input.autocomplete({
 		delay: 0,
 		minLength: 0,
 		source: function( request, response ){
 			$.ajax({
-				url: "getOptions.action?id=" + dataElementId + "&query=" + input.val(),
+				url: "getOptions.action?id=" + dataElementUid + "&query=" + input.val(),
 				dataType: "json",
 				cache: true,
 				success: function(data) {
