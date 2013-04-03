@@ -1149,9 +1149,22 @@ public class ActivityReportingServiceImpl
         List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
             + lastName, orgUnitId );
 
+        //remove the own searcher
+        removeIfDuplicated( patients, enrollmentRelationship.getPersonAId());
+        
         if ( patients.size() > 1 )
         {
-            throw NotAllowedException.NEED_MORE_SPECIFIC;
+            String patientsInfo = new String();
+
+            DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
+            for ( Patient each : patients )
+            {
+                patientsInfo += each.getId() + "/" + each.getFullName() + "/"
+                    + dateFormat.format( each.getBirthDate() ) + "$";
+            }
+
+            throw new NotAllowedException( patientsInfo );
         }
         else if ( patients.size() == 0 )
         {
@@ -1323,6 +1336,18 @@ public class ActivityReportingServiceImpl
         anonymousProgramMobile.setProgramStages( mobileProgramStages );
 
         return anonymousProgramMobile;
+    }
+    
+    private List<Patient> removeIfDuplicated( List<Patient> patients, int patientId )
+    {
+        for ( Patient each : patients )
+        {
+            if ( each.getId() == patientId )
+            {
+                patients.remove( each );
+            }
+        }
+        return patients;
     }
 
     private void saveDataValues( ActivityValue activityValue, ProgramStageInstance programStageInstance,

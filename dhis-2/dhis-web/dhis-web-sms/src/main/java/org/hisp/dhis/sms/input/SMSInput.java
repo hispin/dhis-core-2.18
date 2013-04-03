@@ -15,9 +15,9 @@ public class SMSInput
     implements Action
 {
 
-    private String sender, message;
+    private String sender, phone, number, msisdn;
 
-    private String phone, text;
+    private String message, text, content;
 
     private IncomingSmsService incomingSmsService;
 
@@ -27,41 +27,45 @@ public class SMSInput
     {
         IncomingSms sms = new IncomingSms();
 
-        // case 1 for sender and message
-        if ( sender != null || message != null )
+        // setter for sms's originator
+        if ( sender != null)
         {
-            if ( sender == null || message == null )
-            {
-                setNullToAll();
-                return ERROR;
-            }
-            else
-            {
-                sms.setText( message );
-                sms.setOriginator( sender );
-            }
+            sms.setOriginator( sender );
+        }
+        else if ( phone != null )
+        {
+            sms.setOriginator( phone );
+        }
+        else if ( number != null )
+        {
+            sms.setOriginator( number );
+        }
+        else if ( msisdn != null )
+        {
+            sms.setOriginator( msisdn );
         }
 
-        // case 2 for phone and text
-        if ( phone != null || text != null )
+        // setter for sms's text
+        if ( message != null)
         {
-            if ( phone == null || text == null )
-            {
-                setNullToAll();
-                return ERROR;
-            }
-            else
-            {
-                sms.setText( text );
-                sms.setOriginator( phone );
-            }
+            sms.setText( message );
         }
-
-        // case 3 for all is null
-        if ( sender == null && message == null && phone == null && text == null )
+        else if ( text != null )
         {
+            sms.setText( text );
+        }
+        else if ( content != null )
+        {
+            sms.setText( content );
+        }
+        
+        // check whether 2 necessary attributes are null 
+        if ( sms.getOriginator() == null || sms.getText() == null )
+        {
+            setNullToAll();
             return ERROR;
         }
+        
         java.util.Date rec = new java.util.Date();
         sms.setReceivedDate( rec );
         sms.setSentDate( rec );
@@ -80,24 +84,11 @@ public class SMSInput
     public void setNullToAll()
     {
         sender = null;
-        message = null;
         phone = null;
+        number = null;
+        message = null;
         text = null;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
-    public String getSender()
-    {
-        return sender;
+        content =null;
     }
 
     public void setSender( String sender )
@@ -109,10 +100,30 @@ public class SMSInput
     {
         this.phone = phone;
     }
+    
+    public void setNumber( String number )
+    {
+        this.number = number;
+    }
 
+    public void setMsisdn( String msisdn )
+    {
+        this.msisdn = msisdn;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+    
     public void setText( String text )
     {
         this.text = text;
+    }
+    
+    public void setContent( String content )
+    {
+        this.content = content;
     }
 
     public void setIncomingSmsService( IncomingSmsService incomingSmsService )
