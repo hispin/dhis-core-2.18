@@ -13,6 +13,7 @@
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.relationship.RelationshipStore"
