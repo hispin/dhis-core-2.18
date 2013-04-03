@@ -25,28 +25,44 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseaggregation;
+package org.hisp.dhis.caseaggregation.hibernate;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version PatientAggregationExpressionStore.java Nov 18, 2010 9:27:59 AM
+ * @version HibernateCaseAggregationConditionStore.java Nov 18, 2010 9:36:20 AM
  */
-public interface CaseAggregationConditionStore
-    extends GenericNameableObjectStore<CaseAggregationCondition>
+public class HibernateCaseAggregationConditionStore
+    extends HibernateIdentifiableObjectStore<CaseAggregationCondition>
+    implements CaseAggregationConditionStore
 {
-    String ID = CaseAggregationConditionStore.class.getName();
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<CaseAggregationCondition> get( DataElement dataElement )
+    {
+        return getCriteria( Restrictions.eq( "aggregationDataElement", dataElement ) ).list();
+    }
 
-    Collection<CaseAggregationCondition> get( DataElement dataElement );
+    @Override
+    public CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
+    {
+        return (CaseAggregationCondition) getCriteria( Restrictions.eq( "aggregationDataElement", dataElement ),
+            Restrictions.eq( "optionCombo", optionCombo ) ).uniqueResult();
+    }
 
-    CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
-
-    Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements );
-    
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements )
+    {
+        return getCriteria( Restrictions.in( "aggregationDataElement", dataElements ) ).list();
+    }
 }

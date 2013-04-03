@@ -6,14 +6,16 @@
 
     <!-- Store definitions -->
 
+	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager"
+		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionManager">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="statementBuilder" ref="statementBuilder" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
-		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionStore">
+		class="org.hisp.dhis.caseaggregation.hibernate.HibernateCaseAggregationConditionStore">
 		<property name="clazz" value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.relationship.RelationshipStore"
@@ -170,6 +172,8 @@
 		class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
 		<property name="aggregationConditionStore"
 			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore" />
+		<property name="aggregationConditionManager"
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="dataValueService"

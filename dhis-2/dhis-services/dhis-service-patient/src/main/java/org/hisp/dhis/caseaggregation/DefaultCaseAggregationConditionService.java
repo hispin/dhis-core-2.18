@@ -98,6 +98,8 @@ public class DefaultCaseAggregationConditionService
 
     private CaseAggregationConditionStore aggregationConditionStore;
 
+    private CaseAggregationConditionManager aggregationConditionManager;
+
     private DataElementService dataElementService;
 
     private PatientService patientService;
@@ -121,6 +123,11 @@ public class DefaultCaseAggregationConditionService
     public void setAggregationConditionStore( CaseAggregationConditionStore aggregationConditionStore )
     {
         this.aggregationConditionStore = aggregationConditionStore;
+    }
+
+    public void setAggregationConditionManager( CaseAggregationConditionManager aggregationConditionManager )
+    {
+        this.aggregationConditionManager = aggregationConditionManager;
     }
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
@@ -219,7 +226,7 @@ public class DefaultCaseAggregationConditionService
         DataElement deSum = aggregationCondition.getDeSum();
         Integer deSumId = (deSum == null) ? null : deSum.getId();
 
-        return aggregationConditionStore.getAggregateValue( aggregationCondition.getAggregationExpression(),
+        return aggregationConditionManager.getAggregateValue( aggregationCondition.getAggregationExpression(),
             aggregationCondition.getOperator(), aggDataElement.getType(), deSumId, orgunit.getId(), period );
     }
 
@@ -238,7 +245,7 @@ public class DefaultCaseAggregationConditionService
 
         Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
 
-        String sql = aggregationConditionStore.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
+        String sql = aggregationConditionManager.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
             aggregationCondition.getOperator(), aggDataElement.getType(), deSumId, orgunitId, startDate, endDate );
 
         Collection<DataElement> dataElements = getDataElementsInCondition( aggregationCondition
@@ -246,7 +253,7 @@ public class DefaultCaseAggregationConditionService
 
         if ( dataElements.size() > 0 )
         {
-            Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
+            Collection<Integer> patientIds = aggregationConditionManager.executeSQL( sql );
 
             for ( Integer patientId : patientIds )
             {
@@ -269,7 +276,7 @@ public class DefaultCaseAggregationConditionService
         DataElement deSum = aggregationCondition.getDeSum();
         Integer deSumId = (deSum == null) ? null : deSum.getId();
 
-        String sql = aggregationConditionStore
+        String sql = aggregationConditionManager
             .parseExpressionToSql( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
                 aggDataElement.getType(), deSumId, orgunit.getId(),
                 DateUtils.getMediumDateString( period.getStartDate() ),
@@ -277,7 +284,7 @@ public class DefaultCaseAggregationConditionService
 
         Collection<Patient> result = new HashSet<Patient>();
 
-        Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
+        Collection<Integer> patientIds = aggregationConditionManager.executeSQL( sql );
 
         if ( patientIds != null )
         {
@@ -306,14 +313,14 @@ public class DefaultCaseAggregationConditionService
             || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
             aggregationCondition.setOperator( AGGRERATION_SUM );
-            
+
             // get params
-            
+
             DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
             DataElement deSum = aggregationCondition.getDeSum();
             Integer deSumId = (deSum == null) ? null : deSum.getId();
 
-            sql = aggregationConditionStore.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
+            sql = aggregationConditionManager.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
                 aggregationCondition.getOperator(), aggDataElement.getType(), deSumId, orgunitId, startDate, endDate );
         }
         else
@@ -332,12 +339,12 @@ public class DefaultCaseAggregationConditionService
                 sql = sql + " AND pdv.programstageinstanceid in ( ";
 
                 // Get params
-                
+
                 DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
                 DataElement deSum = aggregationCondition.getDeSum();
                 Integer deSumId = (deSum == null) ? null : deSum.getId();
 
-                String conditionSql = aggregationConditionStore.parseExpressionToSql(
+                String conditionSql = aggregationConditionManager.parseExpressionToSql(
                     aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
                     aggDataElement.getType(), deSumId, orgunit.getId(),
                     DateUtils.getMediumDateString( period.getStartDate() ),
@@ -347,7 +354,7 @@ public class DefaultCaseAggregationConditionService
             }
         }
 
-        Collection<Integer> stageInstanceIds = aggregationConditionStore.executeSQL( sql );
+        Collection<Integer> stageInstanceIds = aggregationConditionManager.executeSQL( sql );
 
         for ( Integer stageInstanceId : stageInstanceIds )
         {
@@ -567,7 +574,7 @@ public class DefaultCaseAggregationConditionService
 
         for ( int i = 0; i < getProcessNo(); i++ )
         {
-            futures.add( aggregationConditionStore.aggregate( datasetQ, taskStrategy ) );
+            futures.add( aggregationConditionManager.aggregate( datasetQ, taskStrategy ) );
         }
 
         ConcurrentUtils.waitForCompletion( futures );
