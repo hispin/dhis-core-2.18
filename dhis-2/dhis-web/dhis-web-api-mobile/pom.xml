@@ -10,7 +10,7 @@
   
 
   <artifactId>dhis-web-api-mobile</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Mobile API</name>
 
   <dependencies>
