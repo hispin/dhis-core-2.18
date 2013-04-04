@@ -85,6 +85,13 @@ Ext.onReady( function() {
 			if (id) {
 				pt.util.pivot.loadTable(id);
 			}
+
+			// Fade in
+			Ext.defer( function() {
+				Ext.getBody().fadeIn({
+					duration: 800
+				});
+			}, 500 );
 		};
 
 		return init;
