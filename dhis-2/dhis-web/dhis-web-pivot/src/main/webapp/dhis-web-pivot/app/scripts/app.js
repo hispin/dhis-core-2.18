@@ -2019,7 +2019,6 @@ Ext.onReady( function() {
 			indicator = {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">Indicators</div>', //i18n
-				bodyStyle: 'padding:2px',
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
@@ -3511,7 +3510,6 @@ Ext.onReady( function() {
 
 			accordion = Ext.create('Ext.panel.Panel', {
 				bodyStyle: 'border-style:none; padding:2px; padding-bottom:0; overflow-y:scroll;',
-				layout: 'fit',
 				items: accordionBody,
 				listeners: {
 					added: function() {
