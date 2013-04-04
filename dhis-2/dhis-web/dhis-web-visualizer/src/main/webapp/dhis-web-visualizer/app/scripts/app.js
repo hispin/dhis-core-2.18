@@ -338,6 +338,13 @@ Ext.onReady( function() {
         DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.urlparam) || DV.conf.finals.cmd.init;
 
         DV.exe.execute(DV.init.cmd);
+
+        // Fade in
+		Ext.defer( function() {
+			Ext.getBody().fadeIn({
+				duration: 500
+			});
+		}, 500 );
     };
 
     DV.util = {
