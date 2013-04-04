@@ -48,7 +48,7 @@
 			#parse( "/dhis-web-caseentry/patientForm.vm" )
 		</tbody>
 		<tbody>
-			#parse( "/dhis-web-caseentry/dataEntryForm.vm" )
+			#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
 		</tbody>
 		<tr>
 			<td></td>
