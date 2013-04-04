@@ -586,7 +586,7 @@ Ext.onReady( function() {
 					var a = [],
 						count = 0;
                     for (var key in rp) {
-                        if (rp[key]) {
+                        if (rp[key] && Ext.isNumber(DV.conf.period.relativePeriods[key])) {
 							count += DV.conf.period.relativePeriods[key];
                         }
                     }
