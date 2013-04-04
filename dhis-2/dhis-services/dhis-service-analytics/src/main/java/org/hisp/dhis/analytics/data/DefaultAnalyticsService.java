@@ -382,7 +382,7 @@ public class DefaultAnalyticsService
         
         List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, tableName );
         
-        t.getSplitTime( "Planned query" );
+        t.getSplitTime( "Planned query, got: " + queries.size() + " for optimal: " + optimalQueries );
         
         List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
         
