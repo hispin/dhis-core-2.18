@@ -663,7 +663,7 @@ public class DefaultAnalyticsService
             // If dimension is not fixed and has no options, insert all options
             // -----------------------------------------------------------------
             
-            if ( !FIXED_DIMS.contains( dimension.getDimension() ) && ( options == null || options.isEmpty() ) )
+            if ( !FIXED_DIMS.contains( dimension.getDimension() ) && options.isEmpty() )
             {
                 if ( DimensionType.ORGANISATIONUNIT_GROUPSET.equals( dimension.getType() ) )
                 {

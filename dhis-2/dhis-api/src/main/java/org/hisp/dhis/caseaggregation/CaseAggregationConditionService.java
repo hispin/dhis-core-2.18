@@ -47,7 +47,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
  */
 public interface CaseAggregationConditionService
 {
-    int  addCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
+    int addCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
     void updateCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 

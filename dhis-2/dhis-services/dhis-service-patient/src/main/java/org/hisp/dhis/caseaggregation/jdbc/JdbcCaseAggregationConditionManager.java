@@ -65,6 +65,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.nfunk.jep.JEP;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -74,8 +75,6 @@ import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version JdbcCaseAggregationConditionManager.java Nov 18, 2010 9:36:20 AM
  */
 public class JdbcCaseAggregationConditionManager
     implements CaseAggregationConditionManager
@@ -161,6 +160,7 @@ public class JdbcCaseAggregationConditionManager
 
             runAggregate( null, dataSet, periods );
         }
+    
         return null;
     }
 
@@ -383,7 +383,7 @@ public class JdbcCaseAggregationConditionManager
 
         Date endDate = calEndDate.getTime();
 
-        CalendarPeriodType periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodTypeName );
+        CalendarPeriodType periodType = (CalendarPeriodType) PeriodType.getPeriodTypeByName( periodTypeName );
         String sql = "select periodtypeid from periodtype where name='" + periodTypeName + "'";
         int periodTypeId = jdbcTemplate.queryForInt( sql );
         
