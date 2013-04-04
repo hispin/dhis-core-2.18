@@ -660,6 +660,10 @@ public class DefaultProgramDataEntryService
         {
             inputHTML += jsCodeForOnchange;
         }
+        else
+        {
+            inputHTML += " class=\"optionset\" ";
+        }
 
         if ( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ) )
         {
