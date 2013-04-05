@@ -2,6 +2,7 @@
 var dataElementSelector;
 var otherProgramStageDataElements;
 var existedDataEntry;
+var timeout;
 
 jQuery(function(){
 	dataElementSelector = jQuery("#dataElementSelection").dialog({
@@ -33,6 +34,7 @@ jQuery(function(){
 	$(":button").button();
 	$(":submit").button();
 	$("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
+	$("#saveAndCloseButton").button("option", "icons", { primary: "ui-icon-disk" });
 	$("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
 	$("#deleteButton").button("option", "icons", { primary: "ui-icon-trash" });
 	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
@@ -297,4 +299,63 @@ function insertImage() {
 	var html = "<img src=\"" + image + "\" title=\"" + $("#imageDialog :selected").text() + "\">";
 	var oEditor = $("#designTextarea").ckeditorGet();
 	oEditor.insertHtml( html );
+}
+
+// -------------------------------------------------------
+// Auto-save data entry form
+// -------------------------------------------------------
+
+function setAutoSaveDataEntrySetting(_autoSave)
+{
+	jQuery.postJSON("setAutoSaveDataEntrySetting.action", {autoSave:_autoSave}, function(json) {
+		autoSave = _autoSave;
+		if (_autoSave) {
+			window.setTimeout( "validateDataEntryFormTimeout( false );", 600 );
+		}
+		else{
+			window.clearTimeout(timeOut);
+		}
+	});
+}
+
+function validateDataEntryFormTimeout()
+{
+	validateDataEntryForm();
+	timeOut = window.setTimeout( "validateDataEntryFormTimeout();", 60000 );
+}
+
+function validateDataEntryForm()
+{
+	$.post( 'validateDataEntryForm.action',
+	{
+		name: getFieldValue('name'),
+		dataEntryFormId: getFieldValue('dataEntryFormId')
+	}, 
+	function( json )
+	{
+		if ( json.response == 'success' )
+		{
+			autoSaveDataEntryForm();
+		}
+		else if ( json.response = 'error' )
+		{
+			setHeaderDelayMessage( json.message );
+		}
+	} );
+}
+
+function autoSaveDataEntryForm()
+{
+	$.postUTF8( 'autoSaveDataEntryForm.action',
+	{
+		name: getFieldValue('name'),
+		designTextarea: jQuery("#designTextarea").ckeditorGet().getData(),
+		programId: getFieldValue('programId'),
+		programStageId: getFieldValue('programStageId'),
+		dataEntryFormId: getFieldValue('dataEntryFormId')
+	},
+	function( json ) 
+	{
+		setHeaderDelayMessage( i18n_save_success ); 
+	} );
 }

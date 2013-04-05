@@ -18,9 +18,9 @@
     var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
 	var i18n_specify_dataelememt = '$encoder.jsEscape( $i18n.getString( "specify_dataelememt" ) , "'" )';
     var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
-	var i18n_dataelement = "$i18n.getString( 'dataelement' )";
+	var i18n_dataelement = '$encoder.jsEscape( $i18n.getString( "dataelement" ) , "'" )';
 	var i18n_dataelement_of_orther_program_stage = "$i18n.getString( 'dataelement_of_orther_program_stage' )";
-	
+	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
 	var previousName = '';
 </script>
 
@@ -102,7 +102,8 @@
 <table width="100%">	
     <tr>
         <td>
-            <button type="submit" id="saveButton">$i18n.getString( 'save' )</button>
+            <button type="button" id="saveButton" onclick="validateDataEntryForm();">$i18n.getString( 'save' )</button>
+            <button type="submit" id="saveAndCloseButton">$i18n.getString( 'save_and_close' )</button>
             <button type="button" id="cancelButton" onclick="window.location='programStage.action?id=$!programStage.program.id'">$i18n.getString( 'cancel' )</button>          
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 			#if( !$existingDataEntryForms.isEmpty() )
@@ -118,9 +119,11 @@
 			
 			#if( $!dataEntryForm )
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-		    <button type="button" id="deleteButton" onclick="deleteDataEntryForm( $programStage.dataEntryForm.id, $programStage.id )">$i18n.getString( 'delete' )</button>
+		    <button type="button" id="deleteButton" onclick="deleteDataEntryForm( $programStage.dataEntryForm.id, $programStage.id )">$i18n.getString( 'delete_this_form' )</button>
 			#end
-        </td>		
+			
+			<input type="checkbox" id="autoSave" name="autoSave" #if($autoSave && $autoSave=="true") checked #end onchange="setAutoSaveDataEntrySetting(this.checked)" />$i18n.getString( 'auto_save_data_entry_forms' )
+        </td>
     </tr>
 </table>
   

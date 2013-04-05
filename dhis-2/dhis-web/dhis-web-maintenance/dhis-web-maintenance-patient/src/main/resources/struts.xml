@@ -498,6 +498,13 @@
 				programStage.action?id=${programId}
 			</result>
 		</action>
+		
+		<action name="autoSaveDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+		</action>
 
 		<action name="delDataEntryForm"
 			class="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction">
@@ -528,6 +535,13 @@
 			class="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction">
 			<result name="success" type="velocity">
 				/dhis-web-maintenance-patient/dataEntryFormCode.vm
+			</result>
+		</action>
+		
+		<action name="setAutoSaveDataEntrySetting"
+			class="org.hisp.dhis.patient.action.dataentryform.SetAutoSaveDataEntrySettingAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
