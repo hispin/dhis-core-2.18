@@ -299,3 +299,20 @@ function insertImage() {
 	var oEditor = $("#designTextarea").ckeditorGet();
 	oEditor.insertHtml( html );
 }
+
+// --------------------------------------------------------------------------
+// Auto-save
+// --------------------------------------------------------------------------
+
+function setAutoSaveSetting(_autoSave)
+{
+	jQuery.postJSON("setAutoSaveSetting.action", {autoSave:_autoSave}, function(json) {
+		autoSave = _autoSave;
+		if (_autoSave) {
+			window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+		}
+		else{
+			window.clearTimeout(timeOut);
+		}
+	});
+}
