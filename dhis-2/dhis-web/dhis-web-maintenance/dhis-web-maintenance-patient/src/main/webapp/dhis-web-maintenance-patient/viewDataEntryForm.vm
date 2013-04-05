@@ -10,6 +10,7 @@
 
 		jQuery('#designTextarea').ckeditor();
 		jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $dataEntryValue, "'" )');
+		openDataElementSelector();
 		
 		checkValueIsExist( "name", "validateDataEntryForm.action", { dataEntryFormId: '$!programStage.dataEntryForm.id' } );
 	});
