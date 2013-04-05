@@ -79,7 +79,7 @@ public class Patient
     private List<Program> enrollmentPrograms;
 
     private List<Relationship> relationships;
-    
+
     private List<Relationship> enrollmentRelationships;
 
     private String phoneNumber;
@@ -385,7 +385,7 @@ public class Patient
         dout.writeInt( atts.size() );
         for ( PatientAttribute att : atts )
         {
-            att.serialize( dout );
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
         }
 
         // Write PatientIdentifier
@@ -395,10 +395,7 @@ public class Patient
             each.serialize( dout );
         }
 
-        // Write Enrolled Programs
-
         // Write Program
-
         dout.writeInt( programs.size() );
         for ( Program each : programs )
         {
@@ -419,9 +416,9 @@ public class Patient
         {
             each.serialize( dout );
         }
-        
+
         // Write Enrolled
-        
+
         dout.writeInt( enrollmentRelationships.size() );
         for ( Relationship each : enrollmentRelationships )
         {

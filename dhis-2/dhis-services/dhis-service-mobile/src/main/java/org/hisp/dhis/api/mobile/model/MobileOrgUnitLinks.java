@@ -328,6 +328,7 @@ public class MobileOrgUnitLinks
         this.getVariesInfoUrl = dataInputStream.readUTF();
         this.addRelationshipUrl = dataInputStream.readUTF();
         this.downloadAnonymousProgramUrl = dataInputStream.readUTF();
+        this.findProgramUrl = dataInputStream.readUTF();
     }
 
     @Override
