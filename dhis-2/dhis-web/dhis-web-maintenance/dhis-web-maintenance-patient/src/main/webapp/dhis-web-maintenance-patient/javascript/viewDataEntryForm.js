@@ -8,6 +8,7 @@ jQuery(function(){
 		title: i18n_dataelement,
 		height: 420,
 		width: 480,
+		position: [$("body").width()- 50, 0],
 		autoOpen: false,
 		zIndex:99999
 	});
@@ -16,6 +17,7 @@ jQuery(function(){
 		title: i18n_dataelement_of_orther_program_stage,
 		height: 460,
 		width:jQuery("#otherProgramStageDataElements [id=dataElementIds]").outerWidth() + 50,
+		position: [$("body").width()- 50, 0],
 		autoOpen: false,
 		zIndex:99999
 	});
@@ -35,6 +37,7 @@ jQuery(function(){
 	$("#deleteButton").button("option", "icons", { primary: "ui-icon-trash" });
 	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	$("#insertImagesButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	$("#insertImageButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	$("#loadExistForms").button("option", "icons", { primary: "ui-icon-newwin" });
 	$("#insertDataElements").button("option", "icons", { primary: "ui-icon-newwin" });
 	$("#insertOtherDataElements").button("option", "icons", { primary: "ui-icon-newwin" });
@@ -47,7 +50,13 @@ jQuery(function(){
 	})
 	
 	$("#insertImagesButton").click(function() {
-		$("#imageDialog").dialog();
+		$("#imageDialog").dialog({
+			minWidth: 350,
+			minheight: 263,
+			position: [$("body").width()- 50, 0],
+			zIndex: 10000,
+			resizable: false
+		});
 	});
 });
 

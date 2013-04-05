@@ -9,6 +9,7 @@ $( document ).ready( function()
 	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	$("#propertiesButton").button("option", "icons", { primary: "ui-icon-newwin" });
 	$("#insertImagesButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	$("#insertImageButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	
 	$("#imageDialog").bind("dialogopen", function(event, ui) {
 		$("#insertImagesButton").button("disable");
@@ -18,7 +19,12 @@ $( document ).ready( function()
 	})
 	
 	$("#insertImagesButton").click(function() {
-		$("#imageDialog").dialog();
+		$("#imageDialog").dialog({
+			overlay:{background:'#000000', opacity:0.1},
+			width:400,
+			height:300,
+			position: [$("body").width()- 50, 0],
+		});
 	});
 });
 	
@@ -34,6 +40,7 @@ function openPropertiesSelector()
 			overlay:{background:'#000000', opacity:0.1},
 			width:500,
 			height:460,
+			position: [$("body").width()- 50, 0],
 			close: function(ev, ui) { 
 				$("#propertiesButton").removeClass("ui-state-active2"); 
 			}
