@@ -28,7 +28,8 @@
     var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
 	var i18n_dataelement = "$i18n.getString( 'dataelement' )";
 	var i18n_dataelement_of_orther_program_stage = "$i18n.getString( 'dataelement_of_orther_program_stage' )";
-	
+	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
+	var autoSave=${autoSave};
 	var previousName = '';
 </script>
 
@@ -97,7 +98,8 @@
 <table width="100%">	
     <tr>
         <td>
-		    <button type="submit" id="saveButton"/>$i18n.getString( 'save' )</button>
+		    <button type="button" id="saveButton" onclick="validateDataEntryForm();">$i18n.getString( 'save' )</button>
+            <button type="submit" id="saveAndCloseButton"/>$i18n.getString( 'save_and_close' )</button>
             <button type="button" id="cancelButton" onclick="window.location='patientRegistrationForm.action'">$i18n.getString( 'cancel' )</button>
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 		    <button type="button" id="propertiesButton" onclick="openPropertiesSelector()"/>$i18n.getString( 'insert_properties' )</button>
@@ -106,6 +108,7 @@
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 		    <button type="button" id="deleteButton" onclick="deleteRegistrationForm( $registrationForm.id, '$registrationForm.dataEntryForm.name' )" />$i18n.getString( 'delete' )</button>
 			#end
+			<input type="checkbox" id="autoSave" name="autoSave" #if($autoSave && $autoSave=="true") checked #end onchange="setAutoSaveRegistrationSetting(this.checked)" />$i18n.getString( 'auto_save_patient_registration_forms' )
         </td>		
     </tr>
 </table>

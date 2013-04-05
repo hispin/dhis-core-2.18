@@ -562,6 +562,16 @@
 		<property name="systemSettingManager">
 			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
 		</property>
+		<property name="userSettingService">
+			<ref bean="org.hisp.dhis.user.UserSettingService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.SetAutoSavePatientRegistrationSettingAction"
+		class="org.hisp.dhis.patient.action.dataentryform.SetAutoSavePatientRegistrationSettingAction"
+		scope="prototype">
+		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
 
 	<!-- Patient Attribute Group -->
