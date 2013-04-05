@@ -160,7 +160,7 @@ public class JdbcCaseAggregationConditionManager
 
             runAggregate( null, dataSet, periods );
         }
-    
+
         return null;
     }
 
@@ -242,6 +242,11 @@ public class JdbcCaseAggregationConditionManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Aggregate data values for the dataset by periods with a organisation unit
+     * list
+     * 
+     */
     private void runAggregate( Collection<Integer> orgunitIds, CaseAggregateSchedule dataSet, Collection<Period> periods )
     {
         String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid, de.valuetype as deType, "
@@ -356,6 +361,15 @@ public class JdbcCaseAggregationConditionManager
         }
     }
 
+    /**
+     * Generate period list based on period Type and taskStrategy option
+     * 
+     * @param periodTypeName The name of period type
+     * @param taskStrategy Specify how to get period list based on period type
+     *        of each dataset. There are four options, include last month, last
+     *        3 month, last 6 month and last 12 month
+     * 
+     */
     private Collection<Period> getPeriods( String periodTypeName, String taskStrategy )
     {
         Calendar calStartDate = Calendar.getInstance();
@@ -386,7 +400,7 @@ public class JdbcCaseAggregationConditionManager
         CalendarPeriodType periodType = (CalendarPeriodType) PeriodType.getPeriodTypeByName( periodTypeName );
         String sql = "select periodtypeid from periodtype where name='" + periodTypeName + "'";
         int periodTypeId = jdbcTemplate.queryForInt( sql );
-        
+
         Collection<Period> periods = periodType.generatePeriods( startDate, endDate );
 
         for ( Period period : periods )
@@ -394,8 +408,8 @@ public class JdbcCaseAggregationConditionManager
             String start = DateUtils.getMediumDateString( period.getStartDate() );
             String end = DateUtils.getMediumDateString( period.getEndDate() );
 
-            sql = "select periodid from period where periodtypeid=" + periodTypeId + " and startdate='"
-                + start + "' and enddate='" + end + "'";
+            sql = "select periodid from period where periodtypeid=" + periodTypeId + " and startdate='" + start
+                + "' and enddate='" + end + "'";
             int periodid = 0;
             SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
             if ( rs.next() )
@@ -420,8 +434,21 @@ public class JdbcCaseAggregationConditionManager
         return periods;
     }
 
-    private String createSQL( String aggregationExpression, String operator, String deType, int orgunitId,
-        String startDate, String endDate )
+    /**
+     * Return standard SQL from query builder formula
+     * 
+     * @param caseExpression The query builder expression
+     * @param operator There are six operators, includes Number of persons,
+     *        Number of visits, Sum, Average, Minimum and Maximum of data
+     *        element values.
+     * @param deType Aggregate Data element type
+     * @param orgunitId The id of organisation unit where to aggregate data
+     *        value
+     * @param startDate Start date
+     * @param endDate End date
+     */
+    private String createSQL( String caseExpression, String operator, String deType, int orgunitId, String startDate,
+        String endDate )
     {
         // ---------------------------------------------------------------------
         // get operators
@@ -429,7 +456,7 @@ public class JdbcCaseAggregationConditionManager
 
         Pattern patternOperator = Pattern.compile( "(AND|OR)" );
 
-        Matcher matcherOperator = patternOperator.matcher( aggregationExpression );
+        Matcher matcherOperator = patternOperator.matcher( caseExpression );
 
         List<String> operators = new ArrayList<String>();
 
@@ -438,7 +465,7 @@ public class JdbcCaseAggregationConditionManager
             operators.add( matcherOperator.group() );
         }
 
-        String[] expression = aggregationExpression.split( "(AND|OR)" );
+        String[] expression = caseExpression.split( "(AND|OR)" );
 
         // ---------------------------------------------------------------------
         // parse expressions
@@ -596,6 +623,10 @@ public class JdbcCaseAggregationConditionManager
         return getSQL( operator, conditions, operators );
     }
 
+    /**
+     * Return standard SQL of the expression to compare data value as null
+     * 
+     */
     private String getConditionForNotDataElement( int programId, String programStageId, String operator,
         int dataElementId, int orgunitId, String startDate, String endDate )
     {
@@ -627,6 +658,10 @@ public class JdbcCaseAggregationConditionManager
         return sql + "  ) ";
     }
 
+    /**
+     * Return standard SQL of a data element expression. E.g [DE:1.2.3]
+     * 
+     */
     private String getConditionForDataElement( int programId, String programStageId, String operator,
         int dataElementId, int orgunitId, String startDate, String endDate )
     {
@@ -653,6 +688,10 @@ public class JdbcCaseAggregationConditionManager
         return sql;
     }
 
+    /**
+     * Return standard SQL of a patient-attribute expression. E.g [CA:1]
+     * 
+     */
     private String getConditionForPatientAttribute( int attributeId, String operator )
     {
         String sql = "SELECT distinct(pi.patientid) ";
@@ -669,6 +708,11 @@ public class JdbcCaseAggregationConditionManager
         return sql + from + "WHERE patientattributeid=" + attributeId + " AND value ";
     }
 
+    /**
+     * Return standard SQL of the expression which is used for calculating total
+     * of person registration
+     * 
+     */
     private String getConditionForPatient( int orgunitId, String operator, String startDate, String endDate )
     {
         String sql = "SELECT pi.patientid ";
@@ -689,6 +733,11 @@ public class JdbcCaseAggregationConditionManager
         return sql + from + where;
     }
 
+    /**
+     * Return standard SQL of the patient-fixed-attribute expression. E.g
+     * [CP:gender]
+     * 
+     */
     private String getConditionForPatientProperty( String propertyName, String operator, String startDate,
         String endDate )
     {
@@ -713,6 +762,11 @@ public class JdbcCaseAggregationConditionManager
         return sql;
     }
 
+    /**
+     * Return standard SQL of the program-property expression. E.g
+     * [PC:executionDate]
+     * 
+     */
     private String getConditionForPatientProgramStageProperty( String propertyName, String operator, String startDate,
         String endDate )
     {
@@ -733,6 +787,12 @@ public class JdbcCaseAggregationConditionManager
         return sql;
     }
 
+    /**
+     * Return standard SQL of the program expression. E.g
+     * [PP:DATE@enrollmentdate#-DATE@dateofincident#] for geting the number of
+     * days between date of enrollment and date of incident.
+     * 
+     */
     private String getConditionForProgramProperty( String operator, String startDate, String endDate, String property )
     {
         String sql = "SELECT pi.patientid FROM programinstance as pi ";
@@ -747,6 +807,11 @@ public class JdbcCaseAggregationConditionManager
             + property;
     }
 
+    /**
+     * Return standard SQL to retrieve the number of persons enrolled into the
+     * program. E.g [PG:1]
+     * 
+     */
     private String getConditionForProgram( String programId, String operator, int orgunitId, String startDate,
         String endDate )
     {
@@ -763,6 +828,11 @@ public class JdbcCaseAggregationConditionManager
             + " AND pi.enrollmentdate >= '" + startDate + "' AND pi.enrollmentdate <= '" + endDate + "' ";
     }
 
+    /**
+     * Return standard SQL to retrieve the number of visits a program-stage. E.g
+     * [PS:1]
+     * 
+     */
     private String getConditionForProgramStage( String programStageId, String operator, int orgunitId,
         String startDate, String endDate )
     {
@@ -779,6 +849,12 @@ public class JdbcCaseAggregationConditionManager
             + "' AND psi.organisationunitid = " + orgunitId + " ";
     }
 
+    /**
+     * Return standard SQL to retrieve the x-time of a person visited one
+     * program-stage. E.g a mother came to a hospital 3th time for third
+     * trimester.
+     * 
+     */
     private String getConditionForCountProgramStage( String programStageId, String operator, int orgunitId,
         String startDate, String endDate )
     {
@@ -806,6 +882,11 @@ public class JdbcCaseAggregationConditionManager
 
     }
 
+    /**
+     * Return standard SQL to retrieve the number of days between report-date
+     * and due-date. E.g [PSP:DATE@executionDate#-DATE@dueDate#]
+     * 
+     */
     private String getConditionForProgramStageProperty( String property, String operator, int orgunitId,
         String startDate, String endDate )
     {
@@ -822,6 +903,10 @@ public class JdbcCaseAggregationConditionManager
             + property;
     }
 
+    /**
+     * Return standard SQL by combining all sub-expressions of an aggregate query builder formula.
+     * 
+     */
     private String getSQL( String aggregateOperator, List<String> conditions, List<String> operators )
     {
         String sql = conditions.get( 0 );
@@ -857,6 +942,10 @@ public class JdbcCaseAggregationConditionManager
         return sql;
     }
 
+    /**
+     * Return the Ids of organisation units which patients registered or events happened. 
+     * 
+     */
     private Collection<Integer> getServiceOrgunit( String startDate, String endDate )
     {
         String sql = "(select organisationunitid from programstageinstance where executiondate>= '" + startDate

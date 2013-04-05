@@ -39,13 +39,53 @@ import org.hisp.dhis.period.Period;
 public interface CaseAggregationConditionManager
 {
     List<Integer> executeSQL( String sql );
-    
+
+    /**
+     * Aggregate data values from query builder formulas defined based on
+     * datasets which have data elements defined in the formulas
+     * 
+     * @param caseAggregateSchedule
+     * @param taskStrategy Specify how to get period list based on period type of each
+     *        dataset. There are four options, include last month, last 3 month,
+     *        last 6 month and last 12 month
+     */
     Future<?> aggregate( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule, String taskStrategy );
-    
+
+    /**
+     * Return a data value aggregated of query builder formula
+     * 
+     * @param caseExpression The query builder expression
+     * @param operator There are six operators, includes Number of persons,
+     *        Number of visits, Sum, Average, Minimum and Maximum of data
+     *        element values.
+     * @param deType Aggregate Data element type
+     * @param deSumId The id of aggregate data element which used for aggregate
+     *        data values for operator Sum, Average, Minimum and Maximum of data
+     *        element values. This fill is null for other operators.
+     * @param orgunitId The id of organisation unit where to aggregate data
+     *        value
+     * @param period The date range for aggregate data value
+     */
     Double getAggregateValue( String caseExpression, String operator, String deType, Integer deSumId,
         Integer orgunitId, Period period );
-   
+
+    /**
+     * Return standard SQL from query builder formula 
+     * 
+     * @param caseExpression The query builder expression
+     * @param operator There are six operators, includes Number of persons,
+     *        Number of visits, Sum, Average, Minimum and Maximum of data
+     *        element values.
+     * @param deType Aggregate Data element type
+     * @param deSumId The id of aggregate data element which used for aggregate
+     *        data values for operator Sum, Average, Minimum and Maximum of data
+     *        element values. This fill is null for other operators.
+     * @param orgunitId The id of organisation unit where to aggregate data
+     *        value
+     * @param startDate Start date
+     * @param endDate End date
+     */
     String parseExpressionToSql( String aggregationExpression, String operator, String deType, Integer deSumId,
         Integer orgunitId, String startDate, String endDate );
-   
+
 }
