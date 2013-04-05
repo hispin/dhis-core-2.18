@@ -29,7 +29,7 @@ $( document ).ready( function()
 	
 	if( autoSave )
 	{
-		timeOut = window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+		timeOut = window.setTimeout( "validateRegistrationFormTimeout( false );", 60000 );
 	}
 });
 	
@@ -172,10 +172,8 @@ function validateForm()
 			}
 			
 			for (var idx in requiredFields){
-				//var field = requiredFields[idx];
 				if( key == idx)
 				{
-					//requiredFields.splice(idx,1);
 					delete requiredFields[idx];
 				}
 			}
@@ -205,7 +203,13 @@ function validateForm()
 	else{
 		setFieldValue('requiredField','everything_is_ok');
 		setInnerHTML( 'designTextarea' , jQuery("#designTextarea").ckeditorGet().getData() );
-		byId('saveDataEntryForm').submit();
+		if(getFieldValue('autoSave')=='true'){
+			autoSavePatientRegistrationForm();
+		}
+		else
+		{
+			byId('saveDataEntryForm').submit();
+		}
 	}
 }
 
@@ -305,8 +309,6 @@ function insertImage() {
 	oEditor.insertHtml( html );
 }
 
-
-
 // -------------------------------------------------------
 // Auto-save data entry form
 // -------------------------------------------------------
@@ -316,7 +318,7 @@ function setAutoSaveRegistrationSetting(_autoSave)
 	jQuery.postJSON("setAutoSavePatientRegistrationSetting.action", {autoSave:_autoSave}, function(json) {
 		autoSave = _autoSave;
 		if (_autoSave) {
-			window.setTimeout( "validateDataEntryFormTimeout( false );", 6000 );
+			window.setTimeout( "validateRegistrationFormTimeout( false );", 6000 );
 		}
 		else{
 			window.clearTimeout(timeOut);
@@ -324,41 +326,52 @@ function setAutoSaveRegistrationSetting(_autoSave)
 	});
 }
 
-function validateDataEntryFormTimeout()
+function validateRegistrationFormTimeout()
 {
 	validateDataEntryForm();
-	timeOut = window.setTimeout( "validateDataEntryFormTimeout();", 60000 );
+	timeOut = window.setTimeout( "validateRegistrationFormTimeout();", 60000 );
 }
 
 function validateDataEntryForm()
 {
-	$.post( 'validateDataEntryForm.action',
+	var name = getFieldValue('name');
+	if( name =='' || name.length<4 || name.length > 150 )
 	{
-		name: getFieldValue('name'),
-		dataEntryFormId: getFieldValue('dataEntryFormId')
-	}, 
-	function( json )
+		setHeaderDelayMessage( i18n_enter_a_name );
+	}
+	else if ( !validateForm() )
 	{
-		if ( json.response == 'success' )
+		return;
+	}
+	else
+	{
+		$.post( 'validateDataEntryForm.action',
 		{
-			autoSaveDataEntryForm();
-		}
-		else if ( json.response = 'error' )
+			name: getFieldValue('name'),
+			dataEntryFormId: getFieldValue('dataEntryFormId')
+		}, 
+		function( json )
 		{
-			setHeaderDelayMessage( json.message );
-		}
-	} );
+			if ( json.response == 'success' )
+			{
+				autoSavePatientRegistrationForm();
+			}
+			else if ( json.response = 'error' )
+			{
+				setHeaderDelayMessage( json.message );
+			}
+		} );
+	}
 }
 
-function autoSaveDataEntryForm()
+function autoSavePatientRegistrationForm()
 {
-	$.postUTF8( 'autoSaveDataEntryForm.action',
+	$.postUTF8( 'autoSavePatientRegistrationForm.action',
 	{
 		name: getFieldValue('name'),
 		designTextarea: jQuery("#designTextarea").ckeditorGet().getData(),
 		programId: getFieldValue('programId'),
-		programStageId: getFieldValue('programStageId'),
-		dataEntryFormId: getFieldValue('dataEntryFormId')
+		id: getFieldValue('id')
 	},
 	function( json ) 
 	{
