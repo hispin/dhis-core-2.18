@@ -26,6 +26,11 @@ $( document ).ready( function()
 			position: [$("body").width()- 50, 0],
 		});
 	});
+	
+	if( autoSave )
+	{
+		timeOut = window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+	}
 });
 	
 function openPropertiesSelector()
@@ -300,19 +305,63 @@ function insertImage() {
 	oEditor.insertHtml( html );
 }
 
-// --------------------------------------------------------------------------
-// Auto-save
-// --------------------------------------------------------------------------
 
-function setAutoSaveSetting(_autoSave)
+
+// -------------------------------------------------------
+// Auto-save data entry form
+// -------------------------------------------------------
+
+function setAutoSaveRegistrationSetting(_autoSave)
 {
-	jQuery.postJSON("setAutoSaveSetting.action", {autoSave:_autoSave}, function(json) {
+	jQuery.postJSON("setAutoSavePatientRegistrationSetting.action", {autoSave:_autoSave}, function(json) {
 		autoSave = _autoSave;
 		if (_autoSave) {
-			window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+			window.setTimeout( "validateDataEntryFormTimeout( false );", 6000 );
 		}
 		else{
 			window.clearTimeout(timeOut);
 		}
 	});
+}
+
+function validateDataEntryFormTimeout()
+{
+	validateDataEntryForm();
+	timeOut = window.setTimeout( "validateDataEntryFormTimeout();", 60000 );
+}
+
+function validateDataEntryForm()
+{
+	$.post( 'validateDataEntryForm.action',
+	{
+		name: getFieldValue('name'),
+		dataEntryFormId: getFieldValue('dataEntryFormId')
+	}, 
+	function( json )
+	{
+		if ( json.response == 'success' )
+		{
+			autoSaveDataEntryForm();
+		}
+		else if ( json.response = 'error' )
+		{
+			setHeaderDelayMessage( json.message );
+		}
+	} );
+}
+
+function autoSaveDataEntryForm()
+{
+	$.postUTF8( 'autoSaveDataEntryForm.action',
+	{
+		name: getFieldValue('name'),
+		designTextarea: jQuery("#designTextarea").ckeditorGet().getData(),
+		programId: getFieldValue('programId'),
+		programStageId: getFieldValue('programStageId'),
+		dataEntryFormId: getFieldValue('dataEntryFormId')
+	},
+	function( json ) 
+	{
+		setHeaderDelayMessage( i18n_save_success ); 
+	} );
 }

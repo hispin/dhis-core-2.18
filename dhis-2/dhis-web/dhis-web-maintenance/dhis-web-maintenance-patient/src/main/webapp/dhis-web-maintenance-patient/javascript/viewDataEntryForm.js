@@ -60,6 +60,11 @@ jQuery(function(){
 			resizable: false
 		});
 	});
+	
+	if( autoSave )
+	{
+		timeOut = window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+	}
 });
 
 function openOtherProgramStageDataElements()
