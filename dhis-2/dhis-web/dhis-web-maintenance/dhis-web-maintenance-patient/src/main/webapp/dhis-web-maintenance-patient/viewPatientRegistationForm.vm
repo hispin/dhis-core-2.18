@@ -99,16 +99,14 @@
 <table width="100%">	
     <tr>
         <td>
-		    <button type="button" id="saveButton" onclick="validateDataEntryForm();">$i18n.getString( 'save' )</button>
-            <button type="submit" id="saveAndCloseButton"/>$i18n.getString( 'save_and_close' )</button>
+		    <button type="button" id="saveButton" onclick="isSave='true';validateDataEntryForm();">$i18n.getString( 'save' )</button>
+            <button type="submit" id="saveAndCloseButton" onclick="isSave='false';"/>$i18n.getString( 'save_and_close' )</button>
             <button type="button" id="cancelButton" onclick="window.location='patientRegistrationForm.action'">$i18n.getString( 'cancel' )</button>
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 		    <button type="button" id="propertiesButton" onclick="openPropertiesSelector()"/>$i18n.getString( 'insert_properties' )</button>
 			<button type="button" id="insertImagesButton">$i18n.getString( 'insert_images' )</button>
-			#if($!registrationForm.dataEntryForm)
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-		    <button type="button" id="deleteButton" onclick="deleteRegistrationForm( $registrationForm.id, '$registrationForm.dataEntryForm.name' )" />$i18n.getString( 'delete' )</button>
-			#end
+		    <button type="button" id="deleteButton" onclick="deleteRegistrationForm( $registrationForm.id, '$registrationForm.dataEntryForm.name' )" #if($!registrationForm.dataEntryForm) style='display:none;' #end />$i18n.getString( 'delete_this_form' )</button>
 			<input type="checkbox" id="autoSave" name="autoSave" value='$!autoSave' #if($autoSave && $autoSave=="true") checked #end onchange="setAutoSaveRegistrationSetting(this.checked)" />$i18n.getString( 'auto_save_patient_registration_forms' )
         </td>		
     </tr>

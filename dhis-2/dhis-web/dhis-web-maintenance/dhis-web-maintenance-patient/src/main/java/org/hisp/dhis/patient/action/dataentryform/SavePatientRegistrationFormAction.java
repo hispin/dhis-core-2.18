@@ -105,6 +105,13 @@ public class SavePatientRegistrationFormAction
         this.programId = programId;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -143,6 +150,10 @@ public class SavePatientRegistrationFormAction
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }
 
+        Integer dataEntryFormId = dataEntryFormService.getDataEntryFormByName( name ).getId();
+
+        message = dataEntryFormId + "";
+        
         return SUCCESS;
     }
 

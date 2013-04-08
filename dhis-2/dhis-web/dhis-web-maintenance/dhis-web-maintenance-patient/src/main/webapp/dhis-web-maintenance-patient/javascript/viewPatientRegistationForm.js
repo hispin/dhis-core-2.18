@@ -1,3 +1,4 @@
+var isSave;
 
 $( document ).ready( function() 
 {
@@ -203,7 +204,7 @@ function validateForm()
 	else{
 		setFieldValue('requiredField','everything_is_ok');
 		setInnerHTML( 'designTextarea' , jQuery("#designTextarea").ckeditorGet().getData() );
-		if(getFieldValue('autoSave')=='true'){
+		if(isSave='true'){
 			autoSavePatientRegistrationForm();
 		}
 		else
@@ -375,6 +376,8 @@ function autoSavePatientRegistrationForm()
 	},
 	function( json ) 
 	{
+		setFieldValue('dataEntryFormId', json.message);
+		showById('deleteButton');
 		setHeaderDelayMessage( i18n_save_success ); 
 	} );
 }
