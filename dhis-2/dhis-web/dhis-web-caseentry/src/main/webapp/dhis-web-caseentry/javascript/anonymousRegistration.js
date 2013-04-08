@@ -6,8 +6,6 @@ $( document ).ready( function () {
         cache: false
     } );
 
-    setHeaderMessage( "Loading.. please wait" );
-
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
         // initialize the stores, and then try and add the data
         DAO.programs = new dhis2.storage.Store( {name: 'programs', adapter: 'dom-ss'}, function ( store ) {
@@ -26,7 +24,54 @@ $( document ).ready( function () {
         } );
     } );
 
+    $( document ).bind( 'dhis2.online', function ( event, loggedIn ) {
+        if ( loggedIn ) {
+            setHeaderDelayMessage( i18n_online_notification );
+        }
+        else {
+            var form = [
+                '<form style="display:inline;">',
+                '<label for="username">Username</label>',
+                '<input name="username" id="username" type="text" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
+                '<label for="password">Password</label>',
+                '<input name="password" id="password" type="password" style="width: 70px; margin-left: 10px; margin-right: 10px" size="10"/>',
+                '<button id="login_button" type="button">Login</button>',
+                '</form>'
+            ].join( '' );
+
+            setHeaderMessage( form );
+            ajax_login();
+        }
+    } );
+
+    $( document ).bind( 'dhis2.offline', function () {
+        setHeaderMessage( i18n_offline_notification );
+    } );
+
+    dhis2.availability.startAvailabilityCheck();
 } );
+
+function ajax_login()
+{
+    $( '#login_button' ).bind( 'click', function()
+    {
+        var username = $( '#username' ).val();
+        var password = $( '#password' ).val();
+
+        $.post( '../dhis-web-commons-security/login.action', {
+            'j_username' : username,
+            'j_password' : password
+        } ).success( function()
+        {
+            var ret = dhis2.availability.syncCheckAvailability();
+
+            if ( !ret )
+            {
+                alert( i18n_ajax_login_failed );
+            }
+        } );
+    } );
+}
 
 function organisationUnitSelected( orgUnits, orgUnitNames ) {
     showById( 'dataEntryMenu' );
@@ -142,7 +187,9 @@ function getDataElements() {
 
             enableCriteriaDiv();
             validateSearchEvents( true );
-        } );
+        } ).fail(function() {
+            enable( 'addBtn' );
+        });
 }
 
 function dataElementOnChange( this_ ) {
