@@ -860,3 +860,17 @@ function autocompletedUsernameField( idField )
 		});
 }
 
+function filterOnSection()
+{
+    var value = 'sec_' + $( '#filterDataSetSection option:selected' ).val();
+    
+    if ( value == 'all' )
+    {
+        $( '.formSection' ).show();
+    }
+    else
+    {
+        $( '.formSection' ).hide();
+        $( '#' + value ).show();
+    }
+}
