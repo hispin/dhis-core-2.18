@@ -38,6 +38,8 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
@@ -58,7 +60,6 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * @version $ LoadDataEntryAction.java May 7, 2011 2:37:44 PM $
- * 
  */
 public class LoadDataEntryAction
     implements Action
@@ -69,13 +70,45 @@ public class LoadDataEntryAction
 
     private ProgramDataEntryService programDataEntryService;
 
+    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
+    {
+        this.programDataEntryService = programDataEntryService;
+    }
+
     private PatientDataValueService patientDataValueService;
+
+    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    {
+        this.patientDataValueService = patientDataValueService;
+    }
 
     private ProgramStageInstanceService programStageInstanceService;
 
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     private SelectedStateManager selectedStateManager;
 
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     private ProgramStageSectionService programStageSectionService;
+
+    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
+    {
+        this.programStageSectionService = programStageSectionService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -93,6 +126,8 @@ public class LoadDataEntryAction
 
     private Map<Integer, PatientDataValue> patientDataValueMap;
 
+    private Integer organisationUnitId;
+
     private OrganisationUnit organisationUnit;
 
     private Program program;
@@ -107,16 +142,6 @@ public class LoadDataEntryAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
-    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
-    {
-        this.programStageSectionService = programStageSectionService;
-    }
-    
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
@@ -135,21 +160,6 @@ public class LoadDataEntryAction
     public ProgramStage getProgramStage()
     {
         return programStage;
-    }
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
-    {
-        this.programDataEntryService = programDataEntryService;
-    }
-
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
-    {
-        this.patientDataValueService = patientDataValueService;
     }
 
     public OrganisationUnit getOrganisationUnit()
@@ -200,7 +210,7 @@ public class LoadDataEntryAction
     {
         return calAttributeValueMap;
     }
-    
+
     private String longitude;
 
     public String getLongitude()
@@ -222,7 +232,8 @@ public class LoadDataEntryAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit() :
+            organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         // ---------------------------------------------------------------------
         // Get program-stage-instance

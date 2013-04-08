@@ -33,6 +33,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -86,6 +88,13 @@ public class SaveExecutionDateAction
         this.patientService = patientService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -99,10 +108,24 @@ public class SaveExecutionDateAction
     {
         this.format = format;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+
+    private Integer patientId;
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
 
     private String executionDate;
 
@@ -112,7 +135,7 @@ public class SaveExecutionDateAction
     }
 
     private Integer programStageInstanceId;
-    
+
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
@@ -140,9 +163,14 @@ public class SaveExecutionDateAction
         throws Exception
     {
         Date dateValue = format.parseDate( executionDate );
-        
+
+        OrganisationUnit organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit() :
+            organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+        Patient patient = patientId == null ? selectedStateManager.getSelectedPatient() : patientService.getPatient( patientId );
+
         if ( dateValue != null )
-        {           
+        {
             ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
             // If the program-stage-instance of the patient not exists,
@@ -158,7 +186,6 @@ public class SaveExecutionDateAction
                     programStage = program.getProgramStages().iterator().next();
                 }
 
-                Patient patient = selectedStateManager.getSelectedPatient();
                 int type = program.getType();
                 ProgramInstance programInstance = null;
 
@@ -188,7 +215,7 @@ public class SaveExecutionDateAction
                 programStageInstance.setProgramStage( programStage );
                 programStageInstance.setDueDate( dateValue );
                 programStageInstance.setExecutionDate( dateValue );
-                programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+                programStageInstance.setOrganisationUnit( organisationUnit );
 
                 programStageInstanceService.addProgramStageInstance( programStageInstance );
                 selectedStateManager.setSelectedProgramInstance( programInstance );
@@ -197,7 +224,7 @@ public class SaveExecutionDateAction
             else
             {
                 programStageInstance.setExecutionDate( dateValue );
-                programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+                programStageInstance.setOrganisationUnit( organisationUnit );
 
                 if ( programStageInstance.getProgramInstance().getProgram().isSingleEvent() )
                 {
