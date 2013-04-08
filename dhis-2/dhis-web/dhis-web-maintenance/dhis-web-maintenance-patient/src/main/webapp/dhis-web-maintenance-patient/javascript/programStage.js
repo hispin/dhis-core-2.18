@@ -294,3 +294,24 @@ function removeTemplateMessageForm( rowId )
 {
 	jQuery("[name=tr" + rowId + "]").remove();
 }
+
+// ----------------------------------------------------------
+// Validate program stage name
+// ----------------------------------------------------------
+
+function validateName( name )
+{
+	var valid = true;
+	for( var i=0; i<programStageList.length; i++){
+		if( programStageList[i]==name){
+			var nameField = jQuery('#name').addClass('error');
+			$( "<span for='name' generated='true' class='error' style='display: inline;'>" + i18n_name_exists + "</span>")
+				.insertAfter( nameField );
+			valid = false;
+		}
+	}
+	if(valid)
+	{
+		$("span[for=name]").remove();
+	}
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,38 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.program;
 
-import java.util.Collection;
-import java.util.List;
+package org.hisp.dhis.program.hibernate;
+
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageStore;
 
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ HibernateProgramStageStore.java Apr 8, 2013 1:30:00 PM $
  */
-public interface ProgramStageService
+public class HibernateProgramStageStore
+    extends HibernateIdentifiableObjectStore<ProgramStage>
+    implements ProgramStageStore
 {
-    String ID = ProgramStageService.class.getName();
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // ProgramStage
-    // -------------------------------------------------------------------------
-    
-    int saveProgramStage( ProgramStage programStage );
-    
-    void deleteProgramStage( ProgramStage programStage );
-    
-    void updateProgramStage( ProgramStage programStage );
-    
-    ProgramStage getProgramStage( int id );
-    
-    ProgramStage getProgramStage( String uid );
-    
-    List<ProgramStage> getProgramStageByName( String name );
-    
-    ProgramStage getProgramStageByName( String name, Program program );
-    
-    Collection<ProgramStage> getAllProgramStages();
-    
-    Collection<ProgramStage> getProgramStages( Program program );
+    public ProgramStage getByNameAndProgram( String name, Program program )
+    {
+        return (ProgramStage) getCriteria( Restrictions.eq( "name", name ), Restrictions.eq( "program", program ) )
+            .uniqueResult();
+    }
+
 }

@@ -163,7 +163,6 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"
@@ -314,6 +313,7 @@
 		class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<!-- Program Stage Section -->
