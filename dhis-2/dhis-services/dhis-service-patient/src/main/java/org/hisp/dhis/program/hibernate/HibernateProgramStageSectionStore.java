@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,38 +25,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.program;
+package org.hisp.dhis.program.hibernate;
 
-import java.util.Collection;
-import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramStageSectionStore;
 
 /**
  * @author Chau Thu Tran
- *
- * @version ProgramStageSectionService.java 11:12:41 AM Aug 22, 2012 $
+ * @version $ HibernateProgramStageStore.java Apr 8, 2013 1:30:00 PM $
  */
-public interface ProgramStageSectionService
+public class HibernateProgramStageSectionStore
+    extends HibernateIdentifiableObjectStore<ProgramStageSection>
+    implements ProgramStageSectionStore
 {
-    String ID = ProgramStageSection.class.getName();
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // ProgramStageSection
-    // -------------------------------------------------------------------------
-    
-    int saveProgramStageSection( ProgramStageSection programStageSection );
-    
-    void deleteProgramStageSection( ProgramStageSection programStageSection );
-    
-    void updateProgramStageSection( ProgramStageSection programStageSection );
-    
-    ProgramStageSection getProgramStageSection( int id );
-    
-    List<ProgramStageSection> getProgramStageSectionByName( String name );
-    
-    ProgramStageSection getProgramStageSectionByName( String name, ProgramStage programStage );
-    
-    Collection<ProgramStageSection> getAllProgramStageSections();
-    
-    Collection<ProgramStageSection> getProgramStages( ProgramStage programStage );
-    
+    @Override
+    public ProgramStageSection getByNameAndProgramStage( String name, ProgramStage programStage )
+    {
+        Criteria criteria = getCriteria( Restrictions.eq( "name", name ) );
+        criteria.createAlias( "programStageDataElements", "programStageDataElement" );
+        criteria.add( Restrictions.eq( "programStageDataElement.programStage", programStage ) );
+        
+        return (ProgramStageSection) criteria.uniqueResult();
+    }
+
 }

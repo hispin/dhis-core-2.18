@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,36 +27,14 @@
 
 package org.hisp.dhis.program;
 
-import java.util.Collection;
-import java.util.List;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
  * @author Chau Thu Tran
- *
- * @version ProgramStageSectionService.java 11:12:41 AM Aug 22, 2012 $
+ * @version $ ProgramStageSectionStore.java Apr 8, 2013 3:48:37 PM $
  */
-public interface ProgramStageSectionService
+public interface ProgramStageSectionStore
+    extends GenericNameableObjectStore<ProgramStageSection>
 {
-    String ID = ProgramStageSection.class.getName();
-
-    // -------------------------------------------------------------------------
-    // ProgramStageSection
-    // -------------------------------------------------------------------------
-    
-    int saveProgramStageSection( ProgramStageSection programStageSection );
-    
-    void deleteProgramStageSection( ProgramStageSection programStageSection );
-    
-    void updateProgramStageSection( ProgramStageSection programStageSection );
-    
-    ProgramStageSection getProgramStageSection( int id );
-    
-    List<ProgramStageSection> getProgramStageSectionByName( String name );
-    
-    ProgramStageSection getProgramStageSectionByName( String name, ProgramStage programStage );
-    
-    Collection<ProgramStageSection> getAllProgramStageSections();
-    
-    Collection<ProgramStageSection> getProgramStages( ProgramStage programStage );
-    
+    ProgramStageSection getByNameAndProgramStage( String name, ProgramStage programStage );
 }
