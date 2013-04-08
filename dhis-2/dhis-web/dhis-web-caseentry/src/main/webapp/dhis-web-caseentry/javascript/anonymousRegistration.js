@@ -46,23 +46,21 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
     hideById( 'listDiv' );
     hideById( 'dataEntryInfor' );
 
-    DAO.programs.fetchAll( function ( store, arr ) {
-        var programs = [];
+    // try online first, then fallback to what we have stored in browser
+    dhis2.storage.Store.plugins['online-anonymous-programs'].call( {}, function ( arr ) {
+        updateProgramList( arr );
+    }, function () {
+        DAO.programs.fetchAll( function ( store, arr ) {
+            var programs = [];
 
-        $.each( arr, function ( idx, item ) {
-            if ( item.programAssociations.indexOf( orgUnits[0] ) != -1 ) {
-                programs.push( item );
-            }
-        } );
-
-        if( programs.length > 0) {
-            updateProgramList( programs );
-        } else {
-            // if we are online, also check server to see if there are any programs
-            dhis2.storage.Store.plugins['anonymous-online'].call( {}, function ( arr ) {
-                updateProgramList( arr );
+            $.each( arr, function ( idx, item ) {
+                if ( item.programAssociations.indexOf( orgUnits[0] ) != -1 ) {
+                    programs.push( item );
+                }
             } );
-        }
+
+            updateProgramList( programs );
+        } );
     } );
 }
 
@@ -556,12 +554,16 @@ function addNewEvent() {
     var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
     var programId = jQuery( '#programId option:selected' ).val();
     var executionDate = getFieldValue( 'executionDate' );
+    var orgunitId = getFieldValue( 'orgunitId' );
+
     jQuery( "#executionDate" ).css( 'background-color', SAVING_COLOR );
+
     jQuery.postJSON( "saveExecutionDate.action",
         {
             programStageInstanceId: programStageInstanceId,
             programId: programId,
-            executionDate: executionDate
+            executionDate: executionDate,
+            organisationUnitId: orgunitId
         },
         function ( json ) {
             if ( json.response == 'success' ) {
