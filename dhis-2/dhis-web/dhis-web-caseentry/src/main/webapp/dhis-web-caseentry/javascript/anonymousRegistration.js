@@ -536,40 +536,7 @@ function showUpdateEvent( programStageInstanceId ) {
     setInnerHTML( 'dataEntryFormDiv', '' );
     showLoader();
 
-    $( '#dataEntryFormDiv' ).load( "dataentryform.action",
-        {
-            programStageInstanceId: programStageInstanceId
-        }, function () {
-            jQuery( '#inputCriteriaDiv' ).remove();
-            showById( 'programName' );
-            showById( 'actionDiv' );
-            var programName = jQuery( '#programId option:selected' ).text();
-            var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
-            jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
-            setInnerHTML( 'programName', programName );
-			jQuery('#executionDate').css('width',430);
-			jQuery('#executionDate').css('margin-right',30);
-			
-            if ( getFieldValue( 'completed' ) == 'true' ) {
-                disable( "completeBtn" );
-                enable( "uncompleteBtn" );
-            }
-            else {
-                enable( "completeBtn" );
-                disable( "uncompleteBtn" );
-            }
-            hideById( 'loaderDiv' );
-            showById( 'dataEntryInfor' );
-            showById( 'entryFormContainer' );
-
-            jQuery( "#entryForm :input" ).each( function () {
-                if ( ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' )
-                    || ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) ) {
-                    var input = jQuery( this );
-                    input.parent().width( input.width() + 200 );
-                }
-            } );
-        } );
+    service.loadDataEntryForm( programStageInstanceId, getFieldValue( 'orgunitId' ) );
 }
 
 function backEventList() {
@@ -608,26 +575,7 @@ function addNewEvent() {
 
     jQuery( "#executionDate" ).css( 'background-color', SAVING_COLOR );
 
-    jQuery.postJSON( "saveExecutionDate.action",
-        {
-            programStageInstanceId: programStageInstanceId,
-            programId: programId,
-            executionDate: executionDate,
-            organisationUnitId: orgunitId
-        },
-        function ( json ) {
-            if ( json.response == 'success' ) {
-                jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
-                setFieldValue( 'programStageInstanceId', json.message );
-                if ( programStageInstanceId != json.message ) {
-                    showUpdateEvent( json.message );
-                }
-            }
-            else {
-                jQuery( "#executionDate" ).css( 'background-color', ERROR_COLOR );
-                showWarningMessage( json.message );
-            }
-        } );
+    service.saveExecutionDate( programId, programStageInstanceId, executionDate, orgunitId );
 }
 
 function completedAndAddNewEvent() {
@@ -696,3 +644,68 @@ function removeAllOption() {
     jQuery( '#searchText' ).val( "" );
     searchEvents( eval( getFieldValue( "listAll" ) ) );
 }
+
+// execution date module
+var service = (function () {
+    return {
+        saveExecutionDate: function( programId, programStageInstanceId, executionDate, organisationUnitId ) {
+            jQuery.postJSON( "saveExecutionDate.action", {
+                programId: programId,
+                programStageInstanceId: programStageInstanceId,
+                executionDate: executionDate,
+                organisationUnitId: organisationUnitId
+            },
+            function ( json ) {
+                if ( json.response == 'success' ) {
+                    jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
+                    setFieldValue( 'programStageInstanceId', json.message );
+                    if ( programStageInstanceId != json.message ) {
+                        showUpdateEvent( json.message );
+                    }
+                }
+                else {
+                    jQuery( "#executionDate" ).css( 'background-color', ERROR_COLOR );
+                    showWarningMessage( json.message );
+                }
+            } );
+        },
+
+        loadDataEntryForm: function( programStageInstanceId, organisationUnitId ) {
+            $( '#dataEntryFormDiv' ).load( "dataentryform.action", {
+                programStageInstanceId: programStageInstanceId,
+                organisationUnitId: organisationUnitId
+            }, function () {
+                jQuery( '#inputCriteriaDiv' ).remove();
+                showById( 'programName' );
+                showById( 'actionDiv' );
+                var programName = jQuery( '#programId option:selected' ).text();
+                var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
+                jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
+                setInnerHTML( 'programName', programName );
+                jQuery('#executionDate').css('width',430);
+                jQuery('#executionDate').css('margin-right',30);
+
+                if ( getFieldValue( 'completed' ) == 'true' ) {
+                    disable( "completeBtn" );
+                    enable( "uncompleteBtn" );
+                }
+                else {
+                    enable( "completeBtn" );
+                    disable( "uncompleteBtn" );
+                }
+                hideById( 'loaderDiv' );
+                showById( 'dataEntryInfor' );
+                showById( 'entryFormContainer' );
+
+                jQuery( "#entryForm :input" ).each( function () {
+                    if ( ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' )
+                        || ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) ) {
+                        var input = jQuery( this );
+                        input.parent().width( input.width() + 200 );
+                    }
+                } );
+            } );
+
+        }
+    }
+})();
