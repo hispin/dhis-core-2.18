@@ -500,6 +500,9 @@ function showUpdateEvent( programStageInstanceId ) {
             var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
             jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
             setInnerHTML( 'programName', programName );
+			jQuery('#executionDate').css('width',430);
+			jQuery('#executionDate').css('margin-right',30);
+			
             if ( getFieldValue( 'completed' ) == 'true' ) {
                 disable( "completeBtn" );
                 enable( "uncompleteBtn" );
