@@ -3,6 +3,9 @@
         datePickerInRange( 'startDate', 'endDate', true, true );
         disableCriteriaDiv();
     } );
+
+    var i18n_online_notification = '$encoder.jsEscape( $i18n.getString( "online_notification" ) , "'")';
+    var i18n_offline_notification = '$encoder.jsEscape( $i18n.getString( "offline_notification" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "anonymous_events_management" ) #openHelp('single_event_without_registration')</h3>
