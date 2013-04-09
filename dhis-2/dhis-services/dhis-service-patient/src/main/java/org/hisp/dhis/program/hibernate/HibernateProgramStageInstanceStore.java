@@ -469,8 +469,8 @@ public class HibernateProgramStageInstanceStore
 
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
-        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
-        I18n i18n )
+        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
+        I18nFormat format, I18n i18n )
     {
         String sql = "";
         List<String> deValues = new ArrayList<String>();
@@ -684,11 +684,11 @@ public class HibernateProgramStageInstanceStore
                 || position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_ORGUNIT
                 || (position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD && deGroupBy == null) )
             {
-                pivotTable( grid, rowSet, i18n, format );
+                pivotTable( grid, rowSet, displayTotals, i18n, format );
             }
             else
             {
-                fillDataInGrid( grid, rowSet, i18n, format );
+                fillDataInGrid( grid, rowSet, displayTotals, i18n, format );
             }
         }
 
@@ -1954,7 +1954,7 @@ public class HibernateProgramStageInstanceStore
             Projections.property( "orgunit.id" ), "orgunitid" ) ) );
         return criteria.list();
     }
-    
+
     // ---------------------------------------------------------------------
     // Get orgunitIds
     // ---------------------------------------------------------------------
@@ -1980,7 +1980,7 @@ public class HibernateProgramStageInstanceStore
         return orgunitIds;
     }
 
-    private void fillDataInGrid( Grid grid, SqlRowSet rs, I18n i18n, I18nFormat format )
+    private void fillDataInGrid( Grid grid, SqlRowSet rs, Boolean displayTotals, I18n i18n, I18nFormat format )
     {
         int cols = rs.getMetaData().getColumnCount();
         int dataCols = 0;
@@ -1996,7 +1996,7 @@ public class HibernateProgramStageInstanceStore
         }
 
         // Add total column if the number of columns is greater then 1
-        if ( dataCols > 1 )
+        if ( displayTotals && dataCols > 1 )
         {
             grid.addHeader( new GridHeader( i18n.getString( "total" ), false, false ) );
         }
@@ -2025,14 +2025,14 @@ public class HibernateProgramStageInstanceStore
             }
 
             // total
-            if ( dataCols > 1 )
+            if ( displayTotals && dataCols > 1 )
             {
                 grid.addValue( format.formatValue( total ) );
             }
         }
 
         // Add total row if the number of rows is greater then 1
-        if ( grid.getRows().size() > 1 )
+        if ( displayTotals && grid.getRows().size() > 1 )
         {
             grid.addRow();
             grid.addValue( i18n.getString( "total" ) );
@@ -2050,7 +2050,7 @@ public class HibernateProgramStageInstanceStore
         }
     }
 
-    private void pivotTable( Grid grid, SqlRowSet rowSet, I18n i18n, I18nFormat format )
+    private void pivotTable( Grid grid, SqlRowSet rowSet, Boolean displayTotals, I18n i18n, I18nFormat format )
     {
         try
         {
@@ -2074,6 +2074,7 @@ public class HibernateProgramStageInstanceStore
                 for ( int i = 2; i <= cols; i++ )
                 {
                     column.add( rowSet.getObject( i ) );
+                    
                     // Total value of the column
                     if ( rowSet.getMetaData().getColumnType( i ) != Types.VARCHAR )
                     {
@@ -2082,9 +2083,10 @@ public class HibernateProgramStageInstanceStore
                 }
 
                 // Add total value of the column
-                if ( cols > 2 )
+                if ( displayTotals && cols > 2 )
                 {
-                    grid.addValue( format.formatValue( total ) );
+                    //grid.addValue( format.formatValue( total ) );
+                    column.add( format.formatValue( total ) );
                 }
 
                 columnValues.put( index, column );
@@ -2092,7 +2094,7 @@ public class HibernateProgramStageInstanceStore
             }
 
             // Add total header
-            if ( rows > 1 )
+            if ( displayTotals && rows > 1 )
             {
                 grid.addHeader( new GridHeader( i18n.getString( "total" ), false, false ) );
             }
@@ -2105,7 +2107,7 @@ public class HibernateProgramStageInstanceStore
                 column.add( i18n.getString( rowSet.getMetaData().getColumnLabel( i ) ) );
             }
 
-            if ( cols > 2 )
+            if ( displayTotals && cols > 2 )
             {
                 grid.addRow();
                 column.add( i18n.getString( "total" ) );
@@ -2118,7 +2120,7 @@ public class HibernateProgramStageInstanceStore
                 grid.addColumn( columnValues.get( i ) );
             }
 
-            if ( rows > 1 )
+            if ( displayTotals && rows > 1 )
             {
                 // Total column
                 int allTotal = 0;
