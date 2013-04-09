@@ -1338,6 +1338,7 @@ Ext.onReady( function() {
 								TR.util.positionFilter.convert( f.position );
 								
 								Ext.getCmp('completedEventsOpt').setValue(f.useCompletedEvents);
+								Ext.getCmp('displayTotalsOpt').setValue(f.displayTotalsOpt);
 								Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
 								Ext.getCmp('limitOption').setValue( f.limitRecords );
 								Ext.getCmp('levelCombobox').setValue( f.level );
@@ -2100,8 +2101,15 @@ Ext.onReady( function() {
 					{
 						completedEvent = "&completedEventsOpt=true";
 					}
+					
+					var displayTotals='&displayTotals=false';
+					if( Ext.getCmp('displayTotalsOpt').getValue() == true )
+					{
+						displayTotals = "&displayTotals=true";
+					}
+					
   				    var exportForm = document.getElementById('exportForm');
-					exportForm.action = url + "?type=" + type + completedEvent;
+					exportForm.action = url + "?type=" + type + completedEvent + "&" + displayTotals;
 					exportForm.submit();
 				}
 				// Show report on grid
@@ -2300,6 +2308,15 @@ Ext.onReady( function() {
 				if( Ext.getCmp('completedEventsOpt').getValue()== true )
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
+				}
+				
+				if( Ext.getCmp('displayTotalsOpt').getValue()== true )
+				{
+					p.displayTotals = Ext.getCmp('displayTotalsOpt').getValue();
+				}
+				else
+				{
+					p.displayTotals = 'false';
 				}
 				
 				return p;
@@ -5555,14 +5572,31 @@ Ext.onReady( function() {
 													}
 												},
 												{
-													xtype: 'checkbox',
-													cls: 'tr-checkbox',
-													id: 'completedEventsOpt',
-													style:'padding: 0px 0px 0px 3px;',
-													boxLabel: TR.i18n.use_completed_events,
-													boxLabelAlign: 'before',
-													labelWidth: 135
+													xtype: 'panel',
+													layout: 'column',
+													bodyStyle: 'border-style:none; background-color:transparent;',
+													items:[
+														{
+															xtype: 'checkbox',
+															cls: 'tr-checkbox',
+															id: 'completedEventsOpt',
+															style:'padding: 0px 0px 0px 3px;',
+															boxLabel: TR.i18n.use_completed_events,
+															boxLabelAlign: 'before',
+															labelWidth: 135
+														},
+														{
+															xtype: 'checkbox',
+															cls: 'tr-checkbox',
+															id: 'displayTotalsOpt',
+															style:'padding-left: 20px;',
+															boxLabel: TR.i18n.display_totals,
+															boxLabelAlign: 'before',
+															labelWidth: 135
+														},
+													]
 												},
+												
 												{
 													xtype: 'combobox',
 													cls: 'tr-combo',

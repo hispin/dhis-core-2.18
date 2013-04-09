@@ -104,13 +104,13 @@ public interface ProgramStageInstanceStore
 
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
-        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
-        I18n i18n );
+        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents,
+        Boolean displayTotals, I18nFormat format, I18n i18n );
 
     // -------------------------------------------------------------------------
     // Activity plans
     // -------------------------------------------------------------------------
-    
+
     Collection<ProgramStageInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, Boolean completed );
 
@@ -123,7 +123,7 @@ public interface ProgramStageInstanceStore
 
     int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         Boolean completed );
-    
+
     Collection<Integer> getOrgunitIds( Date startDate, Date endDate );
-    
+
 }

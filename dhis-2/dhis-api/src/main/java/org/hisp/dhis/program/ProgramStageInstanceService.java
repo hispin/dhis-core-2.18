@@ -112,7 +112,7 @@ public interface ProgramStageInstanceService
 
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
-        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format,
+        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals, I18nFormat format,
         I18n i18n );
 
     // -------------------------------------------------------------------------
