@@ -111,7 +111,7 @@ public class Program
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
     
     private Boolean onlyEnrollOnce = false;
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

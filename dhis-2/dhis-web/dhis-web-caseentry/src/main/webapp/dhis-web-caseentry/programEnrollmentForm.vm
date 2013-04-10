@@ -144,7 +144,7 @@
 			saveCoordinatesEvent($!programStageInstance.id);
 		});
 		
-		#if( $programInstance.completed)
+		#if( $programInstance.status==1)
 			jQuery("[id=tab-2] :input").prop('disabled', true);
 			jQuery("[id=tab-3] :input").prop('disabled', true);
 			jQuery("[id=tab-4] :input").prop('disabled', true);

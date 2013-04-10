@@ -50,6 +50,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.TextUtils;
@@ -431,7 +432,7 @@ public class HibernatePatientStore
                 isPriorityEvent = Boolean.parseBoolean( keys[5] );
                 patientWhere += patientOperator + "pgi.patientid=p.patientid and ";
                 patientWhere += "pgi.programid=" + id + " and ";
-                patientWhere += "pgi.completed = false ";
+                patientWhere += "pgi.status=" + ProgramInstance.STATUS_ACTIVE;
 
                 String operatorStatus = "";
                 String condition = " and ( ";
@@ -543,7 +544,7 @@ public class HibernatePatientStore
                 {
                     patientWhere += ")";
                 }
-                patientWhere += " and pgi.completed=false ";
+                patientWhere += " and pgi.status=" + ProgramInstance.STATUS_ACTIVE + " ";
                 patientOperator = " and ";
 
             }
@@ -573,7 +574,7 @@ public class HibernatePatientStore
                     break;
                 }
 
-                patientWhere += " and pgi.completed=false ";
+                patientWhere += " and pgi.status=" + ProgramInstance.STATUS_ACTIVE + " ";
                 patientOperator = " and ";
             }
         }

@@ -519,7 +519,7 @@
 		<property name="dataElementService"
 			ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataEntryFormService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />		
+			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	</bean>
 
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

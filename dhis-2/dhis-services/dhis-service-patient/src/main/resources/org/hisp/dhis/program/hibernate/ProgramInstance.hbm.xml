@@ -16,7 +16,7 @@
 
     <property name="endDate" column="enddate" />
 
-    <property name="completed" not-null="true" />
+    <property name="status" />
 
     <many-to-one name="patient" class="org.hisp.dhis.patient.Patient" column="patientid"
       foreign-key="fk_programinstance_patientid" />

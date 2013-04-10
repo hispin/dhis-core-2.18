@@ -50,6 +50,12 @@ import java.util.Set;
 public class ProgramInstance
     implements Serializable
 {
+   public static int STATUS_ACTIVE = 0;
+   
+   public static int STATUS_COMPLETED = 1;
+   
+   public static int STATUS_CANCELLED = 2;
+   
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -62,8 +68,8 @@ public class ProgramInstance
     private Date enrollmentDate;
 
     private Date endDate;
-
-    private boolean completed = false;
+    
+    private Integer status = STATUS_ACTIVE;
 
     private Patient patient;
 
@@ -86,12 +92,7 @@ public class ProgramInstance
         this.patient = patient;
         this.program = program;
     }
-
-    // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -254,25 +255,23 @@ public class ProgramInstance
         this.endDate = endDate;
     }
 
+    
     /**
-     * @return the completed
+     * @return the status
      */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isCompleted()
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )    
+    public int getStatus()
     {
-        return completed;
+        return status.intValue();
     }
 
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted( boolean completed )
+    public void setStatus( Integer status )
     {
-        this.completed = completed;
+        this.status = status;
     }
-
+    
     /**
      * @return the patient
      */

@@ -1399,14 +1399,14 @@ function saveEnrollment()
 		});
 }
 
-function unenrollmentForm( programInstanceId )
+function unenrollmentForm( programInstanceId, status )
 {	
 	if( confirm(i18n_incomplete_confirm_message) )
 	{
 		$.ajax({
 			type: "POST",
 			url: 'setProgramInstanceStatus.action',
-			data: "programInstanceId=" + programInstanceId + "&completed=true",
+			data: "programInstanceId=" + programInstanceId + "&status=" + status,
 			success: function( json ) 
 			{
 				var type=jQuery("#tr1_" + programInstanceId ).attr('type');
@@ -1797,8 +1797,8 @@ function sendSmsOnePatient( field, programStageInstanceId )
 				field.value="";
 				field.style.backgroundColor = SUCCESS_COLOR;
 				
-				jQuery('#enrollmentDate').width('270');
-				jQuery('#dateOfIncident').width('270');
+				jQuery('#enrollmentDate').width('325');
+				jQuery('#dateOfIncident').width('325');
 				jQuery('#removeProgram').remove();
 			}
 			else {
@@ -1862,8 +1862,8 @@ function addComment( field, programStageInstanceId )
 			else{
 				commentDivToggle(false);
 			}
-			jQuery('#enrollmentDate').width('270');
-			jQuery('#dateOfIncident').width('270');
+			jQuery('#enrollmentDate').width('325');
+			jQuery('#dateOfIncident').width('325');
 			jQuery('#removeProgram').remove();
 		});
 }

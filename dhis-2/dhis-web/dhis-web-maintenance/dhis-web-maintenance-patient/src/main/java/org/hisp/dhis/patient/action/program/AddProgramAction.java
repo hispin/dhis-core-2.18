@@ -285,7 +285,7 @@ public class AddProgramAction
             programInstance.setEnrollmentDate( new Date() );
             programInstance.setDateOfIncident( new Date() );
             programInstance.setProgram( program );
-            programInstance.setCompleted( false );
+            programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
 
             programInstanceService.addProgramInstance( programInstance );
         }
