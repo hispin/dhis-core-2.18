@@ -553,4 +553,14 @@ public class MobileOrganisationUnitController
         return patientIdentifierAndAttribute;
 
     }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLatestPerson" )
+    @ResponseBody
+    public Patient findLatestPerson( @PathVariable
+    int id, @RequestHeader( "name" )
+    String keyword )
+        throws NotAllowedException
+    {
+        return activityReportingService.findPatient( keyword, id );
+    }
 }
