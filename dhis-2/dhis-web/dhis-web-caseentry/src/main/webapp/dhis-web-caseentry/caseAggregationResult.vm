@@ -46,7 +46,7 @@
 									#set( $item=$dataValue.dataElement.id + '_' + $dataValue.optionCombo.id + '_' + $period.periodType.name + '_' + $format.formatDate($period.startDate) + '_' + $orgunit.id + '_' + $dataValue.value )
 									<input type='checkbox' name='aggregateValues' value='$item'>
 								</td>
-								<td>$dataValue.dataElement.name</td>
+								<td>$dataValue.dataElement.name $dataValue.optionCombo.name </td>
 								<td>$dataValue.value</td>
 								<td>$!mapStatusValues.get( $statusKey )</td>
 								<td>
