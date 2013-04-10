@@ -40,6 +40,14 @@
 </fieldset>
 <br>
 
+<table>
+	#foreach($sms in $programInstance.outboundSms)
+		<tr id="tr${sms.id}" >
+		<td>- ( $format.formatDateTime($!sms.date) - $encoder.htmlEncode($sms.sender) )</td>
+		<td>$encoder.htmlEncode($sms.message)</td>
+	#end
+</table>
+				
 #if( $programStageInstances.size() > 0 )
 	<table class='mainPageTable listTable' id='progarmStageListDiv' name='progarmStageListDiv' >
 		<colgroup>
