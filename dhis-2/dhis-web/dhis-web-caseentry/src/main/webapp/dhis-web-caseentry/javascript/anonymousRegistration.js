@@ -91,22 +91,25 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
     hideById( 'listDiv' );
     hideById( 'dataEntryInfor' );
 
+    DAO.programs.fetchAll( function ( store, arr ) {
+        var programs = [];
+
+        $.each( arr, function ( idx, item ) {
+            if ( item.programAssociations.indexOf( orgUnits[0] ) != -1 ) {
+                programs.push( item );
+            }
+        } );
+
+        updateProgramList( programs );
+    } );
+
+    /*
     // try online first, then fallback to what we have stored in browser
     dhis2.storage.Store.plugins['online-anonymous-programs'].call( {}, function ( arr ) {
         updateProgramList( arr );
     }, function () {
-        DAO.programs.fetchAll( function ( store, arr ) {
-            var programs = [];
-
-            $.each( arr, function ( idx, item ) {
-                if ( item.programAssociations.indexOf( orgUnits[0] ) != -1 ) {
-                    programs.push( item );
-                }
-            } );
-
-            updateProgramList( programs );
-        } );
     } );
+    */
 }
 
 function updateProgramList( arr ) {
