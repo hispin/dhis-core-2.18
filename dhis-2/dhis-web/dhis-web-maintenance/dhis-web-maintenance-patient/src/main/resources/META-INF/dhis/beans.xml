@@ -1048,7 +1048,6 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService"
 			ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="outboundSmsService"
 			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
