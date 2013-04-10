@@ -525,6 +525,11 @@ function runCompleteEvent( isCreateEvent )
 						blockEntryForm();
 					}
 					
+					var remindCompleted = jQuery('#entryFormContainer [id=remindCompleted]').val();
+					if( remindCompleted=='true' ){
+						unenrollmentForm(programInstanceId, 1);
+					}
+					
 					disableCompletedButton(true);
 					enable('validationBtn');
 					var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));

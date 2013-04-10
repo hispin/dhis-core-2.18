@@ -29,6 +29,7 @@
 <input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStageInstance.programStage.validCompleteOnly'>
 <input type='hidden' name='currentUsername' id='currentUsername' value='$!currentUsername'>
 <input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!programStageInstance.programInstance.program.blockEntryForm'>
+<input type='hidden' name='remindCompleted' id='remindCompleted'  value='$!programStageInstance.programInstance.program.remindCompleted'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	<table style="width:600px;margin-top:-9px" class="listTable">

@@ -198,6 +198,10 @@ public class TableAlteror
 
         executeSql( "update caseaggregationcondition set \"operator\"='times' where \"operator\"='SUM'" );
 
+        executeSql( "update prorgam set \"operator\"='times' where \"operator\"='SUM'" );
+        
+        executeSql( "update program set remindCompleted=false where remindCompleted is null" );
+        
         updateUid();
 
         updateUidInDataEntryFrom();

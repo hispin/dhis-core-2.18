@@ -73,7 +73,9 @@
 		<many-to-many class="org.hisp.dhis.user.UserAuthorityGroup"
 			column="userroleid" foreign-key="fk_program_userroles"/>
 	</set>
-		
+			
+ 	<property name="remindCompleted" />
+ 
 	<!-- Access properties -->
 	
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_program_userid" />

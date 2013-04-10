@@ -178,15 +178,21 @@ public class UpdateProgramAction
     {
         this.blockEntryForm = blockEntryForm;
     }
-    
+
     private Boolean onlyEnrollOnce = false;
-    
+
     public void setOnlyEnrollOnce( Boolean onlyEnrollOnce )
     {
         this.onlyEnrollOnce = onlyEnrollOnce;
     }
-    
-    
+
+    private Boolean remindCompleted = false;
+
+    public void setRemindCompleted( Boolean remindCompleted )
+    {
+        this.remindCompleted = remindCompleted;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -199,6 +205,7 @@ public class UpdateProgramAction
         generateBydEnrollmentDate = (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
+        remindCompleted = (remindCompleted == null) ? false : remindCompleted;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -211,7 +218,8 @@ public class UpdateProgramAction
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setBlockEntryForm( blockEntryForm );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
-        
+        program.setRemindCompleted( remindCompleted );
+
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );

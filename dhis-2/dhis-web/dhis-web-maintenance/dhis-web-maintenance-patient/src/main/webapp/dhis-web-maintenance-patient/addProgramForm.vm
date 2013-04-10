@@ -52,6 +52,12 @@
 			<td></td>
 		</tr>
 		
+		<tr>
+			<td><label>$i18n.getString( "remind_completing_program_after_program_stage_completed" )</label></td>
+			<td><input type="checkbox" id="remindCompleted" name="remindCompleted" value='true' ></td>
+			<td></td>
+		</tr>
+		
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
