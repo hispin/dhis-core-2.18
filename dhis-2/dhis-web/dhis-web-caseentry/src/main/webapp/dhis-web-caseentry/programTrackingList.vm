@@ -130,7 +130,7 @@
 		<th>$i18n.getString( "sender" )</th>
 		<th>$i18n.getString( "message" )</th>
 	</tr>
-	<tbody id='commentTB'>
+	<tbody id='commentTB' name='commentTB'>
 		#foreach( $comment in $comments )
 			<tr id="comment_$comment.id">
 				<td>$format.formatDateTime($comment.createdDate)</td>
