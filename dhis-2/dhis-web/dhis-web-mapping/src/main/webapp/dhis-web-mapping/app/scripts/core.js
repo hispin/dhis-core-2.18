@@ -305,19 +305,18 @@ GIS.core.getLayers = function(gis) {
 		});
 		layers.googleHybrid.id = 'googleHybrid';
 	}
-	else {
-		layers.openStreetMap = new OpenLayers.Layer.OSM('OpenStreetMap', {
-			layerType: gis.conf.finals.layer.type_base,
-			layerOpacity: 1,
-			setLayerOpacity: function(number) {
-				if (number) {
-					this.layerOpacity = parseFloat(number);
-				}
-				this.setOpacity(this.layerOpacity);
-			}
-		});
-		layers.openStreetMap.id = 'openStreetMap';
-	}
+
+    layers.openStreetMap = new OpenLayers.Layer.OSM.Mapnik('OpenStreetMap', {
+        layerType: gis.conf.finals.layer.type_base,
+        layerOpacity: 1,
+        setLayerOpacity: function(number) {
+            if (number) {
+                this.layerOpacity = parseFloat(number);
+            }
+            this.setOpacity(this.layerOpacity);
+        }
+    });
+    layers.openStreetMap.id = 'openStreetMap';
 
 	layers.boundary = GIS.core.VectorLayer(gis, 'boundary', 'Boundary layer', {opacity: 0.8});
 	layers.boundary.core = new mapfish.GeoStat.Boundary(gis.olmap, {
