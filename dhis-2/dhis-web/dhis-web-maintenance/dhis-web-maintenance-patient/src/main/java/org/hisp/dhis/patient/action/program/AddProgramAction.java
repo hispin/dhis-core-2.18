@@ -94,7 +94,7 @@ public class AddProgramAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -164,7 +164,7 @@ public class AddProgramAction
 
     private Boolean generateBydEnrollmentDate;
 
-    public void setGeneratedByEnrollmentDate( Boolean generateBydEnrollmentDate )
+    public void setGenerateBydEnrollmentDate( Boolean generateBydEnrollmentDate )
     {
         this.generateBydEnrollmentDate = generateBydEnrollmentDate;
     }
@@ -190,6 +190,14 @@ public class AddProgramAction
         this.onlyEnrollOnce = onlyEnrollOnce;
     }
 
+
+    private Boolean remindCompleted = false;
+
+    public void setRemindCompleted( Boolean remindCompleted )
+    {
+        this.remindCompleted = remindCompleted;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -203,6 +211,7 @@ public class AddProgramAction
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         onlyEnrollOnce = (onlyEnrollOnce == null) ? false : onlyEnrollOnce;
+        remindCompleted = (remindCompleted == null) ? false : remindCompleted;
 
         Program program = new Program();
 
@@ -216,7 +225,8 @@ public class AddProgramAction
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setBlockEntryForm( blockEntryForm );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
-        
+        program.setRemindCompleted( remindCompleted );
+
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
@@ -259,7 +269,7 @@ public class AddProgramAction
         program.setPatientAttributes( patientAttributes );
 
         programService.saveProgram( program );
-        
+
         if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )
             || program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
         {

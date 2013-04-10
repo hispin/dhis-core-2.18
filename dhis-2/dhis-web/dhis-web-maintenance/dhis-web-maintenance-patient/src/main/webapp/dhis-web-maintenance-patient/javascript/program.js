@@ -35,6 +35,9 @@ function showProgramDetails( programId )
 		var onlyEnrollOnce = ( json.program.onlyEnrollOnce == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'onlyEnrollOnceField', onlyEnrollOnce );   	
 		
+		var remindCompleted = ( json.program.remindCompleted == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'remindCompletedField', remindCompleted );   	
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

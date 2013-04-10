@@ -76,7 +76,7 @@ public class ProgramInstance
     private Program program;
 
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
