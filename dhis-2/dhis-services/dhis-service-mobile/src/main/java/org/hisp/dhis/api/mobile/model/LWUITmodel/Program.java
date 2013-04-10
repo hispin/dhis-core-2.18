@@ -43,7 +43,17 @@ public class Program
     
     private int version;
     
-    private boolean isCompleted;
+    private Integer status;
+
+    public Integer getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus( Integer status )
+    {
+        this.status = status;
+    }
 
     private List<ProgramStage> programStages;
 
@@ -77,22 +87,13 @@ public class Program
         this.clientVersion = clientVersion;
     }
 
-    public boolean isCompleted()
-    {
-        return isCompleted;
-    }
-
-    public void setCompleted( boolean isCompleted )
-    {
-        this.isCompleted = isCompleted;
-    }
 
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
         super.serialize( dout );
-        dout.writeBoolean( this.isCompleted() );
+        dout.writeInt( this.status );
         dout.writeInt( this.getVersion() );
         if( programStages == null )
         {

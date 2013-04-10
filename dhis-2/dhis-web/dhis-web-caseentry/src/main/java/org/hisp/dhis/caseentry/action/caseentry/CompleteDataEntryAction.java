@@ -132,7 +132,7 @@ public class CompleteDataEntryAction
                 }
             }
 
-            programInstance.setCompleted( true );
+            programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
             programInstance.setEndDate( new Date() );
 
             programInstanceService.updateProgramInstance( programInstance );

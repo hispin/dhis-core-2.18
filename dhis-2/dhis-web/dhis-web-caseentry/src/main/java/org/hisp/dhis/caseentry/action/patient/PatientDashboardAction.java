@@ -185,7 +185,7 @@ public class PatientDashboardAction
     {
         this.patientId = patientId;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -230,13 +230,13 @@ public class PatientDashboardAction
         {
             if ( programs.contains( programInstance.getProgram() ) )
             {
-                if ( programInstance.isCompleted() )
+                if ( programInstance.getStatus() == ProgramInstance.STATUS_ACTIVE )
                 {
-                    completedProgramInstances.add( programInstance );
+                    activeProgramInstances.add( programInstance );
                 }
                 else
                 {
-                    activeProgramInstances.add( programInstance );
+                    completedProgramInstances.add( programInstance );
                 }
             }
         }

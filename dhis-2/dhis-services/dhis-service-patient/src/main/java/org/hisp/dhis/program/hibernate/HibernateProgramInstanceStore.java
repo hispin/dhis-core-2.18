@@ -30,7 +30,6 @@ package org.hisp.dhis.program.hibernate;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -64,11 +63,11 @@ public class HibernateProgramInstanceStore
     // -------------------------------------------------------------------------
     // Implemented methods
     // -------------------------------------------------------------------------
-    
+
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( boolean completed )
+    public Collection<ProgramInstance> get( Integer status )
     {
-        return getCriteria( Restrictions.eq( "completed", completed ) ).list();
+        return getCriteria( Restrictions.eq( "status", status ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -84,15 +83,15 @@ public class HibernateProgramInstanceStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( Program program, boolean completed )
+    public Collection<ProgramInstance> get( Program program, Integer status )
     {
-        return getCriteria( Restrictions.eq( "program", program ), Restrictions.eq( "completed", completed ) ).list();
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.eq( "status", status ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( Collection<Program> programs, boolean completed )
+    public Collection<ProgramInstance> get( Collection<Program> programs, Integer status )
     {
-        return getCriteria( Restrictions.in( "program", programs ), Restrictions.eq( "completed", completed ) ).list();
+        return getCriteria( Restrictions.in( "program", programs ), Restrictions.eq( "status", status ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -102,9 +101,9 @@ public class HibernateProgramInstanceStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( Patient patient, boolean completed )
+    public Collection<ProgramInstance> get( Patient patient, Integer status )
     {
-        return getCriteria( Restrictions.eq( "patient", patient ), Restrictions.eq( "completed", completed ) ).list();
+        return getCriteria( Restrictions.eq( "patient", patient ), Restrictions.eq( "status", status ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -114,10 +113,10 @@ public class HibernateProgramInstanceStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( Patient patient, Program program, boolean completed )
+    public Collection<ProgramInstance> get( Patient patient, Program program, Integer status )
     {
         return getCriteria( Restrictions.eq( "patient", patient ), Restrictions.eq( "program", program ),
-            Restrictions.eq( "completed", completed ) ).list();
+            Restrictions.eq( "status", status ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -176,55 +175,68 @@ public class HibernateProgramInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean completed )
-    {
-        Criteria criteria = getCriteria( Restrictions.eq( "program", program ) );
-        criteria.createAlias( "patient", "patient" ).createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) )
-            .add( Restrictions.eq( "completed", completed ) );
-        if ( completed )
-        {
-            criteria.add( Restrictions.between( "endDate", startDate, endDate ) );
-        }
-        else
-        {
-            criteria.add( Restrictions.between( "enrollmentDate", startDate, endDate ) );
-        }
+    // @SuppressWarnings( "unchecked" )
+    // public Collection<ProgramInstance> getUnenrollment( Program program,
+    // Collection<Integer> orgunitIds,
+    // Date startDate, Date endDate )
+    // {
+    // return getCriteria( Restrictions.eq( "program", program ),
+    // Restrictions.ge( "enrollmentDate", startDate ),
+    // Restrictions.le( "enrollmentDate", endDate ) ).createAlias( "patient",
+    // "patient" )
+    // .createAlias( "programStageInstances", "programStageInstance" )
+    // .createAlias( "patient.organisationUnit", "organisationUnit" )
+    // .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add(
+    // Restrictions.eq( "completed", true ) )
+    // .add( Restrictions.eq( "programStageInstance.completed", false )
+    // ).list();
+    // }
+    //
+    // public int countUnenrollment( Program program, Collection<Integer>
+    // orgunitIds, Date startDate, Date endDate )
+    // {
+    // Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
+    // Restrictions.ge( "endDate", startDate ), Restrictions.le( "endDate",
+    // endDate ) )
+    // .createAlias( "patient", "patient" ).createAlias(
+    // "programStageInstances", "programStageInstance" )
+    // .createAlias( "patient.organisationUnit", "organisationUnit" )
+    // .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add(
+    // Restrictions.eq( "completed", true ) )
+    // .add( Restrictions.eq( "programStageInstance.completed", false ) )
+    // .setProjection( Projections.projectionList().add(
+    // Projections.countDistinct( "id" ) ) ).uniqueResult();
+    //
+    // return rs != null ? rs.intValue() : 0;
+    // }
 
-        Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+    public int countByStatus( Integer status, Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate )
+    {
+        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
+            Restrictions.between( "endDate", startDate, endDate ) ).createAlias( "patient", "patient" )
+            .createAlias( "patient.organisationUnit", "organisationUnit" )
+            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "status", status ) )
+            .setProjection( Projections.projectionList().add( Projections.countDistinct( "id" ) ) ).uniqueResult();
+
         return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> getUnenrollment( Program program, Collection<Integer> orgunitIds,
+    public Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
-        return getCriteria( Restrictions.eq( "program", program ), Restrictions.ge( "enrollmentDate", startDate ),
-            Restrictions.le( "enrollmentDate", endDate ) ).createAlias( "patient", "patient" )
-            .createAlias( "programStageInstances", "programStageInstance" )
-            .createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "completed", true ) )
-            .add( Restrictions.eq( "programStageInstance.completed", false ) ).list();
-    }
-
-    public int countUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
-    {
-        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
-            Restrictions.ge( "endDate", startDate ), Restrictions.le( "endDate", endDate ) )
-            .createAlias( "patient", "patient" ).createAlias( "programStageInstances", "programStageInstance" )
-            .createAlias( "patient.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "completed", true ) )
-            .add( Restrictions.eq( "programStageInstance.completed", false ) )
-            .setProjection( Projections.projectionList().add( Projections.countDistinct( "id" ) ) ).uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.between( "endDate", startDate, endDate ) )
+            .createAlias( "patient", "patient" ).createAlias( "patient.organisationUnit", "organisationUnit" )
+            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "status", status ) )
+            .list();
     }
 
     public void removeProgramEnrollment( ProgramInstance programInstance )
     {
         String sql = "delete from programstageinstance where programinstanceid=" + programInstance.getId();
         jdbcTemplate.execute( sql );
-        
+
         sql = "delete from programinstance where programinstanceid=" + programInstance.getId();
         jdbcTemplate.execute( sql );
     }

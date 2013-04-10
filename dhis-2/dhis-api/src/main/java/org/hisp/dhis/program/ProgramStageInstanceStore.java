@@ -122,7 +122,7 @@ public interface ProgramStageInstanceStore
     int getOverDueCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
-        Boolean completed );
+        Integer status );
 
     Collection<Integer> getOrgunitIds( Date startDate, Date endDate );
 

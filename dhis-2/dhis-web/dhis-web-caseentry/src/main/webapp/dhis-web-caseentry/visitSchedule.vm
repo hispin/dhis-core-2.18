@@ -4,21 +4,20 @@
 	<table>
 		<tr>
 			<td class='text-column'>$programInstance.program.dateOfEnrollmentDescription:</td>
-			<td><input name="enrollmentDate" id="enrollmentDate" readonly value="$!format.formatDate( $programInstance.enrollmentDate )" style="width:270px;"></td>
+			<td><input name="enrollmentDate" id="enrollmentDate" readonly value="$!format.formatDate( $programInstance.enrollmentDate )" style="width:325px;"></td>
 		</tr>
 		<tr>
 			<td class='text-column'>$programInstance.program.dateOfIncidentDescription:</td>
-			<td><input name="dateOfIncident" id="dateOfIncident" readonly value="$!format.formatDate( $programInstance.dateOfIncident )" style="width:270px;"></td>
+			<td><input name="dateOfIncident" id="dateOfIncident" readonly value="$!format.formatDate( $programInstance.dateOfIncident )" style="width:325px;"></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td>
 				<input type="button" style='width:80px' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.displayName")'/>
-				<input type="button" class='large-button' id='completeProgram' value="$i18n.getString( 'complete_quit' )" onclick='unenrollmentForm($programInstance.id)' />
+				<input type="button" style='width:80px' id='completeProgram' value="$i18n.getString( 'complete' )" onclick='unenrollmentForm($programInstance.id, 1)' />
+				<input type="button" style='width:80px' id='cancelProgram' value="$i18n.getString( 'quit' )" onclick='unenrollmentForm($programInstance.id, 2)' />
 				<input type="button" style='width:80px' id='incompleteProgram' value="$i18n.getString( 're_enrol' )" onclick='reenrollmentForm($programInstance.id)' />
 				#set($allowRemove = 'true')
-				
-				
 				#foreach( $programStageInstance in $programStageInstances )
 					#if( $!programStageInstance.executionDate 
 						|| $!programStageInstance.outboundSms.size() > 0 
@@ -31,8 +30,8 @@
 				#if($allowRemove == 'true')
 					<input type="button" style='width:80px' id='removeProgram' value="$i18n.getString( 'remove' )" onclick='removeProgramInstance($programInstance.id)' />
 					<script>
-						jQuery('#enrollmentDate').width('355');
-						jQuery('#dateOfIncident').width('355');
+						jQuery('#enrollmentDate').width('410');
+						jQuery('#dateOfIncident').width('410');
 					</script>
 				#end
 			</td>
@@ -125,7 +124,7 @@
 #end
 
 <script>
-	#if( $programInstance.completed=='false')
+	#if( $programInstance.status==0)
 		datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
 		jQuery("#incompleteProgram").attr('disabled', true);
 	#else

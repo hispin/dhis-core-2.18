@@ -396,7 +396,9 @@ public class HibernateProgramStageInstanceStore
             + "     ON org.organisationunitid = p.organisationunitid "
             + " INNER JOIN patientreminder prm  "
             + "     ON prm.programstageid = ps.programstageid "
-            + "WHERE pi.completed=false  "
+            + "WHERE pi.status="
+            + ProgramInstance.STATUS_ACTIVE
+            + " "
             + "     and p.phonenumber is not NULL and p.phonenumber != '' "
             + "     and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
@@ -671,7 +673,7 @@ public class HibernateProgramStageInstanceStore
             sql = getAggregateReportSQL8( programStage, orgunitIds, facilityLB, filterSQL, deGroupBy, periods
                 .iterator().next(), aggregateType, limit, useCompletedEvents, format );
         }
-        
+
         if ( !sql.isEmpty() )
         {
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -1654,9 +1656,9 @@ public class HibernateProgramStageInstanceStore
         {
             for ( Integer root : roots )
             {
-               allOrgunitIds = getOrganisationUnits( root, facilityLB );
-               Collection<Integer> orgunitIds = getServiceOrgunit( allOrgunitIds, period );
-               
+                allOrgunitIds = getOrganisationUnits( root, facilityLB );
+                Collection<Integer> orgunitIds = getServiceOrgunit( allOrgunitIds, period );
+
                 sql += "(SELECT ";
                 sql += "( SELECT ou.name FROM organisationunit ou WHERE ou.organisationunitid=" + root
                     + " ) as orgunit, ";
@@ -2039,16 +2041,16 @@ public class HibernateProgramStageInstanceStore
     }
 
     public int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
-        Boolean completed )
+        Integer status )
     {
-        Collection<ProgramInstance> programInstances = programInstanceService.getUnenrollment( program, orgunitIds,
-            startDate, endDate );
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstancesByStatus(
+            ProgramInstance.STATUS_COMPLETED, program, orgunitIds, startDate, endDate );
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.createAlias( "programStage", "programStage" );
         criteria.createAlias( "programInstance.patient", "patient" );
         criteria.add( Restrictions.eq( "programInstance.program", program ) );
-        criteria.add( Restrictions.eq( "programInstance.completed", completed ) );
+        criteria.add( Restrictions.eq( "programInstance.status", status ) );
         criteria.add( Restrictions.in( "organisationUnit.id", orgunitIds ) );
         criteria.add( Restrictions.between( "programInstance.endDate", startDate, endDate ) );
         criteria.add( Restrictions.eq( "completed", true ) );

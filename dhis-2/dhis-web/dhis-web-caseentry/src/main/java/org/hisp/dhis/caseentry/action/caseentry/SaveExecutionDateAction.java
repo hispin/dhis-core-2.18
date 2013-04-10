@@ -196,7 +196,7 @@ public class SaveExecutionDateAction
                     programInstance.setEnrollmentDate( dateValue );
                     programInstance.setDateOfIncident( dateValue );
                     programInstance.setProgram( program );
-                    programInstance.setCompleted( false );
+                    programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
 
                     programInstance.setPatient( patient );
                     patient.getPrograms().add( program );

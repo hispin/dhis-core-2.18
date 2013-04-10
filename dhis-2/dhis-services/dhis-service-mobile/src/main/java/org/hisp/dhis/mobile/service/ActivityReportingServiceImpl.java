@@ -483,7 +483,7 @@ public class ActivityReportingServiceImpl
 
             programInstance.setProgram( programStage.getProgram() );
 
-            programInstance.setCompleted( true );
+            programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
 
             programInstanceService.addProgramInstance( programInstance );
 
@@ -579,7 +579,7 @@ public class ActivityReportingServiceImpl
                 if ( isAllProgramStageFinished( programStageInstance ) == true )
                 {
                     ProgramInstance programInstance = programStageInstance.getProgramInstance();
-                    programInstance.setCompleted( true );
+                    programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
                     programInstanceService.updateProgramInstance( programInstance );
                 }
 
@@ -625,7 +625,7 @@ public class ActivityReportingServiceImpl
         programInstance.setDateOfIncident( new Date() );
         programInstance.setProgram( program );
         programInstance.setPatient( patient );
-        programInstance.setCompleted( false );
+        programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
         programInstanceService.addProgramInstance( programInstance );
         patient.getPrograms().add( program );
         patientService.updatePatient( patient );
@@ -918,7 +918,7 @@ public class ActivityReportingServiceImpl
             org.hisp.dhis.api.mobile.model.LWUITmodel.Program enrollmentProgramMobile = new org.hisp.dhis.api.mobile.model.LWUITmodel.Program();
             enrollmentProgramMobile.setId( enrollmentProgram.getId() );
             enrollmentProgramMobile.setName( enrollmentProgram.getName() );
-            enrollmentProgramMobile.setCompleted( false );
+            enrollmentProgramMobile.setStatus( ProgramInstance.STATUS_ACTIVE );
             enrollmentProgramMobile.setVersion( enrollmentProgram.getVersion() );
             enrollmentProgramMobile.setProgramStages( null );
             enrollmentProgramListMobileList.add( enrollmentProgramMobile );
@@ -950,7 +950,7 @@ public class ActivityReportingServiceImpl
         mobileProgram.setVersion( programInstance.getProgram().getVersion() );
         mobileProgram.setId( programInstance.getId() );
         mobileProgram.setName( programInstance.getProgram().getName() );
-        mobileProgram.setCompleted( programInstance.isCompleted() );
+        mobileProgram.setStatus( programInstance.getStatus() );
         mobileProgram.setProgramStages( getMobileProgramStages( patient, programInstance ) );
         return mobileProgram;
     }
@@ -1013,9 +1013,8 @@ public class ActivityReportingServiceImpl
 
     private boolean checkIfProgramStageCompleted( Patient patient, Program program, ProgramStage programstage )
     {
-
         Collection<ProgramInstance> programIntances = programInstanceService.getProgramInstances( patient, program,
-            false );
+            ProgramInstance.STATUS_ACTIVE );
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         if ( programIntances != null && programIntances.size() == 1 )
         {
@@ -1149,9 +1148,9 @@ public class ActivityReportingServiceImpl
         List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
             + lastName, orgUnitId );
 
-        //remove the own searcher
-        removeIfDuplicated( patients, enrollmentRelationship.getPersonAId());
-        
+        // remove the own searcher
+        removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );
+
         if ( patients.size() > 1 )
         {
             String patientsInfo = new String();
@@ -1160,8 +1159,8 @@ public class ActivityReportingServiceImpl
 
             for ( Patient each : patients )
             {
-                patientsInfo += each.getId() + "/" + each.getFullName() + "/"
-                    + dateFormat.format( each.getBirthDate() ) + "$";
+                patientsInfo += each.getId() + "/" + each.getFullName() + "/" + dateFormat.format( each.getBirthDate() )
+                    + "$";
             }
 
             throw new NotAllowedException( patientsInfo );
@@ -1337,7 +1336,7 @@ public class ActivityReportingServiceImpl
 
         return anonymousProgramMobile;
     }
-    
+
     private List<Patient> removeIfDuplicated( List<Patient> patients, int patientId )
     {
         for ( Patient each : patients )

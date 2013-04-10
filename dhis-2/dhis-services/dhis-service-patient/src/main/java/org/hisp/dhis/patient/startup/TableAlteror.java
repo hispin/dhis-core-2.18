@@ -199,8 +199,10 @@ public class TableAlteror
         executeSql( "update caseaggregationcondition set \"operator\"='times' where \"operator\"='SUM'" );
 
         updateUid();
-        
+
         updateUidInDataEntryFrom();
+
+        updateProgramInstanceStatus();
     }
 
     // -------------------------------------------------------------------------
@@ -309,7 +311,7 @@ public class TableAlteror
                 }
 
                 inputMatcher.appendTail( sb );
-                
+
                 htmlCode = (sb.toString().isEmpty()) ? htmlCode : sb.toString();
                 dataEntryForm.setHtmlCode( htmlCode );
                 dataEntryForm.setFormat( DataEntryForm.CURRENT_FORMAT );
@@ -317,7 +319,25 @@ public class TableAlteror
             }
         }
     }
-    
+
+    private void updateProgramInstanceStatus()
+    {
+        // Set active status for events
+        executeSql( "UPDATE programinstance SET status=0 WHERE completed=false" );
+
+        // Set un-completed status for events
+        executeSql( "UPDATE programinstance SET status=2 WHERE programinstanceid in "
+            + "( select psi.programinstanceid from programinstance pi join programstageinstance psi "
+            + "on psi.programinstanceid = psi.programstageinstanceid "
+            + "where pi.completed=true and psi.completed = false )" );
+
+        // Set completed status for events
+        executeSql( "UPDATE programinstance SET status=1 WHERE status is null" );
+
+        // Drop the column with name as completed
+        executeSql( "ALTER TABLE programinstance DROP COLUMN completed" );
+    }
+
     private int executeSql( String sql )
     {
         try
