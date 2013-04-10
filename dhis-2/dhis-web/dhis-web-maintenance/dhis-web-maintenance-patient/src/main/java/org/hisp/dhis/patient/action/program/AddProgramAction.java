@@ -29,13 +29,16 @@ package org.hisp.dhis.patient.action.program;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -190,14 +193,27 @@ public class AddProgramAction
         this.onlyEnrollOnce = onlyEnrollOnce;
     }
 
-
     private Boolean remindCompleted = false;
 
     public void setRemindCompleted( Boolean remindCompleted )
     {
         this.remindCompleted = remindCompleted;
     }
-    
+
+    private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
+
+    public void setDaysAllowedSendMessages( List<Integer> daysAllowedSendMessages )
+    {
+        this.daysAllowedSendMessages = daysAllowedSendMessages;
+    }
+
+    private List<String> templateMessages = new ArrayList<String>();
+
+    public void setTemplateMessages( List<String> templateMessages )
+    {
+        this.templateMessages = templateMessages;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -268,6 +284,16 @@ public class AddProgramAction
         program.setPatientIdentifierTypes( identifierTypes );
         program.setPatientAttributes( patientAttributes );
 
+        // Template messasges
+        Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
+        for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
+        {
+            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
+                templateMessages.get( i ) );
+            patientReminders.add( reminder );
+        }
+        program.setPatientReminders( patientReminders );
+        
         programService.saveProgram( program );
 
         if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )

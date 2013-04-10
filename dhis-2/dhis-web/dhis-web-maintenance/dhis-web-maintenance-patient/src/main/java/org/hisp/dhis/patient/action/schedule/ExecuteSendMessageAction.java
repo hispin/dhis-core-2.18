@@ -31,6 +31,7 @@ import static org.hisp.dhis.sms.outbound.OutboundSms.DHIS_SYSTEM_SENDER;
 
 import java.util.Collection;
 
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -59,6 +60,13 @@ public class ExecuteSendMessageAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -80,8 +88,39 @@ public class ExecuteSendMessageAction
     @Override
     public String execute()
     {
-        Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
-            .getSendMesssageEvents();
+        // ---------------------------------------------------------------------
+        // Send program-instance messages
+        // ---------------------------------------------------------------------
+
+        Collection<SchedulingProgramObject> schedulingProgramObjects = programInstanceService.getSendMesssageEvents();
+
+        for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
+        {
+            String message = schedulingProgramObject.getMessage();
+            try
+            {
+                OutboundSms outboundSms = new OutboundSms( message, schedulingProgramObject.getPhoneNumber() );
+                outboundSms.setSender( DHIS_SYSTEM_SENDER );
+                outboundSmsService.saveOutboundSms( outboundSms );
+
+                String sql = "INSERT INTO programinstance_outboundsms"
+                    + "( programinstanceid, outboundsmsid, sort_order) VALUES " + "("
+                    + schedulingProgramObject.getProgramInstanceId() + ", " + outboundSms.getId() + ","
+                    + (System.currentTimeMillis() / 1000) + ") ";
+
+                jdbcTemplate.execute( sql );
+            }
+            catch ( SmsServiceException e )
+            {
+                message = e.getMessage();
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Send program-stage-instance messages
+        // ---------------------------------------------------------------------
+
+        schedulingProgramObjects = programStageInstanceService.getSendMesssageEvents();
 
         for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
         {
@@ -99,7 +138,7 @@ public class ExecuteSendMessageAction
                     + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
                     + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ","
                     + (System.currentTimeMillis() / 1000) + ") ";
-                
+
                 jdbcTemplate.execute( sql );
             }
             catch ( SmsServiceException e )

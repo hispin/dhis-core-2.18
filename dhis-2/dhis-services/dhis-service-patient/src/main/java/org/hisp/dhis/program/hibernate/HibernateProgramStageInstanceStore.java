@@ -59,6 +59,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.TabularReportColumn;
@@ -425,12 +426,12 @@ public class HibernateProgramStageInstanceStore
                 String daysSinceDueDate = rs.getString( "days_since_due_date" );
                 String dueDate = rs.getString( "duedate" );
 
-                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
-                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
-                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
-                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
-                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
-                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
             }
 
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();

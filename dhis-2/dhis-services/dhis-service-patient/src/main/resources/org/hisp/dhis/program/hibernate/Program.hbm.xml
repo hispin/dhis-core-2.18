@@ -76,6 +76,11 @@
 			
  	<property name="remindCompleted" />
  
+ 	<set name="patientReminders" order-by="daysAllowedSendMessage" cascade="all">
+      <key column="programid" />
+      <one-to-many class="org.hisp.dhis.patient.PatientReminder" />
+    </set>
+    
 	<!-- Access properties -->
 	
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_program_userid" />

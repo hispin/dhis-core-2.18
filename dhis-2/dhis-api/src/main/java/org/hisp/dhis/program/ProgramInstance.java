@@ -36,10 +36,12 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -50,12 +52,12 @@ import java.util.Set;
 public class ProgramInstance
     implements Serializable
 {
-   public static int STATUS_ACTIVE = 0;
-   
-   public static int STATUS_COMPLETED = 1;
-   
-   public static int STATUS_CANCELLED = 2;
-   
+    public static int STATUS_ACTIVE = 0;
+
+    public static int STATUS_COMPLETED = 1;
+
+    public static int STATUS_CANCELLED = 2;
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -68,7 +70,7 @@ public class ProgramInstance
     private Date enrollmentDate;
 
     private Date endDate;
-    
+
     private Integer status = STATUS_ACTIVE;
 
     private Patient patient;
@@ -76,7 +78,9 @@ public class ProgramInstance
     private Program program;
 
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
-    
+
+    private List<OutboundSms> outboundSms;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -92,7 +96,7 @@ public class ProgramInstance
         this.patient = patient;
         this.program = program;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -255,13 +259,12 @@ public class ProgramInstance
         this.endDate = endDate;
     }
 
-    
     /**
      * @return the status
      */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )    
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getStatus()
     {
         return status.intValue();
@@ -271,7 +274,7 @@ public class ProgramInstance
     {
         this.status = status;
     }
-    
+
     /**
      * @return the patient
      */
@@ -324,6 +327,16 @@ public class ProgramInstance
         this.programStageInstances = programStageInstances;
     }
 
+    public List<OutboundSms> getOutboundSms()
+    {
+        return outboundSms;
+    }
+
+    public void setOutboundSms( List<OutboundSms> outboundSms )
+    {
+        this.outboundSms = outboundSms;
+    }
+
     // -------------------------------------------------------------------------
     // Convenience method
     // -------------------------------------------------------------------------
@@ -338,7 +351,7 @@ public class ProgramInstance
             {
                 return programInstanceStage;
             }
-            
+
             count++;
         }
 

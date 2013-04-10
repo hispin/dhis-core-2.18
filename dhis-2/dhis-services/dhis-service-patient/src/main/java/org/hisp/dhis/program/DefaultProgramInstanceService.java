@@ -359,29 +359,17 @@ public class DefaultProgramInstanceService
     {
         return programInstanceStore.getByStatus( status, program, orgunitIds, startDate, endDate );
     }
-
-    // @Override
-    // public Collection<ProgramInstance> getUnenrollment( Program program,
-    // Collection<Integer> orgunitIds,
-    // Date startDate, Date endDate )
-    // {
-    // return programInstanceStore.getUnenrollment( program, orgunitIds,
-    // startDate, endDate );
-    // }
-    //
-    // @Override
-    // public int countUnenrollment( Program program, Collection<Integer>
-    // orgunitIds, Date startDate, Date endDate )
-    // {
-    // return programInstanceStore.countUnenrollment( program, orgunitIds,
-    // startDate, endDate );
-    // }
-
+    
     public void removeProgramEnrollment( ProgramInstance programInstance )
     {
         programInstanceStore.removeProgramEnrollment( programInstance );
     }
 
+    public Collection<SchedulingProgramObject> getSendMesssageEvents()
+    {
+        return programInstanceStore.getSendMesssageEvents();
+    }
+    
     // -------------------------------------------------------------------------
     // due-date && report-date
     // -------------------------------------------------------------------------
