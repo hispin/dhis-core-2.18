@@ -650,15 +650,26 @@ function removeAllOption() {
 
 // execution date module
 var service = (function () {
+    var executionDateStore = new dhis2.storage.Store( {name: 'anonymousExecutionDate' }, function ( store ) {
+    } );
+
+    var dataValueStore = new dhis2.storage.Store( {name: 'anonymousDataValue' }, function ( store ) {
+    } );
+
+
     return {
         saveExecutionDate: function( programId, programStageInstanceId, executionDate, organisationUnitId ) {
-            jQuery.postJSON( "saveExecutionDate.action", {
-                programId: programId,
-                programStageInstanceId: programStageInstanceId,
-                executionDate: executionDate,
-                organisationUnitId: organisationUnitId
-            },
-            function ( json ) {
+            $.ajax( {
+                url: 'saveExecutionDate.action',
+                data: {
+                    programId: programId,
+                    programStageInstanceId: programStageInstanceId,
+                    executionDate: executionDate,
+                    organisationUnitId: organisationUnitId
+                },
+                type: 'POST',
+                dataType: 'json'
+            } ).done(function ( json ) {
                 if ( json.response == 'success' ) {
                     jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                     setFieldValue( 'programStageInstanceId', json.message );
@@ -670,45 +681,57 @@ var service = (function () {
                     jQuery( "#executionDate" ).css( 'background-color', ERROR_COLOR );
                     showWarningMessage( json.message );
                 }
+            } ).fail( function () {
+                console.log("should save execution date locally.")
             } );
         },
 
         loadDataEntryForm: function( programStageInstanceId, organisationUnitId ) {
-            $( '#dataEntryFormDiv' ).load( "dataentryform.action", {
-                programStageInstanceId: programStageInstanceId,
-                organisationUnitId: organisationUnitId
-            }, function () {
-                jQuery( '#inputCriteriaDiv' ).remove();
-                showById( 'programName' );
-                showById( 'actionDiv' );
-                var programName = jQuery( '#programId option:selected' ).text();
-                var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
-                jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
-                setInnerHTML( 'programName', programName );
-                jQuery('#executionDate').css('width',430);
-                jQuery('#executionDate').css('margin-right',30);
-
-                if ( getFieldValue( 'completed' ) == 'true' ) {
-                    disable( "completeBtn" );
-                    enable( "uncompleteBtn" );
-                }
-                else {
-                    enable( "completeBtn" );
-                    disable( "uncompleteBtn" );
-                }
-                hideById( 'loaderDiv' );
-                showById( 'dataEntryInfor' );
-                showById( 'entryFormContainer' );
-
-                jQuery( "#entryForm :input" ).each( function () {
-                    if ( ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' )
-                        || ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) ) {
-                        var input = jQuery( this );
-                        input.parent().width( input.width() + 200 );
-                    }
-                } );
-            } );
-
+            $.ajax( {
+                url: 'dataentryform.action',
+                data: {
+                    programStageInstanceId: programStageInstanceId,
+                    organisationUnitId: organisationUnitId
+                },
+                dataType: 'html'
+            } ).done(function(data) {
+                $( '#dataEntryFormDiv' ).html( data );
+                updateDataForm();
+            } ).fail(function() {
+                $( '#dataEntryFormDiv' ).html( "not available offline." );
+            });
         }
     }
 })();
+
+function updateDataForm() {
+    jQuery( '#inputCriteriaDiv' ).remove();
+    showById( 'programName' );
+    showById( 'actionDiv' );
+    var programName = jQuery( '#programId option:selected' ).text();
+    var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
+    jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
+    setInnerHTML( 'programName', programName );
+    jQuery('#executionDate').css('width',430);
+    jQuery('#executionDate').css('margin-right',30);
+
+    if ( getFieldValue( 'completed' ) == 'true' ) {
+        disable( "completeBtn" );
+        enable( "uncompleteBtn" );
+    }
+    else {
+        enable( "completeBtn" );
+        disable( "uncompleteBtn" );
+    }
+    hideById( 'loaderDiv' );
+    showById( 'dataEntryInfor' );
+    showById( 'entryFormContainer' );
+
+    jQuery( "#entryForm :input" ).each( function () {
+        if ( ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' )
+            || ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) ) {
+            var input = jQuery( this );
+            input.parent().width( input.width() + 200 );
+        }
+    } );
+}
