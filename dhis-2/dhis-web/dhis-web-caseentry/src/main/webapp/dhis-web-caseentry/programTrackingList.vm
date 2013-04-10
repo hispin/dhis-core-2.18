@@ -6,6 +6,7 @@
 
 <input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.id'>
+<input type='hidden' id='ps_$programStageInstance.id' name='ps_$programStageInstance.id' programStageName='$programStageInstance.programStage.displayName' >
 
 <div class='dashboard-area'>
 	<div class="link-area" style="height:200px">
