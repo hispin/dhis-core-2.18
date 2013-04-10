@@ -71,7 +71,9 @@ function programOnChange()
 		disable("generatedByEnrollmentDate");
 		disable("availablePropertyIds");
 		disable('ignoreOverdueEvents');
-		hideById("selectedList");
+		hideById('selectedList');
+		hideById('programMessageTB');
+		
 		jQuery("[name=displayed]").attr("disabled", true);
 		jQuery("[name=displayed]").removeAttr("checked");
 		
@@ -81,11 +83,12 @@ function programOnChange()
 		enable('onlyEnrollOnce');
 		jQuery("[name=displayed]").prop("disabled", false);
 		enable("availablePropertyIds");
-		showById("selectedList");
 		enable("generatedByEnrollmentDate");
 		enable('dateOfEnrollmentDescription');
 		enable("displayIncidentDate");
 		enable('ignoreOverdueEvents');
+		showById('programMessageTB');
+		showById("selectedList");
 		
 		jQuery("[name=nonAnonymous]").show();
 		if( type == 2 ){
@@ -246,4 +249,52 @@ function moveDownPropertyList()
 			}
 		}
 	}
+}
+
+// --------------------------------------------------------------------
+// Generate template message form
+// --------------------------------------------------------------------
+
+function generateTemplateMessageForm()
+{
+	var rowId = jQuery('.daysAllowedSendMessage').length + 1;
+	
+	var contend = '<tr name="tr' + rowId + '" class="listAlternateRow" >'
+				+ 	'<td colspan="2">' + i18n_reminder + ' ' + rowId + '<a href="javascript:removeTemplateMessageForm('+ rowId +')"> ( '+ i18n_remove_reminder + ' )</a></td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+ 	'<td><label>' + i18n_days_before_after_enrollment_date + '</label></td>'
+				+ 	'<td><input type="text" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/></td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+	'<td>' + i18n_params + '</td>'
+				+	'<td>'
+				+		'<select multiple size="4" id="params' + rowId +'" name="params" ondblclick="insertParams(this.value, ' + rowId + ');">'
+				+			'<option value="{patient-name}">' + i18n_patient_name + '</option>'
+				+			'<option value="{program-name}">' + i18n_program_name + '</option>'
+				+			'<option value="{incident-date}">' + i18n_incident_date + '</option>'
+				+			'<option value="{days-since-incident-date}">' + i18n_days_since_incident_date + '</option>'
+				+			'<option value="{enrollement-date}">' + i18n_enrollement_date + '</option>'
+				+			'<option value="{days-since-enrollement-date}">' + i18n_days_since_enrollment_date + '</option>'
+				+			'<option value="{orgunit-name}">' + i18n_orgunit_name + '</option>'
+				+		'</select>'
+				+	'</td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+	'<td><label>' + i18n_message + '</label></td>'
+				+	'<td><textarea id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true, rangelength:[3,160]}}"></textarea></td>'
+				+ '</tr>';
+
+	jQuery('#programStageMessage').append( contend );
+}
+
+function removeTemplateMessageForm( rowId )
+{
+	jQuery("[name=tr" + rowId + "]").remove();
+}
+
+function insertParams( paramValue, rowId )
+{
+	var templateMessage = paramValue;
+	insertTextCommon('templateMessage' + rowId, templateMessage);
 }

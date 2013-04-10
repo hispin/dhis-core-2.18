@@ -73,14 +73,12 @@ public interface ProgramInstanceStore
     
     int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
-//    Collection<ProgramInstance> getUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
-//    
-//    int countUnenrollment( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
-   
     void removeProgramEnrollment( ProgramInstance programInstance );
     
     int countByStatus( Integer status, Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
     Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate );
+    
+    Collection<SchedulingProgramObject> getSendMesssageEvents();
 }

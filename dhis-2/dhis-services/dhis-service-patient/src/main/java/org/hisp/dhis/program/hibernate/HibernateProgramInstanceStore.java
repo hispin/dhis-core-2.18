@@ -29,6 +29,7 @@ package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -36,10 +37,13 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceStore;
+import org.hisp.dhis.program.SchedulingProgramObject;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Abyot Asalefew
@@ -239,6 +243,65 @@ public class HibernateProgramInstanceStore
 
         sql = "delete from programinstance where programinstanceid=" + programInstance.getId();
         jdbcTemplate.execute( sql );
+    }
+
+    public Collection<SchedulingProgramObject> getSendMesssageEvents()
+    {
+        String sql = "select pi.programinstanceid, p.phonenumber, prm.templatemessage, "
+            + "         p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
+            + "         pg.name as programName, pi.dateofincident , "
+            + "         pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
+            + "         (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
+            + "       FROM patient p INNER JOIN programinstance pi "
+            + "              ON p.patientid=pi.patientid INNER JOIN program pg "
+            + "              ON pg.programid=pi.programid INNER JOIN organisationunit org "
+            + "              ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
+            + "              ON prm.programid = pi.programid   " 
+            + "       WHERE pi.status= " + ProgramInstance.STATUS_ACTIVE
+            + "         and p.phonenumber is not NULL and p.phonenumber != ''   "
+            + "         and prm.templatemessage is not NULL and prm.templatemessage != ''   "
+            + "         and pg.type=1 and prm.daysallowedsendmessage is not null    "
+            + "         and (  DATE(now()) - DATE(pi.enrollmentdate) ) = prm.daysallowedsendmessage";
+        
+        SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
+
+        int cols = rs.getMetaData().getColumnCount();
+
+        Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<SchedulingProgramObject>();
+
+        while ( rs.next() )
+        {
+            String message = "";
+            for ( int i = 1; i <= cols; i++ )
+            {
+
+                message = rs.getString( "templatemessage" );
+                String patientName = rs.getString( "firstName" );
+                String organisationunitName = rs.getString( "orgunitName" );
+                String programName = rs.getString( "programName" );
+                String incidentDate = rs.getString( "dateofincident" );
+                String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
+                String erollmentDate = rs.getString( "enrollmentdate" );
+                String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
+
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE, erollmentDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE, daysSinceEnrollementDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE, daysSinceIncidentDate );
+            }
+
+            SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
+            schedulingProgramObject.setProgramInstanceId( rs.getInt( "programinstanceid" ) );
+            schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
+            schedulingProgramObject.setMessage( message );
+
+            schedulingProgramObjects.add( schedulingProgramObject );
+        }
+
+        return schedulingProgramObjects;
     }
 
 }

@@ -40,6 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -118,6 +119,8 @@ public class Program
      * 
      */
     private Boolean remindCompleted = false;
+
+    private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -488,6 +491,16 @@ public class Program
     public void setOnlyEnrollOnce( Boolean onlyEnrollOnce )
     {
         this.onlyEnrollOnce = onlyEnrollOnce;
+    }
+
+    public Set<PatientReminder> getPatientReminders()
+    {
+        return patientReminders;
+    }
+
+    public void setPatientReminders( Set<PatientReminder> patientReminders )
+    {
+        this.patientReminders = patientReminders;
     }
 
 }

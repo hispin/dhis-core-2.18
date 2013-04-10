@@ -448,6 +448,7 @@
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
         <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
         <property name="jdbcTemplate" ref="jdbcTemplate" />
+        <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     </bean>
 
 	<bean id="sendMessageScheduled"

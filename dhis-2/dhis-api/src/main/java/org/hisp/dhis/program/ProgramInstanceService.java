@@ -96,5 +96,7 @@ public interface ProgramInstanceService
         Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     void removeProgramEnrollment( ProgramInstance programInstance );
+    
+    Collection<SchedulingProgramObject> getSendMesssageEvents();
 
 }
