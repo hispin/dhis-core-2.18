@@ -4966,10 +4966,6 @@ Ext.onReady( function() {
 				gis.olmap.mask = Ext.create('Ext.LoadMask', vp.getEl(), {
 					msg: 'Loading'
 				});
-
-				if (!window.google) {
-					gis.layer.openStreetMap.item.setValue(true);
-				}
 			};
 
 			afterRender = function() {
@@ -5004,7 +5000,6 @@ Ext.onReady( function() {
 				});
 
 				// Favorite
-
 				var id = gis.util.url.getUrlParam('id');
 
 				if (id) {
@@ -5012,6 +5007,11 @@ Ext.onReady( function() {
 						id: id
 					};
 					GIS.core.MapLoader(gis).load();
+				}
+
+                // Background
+				if (!window.google) {
+					gis.layer.openStreetMap.item.setValue(false);
 				}
 			};
 
