@@ -28,6 +28,7 @@
 package org.hisp.dhis.patient.scheduling;
 
 import static org.hisp.dhis.sms.outbound.OutboundSms.DHIS_SYSTEM_SENDER;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,10 +36,14 @@ import java.util.List;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
+import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.Clock;
+import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -77,15 +82,29 @@ public class SendScheduledMessageTask
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private Notifier notifier;
+
+    public void setNotifier( Notifier notifier )
+    {
+        this.notifier = notifier;
+    }
+
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
-    
+
     private Boolean sendingMessage;
 
     public void setSendingMessage( Boolean sendingMessage )
     {
         this.sendingMessage = sendingMessage;
+    }
+
+    private TaskId taskId;
+
+    public void setTaskId( TaskId taskId )
+    {
+        this.taskId = taskId;
     }
 
     // -------------------------------------------------------------------------
@@ -95,15 +114,35 @@ public class SendScheduledMessageTask
     @Override
     public void run()
     {
+        final int cpuCores = SystemUtils.getCpuCores();
+
+        Clock clock = new Clock().startClock().logTime(
+            "Aggregate process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
+
         if ( sendingMessage )
         {
+            clock.logTime( "Start to send messages in outbound" );
+            notifier.notify( taskId, INFO, "Start to send messages in outbound", true );
+
             sendMessage();
+
+            clock.logTime( "Sending messages in outbound completed" );
+            notifier.notify( taskId, INFO, "Sending messages in outbound completed", true );
         }
         else
         {
+            clock.logTime( "Start to prepare reminder messages" );
+            notifier.clear( taskId ).notify( taskId, "Start to prepare reminder messages" );
+
             scheduleProgramStageInstanceMessage();
             scheduleProgramInstanceMessage();
+
+            sendMessage();
+
+            clock.logTime( "Preparing reminder messages completed" );
+            notifier.notify( taskId, INFO, "Preparing reminder messages completed", true );
         }
+
     }
 
     // -------------------------------------------------------------------------
@@ -112,9 +151,11 @@ public class SendScheduledMessageTask
 
     private void scheduleProgramStageInstanceMessage()
     {
+        notifier.notify( taskId, "Start to prepare reminder messages for events" );
+
         Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
             .getSendMesssageEvents();
-       
+
         for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
         {
             String message = schedulingProgramObject.getMessage();
@@ -124,25 +165,37 @@ public class SendScheduledMessageTask
                 OutboundSms outboundSms = new OutboundSms( message, schedulingProgramObject.getPhoneNumber() );
                 outboundSms.setSender( DHIS_SYSTEM_SENDER );
                 outboundSmsService.saveOutboundSms( outboundSms );
+
+                String sortOrderSql = "SELECT max(sort_order) "
+                    + "FROM programstageinstance_outboundsms where programstageinstanceid="
+                    + schedulingProgramObject.getProgramStageInstanceId();
+                int sortOrder = jdbcTemplate.queryForInt( sortOrderSql ) + 1;
 
                 String sql = "INSERT INTO programstageinstance_outboundsms"
                     + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
                     + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ","
-                    + (System.currentTimeMillis() / 1000) + ") ";
+                    + sortOrder + ") ";
 
                 jdbcTemplate.execute( sql );
+
+                notifier.notify( taskId, "Reminder messages for event of " + outboundSms.getRecipients()
+                    + " is created " );
             }
             catch ( SmsServiceException e )
             {
                 message = e.getMessage();
             }
         }
+
+        notifier.notify( taskId, INFO, "Preparing reminder messages for events completed", true );
     }
-    
+
     private void scheduleProgramInstanceMessage()
     {
-        Collection<SchedulingProgramObject> schedulingProgramObjects =  programInstanceService.getSendMesssageEvents();
-        
+        notifier.notify( taskId, "Start to prepare reminder messages for enrollements" );
+
+        Collection<SchedulingProgramObject> schedulingProgramObjects = programInstanceService.getSendMesssageEvents();
+
         for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
         {
             String message = schedulingProgramObject.getMessage();
@@ -152,18 +205,28 @@ public class SendScheduledMessageTask
                 outboundSms.setSender( DHIS_SYSTEM_SENDER );
                 outboundSmsService.saveOutboundSms( outboundSms );
 
+                String sortOrderSql = "select max(sort_order) "
+                    + "from programinstance_outboundsms where programinstanceid="
+                    + schedulingProgramObject.getProgramInstanceId();
+                int sortOrder = jdbcTemplate.queryForInt( sortOrderSql ) + 1;
+
                 String sql = "INSERT INTO programinstance_outboundsms"
                     + "( programinstanceid, outboundsmsid, sort_order) VALUES " + "("
-                    + schedulingProgramObject.getProgramInstanceId() + ", " + outboundSms.getId() + ","
-                    + (System.currentTimeMillis() / 1000) + ") ";
+                    + schedulingProgramObject.getProgramInstanceId() + ", " + outboundSms.getId() + "," + sortOrder + ") ";
 
                 jdbcTemplate.execute( sql );
+
+                notifier.notify( taskId, "Reminder messages for enrollement of " + outboundSms.getRecipients()
+                    + " is created " );
             }
             catch ( SmsServiceException e )
             {
                 message = e.getMessage();
             }
         }
+
+        notifier.notify( taskId, INFO, "Preparing reminder messages for enrollement completed", true );
+
     }
 
     private void sendMessage()

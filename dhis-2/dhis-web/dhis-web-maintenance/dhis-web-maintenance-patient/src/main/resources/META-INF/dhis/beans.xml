@@ -1039,17 +1039,9 @@
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="schedulingManager"
 			ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
-		class="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
-		scope="prototype">
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="programInstanceService"
-			ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="notifier" ref="notifier" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="sendMessageScheduled" ref="sendMessageScheduled" />
 	</bean>
 
 	<bean

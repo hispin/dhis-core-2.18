@@ -447,8 +447,9 @@
 		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask">
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
         <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-        <property name="jdbcTemplate" ref="jdbcTemplate" />
         <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+        <property name="notifier" ref="notifier" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
 
 	<bean id="sendMessageScheduled"
