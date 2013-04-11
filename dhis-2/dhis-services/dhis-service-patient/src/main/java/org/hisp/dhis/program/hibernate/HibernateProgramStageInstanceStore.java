@@ -399,13 +399,12 @@ public class HibernateProgramStageInstanceStore
             + "     ON prm.programstageid = ps.programstageid "
             + "WHERE pi.status="
             + ProgramInstance.STATUS_ACTIVE
-            + " "
             + "     and p.phonenumber is not NULL and p.phonenumber != '' "
             + "     and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
             + "     and psi.executiondate is null "
             + "     and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage ";
-
+        
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
         int cols = rs.getMetaData().getColumnCount();
@@ -417,7 +416,6 @@ public class HibernateProgramStageInstanceStore
             String message = "";
             for ( int i = 1; i <= cols; i++ )
             {
-
                 message = rs.getString( "templatemessage" );
                 String patientName = rs.getString( "firstName" );
                 String organisationunitName = rs.getString( "orgunitName" );

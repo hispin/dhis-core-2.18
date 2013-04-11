@@ -179,41 +179,6 @@ public class HibernateProgramInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    // @SuppressWarnings( "unchecked" )
-    // public Collection<ProgramInstance> getUnenrollment( Program program,
-    // Collection<Integer> orgunitIds,
-    // Date startDate, Date endDate )
-    // {
-    // return getCriteria( Restrictions.eq( "program", program ),
-    // Restrictions.ge( "enrollmentDate", startDate ),
-    // Restrictions.le( "enrollmentDate", endDate ) ).createAlias( "patient",
-    // "patient" )
-    // .createAlias( "programStageInstances", "programStageInstance" )
-    // .createAlias( "patient.organisationUnit", "organisationUnit" )
-    // .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add(
-    // Restrictions.eq( "completed", true ) )
-    // .add( Restrictions.eq( "programStageInstance.completed", false )
-    // ).list();
-    // }
-    //
-    // public int countUnenrollment( Program program, Collection<Integer>
-    // orgunitIds, Date startDate, Date endDate )
-    // {
-    // Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
-    // Restrictions.ge( "endDate", startDate ), Restrictions.le( "endDate",
-    // endDate ) )
-    // .createAlias( "patient", "patient" ).createAlias(
-    // "programStageInstances", "programStageInstance" )
-    // .createAlias( "patient.organisationUnit", "organisationUnit" )
-    // .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add(
-    // Restrictions.eq( "completed", true ) )
-    // .add( Restrictions.eq( "programStageInstance.completed", false ) )
-    // .setProjection( Projections.projectionList().add(
-    // Projections.countDistinct( "id" ) ) ).uniqueResult();
-    //
-    // return rs != null ? rs.intValue() : 0;
-    // }
-
     public int countByStatus( Integer status, Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate )
     {
@@ -275,7 +240,6 @@ public class HibernateProgramInstanceStore
             String message = "";
             for ( int i = 1; i <= cols; i++ )
             {
-
                 message = rs.getString( "templatemessage" );
                 String patientName = rs.getString( "firstName" );
                 String organisationunitName = rs.getString( "orgunitName" );
