@@ -5,6 +5,10 @@
 		<tr>
 			<td class='text-column'>$programInstance.program.dateOfEnrollmentDescription:</td>
 			<td><input name="enrollmentDate" id="enrollmentDate" readonly value="$!format.formatDate( $programInstance.enrollmentDate )" style="width:325px;"></td>
+			<td rowspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href='javascript:markForFollowup($programInstance.id, false)' #if( $programInstance.followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$i18n.getString("unmark_followup")' ><img src='../images/marked_large.png'></a>
+				<a href='javascript:markForFollowup($programInstance.id, true)' #if( $programInstance.followup == 'true') class='hidden' #end id='imgUnmarkFollowup' title='$i18n.getString("mark_followup")' ><img src='../images/unmarked_large.png'></a>
+			</td>
 		</tr>
 		<tr>
 			<td class='text-column'>$programInstance.program.dateOfIncidentDescription:</td>

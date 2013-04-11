@@ -211,6 +211,15 @@
 		<result name="success" type="velocity-json">
 			/dhis-web-caseentry/jsonminOrganisationUnitPaths.vm</result>
 	</action>
+	
+    <action name="markForFollowup"
+      class="org.hisp.dhis.caseentry.action.caseentry.MarkForFollowupAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+    </action>
+	
 
     <!-- save value -->
 

@@ -202,6 +202,7 @@ public class TableAlteror
         
         executeSql( "update program set remindCompleted=false where remindCompleted is null" );
         executeSql( "update patientreminder set dateToCompare='duedate' where programstageid is not null" );
+        executeSql( "UPDATE programinstance SET followup=false where followup is null" );
         
         updateUid();
 
