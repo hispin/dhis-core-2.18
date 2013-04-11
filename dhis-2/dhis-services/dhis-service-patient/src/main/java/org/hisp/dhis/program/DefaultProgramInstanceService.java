@@ -41,6 +41,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -125,7 +126,7 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( programs );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs,Integer status )
+    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, Integer status )
     {
         return programInstanceStore.get( programs, status );
     }
@@ -359,7 +360,7 @@ public class DefaultProgramInstanceService
     {
         return programInstanceStore.getByStatus( status, program, orgunitIds, startDate, endDate );
     }
-    
+
     public void removeProgramEnrollment( ProgramInstance programInstance )
     {
         programInstanceStore.removeProgramEnrollment( programInstance );
@@ -367,9 +368,14 @@ public class DefaultProgramInstanceService
 
     public Collection<SchedulingProgramObject> getSendMesssageEvents()
     {
-        return programInstanceStore.getSendMesssageEvents();
+        Collection<SchedulingProgramObject> result = programInstanceStore
+            .getSendMesssageEvents( PatientReminder.ENROLLEMENT_DATE_TO_COMPARE );
+
+        result.addAll( programInstanceStore.getSendMesssageEvents( PatientReminder.INCIDENT_DATE_TO_COMPARE ) );
+
+        return result;
     }
-    
+
     // -------------------------------------------------------------------------
     // due-date && report-date
     // -------------------------------------------------------------------------

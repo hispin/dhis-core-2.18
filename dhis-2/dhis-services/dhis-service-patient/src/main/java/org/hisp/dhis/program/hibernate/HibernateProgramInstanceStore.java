@@ -245,9 +245,9 @@ public class HibernateProgramInstanceStore
         jdbcTemplate.execute( sql );
     }
 
-    public Collection<SchedulingProgramObject> getSendMesssageEvents()
+    public Collection<SchedulingProgramObject> getSendMesssageEvents( String dateToCompare )
     {
-        String sql = "select pi.programinstanceid, p.phonenumber, prm.templatemessage, "
+        String sql = "SELECT pi.programinstanceid, p.phonenumber, prm.templatemessage, "
             + "         p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
             + "         pg.name as programName, pi.dateofincident , "
             + "         pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
@@ -256,12 +256,13 @@ public class HibernateProgramInstanceStore
             + "              ON p.patientid=pi.patientid INNER JOIN program pg "
             + "              ON pg.programid=pi.programid INNER JOIN organisationunit org "
             + "              ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
-            + "              ON prm.programid = pi.programid   " 
+            + "              ON prm.programid = pi.programid " 
             + "       WHERE pi.status= " + ProgramInstance.STATUS_ACTIVE
             + "         and p.phonenumber is not NULL and p.phonenumber != ''   "
             + "         and prm.templatemessage is not NULL and prm.templatemessage != ''   "
             + "         and pg.type=1 and prm.daysallowedsendmessage is not null    "
-            + "         and (  DATE(now()) - DATE(pi.enrollmentdate) ) = prm.daysallowedsendmessage";
+            + "         and ( DATE(now()) - DATE(pi." + dateToCompare + ") ) = prm.daysallowedsendmessage "
+            + "         and prm.dateToCompare='" + dateToCompare + "'";
         
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 

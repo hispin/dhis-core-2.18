@@ -201,6 +201,7 @@ public class TableAlteror
         executeSql( "update prorgam set \"operator\"='times' where \"operator\"='SUM'" );
         
         executeSql( "update program set remindCompleted=false where remindCompleted is null" );
+        executeSql( "update patientreminder set dateToCompare='duedate' where programstageid is not null" );
         
         updateUid();
 
