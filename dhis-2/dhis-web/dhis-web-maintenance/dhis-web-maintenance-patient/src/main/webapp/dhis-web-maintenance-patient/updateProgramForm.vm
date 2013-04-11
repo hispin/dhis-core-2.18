@@ -25,11 +25,19 @@
 		var templateMessages = jQuery( "#templateMessages" );
 		templateMessages.empty();
 		
+		var datesToCompare = jQuery( "#datesToCompare" );
+		datesToCompare.empty();
+		
 		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
 			daysAllowedSendMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );
 		});
+		
 		jQuery(".templateMessage").each( function( i, item ){ 
 			templateMessages.append( "<option value='" + item.value + "' selected='true'>" +item.value+"</option>" );
+		});
+		
+		jQuery(".dateToCompare").each( function( i, item ){ 
+			datesToCompare.append( "<option value='" + item.value + "' selected='true'>" +item.value+"</option>" );
 		});
 	});
 	
@@ -44,6 +52,7 @@
 <form id="updateProgramForm" name="updateProgramForm" action="updateProgram.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" >
   <select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>
   <select id='templateMessages' name="templateMessages" multiple="multiple" class="hidden"></select>
+  <select id='datesToCompare' name="datesToCompare" multiple="multiple" class="hidden"></select>
   <input type="hidden" id="id" name="id" value="$program.id">
   <table id="detailsList">
     <thead>
@@ -236,7 +245,16 @@
 					</td>
 				</tr>
 				<tr name="tr$index">
-					<td><label>$i18n.getString( "days_before_after_due_date" )</label></td>
+				<td><label>$i18n.getString( "date_to_compare")</label></td>
+					<td>
+						<select class="dateToCompare"/>
+							<option value="dateofincident">$i18n.getString( "incident_date" )</option>
+							<option value="enrollmentdate">$i18n.getString( "enrollment_date" )</option>
+						</select>
+					</td>
+				</tr>
+				<tr name="tr$index">
+					<td><label>$i18n.getString( "days_before_after_comparison_date" )</label></td>
 					<td><input type="text" id="daysAllowedSendMessage$index" name="daysAllowedSendMessage$index" class="daysAllowedSendMessage {validate:{required:true,number:true}}" value="$!reminder.daysAllowedSendMessage"/></td>
 				</tr>
 				<tr name="tr$index">
@@ -282,15 +300,16 @@
 <script>
 	var i18n_reminder = '$encoder.jsEscape( $i18n.getString( "reminder" ) , "'")';   
 	var i18n_remove_reminder = '$encoder.jsEscape( $i18n.getString( "remove_reminder" ) , "'")';   
-	var i18n_days_before_after_enrollment_date = '$encoder.jsEscape( $i18n.getString( "days_before_after_enrollment_date" ) , "'")';   
+	var i18n_days_before_after_comparison_date = '$encoder.jsEscape( $i18n.getString( "days_before_after_comparison_date" ) , "'")';   
 	var i18n_params = '$encoder.jsEscape( $i18n.getString( "params" ) , "'")';   
 	var i18n_patient_name = '$encoder.jsEscape( $i18n.getString( "patient_name" ) , "'")';   
 	var i18n_program_name = '$encoder.jsEscape( $i18n.getString( "program_name" ) , "'")';   
 	var i18n_incident_date = '$encoder.jsEscape( $i18n.getString( "incident_date" ) , "'")';   
 	var i18n_days_since_incident_date = '$encoder.jsEscape( $i18n.getString( "days_since_incident_date" ) , "'")';   
 	var i18n_orgunit_name = '$encoder.jsEscape( $i18n.getString( "orgunit_name" ) , "'")';   
-	var i18n_enrollement_date = '$encoder.jsEscape( $i18n.getString( "enrollement_date" ) , "'")';   
+	var i18n_enrollment_date = '$encoder.jsEscape( $i18n.getString( "enrollement_date" ) , "'")';   
 	var i18n_days_since_enrollment_date = '$encoder.jsEscape( $i18n.getString( "days_since_enrollment_date" ) , "'")';   
 	var i18n_message = '$encoder.jsEscape( $i18n.getString( "message" ) , "'")';   
 	var i18n_name_exists = '$encoder.jsEscape( $i18n.getString( "name_exists" ) , "'")';   
+	var i18n_date_to_compare = '$encoder.jsEscape( $i18n.getString( "date_to_compare" ) , "'")'; 
 </script>

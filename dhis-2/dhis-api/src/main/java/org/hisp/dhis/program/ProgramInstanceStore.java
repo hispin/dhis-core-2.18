@@ -80,5 +80,5 @@ public interface ProgramInstanceStore
     Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate );
     
-    Collection<SchedulingProgramObject> getSendMesssageEvents();
+    Collection<SchedulingProgramObject> getSendMesssageEvents( String dateToCompare );
 }

@@ -210,6 +210,13 @@ public class UpdateProgramAction
         this.templateMessages = templateMessages;
     }
 
+    private List<String> datesToCompare = new ArrayList<String>();
+
+    public void setDatesToCompare( List<String> datesToCompare )
+    {
+        this.datesToCompare = datesToCompare;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -283,6 +290,7 @@ public class UpdateProgramAction
         {
             PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
+            reminder.setDateToCompare( datesToCompare.get( i ) );
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );

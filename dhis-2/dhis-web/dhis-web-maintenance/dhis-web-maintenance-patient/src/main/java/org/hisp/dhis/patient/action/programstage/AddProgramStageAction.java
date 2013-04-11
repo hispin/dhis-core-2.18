@@ -246,6 +246,7 @@ public class AddProgramStageAction
         {
             PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
+            reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );
