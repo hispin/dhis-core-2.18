@@ -59,7 +59,7 @@ function listAllPatient()
 	var programId = getFieldValue('programIdAddPatient');
 	var searchTexts = "stat_" + programId + "_" 
 				+ startDate + "_" + endDate + "_" 
-				+ getFieldValue('orgunitId') + "_false_4";
+				+ getFieldValue('orgunitId') + "_true_4";
 	
 	showLoader();
 	jQuery('#listEventDiv').load('getSMSPatientRecords.action',
@@ -81,6 +81,8 @@ function listAllPatient()
 // --------------------------------------------------------------------
 // Search events
 // --------------------------------------------------------------------
+
+followup = true;
 
 function advancedSearch( params )
 {

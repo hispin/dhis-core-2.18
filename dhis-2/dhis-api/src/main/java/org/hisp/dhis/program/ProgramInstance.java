@@ -36,6 +36,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 import java.io.Serializable;
@@ -80,6 +81,10 @@ public class ProgramInstance
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
 
     private List<OutboundSms> outboundSms;
+
+    private Boolean followup;
+
+    private PatientComment patientComment;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -335,6 +340,38 @@ public class ProgramInstance
     public void setOutboundSms( List<OutboundSms> outboundSms )
     {
         this.outboundSms = outboundSms;
+    }
+
+    /**
+     * @return the followup
+     */
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getFollowup()
+    {
+        return followup;
+    }
+
+    public void setFollowup( Boolean followup )
+    {
+        this.followup = followup;
+    }
+
+    /**
+     * @return the patientComment
+     */
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public PatientComment getPatientComment()
+    {
+        return patientComment;
+    }
+
+    public void setPatientComment( PatientComment patientComment )
+    {
+        this.patientComment = patientComment;
     }
 
     // -------------------------------------------------------------------------

@@ -214,6 +214,7 @@ function validateAdvancedSearch()
 	}
 }
 
+var followup = false;
 function getSearchParams()
 {
 	var params = "";
@@ -230,7 +231,7 @@ function getSearchParams()
 		params = '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
 			   + '_' + startDueDate + '_' + endDueDate
 			   + "_" + orgunitid
-			   + '_false_' + statusEvent;
+			   + '_' + followup + '_' + statusEvent;
 	}
 	
 	var flag = false;
@@ -2025,4 +2026,30 @@ function saveCoordinatesEvent(programStageInstanceId)
 				 byId('latitude').style.backgroundColor = SUCCESS_COLOR;
 			});
 	}
+}
+
+// ---------------------------------------------------------------------------------
+// Followup program-instance
+// ---------------------------------------------------------------------------------
+
+function markForFollowup( programInstanceId, followup )
+{
+	jQuery.postJSON( "markForFollowup.action",
+		{ 
+			programInstanceId:programInstanceId,
+			followup: followup
+		}, 
+		function( json ) 
+		{   
+			 if( followup )
+			 {
+				showById('imgMarkFollowup');
+				hideById('imgUnmarkFollowup');
+			 }
+			 else
+			 {
+				hideById('imgMarkFollowup');
+				showById('imgUnmarkFollowup');
+			 }
+		});
 }
