@@ -3914,7 +3914,7 @@ Ext.onReady( function() {
 				fields: ['id', 'name'],
 				data: [
 					[2, GIS.i18n.equal_intervals],
-					[3, GIS.i18n.quantiles]
+					[3, GIS.i18n.equal_counts]
 				]
 			})
 		});
