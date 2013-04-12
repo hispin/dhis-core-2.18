@@ -220,6 +220,13 @@
       <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 	
+	<action name="saveProgramInstanceComment"
+      class="org.hisp.dhis.caseentry.action.caseentry.SaveProgramInstanceCommentAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+    </action>
 
     <!-- save value -->
 
