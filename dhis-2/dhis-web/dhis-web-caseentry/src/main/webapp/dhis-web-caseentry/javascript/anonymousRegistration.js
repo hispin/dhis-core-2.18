@@ -539,7 +539,7 @@ function showUpdateEvent( programStageInstanceId ) {
     setInnerHTML( 'dataEntryFormDiv', '' );
     showLoader();
 
-    service.loadDataEntryForm( programStageInstanceId, getFieldValue( 'orgunitId' ) );
+    service.loadDataEntryForm( getFieldValue( 'programStageId' ), programStageInstanceId, getFieldValue( 'orgunitId' ) );
 }
 
 function backEventList() {
@@ -650,18 +650,34 @@ function removeAllOption() {
 
 // execution date module
 var service = (function () {
+    var executionDateStoreInitialized = false;
+    var dataValueStoreInitialized = false;
+    var formStoreInitialized = false;
+
+    var executionDateStore = new dhis2.storage.Store( {name: 'anonymousExecutionDate' }, function ( store ) {
+        executionDateStoreInitialized = true;
+    } );
+
+    var dataValueStore = new dhis2.storage.Store( {name: 'anonymousDataValue' }, function ( store ) {
+        dataValueStoreInitialized = true;
+    } );
+
+    var formStore = new dhis2.storage.Store( {name: 'anonymousForm', adapter: 'dom-ss'}, function ( store ) {
+        formStoreInitialized = true;
+    } );
+
     return {
         saveExecutionDate: function( programId, programStageInstanceId, executionDate, organisationUnitId ) {
-            jQuery.postJSON( "saveExecutionDate.action", {
-                programId: programId,
-                programStageInstanceId: programStageInstanceId,
-                executionDate: executionDate,
-                organisationUnitId: organisationUnitId
-            },
-            function ( json ) {
+            $.ajax( {
+                url: 'saveExecutionDate.action',
+                data: createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId),
+                type: 'POST',
+                dataType: 'json'
+            } ).done(function ( json ) {
                 if ( json.response == 'success' ) {
                     jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                     setFieldValue( 'programStageInstanceId', json.message );
+
                     if ( programStageInstanceId != json.message ) {
                         showUpdateEvent( json.message );
                     }
@@ -670,45 +686,99 @@ var service = (function () {
                     jQuery( "#executionDate" ).css( 'background-color', ERROR_COLOR );
                     showWarningMessage( json.message );
                 }
+            } ).fail( function () {
+                function waitForExecutionDateStore() {
+                    if(!executionDateStoreInitialized) {
+                        setTimeout(waitForExecutionDateStore, 50);
+                    }
+                }
+
+                waitForExecutionDateStore();
+
+                var data = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
+
+                if(programStageInstanceId == 0) {
+                    executionDateStore.keys(function(store, keys) {
+                        var i = 100;
+
+                        for(; i<10000; i++) {
+                            if( keys.indexOf(i) == -1 ) break;
+                        }
+
+                        console.log("i: ", i);
+
+                        setFieldValue( 'programStageInstanceId', "local"+i );
+                        jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
+                        showUpdateEvent( programStageInstanceId );
+                        console.log("programStageInstanceId: ", getFieldValue('programStageInstanceId'));
+                    });
+                } else {
+                    // if we have a programStageInstanceId, just reuse that one
+                    setFieldValue( 'programStageInstanceId', programStageInstanceId );
+                    jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
+                    showUpdateEvent( programStageInstanceId );
+                    console.log("programStageInstanceId: ", getFieldValue('programStageInstanceId'));
+                }
             } );
         },
 
-        loadDataEntryForm: function( programStageInstanceId, organisationUnitId ) {
-            $( '#dataEntryFormDiv' ).load( "dataentryform.action", {
-                programStageInstanceId: programStageInstanceId,
-                organisationUnitId: organisationUnitId
-            }, function () {
-                jQuery( '#inputCriteriaDiv' ).remove();
-                showById( 'programName' );
-                showById( 'actionDiv' );
-                var programName = jQuery( '#programId option:selected' ).text();
-                var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
-                jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
-                setInnerHTML( 'programName', programName );
-                jQuery('#executionDate').css('width',430);
-                jQuery('#executionDate').css('margin-right',30);
-
-                if ( getFieldValue( 'completed' ) == 'true' ) {
-                    disable( "completeBtn" );
-                    enable( "uncompleteBtn" );
-                }
-                else {
-                    enable( "completeBtn" );
-                    disable( "uncompleteBtn" );
-                }
+        loadDataEntryForm: function( programStageId, programStageInstanceId, organisationUnitId ) {
+            $.ajax( {
+                url: 'dataentryform.action',
+                data: {
+                    programStageId: programStageId,
+                    programStageInstanceId: programStageInstanceId,
+                    organisationUnitId: organisationUnitId
+                },
+                dataType: 'html'
+            } ).done(function(data) {
+                $( '#dataEntryFormDiv' ).html( data );
+                updateDataForm();
+            } ).fail(function() {
+                $( '#dataEntryFormDiv' ).html( "<div class='message message-info'>Unable to load form.</div>" );
                 hideById( 'loaderDiv' );
-                showById( 'dataEntryInfor' );
-                showById( 'entryFormContainer' );
-
-                jQuery( "#entryForm :input" ).each( function () {
-                    if ( ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' )
-                        || ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) ) {
-                        var input = jQuery( this );
-                        input.parent().width( input.width() + 200 );
-                    }
-                } );
-            } );
-
+            });
         }
     }
 })();
+
+function updateDataForm() {
+    jQuery( '#inputCriteriaDiv' ).remove();
+    showById( 'programName' );
+    showById( 'actionDiv' );
+    var programName = jQuery( '#programId option:selected' ).text();
+    var programStageId = jQuery( '#programId option:selected' ).attr( 'psid' );
+    jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
+    setInnerHTML( 'programName', programName );
+    jQuery('#executionDate').css('width',430);
+    jQuery('#executionDate').css('margin-right',30);
+
+    if ( getFieldValue( 'completed' ) == 'true' ) {
+        disable( "completeBtn" );
+        enable( "uncompleteBtn" );
+    }
+    else {
+        enable( "completeBtn" );
+        disable( "uncompleteBtn" );
+    }
+    hideById( 'loaderDiv' );
+    showById( 'dataEntryInfor' );
+    showById( 'entryFormContainer' );
+
+    jQuery( "#entryForm :input" ).each( function () {
+        if ( ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' )
+            || ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) ) {
+            var input = jQuery( this );
+            input.parent().width( input.width() + 200 );
+        }
+    } );
+}
+
+function createExecutionDate( programId, programStageInstanceId, executionDate, organisationUnitId ) {
+    return {
+        programId: programId,
+        programStageInstanceId: programStageInstanceId,
+        executionDate: executionDate,
+        organisationUnitId: organisationUnitId
+    }
+}

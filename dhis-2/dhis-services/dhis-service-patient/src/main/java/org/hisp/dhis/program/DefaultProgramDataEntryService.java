@@ -44,7 +44,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 /**
  * @author Chau Thu Tran
  * @version $ DefaultProgramDataEntryService.java May 26, 2011 3:59:43 PM $
- * 
+ *
  */
 public class DefaultProgramDataEntryService
     implements ProgramDataEntryService
@@ -139,7 +139,7 @@ public class DefaultProgramDataEntryService
             String inputHTML = dataElementMatcher.group( 1 );
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( inputHTML );
-            
+
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
@@ -758,7 +758,7 @@ public class DefaultProgramDataEntryService
 
     /**
      * Replaces i18n string in the custom form code.
-     * 
+     *
      * @param dataEntryFormCode the data entry form html.
      * @param i18n the I18n object.
      * @return internationalized data entry form html.

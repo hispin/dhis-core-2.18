@@ -1,18 +1,17 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
-		#if($!programStageInstance.programStage.program.type!='1')
+		#if($!program.type!='1')
 			hideById('newEncounterBtn');
 		#end
-		#if($!programStageInstance.programStage.id)
-			setFieldValue('programStageId', "$!programStageInstance.programStage.id");
+		#if($!programStage.id)
+			setFieldValue('programStageId', "$!programStage.id");
 		#end
 		#if( $programStageInstance )
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#end
-		
+
 		entryFormContainerOnReady();
-		
 	});
 </script>
 
@@ -21,20 +20,20 @@
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
 <input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
 <input type='hidden' name='programInstanceId' id='programInstanceId' value='$!programStageInstance.programInstance.id'>
-<input type='hidden' name='irregular' id='irregular' value='$!programStageInstance.programStage.irregular'>
-<input type='hidden' name='displayGenerateEventBox' id='displayGenerateEventBox' value='$!programStageInstance.programStage.displayGenerateEventBox'>
+<input type='hidden' name='irregular' id='irregular' value='$!programStage.irregular'>
+<input type='hidden' name='displayGenerateEventBox' id='displayGenerateEventBox' value='$!programStage.displayGenerateEventBox'>
 <input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
-<input type='hidden' name='programStageUid' id='programStageUid' value='$!programStageInstance.programStage.uid'>
-<input type='hidden' name='programId' id='programId' value='$!programStageInstance.programInstance.program.id'>
-<input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStageInstance.programStage.validCompleteOnly'>
+<input type='hidden' name='programStageUid' id='programStageUid' value='$!programStage.uid'>
+<input type='hidden' name='programId' id='programId' value='$!program.id'>
+<input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStage.validCompleteOnly'>
 <input type='hidden' name='currentUsername' id='currentUsername' value='$!currentUsername'>
-<input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!programStageInstance.programInstance.program.blockEntryForm'>
-<input type='hidden' name='remindCompleted' id='remindCompleted'  value='$!programStageInstance.programInstance.program.remindCompleted'>
+<input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!program.blockEntryForm'>
+<input type='hidden' name='remindCompleted' id='remindCompleted'  value='$!program.remindCompleted'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	<table style="width:600px;margin-top:-9px" class="listTable">
-		
-		#if($programStageInstance.programStage.captureCoordinates=='true')
+
+		#if($programStage.captureCoordinates=='true')
 		<tr>
 			<th class='coordinates1'><label for="longitude">$i18n.getString( "longitude" )</label></th>
 			<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>
@@ -52,8 +51,8 @@
 				<input type="text" class="{validate:{maxlength:160}} criteria" name="comment_$programStageInstance.id" id="comment_$programStageInstance.id" style="width:430px;#if($programStageInstance.programStage.captureCoordinates=='false') margin-left:10px; #end " onkeypress="keypressOnComent(event,this,$programStageInstance.id);">
 			</td>
 		</tr>
-		
-		#if( $programStageInstance.programStage.getDataEntryType()=='section' )
+
+		#if( $programStage.getDataEntryType()=='section' )
 		<tr id="filterDataSetSectionTr" class='coordinates1'>
 			<th class='coordinates1'><label for="filterDataSetSection">$i18n.getString( "filter_on_section" )</label></th>
 			<th colspan='3'>
@@ -88,7 +87,7 @@
 	</table>
 	
 	<br>
-	
+
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
 	#elseif( $sections && $sections.size() > 0 )
@@ -122,7 +121,7 @@
 	var i18n_enter_values_for_longitude_and_latitude_fields = '$encoder.jsEscape( $i18n.getString( "enter_values_for_longitude_and_latitude_fields" ) , "'" )';
 	var i18n_enter_a_valid_number = '$encoder.jsEscape( $i18n.getString( "enter_a_valid_number" ) , "'" )';
 	
-	#if( $programStageInstance.programInstance.program.type=='1' && $programStageInstance.programInstance.status==1)
+	#if( $program.type == '1' && $programStageInstance.programInstance.status==1)
 		jQuery("[id=entryFormContainer] :input").prop('disabled', true);
 		jQuery("[id=entryFormContainer] :input").datepicker("destroy");
 		jQuery("[id=executionDate]").prop('disabled', true);
@@ -133,4 +132,3 @@
 		blockEntryForm();
 	}
 </script>
-
