@@ -87,18 +87,18 @@
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
-    <bean id="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
-      class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction" scope="prototype">
-      <property name="programDataEntryService" ref="org.hisp.dhis.program.ProgramDataEntryService" />
-      <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-      <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-      <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-      <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
-      <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction" scope="prototype">
+    <property name="programDataEntryService" ref="org.hisp.dhis.program.ProgramDataEntryService" />
+    <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+    <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+    <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
 
-    <bean
-		id="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction"
+    <bean id="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction"
 		scope="prototype">
 		<property name="programStageInstanceService"
