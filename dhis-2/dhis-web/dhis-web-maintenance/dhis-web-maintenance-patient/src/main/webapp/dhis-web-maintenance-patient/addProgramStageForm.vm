@@ -23,12 +23,11 @@
 		<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"/></td>
 	</tr>
 	
+	#if( $program.type == 1 )
 	<tr>
 		<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
 		<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
 	</tr>
-	
-	#if( $program.type == 1 )
 	
 	<tr>
 		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
