@@ -244,9 +244,9 @@ public class HibernateProgramInstanceStore
                 String patientName = rs.getString( "firstName" );
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
-                String incidentDate = rs.getString( "dateofincident" );
+                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];// just get date, remove timestamp
                 String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
-                String erollmentDate = rs.getString( "enrollmentdate" );
+                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];// just get date, remove timestamp
                 String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
 
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
