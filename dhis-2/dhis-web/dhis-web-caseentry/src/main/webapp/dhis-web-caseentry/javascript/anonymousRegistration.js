@@ -710,21 +710,13 @@ var service = (function () {
         },
 
         loadDataEntryForm: function( programStageId, programStageInstanceId, organisationUnitId ) {
-            $.ajax( {
-                url: 'dataentryform.action',
-                data: {
-                    programStageId: programStageId,
-                    programStageInstanceId: programStageInstanceId,
-                    organisationUnitId: organisationUnitId
-                },
-                dataType: 'html'
-            } ).done(function(data) {
+            loadFormAjax( programStageId, programStageInstanceId, organisationUnitId ).done(function ( data ) {
                 $( '#dataEntryFormDiv' ).html( data );
                 updateDataForm();
-            } ).fail(function() {
+            } ).fail( function () {
                 $( '#dataEntryFormDiv' ).html( "<div class='message message-info'>Unable to load form.</div>" );
                 hideById( 'loaderDiv' );
-            });
+            } );
         }
     }
 })();
@@ -768,4 +760,23 @@ function createExecutionDate( programId, programStageInstanceId, executionDate, 
         executionDate: executionDate,
         organisationUnitId: organisationUnitId
     }
+}
+
+function loadFormAjax( programStageId, programStageInstanceId, organisationUnitId ) {
+    var data = {};
+
+    if(programStageId)
+        data.programStageId = programStageId;
+
+    if(programStageInstanceId)
+        data.programStageInstanceId = programStageInstanceId;
+
+    if(organisationUnitId)
+        data.organisationUnitId = organisationUnitId;
+
+    return $.ajax( {
+        url: 'dataentryform.action',
+        data: data,
+        dataType: 'html'
+    } )
 }
