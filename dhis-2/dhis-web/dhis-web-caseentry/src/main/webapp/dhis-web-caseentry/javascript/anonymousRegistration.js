@@ -102,14 +102,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
 
         updateProgramList( programs );
     } );
-
-    /*
-    // try online first, then fallback to what we have stored in browser
-    dhis2.storage.Store.plugins['online-anonymous-programs'].call( {}, function ( arr ) {
-        updateProgramList( arr );
-    }, function () {
-    } );
-    */
 }
 
 function updateProgramList( arr ) {
@@ -652,7 +644,6 @@ function removeAllOption() {
 var service = (function () {
     var executionDateStoreInitialized = false;
     var dataValueStoreInitialized = false;
-    var formStoreInitialized = false;
 
     var executionDateStore = new dhis2.storage.Store( {name: 'anonymousExecutionDate' }, function ( store ) {
         executionDateStoreInitialized = true;
@@ -660,10 +651,6 @@ var service = (function () {
 
     var dataValueStore = new dhis2.storage.Store( {name: 'anonymousDataValue' }, function ( store ) {
         dataValueStoreInitialized = true;
-    } );
-
-    var formStore = new dhis2.storage.Store( {name: 'anonymousForm', adapter: 'dom-ss'}, function ( store ) {
-        formStoreInitialized = true;
     } );
 
     return {

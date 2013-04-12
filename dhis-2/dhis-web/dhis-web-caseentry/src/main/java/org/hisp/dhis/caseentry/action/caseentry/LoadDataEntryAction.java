@@ -251,9 +251,6 @@ public class LoadDataEntryAction
     public String execute()
         throws Exception
     {
-        organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit() :
-            organisationUnitService.getOrganisationUnit( organisationUnitId );
-
         if ( programStageInstanceId != null )
         {
             programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
@@ -293,6 +290,9 @@ public class LoadDataEntryAction
 
         if ( programStageInstance != null )
         {
+            organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit() :
+                organisationUnitService.getOrganisationUnit( organisationUnitId );
+
             if ( program.isRegistration() )
             {
                 patient = programStageInstance.getProgramInstance().getPatient();
