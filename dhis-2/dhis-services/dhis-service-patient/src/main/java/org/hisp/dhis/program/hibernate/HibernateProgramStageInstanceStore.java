@@ -422,7 +422,7 @@ public class HibernateProgramStageInstanceStore
                 String programName = rs.getString( "programName" );
                 String programStageName = rs.getString( "programStageName" );
                 String daysSinceDueDate = rs.getString( "days_since_due_date" );
-                String dueDate = rs.getString( "duedate" );
+                String dueDate = rs.getString( "duedate" ).split( " " )[0];// just get date, remove timestamp
 
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
