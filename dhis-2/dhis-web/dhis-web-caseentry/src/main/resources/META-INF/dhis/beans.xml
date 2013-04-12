@@ -155,6 +155,15 @@
 			ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 	
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.SaveProgramInstanceCommentAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveProgramInstanceCommentAction"
+		scope="prototype">
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+	
 	<!-- Multi DataEntry -->
 
 	<bean

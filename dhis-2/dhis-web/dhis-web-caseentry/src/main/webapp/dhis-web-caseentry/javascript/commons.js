@@ -2053,3 +2053,16 @@ function markForFollowup( programInstanceId, followup )
 			 }
 		});
 }
+
+function saveComment( programInstanceId )
+{
+	jQuery.postJSON( "saveProgramInstanceComment.action",
+		{ 
+			programInstanceId:programInstanceId,
+			comment: getFieldValue('comment')
+		}, 
+		function( json ) 
+		{   
+			 $( '#comment' ).css( 'background-color', COLOR_GREEN );
+		});
+}
