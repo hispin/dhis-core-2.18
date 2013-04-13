@@ -658,6 +658,7 @@ function loadProgramStageInstance(programStageInstanceId) {
 
         if(data.executionDate) {
             $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+            $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
         }
 
         if ( data.programStage.captureCoordinates ) {
@@ -678,6 +679,8 @@ function loadProgramStageInstance(programStageInstanceId) {
                 $( '#commentTB' ).append( comment )
             });
         }
+    } ).fail(function() {
+        $('#commentInput').attr('disabled', true)
     });
 }
 

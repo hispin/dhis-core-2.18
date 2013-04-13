@@ -88,10 +88,13 @@ $( document ).ready( function () {
             setHeaderMessage( form );
             ajax_login();
         }
+
+        $('#commentInput').removeAttr('disabled');
     } );
 
     $( document ).bind( 'dhis2.offline', function () {
         setHeaderMessage( i18n_offline_notification );
+        $('#commentInput').attr('disabled', true);
     } );
 
     dhis2.availability.startAvailabilityCheck();
