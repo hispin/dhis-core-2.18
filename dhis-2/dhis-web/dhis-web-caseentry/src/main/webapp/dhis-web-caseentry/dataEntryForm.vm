@@ -38,7 +38,7 @@
 			<th class='coordinates1'><label for="postComment">$i18n.getString('post_comment'):</label></th>
 			<th colspan='3'>
 				<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput"
-                        style="width:430px;#if($programStageInstance.programStage.captureCoordinates=='false') margin-left:10px; #end "
+                        style="width:430px;#if($programStage.captureCoordinates=='false') margin-left:10px; #end "
                        onkeypress="keypressOnComment( event, this );">
 			</th>
 		</tr>
