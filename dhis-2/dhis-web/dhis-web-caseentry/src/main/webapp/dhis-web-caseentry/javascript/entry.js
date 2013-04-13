@@ -625,39 +625,68 @@ TOGGLE = {
     }
 };
 
+function loadProgramStageInstance(programStageInstanceId) {
+    return $.ajax({
+        url: 'getProgramStageInstance.action',
+        data: {
+            'programStageInstanceId': programStageInstanceId
+        },
+        type: 'GET',
+        dataType: 'json'
+    } ).done(function(data) {
+        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
+        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
+        $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
+        $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
+        $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
+        $( "#entryFormContainer input[id='completed']" ).val( data.completed );
+        $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
+        $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
+        $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
+        $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
+        $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.program.blockEntryForm );
+        $( "#entryFormContainer input[id='remindCompleted']" ).val( data.program.remindCompleted );
+    });
+}
+
 function entryFormContainerOnReady()
 {
 	var currentFocus = undefined;
+    var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 
-    if( jQuery("#entryFormContainer") ) {
-		
-        if( jQuery("#executionDate").val() != '' )
-        {
-            toggleContentForReportDate(true);
-        }
-		
-        jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
-            jQuery(this).focus(function(){
-                currentFocus = this;
+    loadProgramStageInstance(programStageInstanceId ).done(function() {
+        if( jQuery("#entryFormContainer") ) {
+
+            if( jQuery("#executionDate").val() != '' )
+            {
+                toggleContentForReportDate(true);
+            }
+
+            jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
+                jQuery(this).focus(function(){
+                    currentFocus = this;
+                });
+
+                jQuery(this).addClass("inputText");
             });
-            
-            jQuery(this).addClass("inputText");
-        });
-		
-        TOGGLE.init();
-				
-		jQuery("#entryForm :input").each(function()
-		{ 
-			if( jQuery(this).attr( 'options' )!= null && jQuery(this).attr( 'options' )== 'true' )
-			{
-				autocompletedField(jQuery(this).attr('id'));
-			}
-			else if( jQuery(this).attr( 'username' )!= null && jQuery(this).attr( 'username' )== 'true' )
-			{
-				autocompletedUsernameField(jQuery(this).attr('id'));
-			}
-		});
-    }
+
+            TOGGLE.init();
+
+    		jQuery("#entryForm :input").each(function()
+    		{
+    			if( jQuery(this).attr( 'options' )!= null && jQuery(this).attr( 'options' )== 'true' )
+    			{
+    				autocompletedField(jQuery(this).attr('id'));
+    			}
+    			else if( jQuery(this).attr( 'username' )!= null && jQuery(this).attr( 'username' )== 'true' )
+    			{
+    				autocompletedUsernameField(jQuery(this).attr('id'));
+    			}
+    		});
+        }
+    } ).fail(function() {
+        console.log("failed, do something smart")
+    });
 }
 
 //------------------------------------------------------

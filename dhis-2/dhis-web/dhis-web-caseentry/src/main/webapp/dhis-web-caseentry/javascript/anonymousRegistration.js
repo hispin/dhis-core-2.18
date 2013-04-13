@@ -1,5 +1,63 @@
 var DAO = DAO || {};
 
+var DEFAULT_WAIT_CHECK_TIMEOUT = 10;
+
+function initalizeProgramStages() {
+    var programStagesInitialized = false;
+
+    DAO.programStages = new dhis2.storage.Store( {name: 'programStages', adapter: 'dom-ss'}, function(store) {
+        programStagesInitialized = true;
+    });
+
+    function waitCheck() {
+        if(!programStagesInitialized) {
+            setTimeout(waitCheck, DEFAULT_WAIT_CHECK_TIMEOUT);
+        }
+    }
+
+    waitCheck();
+}
+
+function initializePrograms() {
+    var programsInitialized = false;
+
+    DAO.programs = new dhis2.storage.Store( {name: 'programs', adapter: 'dom-ss'}, function ( store ) {
+        jQuery.getJSON( "getProgramMetaData.action", {},function ( data ) {
+            var keys = _.keys( data.metaData.programs );
+            var objs = _.values( data.metaData.programs );
+
+            DAO.programs.addAll( keys, objs, function ( store ) {
+                var deferred = $.Deferred();
+                var promise = deferred.promise();
+
+                _.each( _.values(data.metaData.programs), function(el, idx) {
+                    var psid = el.programStages[0].id;
+
+                    promise = promise.pipe(function () {
+                        return loadProgramStage(psid);
+                    });
+                });
+
+                deferred.resolve();
+
+                selection.setListenerFunction( organisationUnitSelected );
+                programsInitialized = true;
+            } );
+        } ).fail( function () {
+            selection.setListenerFunction( organisationUnitSelected );
+            programsInitialized = true;
+        } );
+    } );
+
+    function waitCheck() {
+        if(!programsInitialized) {
+            setTimeout(waitCheck, DEFAULT_WAIT_CHECK_TIMEOUT);
+        }
+    }
+
+    waitCheck();
+}
+
 $( document ).ready( function () {
     $.ajaxSetup( {
         type: 'POST',
@@ -8,20 +66,8 @@ $( document ).ready( function () {
 
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
         // initialize the stores, and then try and add the data
-        DAO.programs = new dhis2.storage.Store( {name: 'programs', adapter: 'dom-ss'}, function ( store ) {
-            jQuery.getJSON( "getProgramMetaData.action", {},function ( data ) {
-                var keys = _.keys( data.metaData.programs );
-                var objs = _.values( data.metaData.programs );
-
-                DAO.programs.addAll( keys, objs, function ( store ) {
-                    selection.setListenerFunction( organisationUnitSelected );
-                    hideHeaderMessage();
-                } );
-            } ).fail( function () {
-                selection.setListenerFunction( organisationUnitSelected );
-                hideHeaderMessage();
-            } );
-        } );
+        initalizeProgramStages();
+        initializePrograms();
     } );
 
     $( document ).bind( 'dhis2.online', function ( event, loggedIn ) {
@@ -531,7 +577,7 @@ function showUpdateEvent( programStageInstanceId ) {
     setInnerHTML( 'dataEntryFormDiv', '' );
     showLoader();
 
-    service.loadDataEntryForm( getFieldValue( 'programStageId' ), programStageInstanceId, getFieldValue( 'orgunitId' ) );
+    service.displayProgramStage( getFieldValue( 'programStageId' ), programStageInstanceId, getFieldValue( 'orgunitId' ) );
 }
 
 function backEventList() {
@@ -642,15 +688,15 @@ function removeAllOption() {
 
 // execution date module
 var service = (function () {
-    var executionDateStoreInitialized = false;
-    var dataValueStoreInitialized = false;
+    var anonymousExecutionDatesInitialized = false;
+    var anonymousDataValuesInitialized = false;
 
-    var executionDateStore = new dhis2.storage.Store( {name: 'anonymousExecutionDate' }, function ( store ) {
-        executionDateStoreInitialized = true;
+    var anonymousExecutionDates = new dhis2.storage.Store( {name: 'anonymousExecutionDates', adapter: 'dom' }, function ( store ) {
+        anonymousExecutionDatesInitialized = true;
     } );
 
-    var dataValueStore = new dhis2.storage.Store( {name: 'anonymousDataValue' }, function ( store ) {
-        dataValueStoreInitialized = true;
+    var anonymousDataValues = new dhis2.storage.Store( {name: 'anonymousDataValues', adapter: 'dom' }, function ( store ) {
+        anonymousDataValuesInitialized = true;
     } );
 
     return {
@@ -675,7 +721,7 @@ var service = (function () {
                 }
             } ).fail( function () {
                 function waitForExecutionDateStore() {
-                    if(!executionDateStoreInitialized) {
+                    if(!anonymousExecutionDatesInitialized) {
                         setTimeout(waitForExecutionDateStore, 50);
                     }
                 }
@@ -685,35 +731,33 @@ var service = (function () {
                 var data = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
 
                 if(programStageInstanceId == 0) {
-                    executionDateStore.keys(function(store, keys) {
+                    anonymousExecutionDates.keys(function(store, keys) {
                         var i = 100;
 
                         for(; i<10000; i++) {
                             if( keys.indexOf(i) == -1 ) break;
                         }
 
-                        console.log("i: ", i);
+                        programStageInstanceId = "local"+i;
 
-                        setFieldValue( 'programStageInstanceId', "local"+i );
+                        setFieldValue( 'programStageInstanceId', programStageInstanceId );
                         jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                         showUpdateEvent( programStageInstanceId );
-                        console.log("programStageInstanceId: ", getFieldValue('programStageInstanceId'));
                     });
                 } else {
                     // if we have a programStageInstanceId, just reuse that one
                     setFieldValue( 'programStageInstanceId', programStageInstanceId );
                     jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                     showUpdateEvent( programStageInstanceId );
-                    console.log("programStageInstanceId: ", getFieldValue('programStageInstanceId'));
                 }
             } );
         },
 
-        loadDataEntryForm: function( programStageId, programStageInstanceId, organisationUnitId ) {
-            loadFormAjax( programStageId, programStageInstanceId, organisationUnitId ).done(function ( data ) {
+        displayProgramStage: function( programStageId, programStageInstanceId, organisationUnitId ) {
+            loadProgramStage( programStageId, programStageInstanceId, organisationUnitId, function ( data ) {
                 $( '#dataEntryFormDiv' ).html( data );
                 updateDataForm();
-            } ).fail( function () {
+            },function () {
                 $( '#dataEntryFormDiv' ).html( "<div class='message message-info'>Unable to load form.</div>" );
                 hideById( 'loaderDiv' );
             } );
@@ -762,7 +806,37 @@ function createExecutionDate( programId, programStageInstanceId, executionDate, 
     }
 }
 
-function loadFormAjax( programStageId, programStageInstanceId, organisationUnitId ) {
+function loadProgramStage( programStageId, programStageInstanceId, organisationUnitId, success, fail ) {
+    /*
+    DAO.programStages.fetch(programStageId, function(store, arr) {
+        if ( arr.length > 0 ) {
+            if(success) success(arr[0]);
+        } else {
+            var data = {};
+
+            if(programStageId)
+                data.programStageId = programStageId;
+
+            if(programStageInstanceId)
+                data.programStageInstanceId = programStageInstanceId;
+
+            if(organisationUnitId)
+                data.organisationUnitId = organisationUnitId;
+
+            $.ajax( {
+                url: 'dataentryform.action',
+                data: data,
+                dataType: 'html'
+            } ).done(function(data) {
+                DAO.programStages.add(programStageId, data);
+                if(success) success(data);
+            } ).fail(function() {
+                if(fail) fail();
+            });
+        }
+    });
+    */
+
     var data = {};
 
     if(programStageId)
@@ -774,9 +848,14 @@ function loadFormAjax( programStageId, programStageInstanceId, organisationUnitI
     if(organisationUnitId)
         data.organisationUnitId = organisationUnitId;
 
-    return $.ajax( {
+    $.ajax( {
         url: 'dataentryform.action',
         data: data,
         dataType: 'html'
-    } )
+    } ).done(function(data) {
+        DAO.programStages.add(programStageId, data);
+        if(success) success(data);
+    } ).fail(function() {
+        if(fail) fail();
+    });
 }
