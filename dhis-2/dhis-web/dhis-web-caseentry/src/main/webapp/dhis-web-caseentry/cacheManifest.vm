@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.12-SNAPSHOT V5
+# 2.12-SNAPSHOT V6
 NETWORK:
 *
 CACHE:
@@ -27,7 +27,7 @@ CACHE:
 ../dhis-web-commons/javascripts/dhis2/dhis2.availability.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.storage.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.storage.dom.js
-../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js
+../dhis-web-commons/javascripts/dhis2/dhis2.storage.dom-ss.js
 ../dhis-web-commons/javascripts/jQuery/jquery.cookie.js
 ../dhis-web-commons/javascripts/jQuery/jquery.validate.js
 ../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js
