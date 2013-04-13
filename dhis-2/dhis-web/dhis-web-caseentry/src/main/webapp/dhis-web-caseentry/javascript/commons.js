@@ -1821,8 +1821,12 @@ function sendSmsOnePatient( field, programStageInstanceId )
 		});
 }
 
-function keypressOnComent(event, field, programStageInstanceId )
+function keypressOnComment(event, field, programStageInstanceId )
 {
+    if(!programStageInstanceId) {
+        programStageInstanceId = $( "#entryFormContainer input[id='programStageInstanceId']" ).val();
+    }
+
 	var key = getKeyCode( event );
 	if ( key==13 ){ // Enter
 		addComment( field, programStageInstanceId );
@@ -1849,10 +1853,12 @@ function addComment( field, programStageInstanceId )
 			var date = new Date();
 			var currentTime = date.getHours() + ":" + date.getMinutes();
 			var content = "<tr><td>" + getCurrentDate("currentDate") + " " + currentTime + "</td>"
+
 			if(programStageName!=undefined)
 			{
 				content += "<td>" + programStageName + "</td>"
 			}
+
 			content += "<td>" + getFieldValue('currentUsername') + "</td>"
 			content += "<td>" + commentText + "</td></tr>";
 			jQuery('#commentTB').prepend(content);
@@ -1876,7 +1882,7 @@ function removeComment( programStageInstanceId, commentId )
 {
 	jQuery.postUTF8( 'removePatientComment.action',
 		{
-			programStageInstanceId:programStageInstanceId,
+			programStageInstanceId: programStageInstanceId,
 			id: commentId
 		}, function ( json )
 		{
@@ -1969,12 +1975,13 @@ function refreshZebraStripes( $tbody )
      $tbody.find( 'tr:visible:odd' ).removeClass( 'listRow' ).removeClass( 'listAlternateRow' ).addClass( 'listAlternateRow' );
 }
 
-function saveCoordinatesEvent(programStageInstanceId)
+function saveCoordinatesEvent()
 {
+	var programStageInstanceId = $( "#entryFormContainer input[id='programStageInstanceId']" ).val();
 	var longitude = jQuery.trim(getFieldValue('longitude'));
 	var latitude = jQuery.trim(getFieldValue('latitude'));
 	var isValid = true;
-	
+
 	if(longitude=='' && latitude==''){
 		isValid = true;
 	}
@@ -2016,7 +2023,7 @@ function saveCoordinatesEvent(programStageInstanceId)
 	if( isValid ){
 		jQuery.postJSON( "saveCoordinatesEvent.action",
 			{ 
-				programStageInstanceId:programStageInstanceId,
+				programStageInstanceId: programStageInstanceId,
 				longitude: longitude,
 				latitude: latitude
 			}, 

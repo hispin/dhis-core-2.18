@@ -98,7 +98,7 @@
 				<tr>
 					<td>$i18n.getString( "post_comment" )</td>
 					<td>
-						<input type='text' id='commentText' name='commentText' onkeypress="keypressOnComent(event,this,'$programStageInstance.id');">
+						<input type='text' id='commentText' name='commentText' onkeypress="keypressOnComment(event,this,'$programStageInstance.id');">
 						<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment( byId('commentText'),'$programStageInstance.id');">
 					</td>
 				</tr>

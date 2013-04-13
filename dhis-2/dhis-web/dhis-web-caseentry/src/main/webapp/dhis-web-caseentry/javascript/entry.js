@@ -634,8 +634,9 @@ function loadProgramStageInstance(programStageInstanceId) {
         type: 'GET',
         dataType: 'json'
     } ).done(function(data) {
-        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
+        $( "#programStageInstanceId" ).val( data.id );
         $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
+        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
         $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
         $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
         $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
