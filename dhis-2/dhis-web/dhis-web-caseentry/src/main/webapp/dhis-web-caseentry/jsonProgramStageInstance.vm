@@ -50,6 +50,6 @@
     "programInstance": {
         "id": "$!programStageInstance.programInstance.id",
         "dateOfIncident": "$format.formatDate( $!programStageInstance.programInstance.dateOfIncident )",
-        "status": "$format.formatDate( $!programStageInstance.programInstance.status )"
+        "status": "$!programStageInstance.programInstance.status"
     }
 }
