@@ -67,6 +67,10 @@
       </result>
     </action>
 
+    <action name="getProgramStageInstance" class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageInstanceAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageInstance.vm</result>
+    </action>
+    
     <action name="dataentryform"
       class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction">
       <result name="success" type="velocity">/content.vm</result>
