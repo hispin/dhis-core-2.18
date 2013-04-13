@@ -1,5 +1,5 @@
 {
-    "currentUser": "$currentUsername",
+    "currentUsername": "$currentUsername",
     "id": "$!programStageInstance.id",
     "dueDate": "$format.formatDate( $!programStageInstance.dueDate )",
     "executionDate": "$format.formatDate( $!programStageInstance.executionDate )",

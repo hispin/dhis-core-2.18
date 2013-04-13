@@ -17,18 +17,18 @@
 
 <div id='entryFormContainer'>
 
-<input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
-<input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
-<input type='hidden' name='programInstanceId' id='programInstanceId' value='$!programStageInstance.programInstance.id'>
-<input type='hidden' name='irregular' id='irregular' value='$!programStage.irregular'>
-<input type='hidden' name='displayGenerateEventBox' id='displayGenerateEventBox' value='$!programStage.displayGenerateEventBox'>
-<input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
-<input type='hidden' name='programStageUid' id='programStageUid' value='$!programStage.uid'>
-<input type='hidden' name='programId' id='programId' value='$!program.id'>
-<input type='hidden' name='validCompleteOnly' id='validCompleteOnly' value='$!programStage.validCompleteOnly'>
-<input type='hidden' name='currentUsername' id='currentUsername' value='$!currentUsername'>
-<input type='hidden' name='blockEntryForm' id='blockEntryForm'  value='$!program.blockEntryForm'>
-<input type='hidden' name='remindCompleted' id='remindCompleted'  value='$!program.remindCompleted'>
+<input type='hidden' name='incidentDate' id='incidentDate'>
+<input type='hidden' name='programStageInstanceId' id='programStageInstanceId'>
+<input type='hidden' name='programInstanceId' id='programInstanceId'>
+<input type='hidden' name='irregular' id='irregular'>
+<input type='hidden' name='displayGenerateEventBox' id='displayGenerateEventBox'>
+<input type='hidden' name='completed' id='completed'>
+<input type='hidden' name='programStageUid' id='programStageUid'>
+<input type='hidden' name='programId' id='programId'>
+<input type='hidden' name='validCompleteOnly' id='validCompleteOnly'>
+<input type='hidden' name='currentUsername' id='currentUsername'>
+<input type='hidden' name='blockEntryForm' id='blockEntryForm'>
+<input type='hidden' name='remindCompleted' id='remindCompleted'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	<table style="width:600px;margin-top:-9px" class="listTable">
