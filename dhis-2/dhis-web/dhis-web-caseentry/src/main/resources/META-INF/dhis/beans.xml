@@ -1110,4 +1110,12 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageInstanceAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageInstanceAction"
+    scope="prototype">
+    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+  </bean>
+
 </beans>
