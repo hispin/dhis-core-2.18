@@ -104,7 +104,7 @@
 	var i18n_enter_a_value_greater_than_or_equal_to_nagetive_90 = '$encoder.jsEscape( $i18n.getString( "enter_a_value_greater_than_or_equal_to_nagetive_90" ) , "'" )';
 	var i18n_enter_values_for_longitude_and_latitude_fields = '$encoder.jsEscape( $i18n.getString( "enter_values_for_longitude_and_latitude_fields" ) , "'" )';
 	var i18n_enter_a_valid_number = '$encoder.jsEscape( $i18n.getString( "enter_a_valid_number" ) , "'" )';
-	
+
 	#if( $program.type == '1' && $programStageInstance.programInstance.status==1)
 		jQuery("[id=entryFormContainer] :input").prop('disabled', true);
 		jQuery("[id=entryFormContainer] :input").datepicker("destroy");
