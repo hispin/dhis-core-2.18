@@ -32,6 +32,7 @@
     "program": {
         "id": "$!programStageInstance.programInstance.program.id",
         "uid": "$!programStageInstance.programInstance.program.uid",
+        "type": "$!programStageInstance.programInstance.program.type",
         "blockEntryForm": "$!programStageInstance.programInstance.program.blockEntryForm",
         "remindCompleted": "$!programStageInstance.programInstance.program.remindCompleted"
     },
