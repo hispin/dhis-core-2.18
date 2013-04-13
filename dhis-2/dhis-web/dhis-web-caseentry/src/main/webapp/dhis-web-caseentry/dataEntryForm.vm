@@ -1,16 +1,5 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
-		#if($!program.type!='1')
-			hideById('newEncounterBtn');
-		#end
-		#if($!programStage.id)
-			setFieldValue('programStageId', "$!programStage.id");
-		#end
-		#if( $programStageInstance )
-			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
-			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
-		#end
-
 		entryFormContainerOnReady();
 	});
 </script>
@@ -30,26 +19,26 @@
 <input type='hidden' name='blockEntryForm' id='blockEntryForm'>
 <input type='hidden' name='remindCompleted' id='remindCompleted'>
 
-<div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
+<div id='entryForm' class='hidden'>
 	<table style="width:600px;margin-top:-9px" class="listTable">
 
 		#if($programStage.captureCoordinates=='true')
 		<tr>
 			<th class='coordinates1'><label for="longitude">$i18n.getString( "longitude" )</label></th>
-			<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" value="$!{longitude}" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>
+			<th class='coordinates2'><input type="text" class='criteria' id="longitude" name="longitude" class="{validate:{number:true,min:-180,max:180}}" placeholder='$i18n.getString("enter_a_number")' ></th>
 			<th class='coordinates1'><label for="latitude">&nbsp;$i18n.getString( "latitude" )</label></th>
 			<th class='coordinates2'>
-				<input type="text" class='criteria' id="latitude" name="latitude" value="$!{latitude}" class="{validate:{number:true,min:-90,max:90}}" placeholder='$i18n.getString("enter_a_number")' >
+				<input type="text" class='criteria' id="latitude" name="latitude" class="{validate:{number:true,min:-90,max:90}}" placeholder='$i18n.getString("enter_a_number")' >
 				<img style='cursor:pointer' src='images/save.png' title='$i18n.getString("save")' onclick='saveCoordinatesEvent($!programStageInstance.id);' />
 			</th>
 		</tr>
 		#end
 		
 		<tr>
-			<th class='coordinates1'><label for="postComment">$i18n.getString('post_comment'):</label></td>
+			<th class='coordinates1'><label for="postComment">$i18n.getString('post_comment'):</label></th>
 			<th colspan='3'>
 				<input type="text" class="{validate:{maxlength:160}} criteria" name="comment_$programStageInstance.id" id="comment_$programStageInstance.id" style="width:430px;#if($programStageInstance.programStage.captureCoordinates=='false') margin-left:10px; #end " onkeypress="keypressOnComent(event,this,$programStageInstance.id);">
-			</td>
+			</th>
 		</tr>
 
 		#if( $programStage.getDataEntryType()=='section' )
@@ -71,13 +60,6 @@
 			<td colspan='3'>
 				<table>
 					<tbody id="commentTB">
-						#foreach( $comment in $programStageInstance.patientComments )
-						<tr>
-							<td>$format.formatDateTime($comment.createdDate) </td>
-							<td>$comment.creator </td>
-							<td>$!comment.commentText</td>
-						</tr>
-						#end
 					</tbody>
 				</table>
 			</td>

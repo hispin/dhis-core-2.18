@@ -640,12 +640,43 @@ function loadProgramStageInstance(programStageInstanceId) {
         $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
         $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
         $( "#entryFormContainer input[id='completed']" ).val( data.completed );
+        $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
         $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
         $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
         $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
         $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
         $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.program.blockEntryForm );
         $( "#entryFormContainer input[id='remindCompleted']" ).val( data.program.remindCompleted );
+
+        $( "#entryFormContainer input[id='dueDate']" ).val( data.dueDate );
+        $( "#entryFormContainer input[id='executionDate']" ).val( data.executionDate );
+
+        if ( data.program.type != '1' ) {
+            hideById( 'newEncounterBtn' );
+        }
+
+        if(data.executionDate) {
+            $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+        }
+
+        if ( data.programStage.captureCoordinates ) {
+            $( '#longitude' ).val( data.longitude );
+            $( '#latitude' ).val( data.latitude );
+        }
+
+        if(data.comments.length > 0) {
+            $.each(data.comments, function(idx, item) {
+                var comment = [
+                    "<tr>",
+                    "<td>" + item.createdDate + "</td>",
+                    "<td>" + item.creator + "</td>",
+                    "<td>" + item.text + "</td>",
+                    "</tr>"
+                ].join(' ');
+
+                $( '#commentTB' ).append( comment )
+            });
+        }
     });
 }
 

@@ -784,6 +784,7 @@ function updateDataForm() {
         enable( "completeBtn" );
         disable( "uncompleteBtn" );
     }
+
     hideById( 'loaderDiv' );
     showById( 'dataEntryInfor' );
     showById( 'entryFormContainer' );
