@@ -483,4 +483,16 @@ public class JdbcAggregatedDataValueStore
         
         return jdbcTemplate.query( sql, new DeflatedDataValueRowMapper() );
     }
+    
+    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId ) //TODO remove
+    {
+        final String sql =
+            "SELECT * FROM datavalue " +
+            "WHERE dataelementid = " + dataElementId + " " +
+            "AND categoryoptioncomboid = " + categoryOptionComboId + " " +
+            "AND periodid = " + periodId + " " +
+            "AND sourceid = " + sourceId;
+        
+        return jdbcTemplate.queryForObject( sql, new DataValueRowMapper() );
+    }
 }
