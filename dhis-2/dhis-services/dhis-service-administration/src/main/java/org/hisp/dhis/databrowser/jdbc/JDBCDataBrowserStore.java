@@ -1,11 +1,18 @@
 package org.hisp.dhis.databrowser.jdbc;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.databrowser.DataBrowserGridStore;
-import org.hisp.dhis.databrowser.util.DataBrowserUtils;
+import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
@@ -17,9 +24,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @version $Id JDBCDataBrowserStore.java 2010-04-06 jpp, ddhieu$
  */
 public class JDBCDataBrowserStore
-    extends DataBrowserUtils
     implements DataBrowserGridStore
 {
+    private static final Log log = LogFactory.getLog( JDBCDataBrowserStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -47,8 +55,6 @@ public class JDBCDataBrowserStore
 
     // -------------------------------------------------------------------------
     // DataBrowserStore implementation
-    //
-    // Basic
     // -------------------------------------------------------------------------
 
     public Grid getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds, PeriodType periodType, boolean isZeroAdded )
@@ -302,8 +308,6 @@ public class JDBCDataBrowserStore
 
     }
 
-    // This method retrieves raw data for a given orgunit, periods,
-
     public Integer setRawDataElementsForOrgUnitBetweenPeriods( Grid grid, Integer orgUnitId,
         List<Integer> betweenPeriodIds, List<Integer> metaIds, boolean isZeroAdded )
     {
@@ -315,8 +319,179 @@ public class JDBCDataBrowserStore
     }
 
     // -------------------------------------------------------------------------
+    // Private methods
+    // -------------------------------------------------------------------------
+
+    private static void setMetaStructure( Grid grid, StringBuffer sqlsb, List<Integer> metaIds, JdbcTemplate jdbcTemplate )
+    {
+        try
+        {
+            Integer metaId = null;
+            String metaName = null;
+            ResultSet resultSet = getScrollableResult( sqlsb.toString(), jdbcTemplate );
+
+            while ( resultSet.next() )
+            {
+                metaId = resultSet.getInt( 1 );
+                metaName = resultSet.getString( 2 );
+
+                metaIds.add( metaId );
+                grid.addRow().addValue( new MetaValue( metaId, metaName ) );
+            }
+        }
+        catch ( SQLException e )
+        {
+            log.error( "Failed to add meta value\n" + sqlsb.toString() );
+            throw new RuntimeException( "Failed to add meta value\n", e );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Oops. Something else went wrong in setMetaStructure()", e );
+        }
+    }
+
+    private static void setHeaderStructure( Grid grid, ResultSet resultSet, List<Integer> headerIds, boolean isZeroAdded )
+    {
+        try
+        {
+            Integer headerId = null;
+            String headerName = null;
+
+            while ( resultSet.next() )
+            {
+                headerId = resultSet.getInt( 4 );
+                headerName = resultSet.getString( 5 );
+
+                GridHeader header = new GridHeader( headerName, headerId + "", String.class.getName(), false, false );
+
+                if ( !headerIds.contains( headerId ) )
+                {
+                    headerIds.add( headerId );
+                    grid.addHeader( header );
+
+                    for ( List<Object> row : grid.getRows() )
+                    {
+                        row.add( isZeroAdded ? "0" : "" );
+                    }
+                }
+            }
+        }
+        catch ( SQLException e )
+        {
+            throw new RuntimeException( "Failed to add header\n", e );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Oops. Something else went wrong in setHeaderStructure()", e );
+        }
+    }
+
+    private static int fillUpDataBasic( Grid grid, StringBuffer sqlsb, boolean isZeroAdded, JdbcTemplate jdbcTemplate )
+    {
+        int countRows = 0;
+
+        try
+        {
+            ResultSet resultSet = getScrollableResult( sqlsb.toString(), jdbcTemplate );
+
+            while ( resultSet.next() )
+            {
+                MetaValue metaValue = new MetaValue( resultSet.getInt( 1 ), resultSet.getString( 2 ) );
+
+                grid.addRow().addValue( metaValue ).addValue( checkValue( resultSet.getString( 3 ), isZeroAdded ) );
+            }
+        }
+        catch ( SQLException e )
+        {
+            log.error( "Error executing" + sqlsb.toString() );
+            throw new RuntimeException( "Failed to get aggregated data value\n", e );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Oops. Something else went wrong", e );
+        }
+
+        return countRows;
+    }
+
+    private static int fillUpDataAdvance( Grid grid, StringBuffer sqlsb, List<Integer> metaIds, boolean isZeroAdded,
+        JdbcTemplate jdbcTemplate )
+    {
+        int countRows = 0;
+        int rowIndex = -1;
+        int columnIndex = -1;
+        int oldWidth = grid.getWidth();
+
+        try
+        {
+            ResultSet rs = getScrollableResult( sqlsb.toString(), jdbcTemplate );
+
+            List<Integer> headerIds = new ArrayList<Integer>();
+            setHeaderStructure( grid, rs, headerIds, isZeroAdded );
+
+            if ( rs.first() != true )
+            {
+                return countRows;
+            }
+
+            rs.beforeFirst();
+
+            while ( rs.next() )
+            {
+                rowIndex = metaIds.indexOf( rs.getInt( 1 ) );
+                columnIndex = headerIds.indexOf( rs.getInt( 4 ) ) + oldWidth;
+
+                grid.getRow( rowIndex ).set( columnIndex, checkValue( rs.getString( 3 ), isZeroAdded ) );
+
+                countRows++;
+            }
+        }
+        catch ( SQLException e )
+        {
+            log.error( "Error executing" + sqlsb.toString() );
+            throw new RuntimeException( "Failed to get aggregated data value\n", e );
+
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Oops. Somthing else went wrong", e );
+        }
+
+        return countRows;
+    }
+
+    // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    /**
+     * Uses StatementManager to obtain a scroll-able, read-only ResultSet based
+     * on the query string.
+     * 
+     * @param sql the query
+     * @param holder the StatementHolder object
+     * @return null or the ResultSet
+     */
+    private static ResultSet getScrollableResult( String sql, JdbcTemplate jdbcTemplate )
+        throws SQLException
+    {
+        Connection con = jdbcTemplate.getDataSource().getConnection();
+        Statement stm = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY );
+        stm.execute( sql );
+        log.debug( sql );
+
+        return stm.getResultSet();
+    }
+
+    private static String checkValue( String value, boolean isZeroAdded )
+    {
+        if ( value == null )
+        {
+            return "null";
+        }
+        return (value.equals( "0" ) && !isZeroAdded) ? "" : value;
+    }
+    
     /**
      * Splits a list of integers by by comma. Use this method if you have a list
      * that will be used in f.ins. a WHERE xxx IN (list) clause in SQL.
@@ -410,5 +585,4 @@ public class JDBCDataBrowserStore
 
         return desc_query.toString();
     }
-
 }
