@@ -27,7 +27,6 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.net.IDN;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -293,34 +292,32 @@ public class ActivityReportingServiceImpl
         }
         else
         {
-            if ( patients != null )
+            Iterator<Patient> iterator = patients.iterator();
+
+            while ( iterator.hasNext() )
             {
-                Iterator<Patient> iterator = patients.iterator();
+                Patient patient = iterator.next();
 
-                while ( iterator.hasNext() )
+                List<ProgramStageInstance> programStageInstances = programStageInstanceService
+                    .getProgramStageInstances( patient, false );
+
+                for ( int i = 0; i < programStageInstances.size(); i++ )
                 {
-                    Patient patient = iterator.next();
+                    ProgramStageInstance programStageInstance = programStageInstances.get( i );
 
-                    List<ProgramStageInstance> programStageInstances = programStageInstanceService
-                        .getProgramStageInstances( patient, false );
+                    // expiredDate.setTime( DateUtils.getDateAfterAddition(
+                    // programStageInstance.getDueDate(), 0 ) );
+                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 30 ) );
 
-                    for ( int i = 0; i < programStageInstances.size(); i++ )
+                    if ( programStageInstance.getDueDate().getTime() <= time
+                        && expiredDate.getTimeInMillis() > time )
                     {
-                        ProgramStageInstance programStageInstance = programStageInstances.get( i );
-
-                        // expiredDate.setTime( DateUtils.getDateAfterAddition(
-                        // programStageInstance.getDueDate(), 0 ) );
-                        expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 30 ) );
-
-                        if ( programStageInstance.getDueDate().getTime() <= time
-                            && expiredDate.getTimeInMillis() > time )
-                        {
-                            items.add( getActivity( programStageInstance,
-                                programStageInstance.getDueDate().getTime() < time ) );
-                        }
+                        items.add( getActivity( programStageInstance,
+                            programStageInstance.getDueDate().getTime() < time ) );
                     }
                 }
             }
+                
             return new ActivityPlan( items );
         }
 
@@ -348,7 +345,7 @@ public class ActivityReportingServiceImpl
         ProgramStageSection programStageSection = programStageSectionService
             .getProgramStageSection( programStageSectionId );
 
-        if ( programStageSectionId != null && programStageSectionId != 0 )
+        if ( programStageSectionId != 0 )
         {
             for ( ProgramStageDataElement de : programStageSection.getProgramStageDataElements() )
             {
@@ -373,7 +370,6 @@ public class ActivityReportingServiceImpl
 
         if ( dataElements.size() != dataElementIds.size() )
         {
-            ;
             throw NotAllowedException.INVALID_PROGRAM_STAGE;
         }
 

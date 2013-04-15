@@ -47,7 +47,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class Patient
     implements DataStreamSerializable
 {
-
     private String clientVersion;
 
     private int id;

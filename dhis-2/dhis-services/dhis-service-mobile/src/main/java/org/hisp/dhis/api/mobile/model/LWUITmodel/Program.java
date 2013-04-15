@@ -104,7 +104,7 @@ public class Program
             dout.writeInt( programStages.size() );
             for ( int i = 0; i < programStages.size(); i++ )
             {
-                ProgramStage ps = (ProgramStage) programStages.get( i );
+                ProgramStage ps = programStages.get( i );
                 ps.serialize( dout );
             }
         }
