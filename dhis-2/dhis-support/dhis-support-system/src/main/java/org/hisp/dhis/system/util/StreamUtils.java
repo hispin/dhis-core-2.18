@@ -125,8 +125,7 @@ public class StreamUtils
         {
             closeInputStream( in );
             closeOutputStream( out );
-        }
-        
+        }        
     }
 
     /**

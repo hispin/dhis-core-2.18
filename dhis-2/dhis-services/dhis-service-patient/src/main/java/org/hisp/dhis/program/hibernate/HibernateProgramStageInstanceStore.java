@@ -347,7 +347,7 @@ public class HibernateProgramStageInstanceStore
         String sql = getTabularReportSql( true, programStage, columns, organisationUnits, level, maxLevel, startDate,
             endDate, false, completed, null, null, null );
 
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )

@@ -210,7 +210,7 @@ public class HibernatePatientStore
         String sql = "SELECT count(*) FROM patient where lower( " + statementBuilder.getPatientFullName() + ") "
             + "like '%" + fullName + "%' ";
 
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     @Override
@@ -328,7 +328,7 @@ public class HibernatePatientStore
     public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
     {
         String sql = searchPatientSql( true, searchKeys, orgunit, null, null );
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     @Override
