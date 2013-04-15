@@ -73,8 +73,67 @@ function showOfflineEvents() {
             $( "#offlineListDiv table" ).addClass( 'hidden' );
         }
 
-        $( document ).trigger('dhis2.anonymous.showOfflineEvents');
+        $( document ).trigger('dhis2.anonymous.checkOfflineEvents');
     });
+}
+
+var haveLocalData = false;
+
+function checkOfflineData() {
+    DAO.executionDates.fetchAll( function ( store, arr ) {
+        if ( arr.length > 0 ) {
+            haveLocalData = true;
+        }
+
+        $( document ).trigger('dhis2.anonymous.checkOfflineData');
+    } );
+}
+
+function uploadExecutionDate( key, programId, executionDate, organisationUnitId ) {
+    return ajaxExecutionDate(programId, "0", executionDate, organisationUnitId ).done(function(json) {
+        if ( json.response == 'success' ) {
+            // console.log( key + " turned into " + json.message );
+
+            DAO.executionDates.remove(key, function(store) {
+                showOfflineEvents();
+            });
+        }
+    } );
+}
+
+function uploadLocalData() {
+    setHeaderWaitMessage( i18n_uploading_data_notification );
+
+    DAO.executionDates.fetchAll( function ( store, arr ) {
+        if(arr.length == 0) {
+            setHeaderDelayMessage( i18n_sync_success );
+            return;
+        }
+
+        var deferred = $.Deferred();
+        var promise = deferred.promise();
+
+        $.each(arr, function(idx, item) {
+            promise = promise.pipe(function () {
+                uploadExecutionDate(item.key, item.programId, item.executionDate, item.organisationUnitId);
+            });
+        });
+
+        deferred.done(function() {
+            setHeaderDelayMessage( i18n_sync_success );
+        });
+
+        deferred.resolve();
+    } );
+}
+
+function sync_failed_button() {
+    var message = i18n_sync_failed
+        + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+
+    setHeaderMessage( message );
+
+    $( '#sync_button' ).bind( 'click', uploadLocalData );
 }
 
 $( document ).ready( function () {
@@ -86,6 +145,10 @@ $( document ).ready( function () {
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
         $( document ).one('dhis2.anonymous.programStagesInitialized', initializePrograms);
         $( document ).one('dhis2.anonymous.programsInitialized', showOfflineEvents);
+        $( document ).one( 'dhis2.anonymous.checkOfflineEvents', checkOfflineData );
+        $( document ).one( 'dhis2.anonymous.checkOfflineData', function() {
+            dhis2.availability.startAvailabilityCheck();
+        } );
 
         initalizeProgramStages();
         initializeExecutionDates();
@@ -94,7 +157,17 @@ $( document ).ready( function () {
 
     $( document ).bind( 'dhis2.online', function ( event, loggedIn ) {
         if ( loggedIn ) {
-            setHeaderDelayMessage( i18n_online_notification );
+            if ( haveLocalData ) {
+                var message = i18n_need_to_sync_notification
+   	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+
+   	            setHeaderMessage( message );
+
+   	            $( '#sync_button' ).bind( 'click', uploadLocalData );
+            } else {
+                setHeaderDelayMessage( i18n_online_notification );
+            }
+
             enableFiltering();
             searchEvents( eval( getFieldValue( 'listAll' ) ) );
             $('#commentInput').removeAttr('disabled');
@@ -120,8 +193,6 @@ $( document ).ready( function () {
         $('#commentInput').attr('disabled', true);
         disableFiltering();
     } );
-
-    dhis2.availability.startAvailabilityCheck();
 } );
 
 function disableFiltering() {
@@ -755,16 +826,20 @@ function removeAllOption() {
     searchEvents( eval( getFieldValue( "listAll" ) ) );
 }
 
+function ajaxExecutionDate( programId, programStageInstanceId, executionDate, organisationUnitId ) {
+    return $.ajax( {
+        url: 'saveExecutionDate.action',
+        data: createExecutionDate( programId, programStageInstanceId, executionDate, organisationUnitId ),
+        type: 'POST',
+        dataType: 'json'
+    } );
+}
+
 // execution date module
 var service = (function () {
     return {
         saveExecutionDate: function( programId, programStageInstanceId, executionDate, organisationUnitId ) {
-            $.ajax( {
-                url: 'saveExecutionDate.action',
-                data: createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId),
-                type: 'POST',
-                dataType: 'json'
-            } ).done(function ( json ) {
+            ajaxExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId).done(function ( json ) {
                 if ( json.response == 'success' ) {
                     jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                     setFieldValue( 'programStageInstanceId', json.message );
