@@ -917,9 +917,9 @@
   <properties>
     <rootDir></rootDir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.2.1.RELEASE</spring.version>
+    <spring.version>3.2.2.RELEASE</spring.version>
     <spring.security.version>3.1.3.RELEASE</spring.security.version>
-    <hibernate.version>4.1.8.Final</hibernate.version>
+    <hibernate.version>4.2.0.Final</hibernate.version>
     <hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
     <jackson.version>2.0.6</jackson.version>
     <camel.version>2.10.2</camel.version>
