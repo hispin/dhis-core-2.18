@@ -120,7 +120,7 @@ public class JdbcDataArchiveStore
 
         log.info( sql );
 
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     public int getNumberOfArchivedValues()
@@ -128,7 +128,7 @@ public class JdbcDataArchiveStore
         String sql = "SELECT COUNT(*) as dem FROM datavaluearchive;";
 
         log.info( sql );
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     public void deleteRegularOverlappingData()
@@ -221,7 +221,7 @@ public class JdbcDataArchiveStore
                 + "ON pi.programinstanceid = psi.programinstanceid";
         log.info( sql );
 
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     public int getNumberOfArchivedPatientValues()
@@ -229,7 +229,7 @@ public class JdbcDataArchiveStore
         String sql = "SELECT COUNT(*) as dem FROM patientdatavaluearchive;";
 
         log.info( sql );
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     public void deleteRegularOverlappingPatientData()

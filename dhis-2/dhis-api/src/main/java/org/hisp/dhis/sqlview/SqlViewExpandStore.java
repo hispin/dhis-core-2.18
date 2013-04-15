@@ -12,9 +12,9 @@ public interface SqlViewExpandStore
 {
     String ID = SqlViewExpandStore.class.getName();
 
-    boolean isViewTableExists( String viewTableName );
+    boolean viewTableExists( String viewTableName );
 
-    String createView( SqlView sqlViewInstance );
+    String createViewTable( SqlView sqlViewInstance );
 
     void dropViewTable( String sqlViewName );
 

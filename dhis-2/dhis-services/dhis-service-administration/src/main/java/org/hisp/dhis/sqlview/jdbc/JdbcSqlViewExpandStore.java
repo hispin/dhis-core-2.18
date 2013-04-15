@@ -73,7 +73,7 @@ public class JdbcSqlViewExpandStore
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean isViewTableExists( String viewTableName )
+    public boolean viewTableExists( String viewTableName )
     {
         try
         {
@@ -90,7 +90,7 @@ public class JdbcSqlViewExpandStore
     }
 
     @Override
-    public String createView( SqlView sqlViewInstance )
+    public String createViewTable( SqlView sqlViewInstance )
     {
         String viewName = sqlViewInstance.getViewName();
 
