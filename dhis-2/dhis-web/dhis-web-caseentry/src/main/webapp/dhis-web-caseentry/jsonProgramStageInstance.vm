@@ -2,7 +2,7 @@
     "currentUsername": "$encoder.jsonEncode( $currentUsername )",
     "id": "$!programStageInstance.id",
     "dueDate": "$format.formatDate( $!programStageInstance.dueDate )",
-    "executionDate": "$format.formatDate( $!programStageInstance.executionDate )",
+    "executionDate": "$!format.formatDate( $programStageInstance.executionDate )",
     "status": "$!programStageInstance.getEventStatus()",
     "completed": "$!programStageInstance.completed",
     #if($programStageInstance.programStage.captureCoordinates)

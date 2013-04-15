@@ -1,4 +1,3 @@
-
 //------------------------------------------------------------------------------
 // Save value
 //------------------------------------------------------------------------------
@@ -349,8 +348,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 					box.css('border-color', COLOR_LIGHTRED);
 					box.css('background-color', COLOR_LIGHT_LIGHTRED);
 					disableCompletedButton(false);
-					enable('validationBtn');
-					setFieldValue( 'programStageUid', selectedProgramStageInstance.attr('psid') );
+					setFieldValue( 'programStageUid', selectedProgramStageInstance.attr('psuid') );
 					
 					var fieldId = "value_" + programStageInstanceId + "_date";
 					jQuery("#" + fieldId).val(executionDate);
@@ -509,7 +507,7 @@ function runCompleteEvent( isCreateEvent )
 					var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
 					if( irregular == 'true' && displayGenerateEventBox=="true" )
 					{
-						var programStageUid = jQuery(".stage-object-selected").attr('psid');
+						var programStageUid = jQuery(".stage-object-selected").attr('psuid');
 						showCreateNewEvent( programInstanceId, programStageUid );
 					}
 					
@@ -531,7 +529,6 @@ function runCompleteEvent( isCreateEvent )
 					}
 					
 					disableCompletedButton(true);
-					enable('validationBtn');
 					var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
 					eventBox.attr('status',1);
 					resetActiveEvent( eventBox.attr("pi") );
@@ -634,46 +631,36 @@ function loadProgramStageInstance(programStageInstanceId) {
         type: 'GET',
         dataType: 'json'
     } ).done(function(data) {
+        $( "#programStageInstanceId" ).val( data.id );
+        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
+        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
+        $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
+        $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
+        $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
+        $( "#entryFormContainer input[id='completed']" ).val( data.completed );
+        $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
+        $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
         $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
+        $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
+        $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
         $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.program.blockEntryForm );
         $( "#entryFormContainer input[id='remindCompleted']" ).val( data.program.remindCompleted );
 
-        $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
-        $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
-        $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
-        $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
-        $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
-
-        $( "#programStageInstanceId" ).val( data.id );
-        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
-        $( "#entryFormContainer input[id='completed']" ).val( data.completed );
-        $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
-        $( "#entryFormContainer input[id='dueDate']" ).val( data.dueDate );
-        $( "#entryFormContainer input[id='executionDate']" ).val( data.executionDate );
-
-        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
-        $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
-
+        $( "input[id='dueDate']" ).val( data.dueDate );
+        $( "input[id='executionDate']" ).val( data.executionDate );
+		
         if ( data.program.type != '1' ) {
             hideById( 'newEncounterBtn' );
         }
 
-        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-            jQuery("[id=entryFormContainer] :input").prop('disabled', true);
-            jQuery("[id=entryFormContainer] :input").datepicker("destroy");
-            jQuery("[id=executionDate]").prop('disabled', true);
-            jQuery("[id=executionDate]").datepicker("destroy");
+        if(data.executionDate) {
+            $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+            $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
         }
 
         if ( data.programStage.captureCoordinates ) {
             $( '#longitude' ).val( data.longitude );
             $( '#latitude' ).val( data.latitude );
-        }
-
-        if(data.executionDate) {
-            $( '#executionDate' ).val(data.executionDate);
-            $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
-            $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
         }
 
         if(data.comments.length > 0) {
@@ -689,8 +676,15 @@ function loadProgramStageInstance(programStageInstanceId) {
                 $( '#commentTB' ).append( comment )
             });
         }
+
+        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
+            jQuery("[id=entryFormContainer] :input").prop('disabled', true);
+            jQuery("[id=entryFormContainer] :input").datepicker("destroy");
+            jQuery("[id=executionDate]").prop('disabled', true);
+            jQuery("[id=executionDate]").datepicker("destroy");
+        }
     } ).fail(function() {
-        $('#commentInput').attr('disabled', true);
+        $('#commentInput').attr('disabled', true)
     });
 }
 
@@ -698,11 +692,15 @@ function entryFormContainerOnReady()
 {
 	var currentFocus = undefined;
     var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
-
-    loadProgramStageInstance( programStageInstanceId ).done(function() {
+	
+    loadProgramStageInstance(programStageInstanceId ).done(function() {
         if( jQuery("#entryFormContainer") ) {
-
-            if( jQuery("#executionDate").val() != '' )
+		
+			if( jQuery("#executionDate").val() == '' )
+			{
+				hideById('entryForm');
+			}
+            else if( jQuery("#executionDate").val() != '' )
             {
                 toggleContentForReportDate(true);
             }
@@ -717,17 +715,18 @@ function entryFormContainerOnReady()
 
             TOGGLE.init();
 
-    		jQuery("#entryForm :input").each(function()
-    		{
-    			if( jQuery(this).attr( 'options' )!= null && jQuery(this).attr( 'options' )== 'true' )
-    			{
-    				autocompletedField(jQuery(this).attr('id'));
-    			}
-    			else if( jQuery(this).attr( 'username' )!= null && jQuery(this).attr( 'username' )== 'true' )
-    			{
-    				autocompletedUsernameField(jQuery(this).attr('id'));
-    			}
-    		});
+			jQuery("#entryForm :input").each(function()
+			{
+				if( jQuery(this).attr( 'options' )!= null && jQuery(this).attr( 'options' )== 'true' )
+				{
+					autocompletedField(jQuery(this).attr('id'));
+				}
+				else if( jQuery(this).attr( 'username' )!= null && jQuery(this).attr( 'username' )== 'true' )
+				{
+					autocompletedUsernameField(jQuery(this).attr('id'));
+				}
+			});
+			
         }
     } ).fail(function() {
         console.log("failed, do something smart")

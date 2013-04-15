@@ -196,6 +196,7 @@ function loadDataEntry( programStageInstanceId )
 	disable('validationBtn');
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
+	jQuery( 'input[id=programStageInstanceId]').val( programStageInstanceId );
 	
 	$('#executionDate').unbind("change");
 	$('#executionDate').change(function() {
@@ -213,6 +214,7 @@ function loadDataEntry( programStageInstanceId )
 			programStageInstanceId: programStageInstanceId
 		},function()
 		{
+			setFieldValue( 'programStageInstanceId', programStageInstanceId );
 			var executionDate = jQuery('#executionDate').val();
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();

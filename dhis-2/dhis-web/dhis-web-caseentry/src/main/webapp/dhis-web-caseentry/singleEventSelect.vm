@@ -23,6 +23,7 @@
 <input type='hidden' id='listAll' name='listAll'>
 <select class='hidden' id='repeatableProgramStageId' name='repeatableProgramStageId'></select>
 <input type='hidden' id='patientId' name= 'patientId'>
+<input type='hidden' id='programStageInstanceId' name= 'programStageInstanceId' value='0'>
 
 <div id='searchDiv'>
 	#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	

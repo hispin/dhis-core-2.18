@@ -20,11 +20,13 @@
 	<input type='hidden' id='listAll' name='listAll'>
 	<input type='hidden' id='sendToList' name='sendToList'>
 	<input type='hidden' id='programStageName' name='programStageName'>
+	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId'>
 	<input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
 	<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
 	<input type="hidden" id='hideLink' name='hideLink' value='false'>
 	<input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
 	<input type='hidden' id='export' name= 'export'>
+	<input type='hidden' class='stage-object-selected'>
 	<div id='selectDiv' class='advanced-search' style='width:550px;'>
 		<table style="margin-bottom:8px;width:550px;">    
 			<tr>
