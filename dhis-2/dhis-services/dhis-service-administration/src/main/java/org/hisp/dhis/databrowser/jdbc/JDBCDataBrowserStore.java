@@ -1,14 +1,8 @@
 package org.hisp.dhis.databrowser.jdbc;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.databrowser.DataBrowserGridStore;
@@ -18,6 +12,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
@@ -26,8 +21,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class JDBCDataBrowserStore
     implements DataBrowserGridStore
 {
-    private static final Log log = LogFactory.getLog( JDBCDataBrowserStore.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -88,8 +81,7 @@ public class JDBCDataBrowserStore
     {
         StringBuffer sqlsb = new StringBuffer();
 
-        sqlsb
-            .append( "(SELECT d.dataelementgroupid AS ID, d.name AS DataElementGroup, COUNT(*) AS counts_of_aggregated_values " );
+        sqlsb.append( "(SELECT d.dataelementgroupid AS ID, d.name AS DataElementGroup, COUNT(*) AS counts_of_aggregated_values " );
         sqlsb.append( "FROM datavalue dv " );
         sqlsb.append( "JOIN dataelementgroupmembers degm ON (dv.dataelementid = degm.dataelementid)" );
         sqlsb.append( "JOIN dataelementgroup d ON (d.dataelementgroupid = degm.dataelementgroupid) " );
@@ -252,8 +244,7 @@ public class JDBCDataBrowserStore
         {
             i++;
 
-            sqlsb
-                .append( "(SELECT de.dataelementid, de.name AS DataElement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
             sqlsb.append( "FROM dataelement de JOIN datavalue dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON (de.dataelementid = degm.dataelementid) " );
             sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
@@ -277,19 +268,15 @@ public class JDBCDataBrowserStore
         {
             i++;
 
-            sqlsb
-                .append( "(SELECT deg.dataelementgroupid, deg.name, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startdate AS ColumnHeader " );
+            sqlsb.append( "(SELECT deg.dataelementgroupid, deg.name, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startdate AS ColumnHeader " );
             sqlsb.append( "FROM dataelementgroup AS deg " );
-            sqlsb
-                .append( "INNER JOIN dataelementgroupmembers AS degm ON deg.dataelementgroupid = degm.dataelementgroupid " );
+            sqlsb.append( "INNER JOIN dataelementgroupmembers AS degm ON deg.dataelementgroupid = degm.dataelementgroupid " );
             sqlsb.append( "INNER JOIN datavalue AS dv ON degm.dataelementid = dv.dataelementid " );
             sqlsb.append( "INNER JOIN period AS p ON dv.periodid = p.periodid " );
             sqlsb.append( "INNER JOIN organisationunit AS ou ON dv.sourceid = ou.organisationunitid " );
             sqlsb.append( "INNER JOIN orgunitgroupmembers AS ougm ON ou.organisationunitid = ougm.organisationunitid " );
-            sqlsb
-                .append( "WHERE p.periodid =  '" + periodid + "' AND ougm.orgunitgroupid =  '" + orgUnitGroupId + "' " );
+            sqlsb.append( "WHERE p.periodid =  '" + periodid + "' AND ougm.orgunitgroupid =  '" + orgUnitGroupId + "' " );
             sqlsb.append( "GROUP BY deg.dataelementgroupid,deg.name,p.periodid,p.startdate) " );
-
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
         }
 
@@ -324,94 +311,55 @@ public class JDBCDataBrowserStore
 
     private static void setMetaStructure( Grid grid, StringBuffer sqlsb, List<Integer> metaIds, JdbcTemplate jdbcTemplate )
     {
-        try
-        {
-            Integer metaId = null;
-            String metaName = null;
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), jdbcTemplate );
+        Integer metaId = null;
+        String metaName = null;
+        SqlRowSet resultSet = jdbcTemplate.queryForRowSet( sqlsb.toString() );
 
-            while ( resultSet.next() )
-            {
-                metaId = resultSet.getInt( 1 );
-                metaName = resultSet.getString( 2 );
+        while ( resultSet.next() )
+        {
+            metaId = resultSet.getInt( 1 );
+            metaName = resultSet.getString( 2 );
 
-                metaIds.add( metaId );
-                grid.addRow().addValue( new MetaValue( metaId, metaName ) );
-            }
-        }
-        catch ( SQLException e )
-        {
-            log.error( "Failed to add meta value\n" + sqlsb.toString() );
-            throw new RuntimeException( "Failed to add meta value\n", e );
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( "Oops. Something else went wrong in setMetaStructure()", e );
+            metaIds.add( metaId );
+            grid.addRow().addValue( new MetaValue( metaId, metaName ) );
         }
     }
 
-    private static void setHeaderStructure( Grid grid, ResultSet resultSet, List<Integer> headerIds, boolean isZeroAdded )
+    private static void setHeaderStructure( Grid grid, SqlRowSet resultSet, List<Integer> headerIds, boolean isZeroAdded )
     {
-        try
+        Integer headerId = null;
+        String headerName = null;
+
+        while ( resultSet.next() )
         {
-            Integer headerId = null;
-            String headerName = null;
+            headerId = resultSet.getInt( 4 );
+            headerName = resultSet.getString( 5 );
 
-            while ( resultSet.next() )
+            GridHeader header = new GridHeader( headerName, headerId + "", String.class.getName(), false, false );
+
+            if ( !headerIds.contains( headerId ) )
             {
-                headerId = resultSet.getInt( 4 );
-                headerName = resultSet.getString( 5 );
+                headerIds.add( headerId );
+                grid.addHeader( header );
 
-                GridHeader header = new GridHeader( headerName, headerId + "", String.class.getName(), false, false );
-
-                if ( !headerIds.contains( headerId ) )
+                for ( List<Object> row : grid.getRows() )
                 {
-                    headerIds.add( headerId );
-                    grid.addHeader( header );
-
-                    for ( List<Object> row : grid.getRows() )
-                    {
-                        row.add( isZeroAdded ? "0" : "" );
-                    }
+                    row.add( isZeroAdded ? "0" : "" );
                 }
             }
         }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to add header\n", e );
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( "Oops. Something else went wrong in setHeaderStructure()", e );
-        }
     }
 
-    private static int fillUpDataBasic( Grid grid, StringBuffer sqlsb, boolean isZeroAdded, JdbcTemplate jdbcTemplate )
+    private static void fillUpDataBasic( Grid grid, StringBuffer sqlsb, boolean isZeroAdded, JdbcTemplate jdbcTemplate )
     {
-        int countRows = 0;
+        SqlRowSet resultSet = jdbcTemplate.queryForRowSet( sqlsb.toString() );
 
-        try
+        while ( resultSet.next() )
         {
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), jdbcTemplate );
+            MetaValue metaValue = new MetaValue( resultSet.getInt( 1 ), resultSet.getString( 2 ) );
 
-            while ( resultSet.next() )
-            {
-                MetaValue metaValue = new MetaValue( resultSet.getInt( 1 ), resultSet.getString( 2 ) );
-
-                grid.addRow().addValue( metaValue ).addValue( checkValue( resultSet.getString( 3 ), isZeroAdded ) );
-            }
+            grid.addRow().addValue( metaValue ).addValue( checkValue( resultSet.getString( 3 ), isZeroAdded ) );
         }
-        catch ( SQLException e )
-        {
-            log.error( "Error executing" + sqlsb.toString() );
-            throw new RuntimeException( "Failed to get aggregated data value\n", e );
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( "Oops. Something else went wrong", e );
-        }
-
-        return countRows;
     }
 
     private static int fillUpDataAdvance( Grid grid, StringBuffer sqlsb, List<Integer> metaIds, boolean isZeroAdded,
@@ -422,66 +370,34 @@ public class JDBCDataBrowserStore
         int columnIndex = -1;
         int oldWidth = grid.getWidth();
 
-        try
+        SqlRowSet rs = jdbcTemplate.queryForRowSet( sqlsb.toString() );
+
+        List<Integer> headerIds = new ArrayList<Integer>();
+        setHeaderStructure( grid, rs, headerIds, isZeroAdded );
+
+        if ( rs.first() != true )
         {
-            ResultSet rs = getScrollableResult( sqlsb.toString(), jdbcTemplate );
-
-            List<Integer> headerIds = new ArrayList<Integer>();
-            setHeaderStructure( grid, rs, headerIds, isZeroAdded );
-
-            if ( rs.first() != true )
-            {
-                return countRows;
-            }
-
-            rs.beforeFirst();
-
-            while ( rs.next() )
-            {
-                rowIndex = metaIds.indexOf( rs.getInt( 1 ) );
-                columnIndex = headerIds.indexOf( rs.getInt( 4 ) ) + oldWidth;
-
-                grid.getRow( rowIndex ).set( columnIndex, checkValue( rs.getString( 3 ), isZeroAdded ) );
-
-                countRows++;
-            }
-        }
-        catch ( SQLException e )
-        {
-            log.error( "Error executing" + sqlsb.toString() );
-            throw new RuntimeException( "Failed to get aggregated data value\n", e );
-
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( "Oops. Somthing else went wrong", e );
+            return countRows;
         }
 
+        rs.beforeFirst();
+
+        while ( rs.next() )
+        {
+            rowIndex = metaIds.indexOf( rs.getInt( 1 ) );
+            columnIndex = headerIds.indexOf( rs.getInt( 4 ) ) + oldWidth;
+
+            grid.getRow( rowIndex ).set( columnIndex, checkValue( rs.getString( 3 ), isZeroAdded ) );
+
+            countRows++;
+        }
+        
         return countRows;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Uses StatementManager to obtain a scroll-able, read-only ResultSet based
-     * on the query string.
-     * 
-     * @param sql the query
-     * @param holder the StatementHolder object
-     * @return null or the ResultSet
-     */
-    private static ResultSet getScrollableResult( String sql, JdbcTemplate jdbcTemplate )
-        throws SQLException
-    {
-        Connection con = jdbcTemplate.getDataSource().getConnection();
-        Statement stm = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY );
-        stm.execute( sql );
-        log.debug( sql );
-
-        return stm.getResultSet();
-    }
 
     private static String checkValue( String value, boolean isZeroAdded )
     {
