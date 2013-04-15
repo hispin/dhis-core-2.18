@@ -72,13 +72,7 @@ $( document ).ready( function () {
         if ( loggedIn ) {
             setHeaderDelayMessage( i18n_online_notification );
             enableFiltering();
-
-            var search = getFieldValue( 'programStageId' ) != undefined && getFieldValue( 'programStageId' ).length != 0;
-
-            if ( search ) {
-                searchEvents( eval( getFieldValue( 'listAll' ) ) );
-            }
-
+            searchEvents( eval( getFieldValue( 'listAll' ) ) );
             $('#commentInput').removeAttr('disabled');
         }
         else {
@@ -158,6 +152,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
     setFieldValue( "listAll", true );
     setFieldValue( "startDate", '' );
     setFieldValue( "endDate", '' );
+    setFieldValue( "programStageId", '' );
+    setFieldValue( "programId", '' );
     jQuery( '#advancedSearchTB [name=searchText]' ).val( '' );
 
     setFieldValue( 'orgunitId', orgUnits[0] );
@@ -478,6 +474,12 @@ function validateSearchEvents( listAll ) {
 }
 
 function searchEvents( listAll ) {
+    var search = getFieldValue( 'programStageId' ) != undefined && getFieldValue( 'programStageId' ).length != 0;
+
+    if ( !search ) {
+        return;
+    }
+
     hideById( 'dataEntryInfor' );
     hideById( 'listDiv' );
 
