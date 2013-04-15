@@ -15,6 +15,7 @@ CACHE:
 ../dhis-web-commons/javascripts/jQuery/jquery.glob.js
 ../dhis-web-commons/javascripts/jQuery/jquery.date.js
 ../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js
+../dhis-web-commons/javascripts/underscore.min.js
 ../dhis-web-commons/i18nJavaScript.action
 ../dhis-web-commons/javascripts/commons.js
 ../dhis-web-commons/javascripts/lists.js
@@ -81,6 +82,7 @@ javascript/entry.js
 images/ajax-loader-circle.gif
 images/close.gif
 images/data_entry.png
+../images/delete.png
 images/flag-blue.png
 images/open.gif
 images/representative.png
