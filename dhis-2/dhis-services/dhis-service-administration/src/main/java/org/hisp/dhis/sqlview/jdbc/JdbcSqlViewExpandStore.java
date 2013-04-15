@@ -28,7 +28,6 @@ package org.hisp.dhis.sqlview.jdbc;
  */
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -77,15 +76,13 @@ public class JdbcSqlViewExpandStore
     {
         try
         {
-            DatabaseMetaData mtdt = jdbcTemplate.getDataSource().getConnection().getMetaData();
+            jdbcTemplate.queryForRowSet( "select * from " + viewTableName.toLowerCase() + " limit 1" );
             
-            ResultSet rs = mtdt.getTables( null, null, viewTableName.toLowerCase(), types );
-
-            return rs.next();
+            return true;
         }
-        catch ( Exception e )
+        catch ( BadSqlGrammarException ex )
         {
-            return false;
+            return false; // View does not exist
         }
     }
 
