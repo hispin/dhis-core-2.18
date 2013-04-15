@@ -114,6 +114,40 @@
 	</div>
 </div>
 
+<script id="offline-event-template" type="text/template">
+    <tr id="tr<%= programStageInstanceId %>" class="listRow">
+        <td><%= index %></td>
+        <td><%= executionDate %></td>
+        <td><%= organisationUnit %></td>
+
+        <td align="right" style="padding-right:20px;">
+            <a href="javascript:showUpdateEvent( '<%= programStageInstanceId %>' )" title="Data entry"><img src="images/data_entry.png" alt="Data entry"></a>
+            <a href="javascript:removeEvent( '<%= programStageInstanceId %>' )" title="Remove"><img src="../images/delete.png" alt="Remove"></a>
+        </td>
+    </tr>
+</script>
+
+<div id='offlineListDiv'>
+    <table class="listTable hidden">
+        <thead>
+        <tr>
+            <th colspan="4">Offline Events</th>
+        </tr>
+        </thead>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Report date</th>
+            <th>Organisation Unit</th>
+            <th style="width:100px">Operations</th>
+        </tr>
+        </thead>
+
+        <tbody id="offlineEventList">
+        </tbody>
+    </table>
+</div>
+
 <div id='listDiv'></div>
 
 <div id='dataEntryInfor' class='hidden'>

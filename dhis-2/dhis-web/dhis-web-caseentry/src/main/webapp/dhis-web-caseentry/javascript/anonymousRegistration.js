@@ -1,9 +1,9 @@
 var DAO = DAO || {};
 
-var PROGRAMS_STORE = 'anonymous_programs';
-var PROGRAM_STAGES_STORE = 'anonymous_programStages';
-var EXECUTION_DATES_STORE = 'anonymous_executionDates';
-var DATA_VALUES_STORE = 'anonymous_dataValues';
+var PROGRAMS_STORE = 'anonymousPrograms';
+var PROGRAM_STAGES_STORE = 'anonymousProgramStages';
+var EXECUTION_DATES_STORE = 'anonymousExecutionDates';
+var DATA_VALUES_STORE = 'anonymousDataValues';
 
 function initalizeProgramStages() {
     DAO.programStages = new dhis2.storage.Store( {name: PROGRAM_STAGES_STORE, adapter: 'dom-ss'}, function(store) {
@@ -49,7 +49,31 @@ function initializeExecutionDates() {
 
 function initializeDataValues() {
     DAO.dataValues = new dhis2.storage.Store( {name: DATA_VALUES_STORE, adapter: 'dom'}, function(store) {
-        $( document ).trigger('dhis2.anonymous.dataValueInitialized');
+        $( document ).trigger('dhis2.anonymous.dataValuesInitialized');
+    });
+}
+
+function showOfflineEvents() {
+    DAO.executionDates.fetchAll(function(store, arr) {
+        var target = $( '#offlineEventList' );
+        target.children().remove();
+
+        if ( arr.length > 0 ) {
+            var template = $( '#offline-event-template' );
+
+            $.each( arr, function ( idx, event ) {
+                event.index = idx + 1;
+                var tmpl = _.template( template.html() );
+                var html = tmpl(event);
+                target.append( html );
+            } );
+
+            $( "#offlineListDiv table" ).removeClass( 'hidden' );
+        } else {
+            $( "#offlineListDiv table" ).addClass( 'hidden' );
+        }
+
+        $( document ).trigger('dhis2.anonymous.showOfflineEvents');
     });
 }
 
@@ -60,12 +84,12 @@ $( document ).ready( function () {
     } );
 
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
-        // initialize the stores, and then try and add the data
         $( document ).one('dhis2.anonymous.programStagesInitialized', initializePrograms);
-        $( document ).one('dhis2.anonymous.programsInitialized', initializeExecutionDates);
-        $( document ).one('dhis2.anonymous.executionDatesInitialized', initializeDataValues);
+        $( document ).one('dhis2.anonymous.programsInitialized', showOfflineEvents);
 
         initalizeProgramStages();
+        initializeExecutionDates();
+        initializeDataValues();
     } );
 
     $( document ).bind( 'dhis2.online', function ( event, loggedIn ) {
@@ -543,24 +567,24 @@ function searchEvents( listAll ) {
         success: function ( html ) {
             hideById( 'dataEntryInfor' );
             setInnerHTML( 'listDiv', html );
-
-            var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
-            setInnerHTML( 'searchInforTD', searchInfor );
-
-            if ( !listAll && jQuery( '#filterBtn' ).attr( "disabled" ) == "disabled" ) {
-                showById( 'minimized-advanced-search' );
-                hideById( 'advanced-search' );
-            }
-            else {
-                hideById( 'minimized-advanced-search' );
-                hideById( 'advanced-search' );
-                showById( 'filterBtn' );
-            }
-
-            showById( 'listDiv' );
-            hideById( 'loaderDiv' );
         }
-    } );
+    } ).complete(function() {
+        var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
+        setInnerHTML( 'searchInforTD', searchInfor );
+
+        if ( !listAll && jQuery( '#filterBtn' ).attr( "disabled" ) == "disabled" ) {
+            showById( 'minimized-advanced-search' );
+            hideById( 'advanced-search' );
+        }
+        else {
+            hideById( 'minimized-advanced-search' );
+            hideById( 'advanced-search' );
+            showById( 'filterBtn' );
+        }
+
+        showById( 'listDiv' );
+        hideById( 'loaderDiv' );
+    });
 }
 
 function getValueFormula( value ) {
@@ -593,7 +617,18 @@ function getValueFormula( value ) {
 }
 
 function removeEvent( programStageId ) {
-    removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );
+    var s = "" + programStageId;
+
+    if( s.indexOf("local") != -1) {
+        if ( confirm( i18n_comfirm_delete_event ) ) {
+            DAO.executionDates.remove(programStageId, function(store) {
+                // redisplay list
+                showOfflineEvents();
+            });
+        }
+    } else {
+        removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );
+    }
 }
 
 function showUpdateEvent( programStageInstanceId ) {
@@ -618,6 +653,9 @@ function backEventList() {
     showById( 'selectDiv' );
     showById( 'searchDiv' );
     showById( 'listDiv' );
+    showById( 'offlineListDiv' );
+
+    showOfflineEvents();
     searchEvents( eval( getFieldValue( 'listAll' ) ) );
 }
 
@@ -630,6 +668,7 @@ function showAddEventForm() {
     hideById( 'selectDiv' );
     hideById( 'searchDiv' );
     hideById( 'listDiv' );
+    hideById( 'offlineListDiv' );
     showById( 'programName' );
     hideById( 'actionDiv' );
     showById( 'dataEntryInfor' );
@@ -739,14 +778,12 @@ var service = (function () {
                     showWarningMessage( json.message );
                 }
             } ).fail( function () {
-                var data = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
-
                 if(programStageInstanceId == 0) {
-                    /*anonymousExecutionDates.keys(function(store, keys) {
+                    DAO.executionDates.keys(function(store, keys) {
                         var i = 100;
 
                         for(; i<10000; i++) {
-                            if( keys.indexOf(i) == -1 ) break;
+                            if( keys.indexOf("local" + i) == -1 ) break;
                         }
 
                         programStageInstanceId = "local"+i;
@@ -754,8 +791,10 @@ var service = (function () {
                         setFieldValue( 'programStageInstanceId', programStageInstanceId );
                         jQuery( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                         showUpdateEvent( programStageInstanceId );
+
+                        var data = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
+                        DAO.executionDates.add(programStageInstanceId, data);
                     });
-                    */
                 } else {
                     // if we have a programStageInstanceId, just reuse that one
                     setFieldValue( 'programStageInstanceId', programStageInstanceId );
@@ -822,8 +861,10 @@ function createExecutionDate( programId, programStageInstanceId, executionDate, 
     if(executionDate)
         data.executionDate = executionDate;
 
-    if(organisationUnitId)
+    if(organisationUnitId) {
         data.organisationUnitId = organisationUnitId;
+        data.organisationUnit = organisationUnits[organisationUnitId].n;
+    }
 
     return data;
 }
