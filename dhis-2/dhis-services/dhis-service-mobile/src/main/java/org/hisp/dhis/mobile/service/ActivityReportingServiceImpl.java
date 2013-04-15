@@ -27,6 +27,7 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.net.IDN;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1575,6 +1576,10 @@ public class ActivityReportingServiceImpl
         {
             String id = "";
             String idt = identifierType.getName();
+            if ( identifierType.isMandatory() == true )
+            {
+                idt += " (*)";
+            }
             list.add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idt, id ) );
         }
         return list;
@@ -1587,6 +1592,10 @@ public class ActivityReportingServiceImpl
         for ( org.hisp.dhis.patient.PatientAttribute pa : getPatientAtts() )
         {
             String name = pa.getName();
+            if ( pa.isMandatory() == true )
+            {
+                name += " (*)";
+            }
             String value = "";
             list.add( new PatientAttribute( name, value ) );
         }
