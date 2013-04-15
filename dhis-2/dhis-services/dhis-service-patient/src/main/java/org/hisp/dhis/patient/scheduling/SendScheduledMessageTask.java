@@ -169,7 +169,7 @@ public class SendScheduledMessageTask
                 String sortOrderSql = "SELECT max(sort_order) "
                     + "FROM programstageinstance_outboundsms where programstageinstanceid="
                     + schedulingProgramObject.getProgramStageInstanceId();
-                int sortOrder = jdbcTemplate.queryForInt( sortOrderSql ) + 1;
+                int sortOrder = jdbcTemplate.queryForObject( sortOrderSql, Integer.class ) + 1;
 
                 String sql = "INSERT INTO programstageinstance_outboundsms"
                     + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
@@ -208,7 +208,7 @@ public class SendScheduledMessageTask
                 String sortOrderSql = "select max(sort_order) "
                     + "from programinstance_outboundsms where programinstanceid="
                     + schedulingProgramObject.getProgramInstanceId();
-                int sortOrder = jdbcTemplate.queryForInt( sortOrderSql ) + 1;
+                int sortOrder = jdbcTemplate.queryForObject( sortOrderSql, Integer.class ) + 1;
 
                 String sql = "INSERT INTO programinstance_outboundsms"
                     + "( programinstanceid, outboundsmsid, sort_order) VALUES " + "("

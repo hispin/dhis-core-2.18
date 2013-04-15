@@ -399,7 +399,7 @@ public class JdbcCaseAggregationConditionManager
 
         CalendarPeriodType periodType = (CalendarPeriodType) PeriodType.getPeriodTypeByName( periodTypeName );
         String sql = "select periodtypeid from periodtype where name='" + periodTypeName + "'";
-        int periodTypeId = jdbcTemplate.queryForInt( sql );
+        int periodTypeId = jdbcTemplate.queryForObject( sql, Integer.class );
 
         Collection<Period> periods = periodType.generatePeriods( startDate, endDate );
 
@@ -423,7 +423,7 @@ public class JdbcCaseAggregationConditionManager
                     + periodTypeId + ",'" + start + "','" + end + "' )";
                 jdbcTemplate.execute( insertSql );
 
-                period.setId( jdbcTemplate.queryForInt( sql ) );
+                period.setId( jdbcTemplate.queryForObject( sql, Integer.class ) );
             }
             else
             {
