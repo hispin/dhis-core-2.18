@@ -3,7 +3,7 @@
 		entryFormContainerOnReady();
 	});
 </script>
-
+<br/>
 <div id='entryFormContainer'>
 
 <input type='hidden' name='incidentDate' id='incidentDate'>
@@ -82,15 +82,15 @@
 </div>
 
 <div id='inputCriteriaDiv' class="page inputCriteria hidden" style="width:490px;height:29px;">
-	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
-	<input type="button" id="uncompleteBtn" value="$i18n.getString('incomplete')" onclick="doUnComplete()" disabled="disabled">
-	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled">
+	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()">
+	<input type="button" id="uncompleteBtn" value="$i18n.getString('incomplete')" onclick="doUnComplete()">
+	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();">
 </div>
 
 </div>
 
 <div id="loading-bar" class="hidden" align='center'>
-	<p>Validation rules are being processed, please wait ...<br>
+	<p>$i18n.getString('validation_rules_are_being_processed_please_wait')<br>
 	<img src='../images/ajax-loader-circle.gif'></p>
 </div>
 
