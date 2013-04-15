@@ -32,8 +32,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -73,31 +71,6 @@ public class JdbcSqlViewExpandStore
     // -------------------------------------------------------------------------
     // Implementing methods
     // -------------------------------------------------------------------------
-
-    @Override
-    public List<String> getAllSqlViewNames()
-    {
-        List<String> viewNames = new ArrayList<String>();
-
-        try
-        {
-            DatabaseMetaData mtdt = jdbcTemplate.getDataSource().getConnection().getMetaData();
-
-            ResultSet rs = mtdt.getTables( null, null, SqlView.PREFIX_VIEWNAME + "%", types );
-
-            while ( rs.next() )
-            {
-                viewNames.add( rs.getString( "TABLE_NAME" ) );
-            }
-        }
-        catch ( SQLException e )
-        {
-            e.printStackTrace();
-        }
-
-        return viewNames;
-
-    }
 
     @Override
     public boolean isViewTableExists( String viewTableName )
