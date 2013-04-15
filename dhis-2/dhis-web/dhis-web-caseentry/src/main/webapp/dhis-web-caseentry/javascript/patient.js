@@ -286,7 +286,8 @@ function loadDataEntry( programStageInstanceId )
 	disable('validationBtn');
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
-	
+	setFieldValue( 'programStageInstanceId', programStageInstanceId );
+			
 	$('#executionDate').unbind("change");
 	$('#executionDate').change(function() {
 		saveExecutionDate( getFieldValue('programId'), programStageInstanceId, byId('executionDate') );

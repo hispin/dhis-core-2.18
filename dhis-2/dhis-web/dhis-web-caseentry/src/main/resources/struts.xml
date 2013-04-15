@@ -297,7 +297,6 @@
       class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/reportDataEntryForm.vm</param>
-      <param name="javascripts">javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
       <param name="stylesheets">style/style.css</param>
     </action>
 
@@ -376,11 +375,12 @@
       <param name="javascripts">javascript/commons.js,javascript/report.js</param>
       <param name="requiredAuthorities">F_GENERATE_PROGRAM_SUMMARY_REPORT</param>
     </action>
-
+	
     <action name="viewRecords"
-      class="org.hisp.dhis.caseentry.action.report.ViewRecordsAction">
+      class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction">
       <result name="success" type="velocity">/content.vm</result>
-      <param name="page">/dhis-web-caseentry/records.vm</param>
+      <param name="page">/dhis-web-caseentry/reportDataEntryForm.vm</param>
+      <param name="stylesheets">style/style.css</param>
     </action>
 
     <action name="statisticalProgramReportSelect"
