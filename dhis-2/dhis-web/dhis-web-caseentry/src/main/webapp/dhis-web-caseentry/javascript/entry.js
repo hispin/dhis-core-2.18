@@ -654,6 +654,7 @@ function loadProgramStageInstance(programStageInstanceId) {
         }
 
         if(data.executionDate) {
+            $( '#executionDate' ).val(data.executionDate);
             $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
             $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
         }
