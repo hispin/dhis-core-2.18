@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class DataSet
     extends Model
-    implements DataStreamSerializable, Comparable<DataSet>
+    implements Comparable<DataSet>
 {
     private String clientVersion;
 
