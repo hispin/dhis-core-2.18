@@ -62,7 +62,6 @@ import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version $GenerateTabularReportAction.java Feb 29, 2012 10:15:05 AM$
  */
 public class GenerateTabularReportAction
@@ -307,6 +306,11 @@ public class GenerateTabularReportAction
     public String execute()
         throws Exception
     {
+        if ( programStageId == null )
+        {
+            return INPUT;
+        }
+
         // ---------------------------------------------------------------------
         // Get user orgunits
         // ---------------------------------------------------------------------
