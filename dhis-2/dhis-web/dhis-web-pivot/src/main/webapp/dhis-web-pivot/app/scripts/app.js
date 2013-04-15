@@ -56,17 +56,12 @@ Ext.onReady( function() {
 			});
 
 			// Left gui
-			var vph = pt.viewport.westRegion.getHeight(),
-				no = pt.init.ougs.length + pt.init.degs.length,
-				factor = 0,
-				staticHeight = 535,
-				tabHeight = 28;
+			var viewportHeight = pt.viewport.westRegion.getHeight(),
+				numberOfTabs = pt.init.ougs.length + pt.init.degs.length + 5,
+				tabHeight = 28,
+				minPeriodHeight = 380;
 
-			if (vph > staticHeight) {
-				var factor = (vph - staticHeight) / tabHeight;
-			}
-
-			if (factor > 7) {
+			if (viewportHeight > numberOfTabs * tabHeight + minPeriodHeight) {
 				if (!Ext.isIE) {
 					pt.viewport.accordion.setAutoScroll(false);
 					pt.viewport.westRegion.setWidth(pt.conf.layout.west_width);
@@ -89,7 +84,7 @@ Ext.onReady( function() {
 			// Fade in
 			Ext.defer( function() {
 				Ext.getBody().fadeIn({
-					duration: 800
+					duration: 400
 				});
 			}, 500 );
 		};
@@ -103,18 +98,19 @@ Ext.onReady( function() {
 		util.dimension = {
 			panel: {
 				setHeight: function(mx) {
-					var ph = pt.cmp.dimension.panels.length * 28,
-						h;
+					var panelHeight = pt.cmp.dimension.panels.length * 28,
+						height;
 
 					if (pt.viewport.westRegion.hasScrollbar) {
-						h = ph + mx;
+						height = panelHeight + mx;
 						pt.viewport.accordion.setHeight(pt.viewport.getHeight() - 2);
-						pt.viewport.accordionBody.setHeight(h);
+						pt.viewport.accordionBody.setHeight(height - 2);
 					}
 					else {
-						h = pt.viewport.westRegion.getHeight() - pt.conf.layout.west_fill;
-						mx += ph;
-						pt.viewport.accordion.setHeight(h > mx ? mx : h);
+						height = pt.viewport.westRegion.getHeight() - pt.conf.layout.west_fill;
+						mx += panelHeight;
+						pt.viewport.accordion.setHeight((height > mx ? mx : height) - 2);
+						pt.viewport.accordionBody.setHeight((height > mx ? mx : height) - 2);
 					}
 				},
 
@@ -3898,7 +3894,7 @@ Ext.onReady( function() {
 				downloadButton: downloadButton,
 				userOrganisationUnit: userOrganisationUnit,
 				userOrganisationUnitChildren: userOrganisationUnitChildren,
-				setFavorite: setFavorite,
+				setFavorite: setFavorite,					
 				items: [
 					westRegion,
 					centerRegion

@@ -216,7 +216,7 @@ PT.core.getConfigs = function() {
         west_maxheight_accordion_dataset: 400,
         west_maxheight_accordion_period: 513,
         west_maxheight_accordion_organisationunit: 900,
-        west_maxheight_accordion_group: 298,
+        west_maxheight_accordion_group: 340,
         west_maxheight_accordion_options: 449,
         west_scrollbarheight_accordion_indicator: 300,
         west_scrollbarheight_accordion_dataelement: 300,
