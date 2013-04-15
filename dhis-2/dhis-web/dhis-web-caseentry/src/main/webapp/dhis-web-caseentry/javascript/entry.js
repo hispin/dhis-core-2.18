@@ -696,6 +696,7 @@ function entryFormContainerOnReady()
     loadProgramStageInstance(programStageInstanceId ).done(function() {
         if( jQuery("#entryFormContainer") ) {
 		
+			// Display entry form if excution-date is not null
 			if( jQuery("#executionDate").val() == '' )
 			{
 				hideById('entryForm');
@@ -704,7 +705,22 @@ function entryFormContainerOnReady()
             {
                 toggleContentForReportDate(true);
             }
-
+			
+			// Set buttons by completed-status of program-stage-instance
+			var completed = $( "#entryFormContainer input[id='completed']" ).val();
+			var blockEntry = $( "#entryFormContainer input[id='blockEntryForm']" ).val();
+			if(completed == 'true'){
+				disable('completeBtn');
+				enable('uncompleteBtn');
+				if( blockEntry == 'true'){
+					blockEntryForm();
+				}
+			}
+			else{
+				enable('completeBtn');
+				disable('uncompleteBtn');
+			}
+			
             jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
                 jQuery(this).focus(function(){
                     currentFocus = this;
