@@ -65,7 +65,7 @@ public class ArchivedDataValueDeletionHandler
     {
         String sql = "SELECT COUNT(*) FROM datavaluearchive where dataelementid=" + dataElement.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
     
     @Override
@@ -73,7 +73,7 @@ public class ArchivedDataValueDeletionHandler
     {
         String sql = "SELECT COUNT(*) FROM datavaluearchive where periodid=" + period.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
     
     @Override
@@ -81,7 +81,7 @@ public class ArchivedDataValueDeletionHandler
     {
         String sql = "SELECT COUNT(*) FROM datavaluearchive where sourceid=" + unit.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
     
     @Override
@@ -89,6 +89,6 @@ public class ArchivedDataValueDeletionHandler
     {
         String sql = "SELECT COUNT(*) FROM datavaluearchive where categoryoptioncomboid=" + combo.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
 }

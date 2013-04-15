@@ -140,9 +140,9 @@ public class DefaultSqlViewService
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean isViewTableExists( String viewTableName )
+    public boolean viewTableExists( String viewTableName )
     {
-        return sqlViewExpandStore.isViewTableExists( viewTableName );
+        return sqlViewExpandStore.viewTableExists( viewTableName );
     }
 
     @Override
@@ -168,7 +168,7 @@ public class DefaultSqlViewService
     @Override
     public String createViewTable( SqlView sqlViewInstance )
     {
-        return sqlViewExpandStore.createView( sqlViewInstance );
+        return sqlViewExpandStore.createViewTable( sqlViewInstance );
     }
 
     @Override
