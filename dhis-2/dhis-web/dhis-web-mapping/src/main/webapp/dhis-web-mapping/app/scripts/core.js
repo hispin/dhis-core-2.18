@@ -258,6 +258,8 @@ GIS.core.getOLMap = function(gis) {
 		gis.layer.boundary.core.reset();
 		gis.layer.thematic1.core.reset();
 		gis.layer.thematic2.core.reset();
+		gis.layer.thematic3.core.reset();
+		gis.layer.thematic4.core.reset();
 		gis.layer.facility.core.reset();
 	};
 
@@ -333,6 +335,18 @@ GIS.core.getLayers = function(gis) {
 	layers.thematic2 = GIS.core.VectorLayer(gis, 'thematic2', 'Thematic layer 2', {opacity: 0.8});
 	layers.thematic2.core = new mapfish.GeoStat.Thematic2(gis.olmap, {
 		layer: layers.thematic2,
+		gis: gis
+	});
+
+	layers.thematic3 = GIS.core.VectorLayer(gis, 'thematic3', 'Thematic layer 3', {opacity: 0.8});
+	layers.thematic3.core = new mapfish.GeoStat.Thematic3(gis.olmap, {
+		layer: layers.thematic3,
+		gis: gis
+	});
+
+	layers.thematic4 = GIS.core.VectorLayer(gis, 'thematic4', 'Thematic layer 4', {opacity: 0.8});
+	layers.thematic4.core = new mapfish.GeoStat.Thematic4(gis.olmap, {
+		layer: layers.thematic4,
 		gis: gis
 	});
 
