@@ -227,40 +227,37 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 			params += byId( providedElsewhereId ).checked;
 		
 		params += '&value=';
-		if( value != '')
-			params += htmlEncode(value);
-		
-		$.ajax({
-			   type: "POST",
-			   url: "saveValue.action",
-			   data: params,
-			   dataType: "xml",
-			   success: function(result){
-					handleResponse (result);
-			   },
-			   error: function(request,status,errorThrown) {
-					handleHttpError (request);
-			   }
-			});
+        if ( value != '' )
+            params += htmlEncode( value );
+
+        $.ajax({
+           type: "POST",
+           url: "saveValue.action",
+           data: params,
+           dataType: "xml",
+           success: function(result){
+                handleResponse (result);
+           },
+           error: function(request,status,errorThrown) {
+                handleHttpError (request);
+           }
+        });
     };
  
     function handleResponse( rootElement )
     {
         var codeElement = rootElement.getElementsByTagName( 'code' )[0];
         var code = parseInt( codeElement.firstChild.nodeValue );
-        if ( code == 0 )
-        {
+
+        if ( code == 0 ) {
             markValue( resultColor );
         }
-        else
-        {
-            if(value!="")
-            {
+        else {
+            if ( value != "" ) {
                 markValue( ERROR );
                 window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
             }
-            else
-            {
+            else {
                 markValue( resultColor );
             }
         }
@@ -493,52 +490,51 @@ function runCompleteEvent( isCreateEvent )
     }else {
         if( confirm(i18n_complete_confirm_message) )
 		{
-			$.postJSON( "completeDataEntry.action",
-				{
-					programStageInstanceId: getFieldValue('programStageInstanceId')
-				},
-				function (json)
-				{
-					jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
-					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
+            $.postJSON( "completeDataEntry.action", {
+                programStageInstanceId: getFieldValue( 'programStageInstanceId' )
+            }, function (json) {
+                jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
+                jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
-					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
-					var displayGenerateEventBox = jQuery('#entryFormContainer [name=displayGenerateEventBox]').val();
-					var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
-					if( irregular == 'true' && displayGenerateEventBox=="true" )
-					{
-						var programStageUid = jQuery(".stage-object-selected").attr('psuid');
-						showCreateNewEvent( programInstanceId, programStageUid );
-					}
-					
-					var selectedProgram = jQuery('.stage-object-selected');
-					if( selectedProgram.attr('programType')=='2' || json.response == 'programcompleted' )
-					{
-						var completedRow = jQuery('#td_' + programInstanceId).html();
-						jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
-					}
-					
-					var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
-					if( blocked=='true' ){
-						blockEntryForm();
-					}
-					
-					var remindCompleted = jQuery('#entryFormContainer [id=remindCompleted]').val();
-					if( remindCompleted=='true' ){
-						unenrollmentForm(programInstanceId, 1);
-					}
-					
-					disableCompletedButton(true);
-					var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
-					eventBox.attr('status',1);
-					resetActiveEvent( eventBox.attr("pi") );
-					
-					hideLoader();
-					
-					if( isCreateEvent ){
-						showAddEventForm();
-					}
-				});
+                var irregular = jQuery('#entryFormContainer [name=irregular]').val();
+                var displayGenerateEventBox = jQuery('#entryFormContainer [name=displayGenerateEventBox]').val();
+                var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
+
+                if( irregular == 'true' && displayGenerateEventBox=="true" ) {
+                    var programStageUid = jQuery(".stage-object-selected").attr('psuid');
+                    showCreateNewEvent( programInstanceId, programStageUid );
+                }
+
+                var selectedProgram = jQuery('.stage-object-selected');
+
+                if( selectedProgram.attr('programType')=='2' || json.response == 'programcompleted' ) {
+                    var completedRow = jQuery('#td_' + programInstanceId).html();
+                    jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
+                }
+
+                var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
+
+                if( blocked=='true' ) {
+                    blockEntryForm();
+                }
+
+                var remindCompleted = jQuery('#entryFormContainer [id=remindCompleted]').val();
+
+                if( remindCompleted=='true' ) {
+                    unenrollmentForm(programInstanceId, 1);
+                }
+
+                disableCompletedButton(true);
+                var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
+                eventBox.attr('status',1);
+                resetActiveEvent( eventBox.attr("pi") );
+
+                hideLoader();
+
+                if ( isCreateEvent ) {
+                    showAddEventForm();
+                }
+            });
 		}
     }
 }
@@ -547,22 +543,18 @@ function doUnComplete( isCreateEvent )
 {	
 	if( confirm(i18n_incomplete_confirm_message) )
 	{
-		$.postJSON( "uncompleteDataEntry.action",
-			{
-				programStageInstanceId: getFieldValue('programStageInstanceId')
-			},
-			function (data)
-			{
-				jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
-				jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
-				unblockEntryForm();
-				disableCompletedButton(false);
-				var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
-				eventBox.attr('status',2);
-				resetActiveEvent( eventBox.attr("pi") );
-			});
+		$.postJSON( "uncompleteDataEntry.action", {
+            programStageInstanceId: getFieldValue('programStageInstanceId')
+        }, function (data) {
+            jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
+            jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
+            unblockEntryForm();
+            disableCompletedButton(false);
+            var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
+            eventBox.attr('status',2);
+            resetActiveEvent( eventBox.attr("pi") );
+        });
 	}
-    
 }
 
 
@@ -648,7 +640,7 @@ function loadProgramStageInstance(programStageInstanceId) {
 
         $( "input[id='dueDate']" ).val( data.dueDate );
         $( "input[id='executionDate']" ).val( data.executionDate );
-		
+
         if ( data.program.type != '1' ) {
             hideById( 'newEncounterBtn' );
         }
