@@ -384,5 +384,6 @@ GIS.i18n = {
     facility_layer_export_currently_not_supported: '$encoder.jsEscape($i18n.getString( 'facility_layer_export_currently_not_supported' ) , "'")',
     link_: '$encoder.jsEscape($i18n.getString( 'link_' ) , "'")',
     level_not_higher_than_parent_level: '$encoder.jsEscape($i18n.getString( 'level_not_higher_than_parent_level' ) , "'")',
-    information: '$encoder.jsEscape($i18n.getString( 'information' ) , "'")'
+    information: '$encoder.jsEscape($i18n.getString( 'information' ) , "'")',
+    parent_unit: '$encoder.jsEscape($i18n.getString( 'parent_unit' ) , "'")'
 };
