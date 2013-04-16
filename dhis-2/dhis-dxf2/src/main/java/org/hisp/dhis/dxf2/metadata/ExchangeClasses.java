@@ -154,6 +154,7 @@ final public class ExchangeClasses
         // for now, do not allow user to be imported
         importClasses.remove( User.class );
         importClasses.remove( UserGroup.class );
+        importClasses.remove( UserAuthorityGroup.class );
 
         // this is considered data, and is not available for meta-data import
         exportClasses.remove( MessageConversation.class );
