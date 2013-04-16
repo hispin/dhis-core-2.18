@@ -4,6 +4,7 @@
 #foreach( $program in $programs )
 "${program.id}":{
     "name":"$encoder.jsonEncode( ${program.displayName} )",
+    "uid":"$encoder.jsonEncode( ${program.uid} )",
     "description":"$encoder.jsonEncode( ${program.description} )",
     "enrollmentDescription":"$encoder.jsonEncode( ${program.dateOfEnrollmentDescription} )",
     "incidentDescription":"$encoder.jsonEncode( ${program.dateOfIncidentDescription} )",
