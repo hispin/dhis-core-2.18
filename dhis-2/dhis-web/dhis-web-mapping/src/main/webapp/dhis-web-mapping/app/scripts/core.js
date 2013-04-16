@@ -474,82 +474,39 @@ GIS.core.createSelectHandlers = function(gis, layer) {
 								cls: 'gis-container-inner',
 								columnWidth: 0.4,
 								bodyStyle: 'padding-right:4px',
-								items: [
-									{
-										html: GIS.i18n.name,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: feature.attributes.name,
-										cls: 'gis-panel-html'
-									},
-									{
-										cls: 'gis-panel-html-separator'
-									},
-									{
-										html: GIS.i18n.type,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: ou.ty,
-										cls: 'gis-panel-html'
-									},
-									{
-										cls: 'gis-panel-html-separator'
-									},
-									{
-										html: GIS.i18n.code,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: ou.co,
-										cls: 'gis-panel-html'
-									},
-									{
-										cls: 'gis-panel-html-separator'
-									},
-									{
-										html: GIS.i18n.address,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: ou.ad,
-										cls: 'gis-panel-html'
-									},
-									{
-										cls: 'gis-panel-html-separator'
-									},
-									{
-										html: GIS.i18n.contact_person,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: ou.cp,
-										cls: 'gis-panel-html'
-									},
-									{
-										cls: 'gis-panel-html-separator'
-									},
-									{
-										html: GIS.i18n.email,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: ou.em,
-										cls: 'gis-panel-html'
-									},
-									{
-										cls: 'gis-panel-html-separator'
-									},
-									{
-										html: GIS.i18n.phone_number,
-										cls: 'gis-panel-html-title'
-									},
-									{
-										html: ou.pn,
-										cls: 'gis-panel-html'
+								items: function() {
+									var a = [];
+
+									if (feature.attributes.name) {
+										a.push({html: GIS.i18n.name, cls: 'gis-panel-html-title'}, {html: feature.attributes.name, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 									}
-								]
+
+									if (ou.pa) {
+										a.push({html: GIS.i18n.parent_unit, cls: 'gis-panel-html-title'}, {html: ou.pa, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+									}
+
+									if (ou.ty) {
+										a.push({html: GIS.i18n.type, cls: 'gis-panel-html-title'}, {html: ou.ty, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+									}
+
+									if (ou.co) {
+										a.push({html: GIS.i18n.code, cls: 'gis-panel-html-title'}, {html: ou.co, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+									}
+
+									if (ou.ad) {
+										a.push({html: GIS.i18n.address, cls: 'gis-panel-html-title'}, {html: ou.ad, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+									}
+
+									if (ou.em) {
+										a.push({html: GIS.i18n.email, cls: 'gis-panel-html-title'}, {html: ou.em, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+									}
+
+									if (ou.pn) {
+										a.push({html: GIS.i18n.phone_number, cls: 'gis-panel-html-title'}, {html: ou.pn, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+									}
+
+									return a;
+								}()
 							},
 							{
 								xtype: 'form',
