@@ -90,12 +90,6 @@ GIS.core.getUtils = function(gis) {
 	var conf = gis.conf,
 		util = {};
 
-	util.google = {};
-
-	util.google.openTerms = function() {
-		window.open('http://www.google.com/intl/en-US_US/help/terms_maps.html', '_blank');
-	};
-
 	util.map = {};
 
 	util.map.getVisibleVectorLayers = function() {
@@ -231,12 +225,16 @@ GIS.core.getOLMap = function(gis) {
 				documentDrag: true
 			}),
 			new OpenLayers.Control.MousePosition({
-				id: 'mouseposition',
 				prefix: '<span class="el-fontsize-10"><span class="text-mouseposition-lonlat">LON </span>',
 				separator: '<span class="text-mouseposition-lonlat">&nbsp;&nbsp;LAT </span>',
-				suffix: '<div id="google-logo" onclick="javascript:gis.util.google.openTerms();"></div></span>'
+				suffix: '<div id="google-logo" name="http://www.google.com/intl/en-US_US/help/terms_maps.html" onclick="window.open(Ext.get(this).dom.attributes.name.nodeValue);"></div></span>'
 			}),
-			new OpenLayers.Control.Permalink()
+			new OpenLayers.Control.Permalink(),
+			new OpenLayers.Control.ScaleLine({
+				geodesic: true,
+				maxWidth: 200,
+				minWidth: 100
+			})
 		],
 		displayProjection: new OpenLayers.Projection('EPSG:4326'),
 		maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508),

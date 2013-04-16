@@ -179,7 +179,17 @@ html * {
 	cursor: hand;
 }
 
-/* GIS */
+/* ScaleLine */
+.olControlScaleLine {
+	left: 5px !important;
+	bottom: 5px !important;
+}
+.olControlScaleLineBottom {
+	display: none;
+}
+.olControlScaleLineTop {
+	font-weight: bold;
+}
 
 /*----------------------------------------------------------------------------
  * Combobox
