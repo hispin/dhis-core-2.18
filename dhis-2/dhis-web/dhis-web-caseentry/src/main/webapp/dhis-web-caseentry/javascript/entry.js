@@ -695,58 +695,55 @@ function entryFormContainerOnReady()
     var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 	
     loadProgramStageInstance(programStageInstanceId ).done(function() {
-        if( jQuery("#entryFormContainer") ) {
-		
-			// Display entry form if excution-date is not null
-			if( jQuery("#executionDate").val() == '' )
-			{
-				hideById('entryForm');
-			}
-            else if( jQuery("#executionDate").val() != '' )
-            {
-                toggleContentForReportDate(true);
-            }
-			
-			// Set buttons by completed-status of program-stage-instance
-			var completed = $( "#entryFormContainer input[id='completed']" ).val();
-			var blockEntry = $( "#entryFormContainer input[id='blockEntryForm']" ).val();
-			if(completed == 'true'){
-				disable('completeBtn');
-				enable('uncompleteBtn');
-				if( blockEntry == 'true'){
-					blockEntryForm();
-				}
-			}
-			else{
-				enable('completeBtn');
-				disable('uncompleteBtn');
-			}
-			
-            jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
-                jQuery(this).focus(function(){
-                    currentFocus = this;
-                });
 
-                jQuery(this).addClass("inputText");
-            });
+    } ).fail(function() {
+
+    } ).always(function() {
+        if( jQuery("#entryFormContainer") ) {
+
+            // Display entry form if excution-date is not null
+            if ( jQuery( "#executionDate" ).val() == '' ) {
+                hideById( 'entryForm' );
+            }
+            else if ( jQuery( "#executionDate" ).val() != '' ) {
+                toggleContentForReportDate( true );
+            }
+
+            // Set buttons by completed-status of program-stage-instance
+            var completed = $( "#entryFormContainer input[id='completed']" ).val();
+            var blockEntry = $( "#entryFormContainer input[id='blockEntryForm']" ).val();
+
+            if ( completed == 'true' ) {
+                disable( 'completeBtn' );
+                enable( 'uncompleteBtn' );
+                if ( blockEntry == 'true' ) {
+                    blockEntryForm();
+                }
+            }
+            else {
+                enable( 'completeBtn' );
+                disable( 'uncompleteBtn' );
+            }
+
+            jQuery( "input[name='entryfield'],select[name='entryselect']" ).each( function () {
+                jQuery( this ).focus( function () {
+                    currentFocus = this;
+                } );
+
+                jQuery( this ).addClass( "inputText" );
+            } );
 
             TOGGLE.init();
 
-			jQuery("#entryForm :input").each(function()
-			{
-				if( jQuery(this).attr( 'options' )!= null && jQuery(this).attr( 'options' )== 'true' )
-				{
-					autocompletedField(jQuery(this).attr('id'));
-				}
-				else if( jQuery(this).attr( 'username' )!= null && jQuery(this).attr( 'username' )== 'true' )
-				{
-					autocompletedUsernameField(jQuery(this).attr('id'));
-				}
-			});
-			
+            jQuery( "#entryForm :input" ).each( function () {
+                if ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' ) {
+                    autocompletedField( jQuery( this ).attr( 'id' ) );
+                }
+                else if ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) {
+                    autocompletedUsernameField( jQuery( this ).attr( 'id' ) );
+                }
+            } );
         }
-    } ).fail(function() {
-        console.log("failed, do something smart")
     });
 }
 
