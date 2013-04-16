@@ -1114,5 +1114,31 @@
       <result name="pdf" type="gridPdfResult" />
     </action>
 	
+	<!-- Program-stage-completeness -->
+	
+	  <action name="programStageCompletenessSelect"
+      class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/programStageCompletenessSelect.vm</param>
+      <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+      <param name="stylesheets">style/style.css</param>
+      <param name="javascripts">
+      	../dhis-web-commons/ouwt/ouwt.js,
+      	javascript/commons.js,
+      	javascript/programStageCompleteness.js</param>
+      <param name="requiredAuthorities">F_PROGRAM_STAGE_COMPLETENESS</param>
+    </action>
+    
+	<action name="generateProgramStageCompleteness"
+      class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/programStageCompleteness.vm</param>
+      <param name="stylesheets">style/style.css</param>
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
+      <param name="requiredAuthorities">F_PROGRAM_STAGE_COMPLETENESS</param>
+    </action>
+	
   </package>
 </struts>

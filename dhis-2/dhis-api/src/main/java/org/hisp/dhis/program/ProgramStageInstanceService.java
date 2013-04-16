@@ -112,20 +112,23 @@ public interface ProgramStageInstanceService
 
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
-        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals, I18nFormat format,
-        I18n i18n );
+        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
+        I18nFormat format, I18n i18n );
 
     // -------------------------------------------------------------------------
     // Statistical
     // -------------------------------------------------------------------------
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, Boolean completed );
 
     int getOverDueEventCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
-    int averageNumberCompletedProgramInstance( Program program , Collection<Integer> orgunitIds, Date startDate, Date endDate, Integer status );
-    
-    Collection<Integer> getOrganisationUnitIds ( Date startDate, Date endDate );
-    
+    int averageNumberCompletedProgramInstance( Program program, Collection<Integer> orgunitIds, Date startDate,
+        Date endDate, Integer status );
+
+    Collection<Integer> getOrganisationUnitIds( Date startDate, Date endDate );
+
+    Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n );
+
 }
