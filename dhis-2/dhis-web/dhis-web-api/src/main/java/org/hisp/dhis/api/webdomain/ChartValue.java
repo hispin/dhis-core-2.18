@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 @JacksonXmlRootElement( localName = "dxf2", namespace = DxfNamespaces.DXF_2_0)
-public class ChartPluginValue
+public class ChartValue
 {
     private List<String[]> values = new ArrayList<String[]>();
     
