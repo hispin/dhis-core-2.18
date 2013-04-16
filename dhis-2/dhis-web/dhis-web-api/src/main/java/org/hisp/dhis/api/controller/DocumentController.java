@@ -61,8 +61,6 @@ public class DocumentController
 {
     public static final String RESOURCE_PATH = "/documents";
 
-    private static final Log log = LogFactory.getLog( DocumentController.class );
-    
     @Autowired
     private DocumentService documentService;
 
@@ -83,27 +81,30 @@ public class DocumentController
         }
         else
         {
-            InputStream in = null;
-            
-            try
-            {
-                in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
-
-            }
-            catch ( LocationManagerException ex )
-            {
-                ContextUtils.conflictResponse( response, "Document could not be found: " + document.getUrl() );
-                log.error( ex );
-                return;
-            }
-            
             String ct = document.getContentType();
 
             boolean attachment = !(CONTENT_TYPE_PDF.equals( ct ) || CONTENT_TYPE_JPG.equals( ct ) || CONTENT_TYPE_PNG.equals( ct ));
 
             contextUtils.configureResponse( response, document.getContentType(), CacheStrategy.CACHE_TWO_WEEKS, document.getUrl(), attachment );
 
-            IOUtils.copy( in, response.getOutputStream() );
+            InputStream in = null;
+            
+            try
+            {
+                in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
+
+                IOUtils.copy( in, response.getOutputStream() );
+            }
+            catch ( LocationManagerException ex )
+            {
+                ContextUtils.conflictResponse( response, "Document could not be found: " + document.getUrl() );
+                
+                return;
+            }
+            finally
+            {
+                IOUtils.closeQuietly( in );
+            }            
         }
     }
 }
