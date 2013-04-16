@@ -31,9 +31,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.validator.DateValidator;
-import org.apache.commons.validator.EmailValidator;
-import org.apache.commons.validator.UrlValidator;
+import org.apache.commons.validator.routines.DateValidator;
+import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.UrlValidator;
 
 /**
  * @author Lars Helge Overland
