@@ -1118,5 +1118,15 @@
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
   </bean>
+  
+  <!-- Program-stage-completeness -->
+  
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction"
+    scope="prototype">
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+  </bean>
 
 </beans>

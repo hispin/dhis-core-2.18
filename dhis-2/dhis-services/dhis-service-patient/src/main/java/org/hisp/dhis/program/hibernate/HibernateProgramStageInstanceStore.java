@@ -404,7 +404,7 @@ public class HibernateProgramStageInstanceStore
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
             + "     and psi.executiondate is null "
             + "     and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage ";
-        
+
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
         int cols = rs.getMetaData().getColumnCount();
@@ -422,7 +422,11 @@ public class HibernateProgramStageInstanceStore
                 String programName = rs.getString( "programName" );
                 String programStageName = rs.getString( "programStageName" );
                 String daysSinceDueDate = rs.getString( "days_since_due_date" );
-                String dueDate = rs.getString( "duedate" ).split( " " )[0];// just get date, remove timestamp
+                String dueDate = rs.getString( "duedate" ).split( " " )[0];// just
+                                                                           // get
+                                                                           // date,
+                                                                           // remove
+                                                                           // timestamp
 
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
@@ -743,6 +747,49 @@ public class HibernateProgramStageInstanceStore
             Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
+    }
+
+    public Grid getCompleteness( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n )
+    {
+        String sql = "SELECT ou.name as orgunit, ps.name as program_stage, psi.completeduser as user_name, count(psi.programstageinstanceid) as number_of_events "
+            + "         FROM programstageinstance psi INNER JOIN programstage ps "
+            + "                         ON psi.programstageid = ps.programstageid "
+            + "                 INNER JOIN organisationunit ou "
+            + "                         ON ou.organisationunitid=psi.organisationunitid"
+            + "                 INNER JOIN program pg "
+            + "                         ON pg.programid = ps.programid "
+            + "         WHERE psi.organisationunitid = "
+            + orgunit.getId()
+            + "                 AND pg.programid = "
+            + program.getId()
+            + "         GROUP BY ou.name, ps.name, psi.completeduser, psi.completeddate, psi.completed "
+            + "         HAVING psi.completeddate >= '"
+            + startDate
+            + "'                AND psi.completeddate <= '"
+            + endDate
+            + "' "
+            + "                 AND psi.completed=true "
+            + "         ORDER BY ou.name, ps.name, psi.completeduser";
+
+        SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
+
+        // Create column with Total column
+
+        Grid grid = new ListGrid();
+
+        grid.setTitle( program.getDisplayName() );
+        grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + " " + endDate );
+
+        int cols = rs.getMetaData().getColumnCount();
+
+        for ( int i = 1; i <= cols; i++ )
+        {
+            grid.addHeader( new GridHeader( i18n.getString( rs.getMetaData().getColumnLabel( i ) ), false, false ) );
+        }
+
+        GridUtils.addRows( grid, rs );
+
+        return grid;
     }
 
     // -------------------------------------------------------------------------
