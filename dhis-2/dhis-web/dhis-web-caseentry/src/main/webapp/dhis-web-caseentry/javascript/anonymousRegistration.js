@@ -281,6 +281,7 @@ function updateProgramList( arr ) {
         jQuery( '#programId' ).append(
             '<option value="' + arr[i].key
             + '" puid="' + arr[i].uid
+            + '" programType="' + arr[i].type
             + '" psid="' + arr[i].programStages[0].id
             + '" psuid="' + arr[i].programStages[0].uid
             + '" reportDateDes="' + arr[i].programStages[0].reportDateDescription + '">'
