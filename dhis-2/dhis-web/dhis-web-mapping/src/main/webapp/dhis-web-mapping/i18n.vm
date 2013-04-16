@@ -378,6 +378,8 @@ GIS.i18n = {
     layer_stack_transparency: '$encoder.jsEscape($i18n.getString( 'layer_stack_transparency' ) , "'")',
     thematic_layer_1_legend: '$encoder.jsEscape($i18n.getString( 'thematic_layer_1_legend' ) , "'")',
     thematic_layer_2_legend: '$encoder.jsEscape($i18n.getString( 'thematic_layer_2_legend' ) , "'")',
+    thematic_layer_3_legend: '$encoder.jsEscape($i18n.getString( 'thematic_layer_3_legend' ) , "'")',
+    thematic_layer_4_legend: '$encoder.jsEscape($i18n.getString( 'thematic_layer_4_legend' ) , "'")',
     facility_layer_legend: '$encoder.jsEscape($i18n.getString( 'facility_layer_legend' ) , "'")',
     facility_layer_export_currently_not_supported: '$encoder.jsEscape($i18n.getString( 'facility_layer_export_currently_not_supported' ) , "'")',
     link_: '$encoder.jsEscape($i18n.getString( 'link_' ) , "'")',

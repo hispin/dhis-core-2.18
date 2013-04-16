@@ -3894,7 +3894,7 @@ Ext.onReady( function() {
 				downloadButton: downloadButton,
 				userOrganisationUnit: userOrganisationUnit,
 				userOrganisationUnitChildren: userOrganisationUnitChildren,
-				setFavorite: setFavorite,					
+				setFavorite: setFavorite,
 				items: [
 					westRegion,
 					centerRegion

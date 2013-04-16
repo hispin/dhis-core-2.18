@@ -4774,6 +4774,16 @@ Ext.onReady( function() {
 							width: 26
 						});
 						a.push({
+							iconCls: 'gis-btn-icon-' + gis.layer.thematic3.id,
+							menu: gis.layer.thematic3.menu,
+							width: 26
+						});
+						a.push({
+							iconCls: 'gis-btn-icon-' + gis.layer.thematic4.id,
+							menu: gis.layer.thematic4.menu,
+							width: 26
+						});
+						a.push({
 							iconCls: 'gis-btn-icon-' + gis.layer.facility.id,
 							menu: gis.layer.facility.menu,
 							width: 26
@@ -4927,7 +4937,6 @@ Ext.onReady( function() {
 					},
 					{
 						title: GIS.i18n.thematic_layer_2_legend,
-						contentEl: 'thematic2Legend',
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
 						collapsed: true,
@@ -4939,8 +4948,31 @@ Ext.onReady( function() {
 						}
 					},
 					{
+						title: GIS.i18n.thematic_layer_3_legend,
+						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
+						collapsible: true,
+						collapsed: true,
+						animCollapse: false,
+						listeners: {
+							added: function() {
+								gis.layer.thematic3.legendPanel = this;
+							}
+						}
+					},
+					{
+						title: GIS.i18n.thematic_layer_4_legend,
+						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
+						collapsible: true,
+						collapsed: true,
+						animCollapse: false,
+						listeners: {
+							added: function() {
+								gis.layer.thematic4.legendPanel = this;
+							}
+						}
+					},
+					{
 						title: GIS.i18n.facility_layer_legend,
-						contentEl: 'facilityLegend',
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
 						collapsed: true,
@@ -5059,6 +5091,18 @@ Ext.onReady( function() {
 			GIS.core.createSelectHandlers(gis, layer);
 
 			layer = gis.layer.thematic2;
+			layer.menu = GIS.app.LayerMenu(layer);
+			layer.widget = GIS.app.LayerWidgetThematic(layer);
+			layer.window = GIS.app.WidgetWindow(layer);
+			GIS.core.createSelectHandlers(gis, layer);
+
+			layer = gis.layer.thematic3;
+			layer.menu = GIS.app.LayerMenu(layer);
+			layer.widget = GIS.app.LayerWidgetThematic(layer);
+			layer.window = GIS.app.WidgetWindow(layer);
+			GIS.core.createSelectHandlers(gis, layer);
+
+			layer = gis.layer.thematic4;
 			layer.menu = GIS.app.LayerMenu(layer);
 			layer.widget = GIS.app.LayerWidgetThematic(layer);
 			layer.window = GIS.app.WidgetWindow(layer);

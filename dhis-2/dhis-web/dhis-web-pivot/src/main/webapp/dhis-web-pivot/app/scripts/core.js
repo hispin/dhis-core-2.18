@@ -1041,7 +1041,7 @@ PT.core.getUtils = function(pt) {
 					if (!(config && Ext.isObject(config))) {
 						return '';
 					}
-
+					
 					cls = config.cls ? config.cls : '';
 					cls += config.hidden ? ' td-hidden' : '';
 					cls += config.collapsed ? ' td-collapsed' : '';
