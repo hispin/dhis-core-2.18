@@ -5,12 +5,13 @@
 function saveVal( dataElementUid )
 {
 	var programStageUid = jQuery('.stage-object-selected').attr('psuid');
-	if(programStageUid==undefined){
-		if( jQuery('#entryFormContainer [id=programStageUid]') == null) return;
-		else programStageUid = jQuery('#entryFormContainer [id=programStageUid]').val();
-	}
-    
-	var fieldId = programStageUid + '-' + dataElementUid + '-val';
+
+    if ( programStageUid == undefined ) {
+        if ( jQuery( '#entryFormContainer [id=programStageUid]' ) == null ) return;
+        else programStageUid = jQuery( '#entryFormContainer [id=programStageUid]' ).val();
+    }
+
+    var fieldId = programStageUid + '-' + dataElementUid + '-val';
 	
 	var field = byId( fieldId ); 
 	if( field == null) return;
@@ -19,25 +20,22 @@ function saveVal( dataElementUid )
 	
 	var arrData = jQuery( "#" + fieldId ).attr('data').replace('{','').replace('}','').replace(/'/g,"").split(',');
 	var data = new Array();
-	for( var i in arrData )
-	{	
-		var values = arrData[i].split(':');
-		var key = jQuery.trim( values[0] );
-		var value = jQuery.trim( values[1] )
-		data[key] = value;
-	}
- 
-	var dataElementName = data['deName']; 
+
+    for ( var i in arrData ) {
+        var values = arrData[i].split( ':' );
+        var key = jQuery.trim( values[0] );
+        var value = jQuery.trim( values[1] )
+        data[key] = value;
+    }
+
+    var dataElementName = data['deName'];
     var type = data['deType'];
- 
-	field.style.backgroundColor = SAVING_COLOR;
-    
-    if( fieldValue != '' )
-    {
-        if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
-        {
-            if (  type == 'int' && !isInt( fieldValue ))
-            {
+
+    field.style.backgroundColor = SAVING_COLOR;
+
+    if ( fieldValue != '' ) {
+        if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' ) {
+            if ( type == 'int' && !isInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
 
                 window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
@@ -46,24 +44,21 @@ function saveVal( dataElementUid )
 
                 return;
             }
-			else if ( type == 'number' && !isRealNumber( fieldValue ) )
-            {
+            else if ( type == 'number' && !isRealNumber( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 field.focus();
 
                 return;
-            } 
-			else if ( type == 'positiveNumber' && !isPositiveInt( fieldValue ) )
-            {
+            }
+            else if ( type == 'positiveNumber' && !isPositiveInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 field.focus();
 
                 return;
-            } 
-			else if ( type == 'negativeNumber' && !isNegativeInt( fieldValue ) )
-            {
+            }
+            else if ( type == 'negativeNumber' && !isNegativeInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 field.focus();
@@ -71,21 +66,22 @@ function saveVal( dataElementUid )
                 return;
             }
         }
-		else if(type=='date')
-		{
-			field.focus();
-		}
-    	
+        else if ( type == 'date' ) {
+            field.focus();
+        }
+
     }
     
 	var value = fieldValue;
-	if ( type == 'trueOnly' ){
-		if( field.checked ) 
-			fieldValue = "true";
-		else 
-			fieldValue="";
-	}
-	var valueSaver = new ValueSaver( dataElementUid, fieldValue, type, SUCCESS_COLOR );
+
+    if ( type == 'trueOnly' ) {
+        if ( field.checked )
+            fieldValue = "true";
+        else
+            fieldValue = "";
+    }
+
+    var valueSaver = new ValueSaver( dataElementUid, fieldValue, type, SUCCESS_COLOR );
     valueSaver.save();
 }
 
@@ -645,6 +641,13 @@ function loadProgramStageInstance(programStageInstanceId) {
             hideById( 'newEncounterBtn' );
         }
 
+        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
+            jQuery("[id=entryFormContainer] :input").prop('disabled', true);
+            jQuery("[id=entryFormContainer] :input").datepicker("destroy");
+            jQuery("[id=executionDate]").prop('disabled', true);
+            jQuery("[id=executionDate]").datepicker("destroy");
+        }
+
         if(data.executionDate) {
             $( '#executionDate' ).val(data.executionDate);
             $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
@@ -668,13 +671,6 @@ function loadProgramStageInstance(programStageInstanceId) {
 
                 $( '#commentTB' ).append( comment )
             });
-        }
-
-        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-            jQuery("[id=entryFormContainer] :input").prop('disabled', true);
-            jQuery("[id=entryFormContainer] :input").datepicker("destroy");
-            jQuery("[id=executionDate]").prop('disabled', true);
-            jQuery("[id=executionDate]").datepicker("destroy");
         }
     } ).fail(function() {
         $('#commentInput').attr('disabled', true)
