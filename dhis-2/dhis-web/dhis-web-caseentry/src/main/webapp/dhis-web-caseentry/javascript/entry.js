@@ -110,6 +110,16 @@ function saveExecutionDate( programId, programStageInstanceId, field )
     }
 }
 
+function getProgramType() {
+    var programType = jQuery( '.stage-object-selected' ).attr( 'programType' );
+
+    if ( programType == undefined ) {
+        programType = jQuery( '#programId option:selected' ).attr( 'programType' );
+    }
+
+    return programType;
+}
+
 function getProgramStageUid() {
     var programStageUid = jQuery( '.stage-object-selected' ).attr( 'psuid' );
 
@@ -224,17 +234,19 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 	var value = value_;
 	var type = dataElementType_;
     var resultColor = resultColor_;
-	
+
     this.save = function()
     {
-		var params  = 'dataElementUid=' + dataElementUid;
-			params += '&programStageInstanceId=' + getFieldValue('programStageInstanceId');
-		
-		params += '&providedElsewhere=';
+        var params = 'dataElementUid=' + dataElementUid;
+            params += '&programStageInstanceId=' + getFieldValue( 'programStageInstanceId' );
+
+        params += '&providedElsewhere=';
+
 		if( byId( providedElsewhereId ) != null )
 			params += byId( providedElsewhereId ).checked;
 		
 		params += '&value=';
+
         if ( value != '' )
             params += htmlEncode( value );
 
@@ -246,7 +258,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
            success: function(result){
                 handleResponse (result);
            },
-           error: function(request,status,errorThrown) {
+           error: function(request) {
                 handleHttpError (request);
            }
         });
@@ -273,8 +285,35 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
  
     function handleHttpError( errorCode )
     {
-        markValue( ERROR );
-        window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+        if( getProgramType() == 3 && DAO.dataValues ) {
+            var data = {
+                providedElsewhere: byId( providedElsewhereId ) != null ? byId( providedElsewhereId ).checked : false,
+                value: value != '' ? htmlEncode( value ) : value
+            };
+
+            var dataValueKey = $( '#programStageInstanceId' ).val();
+            var key = dataElementUid;
+
+            DAO.dataValues.fetch( dataValueKey, function ( store, arr ) {
+                if ( arr.length == 0 ) {
+                    var obj = {
+                        key: data
+                    };
+
+                    store.add( dataValueKey, obj );
+                } else {
+                    var obj = arr[0];
+                    obj[key] = data;
+
+                    store.add( dataValueKey, obj );
+                }
+
+                markValue( resultColor );
+            } );
+        } else {
+            markValue( ERROR );
+            window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+        }
     }
  
     function markValue( color )
@@ -513,9 +552,7 @@ function runCompleteEvent( isCreateEvent )
                     showCreateNewEvent( programInstanceId, programStageUid );
                 }
 
-                var selectedProgram = jQuery('.stage-object-selected');
-
-                if( selectedProgram.attr('programType')=='2' || json.response == 'programcompleted' ) {
+                if( getProgramType()=='2' || json.response == 'programcompleted' ) {
                     var completedRow = jQuery('#td_' + programInstanceId).html();
                     jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
                 }
