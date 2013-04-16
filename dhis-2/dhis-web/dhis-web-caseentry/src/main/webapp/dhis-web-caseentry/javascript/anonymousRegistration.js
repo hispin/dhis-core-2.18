@@ -278,8 +278,14 @@ function updateProgramList( arr ) {
     jQuery( '#programId' ).append( '<option value="" psid="" reportDateDes="' + i18n_report_date + '">[' + i18n_please_select + ']</option>' );
 
     for ( var i = 0; i < arr.length; i++ ) {
-        jQuery( '#programId' ).append( '<option value="' + arr[i].key + '" psid="' + arr[i].programStages[0].id + '" reportDateDes="' +
-            arr[i].programStages[0].reportDateDescription + '">' + arr[i].name + '</option>' );
+        jQuery( '#programId' ).append(
+            '<option value="' + arr[i].key
+            + '" puid="' + arr[i].uid
+            + '" psid="' + arr[i].programStages[0].id
+            + '" psuid="' + arr[i].programStages[0].uid
+            + '" reportDateDes="' + arr[i].programStages[0].reportDateDescription + '">'
+            + arr[i].name
+            + '</option>' );
     }
 
     disableCriteriaDiv();

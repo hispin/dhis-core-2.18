@@ -4,27 +4,21 @@
 
 function saveVal( dataElementUid )
 {
-	var programStageUid = jQuery('.stage-object-selected').attr('psuid');
-
-    if ( programStageUid == undefined ) {
-        if ( jQuery( '#entryFormContainer [id=programStageUid]' ) == null ) return;
-        else programStageUid = jQuery( '#entryFormContainer [id=programStageUid]' ).val();
-    }
-
+    var programStageUid = getProgramStageUid();
     var fieldId = programStageUid + '-' + dataElementUid + '-val';
-	
-	var field = byId( fieldId ); 
-	if( field == null) return;
-	
-	var fieldValue = jQuery.trim( field.value );
-	
-	var arrData = jQuery( "#" + fieldId ).attr('data').replace('{','').replace('}','').replace(/'/g,"").split(',');
-	var data = new Array();
+    var field = byId( fieldId );
+
+    if( field == null) return;
+
+    var fieldValue = jQuery.trim( field.value );
+    var arrData = jQuery( "#" + fieldId ).attr( 'data' ).replace( '{', '' ).replace( '}', '' ).replace( /'/g, "" ).split( ',' );
+    var data = new Array();
 
     for ( var i in arrData ) {
         var values = arrData[i].split( ':' );
         var key = jQuery.trim( values[0] );
-        var value = jQuery.trim( values[1] )
+        var value = jQuery.trim( values[1] );
+
         data[key] = value;
     }
 
@@ -87,7 +81,7 @@ function saveVal( dataElementUid )
 
 function saveOpt( dataElementUid )
 {
-	var programStageUid = jQuery('.stage-object-selected').attr('psuid');
+	var programStageUid = getProgramStageUid();
 	var field = byId( programStageUid + '-' + dataElementUid + '-val' );	
 	field.style.backgroundColor = SAVING_COLOR;
 	
@@ -114,6 +108,24 @@ function saveExecutionDate( programId, programStageInstanceId, field )
     {
         toggleContentForReportDate(true);
     }
+}
+
+function getProgramStageUid() {
+    var programStageUid = jQuery( '.stage-object-selected' ).attr( 'psuid' );
+
+    if ( programStageUid == undefined ) {
+        programStageUid = jQuery( '#programId option:selected' ).attr( 'psuid' );
+    }
+
+    if ( programStageUid == undefined ) {
+        programStageUid = jQuery( '#entryFormContainer [id=programStageUid]' ).val();
+    }
+
+    if ( programStageUid == undefined ) {
+        programStageUid = jQuery( '#programStageUid' ).val();
+    }
+
+    return programStageUid;
 }
 
 /**
@@ -267,7 +279,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
  
     function markValue( color )
     {
-		var programStageUid = jQuery('#entryFormContainer [id=programStageUid]').val();
+		var programStageUid = getProgramStageUid();
 		var element = byId( programStageUid + "-" + dataElementUid + '-val' );
         element.style.backgroundColor = color;
     }
@@ -497,7 +509,7 @@ function runCompleteEvent( isCreateEvent )
                 var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
 
                 if( irregular == 'true' && displayGenerateEventBox=="true" ) {
-                    var programStageUid = jQuery(".stage-object-selected").attr('psuid');
+                    var programStageUid = getProgramStageUid();
                     showCreateNewEvent( programInstanceId, programStageUid );
                 }
 
@@ -682,11 +694,7 @@ function entryFormContainerOnReady()
 	var currentFocus = undefined;
     var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 	
-    loadProgramStageInstance(programStageInstanceId ).done(function() {
-
-    } ).fail(function() {
-
-    } ).always(function() {
+    loadProgramStageInstance(programStageInstanceId ).always(function() {
         if( jQuery("#entryFormContainer") ) {
 
             // Display entry form if excution-date is not null
