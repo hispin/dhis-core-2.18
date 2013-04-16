@@ -34,8 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.PatientIdentifier;
@@ -484,8 +482,97 @@ public class Patient
     @Override
     public boolean equals( Object otherObject )
     {
-        Beneficiary otherBeneficiary = (Beneficiary) otherObject;
-        return this.getId() == otherBeneficiary.getId();
+        if ( this == otherObject )
+        {
+            return true;
+        }
+
+        if ( otherObject == null )
+        {
+            return false;
+        }
+
+        if ( getClass() != otherObject.getClass() )
+        {
+            return false;
+        }
+
+        final Patient otherPatient = (Patient) otherObject;
+
+        if ( birthDate == null )
+        {
+            if ( otherPatient.birthDate != null )
+            {
+                return false;
+            }
+        }
+        else if ( !birthDate.equals( otherPatient.birthDate ) )
+        {
+            return false;
+        }
+
+        if ( firstName == null )
+        {
+            if ( otherPatient.firstName != null )
+            {
+                return false;
+            }
+        }
+        else if ( !firstName.equals( otherPatient.firstName ) )
+        {
+            return false;
+        }
+
+        if ( gender == null )
+        {
+            if ( otherPatient.gender != null )
+                return false;
+        }
+        else if ( !gender.equals( otherPatient.gender ) )
+        {
+            return false;
+        }
+
+        if ( lastName == null )
+        {
+            if ( otherPatient.lastName != null )
+            {
+                return false;
+            }
+        }
+        else if ( !lastName.equals( otherPatient.lastName ) )
+        {
+            return false;
+        }
+
+        if ( middleName == null )
+        {
+            if ( otherPatient.middleName != null )
+            {
+                return false;
+            }
+        }
+        else if ( !middleName.equals( otherPatient.middleName ) )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+        result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
+
+        return result;
     }
 
     @Override

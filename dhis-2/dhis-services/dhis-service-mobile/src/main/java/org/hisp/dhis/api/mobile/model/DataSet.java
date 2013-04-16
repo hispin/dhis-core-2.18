@@ -212,9 +212,26 @@ public class DataSet
     }
 
     @Override
-    public boolean equals( Object obj )
+    public int hashCode()
     {
-        if ( ((DataSet) obj).getId() == this.getId() )
+        return this.getId();
+    }
+
+    @Override
+    public boolean equals( Object otherObject )
+    {
+
+        if ( this == otherObject )
+        {
+            return true;
+        }
+
+        if ( otherObject == null )
+        {
+            return false;
+        }
+
+        if ( ((DataSet) otherObject).getId() == this.getId() )
             return true;
         return false;
     }
