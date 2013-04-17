@@ -738,7 +738,7 @@ Ext.onReady( function() {
 			bbar: [
 				'->',
 				{
-					text: 'Hide',
+					text: PT.i18n.hide,
 					listeners: {
 						added: function(b) {
 							b.on('click', function() {
@@ -748,7 +748,7 @@ Ext.onReady( function() {
 					}
 				},
 				{
-					text: '<b>Update</b>',
+					text: '<b>' + PT.i18n.update + '</b>',
 					listeners: {
 						added: function(b) {
 							b.on('click', function() {
@@ -824,9 +824,9 @@ Ext.onReady( function() {
 			store: Ext.create('Ext.data.Store', {
 				fields: ['id', 'text'],
 				data: [
-					{id: 'comfortable', text: 'Comfortable'},
-					{id: 'normal', text: 'Normal'},
-					{id: 'compact', text: 'Compact'}
+					{id: 'comfortable', text: PT.i18n.comfortable},
+					{id: 'normal', text: PT.i18n.normal},
+					{id: 'compact', text: PT.i18n.compact}
 				]
 			})
 		});
@@ -846,9 +846,9 @@ Ext.onReady( function() {
 			store: Ext.create('Ext.data.Store', {
 				fields: ['id', 'text'],
 				data: [
-					{id: 'large', text: 'Large'},
-					{id: 'normal', text: 'Normal'},
-					{id: 'small', text: 'Small'}
+					{id: 'large', text: PT.i18n.large},
+					{id: 'normal', text: PT.i18n.normal},
+					{id: 'small', text: PT.i18n.small_}
 				]
 			})
 		});
@@ -949,7 +949,7 @@ Ext.onReady( function() {
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px',
-					html: 'Data'
+					html: PT.i18n.data
 				},
 				data,
 				{
@@ -958,7 +958,7 @@ Ext.onReady( function() {
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px',
-					html: 'Style'
+					html: PT.i18n.style
 				},
 				style,
 				{
@@ -967,20 +967,20 @@ Ext.onReady( function() {
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px',
 					style: 'margin-bottom:6px',
-					html: '<b>Parameters</b> <span style="font-size:11px"> (for standard reports only)</span>'
+					html: '<b>' + PT.i18n.parameters + '</b> <span style="font-size:11px"> (' + PT.i18n.for_standard_reports_only + ')</span>'
 				},
 				parameters
 			],
 			bbar: [
 				'->',
 				{
-					text: 'Hide',
+					text: PT.i18n.hide,
 					handler: function() {
 						window.hide();
 					}
 				},
 				{
-					text: '<b>Update</b>',
+					text: '<b>' + PT.i18n.update + '</b>',
 					handler: function() {
 						pt.viewport.updateViewport();
 						window.hide();
@@ -1424,7 +1424,7 @@ Ext.onReady( function() {
 									favorite;
 
 								if (record.data.access.update) {
-									message = 'Overwrite favorite?\n\n' + record.data.name;
+									message = PT.i18n.overwrite_favorite + '?\n\n' + record.data.name;
 									favorite = getBody();
 
 									if (favorite) {
@@ -1485,7 +1485,7 @@ Ext.onReady( function() {
 									message;
 
 								if (record.data.access['delete']) {
-									message = 'Delete favorite?\n\n' + record.data.name;
+									message = PT.i18n.delete_favorite + '?\n\n' + record.data.name;
 
 									if (confirm(message)) {
 										Ext.Ajax.request({
@@ -1599,7 +1599,7 @@ Ext.onReady( function() {
 		});
 
 		favoriteWindow = Ext.create('Ext.window.Window', {
-			title: 'Manage favorites',
+			title: PT.i18n.manage_favorites,
 			//iconCls: 'pt-window-title-icon-favorite',
 			bodyStyle: 'padding:5px; background-color:#fff',
 			resizable: false,
@@ -1836,7 +1836,7 @@ Ext.onReady( function() {
 		}
 
 		window = Ext.create('Ext.window.Window', {
-			title: 'Sharing settings',
+			title: PT.i18n.sharing_settings,
 			bodyStyle: 'padding:6px 6px 0px; background-color:#fff',
 			width: 434,
 			resizable: false,
@@ -1862,7 +1862,7 @@ Ext.onReady( function() {
 			bbar: [
 				'->',
 				{
-					text: 'Save',
+					text: PT.i18n.save,
 					handler: function() {
 						Ext.Ajax.request({
 							url: pt.baseUrl + '/api/sharing?type=reportTable&id=' + sharing.object.id,
@@ -2054,7 +2054,7 @@ Ext.onReady( function() {
 						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
 						valueField: 'id',
 						displayField: 'name',
-						emptyText: 'Select indicator group',
+						emptyText: PT.i18n.select_indicator_group,
 						editable: false,
 						store: {
 							xtype: 'store',
@@ -2243,7 +2243,7 @@ Ext.onReady( function() {
 						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
 						valueField: 'id',
 						displayField: 'name',
-						emptyText: 'Select data element group',
+						emptyText: PT.i18n.select_data_element_group,
 						editable: false,
 						store: {
 							xtype: 'store',
@@ -2581,7 +2581,7 @@ Ext.onReady( function() {
 									},
 									{
 										xtype: 'checkbox',
-										relativePeriodId: PT.i18n.last_bimonth,
+										relativePeriodId: 'LAST_BIMONTH',
 										boxLabel: PT.i18n.last_bimonth
 									},
 									{
@@ -2912,7 +2912,7 @@ Ext.onReady( function() {
 								width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 62 - 62 - 4,
 								valueField: 'id',
 								displayField: 'name',
-								emptyText: 'Select period type',
+								emptyText: PT.i18n.select_period_type,
 								editable: false,
 								queryMode: 'remote',
 								store: pt.store.periodType,
@@ -3651,7 +3651,7 @@ Ext.onReady( function() {
 							}
 						},
 						{
-							text: '<b>Update</b>',
+							text: '<b>' + PT.i18n.update + '</b>',
 							handler: function() {
 								update();
 							}
@@ -3705,14 +3705,14 @@ Ext.onReady( function() {
 							html = '';
 
 						html += '<div style="padding:20px">';
-						html += '<div style="font-size:14px; padding-bottom:8px">Creating a pivot table</div>';
-						html += '<div style="' + liStyle + '">- Select items from any of the dimensions in the left menu</div>';
-						html += '<div style="' + liStyle + '">- Click "Layout" to arrange your dimensions on table rows and columns</div>';
-						html += '<div style="' + liStyle + '">- Click "<b>Update</b>" to create your table</div>';
-						html += '<div style="font-size:14px; padding-top:20px; padding-bottom:8px">Working with a pivot table</div>';
-						html += '<div style="' + liStyle + '">- Click "Options" to hide sub-totals or empty rows, adjust font size and more</div>';
-						html += '<div style="' + liStyle + '">- Click "Favorites" to save your table for later use</div>';
-						html += '<div style="' + liStyle + '">- Click "Download" to save table data to your computer</div>';
+						html += '<div style="font-size:14px; padding-bottom:8px">' + PT.i18n.example1 + '</div>';
+						html += '<div style="' + liStyle + '">- ' + PT.i18n.example2 + '</div>';
+						html += '<div style="' + liStyle + '">- ' + PT.i18n.example3 + '</div>';
+						html += '<div style="' + liStyle + '">- ' + PT.i18n.example4 + '</div>';
+						html += '<div style="font-size:14px; padding-top:20px; padding-bottom:8px">' + PT.i18n.example5 + '</div>';
+						html += '<div style="' + liStyle + '">- ' + PT.i18n.example6 + '</div>';
+						html += '<div style="' + liStyle + '">- ' + PT.i18n.example7 + '</div>';
+						html += '<div style="' + liStyle + '">- ' + PT.i18n.example8 + '</div>';
 						html += '</div>';
 
 						p.update(html);
