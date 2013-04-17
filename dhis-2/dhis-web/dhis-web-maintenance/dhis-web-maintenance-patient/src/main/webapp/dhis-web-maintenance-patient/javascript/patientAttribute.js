@@ -32,6 +32,7 @@ function patientAttributeTypeMap()
 	typeMap['combo'] = i18n_attribute_combo_type;
 	return typeMap;
 }
+
 // -----------------------------------------------------------------------------
 // Remove Patient Attribute
 // -----------------------------------------------------------------------------

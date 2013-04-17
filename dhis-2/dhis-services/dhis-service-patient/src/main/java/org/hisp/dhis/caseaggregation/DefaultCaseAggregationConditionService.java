@@ -222,12 +222,11 @@ public class DefaultCaseAggregationConditionService
     public Double getAggregateValue( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
-        DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
         DataElement deSum = aggregationCondition.getDeSum();
         Integer deSumId = (deSum == null) ? null : deSum.getId();
 
         return aggregationConditionManager.getAggregateValue( aggregationCondition.getAggregationExpression(),
-            aggregationCondition.getOperator(), aggDataElement.getType(), deSumId, orgunit.getId(), period );
+            aggregationCondition.getOperator(), deSumId, orgunit.getId(), period );
     }
 
     @Override
@@ -239,14 +238,13 @@ public class DefaultCaseAggregationConditionService
         int orgunitId = orgunit.getId();
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
         String endDate = DateUtils.getMediumDateString( period.getEndDate() );
-        DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
         DataElement deSum = aggregationCondition.getDeSum();
         Integer deSumId = (deSum == null) ? null : deSum.getId();
 
         Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
 
         String sql = aggregationConditionManager.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
-            aggregationCondition.getOperator(), aggDataElement.getType(), deSumId, orgunitId, startDate, endDate );
+            aggregationCondition.getOperator(), deSumId, orgunitId, startDate, endDate );
 
         Collection<DataElement> dataElements = getDataElementsInCondition( aggregationCondition
             .getAggregationExpression() );
@@ -272,14 +270,12 @@ public class DefaultCaseAggregationConditionService
     public Collection<Patient> getPatients( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
-        DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
         DataElement deSum = aggregationCondition.getDeSum();
         Integer deSumId = (deSum == null) ? null : deSum.getId();
 
         String sql = aggregationConditionManager
             .parseExpressionToSql( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
-                aggDataElement.getType(), deSumId, orgunit.getId(),
-                DateUtils.getMediumDateString( period.getStartDate() ),
+                deSumId, orgunit.getId(), DateUtils.getMediumDateString( period.getStartDate() ),
                 DateUtils.getMediumDateString( period.getEndDate() ) );
 
         Collection<Patient> result = new HashSet<Patient>();
@@ -316,12 +312,11 @@ public class DefaultCaseAggregationConditionService
 
             // get params
 
-            DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
             DataElement deSum = aggregationCondition.getDeSum();
             Integer deSumId = (deSum == null) ? null : deSum.getId();
 
             sql = aggregationConditionManager.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
-                aggregationCondition.getOperator(), aggDataElement.getType(), deSumId, orgunitId, startDate, endDate );
+                aggregationCondition.getOperator(), deSumId, orgunitId, startDate, endDate );
         }
         else
         {
@@ -340,14 +335,12 @@ public class DefaultCaseAggregationConditionService
 
                 // Get params
 
-                DataElement aggDataElement = aggregationCondition.getAggregationDataElement();
                 DataElement deSum = aggregationCondition.getDeSum();
                 Integer deSumId = (deSum == null) ? null : deSum.getId();
 
                 String conditionSql = aggregationConditionManager.parseExpressionToSql(
-                    aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
-                    aggDataElement.getType(), deSumId, orgunit.getId(),
-                    DateUtils.getMediumDateString( period.getStartDate() ),
+                    aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(), deSumId,
+                    orgunit.getId(), DateUtils.getMediumDateString( period.getStartDate() ),
                     DateUtils.getMediumDateString( period.getEndDate() ) );
 
                 sql += conditionSql + " ) ";
