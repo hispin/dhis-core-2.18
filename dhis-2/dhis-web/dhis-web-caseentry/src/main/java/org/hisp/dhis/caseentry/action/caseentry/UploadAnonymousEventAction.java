@@ -190,19 +190,15 @@ public class UploadAnonymousEventAction implements Action
 
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
 
-        if ( patientDataValue == null && value != null )
+        if ( value != null )
         {
-            patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
-            patientDataValue.setStoredBy( storedBy );
-            patientDataValue.setProvidedElsewhere( providedElsewhere );
-
-            patientDataValueService.savePatientDataValue( patientDataValue );
-        }
-        else
-        {
-            if ( value == null )
+            if ( patientDataValue == null )
             {
-                patientDataValueService.deletePatientDataValue( patientDataValue );
+                patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
+                patientDataValue.setStoredBy( storedBy );
+                patientDataValue.setProvidedElsewhere( providedElsewhere );
+
+                patientDataValueService.savePatientDataValue( patientDataValue );
             }
             else
             {
@@ -213,6 +209,10 @@ public class UploadAnonymousEventAction implements Action
 
                 patientDataValueService.updatePatientDataValue( patientDataValue );
             }
+        }
+        else if ( patientDataValue != null )
+        {
+            patientDataValueService.deletePatientDataValue( patientDataValue );
         }
     }
 }
