@@ -43,6 +43,7 @@
 
 <tr>
 	<td>
+		<br/>
 		<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" />
 		<input type='button' class="small-button" alt="$i18n.getString( 'minus' )" onclick='insertOperator( "-" );' value="-" />
 		<input type='button' class="small-button" alt="$i18n.getString( 'multiply' )" onclick='insertOperator( "*" );' value="*" />
