@@ -576,6 +576,10 @@ Ext.onReady( function() {
 				if (value && this.layer.layerType === gis.conf.finals.layer.type_base) {
 					gis.olmap.setBaseLayer(this.layer);
 				}
+
+				if (this.layer.circleLayer) {
+					this.layer.circleLayer.setVisibility(value);
+				}
 			},
 			initComponent: function() {
 				var that = this,
@@ -879,18 +883,10 @@ Ext.onReady( function() {
 			item,
 			panel,
 			visibleLayer = window.google ? layers.googleStreets : layers.openStreetMap,
-			reversedLayers = [];
+			orderedLayers = gis.olmap.layers.reverse();
 
-		for (var key in gis.layer) {
-			if (gis.layer.hasOwnProperty(key)) {
-				reversedLayers.push(gis.layer[key]);
-			}
-		}
-
-		reversedLayers = reversedLayers.reverse();
-
-		for (var i = 0; i < reversedLayers.length; i++) {
-			layer = reversedLayers[i];
+		for (var i = 0; i < orderedLayers.length; i++) {
+			layer = orderedLayers[i];
 
 			item = Ext.create('Ext.ux.panel.LayerItemPanel', {
 				cls: 'gis-container-inner',
@@ -4759,6 +4755,11 @@ Ext.onReady( function() {
 					items: function() {
 						var a = [];
 						a.push({
+							iconCls: 'gis-btn-icon-' + gis.layer.facility.id,
+							menu: gis.layer.facility.menu,
+							width: 26
+						});
+						a.push({
 							iconCls: 'gis-btn-icon-' + gis.layer.boundary.id,
 							menu: gis.layer.boundary.menu,
 							width: 26
@@ -4781,11 +4782,6 @@ Ext.onReady( function() {
 						a.push({
 							iconCls: 'gis-btn-icon-' + gis.layer.thematic4.id,
 							menu: gis.layer.thematic4.menu,
-							width: 26
-						});
-						a.push({
-							iconCls: 'gis-btn-icon-' + gis.layer.facility.id,
-							menu: gis.layer.facility.menu,
 							width: 26
 						});
 						a.push({
@@ -4895,7 +4891,7 @@ Ext.onReady( function() {
 
                         a.push({
                             xtype: 'button',
-                            text: 'Home',
+                            text: GIS.i18n.home,
                             handler: function() {
                                 window.location.href = '../../dhis-web-commons-about/redirect.action';
                             }
@@ -5078,8 +5074,14 @@ Ext.onReady( function() {
 			gis.util = GIS.app.getUtils();
 			gis.store = GIS.app.getStores();
 
-			layer = gis.layer.boundary;
+			layer = gis.layer.facility;
 			layer.menu = GIS.app.LayerMenu(layer, 'gis-toolbar-btn-menu-first');
+			layer.widget = GIS.app.LayerWidgetFacility(layer);
+			layer.window = GIS.app.WidgetWindow(layer);
+			GIS.core.createSelectHandlers(gis, layer);
+
+			layer = gis.layer.boundary;
+			layer.menu = GIS.app.LayerMenu(layer);
 			layer.widget = GIS.app.LayerWidgetBoundary(layer);
 			layer.window = GIS.app.WidgetWindow(layer);
 			GIS.core.createSelectHandlers(gis, layer);
@@ -5105,12 +5107,6 @@ Ext.onReady( function() {
 			layer = gis.layer.thematic4;
 			layer.menu = GIS.app.LayerMenu(layer);
 			layer.widget = GIS.app.LayerWidgetThematic(layer);
-			layer.window = GIS.app.WidgetWindow(layer);
-			GIS.core.createSelectHandlers(gis, layer);
-
-			layer = gis.layer.facility;
-			layer.menu = GIS.app.LayerMenu(layer);
-			layer.widget = GIS.app.LayerWidgetFacility(layer);
 			layer.window = GIS.app.WidgetWindow(layer);
 			GIS.core.createSelectHandlers(gis, layer);
 

@@ -318,39 +318,39 @@ GIS.core.getLayers = function(gis) {
     });
     layers.openStreetMap.id = 'openStreetMap';
 
-	layers.boundary = GIS.core.VectorLayer(gis, 'boundary', 'Boundary layer', {opacity: 0.8});
+	layers.facility = GIS.core.VectorLayer(gis, 'facility', GIS.i18n.facility_layer, {opacity: 0.8});
+	layers.facility.core = new mapfish.GeoStat.Facility(gis.olmap, {
+		layer: layers.facility,
+		gis: gis
+	});
+
+	layers.boundary = GIS.core.VectorLayer(gis, 'boundary', GIS.i18n.boundary_layer, {opacity: 0.8});
 	layers.boundary.core = new mapfish.GeoStat.Boundary(gis.olmap, {
 		layer: layers.boundary,
 		gis: gis
 	});
 
-	layers.thematic1 = GIS.core.VectorLayer(gis, 'thematic1', 'Thematic layer 1', {opacity: 0.8});
+	layers.thematic1 = GIS.core.VectorLayer(gis, 'thematic1', GIS.i18n.thematic_layer + ' 1', {opacity: 0.8});
 	layers.thematic1.core = new mapfish.GeoStat.Thematic1(gis.olmap, {
 		layer: layers.thematic1,
 		gis: gis
 	});
 
-	layers.thematic2 = GIS.core.VectorLayer(gis, 'thematic2', 'Thematic layer 2', {opacity: 0.8});
+	layers.thematic2 = GIS.core.VectorLayer(gis, 'thematic2', GIS.i18n.thematic_layer + ' 2', {opacity: 0.8});
 	layers.thematic2.core = new mapfish.GeoStat.Thematic2(gis.olmap, {
 		layer: layers.thematic2,
 		gis: gis
 	});
 
-	layers.thematic3 = GIS.core.VectorLayer(gis, 'thematic3', 'Thematic layer 3', {opacity: 0.8});
+	layers.thematic3 = GIS.core.VectorLayer(gis, 'thematic3', GIS.i18n.thematic_layer + ' 3', {opacity: 0.8});
 	layers.thematic3.core = new mapfish.GeoStat.Thematic3(gis.olmap, {
 		layer: layers.thematic3,
 		gis: gis
 	});
 
-	layers.thematic4 = GIS.core.VectorLayer(gis, 'thematic4', 'Thematic layer 4', {opacity: 0.8});
+	layers.thematic4 = GIS.core.VectorLayer(gis, 'thematic4', GIS.i18n.thematic_layer + ' 4', {opacity: 0.8});
 	layers.thematic4.core = new mapfish.GeoStat.Thematic4(gis.olmap, {
 		layer: layers.thematic4,
-		gis: gis
-	});
-
-	layers.facility = GIS.core.VectorLayer(gis, 'facility', 'Facility layer', {opacity: 0.8});
-	layers.facility.core = new mapfish.GeoStat.Facility(gis.olmap, {
-		layer: layers.facility,
 		gis: gis
 	});
 
@@ -809,10 +809,8 @@ GIS.core.StyleMap = function(id, labelConfig) {
 	}
 
 	return new OpenLayers.StyleMap({
-		'default': new OpenLayers.Style(
-			OpenLayers.Util.applyDefaults(defaults),
-			OpenLayers.Feature.Vector.style['default']),
-		select: new OpenLayers.Style(select)
+		'default': defaults,
+		select: select
 	});
 };
 
@@ -1077,7 +1075,7 @@ GIS.core.LayerLoaderBoundary = function(gis, layer) {
 
     loadData = function(view, features) {
 		view = view || layer.core.view;
-		features = features || layer.features.slice(0);;
+		features = features || layer.features.slice(0);
 
 		for (var i = 0; i < features.length; i++) {
 			features[i].attributes.label = features[i].attributes.name;
@@ -1631,6 +1629,7 @@ GIS.core.LayerLoaderFacility = function(gis, layer) {
 		}
 		if (Ext.isDefined(radius) && radius) {
 			layer.circleLayer = GIS.app.CircleLayer(layer.features, radius);
+			nissa = layer.circleLayer;
 		}
 	};
 
@@ -1708,11 +1707,17 @@ GIS.core.getInstance = function(config) {
 	gis.olmap = GIS.core.getOLMap(gis);
 	gis.layer = GIS.core.getLayers(gis);
 
-	for (var key in gis.layer) {
-		if (gis.layer.hasOwnProperty(key)) {
-			gis.olmap.addLayer(gis.layer[key]);
-		}
-	}
+	gis.olmap.addLayers([
+		gis.layer.googleStreets,
+		gis.layer.googleHybrid,
+		gis.layer.openStreetMap,
+		gis.layer.thematic4,
+		gis.layer.thematic3,
+		gis.layer.thematic2,
+		gis.layer.thematic1,
+		gis.layer.boundary,
+		gis.layer.facility
+	]);
 
 	return gis;
 };
