@@ -232,7 +232,7 @@ GIS.core.getOLMap = function(gis) {
 			new OpenLayers.Control.Permalink(),
 			new OpenLayers.Control.ScaleLine({
 				geodesic: true,
-				maxWidth: 200,
+				maxWidth: 170,
 				minWidth: 100
 			})
 		],

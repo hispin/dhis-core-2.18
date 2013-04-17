@@ -148,9 +148,11 @@ Ext.onReady( function() {
 				namespace,
 				titleSVG,
 				legendSVG = '',
+				scalelineSVG,
 				x = 20,
 				y = 35,
-				center = gis.viewport.centerRegion;
+				center = gis.viewport.centerRegion,
+				scalelineEl = Ext.get(Ext.query('.olControlScaleLineTop')[0]);
 
 			if (!layers.length) {
 				return false;
@@ -228,11 +230,22 @@ Ext.onReady( function() {
 				}
 			}
 
+			// Scale line
+			scalelineSVG = '<text x="' + (x + 3) + '" y="' + y + '" fill="#000">' + scalelineEl.dom.innerHTML + '</text>';
+
+			y += 3;
+			scalelineSVG += '<line x1="' + x + '" y1="' + y + '" x2="' + x + '" y2="' + (y + 3) + '" style="stroke:#000;stroke-width:1" />';
+			scalelineSVG += '<line x1="' + (x + scalelineEl.getWidth()) + '" y1="' + y + '" x2="' + (x + scalelineEl.getWidth()) + '" y2="' + (y + 3) + '" style="stroke:#000;stroke-width:1" />';
+
+			y += 3;
+			scalelineSVG += '<line x1="' + x + '" y1="' + y + '" x2="' + (x + scalelineEl.getWidth()) + '" y2="' + y + '" style="stroke:#000;stroke-width:1" />';
+
+			// Map
 			if (svgArray.length) {
 				svg = util.svg.merge(svg, svgArray);
 			}
 
-			svg = svg.replace('</svg>', (titleSVG + legendSVG) + '</svg>');
+			svg = svg.replace('</svg>', (titleSVG + legendSVG + scalelineSVG) + '</svg>');
 
 			return svg;
 		};
@@ -3003,21 +3016,43 @@ Ext.onReady( function() {
 
 	GIS.app.DownloadWindow = function() {
 		var window,
-			textfield,
+			format,
+			name,
 			button;
 
-		textfield = Ext.create('Ext.form.field.Text', {
+		format = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			width: 60,
+			style: 'margin-bottom:0; margin-left:2px',
+			valueField: 'id',
+			displayField: 'text',
+			editable: false,
+			queryMode: 'local',
+			forceSelection: true,
+			value: 'png',
+			store: Ext.create('Ext.data.ArrayStore', {
+				fields: ['id', 'text'],
+				data: [
+					['png', 'PNG'],
+					['pdf', 'PDF']
+				]
+			})
+		});
+
+		name = Ext.create('Ext.form.field.Text', {
 			cls: 'gis-textfield',
-			height: 26,
+			//height: 23,
 			width: 230,
-			fieldStyle: 'padding-left: 5px',
+			fieldStyle: 'padding-left:4px',
+			style: 'margin-bottom:0',
 			emptyText: GIS.i18n.please_enter_map_title
 		});
 
 		button = Ext.create('Ext.button.Button', {
 			text: GIS.i18n.download,
 			handler: function() {
-				var title = Ext.htmlEncode(textfield.getValue()),
+				var type = format.getValue(),
+					title = Ext.htmlEncode(name.getValue()),
 					svg = gis.util.svg.getString(title, gis.util.map.getVisibleVectorLayers()),
 					exportForm = document.getElementById('exportForm');
 
@@ -3026,8 +3061,9 @@ Ext.onReady( function() {
 					return;
 				}
 
-				document.getElementById('svgField').value = svg;
+				document.getElementById('typeField').value = type;
 				document.getElementById('titleField').value = title;
+				document.getElementById('svgField').value = svg;
 				exportForm.action = '../exportImage.action';
 				exportForm.method = 'post';
 				exportForm.submit();
@@ -3038,13 +3074,16 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: GIS.i18n.download_map_as_png,
-			layout: 'fit',
+			layout: 'column',
 			iconCls: 'gis-window-title-icon-download',
 			cls: 'gis-container-default',
             bodyStyle: 'padding:2px',
 			resizable: true,
 			modal: true,
-			items: textfield,
+			items: [
+				name,
+				format
+			],
 			bbar: [
 				'->',
 				button
