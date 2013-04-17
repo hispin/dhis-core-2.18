@@ -161,6 +161,16 @@
       </result>
     </action>
 
+    <action name="uploadAnonymousEvent"
+      class="org.hisp.dhis.caseentry.action.caseentry.UploadAnonymousEventAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+    </action>
+
     <action name="removeCurrentEncounter"
       class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction">
       <result name="success" type="velocity-json">

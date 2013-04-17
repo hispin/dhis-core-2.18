@@ -80,38 +80,20 @@ function checkOfflineData() {
     } );
 }
 
-function uploadOfflineData( item, key, programId, executionDate, organisationUnitId ) {
-    key = item.key;
-    programId = item.executionDate.programId;
-    executionDate = item.executionDate.executionDate;
-    organisationUnitId = item.executionDate.organisationUnitId;
+function uploadOfflineData( item ) {
+    $.ajax({
+        url: 'uploadAnonymousEvent.action',
+        contentType: 'application/json',
+        data: JSON.stringify( item )
+    } ).done(function(json) {
+        if ( json.response == 'success' ) {
+            DAO.offlineData.remove( item.key, function ( store ) {
+                showOfflineEvents();
+            } );
+        } else {
 
-    if(key.indexOf('local') != -1) {
-        ajaxExecutionDate(programId, "0", executionDate, organisationUnitId ).done(function(json) {
-            if ( json.response == 'success' ) {
-                // console.log( key + " turned into " + json.message );
-
-                if ( !item.values || _.keys(item.values).length == 0 ) {
-                    DAO.offlineData.remove( key, function ( store ) {
-                        showOfflineEvents();
-                    } );
-                } else {
-                    // change key from old local-prefixed to actual psid
-                    DAO.offlineData.fetch( key, function ( store, arr ) {
-                        var obj = arr[0];
-                        obj.executionDate.programInstanceId = json.message;
-                        delete obj.key;
-
-                        store.add(json.message, obj, function(store) {
-                            DAO.offlineData.remove( key, function ( store ) {
-                                showOfflineEvents();
-                            } );
-                        });
-                    } );
-                }
-            }
-        } );
-    }
+        }
+    });
 }
 
 function uploadLocalData() {
