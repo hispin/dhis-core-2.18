@@ -93,8 +93,8 @@ public class Program
         throws IOException
     {
         super.serialize( dout );
-        dout.writeInt( this.status );
-        dout.writeInt( this.getVersion() );
+        dout.writeInt( getStatus() );
+        dout.writeInt( getVersion() );
         if( programStages == null )
         {
             dout.writeInt( 0 );

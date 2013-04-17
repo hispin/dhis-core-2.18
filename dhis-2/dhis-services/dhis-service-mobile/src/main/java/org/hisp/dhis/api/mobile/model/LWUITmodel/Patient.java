@@ -37,7 +37,6 @@ import java.util.List;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.PatientIdentifier;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Nguyen Kim Lai
@@ -81,7 +80,7 @@ public class Patient
 
     private String phoneNumber;
 
-    private OrganisationUnit organisationUnit;
+    private String organisationUnitName;
 
     public List<PatientIdentifier> getIdentifiers()
     {
@@ -279,16 +278,6 @@ public class Patient
         this.phoneNumber = phoneNumber;
     }
 
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        this.organisationUnit = organisationUnit;
-    }
-
     public List<Relationship> getEnrollmentRelationships()
     {
         return enrollmentRelationships;
@@ -297,6 +286,16 @@ public class Patient
     public void setEnrollmentRelationships( List<Relationship> enrollmentRelationships )
     {
         this.enrollmentRelationships = enrollmentRelationships;
+    }
+    
+    public String getOrganisationUnitName()
+    {
+        return organisationUnitName;
+    }
+
+    public void setOrganisationUnitName( String organisationUnitName )
+    {
+        this.organisationUnitName = organisationUnitName;
     }
 
     @Override
@@ -311,6 +310,7 @@ public class Patient
         dout.writeUTF( this.getMiddleName() );
         dout.writeUTF( this.getLastName() );
         dout.writeInt( this.getAge() );
+        dout.writeUTF( this.getOrganisationUnitName() );
 
         if ( gender != null )
         {
