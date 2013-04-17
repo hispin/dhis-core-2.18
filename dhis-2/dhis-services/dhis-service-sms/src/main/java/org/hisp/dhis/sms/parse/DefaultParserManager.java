@@ -199,13 +199,12 @@ public class DefaultParserManager
         {
             if ( parsedMessage.containsKey( code.getCode().toUpperCase() ) )
             {
-                storeDataValue( sender, orgUnit, parsedMessage, code, command, date, command.getDataset(),
-                    formIsComplete( command, parsedMessage ) );
-                valueStored = true;
+                valueStored = storeDataValue( sender, orgUnit, parsedMessage, code, command, date,
+                    command.getDataset(), formIsComplete( command, parsedMessage ) );
             }
         }
 
-        if ( parsedMessage.isEmpty() || !valueStored )
+        if ( parsedMessage.isEmpty() )
         {
             if ( StringUtils.isEmpty( command.getDefaultMessage() ) )
             {
@@ -216,9 +215,12 @@ public class DefaultParserManager
                 throw new SMSParserException( command.getDefaultMessage() );
             }
         }
+        else if ( !valueStored )
+        {
+            throw new SMSParserException( "Wrong format for command '" + command.getName() + "'" );
+        }
 
         markCompleteDataSet( sender, orgUnit, parsedMessage, command, date );
-
         sendSuccessFeedback( sender, command, parsedMessage, date, orgUnit );
 
     }
@@ -382,7 +384,7 @@ public class DefaultParserManager
         return date;
     }
 
-    private void storeDataValue( String sender, OrganisationUnit orgunit, Map<String, String> parsedMessage,
+    private boolean storeDataValue( String sender, OrganisationUnit orgunit, Map<String, String> parsedMessage,
         SMSCode code, SMSCommand command, Date date, DataSet dataSet, boolean completeForm )
     {
         String upperCaseCode = code.getCode().toUpperCase();
@@ -427,6 +429,18 @@ public class DefaultParserManager
                     value = "false";
                 }
             }
+            else if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_INT ) )
+            {
+                try
+                {
+                    Integer.parseInt( value );
+                }
+                catch ( NumberFormatException e )
+                {
+                    return false;
+                }
+
+            }
 
             dv.setValue( value );
             dv.setTimestamp( new java.util.Date() );
@@ -442,6 +456,7 @@ public class DefaultParserManager
             }
         }
 
+        return true;
     }
 
     /* Checks if all defined data codes have values in the database */
