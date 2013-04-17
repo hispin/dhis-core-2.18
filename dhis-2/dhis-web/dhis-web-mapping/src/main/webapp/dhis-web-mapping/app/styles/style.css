@@ -211,7 +211,6 @@ html * {
     color: #111;
 }
 
-
 /*----------------------------------------------------------------------------
  * GIS Combobox
  *--------------------------------------------------------------------------*/
@@ -226,7 +225,7 @@ html * {
 
 	/* Combobox border-radius */
 .gis-combo input {
-    border-radius: 2px 0px 0px 0px;
+    border-radius: 1px 0px 0px 0px;
     font-size: 10px !important;
 }
 
