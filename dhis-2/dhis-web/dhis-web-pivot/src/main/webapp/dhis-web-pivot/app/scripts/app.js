@@ -527,15 +527,15 @@ Ext.onReady( function() {
 
 		rowStore = getStore();
 		pt.viewport.rowStore = rowStore;
-		rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name}); //i18n
+		rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
 
 		colStore = getStore();
 		pt.viewport.colStore = colStore;
-		colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name}); //i18n
+		colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
 
 		filterStore = getStore();
 		pt.viewport.filterStore = filterStore;
-		filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name}); //i18n
+		filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
 
 		getCmpHeight = function() {
 			var size = dimensionStore.totalCount,
@@ -568,7 +568,7 @@ Ext.onReady( function() {
 				height: 25,
 				items: {
 					xtype: 'label',
-					text: 'Dimensions', //i18n
+					text: PT.i18n.dimensions,
 					cls: 'pt-toolbar-multiselect-leftright-label'
 				}
 			},
@@ -597,7 +597,7 @@ Ext.onReady( function() {
 				height: 25,
 				items: {
 					xtype: 'label',
-					text: 'Row', //i18n
+					text: PT.i18n.row,
 					cls: 'pt-toolbar-multiselect-leftright-label'
 				}
 			},
@@ -631,7 +631,7 @@ Ext.onReady( function() {
 				height: 25,
 				items: {
 					xtype: 'label',
-					text: 'Column', //i18n
+					text: PT.i18n.column,
 					cls: 'pt-toolbar-multiselect-leftright-label'
 				}
 			},
@@ -665,7 +665,7 @@ Ext.onReady( function() {
 				height: 25,
 				items: {
 					xtype: 'label',
-					text: 'Filter', //i18n
+					text: PT.i18n.filter,
 					cls: 'pt-toolbar-multiselect-leftright-label'
 				}
 			},
@@ -715,7 +715,7 @@ Ext.onReady( function() {
 		};
 
 		window = Ext.create('Ext.window.Window', {
-			title: 'Table layout', //i18n
+			title: PT.i18n.table_layout,
 			bodyStyle: 'background-color:#fff; padding:2px',
 			closeAction: 'hide',
 			autoShow: true,
@@ -791,21 +791,21 @@ Ext.onReady( function() {
 			window;
 
 		showTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Show totals', //i18n
+			boxLabel: PT.i18n.show_totals,
 			style: 'margin-bottom:4px',
 			checked: true
 		});
 		pt.viewport.showTotals = showTotals;
 
 		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Show sub-totals', //i18n
+			boxLabel: PT.i18n.show_subtotals,
 			style: 'margin-bottom:4px',
 			checked: true
 		});
 		pt.viewport.showSubTotals = showSubTotals;
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Hide empty rows', //i18n
+			boxLabel: PT.i18n.hide_empty_rows,
 			style: 'margin-bottom:4px'
 		});
 		pt.viewport.hideEmptyRows = hideEmptyRows;
@@ -815,7 +815,7 @@ Ext.onReady( function() {
 			style: 'margin-bottom:3px',
 			width: 250,
 			labelWidth: 130,
-			fieldLabel: 'Display density', //i18n
+			fieldLabel: PT.i18n.display_density,
 			labelStyle: 'color:#333',
 			queryMode: 'local',
 			valueField: 'id',
@@ -837,7 +837,7 @@ Ext.onReady( function() {
 			style: 'margin-bottom:3px',
 			width: 250,
 			labelWidth: 130,
-			fieldLabel: 'Font size', //i18n
+			fieldLabel: PT.i18n.font_size,
 			labelStyle: 'color:#333',
 			queryMode: 'local',
 			valueField: 'id',
@@ -860,7 +860,7 @@ Ext.onReady( function() {
 			style: 'margin-bottom:3px',
 			width: 250,
 			labelWidth: 130,
-			fieldLabel: 'Digit group separator', //i18n
+			fieldLabel: PT.i18n.digit_group_separator,
 			queryMode: 'local',
 			valueField: 'id',
 			editable: false,
@@ -877,19 +877,19 @@ Ext.onReady( function() {
 		pt.viewport.digitGroupSeparator = digitGroupSeparator;
 
 		reportingPeriod = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Reporting period', //i18n
+			boxLabel: PT.i18n.reporting_period,
 			style: 'margin-bottom:4px',
 		});
 		pt.viewport.reportingPeriod = reportingPeriod;
 
 		organisationUnit = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Organisation unit', //i18n
+			boxLabel: PT.i18n.organisation_unit,
 			style: 'margin-bottom:4px',
 		});
 		pt.viewport.organisationUnit = organisationUnit;
 
 		parentOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: 'Parent organisation unit', //i18n
+			boxLabel: PT.i18n.parent_organisation_unit,
 			style: 'margin-bottom:4px',
 		});
 		pt.viewport.parentOrganisationUnit = parentOrganisationUnit;
@@ -925,7 +925,7 @@ Ext.onReady( function() {
 		};
 
 		window = Ext.create('Ext.window.Window', {
-			title: 'Table options', //i18n
+			title: PT.i18n.table_options,
 			bodyStyle: 'background-color:#fff; padding:8px 8px 8px',
 			closeAction: 'hide',
 			autoShow: true,
@@ -1191,7 +1191,7 @@ Ext.onReady( function() {
 			});
 
 			createButton = Ext.create('Ext.button.Button', {
-				text: 'Create', //i18n
+				text: PT.i18n.create,
 				handler: function() {
 					var favorite = getBody();
 					favorite.name = nameTextfield.getValue	();
@@ -1223,7 +1223,7 @@ Ext.onReady( function() {
 			});
 
 			updateButton = Ext.create('Ext.button.Button', {
-				text: 'Update', //i18n
+				text: PT.i18n.update,
 				handler: function() {
 					var name = nameTextfield.getValue(),
 						reportTable;
@@ -1261,7 +1261,7 @@ Ext.onReady( function() {
 			});
 
 			cancelButton = Ext.create('Ext.button.Button', {
-				text: 'Cancel', //i18n
+				text: PT.i18n.cancel,
 				handler: function() {
 					window.destroy();
 				}
@@ -1300,7 +1300,7 @@ Ext.onReady( function() {
 		};
 
 		addButton = Ext.create('Ext.button.Button', {
-			text: 'Add new', //i18n
+			text: PT.i18n.add_new,
 			width: 67,
 			height: 26,
 			style: 'border-radius: 1px;',
@@ -1316,7 +1316,7 @@ Ext.onReady( function() {
 			width: windowCmpWidth - addButton.width - 11,
 			height: 26,
 			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
-			emptyText: 'Search for favorites', //i18n
+			emptyText: PT.i18n.search_for_favorites,
 			enableKeyEvents: true,
 			currentValue: '',
 			listeners: {
@@ -1336,7 +1336,7 @@ Ext.onReady( function() {
 		});
 
 		prevButton = Ext.create('Ext.button.Button', {
-			text: 'Prev', //i18n
+			text: PT.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
 					url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
@@ -1348,7 +1348,7 @@ Ext.onReady( function() {
 		});
 
 		nextButton = Ext.create('Ext.button.Button', {
-			text: 'Next', //i18n
+			text: PT.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
 					url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
@@ -1445,7 +1445,7 @@ Ext.onReady( function() {
 										}
 									}
 									else {
-										alert('Please create a table first'); //i18n
+										alert(PT.i18n.please_create_a_table_first);
 									}
 								}
 							}
@@ -1542,7 +1542,7 @@ Ext.onReady( function() {
 							var el = editArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Rename', //i18n
+								html: PT.i18n.rename,
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -1553,7 +1553,7 @@ Ext.onReady( function() {
 							el = overwriteArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Overwrite', //i18n
+								html: PT.i18n.overwrite,
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -1564,7 +1564,7 @@ Ext.onReady( function() {
 							el = sharingArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Share with other people', //i18n
+								html: PT.i18n.share_with_other_people,
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -1575,7 +1575,7 @@ Ext.onReady( function() {
 							el = deleteArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Delete', //i18n
+								html: PT.i18n.delete_,
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -1664,12 +1664,12 @@ Ext.onReady( function() {
 
 			getData = function() {
 				var data = [
-					{id: 'r-------', name: 'Can view'}, //i18n
-					{id: 'rw------', name: 'Can edit and view'}
+					{id: 'r-------', name: PT.i18n.can_view},
+					{id: 'rw------', name: PT.i18n.can_edit_and_view}
 				];
 
 				if (isPublicAccess) {
-					data.unshift({id: '-------', name: 'None'});
+					data.unshift({id: '-------', name: PT.i18n.none});
 				}
 
 				return data;
@@ -1684,7 +1684,7 @@ Ext.onReady( function() {
 				var items = [];
 
 				combo = Ext.create('Ext.form.field.ComboBox', {
-					fieldLabel: isPublicAccess ? 'Public access' : obj.name, //i18n
+					fieldLabel: isPublicAccess ? PT.i18n.public_access : obj.name,
 					labelStyle: 'color:#333',
 					cls: 'pt-combo',
 					width: 380,
@@ -1780,7 +1780,7 @@ Ext.onReady( function() {
 		userGroupField = Ext.create('Ext.form.field.ComboBox', {
 			valueField: 'id',
 			displayField: 'name',
-			emptyText: 'Search for user groups', //i18n
+			emptyText: PT.i18n.search_for_user_groups,
 			queryParam: 'key',
 			queryDelay: 200,
 			minChars: 1,
@@ -1949,7 +1949,7 @@ Ext.onReady( function() {
 				tbar: [
 					{
 						xtype: 'label',
-						text: 'Available', //i18n pt.i18n.available
+						text: PT.i18n.available,
 						cls: 'pt-toolbar-multiselect-left-label'
 					},
 					'->',
@@ -2006,7 +2006,7 @@ Ext.onReady( function() {
 					'->',
 					{
 						xtype: 'label',
-						text: 'Selected', //i18n pt.i18n.selected,
+						text: PT.i18n.selected,
 						cls: 'pt-toolbar-multiselect-right-label'
 					}
 				],
@@ -2021,7 +2021,7 @@ Ext.onReady( function() {
 
 			indicator = {
 				xtype: 'panel',
-				title: '<div class="pt-panel-title-data">Indicators</div>', //i18n
+				title: '<div class="pt-panel-title-data">' + PT.i18n.indicators + '</div>',
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
@@ -2071,7 +2071,7 @@ Ext.onReady( function() {
 								load: function(s) {
 									s.add({
 										id: 0,
-										name: 'All indicator groups', //i18n pt.i18n.all_indicator_groups
+										name: PT.i18n.all_indicator_groups,
 										index: -1
 									});
 									s.sort([
@@ -2138,7 +2138,7 @@ Ext.onReady( function() {
 				tbar: [
 					{
 						xtype: 'label',
-						text: 'Available', //i18n pt.i18n.available
+						text: PT.i18n.available,
 						cls: 'pt-toolbar-multiselect-left-label'
 					},
 					'->',
@@ -2195,7 +2195,7 @@ Ext.onReady( function() {
 					'->',
 					{
 						xtype: 'label',
-						text: 'Selected', //i18n pt.i18n.selected,
+						text: PT.i18n.selected,
 						cls: 'pt-toolbar-multiselect-right-label'
 					}
 				],
@@ -2210,7 +2210,7 @@ Ext.onReady( function() {
 
 			dataElement = {
 				xtype: 'panel',
-				title: '<div class="pt-panel-title-data">Data elements</div>', //i18n
+				title: '<div class="pt-panel-title-data">' + PT.i18n.data_elements + '</div>',
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
@@ -2260,7 +2260,7 @@ Ext.onReady( function() {
 								load: function(s) {
 									s.add({
 										id: 0,
-										name: 'All data element groups', //i18n pt.i18n.all_indicator_groups
+										name: PT.i18n.all_data_element_groups,
 										index: -1
 									});
 									s.sort([
@@ -2327,7 +2327,7 @@ Ext.onReady( function() {
 				tbar: [
 					{
 						xtype: 'label',
-						text: 'Available', //i18n pt.i18n.available
+						text: PT.i18n.available,
 						cls: 'pt-toolbar-multiselect-left-label'
 					},
 					'->',
@@ -2384,7 +2384,7 @@ Ext.onReady( function() {
 					'->',
 					{
 						xtype: 'label',
-						text: 'Selected', //i18n pt.i18n.selected,
+						text: PT.i18n.selected,
 						cls: 'pt-toolbar-multiselect-right-label'
 					}
 				],
@@ -2399,7 +2399,7 @@ Ext.onReady( function() {
 
 			dataSet = {
 				xtype: 'panel',
-				title: '<div class="pt-panel-title-data">Reporting rates</div>', //i18n
+				title: '<div class="pt-panel-title-data">' + PT.i18n.reporting_rates + '</div>',
 				hideCollapseTool: true,
 				getData: function() {
 					var data = {
@@ -2491,23 +2491,23 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Weeks', //i18n pt.i18n.months,
+										text: PT.i18n.weeks,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_WEEK',
-										boxLabel: 'Last week', //i18n pt.i18n.last_month
+										boxLabel: PT.i18n.last_week
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_4_WEEKS',
-										boxLabel: 'Last 4 weeks', //i18n pt.i18n.last_3_months
+										boxLabel: PT.i18n.last_4_weeks
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_12_WEEKS',
-										boxLabel: 'Last 12 weeks' //i18n pt.i18n.last_12_months,
+										boxLabel: PT.i18n.last_12_weeks
 									}
 								]
 							},
@@ -2533,23 +2533,23 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Months', //i18n pt.i18n.months,
+										text: PT.i18n.months,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_MONTH',
-										boxLabel: 'Last month', //i18n pt.i18n.last_month
+										boxLabel: PT.i18n.last_month
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_3_MONTHS',
-										boxLabel: 'Last 3 months', //i18n pt.i18n.last_3_months
+										boxLabel: PT.i18n.last_3_months
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_12_MONTHS',
-										boxLabel: 'Last 12 months', //i18n pt.i18n.last_12_months,
+										boxLabel: PT.i18n.last_12_months,
 										checked: true
 									}
 								]
@@ -2576,18 +2576,18 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Bi-months', //i18n
+										text: PT.i18n.bimonths,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
-										relativePeriodId: 'LAST_BIMONTH',
-										boxLabel: 'Last bi-month', //i18n
+										relativePeriodId: PT.i18n.last_bimonth,
+										boxLabel: PT.i18n.last_bimonth
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_6_BIMONTHS',
-										boxLabel: 'Last 6 bi-months' //i18n
+										boxLabel: PT.i18n.last_6_bimonths
 									}
 								]
 							}
@@ -2620,18 +2620,18 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Quarters', //i18n pt.i18n.quarters,
+										text: PT.i18n.quarters,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_QUARTER',
-										boxLabel: 'Last quarter', //i18n pt.i18n.last_quarter
+										boxLabel: PT.i18n.last_quarter
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_4_QUARTERS',
-										boxLabel: 'Last 4 quarters' //i18n pt.i18n.last_4_quarters
+										boxLabel: PT.i18n.last_4_quarters
 									}
 								]
 							},
@@ -2657,18 +2657,18 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Six-months', //i18n pt.i18n.six_months,
+										text: PT.i18n.sixmonths,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_SIX_MONTH',
-										boxLabel: 'Last six-month', //i18n pt.i18n.last_six_month
+										boxLabel: PT.i18n.last_sixmonth
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_2_SIXMONTHS',
-										boxLabel: 'Last 2 six-months' //i18n pt.i18n.last_two_six_month
+										boxLabel: PT.i18n.last_2_sixmonths
 									}
 								]
 							},
@@ -2694,18 +2694,18 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Financial years',
+										text: PT.i18n.financial_years,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_FINANCIAL_YEAR',
-										boxLabel: 'Last financial year',
+										boxLabel: PT.i18n.last_financial_year
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_5_FINANCIAL_YEARS',
-										boxLabel: 'Last 5 financial years'
+										boxLabel: PT.i18n.last_5_financial_years
 									}
 								]
 							}
@@ -2756,23 +2756,23 @@ Ext.onReady( function() {
 								items: [
 									{
 										xtype: 'label',
-										text: 'Years', //i18n pt.i18n.years,
+										text: PT.i18n.years,
 										cls: 'pt-label-period-heading'
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'THIS_YEAR',
-										boxLabel: 'This year', //i18n pt.i18n.this_year
+										boxLabel: PT.i18n.this_year
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_YEAR',
-										boxLabel: 'Last year', //i18n pt.i18n.last_year
+										boxLabel: PT.i18n.last_year
 									},
 									{
 										xtype: 'checkbox',
 										relativePeriodId: 'LAST_5_YEARS',
-										boxLabel: 'Last 5 years' //i18n pt.i18n.last_5_years
+										boxLabel: PT.i18n.last_5_years
 									}
 								]
 							}
@@ -2791,7 +2791,7 @@ Ext.onReady( function() {
 				tbar: [
 					{
 						xtype: 'label',
-						text: 'Available', //i18n pt.i18n.available,
+						text: PT.i18n.available,
 						cls: 'pt-toolbar-multiselect-left-label'
 					},
 					'->',
@@ -2851,7 +2851,7 @@ Ext.onReady( function() {
 					'->',
 					{
 						xtype: 'label',
-						text: 'Selected', //i18n pt.i18n.selected,
+						text: PT.i18n.selected,
 						cls: 'pt-toolbar-multiselect-right-label'
 					}
 				],
@@ -2936,7 +2936,7 @@ Ext.onReady( function() {
 							},
 							{
 								xtype: 'button',
-								text: 'Prev year', //i18n
+								text: PT.i18n.prev_year,
 								style: 'margin-left:2px; border-radius:2px',
 								height: 24,
 								handler: function() {
@@ -2949,7 +2949,7 @@ Ext.onReady( function() {
 							},
 							{
 								xtype: 'button',
-								text: 'Next year', //i18n
+								text: PT.i18n.next_year,
 								style: 'margin-left:2px; border-radius:2px',
 								height: 24,
 								handler: function() {
@@ -3120,7 +3120,7 @@ Ext.onReady( function() {
 						if (!r.data.leaf) {
 							v.menu.add({
 								id: 'treepanel-contextmenu-item',
-								text: 'Select all children', //i18n pt.i18n.select_all_children,
+								text: PT.i18n.select_all_children,
 								icon: 'images/node-select-child.png',
 								handler: function() {
 									r.expand(false, function() {
@@ -3141,7 +3141,7 @@ Ext.onReady( function() {
 
 			userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
 				columnWidth: 0.5,
-				boxLabel: 'User organisation unit', //i18n pt.i18n.user_orgunit,
+				boxLabel: PT.i18n.user_organisation_unit,
 				labelWidth: pt.conf.layout.form_label_width,
 				handler: function(chb, checked) {
 					treePanel.xable(checked, userOrganisationUnitChildren.getValue());
@@ -3150,7 +3150,7 @@ Ext.onReady( function() {
 
 			userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
 				columnWidth: 0.5,
-				boxLabel: 'User organisation unit children', //i18n pt.i18n.user_orgunit_children,
+				boxLabel: PT.i18n.user_organisation_unit_children,
 				labelWidth: pt.conf.layout.form_label_width,
 				handler: function(chb, checked) {
 					treePanel.xable(checked, userOrganisationUnit.getValue());
@@ -3159,7 +3159,7 @@ Ext.onReady( function() {
 
 			organisationUnit = {
 				xtype: 'panel',
-				title: '<div class="pt-panel-title-organisationunit">Organisation units</div>', //i18n pt.i18n.organisation_units
+				title: '<div class="pt-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
 				bodyStyle: 'padding-top:5px',
 				hideCollapseTool: true,
 				collapsed: false,
@@ -3265,7 +3265,7 @@ Ext.onReady( function() {
 							tbar: [
 								{
 									xtype: 'label',
-									text: 'Available', //i18n pt.i18n.available
+									text: PT.i18n.available,
 									cls: 'pt-toolbar-multiselect-left-label'
 								},
 								'->',
@@ -3324,7 +3324,7 @@ Ext.onReady( function() {
 								'->',
 								{
 									xtype: 'label',
-									text: 'Selected', //i18n pt.i18n.selected,
+									text: PT.i18n.selected,
 									cls: 'pt-toolbar-multiselect-right-label'
 								}
 							],
@@ -3353,7 +3353,7 @@ Ext.onReady( function() {
 
 					panel = {
 						xtype: 'panel',
-						title: '<div class="' + iconCls + '">' + groupSet.name + '</div>', //i18n
+						title: '<div class="' + iconCls + '">' + groupSet.name + '</div>',
 						hideCollapseTool: true,
 						getData: function() {
 							var data = {
@@ -3440,7 +3440,7 @@ Ext.onReady( function() {
 				if (layout.filter && pt.store.indicatorSelected.data.length) {
 					for (var i = 0; i < layout.filter.length; i++) {
 						if (layout.filter[i].dimensionName === dimConf.data.dimensionName) {
-							alert('Indicators cannot be specified as filter'); //i18n
+							alert(PT.i18n.indicators_cannot_be_specified_as_filter);
 							return;
 						}
 					}
@@ -3448,7 +3448,7 @@ Ext.onReady( function() {
 
 				// Categories as filter
 				if (layout.filter && pt.viewport.layoutWindow.filterStore.getById(dimConf.category.dimensionName)) {
-					alert('Categories cannot be specified as filter');
+					alert(PT.i18n.categories_cannot_be_specified_as_filter);
 					return;
 				}
 
@@ -3456,7 +3456,7 @@ Ext.onReady( function() {
 				if (Ext.Array.contains(dimensionNames, dimConf.data.dimensionName) && pt.store.dataSetSelected.data.length) {
 					for (var i = 0; i < pt.init.degs.length; i++) {
 						if (Ext.Array.contains(dimensionNames, pt.init.degs[i].id)) {
-							alert('Data element group sets cannot be specified together with data sets');
+							alert(PT.i18n.data_element_group_sets_cannot_be_specified_together_with_data_sets);
 							return;
 						}
 					}
@@ -3667,19 +3667,19 @@ Ext.onReady( function() {
 						downloadButton,
                         '->',
 						{
-							text: 'Table', //i18n
+							text: PT.i18n.table,
                             toggleGroup: 'module',
 							pressed: true
 						},
 						{
-							text: 'Chart', //i18n
+							text: PT.i18n.chart,
                             toggleGroup: 'module',
 							handler: function(b) {
                                 window.location.href = '../../dhis-web-visualizer/app/index.html';
 							}
 						},
 						{
-							text: 'Map', //i18n
+							text: PT.i18n.map,
                             toggleGroup: 'module',
 							handler: function(b) {
                                 window.location.href = '../../dhis-web-mapping/app/index.html';
@@ -3692,7 +3692,7 @@ Ext.onReady( function() {
 						},
                         {
                             xtype: 'button',
-                            text: 'Home',
+                            text: PT.i18n.home,
                             handler: function() {
                                 window.location.href = '../../dhis-web-commons-about/redirect.action';
                             }
