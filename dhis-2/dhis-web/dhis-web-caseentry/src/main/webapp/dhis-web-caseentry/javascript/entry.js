@@ -721,6 +721,16 @@ function loadProgramStageInstance(programStageInstanceId) {
                 $( '#commentTB' ).append( comment )
             });
         }
+
+        _.each( data.dataValues, function ( value, key ) {
+            var fieldId = getProgramStageUid() + '-' + key + '-val';
+            var field = $('#' + fieldId);
+
+            if ( field ) {
+                field.val( value.value );
+            }
+        } );
+
     } ).fail(function() {
         $('#commentInput').attr('disabled', true)
     });
