@@ -1131,4 +1131,8 @@
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
   </bean>
 
+  <bean id="org.hisp.dhis.caseentry.action.caseentry.UploadAnonymousEventAction"
+    class="org.hisp.dhis.caseentry.action.caseentry.UploadAnonymousEventAction" scope="prototype">
+  </bean>
+
 </beans>
