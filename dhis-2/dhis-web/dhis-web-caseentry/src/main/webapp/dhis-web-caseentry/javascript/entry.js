@@ -285,7 +285,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
  
     function handleHttpError( errorCode )
     {
-        if( getProgramType() == 3 && DAO.dataValues ) {
+        if( getProgramType() == 3 && DAO.offlineData ) {
             var data = {
                 providedElsewhere: byId( providedElsewhereId ) != null ? byId( providedElsewhereId ).checked : false,
                 value: value != '' ? htmlEncode( value ) : value
@@ -294,20 +294,16 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
             var dataValueKey = $( '#programStageInstanceId' ).val();
             var key = dataElementUid;
 
-            DAO.dataValues.fetch( dataValueKey, function ( store, arr ) {
-                if ( arr.length == 0 ) {
-                    var obj = {
-                        key: data
-                    };
+            DAO.offlineData.fetch( dataValueKey, function ( store, arr ) {
+                var obj = arr[0];
 
-                    store.add( dataValueKey, obj );
-                } else {
-                    var obj = arr[0];
-                    obj[key] = data;
-
-                    store.add( dataValueKey, obj );
+                if ( !obj.values ) {
+                    obj.values = {};
                 }
 
+                obj.values[key] = data;
+
+                store.add( dataValueKey, obj );
                 markValue( resultColor );
             } );
         } else {
