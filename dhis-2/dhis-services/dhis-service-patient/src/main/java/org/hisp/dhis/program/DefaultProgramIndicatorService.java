@@ -239,14 +239,15 @@ public class DefaultProgramIndicatorService
             DataElement dataElement = null;
 
             String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( SEPARATOR_OBJECT )[1];
-
-            Integer programStageId = Integer.parseInt( key.split( "." )[0] );
+            String[] infor = key.split( SEPARATOR_ID );
+            
+            Integer programStageId = Integer.parseInt( infor[0] );
             ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
             ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
                 programInstance, programStage );
 
-            Integer dataElementId = Integer.parseInt( key.split( "." )[1] );
+            Integer dataElementId = Integer.parseInt( infor[1] );
             dataElement = dataElementService.getDataElement( dataElementId );
 
             PatientDataValue dataValue = patientDataValueService

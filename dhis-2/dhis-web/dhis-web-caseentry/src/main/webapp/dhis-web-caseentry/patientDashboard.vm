@@ -47,8 +47,8 @@
 				
 				#foreach($key in $programIndicatorsMap.keySet())
 				<tr class='bold'>
-					<td>$key</td>
-					<td>$programIndicatorsMap.get($key)</td>
+					<td>$encoder.htmlEncode($key)</td>
+					<td>$!programIndicatorsMap.get($key)</td>
 				</tr>
 				#end
 				

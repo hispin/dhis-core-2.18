@@ -57,7 +57,6 @@ jQuery( document ).ready( function()
 		<td><label>$i18n.getString( "date_for_calculating" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select style="width:336px;" id="rootDate" name="rootDate" class="{validate:{required:true}}">
-				<option value=''>[$i18n.getString('please_select')]</option>
 				<option value='incident_date'>$i18n.getString('incident_date')</option>
 				<option value='execution_date'>$i18n.getString('execution_date')</option>
 				<option value='current_date'>$i18n.getString('current_date')</option>
@@ -65,6 +64,18 @@ jQuery( document ).ready( function()
 		</td>
 		<td></td>
 	</tr>
+	<tr>
+			<td><label>$i18n.getString( "program_stage" ) </label></td>
+			<td>
+				<select style="width:336px;" id="programStageId" name="programStageId" onChange="getPatientDataElements();">
+					<option value=''>[$i18n.getString('please_select')]</option>
+					#foreach( $programStage in $programIndicator.program.programStages )
+					<option value='$programStage.id'>$programStage.displayName</option>
+					#end
+				</select>
+			</td>
+			<td></td>
+		</tr>
 </table>
 <br>
 	
