@@ -280,12 +280,21 @@ public class LoadDataEntryAction
 
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
+        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+        Boolean displayProvidedOtherFacility = program.getDisplayProvidedOtherFacility() == null || !program.getDisplayProvidedOtherFacility();
+
         if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
         {
             sections = new ArrayList<ProgramStageSection>(
                 programStageSectionService.getProgramStages( programStage ) );
 
             Collections.sort( sections, new ProgramStageSectionSortOrderComparator() );
+        }
+        else if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_CUSTOM ) )
+        {
+            customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
+                dataEntryForm.getHtmlCode(), null, displayProvidedOtherFacility.toString(), i18n,
+                programStage, null, organisationUnit );
         }
 
         if ( programStageInstance != null )
@@ -310,12 +319,8 @@ public class LoadDataEntryAction
 
             if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_CUSTOM ) )
             {
-                DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-
-                Boolean disabled = (program.getDisplayProvidedOtherFacility() == null) ? true : !program
-                    .getDisplayProvidedOtherFacility();
                 customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
-                    dataEntryForm.getHtmlCode(), patientDataValues, disabled.toString(), i18n,
+                    dataEntryForm.getHtmlCode(), patientDataValues, displayProvidedOtherFacility.toString(), i18n,
                     programStage, programStageInstance, organisationUnit );
             }
 
