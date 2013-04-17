@@ -89,9 +89,8 @@ function uploadOfflineData( item ) {
         if ( json.response == 'success' ) {
             DAO.offlineData.remove( item.key, function ( store ) {
                 showOfflineEvents();
+                searchEvents( eval( getFieldValue( 'listAll' ) ) );
             } );
-        } else {
-
         }
     });
 }
@@ -710,6 +709,7 @@ function showUpdateEvent( programStageInstanceId ) {
     hideById( 'selectDiv' );
     hideById( 'searchDiv' );
     hideById( 'listDiv' );
+    hideById( 'offlineListDiv' );
     setFieldValue( 'programStageInstanceId', programStageInstanceId );
     setInnerHTML( 'dataEntryFormDiv', '' );
     showLoader();
