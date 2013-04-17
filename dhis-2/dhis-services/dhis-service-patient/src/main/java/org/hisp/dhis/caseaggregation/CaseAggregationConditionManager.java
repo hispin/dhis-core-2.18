@@ -58,7 +58,6 @@ public interface CaseAggregationConditionManager
      * @param operator There are six operators, includes Number of persons,
      *        Number of visits, Sum, Average, Minimum and Maximum of data
      *        element values.
-     * @param deType Aggregate Data element type
      * @param deSumId The id of aggregate data element which used for aggregate
      *        data values for operator Sum, Average, Minimum and Maximum of data
      *        element values. This fill is null for other operators.
@@ -66,7 +65,7 @@ public interface CaseAggregationConditionManager
      *        value
      * @param period The date range for aggregate data value
      */
-    Double getAggregateValue( String caseExpression, String operator, String deType, Integer deSumId,
+    Double getAggregateValue( String caseExpression, String operator, Integer deSumId,
         Integer orgunitId, Period period );
 
     /**
@@ -76,7 +75,6 @@ public interface CaseAggregationConditionManager
      * @param operator There are six operators, includes Number of persons,
      *        Number of visits, Sum, Average, Minimum and Maximum of data
      *        element values.
-     * @param deType Aggregate Data element type
      * @param deSumId The id of aggregate data element which used for aggregate
      *        data values for operator Sum, Average, Minimum and Maximum of data
      *        element values. This fill is null for other operators.
@@ -85,7 +83,7 @@ public interface CaseAggregationConditionManager
      * @param startDate Start date
      * @param endDate End date
      */
-    String parseExpressionToSql( String aggregationExpression, String operator, String deType, Integer deSumId,
+    String parseExpressionToSql( String aggregationExpression, String operator, Integer deSumId,
         Integer orgunitId, String startDate, String endDate );
 
 }

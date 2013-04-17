@@ -370,8 +370,7 @@
 		scope="prototype">
 		<property name="programStageSectionService"
 			ref="org.hisp.dhis.program.ProgramStageSectionService" />
-		<property name="programStageService"
-			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean
@@ -568,7 +567,7 @@
 			<ref bean="org.hisp.dhis.user.UserSettingService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.dataentryform.SetAutoSavePatientRegistrationSettingAction"
 		class="org.hisp.dhis.patient.action.dataentryform.SetAutoSavePatientRegistrationSettingAction"
@@ -1069,6 +1068,61 @@
 		</property>
 		<property name="notifier" ref="notifier" />
 		<property name="aggregateConditionTask" ref="aggregateQueryBuilder" />
+	</bean>
+
+	<!-- Program Indicator -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.AddProgramIndicatorAction"
+		class="org.hisp.dhis.patient.action.programtindicator.AddProgramIndicatorAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programIndicatorService">
+			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.RemoveProgramIndicatorAction"
+		class="org.hisp.dhis.patient.action.programtindicator.RemoveProgramIndicatorAction"
+		scope="prototype">
+		<property name="programIndicatorService">
+			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorAction"
+		class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorAction"
+		scope="prototype">
+		<property name="programIndicatorService"
+			ref="org.hisp.dhis.program.ProgramIndicatorService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorListAction"
+		class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorListAction"
+		scope="prototype">
+		<property name="programIndicatorService" ref="org.hisp.dhis.program.ProgramIndicatorService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.UpdateProgramIndicatorAction"
+		class="org.hisp.dhis.patient.action.programtindicator.UpdateProgramIndicatorAction"
+		scope="prototype">
+		<property name="programIndicatorService">
+			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.ValidateProgramIndicatorAction"
+		class="org.hisp.dhis.patient.action.programtindicator.ValidateProgramIndicatorAction"
+		scope="prototype">
+		<property name="programIndicatorService">
+			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
+		</property>
 	</bean>
 
 </beans>

@@ -62,6 +62,7 @@ import org.hisp.dhis.caseaggregation.CaseAggregateSchedule;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionManager;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
@@ -117,6 +118,13 @@ public class JdbcCaseAggregationConditionManager
         this.statementBuilder = statementBuilder;
     }
 
+    public DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Methods
     // -------------------------------------------------------------------------
@@ -164,8 +172,8 @@ public class JdbcCaseAggregationConditionManager
         return null;
     }
 
-    public Double getAggregateValue( String caseExpression, String operator, String deType, Integer deSumId,
-        Integer orgunitId, Period period )
+    public Double getAggregateValue( String caseExpression, String operator, Integer deSumId, Integer orgunitId,
+        Period period )
     {
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
         String endDate = DateUtils.getMediumDateString( period.getEndDate() );
@@ -173,7 +181,7 @@ public class JdbcCaseAggregationConditionManager
         if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT )
             || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
-            String sql = parseExpressionToSql( caseExpression, operator, deType, deSumId, orgunitId, startDate, endDate );
+            String sql = parseExpressionToSql( caseExpression, operator, deSumId, orgunitId, startDate, endDate );
             Collection<Integer> ids = this.executeSQL( sql );
             return (ids == null) ? null : ids.size() + 0.0;
         }
@@ -189,15 +197,14 @@ public class JdbcCaseAggregationConditionManager
         if ( caseExpression != null && !caseExpression.isEmpty() )
         {
             sql = sql + " AND pdv.programstageinstanceid in ( "
-                + parseExpressionToSql( caseExpression, operator, deType, deSumId, orgunitId, startDate, endDate )
-                + " ) ";
+                + parseExpressionToSql( caseExpression, operator, deSumId, orgunitId, startDate, endDate ) + " ) ";
         }
 
         Collection<Integer> ids = this.executeSQL( sql );
         return (ids == null) ? null : ids.iterator().next() + 0.0;
     }
 
-    public String parseExpressionToSql( String aggregationExpression, String operator, String deType, Integer deSumId,
+    public String parseExpressionToSql( String aggregationExpression, String operator, Integer deSumId,
         Integer orgunitId, String startDate, String endDate )
     {
         // Get operators between ( )
@@ -219,7 +226,7 @@ public class JdbcCaseAggregationConditionManager
         // Create SQL statement for the first condition
         String condition = conditions[0].replace( "(", "" ).replace( ")", "" );
 
-        String sql = createSQL( condition, operator, deType, orgunitId, startDate, endDate );
+        String sql = createSQL( condition, operator, orgunitId, startDate, endDate );
 
         subSQL.add( sql );
 
@@ -228,13 +235,14 @@ public class JdbcCaseAggregationConditionManager
         {
             condition = conditions[index].replace( "(", "" ).replace( ")", "" );
 
-            sql = "(" + createSQL( condition, operator, deType, orgunitId, startDate, endDate ) + ")";
+            sql = "(" + createSQL( condition, operator, orgunitId, startDate, endDate ) + ")";
 
             subSQL.add( sql );
         }
 
         sql = getSQL( operator, subSQL, operators ).replace( IN_CONDITION_START_SIGN, "(" ).replaceAll(
             IN_CONDITION_END_SIGN, ")" );
+
         return sql;
     }
 
@@ -249,7 +257,7 @@ public class JdbcCaseAggregationConditionManager
      */
     private void runAggregate( Collection<Integer> orgunitIds, CaseAggregateSchedule dataSet, Collection<Period> periods )
     {
-        String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid, de.valuetype as deType, "
+        String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid, "
             + " cagg.aggregationexpression as caseexpression, cagg.\"operator\" as caseoperator, cagg.desum as desumid "
             + "     from caseaggregationcondition cagg inner join datasetmembers dm "
             + "             on cagg.aggregationdataelementid=dm.dataelementid "
@@ -276,7 +284,6 @@ public class JdbcCaseAggregationConditionManager
                 int optionComboId = rs.getInt( "optioncomboid" );
                 String caseExpression = rs.getString( "caseexpression" );
                 String caseOperator = rs.getString( "caseoperator" );
-                String deType = rs.getString( "deType" );
                 int deSumId = rs.getInt( "desumid" );
 
                 Collection<Integer> _orgunitIds = getServiceOrgunit(
@@ -305,7 +312,7 @@ public class JdbcCaseAggregationConditionManager
 
                     boolean hasValue = jdbcTemplate.queryForRowSet( dataValueSql ).next();
 
-                    Double resultValue = getAggregateValue( caseExpression, caseOperator, deType, deSumId, orgunitId,
+                    Double resultValue = getAggregateValue( caseExpression, caseOperator, deSumId, orgunitId,
                         period );
 
                     if ( resultValue != null && resultValue != 0 )
@@ -447,8 +454,7 @@ public class JdbcCaseAggregationConditionManager
      * @param startDate Start date
      * @param endDate End date
      */
-    private String createSQL( String caseExpression, String operator, String deType, int orgunitId, String startDate,
-        String endDate )
+    private String createSQL( String caseExpression, String operator, int orgunitId, String startDate, String endDate )
     {
         // ---------------------------------------------------------------------
         // get operators
@@ -501,7 +507,6 @@ public class JdbcCaseAggregationConditionManager
                 {
                     String propertyName = info[1];
                     condition = getConditionForPatientProperty( propertyName, operator, startDate, endDate );
-
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
                 {
@@ -515,6 +520,7 @@ public class JdbcCaseAggregationConditionManager
                     int programId = Integer.parseInt( ids[0] );
                     String programStageId = ids[1];
                     int dataElementId = Integer.parseInt( ids[2] );
+                    DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                     String valueToCompare = expression[i].replace( "[" + match + "]", "" ).trim();
 
@@ -532,7 +538,7 @@ public class JdbcCaseAggregationConditionManager
 
                         if ( !expression[i].contains( "+" ) )
                         {
-                            if ( deType.equals( DataElement.VALUE_TYPE_INT ) )
+                            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                             {
                                 condition += " AND cast( pd.value as " + statementBuilder.getDoubleColumnType() + ") ";
                             }
@@ -904,7 +910,8 @@ public class JdbcCaseAggregationConditionManager
     }
 
     /**
-     * Return standard SQL by combining all sub-expressions of an aggregate query builder formula.
+     * Return standard SQL by combining all sub-expressions of an aggregate
+     * query builder formula.
      * 
      */
     private String getSQL( String aggregateOperator, List<String> conditions, List<String> operators )
@@ -943,7 +950,8 @@ public class JdbcCaseAggregationConditionManager
     }
 
     /**
-     * Return the Ids of organisation units which patients registered or events happened. 
+     * Return the Ids of organisation units which patients registered or events
+     * happened.
      * 
      */
     private Collection<Integer> getServiceOrgunit( String startDate, String endDate )

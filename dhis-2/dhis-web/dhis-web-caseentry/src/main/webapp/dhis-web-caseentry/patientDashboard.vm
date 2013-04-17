@@ -44,6 +44,14 @@
 						#end
 					</td>
 				</tr>
+				
+				#foreach($key in $programIndicatorsMap.keySet())
+				<tr class='bold'>
+					<td>$key</td>
+					<td>$programIndicatorsMap.get($key)</td>
+				</tr>
+				#end
+				
 				<tr>
 					<td>$i18n.getString("health_worker")</td>
 					<td>

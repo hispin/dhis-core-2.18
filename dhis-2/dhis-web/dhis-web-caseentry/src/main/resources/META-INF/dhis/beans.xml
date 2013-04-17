@@ -62,6 +62,7 @@
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="programIndicatorService" ref="org.hisp.dhis.program.ProgramIndicatorService" />
 	</bean>
 
 	<bean
@@ -1082,6 +1083,7 @@
 		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programIndicatorService" ref="org.hisp.dhis.program.ProgramIndicatorService" />
 	</bean>
 
 	<bean
