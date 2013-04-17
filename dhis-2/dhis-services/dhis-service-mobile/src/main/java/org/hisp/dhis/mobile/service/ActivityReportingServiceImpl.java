@@ -446,9 +446,8 @@ public class ActivityReportingServiceImpl
             }
             else
             {
-                org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( orgUnitId,
-                    patients.get( 0 ) );
-
+                //org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( orgUnitId, patients.get( 0 ) );
+                org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patients.get( 0 ) );
                 return patientMobile;
             }
         }
@@ -456,7 +455,8 @@ public class ActivityReportingServiceImpl
         {
             Patient patient = patientService.getPatient( Integer.parseInt( keyword ) );
 
-            org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( orgUnitId, patient );
+            //org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( orgUnitId, patient );
+            org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patient );
 
             return patientMobile;
         }
@@ -465,7 +465,7 @@ public class ActivityReportingServiceImpl
 
     @Override
     public String saveProgramStage( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage,
-        int orgUnitId )
+        int patientId )
         throws NotAllowedException
     {
         if ( mobileProgramStage.isSingleEvent() )
@@ -496,7 +496,7 @@ public class ActivityReportingServiceImpl
 
             programStageInstance.setCompleted( true );
 
-            programStageInstance.setOrganisationUnit( orgUnitService.getOrganisationUnit( orgUnitId ) );
+            programStageInstance.setOrganisationUnit( patientService.getPatient( patientId ).getOrganisationUnit() );
 
             programStageInstanceService.addProgramStageInstance( programStageInstance );
 
@@ -607,7 +607,7 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo, int orgUnitId )
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo )
         throws NotAllowedException
     {
         String[] enrollProgramInfos = enrollInfo.split( "-" );
@@ -654,7 +654,8 @@ public class ActivityReportingServiceImpl
 
         }
 
-        return getPatientModel( orgUnitId, patient );
+        //return getPatientModel( orgUnitId, patient );
+        return getPatientModel( patient );
     }
 
     // -------------------------------------------------------------------------
@@ -779,7 +780,8 @@ public class ActivityReportingServiceImpl
     }
 
     // get patient model for LWUIT
-    private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientModel( int orgUnitId, Patient patient )
+    //private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientModel( int orgUnitId, Patient patient )
+    private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientModel( Patient patient )
     {
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientModel = new org.hisp.dhis.api.mobile.model.LWUITmodel.Patient();
         List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
@@ -793,6 +795,7 @@ public class ActivityReportingServiceImpl
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
+        patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
         patientModel.setPhoneNumber( patient.getPhoneNumber() );
 
         this.setSetting( getSettings() );
@@ -907,7 +910,7 @@ public class ActivityReportingServiceImpl
 
         // Set available enrollment programs
         List<Program> enrollmentProgramList = new ArrayList<Program>();
-        enrollmentProgramList = generateEnrollmentProgramList( orgUnitId, patient );
+        enrollmentProgramList = generateEnrollmentProgramList( patient );
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> enrollmentProgramListMobileList = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
 
         for ( Program enrollmentProgram : enrollmentProgramList )
@@ -1084,11 +1087,12 @@ public class ActivityReportingServiceImpl
         return setting;
     }
 
-    private List<Program> generateEnrollmentProgramList( int orgId, Patient patient )
+    private List<Program> generateEnrollmentProgramList( Patient patient )
     {
         List<Program> programs = new ArrayList<Program>();
-        for ( Program program : programService.getPrograms( orgUnitService.getOrganisationUnit( orgId ) ) )
-
+        
+        //for ( Program program : programService.getPrograms( orgUnitService.getOrganisationUnit( orgId ) ) )
+        for ( Program program : programService.getPrograms( patient.getOrganisationUnit()) )
         {
             if ( (program.isSingleEvent() && program.isRegistration()) || !program.isSingleEvent() )
             {
@@ -1120,74 +1124,83 @@ public class ActivityReportingServiceImpl
         org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship enrollmentRelationship, int orgUnitId )
         throws NotAllowedException
     {
-        String fullName = enrollmentRelationship.getPersonBName();
-        int startIndex = fullName.indexOf( ' ' );
-        int endIndex = fullName.lastIndexOf( ' ' );
-
-        String firstName = fullName.toString();
-        String middleName = " ";
-        String lastName = " ";
-
-        if ( fullName.indexOf( ' ' ) != -1 )
+        Patient patientB;
+        if ( enrollmentRelationship.getPersonBId() != 0 )
         {
-            firstName = fullName.substring( 0, startIndex );
-            if ( startIndex == endIndex )
-            {
-                middleName = "  ";
-                lastName = fullName.substring( startIndex + 1, fullName.length() );
-            }
-            else
-            {
-                middleName = " " + fullName.substring( startIndex + 1, endIndex ) + " ";
-                lastName = fullName.substring( endIndex + 1, fullName.length() );
-            }
-        }
-        List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
-            + lastName, orgUnitId );
-
-        // remove the own searcher
-        removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );
-
-        if ( patients.size() > 1 )
-        {
-            String patientsInfo = new String();
-
-            DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-
-            for ( Patient each : patients )
-            {
-                patientsInfo += each.getId() + "/" + each.getFullName() + "/" + dateFormat.format( each.getBirthDate() )
-                    + "$";
-            }
-
-            throw new NotAllowedException( patientsInfo );
-        }
-        else if ( patients.size() == 0 )
-        {
-            throw NotAllowedException.NO_BENEFICIARY_FOUND;
+            patientB = patientService.getPatient( enrollmentRelationship.getPersonBId() );
         }
         else
         {
-            Patient patientB = patients.get( 0 );
-            Patient patientA = patientService.getPatient( enrollmentRelationship.getPersonAId() );
-            RelationshipType relationshipType = relationshipTypeService.getRelationshipType( enrollmentRelationship
-                .getId() );
-
-            Relationship relationship = new Relationship();
-            relationship.setRelationshipType( relationshipType );
-            if ( enrollmentRelationship.getChosenRelationship().equals( relationshipType.getaIsToB() ) )
+            String fullName = enrollmentRelationship.getPersonBName();
+            int startIndex = fullName.indexOf( ' ' );
+            int endIndex = fullName.lastIndexOf( ' ' );
+    
+            String firstName = fullName.toString();
+            String middleName = " ";
+            String lastName = " ";
+    
+            if ( fullName.indexOf( ' ' ) != -1 )
             {
-                relationship.setPatientA( patientA );
-                relationship.setPatientB( patientB );
+                firstName = fullName.substring( 0, startIndex );
+                if ( startIndex == endIndex )
+                {
+                    middleName = "  ";
+                    lastName = fullName.substring( startIndex + 1, fullName.length() );
+                }
+                else
+                {
+                    middleName = " " + fullName.substring( startIndex + 1, endIndex ) + " ";
+                    lastName = fullName.substring( endIndex + 1, fullName.length() );
+                }
+            }
+            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
+                + lastName, orgUnitId );
+    
+            //remove the own searcher
+            patients = removeIfDuplicated( patients, enrollmentRelationship.getPersonAId());
+            
+            if ( patients.size() > 1 )
+            {
+                String patientsInfo = new String();
+    
+                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+    
+                for ( Patient each : patients )
+                {
+                    patientsInfo += each.getId() + "/" + each.getFullName() + "/" + dateFormat.format( each.getBirthDate() )
+                        + "$";
+                }
+    
+                throw new NotAllowedException( patientsInfo );
+            }
+            else if ( patients.size() == 0 )
+            {
+                throw NotAllowedException.NO_BENEFICIARY_FOUND;
             }
             else
             {
-                relationship.setPatientA( patientB );
-                relationship.setPatientB( patientA );
+                patientB = patients.get( 0 );
             }
-            relationshipService.saveRelationship( relationship );
-            return getPatientModel( orgUnitId, patientA );
         }
+        Patient patientA = patientService.getPatient( enrollmentRelationship.getPersonAId() );
+        RelationshipType relationshipType = relationshipTypeService.getRelationshipType( enrollmentRelationship
+            .getId() );
+
+        Relationship relationship = new Relationship();
+        relationship.setRelationshipType( relationshipType );
+        if ( enrollmentRelationship.getChosenRelationship().equals( relationshipType.getaIsToB() ) )
+        {
+            relationship.setPatientA( patientA );
+            relationship.setPatientB( patientB );
+        }
+        else
+        {
+            relationship.setPatientA( patientB );
+            relationship.setPatientB( patientA );
+        }
+        relationshipService.saveRelationship( relationship );
+        //return getPatientModel( orgUnitId, patientA );
+        return getPatientModel( patientA );
     }
 
     @Override
@@ -1273,6 +1286,10 @@ public class ActivityReportingServiceImpl
         anonymousProgramMobile.setId( anonymousProgram.getId() );
 
         anonymousProgramMobile.setName( anonymousProgram.getName() );
+        
+        anonymousProgramMobile.setVersion( anonymousProgram.getVersion() );
+
+        anonymousProgramMobile.setStatus( ProgramInstance.STATUS_ACTIVE );
 
         ProgramStage programStage = anonymousProgram.getProgramStages().iterator().next();
 
@@ -1336,14 +1353,15 @@ public class ActivityReportingServiceImpl
 
     private List<Patient> removeIfDuplicated( List<Patient> patients, int patientId )
     {
-        for ( Patient each : patients )
+        List<Patient> result = new ArrayList<Patient>(patients);
+        for ( int i = 0; i < patients.size(); i++ )
         {
-            if ( each.getId() == patientId )
+            if ( patients.get( i ).getId() == patientId )
             {
-                patients.remove( each );
+                result.remove( i );
             }
         }
-        return patients;
+        return result;
     }
 
     private void saveDataValues( ActivityValue activityValue, ProgramStageInstance programStageInstance,

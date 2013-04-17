@@ -658,7 +658,7 @@ public class HibernatePatientStore
         fullName = fullName.toLowerCase();
         String sql = "SELECT patientid FROM patient where lower( " + statementBuilder.getPatientFullName() + ") "
             + "='" + fullName + "'";
-        if ( orgunitId != null )
+        if ( orgunitId != null && orgunitId != 0 )
         {
             sql += " and organisationunitid=" + orgunitId;
         }
