@@ -979,14 +979,14 @@ function loadProgramStage( programStageId, programStageInstanceId, organisationU
     });
 }
 
-function loadOptionSets(optionSetUids, success ) {
+function loadOptionSets(uids, success ) {
     DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function ( store ) {
         var deferred = $.Deferred();
         var promise = deferred.promise();
 
-        _.each( optionSetUids, function(item, idx) {
+        _.each( uids, function(item, idx) {
             promise = promise.pipe($.ajax({
-                url: 'getOptionSet.action?optionSetUid=' + item,
+                url: 'getOptionSet.action?dataElementUid=' + item,
                 dataType: 'json',
                 success: function(json) {
                     DAO.optionSets.add(item, json);

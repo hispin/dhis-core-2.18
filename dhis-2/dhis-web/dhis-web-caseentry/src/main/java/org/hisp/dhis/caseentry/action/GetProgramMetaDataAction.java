@@ -28,8 +28,6 @@ package org.hisp.dhis.caseentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -125,15 +123,13 @@ public class GetProgramMetaDataAction implements Action
     {
         for ( ProgramStage programStage : program.getProgramStages() )
         {
-            Set<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
+            Set<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
 
-            for ( ProgramStageDataElement dataElement : dataElements )
+            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
-                OptionSet optionSet = dataElement.getDataElement().getOptionSet();
-
-                if ( optionSet != null )
+                if ( programStageDataElement.getDataElement().getOptionSet() != null )
                 {
-                    optionSets.add( optionSet.getUid() );
+                    optionSets.add( programStageDataElement.getDataElement().getUid() );
                 }
             }
         }
