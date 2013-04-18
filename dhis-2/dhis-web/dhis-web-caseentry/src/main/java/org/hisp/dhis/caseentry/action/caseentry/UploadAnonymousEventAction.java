@@ -137,7 +137,9 @@ public class UploadAnonymousEventAction implements Action
             return INPUT;
         }
 
-        ProgramStageInstance programStageInstance = saveExecutionDate( programId, organisationUnitId, date );
+        Boolean completed = (Boolean) executionDate.get( "completed" );
+
+        ProgramStageInstance programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed );
 
         Map<String, Object> values = (Map<String, Object>) input.get( "values" );
 
@@ -158,7 +160,7 @@ public class UploadAnonymousEventAction implements Action
         return SUCCESS;
     }
 
-    private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date )
+    private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date, Boolean completed )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
@@ -171,6 +173,13 @@ public class UploadAnonymousEventAction implements Action
         programStageInstance.setDueDate( date );
         programStageInstance.setExecutionDate( date );
         programStageInstance.setOrganisationUnit( organisationUnit );
+
+        if ( completed != null )
+        {
+            programStageInstance.setCompleted( completed );
+            programStageInstance.setCompletedDate( new Date() );
+            programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+        }
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
