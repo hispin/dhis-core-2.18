@@ -670,19 +670,22 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             if(arr.length > 0 ) {
                 var obj = arr[0];
 
-                _.each( _.keys(obj.values), function(key, idx) {
-                    var fieldId = getProgramStageUid() + '-' + key + '-val';
-                    var field = $('#' + fieldId);
+                if(obj.values !== undefined ) {
+                    _.each( _.keys(obj.values), function(key, idx) {
+                        var fieldId = getProgramStageUid() + '-' + key + '-val';
+                        var field = $('#' + fieldId);
 
-                    if ( field ) {
-                        field.val( obj.values[key].value );
-                    }
-                });
+                        if ( field ) {
+                            field.val( obj.values[key].value );
+                        }
+                    });
+                }
             }
 
-            $('#commentInput').attr('disabled', true)
-
             if( always ) always();
+
+            $('#commentInput').attr('disabled', true);
+            $('#validateBtn').attr('disabled', true);
         });
     } else {
         return $.ajax({
@@ -693,8 +696,6 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             type: 'GET',
             dataType: 'json'
         } ).done(function(data) {
-            $('#commentInput').removeAttr('disabled');
-
             $( "#programStageInstanceId" ).val( data.id );
             $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
             $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
@@ -759,6 +760,9 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             } );
 
             if( always ) always();
+
+            $('#commentInput').removeAttr('disabled');
+            $('#validateBtn').removeAttr('disabled');
         } );
     }
 }
