@@ -1135,4 +1135,7 @@
     class="org.hisp.dhis.caseentry.action.caseentry.UploadAnonymousEventAction" scope="prototype">
   </bean>
 
+  <bean id="org.hisp.dhis.caseentry.action.GetOptionSetAction"
+    class="org.hisp.dhis.caseentry.action.GetOptionSetAction" scope="prototype">
+  </bean>
 </beans>
