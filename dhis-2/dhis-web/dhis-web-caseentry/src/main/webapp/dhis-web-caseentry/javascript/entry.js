@@ -680,6 +680,8 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                 });
             }
 
+            $('#commentInput').attr('disabled', true)
+
             if( always ) always();
         });
     } else {
@@ -691,6 +693,8 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             type: 'GET',
             dataType: 'json'
         } ).done(function(data) {
+            $('#commentInput').removeAttr('disabled');
+
             $( "#programStageInstanceId" ).val( data.id );
             $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
             $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
@@ -755,8 +759,6 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             } );
 
             if( always ) always();
-        } ).fail(function() {
-            $('#commentInput').attr('disabled', true)
         } );
     }
 }

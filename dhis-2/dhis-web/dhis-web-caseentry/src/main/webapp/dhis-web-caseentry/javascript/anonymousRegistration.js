@@ -145,6 +145,7 @@ $( document ).ready( function () {
         $( document ).one( 'dhis2.anonymous.checkOfflineEvents', checkOfflineData );
         $( document ).one( 'dhis2.anonymous.checkOfflineData', function() {
             dhis2.availability.startAvailabilityCheck();
+            selection.responseReceived();
         } );
 
         initalizeProgramStages();
