@@ -815,6 +815,22 @@ function runValidation()
 		});
 }
 
+function searchOptionSet( uid, query, success ) {
+    $.ajax({
+        url: "getOptions.action?id=" + uid + "&query=" + query,
+        dataType: "json",
+        cache: true,
+        success: function(data) {
+            success($.map(data.options, function(item) {
+                return {
+                    label: item.o,
+                    id: item.o
+                };
+            }));
+        }
+    });
+}
+
 function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField );
@@ -825,19 +841,7 @@ function autocompletedField( idField )
 		delay: 0,
 		minLength: 0,
 		source: function( request, response ){
-			$.ajax({
-				url: "getOptions.action?id=" + dataElementUid + "&query=" + input.val(),
-				dataType: "json",
-				cache: true,
-				success: function(data) {
-					response($.map(data.options, function(item) {
-						return {
-							label: item.o,
-							id: item.o
-						};
-					}));
-				}
-			});
+            searchOptionSet( dataElementUid, input.val(), response );
 		},
 		minLength: 0,
 		select: function( event, ui ) {
@@ -903,6 +907,22 @@ function autocompletedField( idField )
 		});
 }
 
+function searchUsername( query, success ) {
+    $.ajax({
+        url: "getUsernameList.action?query=" + query,
+        dataType: "json",
+        cache: true,
+        success: function(data) {
+            success($.map(data.usernames, function(item) {
+                return {
+                    label: item.u,
+                    id: item.u
+                };
+            }));
+        }
+    });
+}
+
 function autocompletedUsernameField( idField )
 {
 	var input = jQuery( "#" +  idField );
@@ -913,19 +933,7 @@ function autocompletedUsernameField( idField )
 		delay: 0,
 		minLength: 0,
 		source: function( request, response ){
-			$.ajax({
-				url: "getUsernameList.action?query=" + input.val(),
-				dataType: "json",
-				cache: true,
-				success: function(data) {
-					response($.map(data.usernames, function(item) {
-						return {
-							label: item.u,
-							id: item.u
-						};
-					}));
-				}
-			});
+            searchUsername( input.val(), response );
 		},
 		minLength: 0,
 		select: function( event, ui ) {
