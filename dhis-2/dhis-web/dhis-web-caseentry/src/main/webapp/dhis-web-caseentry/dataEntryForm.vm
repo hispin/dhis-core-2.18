@@ -81,10 +81,10 @@
 	#end
 </div>
 
-<div id='inputCriteriaDiv' class="page inputCriteria hidden" style="width:490px;height:29px;">
-	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()">
+<div id='inputCriteriaDiv' class="page inputCriteria hidden" style="width:490px; height:29px;">
+	<input type="button" id="completeBtn" class="button" value="$i18n.getString('complete')" onClick="doComplete()">
 	<input type="button" id="uncompleteBtn" value="$i18n.getString('incomplete')" onclick="doUnComplete()">
-	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();">
+	<input type="button" id="validateBtn" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();">
 </div>
 
 </div>

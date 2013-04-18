@@ -168,6 +168,7 @@ $( document ).ready( function () {
             enableFiltering();
             searchEvents( eval( getFieldValue( 'listAll' ) ) );
             $('#commentInput').removeAttr('disabled');
+            $('#validateBtn').removeAttr('disabled');
         }
         else {
             var form = [
@@ -188,6 +189,7 @@ $( document ).ready( function () {
     $( document ).bind( 'dhis2.offline', function () {
         setHeaderMessage( i18n_offline_notification );
         $('#commentInput').attr('disabled', true);
+        $('#validateBtn').attr('disabled', true);
         disableFiltering();
     } );
 } );
