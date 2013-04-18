@@ -78,10 +78,12 @@ function showOfflineEvents() {
 
 var haveLocalData = false;
 
-function checkOfflineData() {
+function checkOfflineData(callback) {
     DAO.offlineData.fetchAll( function ( store, arr ) {
         haveLocalData = arr.length > 0;
         $( document ).trigger('dhis2.anonymous.checkOfflineData');
+
+        if(callback && typeof callback == 'function') callback(haveLocalData);
     } );
 }
 
@@ -156,21 +158,23 @@ $( document ).ready( function () {
 
     $( document ).bind( 'dhis2.online', function ( event, loggedIn ) {
         if ( loggedIn ) {
-            if ( haveLocalData ) {
-                var message = i18n_need_to_sync_notification
-   	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+            checkOfflineData(function(localData) {
+                if ( localData ) {
+                    var message = i18n_need_to_sync_notification
+       	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
-   	            setHeaderMessage( message );
+       	            setHeaderMessage( message );
 
-   	            $( '#sync_button' ).bind( 'click', uploadLocalData );
-            } else {
-                setHeaderDelayMessage( i18n_online_notification );
-            }
+       	            $( '#sync_button' ).bind( 'click', uploadLocalData );
+                } else {
+                    setHeaderDelayMessage( i18n_online_notification );
+                }
 
-            enableFiltering();
-            searchEvents( eval( getFieldValue( 'listAll' ) ) );
-            $('#commentInput').removeAttr('disabled');
-            $('#validateBtn').removeAttr('disabled');
+                enableFiltering();
+                searchEvents( eval( getFieldValue( 'listAll' ) ) );
+                $('#commentInput').removeAttr('disabled');
+                $('#validateBtn').removeAttr('disabled');
+            });
         }
         else {
             var form = [

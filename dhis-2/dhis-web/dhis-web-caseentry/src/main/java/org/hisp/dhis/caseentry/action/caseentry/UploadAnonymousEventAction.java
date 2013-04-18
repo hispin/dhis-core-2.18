@@ -139,8 +139,6 @@ public class UploadAnonymousEventAction implements Action
 
         Boolean completed = (Boolean) executionDate.get( "completed" );
 
-        System.err.println( "Completed: " + completed );
-
         ProgramStageInstance programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed );
 
         Map<String, Object> values = (Map<String, Object>) input.get( "values" );
