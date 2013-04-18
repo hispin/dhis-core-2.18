@@ -95,13 +95,16 @@ public class IdentityPopulator
                 try
                 {
                     int count = 0;
+                    
                     ResultSet resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE uid IS NULL" );
+                    
                     while ( resultSet.next() )
                     {
                         ++count;
                         resultSet.updateString( "uid", CodeGenerator.generateCode() );
                         resultSet.updateRow();
                     }
+                    
                     if ( count > 0 )
                     {
                         log.info( count + " uids updated on " + table );
@@ -133,7 +136,6 @@ public class IdentityPopulator
                     {
                         log.info( count + " timestamps updated on " + table );
                     }
-
                 }
                 catch ( SQLException ex )
                 {
@@ -148,6 +150,8 @@ public class IdentityPopulator
                 statement.close();
             }
         }
+
+        createUidConstraints();
 
         try
         {
@@ -181,8 +185,6 @@ public class IdentityPopulator
                 statement.close();
             }
         }
-
-        createUidConstraints();
     }
 
     private void createUidConstraints()
