@@ -121,6 +121,9 @@
         <td><%= organisationUnit %></td>
 
         <td align="right" style="padding-right:20px;">
+            <% if( !completed ) { %>
+            <span class="incomplete-record" title="Incomplete">&nbsp;!&nbsp;</span>
+            <% } %>
             <a href="javascript:showUpdateEvent( '<%= programStageInstanceId %>' )" title="Data entry"><img src="images/data_entry.png" alt="Data entry"></a>
             <a href="javascript:removeEvent( '<%= programStageInstanceId %>' )" title="Remove"><img src="../images/delete.png" alt="Remove"></a>
         </td>
