@@ -734,7 +734,6 @@
   </bean>
 
   <bean id="org.hisp.dhis.common.IdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
-    <property name="statementManager" ref="statementManager" />
     <property name="name" value="IdentityPopulator" />
     <property name="runlevel" value="2" />
     <property name="skipInTests" value="true" />
