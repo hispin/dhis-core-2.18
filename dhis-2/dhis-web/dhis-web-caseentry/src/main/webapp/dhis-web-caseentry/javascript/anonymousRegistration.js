@@ -39,6 +39,8 @@ function initializePrograms() {
         } ).fail( function () {
             selection.setListenerFunction( organisationUnitSelected );
             $( document ).trigger('dhis2.anonymous.programsInitialized');
+
+            DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function() {} );
         } );
     } );
 }
@@ -876,6 +878,8 @@ var service = (function () {
 
                         var data = {};
                         data.executionDate = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
+                        data.executionDate.completed = false;
+
                         DAO.offlineData.add(programStageInstanceId, data);
                     });
                 } else {

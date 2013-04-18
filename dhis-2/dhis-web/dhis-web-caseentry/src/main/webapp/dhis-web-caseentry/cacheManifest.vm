@@ -22,6 +22,7 @@ CACHE:
 ../dhis-web-commons/javascripts/periodType.js
 ../dhis-web-commons/javascripts/date.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.util.js
+../dhis-web-commons/javascripts/dhis2/dhis2.trigger.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.array.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.select.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js
