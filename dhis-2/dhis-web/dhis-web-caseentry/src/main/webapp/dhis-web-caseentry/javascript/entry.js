@@ -661,81 +661,104 @@ TOGGLE = {
     }
 };
 
-function loadProgramStageInstance(programStageInstanceId) {
-    return $.ajax({
-        url: 'getProgramStageInstance.action',
-        data: {
-            'programStageInstanceId': programStageInstanceId
-        },
-        type: 'GET',
-        dataType: 'json'
-    } ).done(function(data) {
-        $( "#programStageInstanceId" ).val( data.id );
-        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
-        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
-        $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
-        $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
-        $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
-        $( "#entryFormContainer input[id='completed']" ).val( data.completed );
-        $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
-        $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
-        $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
-        $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
-        $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
-        $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.program.blockEntryForm );
-        $( "#entryFormContainer input[id='remindCompleted']" ).val( data.program.remindCompleted );
+function loadProgramStageInstance( programStageInstanceId, always ) {
+    if( programStageInstanceId.indexOf('local') != -1 ) {
+        $( "#programStageInstanceId" ).val( programStageInstanceId );
+        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( programStageInstanceId );
 
-        $( "input[id='dueDate']" ).val( data.dueDate );
-        $( "input[id='executionDate']" ).val( data.executionDate );
+        DAO.offlineData.fetch(programStageInstanceId, function(store, arr) {
+            if(arr.length > 0 ) {
+                var obj = arr[0];
 
-        if ( data.program.type != '1' ) {
-            hideById( 'newEncounterBtn' );
-        }
+                _.each( _.keys(obj.values), function(key, idx) {
+                    var fieldId = getProgramStageUid() + '-' + key + '-val';
+                    var field = $('#' + fieldId);
 
-        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-            jQuery("[id=entryFormContainer] :input").prop('disabled', true);
-            jQuery("[id=entryFormContainer] :input").datepicker("destroy");
-            jQuery("[id=executionDate]").prop('disabled', true);
-            jQuery("[id=executionDate]").datepicker("destroy");
-        }
-
-        if(data.executionDate) {
-            $( '#executionDate' ).val(data.executionDate);
-            $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
-            $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
-        }
-
-        if ( data.programStage.captureCoordinates ) {
-            $( '#longitude' ).val( data.longitude );
-            $( '#latitude' ).val( data.latitude );
-        }
-
-        if(data.comments.length > 0) {
-            $.each(data.comments, function(idx, item) {
-                var comment = [
-                    "<tr>",
-                    "<td>" + item.createdDate + "</td>",
-                    "<td>" + item.creator + "</td>",
-                    "<td>" + item.text + "</td>",
-                    "</tr>"
-                ].join(' ');
-
-                $( '#commentTB' ).append( comment )
-            });
-        }
-
-        _.each( data.dataValues, function ( value, key ) {
-            var fieldId = getProgramStageUid() + '-' + key + '-val';
-            var field = $('#' + fieldId);
-
-            if ( field ) {
-                field.val( value.value );
+                    if ( field ) {
+                        field.val( obj.values[key].value );
+                    }
+                });
             }
-        } );
 
-    } ).fail(function() {
-        $('#commentInput').attr('disabled', true)
-    });
+            if( always ) always();
+        });
+    } else {
+        return $.ajax({
+            url: 'getProgramStageInstance.action',
+            data: {
+                'programStageInstanceId': programStageInstanceId
+            },
+            type: 'GET',
+            dataType: 'json'
+        } ).done(function(data) {
+            $( "#programStageInstanceId" ).val( data.id );
+            $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
+            $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
+            $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
+            $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
+            $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
+            $( "#entryFormContainer input[id='completed']" ).val( data.completed );
+            $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
+            $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
+            $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
+            $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
+            $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
+            $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.program.blockEntryForm );
+            $( "#entryFormContainer input[id='remindCompleted']" ).val( data.program.remindCompleted );
+
+            $( "input[id='dueDate']" ).val( data.dueDate );
+            $( "input[id='executionDate']" ).val( data.executionDate );
+
+            if ( data.program.type != '1' ) {
+                hideById( 'newEncounterBtn' );
+            }
+
+            if ( data.program.type == '1' && data.programInstance.status == '1' ) {
+                jQuery("[id=entryFormContainer] :input").prop('disabled', true);
+                jQuery("[id=entryFormContainer] :input").datepicker("destroy");
+                jQuery("[id=executionDate]").prop('disabled', true);
+                jQuery("[id=executionDate]").datepicker("destroy");
+            }
+
+            if(data.executionDate) {
+                $( '#executionDate' ).val(data.executionDate);
+                $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+                $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
+            }
+
+            if ( data.programStage.captureCoordinates ) {
+                $( '#longitude' ).val( data.longitude );
+                $( '#latitude' ).val( data.latitude );
+            }
+
+            if(data.comments.length > 0) {
+                $.each(data.comments, function(idx, item) {
+                    var comment = [
+                        "<tr>",
+                        "<td>" + item.createdDate + "</td>",
+                        "<td>" + item.creator + "</td>",
+                        "<td>" + item.text + "</td>",
+                        "</tr>"
+                    ].join(' ');
+
+                    $( '#commentTB' ).append( comment )
+                });
+            }
+
+            _.each( data.dataValues, function ( value, key ) {
+                var fieldId = getProgramStageUid() + '-' + key + '-val';
+                var field = $('#' + fieldId);
+
+                if ( field ) {
+                    field.val( value.value );
+                }
+            } );
+
+            if( always ) always();
+        } ).fail(function() {
+            $('#commentInput').attr('disabled', true)
+        } );
+    }
 }
 
 function entryFormContainerOnReady()
@@ -743,9 +766,8 @@ function entryFormContainerOnReady()
 	var currentFocus = undefined;
     var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 	
-    loadProgramStageInstance(programStageInstanceId ).always(function() {
+    loadProgramStageInstance( programStageInstanceId, function() {
         if( jQuery("#entryFormContainer") ) {
-
             // Display entry form if excution-date is not null
             if ( jQuery( "#executionDate" ).val() == '' ) {
                 hideById( 'entryForm' );
