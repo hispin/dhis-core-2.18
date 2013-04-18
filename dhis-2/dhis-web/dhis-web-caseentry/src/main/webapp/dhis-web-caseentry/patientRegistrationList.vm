@@ -98,20 +98,32 @@
 						#if($identifier.identifierType.id==$identifierType.id)
 							#set($value=$identifier.identifier)
 						#end
+						#if($!identifier.identifierType)
+						#else
+							#set($systemId=$identifier.identifier)
+						#end
 					#end
 				#end
 				#if($value=="")
-					#set($value=$patient.getFullName())
+					#set($value=$!patient.getFullName())
+				#end
+				#if($value=="")
+					#foreach( $identifier in $patient.identifiers)
+						#if($!identifier.identifierType)
+						#else
+							#set($value=$identifier.identifier)
+						#end
+					#end
 				#end
 				<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
 					<a>$encoder.htmlEncode($value)</a>
 				</td>
 				
-				<td>$i18n.getString($!patient.gender)</td>
+				<td>#if($!patient.gender) $i18n.getString($!patient.gender) #end</td>
 				
-				<td>$format.formatDate( $!patient.birthDate)</td>
+				<td>#if($!patient.birthDate) $format.formatDate( $!patient.birthDate) #end</td>
 				
-				<td>$!patient.getAge()</td>
+				<td>#if($!patient.birthDate) $!patient.getAge() #end</td>
 				
 				<td>$!patient.phoneNumber</td>
 				

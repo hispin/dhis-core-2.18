@@ -104,8 +104,4 @@ public class DefaultProgramStageService
         return i18n( i18nService, programStageStore.getAll() );
     }
 
-    public Collection<ProgramStage> getProgramStages( Program program )
-    {
-        return i18n( i18nService, program.getProgramStages() );
-    }
 }

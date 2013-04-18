@@ -121,59 +121,61 @@ function programAttrOnClick()
 function getRequiredFields()
 {
 	var requiredFields = {};
-	
-	requiredFields['fixedattributeid=registrationDate'] = i18n_registration_date;
-	requiredFields['fixedattributeid=fullName'] = i18n_full_name;
-	requiredFields['fixedattributeid=gender'] = i18n_gender;
-	requiredFields['fixedattributeid=birthDate'] = i18n_date_of_birth;
-		
-	jQuery('#identifiersSelector option').each(function() {
-		var item = jQuery(this);
-		if( item.attr('mandatory')=='true'){
-			requiredFields['identifierid=' + item.val()] = item.text();
-		}
-	});
-
-	jQuery('#attributesSelector option').each(function() {
-		var item = jQuery(this);
-		if( item.attr('mandatory')=='true'){
-			requiredFields['attributeid=' + item.val()] = item.text();
-		}
-	});
-	
-	var html = jQuery("#designTextarea").ckeditorGet().getData();
-	var input = jQuery( html ).find("input");
-	if( input.length > 0 )
+	if( getFieldValue("disableRegistrationFields")=='false' )
 	{
-		input.each( function(i, item){	
-			var key = "";
-			var inputKey = jQuery(item).attr('fixedattributeid');
-			if( inputKey!=undefined)
-			{
-				key = 'fixedattributeid=' + inputKey
-			}
-			else if( jQuery(item).attr('identifierid')!=undefined ){
-				inputKey = jQuery(item).attr('identifierid');
-				key = 'identifierid=' + inputKey
-			}
-			else if( jQuery(item).attr('attributeid')!=undefined ){
-				inputKey = jQuery(item).attr('attributeid');
-				key = 'attributeid=' + inputKey
-			}
-			else if( jQuery(item).attr('programid')!=undefined ){
-				inputKey = jQuery(item).attr('programid');
-				key = 'programid=' + inputKey
-			}
-				
-			for (var idx in requiredFields){
-				if( key == idx)
-				{
-					delete requiredFields[idx];
-				}
+		requiredFields['fixedattributeid=registrationDate'] = i18n_registration_date;
+		requiredFields['fixedattributeid=fullName'] = i18n_full_name;
+		requiredFields['fixedattributeid=gender'] = i18n_gender;
+		requiredFields['fixedattributeid=birthDate'] = i18n_date_of_birth;
+			
+		jQuery('#identifiersSelector option').each(function() {
+			var item = jQuery(this);
+			if( item.attr('mandatory')=='true'){
+				requiredFields['identifierid=' + item.val()] = item.text();
 			}
 		});
-	}
+
+		jQuery('#attributesSelector option').each(function() {
+			var item = jQuery(this);
+			if( item.attr('mandatory')=='true'){
+				requiredFields['attributeid=' + item.val()] = item.text();
+			}
+		});
+		
+		var html = jQuery("#designTextarea").ckeditorGet().getData();
+		var input = jQuery( html ).find("input");
+		if( input.length > 0 )
+		{
+			input.each( function(i, item){	
+				var key = "";
+				var inputKey = jQuery(item).attr('fixedattributeid');
+				if( inputKey!=undefined)
+				{
+					key = 'fixedattributeid=' + inputKey
+				}
+				else if( jQuery(item).attr('identifierid')!=undefined ){
+					inputKey = jQuery(item).attr('identifierid');
+					key = 'identifierid=' + inputKey
+				}
+				else if( jQuery(item).attr('attributeid')!=undefined ){
+					inputKey = jQuery(item).attr('attributeid');
+					key = 'attributeid=' + inputKey
+				}
+				else if( jQuery(item).attr('programid')!=undefined ){
+					inputKey = jQuery(item).attr('programid');
+					key = 'programid=' + inputKey
+				}
+					
+				for (var idx in requiredFields){
+					if( key == idx)
+					{
+						delete requiredFields[idx];
+					}
+				}
+			});
+		}
 	
+	}
 	return requiredFields;
 }
 

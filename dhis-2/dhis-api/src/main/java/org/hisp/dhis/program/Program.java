@@ -121,7 +121,9 @@ public class Program
     private Boolean remindCompleted = false;
 
     private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
-
+    
+    private Boolean disableRegistrationFields = false;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -501,6 +503,16 @@ public class Program
     public void setPatientReminders( Set<PatientReminder> patientReminders )
     {
         this.patientReminders = patientReminders;
+    }
+
+    public Boolean getDisableRegistrationFields()
+    {
+        return disableRegistrationFields;
+    }
+
+    public void setDisableRegistrationFields( Boolean disableRegistrationFields )
+    {
+        this.disableRegistrationFields = disableRegistrationFields;
     }
 
 }

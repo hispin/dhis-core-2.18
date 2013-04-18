@@ -217,6 +217,13 @@ public class UpdateProgramAction
         this.datesToCompare = datesToCompare;
     }
 
+    private Boolean disableRegistrationFields;
+
+    public void setDisableRegistrationFields( Boolean disableRegistrationFields )
+    {
+        this.disableRegistrationFields = disableRegistrationFields;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -230,6 +237,7 @@ public class UpdateProgramAction
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
+        disableRegistrationFields = (disableRegistrationFields == null) ? false : disableRegistrationFields;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -243,6 +251,7 @@ public class UpdateProgramAction
         program.setBlockEntryForm( blockEntryForm );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
         program.setRemindCompleted( remindCompleted );
+        program.setDisableRegistrationFields( disableRegistrationFields );
 
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {

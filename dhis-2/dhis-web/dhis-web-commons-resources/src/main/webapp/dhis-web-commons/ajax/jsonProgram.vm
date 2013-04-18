@@ -15,6 +15,7 @@
 	"noIdentifierTypes": "$!program.patientIdentifierTypes.size()",
 	"blockEntryForm": "$!program.blockEntryForm",
 	"onlyEnrollOnce": "$!program.onlyEnrollOnce",
-	"remindCompleted": "$!program.remindCompleted"
+	"remindCompleted": "$!program.remindCompleted",
+	"disableRegistrationFields": "$!program.disableRegistrationFields"
   }
 }
