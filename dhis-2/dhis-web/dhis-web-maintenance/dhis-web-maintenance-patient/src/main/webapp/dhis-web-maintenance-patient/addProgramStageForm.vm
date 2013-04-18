@@ -4,8 +4,9 @@
 
 <h4>$program.displayName</h4>
 		
-<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="post">
+<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="get">
 	<input type="hidden" id="programId" name="programId" value="$program.id"/>
+	<input type='hidden' id="id" name="id" value="$program.id"/>
 	<select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>
 	<select id='templateMessages' name="templateMessages" multiple="multiple" class="hidden"></select>
 <table>

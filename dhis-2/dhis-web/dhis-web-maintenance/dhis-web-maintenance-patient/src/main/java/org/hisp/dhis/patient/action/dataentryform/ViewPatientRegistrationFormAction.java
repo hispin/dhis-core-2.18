@@ -117,11 +117,6 @@ public class ViewPatientRegistrationFormAction
         this.programId = programId;
     }
 
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
     private Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>();
 
     private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();

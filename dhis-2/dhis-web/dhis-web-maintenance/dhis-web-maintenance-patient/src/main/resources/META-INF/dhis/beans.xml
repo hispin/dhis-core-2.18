@@ -274,7 +274,6 @@
 		class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.programstage.GetProgramStageAction"

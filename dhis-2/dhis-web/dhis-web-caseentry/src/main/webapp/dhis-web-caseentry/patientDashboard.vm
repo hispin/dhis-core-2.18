@@ -18,22 +18,28 @@
 		</p>
 		<div class="contentProviderTable">
 			<table>
+				#if( $!patient.getFullName()!='' )
 				<tr>
 					<td>$i18n.getString("full_name")</td>
 					<td>$encoder.htmlEncode($!patient.getFullName())</td>
 				</tr>
+				#end
 				<tr>
 					<td>$i18n.getString("location")</td>
 					<td>$encoder.htmlEncode($!patient.organisationUnit.name)</td>
 				</tr>
+				#if( $!patient.gender )
 				<tr>
 					<td>$i18n.getString("gender")</td>
 					<td>$i18n.getString($!patient.gender)</td>
 				</tr>
+				#end
+				#if( $!patient.birthDate )
 				<tr>
 					<td>$i18n.getString("date_of_birth")</td>
 					<td>$format.formatDate( $!patient.birthDate) ($!patient.getAge())</td>
 				</tr>
+				#end
 				<tr>
 					<td>$i18n.getString("phone_number")</td>
 					<td>

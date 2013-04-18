@@ -20,7 +20,7 @@
 			jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $!registrationForm.dataEntryForm.htmlCode, "'" )');
 		#end
 		
-		checkValueIsExist( "name", "validateDataEntryForm.action", { dataEntryFormId: '$!registrationForm.dataEntryForm.id' } );
+		checkValueIsExist( "name", "validateDataEntryForm.action", { dataEntryFormId: getFieldValue('dataEntryFormId') } );
 	});
 
     var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
@@ -54,7 +54,8 @@
 <form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="post" onsubmit="return validateForm();">
 
 <input type="hidden" name="id" id="id" value="$!registrationForm.id"/>
-<input type="hidden" name="programId" id="programId" value="$!programId"/>
+<input type="hidden" name="programId" id="programId" value="$!program.id"/>
+<input type="hidden" name="disableRegistrationFields" id="disableRegistrationFields" value="$program.disableRegistrationFields"/>
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
 
 <h3>$i18n.getString( "add_patient_registration_form" )</h3>
@@ -187,9 +188,9 @@
 		<tr>
 			<td>
 				<select id="programAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'prg' )">
-					<option value="enrollmentDate">$encoder.htmlEncode($program.dateOfEnrollmentDescription)</option>
+					<option value="enrollmentDate" class="bold">$encoder.htmlEncode($program.dateOfEnrollmentDescription)</option>
 					#if($program.displayIncidentDate=='true')
-					<option value="dateOfIncident">$encoder.htmlEncode($program.dateOfIncidentDescription)</option>
+					<option value="dateOfIncident" class="bold">$encoder.htmlEncode($program.dateOfIncidentDescription)</option>
 					#end
 				</select>
 			</td>
