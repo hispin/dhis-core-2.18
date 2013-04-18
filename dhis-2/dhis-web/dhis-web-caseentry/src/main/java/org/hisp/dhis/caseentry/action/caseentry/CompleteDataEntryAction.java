@@ -115,6 +115,11 @@ public class CompleteDataEntryAction
     public String execute()
         throws Exception
     {
+        if ( programStageInstanceId == null )
+        {
+            return INPUT;
+        }
+
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 

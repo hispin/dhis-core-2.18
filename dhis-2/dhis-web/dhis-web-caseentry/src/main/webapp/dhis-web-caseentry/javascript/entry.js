@@ -539,9 +539,14 @@ function runCompleteEvent( isCreateEvent )
     }else {
         if( confirm(i18n_complete_confirm_message) )
 		{
-            $.postJSON( "completeDataEntry.action", {
-                programStageInstanceId: getFieldValue( 'programStageInstanceId' )
-            }, function (json) {
+            $.ajax({
+                url: 'completeDataEntry.action',
+                dataType: 'json',
+                data: {
+                    programStageInstanceId: getFieldValue( 'programStageInstanceId' )
+                },
+                type: 'POST'
+            } ).done(function(json) {
                 jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
                 jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
@@ -572,6 +577,7 @@ function runCompleteEvent( isCreateEvent )
                 }
 
                 disableCompletedButton(true);
+
                 var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
                 eventBox.attr('status',1);
                 resetActiveEvent( eventBox.attr("pi") );
@@ -580,6 +586,32 @@ function runCompleteEvent( isCreateEvent )
 
                 if ( isCreateEvent ) {
                     showAddEventForm();
+                }
+            } ).fail(function() {
+                if ( getProgramType() == 3 ) {
+                    var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
+
+                    if ( window.DAO && window.DAO.offlineData ) {
+                        jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
+                        jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
+
+                        DAO.offlineData.fetch( programStageInstanceId, function ( store, arr ) {
+                            if ( arr.length > 0 ) {
+                                var obj = arr[0];
+                                obj.executionDate.completed = true;
+                                DAO.offlineData.add( programStageInstanceId, obj );
+                            }
+                        } );
+
+                        var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
+
+                        if( blocked=='true' ) {
+                            blockEntryForm();
+                        }
+
+                        disableCompletedButton(true);
+                        hideLoader();
+                    }
                 }
             });
 		}
@@ -590,9 +622,14 @@ function doUnComplete( isCreateEvent )
 {	
 	if( confirm(i18n_incomplete_confirm_message) )
 	{
-		$.postJSON( "uncompleteDataEntry.action", {
-            programStageInstanceId: getFieldValue('programStageInstanceId')
-        }, function (data) {
+        $.ajax({
+            url: 'uncompleteDataEntry.action',
+            dataType: 'json',
+            data: {
+                programStageInstanceId: getFieldValue( 'programStageInstanceId' )
+            },
+            type: 'POST'
+        } ).done(function(json) {
             jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
             jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
             unblockEntryForm();
@@ -600,6 +637,23 @@ function doUnComplete( isCreateEvent )
             var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
             eventBox.attr('status',2);
             resetActiveEvent( eventBox.attr("pi") );
+        } ).fail(function() {
+            if ( getProgramType() == 3 ) {
+                var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
+
+                if ( window.DAO && window.DAO.offlineData ) {
+                    DAO.offlineData.fetch( programStageInstanceId, function ( store, arr ) {
+                        if ( arr.length > 0 ) {
+                            var obj = arr[0];
+                            obj.executionDate.completed = false;
+                            DAO.offlineData.add( programStageInstanceId, obj );
+                        }
+                    } );
+                }
+
+                unblockEntryForm();
+                disableCompletedButton(false);
+            }
         });
 	}
 }
@@ -916,13 +970,13 @@ function autocompletedField( idField )
 		minLength: 0,
 		select: function( event, ui ) {
 			var fieldValue = ui.item.value;
-			
+
 			if ( !dhis2.trigger.invoke( "caseentry-value-selected", [dataElementUid, fieldValue] ) ) {
 				input.val( "" );
 				return false;
 			}
-			
-			input.val( fieldValue );			
+
+			input.val( fieldValue );
 			if ( !unSave ) {
 				saveVal( dataElementUid );
 			}
