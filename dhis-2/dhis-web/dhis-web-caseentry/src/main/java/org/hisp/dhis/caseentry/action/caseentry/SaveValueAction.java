@@ -47,7 +47,6 @@ import java.util.Date;
 public class SaveValueAction
     implements Action
 {
-
     private static final Log LOG = LogFactory.getLog( SaveValueAction.class );
 
     // -------------------------------------------------------------------------
