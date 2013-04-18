@@ -295,6 +295,12 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
             var key = dataElementUid;
 
             DAO.offlineData.fetch( dataValueKey, function ( store, arr ) {
+                if ( arr.length == 0 ) {
+                    markValue( ERROR );
+                    window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+                    return;
+                }
+
                 var obj = arr[0];
 
                 if ( !obj.values ) {
@@ -815,20 +821,56 @@ function runValidation()
 		});
 }
 
+var MAX_OPTIONS_DISPLAYED = 30;
+
 function searchOptionSet( uid, query, success ) {
-    $.ajax({
+    if(window.DAO !== undefined && window.DAO.optionSets !== undefined ) {
+        DAO.optionSets.fetch(uid, function(store, arr) {
+            if ( arr.length > 0 ) {
+                var obj = arr[0];
+                var options = [];
+
+                if(query == null || query == "") {
+                    options = obj.optionSet.options.slice(0, MAX_OPTIONS_DISPLAYED-1);
+                } else {
+                    query = query.toLowerCase();
+
+                    _.each(obj.optionSet.options, function(item, idx) {
+                        if ( item.toLowerCase().indexOf( query ) != -1 ) {
+                            options.push(item);
+                        }
+                    });
+                }
+
+                success( $.map( options, function ( item ) {
+                    return {
+                        label: item,
+                        id: item
+                    };
+                } ) );
+            } else {
+                getOptions( uid, query, success );
+            }
+        } );
+    } else {
+        getOptions( uid, query, success );
+    }
+}
+
+function getOptions( uid, query, success ) {
+    $.ajax( {
         url: "getOptions.action?id=" + uid + "&query=" + query,
         dataType: "json",
         cache: true,
-        success: function(data) {
-            success($.map(data.options, function(item) {
+        success: function ( data ) {
+            success( $.map( data.options, function ( item ) {
                 return {
                     label: item.o,
                     id: item.o
                 };
-            }));
+            } ) );
         }
-    });
+    } );
 }
 
 function autocompletedField( idField )
