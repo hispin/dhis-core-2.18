@@ -211,7 +211,6 @@ public class TableAlteror
         updateProgramInstanceStatus();
         
         executeSql( "UPDATE program SET disableRegistrationFields=false where disableRegistrationFields is null" );
-        executeSql( "ALTER TABLE programstage DROP CONSTRAINT \"programstage_name_key\"");
     }
 
     // -------------------------------------------------------------------------
