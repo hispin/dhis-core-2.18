@@ -28,9 +28,13 @@ package org.hisp.dhis.caseentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +89,13 @@ public class GetProgramMetaDataAction implements Action
         return programAssociations;
     }
 
+    private Set<String> optionSets = new HashSet<String>();
+
+    public Set<String> getOptionSets()
+    {
+        return optionSets;
+    }
+
     // -------------------------------------------------------------------------
     // Action Impl
     // -------------------------------------------------------------------------
@@ -103,8 +114,28 @@ public class GetProgramMetaDataAction implements Action
             {
                 programAssociations.get( program.getId() ).add( organisationUnit.getId() );
             }
+
+            populateOptionSets( program );
         }
 
         return SUCCESS;
+    }
+
+    private void populateOptionSets( Program program )
+    {
+        for ( ProgramStage programStage : program.getProgramStages() )
+        {
+            Set<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
+
+            for ( ProgramStageDataElement dataElement : dataElements )
+            {
+                OptionSet optionSet = dataElement.getDataElement().getOptionSet();
+
+                if ( optionSet != null )
+                {
+                    optionSets.add( optionSet.getUid() );
+                }
+            }
+        }
     }
 }
