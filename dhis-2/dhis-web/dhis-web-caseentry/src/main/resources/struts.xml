@@ -171,6 +171,10 @@
       </result>
     </action>
 
+    <action name="getOptionSet" class="org.hisp.dhis.caseentry.action.GetOptionSetAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonOptionSet.vm</result>
+    </action>
+
     <action name="removeCurrentEncounter"
       class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction">
       <result name="success" type="velocity-json">
