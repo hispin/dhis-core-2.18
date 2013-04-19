@@ -215,6 +215,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE patient ALTER COLUMN birthdate DROP NOT NULL");
         executeSql( "ALTER TABLE patient ALTER COLUMN gender DROP NOT NULL");
         executeSql( "ALTER TABLE patient ALTER COLUMN underage DROP NOT NULL");
+        executeSql( "ALTER TABLE program ALTER COLUMN dateofenrollmentdescription DROP NOT NULL");
     }
 
     // -------------------------------------------------------------------------

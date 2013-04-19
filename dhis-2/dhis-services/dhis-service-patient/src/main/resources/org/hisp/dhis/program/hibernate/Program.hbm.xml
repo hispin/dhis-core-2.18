@@ -19,7 +19,7 @@
 
     <property name="version" />
 
-    <property name="dateOfEnrollmentDescription" type="text" not-null="true" />
+    <property name="dateOfEnrollmentDescription" type="text" />
 
     <property name="dateOfIncidentDescription" type="text" />
 

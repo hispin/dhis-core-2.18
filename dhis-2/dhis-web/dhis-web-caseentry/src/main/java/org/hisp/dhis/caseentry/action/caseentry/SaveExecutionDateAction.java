@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -164,14 +165,16 @@ public class SaveExecutionDateAction
     {
         Date dateValue = format.parseDate( executionDate );
 
-        OrganisationUnit organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit() :
-            organisationUnitService.getOrganisationUnit( organisationUnitId );
+        OrganisationUnit organisationUnit = organisationUnitId == null ? selectedStateManager
+            .getSelectedOrganisationUnit() : organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Patient patient = patientId == null ? selectedStateManager.getSelectedPatient() : patientService.getPatient( patientId );
+        Patient patient = patientId == null ? selectedStateManager.getSelectedPatient() : patientService
+            .getPatient( patientId );
 
         if ( dateValue != null )
         {
-            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+            ProgramStageInstance programStageInstance = programStageInstanceService
+                .getProgramStageInstance( programStageInstanceId );
 
             // If the program-stage-instance of the patient not exists,
             // create a program-instance and program-stage-instance for
@@ -206,7 +209,21 @@ public class SaveExecutionDateAction
                 }
                 else if ( type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
                 {
-                    programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
+                    Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program );
+                    if ( programInstances == null || programInstances.size() == 0 )
+                    {
+                        // Add a new program-instance
+                        programInstance = new ProgramInstance();
+                        programInstance.setEnrollmentDate( dateValue );
+                        programInstance.setDateOfIncident( dateValue );
+                        programInstance.setProgram( program );
+                        programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
+                        programInstanceService.addProgramInstance( programInstance );
+                    }
+                    else
+                    {
+                        programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
+                    }
                 }
 
                 // Add a new program-stage-instance
