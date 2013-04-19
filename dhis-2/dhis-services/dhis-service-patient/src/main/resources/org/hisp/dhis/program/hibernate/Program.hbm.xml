@@ -21,7 +21,7 @@
 
     <property name="dateOfEnrollmentDescription" type="text" not-null="true" />
 
-    <property name="dateOfIncidentDescription" type="text" not-null="true" />
+    <property name="dateOfIncidentDescription" type="text" />
 
     <set name="programStages" order-by="mindaysfromstart" cascade="all">
       <key column="programid" />
