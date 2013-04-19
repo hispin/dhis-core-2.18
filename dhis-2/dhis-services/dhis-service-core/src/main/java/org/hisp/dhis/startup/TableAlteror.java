@@ -558,6 +558,8 @@ public class TableAlteror
         executeSql( "UPDATE chart SET publicaccess='--------' WHERE user IS NULL AND publicaccess IS NULL;" );
         executeSql( "UPDATE map SET publicaccess='-------' WHERE user IS NULL AND publicaccess IS NULL;" );
 
+        executeSql( "ALTER TABLE dataelement ALTER COLUMN domaintype SET NOT NULL" );
+        
         log.info( "Tables updated" );
     }
 

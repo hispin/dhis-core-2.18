@@ -31,7 +31,7 @@
 
     <property name="textType" column="textType" length="16" />
 
-    <property name="domainType" column="domaintype" length="16" />
+    <property name="domainType" not-null="true" column="domaintype" length="16" />
 
     <property name="aggregationOperator" not-null="true" column="aggregationtype" length="16" />
 
