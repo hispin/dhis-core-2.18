@@ -46,6 +46,12 @@ public class H2StatementBuilder
     {
         return null;
     }
+
+    @Override
+    public String getRegexpMatch()
+    {
+        return "regexp";
+    }
     
     @Override
     public String getDeleteZeroDataValues()

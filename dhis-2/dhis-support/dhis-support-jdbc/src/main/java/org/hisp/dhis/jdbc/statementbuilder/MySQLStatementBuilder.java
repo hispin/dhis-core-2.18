@@ -48,6 +48,12 @@ public class MySQLStatementBuilder
     }
 
     @Override
+    public String getRegexpMatch()
+    {
+        return "regexp";
+    }
+    
+    @Override
     public String getDeleteZeroDataValues()
     {
         return

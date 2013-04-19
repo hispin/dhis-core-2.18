@@ -66,6 +66,12 @@ public interface StatementBuilder
     String getDoubleColumnType();
     
     /**
+     * Returns the value used to match a column to a regular expression.
+     * @return the value used to match a column to a regular expression.
+     */
+    String getRegexpMatch();
+    
+    /**
      * Creates a SELECT statement returning the identifier of the given Period.
      * 
      * @param period the Period to use in the statement. 
