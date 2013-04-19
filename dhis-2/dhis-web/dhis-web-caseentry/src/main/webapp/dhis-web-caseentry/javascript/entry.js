@@ -38,7 +38,7 @@ function saveVal( dataElementUid )
 
                 return;
             }
-            else if ( type == 'number' && !isRealNumber( fieldValue ) ) {
+            else if ( type == 'number' && !isNumber( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 field.focus();
