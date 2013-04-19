@@ -96,10 +96,9 @@ public class MathUtilsTest
         assertTrue( MathUtils.isNumeric( "1.2" ) );
         assertTrue( MathUtils.isNumeric( "12.34" ) );
         assertTrue( MathUtils.isNumeric( "0.0" ) );
-        assertTrue( MathUtils.isNumeric( ".1" ) );
         assertTrue( MathUtils.isNumeric( "1.234" ) );
-        assertTrue( MathUtils.isNumeric( "1234  " ) );
-        assertTrue( MathUtils.isNumeric( "  1234" ) );
+        assertTrue( MathUtils.isNumeric( "-1234" ) );
+        assertTrue( MathUtils.isNumeric( "-12.34" ) );
 
         assertFalse( MathUtils.isNumeric( "Hey" ) );
         assertFalse( MathUtils.isNumeric( "45 Perinatal Condition" ) );
@@ -108,8 +107,16 @@ public class MathUtilsTest
         assertFalse( MathUtils.isNumeric( "1 234" ) );
         assertFalse( MathUtils.isNumeric( "." ) );
         assertFalse( MathUtils.isNumeric( "1." ) );
+        assertFalse( MathUtils.isNumeric( ".1" ) );
         assertFalse( MathUtils.isNumeric( "" ) );
         assertFalse( MathUtils.isNumeric( " " ) );
+        assertFalse( MathUtils.isNumeric( "+1234  " ) );
+        assertFalse( MathUtils.isNumeric( "1234  " ) );
+        assertFalse( MathUtils.isNumeric( "  1234" ) );
+        assertFalse( MathUtils.isNumeric( "1,234" ) );
+        assertFalse( MathUtils.isNumeric( "0,1" ) );
+        assertFalse( MathUtils.isNumeric( "0," ) );
+        assertFalse( MathUtils.isNumeric( "0." ) );
         assertFalse( MathUtils.isNumeric( null ) );
     }
     

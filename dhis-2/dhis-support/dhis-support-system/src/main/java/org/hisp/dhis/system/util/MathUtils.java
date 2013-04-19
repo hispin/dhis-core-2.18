@@ -47,7 +47,7 @@ public class MathUtils
     
     private static final double TOLERANCE = 0.01; 
     
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile( "^[ \\t]*[\\.]?[0-9]+[ \\t]*$|^[ \\t]*[0-9]+[\\.][0-9]+[ \\t]*$" );
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile( "^-?(0|[1-9]\\d*)(\\.\\d+)?$" );
 
     /**
      * Validates whether an expression is true or false.
