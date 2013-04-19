@@ -212,7 +212,8 @@ public class ValidationUtils
     
     /**
      * Checks if the given data value is valid according to the value type of the
-     * given data element. Returns a string if the valid is invalid, possible
+     * given data element. Considers the value to be valid if null or empty.
+     * Returns a string if the valid is invalid, possible
      * values are:
      * 
      * <ul>
@@ -223,6 +224,7 @@ public class ValidationUtils
      * <li>value_not_integer</li>
      * <li>value_not_positive_integer</li>
      * <li>value_not_negative_integer</li>
+     * <li>value_is_zero_and_not_zero_significant</li>
      * </ul>
      * 
      * @param value the data value.
@@ -233,7 +235,7 @@ public class ValidationUtils
     {
         if ( value == null || value.trim().isEmpty() )
         {
-            return "value_null_or_empty";
+            return null;
         }
         
         if ( dataElement == null || dataElement.getType() == null || dataElement.getType().isEmpty() )
@@ -268,6 +270,12 @@ public class ValidationUtils
         if ( VALUE_TYPE_NEGATIVE_INT.equals( type ) && !MathUtils.isNegativeInteger( value ) )
         {
             return "value_not_negative_integer";
+        }
+        
+        if ( VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) && 
+            !dataElement.isZeroIsSignificant() && !AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() ) )
+        {
+            return "value_is_zero_and_not_zero_significant";
         }
         
         return null;
