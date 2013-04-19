@@ -121,6 +121,71 @@ public class MathUtilsTest
     }
     
     @Test
+    public void testIsInteger()
+    {
+        assertTrue( MathUtils.isInteger( "1" ) );
+        assertTrue( MathUtils.isInteger( "123" ) );
+        assertTrue( MathUtils.isInteger( "-2" ) );
+        assertTrue( MathUtils.isInteger( "0" ) );
+        
+        assertFalse( MathUtils.isInteger( "1.1" ) );
+        assertFalse( MathUtils.isInteger( "+4" ) );
+        assertFalse( MathUtils.isInteger( "-0" ) );
+        assertFalse( MathUtils.isInteger( "Hey" ) );
+        assertFalse( MathUtils.isInteger( " 1" ) );
+        assertFalse( MathUtils.isInteger( "1 " ) );
+        assertFalse( MathUtils.isInteger( "1.2345" ) );
+    }
+
+    @Test
+    public void testIsPositiveInteger()
+    {
+        assertTrue( MathUtils.isPositiveInteger( "1" ) );
+        assertTrue( MathUtils.isPositiveInteger( "123" ) );
+
+        assertFalse( MathUtils.isPositiveInteger( "0" ) );
+        assertFalse( MathUtils.isPositiveInteger( "+2" ) );
+        assertFalse( MathUtils.isPositiveInteger( "-2" ) );
+        assertFalse( MathUtils.isPositiveInteger( "-2232" ) );
+        assertFalse( MathUtils.isPositiveInteger( "-2.17" ) );
+        assertFalse( MathUtils.isPositiveInteger( "1.1" ) );
+        assertFalse( MathUtils.isPositiveInteger( "-0" ) );
+        assertFalse( MathUtils.isPositiveInteger( "Hey" ) );
+        assertFalse( MathUtils.isPositiveInteger( "1 " ) );
+        assertFalse( MathUtils.isPositiveInteger( "1.2345" ) );
+    }
+
+    @Test
+    public void testIsNegativeInteger()
+    {
+        assertTrue( MathUtils.isNegativeInteger( "-1" ) );
+        assertTrue( MathUtils.isNegativeInteger( "-123" ) );
+
+        assertFalse( MathUtils.isNegativeInteger( "0" ) );
+        assertFalse( MathUtils.isNegativeInteger( "+2" ) );
+        assertFalse( MathUtils.isNegativeInteger( "2" ) );
+        assertFalse( MathUtils.isNegativeInteger( "2232" ) );
+        assertFalse( MathUtils.isNegativeInteger( "2.17" ) );
+        assertFalse( MathUtils.isNegativeInteger( "1.1" ) );
+        assertFalse( MathUtils.isNegativeInteger( "-0" ) );
+        assertFalse( MathUtils.isNegativeInteger( "Hey" ) );
+        assertFalse( MathUtils.isNegativeInteger( "2 " ) );
+        assertFalse( MathUtils.isNegativeInteger( "6.1345" ) );
+    }
+
+    @Test
+    public void testIsZero()
+    {
+        assertTrue( MathUtils.isZero( "0" ) );
+
+        assertFalse( MathUtils.isZero( "+0" ) );
+        assertFalse( MathUtils.isZero( "-0" ) );
+        assertFalse( MathUtils.isZero( "2232" ) );
+        assertFalse( MathUtils.isZero( "2.17" ) );
+        assertFalse( MathUtils.isZero( "Hey" ) );
+    }
+    
+    @Test
     public void testGetAverage()
     {
         assertEquals( 7.5, MathUtils.getAverage( Arrays.asList( 5.0, 5.0, 10.0, 10.0 ) ), 0.01 );
