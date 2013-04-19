@@ -46,7 +46,9 @@ public class MathUtils
     
     private static final double TOLERANCE = 0.01; 
     
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile( "^(0|-?[1-9]\\d*)(\\.\\d+)?$" );
+    public static final String NUMERIC_REGEXP = "^(0|-?[1-9]\\d*)(\\.\\d+)?$";
+    
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile( NUMERIC_REGEXP );
     private static final Pattern INT_PATTERN = Pattern.compile( "^(0|-?[1-9]\\d*)$" );
     private static final Pattern POSITIVE_INT_PATTERN = Pattern.compile( "^[1-9]\\d*$" );
     private static final Pattern NEGATIVE_INT_PATTERN = Pattern.compile( "^-[1-9]\\d*$" );

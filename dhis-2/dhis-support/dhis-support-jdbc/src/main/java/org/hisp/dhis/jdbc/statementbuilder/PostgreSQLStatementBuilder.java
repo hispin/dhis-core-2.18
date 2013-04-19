@@ -48,6 +48,12 @@ public class PostgreSQLStatementBuilder
     }
 
     @Override
+    public String getRegexpMatch()
+    {
+        return "~";
+    }
+    
+    @Override
     public String getDeleteZeroDataValues()
     {
         return

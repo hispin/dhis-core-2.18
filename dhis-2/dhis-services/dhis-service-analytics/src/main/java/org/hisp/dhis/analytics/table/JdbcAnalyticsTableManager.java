@@ -44,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -120,7 +121,7 @@ public class JdbcAnalyticsTableManager
             Date startDate = period.getStartDate();
             Date endDate = period.getEndDate();
             
-            String intClause = "dv.value != '' and dv.value != 'true' and dv.value != 'false' and dv.value not like '%-%'";
+            String intClause = "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_REGEXP + "'";
             
             populateTable( table, startDate, endDate, "cast(dv.value as " + dbl + ")", "int", intClause );
             
