@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset.action.compulsory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -109,8 +110,26 @@ public class GetCompulsoryDataElementsAction
 
         availableOperands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataSet.getDataElements() ) );
         
-        availableOperands.removeAll( selectedOperands );
+        Iterator<DataElementOperand> availableIter = availableOperands.iterator();
 
+        // ---------------------------------------------------------------------
+        // Remove already selected operands - must check manually since selected
+        // operands are persisted while available operands are generated
+        // ---------------------------------------------------------------------
+
+        while ( availableIter.hasNext() )
+        {
+            DataElementOperand availableOperand = availableIter.next();
+            
+            for ( DataElementOperand selectedOperand : selectedOperands )
+            {
+                if ( availableOperand.getOperandExpression().equals( selectedOperand.getOperandExpression() ) )
+                {
+                    availableIter.remove();
+                }
+            }
+        }
+        
         Collections.sort( availableOperands, new DataElementOperandNameComparator() );
 
         return SUCCESS;

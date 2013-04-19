@@ -493,7 +493,6 @@ public class DataElementOperand
     // hashCode, equals, toString, compareTo
     // -------------------------------------------------------------------------
 
-
     @Override
     public String toString()
     {
