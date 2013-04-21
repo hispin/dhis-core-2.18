@@ -119,6 +119,41 @@ public class MathUtilsTest
         assertFalse( MathUtils.isNumeric( "0." ) );
         assertFalse( MathUtils.isNumeric( null ) );
     }
+
+    @Test
+    public void testIsNumericLenient()
+    {
+        assertTrue( MathUtils.isNumericLenient( "0123" ) );
+        assertTrue( MathUtils.isNumericLenient( "123" ) );
+        assertTrue( MathUtils.isNumericLenient( "0" ) );
+        assertTrue( MathUtils.isNumericLenient( "1.2" ) );
+        assertTrue( MathUtils.isNumericLenient( "012.34" ) );
+        assertTrue( MathUtils.isNumericLenient( "12.34" ) );
+        assertTrue( MathUtils.isNumericLenient( "0.0" ) );
+        assertTrue( MathUtils.isNumericLenient( "1.234" ) );
+        assertTrue( MathUtils.isNumericLenient( "-1234" ) );
+        assertTrue( MathUtils.isNumericLenient( "-12.34" ) );
+
+        assertFalse( MathUtils.isNumericLenient( "Hey" ) );
+        assertFalse( MathUtils.isNumericLenient( "45 Perinatal Condition" ) );
+        assertFalse( MathUtils.isNumericLenient( "Long street 2" ) );
+        assertFalse( MathUtils.isNumericLenient( "1.2f" ) );
+        assertFalse( MathUtils.isNumericLenient( "1 234" ) );
+        assertFalse( MathUtils.isNumericLenient( ".1" ) );
+        assertFalse( MathUtils.isNumericLenient( ".4543" ) );
+        assertFalse( MathUtils.isNumericLenient( "." ) );
+        assertFalse( MathUtils.isNumericLenient( "1." ) );
+        assertFalse( MathUtils.isNumericLenient( "" ) );
+        assertFalse( MathUtils.isNumericLenient( " " ) );
+        assertFalse( MathUtils.isNumericLenient( "+6575  " ) );
+        assertFalse( MathUtils.isNumericLenient( "5643  " ) );
+        assertFalse( MathUtils.isNumericLenient( "  3243" ) );
+        assertFalse( MathUtils.isNumericLenient( "1,877" ) );
+        assertFalse( MathUtils.isNumericLenient( "0,1" ) );
+        assertFalse( MathUtils.isNumericLenient( "0," ) );
+        assertFalse( MathUtils.isNumericLenient( "0." ) );
+        assertFalse( MathUtils.isNumericLenient( null ) );
+    }
     
     @Test
     public void testIsInteger()

@@ -121,7 +121,7 @@ public class JdbcAnalyticsTableManager
             Date startDate = period.getStartDate();
             Date endDate = period.getEndDate();
             
-            String intClause = "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_REGEXP + "'";
+            String intClause = "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_LENIENT_REGEXP + "'";
             
             populateTable( table, startDate, endDate, "cast(dv.value as " + dbl + ")", "int", intClause );
             
@@ -166,7 +166,7 @@ public class JdbcAnalyticsTableManager
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype='" + valueType + "' " +
             "and pe.startdate >= '" + start + "' " +
-            "and pe.startdate <= '" + end + "'" +
+            "and pe.startdate <= '" + end + "' " +
             "and dv.value is not null " + 
             "and " + clause;
 
