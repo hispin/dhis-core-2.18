@@ -27,7 +27,6 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.DOMAIN_TYPE_AGGREGATE;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 
 import java.util.ArrayList;
@@ -122,7 +121,9 @@ public class JdbcAnalyticsTableManager
             Date startDate = period.getStartDate();
             Date endDate = period.getEndDate();
             
-            String intClause = "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_LENIENT_REGEXP + "'";
+            String intClause = 
+                "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_LENIENT_REGEXP + "' " +
+                "and ( dv.value != '0' or de.aggregationtype = 'average' or de.zeroissignificant = true ) ";
             
             populateTable( table, startDate, endDate, "cast(dv.value as " + dbl + ")", "int", intClause );
             
@@ -165,8 +166,8 @@ public class JdbcAnalyticsTableManager
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
             "left join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
-            "where de.valuetype='" + valueType + "' " +
-            "and de.domaintype='" + DOMAIN_TYPE_AGGREGATE + "' " +
+            "where de.valuetype = '" + valueType + "' " +
+            "and de.domaintype = 'aggregate' " +
             "and pe.startdate >= '" + start + "' " +
             "and pe.startdate <= '" + end + "' " +
             "and dv.value is not null " + 
