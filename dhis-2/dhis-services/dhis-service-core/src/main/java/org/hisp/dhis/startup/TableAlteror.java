@@ -559,6 +559,7 @@ public class TableAlteror
         executeSql( "UPDATE map SET publicaccess='-------' WHERE user IS NULL AND publicaccess IS NULL;" );
 
         executeSql( "ALTER TABLE dataelement ALTER COLUMN domaintype SET NOT NULL" );
+        executeSql( "update dataelementcategory set datadimension = false where datadimension is null" );
         
         log.info( "Tables updated" );
     }
