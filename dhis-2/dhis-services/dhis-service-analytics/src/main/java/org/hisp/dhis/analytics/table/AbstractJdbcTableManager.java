@@ -55,8 +55,6 @@ public abstract class AbstractJdbcTableManager
     public static final String PREFIX_ORGUNITLEVEL = "uidlevel";
     public static final String PREFIX_INDEX = "in_";
     
-    private static final String TABLE_TEMP_SUFFIX = "_temp";
-    
     @Autowired
     protected OrganisationUnitService organisationUnitService;
     
