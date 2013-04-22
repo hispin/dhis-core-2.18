@@ -257,10 +257,10 @@ public class HibernateProgramStageInstanceStore
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    public Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
-        Collection<Integer> orgUnits, List<TabularReportColumn> columns, int level, int maxLevel, Date startDate,
-        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max,
-        I18n i18n )
+    public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
+        Map<Integer, OrganisationUnitLevel> orgUnitLevelMap, Collection<Integer> orgUnits,
+        List<TabularReportColumn> columns, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
+        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n )
     {
         // ---------------------------------------------------------------------
         // Headers cols
@@ -274,10 +274,13 @@ public class HibernateProgramStageInstanceStore
         grid.addHeader( new GridHeader( "id", true, true ) );
         grid.addHeader( new GridHeader( programStage.getReportDateDescription(), false, true ) );
 
-        for ( int i = level; i <= maxLevel; i++ )
+        if ( anonynousEntryForm == null || !anonynousEntryForm )
         {
-            String name = orgUnitLevelMap.containsKey( i ) ? orgUnitLevelMap.get( i ).getName() : "Level " + i;
-            grid.addHeader( new GridHeader( name, false, true ) );
+            for ( int i = level; i <= maxLevel; i++ )
+            {
+                String name = orgUnitLevelMap.containsKey( i ) ? orgUnitLevelMap.get( i ).getName() : "Level " + i;
+                grid.addHeader( new GridHeader( name, false, true ) );
+            }
         }
 
         Collection<String> deKeys = new HashSet<String>();
@@ -301,8 +304,8 @@ public class HibernateProgramStageInstanceStore
         // Get SQL and build grid
         // ---------------------------------------------------------------------
 
-        String sql = getTabularReportSql( false, programStage, columns, orgUnits, level, maxLevel, startDate, endDate,
-            descOrder, completed, accessPrivateInfo, min, max );
+        String sql = getTabularReportSql( anonynousEntryForm, false, programStage, columns, orgUnits, level, maxLevel,
+            startDate, endDate, descOrder, completed, accessPrivateInfo, min, max );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -341,11 +344,12 @@ public class HibernateProgramStageInstanceStore
         return grid;
     }
 
-    public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate, Boolean completed )
+    public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
+        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, int maxLevel,
+        Date startDate, Date endDate, Boolean completed )
     {
-        String sql = getTabularReportSql( true, programStage, columns, organisationUnits, level, maxLevel, startDate,
-            endDate, false, completed, null, null, null );
+        String sql = getTabularReportSql( anonynousEntryForm, true, programStage, columns, organisationUnits, level,
+            maxLevel, startDate, endDate, false, completed, null, null, null );
 
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
@@ -877,9 +881,9 @@ public class HibernateProgramStageInstanceStore
         return criteria;
     }
 
-    private String getTabularReportSql( boolean count, ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> orgUnits, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max )
+    private String getTabularReportSql( Boolean anonynousEntryForm, boolean count, ProgramStage programStage,
+        List<TabularReportColumn> columns, Collection<Integer> orgUnits, int level, int maxLevel, Date startDate,
+        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max )
     {
         Set<String> deKeys = new HashSet<String>();
         String selector = count ? "count(*) " : "* ";
@@ -888,10 +892,13 @@ public class HibernateProgramStageInstanceStore
         String where = "";
         String operator = "where ";
 
-        for ( int i = level; i <= maxLevel; i++ )
+        if ( anonynousEntryForm == null || !anonynousEntryForm )
         {
-            sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + i + ") as level_" + i
-                + ",";
+            for ( int i = level; i <= maxLevel; i++ )
+            {
+                sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + i + ") as level_"
+                    + i + ",";
+            }
         }
 
         for ( TabularReportColumn column : columns )
@@ -1012,7 +1019,11 @@ public class HibernateProgramStageInstanceStore
         sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
         sql += "left join patient p on (pi.patientid=p.patientid) ";
         sql += "join organisationunit ou on (ou.organisationunitid=psi.organisationunitid) ";
-        sql += "join _orgunitstructure ous on (psi.organisationunitid=ous.organisationunitid) ";
+
+        if ( anonynousEntryForm == null || !anonynousEntryForm )
+        {
+            sql += "join _orgunitstructure ous on (psi.organisationunitid=ous.organisationunitid) ";
+        }
 
         sql += "where psi.programstageid=" + programStage.getId() + " ";
 
@@ -1036,9 +1047,12 @@ public class HibernateProgramStageInstanceStore
 
         sql += "order by ";
 
-        for ( int i = level; i <= maxLevel; i++ )
+        if ( anonynousEntryForm == null || !anonynousEntryForm )
         {
-            sql += "level_" + i + ",";
+            for ( int i = level; i <= maxLevel; i++ )
+            {
+                sql += "level_" + i + ",";
+            }
         }
 
         sql += "psi.executiondate ";

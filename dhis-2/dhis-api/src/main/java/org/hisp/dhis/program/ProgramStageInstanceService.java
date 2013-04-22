@@ -89,12 +89,13 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
 
-    Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
+    Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
         Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n );
 
-    int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Boolean completed, Date startDate, Date endDate );
+    int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
+        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Boolean completed,
+        Date startDate, Date endDate );
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 
@@ -129,6 +130,7 @@ public interface ProgramStageInstanceService
 
     Collection<Integer> getOrganisationUnitIds( Date startDate, Date endDate );
 
-    Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n );
+    Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate,
+        String endDate, I18n i18n );
 
 }
