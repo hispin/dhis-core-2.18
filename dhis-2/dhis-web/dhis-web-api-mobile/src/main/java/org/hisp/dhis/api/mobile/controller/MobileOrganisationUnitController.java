@@ -356,7 +356,7 @@ public class MobileOrganisationUnitController
     public String saveProgramStage( @PathVariable int patientId, @PathVariable int id, @RequestBody ProgramStage programStage )
         throws NotAllowedException
     {
-        return activityReportingService.saveProgramStage( programStage, patientId );
+        return activityReportingService.saveProgramStage( programStage, patientId, id );
     }
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/enrollProgram" )
