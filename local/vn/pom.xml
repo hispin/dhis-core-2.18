@@ -5,17 +5,13 @@
   
   <groupId>org.hisp.dhis</groupId>
   <artifactId>dhis-local-vn</artifactId>
-  <version>2.9-SNAPSHOT</version>
+  <version>2.11</version>
   <packaging>pom</packaging>
   <name>Local Vietnam Modules</name>
   
   <modules>
-    <module>dhis-api-chr</module>
-    <module>dhis-service-chr</module>
+    <module>dhis-service-vn</module>
     <module>dhis-service-spreadsheet-reporting</module>
-    <module>dhis-web-chr-form</module>
-    <module>dhis-web-dataentry-chr</module>
-    <module>dhis-web-datastatus</module>
     <module>dhis-web-spreadsheet-reporting</module>
   </modules>
 </project>
