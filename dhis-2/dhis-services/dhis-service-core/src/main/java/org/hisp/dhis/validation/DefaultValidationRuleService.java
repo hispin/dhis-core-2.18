@@ -266,7 +266,7 @@ public class DefaultValidationRuleService
 
         final Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
-        if ( currentSize < MAX_VIOLATIONS && !valueMap.isEmpty() )
+        if ( currentSize < MAX_VIOLATIONS )
         {
             Double leftSide = null;
             Double rightSide = null;
