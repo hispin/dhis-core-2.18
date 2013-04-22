@@ -292,7 +292,7 @@ public class DefaultValidationRuleService
                             {
                                 violation = ( leftSide != null && rightSide == null ) || ( leftSide == null && rightSide != null );
                             }
-                            else
+                            else if ( leftSide != null && rightSide != null )
                             {
                                 violation = !expressionIsTrue( leftSide, operator, rightSide );
                             }
