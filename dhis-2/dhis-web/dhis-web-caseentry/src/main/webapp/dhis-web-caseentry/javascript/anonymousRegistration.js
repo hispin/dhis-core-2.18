@@ -651,7 +651,9 @@ function searchEvents( listAll ) {
             hideById( 'dataEntryInfor' );
             setInnerHTML( 'listDiv', html );
         }
-    } ).complete(function() {
+    } ).fail(function() {
+        hideById( 'dataEntryInfor' );
+    } ).always(function() {
         var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
         setInnerHTML( 'searchInforTD', searchInfor );
 
@@ -666,7 +668,7 @@ function searchEvents( listAll ) {
         }
 
         showById( 'listDiv' );
-        hideById( 'loaderDiv' );
+        hideLoader();
     });
 }
 
