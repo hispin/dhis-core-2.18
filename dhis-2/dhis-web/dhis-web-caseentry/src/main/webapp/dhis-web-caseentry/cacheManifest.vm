@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.12-SNAPSHOT V7
+# 2.12-SNAPSHOT V8
 NETWORK:
 *
 CACHE:
@@ -7,6 +7,18 @@ CACHE:
 ../dhis-web-commons/css/light_blue/logo_background.png
 ../dhis-web-commons/css/light_blue/logo_banner.png
 ../dhis-web-commons/css/light_blue/logo_separator.png
+../dhis-web-commons/css/india/india.css
+../dhis-web-commons/css/india/logo_background.png
+../dhis-web-commons/css/india/logo_banner.png
+../dhis-web-commons/css/india/logo_separator.png
+../dhis-web-commons/css/green/green.css
+../dhis-web-commons/css/green/logo_background.png
+../dhis-web-commons/css/green/logo_banner.png
+../dhis-web-commons/css/green/logo_separator.png
+../dhis-web-commons/css/vietnam/vietnam.css
+../dhis-web-commons/css/vietnam/logo_background.png
+../dhis-web-commons/css/vietnam/logo_banner.png
+../dhis-web-commons/css/vietnam/logo_separator.png
 ../dhis-web-commons/css/widgets.css
 ../dhis-web-commons/css/print.css
 ../favicon.ico
