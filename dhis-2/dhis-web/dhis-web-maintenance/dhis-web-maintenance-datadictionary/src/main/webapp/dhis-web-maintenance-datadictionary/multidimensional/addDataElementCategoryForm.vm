@@ -42,7 +42,7 @@
       <td><input type="text" id="name" name="name"/></td>
     </tr>
     <tr>
-      <td><label for="dataDimension">$i18n.getString( "use_as_data_dimension" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+      <td><label for="dataDimension">$i18n.getString( "use_as_data_dimension" )</label></td>
       <td><input type="checkbox" id="dataDimension" name="dataDimension" value="true" /></td>
     </tr>
     <tr>

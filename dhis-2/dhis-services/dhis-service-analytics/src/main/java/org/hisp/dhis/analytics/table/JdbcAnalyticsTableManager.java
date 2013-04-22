@@ -38,6 +38,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -161,6 +162,7 @@ public class JdbcAnalyticsTableManager
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
+            "left join _categorystructure cs on dv.categoryoptioncomboid=cs.categoryoptioncomboid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _periodstructure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
@@ -187,10 +189,13 @@ public class JdbcAnalyticsTableManager
         
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
+
+        Collection<DataElementCategory> categories =
+            categoryService.getDataDimensionDataElementCategories();
+
         Collection<OrganisationUnitLevel> levels =
             organisationUnitService.getOrganisationUnitLevels();
-
+        
         for ( DataElementGroupSet groupSet : dataElementGroupSets )
         {
             String[] col = { groupSet.getUid(), "character(11)", "degs." + groupSet.getUid() };
@@ -200,6 +205,12 @@ public class JdbcAnalyticsTableManager
         for ( OrganisationUnitGroupSet groupSet : orgUnitGroupSets )
         {
             String[] col = { groupSet.getUid(), "character(11)", "ougs." + groupSet.getUid() };
+            columns.add( col );
+        }
+        
+        for ( DataElementCategory category : categories )
+        {
+            String[] col = { category.getUid(), "character(11)", "cs." + category.getUid() };
             columns.add( col );
         }
         
