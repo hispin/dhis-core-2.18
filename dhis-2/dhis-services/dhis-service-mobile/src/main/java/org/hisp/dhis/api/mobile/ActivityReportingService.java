@@ -57,7 +57,7 @@ public interface ActivityReportingService
     public Patient findPatient( String name, int orgUnitId )
         throws NotAllowedException;
 
-    public String saveProgramStage( ProgramStage programStage, int patientId )
+    public String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
         throws NotAllowedException;
 
     public Patient enrollProgram( String enrollInfo )

@@ -465,7 +465,7 @@ public class ActivityReportingServiceImpl
 
     @Override
     public String saveProgramStage( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage,
-        int patientId )
+        int patientId, int orgUnitId )
         throws NotAllowedException
     {
         if ( mobileProgramStage.isSingleEvent() )
@@ -496,7 +496,14 @@ public class ActivityReportingServiceImpl
 
             programStageInstance.setCompleted( true );
 
-            programStageInstance.setOrganisationUnit( patientService.getPatient( patientId ).getOrganisationUnit() );
+            if( patientId != 0 )
+            {
+                programStageInstance.setOrganisationUnit( patientService.getPatient( patientId ).getOrganisationUnit() );
+            }
+            else
+            {
+                programStageInstance.setOrganisationUnit( orgUnitService.getOrganisationUnit( orgUnitId ) );
+            }
 
             programStageInstanceService.addProgramStageInstance( programStageInstance );
 
