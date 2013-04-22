@@ -48,7 +48,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 @Transactional
 public class DefaultDataElementCategoryService
@@ -163,6 +162,11 @@ public class DefaultDataElementCategoryService
                 return identifiers.contains( object.getId() );
             }
         } );
+    }
+    
+    public Collection<DataElementCategory> getDataElementCategoriesByUid( Collection<String> uids )
+    {
+        return dataElementCategoryStore.getByUid( uids );
     }
 
     public DataElementCategory getDataElementCategoryByName( String name )
