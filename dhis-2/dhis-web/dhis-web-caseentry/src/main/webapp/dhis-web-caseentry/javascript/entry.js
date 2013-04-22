@@ -730,7 +730,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                         var field = $('#' + fieldId);
 
                         if ( field ) {
-                            field.val( obj.values[key].value );
+                            field.val( decodeURI( obj.values[key].value ) );
                         }
                     });
                 }
@@ -809,7 +809,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                 var field = $('#' + fieldId);
 
                 if ( field ) {
-                    field.val( value.value );
+                    field.val( decodeURI( value.value ));
                 }
             } );
 
