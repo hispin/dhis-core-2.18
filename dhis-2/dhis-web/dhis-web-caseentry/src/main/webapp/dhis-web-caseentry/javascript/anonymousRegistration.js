@@ -647,9 +647,14 @@ function searchEvents( listAll ) {
         type: "POST",
         url: 'searchProgramStageInstances.action',
         data: params,
-        success: function ( html ) {
-            hideById( 'dataEntryInfor' );
-            setInnerHTML( 'listDiv', html );
+        dataType: 'text',
+        success: function ( data ) {
+            if ( data.indexOf( "<!DOCTYPE" ) != 0 ) {
+                hideById( 'dataEntryInfor' );
+                setInnerHTML( 'listDiv', data );
+            }
+
+            hideLoader();
         }
     } ).fail(function() {
         hideById( 'dataEntryInfor' );
