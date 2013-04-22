@@ -30,7 +30,7 @@
 
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>
 
-<form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" >
+<form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" class="inputForm">
   <input type="hidden" id="id" name="id" value="$dataElementCategoryCombo.id"/>
   
   <table id="detailsList">
@@ -42,7 +42,7 @@
     <tbody>
       <tr>
         <td style="width:120px"><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.displayName )"/></td>
+        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementCategoryCombo.displayName )"/></td>
       </tr>      
       <tr>
         <td><label>$i18n.getString( "skip_total_in_reports" )</label></td>

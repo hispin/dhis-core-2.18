@@ -64,6 +64,8 @@ public class DataElementCategory
 
     public static final String DEFAULT_NAME = "default";
 
+    private boolean dataDimension;
+    
     private Concept concept;
 
     @Scanned
@@ -174,7 +176,7 @@ public class DataElementCategory
     }
 
     // ------------------------------------------------------------------------
-    // Getters and setters
+    // Logic
     // ------------------------------------------------------------------------
 
     @Override
@@ -183,25 +185,27 @@ public class DataElementCategory
         return name != null && name.equals( DEFAULT_NAME );
     }
 
+    // ------------------------------------------------------------------------
+    // Getters and setters
+    // ------------------------------------------------------------------------
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isDataDimension()
+    {
+        return dataDimension;
+    }
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0)
-    public List<DataElementCategoryOption> getCategoryOptions()
-    {
-        return categoryOptions;
-    }
-
-    public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
-    {
-        this.categoryOptions = categoryOptions;
-    }
-
-    @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     @JsonInclude( JsonInclude.Include.NON_NULL )
     public Concept getConcept()
     {
@@ -211,6 +215,21 @@ public class DataElementCategory
     public void setConcept( Concept concept )
     {
         this.concept = concept;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryOption", namespace = DxfNamespaces.DXF_2_0 )
+    public List<DataElementCategoryOption> getCategoryOptions()
+    {
+        return categoryOptions;
+    }
+
+    public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
+    {
+        this.categoryOptions = categoryOptions;
     }
 
     @Override
