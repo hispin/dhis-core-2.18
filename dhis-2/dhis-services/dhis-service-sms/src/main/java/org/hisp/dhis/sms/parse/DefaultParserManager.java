@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import jxl.biff.DataValidation;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +42,7 @@ import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -713,6 +716,11 @@ public class DefaultParserManager
             dv.setValue( value );
             dv.setTimestamp( new java.util.Date() );
             dv.setStoredBy( storedBy );
+
+            if ( ValidationUtils.dataValueIsValid( value, dv.getDataElement() ) != null )
+            {
+                return; // not a valid value for data element
+            }
 
             if ( newDataValue )
             {
