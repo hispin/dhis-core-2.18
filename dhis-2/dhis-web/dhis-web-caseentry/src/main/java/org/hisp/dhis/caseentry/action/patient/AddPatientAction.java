@@ -193,7 +193,7 @@ public class AddPatientAction
         }
 
         Date _birthDate = new Date();
-        if ( verified != null )
+        if ( birthDate != null || age != null )
         {
             verified = (verified == null) ? false : verified;
 
