@@ -121,7 +121,7 @@ function programAttrOnClick()
 function getRequiredFields()
 {
 	var requiredFields = {};
-	if( getFieldValue("disableRegistrationFields")=='false' )
+	if( getFieldValue("disableRegistrationFields")!='true' )
 	{
 		requiredFields['fixedattributeid=registrationDate'] = i18n_registration_date;
 		requiredFields['fixedattributeid=fullName'] = i18n_full_name;
@@ -210,7 +210,6 @@ function validateFormOnclick()
 
 function validateForm( checkViolate )
 {
-	var result = false;
 	requiredFields = getRequiredFields();
 	
 	if( Object.keys(requiredFields).length > 0 )
@@ -218,7 +217,6 @@ function validateForm( checkViolate )
 		if ( byId('autoSave').checked )
 		{
 			setHeaderMessage( i18n_save_unsuccess_please_insert_all_required_fields );
-			return;
 		}
 		else
 		{
@@ -240,20 +238,11 @@ function validateForm( checkViolate )
 			});
 			
 		}
-		
 		return false;
 	}
 	else
 	{
-		setFieldValue('requiredField','everything_is_ok');
-		setInnerHTML( 'designTextarea' , jQuery("#designTextarea").ckeditorGet().getData() );
-		if(isSave='true'){
-			autoSavePatientRegistrationForm();
-		}
-		else
-		{
-			byId('saveDataEntryForm').submit();
-		}
+		return true;
 	}
 }
 
@@ -382,6 +371,7 @@ function validateDataEntryForm()
 	if( name =='' || name.length<4 || name.length > 150 )
 	{
 		setHeaderDelayMessage( i18n_enter_a_name );
+		return;
 	}
 	else if ( !validateForm() )
 	{
@@ -389,7 +379,7 @@ function validateDataEntryForm()
 	}
 	else
 	{
-		$.post( 'validateDataEntryForm.action',
+		$.postUTF8( 'validateDataEntryForm.action',
 		{
 			name: getFieldValue('name'),
 			dataEntryFormId: getFieldValue('dataEntryFormId')

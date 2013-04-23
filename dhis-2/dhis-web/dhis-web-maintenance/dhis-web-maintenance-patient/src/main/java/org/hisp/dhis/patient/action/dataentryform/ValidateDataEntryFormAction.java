@@ -98,7 +98,7 @@ public class ValidateDataEntryFormAction
 
         if ( match != null && (dataEntryFormId == null || match.getId() != dataEntryFormId.intValue()) )
         {
-            message = i18n.getString( "duplicate_names" );
+            message = i18n.getString( "name_exists" );
 
             return ERROR;
         }
