@@ -31,7 +31,7 @@ function initializePrograms() {
                 });
 
                 promise = promise.pipe(function() {
-                    loadOptionSets( data.metaData.optionSets, true );
+                    loadOptionSets( data.metaData.optionSets, data.metaData.usernames );
                 });
 
                 deferred.resolve();
