@@ -748,6 +748,11 @@ public class DefaultChartService
     {
         return chartStore.getByUid( uid );
     }
+    
+    public Chart getChartNoAcl( String uid )
+    {
+        return chartStore.getByUidNoAcl( uid );
+    }
 
     public void deleteChart( Chart chart )
     {
