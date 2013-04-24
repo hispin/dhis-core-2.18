@@ -4,8 +4,11 @@ jQuery( document ).ready( function()
 	validation( 'addProgramForm', function( form ){ 
 		if( duplicate==true) 
 			return false;
-		else
+		else{
+			enable('dateOfEnrollmentDescription');
+			enable('dateOfIncidentDescription');
 			form.submit();
+		}
 	}, function(){
 		duplicate = false;
 		var COLOR_RED = '#ff8a8a';
@@ -39,13 +42,27 @@ jQuery( document ).ready( function()
 		jQuery(".dateToCompare").each( function( i, item ){ 
 			datesToCompare.append( "<option value='" + item.value + "' selected='true'>" +item.value+"</option>" );
 		});
+		
+		var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
+		selectedPropertyIds.empty();
+		var personDisplayNames = jQuery( "#personDisplayNames" );
+		personDisplayNames.empty();
+		
+		if(getFieldValue('type')!=3){
+			jQuery("#selectedList").find("tr").each( function( i, item ){ 
+				
+				selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+				
+				var displayed = jQuery( item ).find( "input[name='displayed']:first");
+				var checked = displayed.attr('checked') ? true : false;
+				personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			});
+		}
 	});
 	
 	checkValueIsExist( "name", "validateProgram.action" );	
 });
 </script>
-
-<script type="text/javascript" src="javascript/addProgramForm.js"></script>
 
 <h3>$i18n.getString( "create_new_program" )</h3>
 									
