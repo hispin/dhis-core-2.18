@@ -11,8 +11,7 @@
 	{
 		validation( 'saveDataEntryForm', function( form )
 		{
-			setInnerHTML( 'designTextarea' , jQuery("#designTextarea").ckeditorGet().getData() );
-			form.submit();
+			validateDataEntryForm(form);
 		} );
 			
 		jQuery('#designTextarea').ckeditor();
@@ -50,7 +49,7 @@
 }
 </style>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="post" onsubmit="return validateForm();">
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="post">
 
 <input type="hidden" name="programId" id="programId" value="$!program.id"/>
 <input type="hidden" name="disableRegistrationFields" id="disableRegistrationFields" value="$!program.disableRegistrationFields"/>
@@ -82,7 +81,6 @@
 		<tr>
 			<th>
 				$i18n.getString( "design_patient_registration_form" )
-				<input type='hidden' id='requiredField' name='requiredField' class="{validate:{required:true}}" title="$i18n.getString('please_insert_all_required_fields')">
 			</th>
 		</tr>
 		<tr>
@@ -106,7 +104,7 @@
 		    <button type="button" id="propertiesButton" onclick="openPropertiesSelector()"/>$i18n.getString( 'insert_properties' )</button>
 			<button type="button" id="insertImagesButton">$i18n.getString( 'insert_images' )</button>
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-		    <button type="button" id="deleteButton" #if($!registrationForm.dataEntryForm) style='display:none;' #else onclick="deleteRegistrationForm( $registrationForm.id, '$registrationForm.dataEntryForm.name' )" #end />$i18n.getString( 'delete_this_form' )</button>
+		    <button type="button" id="deleteButton" #if($!registrationForm.dataEntryForm) style='display:none;' #end onclick="deleteRegistrationFormFromView();"  />$i18n.getString( 'delete_this_form' )</button>
 			<input type="checkbox" id="autoSave" name="autoSave" value='$!autoSave' #if($autoSave && $autoSave=="true") checked #end onchange="setAutoSaveRegistrationSetting(this.checked)" />$i18n.getString( 'auto_save_patient_registration_forms' )
         </td>		
     </tr>
