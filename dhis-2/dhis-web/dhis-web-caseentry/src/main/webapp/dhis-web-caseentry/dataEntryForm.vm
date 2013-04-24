@@ -20,7 +20,7 @@
 <input type='hidden' name='remindCompleted' id='remindCompleted'>
 
 <div id='entryForm' class='hidden'>
-	<table style="width:600px;margin-top:-9px" class="listTable">
+	<table style="width:600px;margin-top:-20px" class="listTable">
 
 		#if($programStage.captureCoordinates=='true')
 		<tr>
