@@ -23,6 +23,7 @@
 			  </tr>
 			</thead>
 			  <tbody class="list">
+				#set($hasCommonForm = 'false')
 				#foreach( $registrationForm in $registrationForms )
 				  <tr id="tr${registrationForm.program.id}">
 					<td>
@@ -30,6 +31,7 @@
 							$encoder.htmlEncode( $registrationForm.program.name )
 						#else
 							$i18n.getString('all')
+							#set($hasCommonForm = 'true')
 						#end	
 					</td>  
 					<td>
@@ -44,14 +46,24 @@
 				  </tr>
 				#end
 				#foreach($program in $programs)
-					<tr id="tr${registrationForm.id}">
+				<tr id="tr${registrationForm.id}">
 					<td>$encoder.htmlEncode( $program.name )</td>  
 					<td>[$i18n.getString('none')]</td>   					
 					<td style="text-align:center">
 					  <a href="javascript:addNewForm($program.id)" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/add.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
 					  <img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>
-				  </tr>
+				</tr>
+				#end
+				#if($hasCommonForm=='false')
+				 <tr id="tr${registrationForm.id}">
+					<td>$i18n.getString('all')</td>  
+					<td>[$i18n.getString('none')]</td>   					
+					<td style="text-align:center">
+					  <a href="javascript:addNewForm('')" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/add.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
+					  <img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
+					</td>
+				</tr>
 				#end
 			  </tbody>
         </table>
