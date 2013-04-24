@@ -57,6 +57,9 @@ function initializeOfflineData() {
 
 function showOfflineEvents() {
     DAO.offlineData.fetchAll(function(store, arr) {
+        var orgUnitId = selection.getSelected();
+        var programId = $('#programId').val();
+
         var target = $( '#offlineEventList' );
         target.children().remove();
 
@@ -65,10 +68,13 @@ function showOfflineEvents() {
 
             $.each( arr, function ( idx, item ) {
                 var event = item.executionDate;
-                event.index = idx + 1;
-                var tmpl = _.template( template.html() );
-                var html = tmpl(event);
-                target.append( html );
+
+                if ( event.organisationUnitId == orgUnitId && event.programId == programId ) {
+                    event.index = idx + 1;
+                    var tmpl = _.template( template.html() );
+                    var html = tmpl( event );
+                    target.append( html );
+                }
             } );
 
             $( "#offlineListDiv table" ).removeClass( 'hidden' );
@@ -276,6 +282,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
 
         updateProgramList( programs );
     } );
+
+    showOfflineEvents();
 }
 
 function updateProgramList( arr ) {
@@ -366,6 +374,8 @@ function getDataElements() {
         } ).fail(function() {
             enable( 'addBtn' );
         });
+
+    showOfflineEvents();
 }
 
 function dataElementOnChange( this_ ) {
