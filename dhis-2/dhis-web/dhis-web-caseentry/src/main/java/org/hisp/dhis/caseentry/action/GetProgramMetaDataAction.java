@@ -28,6 +28,7 @@ package org.hisp.dhis.caseentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -94,6 +95,13 @@ public class GetProgramMetaDataAction implements Action
         return optionSets;
     }
 
+    private Boolean usernames = false;
+
+    public boolean getUsernames()
+    {
+        return usernames;
+    }
+
     // -------------------------------------------------------------------------
     // Action Impl
     // -------------------------------------------------------------------------
@@ -130,6 +138,11 @@ public class GetProgramMetaDataAction implements Action
                 if ( programStageDataElement.getDataElement().getOptionSet() != null )
                 {
                     optionSets.add( programStageDataElement.getDataElement().getUid() );
+                }
+
+                if ( programStageDataElement.getDataElement().getType().equals( DataElement.VALUE_TYPE_USER_NAME ) )
+                {
+                    usernames = true;
                 }
             }
         }

@@ -144,7 +144,8 @@ public class GetProgramStageInstanceAction implements Action
 
     private void populateCoordinates()
     {
-        if ( programStageInstance.getProgramStage().getCaptureCoordinates() )
+        if ( programStageInstance != null && programStageInstance.getProgramStage() != null
+            && programStageInstance.getProgramStage().getCaptureCoordinates() )
         {
             longitude = ValidationUtils.getLongitude( programStageInstance.getCoordinates() );
             latitude = ValidationUtils.getLatitude( programStageInstance.getCoordinates() );
