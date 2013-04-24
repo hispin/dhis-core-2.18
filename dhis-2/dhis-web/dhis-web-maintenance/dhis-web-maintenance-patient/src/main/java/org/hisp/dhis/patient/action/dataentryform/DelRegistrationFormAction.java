@@ -78,9 +78,17 @@ public class DelRegistrationFormAction
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( id );
+        PatientRegistrationForm registrationForm = null;
+        if ( id != null )
+        {
+            Program program = programService.getProgram( id );
 
-        PatientRegistrationForm registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
+            registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
+        }
+        else
+        {
+            registrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
+        }
 
         patientRegistrationFormService.deletePatientRegistrationForm( registrationForm );
 
