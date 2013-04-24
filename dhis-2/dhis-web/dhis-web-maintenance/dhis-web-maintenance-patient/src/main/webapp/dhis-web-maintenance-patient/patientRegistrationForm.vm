@@ -37,7 +37,7 @@
 					</td>   					
 					<td style="text-align:center">
 					  <a href="javascript:updateNewForm($registrationForm.id, '$!registrationForm.program.id')" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-					  <a href="javascript:removeRegistrationForm( '$registrationForm.program.id', '$encoder.jsEncode( $registrationForm.program.name )')" title="$i18n.getString( "remove" )"><img id='active_$registrationForm.program.id' src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					  <a href="javascript:removeRegistrationForm( '$!registrationForm.program.id', '$!encoder.jsEncode( $registrationForm.program.name )')" title="$i18n.getString( "remove" )"><img id='active_$registrationForm.program.id' src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					  <img id='define_$registrationForm.program.id' style='display:none;' src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>
 					
