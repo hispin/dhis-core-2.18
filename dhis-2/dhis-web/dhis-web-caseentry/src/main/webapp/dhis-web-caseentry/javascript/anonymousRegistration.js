@@ -65,6 +65,7 @@ function showOfflineEvents() {
 
         if ( arr.length > 0 ) {
             var template = $( '#offline-event-template' );
+            var matched = false;
 
             $.each( arr, function ( idx, item ) {
                 var event = item.executionDate;
@@ -74,10 +75,15 @@ function showOfflineEvents() {
                     var tmpl = _.template( template.html() );
                     var html = tmpl( event );
                     target.append( html );
+                    matched = true;
                 }
             } );
 
-            $( "#offlineListDiv table" ).removeClass( 'hidden' );
+            if ( matched ) {
+                $( "#offlineListDiv table" ).removeClass( 'hidden' );
+            } else {
+                $( "#offlineListDiv table" ).addClass( 'hidden' );
+            }
         } else {
             $( "#offlineListDiv table" ).addClass( 'hidden' );
         }
