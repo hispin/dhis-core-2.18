@@ -1,3 +1,6 @@
+
+var MAX_DROPDOWN_DISPLAYED = 30;
+
 //------------------------------------------------------------------------------
 // Save value
 //------------------------------------------------------------------------------
@@ -903,8 +906,6 @@ function runValidation()
 		});
 }
 
-var MAX_OPTIONS_DISPLAYED = 30;
-
 function searchOptionSet( uid, query, success ) {
     if(window.DAO !== undefined && window.DAO.optionSets !== undefined ) {
         DAO.optionSets.fetch(uid, function(store, arr) {
@@ -913,7 +914,7 @@ function searchOptionSet( uid, query, success ) {
                 var options = [];
 
                 if(query == null || query == "") {
-                    options = obj.optionSet.options.slice(0, MAX_OPTIONS_DISPLAYED-1);
+                    options = obj.optionSet.options.slice(0, MAX_DROPDOWN_DISPLAYED-1);
                 } else {
                     query = query.toLowerCase();
 
@@ -1032,19 +1033,54 @@ function autocompletedField( idField )
 }
 
 function searchUsername( query, success ) {
-    $.ajax({
+    if(window.DAO !== undefined && window.DAO.usernames !== undefined ) {
+        DAO.usernames.fetch('usernames', function(store, arr) {
+            if ( arr.length > 0 ) {
+                var obj = arr[0];
+                var usernames = [];
+
+                if(query == null || query == "") {
+                    delete obj['key'];
+                    usernames = obj.slice(0, MAX_DROPDOWN_DISPLAYED-1);
+                } else {
+                    query = query.toLowerCase();
+
+                    _.each(obj, function(item, idx) {
+                        if ( item.toLowerCase().indexOf( query ) != -1 ) {
+                            usernames.push(item);
+                        }
+                    });
+                }
+
+                success( $.map( usernames, function ( item ) {
+                    return {
+                        label: item,
+                        id: item
+                    };
+                } ) );
+            } else {
+                getUsername( query, success );
+            }
+        } );
+    } else {
+        getUsername( query, success );
+    }
+}
+
+function getUsername( query, success ) {
+    return $.ajax( {
         url: "getUsernameList.action?query=" + query,
         dataType: "json",
         cache: true,
-        success: function(data) {
-            success($.map(data.usernames, function(item) {
+        success: function ( data ) {
+            success( $.map( data.usernames, function ( item ) {
                 return {
                     label: item.u,
                     id: item.u
                 };
-            }));
+            } ) );
         }
-    });
+    } );
 }
 
 function autocompletedUsernameField( idField )

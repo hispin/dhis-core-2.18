@@ -1137,4 +1137,8 @@
   <bean id="org.hisp.dhis.caseentry.action.GetOptionSetAction"
     class="org.hisp.dhis.caseentry.action.GetOptionSetAction" scope="prototype">
   </bean>
+
+  <bean id="org.hisp.dhis.caseentry.action.GetUsernamesAction"
+    class="org.hisp.dhis.caseentry.action.GetUsernamesAction" scope="prototype">
+  </bean>
 </beans>

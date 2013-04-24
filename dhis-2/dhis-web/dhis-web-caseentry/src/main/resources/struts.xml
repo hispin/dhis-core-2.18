@@ -175,6 +175,10 @@
       <result name="success" type="velocity-json">/dhis-web-caseentry/jsonOptionSet.vm</result>
     </action>
 
+    <action name="getUsernames" class="org.hisp.dhis.caseentry.action.GetUsernamesAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonUsers.vm</result>
+    </action>
+
     <action name="removeCurrentEncounter"
       class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction">
       <result name="success" type="velocity-json">

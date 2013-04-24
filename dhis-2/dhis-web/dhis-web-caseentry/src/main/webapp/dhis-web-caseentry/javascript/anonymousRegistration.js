@@ -3,6 +3,7 @@ var DAO = DAO || {};
 var PROGRAMS_STORE = 'anonymousPrograms';
 var PROGRAM_STAGES_STORE = 'anonymousProgramStages';
 var OPTION_SET_STORE = 'optionSets';
+var USERNAME_STORE = 'usernames';
 var OFFLINE_DATA_STORE = 'anonymousOfflineData';
 
 function initalizeProgramStages() {
@@ -17,8 +18,6 @@ function initializePrograms() {
             var keys = _.keys( data.metaData.programs );
             var objs = _.values( data.metaData.programs );
 
-            loadOptionSets( data.metaData.optionSets );
-
             DAO.programs.addAll( keys, objs, function ( store ) {
                 var deferred = $.Deferred();
                 var promise = deferred.promise();
@@ -31,16 +30,21 @@ function initializePrograms() {
                     });
                 });
 
+                promise = promise.pipe(function() {
+                    loadOptionSets( data.metaData.optionSets, true );
+                });
+
                 deferred.resolve();
 
                 selection.setListenerFunction( organisationUnitSelected );
                 $( document ).trigger('dhis2.anonymous.programsInitialized');
             } );
         } ).fail( function () {
+            DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function() {} );
+            DAO.usernames = new dhis2.storage.Store( {name: USERNAME_STORE, adapter: 'dom-ss'}, function() {} );
+
             selection.setListenerFunction( organisationUnitSelected );
             $( document ).trigger('dhis2.anonymous.programsInitialized');
-
-            DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function() {} );
         } );
     } );
 }
@@ -144,10 +148,10 @@ $( document ).ready( function () {
     } );
 
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
-        $( document ).one('dhis2.anonymous.programStagesInitialized', initializePrograms);
-        $( document ).one('dhis2.anonymous.programsInitialized', showOfflineEvents);
+        $( document ).one( 'dhis2.anonymous.programStagesInitialized', initializePrograms );
+        $( document ).one( 'dhis2.anonymous.programsInitialized', showOfflineEvents );
         $( document ).one( 'dhis2.anonymous.checkOfflineEvents', checkOfflineData );
-        $( document ).one( 'dhis2.anonymous.checkOfflineData', function() {
+        $( document ).one( 'dhis2.anonymous.checkOfflineData', function () {
             dhis2.availability.startAvailabilityCheck();
             selection.responseReceived();
         } );
@@ -997,21 +1001,35 @@ function loadProgramStage( programStageId, programStageInstanceId, organisationU
     });
 }
 
-function loadOptionSets(uids, success ) {
+function loadOptionSets(uids, usernames, success ) {
     DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function ( store ) {
-        var deferred = $.Deferred();
-        var promise = deferred.promise();
+        DAO.usernames = new dhis2.storage.Store( {name: USERNAME_STORE, adapter: 'dom-ss'}, function ( store ) {
+            var deferred = $.Deferred();
+            var promise = deferred.promise();
 
-        _.each( uids, function(item, idx) {
-            promise = promise.pipe($.ajax({
-                url: 'getOptionSet.action?dataElementUid=' + item,
-                dataType: 'json',
-                success: function(json) {
-                    DAO.optionSets.add(item, json);
-                }
-            }));
+            _.each( uids, function(item, idx) {
+                promise = promise.pipe( $.ajax( {
+                    url: 'getOptionSet.action?dataElementUid=' + item,
+                    dataType: 'json',
+                    success: function ( json ) {
+                        DAO.optionSets.add( item, json );
+                        if ( success && typeof success == 'function' ) success( json );
+                    }
+                } ) );
+            });
+
+            if ( usernames ) {
+                promise = promise.pipe( $.ajax( {
+                    url: 'getUsernames.action',
+                    dataType: 'json',
+                    success: function ( json ) {
+                        DAO.usernames.add( 'usernames', json.usernames );
+                        if ( success && typeof success == 'function' ) success( json );
+                    }
+                } ) );
+            }
+
+            deferred.resolve();
         });
-
-        deferred.resolve();
     } );
 }

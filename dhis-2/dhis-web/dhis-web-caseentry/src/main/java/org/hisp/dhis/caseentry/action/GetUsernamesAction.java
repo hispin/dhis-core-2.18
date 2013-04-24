@@ -28,39 +28,35 @@ package org.hisp.dhis.caseentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.option.OptionSet;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GetOptionSetAction implements Action
+public class GetUsernamesAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     @Autowired
-    private DataElementService dataElementService;
+    private UserService userService;
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String dataElementUid;
+    private SortedSet<String> usernames = new TreeSet<String>();
 
-    public void setDataElementUid( String dataElementUid )
+    public Set<String> getUsernames()
     {
-        this.dataElementUid = dataElementUid;
-    }
-
-    private OptionSet optionSet;
-
-    public OptionSet getOptionSet()
-    {
-        return optionSet;
+        return usernames;
     }
 
     // -------------------------------------------------------------------------
@@ -70,19 +66,10 @@ public class GetOptionSetAction implements Action
     @Override
     public String execute() throws Exception
     {
-        if ( dataElementUid == null )
+        for ( User user : userService.getAllUsers() )
         {
-            return INPUT;
+            usernames.add( user.getUsername() );
         }
-
-        DataElement dataElement = dataElementService.getDataElement( dataElementUid );
-
-        if ( dataElement == null || dataElement.getOptionSet() == null )
-        {
-            return ERROR;
-        }
-
-        optionSet = dataElement.getOptionSet();
 
         return SUCCESS;
     }
