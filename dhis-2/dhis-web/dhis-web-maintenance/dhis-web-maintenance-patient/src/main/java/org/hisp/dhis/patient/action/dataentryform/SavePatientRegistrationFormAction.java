@@ -76,7 +76,7 @@ public class SavePatientRegistrationFormAction
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-
+    
     private String name;
 
     public void setName( String name )

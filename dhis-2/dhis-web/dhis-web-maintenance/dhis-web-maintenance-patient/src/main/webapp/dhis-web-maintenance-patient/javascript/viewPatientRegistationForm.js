@@ -181,7 +181,6 @@ function getRequiredFields()
 
 function validateFormOnclick()
 {
-	setFieldValue('requiredField','');
 	var requiredFields = getRequiredFields();
 	var violate = "";
 	if( Object.keys(requiredFields).length > 0 )
@@ -220,7 +219,6 @@ function validateForm( checkViolate )
 		}
 		else
 		{
-			setFieldValue('requiredField','');
 			var violate = '<h3>' + i18n_please_insert_all_required_fields + '<h3>';
 			for (var idx in requiredFields){
 				violate += " - " + requiredFields[idx] + '<br>';
@@ -365,17 +363,17 @@ function validateRegistrationFormTimeout()
 	timeOut = window.setTimeout( "validateRegistrationFormTimeout();", interval );
 }
 
-function validateDataEntryForm()
+function validateDataEntryForm(form)
 {
 	var name = getFieldValue('name');
 	if( name =='' || name.length<4 || name.length > 150 )
 	{
 		setHeaderDelayMessage( i18n_enter_a_name );
-		return;
+		return false;
 	}
 	else if ( !validateForm() )
 	{
-		return;
+		return false;
 	}
 	else
 	{
@@ -388,7 +386,14 @@ function validateDataEntryForm()
 		{
 			if ( json.response == 'success' )
 			{
-				autoSavePatientRegistrationForm();
+				if( form != undefined)
+				{
+					form.submit();
+				}
+				else
+				{
+					autoSavePatientRegistrationForm();
+				}
 			}
 			else if ( json.response = 'error' )
 			{
@@ -413,4 +418,13 @@ function autoSavePatientRegistrationForm()
 		showById('deleteButton');
 		setHeaderDelayMessage( i18n_save_success ); 
 	} );
+}
+
+function deleteRegistrationFormFromView()
+{
+	var result = window.confirm( i18n_confirm_delete + '\n\n' + name );
+	if ( result )
+	{
+		window.location.href = 'delRegistrationEntryFormAction.action?id=' + id;
+	}
 }
