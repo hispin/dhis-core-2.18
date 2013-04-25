@@ -153,6 +153,10 @@ where userinfoid not in (
   select userinfoid
   from usersetting
   where name='dashboardConfig')
+  
+-- Reset password to "district" for account with given username
+
+update users set password='48e8f1207baef1ef7fe478a57d19f2e5' where username='admin';
 
 -- Insert random org unit codes
 
