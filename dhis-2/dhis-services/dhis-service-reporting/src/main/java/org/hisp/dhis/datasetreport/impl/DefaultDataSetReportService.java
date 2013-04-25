@@ -144,6 +144,11 @@ public class DefaultDataSetReportService
 
         for ( Section section : sections )
         {
+            if ( !section.hasDataElements() || section.getCategoryCombo() == null )
+            {
+                continue;
+            }
+            
             Grid grid = new ListGrid().setTitle( section.getName() ).
                 setSubtitle( unit.getName() + SPACE + format.formatPeriod( period ) );
 
