@@ -115,7 +115,6 @@
     <tr id="tr<%= programStageInstanceId %>" class="listRow">
         <td><%= index %></td>
         <td><%= executionDate %></td>
-        <td><%= organisationUnit %></td>
 
         <td align="right" style="padding-right:20px;">
             <% if( !completed ) { %>
@@ -124,6 +123,12 @@
             <a href="javascript:showUpdateEvent( '<%= programStageInstanceId %>' )" title="Data entry"><img src="images/data_entry.png" alt="Data entry"></a>
             <a href="javascript:removeEvent( '<%= programStageInstanceId %>' )" title="Remove"><img src="../images/delete.png" alt="Remove"></a>
         </td>
+    </tr>
+</script>
+
+<script id="no-offline-event-template" type="text/template">
+    <tr class="listRow">
+        <td colspan="3">No offline events</td>
     </tr>
 </script>
 
@@ -138,7 +143,6 @@
         <tr>
             <th>#</th>
             <th>Report date</th>
-            <th>Organisation Unit</th>
             <th style="width:100px">Operations</th>
         </tr>
         </thead>
