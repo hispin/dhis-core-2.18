@@ -142,9 +142,11 @@
 	<!-- ATTRIBUTES IN GROUPS -->
 	
 	#foreach ($attributeGroup in $attributeGroups )
-		<tr><td>&nbsp;</td></tr>
-		<tr><th colspan="2" class="heading-column">$attributeGroup.displayName</th></tr>
 		#set($attributes = $attributeGroupsMap.get($attributeGroup.id))
+		#if($!attributes || $attributes.size() > 0)
+			<tr><td>&nbsp;</td></tr>
+			<tr><th colspan="2" class="heading-column">$attributeGroup.displayName</th></tr>
+		#end
 		#foreach($attribute in $attributes )
 			#if( $attribute )
 				#set($value = "")
@@ -185,8 +187,10 @@
 
 	<!-- ATTRIBUTES NOT IN GROUPS -->
 
-	#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
+	#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 
+		#if($!noGroupAttributes || $noGroupAttributes.size() > 0)
 		<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
+		#end
 		#foreach($attribute in $noGroupAttributes )
 		#if( $!attribute && $attribute.program )
 		#elseif( $!attribute )
