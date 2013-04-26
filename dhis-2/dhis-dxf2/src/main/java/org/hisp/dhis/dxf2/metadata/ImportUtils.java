@@ -60,7 +60,6 @@ public class ImportUtils
             {
                 return identifiableObject.getCode();
             }
-
         }
 
         return object.getClass().getName();
