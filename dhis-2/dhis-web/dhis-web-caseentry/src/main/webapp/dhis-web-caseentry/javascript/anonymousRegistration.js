@@ -55,7 +55,7 @@ function initializeOfflineData() {
     });
 }
 
-function showOfflineEvents() {
+function updateOfflineEvents() {
     DAO.offlineData.fetchAll(function(store, arr) {
         var orgUnitId = selection.getSelected();
         var programId = $('#programId').val();
@@ -63,8 +63,13 @@ function showOfflineEvents() {
         var target = $( '#offlineEventList' );
         target.children().remove();
 
+        var no_offline_template = $( '#no-offline-event-template' );
+        var no_offline_template_compiled = _.template( no_offline_template.html() );
+
+        var offline_template = $( '#offline-event-template' );
+        var offline_template_compiled = _.template( offline_template.html() );
+
         if ( arr.length > 0 ) {
-            var template = $( '#offline-event-template' );
             var matched = false;
 
             $.each( arr, function ( idx, item ) {
@@ -72,24 +77,29 @@ function showOfflineEvents() {
 
                 if ( event.organisationUnitId == orgUnitId && event.programId == programId ) {
                     event.index = idx + 1;
-                    var tmpl = _.template( template.html() );
-                    var html = tmpl( event );
+                    var html = offline_template_compiled( event );
                     target.append( html );
                     matched = true;
                 }
             } );
 
-            if ( matched ) {
-                $( "#offlineListDiv table" ).removeClass( 'hidden' );
-            } else {
-                $( "#offlineListDiv table" ).addClass( 'hidden' );
+            if ( !matched ) {
+                target.append( no_offline_template_compiled() );
             }
         } else {
-            $( "#offlineListDiv table" ).addClass( 'hidden' );
+            target.append( no_offline_template_compiled() );
         }
 
         $( document ).trigger('dhis2.anonymous.checkOfflineEvents');
     });
+}
+
+function showOfflineEvents() {
+    $( "#offlineListDiv table" ).removeClass( 'hidden' );
+}
+
+function hideOfflineEvents() {
+    $( "#offlineListDiv table" ).addClass( 'hidden' );
 }
 
 var haveLocalData = false;
@@ -111,7 +121,7 @@ function uploadOfflineData( item ) {
     } ).done(function(json) {
         if ( json.response == 'success' ) {
             DAO.offlineData.remove( item.key, function ( store ) {
-                showOfflineEvents();
+                updateOfflineEvents();
                 searchEvents( eval( getFieldValue( 'listAll' ) ) );
             } );
         }
@@ -161,7 +171,7 @@ $( document ).ready( function () {
 
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
         $( document ).one( 'dhis2.anonymous.programStagesInitialized', initializePrograms );
-        $( document ).one( 'dhis2.anonymous.programsInitialized', showOfflineEvents );
+        $( document ).one( 'dhis2.anonymous.programsInitialized', updateOfflineEvents );
         $( document ).one( 'dhis2.anonymous.checkOfflineEvents', checkOfflineData );
         $( document ).one( 'dhis2.anonymous.checkOfflineData', function () {
             dhis2.availability.startAvailabilityCheck();
@@ -191,6 +201,8 @@ $( document ).ready( function () {
                 $('#commentInput').removeAttr('disabled');
                 $('#validateBtn').removeAttr('disabled');
             });
+
+            hideOfflineEvents();
         }
         else {
             var form = [
@@ -205,6 +217,8 @@ $( document ).ready( function () {
 
             setHeaderMessage( form );
             ajax_login();
+
+            showOfflineEvents();
         }
     } );
 
@@ -213,6 +227,7 @@ $( document ).ready( function () {
         $('#commentInput').attr('disabled', true);
         $('#validateBtn').attr('disabled', true);
         disableFiltering();
+        showOfflineEvents();
     } );
 } );
 
@@ -289,7 +304,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
         updateProgramList( programs );
     } );
 
-    showOfflineEvents();
+    updateOfflineEvents();
 }
 
 function updateProgramList( arr ) {
@@ -353,6 +368,7 @@ function getDataElements() {
         enable( 'programId' );
         hideById( 'listDiv' );
         setFieldValue( 'searchText' );
+        updateOfflineEvents();
         return;
     }
 
@@ -381,7 +397,7 @@ function getDataElements() {
             enable( 'addBtn' );
         });
 
-    showOfflineEvents();
+    updateOfflineEvents();
 }
 
 function dataElementOnChange( this_ ) {
@@ -733,7 +749,7 @@ function removeEvent( programStageId ) {
         if ( confirm( i18n_comfirm_delete_event ) ) {
             DAO.offlineData.remove(programStageId, function(store) {
                 // redisplay list
-                showOfflineEvents();
+                updateOfflineEvents();
             });
         }
     } else {
@@ -766,7 +782,7 @@ function backEventList() {
     showById( 'listDiv' );
     showById( 'offlineListDiv' );
 
-    showOfflineEvents();
+    updateOfflineEvents();
     searchEvents( eval( getFieldValue( 'listAll' ) ) );
 }
 
