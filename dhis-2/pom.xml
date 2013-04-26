@@ -687,7 +687,7 @@
       <dependency>
         <groupId>net.sf.jasperreports</groupId>
         <artifactId>jasperreports</artifactId>
-        <version>4.7.0</version>
+        <version>4.7.1</version>
         <exclusions>
           <exclusion>
             <groupId>xalan</groupId>
@@ -698,6 +698,11 @@
             <artifactId>xercesImpl</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+      	<groupId>net.sf.jasperreports</groupId>
+      	<artifactId>jasperreports-fonts</artifactId>
+      	<version>4.0.0</version>
       </dependency>
       <dependency>
         <groupId>jfree</groupId>

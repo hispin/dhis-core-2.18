@@ -27,7 +27,7 @@ package org.hisp.dhis.help;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.StreamUtils.ENCODING_UTF;
+import static org.hisp.dhis.system.util.StreamUtils.ENCODING_UTF8;
 
 import java.io.OutputStream;
 
@@ -38,7 +38,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.hisp.dhis.help.HelpManager;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -55,7 +54,7 @@ public class DefaultHelpManager
     {
         try
         {
-            Source source = new StreamSource( new ClassPathResource( "help_content.xml" ).getInputStream(), ENCODING_UTF );
+            Source source = new StreamSource( new ClassPathResource( "help_content.xml" ).getInputStream(), ENCODING_UTF8 );
             
             Result result = new StreamResult( out );
             
@@ -75,7 +74,7 @@ public class DefaultHelpManager
     {
         try
         {
-            Source source = new StreamSource( new ClassPathResource( "help_content.xml" ).getInputStream(), ENCODING_UTF );
+            Source source = new StreamSource( new ClassPathResource( "help_content.xml" ).getInputStream(), ENCODING_UTF8 );
             
             Result result = new StreamResult( out );
             
@@ -94,7 +93,7 @@ public class DefaultHelpManager
     private Transformer getTransformer( String stylesheetName )
         throws Exception
     {
-        Source stylesheet = new StreamSource( new ClassPathResource( stylesheetName ).getInputStream(), ENCODING_UTF );
+        Source stylesheet = new StreamSource( new ClassPathResource( stylesheetName ).getInputStream(), ENCODING_UTF8 );
         
         return TransformerFactory.newInstance().newTransformer( stylesheet );
     }
