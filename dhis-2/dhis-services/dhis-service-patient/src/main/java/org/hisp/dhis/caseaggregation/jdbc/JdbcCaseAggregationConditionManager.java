@@ -288,23 +288,18 @@ public class JdbcCaseAggregationConditionManager
                 String caseOperator = rs.getString( "caseoperator" );
                 int deSumId = rs.getInt( "desumid" );
 
-                boolean flag = hasOrgunitProgramStageCompleted( caseExpression );
+                Collection<Integer> _orgunitIds = getServiceOrgunit(
+                    DateUtils.getMediumDateString( period.getStartDate() ),
+                    DateUtils.getMediumDateString( period.getEndDate() ) );
 
-                if ( !flag )
+                if ( orgunitIds == null )
                 {
-                    Collection<Integer> _orgunitIds = getServiceOrgunit(
-                        DateUtils.getMediumDateString( period.getStartDate() ),
-                        DateUtils.getMediumDateString( period.getEndDate() ) );
-
-                    if ( orgunitIds == null )
-                    {
-                        orgunitIds = new HashSet<Integer>();
-                        orgunitIds.addAll( _orgunitIds );
-                    }
-                    else
-                    {
-                        orgunitIds.retainAll( _orgunitIds );
-                    }
+                    orgunitIds = new HashSet<Integer>();
+                    orgunitIds.addAll( _orgunitIds );
+                }
+                else
+                {
+                    orgunitIds.retainAll( _orgunitIds );
                 }
 
                 // ---------------------------------------------------------------------
@@ -957,9 +952,8 @@ public class JdbcCaseAggregationConditionManager
                 + "         FROM programstageinstance psi ";
         }
 
-        sql += " JOIN organisationunit ou ON psi.organisationunitid=ou.organisationunitid " + " WHERE ou.parentid="
-            + orgunitId + " AND psi.completed=true AND psi.programstageid = " + programStageId + " AND "
-            + " psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '" + endDate + "' ";
+        sql += " WHERE psi.organisationunitid=" + orgunitId + " AND psi.completed=true AND psi.programstageid = " + programStageId
+            + " AND " + " psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '" + endDate + "' ";
 
         if ( flag )
         {
