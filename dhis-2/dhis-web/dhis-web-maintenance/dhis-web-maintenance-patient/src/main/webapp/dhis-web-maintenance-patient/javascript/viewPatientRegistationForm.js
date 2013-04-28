@@ -142,6 +142,13 @@ function getRequiredFields()
 			}
 		});
 		
+		jQuery('#programAttrSelector option').each(function() {
+			var item = jQuery(this);
+			if( item.attr('mandatory')=='true'){
+				requiredFields['attributeid=' + item.val()] = item.text();
+			}
+		});
+		
 		var html = jQuery("#designTextarea").ckeditorGet().getData();
 		var input = jQuery( html ).find("input");
 		if( input.length > 0 )
