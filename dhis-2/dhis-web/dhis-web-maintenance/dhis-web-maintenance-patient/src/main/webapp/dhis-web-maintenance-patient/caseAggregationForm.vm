@@ -1,7 +1,9 @@
 <div id="tabs">
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("dataelements")</a></li>
+		<li><a href="#tab-2">$i18n.getString("patient_attributes")</a></li>
 		<li><a href="#tab-3">$i18n.getString("program")</a></li>
+		<li><a href="#tab-4">$i18n.getString("orgunit")</a></li>
 	</ul>	
 	
 	<div id="tab-1">
@@ -82,6 +84,29 @@
 		</table>
 	</div>
 	
+	<div id="tab-4">
+		<table>
+			<tr>
+				<td><label>$i18n.getString('program')</label></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="orgunitProgramId" name="orgunitProgramId" onchange='getProgramStages();' >
+						<option value=''>[$i18n.getString("please_select")]</option>
+						#foreach( $program in $programs )
+							<option value='$program.id'>$encoder.htmlEncode($program.name)</option>
+						#end
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<select multiple id="orgunitProgramStageId" name="orgunitProgramStageId"  size="10" name="programStageProperty" ondblclick="insertInfo(this, true);" >
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 
 <p></p>
@@ -106,6 +131,7 @@
 			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:45px;" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' value="AND" />
 			<input type='button' style="width:45px;" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' value="OR" />
+			<input type='button' style="width:45px;" alt="$i18n.getString( 'combine' )" onclick='insertOperator( "COMBINE" );' value="COMBINE" />
 			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
 		</td>

@@ -261,17 +261,22 @@ public class CaseAggregationResultAction
                 selectedOrgunit.getId() ) );
         }
 
-        orgunitIds.retainAll( programStageInstanceService.getOrganisationUnitIds( sDate, eDate ) );
-        
         // ---------------------------------------------------------------------
         // Aggregation
         // ---------------------------------------------------------------------
-
-        for ( Integer orgUnitId : orgunitIds )
+        for ( CaseAggregationCondition condition : aggregationConditions )
         {
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-            for ( CaseAggregationCondition condition : aggregationConditions )
+            boolean flag = aggregationConditionService.hasOrgunitProgramStageCompleted( condition.getAggregationExpression() );
+
+            if ( !flag )
             {
+                orgunitIds.retainAll( programStageInstanceService.getOrganisationUnitIds( sDate, eDate ) );
+            }
+            
+            for ( Integer orgUnitId : orgunitIds )
+            {
+                OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+
                 DataElement dElement = condition.getAggregationDataElement();
                 DataElementCategoryOptionCombo optionCombo = condition.getOptionCombo();
 
