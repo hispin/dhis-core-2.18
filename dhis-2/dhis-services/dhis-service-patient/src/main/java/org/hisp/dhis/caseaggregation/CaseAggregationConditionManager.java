@@ -86,4 +86,5 @@ public interface CaseAggregationConditionManager
     String parseExpressionToSql( String aggregationExpression, String operator, Integer deSumId,
         Integer orgunitId, String startDate, String endDate );
 
+    boolean hasOrgunitProgramStageCompleted( String expresstion );
 }

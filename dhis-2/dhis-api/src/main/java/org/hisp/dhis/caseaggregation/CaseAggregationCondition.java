@@ -46,7 +46,7 @@ public class CaseAggregationCondition
     public static final String SEPARATOR_OBJECT = ":";
 
     public static final String AGGRERATION_COUNT = "COUNT";
-
+    
     public static final String AGGRERATION_SUM = "times";
     
     public static final String AGGRERATION_SUM_VALUE = "sum";
@@ -79,8 +79,16 @@ public class CaseAggregationCondition
     
     public static String OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY = "PC";
     
+    public static String OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE = "PSIC";
+    
     public static String OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE = "dateOfIncident";
     public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
+
+    public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
+    + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|"
+    + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
+    + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)"
+    + "\\]";
 
     // -------------------------------------------------------------------------
     // Fields

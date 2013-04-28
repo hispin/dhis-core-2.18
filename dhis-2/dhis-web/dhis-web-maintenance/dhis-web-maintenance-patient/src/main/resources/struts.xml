@@ -889,6 +889,14 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
 		</action>
+		
+		<action name="getProgramStages"
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonProgramStages.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 		<!-- Validation - PatientValidationCriteria -->
 

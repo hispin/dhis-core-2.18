@@ -179,6 +179,30 @@ function getParams()
 		});
 }
 
+function getProgramStages()
+{
+	var programId = getFieldValue( 'orgunitProgramId' );
+	if(programId=='') return;
+	
+	clearListById( 'orgunitProgramStageId' );
+	
+	jQuery.getJSON( 'getProgramStages.action',{ id:programId }
+		,function( json ) 
+		{
+			enable('programProperty');
+			var programstage = jQuery('#orgunitProgramStageId');
+			
+			for ( i in json.programStages ) 
+			{ 
+				var id = json.programStages[i].id;
+				var formularId = "[PSIC:" + id + "]";
+				var name = json.programStages[i].name;
+
+				programstage.append( "<option value='" + formularId + "' title='" + name + "'>" + name + "</option>" );
+			}
+		});
+}
+
 //------------------------------------------------------------------------------
 // Get DataElements of Program-Stage
 //------------------------------------------------------------------------------

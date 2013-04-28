@@ -37,6 +37,7 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROG
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_PROPERTY;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
@@ -80,12 +81,6 @@ import org.springframework.scheduling.annotation.Async;
 public class JdbcCaseAggregationConditionManager
     implements CaseAggregationConditionManager
 {
-    private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
-        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|"
-        + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
-        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)"
-        + "\\]";
-
     private final String IS_NULL = "is null";
 
     private final String PROPERTY_AGE = "age";
@@ -182,8 +177,17 @@ public class JdbcCaseAggregationConditionManager
             || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
             String sql = parseExpressionToSql( caseExpression, operator, deSumId, orgunitId, startDate, endDate );
-            Collection<Integer> ids = this.executeSQL( sql );
-            return (ids == null) ? null : ids.size() + 0.0;
+
+            if ( hasOrgunitProgramStageCompleted( caseExpression ) )
+            {
+                Collection<Integer> ids = this.executeSQL( sql );
+                return (ids == null) ? null : ids.iterator().next() + 0.0;
+            }
+            else
+            {
+                Collection<Integer> ids = this.executeSQL( sql );
+                return (ids == null) ? null : ids.size() + 0.0;
+            }
         }
 
         String sql = "SELECT " + operator + "( cast( pdv.value as DOUBLE PRECISION ) ) ";
@@ -243,6 +247,8 @@ public class JdbcCaseAggregationConditionManager
         sql = getSQL( operator, subSQL, operators ).replace( IN_CONDITION_START_SIGN, "(" ).replaceAll(
             IN_CONDITION_END_SIGN, ")" );
 
+        sql.replaceAll( "COMBINE", " " );
+
         return sql;
     }
 
@@ -260,14 +266,10 @@ public class JdbcCaseAggregationConditionManager
         String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid, "
             + " cagg.aggregationexpression as caseexpression, cagg.\"operator\" as caseoperator, cagg.desum as desumid "
             + "     from caseaggregationcondition cagg inner join datasetmembers dm "
-            + "             on cagg.aggregationdataelementid=dm.dataelementid "
-            + "     inner join dataset ds "
-            + "             on ds.datasetid = dm.datasetid "
-            + "     inner join periodtype pt "
-            + "             on pt.periodtypeid=ds.periodtypeid "
-            + "     inner join dataelement de "
-            + "             on de.dataelementid=dm.dataelementid "
-            + "     where ds.datasetid = "
+            + "             on cagg.aggregationdataelementid=dm.dataelementid " + "     inner join dataset ds "
+            + "             on ds.datasetid = dm.datasetid " + "     inner join periodtype pt "
+            + "             on pt.periodtypeid=ds.periodtypeid " + "     inner join dataelement de "
+            + "             on de.dataelementid=dm.dataelementid " + "     where ds.datasetid = "
             + dataSet.getDataSetId();
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
@@ -286,18 +288,23 @@ public class JdbcCaseAggregationConditionManager
                 String caseOperator = rs.getString( "caseoperator" );
                 int deSumId = rs.getInt( "desumid" );
 
-                Collection<Integer> _orgunitIds = getServiceOrgunit(
-                    DateUtils.getMediumDateString( period.getStartDate() ),
-                    DateUtils.getMediumDateString( period.getEndDate() ) );
+                boolean flag = hasOrgunitProgramStageCompleted( caseExpression );
 
-                if ( orgunitIds == null )
+                if ( !flag )
                 {
-                    orgunitIds = new HashSet<Integer>();
-                    orgunitIds.addAll( _orgunitIds );
-                }
-                else
-                {
-                    orgunitIds.retainAll( _orgunitIds );
+                    Collection<Integer> _orgunitIds = getServiceOrgunit(
+                        DateUtils.getMediumDateString( period.getStartDate() ),
+                        DateUtils.getMediumDateString( period.getEndDate() ) );
+
+                    if ( orgunitIds == null )
+                    {
+                        orgunitIds = new HashSet<Integer>();
+                        orgunitIds.addAll( _orgunitIds );
+                    }
+                    else
+                    {
+                        orgunitIds.retainAll( _orgunitIds );
+                    }
                 }
 
                 // ---------------------------------------------------------------------
@@ -312,8 +319,7 @@ public class JdbcCaseAggregationConditionManager
 
                     boolean hasValue = jdbcTemplate.queryForRowSet( dataValueSql ).next();
 
-                    Double resultValue = getAggregateValue( caseExpression, caseOperator, deSumId, orgunitId,
-                        period );
+                    Double resultValue = getAggregateValue( caseExpression, caseOperator, deSumId, orgunitId, period );
 
                     if ( resultValue != null && resultValue != 0 )
                     {
@@ -456,6 +462,10 @@ public class JdbcCaseAggregationConditionManager
      */
     private String createSQL( String caseExpression, String operator, int orgunitId, String startDate, String endDate )
     {
+        Boolean orgunitCompletedProgramStage = false;
+
+        String sqlOrgunitCompleted = "";
+
         // ---------------------------------------------------------------------
         // get operators
         // ---------------------------------------------------------------------
@@ -471,13 +481,13 @@ public class JdbcCaseAggregationConditionManager
             operators.add( matcherOperator.group() );
         }
 
-        String[] expression = caseExpression.split( "(AND|OR)" );
+        String[] expression = caseExpression.split( "(AND|OR|COMBINE)" );
 
         // ---------------------------------------------------------------------
         // parse expressions
         // ---------------------------------------------------------------------
 
-        Pattern patternCondition = Pattern.compile( regExp );
+        Pattern patternCondition = Pattern.compile( CaseAggregationCondition.regExp );
 
         List<String> conditions = new ArrayList<String>();
         double value = 0.0;
@@ -485,6 +495,7 @@ public class JdbcCaseAggregationConditionManager
         for ( int i = 0; i < expression.length; i++ )
         {
             String subExp = expression[i];
+
             List<String> subConditions = new ArrayList<String>();
 
             Matcher matcherCondition = patternCondition.matcher( expression[i] );
@@ -494,6 +505,7 @@ public class JdbcCaseAggregationConditionManager
             while ( matcherCondition.find() )
             {
                 String match = matcherCondition.group();
+
                 subExp = subExp.replace( match, "~" );
                 match = match.replaceAll( "[\\[\\]]", "" );
 
@@ -587,7 +599,12 @@ public class JdbcCaseAggregationConditionManager
                 {
                     condition = getConditionForPatientProgramStageProperty( info[1], operator, startDate, endDate );
                 }
-
+                else if ( info[0].equalsIgnoreCase( OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE ) )
+                {
+                    sqlOrgunitCompleted += getConditionForOrgunitProgramStageCompleted( info[1], operator, orgunitId,
+                        startDate, endDate, orgunitCompletedProgramStage );
+                    orgunitCompletedProgramStage = true;
+                }
                 // -------------------------------------------------------------
                 // Replacing the operand with 1 in order to later be able to
                 // verify
@@ -623,7 +640,16 @@ public class JdbcCaseAggregationConditionManager
                 condition = getSQL( operator, subConditions, subOperators ) + _subExp;
             }
 
-            conditions.add( condition );
+            condition = condition.trim();
+            if ( !condition.isEmpty() )
+            {
+                conditions.add( condition );
+            }
+        }
+
+        if ( !sqlOrgunitCompleted.isEmpty() )
+        {
+            conditions.add( sqlOrgunitCompleted );
         }
 
         return getSQL( operator, conditions, operators );
@@ -910,6 +936,39 @@ public class JdbcCaseAggregationConditionManager
     }
 
     /**
+     * Return standard SQL to retrieve the number of children orgunits has all
+     * program-stage-instance completed and due-date. E.g [PSIC:1]
+     * 
+     * @flag True if there are many stages in the expression
+     * 
+     */
+    private String getConditionForOrgunitProgramStageCompleted( String programStageId, String operator, int orgunitId,
+        String startDate, String endDate, boolean flag )
+    {
+        String sql = "";
+        if ( !flag )
+        {
+            sql = "SELECT " + operator + "(distinct psi.organisationunitid) "
+                + "         FROM programstageinstance psi ";
+        }
+        else
+        {
+            sql = " AND psi.organisationunitid in ( SELECT psi.organisationunitid "
+                + "         FROM programstageinstance psi ";
+        }
+
+        sql += " JOIN organisationunit ou ON psi.organisationunitid=ou.organisationunitid " + " WHERE ou.parentid="
+            + orgunitId + " AND psi.completed=true AND psi.programstageid = " + programStageId + " AND "
+            + " psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '" + endDate + "' ";
+
+        if ( flag )
+        {
+            sql += ")";
+        }
+        return sql;
+    }
+
+    /**
      * Return standard SQL by combining all sub-expressions of an aggregate
      * query builder formula.
      * 
@@ -973,5 +1032,26 @@ public class JdbcCaseAggregationConditionManager
         } );
 
         return orgunitIds;
+    }
+
+    public boolean hasOrgunitProgramStageCompleted( String expresstion )
+    {
+        Pattern pattern = Pattern.compile( CaseAggregationCondition.regExp );
+        Matcher matcher = pattern.matcher( expresstion );
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+
+            if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
