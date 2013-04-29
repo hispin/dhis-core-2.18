@@ -943,22 +943,16 @@ public class JdbcCaseAggregationConditionManager
         String sql = "";
         if ( !flag )
         {
-            sql = "SELECT " + operator + "(distinct psi.organisationunitid) "
-                + "         FROM programstageinstance psi ";
+            sql = "SELECT '1' FROM organisationunit ou WHERE ou.organisationunitid=" + orgunitId + "  ";
         }
         else
         {
-            sql = " AND psi.organisationunitid in ( SELECT psi.organisationunitid "
-                + "         FROM programstageinstance psi ";
+            sql = " AND NOT EXISTS ( SELECT programstageinstanceid FROM programstageinstance psi "
+                + " WHERE psi.organisationunitid=ou.organisationunitid " + " AND psi.programstageid = "
+                + programStageId + " and psi.completed=false " + " AND psi.executiondate >= '" + startDate
+                + "' and psi.executiondate <= '" + endDate + "' ) ";
         }
 
-        sql += " WHERE psi.organisationunitid=" + orgunitId + " AND psi.completed=true AND psi.programstageid = " + programStageId
-            + " AND " + " psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '" + endDate + "' ";
-
-        if ( flag )
-        {
-            sql += ")";
-        }
         return sql;
     }
 
