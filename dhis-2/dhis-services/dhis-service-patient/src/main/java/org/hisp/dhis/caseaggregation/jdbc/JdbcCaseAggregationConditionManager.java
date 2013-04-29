@@ -177,16 +177,15 @@ public class JdbcCaseAggregationConditionManager
             || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
             String sql = parseExpressionToSql( caseExpression, operator, deSumId, orgunitId, startDate, endDate );
+            Collection<Integer> ids = this.executeSQL( sql );
 
             if ( hasOrgunitProgramStageCompleted( caseExpression ) )
             {
-                Collection<Integer> ids = this.executeSQL( sql );
-                return (ids == null) ? null : ids.iterator().next() + 0.0;
+                return (ids == null || ids.size() == 0) ? null : ids.iterator().next() + 0.0;
             }
             else
             {
-                Collection<Integer> ids = this.executeSQL( sql );
-                return (ids == null) ? null : ids.size() + 0.0;
+                return (ids == null || ids.size() == 0) ? null : ids.size() + 0.0;
             }
         }
 
@@ -203,7 +202,7 @@ public class JdbcCaseAggregationConditionManager
             sql = sql + " AND pdv.programstageinstanceid in ( "
                 + parseExpressionToSql( caseExpression, operator, deSumId, orgunitId, startDate, endDate ) + " ) ";
         }
-
+System.out.println("\n " + sql + " \n ");
         Collection<Integer> ids = this.executeSQL( sql );
         return (ids == null) ? null : ids.iterator().next() + 0.0;
     }
@@ -457,7 +456,7 @@ public class JdbcCaseAggregationConditionManager
      */
     private String createSQL( String caseExpression, String operator, int orgunitId, String startDate, String endDate )
     {
-        Boolean orgunitCompletedProgramStage = false;
+        boolean orgunitCompletedProgramStage = false;
 
         String sqlOrgunitCompleted = "";
 
@@ -945,13 +944,11 @@ public class JdbcCaseAggregationConditionManager
         {
             sql = "SELECT '1' FROM organisationunit ou WHERE ou.organisationunitid=" + orgunitId + "  ";
         }
-        else
-        {
-            sql = " AND NOT EXISTS ( SELECT programstageinstanceid FROM programstageinstance psi "
-                + " WHERE psi.organisationunitid=ou.organisationunitid " + " AND psi.programstageid = "
-                + programStageId + " and psi.completed=false " + " AND psi.executiondate >= '" + startDate
-                + "' and psi.executiondate <= '" + endDate + "' ) ";
-        }
+        
+        sql += " AND EXISTS ( SELECT programstageinstanceid FROM programstageinstance psi "
+            + " WHERE psi.organisationunitid=ou.organisationunitid AND psi.programstageid = " + programStageId
+            + " AND psi.completed=true AND psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '"
+            + endDate + "' ) ";
 
         return sql;
     }
@@ -992,7 +989,7 @@ public class JdbcCaseAggregationConditionManager
         }
 
         sql += sqlAnd;
-
+        
         return sql;
     }
 

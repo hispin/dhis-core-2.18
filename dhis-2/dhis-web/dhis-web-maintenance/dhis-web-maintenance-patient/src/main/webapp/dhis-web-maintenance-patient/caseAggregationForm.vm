@@ -3,7 +3,6 @@
 		<li><a href="#tab-1">$i18n.getString("dataelements")</a></li>
 		<li><a href="#tab-2">$i18n.getString("patient_attributes")</a></li>
 		<li><a href="#tab-3">$i18n.getString("program")</a></li>
-		<li><a href="#tab-4">$i18n.getString("orgunit")</a></li>
 	</ul>	
 	
 	<div id="tab-1">
@@ -74,34 +73,11 @@
 				<td>
 					<select multiple id="programStageProperty" size="10" name="programStageProperty" ondblclick="insertInfo(this, true);" disabled >
 						<option value="[PS:*]">$i18n.getString( "visit_selected_program_stage" )</option>
+						<option value="[PSIC:*]">$i18n.getString( "completed" )</option>
 						<option value="[PS:*.COUNT]" name="multiProgram">$i18n.getString( "visit_selected_program_stage_x_th_time" )</option>
 						<option value="[PS:*] AND [PSP:DATE@executionDate#-DATE@dueDate#]" name="multiProgram">$i18n.getString( "report_date" ) - $i18n.getString( "due_date" )</option>
 						<option value="[PS:*] AND [PC:DATE@executionDate#-DATE@birthDate#]" name="multiProgram">$i18n.getString( "age_at_visit_days_since_birth" )</option>
 					</select>
-					</select>
-				</td>
-			</tr>
-		</table>
-	</div>
-	
-	<div id="tab-4">
-		<table>
-			<tr>
-				<td><label>$i18n.getString('program')</label></td>
-			</tr>
-			<tr>
-				<td>
-					<select id="orgunitProgramId" name="orgunitProgramId" onchange='getProgramStages();' >
-						<option value=''>[$i18n.getString("please_select")]</option>
-						#foreach( $program in $programs )
-							<option value='$program.id'>$encoder.htmlEncode($program.name)</option>
-						#end
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<select multiple id="orgunitProgramStageId" name="orgunitProgramStageId"  size="10" name="programStageProperty" ondblclick="insertInfo(this, true);" >
 					</select>
 				</td>
 			</tr>

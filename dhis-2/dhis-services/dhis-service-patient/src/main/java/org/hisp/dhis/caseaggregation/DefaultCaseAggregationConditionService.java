@@ -35,6 +35,8 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROG
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE;
+
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
@@ -426,7 +428,8 @@ public class DefaultCaseAggregationConditionService
                     }
                     matcher.appendReplacement( description, "[" + programDes + "]" );
                 }
-                else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
+                else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) 
+                        || info[0].equalsIgnoreCase( OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE ) )
                 {
                     int objectId = Integer.parseInt( ids[0] );
                     ProgramStage programStage = programStageService.getProgramStage( objectId );
@@ -437,7 +440,7 @@ public class DefaultCaseAggregationConditionService
                     }
 
                     String count = (ids.length == 2) ? SEPARATOR_ID + ids[1] : "";
-                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT
+                    matcher.appendReplacement( description, "[" + info[0] + SEPARATOR_OBJECT
                         + programStage.getDisplayName() + count + "]" );
                 }
             }
