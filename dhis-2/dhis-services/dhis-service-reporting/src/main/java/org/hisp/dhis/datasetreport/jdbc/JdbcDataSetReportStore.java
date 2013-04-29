@@ -139,7 +139,7 @@ public class JdbcDataSetReportStore
                         String dataElementId = rowSet.getString( 1 );
                         Double value = rowSet.getDouble( 2 );
                         
-                        map.put( dataElementId + SEPARATOR + categoryOption.getId(), value );
+                        map.put( dataElementId + SEPARATOR + categoryOption.getUid(), value );
                     }
                 }
             }
