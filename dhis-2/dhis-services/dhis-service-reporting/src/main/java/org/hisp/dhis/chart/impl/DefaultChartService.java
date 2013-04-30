@@ -278,7 +278,7 @@ public class DefaultChartService
         chart.setRelativePeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
-        chart.setName( chart.getTitle() );
+        chart.setName( chart.generateTitle() );
 
         return getJFreeChart( chart, false );
     }
@@ -720,7 +720,7 @@ public class DefaultChartService
         TextTitle title = new TextTitle();
 
         title.setFont( subTitleFont );
-        title.setText( chart.getTitle() );
+        title.setText( chart.generateTitle() );
 
         return title;
     }

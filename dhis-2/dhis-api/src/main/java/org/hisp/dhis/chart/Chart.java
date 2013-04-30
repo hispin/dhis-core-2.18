@@ -185,7 +185,7 @@ public class Chart
         return list != null && !list.isEmpty() ? list.iterator().next() : null;
     }
 
-    public String getTitle()
+    public String generateTitle()
     {
         if ( DIMENSION_PERIOD.equals( filter ) )
         {
