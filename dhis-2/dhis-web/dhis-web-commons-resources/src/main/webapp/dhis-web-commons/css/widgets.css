@@ -328,7 +328,7 @@ div#headerMessage
   left: 155px;
   position: fixed;
   display: none;
-  height: 29px;
+  height: 31px;
   width: 410px;
   background-color: #f9edbe;
   border: 1px solid #dbae56;
@@ -336,7 +336,7 @@ div#headerMessage
   font-size: 9pt;
   text-align: center;
   vertical-align: center;
-  line-height: 30px;
+  line-height: 32px;
   border-radius: 3px;
 }
 
