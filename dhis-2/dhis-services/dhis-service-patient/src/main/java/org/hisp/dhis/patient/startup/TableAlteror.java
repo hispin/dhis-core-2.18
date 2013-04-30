@@ -106,10 +106,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE programstage_dataelements DROP COLUMN showOnReport" );
 
         executeSql( "ALTER TABLE patientdatavalue DROP COLUMN categoryoptioncomboid" );
-        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN providedbyanotherfacility" );
-        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN organisationunitid" );
-        executeSql( "ALTER TABLE patientdatavaluearchive ADD COLUMN storedby VARCHAR(31)" );
-        executeSql( "ALTER TABLE patientdatavaluearchive ADD COLUMN providedelsewhere BOOLEAN" );
         executeSql( "DROP TABLE patientchart" );
 
         executeSql( "ALTER TABLE program DROP COLUMN hidedateofincident" );
@@ -126,6 +122,7 @@ public class TableAlteror
         executeSql( "DROP TABLE programinstance_attributes" );
         executeSql( "DROP TABLE programattributeoption" );
         executeSql( "DROP TABLE programattribute" );
+        executeSql( "DROP TABLE patientdatavaluearchive" );
 
         executeSql( "ALTER TABLE patientattribute DROP COLUMN noChars" );
         executeSql( "ALTER TABLE programstageinstance ALTER executiondate TYPE date" );
