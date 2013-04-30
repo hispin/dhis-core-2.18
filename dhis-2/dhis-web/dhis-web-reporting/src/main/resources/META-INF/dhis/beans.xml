@@ -154,11 +154,6 @@
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportAndParamsAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportAndParamsAction"
     scope="prototype">
   </bean>
