@@ -343,9 +343,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE completedatasetregistration DROP CONSTRAINT fk_datasetcompleteregistration_sourceid" );
         executeSql( "ALTER TABLE minmaxdataelement DROP CONSTRAINT fk_minmaxdataelement_sourceid" );
         executeSql( "ALTER TABLE datavalue DROP CONSTRAINT fk_datavalue_sourceid" );
-        executeSql( "ALTER TABLE datavaluearchive DROP CONSTRAINT fk_datavaluearchive_sourceid" );
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT fke509dd5ef1c932ed" );
         executeSql( "DROP TABLE source CASCADE" );
+        executeSql( "DROP TABLE datavaluearchive" );
 
         // message
 
@@ -476,7 +476,6 @@ public class TableAlteror
         executeSql( "DROP TABLE chartgroupmembers" );
         executeSql( "DROP TABLE chartgroup" );
 
-        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN categoryoptioncomboid" );
         executeSql( "delete from usersetting where name='currentStyle' and value like '%blue/blue.css'" );
         executeSql( "delete from systemsetting where name='currentStyle' and value like '%blue/blue.css'" );
 
