@@ -139,6 +139,7 @@ public class ReportController
         if ( report.getDesignContent() == null )
         {
             ContextUtils.conflictResponse( response, "Report has no design content: " + uid );
+            return;
         }        
         
         if ( Report.TYPE_HTML.equals( report.getType() ) )
