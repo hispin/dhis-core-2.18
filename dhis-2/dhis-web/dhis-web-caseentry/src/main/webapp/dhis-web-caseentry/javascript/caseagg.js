@@ -100,7 +100,7 @@ function backBtnOnClick()
 
 function toggleResult( id )
 {
-	$( "#" + id + "-div" ).slideToggle( "fast" );
+	$( "#div-" + id ).slideToggle( "fast" );
 }
 
 function saveAggregateDataValues( isSaveAll )
@@ -147,5 +147,5 @@ function saveAggregateDataValues( isSaveAll )
 
 function toogleAllCheckBoxes( tableDiv, checked )
 {
-	jQuery("#" + tableDiv + " input[name=aggregateValues]").attr( 'checked', checked );
+	jQuery("#div-" + tableDiv + " input[name=aggregateValues]").attr( 'checked', checked );
 }

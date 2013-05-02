@@ -96,7 +96,7 @@
 			<input type='button' class="small-button" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "=" );' value="=" />
 			<input type='button' class="small-button" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "!=" );' value="!=" />
 			&nbsp;&nbsp;&nbsp;
-			<input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" />
+			<!-- input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" / -->
 			<input type='button' class="small-button" alt="$i18n.getString( 'left_parent' )" onclick='insertOperator( "(" );' value="(" />
 			<input type='button' class="small-button" alt="$i18n.getString( 'right_parent' )" onclick='insertOperator( ")" );' value=")" />
 			&nbsp;&nbsp;&nbsp;
@@ -107,7 +107,7 @@
 			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:45px;" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' value="AND" />
 			<input type='button' style="width:45px;" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' value="OR" />
-			<input type='button' style="width:45px;" alt="$i18n.getString( 'combine' )" onclick='insertOperator( "COMBINE" );' value="COMBINE" />
+			<input type='button' style="width:85px;" alt="$i18n.getString( 'combine' )" onclick='insertOperator( "COMBINE" );' value="COMBINE" />
 			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
 		</td>
