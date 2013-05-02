@@ -860,11 +860,8 @@
 		id="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction"
 		scope="prototype">
-		<property name="aggregationConditionService">
-			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="caseAggregationConditionManager">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager" />
 		</property>
 	</bean>
 

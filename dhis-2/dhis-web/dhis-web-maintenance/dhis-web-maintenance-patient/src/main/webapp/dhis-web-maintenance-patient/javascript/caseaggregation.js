@@ -344,12 +344,7 @@ function testCaseAggregationCondition()
 			
 			if ( type == "input" )
 			{
-				if( json.message == '' ){
-					showWarningMessage( i18n_run_fail );
-				}
-				else{
-					showWarningMessage( json.message );
-				}
+				showWarningMessage( json.message );
 			}
 			else
 			{
