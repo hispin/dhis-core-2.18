@@ -31,8 +31,8 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION
 import static org.hisp.dhis.analytics.DimensionType.DATASET;
 import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT_GROUPSET;
-import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
+import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +48,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
@@ -1019,6 +1022,21 @@ public class DataQueryParams
         }
         
         return list;
+    }
+    
+    public void setDataElementGroupSet( DataElementGroupSet groupSet )
+    {
+        setDimensionOptions( groupSet.getUid(), DimensionType.DATAELEMENT_GROUPSET, null, new ArrayList<IdentifiableObject>( groupSet.getDimensionItems() ) );
+    }
+    
+    public void setOrganisationUnitGroupSet( OrganisationUnitGroupSet groupSet )
+    {
+        setDimensionOptions( groupSet.getUid(), DimensionType.ORGANISATIONUNIT_GROUPSET, null, new ArrayList<IdentifiableObject>( groupSet.getDimensionItems() ) );
+    }
+
+    public void setCategory( DataElementCategory category )
+    {
+        setDimensionOptions( category.getUid(), DimensionType.CATEGORY, null, new ArrayList<IdentifiableObject>( category.getDimensionItems() ) );
     }
     
     public void enableCategoryOptionCombos()
