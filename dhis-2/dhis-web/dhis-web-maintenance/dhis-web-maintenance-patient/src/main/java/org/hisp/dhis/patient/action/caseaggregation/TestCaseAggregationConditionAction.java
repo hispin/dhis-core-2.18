@@ -35,20 +35,15 @@ import java.util.List;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $Id: TestCaseAggregationConditionAction.java Oct 5, 2011 3:45:20 PM
- *          $
  */
 public class TestCaseAggregationConditionAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -115,6 +110,5 @@ public class TestCaseAggregationConditionAction
         List<Integer> ids = caseAggregationConditionManager.executeSQL( sql );
         
         return (ids == null) ? INPUT : SUCCESS;
-
     }
 }
