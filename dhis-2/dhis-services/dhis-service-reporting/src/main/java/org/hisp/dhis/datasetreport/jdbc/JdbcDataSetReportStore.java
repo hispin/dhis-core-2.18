@@ -62,7 +62,7 @@ public class JdbcDataSetReportStore
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataSetReportStore implementation
     // -------------------------------------------------------------------------
