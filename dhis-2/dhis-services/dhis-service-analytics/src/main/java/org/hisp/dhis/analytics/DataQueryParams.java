@@ -32,6 +32,7 @@ import static org.hisp.dhis.analytics.DimensionType.DATASET;
 import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT_GROUPSET;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -952,9 +953,9 @@ public class DataQueryParams
         return getDimensionOptions( INDICATOR_DIM_ID );
     }
     
-    public void setIndicators( List<IdentifiableObject> indicators )
+    public void setIndicators( List<? extends IdentifiableObject> indicators )
     {
-        setDimensionOptions( INDICATOR_DIM_ID, DimensionType.INDICATOR, null, indicators );
+        setDimensionOptions( INDICATOR_DIM_ID, DimensionType.INDICATOR, null, asList( indicators ) );
     }
     
     public List<IdentifiableObject> getDataElements()
@@ -962,9 +963,9 @@ public class DataQueryParams
         return getDimensionOptions( DATAELEMENT_DIM_ID );
     }
     
-    public void setDataElements( List<IdentifiableObject> dataElements )
+    public void setDataElements( List<? extends IdentifiableObject> dataElements )
     {
-        setDimensionOptions( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, null, dataElements );
+        setDimensionOptions( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, null, asList( dataElements ) );
     }
     
     public List<IdentifiableObject> getDataSets()
@@ -972,9 +973,9 @@ public class DataQueryParams
         return getDimensionOptions( DATASET_DIM_ID );
     }
     
-    public void setDataSets( List<IdentifiableObject> dataSets )
+    public void setDataSets( List<? extends IdentifiableObject> dataSets )
     {
-        setDimensionOptions( DATASET_DIM_ID, DimensionType.DATASET, null, dataSets );
+        setDimensionOptions( DATASET_DIM_ID, DimensionType.DATASET, null, asList( dataSets ) );
     }
     
     public List<IdentifiableObject> getPeriods()
@@ -982,9 +983,9 @@ public class DataQueryParams
         return getDimensionOptions( PERIOD_DIM_ID );
     }
     
-    public void setPeriods( List<IdentifiableObject> periods )
+    public void setPeriods( List<? extends IdentifiableObject> periods )
     {
-        setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, null, periods );
+        setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, null, asList( periods ) );
     }
 
     public List<IdentifiableObject> getOrganisationUnits()
@@ -992,9 +993,9 @@ public class DataQueryParams
         return getDimensionOptions( ORGUNIT_DIM_ID );
     }
     
-    public void setOrganisationUnits( List<IdentifiableObject> organisationUnits )
+    public void setOrganisationUnits( List<? extends IdentifiableObject> organisationUnits )
     {
-        setDimensionOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, organisationUnits );
+        setDimensionOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, asList( organisationUnits ) );
     }
     
     public List<Dimension> getDataElementGroupSets()
@@ -1020,9 +1021,9 @@ public class DataQueryParams
         return list;
     }
     
-    public void setDataElementGroupSet( Dimension dimension, List<IdentifiableObject> dataElementGroups )
+    public void setDataElementGroupSet( Dimension dimension, List<? extends IdentifiableObject> dataElementGroups )
     {
-        setDimensionOptions( dimension.getDimension(), DimensionType.DATAELEMENT_GROUPSET, null, dataElementGroups );
+        setDimensionOptions( dimension.getDimension(), DimensionType.DATAELEMENT_GROUPSET, null, asList( dataElementGroups ) );
     }
     
     public void enableCategoryOptionCombos()
