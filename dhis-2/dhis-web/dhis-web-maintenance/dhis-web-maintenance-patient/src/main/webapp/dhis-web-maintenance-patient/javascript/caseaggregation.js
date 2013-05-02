@@ -235,8 +235,8 @@ function getPatientDataElements()
 			var deSumId = jQuery('#deSumId');
 			for ( i in json.dataElements )
 			{ 
-				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
-				dataElementBackups.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+				dataElementBackups.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
 				if( json.dataElements[i].type=='int')
 				{
 					deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
@@ -459,5 +459,44 @@ function filterDataElement( event, value, fieldName, backupFieldsName )
 		}
 	});
 		    
+}
+
+
+function sortByOnChange(sortBy)
+{
+	if( sortBy == 1)
+	{
+		jQuery('#dataElements').each(function() {
+
+			// Keep track of the selected option.
+			var selectedValue = $(this).val();
+
+			// sort it out
+			$(this).html($("option", $(this)).sort(function(a, b) { 
+				return $(a).attr('dename') == $(b).attr('dename') ? 0 : $(a).attr('dename') < $(b).attr('dename') ? -1 : 1 
+			}));
+
+			// Select one option.
+			$(this).val(selectedValue);
+
+		});
+	}
+	else
+	{
+		jQuery('#dataElements').each(function() {
+
+			// Keep track of the selected option.
+			var selectedValue = $(this).val();
+
+			// sort it out
+			$(this).html($("option", $(this)).sort(function(a, b) { 
+				return $(a).attr('decode') == $(b).attr('decode') ? 0 : $(a).attr('decode') < $(b).attr('decode') ? -1 : 1 
+			}));
+
+			// Select one option.
+			$(this).val(selectedValue);
+
+		});
+	} 
 }
 

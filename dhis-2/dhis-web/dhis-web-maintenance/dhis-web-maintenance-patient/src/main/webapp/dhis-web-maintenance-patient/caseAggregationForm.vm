@@ -8,7 +8,14 @@
 	<div id="tab-1">
 	  <table>
         <tr>
-			<td><label for="dataelement">$i18n.getString( "dataelement" )</label></td>
+			<td>
+				<label for="dataelement">$i18n.getString( "dataelement" )</label>
+				<span align='right' style="background:#ADD8E6;padding-left:45px; padding-top:3px; padding-bottom:3px">
+					$i18n.getString( "sort_by" )
+					<input type='radio' name='sortBy' value='1' onchange="sortByOnChange('1')" checked >$i18n.getString("name")
+					<input type='radio' name='sortBy' value='2' onchange="sortByOnChange('2')">$i18n.getString("code") &nbsp;&nbsp;&nbsp;
+				</span>
+			</td>
 			<td>
 				<label for="availableValues">$i18n.getString( "available_values" )</label>&nbsp;
 				<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button" onClick="insertMultiValues('suggestedDEValues');" >
