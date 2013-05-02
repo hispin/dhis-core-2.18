@@ -167,7 +167,7 @@ public class DefaultReportService
 
         try
         {
-            JRProperties.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
+            JRProperties.setProperty( "net.sf.jasperreports.awt.ignore.missing.font", "true" );
             JRProperties.setProperty( "net.sf.jasperreports.default.font.name", "DejaVu Sans" );
 
             JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );

@@ -38,6 +38,7 @@
 
   <distributionManagement>
     <repository>
+      <id></id>
       <name>DHIS 2 Maven repository</name>
       <url>scp://</url>
     </repository>
