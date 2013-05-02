@@ -80,4 +80,5 @@ public interface CaseAggregationConditionService
     void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy );
 
     boolean hasOrgunitProgramStageCompleted( String expresstion );
+    
 }

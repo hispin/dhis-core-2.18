@@ -108,6 +108,7 @@ public class DefaultCaseAggregationConditionService
     {
         this.aggregationConditionManager = aggregationConditionManager;
     }
+
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
@@ -416,7 +417,7 @@ public class DefaultCaseAggregationConditionService
     {
         return aggregationConditionManager.hasOrgunitProgramStageCompleted( expresstion );
     }
-
+    
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------
