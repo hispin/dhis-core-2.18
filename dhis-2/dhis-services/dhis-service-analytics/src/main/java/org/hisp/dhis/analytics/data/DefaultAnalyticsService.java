@@ -119,11 +119,9 @@ public class DefaultAnalyticsService
     private static final String VALUE_HEADER_NAME = "Value";
     private static final int PERCENT = 100;
     private static final int MAX_QUERIES = 8;
-    
-    //TODO filter values must be merged if split
+
+    //TODO make sure data x dims are successive    
     //TODO completeness on time
-    //TODO make sure data x dims are successive
-    //TODO optimize when in and de are specified, and in-de is part of de
     
     @Autowired
     private AnalyticsManager analyticsManager;
@@ -372,7 +370,7 @@ public class DefaultAnalyticsService
     
     /**
      * Generates a mapping between a dimension key and the aggregated value. The
-     * dimension key is a concatenation of the identifiers in for the dimensions
+     * dimension key is a concatenation of the identifiers of the dimension items
      * separated by "-".
      */
     private Map<String, Double> getAggregatedValueMap( DataQueryParams params, String tableName )        
