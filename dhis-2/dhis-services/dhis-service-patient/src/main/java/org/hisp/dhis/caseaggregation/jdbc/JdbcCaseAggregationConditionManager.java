@@ -389,8 +389,11 @@ public class JdbcCaseAggregationConditionManager
                 // Aggregation
                 // ---------------------------------------------------------------------
 
-                insertAggregateValue( caseExpression, caseOperator, dataelementId, optionComboId, deSumId, orgunitIds,
-                    period );
+                if ( _orgunitIds.size() > 0 )
+                {
+                    insertAggregateValue( caseExpression, caseOperator, dataelementId, optionComboId, deSumId,
+                        orgunitIds, period );
+                }
             }
 
         }
