@@ -1,94 +1,153 @@
-// big chunks of this is based on code from:
-// http://brian.io/lawnchair
+"use strict";
+
+/*
+ * Copyright (c) 2004-2013, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 dhis2.util.namespace( 'dhis2.storage' );
 
-dhis2.storage.Store = function ( options, callback ) {
-    var Store = dhis2.storage.Store;
+dhis2.storage.Store = function ( options ) {
+    var self = this;
 
-    this.name = options.name || 'records';
-    this.dbname = options.dbname || 'dhis2';
-    this.record = options.record || 'record';
-
-    if ( arguments.length <= 2 && arguments.length > 0 ) {
-        callback = (typeof arguments[0] === 'function') ? arguments[0] : arguments[1];
-        options = (typeof arguments[0] === 'function') ? {} : arguments[0];
-    } else {
-        throw 'Incorrect # of ctor args!'
+    if ( !(this instanceof dhis2.storage.Store) ) {
+        return new dhis2.storage.Store( options );
     }
+
+    if ( typeof options.name === 'undefined' ) {
+        throw Error( 'Constructor needs a valid database name as a argument' );
+    }
+
+    if ( typeof options.objectStores === 'undefined' || !$.isArray( options.objectStores ) || options.objectStores.length == 0 ) {
+        throw Error( 'Constructor needs a valid objectStores array as a argument' );
+    }
+
+    options.keyPath = options.keyPath || 'id';
+    options.version = options.version || '1';
 
     if ( !JSON ) throw 'JSON unavailable! Include http://www.json.org/json2.js to fix.';
-    if ( typeof callback !== 'function' ) throw 'No callback was provided.';
-    if ( Store.adapters.length == 0 ) throw 'No adapters was provided.';
 
-    var adapter;
+    var Adapter;
 
-    if ( options.adapter ) {
-        for ( var i = 0, l = Store.adapters.length; i < l; i++ ) {
-            if ( options.adapter === Store.adapters[i].id ) {
-                adapter = Store.adapters[i].valid() ? Store.adapters[i] : undefined;
-                break;
-            }
-        }
-    } else {
-        for ( var i = 0, l = Store.adapters.length; i < l; i++ ) {
-            adapter = Store.adapters[i].valid() ? Store.adapters[i] : undefined;
-            if ( adapter ) break;
+    for ( var i = 0, len = options.adapters.length; i < len; i++ ) {
+        if ( dhis2.storage.Store.verifyAdapter( options.adapters[i] ) && options.adapters[i].isSupported() ) {
+            Adapter = options.adapters[i];
+            break;
         }
     }
 
-    if ( !adapter ) throw 'No valid adapter.';
+    if ( !Adapter ) throw 'No valid adapter.';
 
-    // mixin adapter functions
-    for ( var i in adapter ) {
-        if ( adapter.hasOwnProperty( i ) ) {
-            this[i] = adapter[i];
-        }
+    var adapter = new Adapter( options );
+
+    Object.defineProperty( this, 'adapter', {
+        value: adapter
+    } );
+
+    $.each( dhis2.storage.Store.adapterMethods, function ( idx, item ) {
+        var descriptor = Object.getOwnPropertyDescriptor( Adapter, item ) || Object.getOwnPropertyDescriptor( Adapter.prototype, item );
+        Object.defineProperty( self, item, descriptor );
+    } );
+
+    $.each( dhis2.storage.Store.adapterProperties, function ( idx, item ) {
+        var descriptor = Object.getOwnPropertyDescriptor( adapter, item );
+        Object.defineProperty( self, item, descriptor );
+    } );
+
+    if ( typeof adapter.customApi !== 'undefined' ) {
+        $.each( adapter.customApi, function ( idx, item ) {
+            self[item] = adapter[item];
+        } );
     }
-
-    this.init( options, callback );
 };
 
-dhis2.storage.Store.adapters = [];
+dhis2.storage.Store.adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
+dhis2.storage.Store.adapterProperties = "name version objectStoreNames keyPath".split( ' ' );
 
-dhis2.storage.Store.adapter = function ( id, obj ) {
-    var Store = dhis2.storage.Store;
-    var adapter_interface = "init add addAll remove exists fetch fetchAll destroy".split( ' ' );
+dhis2.storage.Store.verifyAdapter = function ( Adapter ) {
+    var failed = [];
 
-    var missing_functions = [];
-    // verify adapter
-    for ( var i in adapter_interface ) {
-        if ( !obj.hasOwnProperty( adapter_interface[i] ) || typeof obj[adapter_interface[i]] !== 'function' ) {
-            missing_functions.push( adapter_interface[i] );
+    if ( typeof Adapter === 'undefined' ) {
+        return false;
+    }
+
+    $.each( dhis2.storage.Store.adapterMethods, function ( idx, item ) {
+        // should probably go up the prototype chain here
+        var descriptor = Object.getOwnPropertyDescriptor( Adapter, item ) || Object.getOwnPropertyDescriptor( Adapter.prototype, item );
+
+        if ( typeof descriptor.value !== 'function' ) {
+            failed.push( item );
         }
-    }
+    } );
 
-    if ( missing_functions.length > 0 ) {
-        throw 'Adapter \'' + id + '\' does not meet interface requirements, missing: ' + missing_functions.join( ' ' );
-    }
-
-    obj['id'] = id;
-    Store.adapters.splice( 0, 0, obj );
+    return failed.length === 0;
 };
 
-dhis2.storage.Store.plugins = {};
+/*
+var STUDENT_STORE = 'students';
+var COURSE_STORE = 'courses';
 
-dhis2.storage.Store.plugin = function ( id, obj ) {
-    var Store = dhis2.storage.Store;
-    var plugin_interface = "call".split( ' ' );
+var store1 = new dhis2.storage.Store( {
+    name: 'store',
+    adapters: [ dhis2.storage.InMemoryAdapter ],
+    objectStores: [ STUDENT_STORE ]
+} );
 
-    var missing_functions = [];
-    // verify plugin
-    for ( var i in plugin_interface ) {
-        if ( !obj.hasOwnProperty( plugin_interface[i] ) || typeof obj[plugin_interface[i]] !== 'function' ) {
-            missing_functions.push( plugin_interface[i] );
-        }
-    }
+var store2 = new dhis2.storage.Store( {
+    name: 'store',
+    adapters: [ dhis2.storage.InMemoryAdapter ],
+    objectStores: [ COURSE_STORE ]
+} );
 
-    if ( missing_functions.length > 0 ) {
-        throw 'Plugin\'' + id + '\' does not meet interface requirements, missing: ' + missing_functions.join( ' ' );
-    }
+var students = [
+    {'id': 'abc1', name: 'Morten 1'},
+    {'id': 'abc2', name: 'Morten 2'},
+    {'id': 'abc3', name: 'Morten 3'},
+    {'id': 'abc4', name: 'Morten 4'},
+];
 
-    obj['id'] = id;
-    Store.plugins[id] = obj;
-};
+var courses = [
+    {'id': 'abc1', name: 'Morten 1'},
+    {'id': 'abc2', name: 'Morten 2'},
+    {'id': 'abc3', name: 'Morten 3'},
+    {'id': 'abc4', name: 'Morten 4'},
+];
+
+store1.open().done( function () {
+    store1.setAll( STUDENT_STORE, students ).then( function () {
+        store1.count( STUDENT_STORE ).done( function ( n ) {
+            console.log( n );
+        } );
+    } );
+} );
+
+store2.open().done( function () {
+    store2.setAll( COURSE_STORE, courses ).then( function () {
+        store2.count( COURSE_STORE ).done( function ( n ) {
+            console.log( n );
+        } );
+    } );
+} );
+*/
