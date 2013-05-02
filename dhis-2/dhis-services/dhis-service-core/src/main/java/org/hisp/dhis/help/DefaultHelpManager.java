@@ -55,11 +55,11 @@ public class DefaultHelpManager
     // -------------------------------------------------------------------------
 
     public void getHelpContent( OutputStream out, String id, Locale locale )
-    {        
+    {
         try
         {
             ClassPathResource classPathResource = resolveHelpFileResource( locale );
-            
+
             Source source = new StreamSource( classPathResource.getInputStream(), ENCODING_UTF8 );
 
             Result result = new StreamResult( out );
@@ -81,7 +81,7 @@ public class DefaultHelpManager
         try
         {
             ClassPathResource classPathResource = resolveHelpFileResource( locale );
-            
+
             Source source = new StreamSource( classPathResource.getInputStream(), ENCODING_UTF8 );
 
             Result result = new StreamResult( out );
@@ -115,13 +115,13 @@ public class DefaultHelpManager
         if ( locale != null && locale.getDisplayLanguage() != null )
         {
             helpFile = "help_content_" + locale.getLanguage() + "_" + locale.getCountry() + ".xml";
-            
+
             log.debug( "Help file: " + helpFile );
         }
         else
         {
             helpFile = "help_content.xml";
-            
+
             log.debug( "Help file: " + helpFile );
         }
 
@@ -130,10 +130,10 @@ public class DefaultHelpManager
         if ( !classPathResource.exists() )
         {
             helpFile = "help_content.xml";
-            
+
             classPathResource = new ClassPathResource( helpFile );
-            
-            log.warn( "Help file: " + helpFile + " not available on classpath" );            
+
+            log.warn( "Help file: " + helpFile + " not available on classpath" );
         }
 
         return classPathResource;
