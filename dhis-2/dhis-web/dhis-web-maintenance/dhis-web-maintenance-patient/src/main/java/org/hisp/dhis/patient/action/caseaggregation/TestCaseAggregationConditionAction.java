@@ -143,8 +143,9 @@ public class TestCaseAggregationConditionAction
         period.setStartDate( new Date() );
         period.setEndDate( new Date() );
 
-        Double value = aggregationConditionService.getAggregateValue( aggCondition, orgunit, period );
+//        Double value = aggregationConditionService.getAggregateValue( aggCondition, orgunit, period );
 
+        Double value = null;
         if ( value == null )
         {
             return INPUT;
