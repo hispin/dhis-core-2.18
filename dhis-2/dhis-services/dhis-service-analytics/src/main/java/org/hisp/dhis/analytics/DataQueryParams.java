@@ -1021,11 +1021,6 @@ public class DataQueryParams
         return list;
     }
     
-    public void setDataElementGroupSet( Dimension dimension, List<? extends IdentifiableObject> dataElementGroups )
-    {
-        setDimensionOptions( dimension.getDimension(), DimensionType.DATAELEMENT_GROUPSET, null, asList( dataElementGroups ) );
-    }
-    
     public void enableCategoryOptionCombos()
     {
         setDimensionOptions( CATEGORYOPTIONCOMBO_DIM_ID, DimensionType.CATEGORY_OPTION_COMBO, null, new ArrayList<IdentifiableObject>() );
