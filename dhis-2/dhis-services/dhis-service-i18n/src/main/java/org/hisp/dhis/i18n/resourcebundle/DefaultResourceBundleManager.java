@@ -177,10 +177,6 @@ public class DefaultResourceBundleManager
         {
             throw new ResourceBundleManagerException( "Failed to get jar file: " + url, e );
         }
-        finally
-        {
-            IOUtils.closeQuietly( jar );
-        }
         
         return availableLocales;
     }
