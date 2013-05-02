@@ -15,8 +15,6 @@
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager"
 		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionManager">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
-		<property name="statementBuilder" ref="statementBuilder" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
