@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.caseaggregation;
 
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
@@ -54,21 +53,14 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.ConcurrentUtils;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,17 +87,11 @@ public class DefaultCaseAggregationConditionService
 
     private DataElementService dataElementService;
 
-    private PatientService patientService;
-
-    private PatientDataValueService dataValueService;
-
     private ProgramStageService programStageService;
 
     private ProgramService programService;
 
     private PatientAttributeService patientAttributeService;
-
-    private ProgramStageInstanceService programStageInstanceService;
 
     private I18nService i18nService;
 
@@ -122,12 +108,6 @@ public class DefaultCaseAggregationConditionService
     {
         this.aggregationConditionManager = aggregationConditionManager;
     }
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
@@ -161,16 +141,6 @@ public class DefaultCaseAggregationConditionService
     public int addCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
         return aggregationConditionStore.save( caseAggregationCondition );
-    }
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    public void setDataValueService( PatientDataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     @Override
@@ -222,138 +192,7 @@ public class DefaultCaseAggregationConditionService
     public void insertAggregateValue( CaseAggregationCondition caseAggregationCondition,
         Collection<Integer> orgunitIds, Period period )
     {
-        aggregationConditionManager.insertAggregateValue( caseAggregationCondition, orgunitIds, period);
-    }
-        
-    @Override
-    public Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition,
-        Collection<Integer> orgunitIds, Period period )
-    {
-        // get params
-
-        String startDate = DateUtils.getMediumDateString( period.getStartDate() );
-        String endDate = DateUtils.getMediumDateString( period.getEndDate() );
-        DataElement deSum = aggregationCondition.getDeSum();
-        Integer deSumId = (deSum == null) ? null : deSum.getId();
-
-        Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
-
-//        String sql = aggregationConditionManager.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
-//            aggregationCondition.getOperator(), deSumId, orgunitIds, startDate, endDate );
-
-        String sql = "";
-        Collection<DataElement> dataElements = getDataElementsInCondition( aggregationCondition
-            .getAggregationExpression() );
-
-        if ( dataElements.size() > 0 )
-        {
-            Collection<Integer> patientIds = aggregationConditionManager.executeSQL( sql );
-
-            for ( Integer patientId : patientIds )
-            {
-                Patient patient = patientService.getPatient( patientId );
-
-                Collection<PatientDataValue> dataValues = dataValueService.getPatientDataValues( patient, dataElements,
-                    period.getStartDate(), period.getEndDate() );
-
-                result.addAll( dataValues );
-            }
-        }
-
-        return result;
-    }
-
-    public Collection<Patient> getPatients( CaseAggregationCondition aggregationCondition,
-        Collection<Integer> orgunitIds, Period period )
-    {
-        DataElement deSum = aggregationCondition.getDeSum();
-        Integer deSumId = (deSum == null) ? null : deSum.getId();
-
-//        String sql = aggregationConditionManager
-//            .parseExpressionToSql( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
-//                deSumId, orgunitIds, DateUtils.getMediumDateString( period.getStartDate() ),
-//                DateUtils.getMediumDateString( period.getEndDate() ) );
-
-        String sql = "";
-        Collection<Patient> result = new HashSet<Patient>();
-
-        Collection<Integer> patientIds = aggregationConditionManager.executeSQL( sql );
-
-        if ( patientIds != null )
-        {
-            for ( Integer patientId : patientIds )
-            {
-                result.add( patientService.getPatient( patientId ) );
-            }
-        }
-
-        return result;
-    }
-
-    public Collection<ProgramStageInstance> getProgramStageInstances( CaseAggregationCondition aggregationCondition,
-        Collection<Integer> orgunitIds, Period period )
-    {
-        Collection<ProgramStageInstance> result = new HashSet<ProgramStageInstance>();
-
-        // get params
-        String startDate = DateUtils.getMediumDateString( period.getStartDate() );
-        String endDate = DateUtils.getMediumDateString( period.getEndDate() );
-
-        String operator = aggregationCondition.getOperator();
-        String sql = "";
-        if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT )
-            || operator.equals( CaseAggregationCondition.AGGRERATION_SUM ) )
-        {
-            aggregationCondition.setOperator( AGGRERATION_SUM );
-
-            // get params
-
-            DataElement deSum = aggregationCondition.getDeSum();
-            Integer deSumId = (deSum == null) ? null : deSum.getId();
-
-//            sql = aggregationConditionManager.parseExpressionToSql( aggregationCondition.getAggregationExpression(),
-//                aggregationCondition.getOperator(), deSumId, orgunitIds, startDate, endDate );
-            sql = "";
-        }
-        else
-        {
-            sql = "SELECT psi.programstageinstanceid ";
-            sql += "FROM patientdatavalue pdv ";
-            sql += "    INNER JOIN programstageinstance psi  ";
-            sql += "    ON psi.programstageinstanceid = pdv.programstageinstanceid ";
-            sql += "WHERE executiondate >='" + DateUtils.getMediumDateString( period.getStartDate() ) + "'  ";
-            sql += "    AND executiondate <='" + DateUtils.getMediumDateString( period.getEndDate() )
-                + "' AND pdv.dataelementid=" + aggregationCondition.getDeSum().getId();
-
-            if ( aggregationCondition.getAggregationExpression() != null
-                && !aggregationCondition.getAggregationExpression().isEmpty() )
-            {
-                sql = sql + " AND pdv.programstageinstanceid in ( ";
-
-                // Get params
-
-                DataElement deSum = aggregationCondition.getDeSum();
-                Integer deSumId = (deSum == null) ? null : deSum.getId();
-
-//                String conditionSql = aggregationConditionManager.parseExpressionToSql(
-//                    aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(), deSumId,
-//                    orgunitIds, DateUtils.getMediumDateString( period.getStartDate() ),
-//                    DateUtils.getMediumDateString( period.getEndDate() ) );
-//
-//                sql += conditionSql + " ) ";
-                
-                sql = "";
-            }
-        }
-
-        Collection<Integer> stageInstanceIds = aggregationConditionManager.executeSQL( sql );
-
-        for ( Integer stageInstanceId : stageInstanceIds )
-        {
-            result.add( programStageInstanceService.getProgramStageInstance( stageInstanceId ) );
-        }
-
-        return result;
+        aggregationConditionManager.insertAggregateValue( caseAggregationCondition, orgunitIds, period );
     }
 
     public String getConditionDescription( String condition )

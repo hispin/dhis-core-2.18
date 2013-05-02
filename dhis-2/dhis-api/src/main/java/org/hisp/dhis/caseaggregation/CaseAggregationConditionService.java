@@ -35,12 +35,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
  * @author Chau Thu Tran
@@ -71,16 +68,7 @@ public interface CaseAggregationConditionService
 
     void insertAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
         Period period );
-
-    Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition,
-        Collection<Integer> orgunitIds, Period period );
-
-    Collection<Patient> getPatients( CaseAggregationCondition aggregationCondition, Collection<Integer> orgunitIds,
-        Period period );
-
-    Collection<ProgramStageInstance> getProgramStageInstances( CaseAggregationCondition aggregationCondition,
-        Collection<Integer> orgunitIds, Period period );
-
+    
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
 
     Collection<Program> getProgramsInCondition( String aggregationExpression );
