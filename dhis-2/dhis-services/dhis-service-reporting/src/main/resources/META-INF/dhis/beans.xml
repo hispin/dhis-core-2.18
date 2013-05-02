@@ -133,6 +133,10 @@
 	<property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
+  <bean id="org.hisp.dhis.datasetreport.AnalyticsDataSetReportStore" class="org.hisp.dhis.datasetreport.jdbc.AnalyticsDataSetReportStore">
+    <property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
+  </bean>
+  
   <!-- Dashboard -->
 
   <bean id="org.hisp.dhis.dashboard.DashboardContentStore" class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardContentStore">

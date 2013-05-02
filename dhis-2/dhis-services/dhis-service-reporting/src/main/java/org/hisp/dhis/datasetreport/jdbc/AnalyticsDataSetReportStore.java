@@ -184,6 +184,16 @@ public class AnalyticsDataSetReportStore
         params.setPeriods( getList( period ) );
         params.setOrganisationUnits( getList( unit ) );
         
-        return analyticsService.getAggregatedDataValueMap( params );
+        Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
+
+        Map<String, Double> dataMap = new HashMap<String, Double>();
+        
+        for ( Entry<String, Double> entry : map.entrySet() )
+        {
+            String[] split = entry.getKey().split( SEPARATOR );            
+            dataMap.put( split[0], entry.getValue() );
+        }
+        
+        return dataMap;
     }
 }
