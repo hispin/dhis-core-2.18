@@ -210,6 +210,7 @@ function getProgramStages()
 function getPatientDataElements()
 {
 	clearListById( 'dataElements' );
+	clearListById( 'dataElementBackups' );
 	clearListById( 'deSumId' );
 	var programStageId = getFieldValue('programStageId');
 	
@@ -226,11 +227,16 @@ function getPatientDataElements()
 			else{
 				disable('programStageProperty');
 			}
+			
 			var dataElements = jQuery('#dataElements');
+			var dataElementBackups = jQuery('#dataElementBackups');
+			clearListById( 'dataElements' );
+			clearListById( 'dataElementBackups' );
 			var deSumId = jQuery('#deSumId');
 			for ( i in json.dataElements )
 			{ 
 				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+				dataElementBackups.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
 				if( json.dataElements[i].type=='int')
 				{
 					deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
@@ -435,3 +441,23 @@ function operatorOnchange(operator)
 		disable('deSumId');
 	}
 }
+
+function filterDataElement( event, value, fieldName, backupFieldsName )
+{
+	// Remove all options in data element fields
+	var field = jQuery('#' + fieldName + " option " ).remove();
+	
+	jQuery('#' + backupFieldsName + " option ").each( function(){
+		var option = jQuery(this);
+		if(value.length == 0 )
+		{
+			jQuery('#' + fieldName ).append( "<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "'>" + option.text() + "</option>" );				
+		}
+		else if (option.text().toLowerCase().indexOf( value.toLowerCase() ) != -1 )
+		{
+			jQuery('#' + fieldName ).append( "<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "'>" + option.text() + "</option>" );				
+		}
+	});
+		    
+}
+
