@@ -36,9 +36,9 @@
 						#elseif($velocityCount==2)
 							#set($categoryoptioncomboid=$col)
 						#elseif($velocityCount==3)
-							#set($periodid=$col)
-						#elseif($velocityCount==4)
 							#set($organisationunitid=$col)
+						#elseif($velocityCount==6)
+							#set($periodid=$col)
 						#elseif($velocityCount==$row.size())
 							#set($value=$col)
 						#end
