@@ -50,6 +50,8 @@
 <div id='addRelationshipDiv'></div> <!-- Add relationship -->
 <div id='migrationPatientDiv'></div> <!-- Migration Patient -->
 			
+<span id='message'></span>
+
 <script type="text/javascript">
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
 	var i18n_please_select_village = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_village" ), "'")' + ']';
