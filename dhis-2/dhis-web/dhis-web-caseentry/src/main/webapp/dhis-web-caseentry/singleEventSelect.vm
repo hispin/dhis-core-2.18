@@ -49,8 +49,6 @@
 <div id='listRelationshipDiv'></div> <!-- List relationship -->
 <div id='addRelationshipDiv'></div> <!-- Add relationship -->
 <div id='migrationPatientDiv'></div> <!-- Migration Patient -->
-			
-<span id='message'></span>
 
 <script type="text/javascript">
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
