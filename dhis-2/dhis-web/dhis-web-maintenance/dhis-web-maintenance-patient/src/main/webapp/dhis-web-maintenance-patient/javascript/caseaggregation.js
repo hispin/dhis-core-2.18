@@ -461,8 +461,7 @@ function filterDataElement( event, value, fieldName, backupFieldsName )
 		    
 }
 
-
-function sortByOnChange(sortBy)
+function sortByOnChange( sortBy )
 {
 	if( sortBy == 1)
 	{
@@ -498,5 +497,45 @@ function sortByOnChange(sortBy)
 
 		});
 	} 
+}
+
+function displayNameOnChange( displayName )
+{
+	// display - name
+	if(displayName=='1'){
+		jQuery('#dataElements option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('dename');
+			item[0].title = item[0].text;
+		});
+		jQuery('#dataElementBackups option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('dename');
+		});
+	}
+	// display - code
+	else if(displayName=='2'){
+		jQuery('#dataElements option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('decode');
+			item[0].title = item[0].text;
+		});
+		jQuery('#dataElementBackups option').each(function(){
+			var item = jQuery(this);
+			item[0].text = item.attr('decode');
+		});
+	}
+	// display - code and name
+	else{
+		jQuery('#dataElements option').each(function(){
+			var item = jQuery(this);
+			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
+			item[0].title = item[0].text;
+		});
+		jQuery('#dataElementBackups option').each(function(){
+			var item = jQuery(this);
+			item[0].text = "(" + item.attr('decode') + ") " + item.attr('dename');
+		});
+	}
 }
 

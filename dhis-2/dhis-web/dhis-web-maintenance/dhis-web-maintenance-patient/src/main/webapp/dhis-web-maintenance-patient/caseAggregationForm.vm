@@ -8,31 +8,37 @@
 	<div id="tab-1">
 	  <table>
         <tr>
+			<th>$i18n.getString("display_name")</th>
 			<td>
-				<label for="dataelement">$i18n.getString( "dataelement" )</label>
-				<span align='right' style="background:#ADD8E6;padding-left:45px; padding-top:3px; padding-bottom:3px">
-					$i18n.getString( "sort_by" )
-					<input type='radio' name='sortBy' value='1' onchange="sortByOnChange('1')" checked >$i18n.getString("name")
-					<input type='radio' name='sortBy' value='2' onchange="sortByOnChange('2')">$i18n.getString("code") &nbsp;&nbsp;&nbsp;
-				</span>
+				<select id='displayNameOption' style="width:220px" onchange='displayNameOnChange( this.value )'>
+					<option value='1'>$i18n.getString("name")</option>
+					<option value='2'>$i18n.getString("code")</option>
+					<option value='3'>$i18n.getString("code_and_name")</option>
+				</select>
 			</td>
 			<td>
 				<label for="availableValues">$i18n.getString( "available_values" )</label>&nbsp;
 				<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button" onClick="insertMultiValues('suggestedDEValues');" >
 			</td>
         </tr>
-        
-        <tr>
+		<tr>
+			<th>$i18n.getString( "sort_by" )</th>
 			<td>
+				<input type='radio' name='sortBy' value='1' onchange="sortByOnChange('1')" checked >$i18n.getString("name")
+				<input type='radio' name='sortBy' value='2' onchange="sortByOnChange('2')">$i18n.getString("code") &nbsp;&nbsp;&nbsp;
+			</td>
+			<td rowspan="3">
+				<select name="suggestedDEValues" size="12" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
+			</td>
+		</tr>
+        <tr>
+			<td colspan='2'>
 				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:265px;'/>
 				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			
 			</td>
-            <td rowspan="4">
-				<select name="suggestedDEValues" size="10" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
-			</td>
         </tr>
         <tr>
-			<td>
+			<td colspan='2'>
 				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>
 				<select id="dataElementBackups" name="dataElementBackups" style='display:none;'></select>
 			</td>
