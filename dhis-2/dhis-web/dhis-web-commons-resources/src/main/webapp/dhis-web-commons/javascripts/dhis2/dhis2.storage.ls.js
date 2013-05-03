@@ -56,8 +56,6 @@ dhis2.util.namespace( 'dhis2.storage' );
             }
         } );
 
-        this.customApi = 'Indexer storage'.split( ' ' );
-
         this.Indexer = function ( name, objectStore, storage ) {
             return {
                 key: name + '.' + objectStore + '.**index**',
@@ -328,6 +326,10 @@ dhis2.util.namespace( 'dhis2.storage' );
     } );
 
     Object.defineProperties( dhis2.storage.DomLocalStorageAdapter, {
+        'adapterName': {
+            value: 'DomLocalStorageAdapter',
+            enumerable: true
+        },
         'isSupported': {
             value: function () {
                 return !!window.localStorage;

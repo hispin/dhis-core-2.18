@@ -73,23 +73,25 @@ dhis2.util.namespace( 'dhis2.storage' );
         'open': {
             value: function () {
                 var self = this;
-                var request = window.indexedDB.open( this.name, self.version );
+                var deferred = $.Deferred();
+
+                var request = window.indexedDB.open( self.name, self.version );
 
                 request.onupgradeneeded = function ( e ) {
                     self._db = e.target.result;
 
                     $.each( self.objectStoreNames, function ( idx, item ) {
                         if ( self._db.objectStoreNames.contains( item ) ) {
+                            console.log( 'delete' );
                             self._db.deleteObjectStore( item );
                         }
                     } );
 
                     $.each( self.objectStoreNames, function ( idx, item ) {
+                        console.log( 'create' );
                         self._db.createObjectStore( item );
                     } );
                 };
-
-                var deferred = $.Deferred();
 
                 request.onsuccess = function ( e ) {
                     self._db = e.target.result;
@@ -113,6 +115,7 @@ dhis2.util.namespace( 'dhis2.storage' );
         'set': {
             value: function ( store, object ) {
                 var self = this;
+                var deferred = $.Deferred();
 
                 if ( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
@@ -130,8 +133,6 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var tx = self._db.transaction( [ store ], "readwrite" );
                 var objectStore = tx.objectStore( store );
                 var request = objectStore.put( object, key );
-
-                var deferred = $.Deferred();
 
                 request.onsuccess = function () {
                     deferred.resolveWith( self, [ object ] );
@@ -154,8 +155,9 @@ dhis2.util.namespace( 'dhis2.storage' );
         'setAll': {
             value: function ( store, arr ) {
                 var self = this;
-                var deferred = $.Deferred();
-                var chained = deferred.then();
+                var deferred1 = $.Deferred();
+                var deferred2 = $.Deferred();
+                var chained = deferred2.promise();
 
                 $.each( arr, function ( idx, item ) {
                     chained = chained.then( function () {
@@ -163,9 +165,13 @@ dhis2.util.namespace( 'dhis2.storage' );
                     } );
                 } );
 
-                deferred.resolveWith( this );
+                chained = chained.then( function () {
+                    deferred1.resolveWith( this );
+                } );
 
-                return chained;
+                deferred2.resolve();
+
+                return deferred1.promise();
             },
             enumerable: true
         },
@@ -481,6 +487,10 @@ dhis2.util.namespace( 'dhis2.storage' );
     } );
 
     Object.defineProperties( dhis2.storage.IndexedDBAdapter, {
+        'adapterName': {
+            value: 'IndexedDBAdapter',
+            enumerable: true
+        },
         'isSupported': {
             value: function () {
                 return !!(window.indexedDB && window.IDBTransaction && window.IDBKeyRange);

@@ -328,6 +328,10 @@ dhis2.util.namespace( 'dhis2.storage' );
     } );
 
     Object.defineProperties( dhis2.storage.DomSessionStorageAdapter, {
+        'adapterName': {
+            value: 'DomSessionStorageAdapter',
+            enumerable: true
+        },
         'isSupported': {
             value: function () {
                 return !!window.sessionStorage;
