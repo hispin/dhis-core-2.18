@@ -44,6 +44,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datasetreport.DataSetReportStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -67,7 +68,8 @@ public class JdbcDataSetReportStore
     // DataSetReportStore implementation
     // -------------------------------------------------------------------------
 
-    public Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, boolean rawData )
+    public Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, 
+        Set<OrganisationUnitGroup> groups, boolean rawData )
     {
         Map<String, Double> map = new HashMap<String, Double>();
         
@@ -109,7 +111,7 @@ public class JdbcDataSetReportStore
         return map;
     }
     
-    public Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit )
+    public Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups )
     {
         Map<String, Double> map = new HashMap<String, Double>();
         
@@ -148,7 +150,7 @@ public class JdbcDataSetReportStore
         return map;
     }
     
-    public Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit )
+    public Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups )
     {
         Map<String, Double> map = new HashMap<String, Double>();
         
@@ -181,7 +183,7 @@ public class JdbcDataSetReportStore
         return map;
     }
     
-    public Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit )
+    public Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups )
     {
         Map<String, Double> map = new HashMap<String, Double>();
         
