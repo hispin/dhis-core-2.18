@@ -78,3 +78,6 @@
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <div id='caseAggregationResult' style='none'></div>
+
+<span id='message'></span>
+
