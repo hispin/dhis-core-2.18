@@ -296,10 +296,21 @@ public class JdbcCaseAggregationConditionManager
                     sql += operator + " (distinct(psi.programinstanceid ) ) as value ";
                 }
 
-                sql += "FROM programstageinstance as psi "
-                    + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
-                    + "INNER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid "
-                    + "INNER JOIN patient p on p.patientid=pi.patientid WHERE "
+                sql += "FROM programstageinstance as psi ";
+                boolean hasPatients = hasPatientCriteria( caseExpression );
+                boolean hasProgramInstances = hasProgramInstanceCriteria( caseExpression );
+
+                if ( hasPatients )
+                {
+                    sql += "INNER JOIN patient p on p.patientid=pi.patientid  ";
+                    sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
+                }
+                if ( (hasProgramInstances && !hasPatients)
+                    || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+                {
+                    sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
+                }
+                sql += "INNER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid WHERE "
                     + createSQL( caseExpression, operator, orgunitIds,
                         DateUtils.getMediumDateString( period.getStartDate() ),
                         DateUtils.getMediumDateString( period.getEndDate() ) );
@@ -769,8 +780,7 @@ public class JdbcCaseAggregationConditionManager
     private String getConditionForCountProgramStage( String programStageId, String operator,
         Collection<Integer> orgunitIds, String startDate, String endDate )
     {
-        String sql = " EXISTS ( SELECT * " + "FROM programstageinstance as _psi "
-            + "INNER JOIN programinstance as _pi ON psi.programinstanceid=psi.programinstanceid "
+        String sql = " EXISTS ( SELECT * FROM programstageinstance as _psi "
             + "WHERE psi.programstageinstanceid=_psi.programstageinstanceid AND _psi.organisationunitid in ("
             + TextUtils.getCommaDelimitedString( orgunitIds ) + ") and _psi.programstageid = " + programStageId + " "
             + "AND _psi.executionDate >= '" + startDate + "' AND _psi.executionDate <= '" + endDate + "' "
@@ -861,6 +871,51 @@ public class JdbcCaseAggregationConditionManager
             String[] info = match.split( SEPARATOR_OBJECT );
 
             if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasPatientCriteria( String expresstion )
+    {
+        Pattern pattern = Pattern.compile( CaseAggregationCondition.regExp );
+        Matcher matcher = pattern.matcher( expresstion );
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+
+            if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT )
+                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_PROPERTY ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasProgramInstanceCriteria( String expresstion )
+    {
+        Pattern pattern = Pattern.compile( CaseAggregationCondition.regExp );
+        Matcher matcher = pattern.matcher( expresstion );
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+
+            if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY )
+                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM )
+                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM_STAGE ) )
             {
                 return true;
             }
