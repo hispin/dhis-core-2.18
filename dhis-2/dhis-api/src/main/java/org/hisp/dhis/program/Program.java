@@ -37,6 +37,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -121,9 +122,14 @@ public class Program
     private Boolean remindCompleted = false;
 
     private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
-    
+
     private Boolean disableRegistrationFields = false;
-    
+
+    /**
+     * All OrganisationUnitGroup that register data with this program.
+     */
+    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -515,4 +521,13 @@ public class Program
         this.disableRegistrationFields = disableRegistrationFields;
     }
 
+    public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
+
+    public void setOrganisationUnitGroups( Set<OrganisationUnitGroup> organisationUnitGroups )
+    {
+        this.organisationUnitGroups = organisationUnitGroups;
+    }
 }
