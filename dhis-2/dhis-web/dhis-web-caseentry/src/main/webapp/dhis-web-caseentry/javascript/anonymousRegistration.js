@@ -1,133 +1,73 @@
 var DAO = DAO || {};
 
-DAO.metaData = new dhis2.storage.Store( {
-    name: 'dhis2',
-    adapters: [ dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ],
-    objectStores: [ 'programs', 'programStages', 'optionSets', 'usernames' ]
-} );
+var PROGRAMS_STORE = 'anonymousPrograms';
+var PROGRAM_STAGES_STORE = 'anonymousProgramStages';
+var OPTION_SET_STORE = 'optionSets';
+var USERNAME_STORE = 'usernames';
+var OFFLINE_DATA_STORE = 'anonymousOfflineData';
 
-DAO.offlineData = new dhis2.storage.Store( {
-    name: 'dhis2',
-    adapters: [ dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ],
-    objectStores: [ 'dataValues' ]
-} );
-
-DAO.metaData.open();
-DAO.offlineData.open();
-
-function loadPrograms() {
-    var def = $.Deferred();
-
-    $.ajax({
-        url: 'getProgramMetaData.action',
-        dataType: 'json'
-    } ).done(function(data) {
-        var programs = _.values( data.metaData.programs );
-        DAO.metaData.setAll('programs', programs ).then(function() {
-            def.resolve(data.metaData);
-        });
-    } ).always(function() {
-        def.resolve();
+function initalizeProgramStages() {
+    DAO.programStages = new dhis2.storage.Store( {name: PROGRAM_STAGES_STORE, adapter: 'dom-ss'}, function(store) {
+        $( document ).trigger('dhis2.anonymous.programStagesInitialized');
     });
-
-    return def.promise();
 }
 
-function loadProgramStages( metaData ) {
-    if(!metaData) {
-        return;
-    }
+function initializePrograms() {
+    DAO.programs = new dhis2.storage.Store( {name: PROGRAMS_STORE, adapter: 'dom-ss'}, function ( store ) {
+        jQuery.getJSON( "getProgramMetaData.action", {},function ( data ) {
+            var keys = _.keys( data.metaData.programs );
+            var objs = _.values( data.metaData.programs );
 
-    var deferred1 = $.Deferred();
-    var deferred2 = $.Deferred();
-    var promise = deferred2.promise();
+            DAO.programs.addAll( keys, objs, function ( store ) {
+                var deferred = $.Deferred();
+                var promise = deferred.promise();
 
-    _.each( _.values(metaData.programs), function(el, idx) {
-        var psid = el.programStages[0].id;
-        var data = createProgramStage(psid);
+                _.each( _.values(data.metaData.programs), function(el, idx) {
+                    var psid = el.programStages[0].id;
 
-        promise = promise.then(function() {
-            return $.ajax( {
-                url: 'dataentryform.action',
-                data: data,
-                dataType: 'html'
-            } ).done(function(data) {
-                var obj = {};
-                obj.id = psid;
-                obj.form = data;
-                DAO.metaData.set('programStages', obj);
-            });
-        });
-    });
+                    promise = promise.pipe(function () {
+                        return loadProgramStage(psid);
+                    });
+                });
 
-    promise = promise.then(function() {
-        deferred1.resolve( metaData );
-    });
+                promise = promise.pipe(function() {
+                    loadOptionSets( data.metaData.optionSets, data.metaData.usernames );
+                });
 
-    deferred2.resolve();
+                deferred.resolve();
 
-    return deferred1.promise();
-}
-
-function loadOptionSets(metaData) {
-    if(!metaData) {
-        return;
-    }
-
-    var deferred1 = $.Deferred();
-    var deferred2 = $.Deferred();
-    var promise = deferred2.promise();
-
-    _.each( metaData.optionSets, function ( item, idx ) {
-        promise = promise.then( function () {
-            return $.ajax( {
-                url: 'getOptionSet.action?dataElementUid=' + item,
-                dataType: 'json'
-            } ).done( function ( data ) {
-                var obj = {};
-                obj.id = item;
-                obj.optionSet = data.optionSet;
-                DAO.metaData.set('optionSets', obj);
+                selection.setListenerFunction( organisationUnitSelected );
+                $( document ).trigger('dhis2.anonymous.programsInitialized');
             } );
+        } ).fail( function () {
+            DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function() {} );
+            DAO.usernames = new dhis2.storage.Store( {name: USERNAME_STORE, adapter: 'dom-ss'}, function() {} );
+
+            selection.setListenerFunction( organisationUnitSelected );
+            $( document ).trigger('dhis2.anonymous.programsInitialized');
         } );
     } );
+}
 
-    if ( metaData.usernames ) {
-        promise = promise.then( function() {
-            return $.ajax( {
-                url: 'getUsernames.action',
-                dataType: 'json'
-            } ).done( function (data) {
-                var obj = {};
-                obj.id = 'usernames';
-                obj.usernames = data.usernames;
-                DAO.metaData.set('usernames', obj);
-            } )
-        } );
-    }
-
-    promise = promise.then(function() {
-        deferred1.resolve( metaData );
+function initializeOfflineData() {
+    DAO.offlineData = new dhis2.storage.Store( {name: OFFLINE_DATA_STORE, adapter: 'dom'}, function(store) {
+        $( document ).trigger('dhis2.anonymous.offlineData');
     });
-
-    deferred2.resolve();
-
-    return deferred1.promise();
 }
 
 function updateOfflineEvents() {
-    var no_offline_template = $( '#no-offline-event-template' );
-    var no_offline_template_compiled = _.template( no_offline_template.html() );
-
-    var offline_template = $( '#offline-event-template' );
-    var offline_template_compiled = _.template( offline_template.html() );
-
-    return DAO.offlineData.getAll( 'dataValues' ).done( function ( arr ) {
+    DAO.offlineData.fetchAll(function(store, arr) {
         var orgUnitId = selection.getSelected();
         var programId = $('#programId').val();
 
         var target = $( '#offlineEventList' );
         target.children().remove();
+
+        var no_offline_template = $( '#no-offline-event-template' );
+        var no_offline_template_compiled = _.template( no_offline_template.html() );
+
+        var offline_template = $( '#offline-event-template' );
+        var offline_template_compiled = _.template( offline_template.html() );
 
         if ( arr.length > 0 ) {
             var matched = false;
@@ -149,7 +89,9 @@ function updateOfflineEvents() {
         } else {
             target.append( no_offline_template_compiled() );
         }
-    } );
+
+        $( document ).trigger('dhis2.anonymous.checkOfflineEvents');
+    });
 }
 
 function showOfflineEvents() {
@@ -163,10 +105,12 @@ function hideOfflineEvents() {
 var haveLocalData = false;
 
 function checkOfflineData(callback) {
-    return DAO.offlineData.getAll( 'dataValues' ).done( function ( arr ) {
+    DAO.offlineData.fetchAll( function ( store, arr ) {
         haveLocalData = arr.length > 0;
+        $( document ).trigger('dhis2.anonymous.checkOfflineData');
+
         if(callback && typeof callback == 'function') callback(haveLocalData);
-    });
+    } );
 }
 
 function uploadOfflineData( item ) {
@@ -176,7 +120,7 @@ function uploadOfflineData( item ) {
         data: JSON.stringify( item )
     } ).done(function(json) {
         if ( json.response == 'success' ) {
-            DAO.offlineData.delete( 'dataValues', item.id ).done( function () {
+            DAO.offlineData.remove( item.key, function ( store ) {
                 updateOfflineEvents();
                 searchEvents( eval( getFieldValue( 'listAll' ) ) );
             } );
@@ -187,7 +131,7 @@ function uploadOfflineData( item ) {
 function uploadLocalData() {
     setHeaderWaitMessage( i18n_uploading_data_notification );
 
-    DAO.offlineData.getAll( 'dataValues' ).done( function ( arr ) {
+    DAO.offlineData.fetchAll( function ( store, arr ) {
         if(arr.length == 0) {
             setHeaderDelayMessage( i18n_sync_success );
             return;
@@ -207,7 +151,7 @@ function uploadLocalData() {
         });
 
         deferred.resolve();
-    });
+    } );
 }
 
 function sync_failed_button() {
@@ -226,21 +170,16 @@ $( document ).ready( function () {
     } );
 
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
-        var def = $.Deferred();
-        var promise = def.promise();
-        promise = promise.then(loadPrograms);
-        promise = promise.then(loadProgramStages);
-        promise = promise.then(loadOptionSets);
-        promise = promise.then(updateOfflineEvents);
-        promise = promise.then(checkOfflineData);
-        promise = promise.then(function() {
-            selection.setListenerFunction( organisationUnitSelected );
-
+        $( document ).one( 'dhis2.anonymous.programStagesInitialized', initializePrograms );
+        $( document ).one( 'dhis2.anonymous.programsInitialized', updateOfflineEvents );
+        $( document ).one( 'dhis2.anonymous.checkOfflineEvents', checkOfflineData );
+        $( document ).one( 'dhis2.anonymous.checkOfflineData', function () {
             dhis2.availability.startAvailabilityCheck();
             selection.responseReceived();
-        });
+        } );
 
-        def.resolve();
+        initalizeProgramStages();
+        initializeOfflineData();
     } );
 
     $( document ).bind( 'dhis2.online', function ( event, loggedIn ) {
@@ -353,7 +292,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
     hideById( 'listDiv' );
     hideById( 'dataEntryInfor' );
 
-    DAO.metaData.getAll( 'programs' ).done( function (arr) {
+    DAO.programs.fetchAll( function ( store, arr ) {
         var programs = [];
 
         $.each( arr, function ( idx, item ) {
@@ -378,7 +317,7 @@ function updateProgramList( arr ) {
 
     for ( var i = 0; i < arr.length; i++ ) {
         jQuery( '#programId' ).append(
-            '<option value="' + arr[i].id
+            '<option value="' + arr[i].key
             + '" puid="' + arr[i].uid
             + '" programType="' + arr[i].type
             + '" psid="' + arr[i].programStages[0].id
@@ -808,9 +747,10 @@ function removeEvent( programStageId ) {
 
     if( s.indexOf("local") != -1) {
         if ( confirm( i18n_comfirm_delete_event ) ) {
-            DAO.offlineData.delete( 'dataValues', programStageId ).always( function () {
+            DAO.offlineData.remove(programStageId, function(store) {
+                // redisplay list
                 updateOfflineEvents();
-            } );
+            });
         }
     } else {
         removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );
@@ -970,7 +910,7 @@ var service = (function () {
                 }
             } ).fail( function () {
                 if(programStageInstanceId == 0) {
-                    DAO.offlineData.getKeys( 'dataValues' ).done( function ( keys ) {
+                    DAO.offlineData.keys(function(store, keys) {
                         var i = 100;
 
                         for(; i<10000; i++) {
@@ -984,11 +924,10 @@ var service = (function () {
                         showUpdateEvent( programStageInstanceId );
 
                         var data = {};
-                        data.id = programStageInstanceId;
                         data.executionDate = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
                         data.executionDate.completed = false;
 
-                        this.set( 'dataValues', data );
+                        DAO.offlineData.add(programStageInstanceId, data);
                     });
                 } else {
                     // if we have a programStageInstanceId, just reuse that one
@@ -1064,35 +1003,65 @@ function createExecutionDate( programId, programStageInstanceId, executionDate, 
     return data;
 }
 
-function createProgramStage( programStageId, programStageInstanceId, organisationUnitId ) {
-    var data = {};
+function loadProgramStage( programStageId, programStageInstanceId, organisationUnitId, success, fail ) {
+    DAO.programStages.fetch(programStageId, function(store, arr) {
+        if ( arr.length > 0 ) {
+            if(success) success(arr[0]);
+        } else {
+            var data = {};
 
-    if(programStageId)
-        data.programStageId = programStageId;
+            if(programStageId)
+                data.programStageId = programStageId;
 
-    if(programStageInstanceId)
-        data.programStageInstanceId = programStageInstanceId;
+            if(programStageInstanceId)
+                data.programStageInstanceId = programStageInstanceId;
 
-    if(organisationUnitId)
-        data.organisationUnitId = organisationUnitId;
+            if(organisationUnitId)
+                data.organisationUnitId = organisationUnitId;
 
-    return data;
+            $.ajax( {
+                url: 'dataentryform.action',
+                data: data,
+                dataType: 'html'
+            } ).done(function(data) {
+                DAO.programStages.add(programStageId, data);
+                if(success) success(data);
+            } ).fail(function() {
+                if(fail) fail();
+            });
+        }
+    });
 }
 
-function loadProgramStage( programStageId, programStageInstanceId, organisationUnitId, success, fail ) {
-    var data = createProgramStage( programStageId, programStageInstanceId, organisationUnitId );
+function loadOptionSets(uids, usernames, success ) {
+    DAO.optionSets = new dhis2.storage.Store( {name: OPTION_SET_STORE, adapter: 'dom-ss'}, function ( store ) {
+        DAO.usernames = new dhis2.storage.Store( {name: USERNAME_STORE, adapter: 'dom-ss'}, function ( store ) {
+            var deferred = $.Deferred();
+            var promise = deferred.promise();
 
-    DAO.metaData.get('programStages', programStageId ).done(function(obj) {
-        if(success) success(obj.form);
-    } ).fail(function() {
-        $.ajax( {
-            url: 'dataentryform.action',
-            data: data,
-            dataType: 'html'
-        } ).done(function(data) {
-            if(success) success(data);
-        } ).fail(function() {
-            if(fail) fail();
+            _.each( uids, function(item, idx) {
+                promise = promise.pipe( $.ajax( {
+                    url: 'getOptionSet.action?dataElementUid=' + item,
+                    dataType: 'json',
+                    success: function ( json ) {
+                        DAO.optionSets.add( item, json );
+                        if ( success && typeof success == 'function' ) success( json );
+                    }
+                } ) );
+            });
+
+            if ( usernames ) {
+                promise = promise.pipe( $.ajax( {
+                    url: 'getUsernames.action',
+                    dataType: 'json',
+                    success: function ( json ) {
+                        DAO.usernames.add( 'usernames', json.usernames );
+                        if ( success && typeof success == 'function' ) success( json );
+                    }
+                } ) );
+            }
+
+            deferred.resolve();
         });
-    });
+    } );
 }

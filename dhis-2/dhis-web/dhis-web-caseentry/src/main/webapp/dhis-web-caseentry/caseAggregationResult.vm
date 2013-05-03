@@ -36,11 +36,11 @@
 						#elseif($velocityCount==2)
 							#set($categoryoptioncomboid=$col)
 						#elseif($velocityCount==3)
-							#set($periodid=$col)
-						#elseif($velocityCount==4)
 							#set($organisationunitid=$col)
 						#elseif($velocityCount==$row.size())
 							#set($value=$col)
+						#elseif($velocityCount==6)
+							#set($periodid=$col)
 						#end
 						#set($item=$dataelementid + '_' + $categoryoptioncomboid + '_' + $periodid + '_' + $organisationunitid + '_' + $value)
 					#end

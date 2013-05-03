@@ -1,4 +1,3 @@
-/*
 dhis2.storage.Store.plugin( 'online-anonymous-programs', (function () {
     return {
         call: function ( args, success, failure ) {
@@ -29,4 +28,3 @@ dhis2.storage.Store.plugin( 'online-anonymous-programs', (function () {
         }
     };
 })() );
-*/
