@@ -49,38 +49,65 @@ dhis2.storage.Store = function ( options ) {
 
     if ( !JSON ) throw 'JSON unavailable! Include http://www.json.org/json2.js to fix.';
 
-    var Adapter;
+    var DefaultAdapter;
 
     for ( var i = 0, len = options.adapters.length; i < len; i++ ) {
         if ( dhis2.storage.Store.verifyAdapter( options.adapters[i] ) && options.adapters[i].isSupported() ) {
-            Adapter = options.adapters[i];
+            DefaultAdapter = options.adapters[i];
             break;
         }
     }
 
-    if ( !Adapter ) throw 'No valid adapter.';
+    var ObjectStoreAdapters = {};
+    var objectStores = [];
 
-    var adapter = new Adapter( options );
-
-    Object.defineProperty( this, 'adapter', {
-        value: adapter
+    $.each( options.objectStores, function ( idx, item ) {
+        if ( typeof item === 'object' ) {
+            if ( typeof item.adapters !== 'undefined' && typeof item.name !== 'undefined' ) {
+                for ( var i = 0, len = item.adapters.length; i < len; i++ ) {
+                    if ( dhis2.storage.Store.verifyAdapter( item.adapters[i] ) && item.adapters[i].isSupported() ) {
+                        ObjectStoreAdapters[item.name] = item.adapters[i];
+                        objectStores.push( item.name );
+                        break;
+                    }
+                }
+            }
+        } else if ( typeof item === 'string' ) {
+            objectStores.push( item );
+        }
     } );
 
-    $.each( dhis2.storage.Store.adapterMethods, function ( idx, item ) {
-        var descriptor = Object.getOwnPropertyDescriptor( Adapter, item ) || Object.getOwnPropertyDescriptor( Adapter.prototype, item );
-        Object.defineProperty( self, item, descriptor );
+    options.objectStores = objectStores;
+
+    if ( !DefaultAdapter && Object.keys( ObjectStoreAdapters ).length == 0 ) throw 'No valid adapter.';
+
+    var defaultAdapter = new DefaultAdapter( options );
+    var objectStoreAdapters = {};
+
+    $.each( Object.keys( ObjectStoreAdapters ), function ( idx, item ) {
+        objectStoreAdapters[item] = new ObjectStoreAdapters[item]( options );
     } );
 
-    $.each( dhis2.storage.Store.adapterProperties, function ( idx, item ) {
-        var descriptor = Object.getOwnPropertyDescriptor( adapter, item );
-        Object.defineProperty( self, item, descriptor );
+    Object.defineProperty( self, 'defaultAdapter', {
+        value: defaultAdapter
     } );
 
-    if ( typeof adapter.customApi !== 'undefined' ) {
-        $.each( adapter.customApi, function ( idx, item ) {
-            self[item] = adapter[item];
-        } );
-    }
+    Object.defineProperty( self, 'objectStoreAdapters', {
+        value: objectStoreAdapters
+    } );
+
+    var adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
+
+    $.each( adapterMethods, function ( idx, item ) {
+        console.log( 'adding method: ' + item );
+
+        Object.defineProperty(self, item, {
+            value: function() {
+                console.log( 'calling ' + item + " with args: ", arguments );
+                return self.defaultAdapter[item].apply( self.defaultAdapter, arguments );
+            }
+        });
+    } );
 };
 
 dhis2.storage.Store.adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
@@ -104,50 +131,3 @@ dhis2.storage.Store.verifyAdapter = function ( Adapter ) {
 
     return failed.length === 0;
 };
-
-/*
-var STUDENT_STORE = 'students';
-var COURSE_STORE = 'courses';
-
-var store1 = new dhis2.storage.Store( {
-    name: 'store',
-    adapters: [ dhis2.storage.InMemoryAdapter ],
-    objectStores: [ STUDENT_STORE ]
-} );
-
-var store2 = new dhis2.storage.Store( {
-    name: 'store',
-    adapters: [ dhis2.storage.InMemoryAdapter ],
-    objectStores: [ COURSE_STORE ]
-} );
-
-var students = [
-    {'id': 'abc1', name: 'Morten 1'},
-    {'id': 'abc2', name: 'Morten 2'},
-    {'id': 'abc3', name: 'Morten 3'},
-    {'id': 'abc4', name: 'Morten 4'},
-];
-
-var courses = [
-    {'id': 'abc1', name: 'Morten 1'},
-    {'id': 'abc2', name: 'Morten 2'},
-    {'id': 'abc3', name: 'Morten 3'},
-    {'id': 'abc4', name: 'Morten 4'},
-];
-
-store1.open().done( function () {
-    store1.setAll( STUDENT_STORE, students ).then( function () {
-        store1.count( STUDENT_STORE ).done( function ( n ) {
-            console.log( n );
-        } );
-    } );
-} );
-
-store2.open().done( function () {
-    store2.setAll( COURSE_STORE, courses ).then( function () {
-        store2.count( COURSE_STORE ).done( function ( n ) {
-            console.log( n );
-        } );
-    } );
-} );
-*/

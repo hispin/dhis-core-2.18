@@ -3,7 +3,10 @@ var DAO = DAO || {};
 DAO.metaData = new dhis2.storage.Store( {
     name: 'dhis2',
     adapters: [ dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ],
-    objectStores: [ 'programs', 'programStages', 'optionSets', 'usernames' ]
+    objectStores: [ 'programs', 'programStages', 'optionSets', 'usernames', {
+        name: 'values',
+        adapters: [ dhis2.storage.DomSessionStorageAdapter ]
+    } ]
 } );
 
 DAO.offlineData = new dhis2.storage.Store( {
