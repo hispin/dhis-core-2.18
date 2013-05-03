@@ -43,8 +43,8 @@
 				<td>
 					<input type="button" style="width:40px" value="&gt;" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'orgunitGroupAvailable', 'orgunitGroupIds' )" /><br>
 					<input type="button" style="width:40px" value="&gt;&gt;" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'orgunitGroupAvailable', 'orgunitGroupIds' )" /><br>
-					<input type="button" style="width:40px" value="&gt;" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'orgunitGroupIds', 'orgunitGroupAvailable' )" /><br>
-					<input type="button" style="width:40px" value="&gt;&gt;" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'orgunitGroupIds', 'orgunitGroupAvailable' )" />
+					<input type="button" style="width:40px" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'orgunitGroupIds', 'orgunitGroupAvailable' )" /><br>
+					<input type="button" style="width:40px" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'orgunitGroupIds', 'orgunitGroupAvailable' )" />
 				</td>
 				<td>
 					<select multiple id='orgunitGroupIds' name='orgunitGroupIds' size='10' ondblclick="moveSelectedById( 'orgunitGroupIds', 'orgunitGroupAvailable' )">
