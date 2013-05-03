@@ -297,21 +297,22 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
             var dataValueKey = $( '#programStageInstanceId' ).val();
             var key = dataElementUid;
 
-            DAO.offlineData.get( 'dataValues', dataValueKey ).done( function ( obj ) {
-                if ( !obj ) {
+            DAO.offlineData.fetch( dataValueKey, function ( store, arr ) {
+                if ( arr.length == 0 ) {
                     markValue( ERROR );
                     window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
                     return;
                 }
 
+                var obj = arr[0];
+
                 if ( !obj.values ) {
                     obj.values = {};
                 }
 
-                obj.id = dataValueKey;
                 obj.values[key] = data;
 
-                this.set( 'dataValues', obj );
+                store.add( dataValueKey, obj );
                 markValue( resultColor );
             } );
         } else {
@@ -597,13 +598,12 @@ function runCompleteEvent( isCreateEvent )
                         jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
                         jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
-                        DAO.offlineData.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
-                            if ( !obj ) {
-                                return;
+                        DAO.offlineData.fetch( programStageInstanceId, function ( store, arr ) {
+                            if ( arr.length > 0 ) {
+                                var obj = arr[0];
+                                obj.executionDate.completed = true;
+                                DAO.offlineData.add( programStageInstanceId, obj );
                             }
-
-                            obj.executionDate.completed = true;
-                            DAO.offlineData.set('dataValues', obj);
                         } );
 
                         var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
@@ -645,13 +645,12 @@ function doUnComplete( isCreateEvent )
                 var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 
                 if ( window.DAO && window.DAO.offlineData ) {
-                    DAO.offlineData.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
-                        if(!obj) {
-                            return;
+                    DAO.offlineData.fetch( programStageInstanceId, function ( store, arr ) {
+                        if ( arr.length > 0 ) {
+                            var obj = arr[0];
+                            obj.executionDate.completed = false;
+                            DAO.offlineData.add( programStageInstanceId, obj );
                         }
-
-                        obj.executionDate.completed = false;
-                        DAO.offlineData.set( 'dataValues', obj );
                     } );
                 }
 
@@ -724,23 +723,27 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
         $( "#programStageInstanceId" ).val( programStageInstanceId );
         $( "#entryFormContainer input[id='programStageInstanceId']" ).val( programStageInstanceId );
 
-        DAO.offlineData.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
-            if(obj && obj.values !== undefined ) {
-                _.each( _.keys(obj.values), function(key, idx) {
-                    var fieldId = getProgramStageUid() + '-' + key + '-val';
-                    var field = $('#' + fieldId);
+        DAO.offlineData.fetch(programStageInstanceId, function(store, arr) {
+            if(arr.length > 0 ) {
+                var obj = arr[0];
 
-                    if ( field ) {
-                        field.val( decodeURI( obj.values[key].value ) );
-                    }
-                });
+                if(obj.values !== undefined ) {
+                    _.each( _.keys(obj.values), function(key, idx) {
+                        var fieldId = getProgramStageUid() + '-' + key + '-val';
+                        var field = $('#' + fieldId);
+
+                        if ( field ) {
+                            field.val( decodeURI( obj.values[key].value ) );
+                        }
+                    });
+                }
             }
 
             if( always ) always();
 
             $('#commentInput').attr('disabled', true);
             $('#validateBtn').attr('disabled', true);
-        } );
+        });
     } else {
         return $.ajax({
             url: 'getProgramStageInstance.action',
@@ -904,9 +907,10 @@ function runValidation()
 }
 
 function searchOptionSet( uid, query, success ) {
-    if(window.DAO !== undefined && window.DAO.metaData !== undefined ) {
-        DAO.metaData.get( 'optionSets', uid ).done( function ( obj ) {
-            if(obj) {
+    if(window.DAO !== undefined && window.DAO.optionSets !== undefined ) {
+        DAO.optionSets.fetch(uid, function(store, arr) {
+            if ( arr.length > 0 ) {
+                var obj = arr[0];
                 var options = [];
 
                 if(query == null || query == "") {

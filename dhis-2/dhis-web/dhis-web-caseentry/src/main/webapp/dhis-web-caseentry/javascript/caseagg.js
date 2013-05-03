@@ -69,7 +69,7 @@ function runAggregate(autoSave)
 		, function(){
 			$( "#loaderDiv" ).hide();
 			showById('caseAggregationForm');
-			setMessage(i18n_aggregate_successfully);
+			setHeaderDelayMessage(i18n_aggregate_successfully);
 		});
 }
 

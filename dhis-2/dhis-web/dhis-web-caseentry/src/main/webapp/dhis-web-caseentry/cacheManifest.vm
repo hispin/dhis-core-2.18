@@ -39,11 +39,9 @@ CACHE:
 ../dhis-web-commons/javascripts/dhis2/dhis2.select.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.availability.js
-../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js
-../dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js
-../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js
-../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.storage.js
+../dhis-web-commons/javascripts/dhis2/dhis2.storage.dom.js
+../dhis-web-commons/javascripts/dhis2/dhis2.storage.dom-ss.js
 ../dhis-web-commons/javascripts/jQuery/jquery.cookie.js
 ../dhis-web-commons/javascripts/jQuery/jquery.validate.js
 ../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js

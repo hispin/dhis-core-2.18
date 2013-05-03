@@ -5,7 +5,6 @@
 #set( $psize = $programs.size() )
 #foreach( $program in $programs )
 "${program.id}":{
-    "id":"${program.id}",
     "name":"$encoder.jsonEncode( ${program.displayName} )",
     "uid":"$encoder.jsonEncode( ${program.uid} )",
     "description":"$encoder.jsonEncode( ${program.description} )",
