@@ -32,6 +32,7 @@ import static org.hisp.dhis.analytics.DimensionType.DATASET;
 import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.analytics.DimensionType.ORGANISATIONUNIT_GROUPSET;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
 import java.util.ArrayList;
@@ -1066,5 +1067,10 @@ public class DataQueryParams
     public void setFilterOrganisationUnits( List<IdentifiableObject> organisationUnits )
     {
         setFilterOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, organisationUnits );
+    }
+    
+    public void setFilter( String filter, DimensionType type, IdentifiableObject item )
+    {
+        setFilterOptions( filter, type, null, getList( item ) );
     }
 }

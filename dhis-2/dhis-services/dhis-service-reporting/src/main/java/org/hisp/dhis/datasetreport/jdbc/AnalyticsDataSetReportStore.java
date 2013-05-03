@@ -34,9 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.DimensionType;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataset.DataSet;
@@ -44,6 +46,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datasetreport.DataSetReportStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -60,14 +63,14 @@ public class AnalyticsDataSetReportStore
     {
         this.analyticsService = analyticsService;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataSetReportStore implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit,
-        boolean rawData )
+    public Map<String, Double> getAggregatedValues( DataSet dataSet, Period period, OrganisationUnit unit, 
+        Set<OrganisationUnitGroup> groups, boolean rawData )
     {
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
@@ -85,6 +88,14 @@ public class AnalyticsDataSetReportStore
         params.setOrganisationUnits( getList( unit ) );
         params.enableCategoryOptionCombos();
         
+        if ( groups != null && !groups.isEmpty() )
+        {
+            for ( OrganisationUnitGroup group : groups )
+            {
+                params.setFilter( group.getGroupSet().getUid(), DimensionType.ORGANISATIONUNIT_GROUPSET, group );
+            }
+        }
+        
         Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
         
         Map<String, Double> dataMap = new HashMap<String, Double>();
@@ -99,7 +110,7 @@ public class AnalyticsDataSetReportStore
     }
 
     @Override
-    public Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit )
+    public Map<String, Double> getAggregatedSubTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups )
     {
         Map<String, Double> dataMap = new HashMap<String, Double>();
         
@@ -124,6 +135,14 @@ public class AnalyticsDataSetReportStore
                 params.setOrganisationUnits( getList( unit ) );
                 params.setCategory( category );            
 
+                if ( groups != null && !groups.isEmpty() )
+                {
+                    for ( OrganisationUnitGroup group : groups )
+                    {
+                        params.setFilter( group.getGroupSet().getUid(), DimensionType.ORGANISATIONUNIT_GROUPSET, group );
+                    }
+                }
+                
                 Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
                 
                 for ( Entry<String, Double> entry : map.entrySet() )
@@ -138,7 +157,7 @@ public class AnalyticsDataSetReportStore
     }
 
     @Override
-    public Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit )
+    public Map<String, Double> getAggregatedTotals( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups )
     {
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
@@ -154,6 +173,14 @@ public class AnalyticsDataSetReportStore
         params.setDataElements( dataElements );
         params.setPeriods( getList( period ) );
         params.setOrganisationUnits( getList( unit ) );
+
+        if ( groups != null && !groups.isEmpty() )
+        {
+            for ( OrganisationUnitGroup group : groups )
+            {
+                params.setFilter( group.getGroupSet().getUid(), DimensionType.ORGANISATIONUNIT_GROUPSET, group );
+            }
+        }
         
         Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
 
@@ -169,7 +196,7 @@ public class AnalyticsDataSetReportStore
     }
 
     @Override
-    public Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit )
+    public Map<String, Double> getAggregatedIndicatorValues( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups )
     {
         List<Indicator> indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
         
@@ -183,6 +210,14 @@ public class AnalyticsDataSetReportStore
         params.setIndicators( indicators );
         params.setPeriods( getList( period ) );
         params.setOrganisationUnits( getList( unit ) );
+
+        if ( groups != null && !groups.isEmpty() )
+        {
+            for ( OrganisationUnitGroup group : groups )
+            {
+                params.setFilter( group.getGroupSet().getUid(), DimensionType.ORGANISATIONUNIT_GROUPSET, group );
+            }
+        }
         
         Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
 
