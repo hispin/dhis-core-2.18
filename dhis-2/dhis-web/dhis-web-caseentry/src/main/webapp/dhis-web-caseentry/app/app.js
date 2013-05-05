@@ -309,23 +309,26 @@ Ext.onReady( function() {
         multiselect: {
             select: function(a, s, f) {
                 var selected = a.getValue();
-				var idx = a.store.findExact('id', selected);
-				var name = a.store.getAt(idx).data.name;
-				var valueType = a.store.getAt(idx).data.valueType;
-				
-                if (selected.length) {
-                    var array = [];
-                    Ext.Array.each(selected, function(item) {
-						var data = a.store.findExact('id', item);
-                        array.push({id: item, uid:a.store.getAt(data).data.uid, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
-                    });
-                    s.store.add(array);
-                }
-                this.filterAvailable(a, s);
-				
-				if(f!=undefined)
+				if( selected.length > 0 )
 				{
-					this.addFilterField( f, selected[0], name, valueType );
+					var idx = a.store.findExact('id', selected);
+					var name = a.store.getAt(idx).data.name;
+					var valueType = a.store.getAt(idx).data.valueType;
+					
+					if (selected.length) {
+						var array = [];
+						Ext.Array.each(selected, function(item) {
+							var data = a.store.findExact('id', item);
+							array.push({id: item, uid:a.store.getAt(data).data.uid, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
+						});
+						s.store.add(array);
+					}
+					this.filterAvailable(a, s);
+					
+					if(f!=undefined)
+					{
+						this.addFilterField( f, selected[0], name, valueType );
+					}
 				}
             },
             selectAll: function(a, s, f) {
@@ -339,7 +342,7 @@ Ext.onReady( function() {
 						var name = a.store.getAt(i).data.name;
 						var valueType = a.store.getAt(i).data.valueType;
 						
-						array.push({id: id, uid:a.store.getAt(data).data.uid, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
+						array.push({id: id, uid:a.store.getAt(i).data.uid, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
 						if(f!=undefined)
 						{
 							this.addFilterField( f, id, name, valueType );
@@ -351,15 +354,18 @@ Ext.onReady( function() {
             },            
             unselect: function(a, s, f) {
                 var selected = s.getValue();
-                if (selected.length) {
-                    Ext.Array.each(selected, function(item) {
-                        s.store.remove(s.store.getAt(s.store.findExact('id', item)));
-                    });                    
-                    this.filterAvailable(a, s);
-                }
-				if(f!=undefined)
+				if( selected.length > 0 )
 				{
-					this.removeFilterField( f, selected[0], a.store.getAt(a.store.findExact('id', selected)).data.valueType );
+					if (selected.length) {
+						Ext.Array.each(selected, function(item) {
+							s.store.remove(s.store.getAt(s.store.findExact('id', item)));
+						});                    
+						this.filterAvailable(a, s);
+					}
+					if(f!=undefined)
+					{
+						this.removeFilterField( f, selected[0], a.store.getAt(a.store.findExact('id', selected)).data.valueType );
+					}
 				}
             },
             unselectAll: function(a, s, f) {
