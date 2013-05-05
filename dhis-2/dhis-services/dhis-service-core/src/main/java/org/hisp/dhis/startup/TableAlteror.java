@@ -457,7 +457,10 @@ public class TableAlteror
         executeSql( "update chart set showdata = false where showdata is null" );
         executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
-
+        
+        executeSql( "insert into chart_filters (chartid, sort_order, filter) select chartid, 0, filter from chart" );
+        executeSql( "alter table chart drop column filter" );
+        
         executeSql( "update users set selfregistered = false where selfregistered is null" );
         executeSql( "update users set disabled = false where disabled is null" );
         executeSql( "update dataentryform set format = 1 where format is null" );
