@@ -7,6 +7,7 @@
 <div class='dashboard-area'>
 <table>
 <tr>
+#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 <td>
 	<div class="link-area">
 		<p class='header'>
@@ -100,12 +101,17 @@
 	</div>
 
 </td>
+#end
+
 <td>
 	<div class="link-area" id="activeDiv" name="activeDiv">
 		<p class='header'>
 			$i18n.getString("active_programs")
 			&#8226; <a href='javascript:viewPersonProgram( "completedDiv","activeDiv" )'>$i18n.getString("completed_programs")</a>
+			
+			#if( $auth.hasAccess( "dhis-web-caseentry", "showProgramEnrollmentForm" ) )
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$patient.id" )'>$i18n.getString("enroll")</a>
+			#end
 		</p>
 		<div class="contentProviderTable">
 			<table id='activeTB' name='activeTB' style='cursor:pointer;'>
@@ -187,8 +193,14 @@
 	<div class="link-area">
 		<p class='header'>
 			$i18n.getString("relationships")
-			&#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString("management")</a>
-			&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false );">$i18n.getString("add_new_patient")</a>
+			
+			#if( $auth.hasAccess( "dhis-web-caseentry", "showRelationshipList" ) )
+				&#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString("management")</a>
+			#end
+			
+			#if( $auth.hasAccess( "dhis-web-caseentry", "showAddRelationshipPatient" ) )			
+				&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false );">$i18n.getString("add_new_patient")</a>
+			#end
 		</p>
 		<div class="contentProviderTable">
 			<table>
