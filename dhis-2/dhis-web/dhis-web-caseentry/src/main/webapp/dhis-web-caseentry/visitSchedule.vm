@@ -69,11 +69,11 @@
                 	<td colspan="3" style="height:15px"></td>
                 </tr>
                 <tr>
-                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_by" )</td>
+                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_by" ):</td>
                 	<td>$!encoder.htmlEncode( $programInstance.patientComment.creator )</td>
                 </tr>
                 <tr>
-                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_date" )</td>
+                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_date" ):</td>
                 	<td>$!format.formatDate( $programInstance.patientComment.createdDate )</td>
                 </tr>
             </table>
