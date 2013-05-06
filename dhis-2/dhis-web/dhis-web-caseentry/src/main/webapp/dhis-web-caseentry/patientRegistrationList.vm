@@ -39,13 +39,12 @@
 			<col/>
 			<col/>
 			<col/>
-		    <col/>
 		  #end
+		  <col/>
 		  
 		  #if($mapPatientOrgunit.size()!=0)
 		  <col/>
 		  #end
-		  <col/>
 		  <col width="200"/>    
 		  
 		  <thead>
@@ -72,6 +71,7 @@
 				#else
 					<th>$i18n.getString("system_identifier")</th>
 				#end
+				
 				#if($mapPatientOrgunit.size()!=0)
 					<th>$i18n.getString( "hierachy_orgunit" )</th>
 				#end
