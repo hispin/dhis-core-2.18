@@ -9,10 +9,11 @@
 <input type='hidden' id='ps_$programStageInstance.id' name='ps_$programStageInstance.id' programStageName='$programStageInstance.programStage.displayName' >
 
 <div class='dashboard-area'>
+	#set($status = $programStageInstance.getEventStatus())
+	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 	<div class="link-area" style="height:200px">
 		<p class='header'>$i18n.getString("demographics")</p>
 		<div class="contentProviderTable" style="height:200px">
-			#set($status = $programStageInstance.getEventStatus())
 			<table>
 				<tr>            
 					<td class="bold">$i18n.getString( "full_name" ):</td>
@@ -45,6 +46,7 @@
 			</table>
 		</div>
 	</div>
+	#end
 		
 	<div class="link-area-tracking">
 		<p class='header'>
