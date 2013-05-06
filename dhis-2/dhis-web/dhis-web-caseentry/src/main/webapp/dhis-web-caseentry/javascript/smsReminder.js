@@ -1,6 +1,10 @@
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {
+	var width = jQuery('#programIdAddPatient').width();
+	jQuery('#programIdAddPatient').width(width-30);
+	showById( "programLoader" );
+	disable('programIdAddPatient');
 	showById('mainLinkLbl');
 	showById('searchDiv');
 	hideById('listEventDiv');
@@ -29,6 +33,9 @@ function orgunitSelected( orgUnits, orgUnitNames )
 				}
 			}
 			enableBtn();
+			hideById('programLoader');
+			jQuery('#programIdAddPatient').width(width);
+			enable('programIdAddPatient');
 		});
 }
 
