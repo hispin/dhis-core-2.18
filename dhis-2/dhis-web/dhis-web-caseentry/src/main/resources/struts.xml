@@ -1131,6 +1131,13 @@
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
     </action>
+    
+     <action name="accessPatientAttributes"
+      class="org.hisp.dhis.caseentry.action.NoAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_ACCESS_PATIENT_ATTRIBUTES</param>
+    </action>
+
 	
 	<!-- Program-stage-completeness -->
 	
