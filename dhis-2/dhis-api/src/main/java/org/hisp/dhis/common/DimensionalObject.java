@@ -47,6 +47,14 @@ public abstract class DimensionalObject
     extends BaseIdentifiableObject
 {
     @JsonProperty
+    @JsonView({ DimensionalView.class })
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getDimension()
+    {
+        return getUid();
+    }
+    
+    @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView({ DimensionalView.class })
     @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
