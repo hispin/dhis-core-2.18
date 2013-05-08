@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -35,6 +35,7 @@ public enum DimensionType
     INDICATOR,
     DATAELEMENT,
     DATASET,
+    DATAELEMENT_OPERAND,
     DATA_X,
     CATEGORY_OPTION_COMBO,
     PERIOD,
