@@ -37,7 +37,9 @@ import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -175,6 +177,8 @@ public class Chart
     
     private transient List<DimensionalObject> filters = new ArrayList<DimensionalObject>();
     
+    private Map<String, String> parentGraphMap = new HashMap<String, String>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -217,6 +221,11 @@ public class Chart
         for ( String filter : filterDimensions )
         {
             filters.addAll( getDimensionalObjectList( filter ) );
+        }
+        
+        for ( OrganisationUnit organisationUnit : organisationUnits )
+        {
+            parentGraphMap.put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
         }
     }
     
@@ -888,7 +897,19 @@ public class Chart
     public void setFilters( List<DimensionalObject> filters )
     {
         this.filters = filters;
-    }    
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    public Map<String, String> getParentGraphMap()
+    {
+        return parentGraphMap;
+    }
+
+    public void setParentGraphMap( Map<String, String> parentGraphMap )
+    {
+        this.parentGraphMap = parentGraphMap;
+    }
 
     // -------------------------------------------------------------------------
     // Merge with
