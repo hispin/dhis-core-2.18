@@ -116,6 +116,8 @@ public class Chart
 
     private boolean regression;
 
+    private boolean hideTitle;
+    
     private boolean hideSubtitle;
 
     private Double targetLineValue;
@@ -623,6 +625,19 @@ public class Chart
     public void setBaseLineLabel( String baseLineLabel )
     {
         this.baseLineLabel = baseLineLabel;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isHideTitle()
+    {
+        return hideTitle;
+    }
+
+    public void setHideTitle( boolean hideTitle )
+    {
+        this.hideTitle = hideTitle;
     }
 
     @JsonProperty
