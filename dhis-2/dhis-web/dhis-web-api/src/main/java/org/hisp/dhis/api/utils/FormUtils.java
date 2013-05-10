@@ -64,7 +64,7 @@ public class FormUtils
             {
                 Group s = new Group();
                 s.setLabel( section.getDisplayName() );
-                s.setFields( inputsFromDataElements( section.getDataElements(), new ArrayList<DataElementOperand>( section.getGreyedFields() ) ) );
+                s.setFields( inputsFromDataElements( new ArrayList<DataElement>( section.getDataElements() ), new ArrayList<DataElementOperand>( section.getGreyedFields() ) ) );
                 form.getGroups().add( s );
             }
         }
