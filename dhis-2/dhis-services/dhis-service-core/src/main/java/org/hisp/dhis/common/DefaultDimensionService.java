@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class DefaultDimensionService
 {
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
     
     @Override
     public DimensionalObject getDimension( String uid )
@@ -115,7 +119,7 @@ public class DefaultDimensionService
     {
         Collection<DataElementGroupSet> degs = identifiableObjectManager.getAll( DataElementGroupSet.class );
         Collection<OrganisationUnitGroupSet> ougs = identifiableObjectManager.getAll( OrganisationUnitGroupSet.class );
-        Collection<DataElementCategory> dcs = identifiableObjectManager.getAll( DataElementCategory.class );
+        Collection<DataElementCategory> dcs = categoryService.getDataDimensionDataElementCategories();
 
         final List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
         

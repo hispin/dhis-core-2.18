@@ -49,4 +49,6 @@ public interface DimensionalObject
     String getDimension();
     
     List<IdentifiableObject> getItems();
+    
+    boolean isDataDimension();
 }

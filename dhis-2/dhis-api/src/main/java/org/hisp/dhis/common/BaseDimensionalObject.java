@@ -44,7 +44,16 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class BaseDimensionalObject
     extends BaseIdentifiableObject implements DimensionalObject
 {
+    /**
+     * The dimensional items for this dimension.
+     */
     private List<IdentifiableObject> items = new ArrayList<IdentifiableObject>();
+    
+    /**
+     * Indicates whether this object should be considered a data dimension. Assumes
+     * true by default.
+     */
+    private boolean dataDimension = true;
 
     public BaseDimensionalObject()
     {        
@@ -84,5 +93,15 @@ public class BaseDimensionalObject
     public void setItems( List<IdentifiableObject> items )
     {
         this.items = items;
+    }
+
+    public boolean isDataDimension()
+    {
+        return dataDimension;
+    }
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
     }
 }
