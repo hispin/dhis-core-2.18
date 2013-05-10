@@ -97,7 +97,7 @@ public class FormUtils
             {
                 for ( DataElementOperand operand : greyedFields )
                 {
-                    if ( dataElement == operand.getDataElement() && dataElement.getCategoryCombo() == operand.getCategoryOptionCombo().getCategoryCombo() )
+                    if ( dataElement.equals( operand.getDataElement() ) && dataElement.getCategoryCombo().equals( operand.getCategoryOptionCombo().getCategoryCombo() ) )
                     {
                         return false;
                     }
