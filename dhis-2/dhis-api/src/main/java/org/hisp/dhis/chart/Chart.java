@@ -28,6 +28,7 @@ package org.hisp.dhis.chart;
  */
 
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_OPERAND_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
@@ -57,6 +58,7 @@ import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
@@ -136,6 +138,9 @@ public class Chart
     @Scanned
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
+    @Scanned
+    private List<DataElementOperand> dataElementOperands = new ArrayList<DataElementOperand>();
+    
     @Scanned
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
@@ -249,11 +254,16 @@ public class Chart
                 objects.add( new BaseDimensionalObject( DATAELEMENT_DIM_ID, dataElements ) );
             }
             
+            if ( !dataElementOperands.isEmpty() )
+            {
+                objects.add( new BaseDimensionalObject( DATAELEMENT_OPERAND_ID, dataElementOperands ) );
+            }
+            
             if ( !dataSets.isEmpty() )
             {
                 objects.add( new BaseDimensionalObject( DATASET_DIM_ID, dataSets ) );
             }
-        }        
+        }
         else if ( PERIOD_DIM_ID.equals( dimension ) && ( !periods.isEmpty() || hasRelativePeriods() ) )
         {
             List<IdentifiableObject> periodList = new ArrayList<IdentifiableObject>( periods );
@@ -696,6 +706,21 @@ public class Chart
     public void setDataElements( List<DataElement> dataElements )
     {
         this.dataElements = dataElements;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataElementOperands", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0)
+    public List<DataElementOperand> getDataElementOperands()
+    {
+        return dataElementOperands;
+    }
+
+    public void setDataElementOperands( List<DataElementOperand> dataElementOperands )
+    {
+        this.dataElementOperands = dataElementOperands;
     }
 
     @JsonProperty

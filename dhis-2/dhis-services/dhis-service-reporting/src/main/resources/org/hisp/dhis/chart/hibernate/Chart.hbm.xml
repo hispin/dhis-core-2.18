@@ -71,6 +71,14 @@
         foreign-key="fk_chart_dataelements_dataelementid" />
     </list>
 
+    <list name="dataElementOperands" table="chart_dataelementoperands" cascade="all-delete-orphan">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_dataelementoperandid_chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="dataelementoperandid" class="org.hisp.dhis.dataelement.DataElementOperand"
+        foreign-key="fk_chart_dataelementoperands_dataelementoperandid" />
+    </list>
+
     <list name="dataSets" table="chart_datasets">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_datasets_chartid" />

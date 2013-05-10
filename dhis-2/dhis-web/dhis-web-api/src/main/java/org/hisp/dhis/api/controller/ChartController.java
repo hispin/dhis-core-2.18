@@ -29,16 +29,17 @@ package org.hisp.dhis.api.controller;
 
 import static org.hisp.dhis.common.DimensionType.DATAELEMENT;
 import static org.hisp.dhis.common.DimensionType.DATAELEMENT_GROUPSET;
+import static org.hisp.dhis.common.DimensionType.DATAELEMENT_OPERAND;
 import static org.hisp.dhis.common.DimensionType.DATASET;
 import static org.hisp.dhis.common.DimensionType.INDICATOR;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
 import static org.hisp.dhis.common.DimensionType.PERIOD;
+import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
+import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,7 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -104,6 +106,9 @@ public class ChartController
 
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private DataElementOperandService operandService;
 
     @Autowired
     private DataSetService dataSetService;
@@ -305,6 +310,10 @@ public class ChartController
             else if ( DATAELEMENT.equals( type ) )
             {
                 chart.getDataElements().addAll( dataElementService.getDataElementsByUid( uids ) );
+            }
+            else if ( DATAELEMENT_OPERAND.equals( type ) )
+            {
+                chart.getDataElementOperands().addAll( operandService.getDataElementOperandsByUid( uids ) );
             }
             else if ( DATASET.equals( type ) )
             {
