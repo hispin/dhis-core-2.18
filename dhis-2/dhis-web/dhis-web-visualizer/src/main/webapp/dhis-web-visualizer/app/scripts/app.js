@@ -3710,7 +3710,13 @@ Ext.onReady( function() {
 			};
 
 			validateSpecialCases = function(layout) {
-				var dimConf = dv.conf.finals.dimension;
+				var dimConf = dv.conf.finals.dimension,
+					dimensions = [].concat(layout.columns, layout.rows, layout.filters),
+					objectNameDimensionMap = {};
+
+				for (var i = 0; i < dimensions.length; i++) {
+					objectNameDimensionMap[dimensions[i].dimension] = dimensions[i];
+				}
 
 				// Indicator as filter
 				for (var i = 0; i < layout.filters.length; i++) {
@@ -3718,6 +3724,18 @@ Ext.onReady( function() {
 						alert(DV.i18n.indicators_cannot_be_specified_as_filter);
 						return;
 					}
+				}
+
+				// dc and in
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.indicator.objectName]) {
+					alert('Indicators and detailed data elements cannot be specified together');
+					return;
+				}
+
+				// dc and de
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataElement.objectName]) {
+					alert('Detailed data elements and totals cannot be specified together');
+					return;
 				}
 
 				// Categories as filter
