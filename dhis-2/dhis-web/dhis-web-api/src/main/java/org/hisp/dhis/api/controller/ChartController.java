@@ -35,6 +35,7 @@ import static org.hisp.dhis.common.DimensionType.INDICATOR;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
 import static org.hisp.dhis.common.DimensionType.PERIOD;
+import static org.hisp.dhis.common.DimensionType.CATEGORY;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
@@ -59,6 +60,8 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.dataelement.DataElementCategoryDimension;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
@@ -106,6 +109,9 @@ public class ChartController
 
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
     
     @Autowired
     private DataElementOperandService operandService;
@@ -301,6 +307,8 @@ public class ChartController
         {
             DimensionType type = dimensionService.getDimensionType( dimension.getDimension() );
             
+            String dimensionId = dimension.getDimension();
+            
             List<String> uids = getUids( dimension.getItems() );
             
             if ( INDICATOR.equals( type ) )
@@ -371,6 +379,14 @@ public class ChartController
                 
                 chart.setOrganisationUnits( ous );
             }
+            else if ( CATEGORY.equals( type ) )
+            {
+                DataElementCategoryDimension categoryDimension = new DataElementCategoryDimension();
+                categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
+                categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
+                
+                chart.getCategoryDimensions().add( categoryDimension );
+            }
             else if ( DATAELEMENT_GROUPSET.equals( type ) )
             {
                 chart.getDataElementGroups().addAll( dataElementService.getDataElementGroupsByUid( uids ) );
@@ -379,8 +395,6 @@ public class ChartController
             {
                 chart.getOrganisationUnitGroups().addAll( organisationUnitGroupService.getOrganisationUnitGroupsByUid( uids ) );
             }
-                        
-            //TODO categories and operands
         }
     }
     

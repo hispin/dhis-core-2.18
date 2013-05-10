@@ -57,6 +57,7 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryDimension;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -153,6 +154,9 @@ public class Chart
     private RelativePeriods relatives;
 
     @Scanned
+    private List<DataElementCategoryDimension> categoryDimensions = new ArrayList<DataElementCategoryDimension>();
+    
+    @Scanned
     private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
 
     @Scanned
@@ -242,6 +246,13 @@ public class Chart
     {
         List<DimensionalObject> objects = new ArrayList<DimensionalObject>();
         
+        List<String> categoryDims = new ArrayList<String>();
+        
+        for ( DataElementCategoryDimension dim : categoryDimensions )
+        {
+            categoryDims.add( dim.getDimension().getDimension() );
+        }
+        
         if ( DATA_X_DIM_ID.equals( dimension ) )
         {
             if ( !indicators.isEmpty() )
@@ -284,7 +295,13 @@ public class Chart
         {
             objects.add( new BaseDimensionalObject( dimension, organisationUnits ) );
         }
-        else // Dynamic dimension
+        else if ( categoryDims.contains( dimension ) )
+        {
+            DataElementCategoryDimension categoryDimension = categoryDimensions.get( categoryDims.indexOf( dimension ) );
+            
+            objects.add( new BaseDimensionalObject( dimension, categoryDimension.getItems() ) );
+        }
+        else // Group set
         {
             ListMap<String, IdentifiableObject> listMap = new ListMap<String, IdentifiableObject>();
             
@@ -297,9 +314,7 @@ public class Chart
             {
                 listMap.putValue( group.getGroupSet().getUid(), group );
             }
-            
-            //TODO categories
-            
+                        
             if ( listMap.containsKey( dimension ) )
             {
                 objects.add( new BaseDimensionalObject( dimension, listMap.get( dimension ) ) );
@@ -709,7 +724,7 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "dataElementOperands", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0)
@@ -780,6 +795,16 @@ public class Chart
     public void setRelatives( RelativePeriods relatives )
     {
         this.relatives = relatives;
+    }
+
+    public List<DataElementCategoryDimension> getCategoryDimensions()
+    {
+        return categoryDimensions;
+    }
+
+    public void setCategoryDimensions( List<DataElementCategoryDimension> categoryDimensions )
+    {
+        this.categoryDimensions = categoryDimensions;
     }
 
     @JsonProperty
