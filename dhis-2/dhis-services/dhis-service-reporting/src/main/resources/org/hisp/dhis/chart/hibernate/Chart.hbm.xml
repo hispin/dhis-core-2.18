@@ -106,6 +106,14 @@
     <many-to-one name="relatives" unique="true" class="org.hisp.dhis.period.RelativePeriods" column="relativeperiodsid"
       cascade="all-delete-orphan" foreign-key="fk_report_relativeperiodsid" />
 
+    <list name="categoryDimensions" table="chart_categorydimensions" cascade="all-delete-orphan">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_categorydimensions_chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="categorydimensionid" class="org.hisp.dhis.dataelement.DataElementCategoryDimension"
+        foreign-key="fk_chart_categorydimensions_categorydimensionid" />
+    </list>
+    
     <list name="dataElementGroups" table="chart_dataelementgroups">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_dataelementgroups_chartid" />
