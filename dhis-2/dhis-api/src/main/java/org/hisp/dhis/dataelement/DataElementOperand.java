@@ -164,6 +164,24 @@ public class DataElementOperand
         
         return uid;
     }
+
+    @Override
+    public String getName()
+    {
+        String name = null;
+        
+        if ( dataElement != null )
+        {
+            name = dataElement.getName();
+        }
+        
+        if ( categoryOptionCombo != null )
+        {
+            name += SPACE + categoryOptionCombo.getName();
+        }
+        
+        return name;
+    }
     
     /**
      * Tests whether the operand has any aggregation levels.
