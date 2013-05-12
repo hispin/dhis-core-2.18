@@ -44,6 +44,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class BaseDimensionalObject
     extends BaseIdentifiableObject implements DimensionalObject
 {
+    /**
+     * The type of this dimension.
+     */
     private DimensionType type;
     
     /**
@@ -57,15 +60,24 @@ public class BaseDimensionalObject
      */
     private boolean dataDimension = true;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     public BaseDimensionalObject()
     {        
     }
     
-    public BaseDimensionalObject( String dimension, DimensionType dimensionType, List<? extends IdentifiableObject> items )
+    public BaseDimensionalObject( String dimension, DimensionType type, List<? extends IdentifiableObject> items )
     {
         this.uid = dimension;
+        this.type = type;
         this.items = new ArrayList<IdentifiableObject>( items );        
     }
+
+    //--------------------------------------------------------------------------
+    // Getters and setters
+    //--------------------------------------------------------------------------
 
     @JsonProperty
     @JsonView( {DimensionalView.class} )
@@ -118,5 +130,15 @@ public class BaseDimensionalObject
     public void setDataDimension( boolean dataDimension )
     {
         this.dataDimension = dataDimension;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Supportive methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public String toString()
+    {
+        return "[" + uid + ", " + items + "]";
     }
 }
