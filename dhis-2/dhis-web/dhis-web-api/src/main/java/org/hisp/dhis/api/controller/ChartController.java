@@ -57,6 +57,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
@@ -288,9 +289,7 @@ public class ChartController
             chart.setUser( userService.getUser( chart.getUser().getUid() ) );
         }
         
-        mergeDimensionalObjects( chart, chart.getColumns() );
-        mergeDimensionalObjects( chart, chart.getRows() );
-        mergeDimensionalObjects( chart, chart.getFilters() );
+        mergeAnalyticalObject( chart );
         
         chart.setSeries( toDimension( chart.getColumns().get( 0 ).getDimension() ) );
         chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
@@ -301,7 +300,14 @@ public class ChartController
         }
     }
     
-    private void mergeDimensionalObjects( Chart chart, List<DimensionalObject> dimensions ) // TODO Add mergeAnalyticalObject to AnalyticsService
+    private void mergeAnalyticalObject( BaseAnalyticalObject object )
+    {
+        mergeDimensionalObjects( object, object.getColumns() );
+        mergeDimensionalObjects( object, object.getRows() );
+        mergeDimensionalObjects( object, object.getFilters() );        
+    }
+    
+    private void mergeDimensionalObjects( BaseAnalyticalObject object, List<DimensionalObject> dimensions ) // TODO Add mergeAnalyticalObject to AnalyticsService
     {
         for ( DimensionalObject dimension : dimensions )
         {
@@ -313,19 +319,19 @@ public class ChartController
             
             if ( INDICATOR.equals( type ) )
             {
-                chart.getIndicators().addAll( indicatorService.getIndicatorsByUid( uids ) );
+                object.getIndicators().addAll( indicatorService.getIndicatorsByUid( uids ) );
             }
             else if ( DATAELEMENT.equals( type ) )
             {
-                chart.getDataElements().addAll( dataElementService.getDataElementsByUid( uids ) );
+                object.getDataElements().addAll( dataElementService.getDataElementsByUid( uids ) );
             }
             else if ( DATAELEMENT_OPERAND.equals( type ) )
             {
-                chart.getDataElementOperands().addAll( operandService.getDataElementOperandsByUid( uids ) );
+                object.getDataElementOperands().addAll( operandService.getDataElementOperandsByUid( uids ) );
             }
             else if ( DATASET.equals( type ) )
             {
-                chart.getDataSets().addAll( dataSetService.getDataSetsByUid( uids ) );
+                object.getDataSets().addAll( dataSetService.getDataSetsByUid( uids ) );
             }
             else if ( PERIOD.equals( type ) )
             {
@@ -349,8 +355,8 @@ public class ChartController
                     }
                 }
 
-                chart.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
-                chart.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
+                object.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
+                object.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
             }
             else if ( ORGANISATIONUNIT.equals( type ) )
             {
@@ -360,11 +366,11 @@ public class ChartController
                 {
                     if ( KEY_USER_ORGUNIT.equals( ou ) )
                     {
-                        chart.setUserOrganisationUnit( true );
+                        object.setUserOrganisationUnit( true );
                     }
                     else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) )
                     {
-                        chart.setUserOrganisationUnitChildren( true );
+                        object.setUserOrganisationUnitChildren( true );
                     }
                     else
                     {
@@ -377,7 +383,7 @@ public class ChartController
                     }
                 }
                 
-                chart.setOrganisationUnits( ous );
+                object.setOrganisationUnits( ous );
             }
             else if ( CATEGORY.equals( type ) )
             {
@@ -385,15 +391,15 @@ public class ChartController
                 categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
                 categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
                 
-                chart.getCategoryDimensions().add( categoryDimension );
+                object.getCategoryDimensions().add( categoryDimension );
             }
             else if ( DATAELEMENT_GROUPSET.equals( type ) )
             {
-                chart.getDataElementGroups().addAll( dataElementService.getDataElementGroupsByUid( uids ) );
+                object.getDataElementGroups().addAll( dataElementService.getDataElementGroupsByUid( uids ) );
             }
             else if ( ORGANISATIONUNIT_GROUPSET.equals( type ) )
             {
-                chart.getOrganisationUnitGroups().addAll( organisationUnitGroupService.getOrganisationUnitGroupsByUid( uids ) );
+                object.getOrganisationUnitGroups().addAll( organisationUnitGroupService.getOrganisationUnitGroupsByUid( uids ) );
             }
         }
     }
