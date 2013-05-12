@@ -34,6 +34,8 @@ import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -187,9 +189,21 @@ public class BaseAnalyticalObject
             
             objects.add( new BaseDimensionalObject( dimension, DimensionType.PERIOD, periodList ) );
         }        
-        else if ( ORGUNIT_DIM_ID.equals( dimension ) && !organisationUnits.isEmpty() )
+        else if ( ORGUNIT_DIM_ID.equals( dimension ) && ( !organisationUnits.isEmpty() || hasUserOrgUnit() ) )
         {
-            objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, organisationUnits ) );
+            List<IdentifiableObject> ouList = new ArrayList<IdentifiableObject>( organisationUnits );
+            
+            if ( userOrganisationUnit )
+            {
+                ouList.add( new BaseIdentifiableObject( KEY_USER_ORGUNIT, KEY_USER_ORGUNIT, KEY_USER_ORGUNIT ) );
+            }
+            
+            if ( userOrganisationUnitChildren )
+            {
+                ouList.add( new BaseIdentifiableObject( KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN ) );
+            }
+                
+            objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, ouList ) );
         }
         else if ( categoryDims.contains( dimension ) )
         {
@@ -405,7 +419,7 @@ public class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public boolean isUserOrganisationUnit()
     {
@@ -418,7 +432,7 @@ public class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public boolean isUserOrganisationUnitChildren()
     {
