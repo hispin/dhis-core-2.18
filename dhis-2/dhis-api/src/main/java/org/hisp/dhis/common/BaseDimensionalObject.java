@@ -44,6 +44,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class BaseDimensionalObject
     extends BaseIdentifiableObject implements DimensionalObject
 {
+    private DimensionType type;
+    
     /**
      * The dimensional items for this dimension.
      */
@@ -59,10 +61,23 @@ public class BaseDimensionalObject
     {        
     }
     
-    public BaseDimensionalObject( String dimension, List<? extends IdentifiableObject> items )
+    public BaseDimensionalObject( String dimension, DimensionType dimensionType, List<? extends IdentifiableObject> items )
     {
         this.uid = dimension;
         this.items = new ArrayList<IdentifiableObject>( items );        
+    }
+
+    @JsonProperty
+    @JsonView( {DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public DimensionType getType()
+    {
+        return type;
+    }
+
+    public void setType( DimensionType type )
+    {
+        this.type = type;
     }
 
     @JsonProperty

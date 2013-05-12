@@ -45,6 +45,7 @@ import java.util.Map;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -181,7 +182,7 @@ public class Chart
     private transient List<OrganisationUnit> relativeOrganisationUnits = new ArrayList<OrganisationUnit>();
 
     // -------------------------------------------------------------------------
-    // Web domain properties
+    // Analytical properties
     // -------------------------------------------------------------------------
 
     private transient List<DimensionalObject> columns = new ArrayList<DimensionalObject>();
@@ -226,7 +227,7 @@ public class Chart
         return list != null && !list.isEmpty() ? list.iterator().next() : null;
     }
         
-    public void populateWebDomainProperties()
+    public void populateAnalyticalProperties()
     {
         columns.addAll( getDimensionalObjectList( series ) );
         rows.addAll( getDimensionalObjectList( category ) );
@@ -257,22 +258,22 @@ public class Chart
         {
             if ( !indicators.isEmpty() )
             {
-                objects.add( new BaseDimensionalObject( INDICATOR_DIM_ID, indicators ) );
+                objects.add( new BaseDimensionalObject( INDICATOR_DIM_ID, DimensionType.INDICATOR, indicators ) );
             }
             
             if ( !dataElements.isEmpty() )
             {
-                objects.add( new BaseDimensionalObject( DATAELEMENT_DIM_ID, dataElements ) );
+                objects.add( new BaseDimensionalObject( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, dataElements ) );
             }
             
             if ( !dataElementOperands.isEmpty() )
             {
-                objects.add( new BaseDimensionalObject( DATAELEMENT_OPERAND_ID, dataElementOperands ) );
+                objects.add( new BaseDimensionalObject( DATAELEMENT_OPERAND_ID, DimensionType.DATAELEMENT_OPERAND, dataElementOperands ) );
             }
             
             if ( !dataSets.isEmpty() )
             {
-                objects.add( new BaseDimensionalObject( DATASET_DIM_ID, dataSets ) );
+                objects.add( new BaseDimensionalObject( DATASET_DIM_ID, DimensionType.DATASET, dataSets ) );
             }
         }
         else if ( PERIOD_DIM_ID.equals( dimension ) && ( !periods.isEmpty() || hasRelativePeriods() ) )
@@ -283,41 +284,48 @@ public class Chart
             {
                 List<RelativePeriodEnum> list = relatives.getRelativePeriodEnums();
 
-                for ( RelativePeriodEnum period : list )
+                for ( RelativePeriodEnum periodEnum : list )
                 {
-                    periodList.add( new ConfigurablePeriod( period.toString(), null, null ) );
+                    periodList.add( new ConfigurablePeriod( periodEnum.toString() ) );
                 }
             }
             
-            objects.add( new BaseDimensionalObject( dimension, periodList ) );
+            objects.add( new BaseDimensionalObject( dimension, DimensionType.PERIOD, periodList ) );
         }        
         else if ( ORGUNIT_DIM_ID.equals( dimension ) && !organisationUnits.isEmpty() )
         {
-            objects.add( new BaseDimensionalObject( dimension, organisationUnits ) );
+            objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, organisationUnits ) );
         }
         else if ( categoryDims.contains( dimension ) )
         {
             DataElementCategoryDimension categoryDimension = categoryDimensions.get( categoryDims.indexOf( dimension ) );
             
-            objects.add( new BaseDimensionalObject( dimension, categoryDimension.getItems() ) );
+            objects.add( new BaseDimensionalObject( dimension, DimensionType.CATEGORY, categoryDimension.getItems() ) );
         }
         else // Group set
         {
-            ListMap<String, IdentifiableObject> listMap = new ListMap<String, IdentifiableObject>();
+            ListMap<String, IdentifiableObject> deGroupMap = new ListMap<String, IdentifiableObject>();
             
             for ( DataElementGroup group : dataElementGroups )
             {
-                listMap.putValue( group.getGroupSet().getDimension(), group );
+                deGroupMap.putValue( group.getGroupSet().getDimension(), group );
             }
+            
+            if ( deGroupMap.containsKey( dimension ) )
+            {
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.DATAELEMENT_GROUPSET, deGroupMap.get( dimension ) ) );
+            }
+
+            ListMap<String, IdentifiableObject> ouGroupMap = new ListMap<String, IdentifiableObject>();
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
-                listMap.putValue( group.getGroupSet().getUid(), group );
+                ouGroupMap.putValue( group.getGroupSet().getUid(), group );
             }
                         
-            if ( listMap.containsKey( dimension ) )
+            if ( ouGroupMap.containsKey( dimension ) )
             {
-                objects.add( new BaseDimensionalObject( dimension, listMap.get( dimension ) ) );
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, ouGroupMap.get( dimension ) ) );
             }
         }
                 
