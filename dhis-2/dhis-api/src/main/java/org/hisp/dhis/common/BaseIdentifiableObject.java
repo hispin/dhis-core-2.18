@@ -128,6 +128,13 @@ public class BaseIdentifiableObject
         this.uid = uid;
         this.name = name;
     }
+    
+    public BaseIdentifiableObject( String uid, String code, String name )
+    {
+        this.uid = uid;
+        this.code = code;
+        this.name = name;
+    }
 
     public BaseIdentifiableObject( IdentifiableObject identifiableObject )
     {

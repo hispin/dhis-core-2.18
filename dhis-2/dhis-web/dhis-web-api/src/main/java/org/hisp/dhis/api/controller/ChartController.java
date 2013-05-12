@@ -301,7 +301,7 @@ public class ChartController
         }
     }
     
-    private void mergeDimensionalObjects( Chart chart, List<DimensionalObject> dimensions )
+    private void mergeDimensionalObjects( Chart chart, List<DimensionalObject> dimensions ) // TODO Add mergeAnalyticalObject to AnalyticsService
     {
         for ( DimensionalObject dimension : dimensions )
         {
