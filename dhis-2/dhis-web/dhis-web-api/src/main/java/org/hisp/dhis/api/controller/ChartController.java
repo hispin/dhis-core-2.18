@@ -254,7 +254,7 @@ public class ChartController
     @Override
     public void postProcessEntity( Chart chart ) throws Exception
     {
-        chart.populateWebDomainProperties();
+        chart.populateAnalyticalProperties();
         
         I18nFormat format = i18nManager.getI18nFormat();
         
