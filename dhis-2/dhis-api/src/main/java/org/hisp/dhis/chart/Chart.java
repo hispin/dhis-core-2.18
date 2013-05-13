@@ -572,16 +572,18 @@ public class Chart
             category = chart.getCategory() == null ? category : chart.getCategory();
             hideLegend = chart.isHideLegend();
             regression = chart.isRegression();
-            hideSubtitle = chart.isHideSubtitle();
             hideTitle = chart.isHideTitle();
+            hideSubtitle = chart.isHideSubtitle();
             title = chart.getTitle() == null ? title : chart.getTitle();
             targetLineValue = chart.getTargetLineValue() == null ? targetLineValue : chart.getTargetLineValue();
             targetLineLabel = chart.getTargetLineLabel() == null ? targetLineLabel : chart.getTargetLineLabel();
             baseLineValue = chart.getBaseLineValue() == null ? baseLineValue : chart.getBaseLineValue();
-            baseLineLabel = chart.getBaseLineLabel() == null ? baseLineLabel : chart.getBaseLineLabel();
-            
+            baseLineLabel = chart.getBaseLineLabel() == null ? baseLineLabel : chart.getBaseLineLabel();            
             showData = chart.isShowData();
-            rewindRelativePeriods = chart.isRewindRelativePeriods();            
+            rewindRelativePeriods = chart.isRewindRelativePeriods();
+            
+            filterDimensions.clear();
+            filterDimensions.addAll( chart.getFilterDimensions() );
         }
     }
 }

@@ -192,8 +192,7 @@ public class DefaultDimensionService
             
             mergeDimensionalObjects( object, object.getColumns() );
             mergeDimensionalObjects( object, object.getRows() );
-            mergeDimensionalObjects( object, object.getFilters() );
-            
+            mergeDimensionalObjects( object, object.getFilters() );            
         }
     }
 
