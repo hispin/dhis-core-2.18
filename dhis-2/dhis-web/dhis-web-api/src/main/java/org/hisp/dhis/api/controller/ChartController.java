@@ -27,28 +27,12 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionType.DATAELEMENT;
-import static org.hisp.dhis.common.DimensionType.DATAELEMENT_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.DATAELEMENT_OPERAND;
-import static org.hisp.dhis.common.DimensionType.DATASET;
-import static org.hisp.dhis.common.DimensionType.INDICATOR;
-import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
-import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.PERIOD;
-import static org.hisp.dhis.common.DimensionType.CATEGORY;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,15 +41,8 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionService;
-import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.dataelement.DataElementCategoryDimension;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementOperandService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
@@ -73,13 +50,8 @@ import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.RelativePeriodEnum;
-import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.user.UserService;
 import org.jfree.chart.ChartUtilities;
@@ -109,21 +81,6 @@ public class ChartController
     private ChartService chartService;
 
     @Autowired
-    private DataElementService dataElementService;
-    
-    @Autowired
-    private DataElementCategoryService categoryService;
-    
-    @Autowired
-    private DataElementOperandService operandService;
-
-    @Autowired
-    private DataSetService dataSetService;
-
-    @Autowired
-    private PeriodService periodService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -132,9 +89,6 @@ public class ChartController
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    @Autowired
-    private OrganisationUnitGroupService organisationUnitGroupService;
-    
     @Autowired
     private DimensionService dimensionService;
     
@@ -274,22 +228,9 @@ public class ChartController
 
     private void mergeChart( Chart chart )
     {
-        chart.getIndicators().clear();
-        chart.getDataElements().clear();
-        chart.getDataSets().clear();
-        chart.getPeriods().clear();
-        chart.setRelatives( null );
-        chart.getOrganisationUnits().clear();
-        chart.getDataElementGroups().clear();
-        chart.getOrganisationUnitGroups().clear();
         chart.getFilterDimensions().clear();
-        
-        if ( chart.getUser() != null )
-        {
-            chart.setUser( userService.getUser( chart.getUser().getUid() ) );
-        }
-        
-        mergeAnalyticalObject( chart );
+                
+        dimensionService.mergeAnalyticalObject( chart );
         
         chart.setSeries( toDimension( chart.getColumns().get( 0 ).getDimension() ) );
         chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
@@ -297,110 +238,6 @@ public class ChartController
         for ( DimensionalObject dimension : chart.getFilters() )
         {
             chart.getFilterDimensions().add( toDimension( dimension.getDimension() ) );
-        }
-    }
-    
-    private void mergeAnalyticalObject( BaseAnalyticalObject object )
-    {
-        mergeDimensionalObjects( object, object.getColumns() );
-        mergeDimensionalObjects( object, object.getRows() );
-        mergeDimensionalObjects( object, object.getFilters() );        
-    }
-    
-    private void mergeDimensionalObjects( BaseAnalyticalObject object, List<DimensionalObject> dimensions ) // TODO Add mergeAnalyticalObject to AnalyticsService
-    {
-        for ( DimensionalObject dimension : dimensions )
-        {
-            DimensionType type = dimensionService.getDimensionType( dimension.getDimension() );
-            
-            String dimensionId = dimension.getDimension();
-            
-            List<String> uids = getUids( dimension.getItems() );
-            
-            if ( INDICATOR.equals( type ) )
-            {
-                object.getIndicators().addAll( indicatorService.getIndicatorsByUid( uids ) );
-            }
-            else if ( DATAELEMENT.equals( type ) )
-            {
-                object.getDataElements().addAll( dataElementService.getDataElementsByUid( uids ) );
-            }
-            else if ( DATAELEMENT_OPERAND.equals( type ) )
-            {
-                object.getDataElementOperands().addAll( operandService.getDataElementOperandsByUid( uids ) );
-            }
-            else if ( DATASET.equals( type ) )
-            {
-                object.getDataSets().addAll( dataSetService.getDataSetsByUid( uids ) );
-            }
-            else if ( PERIOD.equals( type ) )
-            {
-                List<RelativePeriodEnum> enums = new ArrayList<RelativePeriodEnum>();                
-                Set<Period> periods = new HashSet<Period>();
-                
-                for ( String isoPeriod : uids )
-                {
-                    if ( RelativePeriodEnum.contains( isoPeriod ) )
-                    {
-                        enums.add( RelativePeriodEnum.valueOf( isoPeriod ) );
-                    }
-                    else
-                    {
-                        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
-                    
-                        if ( period != null )
-                        {
-                            periods.add( period );
-                        }
-                    }
-                }
-
-                object.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
-                object.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
-            }
-            else if ( ORGANISATIONUNIT.equals( type ) )
-            {
-                List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>();
-                
-                for ( String ou : uids )
-                {
-                    if ( KEY_USER_ORGUNIT.equals( ou ) )
-                    {
-                        object.setUserOrganisationUnit( true );
-                    }
-                    else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) )
-                    {
-                        object.setUserOrganisationUnitChildren( true );
-                    }
-                    else
-                    {
-                        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
-                        
-                        if ( unit != null )
-                        {
-                            ous.add( unit );
-                        }
-                    }
-                }
-                
-                object.setOrganisationUnits( ous );
-            }
-            else if ( CATEGORY.equals( type ) )
-            {
-                DataElementCategoryDimension categoryDimension = new DataElementCategoryDimension();
-                categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
-                categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
-                
-                object.getCategoryDimensions().add( categoryDimension );
-            }
-            else if ( DATAELEMENT_GROUPSET.equals( type ) )
-            {
-                object.getDataElementGroups().addAll( dataElementService.getDataElementGroupsByUid( uids ) );
-            }
-            else if ( ORGANISATIONUNIT_GROUPSET.equals( type ) )
-            {
-                object.getOrganisationUnitGroups().addAll( organisationUnitGroupService.getOrganisationUnitGroupsByUid( uids ) );
-            }
         }
     }
     
