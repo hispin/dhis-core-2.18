@@ -1860,6 +1860,16 @@ DV.core.getApi = function(dv) {
 			operand.objectName = dimConf.operand.objectName;
 			operand.items = Ext.clone(config.items);
 
+			// Replace operand id characters
+			for (var i = 0, id; i < operand.items.length; i++) {
+				id = operand.items[i].id;
+
+				if (id.indexOf('.') !== -1) {
+					id = id.replace('.', '-');
+					operand.items[i].id = id;
+				}
+			}
+
 			return operand;
 		}();
 	};
