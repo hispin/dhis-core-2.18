@@ -56,7 +56,7 @@
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	<property name="reportTableManager" ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager" />
+	<property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
   </bean>
 
   <!-- Document -->

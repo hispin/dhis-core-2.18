@@ -320,7 +320,7 @@ public class JdbcAnalyticsManager
             
             for ( DimensionalObject dim : params.getQueryDimensions() )
             {
-                key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
+                key.append( rowSet.getString( dim.getDimensionName() ) ).append( DIMENSION_SEP );
             }
             
             key.deleteCharAt( key.length() - 1 );

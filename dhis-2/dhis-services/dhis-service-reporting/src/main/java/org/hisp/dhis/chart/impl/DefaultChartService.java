@@ -27,11 +27,33 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.chart.Chart.TYPE_AREA;
+import static org.hisp.dhis.chart.Chart.TYPE_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_COLUMN;
+import static org.hisp.dhis.chart.Chart.TYPE_LINE;
+import static org.hisp.dhis.chart.Chart.TYPE_PIE;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.ChartStore;
@@ -49,7 +71,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -80,19 +101,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static org.hisp.dhis.chart.Chart.*;
-import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
 /**
  * @author Lars Helge Overland
@@ -154,11 +162,11 @@ public class DefaultChartService
         this.currentUserService = currentUserService;
     }
 
-    private ReportTableManager reportTableManager;
+    private AnalyticsService analyticsService;
 
-    public void setReportTableManager( ReportTableManager reportTableManager )
+    public void setAnalyticsService( AnalyticsService analyticsService )
     {
-        this.reportTableManager = reportTableManager;
+        this.analyticsService = analyticsService;
     }
 
     // -------------------------------------------------------------------------
@@ -214,7 +222,7 @@ public class DefaultChartService
 
         chart.setFormat( format );
 
-        return getJFreeChart( chart, !chart.isHideSubtitle() );
+        return getJFreeChart( chart, !chart.isHideSubtitle(), format );
     }
 
     public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
@@ -237,7 +245,7 @@ public class DefaultChartService
         chart.getOrganisationUnits().add( unit );
         chart.setFormat( format );
 
-        return getJFreeChart( chart, title );
+        return getJFreeChart( chart, title, format );
     }
 
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
@@ -261,7 +269,7 @@ public class DefaultChartService
         chart.setOrganisationUnits( parent.getSortedChildren() );
         chart.setFormat( format );
 
-        return getJFreeChart( chart, title );
+        return getJFreeChart( chart, title, format );
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
@@ -282,7 +290,7 @@ public class DefaultChartService
         chart.setFormat( format );
         chart.setName( chart.generateTitle() );
 
-        return getJFreeChart( chart, false );
+        return getJFreeChart( chart, false, format );
     }
 
     public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
@@ -519,7 +527,7 @@ public class DefaultChartService
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
-    private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
+    private JFreeChart getJFreeChart( Chart chart, boolean subTitle, I18nFormat format )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
@@ -530,7 +538,7 @@ public class DefaultChartService
 
         CategoryPlot plot = null;
 
-        CategoryDataset[] dataSets = getCategoryDataSet( chart );
+        CategoryDataset[] dataSets = getCategoryDataSet( chart, format );
 
         if ( chart.isType( TYPE_LINE ) )
         {
@@ -710,9 +718,11 @@ public class DefaultChartService
         return multiplePieChart;
     }
 
-    private CategoryDataset[] getCategoryDataSet( Chart chart )
+    private CategoryDataset[] getCategoryDataSet( Chart chart, I18nFormat format )
     {
-        Map<String, Double> valueMap = reportTableManager.getAggregatedValueMap( chart );
+        DataQueryParams params = analyticsService.getFromAnalyticalObject( chart, null );
+        
+        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( params );
 
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
@@ -727,10 +737,10 @@ public class DefaultChartService
             {
                 categoryIndex++;
 
-                String key = getIdentifier( Arrays.asList( series, category, chart.filter() ) );
+                String key = series.getUid() + DataQueryParams.DIMENSION_SEP + category.getUid();
 
                 Double value = valueMap.get( key );
-
+                
                 regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
 
                 if ( chart.isRegression() && value != null && !MathUtils.isEqual( value, MathUtils.ZERO ) )
