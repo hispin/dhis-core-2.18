@@ -657,7 +657,7 @@ public class DataQueryParams
         {
             Dimension existing = filters.get( index );
             
-            filters.set( index, new Dimension( existing.getDimension(), existing.getType(), existing.getDimensionName(), options ) );
+            filters.set( index, new Dimension( existing.getDimension(), existing.getType(), existing.getName(), options ) );
         }
         
         return this;

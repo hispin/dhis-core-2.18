@@ -42,7 +42,7 @@ public class Dimension
     
     private DimensionType type;
 
-    private String dimensionName;
+    private String name;
 
     private String displayName;
     
@@ -70,19 +70,19 @@ public class Dimension
         this.items = items;
     }
 
-    public Dimension( String dimension, DimensionType type, String dimensionName, List<IdentifiableObject> items )
+    public Dimension( String dimension, DimensionType type, String name, List<IdentifiableObject> items )
     {
         this.dimension = dimension;
         this.type = type;
-        this.dimensionName = dimensionName;
+        this.name = name;
         this.items = items;
     }
 
-    public Dimension( String dimension, DimensionType type, String dimensionName, String displayName, List<IdentifiableObject> items )
+    public Dimension( String dimension, DimensionType type, String name, String displayName, List<IdentifiableObject> items )
     {
         this.dimension = dimension;
         this.type = type;
-        this.dimensionName = dimensionName;
+        this.name = name;
         this.displayName = displayName;
         this.items = items;
     }
@@ -111,9 +111,9 @@ public class Dimension
     /**
      * Returns dimension name with fall back to dimension.
      */
-    public String getDimensionName()
+    public String getName()
     {
-        return dimensionName != null ? dimensionName : dimension;
+        return name != null ? name : dimension;
     }
     
     // -------------------------------------------------------------------------
@@ -196,6 +196,6 @@ public class Dimension
     @Override
     public String toString()
     {
-        return "[Dimension: " + dimension + ", type: " + type + ", name: " + dimensionName + ", items: " + items + "]";
+        return "[Dimension: " + dimension + ", type: " + type + ", name: " + name + ", items: " + items + "]";
     }
 }
