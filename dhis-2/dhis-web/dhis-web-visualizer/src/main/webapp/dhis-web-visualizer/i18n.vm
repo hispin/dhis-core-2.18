@@ -184,5 +184,11 @@ DV.i18n = {
 	totals: '$encoder.jsEscape($i18n.getString( 'totals' ) , "'")',
 	details: '$encoder.jsEscape($i18n.getString( 'details' ) , "'")',
 	prev: '$encoder.jsEscape($i18n.getString( 'prev' ) , "'")',
-	next: '$encoder.jsEscape($i18n.getString( 'next' ) , "'")'
+	next: '$encoder.jsEscape($i18n.getString( 'next' ) , "'")',
+	create: '$encoder.jsEscape($i18n.getString( 'create' ) , "'")',
+	add_new: '$encoder.jsEscape($i18n.getString( 'add_new' ) , "'")',
+	can_view: '$encoder.jsEscape($i18n.getString( 'can_view' ) , "'")',
+	can_edit_and_view: '$encoder.jsEscape($i18n.getString( 'can_edit_and_view' ) , "'")',
+	search_for_user_groups: '$encoder.jsEscape($i18n.getString( 'search_for_user_groups' ) , "'")',
+	public_access: '$encoder.jsEscape($i18n.getString( 'public_access' ) , "'")'	
 };
