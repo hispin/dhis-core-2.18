@@ -165,11 +165,6 @@ public class Chart
         {
             filters.addAll( getDimensionalObjectList( filter ) );
         }
-        
-        for ( OrganisationUnit organisationUnit : organisationUnits )
-        {
-            parentGraphMap.put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
-        }
     }
         
     public String generateTitle()

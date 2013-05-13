@@ -54,8 +54,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.analytics.Dimension;
 import org.hisp.dhis.analytics.MeasureFilter;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.period.Period;
@@ -249,29 +249,29 @@ public class JdbcAnalyticsManager
 
         String sql = "from " + params.getTableName() + " ";
         
-        for ( Dimension dim : params.getQueryDimensions() )
+        for ( DimensionalObject dim : params.getQueryDimensions() )
         {
             if ( !dim.isAllItems() )
             {
-                sql += sqlHelper.whereAnd() + " " + dim.getNameFallback() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
             }
         }
 
-        ListMap<String, Dimension> filterMap = params.getDimensionFilterMap();
+        ListMap<String, DimensionalObject> filterMap = params.getDimensionFilterMap();
         
         for ( String dimension : filterMap.keySet() )
         {
-            List<Dimension> filters = filterMap.get( dimension );
+            List<DimensionalObject> filters = filterMap.get( dimension );
             
             if ( DataQueryParams.anyDimensionHasItems( filters ) )
             {
                 sql += sqlHelper.whereAnd() + " (";
                 
-                for ( Dimension filter : filters )
+                for ( DimensionalObject filter : filters )
                 {
                     if ( filter.hasItems() )
                     {
-                        sql += filter.getNameFallback() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                        sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
                     }
                 }
             }
@@ -318,9 +318,9 @@ public class JdbcAnalyticsManager
             
             StringBuilder key = new StringBuilder();
             
-            for ( Dimension dim : params.getQueryDimensions() )
+            for ( DimensionalObject dim : params.getQueryDimensions() )
             {
-                key.append( rowSet.getString( dim.getNameFallback() ) + DIMENSION_SEP );
+                key.append( rowSet.getString( dim.getDimensionName() ) + DIMENSION_SEP );
             }
             
             key.deleteCharAt( key.length() - 1 );
@@ -379,15 +379,15 @@ public class JdbcAnalyticsManager
      * Generates a comma-delimited string based on the dimension names of the
      * given dimensions.
      */
-    private String getCommaDelimitedString( Collection<Dimension> dimensions )
+    private String getCommaDelimitedString( Collection<DimensionalObject> dimensions )
     {
         final StringBuilder builder = new StringBuilder();
         
         if ( dimensions != null && !dimensions.isEmpty() )
         {
-            for ( Dimension dimension : dimensions )
+            for ( DimensionalObject dimension : dimensions )
             {
-                builder.append( dimension.getNameFallback() ).append( "," );
+                builder.append( dimension.getDimensionName() ).append( "," );
             }
             
             return builder.substring( 0, builder.length() - 1 );

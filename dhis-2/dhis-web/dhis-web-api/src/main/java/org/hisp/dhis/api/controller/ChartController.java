@@ -27,8 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -211,6 +210,11 @@ public class ChartController
     {
         chart.populateAnalyticalProperties();
         
+        for ( OrganisationUnit organisationUnit : chart.getOrganisationUnits() )
+        {
+            chart.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+        }
+        
         I18nFormat format = i18nManager.getI18nFormat();
         
         if ( chart.getPeriods() != null && !chart.getPeriods().isEmpty() )
@@ -239,15 +243,5 @@ public class ChartController
         {
             chart.getFilterDimensions().add( toDimension( dimension.getDimension() ) );
         }
-    }
-    
-    private static String toDimension( String object )
-    {
-        if ( DATA_X_DIMS.contains( object ) )
-        {
-            return DATA_X_DIM_ID;
-        }
-        
-        return object;
     }
 }
