@@ -49,26 +49,8 @@ public interface AnalyticsService
      */
     Grid getAggregatedDataValues( DataQueryParams params );
     
-    /**
-     * Generates aggregated values for the given query. Creates a mapping between 
-     * a dimension key and the aggregated value. The dimension key is a 
-     * concatenation of the identifiers of the dimension items separated by "-".
-     * 
-     * @param params the data query parameters.
-     * @return a mapping between a dimension key and the aggregated value.
-     */
-    Map<String, Double> getAggregatedDataValueMap( DataQueryParams params );
+    Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params );
 
-    /**
-     * Generates aggregated values for the given query. Creates a mapping between 
-     * a dimension key and the aggregated value. The dimension key is a 
-     * concatenation of the identifiers of the dimension items separated by "-".
-     * 
-     * @param params the data query parameters.
-     * @return a mapping between a dimension key and the aggregated value.
-     */
-    Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params );
-    
     /**
      * Creates a data query parameter object from the given URL.
      * 

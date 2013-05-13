@@ -45,12 +45,12 @@ import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.asTypedList;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -353,25 +353,68 @@ public class DefaultAnalyticsService
         
         return grid;
     }
-    
-    public Map<String, Double> getAggregatedDataValueMap( DataQueryParams params )
+
+    public Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params )
     {
-        queryPlanner.validate( params );
+        Grid grid = getAggregatedDataValues( params );
         
-        return getAggregatedValueMap( params, ANALYTICS_TABLE_NAME );
+        Map<String, Double> map = new HashMap<String, Double>();
+        
+        int metaCols = grid.getWidth() - 1;
+        int valueIndex = grid.getWidth() - 1;
+        
+        for ( List<Object> row : grid.getRows() )
+        {
+            StringBuilder key = new StringBuilder();
+            
+            for ( int index = 0; index < metaCols; index++ )
+            {
+                key.append( row.get( index ) ).append( DIMENSION_SEP );
+            }
+
+            key.deleteCharAt( key.length() - 1 );
+            
+            Double value = (Double) row.get( valueIndex );
+            
+            map.put( key.toString(), value );
+        }
+        
+        return map;
     }
     
-    public Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params )
+    /**
+     * Generates aggregated values for the given query. Creates a mapping between 
+     * a dimension key and the aggregated value. The dimension key is a 
+     * concatenation of the identifiers of the dimension items separated by "-".
+     * 
+     * @param params the data query parameters.
+     * @return a mapping between a dimension key and the aggregated value.
+     */
+    private Map<String, Double> getAggregatedDataValueMap( DataQueryParams params )
     {
-        queryPlanner.validate( params );
-        
+        return getAggregatedValueMap( params, ANALYTICS_TABLE_NAME );
+    }
+
+    /**
+     * Generates aggregated values for the given query. Creates a mapping between 
+     * a dimension key and the aggregated value. The dimension key is a 
+     * concatenation of the identifiers of the dimension items separated by "-".
+     * 
+     * @param params the data query parameters.
+     * @return a mapping between a dimension key and the aggregated value.
+     */
+    private Map<String, Double> getAggregatedCompletenessValueMap( DataQueryParams params )
+    {
         return getAggregatedValueMap( params, COMPLETENESS_TABLE_NAME );
     }
 
+    /**
+     * 
+     * @param params
+     * @return
+     */
     private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
     {
-        queryPlanner.validate( params );
-        
         return getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME );
     }
     
