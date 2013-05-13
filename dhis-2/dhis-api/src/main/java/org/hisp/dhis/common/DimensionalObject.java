@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Inherits getName() and getDisplayName().
+ * 
 * @author Lars Helge Overland
 */
 public interface DimensionalObject
@@ -48,7 +50,7 @@ public interface DimensionalObject
     
     String getDimension();
     
-    List<IdentifiableObject> getItems();
-    
     DimensionType getType();
+        
+    List<IdentifiableObject> getItems();
 }
