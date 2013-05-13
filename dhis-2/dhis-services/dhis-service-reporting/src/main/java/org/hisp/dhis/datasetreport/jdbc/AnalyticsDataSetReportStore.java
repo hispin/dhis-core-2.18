@@ -96,7 +96,7 @@ public class AnalyticsDataSetReportStore
             }
         }
         
-        Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
+        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
         
         Map<String, Double> dataMap = new HashMap<String, Double>();
         
@@ -143,7 +143,7 @@ public class AnalyticsDataSetReportStore
                     }
                 }
                 
-                Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
+                Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
                 
                 for ( Entry<String, Double> entry : map.entrySet() )
                 {
@@ -182,7 +182,7 @@ public class AnalyticsDataSetReportStore
             }
         }
         
-        Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
+        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
 
         Map<String, Double> dataMap = new HashMap<String, Double>();
         
@@ -219,7 +219,7 @@ public class AnalyticsDataSetReportStore
             }
         }
         
-        Map<String, Double> map = analyticsService.getAggregatedDataValueMap( params );
+        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
 
         Map<String, Double> dataMap = new HashMap<String, Double>();
         
