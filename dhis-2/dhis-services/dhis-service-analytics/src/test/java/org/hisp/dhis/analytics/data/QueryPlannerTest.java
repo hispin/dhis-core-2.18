@@ -678,12 +678,12 @@ public class QueryPlannerTest
     {
         for ( Dimension dim : params.getDimensions() )
         {
-            assertNotNull( dim.getDimensionName() );
+            assertNotNull( dim.getName() );
         }
         
         for ( Dimension filter : params.getFilters() )
         {
-            assertNotNull( filter.getDimensionName() );
+            assertNotNull( filter.getName() );
         }
     }
 }
