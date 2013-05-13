@@ -51,6 +51,4 @@ public interface DimensionalObject
     List<IdentifiableObject> getItems();
     
     DimensionType getType();
-    
-    boolean isDataDimension();
 }
