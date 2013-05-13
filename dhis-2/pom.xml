@@ -205,8 +205,9 @@
       <plugin>
         <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
         <artifactId>maven-java-formatter-plugin</artifactId>
+        <version>0.3.1</version>
         <configuration>
-          <configFile>../DHISFormatter.xml</configFile>
+          <configFile>${rootDir}DHISFormatter.xml</configFile>
           <lineEnding>LF</lineEnding>
         </configuration>
         <!-- Uncomment the following to add autoformatting when building -->
