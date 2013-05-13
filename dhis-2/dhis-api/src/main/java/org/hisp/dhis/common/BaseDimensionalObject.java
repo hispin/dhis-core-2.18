@@ -54,12 +54,6 @@ public class BaseDimensionalObject
      */
     private List<IdentifiableObject> items = new ArrayList<IdentifiableObject>();
     
-    /**
-     * Indicates whether this object should be considered a data dimension. Assumes
-     * true by default.
-     */
-    private boolean dataDimension = true;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -122,16 +116,6 @@ public class BaseDimensionalObject
         this.items = items;
     }
 
-    public boolean isDataDimension()
-    {
-        return dataDimension;
-    }
-
-    public void setDataDimension( boolean dataDimension )
-    {
-        this.dataDimension = dataDimension;
-    }
-    
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------

@@ -68,6 +68,7 @@ import org.hisp.dhis.analytics.DimensionItem;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
+import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -458,6 +459,15 @@ public class DefaultAnalyticsService
         return params;
     }
 
+    public DataQueryParams getFromAnalyticalObject( BaseAnalyticalObject object )
+    {
+        DataQueryParams params = new DataQueryParams();
+        
+        //TODO impl
+        
+        return params;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
