@@ -76,19 +76,6 @@ public class BaseDimensionalObject
     @JsonProperty
     @JsonView( {DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public DimensionType getType()
-    {
-        return type;
-    }
-
-    public void setType( DimensionType type )
-    {
-        this.type = type;
-    }
-
-    @JsonProperty
-    @JsonView( {DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDimension()
     {
         return uid;
@@ -99,6 +86,19 @@ public class BaseDimensionalObject
         this.uid = dimension;
     }
 
+    @JsonProperty
+    @JsonView( {DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public DimensionType getType()
+    {
+        return type;
+    }
+
+    public void setType( DimensionType type )
+    {
+        this.type = type;
+    }
+    
     @Override
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )

@@ -111,7 +111,7 @@ public class Dimension
     /**
      * Returns dimension name with fall back to dimension.
      */
-    public String getName()
+    public String getNameFallback()
     {
         return name != null ? name : dimension;
     }

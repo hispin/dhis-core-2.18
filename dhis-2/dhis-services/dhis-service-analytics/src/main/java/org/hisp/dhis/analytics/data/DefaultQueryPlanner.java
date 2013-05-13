@@ -263,7 +263,7 @@ public class DefaultQueryPlanner
             for ( List<IdentifiableObject> valuePage : valuePages )
             {
                 DataQueryParams subQuery = new DataQueryParams( query );
-                subQuery.setDimensionOptions( dim.getDimension(), dim.getType(), dim.getName(), valuePage );
+                subQuery.setDimensionOptions( dim.getDimension(), dim.getType(), dim.getNameFallback(), valuePage );
                 subQueries.add( subQuery );
             }
         }

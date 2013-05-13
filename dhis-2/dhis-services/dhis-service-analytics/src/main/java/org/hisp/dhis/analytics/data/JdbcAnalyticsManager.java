@@ -253,7 +253,7 @@ public class JdbcAnalyticsManager
         {
             if ( !dim.isAllItems() )
             {
-                sql += sqlHelper.whereAnd() + " " + dim.getName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+                sql += sqlHelper.whereAnd() + " " + dim.getNameFallback() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
             }
         }
 
@@ -271,7 +271,7 @@ public class JdbcAnalyticsManager
                 {
                     if ( filter.hasItems() )
                     {
-                        sql += filter.getName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                        sql += filter.getNameFallback() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
                     }
                 }
             }
@@ -320,7 +320,7 @@ public class JdbcAnalyticsManager
             
             for ( Dimension dim : params.getQueryDimensions() )
             {
-                key.append( rowSet.getString( dim.getName() ) + DIMENSION_SEP );
+                key.append( rowSet.getString( dim.getNameFallback() ) + DIMENSION_SEP );
             }
             
             key.deleteCharAt( key.length() - 1 );
@@ -387,7 +387,7 @@ public class JdbcAnalyticsManager
         {
             for ( Dimension dimension : dimensions )
             {
-                builder.append( dimension.getName() ).append( "," );
+                builder.append( dimension.getNameFallback() ).append( "," );
             }
             
             return builder.substring( 0, builder.length() - 1 );
