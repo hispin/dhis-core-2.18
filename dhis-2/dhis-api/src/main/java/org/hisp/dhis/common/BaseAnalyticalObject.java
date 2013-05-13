@@ -248,16 +248,16 @@ public abstract class BaseAnalyticalObject
         super.mergeWith( other );
         
         if ( other.getClass().isInstance( this ) )
-        {
-            filters.clear();
-            filters.addAll( other.getFilters() );
-            
+        {            
             indicators.clear();
             indicators.addAll( other.getIndicators() );
 
             dataElements.clear();
             dataElements.addAll( other.getDataElements() );
 
+            dataElementOperands.clear();
+            dataElementOperands.addAll( other.getDataElementOperands() );
+            
             dataSets.clear();
             dataSets.addAll( other.getDataSets() );
             
