@@ -630,6 +630,7 @@ DV.core.getUtil = function(dv) {
 					dimConf = dv.conf.finals.dimension,
 					addCategoryDimension = false,
 					map = xLayout.extended.dimensionNameItemsMap,
+					dx = dimConf.indicator.dimensionName,
 					items;
 
 				for (var i = 0, dimensionName; i < sortedAxisDimensionNames.length; i++) {
@@ -639,7 +640,7 @@ DV.core.getUtil = function(dv) {
 
 					items = Ext.clone(xLayout.extended.dimensionNameItemsMap[dimensionName]).sort();
 
-					if (dimensionName === dimConf.dataElement.dimensionName) {
+					if (dimensionName === dx) {
 						for (var j = 0, index; j < items.length; j++) {
 							index = items[j].indexOf('-');
 
@@ -677,35 +678,41 @@ DV.core.getUtil = function(dv) {
 			getSyncronizedXLayout = function(xLayout, response) {
 				var dimensions = [].concat(xLayout.columns, xLayout.rows, xLayout.filters),
 					xOuDimension = xLayout.extended.objectNameDimensionMap[dimConf.organisationUnit.objectName],
-					isUserOrgunit = Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT'),
-					isUserOrgunitChildren = Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT_CHILDREN'),
-					items = [],
-					isDirty = false;
+					isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT'),
+					isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT_CHILDREN'),
+					peItems = [],
+					ouItems = [];
+
+				// Relative periods
+				for (var i = 0, periodIds; i < dimensions.length; i++) {
+					if (dimensions[i].dimension === dimConf.period.objectName) {
+						periodIds = response.metaData.pe;
+
+						for (var j = 0; j < periodIds.length; j++) {
+							peItems.push({id: periodIds[j]});
+						}
+
+						dimensions[i].items = peItems;
+					}
+				}
 
 				// Add user orgunits
-				if (xOuDimension && (isUserOrgunit || isUserOrgunitChildren)) {
+				if (isUserOrgunit || isUserOrgunitChildren) {
 					if (isUserOrgunit) {
-						items.push(Ext.clone(dv.init.user.ou));
+						ouItems.push(Ext.clone(dv.init.user.ou));
 					}
 					if (isUserOrgunitChildren) {
-						items = items.concat(Ext.clone(dv.init.user.ouc));
+						ouItems = ouItems.concat(Ext.clone(dv.init.user.ouc));
 					}
 
 					for (var i = 0; i < dimensions.length; i++) {
 						if (dimensions[i].dimension === dimConf.organisationUnit.objectName) {
-							dimensions[i].items = items;
+							dimensions[i].items = ouItems;
 						}
 					}
-
-					isDirty = true;
 				}
 
-				if (isDirty) {
-					delete xLayout.extended;
-					xLayout = dv.util.chart.extendLayout(xLayout);
-				}
-
-				return xLayout;
+				return dv.util.chart.extendLayout(xLayout);
 			};
 
 			validateResponse = function(response) {
@@ -1182,8 +1189,16 @@ console.log("baseLineFields", store.baseLineFields);
 					position = 'top',
 					padding = 0;
 
-				for (var i = 0; i < store.rangeFields.length; i++) {
-					str += xResponse.metaData.names[store.rangeFields[i]];
+				for (var i = 0, name, ids; i < store.rangeFields.length; i++) {
+					if (store.rangeFields[i].indexOf('-') !== -1) {
+						ids = store.rangeFields[i].split('-');
+						name = xResponse.metaData.names[ids[0]] + ' ' + xResponse.metaData.names[ids[1]];
+					}
+					else {
+						name = xResponse.metaData.names[store.rangeFields[i]];
+					}
+
+					str += name;
 				}
 
 				numberOfChars = str.length;
@@ -1213,7 +1228,7 @@ console.log("baseLineFields", store.baseLineFields);
 				var filterItems = xLayout.extended.filterItems,
 					a = [],
 					text = '';
-console.log("filterItems", filterItems);
+
 				if (Ext.isArray(filterItems) && filterItems.length) {
 					for (var i = 0; i < filterItems.length; i++) {
 						text += xResponse.metaData.names[filterItems[i]];
@@ -1709,8 +1724,271 @@ console.log("chart", chart);
 	return util;
 };
 
-DV.core.getAPI = function(dv) {
-	var api = {};
+DV.core.getApi = function(dv) {
+	var dimConf = dv.conf.finals.dimension,
+		api = {
+			objectNameClassMap: {}
+		};
+
+	api.Dimension = function() {
+		return {
+			dimension: null, // string
+
+			items: null // array of records
+		};
+	};
+
+	api.Indicator = function(config) {
+		var indicator = api.Dimension(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Indicator config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Indicator dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Indicator items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Indicator has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			indicator.dimension = config.dimension;
+			indicator.dimensionName = dimConf.indicator.dimensionName;
+			indicator.objectName = dimConf.indicator.objectName;
+			indicator.items = Ext.clone(config.items);
+
+			return indicator;
+		}();
+	};
+
+	api.DataElement = function(config) {
+		var dataElement = api.Dimension(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Data element config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Data element dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Data element items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Data element has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			dataElement.dimension = config.dimension;
+			dataElement.dimensionName = dimConf.dataElement.dimensionName;
+			dataElement.objectName = dimConf.dataElement.objectName;
+			dataElement.items = Ext.clone(config.items);
+
+			return dataElement;
+		}();
+	};
+
+	api.Operand = function(config) {
+		var operand = api.Dimension(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Operand config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Operand dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Operand items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Operand has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			operand.dimension = config.dimension;
+			operand.dimensionName = dimConf.operand.dimensionName;
+			operand.objectName = dimConf.operand.objectName;
+			operand.items = Ext.clone(config.items);
+
+			return operand;
+		}();
+	};
+
+	api.DataSet = function(config) {
+		var dataSet = api.Dimension(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Data set config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Data set dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Data set items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Data set has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			dataSet.dimension = config.dimension;
+			dataSet.dimensionName = dimConf.dataSet.dimensionName;
+			dataSet.objectName = dimConf.dataSet.objectName;
+			dataSet.items = Ext.clone(config.items);
+
+			return dataSet;
+		}();
+	};
+
+	api.Period = function(config) {
+		var period = api.Dimension(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Period config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Period dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Period items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Period has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			period.dimension = config.dimension;
+			period.dimensionName = dimConf.period.dimensionName;
+			period.objectName = dimConf.period.objectName;
+			period.items = Ext.clone(config.items);
+
+			return period;
+		}();
+	};
+
+	api.OrganisationUnit = function(config) {
+		var organisationUnit = api.Dimension(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Organisation unit config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Organisation unit dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Organisation unit items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Organisation unit has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			organisationUnit.dimension = config.dimension;
+			organisationUnit.dimensionName = dimConf.organisationUnit.dimensionName;
+			organisationUnit.objectName = dimConf.organisationUnit.objectName;
+			organisationUnit.items = Ext.clone(config.items);
+
+			return organisationUnit;
+		}();
+	};
 
 	api.Layout = function(config) {
 		var layout = {
@@ -1758,14 +2036,9 @@ DV.core.getAPI = function(dv) {
 				}
 
 				for (var i = 0, dim; i < axis.length; i++) {
-					dim = axis[i];
-
-					if (!(Ext.isObject(dim) && Ext.isString(dim.dimension) && Ext.isArray(dim.items) && dim.items.length)) {
+					dim = dv.api.objectNameClassMap[axis[i].dimension](axis[i]);
+					if (!dim) {
 						return;
-					}
-
-					for (var j = 0; j < dim.items.length; j++) {
-						dim.items[j].id = dim.items[j].id.replace('.', '-');
 					}
 				}
 
@@ -1848,6 +2121,13 @@ DV.core.getAPI = function(dv) {
 		}();
 	};
 
+	api.objectNameClassMap[dimConf.indicator.objectName] = api.Indicator;
+	api.objectNameClassMap[dimConf.dataElement.objectName] = api.DataElement;
+	api.objectNameClassMap[dimConf.operand.objectName] = api.Operand;
+	api.objectNameClassMap[dimConf.dataSet.objectName] = api.DataSet;
+	api.objectNameClassMap[dimConf.period.objectName] = api.Period;
+	api.objectNameClassMap[dimConf.organisationUnit.objectName] = api.OrganisationUnit;
+
 	return api;
 };
 
@@ -1859,7 +2139,7 @@ DV.core.getInstance = function(config) {
 
 	dv.conf = DV.core.getConfig();
 	dv.util = DV.core.getUtil(dv);
-	dv.api = DV.core.getAPI(dv);
+	dv.api = DV.core.getApi(dv);
 
 	return dv;
 };

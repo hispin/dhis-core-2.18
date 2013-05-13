@@ -127,26 +127,27 @@ Ext.onReady( function() {
 			config.filters = [];
 
 			// Columns, rows, filters
-			for (var i = 0, dxItems = [], dim; i < panels.length; i++) {
+			for (var i = 0, dim; i < panels.length; i++) {
 				dim = panels[i].getData();
+
 				if (dim) {
 					if (dim.dimensionName === seriesDimensionName) {
-						config.columns.push({
+						config.columns.push(dv.api.objectNameClassMap[dim.objectName]({
 							dimension: dim.objectName,
 							items: dim.items
-						});
+						}));
 					}
 					else if (dim.dimensionName === categoryDimensionName) {
-						config.rows.push({
+						config.rows.push(dv.api.objectNameClassMap[dim.objectName]({
 							dimension: dim.objectName,
 							items: dim.items
-						});
+						}));
 					}
 					else if (Ext.Array.contains(filterDimensionNames, dim.dimensionName)) {
-						config.filters.push({
+						config.filters.push(dv.api.objectNameClassMap[dim.objectName]({
 							dimension: dim.objectName,
 							items: dim.items
-						});
+						}));
 					}
 				}
 			}
@@ -1064,7 +1065,7 @@ Ext.onReady( function() {
 			});
 
 			createButton = Ext.create('Ext.button.Button', {
-				text: 'Create', //i18n
+				text: DV.i18n.create,
 				handler: function() {
 					var favorite = Ext.clone(dv.xLayout);
 					favorite.name = nameTextfield.getValue();
@@ -1085,20 +1086,6 @@ Ext.onReady( function() {
 						delete favorite.rangeAxisTitle;
 
 						delete favorite.extended;
-
-						// Server sync: operand ids
-						for (var i = 0, item; i < favorite.columns[0].items.length; i++) {
-							favorite.columns[0].items[i].id = dv.util.str.replaceAll(favorite.columns[0].items[i].id, '-', '.');
-						}
-						for (var i = 0, item; i < favorite.rows[0].items.length; i++) {
-							favorite.rows[0].items[i].id = dv.util.str.replaceAll(favorite.rows[0].items[i].id, '-', '.');
-						}
-						for (var i = 0, dim; i < favorite.filters.length; i++) {
-							dim = favorite.filters[i];
-							for (var j = 0; j < dim.items.length; j++) {
-								dim.items[j].id = dv.util.str.replaceAll(dim.items[j].id, '-', '.');
-							}
-						}
 
 						// Server sync: user orgunit
 						if (favorite.userOrganisationUnit || favorite.userOrganisationUnitChildren) {
@@ -1143,7 +1130,7 @@ Ext.onReady( function() {
 			});
 
 			updateButton = Ext.create('Ext.button.Button', {
-				text: 'Update', //i18n
+				text: DV.i18n.update,
 				handler: function() {
 					var name = nameTextfield.getValue(),
 						favorite;
@@ -1181,7 +1168,7 @@ Ext.onReady( function() {
 			});
 
 			cancelButton = Ext.create('Ext.button.Button', {
-				text: 'Cancel', //i18n
+				text: DV.i18n.cancel,
 				handler: function() {
 					window.destroy();
 				}
@@ -1220,7 +1207,7 @@ Ext.onReady( function() {
 		};
 
 		addButton = Ext.create('Ext.button.Button', {
-			text: 'Add new', //i18n
+			text: DV.i18n.add_new,
 			width: 67,
 			height: 26,
 			style: 'border-radius: 1px;',
@@ -1345,7 +1332,7 @@ Ext.onReady( function() {
 
 								if (record.data.access.update) {
 									message = DV.i18n.overwrite_favorite + '?\n\n' + record.data.name;
-									favorite = getBody();
+									favorite = Ext.clone(dv.xLayout);
 
 									if (favorite) {
 										favorite.name = record.data.name;
@@ -1584,12 +1571,12 @@ Ext.onReady( function() {
 
 			getData = function() {
 				var data = [
-					{id: 'r-------', name: 'Can view'}, //i18n
-					{id: 'rw------', name: 'Can edit and view'}
+					{id: 'r-------', name: DV.i18n.can_view},
+					{id: 'rw------', name: DV.i18n.can_edit_and_view}
 				];
 
 				if (isPublicAccess) {
-					data.unshift({id: '-------', name: 'None'});
+					data.unshift({id: '-------', name: DV.i18n.none});
 				}
 
 				return data;
@@ -1604,7 +1591,7 @@ Ext.onReady( function() {
 				var items = [];
 
 				combo = Ext.create('Ext.form.field.ComboBox', {
-					fieldLabel: isPublicAccess ? 'Public access' : obj.name, //i18n
+					fieldLabel: isPublicAccess ? DV.i18n.public_access : obj.name,
 					labelStyle: 'color:#333',
 					cls: 'dv-combo',
 					fieldStyle: 'padding-left:5px',
@@ -1701,7 +1688,7 @@ Ext.onReady( function() {
 		userGroupField = Ext.create('Ext.form.field.ComboBox', {
 			valueField: 'id',
 			displayField: 'name',
-			emptyText: 'Search for user groups', //i18n
+			emptyText: DV.i18n.search_for_user_groups,
 			queryParam: 'key',
 			queryDelay: 200,
 			minChars: 1,
@@ -3743,6 +3730,12 @@ Ext.onReady( function() {
 					return;
 				}
 
+				// dc and ds
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataSet.objectName]) {
+					alert('Data sets and detailed data elements cannot be specified together');
+					return;
+				}
+
 				// Categories as filter
 				//if (layout.filter && dv.viewport.layoutWindow.filterStore.getById(dimConf.category.dimensionName)) {
 					//alert(DV.i18n.categories_cannot_be_specified_as_filter);
@@ -4134,8 +4127,22 @@ Ext.onReady( function() {
 				}
 
 				// Organisation units
-				userOrganisationUnit.setValue(xLayout.userOrganisationUnit);
-				userOrganisationUnitChildren.setValue(xLayout.userOrganisationUnitChildren);
+				if (recMap[dimConf.organisationUnit.objectName]) {
+					var isOu = false,
+						isOuc = false;
+
+					for (var i = 0, ouRecords = recMap[dimConf.organisationUnit.objectName]; i < ouRecords.length; i++) {
+						if (ouRecords[i].id === 'USER_ORGUNIT') {
+							isOu = true;
+						}
+						if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
+							isOuc = true;
+						}
+					}
+				}
+
+				userOrganisationUnit.setValue(isOu);
+				userOrganisationUnitChildren.setValue(isOuc);
 
 				// If fav has organisation units, wait for tree callback before update
 				if (recMap[dimConf.organisationUnit.objectName] && graphMap) {
