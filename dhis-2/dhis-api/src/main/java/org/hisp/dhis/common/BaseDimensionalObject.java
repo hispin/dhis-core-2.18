@@ -48,7 +48,14 @@ public class BaseDimensionalObject
      * The type of this dimension.
      */
     private DimensionType type;
-    
+
+    /**
+     * The name of this dimension. For the dynamic dimensions this will be equal
+     * to dimension identifier. For the period dimension, this will reflect the
+     * period type. For the org unit dimension, this will reflect the level.
+     */
+    private String dimensionName;
+
     /**
      * The dimensional items for this dimension.
      */
@@ -61,6 +68,11 @@ public class BaseDimensionalObject
     public BaseDimensionalObject()
     {        
     }
+
+    public BaseDimensionalObject( String dimension )
+    {
+        this.uid = dimension;
+    }
     
     public BaseDimensionalObject( String dimension, DimensionType type, List<? extends IdentifiableObject> items )
     {
@@ -69,6 +81,52 @@ public class BaseDimensionalObject
         this.items = new ArrayList<IdentifiableObject>( items );        
     }
 
+    public BaseDimensionalObject( String dimension, DimensionType type, String dimensionName, List<IdentifiableObject> items )
+    {
+        this.uid = dimension;
+        this.type = type;
+        this.dimensionName = dimensionName;
+        this.items = items;
+    }
+
+    public BaseDimensionalObject( String dimension, DimensionType type, String dimensionName, String displayName, List<IdentifiableObject> items )
+    {
+        this.uid = dimension;
+        this.type = type;
+        this.dimensionName = dimensionName;
+        this.displayName = displayName;
+        this.items = items;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Indicates whether this dimension should use all dimension items. All
+     * dimension options is represented as an option list of zero elements.
+     */
+    public boolean isAllItems()
+    {
+        return items != null && items.isEmpty();
+    }
+
+    /**
+     * Indicates whether this dimension has any dimension items.
+     */
+    public boolean hasItems()
+    {
+        return items != null && !items.isEmpty();
+    }
+    
+    /**
+     * Returns dimension name with fall back to dimension.
+     */
+    public String getDimensionName()
+    {
+        return dimensionName != null ? dimensionName : uid;
+    }
+    
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
@@ -98,7 +156,17 @@ public class BaseDimensionalObject
     {
         this.type = type;
     }
-    
+
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName( String displayName )
+    {
+        this.displayName = displayName;
+    }
+
     @Override
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
@@ -123,6 +191,6 @@ public class BaseDimensionalObject
     @Override
     public String toString()
     {
-        return "[" + uid + ", " + items + "]";
+        return "[" + uid + ", type: " + type  + ", " + items + "]";
     }
 }

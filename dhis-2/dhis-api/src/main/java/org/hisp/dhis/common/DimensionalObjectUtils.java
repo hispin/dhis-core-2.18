@@ -1,7 +1,7 @@
 package org.hisp.dhis.common;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@ package org.hisp.dhis.common;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
+ * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,38 +27,27 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Arrays;
-import java.util.List;
+import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
+import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 
 /**
- * Inherits getName() and getDisplayName().
- * 
-* @author Lars Helge Overland
-*/
-public interface DimensionalObject
+ * @author Lars Helge Overland
+ */
+public class DimensionalObjectUtils
 {
-    final String DATA_X_DIM_ID = "dx"; // in, de, ds, do
-    final String INDICATOR_DIM_ID = "in";
-    final String DATAELEMENT_DIM_ID = "de";
-    final String DATASET_DIM_ID = "ds";
-    final String DATAELEMENT_OPERAND_ID = "dc";
-    final String CATEGORYOPTIONCOMBO_DIM_ID = "co";
-    final String PERIOD_DIM_ID = "pe";
-    final String ORGUNIT_DIM_ID = "ou";
-
-    final List<String> DATA_X_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, DATAELEMENT_OPERAND_ID );
-    
-    String getDimension();
-    
-    DimensionType getType();
-    
-    String getDimensionName();
-    
-    String getDisplayName();
+    /**
+     * Converts a concrete dimensional class identifier to a dimension identifier.
+     * 
+     * @param identifier the identifier.
+     * @return a dimension identifier.
+     */
+    public static String toDimension( String identifier )
+    {
+        if ( DATA_X_DIMS.contains( identifier ) )
+        {
+            return DATA_X_DIM_ID;
+        }
         
-    List<IdentifiableObject> getItems();
-    
-    boolean isAllItems();
-    
-    boolean hasItems();
+        return identifier;
+    }
 }

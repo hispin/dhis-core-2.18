@@ -74,7 +74,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
  * 
  * @author Lars Helge Overland
  */
-public class BaseAnalyticalObject
+public abstract class BaseAnalyticalObject
     extends BaseIdentifiableObject
 {
     // -------------------------------------------------------------------------
@@ -115,7 +115,7 @@ public class BaseAnalyticalObject
     protected boolean userOrganisationUnitChildren;
 
     // -------------------------------------------------------------------------
-    // Web domain properties
+    // Analytical properties
     // -------------------------------------------------------------------------
 
     protected transient List<DimensionalObject> columns = new ArrayList<DimensionalObject>();
@@ -130,6 +130,8 @@ public class BaseAnalyticalObject
     // Logic
     // -------------------------------------------------------------------------
 
+    public abstract void populateAnalyticalProperties();
+    
     public boolean hasUserOrgUnit()
     {
         return userOrganisationUnit || userOrganisationUnitChildren;
