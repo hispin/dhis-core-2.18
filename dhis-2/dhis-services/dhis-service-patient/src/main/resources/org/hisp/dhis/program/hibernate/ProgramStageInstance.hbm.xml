@@ -31,7 +31,7 @@
       <many-to-many class="org.hisp.dhis.sms.outbound.OutboundSms" column="outboundsmsid" />
     </list>
      
-    <set name="patientComments" order-by="createdDate desc" cascade="all">
+    <set name="patientComments" order-by="createdDate asc" cascade="all">
       <key column="programstageinstanceid" />
       <one-to-many class="org.hisp.dhis.patientcomment.PatientComment" />
     </set>
