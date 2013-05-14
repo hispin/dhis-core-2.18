@@ -27,12 +27,6 @@ package org.hisp.dhis.sms.smslib;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -55,6 +49,12 @@ import org.smslib.OutboundMessage;
 import org.smslib.SMSLibException;
 import org.smslib.Service;
 import org.smslib.Service.ServiceStatus;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SmsLibService
     implements OutboundSmsTransportService
@@ -518,13 +518,18 @@ public class SmsLibService
 
     public String getDefaultGateway()
     {
+        if ( config == null )
+        {
+            return null;
+        }
+
         SmsGatewayConfig gatewayConfig = config.getDefaultGateway();
 
         if ( gatewayConfig == null )
         {
             return null;
         }
-        
+
         if ( getGatewayMap() == null )
         {
             return null;
