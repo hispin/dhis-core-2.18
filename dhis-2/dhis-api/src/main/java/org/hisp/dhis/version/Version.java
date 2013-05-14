@@ -63,12 +63,6 @@ public class Version
     }
 
     @Override
-    public String toString()
-    {
-        return "[" + key + "]";
-    }
-
-    @Override
     public boolean equals( Object o )
     {
         if ( this == o )
@@ -89,6 +83,12 @@ public class Version
         final Version other = (Version) o;
 
         return key.equals( other.getKey() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + key + "]";
     }
 
     // -------------------------------------------------------------------------

@@ -41,7 +41,6 @@ import static org.junit.Assert.*;
 
 /**
  * @author Kristian Nordal
- * @version $Id: OrganisationUnitServiceTest.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class OrganisationUnitServiceTest
     extends DhisSpringTest
@@ -126,19 +125,14 @@ public class OrganisationUnitServiceTest
     public void testGetOrganisationUnitWithChildren()
         throws Exception
     {
-        OrganisationUnit unit1 = new OrganisationUnit( "name1", "shortName1", "organisationUnitCode1", new Date(),
-            new Date(), true, "comment" );
-        OrganisationUnit unit2 = new OrganisationUnit( "name2", unit1, "shortName2", "organisationUnitCode2",
-            new Date(), new Date(), true, "comment" );
-        OrganisationUnit unit3 = new OrganisationUnit( "name3", unit2, "shortName3", "organisationUnitCode3",
-            new Date(), new Date(), true, "comment" );
-        OrganisationUnit unit4 = new OrganisationUnit( "name4", "shortName4", "organisationUnitCode4", new Date(),
-            new Date(), true, "comment" );
+        OrganisationUnit unit1 = createOrganisationUnit( 'A' );
+        OrganisationUnit unit2 = createOrganisationUnit( 'B', unit1 );
+        OrganisationUnit unit3 = createOrganisationUnit( 'C', unit2 );
+        OrganisationUnit unit4 = createOrganisationUnit( 'D' );
 
         int id1 = organisationUnitService.addOrganisationUnit( unit1 );
         unit1.getChildren().add( unit2 );
         organisationUnitService.addOrganisationUnit( unit2 );
-        unit2.getChildren().add( unit3 );
         organisationUnitService.addOrganisationUnit( unit3 );
         organisationUnitService.addOrganisationUnit( unit4 );
 
