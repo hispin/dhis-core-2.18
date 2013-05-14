@@ -2166,6 +2166,32 @@ DV.core.getApi = function(dv) {
 				}
 			}
 
+			// Clint sync
+			if (Ext.isString(layout.targetLineLabel)) {
+				layout.targetLineTitle = layout.targetLineLabel;
+				delete layout.targetLineLabel;
+			}
+			if (Ext.isString(layout.baseLineLabel)) {
+				layout.baseLineTitle = layout.baseLineLabel;
+				delete layout.baseLineLabel;
+			}
+			if (Ext.isString(layout.domainAxisLabel)) {
+				layout.domainAxisTitle = layout.domainAxisLabel;
+				delete layout.domainAxisLabel;
+			}
+			if (Ext.isString(layout.rangeAxisLabel)) {
+				layout.rangeAxisTitle = layout.rangeAxisLabel;
+				delete layout.rangeAxisLabel;
+			}
+			if (Ext.isBoolean(layout.regression)) {
+				layout.showTrendLine = layout.regression;
+				delete layout.regression;
+			}
+			if (Ext.isBoolean(layout.showData)) {
+				layout.showValues = layout.showData;
+				delete layout.showData;
+			}
+
 			return Ext.clone(layout);
 		}();
 	};
