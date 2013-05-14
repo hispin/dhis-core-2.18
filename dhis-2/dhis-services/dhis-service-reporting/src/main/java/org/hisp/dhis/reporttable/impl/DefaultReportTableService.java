@@ -386,9 +386,9 @@ public class DefaultReportTableService
         }
 
         final int startColumnIndex = grid.getHeaders().size();
-        final int numberOfColumns = reportTable.getColumns().size();
+        final int numberOfColumns = reportTable.getGridColumns().size();
 
-        for ( List<NameableObject> column : reportTable.getColumns() )
+        for ( List<NameableObject> column : reportTable.getGridColumns() )
         {
             grid.addHeader( new GridHeader( getPrettyColumnName( column ), getColumnName( column ), Double.class
                 .getName(), false, false ) );
@@ -413,7 +413,7 @@ public class DefaultReportTableService
         // Values
         // ---------------------------------------------------------------------
 
-        for ( List<NameableObject> row : reportTable.getRows() )
+        for ( List<NameableObject> row : reportTable.getGridRows() )
         {
             grid.addRow();
 
@@ -452,7 +452,7 @@ public class DefaultReportTableService
                 grid.addValue( isCurrentParent( row ) ? YES : NO );
             }
 
-            for ( List<NameableObject> column : reportTable.getColumns() ) // Values
+            for ( List<NameableObject> column : reportTable.getGridColumns() ) // Values
             {
                 grid.addValue( map.get( getIdentifier( row, column ) ) );
             }

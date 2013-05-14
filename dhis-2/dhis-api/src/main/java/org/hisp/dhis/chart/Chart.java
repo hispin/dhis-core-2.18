@@ -156,6 +156,7 @@ public class Chart
         return list != null && !list.isEmpty() ? list.iterator().next() : null;
     }
 
+    @Override
     public void populateAnalyticalProperties()
     {
         columns.addAll( getDimensionalObjectList( series ) );
