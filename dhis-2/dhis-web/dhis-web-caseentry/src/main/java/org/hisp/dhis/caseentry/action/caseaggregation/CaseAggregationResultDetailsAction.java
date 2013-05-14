@@ -154,8 +154,7 @@ public class CaseAggregationResultDetailsAction
 
         CaseAggregationCondition aggCondition = aggregationConditionService
             .getCaseAggregationCondition( aggConditionName );
-        System.out.println( "\n\n orgunit : " + orgunit );
-        System.out.println( "\n aggCondition : " + aggCondition );
+
         grid = aggregationConditionService.getAggregateValueDetails( aggCondition, orgunit, period, format, i18n );
 
         return SUCCESS;
