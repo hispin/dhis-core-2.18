@@ -120,11 +120,27 @@ Ext.onReady( function() {
 				seriesDimensionName = dv.viewport.series.getValue(),
 				categoryDimensionName = dv.viewport.category.getValue(),
 				filterDimensionNames = dv.viewport.filter.getValue(),
-				config = dv.viewport.optionsWindow.getOptions();
+				config = dv.viewport.optionsWindow.getOptions(),
+				getDimension;
 
 			config.columns = [];
 			config.rows = [];
 			config.filters = [];
+
+			getDimension = function(config) {
+				if (dv.api.objectNameDimensionClassMap[config.objectName]) {
+					return dv.api.objectNameDimensionClassMap[config.objectName]({
+						dimension: config.objectName,
+						items: config.items
+					});
+				}
+				else {
+					return dv.api.Dimension({
+						dimension: config.dimension,
+						items: config.items
+					});
+				}
+			};
 
 			// Columns, rows, filters
 			for (var i = 0, dim; i < panels.length; i++) {
@@ -132,19 +148,19 @@ Ext.onReady( function() {
 
 				if (dim) {
 					if (dim.dimensionName === seriesDimensionName) {
-						config.columns.push(dv.api.objectNameClassMap[dim.objectName]({
+						config.columns.push(getDimension({
 							dimension: dim.objectName,
 							items: dim.items
 						}));
 					}
 					else if (dim.dimensionName === categoryDimensionName) {
-						config.rows.push(dv.api.objectNameClassMap[dim.objectName]({
+						config.rows.push(getDimension({
 							dimension: dim.objectName,
 							items: dim.items
 						}));
 					}
 					else if (Ext.Array.contains(filterDimensionNames, dim.dimensionName)) {
-						config.filters.push(dv.api.objectNameClassMap[dim.objectName]({
+						config.filters.push(getDimension({
 							dimension: dim.objectName,
 							items: dim.items
 						}));

@@ -1727,10 +1727,12 @@ console.log("chart", chart);
 DV.core.getApi = function(dv) {
 	var dimConf = dv.conf.finals.dimension,
 		api = {
-			objectNameClassMap: {}
+			objectNameDimensionClassMap: {}
 		};
 
-	api.Dimension = function() {
+	// Dimension
+
+	api.DimensionSuper = function() {
 		return {
 			dimension: null, // string
 
@@ -1739,7 +1741,7 @@ DV.core.getApi = function(dv) {
 	};
 
 	api.Indicator = function(config) {
-		var indicator = api.Dimension(),
+		var indicator = api.DimensionSuper(),
 			validateConfig;
 
 		validateConfig = function() {
@@ -1781,7 +1783,7 @@ DV.core.getApi = function(dv) {
 	};
 
 	api.DataElement = function(config) {
-		var dataElement = api.Dimension(),
+		var dataElement = api.DimensionSuper(),
 			validateConfig;
 
 		validateConfig = function() {
@@ -1823,7 +1825,7 @@ DV.core.getApi = function(dv) {
 	};
 
 	api.Operand = function(config) {
-		var operand = api.Dimension(),
+		var operand = api.DimensionSuper(),
 			validateConfig;
 
 		validateConfig = function() {
@@ -1875,7 +1877,7 @@ DV.core.getApi = function(dv) {
 	};
 
 	api.DataSet = function(config) {
-		var dataSet = api.Dimension(),
+		var dataSet = api.DimensionSuper(),
 			validateConfig;
 
 		validateConfig = function() {
@@ -1917,7 +1919,7 @@ DV.core.getApi = function(dv) {
 	};
 
 	api.Period = function(config) {
-		var period = api.Dimension(),
+		var period = api.DimensionSuper(),
 			validateConfig;
 
 		validateConfig = function() {
@@ -1959,7 +1961,7 @@ DV.core.getApi = function(dv) {
 	};
 
 	api.OrganisationUnit = function(config) {
-		var organisationUnit = api.Dimension(),
+		var organisationUnit = api.DimensionSuper(),
 			validateConfig;
 
 		validateConfig = function() {
@@ -1999,6 +2001,50 @@ DV.core.getApi = function(dv) {
 			return organisationUnit;
 		}();
 	};
+
+	api.Dimension = function(config) {
+		var dimension = api.DimensionSuper(),
+			validateConfig;
+
+		validateConfig = function() {
+			if (!Ext.isObject(config)) {
+				alert('Dimension config is not an object');
+				return;
+			}
+
+			if (!Ext.isString(config.dimension)) {
+				alert('Dimension name is illegal');
+				return;
+			}
+
+			if (!Ext.isArray(config.items)) {
+				alert('Dimension items is not an array');
+				return;
+			}
+
+			if (!config.items.length) {
+				alert('Dimension has no items');
+				return;
+			}
+
+			return true;
+		};
+
+		return function() {
+			if (!validateConfig()) {
+				return;
+			}
+
+			dimension.dimension = config.dimension;
+			dimension.dimensionName = config.dimension;
+			dimension.objectName = config.dimension;
+			dimension.items = Ext.clone(config.items);
+
+			return dimension;
+		}();
+	};
+
+	// Layout
 
 	api.Layout = function(config) {
 		var layout = {
@@ -2043,13 +2089,6 @@ DV.core.getApi = function(dv) {
 			validateAxis = function(axis) {
 				if (!(axis && Ext.isArray(axis) && axis.length)) {
 					return;
-				}
-
-				for (var i = 0, dim; i < axis.length; i++) {
-					dim = dv.api.objectNameClassMap[axis[i].dimension](axis[i]);
-					if (!dim) {
-						return;
-					}
 				}
 
 				return true;
@@ -2131,12 +2170,12 @@ DV.core.getApi = function(dv) {
 		}();
 	};
 
-	api.objectNameClassMap[dimConf.indicator.objectName] = api.Indicator;
-	api.objectNameClassMap[dimConf.dataElement.objectName] = api.DataElement;
-	api.objectNameClassMap[dimConf.operand.objectName] = api.Operand;
-	api.objectNameClassMap[dimConf.dataSet.objectName] = api.DataSet;
-	api.objectNameClassMap[dimConf.period.objectName] = api.Period;
-	api.objectNameClassMap[dimConf.organisationUnit.objectName] = api.OrganisationUnit;
+	api.objectNameDimensionClassMap[dimConf.indicator.objectName] = api.Indicator;
+	api.objectNameDimensionClassMap[dimConf.dataElement.objectName] = api.DataElement;
+	api.objectNameDimensionClassMap[dimConf.operand.objectName] = api.Operand;
+	api.objectNameDimensionClassMap[dimConf.dataSet.objectName] = api.DataSet;
+	api.objectNameDimensionClassMap[dimConf.period.objectName] = api.Period;
+	api.objectNameDimensionClassMap[dimConf.organisationUnit.objectName] = api.OrganisationUnit;
 
 	return api;
 };
