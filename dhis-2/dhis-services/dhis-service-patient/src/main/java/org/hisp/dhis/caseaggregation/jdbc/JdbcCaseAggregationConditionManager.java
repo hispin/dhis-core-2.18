@@ -392,7 +392,7 @@ public class JdbcCaseAggregationConditionManager
         }
         else if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
         {
-            sql += "p.firstName, p.middleName, p.lastName, p.gender, p.birthDate, p.phoneNumber, pg.name as program,";
+            sql += "p.firstName, p.middleName, p.lastName, p.gender, p.birthDate, p.phoneNumber, ";
         }
         else if ( hasDataelement )
         {
