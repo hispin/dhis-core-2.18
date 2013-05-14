@@ -13,18 +13,19 @@
 	#set($divIdx=$divIdx+1)
 	<h3>
 		$!encoder.htmlEncode( $grid.title ) - $!encoder.htmlEncode( $grid.subtitle )
-		<img id='$periodButton' src="../images/down.png" onclick="toggleResult('$divIdx');" style="cursor: pointer;"></h4>
+		<img src="../images/down.png" onclick="toggleResult('$divIdx');" style="cursor: pointer;"></h4>
 	</h3>
 
 	<h5>
 		</h5>
-	<table class="listTable gridTable" id='div-$divIdx' style='display:none;'>
+	<table class="listTable gridTable" id='div-$divIdx' name='div-$divIdx' style='display:none;'>
 		<thead>
 			<tr>
 				<th><input type='checkbox' onchange="toogleAllCheckBoxes( '$divIdx', this.checked );"></th>
 				#foreach( $header in $grid.getVisibleHeaders() )
-				<th #if( $header.meta )style="text-align:left"#end>$!encoder.htmlEncode( $header.name )</th>
+				<th #if( $header.meta ) style="text-align:left" #end>$!encoder.htmlEncode( $header.name )</th>
 				#end
+				<th>$i18n.getString('operator')</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -51,6 +52,9 @@
 					#foreach( $col in $row )
 						#if($velocityCount>6) <td>$col</td> #end
 					#end
+					<td>
+						<a href='javascript:viewResultDetails( "$grid.title", $organisationunitid, "$periodid")' title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+					</td>
 				</tr>
 			#end
 		</tbody>
@@ -62,6 +66,8 @@
 	<input type="button" value="$i18n.getString( 'back' )" onclick="backBtnOnClick();" style="width:10em">
 	<h2>$i18n.getString('no_aggregate_date_values_are_added_or_update_in_all_facilities')</h2>
 #end
+<div id='contentDetails'></div>
+
 <script>
 	var i18n_aggregate_details = '$encoder.jsEscape( $i18n.getString( "aggregate_details" ) , "'")';
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'")';

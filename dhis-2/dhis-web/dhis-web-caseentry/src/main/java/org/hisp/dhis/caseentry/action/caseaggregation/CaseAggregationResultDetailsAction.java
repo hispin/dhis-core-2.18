@@ -32,9 +32,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.apache.camel.component.dataset.DataSet;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -69,21 +72,19 @@ public class CaseAggregationResultDetailsAction
 
     private I18nFormat format;
 
+    private I18n i18n;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
+    private String aggConditionName;
+
+    private String isoPeriod;
+
     private Integer orgunitId;
 
-    private Integer aggregationConditionId;
-
-    private String periodTypeName;
-
-    private String startDate;
-
-    private Map<Patient, Collection<PatientDataValue>> mapPatients;
-
-    private Map<ProgramStageInstance, Collection<PatientDataValue>> mapEvents;
+    private Grid grid;
 
     // -------------------------------------------------------------------------
     // Getter/Setter
@@ -92,6 +93,16 @@ public class CaseAggregationResultDetailsAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    public void setIsoPeriod( String isoPeriod )
+    {
+        this.isoPeriod = isoPeriod;
     }
 
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
@@ -109,36 +120,21 @@ public class CaseAggregationResultDetailsAction
         this.periodService = periodService;
     }
 
-    public void setPeriodTypeName( String periodTypeName )
-    {
-        this.periodTypeName = periodTypeName;
-    }
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    public Map<Patient, Collection<PatientDataValue>> getMapPatients()
-    {
-        return mapPatients;
-    }
-
-    public Map<ProgramStageInstance, Collection<PatientDataValue>> getMapEvents()
-    {
-        return mapEvents;
-    }
-
     public void setOrgunitId( Integer orgunitId )
     {
         this.orgunitId = orgunitId;
     }
-
-    public void setAggregationConditionId( Integer aggregationConditionId )
-    {
-        this.aggregationConditionId = aggregationConditionId;
-    }
     
+    public void setAggConditionName( String aggConditionName )
+    {
+        this.aggConditionName = aggConditionName;
+    }
+
+    public Grid getGrid()
+    {
+        return grid;
+    }
+
     public void setFormat( I18nFormat format )
     {
         this.format = format;
@@ -152,60 +148,15 @@ public class CaseAggregationResultDetailsAction
     public String execute()
         throws Exception
     {
-//        OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+        OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
-        Period period = periodType.createPeriod( format.parseDate( startDate ) );
+        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
 
         CaseAggregationCondition aggCondition = aggregationConditionService
-            .getCaseAggregationCondition( aggregationConditionId );
-
-        if ( aggCondition.getOperator().equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
-        {
-            mapPatients = new HashMap<Patient, Collection<PatientDataValue>>();
-
-            Collection<Patient> patients = null;
-//            Collection<Patient> patients = aggregationConditionService.getPatients( aggCondition, orgunit, period );
-
-            for ( Patient patient : patients )
-            {
-                Collection<DataElement> dataElements = aggregationConditionService
-                    .getDataElementsInCondition( aggCondition.getAggregationExpression() );
-
-                Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
-
-                if ( dataElements.size() > 0 )
-                {
-                    dataValues = patientDataValueService.getPatientDataValues( patient, dataElements, period
-                        .getStartDate(), period.getEndDate() );
-                }
-
-                mapPatients.put( patient, dataValues );
-            }
-        }
-        else
-        {
-            mapEvents = new HashMap<ProgramStageInstance, Collection<PatientDataValue>>();
-
-            Collection<ProgramStageInstance> programStageInstances = null;
-//            Collection<ProgramStageInstance> programStageInstances = aggregationConditionService
-//                .getProgramStageInstances( aggCondition, orgunit, period );
-
-            for ( ProgramStageInstance programStageInstance : programStageInstances )
-            {
-                Collection<DataElement> dataElements = aggregationConditionService
-                    .getDataElementsInCondition( aggCondition.getAggregationExpression() );
-
-                Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
-
-                if ( dataElements.size() > 0 )
-                {
-                    dataValues = patientDataValueService.getPatientDataValues( programStageInstance, dataElements );
-                }
-
-                mapEvents.put( programStageInstance, dataValues );
-            }
-        }
+            .getCaseAggregationCondition( aggConditionName );
+        System.out.println( "\n\n orgunit : " + orgunit );
+        System.out.println( "\n aggCondition : " + aggCondition );
+        grid = aggregationConditionService.getAggregateValueDetails( aggCondition, orgunit, period, format, i18n );
 
         return SUCCESS;
     }

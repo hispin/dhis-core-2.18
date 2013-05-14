@@ -35,6 +35,7 @@ import java.util.concurrent.Future;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -104,4 +105,9 @@ public interface CaseAggregationConditionManager
         Collection<Integer> orgunitIds, Period period );
 
     boolean hasOrgunitProgramStageCompleted( String expresstion );
+    
+    Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period, I18nFormat format, I18n i18n );
+    
+    String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
 }

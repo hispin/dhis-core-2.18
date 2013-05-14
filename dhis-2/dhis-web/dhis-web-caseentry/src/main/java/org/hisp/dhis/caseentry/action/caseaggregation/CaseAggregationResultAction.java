@@ -229,16 +229,9 @@ public class CaseAggregationResultAction
         // ---------------------------------------------------------------------
         // Aggregation
         // ---------------------------------------------------------------------
-        // for ( Integer orgUnitId : orgunitIds )
-        // {
-        // OrganisationUnit orgUnit =
-        // organisationUnitService.getOrganisationUnit( orgUnitId );
 
         for ( CaseAggregationCondition condition : aggregationConditions )
         {
-            DataElement dElement = condition.getAggregationDataElement();
-            DataElementCategoryOptionCombo optionCombo = condition.getOptionCombo();
-
             for ( Period period : periods )
             {
                 if ( autoSave )
@@ -251,8 +244,6 @@ public class CaseAggregationResultAction
                         i18n ) );
                 }
             }
-            // }
-
         }
         return SUCCESS;
     }

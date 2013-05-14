@@ -16,24 +16,22 @@ function validationCaseAggregationCompleted( message )
     }
 }
 
-function viewResultDetails( orgunitId, periodTypeName, startDate, aggregationConditionId ) 
+function viewResultDetails( aggConditionName, orgunitId, isoPeriod ) 
 {
-	$('#contentDetails' ).val('');
-	var url = 'caseAggregationResultDetails.action?';
-		url+= 'orgunitId=' + orgunitId;
-		url+= '&periodTypeName=' + periodTypeName;
-		url+= '&startDate=' + startDate;
-		url+= '&aggregationConditionId=' + aggregationConditionId;
-		
-	$('#contentDetails' ).load(url).dialog({
-        title: i18n_aggregate_details,
-		maximize: true, 
-		closable: true,
-		modal:true,
-		overlay:{background:'#000000', opacity:0.1},
-		width: 800,
-        height: 400
-    });
+	$('#contentDetails' ).load('caseAggregationResultDetails.action',
+		{
+			orgunitId:orgunitId,
+			isoPeriod:isoPeriod,
+			aggConditionName:aggConditionName
+		}).dialog({
+			title: i18n_aggregate_details,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 400
+		});
 }
 
 function caseAggregationResult()
