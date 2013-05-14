@@ -49,7 +49,6 @@ function listAllPatient()
 {
 	hideById('listEventDiv');
 	hideById('advanced-search');
-	setFieldValue('statusEvent', "4");
 	contentDiv = 'listEventDiv';
 	$('#contentDataRecord').html('');
 	hideById('advanced-search');
@@ -66,7 +65,8 @@ function listAllPatient()
 	var programId = getFieldValue('programIdAddPatient');
 	var searchTexts = "stat_" + programId + "_" 
 				+ startDate + "_" + endDate + "_" 
-				+ getFieldValue('orgunitId') + "_true_4";
+				+ getFieldValue('orgunitId') + "_true_" 
+				+ getFieldValue('statusEvent');
 	
 	showLoader();
 	jQuery('#listEventDiv').load('getSMSPatientRecords.action',
