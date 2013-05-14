@@ -48,7 +48,12 @@ public interface VersionService
      * @param version Version object to update.
      */
     void updateVersion( Version version );
-
+    
+    /**
+     * @param key
+     */
+    void updateVersion( String key );
+    
     /**
      * @param key
      * @param value

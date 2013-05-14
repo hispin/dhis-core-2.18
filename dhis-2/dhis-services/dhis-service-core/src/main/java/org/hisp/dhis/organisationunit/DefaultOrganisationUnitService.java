@@ -27,6 +27,19 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -39,20 +52,6 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.VersionService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -120,7 +119,7 @@ public class DefaultOrganisationUnitService
             currentUserService.getCurrentUser().getOrganisationUnits().add( organisationUnit );
         }
 
-        updateVersion();
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
 
         return id;
     }
@@ -129,7 +128,7 @@ public class DefaultOrganisationUnitService
     {
         organisationUnitStore.update( organisationUnit );
 
-        updateVersion();
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
     }
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
@@ -158,7 +157,7 @@ public class DefaultOrganisationUnitService
 
         organisationUnitStore.delete( organisationUnit );
 
-        updateVersion();
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
     }
 
     public OrganisationUnit getOrganisationUnit( int id )
@@ -752,6 +751,6 @@ public class DefaultOrganisationUnitService
     @Override
     public void updateVersion()
     {
-        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION, UUID.randomUUID().toString() );
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
     }
 }

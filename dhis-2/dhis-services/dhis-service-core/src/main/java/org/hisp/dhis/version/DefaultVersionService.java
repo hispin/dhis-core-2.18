@@ -24,6 +24,7 @@ package org.hisp.dhis.version;
  */
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +60,12 @@ public class DefaultVersionService
     public void updateVersion( Version version )
     {
         versionStore.update( version );
+    }
+
+    @Override
+    public void updateVersion( String key )
+    {
+        updateVersion( key, UUID.randomUUID().toString() );
     }
 
     @Override
