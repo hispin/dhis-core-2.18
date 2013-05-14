@@ -1,2 +1,1 @@
 #parse( "/dhis-web-commons/ajax/htmlGrid.vm" )
-$grid

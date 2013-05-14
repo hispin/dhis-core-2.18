@@ -399,7 +399,7 @@ public class JdbcCaseAggregationConditionManager
             sql += "pdv.value,";
         }
 
-        sql += "pgs.name, psi.executiondate as report_date ";
+        sql += "pgs.name as program_stage, psi.executiondate as report_date ";
 
         sql += "FROM programstageinstance as psi ";
         sql += "INNER JOIN programstage as pgs ON pgs.programstageid = psi.programstageid ";
