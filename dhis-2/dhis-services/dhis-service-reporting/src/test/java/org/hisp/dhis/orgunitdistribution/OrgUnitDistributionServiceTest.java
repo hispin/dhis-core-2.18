@@ -65,21 +65,17 @@ public class OrgUnitDistributionServiceTest
     @Test
     public void testGetOrganisationUnitsByNameAndGroups()
     {
-        OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B', unitA );
-        unitA.getChildren().add( unitB );
-        OrganisationUnit unitC = createOrganisationUnit( 'C', unitA );
-        unitA.getChildren().add( unitC );
+        OrganisationUnit unitA = createOrganisationUnit( 'A' ); //TODO make hierarchy
+        OrganisationUnit unitB = createOrganisationUnit( 'B' );
+        
         organisationUnitService.addOrganisationUnit( unitA );
         organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
         
         OrganisationUnitGroup groupA = createOrganisationUnitGroup( 'A' );
         OrganisationUnitGroup groupB = createOrganisationUnitGroup( 'B' );
         
         groupA.getMembers().add( unitA );
-        groupA.getMembers().add( unitB );
-        groupB.getMembers().add( unitC );
+        groupB.getMembers().add( unitB );
         
         organisationUnitGroupService.addOrganisationUnitGroup( groupA );
         organisationUnitGroupService.addOrganisationUnitGroup( groupB );
@@ -93,6 +89,6 @@ public class OrgUnitDistributionServiceTest
         Grid grid = distributionService.getOrganisationUnitDistribution( groupSet, unitA, false );
         assertNotNull( grid );
         assertEquals( 4, grid.getWidth() ); // Including total
-        assertEquals( 3, grid.getHeight() ); // Including total
+        assertEquals( 1, grid.getHeight() ); // Including total
     }   
 }
