@@ -27,9 +27,9 @@ package org.hisp.dhis.common.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
-
 import org.hisp.dhis.common.IdentifiableObject;
+
+import java.util.Comparator;
 
 /**
  * @author Lars Helge Overland
@@ -38,14 +38,14 @@ public class IdentifiableObjectNameComparator
     implements Comparator<IdentifiableObject>
 {
     public static final Comparator<IdentifiableObject> INSTANCE = new IdentifiableObjectNameComparator();
-    
+
     public int compare( IdentifiableObject object0, IdentifiableObject object1 )
     {
-        if ( object0 == null )
+        if ( object0 == null || object0.getDisplayName() == null )
         {
             return object1 == null ? 0 : -1;
         }
-        
+
         return object1 == null ? 1 : object0.getDisplayName().compareToIgnoreCase( object1.getDisplayName() );
     }
 }
