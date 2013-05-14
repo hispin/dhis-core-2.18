@@ -1070,15 +1070,21 @@ Ext.onReady( function() {
 
 				// Server sync: property names
 				favorite.showData = favorite.showValues;
-				favorite.targetLineLabel = favorite.targetLineTitle;
-				favorite.baseLineLabel = favorite.baseLineTitle;
-				favorite.domainAxisLabel = favorite.domainAxisTitle;
-				favorite.rangeAxisLabel = favorite.rangeAxisTitle;
-
 				delete favorite.showValues;
+
+				favorite.regression = favorite.showTrendLine;
+				delete favorite.showTrendLine;
+
+				favorite.targetLineLabel = favorite.targetLineTitle;
 				delete favorite.targetLineTitle;
+
+				favorite.baseLineLabel = favorite.baseLineTitle;
 				delete favorite.baseLineTitle;
+
+				favorite.domainAxisLabel = favorite.domainAxisTitle;
 				delete favorite.domainAxisTitle;
+
+				favorite.rangeAxisLabel = favorite.rangeAxisTitle;
 				delete favorite.rangeAxisTitle;
 
 				delete favorite.extended;
