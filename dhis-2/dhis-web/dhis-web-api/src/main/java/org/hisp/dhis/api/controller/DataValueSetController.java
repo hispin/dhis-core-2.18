@@ -1,7 +1,7 @@
 package org.hisp.dhis.api.controller;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ public class DataValueSetController
 {
     public static final String RESOURCE_PATH = "/dataValueSets";
 
-    private static final Log log = LogFactory.getLog( DataValueSetController.class );
+    private static final Log LOG = LogFactory.getLog( DataValueSetController.class );
 
     @Autowired
     private DataValueSetService dataValueSetService;
@@ -82,7 +82,7 @@ public class DataValueSetController
     public void getDataValueSet( @RequestParam String dataSet, @RequestParam String period,
         @RequestParam String orgUnit, HttpServletResponse response ) throws IOException
     {
-        log.info( "Get data value set for data set: " + dataSet + ", period: " + period + ", org unit: " + orgUnit );
+        LOG.info( "Get data value set for data set: " + dataSet + ", period: " + period + ", org unit: " + orgUnit );
 
         response.setContentType( CONTENT_TYPE_XML );
         dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
@@ -95,7 +95,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions );
 
-        log.info( "Data values set saved " + importOptions );
+        LOG.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -108,7 +108,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetJson( in, importOptions );
 
-        log.info( "Data values set saved " + importOptions );
+        LOG.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_JSON );
         JacksonUtils.toJson( response.getOutputStream(), summary );
@@ -121,7 +121,7 @@ public class DataValueSetController
     {
         ImportSummary summary = integrationService.importSDMXDataValueSet( in, importOptions );
 
-        log.info( "Data values set saved " + importOptions );
+        LOG.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
