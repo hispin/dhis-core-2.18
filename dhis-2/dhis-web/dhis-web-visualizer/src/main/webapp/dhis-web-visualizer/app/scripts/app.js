@@ -75,7 +75,7 @@ Ext.onReady( function() {
 			var id = dv.util.url.getUrlParam('id');
 
 			if (id) {
-				dv.util.chart.loadTable(id);
+				dv.util.chart.loadChart(id);
 			}
 
 			// Fade in
@@ -967,6 +967,66 @@ Ext.onReady( function() {
 					domainAxisTitle: domainAxisTitle.getValue(),
 					rangeAxisTitle: rangeAxisTitle.getValue()
 				};
+			},
+			setOptions: function(layout) {
+				showTrendLine.setValue(Ext.isBoolean(layout.showTrendLine) ? layout.showTrendLine : false);
+				showValues.setValue(Ext.isBoolean(layout.showValues) ? layout.showValues : false);
+				hideLegend.setValue(Ext.isBoolean(layout.hideLegend) ? layout.hideLegend : false);
+				hideTitle.setValue(Ext.isBoolean(layout.hideTitle) ? layout.hideTitle : false);
+
+				// Title
+				if (Ext.isString(layout.title)) {
+					title.setValue(layout.title);
+				}
+				else {
+					title.reset();
+				}
+
+				// Target line
+				if (Ext.isNumber(layout.targetLineValue)) {
+					targetLineValue.setValue(layout.targetLineValue);
+				}
+				else {
+					targetLineValue.reset();
+				}
+
+				if (Ext.isString(layout.targetLineTitle)) {
+					targetLineTitle.setValue(layout.targetLineTitle);
+				}
+				else {
+					targetLineTitle.reset();
+				}
+
+				// Base line
+				if (Ext.isNumber(layout.baseLineValue)) {
+					baseLineValue.setValue(layout.baseLineValue);
+				}
+				else {
+					baseLineValue.reset();
+				}
+
+				if (Ext.isString(layout.baseLineTitle)) {
+					baseLineTitle.setValue(layout.baseLineTitle);
+				}
+				else {
+					baseLineTitle.reset();
+				}
+
+				// Domain axis
+				if (Ext.isString(layout.domainAxisTitle)) {
+					domainAxisTitle.setValue(layout.domainAxisTitle);
+				}
+				else {
+					domainAxisTitle.reset();
+				}
+
+				// Range axis
+				if (Ext.isString(layout.rangeAxisTitle)) {
+					rangeAxisTitle.setValue(layout.rangeAxisTitle);
+				}
+				else {
+					rangeAxisTitle.reset();
+				}
 			},
 			items: [
 				{
@@ -4134,49 +4194,8 @@ Ext.onReady( function() {
 					}
 				}
 
-					// Add records
-				//for (var key in dimensionIdSelectedStoreMap) {
-					//if (dimensionIdSelectedStoreMap.hasOwnProperty(key) && recMap[key]) {
-						//dimensionIdSelectedStoreMap[key].add(recMap[key]);
-						//dv.util.multiselect.filterAvailable(
-					//}
-				//}
-
 				// Options
-				if (Ext.isNumber(xLayout.targetLineValue)) {
-					dv.viewport.targetLineValue.setValue(xLayout.targetLineValue);
-				}
-				if (Ext.isString(xLayout.targetLineTitle)) {
-					dv.viewport.targetLineTitle.setValue(xLayout.targetLineTitle);
-				}
-				if (Ext.isNumber(xLayout.baseLineValue)) {
-					dv.viewport.baseLineValue.setValue(xLayout.baseLineValue);
-				}
-				if (Ext.isString(xLayout.baseLineTitle)) {
-					dv.viewport.baseLineTitle.setValue(xLayout.baseLineTitle);
-				}
-				if (Ext.isString(xLayout.title)) {
-					dv.viewport.title.setValue(xLayout.title);
-				}
-				if (Ext.isString(xLayout.domainAxisTitle)) {
-					dv.viewport.domainAxisTitle.setValue(xLayout.domainAxisTitle);
-				}
-				if (Ext.isString(xLayout.rangeAxisTitle)) {
-					dv.viewport.rangeAxisTitle.setValue(xLayout.rangeAxisTitle);
-				}
-
-				if (Ext.isBoolean(xLayout.regression)) {
-					dv.viewport.showTrendLine.setValue(xLayout.regression);
-				}
-				if (Ext.isBoolean(xLayout.showData)) {
-					dv.viewport.showValues.setValue(xLayout.showData);
-				}
-				if (Ext.isBoolean(xLayout.hideLegend)) {
-					dv.viewport.hideLegend.setValue(xLayout.hideLegend);
-				}
-				if (Ext.isBoolean(xLayout.hideTitle)) {
-					dv.viewport.hideTitle.setValue(xLayout.hideTitle);
-				}
+				dv.viewport.optionsWindow.setOptions(xLayout);
 
 				// Organisation units
 				if (recMap[dimConf.organisationUnit.objectName]) {

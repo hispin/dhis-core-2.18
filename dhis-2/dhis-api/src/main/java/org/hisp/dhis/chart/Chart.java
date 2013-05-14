@@ -474,7 +474,7 @@ public class Chart
     }
     
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getTitle()
     {
