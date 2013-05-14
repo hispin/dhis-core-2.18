@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
@@ -53,6 +54,8 @@ public interface CaseAggregationConditionService
     void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
     CaseAggregationCondition getCaseAggregationCondition( int id );
+    
+    CaseAggregationCondition getCaseAggregationCondition( String name );
 
     Collection<CaseAggregationCondition> getAllCaseAggregationCondition();
 
@@ -80,5 +83,8 @@ public interface CaseAggregationConditionService
     void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy );
 
     boolean hasOrgunitProgramStageCompleted( String expresstion );
+    
+    Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period,
+        I18nFormat format, I18n i18n );
     
 }

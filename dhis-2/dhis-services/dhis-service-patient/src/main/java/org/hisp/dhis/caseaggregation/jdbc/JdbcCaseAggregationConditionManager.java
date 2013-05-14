@@ -63,6 +63,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -192,6 +193,29 @@ public class JdbcCaseAggregationConditionManager
         return null;
     }
 
+    @Override
+    public Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period, I18nFormat format, I18n i18n )
+    {
+        Grid grid = new ListGrid();
+        grid.setTitle( orgunit.getName() + " - " + aggregationCondition.getDisplayName() );
+        grid.setSubtitle( format.formatPeriod( period ) );
+
+        String sql = parseExpressionDetailsToSql( aggregationCondition.getAggregationExpression(),
+            aggregationCondition.getOperator(), orgunit.getId(), period );
+
+        SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
+
+        for ( String colName : rs.getMetaData().getColumnNames() )
+        {
+            grid.addHeader( new GridHeader( i18n.getString( colName ), false, true ) );
+        }
+
+        grid.addRows( rs );
+
+        return grid;
+    }
+
     /**
      * Insert data elements into database directly
      * 
@@ -273,7 +297,7 @@ public class JdbcCaseAggregationConditionManager
         else
         {
             sql += "'" + period.getIsoDate() + "' as periodIsoDate,'" + aggregateDeName + "' as dataelementname, '"
-                + optionComboName + "' as categoryoptioncomboname, " + "ou.name as organisationunitname, ";
+                + optionComboName + "' as categoryoptioncomboname, ou.name as organisationunitname, ";
         }
 
         if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT )
@@ -302,10 +326,10 @@ public class JdbcCaseAggregationConditionManager
 
                 if ( hasPatients )
                 {
-                    sql += "INNER JOIN patient p on p.patientid=pi.patientid  ";
                     sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
+                    sql += "INNER JOIN patient p on p.patientid=pi.patientid  ";
                 }
-                if ( (hasProgramInstances && !hasPatients)
+                else if ( (hasProgramInstances && !hasPatients)
                     || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
                 {
                     sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
@@ -343,7 +367,62 @@ public class JdbcCaseAggregationConditionManager
         }
 
         sql = sql.replaceAll( "COMBINE", "" );
-        
+
+        return sql;
+    }
+
+    @Override
+    public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
+    {
+        String sql = "SELECT ";
+
+        boolean hasPatients = hasPatientCriteria( caseExpression );
+        boolean hasProgramInstances = hasProgramInstanceCriteria( caseExpression );
+        boolean hasDataelement = hasDataelementCriteria( caseExpression );
+
+        Collection<Integer> orgunitIds = new HashSet<Integer>();
+        orgunitIds.add( orgunitId );
+
+        if ( hasOrgunitProgramStageCompleted( caseExpression ) )
+        {
+            sql += "ou.name "
+                + createSQL( caseExpression, operator, orgunitIds,
+                    DateUtils.getMediumDateString( period.getStartDate() ),
+                    DateUtils.getMediumDateString( period.getEndDate() ) );
+        }
+        else if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+        {
+            sql += "p.firstName, p.middleName, p.lastName, p.gender, p.birthDate, p.phoneNumber, pg.name as program,";
+        }
+        else if ( hasDataelement )
+        {
+            sql += "pdv.value,";
+        }
+
+        sql += "pgs.name, psi.executiondate as report_date ";
+
+        sql += "FROM programstageinstance as psi ";
+        sql += "INNER JOIN programstage as pgs ON pgs.programstageid = psi.programstageid ";
+        if ( hasDataelement )
+        {
+            sql += "INNER JOIN patientdatavalue as pdv ON psi.programstageinstanceid = pdv.programstageinstanceid ";
+        }
+
+        if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+        {
+            sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
+            sql += "INNER JOIN patient p on p.patientid=pi.patientid  ";
+        }
+        else if ( (hasProgramInstances && !hasPatients) || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+        {
+            sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
+        }
+        sql += "INNER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid WHERE "
+            + createSQL( caseExpression, operator, orgunitIds, DateUtils.getMediumDateString( period.getStartDate() ),
+                DateUtils.getMediumDateString( period.getEndDate() ) );
+
+        sql = sql.replaceAll( "COMBINE", "" );
+
         return sql;
     }
 
@@ -916,6 +995,27 @@ public class JdbcCaseAggregationConditionManager
             if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY )
                 || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM )
                 || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM_STAGE ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasDataelementCriteria( String expresstion )
+    {
+        Pattern pattern = Pattern.compile( CaseAggregationCondition.regExp );
+        Matcher matcher = pattern.matcher( expresstion );
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+
+            if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
             {
                 return true;
             }

@@ -53,6 +53,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.period.Period;
@@ -160,7 +161,12 @@ public class DefaultCaseAggregationConditionService
     public CaseAggregationCondition getCaseAggregationCondition( int id )
     {
         return i18n( i18nService, aggregationConditionStore.get( id ) );
+    }
 
+    @Override
+    public CaseAggregationCondition getCaseAggregationCondition( String name )
+    {
+        return i18n( i18nService, aggregationConditionStore.getByName( name ) );
     }
 
     @Override
@@ -187,6 +193,14 @@ public class DefaultCaseAggregationConditionService
         Period period, I18nFormat format, I18n i18n )
     {
         return aggregationConditionManager.getAggregateValue( aggregationCondition, orgunitIds, period, format, i18n );
+    }
+
+    @Override
+    public Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period, I18nFormat format, I18n i18n )
+    {
+        return aggregationConditionManager.getAggregateValueDetails( aggregationCondition, orgunit, period, format,
+            i18n );
     }
 
     @Override
@@ -417,7 +431,7 @@ public class DefaultCaseAggregationConditionService
     {
         return aggregationConditionManager.hasOrgunitProgramStageCompleted( expresstion );
     }
-    
+
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------
