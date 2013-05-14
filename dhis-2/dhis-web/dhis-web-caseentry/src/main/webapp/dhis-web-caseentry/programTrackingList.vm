@@ -141,13 +141,15 @@
 				<th>$i18n.getString( "message" )</th>
 			</tr>
 			<tbody id='commentTB' name='commentTB'>
+				#set( $mark = false )
 				#foreach( $comment in $comments )
-					<tr id="comment_$comment.id">
+					<tr id="comment_$comment.id" #alternate( $mark )>
 						<td>$format.formatDateTime($comment.createdDate)</td>
 						<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
 						<td>$encoder.htmlEncode($comment.creator)</td>
 						<td>$encoder.htmlEncode($comment.commentText)</td>
 					</tr>
+					#set( $mark = !$mark )
 				#end
 			</tbody>
 		</table>
@@ -168,13 +170,15 @@
 				<th>$i18n.getString( "message" )</th>
 			</tr>
 			<tbody id='messageTB' name='messageTB'>
+				#set( $mark = false )
 				#foreach( $sms in $outboundSms )
-					<tr id="tr${sms.id}" >
+					<tr id="tr${sms.id}" #alternate( $mark )>
 						<td>$format.formatDateTime($!sms.date)</td>
 						<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
 						<td>$encoder.htmlEncode($sms.sender)</td>
 						<td>$encoder.htmlEncode($sms.message)</td>
 					</tr>
+					#set( $mark = !$mark )
 				#end
 			</tbody>
 		</table>
