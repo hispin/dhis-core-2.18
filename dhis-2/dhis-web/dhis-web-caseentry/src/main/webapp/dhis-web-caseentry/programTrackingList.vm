@@ -120,52 +120,74 @@
 	</div>
 </div>			
 
-<table class="mainPageTable">
-	<colgroup>
-		<col width="160px"/>
-		<col width="160px"/>
-		<col width="100px"/>
-		<col/>
-	</colgroup>
-	<tr>
-		<th>$i18n.getString( "date" )</th>
-		<th>$i18n.getString( "program_stage" )</th>
-		<th>$i18n.getString( "sender" )</th>
-		<th>$i18n.getString( "message" )</th>
-	</tr>
-	<tbody id='commentTB' name='commentTB'>
-		#foreach( $comment in $comments )
-			<tr id="comment_$comment.id">
-				<td>$format.formatDateTime($comment.createdDate)</td>
-				<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
-				<td>$encoder.htmlEncode($comment.creator)</td>
-				<td>$encoder.htmlEncode($comment.commentText)</td>
+<div id='tabs'>
+	<ul>
+		<li><a href="#tab-1">$i18n.getString("comments")</a></li>
+		<li><a href="#tab-2">$i18n.getString("messages")</a></li>
+	</ul>
+	
+	<div id='tab-1'>
+		<table class="mainPageTable">
+			<colgroup>
+				<col width="160px"/>
+				<col width="160px"/>
+				<col width="100px"/>
+				<col/>
+			</colgroup>
+			<tr>
+				<th>$i18n.getString( "date" )</th>
+				<th>$i18n.getString( "program_stage" )</th>
+				<th>$i18n.getString( "sender" )</th>
+				<th>$i18n.getString( "message" )</th>
 			</tr>
-		#end
-		
-		#foreach( $sms in $outboundSms )
-			<tr id="tr${sms.id}" >
-				<td>$format.formatDateTime($!sms.date)</td>
-				<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
-				<td>$encoder.htmlEncode($sms.sender)</td>
-				<td>$encoder.htmlEncode($sms.message)</td>
+			<tbody id='commentTB' name='commentTB'>
+				#foreach( $comment in $comments )
+					<tr id="comment_$comment.id">
+						<td>$format.formatDateTime($comment.createdDate)</td>
+						<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
+						<td>$encoder.htmlEncode($comment.creator)</td>
+						<td>$encoder.htmlEncode($comment.commentText)</td>
+					</tr>
+				#end
+			</tbody>
+		</table>
+	</div>
+	
+	<div id='tab-2'>
+		<table class="mainPageTable">
+			<colgroup>
+				<col width="160px"/>
+				<col width="160px"/>
+				<col width="100px"/>
+				<col/>
+			</colgroup>
+			<tr>
+				<th>$i18n.getString( "date" )</th>
+				<th>$i18n.getString( "program_stage" )</th>
+				<th>$i18n.getString( "sender" )</th>
+				<th>$i18n.getString( "message" )</th>
 			</tr>
-		#end
-	</tbody>
-</table>
-<p>
-	#set($count = $comments.size() + $outboundSms.size() )
-	<input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count && $count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
-	<input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' class='hidden' onclick='commentDivToggle(true);'>
-</p>
+			<tbody id='messageTB' name='messageTB'>
+				#foreach( $sms in $outboundSms )
+					<tr id="tr${sms.id}" >
+						<td>$format.formatDateTime($!sms.date)</td>
+						<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
+						<td>$encoder.htmlEncode($sms.sender)</td>
+						<td>$encoder.htmlEncode($sms.message)</td>
+					</tr>
+				#end
+			</tbody>
+		</table>
+	</div>
+<div>
 
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
 		setFieldValue('programStageName', "$programStageInstance.programStage.displayName");
 		setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
-		commentDivToggle(true);
+		$('#tabs').tabs();
 	});
-	
+
 	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
 	var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
 	var i18n_this_field_is_required = '$encoder.jsEscape( $i18n.getString( "this_field_is_required" ) , "'")';
