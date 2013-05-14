@@ -4117,26 +4117,30 @@ Ext.onReady( function() {
 				dv.store.fixedPeriodSelected.add(fixedPeriodRecords);
 
 				// Group sets
-
-					// Reset stores
 				for (var key in dimensionIdSelectedStoreMap) {
 					if (dimensionIdSelectedStoreMap.hasOwnProperty(key)) {
 						var a = dimensionIdAvailableStoreMap[key],
 							s = dimensionIdSelectedStoreMap[key];
 
 						if (s.getCount() > 0) {
-							a.reload();
+							a.reset();
 							s.removeAll();
+						}
+
+						if (recMap[key]) {
+							s.add(recMap[key]);
+							dv.util.multiselect.filterAvailable({store: a}, {store: s});
 						}
 					}
 				}
 
 					// Add records
-				for (var key in dimensionIdSelectedStoreMap) {
-					if (dimensionIdSelectedStoreMap.hasOwnProperty(key) && recMap[key]) {
-						dimensionIdSelectedStoreMap[key].add(recMap[key]);
-					}
-				}
+				//for (var key in dimensionIdSelectedStoreMap) {
+					//if (dimensionIdSelectedStoreMap.hasOwnProperty(key) && recMap[key]) {
+						//dimensionIdSelectedStoreMap[key].add(recMap[key]);
+						//dv.util.multiselect.filterAvailable(
+					//}
+				//}
 
 				// Options
 				if (Ext.isNumber(xLayout.targetLineValue)) {
