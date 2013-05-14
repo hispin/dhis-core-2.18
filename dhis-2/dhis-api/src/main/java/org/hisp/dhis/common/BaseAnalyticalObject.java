@@ -124,7 +124,7 @@ public abstract class BaseAnalyticalObject
     
     protected transient List<DimensionalObject> filters = new ArrayList<DimensionalObject>();
     
-    protected Map<String, String> parentGraphMap = new HashMap<String, String>();
+    protected transient Map<String, String> parentGraphMap = new HashMap<String, String>();
 
     // -------------------------------------------------------------------------
     // Logic
