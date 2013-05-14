@@ -31,9 +31,9 @@ import java.io.Serializable;
 
 /**
  * @author Stian Strandli
- * @version $Id: SystemSetting.java 3340 2007-06-03 04:01:04Z hanssto $
  */
 public class SystemSetting
+    implements Serializable
 {
     private int id;
 
@@ -41,15 +41,27 @@ public class SystemSetting
 
     private Serializable value;
 
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+
     public SystemSetting()
     {
 
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
     public boolean hasValue()
     {
         return value != null;
     }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     public int getId()
     {
@@ -81,4 +93,41 @@ public class SystemSetting
         this.value = value;
     }
 
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !(o instanceof SystemSetting) )
+        {
+            return false;
+        }
+
+        final SystemSetting other = (SystemSetting) o;
+
+        return name.equals( other.getName() );
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int prime = 31;
+        int result = 1;
+
+        result = result * prime + name.hashCode();
+
+        return result;
+    }
 }
