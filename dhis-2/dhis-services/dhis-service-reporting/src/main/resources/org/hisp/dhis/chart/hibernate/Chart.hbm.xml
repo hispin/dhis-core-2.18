@@ -46,6 +46,8 @@
     <property name="hideTitle" />
 
     <property name="hideSubtitle" />
+    
+    <property name="title" />
 
     <property name="targetLineValue" />
 
