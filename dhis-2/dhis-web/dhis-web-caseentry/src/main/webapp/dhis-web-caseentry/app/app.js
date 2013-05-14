@@ -314,16 +314,17 @@ Ext.onReady( function() {
 					var array = [];
 					Ext.Array.each(selected, function(item) {
 						var data = a.store.findExact('id', item);
-						array.push({id: item, uid:a.store.getAt(data).data.uid, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
+						var name = a.store.getAt(data).data.name;
+						var valueType = a.store.getAt(data).data.valueType;
+						array.push({id: item, uid:a.store.getAt(data).data.uid, name:name, compulsory: a.store.getAt(data).data.compulsory, valueType:valueType});
+						if(f!=undefined)
+						{
+							TR.util.multiselect.addFilterField( f, selected[data], name, valueType );
+						}
 					});
 					s.store.add(array);
 					
 					this.filterAvailable(a, s);
-					
-					if(f!=undefined)
-					{
-						this.addFilterField( f, selected[0], name, valueType );
-					}
 				}
             },
             selectAll: function(a, s, f) {
