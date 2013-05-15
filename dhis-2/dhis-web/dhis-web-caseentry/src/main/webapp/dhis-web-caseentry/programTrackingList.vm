@@ -136,7 +136,7 @@
 			</colgroup>
 			<tr>
 				<th>$i18n.getString( "date" )</th>
-				<th>$i18n.getString( "program_stage" )</th>
+				<th>$i18n.getString( "events" )</th>
 				<th>$i18n.getString( "sender" )</th>
 				<th>$i18n.getString( "message" )</th>
 			</tr>
