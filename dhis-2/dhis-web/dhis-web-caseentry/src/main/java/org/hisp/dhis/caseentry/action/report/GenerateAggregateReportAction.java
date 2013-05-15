@@ -379,6 +379,12 @@ public class GenerateAggregateReportAction
             periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
 
+        if ( relativePeriods.contains( "last3Months" ) )
+        {
+            rp.clear().setLast3Months( true );
+            periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
+        }
+        
         if ( relativePeriods.contains( "last12Months" ) )
         {
             rp.clear().setLast12Months( true );
