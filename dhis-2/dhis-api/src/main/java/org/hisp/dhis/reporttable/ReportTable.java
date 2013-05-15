@@ -417,8 +417,7 @@ public class ReportTable
     public ReportTable( String name, List<DataElement> dataElements, List<Indicator> indicators,
                         List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> organisationUnits,
                         List<OrganisationUnit> relativeUnits, List<OrganisationUnitGroup> organisationUnitGroups,
-                        boolean doIndicators,
-                        boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
+                        boolean doIndicators, boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
                         I18nFormat i18nFormat, String reportingPeriodName )
     {
         this.name = name;
