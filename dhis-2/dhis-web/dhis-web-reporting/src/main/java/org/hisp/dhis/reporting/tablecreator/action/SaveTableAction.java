@@ -35,8 +35,6 @@ import java.util.List;
 
 import org.hisp.dhis.commons.action.AbstractRelativePeriodsAction;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -77,13 +75,6 @@ public class SaveTableAction
         this.dataElementService = dataElementService;
     }
     
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -163,13 +154,6 @@ public class SaveTableAction
     public void setCumulative( boolean cumulative )
     {
         this.cumulative = cumulative;
-    }
-
-    private Integer categoryComboId;
-
-    public void setCategoryComboId( Integer categoryComboId )
-    {
-        this.categoryComboId = categoryComboId;
     }
 
     private boolean doIndicators;
@@ -305,8 +289,6 @@ public class SaveTableAction
             organisationUnitGroups.add( organisationUnitGroupService.getOrganisationUnitGroup( id ) );
         }
         
-        DataElementCategoryCombo categoryCombo = categoryComboId != null ? categoryService.getDataElementCategoryCombo( categoryComboId ) : null;
-        
         RelativePeriods relatives = getRelativePeriods();
         
         ReportParams reportParams = new ReportParams();
@@ -322,7 +304,7 @@ public class SaveTableAction
         {
             reportTable = new ReportTable( tableName,
                 dataElements, indicators, dataSets, periods, null, units, null, organisationUnitGroups,
-                categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, null, null );
+                doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, null, null );
         }
         else
         {
@@ -336,7 +318,6 @@ public class SaveTableAction
             reportTable.setPeriods( periods );
             reportTable.setOrganisationUnits( units );
             reportTable.setOrganisationUnitGroups( organisationUnitGroups );
-            reportTable.setCategoryCombo( categoryCombo );
             reportTable.setDoIndicators( doIndicators );
             reportTable.setDoPeriods( doPeriods );
             reportTable.setDoUnits( doOrganisationUnits );
