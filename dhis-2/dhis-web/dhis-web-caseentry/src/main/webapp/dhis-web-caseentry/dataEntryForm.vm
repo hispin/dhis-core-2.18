@@ -34,7 +34,7 @@
 		</tr>
 		#end
 		
-		<tr>
+		<tr id='entryPostComment'>
 			<th class='coordinates1'><label for="postComment">$i18n.getString('post_comment'):</label></th>
 			<th colspan='3'>
 				<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput"

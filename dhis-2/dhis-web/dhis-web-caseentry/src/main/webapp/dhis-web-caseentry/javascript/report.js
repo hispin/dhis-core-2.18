@@ -37,6 +37,7 @@ function loadDataEntry( programStageInstanceId )
 		.load( 'viewRecords.action?programStageInstanceId=' + programStageInstanceId
 		,function(){
 			showById('entryForm');
+			hideById('entryPostComment');
 			jQuery("#viewRecordsDiv :input" ).attr("disabled", true);
 			jQuery("#viewRecordsDiv :input" ).datepicker("destroy");
 			jQuery("#viewRecordsDiv :input" ).removeAttr("onclick");

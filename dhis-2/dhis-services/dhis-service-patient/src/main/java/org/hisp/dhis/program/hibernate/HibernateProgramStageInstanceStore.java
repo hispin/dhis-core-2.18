@@ -755,7 +755,7 @@ public class HibernateProgramStageInstanceStore
 
     public Grid getCompleteness( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n )
     {
-        String sql = "SELECT ou.name as orgunit, ps.name as program_stage, psi.completeduser as user_name, count(psi.programstageinstanceid) as number_of_events "
+        String sql = "SELECT ou.name as orgunit, ps.name as events, psi.completeduser as user_name, count(psi.programstageinstanceid) as number_of_events "
             + "         FROM programstageinstance psi INNER JOIN programstage ps "
             + "                         ON psi.programstageid = ps.programstageid "
             + "                 INNER JOIN organisationunit ou "
