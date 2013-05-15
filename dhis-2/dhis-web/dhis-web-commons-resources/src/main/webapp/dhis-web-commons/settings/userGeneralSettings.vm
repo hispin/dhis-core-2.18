@@ -9,12 +9,20 @@
                 messageSmsNotification: jQuery( '#messageSmsNotification' ).is(':checked' )
 			}, function ( json ) {
 				if ( json.response == "success" )
+				{	
 					setHeaderDelayMessage( json.message );
+					//setTimeout( "refreshPage()", 4000);
+				}
 			});
 		});
 	});
+	
+	//function refreshPage()
+	//{
+		//window.location = "userSettings.action";
+	//};
+	
 </script>
-
 <h3>$i18n.getString( "settings" ) #openHelp( "userGeneralSettings" )</h3>
 
 <div class="settingLabel">$i18n.getString( "language" )</div>

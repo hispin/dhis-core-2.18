@@ -60,7 +60,7 @@ public class SmsMessageSender
     /**
      * Note this methods is invoked asynchronously.
      */
-    @Async
+    //@Async
     @SuppressWarnings( "unchecked" )
     public String sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients,
         String gatewayId )

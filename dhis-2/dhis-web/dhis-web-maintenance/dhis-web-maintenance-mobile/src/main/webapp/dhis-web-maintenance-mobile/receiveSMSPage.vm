@@ -55,7 +55,7 @@
 		
 		if( result != "")
 		{
-			var confirmation = window.confirm( "$i18n.getString( 'confirm_delete_items' )"+result );
+			var confirmation = window.confirm( "$i18n.getString( 'confirm_delete_items' )" );
 			if ( confirmation )
 			{
 				jQuery.get( 'deleteReceiveSMS.action?' + result, {},
@@ -177,8 +177,7 @@
 					<input type="hidden" id="$incomingSms.id" value="$incomingSms.text" onblur="makeVisible( $incomingSms.id, $velocityCount )"/></td>
 				<td>$incomingSms.originator</td>
 				<td>update</td>
-				<td style="text-align:center"><a href="javascript:removeSingleItem( '$incomingSms.id', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>
-				
+				<td style="text-align:center"><a href="javascript:removeSingleItem( '$incomingSms.id', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>				
 			</tr>
 			#end
 		</tbody>

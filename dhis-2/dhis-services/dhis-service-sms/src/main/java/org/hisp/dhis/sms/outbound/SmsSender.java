@@ -49,7 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SmsSender
     implements MessageSender
 {
-    private static final Log log = LogFactory.getLog( SmsMessageSender.class );
+    private static final Log log = LogFactory.getLog( SmsSender.class );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -112,7 +112,7 @@ public class SmsSender
             {
                 text = createMessage( subject, text, sender );
                 
-                phoneNumbers = getRecipientsPhoneNumber( users );
+                phoneNumbers = getRecipientsPhoneNumber( toSendUserList );
                 
                 if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
                 {
@@ -147,7 +147,7 @@ public class SmsSender
 
         text = "From " + name + subject + ": " + text;
 
-        // Simplistic cutoff 160 characters
+        // Simplistic cut off 160 characters
         int length = text.length();
 
         return (length > 160) ? text.substring( 0, 157 ) + "..." : text;
