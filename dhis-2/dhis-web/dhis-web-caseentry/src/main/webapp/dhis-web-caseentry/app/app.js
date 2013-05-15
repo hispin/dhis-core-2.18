@@ -341,7 +341,7 @@ Ext.onReady( function() {
 						array.push({id: id, uid:a.store.getAt(i).data.uid, name: name, compulsory: a.store.getAt(i).data.compulsory, valueType: valueType});
 						if(f!=undefined)
 						{
-							this.addFilterField( f, id, name, valueType );
+							TR.util.multiselect.addFilterField( f, id, name, valueType );
 						}
 					}
 				}
@@ -623,8 +623,8 @@ Ext.onReady( function() {
 						params.displayField = 'o';
 						params.multiSelect = true;
 						params.delimiter = ';';
-						var index = TR.store.dataelement.selected.findExact('id', 'de_' + deId);
-						var deUid = TR.store.dataelement.selected.getAt(index).data.uid;
+						var index = TR.store.dataelement.available.findExact('id', 'de_' + deId);
+						var deUid = TR.store.dataelement.available.getAt(index).data.uid;
 						params.store = Ext.create('Ext.data.Store', {
 							fields: ['o'],
 							data:[],
