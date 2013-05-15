@@ -306,8 +306,7 @@ public class ReportTableConverter
             
             reader.moveToStartElement( FIELD_CATEGORY_COMBO );
             String cc = reader.getElementValue();
-            reportTable.setCategoryCombo( cc != null ? categoryService.getDataElementCategoryCombo( categoryComboMapping.get( Integer.parseInt( cc ) ) ) : null );
-
+            
             reader.moveToStartElement( FIELD_DO_INDICATORS );
             reportTable.setDoIndicators( Boolean.parseBoolean( reader.getElementValue() ) );
 
