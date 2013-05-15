@@ -186,6 +186,15 @@
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetAllProgramsAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetAllProgramsAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"

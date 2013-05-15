@@ -88,6 +88,8 @@
 	  <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"/>
 	</set>
 	
+	<property name="displayOnAllOrgunit" />
+	
 	<!-- Access properties -->
 	
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_program_userid" />

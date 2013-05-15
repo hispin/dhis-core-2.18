@@ -72,14 +72,14 @@ public class HibernateProgramStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Program> getByType( int type )
     {
         return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Program> get( int type, OrganisationUnit organisationUnit )
     {
@@ -135,8 +135,25 @@ public class HibernateProgramStore
         }
         else
         {
-            programs = getByType(type);
+            programs = getByType( type );
         }
         return programs;
     }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
+        
+        if ( orgunit != null )
+        {
+            criteria.createAlias( "organisationUnits", "orgunit" );
+            criteria.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
+        }
+        
+        return criteria.list();
+    }
+
 }

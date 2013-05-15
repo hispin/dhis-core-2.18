@@ -113,14 +113,16 @@ public class SelectAction
     public String execute()
         throws Exception
     {
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        programs = new ArrayList<Program>(programService.getProgramsByCurrentUser());
+        programs = new ArrayList<Program>( programService.getProgramsByDisplayOnAllOrgunit( true, null ) );
+        programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
+        programs.retainAll( programService.getProgramsByCurrentUser() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-        
-        Collections.sort( programs, new ProgramDisplayNameComparator() );
 
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        Collections.sort( programs, new ProgramDisplayNameComparator() );
 
         return SUCCESS;
     }

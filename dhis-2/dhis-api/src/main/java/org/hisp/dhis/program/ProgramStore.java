@@ -48,4 +48,6 @@ public interface ProgramStore
     Collection<Program> getByCurrentUser();
 
     Collection<Program> getByCurrentUser( int type );
+    
+    Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit  );
 }

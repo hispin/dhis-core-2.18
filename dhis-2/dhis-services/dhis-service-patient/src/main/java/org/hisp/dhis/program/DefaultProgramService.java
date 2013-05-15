@@ -68,37 +68,44 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
+    
+    @Override
     public int saveProgram( Program program )
     {
         return programStore.save( program );
     }
 
+    @Override
     public void updateProgram( Program program )
     {
         programStore.update( program );
     }
 
+    @Override
     public void deleteProgram( Program program )
     {
         programStore.delete( program );
     }
 
+    @Override
     public Collection<Program> getAllPrograms()
     {
         return i18n( i18nService, programStore.getAll() );
     }
 
+    @Override
     public Program getProgram( int id )
     {
         return i18n( i18nService, programStore.get( id ) );
     }
 
+    @Override
     public Program getProgramByName( String name )
     {
         return i18n( i18nService, programStore.getByName( name ) );
     }
 
+    @Override
     public Collection<Program> getPrograms( OrganisationUnit organisationUnit )
     {
         Set<Program> programs = new HashSet<Program>();
@@ -106,9 +113,9 @@ public class DefaultProgramService
         for ( Program program : getAllPrograms() )
         {
             Set<OrganisationUnitGroup> orgunitGroups = program.getOrganisationUnitGroups();
-            for( OrganisationUnitGroup orgunitGroup : orgunitGroups )
+            for ( OrganisationUnitGroup orgunitGroup : orgunitGroups )
             {
-                if( orgunitGroup.getMembers().contains( organisationUnit ))
+                if ( orgunitGroup.getMembers().contains( organisationUnit ) )
                 {
                     programs.add( program );
                 }
@@ -122,6 +129,7 @@ public class DefaultProgramService
         return i18n( i18nService, programs );
     }
 
+    @Override
     public Collection<Program> getPrograms( ValidationCriteria validationCriteria )
     {
         Set<Program> programs = new HashSet<Program>();
@@ -137,16 +145,19 @@ public class DefaultProgramService
         return i18n( i18nService, programs );
     }
 
+    @Override
     public Collection<Program> getPrograms( int type )
     {
         return i18n( i18nService, programStore.getByType( type ) );
     }
 
+    @Override
     public Collection<Program> getPrograms( int type, OrganisationUnit orgunit )
     {
         return i18n( i18nService, programStore.get( type, orgunit ) );
     }
 
+    @Override
     public Collection<Program> getProgramsByCurrentUser()
     {
         return i18n( i18nService, programStore.getByCurrentUser() );
@@ -158,8 +169,16 @@ public class DefaultProgramService
         return i18n( i18nService, programStore.getByCurrentUser( type ) );
     }
 
+    @Override
     public Program getProgram( String uid )
     {
         return i18n( i18nService, programStore.getByUid( uid ) );
     }
+    
+    @Override
+    public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
+    {
+         return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
+    }
+    
 }

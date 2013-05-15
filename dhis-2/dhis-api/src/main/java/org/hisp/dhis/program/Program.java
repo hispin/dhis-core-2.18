@@ -130,6 +130,11 @@ public class Program
      */
     private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
 
+    /**
+     * Allow enrolling person to all orgunit no matter what the program is assigned for the orgunit or not
+     */
+    private Boolean displayOnAllOrgunit = true;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -530,4 +535,15 @@ public class Program
     {
         this.organisationUnitGroups = organisationUnitGroups;
     }
+
+    public Boolean getDisplayOnAllOrgunit()
+    {
+        return displayOnAllOrgunit;
+    }
+
+    public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
+    {
+        this.displayOnAllOrgunit = displayOnAllOrgunit;
+    }
+    
 }
