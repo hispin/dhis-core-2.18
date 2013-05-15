@@ -41,9 +41,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseAnalyticalObject;
-import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.CombinationGenerator;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
@@ -234,11 +234,6 @@ public class ReportTable
     private List<String> filterDimensions = new ArrayList<String>();
     
     /**
-     * The DataElementCategoryCombo for the ReportTable.
-     */
-    private DataElementCategoryCombo categoryCombo;
-
-    /**
      * The ReportParams of the ReportTable.
      */
     private ReportParams reportParams;
@@ -422,7 +417,7 @@ public class ReportTable
     public ReportTable( String name, List<DataElement> dataElements, List<Indicator> indicators,
                         List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> organisationUnits,
                         List<OrganisationUnit> relativeUnits, List<OrganisationUnitGroup> organisationUnitGroups,
-                        DataElementCategoryCombo categoryCombo, boolean doIndicators,
+                        boolean doIndicators,
                         boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
                         I18nFormat i18nFormat, String reportingPeriodName )
     {
@@ -435,7 +430,6 @@ public class ReportTable
         this.organisationUnits = organisationUnits;
         this.relativeUnits = relativeUnits;
         this.organisationUnitGroups = organisationUnitGroups;
-        this.categoryCombo = categoryCombo;
         this.relatives = relatives;
         this.reportParams = reportParams;
         this.i18nFormat = i18nFormat;
@@ -489,7 +483,7 @@ public class ReportTable
 
         if ( isDimensional() )
         {
-            categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() );
+            categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( getCategoryCombo().getOptionCombos() );
             verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
 
@@ -660,13 +654,23 @@ public class ReportTable
 
         return organisationUnitGroupMap;
     }
+    
+    public DataElementCategoryCombo getCategoryCombo()
+    {
+        if ( dataElements != null && !dataElements.isEmpty() )
+        {
+            return dataElements.get( 0 ).getCategoryCombo();
+        }
+        
+        return null;
+    }
 
     /**
      * Indicates whether this ReportTable is multi-dimensional.
      */
     public boolean isDimensional()
     {
-        return categoryCombo != null;
+        return dataElements != null && !dataElements.isEmpty() && columnDimensions.contains( DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID );
     }
 
     /**
@@ -684,7 +688,9 @@ public class ReportTable
      */
     public boolean doSubTotals()
     {
-        return doTotal() && categoryCombo.getCategories() != null && categoryCombo.getCategories().size() > 1;
+        DataElementCategoryCombo categoryCombo = getCategoryCombo();
+        
+        return doTotal() && categoryCombo != null && categoryCombo.getCategories() != null && categoryCombo.getCategories().size() > 1;
     }
 
     /**
@@ -1145,20 +1151,6 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public DataElementCategoryCombo getCategoryCombo()
-    {
-        return categoryCombo;
-    }
-
-    public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
-    {
-        this.categoryCombo = categoryCombo;
-    }
-
-    @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public ReportParams getReportParams()
@@ -1459,7 +1451,6 @@ public class ReportTable
 
             regression = reportTable.isRegression();
             cumulative = reportTable.isCumulative();
-            categoryCombo = reportTable.getCategoryCombo() == null ? categoryCombo : reportTable.getCategoryCombo();
             relatives = reportTable.getRelatives() == null ? relatives : reportTable.getRelatives();
             reportParams = reportTable.getReportParams() == null ? reportParams : reportTable.getReportParams();
             sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();

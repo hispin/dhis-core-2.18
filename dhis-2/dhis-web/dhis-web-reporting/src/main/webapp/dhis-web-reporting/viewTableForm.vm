@@ -22,8 +22,7 @@
 				 <tr>
 				 	<td>#filterDiv( "displayManageTableForm" )</td>
                     <td colspan="10" style="text-align:right">
-                    	<input type="button" value="$i18n.getString( 'add_report_table' )" style="width:220px" onclick="window.location.href='displayAddTableForm.action?dimension=false'"><br>
-                    	<input type="button" value="$i18n.getString( 'add_dataelement_dimension_table' )" style="width:220px" onclick="window.location.href='displayAddTableForm.action?dimension=true'">                    	
+                    	<input type="button" value="$i18n.getString( 'add_report_table' )" style="width:220px" onclick="window.location.href='displayAddTableForm.action?dimension=false'">                 	
                     </td>
                 </tr>
 			</table>

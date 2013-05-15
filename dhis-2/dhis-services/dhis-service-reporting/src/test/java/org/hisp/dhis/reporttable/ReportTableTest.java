@@ -358,7 +358,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), relativeUnits, 
-            groups, null, true, true, false, relatives, null, i18nFormat, "january_2000" );
+            groups, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -416,7 +416,7 @@ public class ReportTableTest
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), relativeUnits, 
-            groups, null, true, false, true, relatives, null, i18nFormat, "january_2000" );
+            groups, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -472,7 +472,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -530,7 +530,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -588,7 +588,7 @@ public class ReportTableTest
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -644,7 +644,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, true, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, true, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -674,7 +674,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, false, false, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), false, false, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -704,7 +704,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -746,7 +746,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -788,7 +788,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -824,186 +824,13 @@ public class ReportTableTest
         assertNotNull( rows );
         assertEquals( 4, rows.size() );
     }
-    
-    @Test
-    public void testCategoryComboReportTableA()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), categoryCombo, true, true, false, relatives, null, i18nFormat, "january_2000" );
-        
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.ORGANISATIONUNIT_ID ) );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-        
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
-
-        List<List<NameableObject>> columns = reportTable.getGridColumns();
-        
-        assertNotNull( columns );
-        assertEquals( 16, columns.size() );
-        
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( dataElementA, periodA, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementA, periodA, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementA, periodB, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementA, periodB, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementA, periodC, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementA, periodC, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementA, periodD, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementA, periodD, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementB, periodA, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementB, periodA, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementB, periodB, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementB, periodB, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementB, periodC, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementB, periodC, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementB, periodD, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementB, periodD, categoryOptionComboB ), iterator.next() );
-        
-        List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
-        
-        assertNotNull( columnNames );
-        assertEquals( 16, columnNames.size() );
-        
-        List<List<NameableObject>> rows = reportTable.getGridRows();
-        
-        assertNotNull( rows );
-        assertEquals( 2, rows.size() );
-
-        iterator = rows.iterator();
-        
-        assertEquals( getList( unitA ), iterator.next() );
-        assertEquals( getList( unitB ), iterator.next() );
-    }
-    
-    @Test
-    public void testCategoryComboReportTableB()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), categoryCombo, false, false, true, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-
-        assertNotNull( indexColumns );
-        assertEquals( 2, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.INDICATOR_ID ) );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 2, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
-        List<List<NameableObject>> columns = reportTable.getGridColumns();
-
-        assertNotNull( columns );
-        assertEquals( 4, columns.size() );
-
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( unitA, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( unitA, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( unitB, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( unitB, categoryOptionComboB ), iterator.next() );
-        
-        List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
-        
-        assertNotNull( columnNames );
-        assertEquals( 4, columnNames.size() );
-
-        List<List<NameableObject>> rows = reportTable.getGridRows();
-        
-        assertNotNull( rows );
-        assertEquals( 8, rows.size() );
-
-        iterator = rows.iterator();
-        
-        assertEquals( getList( dataElementA, periodA ), iterator.next() );
-        assertEquals( getList( dataElementA, periodB ), iterator.next() );
-        assertEquals( getList( dataElementA, periodC ), iterator.next() );
-        assertEquals( getList( dataElementA, periodD ), iterator.next() );
-        assertEquals( getList( dataElementB, periodA ), iterator.next() );
-        assertEquals( getList( dataElementB, periodB ), iterator.next() );
-        assertEquals( getList( dataElementB, periodC ), iterator.next() );
-        assertEquals( getList( dataElementB, periodD ), iterator.next() );
-    }
-
-    @Test
-    public void testCategoryComboReportTableC()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), categoryCombo, true, false, true, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
-        List<List<NameableObject>> columns = reportTable.getGridColumns();
-        
-        assertNotNull( columns );
-        assertEquals( 8, columns.size() );
-        
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( dataElementA, unitA, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementA, unitA, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementA, unitB, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementA, unitB, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementB, unitA, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementB, unitA, categoryOptionComboB ), iterator.next() );
-        assertEquals( getList( dataElementB, unitB, categoryOptionComboA ), iterator.next() );
-        assertEquals( getList( dataElementB, unitB, categoryOptionComboB ), iterator.next() );
-
-        List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
-        
-        assertNotNull( columnNames );
-        assertEquals( 8, columnNames.size() );
-
-        List<List<NameableObject>> rows = reportTable.getGridRows();
-        
-        assertNotNull( rows );
-        assertEquals( 4, rows.size() );
-
-        iterator = rows.iterator();
-        
-        assertEquals( getList( periodA ), iterator.next() );
-        assertEquals( getList( periodB ), iterator.next() );
-        assertEquals( getList( periodC ), iterator.next() );
-        assertEquals( getList( periodD ), iterator.next() );
-    }
 
     @Test
     public void testDataSetReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -1045,7 +872,7 @@ public class ReportTableTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -1087,7 +914,7 @@ public class ReportTableTest
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         

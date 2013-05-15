@@ -782,6 +782,7 @@ public class TableAlteror
             executeSql( "alter table reporttable drop column doindicators" );
             executeSql( "alter table reporttable drop column doperiods" );
             executeSql( "alter table reporttable drop column dounits" );
+            executeSql( "alter table reporttable drop column categorycomboid" );
         }
         catch ( Exception ex )
         {

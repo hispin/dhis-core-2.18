@@ -53,10 +53,6 @@
         foreign-key="fk_reporttable_datasets_datasetid" />
     </list>
 
-    <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo"
-      column="categorycomboid"
-      foreign-key="fk_reporttable_categorycombo" />
-
     <list name="organisationUnits" table="reporttable_organisationunits">
       <cache usage="read-write" />
       <key column="reporttableid" foreign-key="fk_reporttable_organisationunits_reporttableid" />
