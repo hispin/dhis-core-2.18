@@ -269,6 +269,15 @@ public abstract class BaseAnalyticalObject
             organisationUnits.clear();
             organisationUnits.addAll( other.getOrganisationUnits() );
             
+            dataElementGroups.clear();
+            dataElementGroups.addAll( other.getDataElementGroups() );
+            
+            organisationUnitGroups.clear();
+            organisationUnitGroups.addAll( other.getOrganisationUnitGroups() );
+            
+            categoryDimensions.clear();
+            categoryDimensions.addAll( other.getCategoryDimensions() );
+            
             userOrganisationUnit = other.isUserOrganisationUnit();
             userOrganisationUnitChildren = other.isUserOrganisationUnitChildren();            
         }
