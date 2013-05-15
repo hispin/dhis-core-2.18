@@ -480,16 +480,10 @@ public class SaveBeneficiaryAction
         String identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), gender );
 
         PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, identifier );
-        while ( systemGenerateIdentifier != null )
-        {
-            identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
-            systemGenerateIdentifier = patientIdentifierService.get( null, identifier );
-        }
-
         systemGenerateIdentifier = new PatientIdentifier();
         systemGenerateIdentifier.setIdentifier( identifier );
         systemGenerateIdentifier.setPatient( patient );
-        patient.getIdentifiers().add( systemGenerateIdentifier );
+        patientIdentifierSet.add(systemGenerateIdentifier);
         
         for ( PatientAttribute patientAttribute : patientAttributes )
         {
