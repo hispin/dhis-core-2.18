@@ -27,14 +27,16 @@ package org.hisp.dhis.api.controller.tracker;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.programdatavalue.ProgramInstance;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -49,10 +51,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -61,8 +59,6 @@ import java.io.InputStream;
 public class ProgramInstanceController
 {
     public static final String RESOURCE_PATH = "/programInstances";
-
-    private static final Log LOG = LogFactory.getLog( ProgramInstanceController.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -88,13 +84,6 @@ public class ProgramInstanceController
 
     @Autowired
     private PatientDataValueService patientDataValueService;
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
 
     // -------------------------------------------------------------------------
     // Controller

@@ -232,10 +232,10 @@ public class ChartController
 
     private void mergeChart( Chart chart )
     {
-        chart.getFilterDimensions().clear();
-                
         dimensionService.mergeAnalyticalObject( chart );
         
+        chart.getFilterDimensions().clear();
+                
         chart.setSeries( toDimension( chart.getColumns().get( 0 ).getDimension() ) );
         chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
         
