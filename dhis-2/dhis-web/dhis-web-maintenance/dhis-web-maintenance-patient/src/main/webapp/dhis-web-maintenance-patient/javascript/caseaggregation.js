@@ -233,6 +233,7 @@ function getPatientDataElements()
 			clearListById( 'dataElements' );
 			clearListById( 'dataElementBackups' );
 			var deSumId = jQuery('#deSumId');
+			deSumId.append( "<option value='' >" + i18n_please_select + "</option>" );
 			for ( i in json.dataElements )
 			{ 
 				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
