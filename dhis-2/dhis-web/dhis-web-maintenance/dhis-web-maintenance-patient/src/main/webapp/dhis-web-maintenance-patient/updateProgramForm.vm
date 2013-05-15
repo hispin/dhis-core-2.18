@@ -146,7 +146,7 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "ignore_to_generate_overdue_events" )</label></td>
+			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
 			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true' #if($program.ignoreOverdueEvents=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
 			<td></td>
 		</tr>

@@ -142,7 +142,7 @@ jQuery( document ).ready( function()
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "ignore_to_generate_overdue_events" )</label></td>
+			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
 			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
 			<td></td>
 		</tr>
