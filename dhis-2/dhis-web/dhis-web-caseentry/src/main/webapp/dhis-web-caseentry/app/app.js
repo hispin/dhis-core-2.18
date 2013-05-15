@@ -319,7 +319,7 @@ Ext.onReady( function() {
 						array.push({id: item, uid:a.store.getAt(data).data.uid, name:name, compulsory: a.store.getAt(data).data.compulsory, valueType:valueType});
 						if(f!=undefined)
 						{
-							TR.util.multiselect.addFilterField( f, selected[data], name, valueType );
+							TR.util.multiselect.addFilterField( f, item, name, valueType );
 						}
 					});
 					s.store.add(array);
@@ -1892,10 +1892,12 @@ Ext.onReady( function() {
 						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						var filter = deId + '_' + hidden + '_';
 						
-						if( filterValue!='' ){
+						if( Ext.getCmp('filter_' + id).getValue()!=null 
+							&& Ext.getCmp('filter_' + id).getValue()!=''){
 							filterValue = filterValue.toLowerCase();
 							filter += filterOpt + ' ';
-							if( filterOpt == 'IN' )
+							if( filtif( Ext.getCmp('filter_' + id).getValue()!=null 
+							&& Ext.getCmp('filter_' + id).getValue()!=''){erOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
 								filter +="(";
@@ -1907,7 +1909,7 @@ Ext.onReady( function() {
 							}
 							else
 							{
-								filter += "'" + filterValue + "'";
+								filter += "'" + Ext.getCmp('filter_' + id).getValue() + "'";
 							}
 						}
 						p.searchingValues.push( filter );
@@ -1989,7 +1991,9 @@ Ext.onReady( function() {
 						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						
 						var filter = deId + '_' + hidden + '_';
-						if( filterValue!=''){
+						if( Ext.getCmp('filter_' + id).getValue()!=null 
+							&& Ext.getCmp('filter_' + id).getValue()!=''){
+							
 							filterValue = filterValue.toLowerCase();
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
 							filter += filterOpt + ' ';
@@ -2006,7 +2010,7 @@ Ext.onReady( function() {
 							}
 							else
 							{
-								filter += "'" + filterValue + "'";
+								filter += "'" + Ext.getCmp('filter_' + id).getValue() + "'";
 							}
 						}
 						TR.util.list.addOptionToList(searchingValues, filter, '');
