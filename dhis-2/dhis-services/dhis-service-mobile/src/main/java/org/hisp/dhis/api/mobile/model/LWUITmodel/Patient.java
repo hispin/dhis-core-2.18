@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.IDN;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -287,7 +288,7 @@ public class Patient
     {
         this.enrollmentRelationships = enrollmentRelationships;
     }
-    
+
     public String getOrganisationUnitName()
     {
         return organisationUnitName;
@@ -386,10 +387,13 @@ public class Patient
         }
 
         // Write PatientIdentifier
-        dout.writeInt( identifiers.size() );
-        for ( PatientIdentifier each : identifiers )
+        if ( identifiers != null )
         {
-            each.serialize( dout );
+            dout.writeInt( identifiers.size() );
+            for ( PatientIdentifier each : identifiers )
+            {
+                each.serialize( dout );
+            }
         }
 
         // Write Program

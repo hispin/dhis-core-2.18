@@ -83,5 +83,6 @@ public interface ActivityReportingService
 
     public Program findProgram( String programInfo )
         throws NotAllowedException;
+    public Patient findLatestPatient(int orgUnitId) throws NotAllowedException;
 
 }

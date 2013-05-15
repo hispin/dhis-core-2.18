@@ -712,4 +712,16 @@ public class HibernatePatientStore
         return orgunitIds;
     }
 
+    @Override
+    public Patient getLatestPatient(Integer orgunitId)
+    {
+        Patient patient = new Patient();
+        String hql = "select p from Patient p where p.organisationUnit.id = " + orgunitId + " order by p.id DESC";
+        Query query = getQuery( hql );
+        query.setMaxResults( 1 );
+        patient = (Patient) query.uniqueResult();
+
+        return patient;
+    }
+
 }

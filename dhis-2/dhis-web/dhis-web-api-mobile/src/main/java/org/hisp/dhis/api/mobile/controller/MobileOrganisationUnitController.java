@@ -33,6 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
@@ -84,6 +85,13 @@ public class MobileOrganisationUnitController
 
     @Autowired
     private PatientAttributeService patientAttributeService;
+
+    private PatientIdentifierService patientIdentifierService;
+
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
+    }
 
     private Integer patientId;
 
@@ -353,7 +361,10 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/uploadProgramStage/{patientId}" )
     @ResponseBody
-    public String saveProgramStage( @PathVariable int patientId, @PathVariable int id, @RequestBody ProgramStage programStage )
+    public String saveProgramStage( @PathVariable
+    int patientId, @PathVariable
+    int id, @RequestBody
+    ProgramStage programStage )
         throws NotAllowedException
     {
         return activityReportingService.saveProgramStage( programStage, patientId, id );
@@ -522,7 +533,6 @@ public class MobileOrganisationUnitController
             patientAttributeValue.setPatient( patientWeb );
             patientAttributeValue.setPatientAttribute( patientAttribute );
             patientAttributeValue.setValue( paAtt.getValue() );
-
             patientAttributeValues.add( patientAttributeValue );
 
         }
@@ -530,7 +540,7 @@ public class MobileOrganisationUnitController
         patientWeb.setIdentifiers( patientIdentifierSet );
         patientWeb.setAttributes( patientAttributeSet );
 
-        patientId = patientService.savePatient( patientWeb );
+        patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
 
         return PATIENT_REGISTERED;
 
@@ -551,14 +561,13 @@ public class MobileOrganisationUnitController
         return patientIdentifierAndAttribute;
 
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLatestPerson" )
     @ResponseBody
     public Patient findLatestPerson( @PathVariable
-    int id, @RequestHeader( "name" )
-    String keyword )
+    int id )
         throws NotAllowedException
     {
-        return activityReportingService.findPatient( keyword, id );
+        return activityReportingService.findLatestPatient( id );
     }
 }

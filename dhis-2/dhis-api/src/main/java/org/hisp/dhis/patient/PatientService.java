@@ -243,4 +243,6 @@ public interface PatientService {
 	Collection<Patient> getPatientByFullname(String fullName, Integer orgunitId);
 	
 	Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
+
+        Patient getLatestPatient(Integer orgunitId);
 }
