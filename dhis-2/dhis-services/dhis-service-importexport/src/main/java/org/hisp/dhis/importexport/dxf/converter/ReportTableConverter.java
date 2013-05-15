@@ -93,7 +93,6 @@ public class ReportTableConverter
     private static final String FIELD_PARAM_ORG_UNIT = "paramOrganisationUnit";
         
     private Map<Object, Integer> dataElementMapping;
-    private Map<Object, Integer> categoryComboMapping;
     private Map<Object, Integer> indicatorMapping;
     private Map<Object, Integer> dataSetMapping;
     private Map<Object, Integer> periodMapping;
@@ -156,7 +155,6 @@ public class ReportTableConverter
         this.periodService = periodService;
         this.organisationUnitService = organisationUnitService;
         this.dataElementMapping = dataElementMapping;
-        this.categoryComboMapping = categoryComboMapping;
         this.indicatorMapping = indicatorMapping;
         this.dataSetMapping = dataSetMapping;
         this.periodMapping = periodMapping;
@@ -305,7 +303,6 @@ public class ReportTableConverter
             }
             
             reader.moveToStartElement( FIELD_CATEGORY_COMBO );
-            String cc = reader.getElementValue();
             
             reader.moveToStartElement( FIELD_DO_INDICATORS );
             reportTable.setDoIndicators( Boolean.parseBoolean( reader.getElementValue() ) );

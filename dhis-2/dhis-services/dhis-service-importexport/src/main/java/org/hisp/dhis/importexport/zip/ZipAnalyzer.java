@@ -76,6 +76,7 @@ public class ZipAnalyzer
                 }
             }
         }
+        
         return resultStream;
     }
 }
