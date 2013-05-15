@@ -192,7 +192,6 @@ public class ProcessingSendSMSAction
             {
                 e.printStackTrace();
             }
-
             message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
         }
         else if ( sendTarget.equals( "userGroup" ) )

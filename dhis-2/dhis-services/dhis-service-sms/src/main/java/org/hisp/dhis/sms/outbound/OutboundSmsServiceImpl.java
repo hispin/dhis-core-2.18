@@ -146,7 +146,9 @@ public class OutboundSmsServiceImpl
     {
         try
         {
-            return transportService.sendMessage( sms, id );
+            String message = transportService.sendMessage( sms, id );
+            
+            return message;
         }
         catch ( SmsServiceException e )
         {

@@ -218,7 +218,7 @@ public class SmsLibService
         {
             outboundSmsStore.update( sms );
         }
-
+        
         return message;
     }
 

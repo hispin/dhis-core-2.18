@@ -108,7 +108,7 @@ public class ReceivingSMSAction
         }
         else
         {
-            pollingInterval = 0;
+            pollingInterval = 4000;
         }
         listIncomingSms = incomingSmsService.listAllMessageFromModem();
 
