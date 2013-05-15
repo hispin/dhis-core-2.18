@@ -15,6 +15,21 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	enable('advancedSearchBtn');
 	enable('searchObjectId');
 	setFieldValue("orgunitName", orgUnitNames[0]);
+	
+	clearListById('programIdAddPatient');
+	jQuery.get("getAllPrograms.action",{}, 
+		function(json)
+		{
+			jQuery( '#programIdAddPatient').append( '<option value="">' + i18n_view_all + '</option>' );
+			for ( i in json.programs ) {
+				if(json.programs[i].type==1){
+					jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+				}
+			}
+			enableBtn();
+			hideById('programLoader');
+			enable('programIdAddPatient');
+		});
 }
 
 selection.setListenerFunction( organisationUnitSelected );

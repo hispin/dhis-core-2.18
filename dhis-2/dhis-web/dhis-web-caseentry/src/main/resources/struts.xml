@@ -303,7 +303,13 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPrograms.vm
       </result>
     </action>
-
+    
+    <action name="getAllPrograms"
+      class="org.hisp.dhis.caseentry.action.caseentry.GetAllProgramsAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPrograms.vm
+      </result>
+    </action>
+	
     <action name="getDataRecords"
       class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
       <result name="success" type="velocity">/content.vm</result>

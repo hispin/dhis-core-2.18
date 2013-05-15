@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,38 +24,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.caseentry.action.patient;
+
+package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.comparator.ProgramDisplayNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ GetAllProgramsAction.java May 15, 2013 3:33:24 PM $
  */
-public class ProgramEnrollmentSelectAction
+public class GetAllProgramsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setPatientService( PatientService patientService )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.patientService = patientService;
+        this.selectionManager = selectionManager;
     }
 
     private ProgramService programService;
@@ -65,41 +64,13 @@ public class ProgramEnrollmentSelectAction
         this.programService = programService;
     }
 
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private List<Program> programs;
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
-    private Collection<Program> programs = new ArrayList<Program>();
-
-    public Collection<Program> getPrograms()
+    public List<Program> getPrograms()
     {
         return programs;
     }
@@ -111,23 +82,16 @@ public class ProgramEnrollmentSelectAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
-        patient = patientService.getPatient( id );
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        // Get all programs
-        
         programs = new ArrayList<Program>( programService.getProgramsByDisplayOnAllOrgunit( true, null ) );
-        programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, orgunit ) );
+        programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
         programs.retainAll( programService.getProgramsByCurrentUser() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-        
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_ACTIVE );
 
-        for ( ProgramInstance programInstance : programInstances )
-        {
-            programs.remove( programInstance.getProgram() );
-        }
+        Collections.sort( programs, new ProgramDisplayNameComparator() );
         
         return SUCCESS;
     }
+
 }

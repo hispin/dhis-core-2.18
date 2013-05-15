@@ -224,6 +224,13 @@ public class UpdateProgramAction
         this.disableRegistrationFields = disableRegistrationFields;
     }
 
+    private Boolean displayOnAllOrgunit;
+
+    public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
+    {
+        this.displayOnAllOrgunit = displayOnAllOrgunit;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -238,6 +245,7 @@ public class UpdateProgramAction
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         disableRegistrationFields = (disableRegistrationFields == null) ? false : disableRegistrationFields;
+        displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -252,6 +260,7 @@ public class UpdateProgramAction
         program.setOnlyEnrollOnce( onlyEnrollOnce );
         program.setRemindCompleted( remindCompleted );
         program.setDisableRegistrationFields( disableRegistrationFields );
+        program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
 
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
