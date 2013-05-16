@@ -1670,11 +1670,10 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient( int orgUnitId )
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient()
         throws NotAllowedException
     {
-
-        Patient patient = (Patient) this.patientService.getLatestPatient( orgUnitId );
+        Patient patient = (Patient) this.patientService.getLatestPatient( this.getPatientId() );
 
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patient );
         return patientMobile;
@@ -1782,7 +1781,6 @@ public class ActivityReportingServiceImpl
         patientWeb.setAttributes( patientAttributeSet );
 
         patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
-        
 
         return PATIENT_REGISTERED;
 
