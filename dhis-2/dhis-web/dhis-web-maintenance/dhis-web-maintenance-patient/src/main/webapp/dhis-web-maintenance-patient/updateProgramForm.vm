@@ -157,6 +157,12 @@
 			<td></td>
 		</tr>
 		
+		<tr>
+			<td><label>$i18n.getString( "display_on_all_orgunits" )</label></td>
+			<td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true' #if($program.displayOnAllOrgunit) checked #end></td>
+			<td></td>
+		</tr>
+		
 		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "show_incident_date" )</label></td>
 			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' #if( $program.type=='3' ) disabled #elseif($program.displayIncidentDate=='true') checked #end></td>
