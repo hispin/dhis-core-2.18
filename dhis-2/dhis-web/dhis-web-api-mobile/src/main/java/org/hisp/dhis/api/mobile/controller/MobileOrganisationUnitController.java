@@ -3,10 +3,8 @@ package org.hisp.dhis.api.mobile.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.FacilityReportingService;
@@ -20,7 +18,6 @@ import org.hisp.dhis.api.mobile.model.DataSetValue;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
-import org.hisp.dhis.api.mobile.model.PatientIdentifier;
 import org.hisp.dhis.api.mobile.model.SMSCode;
 import org.hisp.dhis.api.mobile.model.SMSCommand;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
@@ -31,13 +28,6 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.smscommand.SMSCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,8 +47,6 @@ public class MobileOrganisationUnitController
 
     private static final String DATASET_REPORT_UPLOADED = "dataset_report_uploaded";
 
-    private static final String PATIENT_REGISTERED = "patient_registered";
-
     @Autowired
     private ActivityReportingService activityReportingService;
 
@@ -75,23 +63,7 @@ public class MobileOrganisationUnitController
     private I18nService i18nService;
 
     @Autowired
-    private PatientService patientService;
-
-    @Autowired
     private SMSCommandService smsCommandService;
-
-    @Autowired
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    @Autowired
-    private PatientAttributeService patientAttributeService;
-
-    private PatientIdentifierService patientIdentifierService;
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
 
     private Integer patientId;
 
@@ -465,84 +437,10 @@ public class MobileOrganisationUnitController
     public String savePatient( @PathVariable
     int id, @RequestBody
     Patient patient )
+        throws NotAllowedException
     {
 
-        org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
-
-        int startIndex = patient.getFirstName().indexOf( ' ' );
-        int endIndex = patient.getFirstName().lastIndexOf( ' ' );
-
-        String firstName = patient.getFirstName().toString();
-        String middleName = "";
-        String lastName = "";
-
-        if ( patient.getFirstName().indexOf( ' ' ) != -1 )
-        {
-            firstName = patient.getFirstName().substring( 0, startIndex );
-            if ( startIndex == endIndex )
-            {
-                middleName = "";
-                lastName = patient.getFirstName().substring( startIndex + 1, patient.getFirstName().length() );
-            }
-            else
-            {
-                middleName = patient.getFirstName().substring( startIndex + 1, endIndex );
-                lastName = patient.getFirstName().substring( endIndex + 1, patient.getFirstName().length() );
-            }
-        }
-
-        patientWeb.setFirstName( firstName );
-        patientWeb.setMiddleName( middleName );
-        patientWeb.setLastName( lastName );
-        patientWeb.setGender( patient.getGender() );
-        patientWeb.setDobType( patient.getDobType() );
-        patientWeb.setPhoneNumber( patient.getPhoneNumber() );
-        patientWeb.setBirthDate( patient.getBirthDate() );
-        patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( id ) );
-        patientWeb.setRegistrationDate( new Date() );
-
-        Set<org.hisp.dhis.patient.PatientIdentifier> patientIdentifierSet = new HashSet<org.hisp.dhis.patient.PatientIdentifier>();
-        Set<PatientAttribute> patientAttributeSet = new HashSet<PatientAttribute>();
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
-
-        Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
-
-        Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> patientAttributesMobile = patient
-            .getPatientAttValues();
-        for ( PatientIdentifier identifier : identifiers )
-        {
-            PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
-                .getPatientIdentifierType( identifier.getIdentifierType() );
-
-            org.hisp.dhis.patient.PatientIdentifier patientIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
-            patientIdentifier.setIdentifierType( patientIdentifierType );
-            patientIdentifier.setPatient( patientWeb );
-            patientIdentifier.setIdentifier( identifier.getIdentifier() );
-            patientIdentifierSet.add( patientIdentifier );
-        }
-
-        for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : patientAttributesMobile )
-        {
-
-            PatientAttribute patientAttribute = patientAttributeService.getPatientAttributeByName( paAtt.getName() );
-
-            patientAttributeSet.add( patientAttribute );
-
-            PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
-
-            patientAttributeValue.setPatient( patientWeb );
-            patientAttributeValue.setPatientAttribute( patientAttribute );
-            patientAttributeValue.setValue( paAtt.getValue() );
-            patientAttributeValues.add( patientAttributeValue );
-
-        }
-
-        patientWeb.setIdentifiers( patientIdentifierSet );
-        patientWeb.setAttributes( patientAttributeSet );
-
-        patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
-
-        return PATIENT_REGISTERED;
+        return activityReportingService.savePatient( patient, id );
 
     }
 
