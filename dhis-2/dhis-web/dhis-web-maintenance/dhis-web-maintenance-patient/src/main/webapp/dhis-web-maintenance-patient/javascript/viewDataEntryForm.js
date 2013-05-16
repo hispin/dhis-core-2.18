@@ -330,9 +330,10 @@ function validateDataEntryFormTimeout()
 
 function validateDataEntryForm()
 {
-	if( getFieldValue('name').length==0 )
+	var name = getFieldValue('name');
+	if( name.length==0 || name.length < 4 || name.length > 150 )
 	{
-		setHeaderDelayMessage( i18n_name_exists );
+		setHeaderDelayMessage( i18n_enter_a_name );
 		return;
 	}
 	
