@@ -2589,7 +2589,7 @@ Ext.onReady( function() {
 			startValue = Ext.create('Ext.form.field.Number', {
 				width: 153,
 				height: 23,
-				allowDecimals: false,
+				allowDecimals: true,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px',
 				value: 0
 			});
@@ -2597,7 +2597,7 @@ Ext.onReady( function() {
 			endValue = Ext.create('Ext.form.field.Number', {
 				width: 154,
 				height: 23,
-				allowDecimals: false,
+				allowDecimals: true,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px',
 				value: 0,
 				style: 'padding-left: 3px'
