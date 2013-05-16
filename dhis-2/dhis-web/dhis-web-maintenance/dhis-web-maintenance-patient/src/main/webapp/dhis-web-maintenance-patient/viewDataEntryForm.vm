@@ -112,9 +112,6 @@
 			#if(!$dataElements.isEmpty())
 			<button type="button" id='insertDataElements' onclick="openDataElementSelector()">$i18n.getString( 'insert_data_elements' )</button>
 			#end
-			#if(!$programStages.isEmpty())
-			<button type="button" id='insertOtherDataElements' onclick="openOtherProgramStageDataElements()">$i18n.getString( 'other_program_stage_data_element')</button>
-			#end
 			<button type="button" id="insertImagesButton">$i18n.getString( 'insert_images' )</button>
 			
 			#if( $!dataEntryForm )
@@ -181,7 +178,9 @@
 		</tr>
 		<tr>
 			<td colspan='2'><hr/>
+				#if(!$programStages.isEmpty())
 				<input type="button" value="$i18n.getString('other_program_stages')" onclick="hideById('dataElementSelection');showById('otherProgramStageDataElements');" >
+				#end
 				<input type="button" id="insertButton" value="$i18n.getString('insert')" onclick="insertDataElement( '#dataElementSelection', '$programStage.uid')" style="width:100px">
 			</td>
 		</tr>

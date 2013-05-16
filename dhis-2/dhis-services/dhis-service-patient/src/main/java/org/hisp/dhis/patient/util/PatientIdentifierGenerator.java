@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.mobile.service;
+package org.hisp.dhis.patient.util;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
