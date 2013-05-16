@@ -89,6 +89,7 @@ import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ActivityReportingServiceImpl
@@ -99,6 +100,8 @@ public class ActivityReportingServiceImpl
     private static final String PROGRAM_STAGE_SECTION_UPLOADED = "program_stage_section_uploaded";
 
     private static final String ANONYMOUS_PROGRAM_UPLOADED = "anonymous_program_uploaded";
+
+    private static final String PATIENT_REGISTERED = "patient_registered";
 
     private ActivityComparator activityComparator = new ActivityComparator();
 
@@ -144,9 +147,22 @@ public class ActivityReportingServiceImpl
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    public PatientAttributeService getPatientAttributeService()
+    {
+        return patientAttributeService;
+    }
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    public PatientIdentifierTypeService getPatientIdentifierTypeService()
+    {
+        return patientIdentifierTypeService;
     }
 
     private Collection<PatientIdentifier> patientIdentifiers;
@@ -190,6 +206,18 @@ public class ActivityReportingServiceImpl
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
+    }
+
+    private Integer patientId;
+
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
     }
 
     // -------------------------------------------------------------------------
@@ -1641,13 +1669,121 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient(int orgUnitId)
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient( int orgUnitId )
         throws NotAllowedException
     {
 
-        Patient patient = (Patient) this.patientService.getLatestPatient(orgUnitId);
+        Patient patient = (Patient) this.patientService.getLatestPatient( orgUnitId );
 
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patient );
         return patientMobile;
+    }
+
+    @Override
+    public String savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId )
+        throws NotAllowedException
+    {
+        org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
+
+        int startIndex = patient.getFirstName().indexOf( ' ' );
+        int endIndex = patient.getFirstName().lastIndexOf( ' ' );
+
+        String firstName = patient.getFirstName().toString();
+        String middleName = "";
+        String lastName = "";
+
+        if ( patient.getFirstName().indexOf( ' ' ) != -1 )
+        {
+            firstName = patient.getFirstName().substring( 0, startIndex );
+            if ( startIndex == endIndex )
+            {
+                middleName = "";
+                lastName = patient.getFirstName().substring( startIndex + 1, patient.getFirstName().length() );
+            }
+            else
+            {
+                middleName = patient.getFirstName().substring( startIndex + 1, endIndex );
+                lastName = patient.getFirstName().substring( endIndex + 1, patient.getFirstName().length() );
+            }
+        }
+
+        patientWeb.setFirstName( firstName );
+        patientWeb.setMiddleName( middleName );
+        patientWeb.setLastName( lastName );
+        patientWeb.setGender( patient.getGender() );
+        patientWeb.setDobType( patient.getDobType() );
+        patientWeb.setPhoneNumber( patient.getPhoneNumber() );
+        patientWeb.setBirthDate( patient.getBirthDate() );
+        patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
+        patientWeb.setRegistrationDate( new Date() );
+
+        Set<org.hisp.dhis.patient.PatientIdentifier> patientIdentifierSet = new HashSet<org.hisp.dhis.patient.PatientIdentifier>();
+        Set<org.hisp.dhis.patient.PatientAttribute> patientAttributeSet = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
+        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+
+        Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiers = patient.getIdentifiers();
+
+        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> patientAttributesMobile = patient
+            .getPatientAttValues();
+
+        if ( identifierTypes.size() > 0 )
+        {
+            for ( org.hisp.dhis.api.mobile.model.PatientIdentifier identifier : identifiers )
+            {
+                PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
+                    .getPatientIdentifierType( identifier.getIdentifierType() );
+
+                org.hisp.dhis.patient.PatientIdentifier patientIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
+
+                patientIdentifier.setIdentifierType( patientIdentifierType );
+                patientIdentifier.setPatient( patientWeb );
+                patientIdentifier.setIdentifier( identifier.getIdentifier() );
+                patientIdentifierSet.add( patientIdentifier );
+            }
+        }
+        // --------------------------------------------------------------------------------
+        // Generate system id with this format :
+        // (BirthDate)(Gender)(XXXXXX)(checkdigit)
+        // PatientIdentifierType will be null
+        // --------------------------------------------------------------------------------
+        if ( identifierTypes.size() == 0 )
+        {
+            String identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(),
+                patient.getGender() );
+
+            org.hisp.dhis.patient.PatientIdentifier systemGenerateIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
+            systemGenerateIdentifier.setIdentifier( identifier );
+            systemGenerateIdentifier.setIdentifierType( null );
+            systemGenerateIdentifier.setPatient( patientWeb );
+            patientIdentifierSet.add( systemGenerateIdentifier );
+        }
+
+        for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : patientAttributesMobile )
+        {
+
+            org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttributeService
+                .getPatientAttributeByName( paAtt.getName() );
+
+            patientAttributeSet.add( patientAttribute );
+
+            PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
+
+            patientAttributeValue.setPatient( patientWeb );
+            patientAttributeValue.setPatientAttribute( patientAttribute );
+            patientAttributeValue.setValue( paAtt.getValue() );
+            patientAttributeValues.add( patientAttributeValue );
+
+        }
+
+        patientWeb.setIdentifiers( patientIdentifierSet );
+        patientWeb.setAttributes( patientAttributeSet );
+
+        patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
+        
+
+        return PATIENT_REGISTERED;
+
     }
 }
