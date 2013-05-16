@@ -42,7 +42,7 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.caseentry.idgen.PatientIdentifierGenerator;
+import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 
 import com.opensymphony.xwork2.Action;
 
