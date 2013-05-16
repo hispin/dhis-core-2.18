@@ -153,6 +153,12 @@ jQuery( document ).ready( function()
 			<td></td>
 		</tr>
 		
+		<tr>
+			<td><label>$i18n.getString( "display_on_all_orgunits" )</label></td>
+			<td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true' checked></td>
+			<td></td>
+		</tr>
+		
 		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "show_incident_date" )</label></td>
 			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' checked onchange='programOnChange();'></td>

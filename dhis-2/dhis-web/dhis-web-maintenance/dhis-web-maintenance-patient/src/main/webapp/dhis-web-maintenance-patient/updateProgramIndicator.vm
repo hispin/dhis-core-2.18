@@ -47,8 +47,8 @@ jQuery( document ).ready( function()
 		<td><label>$i18n.getString( "value_type" )</label></td>
 		<td>
 			<select style="width: 336px;" id="valueType" name="valueType" onchange='programIndicatorOnChange();' class="{validate:{required:true}}">
-				<option value='int' #if( '$programIndicator.valueType'=='int' ) selected #end>$i18n.getString('int')</option>
-				<option value='date' #if( '$programIndicator.valueType'=='date' ) selected #end>$i18n.getString('date')</option>
+				<option value='int' #if( $programIndicator.valueType=='int' ) selected #end>$i18n.getString('int')</option>
+				<option value='date' #if( $programIndicator.valueType=='date' ) fasdfasdf selected #end>$i18n.getString('date')</option>
 			</select>
 		</td>
 		<td></td>

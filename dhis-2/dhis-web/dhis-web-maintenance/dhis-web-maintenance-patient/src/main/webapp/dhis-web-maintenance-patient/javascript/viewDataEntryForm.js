@@ -138,7 +138,6 @@ function getSelectedValues( jQueryString )
 	return result;
 }
 
-
 function checkExisted( id )
 {	
 	var result = false;
@@ -315,7 +314,7 @@ function setAutoSaveDataEntrySetting(_autoSave)
 	jQuery.postJSON("setAutoSaveDataEntrySetting.action", {autoSave:_autoSave}, function(json) {
 		autoSave = _autoSave;
 		if (_autoSave) {
-			window.setTimeout( "validateDataEntryFormTimeout( false );", 600 );
+			window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
 		}
 		else{
 			window.clearTimeout(timeOut);
@@ -331,6 +330,12 @@ function validateDataEntryFormTimeout()
 
 function validateDataEntryForm()
 {
+	if( getFieldValue('name').length==0 )
+	{
+		setHeaderDelayMessage( i18n_name_exists );
+		return;
+	}
+	
 	$.post( 'validateDataEntryForm.action',
 	{
 		name: getFieldValue('name'),
