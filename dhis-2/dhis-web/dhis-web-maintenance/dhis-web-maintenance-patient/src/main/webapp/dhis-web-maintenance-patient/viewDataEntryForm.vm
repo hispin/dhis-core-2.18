@@ -29,7 +29,6 @@
 #dataElementSelection,
 #existedDataEntry,
 #otherProgramStageDataElements{ 
-	padding: 0.5em; 	
 	z-index:999999;
 	font-size:10pt;
 	
@@ -130,18 +129,20 @@
   
 </form>
 
-<div id="dataElementSelection">
-	<table>
+<div id='dataElementDiv'>
+	<table id='dataElementSelection'>
 		<tr>
-			<td>$i18n.getString( "dataelement" )</td>
+			<td>
+				$i18n.getString( "dataelement" )
+				<input type="text" id='dataElementFilter' style="width:240px;" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
+			</td>
 			<td>	
-				<input type="text" id='dataElementFilter' style="width:260px;" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('dataElementFilter','');">
 			</td>
 		</tr>
 		<tr>
 			<td colspan='2'>	
-				<select id="dataElementIds" name="dataElementIds" style="min-width:400; width:100%; height:210px;" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.uid')">
+				<select id="dataElementIds" name="dataElementIds" style="width:430px;"  multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.uid')">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"uid"' + ':"' + "$de.uid" + '",' + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' )
 					<option value='$deJSON' decode="$!de.code" dename="$de.name" title="$de.name">$encoder.htmlEncode( $de.name )</option>
@@ -179,45 +180,49 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td colspan='2'><hr/>
+				<input type="button" value="$i18n.getString('other_program_stages')" onclick="hideById('dataElementSelection');showById('otherProgramStageDataElements');" >
 				<input type="button" id="insertButton" value="$i18n.getString('insert')" onclick="insertDataElement( '#dataElementSelection', '$programStage.uid')" style="width:100px">
 			</td>
-			<td>
-				<span id="message_"></span>
-			</td>
 		</tr>
-	</table>	
-</div>
-
-<div id="otherProgramStageDataElements">	
-	<table>
-		<tr>
-			<td>$i18n.getString( "program_stage" )</td>
-			<td>
-				<select id="programStageIds" style="min-width:300px" onchange="getProgramStageDataElements( this.value )" >
-					<option value=''>[$i18n.getString( "please_select" )]</option>
-					#foreach( $p in $programStages)
-					<option value='$p.id'>$encoder.htmlEncode( $p.name )</option>
-					#end
-				</select>			
-			</td>			
-		</tr>
-		<tr>
-			<td>$i18n.getString( "dataelement" )</td>
-			<td>
-				<input type="text" id='otherDataElementFilter' style="width:260px;" onkeyup="filterDataElements( this.value, '#otherProgramStageDataElements', '#dataElementIds')"/>
-				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('otherDataElementFilter','');filterDataElements('', '#otherProgramStageDataElements', '#dataElementIds')">
-			</td>
-		</tr>
+	</table>
+	
+	<table id='otherProgramStageDataElements' style='display:none;'>
 		<tr>
 			<td colspan='2'>
-				<select id="dataElementIds" name="dataElementIds" style="min-width:400; width:100%; height:210px;" multiple="multiple" size="10" ondblclick="insertDataElement( '#otherProgramStageDataElements', jQuery('#programStageIds option:selected').attr('uid') )"></select>
-				<select id="dataElementIdsStore" name="dataElementIdsStore" style="min-width:300px;display:none" multiple="multiple" size="10"></select>
+				<table>
+					<tr>
+						<td>$i18n.getString( "program_stage" )</td>
+						<td>
+							<select id="programStageIds" style="width:320px" onchange="getProgramStageDataElements( this.value )" >
+								<option value=''>[$i18n.getString( "please_select" )]</option>
+								#foreach( $p in $programStages)
+								<option value='$p.id'>$encoder.htmlEncode( $p.name )</option>
+								#end
+							</select>			
+						</td>			
+					</tr>
+					<tr>
+						<td>
+							$i18n.getString( "dataelement" )
+						</td>
+						<td>
+							<input type="text" id='otherDataElementFilter' style="width:240px;" onkeyup="filterDataElements( this.value, '#otherProgramStageDataElements', '#dataElementIds')"/>
+							<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('otherDataElementFilter','');filterDataElements('', '#otherProgramStageDataElements', '#dataElementIds')">
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
-			<td colspan='2'>
-				<table style="background-color:#DFEFEC;">
+			<td colspan='3'>
+				<select id="dataElementIds" name="dataElementIds" style="width:430px;"  multiple="multiple" size="10" ondblclick="insertDataElement( '#otherProgramStageDataElements', jQuery('#programStageIds option:selected').attr('uid') )"></select>
+				<select id="dataElementIdsStore" name="dataElementIdsStore" multiple="multiple" style="display:none"></select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='3'>
+				<table style="background-color:#DFEFEC;width:100%">
 					<tr>
 						<td>$i18n.getString("display_name")</td>
 						<td>
@@ -239,16 +244,14 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td colspan='2'><hr/>
+				<input type="button" value="$i18n.getString('selected_program_stages')" onclick="hideById('otherProgramStageDataElements');showById('dataElementSelection');" >
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements', byId('programStageIds').value )"/>
 			</td>
 		</tr>
-		<tr>
-			<td>
-				<span id="message_"></span>
-			</td>
-		</tr>
 	</table>	
+	
+	<br><span id="message_"></span>
 </div>
 
 <div id="existedDataEntry">	
