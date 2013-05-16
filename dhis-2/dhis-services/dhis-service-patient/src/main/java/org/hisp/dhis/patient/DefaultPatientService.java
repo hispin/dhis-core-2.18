@@ -601,10 +601,10 @@ public class DefaultPatientService
     }
 
     @Override
-    public Patient getLatestPatient(Integer orgunitId)
+    public Patient getLatestPatient(Integer patientId)
     {
         
-        return patientStore.getLatestPatient(orgunitId);
+        return patientStore.getLatestPatient(patientId);
     }
 
 }

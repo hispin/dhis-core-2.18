@@ -462,10 +462,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLatestPerson" )
     @ResponseBody
-    public Patient findLatestPerson( @PathVariable
-    int id )
+    public Patient findLatestPerson()
         throws NotAllowedException
     {
-        return activityReportingService.findLatestPatient( id );
+        return activityReportingService.findLatestPatient();
     }
 }
