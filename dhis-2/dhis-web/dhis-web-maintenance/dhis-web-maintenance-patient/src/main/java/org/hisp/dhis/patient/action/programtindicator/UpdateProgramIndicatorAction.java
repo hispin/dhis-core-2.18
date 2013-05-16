@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.patient.action.programtindicator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.hisp.dhis.program.ProgramIndicator;
 import org.hisp.dhis.program.ProgramIndicatorService;
 
@@ -126,7 +129,18 @@ public class UpdateProgramIndicatorAction
         throws Exception
     {
         code = (code == null && code.trim().length() == 0) ? null : code;
-        
+        expression = expression.trim();
+
+        if ( valueType.equals( ProgramIndicator.VALUE_TYPE_DATE ) )
+        {
+            Pattern pattern = Pattern.compile( "[(+|-|*|\\)]+" );
+            Matcher matcher = pattern.matcher( expression );
+            if ( matcher.find() && matcher.start() != 0 )
+            {
+                expression = "+" + expression;
+            }
+        }
+
         ProgramIndicator programIndicator = programIndicatorService.getProgramIndicator( id );
 
         programIndicator.setName( name );
@@ -140,7 +154,7 @@ public class UpdateProgramIndicatorAction
         programIndicatorService.updateProgramIndicator( programIndicator );
 
         programId = programIndicator.getProgram().getId();
-        
+
         return SUCCESS;
     }
 
