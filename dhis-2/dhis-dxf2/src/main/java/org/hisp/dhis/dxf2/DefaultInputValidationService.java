@@ -31,7 +31,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
-import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultValidationService implements ValidationService
+public class DefaultInputValidationService implements InputValidationService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -52,11 +51,11 @@ public class DefaultValidationService implements ValidationService
     private UserService userService;
 
     // -------------------------------------------------------------------------
-    // ValidationService Implementation
+    // InputValidationService Implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public ValidationStatus validateDataElement( DataElement dataElement, String value )
+    public Status validateDataElement( DataElement dataElement, String value )
     {
         I18nFormat format;
 
@@ -66,28 +65,28 @@ public class DefaultValidationService implements ValidationService
         }
         catch ( I18nManagerException ex )
         {
-            return new ValidationStatus( false, ex.getMessage() );
+            return new Status( false, ex.getMessage() );
         }
 
         value = value.trim();
 
         if ( value.length() >= 255 )
         {
-            return new ValidationStatus( false, value + " is more than 255 characters." );
+            return new Status( false, value + " is more than 255 characters." );
         }
 
         if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
         {
             if ( !(value.equalsIgnoreCase( "true" ) || value.equalsIgnoreCase( "false" )) )
             {
-                return new ValidationStatus( false, value + " is not a valid boolean expression." );
+                return new Status( false, value + " is not a valid boolean expression." );
             }
         }
         else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
         {
             if ( !value.equalsIgnoreCase( "true" ) )
             {
-                return new ValidationStatus( false, value + " can only be true." );
+                return new Status( false, value + " can only be true." );
             }
         }
         else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_DATE ) )
@@ -96,14 +95,14 @@ public class DefaultValidationService implements ValidationService
 
             if ( !dateIsValidated )
             {
-                return new ValidationStatus( false, value + " is not a valid date expression." );
+                return new Status( false, value + " is not a valid date expression." );
             }
         }
         else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_USER_NAME ) )
         {
             if ( userService.getUserCredentialsByUsername( value ) == null )
             {
-                return new ValidationStatus( false, value + " is not a valid username." );
+                return new Status( false, value + " is not a valid username." );
             }
         }
         else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_STRING ) )
@@ -112,7 +111,7 @@ public class DefaultValidationService implements ValidationService
             {
                 if ( !dataElement.getOptionSet().getOptions().contains( value ) )
                 {
-                    return new ValidationStatus( false, value + " is not a valid option for this optionSet." );
+                    return new Status( false, value + " is not a valid option for this optionSet." );
                 }
             }
             else if ( dataElement.getTextType().equals( DataElement.VALUE_TYPE_TEXT ) ||
@@ -125,14 +124,14 @@ public class DefaultValidationService implements ValidationService
         {
             if ( !MathUtils.isNumeric( value ) )
             {
-                return new ValidationStatus( false, value + " is not a valid number." );
+                return new Status( false, value + " is not a valid number." );
             }
 
             if ( dataElement.getOptionSet() != null )
             {
                 if ( !dataElement.getOptionSet().getOptions().contains( value ) )
                 {
-                    return new ValidationStatus( false, value + " is not a valid option for this optionSet." );
+                    return new Status( false, value + " is not a valid option for this optionSet." );
                 }
             }
 
@@ -140,25 +139,25 @@ public class DefaultValidationService implements ValidationService
             {
                 if ( !MathUtils.isInteger( value ) )
                 {
-                    return new ValidationStatus( false, value + " is not a valid integer." );
+                    return new Status( false, value + " is not a valid integer." );
                 }
             }
             else if ( dataElement.getNumberType().equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
             {
                 if ( !MathUtils.isPositiveInteger( value ) )
                 {
-                    return new ValidationStatus( false, value + " is not a valid positive integer." );
+                    return new Status( false, value + " is not a valid positive integer." );
                 }
             }
             else if ( dataElement.getNumberType().equals( DataElement.VALUE_TYPE_NEGATIVE_INT ) )
             {
                 if ( !MathUtils.isNegativeInteger( value ) )
                 {
-                    return new ValidationStatus( false, value + " is not a valid negative integer." );
+                    return new Status( false, value + " is not a valid negative integer." );
                 }
             }
         }
 
-        return new ValidationStatus( true );
+        return new Status();
     }
 }

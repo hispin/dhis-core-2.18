@@ -29,7 +29,7 @@ package org.hisp.dhis.dxf2.event;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dxf2.ValidationService;
+import org.hisp.dhis.dxf2.InputValidationService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -85,7 +85,7 @@ public abstract class BaseEventService implements EventService
     private PatientDataValueService patientDataValueService;
 
     @Autowired
-    private ValidationService validationService;
+    private InputValidationService inputValidationService;
 
     @Autowired
     private I18nManager i18nManager;
@@ -216,7 +216,7 @@ public abstract class BaseEventService implements EventService
 
     private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
     {
-        ValidationService.ValidationStatus status = validationService.validateDataElement( dataElement, value );
+        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value );
 
         if ( !status.isSuccess() )
         {
