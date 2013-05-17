@@ -30,12 +30,12 @@
 		<table class="listTable">
 			<col>
 			<col width="120">   
-		
-			<tr>
-				<th>$i18n.getString( "name" )</th>
-				<th>$i18n.getString( "operations" )</th>
-			</tr>
-
+			<thead>
+				<tr>
+					<th>$i18n.getString( "name" )</th>
+					<th>$i18n.getString( "operations" )</th>
+				</tr>
+			</thead>
 			<tbody id="list">
 				#parse( "/dhis-web-maintenance-patient/caseAggregationList.vm" )
 			</tbody>

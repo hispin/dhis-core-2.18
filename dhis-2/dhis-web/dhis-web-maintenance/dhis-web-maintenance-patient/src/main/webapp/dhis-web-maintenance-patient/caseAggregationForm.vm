@@ -8,39 +8,45 @@
 	<div id="tab-1">
 	  <table>
         <tr>
-			<th>$i18n.getString("display_name")</th>
-			<td>
-				<select id='displayNameOption' style="width:220px" onchange='displayNameOnChange( this.value )'>
-					<option value='1'>$i18n.getString("name")</option>
-					<option value='2'>$i18n.getString("code")</option>
-					<option value='3'>$i18n.getString("code_and_name")</option>
-				</select>
+			<td colspan='2'>
+				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:265px;'/>
+				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			
 			</td>
 			<td>
 				<label for="availableValues">$i18n.getString( "available_values" )</label>&nbsp;
 				<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button" onClick="insertMultiValues('suggestedDEValues');" >
 			</td>
         </tr>
-		<tr>
-			<th>$i18n.getString( "sort_by" )</th>
-			<td>
-				<input type='radio' name='sortBy' value='1' onchange="sortByOnChange('1')" checked >$i18n.getString("name")
-				<input type='radio' name='sortBy' value='2' onchange="sortByOnChange('2')">$i18n.getString("code") &nbsp;&nbsp;&nbsp;
-			</td>
-			<td rowspan="3">
-				<select name="suggestedDEValues" size="12" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
-			</td>
-		</tr>
-        <tr>
-			<td colspan='2'>
-				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:265px;'/>
-				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			
-			</td>
-        </tr>
         <tr>
 			<td colspan='2'>
 				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>
 				<select id="dataElementBackups" name="dataElementBackups" style='display:none;'></select>
+			</td>
+			<td rowspan='3'>
+				<select name="suggestedDEValues" size="12" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
+			</td>
+		</tr>
+		 <tr>
+			<td>
+				<table style='background-color:#CBDDEB'>
+					<tr>
+						<td>$i18n.getString("display_name")</td>
+						<td>
+							<select id='displayNameOption' style="width:220px" onchange='displayNameOnChange( this.value )'>
+								<option value='1'>$i18n.getString("name")</option>
+								<option value='2'>$i18n.getString("code")</option>
+								<option value='3'>$i18n.getString("code_and_name")</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>$i18n.getString( "sort_by" )</td>
+						<td>
+							<input type='radio' name='sortBy' value='1' onchange="sortByOnChange('1')" checked >$i18n.getString("name")
+							<input type='radio' name='sortBy' value='2' onchange="sortByOnChange('2')">$i18n.getString("code") &nbsp;&nbsp;&nbsp;
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
       </table>
@@ -103,25 +109,26 @@
 <table>
 	<tr>
 		<td>
-			<input type='button' class="small-button" alt="$i18n.getString( 'less' )" onclick='insertOperator( "<" );' value="<" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "<=" );' value="<=" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'greater' )" onclick='insertOperator( ">" );' value=">" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'greater_or_equal' )" onclick='insertOperator( ">=" );' value=">=" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "=" );' value="=" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "!=" );' value="!=" />
+			<input type='button' class="small-button" onclick='insertOperator( "(" );' value="(" />
+			<input type='button' class="small-button" onclick='insertOperator( ")" );' value=")" />
+			<input type='button' class="small-button" onclick='insertOperator( "<" );' value="<" />
+			<input type='button' class="small-button" onclick='insertOperator( "<=" );' value="<=" />
+			<input type='button' class="small-button" onclick='insertOperator( ">" );' value=">" />
+			<input type='button' class="small-button" onclick='insertOperator( ">=" );' value=">=" />
+			<input type='button' class="small-button" onclick='insertOperator( "=" );' value="=" />
+			<input type='button' class="small-button" onclick='insertOperator( "!=" );' value="!=" />
 			&nbsp;&nbsp;&nbsp;
-			<!-- input type='button' class="small-button" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' value="+" / -->
-			<input type='button' class="small-button" alt="$i18n.getString( 'left_parent' )" onclick='insertOperator( "(" );' value="(" />
-			<input type='button' class="small-button" alt="$i18n.getString( 'right_parent' )" onclick='insertOperator( ")" );' value=")" />
+			<input type='button' class="nornal-button" onclick='insertBoolValue( "true" );' value="$i18n.getString( 'yes' )" />
+			<input type='button' class="nornal-button" onclick='insertBoolValue( "false" );' value="$i18n.getString( 'no' )" />
+			<input type='button' class="nornal-button" onclick='insertOperator( "is null" );' value="==NULL" />
+			<input type='button' class="nornal-button" onclick='insertOperator( "is not null" );' value="!=NULL" />
+			<br><br>
+			<input type='button' style="width:54px;" onclick='insertOperator( "AND" );' value="$i18n.getString( 'and_operator' )" />
+			<input type='button' style="width:54px;" onclick='insertOperator( "OR" );' value="$i18n.getString( 'or_operator' )" />
 			&nbsp;&nbsp;&nbsp;
-			<input type='button' class="nornal-button" alt="$i18n.getString( 'yes' )" onclick='insertBoolValue( "true" );' value="$i18n.getString( 'yes' )" />
-			<input type='button' class="nornal-button" alt="$i18n.getString( 'no' )" onclick='insertBoolValue( "false" );' value="$i18n.getString( 'no' )" />
-			<input type='button' class="nornal-button" alt="$i18n.getString( 'is_null' )" onclick='insertOperator( "is null" );' value="==NULL" />
-			<input type='button' class="nornal-button" alt="$i18n.getString( 'not_null' )" onclick='insertOperator( "is not null" );' value="!=NULL" />
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' style="width:45px;" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' value="AND" />
-			<input type='button' style="width:45px;" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' value="OR" />
-			<input type='button' style="width:85px;" alt="$i18n.getString( 'combine' )" onclick='insertOperator( "COMBINE" );' value="COMBINE" />
+			<input type='button' style="width:92px;" onclick='insertOperator( "COMBINE" );' value="$i18n.getString( 'combine_operator' )" />
+			<input type='button' style="width:150px;" onclick='insertOperator( "MINUS( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
+			<input type='button' style="width:150px;" onclick='insertOperator( "MINUS( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
 			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
 		</td>
