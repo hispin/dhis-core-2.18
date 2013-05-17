@@ -37,6 +37,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
@@ -118,6 +119,31 @@ public abstract class BaseEventService implements EventService
         if ( organisationUnit == null )
         {
             return new ImportSummary( ImportStatus.ERROR, "Event organisationUnitId does not point to a valid organisation unit." );
+        }
+        else
+        {
+            boolean assignedToOrganisationUnit = false;
+
+            if ( program.getOrganisationUnits().contains( organisationUnit ) )
+            {
+                assignedToOrganisationUnit = true;
+            }
+            else
+            {
+                for ( OrganisationUnitGroup organisationUnitGroup : program.getOrganisationUnitGroups() )
+                {
+                    if ( organisationUnitGroup.getMembers().contains( organisationUnit ) )
+                    {
+                        assignedToOrganisationUnit = true;
+                        break;
+                    }
+                }
+            }
+
+            if ( !assignedToOrganisationUnit )
+            {
+                return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit." );
+            }
         }
 
         if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
