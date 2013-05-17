@@ -49,8 +49,10 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
@@ -365,7 +367,7 @@ public class JdbcCaseAggregationConditionManager
             sql += "GROUP BY ou.organisationunitid, ou.name";
 
         }
-
+        System.out.println( "\n\n === \n " + sql );
         sql = sql.replaceAll( "COMBINE", "" );
 
         return sql;
@@ -584,6 +586,28 @@ public class JdbcCaseAggregationConditionManager
 
         String sqlOrgunitCompleted = "";
 
+        // Get minus(date, date) out from the expression and run them later
+
+        Map<Integer, String> minusSQLMap = new HashMap<Integer, String>();
+        int idx = 0;
+        Pattern patternMinus = Pattern.compile( CaseAggregationCondition.dataelementRegExp );
+        Matcher matcherMinus = patternMinus.matcher( caseExpression );
+        while ( matcherMinus.find() )
+        {
+            String[] ids = matcherMinus.group( 2 ).split( SEPARATOR_ID );
+
+            minusSQLMap.put(
+                idx,
+                getConditionForMinusDataElement( orgunitIds, Integer.parseInt( ids[1] ), Integer.parseInt( ids[2] ),
+                    matcherMinus.group( 4 ), startDate, endDate ) );
+
+            caseExpression = caseExpression.replace( matcherMinus.group( 0 ), CaseAggregationCondition.MINUS_OPERATOR
+                + "_" + idx );
+
+            idx++;
+        }
+
+        // Run nornal expression
         String[] expression = caseExpression.split( "(AND|OR)" );
         caseExpression = caseExpression.replaceAll( "AND", " ) AND " );
         caseExpression = caseExpression.replaceAll( "OR", " ) OR " );
@@ -696,7 +720,14 @@ public class JdbcCaseAggregationConditionManager
         sql = sql.replaceAll( IN_CONDITION_END_SIGN, ")" );
         sql = sql.replaceAll( IS_NULL, " " );
 
+        System.out.println("\n\n minusSQLMap " + minusSQLMap );
+        for ( int key = 0; key < idx; key++ )
+        {
+            sql = sql.replace( CaseAggregationCondition.MINUS_OPERATOR + "_" + key, minusSQLMap.get( key ) );
+        }
+
         return sql + " ) ";
+
     }
 
     /**
@@ -714,8 +745,8 @@ public class JdbcCaseAggregationConditionManager
             + "ON _pi.programinstanceid=_psi.programinstanceid "
             + "WHERE psi.programstageinstanceid=_pdv.programstageinstanceid AND _pdv.dataelementid=" + dataElementId
             + "  AND _psi.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ")  "
-            + "AND _pi.programid = " + programId + " AND psi.executionDate>='" + startDate
-            + "' AND psi.executionDate <= '" + endDate + "' ";
+            + "AND _pi.programid = " + programId + " AND _psi.executionDate>='" + startDate
+            + "' AND _psi.executionDate <= '" + endDate + "' ";
 
         if ( !programStageId.equals( IN_CONDITION_GET_ALL ) )
         {
@@ -909,6 +940,20 @@ public class JdbcCaseAggregationConditionManager
             + endDate + "' ) ";
 
         return sql;
+    }
+
+    private String getConditionForMinusDataElement( Collection<Integer> orgunitIds, Integer programStageId,
+        Integer dataElementId, String compareSide, String startDate, String endDate )
+    {
+        return " EXISTS ( SELECT * FROM patientdatavalue _pdv inner join programstageinstance _psi "
+            + "                         ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
+            + "                 JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
+            + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid "
+            + "                  AND _pdv.dataelementid=" + dataElementId
+            + "                 AND _psi.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds )
+            + ") " + "                 AND _psi.programstageid = " + programStageId + " AND _psi.executionDate>='"
+            + startDate + "' AND _psi.executionDate <= '" + endDate + "' "
+            + "                 AND ( DATE(_pdv.value) - DATE(" + compareSide + ") ) ";
     }
 
     /**
