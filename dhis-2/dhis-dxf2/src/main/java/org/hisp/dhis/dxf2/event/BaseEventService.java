@@ -185,6 +185,13 @@ public abstract class BaseEventService implements EventService
 
         ProgramStageInstance programStageInstance = saveExecutionDate( program, organisationUnit, executionDate, event.getCompleted() );
 
+        String storedBy = event.getStoredBy();
+
+        if ( storedBy == null )
+        {
+            storedBy = currentUserService.getCurrentUsername();
+        }
+
         for ( DataValue dataValue : event.getDataValues() )
         {
             DataElement dataElement = dataElementService.getDataElement( dataValue.getDataElementId() );
@@ -198,7 +205,7 @@ public abstract class BaseEventService implements EventService
             {
                 if ( validateDataElement( dataElement, dataValue.getValue(), importSummary ) )
                 {
-                    saveDataValue( programStageInstance, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
+                    saveDataValue( programStageInstance, storedBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
                     importSummary.getDataValueCount().incrementImported();
                 }
             }
@@ -245,10 +252,8 @@ public abstract class BaseEventService implements EventService
         return programStageInstance;
     }
 
-    private void saveDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, String value, Boolean providedElsewhere )
+    private void saveDataValue( ProgramStageInstance programStageInstance, String storedBy, DataElement dataElement, String value, Boolean providedElsewhere )
     {
-        String storedBy = currentUserService.getCurrentUsername();
-
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
