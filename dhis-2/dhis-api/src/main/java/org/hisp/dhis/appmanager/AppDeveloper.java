@@ -34,7 +34,6 @@ import java.io.Serializable;
 public class AppDeveloper
     implements Serializable
 {
-
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -57,6 +56,7 @@ public class AppDeveloper
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+    
     public String getUrl()
     {
         return url;
