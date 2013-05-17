@@ -9,7 +9,8 @@
 	  <table>
         <tr>
 			<td colspan='2'>
-				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:265px;'/>
+				$i18n.getString("filter_by_name"): 
+				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:185px;'/>
 				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			
 			</td>
 			<td>
@@ -17,12 +18,25 @@
 				<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button" onClick="insertMultiValues('suggestedDEValues');" >
 			</td>
         </tr>
+		 <tr>
+			<td colspan='2'>
+				$i18n.getString("filter_by_type"): <select type='text' id='deValueType' name='deValueType' onchange="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:245px;'>
+					<option value=''>[$i18n.getString('view_all')]</option>
+					<option value="int">$i18n.getString( "number" )</option>
+					<option value="string">$i18n.getString( "text" )</option>
+					<option value="bool">$i18n.getString( "yes_no" )</option>
+					<option value="trueOnly">$i18n.getString( "yes_only" )</option>
+					<option value="date">$i18n.getString( "date" )</option>
+					<option value="username">$i18n.getString( "user_name" )</option>
+				</select>
+			</td>
+		</tr>
         <tr>
 			<td colspan='2'>
 				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>
 				<select id="dataElementBackups" name="dataElementBackups" style='display:none;'></select>
 			</td>
-			<td rowspan='3'>
+			<td rowspan='4'>
 				<select name="suggestedDEValues" size="12" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
 			</td>
 		</tr>
