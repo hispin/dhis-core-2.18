@@ -65,7 +65,6 @@ public interface ProgramService
     Collection<Program> getPrograms( int type, OrganisationUnit orgunit );
 
     Program getProgram( String uid );
-    
-    Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit,  OrganisationUnit orgunit  );
 
+    Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit );
 }
