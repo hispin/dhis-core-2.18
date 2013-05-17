@@ -85,6 +85,4 @@ public interface PatientStore
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
-    Patient getLatestPatient(Integer patientId);
-
 }
