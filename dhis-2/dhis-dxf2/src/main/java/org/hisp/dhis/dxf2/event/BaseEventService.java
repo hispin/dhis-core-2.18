@@ -50,6 +50,7 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -101,6 +102,15 @@ public abstract class BaseEventService implements EventService
         if ( program == null )
         {
             return new ImportSummary( ImportStatus.ERROR, "Event ID does not point to a valid program." );
+        }
+        else
+        {
+            Collection<Program> programsByCurrentUser = programService.getProgramsByCurrentUser();
+
+            if ( !programsByCurrentUser.contains( program ) )
+            {
+                return new ImportSummary( ImportStatus.ERROR, "Current user does not have permission to access this program." );
+            }
         }
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrganisationUnitId() );
