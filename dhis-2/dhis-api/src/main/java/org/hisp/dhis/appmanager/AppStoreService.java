@@ -31,7 +31,6 @@ import java.util.List;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id$
  */
 public interface AppStoreService
 {
