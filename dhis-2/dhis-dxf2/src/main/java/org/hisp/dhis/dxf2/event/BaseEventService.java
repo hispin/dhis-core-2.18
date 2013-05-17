@@ -191,6 +191,11 @@ public abstract class BaseEventService implements EventService
         {
             storedBy = currentUserService.getCurrentUsername();
         }
+        else if ( storedBy.length() >= 31 )
+        {
+            importSummary.getConflicts().add( new ImportConflict( "storedBy", storedBy + " is more than 31 characters, using current username instead." ) );
+            storedBy = currentUserService.getCurrentUsername();
+        }
 
         for ( DataValue dataValue : event.getDataValues() )
         {
