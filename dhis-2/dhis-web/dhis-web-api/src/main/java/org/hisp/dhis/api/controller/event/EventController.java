@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller.tracker;
+package org.hisp.dhis.api.controller.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -27,22 +27,11 @@ package org.hisp.dhis.api.controller.tracker;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dxf2.event.EventService;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.dxf2.programdatavalue.ProgramInstance;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -51,39 +40,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ProgramInstanceController.RESOURCE_PATH )
-public class ProgramInstanceController
+@RequestMapping( value = EventController.RESOURCE_PATH )
+public class EventController
 {
-    public static final String RESOURCE_PATH = "/programInstances";
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    public static final String RESOURCE_PATH = "/events";
 
     @Autowired
-    private ProgramService programService;
-
-    @Autowired
-    private ProgramInstanceService programInstanceService;
-
-    @Autowired
-    private ProgramStageInstanceService programStageInstanceService;
-
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private CurrentUserService currentUserService;
-
-    @Autowired
-    private PatientDataValueService patientDataValueService;
+    private EventService eventService;
 
     // -------------------------------------------------------------------------
     // Controller
@@ -92,19 +63,19 @@ public class ProgramInstanceController
     @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postDxf2ProgramInstance( ImportOptions importOptions,
-        HttpServletResponse response, InputStream in, Model model ) throws IOException
+        HttpServletResponse response, InputStream inputStream, Model model ) throws IOException
     {
-        ProgramInstance programInstance = JacksonUtils.fromXml( in, ProgramInstance.class );
-        System.err.println( programInstance );
+        ImportSummary importSummary = eventService.saveEventXml( inputStream );
+        JacksonUtils.toXml( response.getOutputStream(), importSummary );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postJsonProgramInstance( ImportOptions importOptions,
-        HttpServletResponse response, InputStream in, Model model ) throws IOException
+        HttpServletResponse response, InputStream inputStream, Model model ) throws IOException
     {
-        ProgramInstance programInstance = JacksonUtils.fromJson( in, ProgramInstance.class );
-        System.err.println( programInstance );
+        ImportSummary importSummary = eventService.saveEventJson( inputStream );
+        JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
 
     @ExceptionHandler( IllegalArgumentException.class )

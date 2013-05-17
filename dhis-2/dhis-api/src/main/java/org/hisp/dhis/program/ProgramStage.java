@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -145,11 +146,6 @@ public class ProgramStage
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public DataEntryForm getDataEntryForm()
-    {
-        return dataEntryForm;
-    }
-
     public Set<PatientReminder> getPatientReminders()
     {
         return patientReminders;
@@ -158,6 +154,11 @@ public class ProgramStage
     public void setPatientReminders( Set<PatientReminder> patientReminders )
     {
         this.patientReminders = patientReminders;
+    }
+
+    public DataEntryForm getDataEntryForm()
+    {
+        return dataEntryForm;
     }
 
     public void setDataEntryForm( DataEntryForm dataEntryForm )
@@ -173,6 +174,11 @@ public class ProgramStage
         return description;
     }
 
+    @JsonProperty( value = "validationCriterias" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "validationCriterias", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramStageSection> getProgramStageSections()
     {
         return programStageSections;
@@ -241,7 +247,10 @@ public class ProgramStage
         this.program = program;
     }
 
-    // TODO expose as xml/json
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "programStageDataElements", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programStageDataElement", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;

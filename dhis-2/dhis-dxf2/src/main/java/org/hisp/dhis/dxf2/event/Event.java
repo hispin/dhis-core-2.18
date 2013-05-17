@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.programdatavalue;
+package org.hisp.dhis.dxf2.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,27 +28,37 @@ package org.hisp.dhis.dxf2.programdatavalue;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
-public class ProgramInstance
+@JacksonXmlRootElement( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
+public class Event
 {
     private String id;
 
-    private String programInstanceId;
+    private String eventId;
 
     private String organisationUnitId;
+
+    private String patientId;
 
     private String executionDate;
 
     private Boolean completed = false;
 
-    public ProgramInstance()
+    private String storedBy;
+
+    private List<DataValue> dataValues = new ArrayList<DataValue>();
+
+    public Event()
     {
     }
 
@@ -66,17 +76,17 @@ public class ProgramInstance
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getProgramInstanceId()
+    public String getEventId()
     {
-        return programInstanceId;
+        return eventId;
     }
 
-    public void setProgramInstanceId( String programInstanceId )
+    public void setEventId( String eventId )
     {
-        this.programInstanceId = programInstanceId;
+        this.eventId = eventId;
     }
 
-    @JsonProperty( required = true )
+    @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
     public String getOrganisationUnitId()
     {
@@ -86,6 +96,18 @@ public class ProgramInstance
     public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public String getPatientId()
+    {
+        return patientId;
+    }
+
+    public void setPatientId( String patientId )
+    {
+        this.patientId = patientId;
     }
 
     @JsonProperty( required = true )
@@ -102,7 +124,7 @@ public class ProgramInstance
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public boolean isCompleted()
+    public Boolean getCompleted()
     {
         return completed;
     }
@@ -112,15 +134,43 @@ public class ProgramInstance
         this.completed = completed;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dataValues", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataValue", namespace = DxfNamespaces.DXF_2_0 )
+    public List<DataValue> getDataValues()
+    {
+        return dataValues;
+    }
+
+    public void setDataValues( List<DataValue> dataValues )
+    {
+        this.dataValues = dataValues;
+    }
+
     @Override
     public String toString()
     {
-        return "ProgramInstance{" +
+        return "Event{" +
             "id='" + id + '\'' +
-            ", programInstanceId='" + programInstanceId + '\'' +
+            ", eventId='" + eventId + '\'' +
             ", organisationUnitId='" + organisationUnitId + '\'' +
+            ", patientId='" + patientId + '\'' +
             ", executionDate='" + executionDate + '\'' +
             ", completed=" + completed +
+            ", storedBy='" + storedBy + '\'' +
+            ", dataValues=" + dataValues +
             '}';
     }
 }

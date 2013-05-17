@@ -26,6 +26,15 @@
  */
 package org.hisp.dhis.program;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 
 import java.io.Serializable;
@@ -34,6 +43,7 @@ import java.io.Serializable;
  * @author Viet Nguyen
  * @version $Id$
  */
+@JacksonXmlRootElement( localName = "programStageDataElement", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramStageDataElement
     implements Serializable
 {
@@ -88,6 +98,10 @@ public class ProgramStageDataElement
     {
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -98,6 +112,10 @@ public class ProgramStageDataElement
         this.programStage = programStage;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public DataElement getDataElement()
     {
         return dataElement;
@@ -108,6 +126,9 @@ public class ProgramStageDataElement
         this.dataElement = dataElement;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Boolean getAllowProvidedElsewhere()
     {
         return allowProvidedElsewhere;
@@ -118,6 +139,9 @@ public class ProgramStageDataElement
         this.allowProvidedElsewhere = allowProvidedElsewhere;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public boolean isCompulsory()
     {
         return compulsory;
@@ -138,6 +162,9 @@ public class ProgramStageDataElement
         this.sortOrder = sortOrder;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Boolean getDisplayInReports()
     {
         return displayInReports;

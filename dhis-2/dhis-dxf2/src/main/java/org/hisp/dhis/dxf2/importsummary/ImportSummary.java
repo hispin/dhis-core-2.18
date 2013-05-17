@@ -43,7 +43,7 @@ public class ImportSummary
 
     private String description;
 
-    private ImportCount dataValueCount;
+    private ImportCount dataValueCount = new ImportCount();
 
     private List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
 

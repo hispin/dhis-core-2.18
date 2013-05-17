@@ -14,6 +14,8 @@
   <bean id="org.hisp.dhis.dxf2.datavalueset.DataValueSetStore"
     class="org.hisp.dhis.dxf2.datavalueset.SpringDataValueSetStore" />
 
+  <bean id="org.hisp.dhis.dxf2.event.EventService" class="org.hisp.dhis.dxf2.event.JacksonEventService" />
+
   <!-- register idObject handlers -->
 
   <bean id="organisationUnitObjectHandler"

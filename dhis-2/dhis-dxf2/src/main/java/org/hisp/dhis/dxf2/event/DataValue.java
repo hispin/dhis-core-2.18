@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller.tracker;
+package org.hisp.dhis.dxf2.event;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,68 @@ package org.hisp.dhis.api.controller.tracker;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.controller.AbstractCrudController;
-import org.hisp.dhis.program.Program;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller
-@RequestMapping( value = ProgramController.RESOURCE_PATH )
-public class ProgramController
-    extends AbstractCrudController<Program>
+public class DataValue
 {
-    public static final String RESOURCE_PATH = "/programs";
+    private String value;
+
+    private String dataElementId;
+
+    private Boolean providedElsewhere = false;
+
+    public DataValue()
+    {
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public String getDataElementId()
+    {
+        return dataElementId;
+    }
+
+    public void setDataElementId( String dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public Boolean getProvidedElsewhere()
+    {
+        return providedElsewhere;
+    }
+
+    public void setProvidedElsewhere( Boolean providedElsewhere )
+    {
+        this.providedElsewhere = providedElsewhere;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "DataValue{" +
+            "value='" + value + '\'' +
+            ", dataElementId='" + dataElementId + '\'' +
+            ", providedElsewhere=" + providedElsewhere +
+            '}';
+    }
 }

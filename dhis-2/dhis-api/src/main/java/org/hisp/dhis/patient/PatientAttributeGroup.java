@@ -26,22 +26,25 @@
  */
 package org.hisp.dhis.patient;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-@XmlRootElement( name = "patientAttributeGroup", namespace = DxfNamespaces.DXF_2_0)
-@XmlAccessorType( value = XmlAccessType.NONE )
+@XmlRootElement(name = "patientAttributeGroup", namespace = DxfNamespaces.DXF_2_0)
 public class PatientAttributeGroup
     extends BaseIdentifiableObject
 {
@@ -117,6 +120,11 @@ public class PatientAttributeGroup
         this.description = description;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "patientAttributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "patientAttribute", namespace = DxfNamespaces.DXF_2_0 )
     public List<PatientAttribute> getAttributes()
     {
         return attributes;
