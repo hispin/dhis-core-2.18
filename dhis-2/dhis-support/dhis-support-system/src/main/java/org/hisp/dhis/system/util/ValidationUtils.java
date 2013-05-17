@@ -1,7 +1,7 @@
 package org.hisp.dhis.system.util;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,16 +27,16 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.validator.routines.DateValidator;
+import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.UrlValidator;
+import org.hisp.dhis.dataelement.DataElement;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.validator.routines.DateValidator;
-import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.commons.validator.routines.UrlValidator;
-import org.hisp.dhis.dataelement.DataElement;
 
 import static org.hisp.dhis.dataelement.DataElement.*;
 
@@ -49,15 +49,15 @@ public class ValidationUtils
     private static Pattern POINT_PATTERN = Pattern.compile( "\\[(.+),\\s?(.+)\\]" );
     private static Pattern DIGIT_PATTERN = Pattern.compile( ".*\\d.*" );
     private static Pattern UPPERCASE_PATTERN = Pattern.compile( ".*[A-Z].*" );
-    
+
     private static int LONG_MAX = 180;
     private static int LONG_MIN = -180;
     private static int LAT_MAX = 90;
     private static int LAT_MIN = -90;
-    
+
     /**
      * Validates whether an email string is valid.
-     * 
+     *
      * @param email the email string.
      * @return true if the email string is valid, false otherwise.
      */
@@ -65,11 +65,11 @@ public class ValidationUtils
     {
         return EmailValidator.getInstance().isValid( email );
     }
-    
+
     /**
      * Validates whether a date string is valid for the given Locale.
-     * 
-     * @param date the date string.
+     *
+     * @param date   the date string.
      * @param locale the Locale
      * @return true if the date string is valid, false otherwise.
      */
@@ -80,7 +80,7 @@ public class ValidationUtils
 
     /**
      * Validates whether a date string is valid for the default Locale.
-     * 
+     *
      * @param date the date string.
      * @return true if the date string is valid, false otherwise.
      */
@@ -88,10 +88,10 @@ public class ValidationUtils
     {
         return dateIsValid( date, null );
     }
-    
+
     /**
      * Validates whether an URL string is valid.
-     * 
+     *
      * @param url the URL string.
      * @return true if the URL string is valid, false otherwise.
      */
@@ -99,16 +99,16 @@ public class ValidationUtils
     {
         return new UrlValidator().isValid( url );
     }
-    
+
     /**
      * Validates whether a password is valid. A password must:
-     * 
+     * <p/>
      * <ul>
      * <li>Be between 8 and 80 characters long</li>
      * <li>Include at least one digit</li>
      * <li>Include at least one uppercase letter</li>
      * </ul>
-     * 
+     *
      * @param password the password.
      * @return true if the password is valid, false otherwise.
      */
@@ -118,13 +118,13 @@ public class ValidationUtils
         {
             return false;
         }
-        
+
         return DIGIT_PATTERN.matcher( password ).matches() && UPPERCASE_PATTERN.matcher( password ).matches();
     }
-    
+
     /**
      * Validates whether a coordinate is valid.
-     * 
+     *
      * @return true if the coordinate is valid, false otherwise.
      */
     public static boolean coordinateIsValid( String coordinate )
@@ -133,17 +133,17 @@ public class ValidationUtils
         {
             return false;
         }
-        
+
         Matcher matcher = POINT_PATTERN.matcher( coordinate );
-        
+
         if ( !matcher.find() )
         {
             return false;
         }
-        
+
         double longitude = 0.0;
         double latitude = 0.0;
-        
+
         try
         {
             longitude = Double.parseDouble( matcher.group( 1 ) );
@@ -153,15 +153,15 @@ public class ValidationUtils
         {
             return false;
         }
-        
+
         return longitude >= LONG_MIN && longitude <= LONG_MAX && latitude >= LAT_MIN && latitude <= LAT_MAX;
     }
-    
+
     /**
      * Returns the longitude from the given coordinate. Returns null if the
      * coordinate string is not valid. The coordinate is on the form
      * longitude / latitude.
-     * 
+     *
      * @param coordinate the coordinate string.
      * @return the longitude.
      */
@@ -171,9 +171,9 @@ public class ValidationUtils
         {
             return null;
         }
-        
+
         Matcher matcher = POINT_PATTERN.matcher( coordinate );
-        
+
         return matcher.find() ? matcher.group( 1 ) : null;
     }
 
@@ -181,7 +181,7 @@ public class ValidationUtils
      * Returns the latitude from the given coordinate. Returns null if the
      * coordinate string is not valid. The coordinate is on the form
      * longitude / latitude.
-     * 
+     *
      * @param coordinate the coordinate string.
      * @return the latitude.
      */
@@ -191,31 +191,31 @@ public class ValidationUtils
         {
             return null;
         }
-        
+
         Matcher matcher = POINT_PATTERN.matcher( coordinate );
-        
+
         return matcher.find() ? matcher.group( 2 ) : null;
     }
 
     /**
-     * Returns a coordinate string based on the given latitude and longitude. 
+     * Returns a coordinate string based on the given latitude and longitude.
      * The coordinate is on the form longitude / latitude.
-     * 
+     *
      * @param longitude the longitude string.
-     * @param latitude the latitude string.
+     * @param latitude  the latitude string.
      * @return a coordinate string.
      */
     public static String getCoordinate( String longitude, String latitude )
     {
         return "[" + longitude + "," + latitude + "]";
     }
-    
+
     /**
      * Checks if the given data value is valid according to the value type of the
      * given data element. Considers the value to be valid if null or empty.
      * Returns a string if the valid is invalid, possible
      * values are:
-     * 
+     * <p/>
      * <ul>
      * <li>value_null_or_empty</li>
      * <li>data_element_or_type_null_or_empty</li>
@@ -226,8 +226,8 @@ public class ValidationUtils
      * <li>value_not_negative_integer</li>
      * <li>value_is_zero_and_not_zero_significant</li>
      * </ul>
-     * 
-     * @param value the data value.
+     *
+     * @param value       the data value.
      * @param dataElement the data element.
      * @return null if the value is valid, a string if not.
      */
@@ -237,47 +237,47 @@ public class ValidationUtils
         {
             return null;
         }
-        
+
         if ( dataElement == null || dataElement.getType() == null || dataElement.getType().isEmpty() )
         {
             return "data_element_or_type_null_or_empty";
         }
-        
+
         List<String> types = Arrays.asList( VALUE_TYPE_STRING, VALUE_TYPE_INT, VALUE_TYPE_NUMBER, VALUE_TYPE_POSITIVE_INT, VALUE_TYPE_NEGATIVE_INT );
-        
+
         String type = dataElement.getDetailedNumberType();
-        
+
         if ( types.contains( type ) && value.length() > 255 )
         {
             return "value_length_greater_than_max_length";
         }
-        
+
         if ( VALUE_TYPE_NUMBER.equals( type ) && !MathUtils.isNumeric( value ) )
         {
             return "value_not_numeric";
         }
-        
+
         if ( VALUE_TYPE_INT.equals( type ) && !MathUtils.isInteger( value ) )
         {
             return "value_not_integer";
         }
-        
+
         if ( VALUE_TYPE_POSITIVE_INT.equals( type ) && !MathUtils.isPositiveInteger( value ) )
         {
             return "value_not_positive_integer";
         }
-        
+
         if ( VALUE_TYPE_NEGATIVE_INT.equals( type ) && !MathUtils.isNegativeInteger( value ) )
         {
             return "value_not_negative_integer";
         }
-        
-        if ( VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) && 
+
+        if ( VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) &&
             !dataElement.isZeroIsSignificant() && !AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() ) )
         {
             return "value_is_zero_and_not_zero_significant";
         }
-        
+
         return null;
-    }    
+    }
 }

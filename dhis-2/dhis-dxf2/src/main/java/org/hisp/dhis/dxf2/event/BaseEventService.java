@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.event;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dxf2.ValidationService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -82,7 +83,12 @@ public abstract class BaseEventService implements EventService
     private PatientDataValueService patientDataValueService;
 
     @Autowired
+    private ValidationService validationService;
+
+    @Autowired
     private I18nManager i18nManager;
+
+    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -122,8 +128,6 @@ public abstract class BaseEventService implements EventService
 
     private ImportSummary saveSingleEventWithoutRegistration( Program program, OrganisationUnit organisationUnit, Event event )
     {
-        I18nFormat format = null;
-
         try
         {
             format = i18nManager.getI18nFormat();
@@ -141,6 +145,7 @@ public abstract class BaseEventService implements EventService
         }
 
         ImportSummary importSummary = new ImportSummary();
+        importSummary.setStatus( ImportStatus.SUCCESS );
 
         ProgramStageInstance programStageInstance = saveExecutionDate( program, organisationUnit, executionDate, event.getCompleted() );
 
@@ -155,14 +160,29 @@ public abstract class BaseEventService implements EventService
             }
             else
             {
-                saveDataValue( programStageInstance, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
-                importSummary.getDataValueCount().incrementImported();
+                if ( validateDataElement( dataElement, dataValue.getValue(), importSummary ) )
+                {
+                    saveDataValue( programStageInstance, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
+                    importSummary.getDataValueCount().incrementImported();
+                }
             }
         }
 
-        importSummary.setStatus( ImportStatus.SUCCESS );
-
         return importSummary;
+    }
+
+    private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
+    {
+        ValidationService.ValidationStatus status = validationService.validateDataElement( dataElement, value );
+
+        if ( !status.isSuccess() )
+        {
+            importSummary.getConflicts().add( new ImportConflict( dataElement.getUid(), status.getMessage() ) );
+            importSummary.getDataValueCount().incrementIgnored();
+            return false;
+        }
+
+        return true;
     }
 
     private ProgramStageInstance saveExecutionDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed )
