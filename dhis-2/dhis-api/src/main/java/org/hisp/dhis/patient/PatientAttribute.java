@@ -26,16 +26,23 @@
  */
 package org.hisp.dhis.patient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.hisp.dhis.common.BaseIdentifiableObject;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
-
+@JacksonXmlRootElement( localName = "patientAttribute", namespace = DxfNamespaces.DXF_2_0 )
 public class PatientAttribute
     extends BaseIdentifiableObject
 {
@@ -57,7 +64,7 @@ public class PatientAttribute
     public static final String TYPE_COMBO = "combo";
 
     private String description;
-    
+
     private String valueType;
 
     private boolean mandatory;
@@ -140,14 +147,25 @@ public class PatientAttribute
         attributeOptions.add( option );
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getInherit()
+    {
+        return inherit;
+    }
+
     public void setInherit( Boolean inherit )
     {
         this.inherit = inherit;
     }
 
-    public Boolean getInherit()
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getGroupBy()
     {
-        return inherit;
+        return groupBy;
     }
 
     public void setGroupBy( Boolean groupBy )
@@ -155,11 +173,9 @@ public class PatientAttribute
         this.groupBy = groupBy;
     }
 
-    public Boolean getGroupBy()
-    {
-        return groupBy;
-    }
-
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isMandatory()
     {
         return mandatory;
@@ -170,6 +186,9 @@ public class PatientAttribute
         this.mandatory = mandatory;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -180,6 +199,9 @@ public class PatientAttribute
         this.description = description;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValueType()
     {
         return valueType;
@@ -200,6 +222,9 @@ public class PatientAttribute
         this.patientAttributeGroup = patientAttributeGroup;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getExpression()
     {
         return expression;

@@ -27,10 +27,12 @@
 
 package org.hisp.dhis.program;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -45,12 +47,9 @@ import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -117,7 +116,6 @@ public class Program
     /**
      * Enabled this property to show a pop-up for confirming Complete a program
      * after to complete a progam-stage
-     * 
      */
     private Boolean remindCompleted = false;
 
@@ -486,6 +484,11 @@ public class Program
         return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type);
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "userRoles", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "userRole", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserAuthorityGroup> getUserRoles()
     {
         return userRoles;
@@ -496,6 +499,8 @@ public class Program
         this.userRoles = userRoles;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getOnlyEnrollOnce()
     {
         return onlyEnrollOnce;
@@ -516,6 +521,8 @@ public class Program
         this.patientReminders = patientReminders;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisableRegistrationFields()
     {
         return disableRegistrationFields;
@@ -526,6 +533,10 @@ public class Program
         this.disableRegistrationFields = disableRegistrationFields;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
@@ -536,6 +547,8 @@ public class Program
         this.organisationUnitGroups = organisationUnitGroups;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayOnAllOrgunit()
     {
         return displayOnAllOrgunit;
@@ -545,5 +558,5 @@ public class Program
     {
         this.displayOnAllOrgunit = displayOnAllOrgunit;
     }
-    
+
 }
