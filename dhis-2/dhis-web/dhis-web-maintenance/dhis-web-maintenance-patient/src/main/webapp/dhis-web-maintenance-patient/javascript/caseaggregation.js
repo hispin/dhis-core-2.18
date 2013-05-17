@@ -236,11 +236,11 @@ function getPatientDataElements()
 			deSumId.append( "<option value='' >" + i18n_please_select + "</option>" );
 			for ( i in json.dataElements )
 			{ 
-				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
-				dataElementBackups.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>" );
+				dataElementBackups.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' dename='" + json.dataElements[i].name + "' decode='" + json.dataElements[i].code + "' suggested='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>" );
 				if( json.dataElements[i].type=='int')
 				{
-					deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+					deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "' valuetype='" + json.dataElements[i].type + "'>" + json.dataElements[i].name + "</option>" );
 				}
 			}
 			
@@ -447,16 +447,20 @@ function filterDataElement( event, value, fieldName, backupFieldsName )
 {
 	// Remove all options in data element fields
 	var field = jQuery('#' + fieldName + " option " ).remove();
-	
+	var valueType = getFieldValue('deValueType');
+			
 	jQuery('#' + backupFieldsName + " option ").each( function(){
 		var option = jQuery(this);
-		if(value.length == 0 )
+		if (valueType=='' || valueType.indexOf( option.attr('valueType').toLowerCase() ) != -1 )
 		{
-			jQuery('#' + fieldName ).append( "<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "'>" + option.text() + "</option>" );				
-		}
-		else if (option.text().toLowerCase().indexOf( value.toLowerCase() ) != -1 )
-		{
-			jQuery('#' + fieldName ).append( "<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "'>" + option.text() + "</option>" );				
+			if(value.length == 0 )
+			{
+				jQuery('#' + fieldName ).append( "<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>" );				
+			}
+			else if (option.text().toLowerCase().indexOf( value.toLowerCase() ) != -1 )
+			{
+				jQuery('#' + fieldName ).append( "<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>" );				
+			}
 		}
 	});
 		    
