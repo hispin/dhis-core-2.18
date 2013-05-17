@@ -712,17 +712,4 @@ public class HibernatePatientStore
         return orgunitIds;
     }
 
-    @Override
-    public Patient getLatestPatient( Integer patientId )
-    {
-        Patient patient = new Patient();
-        String hql = "select p from Patient p where p.id = " + patientId;
-        Query query = getQuery( hql );
-        query.setMaxResults( 1 );
-
-        patient = (Patient) query.uniqueResult();
-
-        return patient;
-    }
-
 }
