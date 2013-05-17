@@ -16,7 +16,7 @@
 
   <bean id="org.hisp.dhis.dxf2.event.EventService" class="org.hisp.dhis.dxf2.event.JacksonEventService" />
 
-  <bean id="org.hisp.dhis.dxf2.ValidationService" class="org.hisp.dhis.dxf2.DefaultValidationService" />
+  <bean id="org.hisp.dhis.dxf2.InputValidationService" class="org.hisp.dhis.dxf2.DefaultInputValidationService" />
 
   <!-- register idObject handlers -->
 

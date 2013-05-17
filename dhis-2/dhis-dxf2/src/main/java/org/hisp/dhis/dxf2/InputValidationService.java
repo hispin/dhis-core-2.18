@@ -32,20 +32,19 @@ import org.hisp.dhis.dataelement.DataElement;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface ValidationService
+public interface InputValidationService
 {
-    class ValidationStatus
+    final class Status
     {
-        private boolean success;
+        private boolean success = true;
 
         private String message;
 
-        public ValidationStatus( boolean success )
+        public Status()
         {
-            this.success = success;
         }
 
-        public ValidationStatus( boolean success, String message )
+        public Status( boolean success, String message )
         {
             this.success = success;
             this.message = message;
@@ -62,5 +61,5 @@ public interface ValidationService
         }
     }
 
-    ValidationStatus validateDataElement( DataElement dataElement, String value );
+    Status validateDataElement( DataElement dataElement, String value );
 }
