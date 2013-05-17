@@ -228,6 +228,16 @@ public abstract class BaseEventService implements EventService
         return true;
     }
 
+    private ImportSummary saveSingleEventWithRegistration( Program program, OrganisationUnit organisationUnit, Event event )
+    {
+        return new ImportSummary();
+    }
+
+    private ImportSummary saveMultipleEventsWithRegistration( Program program, OrganisationUnit organisationUnit, Event event )
+    {
+        return new ImportSummary();
+    }
+
     private ProgramStageInstance saveExecutionDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed )
     {
         ProgramStage programStage = program.getProgramStages().iterator().next();
@@ -285,15 +295,5 @@ public abstract class BaseEventService implements EventService
         {
             patientDataValueService.deletePatientDataValue( patientDataValue );
         }
-    }
-
-    private ImportSummary saveSingleEventWithRegistration( Program program, OrganisationUnit organisationUnit, Event event )
-    {
-        return new ImportSummary();
-    }
-
-    private ImportSummary saveMultipleEventsWithRegistration( Program program, OrganisationUnit organisationUnit, Event event )
-    {
-        return new ImportSummary();
     }
 }
