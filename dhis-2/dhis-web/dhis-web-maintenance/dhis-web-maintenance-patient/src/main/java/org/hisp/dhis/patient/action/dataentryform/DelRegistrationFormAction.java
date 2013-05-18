@@ -81,7 +81,7 @@ public class DelRegistrationFormAction
         PatientRegistrationForm registrationForm = null;
         if ( id != null )
         {
-            Program program = programService.getProgram( id );
+             = programService.getProgram( id );
 
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
@@ -89,7 +89,7 @@ public class DelRegistrationFormAction
         {
             registrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
         }
-
+        
         patientRegistrationFormService.deletePatientRegistrationForm( registrationForm );
 
         return SUCCESS;
