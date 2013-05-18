@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.importsummary;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -27,22 +27,37 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface EventService
+@JacksonXmlRootElement( localName = "importSummaries", namespace = DxfNamespaces.DXF_2_0 )
+public class ImportSummaries
 {
-    ImportSummary saveEventXml( InputStream inputStream ) throws IOException;
+    private List<ImportSummary> importSummaries = new ArrayList<ImportSummary>();
 
-    ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException;
+    public ImportSummaries()
+    {
+    }
 
-    ImportSummary saveEventJson( InputStream inputStream ) throws IOException;
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "importSummaryList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "importSummary", namespace = DxfNamespaces.DXF_2_0 )
+    public List<ImportSummary> getImportSummaries()
+    {
+        return importSummaries;
+    }
 
-    ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException;
+    public void setImportSummaries( List<ImportSummary> importSummaries )
+    {
+        this.importSummaries = importSummaries;
+    }
 }

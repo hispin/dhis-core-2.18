@@ -27,22 +27,60 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface EventService
+@JacksonXmlRootElement( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
+public class Events
 {
-    ImportSummary saveEventXml( InputStream inputStream ) throws IOException;
+    private String id;
 
-    ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException;
+    private List<Event> events = new ArrayList<Event>();
 
-    ImportSummary saveEventJson( InputStream inputStream ) throws IOException;
+    public Events()
+    {
+    }
 
-    ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException;
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
+    @JsonProperty( "eventList" )
+    @JacksonXmlElementWrapper( localName = "eventList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Event> getEvents()
+    {
+        return events;
+    }
+
+    public void setEvents( List<Event> events )
+    {
+        this.events = events;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Events{" +
+            "id='" + id + '\'' +
+            ", events=" + events +
+            '}';
+    }
 }

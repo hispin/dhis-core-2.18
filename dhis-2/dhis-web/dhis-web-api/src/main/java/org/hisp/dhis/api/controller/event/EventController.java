@@ -29,7 +29,7 @@ package org.hisp.dhis.api.controller.event;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dxf2.event.EventService;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ import java.io.InputStream;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = EventController.RESOURCE_PATH )
+@RequestMapping(value = EventController.RESOURCE_PATH)
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -60,13 +60,21 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public void postDxf2ProgramInstance( ImportOptions importOptions,
         HttpServletResponse response, InputStream inputStream, Model model ) throws IOException
     {
-        ImportSummary importSummary = eventService.saveEventXml( inputStream );
-        JacksonUtils.toXml( response.getOutputStream(), importSummary );
+        ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
+
+        if ( importSummaries.getImportSummaries().size() == 1 )
+        {
+            JacksonUtils.toXml( response.getOutputStream(), importSummaries.getImportSummaries().get( 0 ) );
+        }
+        else
+        {
+            JacksonUtils.toXml( response.getOutputStream(), importSummaries );
+        }
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
@@ -74,8 +82,17 @@ public class EventController
     public void postJsonProgramInstance( ImportOptions importOptions,
         HttpServletResponse response, InputStream inputStream, Model model ) throws IOException
     {
-        ImportSummary importSummary = eventService.saveEventJson( inputStream );
-        JacksonUtils.toJson( response.getOutputStream(), importSummary );
+        ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
+
+        if ( importSummaries.getImportSummaries().size() == 1 )
+        {
+            JacksonUtils.toJson( response.getOutputStream(), importSummaries.getImportSummaries().get( 0 ) );
+        }
+        else
+        {
+            JacksonUtils.toJson( response.getOutputStream(), importSummaries );
+        }
+
     }
 
     @ExceptionHandler( IllegalArgumentException.class )
