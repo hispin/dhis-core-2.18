@@ -56,6 +56,8 @@ public class Event
 
     private String storedBy;
 
+    private Coordinate coordinate;
+
     private List<DataValue> dataValues = new ArrayList<DataValue>();
 
     public Event()
@@ -147,6 +149,18 @@ public class Event
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Coordinate getCoordinate()
+    {
+        return coordinate;
+    }
+
+    public void setCoordinate( Coordinate coordinate )
+    {
+        this.coordinate = coordinate;
+    }
+
+    @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataValues", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "dataValue", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataValue> getDataValues()
@@ -170,6 +184,7 @@ public class Event
             ", executionDate='" + executionDate + '\'' +
             ", completed=" + completed +
             ", storedBy='" + storedBy + '\'' +
+            ", coordinate=" + coordinate +
             ", dataValues=" + dataValues +
             '}';
     }
