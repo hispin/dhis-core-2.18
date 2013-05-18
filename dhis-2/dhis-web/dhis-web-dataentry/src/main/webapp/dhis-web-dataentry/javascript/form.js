@@ -835,6 +835,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
     addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
 
     var dataSetValid = false;
+    var multiDataSetValid = false;
 
     $.safeEach( dataSetList, function( idx, item ) 
     {
@@ -856,6 +857,11 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
             $.safeEach( childrenDataSets, function( idx, item )
             {
+                if ( dataSetId == item.id && multiOrganisationUnit)
+                {
+                    multiDataSetValid = true;
+                }
+
                 $( '<option />' ).attr( 'data-multiorg', true).attr( 'value', item.id).html(item.name).appendTo( '#selectedDataSetId' );
             } );
 
@@ -863,19 +869,25 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
         }
     }
 
-    if ( !multiOrganisationUnit && dataSetValid && dataSetId != null )
-    {
+    if ( !multiOrganisationUnit && dataSetValid && dataSetId != null ) {
         $( '#selectedDataSetId' ).val( dataSetId );
 
-        if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
-        {
+        if ( periodId && periodId != -1 && dataEntryFormIsLoaded ) {
+            resetSectionFilters();
+            showLoader();
+            loadDataValues();
+        }
+    } else if ( multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
+        $( '#selectedDataSetId' ).val( dataSetId );
+        dataSetSelected();
+
+        if ( periodId && periodId != -1 && dataEntryFormIsLoaded ) {
             resetSectionFilters();
             showLoader();
             loadDataValues();
         }
     }
-    else
-    {
+    else {
         multiOrganisationUnit = false;
 
         clearSectionFilters();
