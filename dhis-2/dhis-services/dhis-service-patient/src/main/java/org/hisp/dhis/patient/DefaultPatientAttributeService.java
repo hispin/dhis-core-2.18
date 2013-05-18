@@ -62,7 +62,7 @@ public class DefaultPatientAttributeService
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
+    
     public void deletePatientAttribute( PatientAttribute patientAttribute )
     {
         patientAttributeStore.delete( patientAttribute );

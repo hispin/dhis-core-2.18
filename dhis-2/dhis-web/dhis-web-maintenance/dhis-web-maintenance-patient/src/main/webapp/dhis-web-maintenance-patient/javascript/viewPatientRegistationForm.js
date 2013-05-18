@@ -126,6 +126,7 @@ function getRequiredFields()
 		requiredFields['fixedattributeid=registrationDate'] = i18n_registration_date;
 		requiredFields['fixedattributeid=fullName'] = i18n_full_name;
 		requiredFields['fixedattributeid=gender'] = i18n_gender;
+		requiredFields['fixedattributeid=dobType'] = i18n_dob_type;
 		requiredFields['fixedattributeid=birthDate'] = i18n_date_of_birth;
 			
 		jQuery('#identifiersSelector option').each(function() {
@@ -202,8 +203,7 @@ function validateFormOnclick()
 		violate = '<h3>' + i18n_validate_success + '<h3>';
 	}
 	
-	setInnerHTML('validateDiv', violate);
-	jQuery('#validateDiv').dialog({
+	jQuery('#validateDiv').html(violate).dialog({
 		title:i18n_required_fields_valivation,
 		maximize:true, 
 		closable:true,
@@ -432,6 +432,6 @@ function deleteRegistrationFormFromView()
 	var result = window.confirm( i18n_confirm_delete + '\n\n' + name );
 	if ( result )
 	{
-		window.location.href = 'delRegistrationEntryFormAction.action?id=' + id;
+		window.location.href = 'delRegistrationEntryFormAction.action?id=' + getFieldValue('id');
 	}
 }
