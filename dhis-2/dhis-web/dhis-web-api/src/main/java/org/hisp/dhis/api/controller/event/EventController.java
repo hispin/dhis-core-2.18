@@ -35,7 +35,6 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,7 +62,7 @@ public class EventController
     @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
     @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public void postDxf2ProgramInstance( ImportOptions importOptions,
-        HttpServletResponse response, InputStream inputStream, Model model ) throws IOException
+        HttpServletResponse response, InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
 
@@ -80,7 +79,7 @@ public class EventController
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postJsonProgramInstance( ImportOptions importOptions,
-        HttpServletResponse response, InputStream inputStream, Model model ) throws IOException
+        HttpServletResponse response, InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
 
