@@ -81,7 +81,7 @@ public class DelRegistrationFormAction
         PatientRegistrationForm registrationForm = null;
         if ( id != null )
         {
-             = programService.getProgram( id );
+            Program program = programService.getProgram( id );
 
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
