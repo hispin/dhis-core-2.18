@@ -28,6 +28,8 @@ TR.conf = {
 					obj.system.level.push({value: r.levels[i].value, name: r.levels[i].name});
 				}
 				
+				obj.system.accessPatientAttributes = r.accessPatientAttributes;
+				
 				return obj;
 			}
 		}
@@ -1896,8 +1898,8 @@ Ext.onReady( function() {
 							&& Ext.getCmp('filter_' + id).getValue()!=''){
 							filterValue = filterValue.toLowerCase();
 							filter += filterOpt + ' ';
-							if( filtif( Ext.getCmp('filter_' + id).getValue()!=null 
-							&& Ext.getCmp('filter_' + id).getValue()!=''){erOpt == 'IN' )
+							if( Ext.getCmp('filter_' + id).getValue()!=null 
+								&& Ext.getCmp('filter_' + id).getValue()!='')
 							{
 								var filterValues = filterValue.split(";");
 								filter +="(";
@@ -3855,7 +3857,10 @@ Ext.onReady( function() {
 														Ext.getCmp('levelCombobox').setValue('1');
 													}
 													Ext.getCmp('dateRangeDiv').setVisible(true);
-													Ext.getCmp('patientPropertiesDiv').setVisible(true);
+													if( TR.init.system.accessPatientAttributes=='true')
+													{
+														Ext.getCmp('patientPropertiesDiv').setVisible(false);
+													}
 													Ext.getCmp('btnSortBy').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
@@ -5977,6 +5982,16 @@ Ext.onReady( function() {
         listeners: {
             afterrender: function(vp) {
                 TR.init.initialize(vp);
+				
+				if( TR.init.system.accessPatientAttributes=='false')
+				{
+					Ext.getCmp('patientPropertiesDiv').setVisible(false);
+				}
+				else
+				{
+					Ext.getCmp('patientPropertiesDiv').setVisible(true);
+				}
+				
 				Ext.getCmp('reportTypeGroup').setValue(true);
 				Ext.getCmp('limitOption').setVisible(false);
 				dataElementTabTitle.innerHTML = TR.i18n.data_elements;
