@@ -27,11 +27,14 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * Implementation of EventService that uses Jackson for serialization and deserialization.
@@ -45,20 +48,66 @@ public class JacksonEventService extends BaseEventService
     // -------------------------------------------------------------------------
 
     @Override
+    public ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException
+    {
+        ImportSummaries importSummaries = new ImportSummaries();
+
+        String input = StreamUtils.copyToString( inputStream, Charset.defaultCharset() );
+
+        try
+        {
+            Events events = JacksonUtils.fromXml( input, Events.class );
+
+            for ( Event event : events.getEvents() )
+            {
+                importSummaries.getImportSummaries().add( saveEvent( event ) );
+            }
+        }
+        catch ( Exception ex )
+        {
+            Event event = JacksonUtils.fromXml( input, Event.class );
+            importSummaries.getImportSummaries().add( saveEvent( event ) );
+        }
+
+        return importSummaries;
+    }
+
+    @Override
     public ImportSummary saveEventXml( InputStream inputStream ) throws IOException
     {
         Event event = JacksonUtils.fromXml( inputStream, Event.class );
-        ImportSummary importSummary = saveEvent( event );
+        return saveEvent( event );
+    }
 
-        return importSummary;
+    @Override
+    public ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException
+    {
+        ImportSummaries importSummaries = new ImportSummaries();
+
+        String input = StreamUtils.copyToString( inputStream, Charset.defaultCharset() );
+
+        try
+        {
+            Events events = JacksonUtils.fromJson( input, Events.class );
+
+            for ( Event event : events.getEvents() )
+            {
+                importSummaries.getImportSummaries().add( saveEvent( event ) );
+            }
+        }
+        catch ( Exception ex )
+        {
+            Event event = JacksonUtils.fromJson( input, Event.class );
+            importSummaries.getImportSummaries().add( saveEvent( event ) );
+        }
+
+        return importSummaries;
     }
 
     @Override
     public ImportSummary saveEventJson( InputStream inputStream ) throws IOException
     {
         Event event = JacksonUtils.fromJson( inputStream, Event.class );
-        ImportSummary importSummary = saveEvent( event );
-
-        return importSummary;
+        return saveEvent( event );
     }
 }

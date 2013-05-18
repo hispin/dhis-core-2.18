@@ -27,18 +27,6 @@ package org.hisp.dhis.dxf2.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.hisp.dhis.common.view.BasicView;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.DimensionalView;
-import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.common.view.ShortNameView;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -47,6 +35,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import org.hisp.dhis.common.view.BasicView;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.DimensionalView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.ShortNameView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -73,7 +72,7 @@ public class JacksonUtils
             objectMapper.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
             objectMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
 
-            objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+            objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true );
             objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
             objectMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
 
@@ -88,7 +87,7 @@ public class JacksonUtils
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
 
         // Register view classes
-        
+
         viewClasses.put( "default", BasicView.class );
         viewClasses.put( "basic", BasicView.class );
         viewClasses.put( "shortName", ShortNameView.class );
@@ -151,6 +150,12 @@ public class JacksonUtils
         return (T) jsonMapper.readValue( input, clazz );
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T fromJson( String input, Class<?> clazz ) throws IOException
+    {
+        return (T) jsonMapper.readValue( input, clazz );
+    }
+
     //--------------------------------------------------------------------------
     // XML
     //--------------------------------------------------------------------------
@@ -177,6 +182,12 @@ public class JacksonUtils
 
     @SuppressWarnings( "unchecked" )
     public static <T> T fromXml( InputStream input, Class<?> clazz ) throws IOException
+    {
+        return (T) xmlMapper.readValue( input, clazz );
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
