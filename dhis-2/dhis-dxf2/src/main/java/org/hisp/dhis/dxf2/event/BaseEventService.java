@@ -183,7 +183,8 @@ public abstract class BaseEventService implements EventService
         ImportSummary importSummary = new ImportSummary();
         importSummary.setStatus( ImportStatus.SUCCESS );
 
-        ProgramStageInstance programStageInstance = saveExecutionDate( program, organisationUnit, executionDate, event.getCompleted() );
+        ProgramStageInstance programStageInstance = saveExecutionDate( program, organisationUnit, executionDate,
+            event.getCompleted(), event.getCoordinate() );
 
         String storedBy = event.getStoredBy();
 
@@ -243,7 +244,8 @@ public abstract class BaseEventService implements EventService
         return new ImportSummary();
     }
 
-    private ProgramStageInstance saveExecutionDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed )
+    private ProgramStageInstance saveExecutionDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed,
+        Coordinate coordinate )
     {
         ProgramStage programStage = program.getProgramStages().iterator().next();
         ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
@@ -254,6 +256,18 @@ public abstract class BaseEventService implements EventService
         programStageInstance.setDueDate( date );
         programStageInstance.setExecutionDate( date );
         programStageInstance.setOrganisationUnit( organisationUnit );
+
+        if ( programStage.getCaptureCoordinates() )
+        {
+            if ( coordinate.isValid() )
+            {
+                programStageInstance.setCoordinates( coordinate.getCoordinateString() );
+            }
+            else
+            {
+                programStageInstance.setCoordinates( null );
+            }
+        }
 
         if ( completed != null )
         {
