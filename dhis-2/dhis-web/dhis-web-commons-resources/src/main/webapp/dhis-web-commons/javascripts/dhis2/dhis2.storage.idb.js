@@ -82,13 +82,11 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                     $.each( self.objectStoreNames, function ( idx, item ) {
                         if ( self._db.objectStoreNames.contains( item ) ) {
-                            console.log( 'delete' );
                             self._db.deleteObjectStore( item );
                         }
                     } );
 
                     $.each( self.objectStoreNames, function ( idx, item ) {
-                        console.log( 'create' );
                         self._db.createObjectStore( item );
                     } );
                 };
