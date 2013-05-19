@@ -47,10 +47,10 @@ public class Coordinate
     {
     }
 
-    public Coordinate( Double latitude, Double longitude )
+    public Coordinate( Double longitude, Double latitude )
     {
-        this.latitude = latitude;
         this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     @JsonProperty( required = true )

@@ -258,6 +258,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
            url: "saveValue.action",
            data: params,
            dataType: "xml",
+           cache: false,
            success: function(result){
                 handleResponse (result);
            },
@@ -343,6 +344,7 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
 			   url: "saveProvidingFacility.action",
 			   data: params,
 			   dataType: "xml",
+               cache: false,
 			   success: function(result){
 					handleResponse (result);
 			   },
@@ -387,7 +389,8 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 			   url: "saveExecutionDate.action",
 			   data: params,
 			   dataType: "json",
-			   success: function( json ){	
+               cache: false,
+			   success: function( json ){
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					var box = jQuery(".stage-object-selected");
 					var boxName = box.attr('psname') + "\n" + executionDate;
@@ -544,6 +547,7 @@ function runCompleteEvent( isCreateEvent )
             $.ajax({
                 url: 'completeDataEntry.action',
                 dataType: 'json',
+                cache: false,
                 data: {
                     programStageInstanceId: getFieldValue( 'programStageInstanceId' )
                 },
@@ -628,6 +632,7 @@ function doUnComplete( isCreateEvent )
         $.ajax({
             url: 'uncompleteDataEntry.action',
             dataType: 'json',
+            cache: false,
             data: {
                 programStageInstanceId: getFieldValue( 'programStageInstanceId' )
             },
@@ -737,9 +742,13 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                     });
                 }
 
-                if ( obj.coordinates !== undefined ) {
-                    $( '#longitude' ).val( obj.coordinates.longitude );
-                    $( '#latitude' ).val( obj.coordinates.latitude );
+                if ( obj.coordinate !== undefined ) {
+                    $( '#longitude' ).val( obj.coordinate.longitude );
+                    $( '#latitude' ).val( obj.coordinate.latitude );
+                }
+
+                if ( obj.executionDate.completed !== undefined ) {
+                    $( "#entryFormContainer input[id='completed']" ).val( obj.executionDate.completed );
                 }
             }
 
@@ -752,6 +761,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
     } else {
         return $.ajax({
             url: 'getProgramStageInstance.action',
+            cache: false,
             data: {
                 'programStageInstanceId': programStageInstanceId
             },
@@ -949,7 +959,7 @@ function getOptions( uid, query, success ) {
     $.ajax( {
         url: "getOptions.action?id=" + uid + "&query=" + query,
         dataType: "json",
-        cache: true,
+        cache: false,
         success: function ( data ) {
             success( $.map( data.options, function ( item ) {
                 return {
@@ -1076,7 +1086,7 @@ function getUsername( query, success ) {
     return $.ajax( {
         url: "getUsernameList.action?query=" + query,
         dataType: "json",
-        cache: true,
+        cache: false,
         success: function ( data ) {
             success( $.map( data.usernames, function ( item ) {
                 return {

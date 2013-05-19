@@ -14,7 +14,8 @@ function loadPrograms() {
 
     $.ajax( {
         url: 'getProgramMetaData.action',
-        dataType: 'json'
+        dataType: 'json',
+        cache: false
     } ).done(function ( data ) {
         var programs = _.values( data.metaData.programs );
         DAO.store.setAll( 'programs', programs ).then( function () {
@@ -44,7 +45,8 @@ function loadProgramStages( metaData ) {
             return $.ajax( {
                 url: 'dataentryform.action',
                 data: data,
-                dataType: 'html'
+                dataType: 'html',
+                cache: false
             } ).done( function ( data ) {
                     var obj = {};
                     obj.id = psid;
@@ -76,7 +78,8 @@ function loadOptionSets( metaData ) {
         promise = promise.then( function () {
             return $.ajax( {
                 url: 'getOptionSet.action?dataElementUid=' + item,
-                dataType: 'json'
+                dataType: 'json',
+                cache: false
             } ).done( function ( data ) {
                 var obj = {};
                 obj.id = item;
@@ -90,7 +93,8 @@ function loadOptionSets( metaData ) {
         promise = promise.then( function () {
             return $.ajax( {
                 url: 'getUsernames.action',
-                dataType: 'json'
+                dataType: 'json',
+                cache: false
             } ).done( function ( data ) {
                     var obj = {};
                     obj.id = 'usernames';
@@ -163,14 +167,15 @@ function checkOfflineData( callback ) {
     } );
 }
 
-function uploadOfflineData( item ) {
+function uploadOfflineData( event ) {
     $.ajax( {
         url: 'uploadAnonymousEvent.action',
         contentType: 'application/json',
-        data: JSON.stringify( item )
+        data: JSON.stringify( event ),
+        cache: false
     } ).done( function ( json ) {
         if ( json.response == 'success' ) {
-            DAO.store.delete( 'dataValues', item.id ).done( function () {
+            DAO.store.delete( 'dataValues', event.id ).done( function () {
                 updateOfflineEvents();
                 searchEvents( eval( getFieldValue( 'listAll' ) ) );
             } );
@@ -282,7 +287,7 @@ $( document ).ready( function () {
     $( document ).bind( 'dhis2.offline', function () {
         setHeaderMessage( i18n_offline_notification );
         $('#commentInput').attr('disabled', true);
-        $('#commentButton').attr('disabled', true);
+        $('#commentInput').attr('disabled', true);
         $('#validateBtn').attr('disabled', true);
         disableFiltering();
         showOfflineEvents();
@@ -498,6 +503,7 @@ function autocompletedFilterField( idField, searchObjectId ) {
             $.ajax( {
                 url: "getOptions.action?id=" + searchObjectId + "&query=" + input.val(),
                 dataType: "json",
+                cache: false,
                 success: function ( data ) {
                     response( $.map( data.options, function ( item ) {
                         return {
@@ -560,7 +566,7 @@ function autocompletedUsernameField( idField ) {
             $.ajax( {
                 url: "getUsernameList.action?query=" + input.val(),
                 dataType: "json",
-                cache: true,
+                cache: false,
                 success: function ( data ) {
                     response( $.map( data.usernames, function ( item ) {
                         return {
@@ -742,6 +748,7 @@ function searchEvents( listAll ) {
         url: 'searchProgramStageInstances.action',
         data: params,
         dataType: 'text',
+        cache: false,
         success: function ( data ) {
             if ( data.indexOf( "<!DOCTYPE" ) != 0 ) {
                 hideById( 'dataEntryInfor' );
@@ -944,7 +951,8 @@ function ajaxExecutionDate( programId, programStageInstanceId, executionDate, or
         url: 'saveExecutionDate.action',
         data: createExecutionDate( programId, programStageInstanceId, executionDate, organisationUnitId ),
         type: 'POST',
-        dataType: 'json'
+        dataType: 'json',
+        cache: false
     } );
 }
 
@@ -1085,7 +1093,8 @@ function loadProgramStage( programStageId, programStageInstanceId, organisationU
         $.ajax( {
             url: 'dataentryform.action',
             data: data,
-            dataType: 'html'
+            dataType: 'html',
+            cache: false
         } ).done(function(data) {
             if(success) success(data);
         } ).fail(function() {

@@ -32,6 +32,7 @@ import com.opensymphony.xwork2.Action;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dxf2.event.Coordinate;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -139,7 +140,25 @@ public class UploadAnonymousEventAction implements Action
 
         Boolean completed = (Boolean) executionDate.get( "completed" );
 
-        ProgramStageInstance programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed );
+        Coordinate coordinate = null;
+        Map<String, String> coord = (Map<String, String>) input.get( "coordinate" );
+
+        if ( coord != null )
+        {
+            try
+            {
+                double lng = Double.parseDouble( coord.get( "longitude" ) );
+                double lat = Double.parseDouble( coord.get( "latitude" ) );
+
+                coordinate = new Coordinate( lng, lat );
+            }
+            catch ( NullPointerException ignored )
+            {
+            }
+
+        }
+
+        ProgramStageInstance programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed, coordinate );
 
         Map<String, Object> values = (Map<String, Object>) input.get( "values" );
 
@@ -160,7 +179,8 @@ public class UploadAnonymousEventAction implements Action
         return SUCCESS;
     }
 
-    private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date, Boolean completed )
+    private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date, Boolean completed,
+        Coordinate coordinate )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
@@ -179,6 +199,18 @@ public class UploadAnonymousEventAction implements Action
             programStageInstance.setCompleted( completed );
             programStageInstance.setCompletedDate( new Date() );
             programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+        }
+
+        if ( programStage.getCaptureCoordinates() )
+        {
+            if ( coordinate != null && coordinate.isValid() )
+            {
+                programStageInstance.setCoordinates( coordinate.getCoordinateString() );
+            }
+            else
+            {
+                programStageInstance.setCoordinates( null );
+            }
         }
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );
