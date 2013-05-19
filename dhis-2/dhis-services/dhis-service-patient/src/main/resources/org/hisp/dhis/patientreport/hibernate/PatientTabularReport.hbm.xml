@@ -16,36 +16,12 @@
 
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
+    <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+      column="programstageid" foreign-key="fk_patientaggregatereport_programstage" />
+
     <property name="startDate" />
 
     <property name="endDate" />
-
-    <list name="identifiers"
-      table="patienttabularreport_identifiers">
-      <key column="patienttabularreportid" />
-      <list-index column="sort_order" base="0" />
-      <many-to-many class="org.hisp.dhis.patient.PatientIdentifierType"
-        column="patientidentifiertypeid" foreign-key="patienttabularreport_indentifierid" />
-    </list>
-
-    <list name="attributes" table="patienttabularreport_attributes">
-      <key column="patienttabularreportid" />
-      <list-index column="sort_order" base="0" />
-      <many-to-many class="org.hisp.dhis.patient.PatientAttribute"
-        column="patientattributeid" foreign-key="patienttabularreport_attributeid" />
-    </list>
-
-    <list name="fixedAttributes" table="patienttabularreport_fixedattribute">
-      <key column="patienttabularreportid" foreign-key="patienttabularreport_fixedAttribute" />
-      <list-index column="sort_order" />
-      <element type="text" column="fixedAttribute" />
-    </list>
-
-    <list name="programStageDataElements" table="patienttabularreport_programstagedataelements">
-      <key column="patienttabularreportid" />
-      <list-index column="tabular_sort_order" base="1" />
-      <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
-    </list>
 
     <set name="organisationUnits" table="patienttabularreport_organisationUnits">
       <cache usage="read-write" />
@@ -68,6 +44,13 @@
     <property name="userOrganisationUnit" />
 
     <property name="userOrganisationUnitChildren" />
+    
+     <list name="filterValues" table="patienttabularreport_filtervalues">
+      <key column="patientaggregatereportid"
+        foreign-key="fk_patienttabularreportid_filtervalues" />
+        <list-index column="sort_order" base="1" />
+      <element type="text" column="filtervalue" />
+    </list>
 
   </class>
 </hibernate-mapping>

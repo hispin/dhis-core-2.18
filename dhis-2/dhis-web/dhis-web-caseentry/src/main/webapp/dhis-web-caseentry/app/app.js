@@ -415,7 +415,7 @@ Ext.onReady( function() {
 					ms[i].setHeight(panel.getHeight() - 49);
 				}
 			},
-			addFilterField: function( p, id, name, valueType ){
+			addFilterField: function( p, id, name, valueType, filterValue ){
 				var panelid = p + '_' + id;
 				var idx = 0;
 				var subPanel = Ext.getCmp(panelid);
@@ -446,8 +446,17 @@ Ext.onReady( function() {
 					text:name,
 					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 60
 				};
-				items[1] = this.createOperatorField(valueType, fieldid);
-				items[2] = this.createFilterField( valueType, fieldid );
+				
+				var opt = "";
+				var filter = "";
+				if( filterValue!=undefined && filterValue != "" )
+				{
+					var arrFilter = filterValue.split("_");
+					opt = arrFilter[0];
+					filter = arrFilter[1];
+				}
+				items[1] = this.createOperatorField(valueType, fieldid, opt);
+				items[2] = this.createFilterField(valueType, fieldid, filter);
 				if( idx == 0 ){
 					items[3] = this.addFieldBtn( p, id, name, valueType, idx );
 				}
@@ -462,7 +471,7 @@ Ext.onReady( function() {
 				var e1 = Ext.getCmp( p + '_' + id );
 				Ext.getCmp(p).remove(e1);
 			},
-			createOperatorField: function( valueType, id ){
+			createOperatorField: function( valueType, id, filterOperator ){
 				var params = {};
 				params.xtype = 'combobox';
 				params.id = 'filter_opt_' + id;
@@ -471,7 +480,14 @@ Ext.onReady( function() {
 				params.valueField = 'value';
 				params.displayField = 'name';
 				params.editable = false;
-				params.value = '=';
+				if( filterOperator != undefined || filterOperator!= '')
+				{
+					params.value = filterOperator;
+				}
+				else
+				{
+					params.value = '=';
+				}
 				
 				if(valueType == 'string' || valueType == 'list' || valueType == 'username' ){
 					var fixedId = id.substring(0, id.lastIndexOf('_') );
@@ -527,7 +543,7 @@ Ext.onReady( function() {
 				
 				return params;
 			},
-			createFilterField: function( valueType, id ){
+			createFilterField: function( valueType, id, filterValue ){
 				var params = {};
 				var xtype = TR.value.covertXType(valueType);
 				params.xtype = xtype;
@@ -642,7 +658,14 @@ Ext.onReady( function() {
 						});
 					}					
 				}
-				params.value = '';
+				if( filterValue != undefined )
+				{
+					params.value = filterValue;
+				}
+				else
+				{
+					params.value = '';
+				}
 				return params;
 			},
 			addFieldBtn: function( p, id, name, valueType, idx ){
@@ -1091,8 +1114,9 @@ Ext.onReady( function() {
 									 for (var i = 0; i < f.patientProperties.length; i++) {
 										var name = TR.util.string.getEncodedString(f.patientProperties[i].name);
 										TR.cmp.params.patientProperty.objects.push({id: f.patientProperties[i].id, name: name});
-										TR.util.multiselect.addFilterField( 'filterPropPanel', f.patientProperties[i].id, name, f.patientProperties[i].valueType );
+										TR.util.multiselect.addFilterField( 'filterPropPanel', f.patientProperties[i].id, name, f.patientProperties[i].valueType, f.patientProperties[i].filter );
 									 }
+
 									 TR.store.patientProperty.selected.add(TR.cmp.params.patientProperty.objects);
 							 
 									 var storePatientProperty = TR.store.patientProperty.available;
@@ -1119,7 +1143,7 @@ Ext.onReady( function() {
 										var compulsory = f.dataElements[i].compulsory;
 										var valueType = f.dataElements[i].valueType;
 										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
-										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType );
+										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType, f.dataElements[i].filter );
 									}
 									TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
 									
@@ -1138,15 +1162,24 @@ Ext.onReady( function() {
 								}
 								
 								// Program stage									
+								
 								var storeProgramStage = TR.store.programStage;
 								storeProgramStage.parent = f.programStageId;
 								storeProgramStage.isLoadFromFavorite = true;
-								storeProgramStage.load({params: {programId: f.programId}});
 								
-								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
 								TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
-				
+								
+								TR.store.programStage.removeAll();
+								for (var i = 0; i < f.programStages.length; i++)
+								{
+									TR.store.programStage.add(
+										{'id': f.programStages[i].id,'name': f.programStages[i].name}
+									);
+								}
+								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								
 								TR.exe.execute();
+								
 							}
 						});
 					}				
@@ -1830,7 +1863,7 @@ Ext.onReady( function() {
 				}
 				
 				// Get searching values
-				p.searchingValues = [];
+				p.filterValues = [];
 				
 				// Patient properties
 				
@@ -1860,7 +1893,7 @@ Ext.onReady( function() {
 						var filter = propId + '_' + hidden 
 						if( filterValue!=null && filterValue!=''){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-							filter += '_' + filterOpt + ' ';
+							filter += '_' + filterOpt + '_';
 							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
@@ -1876,7 +1909,7 @@ Ext.onReady( function() {
 								filter += "'" + filterValue + "'";
 							}
 						}
-						p.searchingValues.push( filter );
+						p.filterValues.push( filter );
 					}
 				});
 				
@@ -1893,13 +1926,12 @@ Ext.onReady( function() {
 						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;						
 						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						var filter = deId + '_' + hidden + '_';
-						
 						if( Ext.getCmp('filter_' + id).getValue()!=null 
 							&& Ext.getCmp('filter_' + id).getValue()!=''){
+							
 							filterValue = filterValue.toLowerCase();
-							filter += filterOpt + ' ';
-							if( Ext.getCmp('filter_' + id).getValue()!=null 
-								&& Ext.getCmp('filter_' + id).getValue()!='')
+							filter += filterOpt + '_';
+							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
 								filter +="(";
@@ -1914,7 +1946,7 @@ Ext.onReady( function() {
 								filter += "'" + Ext.getCmp('filter_' + id).getValue() + "'";
 							}
 						}
-						p.searchingValues.push( filter );
+						p.filterValues.push( filter );
 					}
 				});
 					
@@ -1941,8 +1973,8 @@ Ext.onReady( function() {
 				
 				// Get searching values
 				
-				var searchingValues = document.getElementById('searchingValues');
-				TR.util.list.clearList(searchingValues);				
+				var filterValues = document.getElementById('filterValues');
+				TR.util.list.clearList(filterValues);				
 				
 				// Patient properties
 				
@@ -1975,7 +2007,7 @@ Ext.onReady( function() {
 								filter += "'" + filterValue + "'";
 							}
 						}
-						TR.util.list.addOptionToList(searchingValues, filter, '');
+						TR.util.list.addOptionToList(filterValues, filter, '');
 					}
 				});
 				
@@ -2015,7 +2047,7 @@ Ext.onReady( function() {
 								filter += "'" + Ext.getCmp('filter_' + id).getValue() + "'";
 							}
 						}
-						TR.util.list.addOptionToList(searchingValues, filter, '');
+						TR.util.list.addOptionToList(filterValues, filter, '');
 					}
 				});
 			},

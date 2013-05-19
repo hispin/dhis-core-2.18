@@ -2,6 +2,7 @@
 	"user":
 	{
 		"id":"$!currentUser.id",
+		"accessPatientAttributes":$auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ),
 		"isAdmin":$!currentUser.userCredentials.isSuper(),
 		"ous":[
 			#foreach( $orgunit in $currentUser.organisationUnits )

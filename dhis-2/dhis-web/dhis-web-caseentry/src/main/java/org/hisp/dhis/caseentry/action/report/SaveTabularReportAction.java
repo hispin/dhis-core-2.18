@@ -27,31 +27,18 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEMENT;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_FIXED_ATTRIBUTE;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER_TYPE;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -90,41 +77,13 @@ public class SaveTabularReportAction
         this.programStageService = programStageService;
     }
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private PatientIdentifierTypeService identifierTypeService;
-
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
-    {
-        this.identifierTypeService = identifierTypeService;
-    }
-
-    private PatientAttributeService patientAttributeService;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
-
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-
-    private ProgramStageDataElementService programStageDataElementService;
-
-    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
-    }
-
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -144,7 +103,7 @@ public class SaveTabularReportAction
 
     private Integer programStageId;
 
-    private List<String> searchingValues = new ArrayList<String>();
+    private List<String> filterValues = new ArrayList<String>();
 
     private Collection<Integer> orgunitIds;
 
@@ -174,9 +133,9 @@ public class SaveTabularReportAction
         this.level = level;
     }
 
-    public void setSearchingValues( List<String> searchingValues )
+    public void setFilterValues( List<String> filterValues )
     {
-        this.searchingValues = searchingValues;
+        this.filterValues = filterValues;
     }
 
     public void setFacilityLB( String facilityLB )
@@ -237,6 +196,7 @@ public class SaveTabularReportAction
 
         Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
             organisationUnitService.getOrganisationUnits( orgunitIds ) );
+        
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
         // ---------------------------------------------------------------------
@@ -259,49 +219,8 @@ public class SaveTabularReportAction
 
         tabularReport.setUserOrganisationUnit( userOrganisationUnit );
         tabularReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
-
-        // ---------------------------------------------------------------------
-        // Get searching-keys
-        // ---------------------------------------------------------------------
-
-        List<PatientIdentifierType> identifiers = new ArrayList<PatientIdentifierType>();
-
-        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-
-        List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
-        List<String> fixedAttributes = new ArrayList<String>();
-
-        for ( String searchingValue : searchingValues )
-        {
-            String[] infor = searchingValue.split( "_" );
-            String objectType = infor[0];
-
-            if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
-            {
-                int objectId = Integer.parseInt( infor[1] );
-                identifiers.add( identifierTypeService.getPatientIdentifierType( objectId ) );
-            }
-            else if ( objectType.equals( PREFIX_FIXED_ATTRIBUTE ) )
-            {
-                fixedAttributes.add( infor[1] );
-            }
-            else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
-            {
-                int objectId = Integer.parseInt( infor[1] );
-                attributes.add( patientAttributeService.getPatientAttribute( objectId ) );
-            }
-            else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
-            {
-                int objectId = Integer.parseInt( infor[1] );
-                DataElement dataElement = dataElementService.getDataElement( objectId );
-                programStageDataElements.add( programStageDataElementService.get( programStage, dataElement ) );
-            }
-        }
-
-        tabularReport.setFixedAttributes( fixedAttributes );
-        tabularReport.setIdentifiers( identifiers );
-        tabularReport.setAttributes( attributes );
-        tabularReport.setProgramStageDataElements( programStageDataElements );
+        tabularReport.setFilterValues( filterValues );
+        tabularReport.setProgramStage( programStage );
 
         tabularReportService.saveOrUpdate( tabularReport );
 

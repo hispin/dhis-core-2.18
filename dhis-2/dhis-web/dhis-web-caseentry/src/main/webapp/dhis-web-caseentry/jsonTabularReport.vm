@@ -16,6 +16,17 @@
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
 	"programStageName": "$!encoder.jsonEncode( ${programStage.displayName} )",
+	"programStages": [
+		#set( $programStages = $programStage.program.programStages )
+		#set( $size = $programStages.size() )
+		#foreach( ${programStage} in $!{programStages} )
+			{
+				"id": "$programStage.id",
+				"name": "$programStage.name"
+			}
+			#if( $velocityCount < $size ),#end
+		#end
+	],
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",
 	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
 	"level": "${tabularReport.level}",
@@ -37,46 +48,57 @@
 		#end
 	],
 	"patientProperties": [
-		#set( $fixedAttributes = ${tabularReport.fixedAttributes} )
-		#foreach( ${fixedAttribute} in $!{fixedAttributes} )
+		#set($idx=0)
+		#foreach( ${fixedAttribute} in $!{selectedFixedAttributes} )
 			{	
 				#set( $attr = $i18n.getString($fixedAttribute) )
 				"id": "fixedAttr_${fixedAttribute}",
-				"name": "$attr"
+				"name": "$attr",
+				"filter": "$fixedAttributeFilters.get($idx)"
 			},
+			#set($idx=$idx+1)
 		#end
-		#set( $identifiers = ${tabularReport.identifiers} )
-		#foreach( ${identifier} in $!{identifiers} )
+		
+		#set($idx=0)
+		#set( $size = ${selectedIdentifierTypes.size()} )		
+		#foreach( ${identifier} in $!{selectedIdentifierTypes} )
 			{
 				"id": "iden_${identifier.id}",
-				"name": "${identifier.displayName}"
-			},
+				"name": "${identifier.displayName}",
+				"filter": "$identifierTypeFilters.get($idx)"
+			}#if( $velocityCount < $size ),#end
+			#set($idx=$idx+1)
 		#end
-		#set( $size = ${tabularReport.attributes.size()} )
-		#set( $attributes = ${tabularReport.attributes} )
-		#foreach( ${attribute} in $!{attributes} )
+		
+		#set($idx=0)
+		#set( $size = ${selectedAttributes.size()} )		
+		#foreach( ${attribute} in $!{selectedAttributes} )
 			{
 				"id": "attr_${attribute.id}",
-				"name": "${attribute.displayName}"
+				"name": "${attribute.displayName}",
+				"filter": "$patientAttributeFilters.get($idx)"
 			}
 			#if( $velocityCount < $size ),#end
+			#set($idx=$idx+1)
 		#end
 	],
 	"dataElements": [
-		#set( $size = ${tabularReport.programStageDataElements.size()} )
-		#set( $programStageDataElements = ${tabularReport.programStageDataElements} )
-		#foreach( ${programStageDataElement} in $!{programStageDataElements} )
+		#set($idx=0)
+		#set( $size = ${selectedDataElements.size()} )
+		#foreach( ${dataElement} in $!{selectedDataElements} )
 			{
-				"id": "de_${programStageDataElement.dataElement.id}",
-				"name": "${programStageDataElement.dataElement.name}",
-				"compulsory": "${programStageDataElement.compulsory}",
-				"valueType": #if( $programStageDataElement.dataElement.optionSet )
+				"id": "de_${dataElement.id}",
+				"name": "${dataElement.name}",
+				"compulsory": "",
+				"valueType": #if( $dataElement.optionSet )
 								"list"
 							 #else
-								"${programStageDataElement.dataElement.type}"
-							 #end
+								"${dataElement.type}"
+							 #end,
+				"filter": "$dataelementFilters.get($idx)"
 			}
 			#if( $velocityCount < $size ),#end
+			#set($idx=$idx+1)
 		#end
 	]
 }

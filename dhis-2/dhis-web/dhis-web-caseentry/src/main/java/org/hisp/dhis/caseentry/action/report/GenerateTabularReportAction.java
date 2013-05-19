@@ -180,11 +180,11 @@ public class GenerateTabularReportAction
         return values;
     }
 
-    private List<String> searchingValues = new ArrayList<String>();
+    private List<String> filterValues = new ArrayList<String>();
 
-    public void setSearchingValues( List<String> searchingValues )
+    public void setFilterValues( List<String> filterValues )
     {
-        this.searchingValues = searchingValues;
+        this.filterValues = filterValues;
     }
 
     private boolean orderByOrgunitAsc;
@@ -457,9 +457,9 @@ public class GenerateTabularReportAction
 
         int index = 0;
 
-        for ( String searchValue : searchingValues )
+        for ( String filterValue : filterValues )
         {
-            String[] values = searchValue.split( "_" );
+            String[] values = filterValue.split( "_" );
 
             if ( values != null && values.length >= 3 )
             {
@@ -469,7 +469,9 @@ public class GenerateTabularReportAction
                 column.setPrefix( prefix );
                 column.setIdentifier( values[1] );
                 column.setHidden( Boolean.parseBoolean( values[2] ) );
-                column.setQuery( values.length == 4 ? TextUtils.lower( values[3] ) : null );
+                
+                column.setOperator( values.length == 5 ? TextUtils.lower( values[3] ) : null );
+                column.setQuery( values.length == 5 ? TextUtils.lower( values[4] ) : null );
 
                 if ( PREFIX_FIXED_ATTRIBUTE.equals( prefix ) )
                 {
