@@ -2019,20 +2019,21 @@ function saveCoordinatesEvent()
 		alert(i18n_enter_a_value_greater_than_or_equal_to_nagetive_90);
 		isValid = false;
 	}
-	
-	if( isValid ){
-		jQuery.postJSON( "saveCoordinatesEvent.action",
-			{ 
-				programStageInstanceId: programStageInstanceId,
-				longitude: longitude,
-				latitude: latitude
-			}, 
-			function( json ) 
-			{   
-				 byId('longitude').style.backgroundColor = SUCCESS_COLOR;
-				 byId('latitude').style.backgroundColor = SUCCESS_COLOR;
-			});
-	}
+
+    if ( isValid ) {
+        $.ajax( {
+            url: 'saveCoordinatesEvent.action',
+            data: {
+                programStageInstanceId: programStageInstanceId,
+                longitude: longitude,
+                latitude: latitude
+            },
+            dataType: 'json'
+        } ).done(function() {
+            byId( 'longitude' ).style.backgroundColor = SUCCESS_COLOR;
+            byId( 'latitude' ).style.backgroundColor = SUCCESS_COLOR;
+        });
+    }
 }
 
 // ---------------------------------------------------------------------------------
