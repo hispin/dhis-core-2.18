@@ -1989,12 +1989,12 @@ function saveCoordinatesEvent()
 		alert(i18n_enter_values_for_longitude_and_latitude_fields);
 		isValid = false;
 	}	
-	else if(!isInt(longitude)){
+	else if(!isNumber(longitude)){
 		byId('longitude').style.backgroundColor = '#ffcc00';
 		alert(i18n_enter_a_valid_number);
 		isValid = false;
 	}
-	else if(!isInt(latitude)){
+	else if(!isNumber(latitude)){
 		byId('latitude').style.backgroundColor = '#ffcc00';
 		alert(i18n_enter_a_valid_number);
 		isValid = false;
