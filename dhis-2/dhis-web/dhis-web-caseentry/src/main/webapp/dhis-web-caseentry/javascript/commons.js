@@ -2028,6 +2028,7 @@ function saveCoordinatesEvent()
                 longitude: longitude,
                 latitude: latitude
             },
+            cache: false,
             dataType: 'json'
         } ).done(function() {
             byId( 'longitude' ).style.backgroundColor = SUCCESS_COLOR;
@@ -2035,9 +2036,9 @@ function saveCoordinatesEvent()
         } ).fail(function() {
             if(DAO.store && programStageInstanceId.indexOf('local') != -1 ) {
                 DAO.store.get( 'dataValues', programStageInstanceId ).done( function ( data ) {
-                    data.coordinates = {};
-                    data.coordinates.longitude = longitude;
-                    data.coordinates.latitude = latitude;
+                    data.coordinate = {};
+                    data.coordinate.longitude = longitude;
+                    data.coordinate.latitude = latitude;
 
                     this.set( 'dataValues', data ).done( function () {
                         byId( 'longitude' ).style.backgroundColor = SUCCESS_COLOR;
