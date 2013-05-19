@@ -40,7 +40,7 @@
 				<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput"
                         style="width:380px;#if($programStage.captureCoordinates=='false') margin-left:10px; #end "
                        onkeypress="keypressOnComment( event, this );">
-				<input type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( this )'>
+				<input id="commentButton" type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( this )'>
 			</th>
 		</tr>
 

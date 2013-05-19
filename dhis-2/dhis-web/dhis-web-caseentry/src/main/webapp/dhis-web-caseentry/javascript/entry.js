@@ -739,6 +739,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             if( always ) always();
 
             $('#commentInput').attr('disabled', true);
+            $('#commentButton').attr('disabled', true);
             $('#validateBtn').attr('disabled', true);
         } );
     } else {
@@ -816,6 +817,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             if( always ) always();
 
             $('#commentInput').removeAttr('disabled');
+            $('#commentButton').removeAttr('disabled');
             $('#validateBtn').removeAttr('disabled');
         } );
     }

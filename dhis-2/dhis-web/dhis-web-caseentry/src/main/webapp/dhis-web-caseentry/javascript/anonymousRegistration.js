@@ -255,6 +255,7 @@ $( document ).ready( function () {
                 enableFiltering();
                 searchEvents( eval( getFieldValue( 'listAll' ) ) );
                 $('#commentInput').removeAttr('disabled');
+                $('#commentButton').removeAttr('disabled');
                 $('#validateBtn').removeAttr('disabled');
             });
 
@@ -281,6 +282,7 @@ $( document ).ready( function () {
     $( document ).bind( 'dhis2.offline', function () {
         setHeaderMessage( i18n_offline_notification );
         $('#commentInput').attr('disabled', true);
+        $('#commentButton').attr('disabled', true);
         $('#validateBtn').attr('disabled', true);
         disableFiltering();
         showOfflineEvents();
