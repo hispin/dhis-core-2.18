@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller.event;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dxf2.event.EventService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +46,7 @@ import java.io.InputStream;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = EventController.RESOURCE_PATH)
+@RequestMapping( value = EventController.RESOURCE_PATH )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -59,10 +58,9 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public void postDxf2ProgramInstance( ImportOptions importOptions,
-        HttpServletResponse response, InputStream inputStream ) throws IOException
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public void postXmlEvents( HttpServletResponse response, InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
 
@@ -78,8 +76,7 @@ public class EventController
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postJsonProgramInstance( ImportOptions importOptions,
-        HttpServletResponse response, InputStream inputStream ) throws IOException
+    public void postJsonEvents( HttpServletResponse response, InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
 
