@@ -108,7 +108,6 @@
     scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
-	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
   </bean>
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"

@@ -29,10 +29,9 @@ package org.hisp.dhis.common;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Inherits getName() and getDisplayName().
- * 
 * @author Lars Helge Overland
 */
 public interface DimensionalObject
@@ -47,6 +46,12 @@ public interface DimensionalObject
     final String ORGUNIT_DIM_ID = "ou";
 
     final List<String> DATA_X_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, DATAELEMENT_OPERAND_ID );
+    
+    final Map<String, String> PRETTY_NAMES = DimensionalObjectUtils.asMap( 
+        DATA_X_DIM_ID, "Data",
+        CATEGORYOPTIONCOMBO_DIM_ID, "Data details",
+        PERIOD_DIM_ID, "Period",
+        ORGUNIT_DIM_ID, "Organisation unit" );
     
     String getDimension();
     

@@ -109,13 +109,6 @@ public class AddReportAction
         this.reportTableId = reportTableId;
     }
 
-    private boolean usingOrgUnitGroupSets;
-    
-    public void setUsingOrgUnitGroupSets( boolean usingOrgUnitGroupSets )
-    {
-        this.usingOrgUnitGroupSets = usingOrgUnitGroupSets;
-    }
-
     private File file;
 
     public void setUpload( File file )
@@ -207,7 +200,6 @@ public class AddReportAction
         report.setName( name );
         report.setType( type );
         report.setReportTable( reportTable );
-        report.setUsingOrgUnitGroupSets( usingOrgUnitGroupSets );
         report.setRelatives( getRelativePeriods() );
         report.setReportParams( reportParams );
         

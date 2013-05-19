@@ -61,15 +61,6 @@
         </td>
     </tr>
     #end
-    <tr class="jasperReportTableDataSource">
-        <td><label for="usingOrgUnitGroupSets">$i18n.getString( "include_organisation_unit_group_sets" )</label></td>
-        <td>
-            <select id="usingOrgUnitGroupSets" name="usingOrgUnitGroupSets">
-            <option value="false"#if ( $report && $report.usingOrgUnitGroupSets )selected="selected"#end>$i18n.getString( "no" )</option>
-            <option value="true"#if ( $report && $report.usingOrgUnitGroupSets )selected="selected"#end>$i18n.getString( "yes" )</option>           
-            </select>
-        </td>
-    </tr>
 	<tr class="jasperReportTableDataSource">
 		<td>$i18n.getString( "report_table" )</td>
 		<td>

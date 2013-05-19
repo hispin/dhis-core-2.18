@@ -33,8 +33,8 @@ import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,10 +59,9 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
+import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -196,6 +195,7 @@ public class ReportTable
     private static final String EMPTY = "";
 
     private static final NameableObject[] IRT = new NameableObject[0];
+    private static final NameableObject[][] IRT2D = new NameableObject[0][];
 
     private static final String[] SRT = new String[0];
 
@@ -280,31 +280,6 @@ public class ReportTable
     // -------------------------------------------------------------------------
 
     /**
-     * Periods relative to the reporting month.
-     */
-    private List<Period> relativePeriods = new ArrayList<Period>();
-
-    /**
-     * Static Periods and relative Periods.
-     */
-    private List<Period> allPeriods = new ArrayList<Period>();
-
-    /**
-     * OrganisationUnits relative to a parent unit or current unit.
-     */
-    private List<OrganisationUnit> relativeUnits = new ArrayList<OrganisationUnit>();
-
-    /**
-     * Static OrganisationUnits and relative OrganisationUnits.
-     */
-    private List<NameableObject> allUnits = new ArrayList<NameableObject>();
-
-    /**
-     * All Indicators, including DateElements, Indicators and DataSets.
-     */
-    private List<NameableObject> allIndicators = new ArrayList<NameableObject>();
-
-    /**
      * All crosstabulated columns.
      */
     private List<List<NameableObject>> gridColumns = new ArrayList<List<NameableObject>>();
@@ -313,40 +288,6 @@ public class ReportTable
      * All rows.
      */
     private List<List<NameableObject>> gridRows = new ArrayList<List<NameableObject>>();
-
-    /**
-     * Names of the columns used to query the datavalue table and as index
-     * columns in the report table.
-     */
-    private List<String> indexColumns = new ArrayList<String>();
-
-    /**
-     * Names of the columns holding entry uids used to query the datavalue
-     * table.
-     */
-    private List<String> indexUidColumns = new ArrayList<String>();
-
-    /**
-     * Names of the columns holding entry names used to query the datavalue
-     * table.
-     */
-    private List<String> indexNameColumns = new ArrayList<String>();
-
-    /**
-     * Names of the columns holding entry codes used to query the datavalue
-     * table.
-     */
-    private List<String> indexCodeColumns = new ArrayList<String>();
-
-    /**
-     * Names of the columns holding entry descriptions.
-     */
-    private List<String> indexDescriptionColumns = new ArrayList<String>();
-
-    /**
-     * The I18nFormat used for internationalization of ie. periods.
-     */
-    private I18nFormat i18nFormat;
 
     /**
      * The name of the reporting month based on the report param.
@@ -398,23 +339,19 @@ public class ReportTable
      * @param i18nFormat the i18n format. Not persisted.
      */
     public ReportTable( String name, List<DataElement> dataElements, List<Indicator> indicators,
-                        List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> organisationUnits,
-                        List<OrganisationUnit> relativeUnits, List<OrganisationUnitGroup> organisationUnitGroups,
+                        List<DataSet> dataSets, List<Period> periods,
+                        List<OrganisationUnit> organisationUnits,
                         boolean doIndicators, boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
-                        I18nFormat i18nFormat, String reportingPeriodName )
+                        String reportingPeriodName )
     {
         this.name = name;
         this.dataElements = dataElements;
         this.indicators = indicators;
         this.dataSets = dataSets;
         this.periods = periods;
-        this.relativePeriods = relativePeriods;
         this.organisationUnits = organisationUnits;
-        this.relativeUnits = relativeUnits;
-        this.organisationUnitGroups = organisationUnitGroups;
         this.relatives = relatives;
         this.reportParams = reportParams;
-        this.i18nFormat = i18nFormat;
         this.reportingPeriodName = reportingPeriodName;
         
         if ( doIndicators )
@@ -449,82 +386,46 @@ public class ReportTable
     // Init
     // -------------------------------------------------------------------------
 
-    public void init()
+    public void init( User user, Date date, List<OrganisationUnit> relativeOrganisationUnits, I18nFormat format )
     {
-        verify( nonEmptyLists( dataElements, indicators, dataSets ) > 0,
-            "Must contain dataelements, indicators or datasets" );
-        verify( nonEmptyLists( periods, relativePeriods ) > 0, "Must contain periods or relative periods" );
-        verify( nonEmptyLists( organisationUnits, relativeUnits, organisationUnitGroups ) > 0,
-            "Must contain organisation units, relative organisation units or organisation unit groups" );
-        verify( !(doTotal() && regression), "Cannot have regression columns with total columns" );
-        verify( i18nFormat != null, "I18n format must be set" );
+        verify( ( periods != null && !periods.isEmpty() ) || hasRelativePeriods(), "Must contain periods or relative periods" );
 
-        // ---------------------------------------------------------------------
-        // Init dimensions
-        // ---------------------------------------------------------------------
-
+        addTransientOrganisationUnits( relativeOrganisationUnits );
+        
+        this.populateGridColumnsAndRows( date, user, format );
+        
         if ( isDimensional() )
         {
             categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( getCategoryCombo().getOptionCombos() );
             verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
 
-        // ---------------------------------------------------------------------
-        // Init allPeriods, allUnits, allIndicators
-        // ---------------------------------------------------------------------
-
-        allIndicators.addAll( dataElements );
-        allIndicators.addAll( indicators );
-        allIndicators.addAll( dataSets );
-
-        allPeriods.addAll( periods );
-        allPeriods.addAll( relativePeriods );
-        allPeriods = removeDuplicates( allPeriods );
-
-        Collections.sort( allPeriods, new AscendingPeriodComparator() );
-        setNames( allPeriods ); // Set names on periods
-
-        if ( isOrganisationUnitGroupBased() )
-        {
-            allUnits.addAll( organisationUnitGroups );
-        }
-        else
-        {
-            allUnits.addAll( organisationUnits );
-            allUnits.addAll( relativeUnits );
-            allUnits = removeDuplicates( allUnits );
-        }
-
-        gridColumns = new CombinationGenerator<NameableObject>( getArrays( true ) ).getCombinations();
-        gridRows = new CombinationGenerator<NameableObject>( getArrays( false ) ).getCombinations();
-
         addIfEmpty( gridColumns ); // Allow for all or none crosstab dimensions
         addIfEmpty( gridRows );
-
-        add( indexColumns, INDICATOR_ID, isDoIndicators() );
-        add( indexColumns, PERIOD_ID, isDoPeriods() );
-        add( indexColumns, ORGANISATIONUNIT_ID, isDoUnits() );
-
-        add( indexUidColumns, INDICATOR_UID, isDoIndicators() );
-        add( indexUidColumns, PERIOD_UID, isDoPeriods() );
-        add( indexUidColumns, ORGANISATIONUNIT_UID, isDoUnits() );
-
-        add( indexNameColumns, INDICATOR_NAME, isDoIndicators() );
-        add( indexNameColumns, PERIOD_NAME, isDoPeriods() );
-        add( indexNameColumns, ORGANISATIONUNIT_NAME, isDoUnits() );
-
-        add( indexCodeColumns, INDICATOR_CODE, isDoIndicators() );
-        add( indexCodeColumns, PERIOD_CODE, isDoPeriods() );
-        add( indexCodeColumns, ORGANISATIONUNIT_CODE, isDoUnits() );
-
-        add( indexDescriptionColumns, INDICATOR_DESCRIPTION, isDoIndicators() );
-        add( indexDescriptionColumns, PERIOD_DESCRIPTION, isDoPeriods() );
-        add( indexDescriptionColumns, ORGANISATIONUNIT_DESCRIPTION, isDoUnits() );
     }
-
+    
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
+    
+    public void populateGridColumnsAndRows( Date date, User user, I18nFormat format )
+    {
+        List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
+        List<NameableObject[]> tableRows = new ArrayList<NameableObject[]>();
+        
+        for ( String dimension : columnDimensions )
+        {
+            tableColumns.add( getDimensionalObject( dimension, date, user, false, format ).getItems().toArray( IRT ) );
+        }
+        
+        for ( String dimension : rowDimensions )
+        {
+            tableRows.add( getDimensionalObject( dimension, date, user, true, format ).getItems().toArray( IRT ) );
+        }
+
+        gridColumns = new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations();
+        gridRows = new CombinationGenerator<NameableObject>( tableRows.toArray( IRT2D ) ).getCombinations();        
+    }
     
     @Override
     public void populateAnalyticalProperties()
@@ -544,53 +445,8 @@ public class ReportTable
             filters.addAll( getDimensionalObjectList( filter ) );
         }
     }
-    
-    /**
-     * Indicates whether this report table can be rendered by the report table
-     * service. Stopgap method until report table UI will be replaced by pivot
-     * table UI. TODO temporary
-     */
-    public boolean isReportTable()
-    {
-        List<String> STANDARD_DIMS = Arrays.asList( DATA_X_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
-        
-        return dataElementGroups.isEmpty() && filterDimensions.isEmpty() &&
-            STANDARD_DIMS.containsAll( columnDimensions ) && STANDARD_DIMS.containsAll( filterDimensions );            
-    }
-    
-    /**
-     * Creates a map which contains mappings between the organisation unit
-     * identifier and the name of the group this organisation unit is a member
-     * of in all of the given group sets for all organisation units in this
-     * report table.
-     *
-     * @param groupSets the collection of organisation unit group sets.
-     * @return a map.
-     */
-    @Deprecated
-    public Map<String, Object> getOrganisationUnitGroupMap( Collection<OrganisationUnitGroupSet> groupSets )
-    {
-        Map<String, Object> organisationUnitGroupMap = new HashMap<String, Object>();
-
-        for ( OrganisationUnitGroupSet groupSet : groupSets )
-        {
-            Map<Integer, String> map = new HashMap<Integer, String>();
-
-            for ( NameableObject unit : allUnits )
-            {
-                if ( unit instanceof OrganisationUnit )
-                {
-                    map.put( unit.getId(), ((OrganisationUnit) unit).getGroupNameInGroupSet( groupSet ) );
-                }
-            }
-
-            organisationUnitGroupMap.put( columnEncode( KEY_ORGUNIT_GROUPSET + groupSet.getName() ), map );
-        }
-
-        return organisationUnitGroupMap;
-    }
-    
-    public DataElementCategoryCombo getCategoryCombo()
+            
+    private DataElementCategoryCombo getCategoryCombo()
     {
         if ( dataElements != null && !dataElements.isEmpty() )
         {
@@ -609,26 +465,6 @@ public class ReportTable
     }
 
     /**
-     * Indicates whether a total column should be included.
-     */
-    public boolean doTotal()
-    {
-        return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDimensional();
-    }
-
-    /**
-     * Indicates whether subtotal columns should be included. The category combo
-     * of the report table must have more than one category if subtotal columns
-     * will contribute.
-     */
-    public boolean doSubTotals()
-    {
-        DataElementCategoryCombo categoryCombo = getCategoryCombo();
-        
-        return doTotal() && categoryCombo != null && categoryCombo.getCategories() != null && categoryCombo.getCategories().size() > 1;
-    }
-
-    /**
      * Generates a pretty column name based on short-names of the argument
      * objects. Null arguments are ignored in the name.
      */
@@ -638,7 +474,7 @@ public class ReportTable
 
         for ( NameableObject object : objects )
         {
-            buffer.append( object != null ? (object.getShortName() + SPACE) : EMPTY );
+            buffer.append( object != null ? ( object.getShortName() + SPACE ) : EMPTY );
         }
 
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SPACE ) ) : TOTAL_COLUMN_PRETTY_NAME;
@@ -647,6 +483,10 @@ public class ReportTable
     /**
      * Generates a column name based on short-names of the argument objects.
      * Null arguments are ignored in the name.
+     * 
+     * The period column name must be static when on columns so it can be
+     * re-used in reports, hence the name property is used which will be formatted
+     * only when the period dimension is on rows.
      */
     public static String getColumnName( List<NameableObject> objects )
     {
@@ -656,15 +496,11 @@ public class ReportTable
         {
             if ( object != null && object instanceof Period )
             {
-                // -------------------------------------------------------------
-                // Periods need static names when crosstab - set on name prop
-                // -------------------------------------------------------------
-
                 buffer.append( object.getName() + SEPARATOR );
             }
             else
             {
-                buffer.append( object != null ? (object.getShortName() + SEPARATOR) : EMPTY );
+                buffer.append( object != null ? ( object.getShortName() + SEPARATOR ) : EMPTY );
             }
         }
 
@@ -813,15 +649,6 @@ public class ReportTable
         return parentOrganisationUnit != null ? parentOrganisationUnit.getName() : EMPTY;
     }
 
-    /**
-     * Indicates whether this report table is based on organisation unit groups
-     * or the organisation unit hierarchy.
-     */
-    public boolean isOrganisationUnitGroupBased()
-    {
-        return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
-    }
-
     public boolean isDoIndicators()
     {
         return columnDimensions.contains( DATA_X_DIM_ID );
@@ -871,33 +698,6 @@ public class ReportTable
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private NameableObject[][] getArrays( boolean crosstab )
-    {
-        List<NameableObject[]> arrays = new ArrayList<NameableObject[]>();
-
-        if ( (isDoIndicators() && crosstab) || (!isDoIndicators() && !crosstab) )
-        {
-            arrays.add( allIndicators.toArray( IRT ) );
-        }
-
-        if ( (isDoPeriods() && crosstab) || (!isDoPeriods() && !crosstab) )
-        {
-            arrays.add( allPeriods.toArray( IRT ) );
-        }
-
-        if ( (isDoUnits() && crosstab) || (!isDoUnits() && !crosstab) )
-        {
-            arrays.add( allUnits.toArray( IRT ) );
-        }
-
-        if ( isDimensional() && crosstab ) // Must be crosstab if exists
-        {
-            arrays.add( categoryOptionCombos.toArray( IRT ) );
-        }
-
-        return arrays.toArray( new NameableObject[0][] );
-    }
-
     /**
      * Adds an empty list of NameableObjects to the given list if empty.
      */
@@ -925,56 +725,6 @@ public class ReportTable
         }
 
         return nonEmpty;
-    }
-
-    /**
-     * Sets the name and short name properties on the given Periods which don't
-     * have the name property already set.
-     */
-    private void setNames( List<Period> periods )
-    {
-        for ( Period period : periods )
-        {
-            if ( period.getName() == null ) // Crosstabulated relative periods
-            {
-                // -------------------------------------------------------------
-                // Static periods + index relative periods
-                // -------------------------------------------------------------
-
-                period.setName( i18nFormat.formatPeriod( period ) );
-                period.setShortName( i18nFormat.formatPeriod( period ) );
-            }
-        }
-    }
-
-    /**
-     * Adds the given object to the given list if not skip argument is true.
-     */
-    private static <T> void add( List<T> list, T object, boolean skip )
-    {
-        if ( !skip )
-        {
-            list.add( object );
-        }
-    }
-
-    /**
-     * Removes duplicates from the given list while maintaining the order.
-     */
-    private static <T> List<T> removeDuplicates( List<T> list )
-    {
-        final List<T> temp = new ArrayList<T>( list );
-        list.clear();
-
-        for ( T object : temp )
-        {
-            if ( !list.contains( object ) )
-            {
-                list.add( object );
-            }
-        }
-
-        return list;
     }
 
     /**
@@ -1207,53 +957,6 @@ public class ReportTable
     // -------------------------------------------------------------------------
 
     @JsonIgnore
-    public List<Period> getRelativePeriods()
-    {
-        return relativePeriods;
-    }
-
-    @JsonIgnore
-    public void setRelativePeriods( List<Period> relativePeriods )
-    {
-        this.relativePeriods = relativePeriods;
-    }
-
-    @JsonIgnore
-    public List<Period> getAllPeriods()
-    {
-        return allPeriods;
-    }
-
-    @JsonIgnore
-    public List<OrganisationUnit> getRelativeUnits()
-    {
-        return relativeUnits;
-    }
-
-    @JsonIgnore
-    public void setRelativeUnits( List<OrganisationUnit> relativeUnits )
-    {
-        this.relativeUnits = relativeUnits;
-    }
-
-    @JsonIgnore
-    public List<NameableObject> getAllUnits()
-    {
-        return allUnits;
-    }
-
-    @JsonIgnore
-    public I18nFormat getI18nFormat()
-    {
-        return i18nFormat;
-    }
-
-    public void setI18nFormat( I18nFormat format )
-    {
-        i18nFormat = format;
-    }
-
-    @JsonIgnore
     public String getReportingPeriodName()
     {
         return reportingPeriodName;
@@ -1275,36 +978,6 @@ public class ReportTable
     public List<List<NameableObject>> getGridRows()
     {
         return gridRows;
-    }
-
-    @JsonIgnore
-    public List<String> getIndexColumns()
-    {
-        return indexColumns;
-    }
-
-    @JsonIgnore
-    public List<String> getIndexUidColumns()
-    {
-        return indexUidColumns;
-    }
-
-    @JsonIgnore
-    public List<String> getIndexNameColumns()
-    {
-        return indexNameColumns;
-    }
-
-    @JsonIgnore
-    public List<String> getIndexCodeColumns()
-    {
-        return indexCodeColumns;
-    }
-
-    @JsonIgnore
-    public List<String> getIndexDescriptionColumns()
-    {
-        return indexDescriptionColumns;
     }
 
     @JsonIgnore

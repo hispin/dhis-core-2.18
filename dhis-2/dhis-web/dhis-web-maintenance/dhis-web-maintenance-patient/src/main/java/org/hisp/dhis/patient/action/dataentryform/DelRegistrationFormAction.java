@@ -79,6 +79,7 @@ public class DelRegistrationFormAction
         throws Exception
     {
         PatientRegistrationForm registrationForm = null;
+        
         if ( id != null )
         {
             Program program = programService.getProgram( id );

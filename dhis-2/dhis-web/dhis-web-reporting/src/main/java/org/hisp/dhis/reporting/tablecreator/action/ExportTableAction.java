@@ -40,10 +40,8 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -74,13 +72,6 @@ public class ExportTableAction
     public void setConstantService( ConstantService constantService )
     {
         this.constantService = constantService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private I18nFormat format;
@@ -182,12 +173,9 @@ public class ExportTableAction
         // Assemble report
         // ---------------------------------------------------------------------
 
-        ReportTable reportTable = reportTableService.getReportTable( uid );
-        
         if ( TYPE_JRXML.equals( format ) )
         {
             params.putAll( constantService.getConstantParameterMap() );
-            params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
         }
         
         Period period = PeriodType.getPeriodFromIsoString( pe );

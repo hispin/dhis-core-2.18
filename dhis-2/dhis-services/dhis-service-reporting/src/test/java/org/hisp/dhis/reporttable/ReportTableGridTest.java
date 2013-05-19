@@ -27,14 +27,17 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.amplecode.quick.BatchHandler;
@@ -42,6 +45,8 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.data.MockAnalyticsService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
@@ -59,19 +64,15 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedOrgUnitDataValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedOrgUnitIndicatorValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.RelativePeriods;
 import org.junit.Test;
 
 /**
@@ -84,14 +85,16 @@ public class ReportTableGridTest
     
     private BatchHandlerFactory batchHandlerFactory;
     
+    private AnalyticsService analyticsService;
+        
+    private Map<String, Double> valueMap;
+    
     private List<DataElement> dataElements;
     private List<DataElementCategoryOptionCombo> categoryOptionCombos;
     private List<Indicator> indicators;
     private List<DataSet> dataSets;
     private List<Period> periods;
-    private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
-    private List<OrganisationUnitGroup> groups;
 
     private PeriodType montlyPeriodType;
 
@@ -122,9 +125,6 @@ public class ReportTableGridTest
     private OrganisationUnit unitA;
     private OrganisationUnit unitB;
     
-    private OrganisationUnitGroup groupA;
-    private OrganisationUnitGroup groupB;
-        
     private int dataElementIdA;
     private int dataElementIdB;
     
@@ -141,9 +141,6 @@ public class ReportTableGridTest
     
     private int unitIdA;
     private int unitIdB;
-    
-    private int groupIdA;
-    private int groupIdB;
         
     private I18nFormat i18nFormat;
     
@@ -176,12 +173,20 @@ public class ReportTableGridTest
         indicators = new ArrayList<Indicator>();
         dataSets = new ArrayList<DataSet>();
         periods = new ArrayList<Period>();
-        relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
-        groups = new ArrayList<OrganisationUnitGroup>();
         
         montlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );       
+
+        // ---------------------------------------------------------------------
+        // Mock injection
+        // ---------------------------------------------------------------------
+
+        valueMap = new HashMap<String, Double>();
         
+        analyticsService = new MockAnalyticsService( valueMap );
+        
+        setDependency( reportTableService, "analyticsService", analyticsService );
+
         // ---------------------------------------------------------------------
         // Setup Dimensions
         // ---------------------------------------------------------------------
@@ -290,15 +295,6 @@ public class ReportTableGridTest
         // Setup OrganisationUnitGroups
         // ---------------------------------------------------------------------
 
-        groupA = createOrganisationUnitGroup( 'A' );
-        groupB = createOrganisationUnitGroup( 'B' );
-        
-        groupIdA = organisationUnitGroupService.addOrganisationUnitGroup( groupA );
-        groupIdB = organisationUnitGroupService.addOrganisationUnitGroup( groupB );
-        
-        groups.add( groupA );
-        groups.add( groupB );
-        
         i18nFormat = new MockI18nFormat();
 
         BatchHandler<AggregatedDataValue> dataValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
@@ -339,32 +335,6 @@ public class ReportTableGridTest
         completenessBatchHandler.addObject( new DataSetCompletenessResult( dataSetIdB, periodIdB, null, unitIdB, null, 100, 18, 18 ) );
         
         completenessBatchHandler.flush();
-        
-        BatchHandler<AggregatedDataValue> dataValueOrgUnitBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedOrgUnitDataValueBatchHandler.class ).init();
-        
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdA, 8, 21 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdB, 8, 22 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdA, 8, 23 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdB, 8, 24 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdA, 8, 25 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdB, 8, 26 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdA, 8, 27 ) );
-        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdB, 8, 28 ) );
-        
-        dataValueOrgUnitBatchHandler.flush();
-        
-        BatchHandler<AggregatedIndicatorValue> indicatorOrgUnitValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedOrgUnitIndicatorValueBatchHandler.class ).init();
-        
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, groupIdA, 8, "", 1, 21, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, groupIdB, 8, "", 1, 22, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, groupIdA, 8, "", 1, 23, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, groupIdB, 8, "", 1, 24, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, groupIdA, 8, "", 1, 25, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, groupIdB, 8, "", 1, 26, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, groupIdA, 8, "", 1, 27, 0, 0 ) );
-        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, groupIdB, 8, "", 1, 28, 0, 0 ) );
-        
-        indicatorOrgUnitValueBatchHandler.flush();
     }
     
     @Override
@@ -382,727 +352,550 @@ public class ReportTableGridTest
     // Tests
     // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Org unit group
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testGetOrgUnitIndicatorReportTableA()
-    {
-        ReportTable reportTable = new ReportTable( "Prescriptions",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(),
-            groups, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        reportTable.setParentOrganisationUnit( unitA );
-        
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, null, "0" );
-        
-        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 23.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 27.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 22.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 26.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
-    }
-
-    @Test
-    public void testGetIndicatorOrgUnitReportTableB()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
-            groups, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        reportTable.setParentOrganisationUnit( unitA );
-        
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-
-        assertEquals( 21.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 14 ) );
-        
-        assertEquals( 23.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 14 ) );
-        
-        assertEquals( 25.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 14 ) );
-        
-        assertEquals( 27.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 14 ) );
-    }
-
-    @Test
-    public void testGetIndicatorOrgUnitReportTableC()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
-            groups, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        reportTable.setParentOrganisationUnit( unitA );
-        
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-
-        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 26.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 23.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 27.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
-    }
-
-    @Test
-    public void testGetDataElementOrgUnitReportTableA()
-    {
-        ReportTable reportTable = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(),
-            groups, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        reportTable.setParentOrganisationUnit( unitA );
-        
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-
-        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 23.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 27.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 22.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 26.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
-    }
-    
-    @Test
-    public void testGetDataElementOrgUnitReportTableB()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
-            groups, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        reportTable.setParentOrganisationUnit( unitA );
-        
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-        
-        assertEquals( 21.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 14 ) );
-        
-        assertEquals( 23.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 14 ) );
-        
-        assertEquals( 25.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 14 ) );
-        
-        assertEquals( 27.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 14 ) );
-    }
-
-    @Test
-    public void testGetDataElementOrgUnitReportTableC()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
-            groups, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        reportTable.setParentOrganisationUnit( unitA );
-        
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-        
-        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 26.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 23.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 27.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
-    }
-
-    // -------------------------------------------------------------------------
-    // Org unit hierarchy
-    // -------------------------------------------------------------------------
-
     @Test
     public void testGetIndicatorReportTableA()
     {
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 11d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 12d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 13d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 14d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 15d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 16d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 17d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 18d );
+                
         ReportTable reportTable = new ReportTable( "Prescriptions",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, false, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, null, "0" );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
     }
     
     @Test
     public void testGetIndicatorReportTableB()
     {
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            false, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 12 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
+        assertEquals( 13d, grid.getRow( 2 ).get( 11 ) );
+        assertEquals( 17d, grid.getRow( 2 ).get( 12 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 14d, grid.getRow( 3 ).get( 11 ) );
+        assertEquals( 18d, grid.getRow( 3 ).get( 12 ) );
     }
 
     @Test
     public void testGetIndicatorReportTableC()
     {
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+                
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
     }
     
     @Test
     public void testGetDataElementReportTableA()
     {
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 11d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 12d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 13d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 14d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 15d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 16d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 17d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 18d );
+                
         ReportTable reportTable = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            true, true, false, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
     }
     
     @Test
     public void testGetDataElementReportTableB()
     {
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            false, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+
+        assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 12 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 13d, grid.getRow( 2 ).get( 11 ) );
+        assertEquals( 17d, grid.getRow( 2 ).get( 12 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
-        
-        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 14d, grid.getRow( 3 ).get( 11 ) );
+        assertEquals( 18d, grid.getRow( 3 ).get( 12 ) );
     }
 
     @Test
     public void testGetDataElementReportTableC()
     {
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+                
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            true, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10) );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
     }
     
     @Test
     public void testGetDataSetReportTableA()
     {
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 11d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 12d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 13d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 14d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 15d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 16d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 17d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 18d );
+                
         ReportTable reportTable = new ReportTable( "Prescriptions",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            true, true, false, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10 ) );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
     }
     
     @Test
     public void testGetDataSetReportTableB()
     {
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            false, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 12 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
+        assertEquals( 13d, grid.getRow( 2 ).get( 11 ) );
+        assertEquals( 17d, grid.getRow( 2 ).get( 12 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 14d, grid.getRow( 3 ).get( 11 ) );
+        assertEquals( 18d, grid.getRow( 3 ).get( 12 ) );
     }
 
     @Test
     public void testGetDataSetReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
-        
-        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
-    }
-
-    /*
-    @Test
-    public void testGetCategoryComboReportTableA()
-    {
-        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
-        
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 11 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 12 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 13 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 14 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 15 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 16 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 17 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 18 ) );  
-        
-        batchHandler.flush();
-        
-        ReportTable reportTable = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), categoryComboA, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-        
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 15 ) );
-
-        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
-    }
-
-    @Test
-    public void testGetCategoryComboReportTableB()
-    {
-        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
-        
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 11 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 12 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 13 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 14 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 15 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 16 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 17 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 18 ) );  
-        
-        batchHandler.flush();
-        
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), categoryComboA, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-        
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 15 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 16 ) );
-        
-        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 15 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 16 ) );
-        
-        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 15.0, grid.getRow( 2 ).get( 14 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 15 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 16 ) );
-
-        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 17.0, grid.getRow( 3 ).get( 14 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 15 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 16 ) );
-    }
-
-    @Test
-    public void testGetCategoryComboReportTableC()
-    {
-        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
-        
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 11 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 12 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 13 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 14 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 15 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 16 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 17 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 18 ) );  
-        
-        batchHandler.flush();
-        
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), categoryComboA, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
-        int id = reportTableService.saveReportTable( reportTable );
-
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
                 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 15 ) );
-        
-        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
-    }
-
-    @Test
-    public void testGetCategoryComboReportTableTotal()
-    {
-        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
-        
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 11 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 12 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 13 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 14 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 15 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 16 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 17 ) );
-        batchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 18 ) );  
-        
-        batchHandler.flush();
-        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), categoryComboA, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            true, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 18 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 19 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 20 ) );
-
-        assertEquals( 12.0, grid.getRow( 1 ).get( 18 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 19 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 20 ) );
-
-        assertEquals( 13.0, grid.getRow( 2 ).get( 18 ) );
-        assertEquals( 13.0, grid.getRow( 2 ).get( 19 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 20 ) );
-
-        assertEquals( 14.0, grid.getRow( 3 ).get( 18 ) );
-        assertEquals( 14.0, grid.getRow( 3 ).get( 19 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 20 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10) );
         
-        assertEquals( 15.0, grid.getRow( 4 ).get( 18 ) );
-        assertEquals( 15.0, grid.getRow( 4 ).get( 19 ) );
-        assertEquals( 30.0, grid.getRow( 4 ).get( 20 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
+    }
 
-        assertEquals( 16.0, grid.getRow( 5 ).get( 18 ) );
-        assertEquals( 16.0, grid.getRow( 5 ).get( 19 ) );
-        assertEquals( 32.0, grid.getRow( 5 ).get( 20 ) );
-
-        assertEquals( 17.0, grid.getRow( 6 ).get( 18 ) );
-        assertEquals( 17.0, grid.getRow( 6 ).get( 19 ) );
-        assertEquals( 34.0, grid.getRow( 6 ).get( 20 ) );
-
-        assertEquals( 18.0, grid.getRow( 7 ).get( 18 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 19 ) );
-        assertEquals( 36.0, grid.getRow( 7 ).get( 20 ) );
-    }*/
-    
     @Test
     public void testGetMultiReportTableA()
     {
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 11d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 12d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 13d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 14d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 15d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 16d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 17d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 18d );
+
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 21d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 22d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 23d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 24d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 25d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 26d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 27d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 28d );
+
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 31d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 32d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 33d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 34d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 35d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 36d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 37d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 38d );
+                
         ReportTable reportTable = new ReportTable( "Prescriptions",
-            dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, indicators, dataSets, periods, units, 
+            true, true, false, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
-
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 15 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 16 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 17 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 18 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 19 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 16 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 17 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 18 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 19 ) );        
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 21d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 23d, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 25d, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 27d, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 31d, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 33d, grid.getRow( 0 ).get( 16 ) );
+        assertEquals( 35d, grid.getRow( 0 ).get( 17 ) );
+        assertEquals( 37d, grid.getRow( 0 ).get( 18 ) );
+        
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 22d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 24d, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 26d, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 28d, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 32d, grid.getRow( 1 ).get( 15 ) );
+        assertEquals( 34d, grid.getRow( 1 ).get( 16 ) );
+        assertEquals( 36d, grid.getRow( 1 ).get( 17 ) );
+        assertEquals( 38d, grid.getRow( 1 ).get( 18 ) );        
     }
     
     @Test
     public void testGetMultiReportTableB()
     {
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodA.getUid(), 21d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodB.getUid(), 22d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodA.getUid(), 23d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodB.getUid(), 24d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodA.getUid(), 25d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementA.getUid() + DIMENSION_SEP + periodB.getUid(), 26d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodA.getUid(), 27d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataElementB.getUid() + DIMENSION_SEP + periodB.getUid(), 28d );
+
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodA.getUid(), 31d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodB.getUid(), 32d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodA.getUid(), 33d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodB.getUid(), 34d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodA.getUid(), 35d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetA.getUid() + DIMENSION_SEP + periodB.getUid(), 36d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodA.getUid(), 37d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + dataSetB.getUid() + DIMENSION_SEP + periodB.getUid(), 38d );
+        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, indicators, dataSets, periods, units, 
+            false, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+
+        assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 12 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 13d, grid.getRow( 2 ).get( 11 ) );
+        assertEquals( 17d, grid.getRow( 2 ).get( 12 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
+        assertEquals( 14d, grid.getRow( 3 ).get( 11 ) );
+        assertEquals( 18d, grid.getRow( 3 ).get( 12 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 21d, grid.getRow( 4 ).get( 11 ) );
+        assertEquals( 25d, grid.getRow( 4 ).get( 12 ) );
         
-        assertEquals( 11.0, grid.getRow( 4 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 4 ).get( 14 ) );
+        assertEquals( 22d, grid.getRow( 5 ).get( 11 ) );
+        assertEquals( 26d, grid.getRow( 5 ).get( 12 ) );
         
-        assertEquals( 13.0, grid.getRow( 5 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 5 ).get( 14 ) );
+        assertEquals( 23d, grid.getRow( 6 ).get( 11 ) );
+        assertEquals( 27d, grid.getRow( 6 ).get( 12 ) );
         
-        assertEquals( 15.0, grid.getRow( 6 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 6 ).get( 14 ) );
+        assertEquals( 24d, grid.getRow( 7 ).get( 11 ) );
+        assertEquals( 28d, grid.getRow( 7 ).get( 12 ) );
         
-        assertEquals( 17.0, grid.getRow( 7 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 14 ) );
+        assertEquals( 31d, grid.getRow( 8 ).get( 11 ) );
+        assertEquals( 35d, grid.getRow( 8 ).get( 12 ) );
         
-        assertEquals( 11.0, grid.getRow( 8 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 8 ).get( 14 ) );
+        assertEquals( 32d, grid.getRow( 9 ).get( 11 ) );
+        assertEquals( 36d, grid.getRow( 9 ).get( 12 ) );
         
-        assertEquals( 13.0, grid.getRow( 9 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 9 ).get( 14 ) );
+        assertEquals( 33d, grid.getRow( 10 ).get( 11 ) );
+        assertEquals( 37d, grid.getRow( 10 ).get( 12 ) );
         
-        assertEquals( 15.0, grid.getRow( 10 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 10 ).get( 14 ) );
-        
-        assertEquals( 17.0, grid.getRow( 11 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 11 ).get( 14 ) );
+        assertEquals( 34d, grid.getRow( 11 ).get( 11 ) );
+        assertEquals( 38d, grid.getRow( 11 ).get( 12 ) );
     }
     
     @Test
     public void testGetMultiReportTableC()
     {
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 21d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 22d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 23d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 24d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 25d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 26d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 27d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 28d );
+
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 31d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 32d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 33d );
+        valueMap.put( dataSetA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 34d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 35d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 36d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 37d );
+        valueMap.put( dataSetB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 38d );
+                
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, indicators, dataSets, periods, units, 
+            true, false, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 15 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 16 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 17 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 18 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 19 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 21d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 23d, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 25d, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 27d, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 31d, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 33d, grid.getRow( 0 ).get( 16 ) );
+        assertEquals( 35d, grid.getRow( 0 ).get( 17 ) );
+        assertEquals( 37d, grid.getRow( 0 ).get( 18 ) );
 
-        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 16 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 17 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 18 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 19 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14d, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16d, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 22d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 24d, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 26d, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 28d, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 32d, grid.getRow( 1 ).get( 15 ) );
+        assertEquals( 34d, grid.getRow( 1 ).get( 16 ) );
+        assertEquals( 36d, grid.getRow( 1 ).get( 17 ) );
+        assertEquals( 38d, grid.getRow( 1 ).get( 18 ) );
     }
 
     @Test
     public void testGetIndicatorReportTableColumnsOnly()
     {
+        putIndicatorData();
+                
         ReportTable reportTable = new ReportTable( "Prescriptions",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), true, true, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, true, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 3 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 4 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 5 ) );
-        assertEquals( 14.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 3 ) );
+        assertEquals( 12d, grid.getRow( 0 ).get( 4 ) );
+        assertEquals( 13d, grid.getRow( 0 ).get( 5 ) );
+        assertEquals( 14d, grid.getRow( 0 ).get( 6 ) );
+        assertEquals( 15d, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 16d, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 17d, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 18d, grid.getRow( 0 ).get( 10 ) );
     }
 
     @Test
     public void testGetIndicatorReportTableRowsOnly()
     {
+        putIndicatorData();
+                
         ReportTable reportTable = new ReportTable( "Prescriptions",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            new ArrayList<OrganisationUnitGroup>(), false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            false, false, false, null, null, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 18 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 18 ) );
-        assertEquals( 13.0, grid.getRow( 2 ).get( 18 ) );
-        assertEquals( 14.0, grid.getRow( 3 ).get( 18 ) );
-        assertEquals( 15.0, grid.getRow( 4 ).get( 18 ) );
-        assertEquals( 16.0, grid.getRow( 5 ).get( 18 ) );
-        assertEquals( 17.0, grid.getRow( 6 ).get( 18 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 18 ) );
+        assertEquals( 11d, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 12d, grid.getRow( 1 ).get( 15 ) );
+        assertEquals( 13d, grid.getRow( 2 ).get( 15 ) );
+        assertEquals( 14d, grid.getRow( 3 ).get( 15 ) );
+        assertEquals( 15d, grid.getRow( 4 ).get( 15 ) );
+        assertEquals( 16d, grid.getRow( 5 ).get( 15 ) );
+        assertEquals( 17d, grid.getRow( 6 ).get( 15 ) );
+        assertEquals( 18d, grid.getRow( 7 ).get( 15 ) );
     }
-
+    
     @Test
     public void testGetIndicatorReportTableTopLimit()
     {
+        putIndicatorData();
+                
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            false, false, true, null, null, "january_2000" );
         reportTable.setTopLimit( 2 );
         
         int id = reportTableService.saveReportTable( reportTable );
@@ -1110,45 +903,57 @@ public class ReportTableGridTest
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
         assertEquals( 2, grid.getHeight() );
-        
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
-        
-        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
     }
 
     @Test
     public void testGetIndicatorReportTableSortOrder()
     {
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( unitA.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( unitB.getUid() + DIMENSION_SEP + indicatorB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            false, false, true, null, null, "january_2000" );
         reportTable.setSortOrder( ReportTable.DESC );
         
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
 
-        assertEquals( 17.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 18.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 14d, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 18d, grid.getRow( 0 ).get( 12 ) );
 
-        assertEquals( 15.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 13d, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 17d, grid.getRow( 1 ).get( 12 ) );
 
-        assertEquals( 13.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 14.0, grid.getRow( 2 ).get( 14 ) );
+        assertEquals( 12d, grid.getRow( 2 ).get( 11 ) );
+        assertEquals( 16d, grid.getRow( 2 ).get( 12 ) );
         
-        assertEquals( 11.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 11d, grid.getRow( 3 ).get( 11 ) );
+        assertEquals( 15d, grid.getRow( 3 ).get( 12 ) );
     }
 
     @Test
     public void testGetDataElementReportTableRegression()
     {
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 11d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 12d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 13d );
+        valueMap.put( dataElementA.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 14d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodA.getUid(), 15d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitA.getUid() + DIMENSION_SEP + periodB.getUid(), 16d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodA.getUid(), 17d );
+        valueMap.put( dataElementB.getUid() + DIMENSION_SEP + unitB.getUid() + DIMENSION_SEP + periodB.getUid(), 18d );
+        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            true, false, true, null, null, "january_2000" );
         
         reportTable.setRegression( true );
         
@@ -1156,24 +961,36 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 10 ) );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 10 ) );
 
-        assertEquals( 13.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
-    }    
+        assertEquals( 12.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 14 ) );
+    }
+    
+    private void putIndicatorData()
+    {
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 11d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 12d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 13d );
+        valueMap.put( indicatorA.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 14d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitA.getUid(), 15d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodA.getUid() + DIMENSION_SEP + unitB.getUid(), 16d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitA.getUid(), 17d );
+        valueMap.put( indicatorB.getUid() + DIMENSION_SEP + periodB.getUid() + DIMENSION_SEP + unitB.getUid(), 18d );                
+    }
 }

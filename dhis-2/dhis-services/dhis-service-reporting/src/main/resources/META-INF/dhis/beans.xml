@@ -17,11 +17,11 @@
   </bean>
 
   <bean id="org.hisp.dhis.reporttable.ReportTableService" class="org.hisp.dhis.reporttable.impl.DefaultReportTableService">
-    <property name="reportTableManager" ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager" />
+    <property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
     <property name="reportTableStore" ref="org.hisp.dhis.reporttable.ReportTableStore" />
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <!-- Report -->
@@ -37,7 +37,6 @@
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataSource" ref="dataSource" />
   </bean>

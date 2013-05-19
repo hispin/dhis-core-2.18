@@ -30,6 +30,11 @@ package org.hisp.dhis.common;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIMS;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Lars Helge Overland
  */
@@ -49,5 +54,47 @@ public class DimensionalObjectUtils
         }
         
         return identifier;
+    }    
+
+    /**
+     * Creates a two-dimensional array of dimension items based on the list of
+     * DimensionalObjects. I.e. the list of items of each DimensionalObject is
+     * converted to an array and inserted into the outer array in the same order.
+     * 
+     * @param dimensions the list of DimensionalObjects.
+     * @return a two-dimensional array of NameableObjects.
+     */
+    public static NameableObject[][] getItemArray( List<DimensionalObject> dimensions )
+    {
+        List<NameableObject[]> arrays = new ArrayList<NameableObject[]>();
+        
+        for ( DimensionalObject dimension : dimensions )
+        {
+            arrays.add( dimension.getItems().toArray( new NameableObject[0] ) );
+        }
+        
+        return arrays.toArray( new NameableObject[0][] );
+    }
+    
+    /**
+     * Creates a map based on the given array of elements, where each pair of
+     * elements are put on them map as a key-value pair.
+     * 
+     * @param elements the elements to put on the map.
+     * @return a map.
+     */
+    public static <T> Map<T, T> asMap( T... elements )
+    {
+        Map<T, T> map = new HashMap<T, T>();
+        
+        if ( elements != null && ( elements.length % 2 == 0 ) )
+        {
+            for ( int i = 0; i < elements.length; i += 2 )
+            {
+                map.put( elements[i], elements[i+1] );
+            }
+        }
+        
+        return map;
     }
 }

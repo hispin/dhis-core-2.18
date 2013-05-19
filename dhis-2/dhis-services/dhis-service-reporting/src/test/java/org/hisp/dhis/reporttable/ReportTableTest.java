@@ -27,24 +27,24 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.reporttable.ReportTable.DATAELEMENT_ID;
+import static org.hisp.dhis.reporttable.ReportTable.INDICATOR_ID;
+import static org.hisp.dhis.reporttable.ReportTable.ORGANISATIONUNITGROUP_ID;
+import static org.hisp.dhis.reporttable.ReportTable.PERIOD_ID;
+import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
+import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.hisp.dhis.reporttable.ReportTable.DATAELEMENT_ID;
-import static org.hisp.dhis.reporttable.ReportTable.INDICATOR_ID;
-import static org.hisp.dhis.reporttable.ReportTable.PERIOD_ID;
-import static org.hisp.dhis.reporttable.ReportTable.ORGANISATIONUNITGROUP_ID;
-import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
-import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -56,6 +56,7 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -64,7 +65,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ReportTableTest
     extends DhisTest
@@ -74,7 +74,6 @@ public class ReportTableTest
     private List<Indicator> indicators;
     private List<DataSet> dataSets;
     private List<Period> periods;
-    private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
     private List<OrganisationUnit> relativeUnits;
     private List<OrganisationUnitGroup> groups;
@@ -105,6 +104,8 @@ public class ReportTableTest
     private OrganisationUnit unitA;
     private OrganisationUnit unitB;
     
+    private OrganisationUnitGroupSet groupSet;
+    
     private OrganisationUnitGroup groupA;
     private OrganisationUnitGroup groupB;
     
@@ -125,7 +126,6 @@ public class ReportTableTest
         indicators = new ArrayList<Indicator>();
         dataSets = new ArrayList<DataSet>();
         periods = new ArrayList<Period>();
-        relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
         relativeUnits = new ArrayList<OrganisationUnit>();
         groups = new ArrayList<OrganisationUnitGroup>();
@@ -179,22 +179,20 @@ public class ReportTableTest
         
         periodA.setId( 'A' );
         periodB.setId( 'B' );
-        
+
         periods.add( periodA );
         periods.add( periodB );
+
+        relatives = new RelativePeriods();
         
-        periodC = createPeriod( montlyPeriodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
-        periodD = createPeriod( montlyPeriodType, getDate( 2008, 4, 1 ), getDate( 2008, 4, 30 ) );
+        relatives.setReportingMonth( true );
+        relatives.setThisYear( true );
+
+        List<Period> rp = relatives.getRelativePeriods();
         
-        periodC.setId( 'C' );
-        periodD.setId( 'D' );
-        
-        periodC.setName( RelativePeriods.REPORTING_MONTH );
-        periodD.setName( RelativePeriods.THIS_YEAR );
-        
-        relativePeriods.add( periodC );
-        relativePeriods.add( periodD );
-        
+        periodC = rp.get( 0 );
+        periodD = rp.get( 1 );
+
         unitA = createOrganisationUnit( 'A' );
         unitB = createOrganisationUnit( 'B' );
         
@@ -205,8 +203,13 @@ public class ReportTableTest
         units.add( unitB );
         relativeUnits.add( unitA );
         
+        groupSet = createOrganisationUnitGroupSet( 'A' );
+        
         groupA = createOrganisationUnitGroup( 'A' );
         groupB = createOrganisationUnitGroup( 'B' );
+        
+        groupA.setGroupSet( groupSet );
+        groupB.setGroupSet( groupSet );
         
         groupA.setId( 'A' );
         groupB.setId( 'B' );
@@ -214,11 +217,6 @@ public class ReportTableTest
         groups.add( groupA );
         groups.add( groupB );
         
-        relatives = new RelativePeriods();
-        
-        relatives.setReportingMonth( true );
-        relatives.setThisYear( true );
-
         i18nFormat = new MockI18nFormat();
     }
     
@@ -233,7 +231,7 @@ public class ReportTableTest
         
         for ( List<NameableObject> column : cols )
         {
-            columns.add( getColumnName( column ) );
+            columns.add( ReportTable.getColumnName( column ) );
         }
         
         return columns;
@@ -352,157 +350,39 @@ public class ReportTableTest
         assertNotNull( getColumnName( a3 ) );
         assertEquals( "organisationunitgroupshorta_indicatorshorta", getColumnName( a3 ) );
     }
-
-    @Test
-    public void testOrganisationUnitGroupReportTableA()
-    {
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), relativeUnits, 
-            groups, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-        
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.ORGANISATIONUNIT_ID ) );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
-        
-        List<List<NameableObject>> columns = reportTable.getGridColumns();
-
-        assertNotNull( columns ); 
-        assertEquals( 8, columns.size() );
-        
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( indicatorA, periodA ), iterator.next() );
-        assertEquals( getList( indicatorA, periodB ), iterator.next() );
-        assertEquals( getList( indicatorA, periodC ), iterator.next() );
-        assertEquals( getList( indicatorA, periodD ), iterator.next() );
-        assertEquals( getList( indicatorB, periodA ), iterator.next() );
-        assertEquals( getList( indicatorB, periodB ), iterator.next() );
-        assertEquals( getList( indicatorB, periodC ), iterator.next() );
-        assertEquals( getList( indicatorB, periodD ), iterator.next() );
-            
-        List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
-        
-        assertNotNull( columnNames );        
-        assertEquals( 8, columnNames.size() );
-        
-        assertTrue( columnNames.contains( "indicatorshorta_reporting_month" ) );
-        assertTrue( columnNames.contains( "indicatorshorta_year" ) );
-        assertTrue( columnNames.contains( "indicatorshortb_reporting_month" ) );
-        assertTrue( columnNames.contains( "indicatorshortb_year" ) );
-        
-        List<List<NameableObject>> rows = reportTable.getGridRows();
-        
-        assertNotNull( rows );
-        assertEquals( 2, rows.size() );
-        
-        iterator = rows.iterator();
-        
-        assertEquals( getList( groupA ), iterator.next() );
-        assertEquals( getList( groupB ), iterator.next() );
-    }
-
-    @Test
-    public void testOrganisationUnitGroupReportTableB()
-    {        
-        ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), relativeUnits, 
-            groups, true, false, true, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
-        List<List<NameableObject>> columns = reportTable.getGridColumns();
-        
-        assertNotNull( columns );
-        assertEquals( 4, columns.size() );
-
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( indicatorA, groupA ), iterator.next() );
-        assertEquals( getList( indicatorA, groupB ), iterator.next() );
-        assertEquals( getList( indicatorB, groupA ), iterator.next() );
-        assertEquals( getList( indicatorB, groupB ), iterator.next() );
-        
-        List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
-        
-        assertNotNull( columnNames );
-        assertEquals( 4, columnNames.size() );
-        
-        assertTrue( columnNames.contains( "indicatorshorta_organisationunitgroupshorta" ) );
-        assertTrue( columnNames.contains( "indicatorshorta_organisationunitgroupshortb" ) );
-        assertTrue( columnNames.contains( "indicatorshortb_organisationunitgroupshorta" ) );
-        assertTrue( columnNames.contains( "indicatorshortb_organisationunitgroupshortb" ) );
-        
-        List<List<NameableObject>> rows = reportTable.getGridRows();
-        
-        assertNotNull( rows );
-        assertEquals( 4, rows.size() );
-
-        iterator = rows.iterator();
-        
-        assertEquals( getList( periodA ), iterator.next() );
-        assertEquals( getList( periodB ), iterator.next() );
-        assertEquals( getList( periodC ), iterator.next() );
-        assertEquals( getList( periodD ), iterator.next() );
-    }
     
     @Test
     public void testIndicatorReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, false, relatives, null, "january_2000" );
 
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-        
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.ORGANISATIONUNIT_ID ) );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
+        reportTable.init( null, null, null, i18nFormat );
 
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
+        
+        assertEquals( 2, columnDims.size() );        
+        assertEquals( 1, rowDims.size() );
+
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
         
         List<List<NameableObject>> columns = reportTable.getGridColumns();
 
         assertNotNull( columns ); 
         assertEquals( 8, columns.size() );
         
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( indicatorA, periodA ), iterator.next() );
-        assertEquals( getList( indicatorA, periodB ), iterator.next() );
-        assertEquals( getList( indicatorA, periodC ), iterator.next() );
-        assertEquals( getList( indicatorA, periodD ), iterator.next() );
-        assertEquals( getList( indicatorB, periodA ), iterator.next() );
-        assertEquals( getList( indicatorB, periodB ), iterator.next() );
-        assertEquals( getList( indicatorB, periodC ), iterator.next() );
-        assertEquals( getList( indicatorB, periodD ), iterator.next() );
+        assertTrue( columns.contains( getList( indicatorA, periodA  ) ) );
+        assertTrue( columns.contains( getList( indicatorA, periodB  ) ) );
+        assertTrue( columns.contains( getList( indicatorA, periodC  ) ) );
+        assertTrue( columns.contains( getList( indicatorA, periodD  ) ) );
+        assertTrue( columns.contains( getList( indicatorB, periodA  ) ) );
+        assertTrue( columns.contains( getList( indicatorB, periodB  ) ) );
+        assertTrue( columns.contains( getList( indicatorB, periodC  ) ) );
+        assertTrue( columns.contains( getList( indicatorB, periodD  ) ) );
             
         List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
         
@@ -518,45 +398,37 @@ public class ReportTableTest
         
         assertNotNull( rows );
         assertEquals( 2, rows.size() );
-        
-        iterator = rows.iterator();
-        
-        assertEquals( getList( unitA ), iterator.next() );
-        assertEquals( getList( unitB ), iterator.next() );
+                
+        assertTrue( rows.contains( getList( unitB ) ) );
+        assertTrue( rows.contains( getList( unitB ) ) );
     }
 
     @Test
     public void testIndicatorReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            false, false, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 1, columnDims.size() );        
+        assertEquals( 2, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 2, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.INDICATOR_ID ) );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );        
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 2, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );        
-
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
         assertEquals( 2, columns.size() );
 
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( unitA ), iterator.next() );
-        assertEquals( getList( unitB ), iterator.next() );
+        assertTrue( columns.contains( getList( unitA ) ) );
+        assertTrue( columns.contains( getList( unitB ) ) );
         
         List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
         
@@ -570,51 +442,45 @@ public class ReportTableTest
         
         assertNotNull( rows );
         assertEquals( 8, rows.size() );
-        
-        iterator = rows.iterator();
-        
-        assertEquals( getList( indicatorA, periodA ), iterator.next() );
-        assertEquals( getList( indicatorA, periodB ), iterator.next() );
-        assertEquals( getList( indicatorA, periodC ), iterator.next() );
-        assertEquals( getList( indicatorA, periodD ), iterator.next() );
-        assertEquals( getList( indicatorB, periodA ), iterator.next() );
-        assertEquals( getList( indicatorB, periodB ), iterator.next() );
-        assertEquals( getList( indicatorB, periodC ), iterator.next() );
-        assertEquals( getList( indicatorB, periodD ), iterator.next() );            
+
+        assertTrue( rows.contains( getList( indicatorA, periodA  ) ) );
+        assertTrue( rows.contains( getList( indicatorA, periodB  ) ) );
+        assertTrue( rows.contains( getList( indicatorA, periodC  ) ) );
+        assertTrue( rows.contains( getList( indicatorA, periodD  ) ) );
+        assertTrue( rows.contains( getList( indicatorB, periodA  ) ) );
+        assertTrue( rows.contains( getList( indicatorB, periodB  ) ) );  
+        assertTrue( rows.contains( getList( indicatorB, periodC  ) ) );
+        assertTrue( rows.contains( getList( indicatorB, periodD  ) ) );                    
     }
 
     @Test
     public void testIndicatorReportTableC()
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, false, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 2, columnDims.size() );        
+        assertEquals( 1, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
         assertEquals( 4, columns.size() );
 
-        Iterator<List<NameableObject>> iterator = columns.iterator();
-        
-        assertEquals( getList( indicatorA, unitA ), iterator.next() );
-        assertEquals( getList( indicatorA, unitB ), iterator.next() );
-        assertEquals( getList( indicatorB, unitA ), iterator.next() );
-        assertEquals( getList( indicatorB, unitB ), iterator.next() );
+        assertTrue( columns.contains( getList( indicatorA, unitA ) ) );
+        assertTrue( columns.contains( getList( indicatorA, unitB ) ) );
+        assertTrue( columns.contains( getList( indicatorB, unitA ) ) );
+        assertTrue( columns.contains( getList( indicatorB, unitB ) ) );
         
         List<String> columnNames = getColumnNames( reportTable.getGridColumns() );
         
@@ -631,32 +497,30 @@ public class ReportTableTest
         assertNotNull( rows );
         assertEquals( 4, rows.size() );
 
-        iterator = rows.iterator();
-        
-        assertEquals( getList( periodA ), iterator.next() );
-        assertEquals( getList( periodB ), iterator.next() );
-        assertEquals( getList( periodC ), iterator.next() );
-        assertEquals( getList( periodD ), iterator.next() );
+        assertTrue( rows.contains( getList( periodA  ) ) );
+        assertTrue( rows.contains( getList( periodB  ) ) );
+        assertTrue( rows.contains( getList( periodC  ) ) );
+        assertTrue( rows.contains( getList( periodD  ) ) );
     }
     
     @Test
     public void testIndicatorReportTableColumnsOnly()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 3, columnDims.size() );        
+        assertEquals( 0, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 0, indexColumns.size() );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 0, indexNameColumns.size() );
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
         
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
@@ -673,20 +537,20 @@ public class ReportTableTest
     public void testIndicatorReportTableRowsOnly()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            false, false, false, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 0, columnDims.size() );        
+        assertEquals( 3, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 3, indexColumns.size() );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 3, indexNameColumns.size() );
+        assertTrue( rowDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
         
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
@@ -703,23 +567,21 @@ public class ReportTableTest
     public void testDataElementReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relatives, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            true, true, false, relatives, null, "january_2000" );
 
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-        
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.ORGANISATIONUNIT_ID ) );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
+        reportTable.init( null, null, null, i18nFormat );
 
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
+        
+        assertEquals( 2, columnDims.size() );        
+        assertEquals( 1, rowDims.size() );
 
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
@@ -745,25 +607,21 @@ public class ReportTableTest
     public void testDataElementReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relatives, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            false, false, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 1, columnDims.size() );        
+        assertEquals( 2, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 2, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.INDICATOR_ID ) );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 2, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
@@ -787,23 +645,21 @@ public class ReportTableTest
     public void testDataElementReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, relatives, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            true, false, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 2, columnDims.size() );        
+        assertEquals( 1, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
@@ -829,23 +685,21 @@ public class ReportTableTest
     public void testDataSetReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            true, true, false, relatives, null, "january_2000" );
 
-        reportTable.init();
-        
-        List<String> indexColumns = reportTable.getIndexColumns();
-        
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.ORGANISATIONUNIT_ID ) );
-        
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
+        reportTable.init( null, null, null, i18nFormat );
 
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
+        
+        assertEquals( 2, columnDims.size() );        
+        assertEquals( 1, rowDims.size() );
 
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
@@ -871,25 +725,21 @@ public class ReportTableTest
     public void testDataSetReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            false, false, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 1, columnDims.size() );        
+        assertEquals( 2, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 2, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.INDICATOR_ID ) );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );        
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 2, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );        
-
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );
@@ -913,23 +763,21 @@ public class ReportTableTest
     public void testDataSetReportTableC()
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, false, true, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            true, false, true, relatives, null, "january_2000" );
 
-        reportTable.init();
+        reportTable.init( null, null, null, i18nFormat );
+
+        List<String> columnDims = reportTable.getColumnDimensions();
+        List<String> rowDims = reportTable.getRowDimensions();
         
-        List<String> indexColumns = reportTable.getIndexColumns();
+        assertEquals( 2, columnDims.size() );        
+        assertEquals( 1, rowDims.size() );
 
-        assertNotNull( indexColumns );
-        assertEquals( 1, indexColumns.size() );
-        assertTrue( indexColumns.contains( ReportTable.PERIOD_ID ) );
-
-        List<String> indexNameColumns = reportTable.getIndexNameColumns();
-
-        assertNotNull( indexNameColumns );
-        assertEquals( 1, indexNameColumns.size() );
-        assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
-
+        assertTrue( columnDims.contains( DimensionalObject.DATA_X_DIM_ID ) );
+        assertTrue( columnDims.contains( DimensionalObject.ORGUNIT_DIM_ID ) );
+        assertTrue( rowDims.contains( DimensionalObject.PERIOD_DIM_ID ) );
+        
         List<List<NameableObject>> columns = reportTable.getGridColumns();
         
         assertNotNull( columns );

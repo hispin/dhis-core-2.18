@@ -42,13 +42,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -73,7 +70,6 @@ public class ReportTableStoreTest
     private List<Indicator> indicators;
     private List<DataSet> dataSets;
     private List<Period> periods;
-    private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
     
     private PeriodType periodType;
@@ -97,8 +93,6 @@ public class ReportTableStoreTest
     private RelativePeriods relativesB;
     private RelativePeriods relativesC;
         
-    private I18nFormat i18nFormat;
-    
     @Override
     public void setUpTest()
         throws Exception
@@ -182,23 +176,21 @@ public class ReportTableStoreTest
 
         relativesC = new RelativePeriods();        
         relativesC.setReportingMonth( true );
-        relativesC.setThisYear( true );
-
-        i18nFormat = new MockI18nFormat();        
+        relativesC.setThisYear( true );    
     }
 
     @Test
     public void testSaveGetReportTable()
     {
         ReportTable reportTableA = new ReportTable( "Immunization",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relativesA, null, i18nFormat, "january_2000" );        
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, false, relativesA, null, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relativesB, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            false, false, true, relativesB, null, "january_2000" );
         ReportTable reportTableC = new ReportTable( "Assualt",
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relativesC, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
+            false, false, true, relativesC, null, "january_2000" );
         
         int idA = reportTableStore.save( reportTableA );
         int idB = reportTableStore.save( reportTableB );
@@ -211,7 +203,6 @@ public class ReportTableStoreTest
         assertEquals( "Immunization", reportTableA.getName() );
         assertEquals( indicators, reportTableA.getIndicators() );
         assertEquals( periods, reportTableA.getPeriods() );
-        assertEquals( relativePeriods, reportTableA.getRelativePeriods() );
         assertEquals( units, reportTableA.getOrganisationUnits() );
         assertEquals( true, reportTableA.isDoIndicators() );
         assertEquals( true, reportTableA.isDoPeriods() );
@@ -221,7 +212,6 @@ public class ReportTableStoreTest
         assertEquals( "Prescriptions", reportTableB.getName() );
         assertEquals( dataElements, reportTableB.getDataElements() );
         assertEquals( periods, reportTableB.getPeriods() );
-        assertEquals( relativePeriods, reportTableB.getRelativePeriods() );
         assertEquals( units, reportTableB.getOrganisationUnits() );
         assertEquals( false, reportTableB.isDoIndicators() );
         assertEquals( false, reportTableB.isDoPeriods() );
@@ -231,7 +221,6 @@ public class ReportTableStoreTest
         assertEquals( "Assualt", reportTableC.getName() );
         assertEquals( dataSets, reportTableC.getDataSets() );
         assertEquals( periods, reportTableC.getPeriods() );
-        assertEquals( relativePeriods, reportTableC.getRelativePeriods() );
         assertEquals( units, reportTableC.getOrganisationUnits() );
         assertEquals( false, reportTableC.isDoIndicators() );
         assertEquals( false, reportTableC.isDoPeriods() );
@@ -243,11 +232,11 @@ public class ReportTableStoreTest
     public void testDeleteReportTable()
     {
         ReportTable reportTableA = new ReportTable( "Immunization",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relativesA, null, i18nFormat, "january_2000" );        
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, false, relativesA, null, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relativesB, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            false, false, true, relativesB, null, "january_2000" );
         
         int idA = reportTableStore.save( reportTableA );
         int idB = reportTableStore.save( reportTableB );
@@ -270,11 +259,11 @@ public class ReportTableStoreTest
     public void testGetAllReportTables()
     {
         ReportTable reportTableA = new ReportTable( "Immunization",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relativesA, null, i18nFormat, "january_2000" );        
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, false, relativesA, null, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relativesB, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            false, false, true, relativesB, null, "january_2000" );
         
         reportTableStore.save( reportTableA );
         reportTableStore.save( reportTableB );
@@ -289,11 +278,11 @@ public class ReportTableStoreTest
     public void testGetReportTableByName()
     {
         ReportTable reportTableA = new ReportTable( "Immunization",
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), true, true, false, relativesA, null, i18nFormat, "january_2000" );        
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
+            true, true, false, relativesA, null, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions",
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            new ArrayList<OrganisationUnitGroup>(), false, false, true, relativesB, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
+            false, false, true, relativesB, null, "january_2000" );
         
         reportTableStore.save( reportTableA );
         reportTableStore.save( reportTableB );
