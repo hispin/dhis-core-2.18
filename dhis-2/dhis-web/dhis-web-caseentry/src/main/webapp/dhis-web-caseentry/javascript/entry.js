@@ -725,15 +725,22 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
         $( "#entryFormContainer input[id='programStageInstanceId']" ).val( programStageInstanceId );
 
         DAO.store.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
-            if(obj && obj.values !== undefined ) {
-                _.each( _.keys(obj.values), function(key, idx) {
-                    var fieldId = getProgramStageUid() + '-' + key + '-val';
-                    var field = $('#' + fieldId);
+            if(obj ) {
+                if(obj.values !== undefined) {
+                    _.each( _.keys(obj.values), function(key, idx) {
+                        var fieldId = getProgramStageUid() + '-' + key + '-val';
+                        var field = $('#' + fieldId);
 
-                    if ( field ) {
-                        field.val( decodeURI( obj.values[key].value ) );
-                    }
-                });
+                        if ( field ) {
+                            field.val( decodeURI( obj.values[key].value ) );
+                        }
+                    });
+                }
+
+                if ( obj.coordinates !== undefined ) {
+                    $( '#longitude' ).val( obj.coordinates.longitude );
+                    $( '#latitude' ).val( obj.coordinates.latitude );
+                }
             }
 
             if( always ) always();
