@@ -27,16 +27,15 @@
 
 package org.hisp.dhis.patientreport;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.program.ProgramStageDataElement;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Chau Thu Tran
@@ -69,13 +68,7 @@ public class PatientTabularReport
 
     private Date endDate;
 
-    private List<PatientIdentifierType> identifiers = new ArrayList<PatientIdentifierType>();
-
-    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-
-    private List<String> fixedAttributes = new ArrayList<String>();
-
-    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+    private ProgramStage programStage;
 
     private Set<OrganisationUnit> organisationUnits;
 
@@ -85,11 +78,15 @@ public class PatientTabularReport
 
     private String facilityLB;
 
+    private User user;
+
     private Boolean useCompletedEvents;
 
     private Boolean userOrganisationUnit;
 
     private Boolean userOrganisationUnitChildren;
+
+    private List<String> filterValues = new ArrayList<String>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -138,44 +135,14 @@ public class PatientTabularReport
         this.organisationUnits = organisationUnits;
     }
 
-    public List<PatientIdentifierType> getIdentifiers()
+    public List<String> getFilterValues()
     {
-        return identifiers;
+        return filterValues;
     }
 
-    public void setIdentifiers( List<PatientIdentifierType> identifiers )
+    public void setFilterValues( List<String> filterValues )
     {
-        this.identifiers = identifiers;
-    }
-
-    public List<PatientAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
-    public void setAttributes( List<PatientAttribute> attributes )
-    {
-        this.attributes = attributes;
-    }
-
-    public List<String> getFixedAttributes()
-    {
-        return fixedAttributes;
-    }
-
-    public void setFixedAttributes( List<String> fixedAttributes )
-    {
-        this.fixedAttributes = fixedAttributes;
-    }
-
-    public List<ProgramStageDataElement> getProgramStageDataElements()
-    {
-        return programStageDataElements;
-    }
-
-    public void setProgramStageDataElements( List<ProgramStageDataElement> programStageDataElements )
-    {
-        this.programStageDataElements = programStageDataElements;
+        this.filterValues = filterValues;
     }
 
     public int getLevel()
@@ -236,6 +203,26 @@ public class PatientTabularReport
     public void setUseCompletedEvents( Boolean useCompletedEvents )
     {
         this.useCompletedEvents = useCompletedEvents;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
+    }
+
+    public void setProgramStage( ProgramStage programStage )
+    {
+        this.programStage = programStage;
     }
 
 }

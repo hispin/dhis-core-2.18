@@ -17,6 +17,8 @@ public class TabularReportColumn
     
     private String query;
     
+    private String operator;
+    
     private String name;
     
     private boolean dateType = false;
@@ -29,13 +31,14 @@ public class TabularReportColumn
     {
     }
     
-    public TabularReportColumn( String prefix, String identifier, String name, boolean hidden, String query )
+    public TabularReportColumn( String prefix, String identifier, String name, boolean hidden, String operator, String query )
     {
         this.prefix = prefix;
         this.identifier = identifier;
         this.name = name;
         this.hidden = hidden;
         this.query = query;
+        this.operator = operator;
     }
 
     // -------------------------------------------------------------------------
@@ -144,5 +147,15 @@ public class TabularReportColumn
     public void setDateType( boolean dateType )
     {
         this.dateType = dateType;
+    }
+
+    public String getOperator()
+    {
+        return operator;
+    }
+
+    public void setOperator( String operator )
+    {
+        this.operator = operator;
     }
 }
