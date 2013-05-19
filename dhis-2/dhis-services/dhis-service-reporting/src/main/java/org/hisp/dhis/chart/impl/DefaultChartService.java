@@ -720,9 +720,7 @@ public class DefaultChartService
 
     private CategoryDataset[] getCategoryDataSet( Chart chart, I18nFormat format )
     {
-        DataQueryParams params = analyticsService.getFromAnalyticalObject( chart, null );
-        
-        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( params );
+        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, format );
 
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();

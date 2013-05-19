@@ -137,12 +137,12 @@ public class AnalyticsServiceTest
     public void testGetFromUrlA()
     {
         Set<String> dimensionParams = new HashSet<String>();
-        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+        dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() + ";" + deC.getUid() + ";" + deD.getUid() );
         dimensionParams.add( "pe:2012;2012S1;2012S2" );
         dimensionParams.add( ouGroupSetA.getUid() + ":" + ouGroupA.getUid() + ";" + ouGroupB.getUid() + ";" + ouGroupC.getUid() );
         
         Set<String> filterParams = new HashSet<String>();
-        filterParams.add( "ou:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D;" + BASE_UID + "E" );
+        filterParams.add( "ou:" + ouA.getUid() + ";" + ouB.getUid() + ";" + ouC.getUid() + ";" + ouD.getUid() + ";" + ouE.getUid() );
         
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, null );
         
@@ -156,10 +156,10 @@ public class AnalyticsServiceTest
     public void testGetFromUrlB()
     {
         Set<String> dimensionParams = new HashSet<String>();
-        dimensionParams.add( "dx:" + BASE_UID + "A;" + BASE_UID + "B;" + BASE_UID + "C;" + BASE_UID + "D" );
+        dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() + ";" + deC.getUid() + ";" + deD.getUid() );
 
         Set<String> filterParams = new HashSet<String>();
-        filterParams.add( "ou:" + BASE_UID + "A" );
+        filterParams.add( "ou:" + ouA.getUid() );
         
         DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, null );
         

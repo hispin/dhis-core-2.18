@@ -40,12 +40,8 @@
 				<tr id="tr${table.id}">
 					<td onclick="showTableDetails( $table.id )">$encoder.htmlEncode( $table.name )</td>
 					<td style="text-align:right">
-						#if ( $table.isReportTable() )
 						<a href="getReportParams.action?uid=${table.uid}&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a>
-						#else
-						<img src="../images/start_process-denied.png">
-						#end
-
+						
                         #if ( $security.canManage( $table ) )
                         <a href="javascript:showSharingDialog('reportTable', '$table.uid');" title="$i18n.getString( 'sharing_settings' )"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
                         #else

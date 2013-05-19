@@ -63,8 +63,6 @@ public class Report
 
     private ReportTable reportTable;
 
-    private Boolean usingOrgUnitGroupSets;
-
     private RelativePeriods relatives;
 
     private ReportParams reportParams;
@@ -114,11 +112,6 @@ public class Report
     public boolean hasReportTable()
     {
         return reportTable != null;
-    }
-
-    public boolean isUsingOrganisationUnitGroupSets()
-    {
-        return usingOrgUnitGroupSets != null && usingOrgUnitGroupSets;
     }
 
     /**
@@ -226,19 +219,6 @@ public class Report
         this.reportTable = reportTable;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getUsingOrgUnitGroupSets()
-    {
-        return usingOrgUnitGroupSets;
-    }
-
-    public void setUsingOrgUnitGroupSets( Boolean usingOrgUnitGroupSets )
-    {
-        this.usingOrgUnitGroupSets = usingOrgUnitGroupSets;
-    }
-
     @JsonProperty( value = "relativePeriods" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -276,7 +256,6 @@ public class Report
 
             designContent = report.getDesignContent() == null ? designContent : report.getDesignContent();
             reportTable = report.getReportTable() == null ? reportTable : report.getReportTable();
-            usingOrgUnitGroupSets = report.isUsingOrganisationUnitGroupSets();
         }
     }
 }

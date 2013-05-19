@@ -109,6 +109,10 @@ import org.springframework.aop.support.AopUtils;
 public abstract class DhisConvenienceTest
 {
     protected static final String BASE_UID = "123456789a";
+    protected static final String BASE_IN_UID = "inabcdefgh";
+    protected static final String BASE_DE_UID = "deabcdefgh";
+    protected static final String BASE_DS_UID = "dsabcdefgh";
+    protected static final String BASE_OU_UID = "ouabcdefgh";
 
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
@@ -366,7 +370,7 @@ public abstract class DhisConvenienceTest
     {
         DataElement dataElement = new DataElement();
 
-        dataElement.setUid( BASE_UID + uniqueCharacter );
+        dataElement.setUid( BASE_DE_UID + uniqueCharacter );
         dataElement.setName( "DataElement" + uniqueCharacter );
         dataElement.setShortName( "DataElementShort" + uniqueCharacter );
         dataElement.setCode( "DataElementCode" + uniqueCharacter );
@@ -532,7 +536,7 @@ public abstract class DhisConvenienceTest
     {
         Indicator indicator = new Indicator();
 
-        indicator.setUid( BASE_UID + uniqueCharacter );
+        indicator.setUid( BASE_IN_UID + uniqueCharacter );
         indicator.setName( "Indicator" + uniqueCharacter );
         indicator.setShortName( "IndicatorShort" + uniqueCharacter );
         indicator.setCode( "IndicatorCode" + uniqueCharacter );
@@ -581,6 +585,7 @@ public abstract class DhisConvenienceTest
     {
         DataSet dataSet = new DataSet();
 
+        dataSet.setUid( BASE_DS_UID + uniqueCharacter );
         dataSet.setName( "DataSet" + uniqueCharacter );
         dataSet.setShortName( "DataSetShort" + uniqueCharacter );
         dataSet.setCode( "DataSetCode" + uniqueCharacter );
@@ -596,7 +601,7 @@ public abstract class DhisConvenienceTest
     {
         OrganisationUnit unit = new OrganisationUnit();
 
-        unit.setUid( BASE_UID + uniqueCharacter );
+        unit.setUid( BASE_OU_UID + uniqueCharacter );
         unit.setName( "OrganisationUnit" + uniqueCharacter );
         unit.setShortName( "OrganisationUnitShort" + uniqueCharacter );
         unit.setCode( "OrganisationUnitCode" + uniqueCharacter );

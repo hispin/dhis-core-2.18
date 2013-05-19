@@ -167,6 +167,7 @@ public class DefaultAnalyticsService
     // Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Grid getAggregatedDataValues( DataQueryParams params )        
     {
         queryPlanner.validate( params );
@@ -353,7 +354,8 @@ public class DefaultAnalyticsService
         
         return grid;
     }
-
+    
+    @Override
     public Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params )
     {
         Grid grid = getAggregatedDataValues( params );
@@ -380,6 +382,14 @@ public class DefaultAnalyticsService
         }
         
         return map;
+    }
+
+    @Override
+    public Map<String, Double> getAggregatedDataValueMapping( BaseAnalyticalObject object, I18nFormat format )
+    {
+        DataQueryParams params = getFromAnalyticalObject( object, format );
+        
+        return getAggregatedDataValueMapping( params );
     }
     
     /**
@@ -467,6 +477,7 @@ public class DefaultAnalyticsService
         return map;
     }
     
+    @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
         AggregationType aggregationType, String measureCriteria, I18nFormat format )
     {
@@ -510,6 +521,7 @@ public class DefaultAnalyticsService
         return params;
     }
 
+    @Override
     public DataQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
@@ -542,8 +554,16 @@ public class DefaultAnalyticsService
     // -------------------------------------------------------------------------
     
     /**
-     * Returns a list of dimensions generated from the given dimension identifier
-     * and list of dimension options.
+     * Returns a list of persisted DimensionalObjects generated from the given 
+     * dimension identifier and list of dimension options. The dx dimension
+     * will be exploded into concrete in|de|ds object identifiers and returned
+     * as separate DimensionalObjects. 
+     * 
+     * For the pe dimension items, relative periods represented by enums will be 
+     * replaced by real ISO periods relative to the current date. For the ou 
+     * dimension items, the user  organisation unit enums 
+     * USER_ORG_UNIT|USER_ORG_UNIT_CHILDREN will be replaced by the persisted 
+     * organisation units for the current user. 
      */
     private List<DimensionalObject> getDimension( String dimension, List<String> items, I18nFormat format )
     {        
@@ -613,44 +633,7 @@ public class DefaultAnalyticsService
             
             return Arrays.asList( object );
         }
-        
-        if ( ORGUNIT_DIM_ID.equals( dimension ) )
-        {
-            User user = currentUserService.getCurrentUser();
-            
-            List<IdentifiableObject> ous = new ArrayList<IdentifiableObject>();
-            
-            for ( String ou : items )
-            {
-                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.getOrganisationUnit() != null )
-                {
-                    ous.add( user.getOrganisationUnit() );
-                }
-                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.getOrganisationUnit() != null )
-                {
-                    ous.addAll( user.getOrganisationUnit().getSortedChildren() );
-                }
-                else
-                {
-                    OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
-                    
-                    if ( unit != null )
-                    {
-                        ous.add( unit );
-                    }
-                }
-            }
-            
-            if ( ous.isEmpty() )
-            {
-                throw new IllegalQueryException( "Dimension ou is present in query without any valid dimension options" );
-            }
-            
-            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, ous );
-            
-            return Arrays.asList( object );
-        }
-        
+
         if ( PERIOD_DIM_ID.equals( dimension ) )
         {
             Set<Period> periods = new HashSet<Period>();
@@ -687,6 +670,43 @@ public class DefaultAnalyticsService
             Collections.sort( periodList, AscendingPeriodComparator.INSTANCE );
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.PERIOD, null, DISPLAY_NAME_PERIOD, asList( periodList ) );
+            
+            return Arrays.asList( object );
+        }
+        
+        if ( ORGUNIT_DIM_ID.equals( dimension ) )
+        {
+            User user = currentUserService.getCurrentUser();
+            
+            List<IdentifiableObject> ous = new ArrayList<IdentifiableObject>();
+            
+            for ( String ou : items )
+            {
+                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                {
+                    ous.add( user.getOrganisationUnit() );
+                }
+                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                {
+                    ous.addAll( user.getOrganisationUnit().getSortedChildren() );
+                }
+                else
+                {
+                    OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
+                    
+                    if ( unit != null )
+                    {
+                        ous.add( unit );
+                    }
+                }
+            }
+            
+            if ( ous.isEmpty() )
+            {
+                throw new IllegalQueryException( "Dimension ou is present in query without any valid dimension options" );
+            }
+            
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, ous );
             
             return Arrays.asList( object );
         }

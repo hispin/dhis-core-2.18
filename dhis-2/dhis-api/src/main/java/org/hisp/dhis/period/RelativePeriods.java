@@ -698,7 +698,9 @@ public class RelativePeriods
     }
 
     /**
-     * Sets the name and short name of the given Period.
+     * Sets the name and short name of the given Period. The name will be
+     * formatted to the real period name if the given dynamicNames argument is
+     * true. The short name will be formatted in any case.
      *
      * @param period       the period.
      * @param periodName   the period name.

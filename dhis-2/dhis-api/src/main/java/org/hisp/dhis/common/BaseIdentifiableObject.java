@@ -441,15 +441,15 @@ public class BaseIdentifiableObject
     @Override
     public String toString()
     {
-        return "IdentifiableObject{" +
-            "id=" + id +
-            ", uid='" + uid + '\'' +
-            ", code='" + code + '\'' +
-            ", name='" + name + '\'' +
-            ", created=" + created +
-            ", lastUpdated=" + lastUpdated +
-            ", class=" + getClass().getSimpleName() +
-            '}';
+        return "[IdentifiableObject: " +
+            "id='" + id +
+            "', uid='" + uid + 
+            "', code='" + code + 
+            "', name='" + name + 
+            "', created='" + created + 
+            "', lastUpdated='" + lastUpdated + 
+            "', class='" + getClass().getSimpleName() + 
+            "']";
     }
 
     @Override

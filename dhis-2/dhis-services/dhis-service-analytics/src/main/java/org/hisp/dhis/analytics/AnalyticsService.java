@@ -48,8 +48,27 @@ public interface AnalyticsService
      * @return aggregated data as a Grid object.
      */
     Grid getAggregatedDataValues( DataQueryParams params );
-    
+
+    /**
+     * Generates a mapping where the key represents the dimensional item identifiers
+     * concatenated by "-" and the value is the corresponding aggregated data value
+     * based on the given DataQueryParams.
+     * 
+     * @param params the DataQueryParams.
+     * @return a mapping of dimensional items and aggregated data values.
+     */
     Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params );
+
+    /**
+     * Generates a mapping where the key represents the dimensional item identifiers
+     * concatenated by "-" and the value is the corresponding aggregated data value
+     * based on the given BaseAnalyticalObject.
+     * 
+     * @param object the BaseAnalyticalObject.
+     * @param format the I18nFormat, can be null.
+     * @return a mapping of dimensional items and aggregated data values.
+     */
+    Map<String, Double> getAggregatedDataValueMapping( BaseAnalyticalObject object, I18nFormat format );
 
     /**
      * Creates a data query parameter object from the given URL.

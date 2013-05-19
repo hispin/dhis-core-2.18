@@ -126,6 +126,18 @@ public class Period
     {
         return getIsoDate();
     }
+    
+    @Override
+    public String getName()
+    {
+        return name != null ? name : getIsoDate();
+    }
+
+    @Override
+    public String getShortName()
+    {
+        return shortName != null ? shortName : getIsoDate();
+    }
 
     /**
      * Returns an ISO8601 formatted string version of the period
@@ -287,7 +299,7 @@ public class Period
     @Override
     public String toString()
     {
-        return "[" + (periodType == null ? "" : periodType.getName() + ": ") + startDate + " - " + endDate + "]";
+        return "[" + (periodType == null ? "" : periodType.getName() + ": ") + startDate + " - " + endDate + "] " + name;
     }
 
     // -------------------------------------------------------------------------

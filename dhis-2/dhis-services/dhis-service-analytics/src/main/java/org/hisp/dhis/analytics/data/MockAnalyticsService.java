@@ -1,7 +1,7 @@
-package org.hisp.dhis.period;
+package org.hisp.dhis.analytics.data;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,63 +27,58 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * @author Lars Helge Overland
- */
-public class ConfigurablePeriod
-    extends Period
-{
-    private String value;
+import java.util.Map;
+import java.util.Set;
 
-    public ConfigurablePeriod( String value )
+import org.apache.commons.lang.NotImplementedException;
+import org.hisp.dhis.analytics.AggregationType;
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nFormat;
+
+/**
+ * Configurable mock implementation of AnalyticsService for testing purposes.
+ */
+public class MockAnalyticsService
+    implements AnalyticsService
+{
+    private Map<String, Double> valueMap;
+
+    public MockAnalyticsService( Map<String, Double> valueMap )
     {
-        this.value = value;
-        this.name = value;
-        this.code = value;
+        this.valueMap = valueMap;
+    }
+
+    @Override
+    public Grid getAggregatedDataValues( DataQueryParams params )
+    {
+        throw new NotImplementedException();
     }
     
     @Override
-    public String getIsoDate()
+    public Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params )
     {
-        return value;
-    }
-
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return value.hashCode();
+        return valueMap;
     }
 
     @Override
-    public boolean equals( Object o )
+    public Map<String, Double> getAggregatedDataValueMapping( BaseAnalyticalObject object, I18nFormat format )
     {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof Period) )
-        {
-            return false;
-        }
-
-        final Period other = (Period) o;
-
-        return value.equals( other.getIsoDate() );
+        return valueMap;
     }
 
     @Override
-    public String toString()
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams,
+        AggregationType aggregationType, String measureCriteria, I18nFormat format )
     {
-        return "[" + value + "]";
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public DataQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format )
+    {
+        throw new NotImplementedException();
     }
 }

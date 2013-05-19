@@ -170,6 +170,27 @@ public class IdentifiableObjectUtils
     }
 
     /**
+     * Removes duplicates from the given list while maintaining the order.
+     * 
+     * @param list the list.
+     */
+    public static <T extends IdentifiableObject> List<T> removeDuplicates( List<T> list )
+    {
+        final List<T> temp = new ArrayList<T>( list );
+        list.clear();
+
+        for ( T object : temp )
+        {
+            if ( !list.contains( object ) )
+            {
+                list.add( object );
+            }
+        }
+
+        return list;
+    }
+
+    /**
      * Generates a tag reflecting the date of when the most recently updated
      * IdentifiableObject in the given collection was modified.
      *

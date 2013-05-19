@@ -28,7 +28,6 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -142,21 +141,5 @@ public class ReportTableDeletionHandler
                 reportTableService.updateReportTable( reportTable );
             }
         }
-    }
-    
-    @Override
-    public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            DataElementCategoryCombo eachCatCombo = reportTable.getCategoryCombo();
-
-            if ( eachCatCombo != null && eachCatCombo.equals( categoryCombo ) )
-            {
-                return reportTable.getName();
-            }
-        }
-
-        return null;
     }
 }

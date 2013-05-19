@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
@@ -57,7 +58,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0)
 public class DataElementOperand
-    extends BaseIdentifiableObject
+    extends BaseNameableObject
 {
     public static final String SEPARATOR = ".";
     public static final String NAME_TOTAL = "(Total)";

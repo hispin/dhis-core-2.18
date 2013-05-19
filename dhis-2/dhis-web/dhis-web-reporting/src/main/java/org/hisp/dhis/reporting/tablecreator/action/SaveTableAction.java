@@ -303,8 +303,8 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName,
-                dataElements, indicators, dataSets, periods, null, units, null, organisationUnitGroups,
-                doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, null, null );
+                dataElements, indicators, dataSets, periods, units, 
+                doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, null );
         }
         else
         {

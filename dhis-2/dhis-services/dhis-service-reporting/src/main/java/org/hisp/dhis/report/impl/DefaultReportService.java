@@ -44,15 +44,13 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-
 import net.sf.jasperreports.engine.util.JRProperties;
-import org.amplecode.quick.StatementManager;
+
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -107,13 +105,6 @@ public class DefaultReportService
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
     
     private PeriodService periodService;
@@ -177,11 +168,6 @@ public class DefaultReportService
                 ReportTable reportTable = report.getReportTable();
 
                 Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), format, reportDate, organisationUnitUid );
-
-                if ( report.isUsingOrganisationUnitGroupSets() )
-                {
-                    params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
-                }
 
                 print = JasperFillManager.fillReport( jasperReport, params, grid );
             }

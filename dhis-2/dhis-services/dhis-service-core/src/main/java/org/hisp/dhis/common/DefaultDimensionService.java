@@ -200,7 +200,19 @@ public class DefaultDimensionService
     // Supportive methods
     //--------------------------------------------------------------------------
 
-    private void mergeDimensionalObjects( BaseAnalyticalObject object, List<DimensionalObject> dimensions ) // TODO Add mergeAnalyticalObject to AnalyticsService
+    /**
+     * Sets persistent objects for dimensional associations on the given 
+     * BaseAnalyticalObject based on the given list of transient DimensionalObjects. 
+     * 
+     * Relative periods represented by enums are converted into a RelativePeriods 
+     * object. User organisation units represented by enums are converted and 
+     * represented by the user organisation unit persisted properties on the
+     * BaseAnalyticalObject.
+     * 
+     * @param object the BaseAnalyticalObject to merge.
+     * @param dimensions the
+     */
+    private void mergeDimensionalObjects( BaseAnalyticalObject object, List<DimensionalObject> dimensions )
     {
         for ( DimensionalObject dimension : dimensions )
         {
