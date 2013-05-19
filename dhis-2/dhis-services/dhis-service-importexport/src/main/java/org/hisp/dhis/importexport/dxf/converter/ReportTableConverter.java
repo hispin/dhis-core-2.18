@@ -74,8 +74,6 @@ public class ReportTableConverter
     private static final String FIELD_PERIODS = "periods";
     private static final String FIELD_ORGANISATION_UNITS = "organisationUnits";
     
-    private static final String FIELD_CATEGORY_COMBO = "categoryCombo";
-    
     private static final String FIELD_DO_INDICATORS = "doIndicators";
     private static final String FIELD_DO_PERIODS = "doPeriods";
     private static final String FIELD_DO_ORGANISATION_UNITS = "doOrganisationUnits";
@@ -218,8 +216,6 @@ public class ReportTableConverter
                 }
                 writer.closeElement();
                 
-                writer.writeElement( FIELD_CATEGORY_COMBO, reportTable.getCategoryCombo() != null ? String.valueOf( reportTable.getCategoryCombo().getId() ) : EMPTY );
-                
                 writer.writeElement( FIELD_DO_INDICATORS, String.valueOf( reportTable.isDoIndicators() ) );
                 writer.writeElement( FIELD_DO_PERIODS, String.valueOf( reportTable.isDoPeriods() ) );
                 writer.writeElement( FIELD_DO_ORGANISATION_UNITS, String.valueOf( reportTable.isDoUnits() ) );
@@ -301,8 +297,6 @@ public class ReportTableConverter
                 int id = Integer.parseInt( reader.getElementValue() );
                 reportTable.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( id ) ) );
             }
-            
-            reader.moveToStartElement( FIELD_CATEGORY_COMBO );
             
             reader.moveToStartElement( FIELD_DO_INDICATORS );
             reportTable.setDoIndicators( Boolean.parseBoolean( reader.getElementValue() ) );
