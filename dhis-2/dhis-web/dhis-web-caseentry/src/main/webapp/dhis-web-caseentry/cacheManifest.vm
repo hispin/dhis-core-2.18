@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.12-SNAPSHOT V9
+# 2.12-SNAPSHOT V10
 NETWORK:
 *
 CACHE:
@@ -104,4 +104,5 @@ images/open.gif
 images/representative.png
 images/rightarrow.png
 images/sms.png
+images/save.png
 style/style.css
