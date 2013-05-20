@@ -136,13 +136,14 @@
 			<input type='button' class="nornal-button" onclick='insertBoolValue( "false" );' value="$i18n.getString( 'no' )" />
 			<input type='button' class="nornal-button" onclick='insertOperator( "is null" );' value="==NULL" />
 			<input type='button' class="nornal-button" onclick='insertOperator( "is not null" );' value="!=NULL" />
-			<br><br>
+			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:54px;" onclick='insertOperator( "AND" );' value="$i18n.getString( 'and_operator' )" />
 			<input type='button' style="width:54px;" onclick='insertOperator( "OR" );' value="$i18n.getString( 'or_operator' )" />
-			&nbsp;&nbsp;&nbsp;
+			<br><br>
 			<input type='button' style="width:92px;" onclick='insertOperator( "COMBINE" );' value="$i18n.getString( 'combine_operator' )" />
-			<input type='button' style="width:150px;" onclick='insertOperator( "MINUS( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
-			<input type='button' style="width:150px;" onclick='insertOperator( "MINUS( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
+			<input type='button' style="width:150px;" onclick='insertOperator( "DATEDIFF( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
+			<input type='button' style="width:150px;" onclick='insertOperator( "DATEDIFF( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
+			<input type='button' style="width:150px;" onclick='insertOperator( "DATEDIFF( , executionDate) " );' value="$i18n.getString('minus_with_executionDate')" />
 			&nbsp;&nbsp;&nbsp;
 			<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
 		</td>
