@@ -27,17 +27,34 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_CSV;
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_HTML;
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_TEXT;
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.webdomain.DataValueSets;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.integration.IntegrationService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,32 +63,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
-
 @Controller
 @RequestMapping(value = DataValueSetController.RESOURCE_PATH)
 public class DataValueSetController
 {
     public static final String RESOURCE_PATH = "/dataValueSets";
 
-    private static final Log LOG = LogFactory.getLog( DataValueSetController.class );
+    private static final Log log = LogFactory.getLog( DataValueSetController.class );
 
     @Autowired
     private DataValueSetService dataValueSetService;
 
     @Autowired
     private IntegrationService integrationService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
     // Get
     // -------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.GET, produces = { "text/html", "text/plain" })
+    @RequestMapping(method = RequestMethod.GET, produces = {CONTENT_TYPE_HTML, CONTENT_TYPE_TEXT})
     public String getDataValueSets( Model model ) throws Exception
     {
         DataValueSets dataValueSets = new DataValueSets();
@@ -82,16 +95,72 @@ public class DataValueSetController
         return "dataValueSets";
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
-    public void getDataValueSet( @RequestParam String dataSet, @RequestParam String period,
-        @RequestParam String orgUnit, HttpServletResponse response ) throws IOException
+    @RequestMapping(method = RequestMethod.GET, produces = CONTENT_TYPE_XML)
+    public void getDataValueSetXml( 
+        @RequestParam Set<String> dataSet, 
+        @RequestParam(required=false) String period,
+        @RequestParam(required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+        @RequestParam(required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+        @RequestParam Set<String> orgUnit, 
+        @RequestParam(required=false) boolean children, 
+        HttpServletResponse response ) throws IOException
     {
-        LOG.info( "Get data value set for data set: " + dataSet + ", period: " + period + ", org unit: " + orgUnit );
-
         response.setContentType( CONTENT_TYPE_XML );
-        dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
+
+        boolean isSingleDataValueSet = dataSet.size() == 1 && orgUnit.size() == 1;
+        
+        if ( isSingleDataValueSet )
+        {
+            String ds = dataSet.iterator().next();
+            String ou = orgUnit.iterator().next();
+            
+            log.info( "Get XML data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
+            
+            dataValueSetService.writeDataValueSet( ds, period, ou, response.getOutputStream() );
+        }
+        else
+        {
+            log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
+            
+            Set<String> ous = getOrganisationUnits( orgUnit, children );
+            dataValueSetService.writeDataValueSet( dataSet, startDate, endDate, ous, response.getOutputStream() );            
+        }        
     }
 
+    @RequestMapping(method = RequestMethod.GET, produces = CONTENT_TYPE_CSV)
+    public void getDataValuesCsv( 
+        @RequestParam Set<String> dataSet, 
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+        @RequestParam Set<String> orgUnit,
+        @RequestParam(required=false) boolean children, 
+        HttpServletResponse response ) throws IOException
+    {
+        log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
+        
+        Set<String> ous = getOrganisationUnits( orgUnit, children );
+        
+        response.setContentType( CONTENT_TYPE_CSV );
+        dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, ous, response.getWriter() );
+    }
+
+    private Set<String> getOrganisationUnits( Set<String> orgUnits, boolean children )
+    {
+        Set<String> ous = new HashSet<String>();
+        
+        if ( children )
+        {
+            for ( String ou : orgUnits )
+            {
+                ous.addAll( IdentifiableObjectUtils.getUids( organisationUnitService.getOrganisationUnitsWithChildren( ou ) ) );
+            }
+        }
+        
+        ous.addAll( orgUnits );
+        
+        return ous;
+    }
+    
     // -------------------------------------------------------------------------
     // Post
     // -------------------------------------------------------------------------
@@ -103,7 +172,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions );
 
-        LOG.info( "Data values set saved " + importOptions );
+        log.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -116,7 +185,7 @@ public class DataValueSetController
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetJson( in, importOptions );
 
-        LOG.info( "Data values set saved " + importOptions );
+        log.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_JSON );
         JacksonUtils.toJson( response.getOutputStream(), summary );
@@ -129,7 +198,7 @@ public class DataValueSetController
     {
         ImportSummary summary = integrationService.importSDMXDataValueSet( in, importOptions );
 
-        LOG.info( "Data values set saved " + importOptions );
+        log.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
