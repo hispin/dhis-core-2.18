@@ -32,96 +32,96 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
 public class CreateSMSCommandForm
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private SMSCommandService smsCommandService;
-
-    private DataSetService dataSetService;
-
-    private String name;
-
-    private String parser;
-
-    private ParserType parserType;
-    
-    private int selectedDataSetID; 
-    
-    @Override
-    public String execute()
-        throws Exception
-    {
-        DataSet dataset = getDataSetService().getDataSet( getSelectedDataSetID() );
-        
-        SMSCommand command = new SMSCommand();
-        command.setName( name );
-        command.setDataset( dataset );
-        command.setParserType( parserType );
-        
-        smsCommandService.save( command );
-        return SUCCESS;
-    }
-
-    public SMSCommandService getSmsCommandService()
-    {
-        return smsCommandService;
-    }
 
     public void setSmsCommandService( SMSCommandService smsCommandService )
     {
         this.smsCommandService = smsCommandService;
     }
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getParser()
-    {
-        return parser;
-    }
-
-    public void setParser( String parser )
-    {
-        this.parser = parser;
-    }
-
-    public int getSelectedDataSetID()
-    {
-        return selectedDataSetID;
-    }
-
-    public void setSelectedDataSetID( int selectedDataSetID )
-    {
-        this.selectedDataSetID = selectedDataSetID;
-    }
-
-    public DataSetService getDataSetService()
-    {
-        return dataSetService;
-    }
+    private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
-    public ParserType getParserType()
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
     {
-        return parserType;
+        this.userGroupService = userGroupService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    private ParserType parserType;
 
     public void setParserType( ParserType parserType )
     {
         this.parserType = parserType;
+    }
+
+    private Integer selectedDataSetID;
+
+    public void setSelectedDataSetID( Integer selectedDataSetID )
+    {
+        this.selectedDataSetID = selectedDataSetID;
+    }
+
+    private Integer userGroupID;
+
+    public void setUserGroupID( Integer userGroupID )
+    {
+        this.userGroupID = userGroupID;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+
+        SMSCommand command = new SMSCommand();
+        command.setName( name );
+        command.setParserType( parserType );
+        if ( parserType.equals( ParserType.KEY_VALUE_PARSER ) || parserType.equals( ParserType.J2ME_PARSER ) )
+        {
+            DataSet dataset = dataSetService.getDataSet( selectedDataSetID );
+            command.setDataset( dataset );
+        }
+        else if ( parserType.equals( ParserType.ALERT_PARSER ) )
+        {
+            UserGroup userGroup = new UserGroup();
+            userGroup = userGroupService.getUserGroup( userGroupID );
+            command.setUserGroup( userGroup );
+        }
+
+        smsCommandService.save( command );
+        return SUCCESS;
     }
 }

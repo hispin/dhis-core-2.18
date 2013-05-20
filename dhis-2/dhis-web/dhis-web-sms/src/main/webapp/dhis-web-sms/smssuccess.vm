@@ -1,6 +1,6 @@
 <h2 style="color:green;">SMS success!</h2>
 
-<br/><br/><a href="./testsms.action">Back to SMS Test page</a>
+<br/><br/><a href="./testSMS.action">Back to SMS Test page</a>
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>

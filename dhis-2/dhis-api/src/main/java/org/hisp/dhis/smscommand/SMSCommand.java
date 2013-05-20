@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.sms.parse.ParserType;
+import org.hisp.dhis.user.UserGroup;
 
 public class SMSCommand
 {
@@ -51,11 +52,28 @@ public class SMSCommand
     private String codeSeparator;
 
     private String defaultMessage;
+    
+    private UserGroup userGroup;
 
     private boolean currentPeriodUsedForReporting = false; // default is prev
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
-        Set<SMSCode> codes, String codeSeparator, String defaultMessage )
+        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup )
+    {
+        super();
+        this.name = name;
+        this.parser = parser;
+        this.parserType = parserType;
+        this.separator = separator;
+        this.dataset = dataset;
+        this.codes = codes;
+        this.codeSeparator = codeSeparator;
+        this.defaultMessage = defaultMessage;
+        this.userGroup = userGroup;
+    }
+    
+    public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
+        Set<SMSCode> codes, String codeSeparator, String defaultMessage)
     {
         super();
         this.name = name;
@@ -223,5 +241,15 @@ public class SMSCommand
         {
             this.currentPeriodUsedForReporting = currentPeriodUsedForReporting;
         }
+    }
+
+    public UserGroup getUserGroup()
+    {
+        return userGroup;
+    }
+
+    public void setUserGroup( UserGroup userGroup )
+    {
+        this.userGroup = userGroup;
     }
 }

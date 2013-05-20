@@ -1,5 +1,4 @@
 currentType = '';
-
 function changeValueType( value )
 {
 	hideAll();

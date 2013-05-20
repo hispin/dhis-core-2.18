@@ -39,11 +39,12 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.sms.MessageSender;
+
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -77,11 +78,15 @@ public class ProcessingSendSMSAction
     private UserGroupService userGroupService;
 
     @Autowired
-    private MessageSender messageSender;
-
-    @Autowired
     private OutboundSmsTransportService transportService;
 
+    private MessageSender messageSender;
+
+    public void setMessageSender( MessageSender messageSender )
+    {
+        this.messageSender = messageSender;
+    }
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -170,15 +175,23 @@ public class ProcessingSendSMSAction
         }
 
         User currentUser = currentUserService.getCurrentUser();
-
+        
+        Set<User> recipientsList = new HashSet<User>();
+        
         if ( sendTarget != null && sendTarget.equals( "phone" ) )
         {
             try
             {
                 ObjectMapper mapper = new ObjectMapper().setVisibility( JsonMethod.FIELD, Visibility.ANY );
                 mapper.configure( DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-
                 recipients = mapper.readValue( recipients.iterator().next(), Set.class );
+                
+                for( String each: recipients )
+                {
+                    User user = new User();
+                    user.setPhoneNumber( each );
+                    recipientsList.add( user );
+                }
             }
             catch ( JsonParseException e )
             {
@@ -192,7 +205,9 @@ public class ProcessingSendSMSAction
             {
                 e.printStackTrace();
             }
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+            
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
@@ -212,8 +227,8 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, group.getMembers(),
-                gatewayId );
+            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, group.getMembers(), gatewayId );
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, group.getMembers(), false );
         }
         else if ( sendTarget.equals( "user" ) )
         {
@@ -221,21 +236,24 @@ public class ProcessingSendSMSAction
 
             if ( units != null && !units.isEmpty() )
             {
-                Set<User> users = new HashSet<User>();
+                //Set<User> users = new HashSet<User>();
 
                 for ( OrganisationUnit unit : units )
                 {
-                    users.addAll( unit.getUsers() );
+                    //users.addAll( unit.getUsers() );
+                    recipientsList.addAll( unit.getUsers() );
                 }
 
-                if ( users.isEmpty() )
+                //if ( users.isEmpty() )
+                if ( recipientsList.isEmpty() )
                 {
                     message = i18n.getString( "there_is_no_user_assigned_to_selected_units" );
 
                     return ERROR;
                 }
 
-                message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, users, gatewayId );
+                //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, users, gatewayId );
+                message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
             }
         }
         else if ( sendTarget.equals( "unit" ) )
@@ -244,23 +262,27 @@ public class ProcessingSendSMSAction
             {
                 if ( unit.getPhoneNumber() != null && !unit.getPhoneNumber().isEmpty() )
                 {
-                    recipients.add( unit.getPhoneNumber() );
+                    //recipients.add( unit.getPhoneNumber() );
+                    User user = new User();
+                    user.setPhoneNumber( unit.getPhoneNumber() );
+                    recipientsList.add( user );
                 }
             }
 
-            if ( recipients.isEmpty() )
+            if ( recipientsList.isEmpty() )
             {
                 message = i18n.getString( "selected_units_have_no_phone_number" );
 
                 return ERROR;
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false);
         }
         else
         {
             Patient patient = null;
-            Set<String> phones = new HashSet<String>();
+            //Set<String> phones = new HashSet<String>();
 
             try
             {
@@ -288,18 +310,22 @@ public class ProcessingSendSMSAction
 
                 if ( patient != null && patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
                 {
-                    phones.add( patient.getPhoneNumber() );
+                    //phones.add( patient.getPhoneNumber() );
+                    User user = new User();
+                    user.setPhoneNumber( patient.getPhoneNumber() );
+                    recipientsList.add( user );
                 }
             }
 
-            if ( phones.isEmpty() )
+            if ( recipientsList.isEmpty() )
             {
                 message = i18n.getString( "selected_persons_have_no_phone_number" );
 
                 return ERROR;
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, phones, gatewayId );
+            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, phones, gatewayId );
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false);
         }
 
         if ( message != null && !message.equals( "success" ) )

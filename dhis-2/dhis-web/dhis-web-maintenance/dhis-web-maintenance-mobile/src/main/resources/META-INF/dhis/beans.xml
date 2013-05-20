@@ -141,6 +141,8 @@
 		<property name="smsCommandService" ref="smsCommandService" />
 		<property name="dataSetService"
 			ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="userGroupService"
+			ref="org.hisp.dhis.user.UserGroupService" />	
 
 	</bean>
 
@@ -162,6 +164,8 @@
 		<property name="smsCommandService" ref="smsCommandService" />
 		<property name="dataSetService"
 			ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="userGroupService"
+			ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean
