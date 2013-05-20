@@ -55,8 +55,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultOrganisationUnitService.java 5951 2008-10-16 17:41:34Z
- *          larshelg $
  */
 @Transactional
 public class DefaultOrganisationUnitService
@@ -272,6 +270,11 @@ public class DefaultOrganisationUnitService
         } );
     }
 
+    public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid )
+    {
+        return getOrganisationUnitWithChildren( getOrganisationUnit( uid ).getId() );
+    }
+    
     public Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id )
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );

@@ -229,6 +229,16 @@ public interface OrganisationUnitService
     /**
      * Returns an OrganisationUnit and all its children.
      *
+     * @param uid the uid of the parent OrganisationUnit in the subtree.
+     * @return a collection containing the OrganisationUnit with the given id
+     *         and all its children, or an empty collection if no
+     *         OrganisationUnits match.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid );
+    
+    /**
+     * Returns an OrganisationUnit and all its children.
+     *
      * @param id the id of the parent OrganisationUnit in the subtree.
      * @return a collection containing the OrganisationUnit with the given id
      *         and all its children, or an empty collection if no
