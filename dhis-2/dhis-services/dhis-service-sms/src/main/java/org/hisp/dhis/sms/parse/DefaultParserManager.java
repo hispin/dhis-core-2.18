@@ -34,9 +34,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -51,6 +53,10 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.message.Message;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageConversationStore;
+import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -69,6 +75,7 @@ import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
@@ -101,6 +108,13 @@ public class DefaultParserManager
 
     @Autowired
     private DataSetService dataSetService;
+    
+    private MessageConversationStore messageConversationStore;
+
+    public void setMessageConversationStore( MessageConversationStore messageConversationStore )
+    {
+        this.messageConversationStore = messageConversationStore;
+    }
 
     @Transactional
     public void parse( IncomingSms sms )
@@ -172,9 +186,14 @@ public class DefaultParserManager
                     runKeyValueParser( sender, message, orgUnits, command );
                     break;
                 }
-                else
+                else if ( ParserType.J2ME_PARSER.equals( command.getParserType() ) )
                 {
                     runJ2MEParser( sender, message, orgUnits, command );
+                    break;
+                }
+                else if ( ParserType.ALERT_PARSER.equals( command.getParserType() ) )
+                {
+                    runDhisMessageAlertParser( sender, message, command );
                     break;
                 }
             }
@@ -249,7 +268,64 @@ public class DefaultParserManager
 
         markCompleteDataSet( sender, orgUnit, parsedMessage, command, date );
         sendSuccessFeedback( sender, command, parsedMessage, date, orgUnit );
+    }
 
+    private void runDhisMessageAlertParser( String senderNumber, String message, SMSCommand command )
+    {
+        /*
+         * IParser parser = new DhisMessageAlertParser();
+         * 
+         * if ( !StringUtils.isBlank( command.getSeparator() ) ) {
+         * parser.setSeparator( command.getSeparator() ); }
+         * 
+         * message = message.trim();
+         * 
+         * Map<String, String> parsedMessage = parser.parse( message );
+         */
+
+        UserGroup userGroup = command.getUserGroup();
+
+        if ( userGroup != null )
+        {
+            Collection users = userService.getUsersByPhoneNumber( senderNumber );
+            if ( users != null && users.size() > 1 )
+            {
+                String messageMoreThanOneUser = "System only accepts sender's number assigned for one user, but found more than one user for this number: ";
+                for ( Iterator<User> i = users.iterator(); i.hasNext(); )
+                {
+                    User user = i.next();
+                    messageMoreThanOneUser += " " + user.getName();
+                    if ( i.hasNext() )
+                    {
+                        messageMoreThanOneUser += ",";
+                    }
+                }
+                throw new SMSParserException( messageMoreThanOneUser );
+            }
+            else if ( users != null && users.size() == 1 )
+            {
+                User sender = (User) users.iterator().next();
+                
+                Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
+                
+                if ( sender != null )
+                {
+                    receivers.add( sender );
+                }
+                
+                MessageConversation conversation = new MessageConversation( command.getName(), sender );
+                
+                conversation.addMessage( new Message( message, null, sender ) );
+                
+                for ( User receiver : receivers )
+                {
+                    boolean read = receiver != null && receiver.equals( sender );
+
+                    conversation.addUserMessage( new UserMessage( receiver, read ) );
+                }
+                messageConversationStore.save( conversation );
+            }
+        }
     }
 
     protected OrganisationUnit selectOrganisationUnit( Collection<OrganisationUnit> orgUnits,
@@ -272,7 +348,7 @@ public class DefaultParserManager
 
         if ( orgUnit == null && orgUnits.size() > 1 )
         {
-            String messageListingOrgUnits = "Found more then one org unit for this number. Please specify one of the following:";
+            String messageListingOrgUnits = "Found more than one org unit for this number. Please specify one of the following:";
             for ( Iterator<OrganisationUnit> i = orgUnits.iterator(); i.hasNext(); )
             {
                 OrganisationUnit o = i.next();
@@ -597,7 +673,6 @@ public class DefaultParserManager
     }
 
     // Run the J2ME parser for mobile
-
     private void runJ2MEParser( String sender, String message, Collection<OrganisationUnit> orgUnits, SMSCommand command )
     {
         J2MEDataEntryParser j2meParser = new J2MEDataEntryParser();
@@ -639,7 +714,6 @@ public class DefaultParserManager
         registerCompleteDataSet( command.getDataset(), period, orgUnit, "mobile" );
 
         sendSuccessFeedback( sender, command, parsedMessage, period, orgUnit );
-
     }
 
     private void sendSuccessFeedback( String sender, SMSCommand command, Map<String, String> parsedMessage,

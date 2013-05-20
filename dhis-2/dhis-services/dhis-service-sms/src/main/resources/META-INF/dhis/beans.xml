@@ -35,10 +35,6 @@
     <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
   </bean>
   <!-- SMS Message sender -->
-
-  <bean id="org.hisp.dhis.sms.outbound.SmsMessageSender" class="org.hisp.dhis.sms.outbound.SmsMessageSender">
-    <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-  </bean>
   
   <bean id="org.hisp.dhis.sms.outbound.SmsSender" class="org.hisp.dhis.sms.outbound.SmsSender">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
@@ -64,6 +60,7 @@
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />  
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
   </bean>
   
 </beans>

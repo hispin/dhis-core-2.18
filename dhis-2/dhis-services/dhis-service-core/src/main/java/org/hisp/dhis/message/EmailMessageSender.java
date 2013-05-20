@@ -84,7 +84,7 @@ public class EmailMessageSender
      */
     @Async
     @Override
-    public void sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
+    public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {        
         String hostName = systemSettingManager.getEmailHostName();
         int port = systemSettingManager.getEmailPort();
@@ -94,7 +94,7 @@ public class EmailMessageSender
 
         if ( hostName == null )
         {
-            return;
+            return null;
         }
 
         text = sender == null ? text : ( text + LB + LB + 
@@ -140,6 +140,7 @@ public class EmailMessageSender
         {
             log.warn( "Could not send email: " + ex.getMessage() );
         }
+        return null;
     }
 
     private Email getEmail( String hostName, int port, String username, String password, boolean tls )

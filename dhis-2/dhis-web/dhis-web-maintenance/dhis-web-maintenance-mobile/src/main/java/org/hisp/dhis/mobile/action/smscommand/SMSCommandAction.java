@@ -42,19 +42,81 @@ import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
 public class SMSCommandAction
     implements Action
 {
+    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
     private SMSCommandService smsCommandService;
+    
+    public void setSmsCommandService( SMSCommandService smsCommandService )
+    {
+        this.smsCommandService = smsCommandService;
+    }
 
     private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    private UserGroupService userGroupService;
+    
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+    
+    private List<UserGroup> userGroupList;
+
+    public List<UserGroup> getUserGroupList()
+    {
+        return userGroupList;
+    }
 
     private int selectedCommandID = -1;
+    
+
+    public int getSelectedCommandID()
+    {
+        return selectedCommandID;
+    }
+
+    public void setSelectedCommandID( int selectedCommandID )
+    {
+        this.selectedCommandID = selectedCommandID;
+    }
 
     private Map<String, String> codes = new HashMap<String, String>();
+    
+
+    public Map<String, String> getCodes()
+    {
+        return codes;
+    }
+
+    public void setCodes( Map<String, String> codes )
+    {
+        this.codes = codes;
+    }
+    
+    public ParserType[] getParserType(){       
+        return ParserType.values();
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -70,9 +132,16 @@ public class SMSCommandAction
                 codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
             }
         }
+        
+        userGroupList = new ArrayList<UserGroup>(userGroupService.getAllUserGroups());
+        
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Supporting methods
+    // -------------------------------------------------------------------------
+    
     public List<DataElement> getDataSetElements()
     {
         if ( getSMSCommand() != null )
@@ -91,7 +160,7 @@ public class SMSCommandAction
 
     public Collection<DataSet> getDataSets()
     {
-        return getDataSetService().getAllDataSets();
+        return dataSetService.getAllDataSets();
     }
 
     public Collection<SMSCommand> getSMSCommands()
@@ -109,49 +178,5 @@ public class SMSCommandAction
         {
             return null;
         }
-    }
-
-    public SMSCommandService getSmsCommandService()
-    {
-        return smsCommandService;
-    }
-
-    public void setSmsCommandService( SMSCommandService smsCommandService )
-    {
-        this.smsCommandService = smsCommandService;
-    }
-
-    public int getSelectedCommandID()
-    {
-        return selectedCommandID;
-    }
-
-    public void setSelectedCommandID( int selectedCommandID )
-    {
-        this.selectedCommandID = selectedCommandID;
-    }
-
-    public DataSetService getDataSetService()
-    {
-        return dataSetService;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    public Map<String, String> getCodes()
-    {
-        return codes;
-    }
-
-    public void setCodes( Map<String, String> codes )
-    {
-        this.codes = codes;
-    }
-    
-    public ParserType[] getParserType(){       
-        return ParserType.values();
     }
 }

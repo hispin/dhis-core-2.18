@@ -50,38 +50,44 @@ public class SmsSender
     implements MessageSender
 {
     private static final Log log = LogFactory.getLog( SmsSender.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
+
     private UserService userService;
-    
+
     public void setUserService( UserService userService )
     {
         this.userService = userService;
     }
-    
+
     private OutboundSmsService outboundSmsService;
 
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
         this.outboundSmsService = outboundSmsService;
     }
-    
+
     @Autowired
     private OutboundSmsTransportService transportService;
-    
+
+    /**
+     * Note this methods is invoked asynchronously.
+     */
+    // @Async
     @Override
-    public void sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
+    public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
+        String message = null;
+
         Set<User> toSendUserList = new HashSet<User>();
 
         String gatewayId = transportService.getDefaultGateway();
@@ -91,42 +97,52 @@ public class SmsSender
             boolean sendSMSNotification = false;
             for ( User user : users )
             {
-                if ( currentUserService.getCurrentUser() != user )
+                if ( !currentUserService.getCurrentUser().equals( user ) )
                 {
-                    UserSetting userSetting = userService.getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
-                    if ( userSetting != null )
+                    // check if receiver is raw number or not
+                    if ( user.getFirstName() == null )
                     {
-                        sendSMSNotification = (Boolean) userSetting.getValue();
-                        if ( sendSMSNotification == true )
+                        toSendUserList.add( user );
+                    }
+                    else
+                    {
+                        UserSetting userSetting = userService.getUserSetting( user,
+                            UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
+                        if ( userSetting != null )
                         {
-                            toSendUserList.add( user );
-                            sendSMSNotification = false;
+                            sendSMSNotification = (Boolean) userSetting.getValue();
+                            if ( sendSMSNotification == true )
+                            {
+                                toSendUserList.add( user );
+                                sendSMSNotification = false;
+                            }
                         }
                     }
                 }
             }
-            
+
             Set<String> phoneNumbers = null;
 
             if ( outboundSmsService != null || outboundSmsService.isEnabled() )
             {
                 text = createMessage( subject, text, sender );
-                
+
                 phoneNumbers = getRecipientsPhoneNumber( toSendUserList );
-                
+
                 if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
                 {
-                    sendMessage( text, phoneNumbers, gatewayId );
+                    message = sendMessage( text, phoneNumbers, gatewayId );
                 }
 
             }
         }
+        return message;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private String createMessage( String subject, String text, User sender )
     {
         String name = "unknown";
@@ -152,7 +168,7 @@ public class SmsSender
 
         return (length > 160) ? text.substring( 0, 157 ) + "..." : text;
     }
-    
+
     private Set<String> getRecipientsPhoneNumber( Set<User> users )
     {
         Set<String> recipients = new HashSet<String>();
@@ -169,20 +185,24 @@ public class SmsSender
 
         return recipients;
     }
-    
-    private void sendMessage( String text, Set<String> recipients, String gateWayId )
+
+    private String sendMessage( String text, Set<String> recipients, String gateWayId )
     {
+        String message = null;
         OutboundSms sms = new OutboundSms();
         sms.setMessage( text );
         sms.setRecipients( recipients );
 
         try
         {
-            outboundSmsService.sendMessage( sms, gateWayId );
+            message = outboundSmsService.sendMessage( sms, gateWayId );
         }
         catch ( SmsServiceException e )
         {
+            message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
+
             log.warn( "Unable to send message through sms: " + sms, e );
         }
+        return message;
     }
 }

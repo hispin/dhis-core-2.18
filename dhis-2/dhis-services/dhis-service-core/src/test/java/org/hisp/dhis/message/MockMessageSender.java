@@ -35,8 +35,9 @@ public class MockMessageSender
     implements MessageSender
 {
     @Override
-    public void sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
+    public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
         // Do nothing
+        return null;
     }
 }
