@@ -720,7 +720,6 @@ public class JdbcCaseAggregationConditionManager
         sql = sql.replaceAll( IN_CONDITION_END_SIGN, ")" );
         sql = sql.replaceAll( IS_NULL, " " );
 
-        System.out.println("\n\n minusSQLMap " + minusSQLMap );
         for ( int key = 0; key < idx; key++ )
         {
             sql = sql.replace( CaseAggregationCondition.MINUS_OPERATOR + "_" + key, minusSQLMap.get( key ) );

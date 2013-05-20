@@ -85,7 +85,7 @@ public class CaseAggregationCondition
 
     public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
     
-    public static String MINUS_OPERATOR = "MINUS";
+    public static String MINUS_OPERATOR = "DATEDIFF";
 
     public static String AUTO_STORED_BY = "DHIS-SYSTEM";
 
