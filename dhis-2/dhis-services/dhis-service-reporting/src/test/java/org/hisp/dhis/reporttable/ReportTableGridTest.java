@@ -368,9 +368,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             true, true, false, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, null, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, null, "0" );
         
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -399,9 +399,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             false, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
         assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
@@ -432,9 +432,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             true, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -463,9 +463,9 @@ public class ReportTableGridTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
             true, true, false, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -494,9 +494,9 @@ public class ReportTableGridTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
             false, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
         assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
@@ -527,9 +527,9 @@ public class ReportTableGridTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
             true, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -558,9 +558,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
             true, true, false, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -589,9 +589,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
             false, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
         assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
@@ -622,9 +622,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
             true, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -671,9 +671,9 @@ public class ReportTableGridTest
             dataElements, indicators, dataSets, periods, units, 
             true, true, false, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
         
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -736,9 +736,9 @@ public class ReportTableGridTest
             dataElements, indicators, dataSets, periods, units, 
             false, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 11 ) );
         assertEquals( 15d, grid.getRow( 0 ).get( 12 ) );
@@ -811,9 +811,9 @@ public class ReportTableGridTest
             dataElements, indicators, dataSets, periods, units, 
             true, false, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13d, grid.getRow( 0 ).get( 8 ) );
@@ -851,9 +851,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             true, true, true, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 3 ) );
         assertEquals( 12d, grid.getRow( 0 ).get( 4 ) );
@@ -874,9 +874,9 @@ public class ReportTableGridTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             false, false, false, null, null, "january_2000" );
 
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 11d, grid.getRow( 0 ).get( 15 ) );
         assertEquals( 12d, grid.getRow( 1 ).get( 15 ) );
@@ -898,9 +898,9 @@ public class ReportTableGridTest
             false, false, true, null, null, "january_2000" );
         reportTable.setTopLimit( 2 );
         
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 2, grid.getHeight() );
     }
@@ -922,9 +922,9 @@ public class ReportTableGridTest
             false, false, true, null, null, "january_2000" );
         reportTable.setSortOrder( ReportTable.DESC );
         
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
 
         assertEquals( 14d, grid.getRow( 0 ).get( 11 ) );
         assertEquals( 18d, grid.getRow( 0 ).get( 12 ) );
@@ -957,9 +957,9 @@ public class ReportTableGridTest
         
         reportTable.setRegression( true );
         
-        int id = reportTableService.saveReportTable( reportTable );
+        reportTableService.saveReportTable( reportTable );
 
-        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, "0" );
+        Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), i18nFormat, date, "0" );
         
         assertEquals( 11.0, grid.getRow( 0 ).get( 7 ) );
         assertEquals( 13.0, grid.getRow( 0 ).get( 8 ) );

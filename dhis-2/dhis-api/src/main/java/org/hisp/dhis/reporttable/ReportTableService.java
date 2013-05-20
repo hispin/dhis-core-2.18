@@ -126,21 +126,6 @@ public interface ReportTableService
      */
     Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid );
 
-    Grid getReportTableGrid( int reportTableId, I18nFormat format, Date reportingPeriod, String organisationUnitUid );
-
-    /**
-     * Instantiates and populates a Grid populated with data from the given
-     * ReportTable.
-     *
-     * @param reportTable         the ReportTable.
-     * @param format              the I18nFormat.
-     * @param reportingPeriod     the reporting date.
-     * @param organisationUnitUid the organisation unit uid.
-     * @param minimal             indicates whether to include visible columns only in the Grid.
-     * @return a Grid.
-     */
-    Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal );
-
     ReportTable getReportTable( String uid, String mode );
 
     List<ReportTable> getReportTablesBetween( int first, int max );
