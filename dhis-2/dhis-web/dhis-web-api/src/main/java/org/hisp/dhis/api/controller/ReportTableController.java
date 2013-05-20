@@ -31,10 +31,8 @@ import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,14 +42,11 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -59,7 +54,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.grid.GridUtils;
@@ -85,8 +79,6 @@ public class ReportTableController
     extends AbstractCrudController<ReportTable>
 {
     public static final String RESOURCE_PATH = "/reportTables";
-
-    private static final String DATA_NAME = "data";
 
     @Autowired
     public ReportTableService reportTableService;
@@ -195,179 +187,6 @@ public class ReportTableController
                 period.setName( format.formatPeriod( period ) );
             }
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // GET - Dynamic data
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( value = "/data", method = RequestMethod.GET ) // For json, jsonp
-    public String getReportTableDynamicData( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        Model model,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        model.addAttribute( "model", grid );
-        model.addAttribute( "viewClass", "detailed" );
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
-
-        return grid != null ? "reportTableData" : null;
-    }
-
-    @RequestMapping( value = "/data.html", method = RequestMethod.GET )
-    public void getReportTableDynamicDataHtml( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        String filename = DATA_NAME + ".html";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toHtml( grid, response.getWriter() );
-    }
-
-    @RequestMapping( value = "/data.xml", method = RequestMethod.GET )
-    public void getReportTableDynamicDataXml( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        String filename = DATA_NAME + ".xml";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toXml( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/data.pdf", method = RequestMethod.GET )
-    public void getReportTableDynamicDataPdf( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        String filename = DATA_NAME + ".pdf";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toPdf( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/data.xls", method = RequestMethod.GET )
-    public void getReportTableDynamicDataXls( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        String filename = DATA_NAME + ".xls";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
-
-        GridUtils.toXls( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/data.csv", method = RequestMethod.GET )
-    public void getReportTableDynamicDataCsv( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        String filename = DATA_NAME + ".csv";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
-
-        GridUtils.toCsv( grid, response.getOutputStream() );
-    }
-
-    private Grid getReportTableDynamicGrid( List<String> indicators, List<String> dataElements, List<String> dataSets,
-        List<String> orgUnits, List<String> crossTab, boolean orgUnitIsParent, boolean minimal, RelativePeriods relatives, HttpServletResponse response ) throws Exception
-    {
-        List<Indicator> indicators_ = indicatorService.getIndicatorsByUid( indicators );
-        List<DataElement> dataElements_ = dataElementService.getDataElementsByUid( dataElements );
-        List<DataSet> dataSets_ = dataSetService.getDataSetsByUid( dataSets );
-        List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid( orgUnits );
-
-        if ( indicators_.isEmpty() && dataElements_.isEmpty() && dataSets_.isEmpty() )
-        {
-            ContextUtils.conflictResponse( response, "No valid indicators, data elements or data sets specified" );
-            return null;
-        }
-
-        if ( orgUnitIsParent )
-        {
-            List<OrganisationUnit> childUnits = new ArrayList<OrganisationUnit>();
-
-            for ( OrganisationUnit unit : organisationUnits )
-            {
-                childUnits.addAll( unit.getChildren() );
-            }
-
-            organisationUnits = childUnits;
-        }
-
-        if ( organisationUnits.isEmpty() )
-        {
-            ContextUtils.conflictResponse( response, "No valid organisation units specified" );
-            return null;
-        }
-
-        ReportTable table = new ReportTable();
-
-        table.setIndicators( indicators_ );
-        table.setDataElements( dataElements_ );
-        table.setOrganisationUnits( organisationUnits );
-
-        table.setDoIndicators( crossTab != null && crossTab.contains( "data" ) );
-        table.setDoPeriods( crossTab != null && crossTab.contains( "periods" ) );
-        table.setDoUnits( crossTab != null && crossTab.contains( "orgunits" ) );
-
-        table.setRelatives( relatives );
-
-        return reportTableService.getReportTableGrid( table, i18nManager.getI18nFormat(), new Date(), null, minimal );
     }
 
     //--------------------------------------------------------------------------

@@ -67,6 +67,10 @@ public class DataValueSetController
     @Autowired
     private IntegrationService integrationService;
 
+    // -------------------------------------------------------------------------
+    // Get
+    // -------------------------------------------------------------------------
+
     @RequestMapping(method = RequestMethod.GET, produces = { "text/html", "text/plain" })
     public String getDataValueSets( Model model ) throws Exception
     {
@@ -87,6 +91,10 @@ public class DataValueSetController
         response.setContentType( CONTENT_TYPE_XML );
         dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
     }
+
+    // -------------------------------------------------------------------------
+    // Post
+    // -------------------------------------------------------------------------
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
     @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
@@ -126,6 +134,10 @@ public class DataValueSetController
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive
+    // -------------------------------------------------------------------------
 
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )

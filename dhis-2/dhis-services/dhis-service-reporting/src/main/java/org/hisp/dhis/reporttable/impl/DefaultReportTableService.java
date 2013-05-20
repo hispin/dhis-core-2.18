@@ -125,20 +125,6 @@ public class DefaultReportTableService
     {
         ReportTable reportTable = getReportTable( uid );
 
-        return getReportTableGrid( reportTable, format, reportingPeriod, organisationUnitUid, false );
-    }
-
-    @Override
-    public Grid getReportTableGrid( int reportTableId, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
-    {
-        ReportTable reportTable = getReportTable( reportTableId );
-
-        return getReportTableGrid( reportTable, format, reportingPeriod, organisationUnitUid, false );
-    }
-
-    @Override
-    public Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal )
-    {
         reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitUid, format );
 
         return getGrid( reportTable, format );
