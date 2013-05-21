@@ -91,7 +91,7 @@ public class ProvideContentAction
     public String execute()
         throws Exception
     {
-        chartsForAll = new ArrayList<Chart>( chartService.getSystemAndUserCharts() );
+        chartsForAll = new ArrayList<Chart>( chartService.getAllCharts() );
         
         DashboardConfiguration config = dashboardManager.getConfiguration();
 

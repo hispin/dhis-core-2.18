@@ -817,11 +817,6 @@ public class DefaultChartService
         return chartStore.getAll();
     }
 
-    public Collection<Chart> getSystemAndUserCharts()
-    {
-        return chartStore.getSystemAndUserCharts( currentUserService.getCurrentUser() );
-    }
-
     public Chart getChartByName( String name )
     {
         return chartStore.getByName( name );

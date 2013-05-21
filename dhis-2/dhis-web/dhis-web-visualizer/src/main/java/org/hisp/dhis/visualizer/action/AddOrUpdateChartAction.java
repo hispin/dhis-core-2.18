@@ -27,14 +27,17 @@ package org.hisp.dhis.visualizer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import static org.hisp.dhis.system.util.DateUtils.setNames;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -42,10 +45,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.CurrentUserService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hisp.dhis.system.util.DateUtils.setNames;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
@@ -150,13 +150,6 @@ public class AddOrUpdateChartAction
     public void setCategory( String category )
     {
         this.category = category;
-    }
-
-    private String filter; //TODO fix
-
-    public void setFilter( String filter )
-    {
-        this.filter = filter;
     }
 
     private List<String> indicatorIds;

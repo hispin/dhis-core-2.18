@@ -37,6 +37,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
+import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -131,7 +132,7 @@ public class ProvideContentAction
 
         providerNames = manager.getContentProviderNames();
         
-        charts = new ArrayList<Chart>( chartService.getSystemAndUserCharts() );
+        charts = new ArrayList<Chart>( chartService.getAllCharts() );
 
         Collections.sort( charts, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -145,7 +146,14 @@ public class ProvideContentAction
             
             if ( id != null )
             {
-                chart = chartService.getChart( Integer.valueOf( String.valueOf( id ) ) );
+                try
+                {
+                    chart = chartService.getChart( Integer.valueOf( String.valueOf( id ) ) );
+                }
+                catch ( ReadAccessDeniedException ex )
+                {
+                    // Chart has been made private, do nothing and continue
+                }
             }
             
             chartAreas.add( chart );

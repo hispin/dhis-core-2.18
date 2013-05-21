@@ -83,13 +83,6 @@
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-  <bean id="org.hisp.dhis.visualizer.action.GetSystemAndCurrentUserChartsAction"
-    class="org.hisp.dhis.visualizer.action.GetSystemAndCurrentUserChartsAction"
-    scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
   <bean id="org.hisp.dhis.visualizer.action.DeleteChartsAction"
     class="org.hisp.dhis.visualizer.action.DeleteChartsAction"
     scope="prototype">
