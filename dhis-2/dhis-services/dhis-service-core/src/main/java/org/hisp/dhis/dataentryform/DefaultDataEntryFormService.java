@@ -27,14 +27,6 @@ package org.hisp.dhis.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -51,6 +43,14 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+
 /**
  * @author Bharath Kumar
  * @version $Id$
@@ -60,7 +60,7 @@ public class DefaultDataEntryFormService
     implements DataEntryFormService
 {
     private static final Log log = LogFactory.getLog( DefaultDataEntryFormService.class );
-    
+
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
     private static final String EMPTY_TITLE_TAG = "title=\"\"";
     private static final String TAG_CLOSE = "/>";
@@ -145,13 +145,13 @@ public class DefaultDataEntryFormService
             // -----------------------------------------------------------------
 
             String dataElementCode = inputMatcher.group();
-            
+
             Matcher valueTagMatcher = VALUE_TAG_PATTERN.matcher( dataElementCode );
             Matcher titleTagMatcher = TITLE_TAG_PATTERN.matcher( dataElementCode );
 
             if ( valueTagMatcher.find() && valueTagMatcher.groupCount() > 0 )
             {
-                dataElementCode = dataElementCode.replace( valueTagMatcher.group( 1 ), EMPTY );                
+                dataElementCode = dataElementCode.replace( valueTagMatcher.group( 1 ), EMPTY );
             }
 
             if ( titleTagMatcher.find() && titleTagMatcher.groupCount() > 0 )
@@ -170,7 +170,7 @@ public class DefaultDataEntryFormService
     public String prepareDataEntryFormForEdit( String htmlCode, I18n i18n )
     {
         //TODO HTML encode names
-        
+
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -184,7 +184,7 @@ public class DefaultDataEntryFormService
             Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
             Matcher dynamicInputMatcher = DYNAMIC_INPUT_PATTERN.matcher( inputHtml );
             Matcher dynamicSelectMatcher = DYNAMIC_SELECT_PATTERN.matcher( inputHtml );
-            
+
             String displayValue = null;
             String displayTitle = null;
 
@@ -197,10 +197,10 @@ public class DefaultDataEntryFormService
                 DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
 
-                StringBuilder title = dataElement != null ? 
+                StringBuilder title = dataElement != null ?
                     new StringBuilder( "title=\"" ).append( dataElementId ).append( " - " ).
-                    append( dataElement.getDisplayName() ).append( " - " ).append( optionComboId ).append( " - " ).
-                    append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
+                        append( dataElement.getDisplayName() ).append( " - " ).append( optionComboId ).append( " - " ).
+                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
 
                 displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
                 displayTitle = dataElement != null ? title.toString() : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
@@ -225,7 +225,7 @@ public class DefaultDataEntryFormService
             {
                 String categoryOptionComboId = dynamicInputMatcher.group( 2 );
                 DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
-                
+
                 displayValue = categoryOptionCombo != null ? "value=\"[ " + categoryOptionCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
                 displayTitle = categoryOptionCombo != null ? "title=\"" + categoryOptionCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
             }
@@ -233,7 +233,7 @@ public class DefaultDataEntryFormService
             {
                 String categoryComboId = dynamicSelectMatcher.group( 1 );
                 DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
-                
+
                 displayValue = categoryCombo != null ? "value=\"[ " + categoryCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
                 displayTitle = categoryCombo != null ? "title=\"" + categoryCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
             }
@@ -247,7 +247,7 @@ public class DefaultDataEntryFormService
                 log.warn( "Ignoring invalid form markup: '" + inputHtml + "'" );
                 continue;
             }
-            
+
             inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
             inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : inputHtml + " " + displayTitle;
 
@@ -262,7 +262,7 @@ public class DefaultDataEntryFormService
     public String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet )
     {
         //TODO HTML encode names
-        
+
         // ---------------------------------------------------------------------
         // Inline javascript/html to add to HTML before output
         // ---------------------------------------------------------------------
@@ -313,13 +313,17 @@ public class DefaultDataEntryFormService
                 {
                     inputHtml = inputHtml.replace( "input", "select" );
                     inputHtml = inputHtml.replaceAll( "value=\".*?\"", "" );
-                    
+
                     appendCode += " name=\"entryselect\" tabindex=\"" + i++ + "\">";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
                     appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
                     appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
                     appendCode += "</select>";
+                }
+                else if ( dataElement.getOptionSet() != null )
+                {
+                    appendCode += " name=\"entryoptionset\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
                 else
                 {
@@ -339,7 +343,7 @@ public class DefaultDataEntryFormService
                 {
                     return i18n.getString( "category_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
                 }
-                
+
                 inputHtml = inputHtml.replace( TAG_CLOSE, " name=\"dyninput\" tabindex=\"" + i++ + "\"" + TAG_CLOSE );
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
@@ -362,22 +366,22 @@ public class DefaultDataEntryFormService
         {
             return null;
         }
-        
+
         Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
-        
+
         Set<DataElement> dataElements = new HashSet<DataElement>();
-        
+
         Matcher inputMatcher = INPUT_PATTERN.matcher( dataSet.getDataEntryForm().getHtmlCode() );
-        
+
         while ( inputMatcher.find() )
         {
             String inputHtml = inputMatcher.group();
-            
+
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dataElementTotalMatcher = DATAELEMENT_TOTAL_PATTERN.matcher( inputHtml );
-            
+
             DataElement dataElement = null;
-            
+
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 String dataElementId = identifierMatcher.group( 1 );
@@ -388,13 +392,13 @@ public class DefaultDataEntryFormService
                 String dataElementId = dataElementTotalMatcher.group( 1 );
                 dataElement = dataElementMap.get( dataElementId );
             }
-            
+
             if ( dataElement != null )
             {
                 dataElements.add( dataElement );
             }
         }
-        
+
         return dataElements;
     }
 
@@ -404,31 +408,31 @@ public class DefaultDataEntryFormService
         {
             return null;
         }
-        
+
         Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
-        
+
         Matcher inputMatcher = INPUT_PATTERN.matcher( dataSet.getDataEntryForm().getHtmlCode() );
-        
+
         while ( inputMatcher.find() )
         {
             String inputHtml = inputMatcher.group();
-            
+
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
-            
+
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 String dataElementId = identifierMatcher.group( 1 );
-                String categoryOptionComboId = identifierMatcher.group( 2 );                
+                String categoryOptionComboId = identifierMatcher.group( 2 );
 
                 DataElementOperand operand = new DataElementOperand( dataElementId, categoryOptionComboId );
-                
+
                 operands.add( operand );
             }
         }
-        
+
         return operands;
     }
-    
+
     public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         if ( programStageIds == null || programStageIds.isEmpty() )
