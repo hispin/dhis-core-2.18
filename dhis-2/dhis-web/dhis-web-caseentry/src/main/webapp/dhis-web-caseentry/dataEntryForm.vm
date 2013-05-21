@@ -40,7 +40,7 @@
 				<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput"
                         style="width:380px;#if($programStage.captureCoordinates=='false') margin-left:10px; #end "
                        onkeypress="keypressOnComment( event, this );">
-				<input id="commentButton" type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( this )'>
+				<input id="commentButton" type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( byId("commentInput"), $programStageInstance.id )'>
 			</th>
 		</tr>
 
@@ -49,7 +49,7 @@
 			<th class='coordinates1'><label for="filterDataSetSection">$i18n.getString( "filter_on_section" )</label></th>
 			<th colspan='3'>
 				<select id="filterDataSetSection" name="filterDataSetSection" onchange="filterOnSection()" style="width:430px;margin-left:10px;" >
-					<option value='all'>$i18n.getString("show_all_sections")</option>
+					<option value='all'>[$i18n.getString("show_all_sections")]</option>
 					#foreach( $section in $sections )
 						<option value='$section.id'>$encoder.htmlEncode( $section.displayName )</option>
 					#end
