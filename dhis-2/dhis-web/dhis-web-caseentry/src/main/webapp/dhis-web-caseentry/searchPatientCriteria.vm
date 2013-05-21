@@ -12,9 +12,9 @@
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
 		<td rowspan='3' valign='bottom'>
-			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" disabled >
-			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" disabled >
-			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" disabled>
+			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" >
+			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" >
+			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" >
 		</td>
 	</tr> 
 	<tr id='programAddPatientTR'>
@@ -32,7 +32,7 @@
 	<tr id='scheduleVisitTR' class='hidden'>
 		<td>$i18n.getString('scheduled_visits')</td>
 		<td>
-			<select id='scheduledVisitDays' name='scheduledVisitDays' onchange='javascript:listAllPatient();' disabled >
+			<select id='scheduledVisitDays' name='scheduledVisitDays' onchange='javascript:listAllPatient();' >
 				<option value=''>[$i18n.getString("please_select")]</option>
 				<option value='0'>$i18n.getString("today")</option>
 				<option value='7'>$i18n.getString("last_7_days")</option>
@@ -125,7 +125,7 @@
 				</td>		
 				<td>
 					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
-					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
+					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" >
 				</td>
 			</tr>
 		</tbody>
