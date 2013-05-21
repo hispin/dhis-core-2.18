@@ -20,6 +20,7 @@
 		setFieldValue('hideLink', 'true');
 		isDashboard = true;
 		showById('dueDateTR');
+		setFieldValue('listPatientBtn','$encoder.jsEscape( $i18n.getString( "list_events" ) , "'")');
 		mainPage = 0;
 	});	
 </script>
