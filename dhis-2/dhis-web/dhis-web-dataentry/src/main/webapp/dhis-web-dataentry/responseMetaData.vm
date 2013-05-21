@@ -13,6 +13,13 @@
 #if( $velocityCount < $size ),#end
 #end },
 
+"optionSets": {
+#set( $size = $dataElementsWithOptionSet.size() )
+#foreach( $dataElement in $dataElementsWithOptionSet )
+"${dataElement.uid}-${dataElement.categoryCombo.getSortedOptionCombos().get(0).uid}":"$encoder.jsonEncode( ${dataElement.optionSet.uid} )"
+#if( $velocityCount < $size ),#end
+#end },
+
 "indicatorFormulas": {
 #set( $size = $indicators.size() )
 #foreach( $indicator in $indicators )
