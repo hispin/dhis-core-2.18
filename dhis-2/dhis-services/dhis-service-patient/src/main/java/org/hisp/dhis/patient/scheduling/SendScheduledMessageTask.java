@@ -236,7 +236,7 @@ public class SendScheduledMessageTask
             }
         }
 
-        notifier.notify( taskId, INFO, "Preparing reminder messages for enrollement completed", true );
+        notifier.notify( taskId, INFO, "Sending reminder messages for enrollement completed", true );
 
     }
 
