@@ -412,7 +412,32 @@ function addEventListeners()
 
         $( this ).css( 'width', '90%' );
     } );
-    
+
+    $( '[name="entryoptionset"]' ).each( function( i )
+    {
+        var id = $( this ).attr( 'id' );
+        var split = splitFieldId( id );
+
+        var dataElementId = split.dataElementId;
+        var optionComboId = split.optionComboId;
+
+        $( this ).unbind( 'focus' );
+        $( this ).unbind( 'change' );
+
+        $( this ).focus( valueFocus );
+        $( this ).blur( valueBlur );
+
+        $( this ).change( function()
+        {
+            saveVal( dataElementId, optionComboId, id );
+        } );
+
+        if ( formType != FORMTYPE_CUSTOM ) {
+            $( this ).css( 'width', '80%' );
+            $( this ).css( 'text-align', 'center' );
+        }
+    } );
+
     $( '[name="commentlink"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
@@ -546,8 +571,8 @@ function loadForm( dataSetId, multiOrg )
                 $( '#currentOrganisationUnit' ).html( i18n_no_organisationunit_selected );
             }
 
-            loadDataValues();
             insertOptionSets();
+            loadDataValues();
         } );
     }
 }
@@ -1076,11 +1101,13 @@ function insertDataValues()
 
     $( '[name="entryfield"]' ).val( '' );
     $( '[name="entryselect"]' ).val( '' );
+    $( '[name="entryoptionset"]' ).val( '' );
     $( '[name="dyninput"]' ).val( '' );
     $( '[name="dynselect"]' ).val( '' );
 
     $( '[name="entryfield"]' ).css( 'background-color', COLOR_WHITE );
     $( '[name="entryselect"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="entryoptionset"]' ).css( 'background-color', COLOR_WHITE );
     $( '[name="dyninput"]' ).css( 'background-color', COLOR_WHITE );
 
     $( '[name="min"]' ).html( '' );
@@ -1536,7 +1563,7 @@ function validateCompulsoryCombinations()
     if ( fieldCombinationRequired )
     {
         var violations = false;
-		
+
         $( '[name="entryfield"]' ).add( '[name="entryselect"]' ).each( function( i )
         {
             var id = $( this ).attr( 'id' );
@@ -2277,13 +2304,29 @@ function loadOptionSets() {
 }
 
 function insertOptionSets() {
-    $.each( _.keys(optionSets), function(idx, item) {
-        autocompleteOptionSetField( item + '-val', optionSets[item] );
-    });
+    $( '[name="entryoptionset"]' ).each( function ( idx, item ) {
+        var optionSetKey = splitFieldId( item.id );
+
+        if ( multiOrganisationUnit ) {
+            item = optionSetKey.organisationUnitId + '-' + optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
+        } else {
+            item = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
+        }
+
+        item = item + '-val';
+        optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
+
+        autocompleteOptionSetField( item, optionSets[optionSetKey] );
+    } );
 }
 
 function autocompleteOptionSetField( idField, optionSetUid ) {
     var input = jQuery( "#" + idField );
+
+    if ( !input ) {
+        return;
+    }
+
     input.css( "width", "85%" );
     input.autocomplete( {
         delay: 0,

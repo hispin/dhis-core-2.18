@@ -67,7 +67,11 @@
       <option value="false">$i18n.getString( "no" )</option>
     </select><img name="commentlink" id="${commentId}"></td>
     #else
-    <td><input name="entryfield" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
+        #if( $dataElement.optionSet )
+          <td><input name="entryoptionset" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
+        #else
+          <td><input name="entryfield" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
+        #end
     #end
     </td>
     #set( $tabIndex = $tabIndex + 1 )
