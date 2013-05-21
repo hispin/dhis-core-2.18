@@ -194,7 +194,6 @@ public class DefaultPatientRegistrationFormService
             {
                 String uid = identifierMatcher.group( 1 );
                 PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( uid );
-
                 if ( identifierType == null )
                 {
                     inputHtml = "<input value='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + uid
@@ -208,6 +207,7 @@ public class DefaultPatientRegistrationFormService
                     {
                         PatientIdentifier patientIdentifier = identifierService.getPatientIdentifier( identifierType,
                             patient );
+
                         if ( patientIdentifier != null )
                         {
                             value = patientIdentifier.getIdentifier();
@@ -238,7 +238,7 @@ public class DefaultPatientRegistrationFormService
             {
                 String uid = dynamicAttrMatcher.group( 1 );
                 PatientAttribute attribute = attributeService.getPatientAttribute( uid );
-
+                
                 if ( attribute == null )
                 {
                     inputHtml = "<input value='[" + i18n.getString( "missing_patient_attribute" ) + " " + uid
@@ -359,7 +359,7 @@ public class DefaultPatientRegistrationFormService
         }
         else
         {
-            inputHtml += TAG_CLOSE;
+            inputHtml += " value=\"" + value + "\"" + TAG_CLOSE;
         }
         return inputHtml;
     }
@@ -503,6 +503,7 @@ public class DefaultPatientRegistrationFormService
     {
         try
         {
+
             return ProgramInstance.class.getMethod( "get" + property ).invoke( programInstance );
         }
         catch ( Exception ex )
