@@ -484,6 +484,7 @@
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.RemovePatientAction"
@@ -511,6 +512,7 @@
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction"

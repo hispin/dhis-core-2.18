@@ -246,7 +246,7 @@ public class UpdateProgramAction
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         disableRegistrationFields = (disableRegistrationFields == null) ? false : disableRegistrationFields;
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
-        
+
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
