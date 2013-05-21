@@ -50,6 +50,7 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -83,6 +84,13 @@ public class UpdatePatientAction
 
     private UserService userService;
 
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -169,6 +177,9 @@ public class UpdatePatientAction
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
+
+        phoneNumber = (phoneNumber.trim().equals( systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE ) )) ? null : phoneNumber;
 
         patient.setGender( gender );
         patient.setIsDead( isDead );
