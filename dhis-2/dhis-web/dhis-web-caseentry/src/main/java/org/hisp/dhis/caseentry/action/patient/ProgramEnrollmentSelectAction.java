@@ -120,6 +120,7 @@ public class ProgramEnrollmentSelectAction
         programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, orgunit ) );
         programs.retainAll( programService.getProgramsByCurrentUser() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        programs.removeAll( patient.getPrograms() );
         
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_ACTIVE );
 
