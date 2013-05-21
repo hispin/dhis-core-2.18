@@ -178,7 +178,7 @@ public class AddPatientAction
         // Set Other information for patient
         // ---------------------------------------------------------------------
 
-        phoneNumber = (phoneNumber.trim().equals( systemSettingManager
+        phoneNumber = (phoneNumber!=null && phoneNumber.trim().equals( systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE ) )) ? null : phoneNumber;
 
         patient.setGender( gender );

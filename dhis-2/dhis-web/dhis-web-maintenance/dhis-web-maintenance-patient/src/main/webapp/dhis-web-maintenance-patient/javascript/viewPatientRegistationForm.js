@@ -146,7 +146,7 @@ function getRequiredFields()
 		jQuery('#programAttrSelector option').each(function() {
 			var item = jQuery(this);
 			if( item.attr('mandatory')=='true'){
-				requiredFields['attributeid=' + item.val()] = item.text();
+				requiredFields['programid=' + item.val()] = item.text();
 			}
 		});
 		
