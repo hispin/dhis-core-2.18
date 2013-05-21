@@ -131,21 +131,24 @@
 			<input type='button' class="small-button" onclick='insertOperator( ">=" );' value=">=" />
 			<input type='button' class="small-button" onclick='insertOperator( "=" );' value="=" />
 			<input type='button' class="small-button" onclick='insertOperator( "!=" );' value="!=" />
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' class="nornal-button" onclick='insertBoolValue( "true" );' value="$i18n.getString( 'yes' )" />
-			<input type='button' class="nornal-button" onclick='insertBoolValue( "false" );' value="$i18n.getString( 'no' )" />
-			<input type='button' class="nornal-button" onclick='insertOperator( "is null" );' value="==NULL" />
-			<input type='button' class="nornal-button" onclick='insertOperator( "is not null" );' value="!=NULL" />
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' style="width:54px;" onclick='insertOperator( "AND" );' value="$i18n.getString( 'and_operator' )" />
-			<input type='button' style="width:54px;" onclick='insertOperator( "OR" );' value="$i18n.getString( 'or_operator' )" />
+			<span style='padding-left:10px'>
+				<input type='button' class="nornal-button" onclick='insertBoolValue( "true" );' value="$i18n.getString( 'yes' )" />
+				<input type='button' class="nornal-button" onclick='insertBoolValue( "false" );' value="$i18n.getString( 'no' )" />
+				<input type='button' class="nornal-button" onclick='insertOperator( "is null" );' value="==NULL" />
+				<input type='button' class="nornal-button" onclick='insertOperator( "is not null" );' value="!=NULL" />
+			</span>
+			<span style='padding-left:10px'>
+				<input type='button' style="width:54px;" onclick='insertOperator( "AND" );' value="$i18n.getString( 'and_operator' )" />
+				<input type='button' style="width:54px;" onclick='insertOperator( "OR" );' value="$i18n.getString( 'or_operator' )" />
+				<input type='button' style="width:80px;" onclick='insertOperator( "COMBINE" );' value="$i18n.getString( 'combine_operator' )" />
+			</span>
 			<br><br>
-			<input type='button' style="width:92px;" onclick='insertOperator( "COMBINE" );' value="$i18n.getString( 'combine_operator' )" />
-			<input type='button' style="width:150px;" onclick='insertOperator( "DATEDIFF( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
-			<input type='button' style="width:150px;" onclick='insertOperator( "DATEDIFF( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
-			<input type='button' style="width:150px;" onclick='insertOperator( "DATEDIFF( , executionDate) " );' value="$i18n.getString('minus_with_executionDate')" />
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
+			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
+			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
+			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , executionDate) " );' value="$i18n.getString('minus_with_executionDate')" />
+			<span style='padding-left:110px'>
+				<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
+			</span>
 		</td>
 	</tr>
     </tbody>
