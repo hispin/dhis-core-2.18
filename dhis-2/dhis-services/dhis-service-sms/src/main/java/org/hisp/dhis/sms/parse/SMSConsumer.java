@@ -77,7 +77,7 @@ public class SMSConsumer
                 }
                 catch ( Exception e )
                 {
-                    // ignore
+//                    e.printStackTrace();
                 }
                 try
                 {
@@ -102,6 +102,7 @@ public class SMSConsumer
                 catch ( Exception e )
                 {
                     log.error( e );
+                    e.printStackTrace();
                 }
 
                 messageQueue.remove( message );

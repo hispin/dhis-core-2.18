@@ -29,19 +29,18 @@ package org.hisp.dhis.mobile.action.incoming;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
+import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.opensymphony.xwork2.Action;
 
 /**
-* @author Nguyen Kim Lai
-*/
+ * @author Nguyen Kim Lai
+ */
 public class ReceivingSMSAction
     implements Action
 {
@@ -62,7 +61,7 @@ public class ReceivingSMSAction
     {
         this.i18n = i18n;
     }
-    
+
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
 
@@ -83,28 +82,39 @@ public class ReceivingSMSAction
     {
         return message;
     }
-    
+
     private Integer pollingInterval;
-    
+
     public Integer getPollingInterval()
     {
         return pollingInterval;
     }
 
+    private String smsStatus;
+
+    public String getSmsStatus()
+    {
+        return smsStatus;
+    }
+
+    public void setSmsStatus( String smsStatus )
+    {
+        this.smsStatus = smsStatus;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-
     @Override
     public String execute()
         throws Exception
     {
         ModemGatewayConfig gatewayConfig = (ModemGatewayConfig) smsConfigurationManager
-        .checkInstanceOfGateway( ModemGatewayConfig.class );
+            .checkInstanceOfGateway( ModemGatewayConfig.class );
 
         if ( gatewayConfig != null )
         {
-            pollingInterval = gatewayConfig.getPollingInterval()*1000;
+            pollingInterval = gatewayConfig.getPollingInterval() * 1000;
         }
         else
         {
@@ -114,19 +124,36 @@ public class ReceivingSMSAction
 
         if ( listIncomingSms.size() > 0 )
         {
-            for( IncomingSms each : listIncomingSms )
+            for ( IncomingSms each : listIncomingSms )
             {
                 incomingSmsService.save( each );
             }
-            
+
             message = i18n.getString( "new_message" );
-            
+
             incomingSmsService.deleteAllFromModem();
         }
-        
-        listIncomingSms = incomingSmsService.listAllMessage();
+
+        if ( smsStatus == null || smsStatus.trim().equals( "" ) )
+        {
+            listIncomingSms = incomingSmsService.listAllMessage();
+        }
+        else
+        {
+            SmsMessageStatus[] statusArray = SmsMessageStatus.values();
+
+            for ( int i = 0; i < statusArray.length; i++ )
+            {
+                if ( statusArray[i].toString().equalsIgnoreCase( smsStatus ) )
+                {
+                    listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( statusArray[i] ) );
+                    System.out.println( "Status: " + statusArray[i].toString() );
+                    break;
+                }
+            }
+
+        }
 
         return SUCCESS;
     }
-
 }

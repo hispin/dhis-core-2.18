@@ -1,5 +1,6 @@
 package org.hisp.dhis.sms.incoming;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.sms.queue.MessageQueue;
@@ -64,4 +65,6 @@ public interface IncomingSmsService
     void save ( IncomingSms sms );
     
     public void setIncomingSmsQueue( MessageQueue incomingSmsQueue );
+    
+    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
 }
