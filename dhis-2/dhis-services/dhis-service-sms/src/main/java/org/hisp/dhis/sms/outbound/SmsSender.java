@@ -203,6 +203,7 @@ public class SmsSender
 
             log.warn( "Unable to send message through sms: " + sms, e );
         }
+        
         return message;
     }
 }

@@ -140,6 +140,7 @@ public class EmailMessageSender
         {
             log.warn( "Could not send email: " + ex.getMessage() );
         }
+        
         return null;
     }
 
