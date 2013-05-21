@@ -48,7 +48,11 @@
   </select>
   <img name="commentlink" id="${commentId}"></td>
   #else
-  <td><input name="entryfield" id="${dataEntryId}" maxlength="255" type="text"#if( !$hasAccess ) disabled="disabled"#end tabindex="$tabIndex"></td>
+      #if( $dataElement.optionSet )
+        <td><input name="entryoptionset" id="${dataEntryId}" maxlength="255" type="text"#if( !$hasAccess ) disabled="disabled"#end tabindex="$tabIndex"></td>
+      #else
+        <td><input name="entryfield" id="${dataEntryId}" maxlength="255" type="text"#if( !$hasAccess ) disabled="disabled"#end tabindex="$tabIndex"></td>
+      #end
   #end
   </td>
   #set( $tabIndex = $tabIndex + 1 )
