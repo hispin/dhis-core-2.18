@@ -58,7 +58,7 @@ function listAllPatient()
 	var d = date.getDate() - 1;
 	var m = date.getMonth();
 	var y1 = date.getFullYear() - 100;
-	var y2 = date.getFullYear();
+	var y2 = date.getFullYear() + 100;
 	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y1, m, d) );
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
 	
@@ -104,11 +104,11 @@ function advancedSearch( params )
 		type:"POST",
 		data: params,
 		success: function( html ){
-			setTableStyles();
 			jQuery('#listEventDiv').html(html);
 			showById('colorHelpLink');
 			showById('listEventDiv');
 			eventList = 2;
+			setTableStyles();
 			hideLoader();
 		}
 	});
