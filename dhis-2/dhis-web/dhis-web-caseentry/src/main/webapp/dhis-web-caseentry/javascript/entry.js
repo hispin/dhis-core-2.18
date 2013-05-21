@@ -791,10 +791,10 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             }
 
             if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-                jQuery("[id=entryFormContainer] :input").prop('disabled', true);
-                jQuery("[id=entryFormContainer] :input").datepicker("destroy");
-                jQuery("[id=executionDate]").prop('disabled', true);
-                jQuery("[id=executionDate]").datepicker("destroy");
+				var blockEntryForm = getFieldValue('blockEntryForm');
+				if( blockEntryForm == 'true' ){
+					blockEntryForm();
+				}
             }
 
             if(data.executionDate) {

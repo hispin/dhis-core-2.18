@@ -338,12 +338,10 @@ function loadDataEntry( programStageInstanceId )
 				disable('validationBtn');
 			}
 			else if( executionDate != ''){
-				if ( completed == 'false' )
-				{
+				if ( completed == 'false' ){
 					disableCompletedButton(false);
 				}
-				else if( completed == 'true' )
-				{
+				else if( completed == 'true' ){
 					disableCompletedButton(true);
 				}
 			}
