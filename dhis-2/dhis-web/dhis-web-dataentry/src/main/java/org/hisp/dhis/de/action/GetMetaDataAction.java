@@ -38,6 +38,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,13 @@ public class GetMetaDataAction
         return dataElements;
     }
 
+    private List<DataElement> dataElementsWithOptionSet = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElementsWithOptionSet()
+    {
+        return dataElementsWithOptionSet;
+    }
+
     private Collection<Indicator> indicators;
 
     public Collection<Indicator> getIndicators()
@@ -143,6 +151,14 @@ public class GetMetaDataAction
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
 
         dataElements = dataElementService.getDataElementsWithDataSets();
+
+        for ( DataElement dataElement : dataElements )
+        {
+            if ( dataElement.getOptionSet() != null )
+            {
+                dataElementsWithOptionSet.add( dataElement );
+            }
+        }
 
         indicators = indicatorService.getIndicatorsWithDataSets();
 
