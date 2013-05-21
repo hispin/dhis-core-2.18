@@ -5,6 +5,19 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	hideById("listPatientDiv");
 	setFieldValue('orgunitName', orgUnitNames[0]);
 	setFieldValue('orgunitId', orgUnits[0]);
+	clearListById('programId');
+	jQuery.get("getPrograms.action",{}, 
+		function(json)
+		{
+			jQuery( '#programId').append( '<option value="">' + i18n_please_select + '</option>' );
+			for ( i in json.programs ) {
+				if(json.programs[i].type==1){
+					jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+				}
+			}
+			hideById('programLoader');
+			enable('programId');
+		});
 }
 
 selection.setListenerFunction( orgunitSelected );
