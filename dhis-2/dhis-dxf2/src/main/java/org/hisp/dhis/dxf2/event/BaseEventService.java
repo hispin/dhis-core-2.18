@@ -173,17 +173,17 @@ public abstract class BaseEventService implements EventService
             return new ImportSummary( ImportStatus.ERROR, ex.getMessage() );
         }
 
-        Date executionDate = format.parseDate( event.getExecutionDate() );
+        Date eventDate = format.parseDate( event.getEventDate() );
 
-        if ( executionDate == null )
+        if ( eventDate == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event executionDate is not in a valid format." );
+            return new ImportSummary( ImportStatus.ERROR, "Event eventDate is not in a valid format." );
         }
 
         ImportSummary importSummary = new ImportSummary();
         importSummary.setStatus( ImportStatus.SUCCESS );
 
-        ProgramStageInstance programStageInstance = saveExecutionDate( program, organisationUnit, executionDate,
+        ProgramStageInstance programStageInstance = saveEventDate( program, organisationUnit, eventDate,
             event.getCompleted(), event.getCoordinate() );
 
         String storedBy = event.getStoredBy();
@@ -244,7 +244,7 @@ public abstract class BaseEventService implements EventService
         return new ImportSummary();
     }
 
-    private ProgramStageInstance saveExecutionDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed,
+    private ProgramStageInstance saveEventDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed,
         Coordinate coordinate )
     {
         ProgramStage programStage = program.getProgramStages().iterator().next();
