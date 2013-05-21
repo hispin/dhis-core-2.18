@@ -50,7 +50,7 @@ public class Event
 
     private String patientId;
 
-    private String executionDate;
+    private String eventDate;
 
     private Boolean completed = false;
 
@@ -114,14 +114,14 @@ public class Event
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getExecutionDate()
+    public String getEventDate()
     {
-        return executionDate;
+        return eventDate;
     }
 
-    public void setExecutionDate( String executionDate )
+    public void setEventDate( String eventDate )
     {
-        this.executionDate = executionDate;
+        this.eventDate = eventDate;
     }
 
     @JsonProperty
@@ -181,7 +181,7 @@ public class Event
             ", eventId='" + eventId + '\'' +
             ", organisationUnitId='" + organisationUnitId + '\'' +
             ", patientId='" + patientId + '\'' +
-            ", executionDate='" + executionDate + '\'' +
+            ", eventDate='" + eventDate + '\'' +
             ", completed=" + completed +
             ", storedBy='" + storedBy + '\'' +
             ", coordinate=" + coordinate +
