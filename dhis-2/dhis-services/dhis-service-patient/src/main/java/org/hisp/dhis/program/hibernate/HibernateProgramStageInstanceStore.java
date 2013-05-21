@@ -762,7 +762,7 @@ public class HibernateProgramStageInstanceStore
             + "                         ON ou.organisationunitid=psi.organisationunitid"
             + "                 INNER JOIN program pg "
             + "                         ON pg.programid = ps.programid "
-            + "         WHERE psi.organisationunitid = "
+            + "         WHERE ou.parentid = "
             + orgunit.getId()
             + "                 AND pg.programid = "
             + program.getId()
