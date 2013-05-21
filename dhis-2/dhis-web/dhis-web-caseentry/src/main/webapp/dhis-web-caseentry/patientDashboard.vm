@@ -124,14 +124,7 @@
 					#end
 					
 					#set($flag = 'false')
-					#set($messages = "")
 					#foreach( $programStageInstance in $programInstance.programStageInstances )
-						<!-- Messages of stage -->
-						#foreach( $comment in $programStageInstance.patientComments )
-							#set($messages = $messages + $format.formatDateTime($comment.createdDate) + ' ' + $comment.creator + ' ' + $comment.commentText + '<br>' )
-							#set( $mark = !$mark )
-						#end
-						
 						#set( $status = $programStageInstance.getEventStatus() )
 						#if( $status!=1 && $status!=5 && $flag=='false')
 							<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
@@ -160,12 +153,6 @@
 						</td>
 					</tr>
 					#end
-					
-					<!-- Fill messages -->
-					#if($messages!='')
-					<tr><td>$messages</td></tr>
-					#end
-					
 				#end
 			</table>
 		</div>
