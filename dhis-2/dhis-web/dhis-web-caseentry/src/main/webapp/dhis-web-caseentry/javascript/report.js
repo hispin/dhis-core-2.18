@@ -42,6 +42,7 @@ function loadDataEntry( programStageInstanceId )
 			jQuery("#viewRecordsDiv :input" ).datepicker("destroy");
 			jQuery("#viewRecordsDiv :input" ).removeAttr("onclick");
 			jQuery("#viewRecordsDiv :input" ).removeAttr("onchange");
+			jQuery("#viewRecordsDiv :input" ).width("260");
 			jQuery("#viewRecordsDiv" ).find('img').removeAttr("onclick");
 			showById("reportTitle");
 			hideById("patientInforTB");
