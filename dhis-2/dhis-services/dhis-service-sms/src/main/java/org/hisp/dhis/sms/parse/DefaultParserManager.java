@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,6 +66,8 @@ import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.sms.incoming.IncomingSms;
+import org.hisp.dhis.sms.incoming.IncomingSmsService;
+import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
@@ -108,7 +109,7 @@ public class DefaultParserManager
 
     @Autowired
     private DataSetService dataSetService;
-    
+
     private MessageConversationStore messageConversationStore;
 
     public void setMessageConversationStore( MessageConversationStore messageConversationStore )
@@ -116,15 +117,22 @@ public class DefaultParserManager
         this.messageConversationStore = messageConversationStore;
     }
 
+    @Autowired
+    private IncomingSmsService incomingSmsService;
+
     @Transactional
     public void parse( IncomingSms sms )
     {
         try
         {
-            parse( sms.getOriginator(), sms.getText() );
+            parse( sms.getOriginator(), sms );
+            sms.setStatus( SmsMessageStatus.PROCESSED );
+            incomingSmsService.update( sms );
         }
         catch ( SMSParserException e )
         {
+            sms.setStatus( SmsMessageStatus.FAILED );
+            incomingSmsService.update( sms );
             sendSMS( e.getMessage(), sms.getOriginator() );
             return;
         }
@@ -140,10 +148,10 @@ public class DefaultParserManager
     }
 
     @Transactional
-    private void parse( String sender, String message )
+    private void parse( String sender, IncomingSms sms )
         throws SMSParserException
     {
-
+        String message = sms.getText();
         if ( StringUtils.isEmpty( sender ) )
         {
             return;
@@ -305,18 +313,18 @@ public class DefaultParserManager
             else if ( users != null && users.size() == 1 )
             {
                 User sender = (User) users.iterator().next();
-                
+
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
-                
+
                 if ( sender != null )
                 {
                     receivers.add( sender );
                 }
-                
+
                 MessageConversation conversation = new MessageConversation( command.getName(), sender );
-                
+
                 conversation.addMessage( new Message( message, null, sender ) );
-                
+
                 for ( User receiver : receivers )
                 {
                     boolean read = receiver != null && receiver.equals( sender );
@@ -622,11 +630,8 @@ public class DefaultParserManager
             registration.setSource( organisationUnit );
             registration.setDate( new Date() );
             registration.setStoredBy( storedBy );
-
             registration.setPeriodName( registration.getPeriod().toString() );
-
-            registrationService.saveCompleteDataSetRegistration( registration, true );
-
+            registrationService.saveCompleteDataSetRegistration( registration, false );
             log.info( "DataSet registered as complete: " + registration );
         }
     }
@@ -968,4 +973,11 @@ public class DefaultParserManager
     {
         this.registrationService = registrationService;
     }
+
+    @Required
+    public IncomingSmsService getIncomingSmsService()
+    {
+        return incomingSmsService;
+    }
+
 }

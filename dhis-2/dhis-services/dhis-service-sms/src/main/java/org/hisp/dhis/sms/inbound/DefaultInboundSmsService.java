@@ -28,6 +28,7 @@ package org.hisp.dhis.sms.inbound;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
@@ -46,7 +47,7 @@ public class DefaultInboundSmsService
     // -------------------------------------------------------------------------
 
     private IncomingSmsStore incomingSmsStore;
-    
+
     private MessageQueue incomingSmsQueue;
 
     public void setIncomingSmsQueue( MessageQueue incomingSmsQueue )
@@ -163,7 +164,7 @@ public class DefaultInboundSmsService
     {
         return incomingSmsStore.get( id );
     }
-    
+
     @Override
     public IncomingSms getNextUnprocessed()
     {
@@ -175,6 +176,12 @@ public class DefaultInboundSmsService
     public void update( IncomingSms incomingSms )
     {
         incomingSmsStore.update( incomingSms );
+    }
+
+    @Override
+    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status )
+    {
+        return incomingSmsStore.getSmsByStatus( status );
     }
 
     // -------------------------------------------------------------------------
