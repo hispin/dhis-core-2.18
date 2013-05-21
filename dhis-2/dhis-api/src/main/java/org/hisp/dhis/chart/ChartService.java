@@ -93,8 +93,6 @@ public interface ChartService
 
     Collection<Chart> getAllCharts();
     
-    Collection<Chart> getSystemAndUserCharts();
-
     Chart getChartByName( String name );
 
     Collection<Chart> getCharts( final Collection<Integer> identifiers );

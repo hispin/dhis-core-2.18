@@ -91,13 +91,6 @@
       </result>
     </action>
 
-    <action name="getSystemAndCurrentUserCharts"
-      class="org.hisp.dhis.visualizer.action.GetSystemAndCurrentUserChartsAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-visualizer/jsonminCharts.vm
-      </result>
-    </action>
-
     <action name="deleteCharts"
       class="org.hisp.dhis.visualizer.action.DeleteChartsAction">
       <result name="success" type="velocity-json">
