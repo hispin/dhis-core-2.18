@@ -234,8 +234,7 @@ td .bad div {
 .pt-panel-title-data,
 .pt-panel-title-period,
 .pt-panel-title-organisationunit,
-.pt-panel-title-organisationunitgroupset,
-.pt-panel-title-dataelementgroupset {
+.pt-panel-title-dimension {
 	height: 17px;
 	background-repeat: no-repeat;
 	padding-left: 20px
@@ -250,10 +249,7 @@ td .bad div {
 .pt-panel-title-organisationunit {
 	background-image: url(../images/organisationunit.png);
 }
-.pt-panel-title-organisationunitgroupset {
-	background-image: url(../images/organisationunitgroupset.png);
-}
-.pt-panel-title-dataelementgroupset {
+.pt-panel-title-dimension {
 	background-image: url(../images/dataelementgroupset.png);
 }
 
