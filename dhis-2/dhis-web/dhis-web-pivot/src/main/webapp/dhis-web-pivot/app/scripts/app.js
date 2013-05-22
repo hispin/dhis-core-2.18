@@ -890,6 +890,66 @@ Ext.onReady( function() {
 		});
 		pt.viewport.parentOrganisationUnit = parentOrganisationUnit;
 
+		regression = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: PT.i18n.include_regression,
+			style: 'margin-bottom:4px',
+		});
+		pt.viewport.regression = regression;
+
+		cumulative = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: PT.i18n.include_cumulative,
+			style: 'margin-bottom:6px',
+		});
+		pt.viewport.cumulative = cumulative;
+
+		sortOrder = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'pt-combo',
+			style: 'margin-bottom:3px',
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: PT.i18n.sort_order,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 0,
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 0, text: PT.i18n.none},
+					{id: 1, text: PT.i18n.low_to_high},
+					{id: 2, text: PT.i18n.high_to_low}
+				]
+			})
+		});
+		pt.viewport.sortOrder = sortOrder;
+
+		topLimit = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'pt-combo',
+			style: 'margin-bottom:3px',
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: PT.i18n.top_limit,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 0,
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 0, text: PT.i18n.none},
+					{id: 5, text: 5},
+					{id: 10, text: 10},
+					{id: 20, text: 20},
+					{id: 50, text: 50},
+					{id: 100, text: 100}
+				]
+			})
+		});
+		pt.viewport.topLimit = topLimit;
+
+
 		data = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
@@ -916,7 +976,11 @@ Ext.onReady( function() {
 			items: [
 				reportingPeriod,
 				organisationUnit,
-				parentOrganisationUnit
+				parentOrganisationUnit,
+				regression,
+				cumulative,
+				sortOrder,
+				topLimit
 			]
 		};
 
@@ -938,21 +1002,27 @@ Ext.onReady( function() {
 					digitGroupSeparator: digitGroupSeparator.getValue(),
 					reportingPeriod: reportingPeriod.getValue(),
 					organisationUnit: organisationUnit.getValue(),
-					parentOrganisationUnit: parentOrganisationUnit.getValue()
+					parentOrganisationUnit: parentOrganisationUnit.getValue(),
+					regression: regression.getValue(),
+					cumulative: cumulative.getValue(),
+					sortOrder: sortOrder.getValue(),
+					topLimit: topLimit.getValue()
 				};
 			},
 			setOptions: function(layout) {
 				showTotals.setValue(Ext.isBoolean(layout.showTotals) ? layout.showTotals : true);
 				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
-
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
 				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
 				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
-
 				reportingPeriod.setValue(Ext.isBoolean(layout.reportingPeriod) ? layout.reportingPeriod : false);
 				organisationUnit.setValue(Ext.isBoolean(layout.organisationUnit) ? layout.organisationUnit : false);
 				parentOrganisationUnit.setValue(Ext.isBoolean(layout.parentOrganisationUnit) ? layout.parentOrganisationUnit : false);
+				regression.setValue(Ext.isBoolean(layout.regression) ? layout.regression : false);
+				cumulative.setValue(Ext.isBoolean(layout.cumulative) ? layout.cumulative : false);
+				sortOrder.setValue(Ext.isNumber(layout.sortOrder) ? layout.sortOrder : 0);
+				topLimit.setValue(Ext.isNumber(layout.topLimit) ? layout.topLimit : 0);
 			},
 			items: [
 				{
