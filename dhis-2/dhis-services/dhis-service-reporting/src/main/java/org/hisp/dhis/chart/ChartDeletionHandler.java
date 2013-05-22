@@ -29,8 +29,12 @@ package org.hisp.dhis.chart;
 
 import java.util.Iterator;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
@@ -84,11 +88,35 @@ public class ChartDeletionHandler
         {
             if ( chart.getIndicators().remove( indicator ) )
             {
-                chartService.addChart( chart );
+                chartService.updateChart( chart );
             }
         }
     }
 
+    @Override
+    public void deleteDataElement( DataElement dataElement )
+    {
+        for ( Chart chart : chartService.getAllCharts() )
+        {
+            if ( chart.getDataElements().remove( chart ) )
+            {
+                chartService.updateChart( chart );
+            }
+        }
+    }
+
+    @Override
+    public void deleteDataSet( DataSet dataSet )
+    {
+        for ( Chart chart : chartService.getAllCharts() )
+        {
+            if ( chart.getDataSets().remove( chart ) )
+            {
+                chartService.updateChart( chart );
+            }
+        }
+    }
+    
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
@@ -96,7 +124,7 @@ public class ChartDeletionHandler
         {
             if ( chart.getOrganisationUnits().remove( unit ) )
             {
-                chartService.addChart( chart );
+                chartService.updateChart( chart );
             }
         }
     }
@@ -111,6 +139,30 @@ public class ChartDeletionHandler
             Chart chart = iterator.next();
             iterator.remove();
             chartService.deleteChart( chart );
+        }
+    }
+
+    @Override
+    public void deleteDataElementGroup( DataElementGroup group )
+    {
+        for ( Chart chart : chartService.getAllCharts() )
+        {
+            if ( chart.getDataElementGroups().remove( group ) )
+            {
+                chartService.updateChart( chart );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
+    {
+        for ( Chart chart : chartService.getAllCharts() )
+        {
+            if ( chart.getOrganisationUnitGroups().remove( group ) )
+            {
+                chartService.updateChart( chart );
+            }
         }
     }
 }
