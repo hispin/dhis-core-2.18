@@ -82,7 +82,7 @@ public class SmsSender
     /**
      * Note this methods is invoked asynchronously.
      */
-    // @Async
+    //@Async
     @Override
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
@@ -144,6 +144,7 @@ public class SmsSender
     // -------------------------------------------------------------------------
 
     private String createMessage( String subject, String text, User sender )
+    //private String createMessage( String subject, String text, User sender, boolean isUnicode )
     {
         String name = "unknown";
 
@@ -187,6 +188,7 @@ public class SmsSender
     }
 
     private String sendMessage( String text, Set<String> recipients, String gateWayId )
+    //private String sendMessage( String text, Set<String> recipients, String gateWayId, boolean isUnicode )
     {
         String message = null;
         OutboundSms sms = new OutboundSms();

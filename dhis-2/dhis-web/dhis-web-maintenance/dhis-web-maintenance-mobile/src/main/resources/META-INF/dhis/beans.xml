@@ -154,6 +154,8 @@
 			ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="dataElementService"
 			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="userGroupService"
+			ref="org.hisp.dhis.user.UserGroupService" />
 
 	</bean>
 

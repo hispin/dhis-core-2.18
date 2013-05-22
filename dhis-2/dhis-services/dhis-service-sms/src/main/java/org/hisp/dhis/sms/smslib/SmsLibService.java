@@ -48,6 +48,7 @@ import org.smslib.IOutboundMessageNotification;
 import org.smslib.OutboundMessage;
 import org.smslib.SMSLibException;
 import org.smslib.Service;
+import org.smslib.Message.MessageEncodings;
 import org.smslib.Service.ServiceStatus;
 
 import java.io.IOException;
@@ -145,6 +146,8 @@ public class SmsLibService
         }
 
         OutboundMessage outboundMessage = new OutboundMessage( recipient, sms.getMessage() );
+        
+        outboundMessage.setEncoding( MessageEncodings.ENCUCS2 );
 
         String longNumber = config.getLongNumber();
 
