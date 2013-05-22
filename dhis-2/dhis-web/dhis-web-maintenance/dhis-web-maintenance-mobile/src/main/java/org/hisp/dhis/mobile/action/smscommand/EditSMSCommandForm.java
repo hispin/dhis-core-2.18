@@ -42,21 +42,53 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
 public class EditSMSCommandForm
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
     private SMSCommandService smsCommandService;
+    
+    public void setSmsCommandService( SMSCommandService smsCommandService )
+    {
+        this.smsCommandService = smsCommandService;
+    }
 
     private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     private DataElementService dataElementService;
+    
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
 
     private String name;
 
     private int selectedDataSetID;
+    
+    private Integer userGroupID;
 
     private String codeDataelementOption;
 
@@ -104,6 +136,10 @@ public class EditSMSCommandForm
             c.setSeparator( separator );
             c.setCodes( codeSet );
             c.setDefaultMessage( defaultMessage );
+            if( userGroupID != null && userGroupID > -1 )
+            {
+                c.setUserGroup( userGroupService.getUserGroup( userGroupID ) );
+            }
             smsCommandService.save( c );
         }
 
@@ -112,7 +148,7 @@ public class EditSMSCommandForm
 
     public Collection<DataSet> getDataSets()
     {
-        return getDataSetService().getAllDataSets();
+        return dataSetService.getAllDataSets();
     }
 
     public Set<DataElement> getDataSetElements()
@@ -130,15 +166,6 @@ public class EditSMSCommandForm
         return smsCommandService.getSMSCommand( selectedCommandID );
     }
 
-    public DataSetService getDataSetService()
-    {
-        return dataSetService;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
 
     public int getSelectedDataSetID()
     {
@@ -170,16 +197,6 @@ public class EditSMSCommandForm
         this.name = name;
     }
 
-    public SMSCommandService getSmsCommandService()
-    {
-        return smsCommandService;
-    }
-
-    public void setSmsCommandService( SMSCommandService smsCommandService )
-    {
-        this.smsCommandService = smsCommandService;
-    }
-
     public int getSelectedCommandID()
     {
         return selectedCommandID;
@@ -198,16 +215,6 @@ public class EditSMSCommandForm
     public void setSeparator( String separator )
     {
         this.separator = separator;
-    }
-
-    public DataElementService getDataElementService()
-    {
-        return dataElementService;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
     }
 
     public String getCodeSeparator()
@@ -247,4 +254,8 @@ public class EditSMSCommandForm
         }
     }
 
+    public Integer getUserGroupID()
+    {
+        return userGroupID;
+    }
 }

@@ -81,6 +81,10 @@ public class SMSCommandAction
     // Input & Output
     // -------------------------------------------------------------------------
     
+    private SMSCommand smsCommand;
+    
+    private List<DataElement> dataElements;
+    
     private List<UserGroup> userGroupList;
 
     public List<UserGroup> getUserGroupList()
@@ -125,16 +129,20 @@ public class SMSCommandAction
     public String execute()
         throws Exception
     {
-        if ( getSMSCommand() != null && getSMSCommand().getCodes() != null )
+        if ( selectedCommandID > -1 )
         {
-            for ( SMSCode x : getSMSCommand().getCodes() )
+            smsCommand = smsCommandService.getSMSCommand( selectedCommandID );
+        }
+        
+        if ( smsCommand != null && smsCommand.getCodes() != null )
+        {
+            for ( SMSCode x : smsCommand.getCodes() )
             {
                 codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
             }
         }
         
         userGroupList = new ArrayList<UserGroup>(userGroupService.getAllUserGroups());
-        
         return SUCCESS;
     }
 
@@ -142,21 +150,21 @@ public class SMSCommandAction
     // Supporting methods
     // -------------------------------------------------------------------------
     
-    public List<DataElement> getDataSetElements()
+    public List<DataElement> getDataElements()
     {
-        if ( getSMSCommand() != null )
+        if ( smsCommand != null )
         {
-            DataSet d = getSMSCommand().getDataset();
+            DataSet d = smsCommand.getDataset();
             if ( d != null )
             {
-                List<DataElement> x = new ArrayList<DataElement>( d.getDataElements() );
-                Collections.sort( x, new DataElementSortOrderComparator() );
-                return x;
+                dataElements = new ArrayList<DataElement>( d.getDataElements() );
+                Collections.sort( dataElements, new DataElementSortOrderComparator() );
+                return dataElements;
             }
         }
-
         return null;
     }
+    
 
     public Collection<DataSet> getDataSets()
     {
@@ -167,16 +175,9 @@ public class SMSCommandAction
     {
         return smsCommandService.getSMSCommands();
     }
-
-    public SMSCommand getSMSCommand()
+    
+    public SMSCommand getSmsCommand()
     {
-        if ( selectedCommandID > -1 )
-        {
-            return smsCommandService.getSMSCommand( selectedCommandID );
-        }
-        else
-        {
-            return null;
-        }
-    }
+        return smsCommand;
+    }   
 }
