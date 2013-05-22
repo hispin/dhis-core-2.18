@@ -654,7 +654,7 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
+    @JsonView( {DimensionalView.class} )
     public Map<String, String> getParentGraphMap()
     {
         return parentGraphMap;
