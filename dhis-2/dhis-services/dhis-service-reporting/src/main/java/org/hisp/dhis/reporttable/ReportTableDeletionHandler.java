@@ -28,6 +28,7 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -64,45 +65,39 @@ public class ReportTableDeletionHandler
     }
 
     @Override
-    public String allowDeleteDataElement( DataElement dataElement )
+    public void deleteDataElement( DataElement dataElement )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
-            if ( reportTable.getDataElements().contains( dataElement ) )
+            if ( reportTable.getDataElements().remove( dataElement ) )
             {
-                return reportTable.getName();
+                reportTableService.updateReportTable( reportTable );
             }
         }
-
-        return null;
     }
 
     @Override
-    public String allowDeleteIndicator( Indicator indicator )
+    public void deleteIndicator( Indicator indicator )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
-            if ( reportTable.getIndicators().contains( indicator ) )
+            if ( reportTable.getIndicators().remove( indicator ) )
             {
-                return reportTable.getName();
+                reportTableService.updateReportTable( reportTable );
             }
         }
-
-        return null;
     }
 
     @Override
-    public String allowDeleteDataSet( DataSet dataSet )
+    public void deleteDataSet( DataSet dataSet )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
-            if ( reportTable.getDataSets().contains( dataSet ) )
+            if ( reportTable.getDataSets().remove( dataSet ) )
             {
-                return reportTable.getName();
+                reportTableService.updateReportTable( reportTable );
             }
         }
-
-        return null;
     }
 
     @Override
@@ -131,6 +126,18 @@ public class ReportTableDeletionHandler
         }
     }
 
+    @Override
+    public void deleteDataElementGroup( DataElementGroup group )
+    {
+        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
+        {
+            if ( reportTable.getDataElementGroups().remove( group ) )
+            {
+                reportTableService.updateReportTable( reportTable );
+            }
+        }
+    }
+    
     @Override
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
