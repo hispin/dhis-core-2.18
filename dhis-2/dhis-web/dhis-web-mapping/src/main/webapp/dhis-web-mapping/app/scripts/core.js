@@ -1339,6 +1339,8 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 						iid = feature.attributes.internalId;
 					if (featureMap.hasOwnProperty(iid) && valueMap.hasOwnProperty(iid)) {
 						feature.attributes.value = valueMap[iid];
+						//var m = Math.random();
+						//feature.attributes.value = m < 0.3 ? -5 : m < 0.6 ? null : 1;
 						feature.attributes.label = feature.attributes.name + ' (' + feature.attributes.value + ')';
 						newFeatures.push(feature);
 					}

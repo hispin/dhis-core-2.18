@@ -2113,7 +2113,7 @@ DV.core.getApi = function(dv) {
 			}
 
 			if (!Ext.isBoolean(config.showTrendLine)) {
-				delete config.showTrendLine;
+				config.showTrendLine = layout.showTrendLine;
 			}
 			if (!Ext.isNumber(config.targetLineValue)) {
 				delete config.targetLineValue;
@@ -2128,13 +2128,13 @@ DV.core.getApi = function(dv) {
 				delete config.baseLineTitle;
 			}
 			if (!Ext.isBoolean(config.showValues)) {
-				delete config.showValues;
+				config.showValues = layout.showValues;
 			}
 			if (!Ext.isBoolean(config.hideLegend)) {
-				delete config.hideLegend;
+				config.hideLegend = layout.hideLegend;
 			}
 			if (!Ext.isBoolean(config.hideTitle)) {
-				delete config.hideTitle;
+				config.hideTitle = layout.hideTitle;
 			}
 			if (!Ext.isString(config.title) || Ext.isEmpty(config.title)) {
 				delete config.title;
@@ -2146,10 +2146,10 @@ DV.core.getApi = function(dv) {
 				delete config.rangeAxisTitle;
 			}
 			if (!Ext.isBoolean(config.userOrganisationUnit)) {
-				delete config.userOrganisationUnit;
+				config.userOrganisationUnit = layout.userOrganisationUnit;
 			}
 			if (!Ext.isBoolean(config.userOrganisationUnitChildren)) {
-				delete config.userOrganisationUnitChildren;
+				config.userOrganisationUnitChildren = layout.userOrganisationUnitChildren;
 			}
 
 			return true;

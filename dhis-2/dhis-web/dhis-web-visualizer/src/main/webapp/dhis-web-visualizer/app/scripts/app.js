@@ -27,12 +27,9 @@ Ext.onReady( function() {
 			init.rootNodes[i].path = '/' + dv.conf.finals.root.id + '/' + init.rootNodes[i].id;
 		}
 
-		// Dynamic dimensions
-
-			// Sort by name
+		// Sort and extend dynamic dimensions
 		init.dimensions = dv.util.array.sortObjectsByString(init.dimensions);
 
-			// Extend
 		for (var i = 0, dim; i < init.dimensions.length; i++) {
 			dim = init.dimensions[i];
 			dim.dimensionName = dim.id;
@@ -40,6 +37,7 @@ Ext.onReady( function() {
 			dv.conf.finals.dimension.objectNameMap[dim.id] = dim;
 		}
 
+		// Viewport afterrender
 		init.afterRender = function() {
 
 			// Resize event handler
@@ -128,17 +126,11 @@ Ext.onReady( function() {
 			config.filters = [];
 
 			getDimension = function(config) {
-				if (dv.api.objectNameDimensionClassMap[config.objectName]) {
-					return dv.api.objectNameDimensionClassMap[config.objectName]({
-						dimension: config.objectName,
-						items: config.items
-					});
+				if (dv.api.objectNameDimensionClassMap[config.dimension]) {
+					return dv.api.objectNameDimensionClassMap[config.dimension](config);
 				}
 				else {
-					return dv.api.Dimension({
-						dimension: config.dimension,
-						items: config.items
-					});
+					return dv.api.Dimension(config);
 				}
 			};
 
@@ -4117,7 +4109,9 @@ Ext.onReady( function() {
 					dimConf = dv.conf.finals.dimension,
 					objectName,
 					periodRecords,
-					fixedPeriodRecords = [];
+					fixedPeriodRecords = [],
+					isOu = false,
+					isOuc = false;
 
 				// Type
 				dv.viewport.chartType.setChartType(xLayout.type);
@@ -4136,6 +4130,7 @@ Ext.onReady( function() {
 				objectName = dimConf.indicator.objectName;
 				if (dimMap[objectName]) {
 					dv.store.indicatorSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.indicatorAvailable}, {store: pt.store.indicatorSelected});
 				}
 
 				// Data elements
@@ -4143,6 +4138,7 @@ Ext.onReady( function() {
 				objectName = dimConf.dataElement.objectName;
 				if (dimMap[objectName]) {
 					dv.store.dataElementSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.dataElementAvailable}, {store: pt.store.dataElementSelected});
 					dv.viewport.dataElementDetailLevel.setValue(objectName);
 				}
 
@@ -4150,6 +4146,7 @@ Ext.onReady( function() {
 				objectName = dimConf.operand.objectName;
 				if (dimMap[objectName]) {
 					dv.store.dataElementSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.dataSetAvailable}, {store: pt.store.dataSetSelected});
 					dv.viewport.dataElementDetailLevel.setValue(objectName);
 				}
 
@@ -4175,6 +4172,7 @@ Ext.onReady( function() {
 					}
 				}
 				dv.store.fixedPeriodSelected.add(fixedPeriodRecords);
+				pt.util.multiselect.filterAvailable({store: pt.store.fixedPeriodAvailable}, {store: pt.store.fixedPeriodSelected});
 
 				// Group sets
 				for (var key in dimensionIdSelectedStoreMap) {
@@ -4199,9 +4197,6 @@ Ext.onReady( function() {
 
 				// Organisation units
 				if (recMap[dimConf.organisationUnit.objectName]) {
-					var isOu = false,
-						isOuc = false;
-
 					for (var i = 0, ouRecords = recMap[dimConf.organisationUnit.objectName]; i < ouRecords.length; i++) {
 						if (ouRecords[i].id === 'USER_ORGUNIT') {
 							isOu = true;

@@ -17,9 +17,9 @@ Ext.onReady( function() {
 
 	// Init
 
-	var pt = PT.core.getInstance();
+	pt = PT.core.getInstance();
 
-	PT.app.instances = [pt];
+	PT.core.instances = [pt];
 
 	PT.app.getInits = function(r) {
 		var init = Ext.decode(r.responseText);
@@ -28,22 +28,17 @@ Ext.onReady( function() {
 			init.rootNodes[i].path = '/' + pt.conf.finals.root.id + '/' + init.rootNodes[i].id;
 		}
 
-		// Ougs
-		for (var i = 0, dim = pt.conf.finals.dimension, oug; i < init.ougs.length; i++) {
-			oug = init.ougs[i];
-			oug.dimensionName = oug.id;
-			oug.objectName = pt.conf.finals.dimension.organisationUnitGroupSet.objectName;
-			dim.objectNameMap[oug.id] = oug;
+		// Sort and extend dynamic dimensions
+		init.dimensions = pt.util.array.sortObjectsByString(init.dimensions);
+
+		for (var i = 0, dim; i < init.dimensions.length; i++) {
+			dim = init.dimensions[i];
+			dim.dimensionName = dim.id;
+			dim.objectName = pt.conf.finals.dimension.dimension.objectName;
+			pt.conf.finals.dimension.objectNameMap[dim.id] = dim;
 		}
 
-		// Degs
-		for (var i = 0, dim = pt.conf.finals.dimension, deg; i < init.degs.length; i++) {
-			deg = init.degs[i];
-			deg.dimensionName = deg.id;
-			deg.objectName = pt.conf.finals.dimension.dataElementGroupSet.objectName;
-			dim.objectNameMap[deg.id] = deg;
-		}
-
+		// Viewport afterrender
 		init.afterRender = function() {
 
 			// Resize event handler
@@ -57,7 +52,7 @@ Ext.onReady( function() {
 
 			// Left gui
 			var viewportHeight = pt.viewport.westRegion.getHeight(),
-				numberOfTabs = pt.init.ougs.length + pt.init.degs.length + 5,
+				numberOfTabs = pt.init.dimensions.length + 5,
 				tabHeight = 28,
 				minPeriodHeight = 380;
 
@@ -94,6 +89,72 @@ Ext.onReady( function() {
 
 	PT.app.getUtils = function() {
 		var util = pt.util || {};
+
+		util.pivot.getLayoutConfig = function() {
+			var panels = pt.cmp.dimension.panels,
+				columnDimNames = pt.viewport.colStore.getDimensionNames(),
+				rowDimNames = pt.viewport.rowStore.getDimensionNames(),
+				filterDimNames = pt.viewport.filterStore.getDimensionNames(),
+				config = pt.viewport.optionsWindow.getOptions(),
+				dimConf = pt.conf.finals.dimension,
+				dx = dimConf.data.dimensionName,
+				co = dimConf.category.dimensionName,
+				nameDimArrayMap = {},
+				getDimension;
+
+			config.columns = [];
+			config.rows = [];
+			config.filters = [];
+
+			// Panel data
+			for (var i = 0, dim, dimName; i < panels.length; i++) {
+				dim = panels[i].getDimension();
+
+				if (dim) {
+					nameDimArrayMap[dim.dimension] = [dim];
+				}
+			}
+
+			nameDimArrayMap[dx] = Ext.Array.clean([].concat(
+				nameDimArrayMap[dimConf.indicator.objectName],
+				nameDimArrayMap[dimConf.dataElement.objectName],
+				nameDimArrayMap[dimConf.operand.objectName],
+				nameDimArrayMap[dimConf.dataSet.objectName]
+			));
+
+			// Columns, rows, filters
+			for (var i = 0, nameArrays = [columnDimNames, rowDimNames, filterDimNames], axes = [config.columns, config.rows, config.filters], dimNames; i < nameArrays.length; i++) {
+				dimNames = nameArrays[i];
+
+				for (var j = 0, dimName, dim; j < dimNames.length; j++) {
+					dimName = dimNames[j];
+
+					if (dimName === co) {
+						axes[i].push({
+							dimension: co,
+							items: []
+						});
+					}
+					else if (dimName === dx && nameDimArrayMap.hasOwnProperty(dimName) && nameDimArrayMap[dimName]) {
+						for (var k = 0; k < nameDimArrayMap[dx].length; k++) {
+							axes[i].push(Ext.clone(nameDimArrayMap[dx][k]));
+						}
+					}
+					else if (nameDimArrayMap.hasOwnProperty(dimName) && nameDimArrayMap[dimName]) {
+						//axes[i].push(Ext.clone(nameDimArrayMap[dimName]));
+
+						for (var k = 0; k < nameDimArrayMap[dimName].length; k++) {
+							axes[i].push(Ext.clone(nameDimArrayMap[dimName][k]));
+						}
+					}
+				}
+			}
+
+			config.userOrganisationUnit = pt.viewport.userOrganisationUnit.getValue();
+			config.userOrganisationUnitChildren = pt.viewport.userOrganisationUnitChildren.getValue();
+
+			return config;
+		};
 
 		util.dimension = {
 			panel: {
@@ -164,80 +225,6 @@ Ext.onReady( function() {
 
 				w.hasDestroyOnBlurHandler = true;
 			}
-		};
-
-		util.pivot.getLayoutConfig = function() {
-			var data = {},
-				setup = pt.viewport.layoutWindow ? pt.viewport.layoutWindow.getSetup() : {},
-				getData,
-				extendLayout,
-				config;
-
-			config = {
-				col: [],
-				row: [],
-				filter: [],
-				objects: [],
-				userOrganisationUnit: false,
-				userOrganisationUnitChildren: false
-			};
-
-			getData = function() {
-				var panels = pt.cmp.dimension.panels,
-					dxItems = [];
-
-				for (var i = 0, dim; i < panels.length; i++) {
-					dim = panels[i].getData();
-
-					if (dim) {
-						config.objects.push(dim);
-
-						if (dim.dimensionName === pt.conf.finals.dimension.data.dimensionName) {
-							dxItems = dxItems.concat(dim.items);
-						}
-						else {
-							data[dim.dimensionName] = dim.items;
-						}
-					}
-				}
-
-				if (dxItems.length) {
-					data[pt.conf.finals.dimension.data.dimensionName] = dxItems;
-				}
-			}();
-
-			extendLayout = function() {
-				for (var i = 0, dimensionName; i < setup.col.length; i++) {
-					dimensionName = setup.col[i];
-					config.col.push({
-						dimensionName: dimensionName,
-						items: data[dimensionName]
-					});
-				}
-
-				for (var i = 0, dimensionName; i < setup.row.length; i++) {
-					dimensionName = setup.row[i];
-					config.row.push({
-						dimensionName: dimensionName,
-						items: data[dimensionName]
-					});
-				}
-
-				for (var i = 0, dimensionName; i < setup.filter.length; i++) {
-					dimensionName = setup.filter[i];
-					config.filter.push({
-						dimensionName: dimensionName,
-						items: data[dimensionName]
-					});
-				}
-			}();
-
-			config.options = pt.viewport.optionsWindow.getOptions();
-
-			config.options.userOrganisationUnit = pt.viewport.userOrganisationUnit.getValue();
-			config.options.userOrganisationUnitChildren = pt.viewport.userOrganisationUnitChildren.getValue();
-
-			return config;
 		};
 
 		util.url = {
@@ -489,10 +476,7 @@ Ext.onReady( function() {
 				data.push({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
 			}
 
-			return data.concat(
-				pt.util.array.sortObjectsByString(Ext.clone(pt.init.ougs)),
-				pt.util.array.sortObjectsByString(Ext.clone(pt.init.degs))
-			);
+			return data.concat(Ext.clone(pt.init.dimensions));
 		};
 
 		getStore = function(data) {
@@ -503,6 +487,16 @@ Ext.onReady( function() {
 			if (data) {
 				config.data = data;
 			}
+
+			config.getDimensionNames = function() {
+				var dimensionNames = [];
+
+				this.each(function(r) {
+					dimensionNames.push(r.data.id);
+				});
+
+				return Ext.clone(dimensionNames);
+			};
 
 			return Ext.create('Ext.data.Store', config);
 		};
@@ -947,6 +941,19 @@ Ext.onReady( function() {
 					parentOrganisationUnit: parentOrganisationUnit.getValue()
 				};
 			},
+			setOptions: function(layout) {
+				showTotals.setValue(Ext.isBoolean(layout.showTotals) ? layout.showTotals : true);
+				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
+				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
+
+				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
+				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
+				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
+
+				reportingPeriod.setValue(Ext.isBoolean(layout.reportingPeriod) ? layout.reportingPeriod : false);
+				organisationUnit.setValue(Ext.isBoolean(layout.organisationUnit) ? layout.organisationUnit : false);
+				parentOrganisationUnit.setValue(Ext.isBoolean(layout.parentOrganisationUnit) ? layout.parentOrganisationUnit : false);
+			},
 			items: [
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
@@ -1053,8 +1060,8 @@ Ext.onReady( function() {
 		getBody = function() {
 			var favorite;
 
-			if (pt.xLayout) {
-				favorite = Ext.clone(pt.xLayout.options);
+			if (pt.layout) {
+				favorite = Ext.clone(pt.layout);
 
 				// Server sync
 				favorite.totals = favorite.showTotals;
@@ -1072,103 +1079,7 @@ Ext.onReady( function() {
 				delete favorite.organisationUnit;
 				delete favorite.parentOrganisationUnit;
 
-				// Dimensions
-				for (var i = 0, obj, key, items; i < pt.xLayout.objects.length; i++) {
-					obj = pt.xLayout.objects[i];
-
-					if (obj.objectName === pt.conf.finals.dimension.period.objectName) {
-						for (var j = 0, item; j < obj.items.length; j++) {
-							item = obj.items[j];
-
-							if (pt.conf.period.relativePeriodValueKeys[item]) {
-								key = pt.conf.finals.dimension.relativePeriod.value;
-
-								if (!favorite[key]) {
-									favorite[key] = {};
-								}
-
-								favorite[key][pt.conf.period.relativePeriodValueKeys[item]] = true;
-							}
-							else {
-								key = pt.conf.finals.dimension.fixedPeriod.value;
-
-								if (!favorite[key]) {
-									favorite[key] = [];
-								}
-
-								favorite[key].push({
-									id: item
-								});
-							}
-						}
-					}
-					else if (obj.objectName === pt.conf.finals.dimension.organisationUnitGroupSet.objectName ||
-							 obj.objectName === pt.conf.finals.dimension.dataElementGroupSet.objectName) {
-						key = pt.conf.finals.dimension.objectNameMap[obj.objectName].value;
-
-						if (!favorite[key]) {
-							favorite[key] = {};
-						}
-
-						favorite[key][obj.dimensionName] = [];
-
-						for (var j = 0, item; j < obj.items.length; j++) {
-							item = obj.items[j];
-
-							favorite[key][obj.dimensionName].push({
-								id: item
-							});
-						}
-					}
-					else {
-						key = pt.conf.finals.dimension.objectNameMap[obj.objectName].value;
-						favorite[key] = [];
-
-						for (var j = 0, item; j < obj.items.length; j++) {
-							item = obj.items[j];
-
-							favorite[key].push({
-								id: item
-							});
-						}
-					}
-				}
-
-				// Relative periods PUT workaround
-				if (!favorite.relativePeriods) {
-					favorite.relativePeriods = {};
-				}
-
-				// Layout
-				if (pt.xLayout.col) {
-					var a = [];
-
-					for (var i = 0; i < pt.xLayout.col.length; i++) {
-						a.push(pt.xLayout.col[i].dimensionName);
-					}
-
-					favorite.columnDimensions = a;
-				}
-
-				if (pt.xLayout.row) {
-					var a = [];
-
-					for (var i = 0; i < pt.xLayout.row.length; i++) {
-						a.push(pt.xLayout.row[i].dimensionName);
-					}
-
-					favorite.rowDimensions = a;
-				}
-
-				if (pt.xLayout.filter) {
-					var a = [];
-
-					for (var i = 0; i < pt.xLayout.filter.length; i++) {
-						a.push(pt.xLayout.filter[i].dimensionName);
-					}
-
-					favorite.filterDimensions = a;
-				}
+				delete favorite.parentGraphMap;
 			}
 
 			return favorite;
@@ -1196,7 +1107,7 @@ Ext.onReady( function() {
 				text: PT.i18n.create,
 				handler: function() {
 					var favorite = getBody();
-					favorite.name = nameTextfield.getValue	();
+					favorite.name = nameTextfield.getValue();
 
 					if (favorite && favorite.name) {
 						Ext.Ajax.request({
@@ -1921,8 +1832,8 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren,
 				treePanel,
 				organisationUnit,
-				groupSetIdAvailableStoreMap = {},
-				groupSetIdSelectedStoreMap = {},
+				dimensionIdAvailableStoreMap = {},
+				dimensionIdSelectedStoreMap = {},
 				getGroupSetPanels,
 				validateSpecialCases,
 				update,
@@ -2025,18 +1936,17 @@ Ext.onReady( function() {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">' + PT.i18n.indicators + '</div>',
 				hideCollapseTool: true,
-				getData: function() {
-					var data = {
-						dimensionName: pt.conf.finals.dimension.indicator.dimensionName,
-						objectName: pt.conf.finals.dimension.indicator.objectName,
+				getDimension: function() {
+					var config = {
+						dimension: pt.conf.finals.dimension.indicator.objectName,
 						items: []
 					};
 
 					pt.store.indicatorSelected.each( function(r) {
-						data.items.push(r.data.id);
+						config.items.push({id: r.data.id});
 					});
 
-					return data.items.length ? data : null;
+					return config.items.length ? config : null;
 				},
 				onExpand: function() {
 					var h = pt.viewport.westRegion.hasScrollbar ?
@@ -2214,18 +2124,17 @@ Ext.onReady( function() {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">' + PT.i18n.data_elements + '</div>',
 				hideCollapseTool: true,
-				getData: function() {
-					var data = {
-						dimensionName: pt.conf.finals.dimension.dataElement.dimensionName,
-						objectName: pt.conf.finals.dimension.dataElement.objectName,
+				getDimension: function() {
+					var config = {
+						dimension: pt.conf.finals.dimension.dataElement.objectName,
 						items: []
 					};
 
 					pt.store.dataElementSelected.each( function(r) {
-						data.items.push(r.data.id);
+						config.items.push({id: r.data.id});
 					});
 
-					return data.items.length ? data : null;
+					return config.items.length ? config : null;
 				},
 				onExpand: function() {
 					var h = pt.viewport.westRegion.hasScrollbar ?
@@ -2403,18 +2312,17 @@ Ext.onReady( function() {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">' + PT.i18n.reporting_rates + '</div>',
 				hideCollapseTool: true,
-				getData: function() {
-					var data = {
-						dimensionName: pt.conf.finals.dimension.dataSet.dimensionName,
-						objectName: pt.conf.finals.dimension.dataSet.objectName,
+				getDimension: function() {
+					var config = {
+						dimension: pt.conf.finals.dimension.dataSet.objectName,
 						items: []
 					};
 
 					pt.store.dataSetSelected.each( function(r) {
-						data.items.push(r.data.id);
+						config.items.push({id: r.data.id});
 					});
 
-					return data.items.length ? data : null;
+					return config.items.length ? config : null;
 				},
 				onExpand: function() {
 					var h = pt.viewport.westRegion.hasScrollbar ?
@@ -2870,25 +2778,24 @@ Ext.onReady( function() {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-period">Periods</div>',
 				hideCollapseTool: true,
-				getData: function() {
-					var data = {
-							dimensionName: pt.conf.finals.dimension.period.dimensionName,
-							objectName: pt.conf.finals.dimension.period.objectName,
+				getDimension: function() {
+					var config = {
+							dimension: pt.conf.finals.dimension.period.objectName,
 							items: []
 						},
 						chb = pt.cmp.dimension.relativePeriod.checkbox;
 
 					pt.store.fixedPeriodSelected.each( function(r) {
-						data.items.push(r.data.id);
+						config.items.push({id: r.data.id});
 					});
 
 					for (var i = 0; i < chb.length; i++) {
 						if (chb[i].getValue()) {
-							data.items.push(chb[i].relativePeriodId);
+							config.items.push({id: chb[i].relativePeriodId});
 						}
 					}
 
-					return data.items.length ? data : null;
+					return config.items.length ? config : null;
 				},
 				onExpand: function() {
 					var h = pt.viewport.westRegion.hasScrollbar ?
@@ -3165,19 +3072,28 @@ Ext.onReady( function() {
 				bodyStyle: 'padding-top:5px',
 				hideCollapseTool: true,
 				collapsed: false,
-				getData: function() {
-					var records = treePanel.getSelectionModel().getSelection(),
-						data = {
-							dimensionName: pt.conf.finals.dimension.organisationUnit.dimensionName,
-							objectName: pt.conf.finals.dimension.organisationUnit.objectName,
+				getDimension: function() {
+					var r = treePanel.getSelectionModel().getSelection(),
+						config = {
+							dimension: pt.conf.finals.dimension.organisationUnit.objectName,
 							items: []
 						};
 
-					for (var i = 0; i < records.length; i++) {
-						data.items.push(records[i].data.id);
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+						if (userOrganisationUnit.getValue()) {
+							config.items.push({id: 'USER_ORGUNIT'});
+						}
+						if (userOrganisationUnitChildren.getValue()) {
+							config.items.push({id: 'USER_ORGUNIT_CHILDREN'});
+						}
+					}
+					else {
+						for (var i = 0; i < r.length; i++) {
+							config.items.push({id: r[i].data.id});
+						}
 					}
 
-					return data.items.length ? data : null;
+					return config.items.length ? config : null;
 				},
 				onExpand: function() {
 					var h = pt.viewport.westRegion.hasScrollbar ?
@@ -3206,33 +3122,39 @@ Ext.onReady( function() {
 				}
 			};
 
-			getGroupSetPanels = function(groupSets, objectName, iconCls) {
+			getDimensionPanels = function(dimensions, iconCls) {
 				var	getAvailableStore,
 					getSelectedStore,
 
 					createPanel,
 					getPanels;
 
-				getAvailableStore = function(groupSet) {
+				getAvailableStore = function(dimension) {
 					return Ext.create('Ext.data.Store', {
 						fields: ['id', 'name'],
-						data: groupSet.items,
+						proxy: {
+							type: 'ajax',
+							url: pt.baseUrl + '/api/dimensions/' + dimension.id + '.json',
+							reader: {
+								type: 'json',
+								root: 'items'
+							}
+						},
 						isLoaded: false,
 						storage: {},
 						sortStore: function() {
 							this.sort('name', 'ASC');
 						},
-						reload: function() {
-							this.removeAll();
-							this.storage = {};
-							this.loadData(groupSet.items);
+						reset: function() {
+							if (this.isLoaded) {
+								this.removeAll();
+								pt.util.store.loadFromStorage(this);
+								this.sortStore();
+							}
 						},
 						listeners: {
 							load: function(s) {
 								s.isLoaded = true;
-								//s.each( function(r) {
-									//r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
-								//});
 								pt.util.store.addToStorage(s);
 							}
 						}
@@ -3246,7 +3168,7 @@ Ext.onReady( function() {
 					});
 				};
 
-				createPanel = function(groupSet) {
+				createPanel = function(dimension) {
 					var getAvailable,
 						getSelected,
 
@@ -3340,11 +3262,11 @@ Ext.onReady( function() {
 						});
 					};
 
-					availableStore = getAvailableStore(groupSet);
+					availableStore = getAvailableStore(dimension);
 					selectedStore = getSelectedStore();
 
-					groupSetIdAvailableStoreMap[groupSet.id] = availableStore;
-					groupSetIdSelectedStoreMap[groupSet.id] = selectedStore;
+					dimensionIdAvailableStoreMap[dimension.id] = availableStore;
+					dimensionIdSelectedStoreMap[dimension.id] = selectedStore;
 
 					available = getAvailable(availableStore);
 					selected = getSelected(selectedStore);
@@ -3355,20 +3277,21 @@ Ext.onReady( function() {
 
 					panel = {
 						xtype: 'panel',
-						title: '<div class="' + iconCls + '">' + groupSet.name + '</div>',
+						title: '<div class="' + iconCls + '">' + dimension.name + '</div>',
 						hideCollapseTool: true,
-						getData: function() {
-							var data = {
-								dimensionName: groupSet.id,
-								objectName: objectName,
+						availableStore: availableStore,
+						selectedStore: selectedStore,
+						getDimension: function() {
+							var config = {
+								dimension: dimension.id,
 								items: []
 							};
 
 							selectedStore.each( function(r) {
-								data.items.push(r.data.id);
+								config.items.push({id: r.data.id});
 							});
 
-							return data.items.length ? data : null;
+							return config.items.length ? config : null;
 						},
 						onExpand: function() {
 							if (!availableStore.isLoaded) {
@@ -3410,14 +3333,10 @@ Ext.onReady( function() {
 				};
 
 				getPanels = function() {
-					var panels = [],
-						groupSet,
-						last;
+					var panels = [];
 
-					for (var i = 0, panel; i < groupSets.length; i++) {
-						groupSet = groupSets[i];
-
-						panel = createPanel(groupSet);
+					for (var i = 0, panel; i < dimensions.length; i++) {
+						panel = createPanel(dimensions[i]);
 
 						panels.push(panel);
 					}
@@ -3429,58 +3348,57 @@ Ext.onReady( function() {
 			};
 
 			validateSpecialCases = function(layout) {
-				var dimConf = pt.conf.finals.dimension,
-					dimensionNames = [],
-					layoutObjects = [].concat(Ext.clone(layout.col || []), Ext.clone(layout.row || []), Ext.clone(layout.filter || []));
+				var dimConf = pt.conf.finals.dimension;
+					//dimensionNames = [],
+					//layoutObjects = [].concat(Ext.clone(layout.columns || []), Ext.clone(layout.rows || []), Ext.clone(layout.filters || []));
 
 				// Layout names
-				for (var i = 0; i < layoutObjects.length; i++) {
-					dimensionNames.push(layoutObjects[i].dimensionName);
-				}
-
-				// Indicator as filter
-				if (layout.filter && pt.store.indicatorSelected.data.length) {
-					for (var i = 0; i < layout.filter.length; i++) {
-						if (layout.filter[i].dimensionName === dimConf.data.dimensionName) {
-							alert(PT.i18n.indicators_cannot_be_specified_as_filter);
-							return;
-						}
-					}
-				}
-
-				// Categories as filter
-				if (layout.filter && pt.viewport.layoutWindow.filterStore.getById(dimConf.category.dimensionName)) {
-					alert(PT.i18n.categories_cannot_be_specified_as_filter);
+				//for (var i = 0; i < layoutObjects.length; i++) {
+					//dimensionNames.push(layoutObjects[i].dimension);
+				//}
+				if (!layout) {
 					return;
 				}
 
-				// Degs and datasets in the same query
-				if (Ext.Array.contains(dimensionNames, dimConf.data.dimensionName) && pt.store.dataSetSelected.data.length) {
-					for (var i = 0; i < pt.init.degs.length; i++) {
-						if (Ext.Array.contains(dimensionNames, pt.init.degs[i].id)) {
-							alert(PT.i18n.data_element_group_sets_cannot_be_specified_together_with_data_sets);
+				if (layout.filters && layout.filters.length) {
+					for (var i = 0; i < layout.filters.length; i++) {
+
+						// Indicators as filter
+						if (layout.filters[i].dimension === dimConf.indicator.objectName) {
+							alert(PT.i18n.indicators_cannot_be_specified_as_filter);
+							return;
+						}
+
+						// Categories as filter
+						if (layout.filters[i].dimension === dimConf.category.objectName) {
+							alert(PT.i18n.categories_cannot_be_specified_as_filter);
 							return;
 						}
 					}
 				}
+
+				// Degs and datasets in the same query
+				//if (Ext.Array.contains(dimensionNames, dimConf.data.dimensionName) && pt.store.dataSetSelected.data.length) {
+					//for (var i = 0; i < pt.init.degs.length; i++) {
+						//if (Ext.Array.contains(dimensionNames, pt.init.degs[i].id)) {
+							//alert(PT.i18n.data_element_group_sets_cannot_be_specified_together_with_data_sets);
+							//return;
+						//}
+					//}
+				//}
 
 				return true;
 			};
 
 			update = function() {
 				var config = pt.util.pivot.getLayoutConfig(),
-					layout = pt.api.Layout(config);
+				layout = pt.api.layout.Layout(config);
 
-				if (!layout) {
-					return;
-				}
 				if (!validateSpecialCases(layout)) {
 					return;
 				}
 
-				if (layout) {
-					pt.util.pivot.createTable(layout, pt);
-				}
+				pt.util.pivot.createTable(layout, pt);
 			};
 
 			accordionBody = Ext.create('Ext.panel.Panel', {
@@ -3497,14 +3415,11 @@ Ext.onReady( function() {
 						period,
 						organisationUnit
 					],
-					ougs = Ext.clone(pt.init.ougs),
-					degs = Ext.clone(pt.init.degs);
+					dims = Ext.clone(pt.init.dimensions);
 
-					pt.util.array.sortObjectsByString(ougs);
-					pt.util.array.sortObjectsByString(degs);
+					pt.util.array.sortObjectsByString(dims);
 
-					panels = panels.concat(getGroupSetPanels(ougs, pt.conf.finals.dimension.organisationUnitGroupSet.objectName, 'pt-panel-title-organisationunitgroupset'));
-					panels = panels.concat(getGroupSetPanels(degs, pt.conf.finals.dimension.dataElementGroupSet.objectName, 'pt-panel-title-dataelementgroupset'));
+					panels = panels.concat(getDimensionPanels(dims, 'pt-panel-title-dimension'));
 
 					last = panels[panels.length - 1];
 					last.cls = 'pt-accordion-last';
@@ -3722,77 +3637,79 @@ Ext.onReady( function() {
 				}
 			});
 
-			setFavorite = function(r) {
+			setFavorite = function(layout) {
+				var dimConf = pt.conf.finals.dimension,
+					xLayout,
+					dimMap,
+					recMap,
+					objectName,
+					periodRecords,
+					fixedPeriodRecords = [],
+					isOu = false,
+					isOuc = false;
+
+				pt.util.pivot.createTable(layout, pt);
+
+				xLayout = pt.util.pivot.getExtendedLayout(layout);
+				dimMap = xLayout.objectNameDimensionsMap;
+				recMap = xLayout.objectNameItemsMap;
+				graphMap = layout.parentGraphMap;
 
 				// Indicators
 				pt.store.indicatorSelected.removeAll();
-				if (Ext.isArray(r.indicators)) {
-					pt.store.indicatorSelected.add(r.indicators);
+				objectName = dimConf.indicator.objectName;
+				if (dimMap[objectName]) {
+					pt.store.indicatorSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.indicatorAvailable}, {store: pt.store.indicatorSelected});
 				}
 
 				// Data elements
 				pt.store.dataElementSelected.removeAll();
-				if (Ext.isArray(r.dataElements)) {
-					pt.store.dataElementSelected.add(r.dataElements);
+				objectName = dimConf.dataElement.objectName;
+				if (dimMap[objectName]) {
+					pt.store.dataElementSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.dataElementAvailable}, {store: pt.store.dataElementSelected});
 				}
 
 				// Data sets
 				pt.store.dataSetSelected.removeAll();
-				if (Ext.isArray(r.dataSets)) {
-					pt.store.dataSetSelected.add(r.dataSets);
+				objectName = dimConf.dataSet.objectName;
+				if (dimMap[objectName]) {
+					pt.store.dataSetSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.dataSetAvailable}, {store: pt.store.dataSetSelected});
 				}
 
-				// Fixed periods
+				// Periods
 				pt.store.fixedPeriodSelected.removeAll();
-				if (Ext.isArray(r.periods)) {
-					pt.store.fixedPeriodSelected.add(r.periods);
-				}
-
-				// Relative periods
-				if (Ext.isObject(r.relativePeriods)) {
-					for (var key in r.relativePeriods) {
-						if (r.relativePeriods.hasOwnProperty(key) && pt.conf.period.relativePeriodParamKeys.hasOwnProperty(key)) {
-							var value = pt.conf.period.relativePeriodParamKeys[key];
-							relativePeriod.valueComponentMap[value].setValue(!!r.relativePeriods[key]);
-						}
+				pt.util.checkbox.setAllFalse();
+				periodRecords = recMap[dimConf.period.objectName] || [];
+				for (var i = 0, peroid, checkbox; i < periodRecords.length; i++) {
+					period = periodRecords[i];
+					checkbox = relativePeriod.valueComponentMap[period.id];
+					if (checkbox) {
+						checkbox.setValue(true);
+					}
+					else {
+						fixedPeriodRecords.push(period);
 					}
 				}
+				pt.store.fixedPeriodSelected.add(fixedPeriodRecords);
+				pt.util.multiselect.filterAvailable({store: pt.store.fixedPeriodAvailable}, {store: pt.store.fixedPeriodSelected});
 
-				// Organisation units: tree sync/async
-
-				// User orgunit
-				userOrganisationUnit.setValue(r.userOrganisationUnit);
-				userOrganisationUnitChildren.setValue(r.userOrganisationUnitChildren);
-
-				// Reset groupset stores
-				for (var key in groupSetIdSelectedStoreMap) {
-					if (groupSetIdSelectedStoreMap.hasOwnProperty(key)) {
-						var a = groupSetIdAvailableStoreMap[key],
-							s = groupSetIdSelectedStoreMap[key];
+				// Group sets
+				for (var key in dimensionIdSelectedStoreMap) {
+					if (dimensionIdSelectedStoreMap.hasOwnProperty(key)) {
+						var a = dimensionIdAvailableStoreMap[key],
+							s = dimensionIdSelectedStoreMap[key];
 
 						if (s.getCount() > 0) {
-							a.reload();
+							a.reset();
 							s.removeAll();
 						}
-					}
-				}
 
-				// Organisation unit group sets
-				if (Ext.isObject(r.organisationUnitGroupSets)) {
-					for (var key in r.organisationUnitGroupSets) {
-						if (r.organisationUnitGroupSets.hasOwnProperty(key)) {
-							groupSetIdSelectedStoreMap[key].add(r.organisationUnitGroupSets[key]);
-							pt.util.multiselect.filterAvailable({store: groupSetIdAvailableStoreMap[key]}, {store: groupSetIdSelectedStoreMap[key]});
-						}
-					}
-				}
-
-				// Data element group sets
-				if (Ext.isObject(r.dataElementGroupSets)) {
-					for (var key in r.dataElementGroupSets) {
-						if (r.dataElementGroupSets.hasOwnProperty(key)) {
-							groupSetIdSelectedStoreMap[key].add(r.dataElementGroupSets[key]);
-							pt.util.multiselect.filterAvailable({store: groupSetIdAvailableStoreMap[key]}, {store: groupSetIdSelectedStoreMap[key]});
+						if (recMap[key]) {
+							s.add(recMap[key]);
+							dv.util.multiselect.filterAvailable({store: a}, {store: s});
 						}
 					}
 				}
@@ -3803,9 +3720,9 @@ Ext.onReady( function() {
 				pt.viewport.rowStore.removeAll();
 				pt.viewport.filterStore.removeAll();
 
-				if (Ext.isArray(r.columnDimensions)) {
-					for (var i = 0, dim; i < r.columnDimensions.length; i++) {
-						dim = pt.conf.finals.dimension.objectNameMap[r.columnDimensions[i]];
+				if (layout.columns) {
+					for (var i = 0, dim; i < layout.columns.length; i++) {
+						dim = dimConf.objectNameMap[layout.columns[i].dimension];
 
 						pt.viewport.colStore.add({
 							id: dim.dimensionName,
@@ -3813,13 +3730,12 @@ Ext.onReady( function() {
 						});
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
-
 					}
 				}
 
-				if (Ext.isArray(r.rowDimensions)) {
-					for (var i = 0, dim; i < r.rowDimensions.length; i++) {
-						dim = pt.conf.finals.dimension.objectNameMap[r.rowDimensions[i]];
+				if (layout.rows) {
+					for (var i = 0, dim; i < layout.rows.length; i++) {
+						dim = dimConf.objectNameMap[layout.rows[i].dimension];
 
 						pt.viewport.rowStore.add({
 							id: dim.dimensionName,
@@ -3830,9 +3746,9 @@ Ext.onReady( function() {
 					}
 				}
 
-				if (Ext.isArray(r.filterDimensions)) {
-					for (var i = 0, dim; i < r.filterDimensions.length; i++) {
-						dim = pt.conf.finals.dimension.objectNameMap[r.filterDimensions[i]];
+				if (layout.filters) {
+					for (var i = 0, dim; i < layout.filters.length; i++) {
+						dim = dimConf.objectNameMap[layout.filters[i].dimension];
 
 						pt.viewport.filterStore.add({
 							id: dim.dimensionName,
@@ -3844,42 +3760,35 @@ Ext.onReady( function() {
 				}
 
 				// Options
-				pt.viewport.showTotals.setValue(r.totals);
-				pt.viewport.showSubTotals.setValue(r.subtotals);
-				pt.viewport.hideEmptyRows.setValue(r.hideEmptyRows);
-				pt.viewport.displayDensity.setValue(r.displayDensity);
-				pt.viewport.fontSize.setValue(r.fontSize);
-				pt.viewport.digitGroupSeparator.setValue(r.digitGroupSeparator);
+				pt.viewport.optionsWindow.setOptions(layout);
 
-				if (Ext.isObject(r.reportParams)) {
-					pt.viewport.reportingPeriod.setValue(r.reportParams.paramReportingPeriod);
-					pt.viewport.organisationUnit.setValue(r.reportParams.paramOrganisationUnit);
-					pt.viewport.parentOrganisationUnit.setValue(r.reportParams.paramParentOrganisationUnit);
-				}
-
-				// Upgrade fixes
-				if (!Ext.isArray(r.organisationUnits) || !r.organisationUnits.length) {
-					if (Ext.isObject(r.reportParams) && r.reportParams.paramOrganisationUnit) {
-						userOrganisationUnit.setValue(true);
-					}
-
-					if (Ext.isObject(r.reportParams) && r.reportParams.paramParentOrganisationUnit) {
-						userOrganisationUnit.setValue(true);
+				// Organisation units
+				if (recMap[dimConf.organisationUnit.objectName]) {
+					for (var i = 0, ouRecords = recMap[dimConf.organisationUnit.objectName]; i < ouRecords.length; i++) {
+						if (ouRecords[i].id === 'USER_ORGUNIT') {
+							isOu = true;
+						}
+						if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
+							isOuc = true;
+						}
 					}
 				}
 
-				// Organisation units: If fav has organisation units, execute from tree callback instead
-				if (Ext.isArray(r.organisationUnits) && Ext.isObject(r.parentGraphMap)) {
-					treePanel.numberOfRecords = pt.util.object.getLength(r.parentGraphMap);
-					for (var key in r.parentGraphMap) {
-						if (r.parentGraphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, r.parentGraphMap[key], true);
+				userOrganisationUnit.setValue(isOu);
+				userOrganisationUnitChildren.setValue(isOuc);
+
+				// If fav has organisation units, wait for tree callback before update
+				if (recMap[dimConf.organisationUnit.objectName] && graphMap) {
+					treePanel.numberOfRecords = pt.util.object.getLength(graphMap);
+					for (var key in graphMap) {
+						if (graphMap.hasOwnProperty(key)) {
+							treePanel.multipleExpand(key, graphMap[key], true);
 						}
 					}
 				}
 				else {
 					treePanel.reset();
-					update();
+					//update();
 				}
 			};
 
@@ -3951,5 +3860,6 @@ Ext.onReady( function() {
 		url: pt.conf.finals.ajax.path_pivot + 'initialize.action',
 		success: function(r) {
 			PT.app.init.onInitialize(r);
-	}});
+		}
+	});
 });
