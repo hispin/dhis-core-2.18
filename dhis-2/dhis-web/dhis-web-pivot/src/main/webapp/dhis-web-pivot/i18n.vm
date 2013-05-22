@@ -109,5 +109,11 @@ PT.i18n = {
     layout: '$encoder.jsEscape($i18n.getString( 'layout' ) , "'")',
     options: '$encoder.jsEscape($i18n.getString( 'options' ) , "'")',
     download: '$encoder.jsEscape($i18n.getString( 'download' ) , "'")',
-    favorites: '$encoder.jsEscape($i18n.getString( 'favorites' ) , "'")'
+    favorites: '$encoder.jsEscape($i18n.getString( 'favorites' ) , "'")',
+    include_regression: '$encoder.jsEscape($i18n.getString( 'include_regression' ) , "'")',
+    include_cumulative: '$encoder.jsEscape($i18n.getString( 'include_cumulative' ) , "'")',
+    sort_order: '$encoder.jsEscape($i18n.getString( 'sort_order' ) , "'")',
+    low_to_high: '$encoder.jsEscape($i18n.getString( 'low_to_high' ) , "'")',
+    high_to_low: '$encoder.jsEscape($i18n.getString( 'high_to_low' ) , "'")',
+    top_limit: '$encoder.jsEscape($i18n.getString( 'top_limit' ) , "'")'
 };

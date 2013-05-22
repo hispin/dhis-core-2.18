@@ -1922,6 +1922,14 @@ PT.core.getAPI = function(pt) {
 
 		// parentOrganisationUnit: boolean (false) //report tables only
 
+		// regression: boolean (false)
+
+		// cumulative: boolean (false)
+
+		// sortOrder: integer (0) //-1, 0, 1
+
+		// topLimit: integer (100) //5, 10, 20, 50, 100
+
 		var getValidatedDimensionArray = function(dimensionArray) {
 			var dimensions = [];
 
@@ -1995,10 +2003,14 @@ PT.core.getAPI = function(pt) {
 
 			layout.parentGraphMap = Ext.isString(config.parentGraphMap) ? config.parentGraphMap : '';
 
-			layout.reportingPeriod = Ext.isBoolean(config.reportingPeriod) ? config.reportingPeriod : false;
-			layout.organisationUnit = Ext.isBoolean(config.organisationUnit) ? config.organisationUnit : false;
-			layout.parentOrganisationUnit = Ext.isBoolean(config.parentOrganisationUnit) ? config.parentOrganisationUnit : false;
+			layout.reportingPeriod = Ext.isBoolean(config.reportParams.paramReportingPeriod) ? config.reportParams.paramReportingPeriod : (Ext.isBoolean(config.reportingPeriod) ? config.reportingPeriod : false);
+			layout.organisationUnit = Ext.isBoolean(config.reportParams.paramOrganisationUnit) ? config.reportParams.paramOrganisationUnit : (Ext.isBoolean(config.organisationUnit) ? config.organisationUnit : false);
+			layout.parentOrganisationUnit = Ext.isBoolean(config.reportParams.paramParentOrganisationUnit) ? config.reportParams.paramParentOrganisationUnit : (Ext.isBoolean(config.parentOrganisationUnit) ? config.parentOrganisationUnit : false);
 
+			layout.regression = Ext.isBoolean(config.regression) ? config.regression : false;
+			layout.cumulative = Ext.isBoolean(config.cumulative) ? config.cumulative : false;
+			layout.sortOrder = Ext.isNumber(config.sortOrder) ? config.sortOrder : 0;
+			layout.topLimit = Ext.isNumber(config.topLimit) ? config.topLimit : 0;
 
 			return Ext.clone(layout);
 		}();
