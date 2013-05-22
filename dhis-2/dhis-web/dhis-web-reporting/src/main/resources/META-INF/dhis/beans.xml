@@ -87,12 +87,6 @@
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
-    scope="prototype">
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
-
   <!-- Report -->
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
