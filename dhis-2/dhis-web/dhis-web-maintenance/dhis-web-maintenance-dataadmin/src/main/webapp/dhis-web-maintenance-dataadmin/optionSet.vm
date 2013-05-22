@@ -11,7 +11,7 @@
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
-			<table class="listTable">
+			<table width="100%">
 				<col>          
 				<col width="120"> 
 				<tr>
@@ -22,23 +22,29 @@
 						<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOptionSetForm.action'" style="width:70px">
 					</td>
 				</tr>		
-				<tr>
-					<th>$i18n.getString( "name" )</th>
-					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
-				</tr>
-			<tbody id="list">
-			#foreach( $optionSet in $optionSets )
-			<tr id="tr${optionSet.id}">
-				<td>$encoder.htmlEncode( $optionSet.displayName )</td>
-				<td style="text-align:right">
-					<a href="showUpdateOptionSetForm.action?id=$optionSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-					<a href="javascript:translate( 'OptionSet', '$optionSet.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-				    <a href="javascript:removeOptionSet( $optionSet.id, '$encoder.jsEncode( $optionSet.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-					<a href="javascript:showOptionSetDetails( $optionSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-				</td>
-			</tr>
-			#end
-			</tbody>
+			</table>
+            <table class="listTable" id="listTable">
+                <col/>
+                <col width="120px"/>            
+                <thead>
+                <tr>
+                    <th>$i18n.getString( "name" )</th>
+                    <th class="{sorter: false}">$i18n.getString( "operations" )</th>
+                </tr>
+                </thead>
+			    <tbody id="list">
+			    #foreach( $optionSet in $optionSets )
+			    <tr id="tr${optionSet.id}">
+			    	<td>$encoder.htmlEncode( $optionSet.displayName )</td>
+				    <td style="text-align:right">
+					    <a href="showUpdateOptionSetForm.action?id=$optionSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+					    <a href="javascript:translate( 'OptionSet', '$optionSet.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+				        <a href="javascript:removeOptionSet( $optionSet.id, '$encoder.jsEncode( $optionSet.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+					    <a href="javascript:showOptionSetDetails( $optionSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+				    </td>
+			    </tr>
+			    #end
+			    </tbody>
 			</table>
 		</td>
 		

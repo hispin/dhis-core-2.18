@@ -361,20 +361,18 @@ div#menuDropDown4
   font-size: 9pt;
 }
 
-.page th, thead tr, .tabHead
+.page th
 {
+  background-color: #cbddeb;
   text-align: left;
   color: #39547d;
-  padding: 3px 0px 2px 6px;
-  border-bottom: 1px solid #cad5e5;
+  padding: 3px 0 2px 6px;
+  border: 0;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
   font-weight: normal;
-}
-
-.page th
-{
-  padding: 6px 0 3px 5px;
+  border-collapse: collapse;
+  min-height: 28px;
 }
 
 #mainPage 
@@ -398,6 +396,13 @@ div#menuDropDown4
   width: 100%;
   border-collapse: collapse;
   padding-top: 10px;
+}
+
+.listTable th
+{
+  background-color: #fff;
+  border-bottom: 1px solid #cad5e5;
+  padding: 6px 0 3px 5px;
 }
 
 .listTable td
