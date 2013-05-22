@@ -756,7 +756,7 @@ public class RelativePeriods
      * @param relativePeriods a list of RelativePeriodsEnum.
      * @return a RelativePeriods instance.
      */
-    public static List<Period> getRelativePeriodsFromEnum( RelativePeriodEnum relativePeriod, I18nFormat format, boolean dynamicNames )
+    public static List<Period> getRelativePeriodsFromEnum( RelativePeriodEnum relativePeriod, Date date, I18nFormat format, boolean dynamicNames )
     {
         Map<RelativePeriodEnum, RelativePeriods> map = new HashMap<RelativePeriodEnum, RelativePeriods>();
         
@@ -784,7 +784,7 @@ public class RelativePeriods
         map.put( RelativePeriodEnum.LAST_12_WEEKS, new RelativePeriods().setLast12Weeks( true ) );
         map.put( RelativePeriodEnum.LAST_52_WEEKS, new RelativePeriods().setLast52Weeks( true ) );
         
-        return map.containsKey( relativePeriod ) ? map.get( relativePeriod ).getRelativePeriods( format, dynamicNames ) : null;
+        return map.containsKey( relativePeriod ) ? map.get( relativePeriod ).getRelativePeriods( date, format, dynamicNames ) : null;
     }
     
     /**

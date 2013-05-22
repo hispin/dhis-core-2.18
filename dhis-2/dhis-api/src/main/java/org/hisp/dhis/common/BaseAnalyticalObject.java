@@ -39,6 +39,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,6 +68,7 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.user.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -137,6 +139,8 @@ public abstract class BaseAnalyticalObject
     // -------------------------------------------------------------------------
 
     protected transient List<OrganisationUnit> transientOrganisationUnits = new ArrayList<OrganisationUnit>();
+        
+    protected transient Date relativePeriodDate;
     
     // -------------------------------------------------------------------------
     // Logic
@@ -154,11 +158,19 @@ public abstract class BaseAnalyticalObject
         return relatives != null && !relatives.isEmpty();
     }
     
-    protected void addTransientOrganisationUnits( List<OrganisationUnit> organisationUnits )
+    protected void addTransientOrganisationUnits( Collection<OrganisationUnit> organisationUnits )
     {
         if ( organisationUnits != null )
         {
             this.transientOrganisationUnits.addAll( organisationUnits );
+        }
+    }
+    
+    protected void addTransientOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        if ( organisationUnit != null )
+        {
+            this.transientOrganisationUnits.add( organisationUnit );
         }
     }
     
@@ -604,6 +616,16 @@ public abstract class BaseAnalyticalObject
     public void setUserOrganisationUnitChildren( boolean userOrganisationUnitChildren )
     {
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    @JsonIgnore
+    public Date getRelativePeriodDate()
+    {
+        return relativePeriodDate;
     }
 
     // -------------------------------------------------------------------------
