@@ -119,7 +119,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/table.js</param>
     </action>
 
     <action name="getReportTables" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
@@ -132,22 +131,11 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="saveTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction">
-      <result name="success" type="redirect">displayManageTableForm.action</result>
-    </action>
-
     <action name="getReportParams" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/inputReportParamsForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/generateReport.js</param>
-    </action>
-
-    <action name="displayAddTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/addTableForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/table.js,javascript/lists.js</param>
     </action>
 
     <action name="getTable" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction">

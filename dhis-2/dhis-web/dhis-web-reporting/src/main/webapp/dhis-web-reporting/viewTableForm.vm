@@ -15,17 +15,11 @@
 
 <h3>$i18n.getString( "report_table" ) #openHelp( "report_tables" )</h3>
 
+<p>Create report tables in <a href="../dhis-web-pivot/app/index.html">Pivot table module</a></p>
+
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
-			<table width="100%">
-				 <tr>
-				 	<td>#filterDiv( "displayManageTableForm" )</td>
-                    <td colspan="10" style="text-align:right">
-                    	<input type="button" value="$i18n.getString( 'add_report_table' )" style="width:220px" onclick="window.location.href='displayAddTableForm.action?dimension=false'">                 	
-                    </td>
-                </tr>
-			</table>
 			<table class="listTable" id="listTable">
 				<col>
 				<col width="175">
@@ -48,19 +42,11 @@
                         <img src="../images/relationship-denied.png">
                         #end
 
-                        #if( $security.canUpdate( $table ) && $table.isReportTable() )
-                        <a href="displayAddTableForm.action?id=${table.id}&dimension=${table.isDimensional()}" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
-                        #else
-                        <img src="../images/edit-denied.png">
-                        #end
-
 						<a href="javascript:addReportTableToDashboard( '$table.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
 
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeTable" ) && $security.canDelete( $table ))
 						<a href="javascript:removeTable( $table.id, '$encoder.jsEncode( $table.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-						#else <img src="../images/delete-denied.png"> #end
-						<a href="javascript:showTableDetails( $table.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
-
+						#else <img src="../images/delete-denied.png"> #end						
 					</td>
 				</tr>
 				#end

@@ -33,13 +33,11 @@ import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.CombinationGenerator;
@@ -147,34 +145,10 @@ public class ReportTable
     {
         {
             put( CATEGORYCOMBO_ID, "Category combination ID" );
-
             put( INDICATOR_ID, "Indicator ID" );
-            put( INDICATOR_UID, "Indicator UID" );
-            put( INDICATOR_NAME, "Indicator" );
-            put( INDICATOR_CODE, "Indicator code" );
-            put( INDICATOR_DESCRIPTION, "Indicator description" );
-
             put( PERIOD_ID, "Period ID" );
-            put( PERIOD_UID, "Period UID" );
-            put( PERIOD_NAME, "Period" );
-            put( PERIOD_CODE, "Period code" );
-            put( PERIOD_DESCRIPTION, "Period description" );
-
             put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
-            put( ORGANISATIONUNIT_UID, "Organisation unit UID" );
-            put( ORGANISATIONUNIT_NAME, "Organisation unit" );
-            put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
-            put( ORGANISATIONUNIT_DESCRIPTION, "Organisation unit description" );
-
             put( ORGANISATIONUNITGROUP_ID, "Organisation unit group ID" );
-            put( ORGANISATIONUNITGROUP_UID, "Organisation unit group UID" );
-            put( ORGANISATIONUNITGROUP_NAME, "Organisation unit group" );
-            put( ORGANISATIONUNITGROUP_CODE, "Organisation unit group code" );
-            put( ORGANISATIONUNITGROUP_DESCRIPTION, "Organisation unit group description" );
-
-            put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
-            put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
-            put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
         }
     };
 
@@ -196,8 +170,6 @@ public class ReportTable
 
     private static final NameableObject[] IRT = new NameableObject[0];
     private static final NameableObject[][] IRT2D = new NameableObject[0][];
-
-    private static final String[] SRT = new String[0];
 
     private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
 
@@ -502,97 +474,6 @@ public class ReportTable
         String column = columnEncode( buffer.toString() );
 
         return column.length() > 0 ? column.substring( 0, column.lastIndexOf( SEPARATOR ) ) : TOTAL_COLUMN_NAME;
-    }
-
-    /**
-     * Generates a grid identifier based on the internal identifiers of the
-     * argument objects.
-     */
-    public static String getIdentifier( List<NameableObject> objects )
-    {
-        return getIdentifier( objects, new ArrayList<NameableObject>() );
-    }
-
-    /**
-     * Generates a grid identifier based on the internal identifiers of the
-     * argument objects.
-     */
-    public static String getIdentifier( List<? extends NameableObject> objects1, List<? extends NameableObject> objects2 )
-    {
-        List<String> identifiers = new ArrayList<String>();
-
-        for ( NameableObject object : objects1 )
-        {
-            identifiers.add( getIdentifier( getNameableClass( object.getClass() ), object.getId() ) );
-        }
-
-        for ( NameableObject object : objects2 )
-        {
-            identifiers.add( getIdentifier( getNameableClass( object.getClass() ), object.getId() ) );
-        }
-
-        return getIdentifier( identifiers.toArray( SRT ) );
-    }
-
-    /**
-     * Generates a grid column identifier based on the argument identifiers.
-     */
-    public static String getIdentifier( List<NameableObject> objects, Class<? extends NameableObject> clazz, int id )
-    {
-        List<String> identifiers = new ArrayList<String>();
-
-        for ( NameableObject object : objects )
-        {
-            identifiers.add( getIdentifier( getNameableClass( object.getClass() ), object.getId() ) );
-        }
-
-        identifiers.add( getIdentifier( clazz, id ) );
-
-        return getIdentifier( identifiers.toArray( SRT ) );
-    }
-
-    /**
-     * Generates a grid column identifier based on the argument identifiers.
-     */
-    public static String getIdentifier( String... identifiers )
-    {
-        List<String> ids = Arrays.asList( identifiers );
-
-        Collections.sort( ids ); // Sort to remove the significance of order
-
-        return StringUtils.join( ids, SEPARATOR );
-    }
-
-    /**
-     * Returns a grid identifier based on the argument class and id.
-     */
-    public static String getIdentifier( Class<? extends NameableObject> clazz, int id )
-    {
-        return CLASS_ID_MAP.get( clazz ) + id;
-    }
-
-    /**
-     * Indicates whether the report table contains data elements.
-     */
-    public boolean hasDataElements()
-    {
-        return dataElements != null && dataElements.size() > 0;
-    }
-
-    /**
-     * Indicates whether the report table contains indicators.
-     */
-    public boolean hasIndicators()
-    {
-        return indicators != null && indicators.size() > 0;
-    }
-
-    /**
-     * Indicates whether the report table contains data sets.
-     */
-    public boolean hasDataSets()
-    {
-        return dataSets != null && dataSets.size() > 0;
     }
 
     /**

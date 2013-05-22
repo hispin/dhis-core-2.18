@@ -6,10 +6,6 @@
 
   <!-- ReportTable -->
 
-  <bean id="org.hisp.dhis.reporttable.jdbc.ReportTableManager" class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
-	  <property name="jdbcTemplate" ref="jdbcTemplate" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporttable.ReportTableStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.reporttable.ReportTable" />
     <property name="sessionFactory" ref="sessionFactory" />
