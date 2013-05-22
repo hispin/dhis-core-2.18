@@ -161,11 +161,6 @@
       <param name="stylesheets">style/dhis-web-reporting.css</param>
     </action>
 
-    <action name="getCategoryComboDataElements" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction">
-      <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlDataElements.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <!-- PivotTable -->
 
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction">
