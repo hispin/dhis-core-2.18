@@ -53,29 +53,6 @@
 
   <!-- TableCreator -->
 
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
     scope="prototype">
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />

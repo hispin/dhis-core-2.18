@@ -29,7 +29,6 @@ package org.hisp.dhis.reporttable.impl;
 
 import static org.hisp.dhis.reporttable.ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME;
 import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.PRETTY_COLUMNS;
 import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
 import static org.hisp.dhis.reporttable.ReportTable.SPACE;
 import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
@@ -329,11 +328,11 @@ public class DefaultReportTableService
             grid.addHeader( new GridHeader( name + " description", row + "_description", String.class.getName(), true, true ) );
         }
         
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
+        grid.addHeader( new GridHeader( "Reporting month", REPORTING_MONTH_COLUMN_NAME,
             String.class.getName(), true, true ) );
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ),
+        grid.addHeader( new GridHeader( "Organisation unit parameter",
             PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ),
+        grid.addHeader( new GridHeader( "Organisation unit is parent",
             ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
 
         final int startColumnIndex = grid.getHeaders().size();

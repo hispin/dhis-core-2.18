@@ -364,18 +364,14 @@ div#menuDropDown4
 
 .page th, thead tr, .tabHead
 {
+  background-color: #ebf0f6;
   text-align: left;
   color: #39547d;
   padding: 3px 0 2px 6px;
-  border-bottom: 1px solid #cad5e5;
+  border: 1px solid #cad5e5;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
   font-weight: normal;
-}
-
-.page th
-{
-  padding: 6px 0 3px 5px;
 }
 
 #mainPage 
@@ -394,6 +390,14 @@ div#menuDropDown4
   width: 100%;
   border-collapse: collapse;
   padding-top: 10px;
+}
+
+.listTable th, .listTable thead tr
+{
+  background-color: #fff;
+  border: 0px solid #fff;
+  border-bottom: 1px solid #cad5e5;
+  padding: 6px 0 3px 5px;
 }
 
 .listTable td

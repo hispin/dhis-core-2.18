@@ -27,14 +27,8 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reporttable.ReportTable.DATAELEMENT_ID;
-import static org.hisp.dhis.reporttable.ReportTable.INDICATOR_ID;
-import static org.hisp.dhis.reporttable.ReportTable.ORGANISATIONUNITGROUP_ID;
-import static org.hisp.dhis.reporttable.ReportTable.PERIOD_ID;
 import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
-import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -241,97 +235,6 @@ public class ReportTableTest
     // Tests
     // -------------------------------------------------------------------------
 
-    @Test
-    public void testGetIdentifierA()
-    {
-        List<NameableObject> a1 = getList( unitA, periodA );
-        List<NameableObject> a2 = getList( indicatorA );
-        
-        List<NameableObject> b1 = getList( periodA );
-        List<NameableObject> b2 = getList( indicatorA, unitA );
-        
-        List<NameableObject> c1 = getList( groupA, periodA );
-        List<NameableObject> c2 = getList( indicatorA );
-        
-        assertNotNull( getIdentifier( a1, a2 ) );
-        assertNotNull( getIdentifier( b1, b2 ) );
-        assertNotNull( getIdentifier( c1, c2 ) );
-        assertEquals( getIdentifier( a1, a2 ), getIdentifier( b1, b2 ) );
-        
-        String identifier = getIdentifier( getIdentifier( unitA.getClass(), unitA.getId() ), 
-            getIdentifier( periodA.getClass(), periodA.getId() ), getIdentifier( indicatorA.getClass(), indicatorA.getId() ) );
-        
-        assertEquals( getIdentifier( a1, a2 ), identifier );
-
-        identifier = getIdentifier( getIdentifier( periodA.getClass(), periodA.getId() ), 
-            getIdentifier( indicatorA.getClass(), indicatorA.getId() ), getIdentifier( unitA.getClass(), unitA.getId() ) );
-        
-        assertEquals( getIdentifier( b1, b2 ), identifier );
-        
-        identifier = getIdentifier( getIdentifier( groupA.getClass(), groupA.getId() ),
-            getIdentifier( periodA.getClass(), periodA.getId() ), getIdentifier( indicatorA.getClass(), indicatorA.getId() ) );
-        
-        assertEquals( getIdentifier( c1, c2 ), identifier );
-    }
-
-    @Test
-    public void testGetIdentifierB()
-    {
-        String a1 = getIdentifier( Indicator.class, 1 );
-        String a2 = getIdentifier( DataElement.class, 2 );
-        
-        assertEquals( INDICATOR_ID + 1, a1 );
-        assertEquals( DATAELEMENT_ID + 2, a2 );
-        
-        String b1 = getIdentifier( Indicator.class, 2 );
-        String b2 = getIdentifier( DataElement.class, 1 );
-        
-        assertEquals( INDICATOR_ID + 2, b1 );
-        assertEquals( DATAELEMENT_ID + 1, b2 );
-        
-        String c1 = getIdentifier( OrganisationUnitGroup.class, 1 );
-        String c2 = getIdentifier( Period.class, 2 );
-        
-        assertEquals( getIdentifier( ORGANISATIONUNITGROUP_ID + 1 ), c1 );
-        assertEquals( getIdentifier( PERIOD_ID + 2 ), c2 );
-        
-        assertFalse( getIdentifier( a1, a2 ).equals( getIdentifier( b1, b2 ) ) );        
-    }
-    
-    @Test
-    public void testGetIdentifierC()
-    {
-        List<NameableObject> a1 = getList( dataElementA, periodA, categoryOptionComboA );
-        List<NameableObject> a2 = getList( unitA );
-        
-        String b1 = getIdentifier( DataElement.class, 'A' );
-        String b2 = getIdentifier( Period.class, 'A' );
-        String b3 = getIdentifier( DataElementCategoryOptionCombo.class, 'A' );
-        String b4 = getIdentifier( OrganisationUnit.class, 'A' );
-        
-        String a = getIdentifier( a1, a2 );
-        String b = getIdentifier( b1, b2, b3, b4 );
-        
-        assertEquals( a, b );
-    }
-
-    @Test
-    public void testGetIdentifierD()
-    {
-        List<NameableObject> a1 = getList( dataElementA, periodA, categoryOptionComboA );
-        List<NameableObject> a2 = getList( groupA );
-        
-        String b1 = getIdentifier( DataElement.class, 'A' );
-        String b2 = getIdentifier( Period.class, 'A' );
-        String b3 = getIdentifier( DataElementCategoryOptionCombo.class, 'A' );
-        String b4 = getIdentifier( OrganisationUnitGroup.class, 'A' );
-        
-        String a = getIdentifier( a1, a2 );
-        String b = getIdentifier( b1, b2, b3, b4 );
-        
-        assertEquals( a, b );
-    }
-    
     @Test
     public void testGetColumnName()
     {
