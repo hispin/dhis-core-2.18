@@ -315,11 +315,11 @@ public class JdbcCaseAggregationConditionManager
             {
                 if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
                 {
-                    sql += operator + " (distinct(pi.patientid) ) as value ";
+                    sql += " count (distinct(pi.patientid) ) as value ";
                 }
                 else
                 {
-                    sql += operator + " (distinct(psi.programinstanceid ) ) as value ";
+                    sql += " count (psi.programinstanceid ) as value ";
                 }
 
                 sql += "FROM programstageinstance as psi ";
@@ -540,14 +540,14 @@ public class JdbcCaseAggregationConditionManager
 
             sql = "select periodid from period where periodtypeid=" + periodTypeId + " and startdate='" + start
                 + "' and enddate='" + end + "'";
-            int periodid = 0;
+            Integer periodid = null;
             SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
             if ( rs.next() )
             {
                 periodid = rs.getInt( "periodid" );
             }
 
-            if ( periodid == 0 )
+            if ( periodid == null)
             {
                 String insertSql = "insert into period (periodtypeid,startdate,enddate) " + " VALUES " + "("
                     + periodTypeId + ",'" + start + "','" + end + "' )";
