@@ -353,11 +353,34 @@ public class ReportTable
     // Init
     // -------------------------------------------------------------------------
 
-    public void init( User user, Date date, List<OrganisationUnit> relativeOrganisationUnits, I18nFormat format )
+    public void init( User user, Date date, OrganisationUnit organisationUnit, I18nFormat format )
     {
         verify( ( periods != null && !periods.isEmpty() ) || hasRelativePeriods(), "Must contain periods or relative periods" );
 
-        addTransientOrganisationUnits( relativeOrganisationUnits );
+        this.relativePeriodDate = date;
+        
+        // Handle report parameters
+        
+        if ( hasRelativePeriods() )
+        {
+            this.reportingPeriodName = relatives.getReportingPeriodName( date, format );
+        }
+
+        if ( organisationUnit != null && hasReportParams() && reportParams.isParamParentOrganisationUnit() )
+        {
+            organisationUnit.setCurrentParent( true );
+            this.parentOrganisationUnit = organisationUnit;
+            addTransientOrganisationUnits( organisationUnit.getChildren() );
+            addTransientOrganisationUnit( organisationUnit );
+        }
+
+        if ( organisationUnit != null && hasReportParams() && reportParams.isParamOrganisationUnit() )
+        {
+            this.parentOrganisationUnit = organisationUnit;
+            addTransientOrganisationUnit( organisationUnit );
+        }
+
+        // Populate grid
         
         this.populateGridColumnsAndRows( date, user, format );
         
@@ -367,7 +390,9 @@ public class ReportTable
             verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
 
-        addIfEmpty( gridColumns ); // Allow for all or none crosstab dimensions
+        // Allow for no columns or rows
+        
+        addIfEmpty( gridColumns ); 
         addIfEmpty( gridRows );
     }
     

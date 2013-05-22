@@ -34,7 +34,6 @@ import static org.hisp.dhis.reporttable.ReportTable.SPACE;
 import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
 import static org.hisp.dhis.reporttable.ReportTable.getPrettyColumnName;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -122,9 +121,13 @@ public class DefaultReportTableService
     @Override
     public Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
     {
+        log.info( "Generating report table grid: " + uid + ", date: " + reportingPeriod + ", ou: " + organisationUnitUid );
+        
         ReportTable reportTable = getReportTable( uid );
-
-        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitUid, format );
+                
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+                
+        reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, organisationUnit, format );
 
         return getGrid( reportTable, format );
     }
@@ -224,80 +227,6 @@ public class DefaultReportTableService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Populates the report table with dynamic meta objects originating from
-     * report table parameters.
-     *
-     * @param reportTable        the report table.
-     * @param reportingPeriod    the reporting period start date.
-     * @param organisationUnitId the organisation unit identifier.
-     * @param format             the I18n format.
-     * @return a report table.
-     */
-    private ReportTable initDynamicMetaObjects( ReportTable reportTable, Date reportingPeriod,
-        String organisationUnitUid, I18nFormat format )
-    {
-        // ---------------------------------------------------------------------
-        // Reporting period report parameter / current reporting period
-        // ---------------------------------------------------------------------
-
-        log.info( "Running report table: " + reportTable.getName() );
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-        
-        List<OrganisationUnit> relativeOrganisationUnits = new ArrayList<OrganisationUnit>();
-        
-        if ( reportTable.hasRelativePeriods() && reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
-        {
-            reportTable.setReportingPeriodName( reportTable.getRelatives().getReportingPeriodName( reportingPeriod,
-                format ) );
-
-            log.info( "Reporting period date from report param: " + reportTable.getReportingPeriodName() );
-        }
-        else if ( reportTable.hasRelativePeriods() )
-        {
-            reportTable.setReportingPeriodName( reportTable.getRelatives().getReportingPeriodName( format ) );
-
-            log.info( "Reporting period date default: " + reportTable.getReportingPeriodName() );
-        }
-
-        // ---------------------------------------------------------------------
-        // Parent organisation unit report parameter
-        // ---------------------------------------------------------------------
-
-        if ( reportTable.getReportParams() != null &&
-            reportTable.getReportParams().isParamParentOrganisationUnit() )
-        {
-            organisationUnit.setCurrentParent( true );
-            reportTable.setParentOrganisationUnit( organisationUnit );
-            relativeOrganisationUnits.addAll( organisationUnit.getChildren() );
-            relativeOrganisationUnits.add( organisationUnit );
-
-            log.info( "Parent organisation unit: " + organisationUnit.getName() );
-        }
-
-        // ---------------------------------------------------------------------
-        // Organisation unit report parameter
-        // ---------------------------------------------------------------------
-
-        if ( reportTable.getReportParams() != null &&
-            reportTable.getReportParams().isParamOrganisationUnit() )
-        {
-            reportTable.setParentOrganisationUnit( organisationUnit );
-            relativeOrganisationUnits.add( organisationUnit );
-
-            log.info( "Organisation unit: " + organisationUnit.getName() );
-        }
-
-        // ---------------------------------------------------------------------
-        // Set properties and initalize
-        // ---------------------------------------------------------------------
-
-        reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, relativeOrganisationUnits, format );
-
-        return reportTable;
-    }
 
     /**
      * Generates a grid based on the given report table.

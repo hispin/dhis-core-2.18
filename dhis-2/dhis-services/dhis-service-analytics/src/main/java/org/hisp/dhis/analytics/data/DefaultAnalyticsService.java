@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -494,7 +495,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    params.getDimensions().addAll( getDimension( dimension, options, format ) );
+                    params.getDimensions().addAll( getDimension( dimension, options, null, format ) );
                 }
             }
         }
@@ -508,7 +509,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    params.getFilters().addAll( getDimension( dimension, options, format ) );
+                    params.getFilters().addAll( getDimension( dimension, options, null, format ) );
                 }
             }
         }
@@ -528,21 +529,23 @@ public class DefaultAnalyticsService
         
         if ( object != null )
         {
+            Date date = object.getRelativePeriodDate();
+            
             object.populateAnalyticalProperties();
             
             for ( DimensionalObject column : object.getColumns() )
             {
-                params.getDimensions().addAll( getDimension( toDimension( column.getDimension() ), getUids( column.getItems() ), format ) );
+                params.getDimensions().addAll( getDimension( toDimension( column.getDimension() ), getUids( column.getItems() ), date, format ) );
             }
             
             for ( DimensionalObject row : object.getRows() )
             {
-                params.getDimensions().addAll( getDimension( toDimension( row.getDimension() ), getUids( row.getItems() ), format ) );
+                params.getDimensions().addAll( getDimension( toDimension( row.getDimension() ), getUids( row.getItems() ), date, format ) );
             }
             
             for ( DimensionalObject filter : object.getFilters() )
             {
-                params.getFilters().addAll( getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), format ) );
+                params.getFilters().addAll( getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), date, format ) );
             }
         }
         
@@ -563,9 +566,15 @@ public class DefaultAnalyticsService
      * replaced by real ISO periods relative to the current date. For the ou 
      * dimension items, the user  organisation unit enums 
      * USER_ORG_UNIT|USER_ORG_UNIT_CHILDREN will be replaced by the persisted 
-     * organisation units for the current user. 
+     * organisation units for the current user.
+     * 
+     * @param dimension the dimension identifier.
+     * @param items the dimension items.
+     * @param relativePeriodDate the date to use for generating relative periods, can be null.
+     * @parma format the I18nFormat, can be null.
+     * @return list of DimensionalObjects.
      */
-    private List<DimensionalObject> getDimension( String dimension, List<String> items, I18nFormat format )
+    private List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format )
     {        
         if ( DATA_X_DIM_ID.equals( dimension ) )
         {
@@ -643,7 +652,7 @@ public class DefaultAnalyticsService
                 if ( RelativePeriodEnum.contains( isoPeriod ) )
                 {
                     RelativePeriodEnum relativePeriod = RelativePeriodEnum.valueOf( isoPeriod );
-                    periods.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, format, true ) );
+                    periods.addAll( RelativePeriods.getRelativePeriodsFromEnum( relativePeriod, relativePeriodDate, format, true ) );
                 }
                 else
                 {
