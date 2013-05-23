@@ -214,6 +214,11 @@ public class DefaultDimensionService
      */
     private void mergeDimensionalObjects( BaseAnalyticalObject object, List<DimensionalObject> dimensions )
     {
+        if ( object == null || dimensions == null )
+        {
+            return;
+        }
+        
         for ( DimensionalObject dimension : dimensions )
         {
             DimensionType type = getDimensionType( dimension.getDimension() );
