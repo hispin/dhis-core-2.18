@@ -104,6 +104,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DebugUtils;

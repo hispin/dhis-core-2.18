@@ -438,6 +438,8 @@ public class TableAlteror
         executeSql( "update reporttable set displaydensity = 'normal' where displaydensity is null" );
         executeSql( "update reporttable set fontsize = 'normal' where fontsize is null" );
         executeSql( "update reporttable set digitgroupseparator = 'space' where digitgroupseparator is null" );
+        executeSql( "update reporttable set sortorder = 0 where sortorder is null" );
+        executeSql( "update reporttable set toplimit = 0 where toplimit is null" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
         executeSql( "update chart set reportingbimonth = false where reportingbimonth is null" );
