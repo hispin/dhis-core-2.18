@@ -38,5 +38,4 @@ function displaySummary()
 function toggleOptions()
 {
 	$( ".moreOptions" ).toggle();
-	$.toggleCss( "inputCriteria", "height", "144px", "230px" );
 }
