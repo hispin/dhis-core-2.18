@@ -238,6 +238,21 @@ function saveBoolean( dataElementId, optionComboId, fieldId )
     valueSaver.save();
 }
 
+function saveTrueOnly( dataElementId, optionComboId, fieldId )
+{
+    fieldId = '#' + fieldId;
+
+    var value = $( fieldId ).attr('checked');
+
+    $( fieldId ).css( 'background-color', COLOR_YELLOW );
+
+    var periodId = $( '#selectedPeriodId' ).val();
+
+    var valueSaver = new ValueSaver( dataElementId, optionComboId,
+    	currentOrganisationUnitId, periodId, value, fieldId, COLOR_GREEN );
+    valueSaver.save();
+}
+
 /**
  * Supportive method.
  */

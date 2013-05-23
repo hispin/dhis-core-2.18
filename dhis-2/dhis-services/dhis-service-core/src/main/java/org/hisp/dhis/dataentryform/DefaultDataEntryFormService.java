@@ -321,6 +321,10 @@ public class DefaultDataEntryFormService
                     appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
                     appendCode += "</select>";
                 }
+                else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
+                {
+                    appendCode += " name=\"entrytrueonly\" type=\"checkbox\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                }
                 else if ( dataElement.getOptionSet() != null )
                 {
                     appendCode += " name=\"entryoptionset\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
