@@ -52,6 +52,15 @@ public class StreamingCsvDataValue
     {
         this.values = Arrays.asList( row );
     }
+
+    //--------------------------------------------------------------------------
+    // Supportive methods
+    //--------------------------------------------------------------------------
+
+    private String getValue( int index )
+    {
+        return index >= 0 && index < values.size() ? values.get( index ) : null;
+    }
     
     //--------------------------------------------------------------------------
     // Getters
@@ -60,55 +69,55 @@ public class StreamingCsvDataValue
     @Override
     public String getDataElement()
     {
-        return dataElement = dataElement == null ? values.get( 0 ) : dataElement;
+        return dataElement = dataElement == null ? getValue( 0 ) : dataElement;
     }
 
     @Override
     public String getPeriod()
     {
-        return period = period == null ? values.get( 1 ) : period;
+        return period = period == null ? getValue( 1 ) : period;
     }
 
     @Override
     public String getOrgUnit()
     {
-        return orgUnit = orgUnit == null ? values.get( 2 ) : orgUnit;
+        return orgUnit = orgUnit == null ? getValue( 2 ) : orgUnit;
     }
 
     @Override
     public String getCategoryOptionCombo()
     {
-        return categoryOptionCombo = categoryOptionCombo == null ? values.get( 3 ) : categoryOptionCombo;
+        return categoryOptionCombo = categoryOptionCombo == null ? getValue( 3 ) : categoryOptionCombo;
     }
 
     @Override
     public String getValue()
     {
-        return value = value == null ? values.get( 4 ) : value;
+        return value = value == null ? getValue( 4 ) : value;
     }
 
     @Override
     public String getStoredBy()
     {
-        return storedBy = storedBy == null ? values.get( 5 ) : storedBy;
+        return storedBy = storedBy == null ? getValue( 5 ) : storedBy;
     }
 
     @Override
     public String getTimestamp()
     {
-        return timestamp = timestamp == null ? values.get( 6 ) : timestamp;
+        return timestamp = timestamp == null ? getValue( 6 ) : timestamp;
     }
 
     @Override
     public String getComment()
     {
-        return comment = comment == null ? values.get( 7 ) : comment;
+        return comment = comment == null ? getValue( 7 ) : comment;
     }
 
     @Override
     public Boolean getFollowup()
     {
-        return followup = followup == null ? valueOf( values.get( 8 ) ) : followup;
+        return followup = followup == null ? valueOf( getValue( 8 ) ) : followup;
     }
 
     //--------------------------------------------------------------------------
