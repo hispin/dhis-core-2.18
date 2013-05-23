@@ -417,188 +417,208 @@ DV.core.getUtil = function(dv) {
 	};
 
 	util.chart = {
-		extendLayout: function(layout) {
-			var xLayout = Ext.clone(layout),
-				dimConf = dv.conf.finals.dimension,
+		getExtendedLayout: function(layout) {
+			var dimConf = dv.conf.finals.dimension,
+				layout = Ext.clone(layout),
+				xLayout = {
+					columns: [],
+					rows: [],
+					filters: [],
 
-				axisDimensions = [].concat(Ext.clone(xLayout.columns) || [], Ext.clone(xLayout.rows) || []),
-				axisDimensionNames = [],
-				axisObjectNames = [],
-				axisItems = [],
+					columnObjectNames: [],
+					columnDimensionNames: [],
+					columnItems: [],
+					columnIds: [],
+					rowObjectNames: [],
+					rowDimensionNames: [],
+					rowItems: [],
+					rowIds: [],
 
-				filterDimensions = Ext.clone(xLayout.filters) || [],
-				filterDimensionNames = [],
-				filterObjectNames = [],
-				filterItems = [],
+					// Axis
+					axisDimensions: [],
+					axisObjectNames: [],
+					axisDimensionNames: [],
 
-				objectNameDimensionMap = {},
-				dimensionNameItemsMap = {},
+						// For param string
+					sortedAxisDimensionNames: [],
 
-				columns,
-				columnsDimensionNames = [],
-				rows,
-				rowsDimensionNames = [],
-				filters,
-				filtersDimensionNames = [],
+					// Filter
+					filterDimensions: [],
+					filterObjectNames: [],
+					filterDimensionNames: [],
+					filterItems: [],
+					filterIds: [],
 
-				objectNameRecordsMap = {};
+						// For param string
+					sortedFilterDimensions: [],
 
-			xLayout.extended = {};
+					// All
+					dimensions: [],
+					objectNames: [],
+					dimensionNames: [],
 
-			// Axis
-			for (var i = 0, dim, items; i < axisDimensions.length; i++) {
-				dim = axisDimensions[i];
-				items = [];
+					// Object name maps
+					objectNameDimensionsMap: {},
+					objectNameItemsMap: {},
+					objectNameIdsMap: {},
 
-				dim.dimensionName = dv.conf.finals.dimension.objectNameMap[dim.dimension].dimensionName;
-				dim.objectName = dim.dimension;
+					// Dimension name maps
+					dimensionNameDimensionsMap: {},
+					dimensionNameItemsMap: {},
+					dimensionNameIdsMap: {},
 
-				axisDimensionNames.push(dim.dimensionName);
-				axisObjectNames.push(dim.objectName);
+						// For param string
+					dimensionNameSortedIdsMap: {}
+				};
 
-				for (var j = 0; j < dim.items.length; j++) {
-					items.push(dim.items[j].id);
-				}
-
-				dim.items = items;
-
-				axisItems = axisItems.concat(items);
-			}
-
-			// Filter
-			for (var i = 0, dim, items; i < filterDimensions.length; i++) {
-				dim = filterDimensions[i];
-				items = [];
-
-				dim.dimensionName = dv.conf.finals.dimension.objectNameMap[dim.dimension].dimensionName;
-				dim.objectName = dim.dimension;
-
-				filterDimensionNames.push(dim.dimensionName);
-				filterObjectNames.push(dim.objectName);
-
-				for (var j = 0; j < dim.items.length; j++) {
-					items.push(dim.items[j].id);
-				}
-
-				dim.items = items;
-
-				filterItems = filterItems.concat(items);
-			}
-
-			// Axis
-			xLayout.extended.axisDimensions = axisDimensions;
-			xLayout.extended.axisDimensionNames = Ext.Array.unique(axisDimensionNames);
-			xLayout.extended.axisObjectNames = axisObjectNames;
-			xLayout.extended.axisItems = axisItems;
-
-			// Filter
-			xLayout.extended.filterDimensions = filterDimensions;
-			xLayout.extended.filterDimensionNames = Ext.Array.unique(filterDimensionNames);
-			xLayout.extended.filterObjectNames = filterObjectNames;
-			xLayout.extended.filterItems = filterItems;
-
-			// All
-			xLayout.extended.dimensions = [].concat(axisDimensions, filterDimensions);
-			xLayout.extended.dimensionNames = Ext.Array.unique([].concat(axisDimensionNames, filterDimensionNames));
-			xLayout.extended.objectNames = [].concat(axisObjectNames, filterObjectNames);
-			xLayout.extended.items = [].concat(axisItems, filterItems);
-
-			// Sorted axis
-			xLayout.extended.sortedAxisDimensions = dv.util.array.sortDimensions(Ext.clone(axisDimensions));
-			xLayout.extended.sortedAxisDimensionNames = Ext.Array.unique(Ext.clone(axisDimensionNames).sort());
-			xLayout.extended.sortedAxisObjectNames = Ext.clone(axisObjectNames).sort();
-			xLayout.extended.sortedAxisItems = Ext.clone(axisItems).sort();
-
-			// Sorted filter
-			xLayout.extended.sortedFilterDimensions = dv.util.array.sortDimensions(Ext.clone(filterDimensions));
-			xLayout.extended.sortedFilterDimensionNames = Ext.Array.unique(Ext.clone(filterDimensionNames).sort());
-			xLayout.extended.sortedFilterObjectNames = Ext.clone(filterObjectNames).sort();
-			xLayout.extended.sortedFilterItems = Ext.clone(filterItems).sort();
-
-			// Sorted all
-			xLayout.extended.sortedDimensions = [].concat(xLayout.extended.sortedAxisDimensions, xLayout.extended.sortedFilterDimensions);
-			xLayout.extended.sortedDimensionNames = Ext.Array.unique([].concat(xLayout.extended.sortedAxisDimensionNames, xLayout.extended.sortedFilterDimensionNames));
-			xLayout.extended.sortedObjectNames = [].concat(xLayout.extended.sortedAxisObjectNames, xLayout.extended.sortedFilterObjectNames);
-			xLayout.extended.sortedItems = [].concat(xLayout.extended.sortedAxisItems, xLayout.extended.sortedFilterItems);
-
-			// Maps
-
-			// Add dimensionName keys
-			for (var i = 0, name; i < xLayout.extended.dimensionNames.length; i++) {
-				name = xLayout.extended.dimensionNames[i];
-				dimensionNameItemsMap[name] = [];
-			}
-
-			// Add dimensions and items
-			for (var i = 0, dim; i < xLayout.extended.dimensions.length; i++) {
-				dim = xLayout.extended.dimensions[i];
-
-				// objectName : object
-				objectNameDimensionMap[dim.objectName] = dim;
-
-				// dimensionName : items
-				dimensionNameItemsMap[dim.dimensionName] = dimensionNameItemsMap[dim.dimensionName].concat(Ext.clone(dim.items));
-			}
-
-			xLayout.extended.objectNameDimensionMap = objectNameDimensionMap;
-			xLayout.extended.dimensionNameItemsMap = dimensionNameItemsMap;
+			Ext.applyIf(xLayout, layout);
 
 			// Columns, rows, filters
-			columns = Ext.clone(xLayout.columns);
-			for (var i = 0, dim; i < columns.length; i++) {
-				dim = columns[i];
-				dim.objectName = dim.dimension;
-				dim.dimensionName = dimConf.objectNameMap[dim.objectName].dimensionName;
-				dim.records = Ext.clone(dim.items);
-				dim.items = xLayout.extended.objectNameDimensionMap[dim.objectName].items;
+			if (layout.columns) {
+				for (var i = 0, dim, items, xDim; i < layout.columns.length; i++) {
+					dim = layout.columns[i];
+					items = dim.items;
+					xDim = {};
 
-				objectNameRecordsMap[dim.objectName] = dim.records;
+					xDim.dimension = dim.dimension;
+					xDim.objectName = dim.dimension;
+					xDim.dimensionName = dimConf.objectNameMap[dim.dimension].dimensionName;
+
+					if (items) {
+						xDim.items = items;
+						xDim.ids = [];
+
+						for (var j = 0; j < items.length; j++) {
+							xDim.ids.push(items[j].id);
+						}
+					}
+
+					xLayout.columns.push(xDim);
+
+					xLayout.columnObjectNames.push(xDim.objectName);
+					xLayout.columnDimensionNames.push(xDim.dimensionName);
+					xLayout.columnItems = xLayout.columnItems.concat(xDim.items);
+					xLayout.columnIds = xLayout.columnIds.concat(xDim.ids);
+
+					xLayout.axisDimensions.push(xDim);
+					xLayout.axisObjectNames.push(xDim.objectName);
+					xLayout.axisDimensionNames.push(dimConf.objectNameMap[xDim.objectName].dimensionName);
+
+					xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
+					xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
+					xLayout.objectNameIdsMap[xDim.objectName] = xDim.ids;
+				}
 			}
 
-			rows = Ext.clone(xLayout.rows);
-			for (var i = 0, dim; i < rows.length; i++) {
-				dim = rows[i];
-				dim.objectName = dim.dimension;
-				dim.dimensionName = dimConf.objectNameMap[dim.objectName].dimensionName;
-				dim.records = Ext.clone(dim.items);
-				dim.items = xLayout.extended.objectNameDimensionMap[dim.objectName].items;
+			if (layout.rows) {
+				for (var i = 0, dim, items, xDim; i < layout.rows.length; i++) {
+					dim = layout.rows[i];
+					items = dim.items;
+					xDim = {};
 
-				objectNameRecordsMap[dim.objectName] = Ext.clone(dim.records);
+					xDim.dimension = dim.dimension;
+					xDim.objectName = dim.dimension;
+					xDim.dimensionName = dimConf.objectNameMap[dim.dimension].dimensionName;
+
+					if (items) {
+						xDim.items = items;
+						xDim.ids = [];
+
+						for (var j = 0; j < items.length; j++) {
+							xDim.ids.push(items[j].id);
+						}
+					}
+
+					xLayout.rows.push(xDim);
+
+					xLayout.rowObjectNames.push(xDim.objectName);
+					xLayout.rowDimensionNames.push(xDim.dimensionName);
+					xLayout.rowItems = xLayout.rowItems.concat(xDim.items);
+					xLayout.rowIds = xLayout.rowIds.concat(xDim.ids);
+
+					xLayout.axisDimensions.push(xDim);
+					xLayout.axisObjectNames.push(xDim.objectName);
+					xLayout.axisDimensionNames.push(dimConf.objectNameMap[xDim.objectName].dimensionName);
+
+					xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
+					xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
+					xLayout.objectNameIdsMap[xDim.objectName] = xDim.ids;
+				}
 			}
 
-			filters = Ext.clone(xLayout.filters);
-			for (var i = 0, dim; i < filters.length; i++) {
-				dim = filters[i];
-				dim.objectName = dim.dimension;
-				dim.dimensionName = dimConf.objectNameMap[dim.objectName].dimensionName;
-				dim.records = Ext.clone(dim.items);
-				dim.items = xLayout.extended.objectNameDimensionMap[dim.objectName].items;
+			if (layout.filters) {
+				for (var i = 0, dim, items, xDim; i < layout.filters.length; i++) {
+					dim = layout.filters[i];
+					items = dim.items;
+					xDim = {};
 
-				objectNameRecordsMap[dim.objectName] = Ext.clone(dim.records);
+					xDim.dimension = dim.dimension;
+					xDim.objectName = dim.dimension;
+					xDim.dimensionName = dimConf.objectNameMap[dim.dimension].dimensionName;
+
+					if (items) {
+						xDim.items = items;
+						xDim.ids = [];
+
+						for (var j = 0; j < items.length; j++) {
+							xDim.ids.push(items[j].id);
+						}
+					}
+
+					xLayout.filters.push(xDim);
+
+					xLayout.filterDimensions.push(xDim);
+					xLayout.filterObjectNames.push(xDim.objectName);
+					xLayout.filterDimensionNames.push(dimConf.objectNameMap[xDim.objectName].dimensionName);
+					xLayout.filterItems = xLayout.filterItems.concat(xDim.items);
+					xLayout.filterIds = xLayout.filterIds.concat(xDim.ids);
+
+					xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
+					xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
+					xLayout.objectNameIdsMap[xDim.objectName] = xDim.ids;
+				}
 			}
 
-			xLayout.extended.columns = columns;
-			xLayout.extended.rows = rows;
-			xLayout.extended.filters = filters;
+			// Unique dimension names
+			xLayout.axisDimensionNames = Ext.Array.unique(xLayout.axisDimensionNames);
+			xLayout.filterDimensionNames = Ext.Array.unique(xLayout.filterDimensionNames);
 
-			xLayout.extended.objectNameRecordsMap = objectNameRecordsMap;
+			xLayout.columnDimensionNames = Ext.Array.unique(xLayout.columnDimensionNames);
+			xLayout.rowDimensionNames = Ext.Array.unique(xLayout.rowDimensionNames);
+			xLayout.filterDimensionNames = Ext.Array.unique(xLayout.filterDimensionNames);
 
-			// columnsDimensionNames, rowsDimensionNames, filtersDimensionNames
-			for (var i = 0; i < xLayout.extended.columns.length; i++) {
-				columnsDimensionNames.push(xLayout.extended.columns[i].dimensionName);
+				// For param string
+			xLayout.sortedAxisDimensionNames = Ext.clone(xLayout.axisDimensionNames).sort();
+			xLayout.sortedFilterDimensions = dv.util.array.sortDimensions(Ext.clone(xLayout.filterDimensions));
+
+			// All
+			xLayout.dimensions = [].concat(xLayout.axisDimensions, xLayout.filterDimensions);
+			xLayout.objectNames = [].concat(xLayout.axisObjectNames, xLayout.filterObjectNames);
+			xLayout.dimensionNames = [].concat(xLayout.axisDimensionNames, xLayout.filterDimensionNames);
+
+			// Dimension name maps
+			for (var i = 0, dimName; i < xLayout.dimensionNames.length; i++) {
+				dimName = xLayout.dimensionNames[i];
+
+				xLayout.dimensionNameDimensionsMap[dimName] = [];
+				xLayout.dimensionNameItemsMap[dimName] = [];
+				xLayout.dimensionNameIdsMap[dimName] = [];
 			}
 
-			for (var i = 0; i < xLayout.extended.rows.length; i++) {
-				rowsDimensionNames.push(xLayout.extended.rows[i].dimensionName);
+			for (var i = 0, xDim; i < xLayout.dimensions.length; i++) {
+				xDim = xLayout.dimensions[i];
+
+				xLayout.dimensionNameDimensionsMap[xDim.dimensionName].push(xDim);
+				xLayout.dimensionNameItemsMap[xDim.dimensionName] = xLayout.dimensionNameItemsMap[xDim.dimensionName].concat(xDim.items);
+				xLayout.dimensionNameIdsMap[xDim.dimensionName] = xLayout.dimensionNameIdsMap[xDim.dimensionName].concat(xDim.ids);
 			}
 
-			for (var i = 0; i < xLayout.extended.filters.length; i++) {
-				filtersDimensionNames.push(xLayout.extended.filters[i].dimensionName);
+				// For param string
+			for (var key in xLayout.dimensionNameIdsMap) {
+				if (xLayout.dimensionNameIdsMap.hasOwnProperty(key)) {
+					xLayout.dimensionNameSortedIdsMap[key] = Ext.clone(xLayout.dimensionNameIdsMap[key]).sort();
+				}
 			}
-
-			xLayout.extended.columnsDimensionNames = columnsDimensionNames;
-			xLayout.extended.rowsDimensionNames = rowsDimensionNames;
-			xLayout.extended.filtersDimensionNames = filtersDimensionNames;
 
 			return xLayout;
 		},
@@ -607,8 +627,7 @@ DV.core.getUtil = function(dv) {
 			var dimConf = dv.conf.finals.dimension,
 				getSyncronizedXLayout,
 				getParamString,
-				validateResponse,
-				extendResponse,
+				getExtendedResponse,
 				getDefaultStore,
 				getDefaultNumericAxis,
 				getDefaultCategoryAxis,
@@ -624,23 +643,23 @@ DV.core.getUtil = function(dv) {
 				initialize;
 
 			getParamString = function(xLayout) {
-				var sortedAxisDimensionNames = xLayout.extended.sortedAxisDimensionNames,
-					sortedFilterDimensions = xLayout.extended.sortedFilterDimensions,
+				var sortedAxisDimensionNames = xLayout.sortedAxisDimensionNames,
+					sortedFilterDimensions = xLayout.sortedFilterDimensions,
+					dimensionNameSortedIdsMap = xLayout.dimensionNameSortedIdsMap,
 					paramString = '?',
 					dimConf = dv.conf.finals.dimension,
 					addCategoryDimension = false,
-					map = xLayout.extended.dimensionNameItemsMap,
-					dx = dimConf.indicator.dimensionName,
-					items;
+					map = xLayout.dimensionNameItemsMap,
+					dx = dimConf.indicator.dimensionName;
 
-				for (var i = 0, dimensionName; i < sortedAxisDimensionNames.length; i++) {
-					dimensionName = sortedAxisDimensionNames[i];
+				for (var i = 0, dimName, items; i < sortedAxisDimensionNames.length; i++) {
+					dimName = sortedAxisDimensionNames[i];
 
-					paramString += 'dimension=' + dimensionName;
+					paramString += 'dimension=' + dimName;
 
-					items = Ext.clone(xLayout.extended.dimensionNameItemsMap[dimensionName]).sort();
+					items = Ext.clone(dimensionNameSortedIdsMap[dimName]);
 
-					if (dimensionName === dx) {
+					if (dimName === dx) {
 						for (var j = 0, index; j < items.length; j++) {
 							index = items[j].indexOf('-');
 
@@ -668,7 +687,7 @@ DV.core.getUtil = function(dv) {
 					for (var i = 0, dim; i < sortedFilterDimensions.length; i++) {
 						dim = sortedFilterDimensions[i];
 
-						paramString += '&filter=' + dim.dimensionName + ':' + dim.items.join(';');
+						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
 					}
 				}
 
@@ -677,42 +696,32 @@ DV.core.getUtil = function(dv) {
 
 			getSyncronizedXLayout = function(xLayout, response) {
 				var dimensions = [].concat(xLayout.columns, xLayout.rows, xLayout.filters),
-					xOuDimension = xLayout.extended.objectNameDimensionMap[dimConf.organisationUnit.objectName],
+					xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
 					isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT'),
 					isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT_CHILDREN'),
 					peItems = [],
-					ouItems = [];
+					ouItems = [],
+					layout;
 
-				// Relative periods
-				for (var i = 0, periodIds; i < dimensions.length; i++) {
-					if (dimensions[i].dimension === dimConf.period.objectName) {
-						periodIds = response.metaData.pe;
+				// Use metaData ids if any
+				for (var i = 0, dim, metaDataDim, items; i < dimensions.length; i++) {
+					dim = dimensions[i];
+					metaDataDim = response.metaData[dim.objectName];
 
-						for (var j = 0; j < periodIds.length; j++) {
-							peItems.push({id: periodIds[j]});
+					if (Ext.isArray(metaDataDim)) {
+						items = [];
+
+						for (var j = 0; j < metaDataDim.length; j++) {
+							items.push({id: metaDataDim[j]});
 						}
 
-						dimensions[i].items = peItems;
+						dim.items = items;
 					}
 				}
 
-				// Add user orgunits
-				if (isUserOrgunit || isUserOrgunitChildren) {
-					if (isUserOrgunit) {
-						ouItems.push(Ext.clone(dv.init.user.ou));
-					}
-					if (isUserOrgunitChildren) {
-						ouItems = ouItems.concat(Ext.clone(dv.init.user.ouc));
-					}
+				layout = dv.api.layout.Layout(xLayout);
 
-					for (var i = 0; i < dimensions.length; i++) {
-						if (dimensions[i].dimension === dimConf.organisationUnit.objectName) {
-							dimensions[i].items = ouItems;
-						}
-					}
-				}
-
-				return dv.util.chart.extendLayout(xLayout);
+				return layout ? dv.util.chart.getExtendedLayout(layout) : null;
 			};
 
 			validateResponse = function(response) {
@@ -741,31 +750,35 @@ DV.core.getUtil = function(dv) {
 				return true;
 			};
 
-			extendResponse = function(response, xLayout) {
+			getExtendedResponse = function(response, xLayout) {
 				response.nameHeaderMap = {};
 				response.idValueMap = {};
+				ids = [];
 
 				var extendHeaders = function() {
 
 					// Extend headers: index, items, size
 					for (var i = 0, header; i < response.headers.length; i++) {
 						header = response.headers[i];
+
+						// Index
 						header.index = i;
 
 						if (header.meta) {
 
-							// Categories
-							if (header.name === dv.conf.finals.dimension.category.dimensionName) {
-								header.items = [].concat(response.metaData[dv.conf.finals.dimension.category.dimensionName]);
+							// Items: get ids from metadata
+							if (Ext.isArray(response.metaData[header.name])) {
+								header.items = Ext.clone(response.metaData[header.name]);
 							}
-							// Periods
-							else if (header.name === dv.conf.finals.dimension.period.dimensionName) {
-								header.items = [].concat(response.metaData[dv.conf.finals.dimension.period.dimensionName]);
-							}
+							// Items: get ids from xLayout
 							else {
-								header.items = xLayout.extended.dimensionNameItemsMap[header.name];
+								header.items = xLayout.dimensionNameIdsMap[header.name];
 							}
 
+							// Collect ids
+							ids = ids.concat(header.items);
+
+							// Size
 							header.size = header.items.length;
 						}
 					}
@@ -778,10 +791,21 @@ DV.core.getUtil = function(dv) {
 					}
 				}();
 
+				var extendMetaData = function() {
+					for (var i = 0, id, splitId ; i < ids.length; i++) {
+						id = ids[i];
+
+						if (id.indexOf('-') !== -1) {
+							splitId = id.split('-');
+							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
+						}
+					}
+				}();
+
 				var createValueIdMap = function() {
 					var valueHeaderIndex = response.nameHeaderMap[dv.conf.finals.dimension.value.value].index,
 						coHeader = response.nameHeaderMap[dv.conf.finals.dimension.category.dimensionName],
-						axisDimensionNames = xLayout.extended.axisDimensionNames,
+						axisDimensionNames = xLayout.axisDimensionNames,
 						idIndexOrder = [];
 
 					// idIndexOrder
@@ -834,12 +858,13 @@ DV.core.getUtil = function(dv) {
 
 			getDefaultStore = function(xResponse, xLayout) {
 				var pe = dv.conf.finals.dimension.period.dimensionName,
-					columnDimensionName = xLayout.extended.columns[0].dimensionName,
-					rowDimensionName = xLayout.extended.rows[0].dimensionName,
+					columnDimensionName = xLayout.columns[0].dimensionName,
+					rowDimensionName = xLayout.rows[0].dimensionName,
 
 					data = [],
-					columnIds = columnDimensionName === pe ? xResponse.metaData.pe : xLayout.extended.dimensionNameItemsMap[columnDimensionName],
-					rowIds = rowDimensionName === pe ? xResponse.metaData.pe : xLayout.extended.dimensionNameItemsMap[rowDimensionName],
+					//columnIds = columnDimensionName === pe ? xResponse.metaData.pe : xLayout.extended.dimensionNameItemsMap[columnDimensionName],
+					columnIds = Ext.isArray(xResponse.metaData[columnDimensionName]) ? xResponse.metaData[columnDimensionName] : xLayout.dimensionNameIdsMap[columnDimensionName],
+					rowIds = Ext.isArray(xResponse.metaData[rowDimensionName]) ? xResponse.metaData[rowDimensionName] : xLayout.dimensionNameIdsMap[rowDimensionName],
 					trendLineFields = [],
 					targetLineFields = [],
 					baseLineFields = [],
@@ -852,7 +877,9 @@ DV.core.getUtil = function(dv) {
 
 					obj[dv.conf.finals.data.domain] = xResponse.metaData.names[category];
 					for (var j = 0, id; j < columnIds.length; j++) {
-						id = dv.util.str.replaceAll(columnIds[j], '-', '') + rowIds[i];
+						id = dv.util.str.replaceAll(columnIds[j], '-', '') + dv.util.str.replaceAll(rowIds[i], '-', '');
+						//id = columnIds[j].replace('-', '') + rowIds[i].replace('-', '');
+
 						obj[columnIds[j]] = xResponse.idValueMap[id];
 					}
 
@@ -1029,26 +1056,11 @@ console.log("baseLineFields", store.baseLineFields);
 			};
 
 			getDefaultSeriesTitle = function(store, xResponse) {
-				var a = [],
-					ids;
+				var a = [];
 
-				for (var i = 0, id; i < store.rangeFields.length; i++) {
+				for (var i = 0, id, ids; i < store.rangeFields.length; i++) {
 					id = store.rangeFields[i];
-
-					if (id.indexOf('-') !== -1) {
-						ids = id.split('-');
-						id = '';
-
-						for (var j = 0; j < ids.length; j++) {
-							id += j !== 0 ? ' ' : '';
-							id += xResponse.metaData.names[ids[j]];
-						}
-
-						a.push(id);
-					}
-					else {
-						a.push(xResponse.metaData.names[id]);
-					}
+					a.push(xResponse.metaData.names[id]);
 				}
 
 				return a;
@@ -1225,14 +1237,19 @@ console.log("baseLineFields", store.baseLineFields);
 			};
 
 			getDefaultChartTitle = function(store, xResponse, xLayout) {
-				var filterItems = xLayout.extended.filterItems,
+				var ids = xLayout.filterIds,
 					a = [],
-					text = '';
+					text = '',
+					fontSize;
 
-				if (Ext.isArray(filterItems) && filterItems.length) {
-					for (var i = 0; i < filterItems.length; i++) {
-						text += xResponse.metaData.names[filterItems[i]];
-						text += i < filterItems.length - 1 ? ', ' : '';
+				if (xLayout.type === dv.conf.finals.chart.pie) {
+					ids = ids.concat(xLayout.columnIds);
+				}
+
+				if (Ext.isArray(ids) && ids.length) {
+					for (var i = 0; i < ids.length; i++) {
+						text += xResponse.metaData.names[ids[i]];
+						text += i < ids.length - 1 ? ', ' : '';
 					}
 				}
 
@@ -1240,10 +1257,12 @@ console.log("baseLineFields", store.baseLineFields);
 					text = xLayout.title;
 				}
 
+				fontSize = (dv.viewport.centerRegion.getWidth() / text.length) < 11.6 ? 13 : 18;
+
 				return Ext.create('Ext.draw.Sprite', {
 					type: 'text',
 					text: text,
-					font: 'bold 19px ' + dv.conf.chart.style.fontFamily,
+					font: 'bold ' + fontSize + 'px ' + dv.conf.chart.style.fontFamily,
 					fill: '#111',
 					height: 20,
 					y: 	20
@@ -1459,7 +1478,8 @@ console.log("baseLineFields", store.baseLineFields);
 					categoryAxis = getDefaultCategoryAxis(store, xLayout),
 					axes = [numericAxis, categoryAxis],
 					series = [],
-					colors = dv.conf.chart.theme.dv1.slice(0, store.rangeFields.length);
+					colors = dv.conf.chart.theme.dv1.slice(0, store.rangeFields.length),
+					seriesTitles = getDefaultSeriesTitle(store, xResponse);
 
 				// Series
 				for (var i = 0, line; i < store.rangeFields.length; i++) {
@@ -1477,7 +1497,7 @@ console.log("baseLineFields", store.baseLineFields);
 							radius: 4
 						},
 						tips: getDefaultTips(),
-						title: getDefaultSeriesTitle(store, xResponse)
+						title: seriesTitles[i]
 					};
 
 					//if (xLayout.showValues) {
@@ -1596,7 +1616,7 @@ console.log("baseLineFields", store.baseLineFields);
 					chart;
 
 				// Theme
-				colors = dv.conf.chart.theme.dv1.slice(0, xResponse.nameHeaderMap[xLayout.extended.rows[0].dimensionName].items.length);
+				colors = dv.conf.chart.theme.dv1.slice(0, xResponse.nameHeaderMap[xLayout.rowDimensionNames[0]].items.length);
 
 				Ext.chart.theme.dv1 = Ext.extend(Ext.chart.theme.Base, {
 					constructor: function(config) {
@@ -1612,7 +1632,7 @@ console.log("baseLineFields", store.baseLineFields);
 
 				chart.legend.position = 'right';
 				chart.legend.isVertical = true;
-				chart.insetPadding = 20;
+				chart.insetPadding = 40;
 				chart.shadow = true;
 
 				return chart;
@@ -1624,7 +1644,7 @@ console.log("baseLineFields", store.baseLineFields);
 					xResponse,
 					chart;
 
-				xLayout = dv.util.chart.extendLayout(layout);
+				xLayout = dv.util.chart.getExtendedLayout(layout);
 
 				dv.paramString = getParamString(xLayout);
 				url = dv.init.contextPath + '/api/analytics.json' + dv.paramString;
@@ -1665,7 +1685,7 @@ console.log("baseLineFields", store.baseLineFields);
 							return;
 						}
 
-						xResponse = extendResponse(response, xLayout);
+						xResponse = getExtendedResponse(response, xLayout);
 
 						chart = generator[xLayout.type](xResponse, xLayout);
 
@@ -1680,12 +1700,13 @@ console.log("baseLineFields", store.baseLineFields);
 						}
 
 						dv.chart = chart;
+						dv.layout = layout;
 						dv.xLayout = xLayout;
 						dv.xResponse = xResponse;
 
 console.log("xResponse", xResponse);
 console.log("xLayout", xLayout);
-console.log("chart", chart);
+console.log("layout", layout);
 					}
 				});
 
@@ -1706,15 +1727,10 @@ console.log("chart", chart);
 					alert(r.responseText);
 				},
 				success: function(r) {
-					var layout,
-						xLayout;
+					var layout = dv.api.layout.Layout(Ext.decode(r.responseText));
 
-					r = Ext.decode(r.responseText);
-					layout = dv.api.Layout(r);
-					xLayout = dv.util.chart.extendLayout(layout);
-
-					if (xLayout) {
-						dv.viewport.setFavorite(xLayout);
+					if (layout) {
+						dv.viewport.setFavorite(layout);
 					}
 				}
 			});
@@ -1727,481 +1743,313 @@ console.log("chart", chart);
 DV.core.getApi = function(dv) {
 	var dimConf = dv.conf.finals.dimension,
 		api = {
-			objectNameDimensionClassMap: {}
+			layout: {
+				Record: null,
+				Dimension: null,
+				Layout: null
+			},
+			response: {
+				Header: null,
+				Response: null
+			}
 		};
-
-	// Dimension
-
-	api.DimensionSuper = function() {
-		return {
-			dimension: null, // string
-
-			items: null // array of records
-		};
-	};
-
-	api.Indicator = function(config) {
-		var indicator = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Indicator config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Indicator dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Indicator items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Indicator has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			indicator.dimension = config.dimension;
-			indicator.dimensionName = dimConf.indicator.dimensionName;
-			indicator.objectName = dimConf.indicator.objectName;
-			indicator.items = Ext.clone(config.items);
-
-			return indicator;
-		}();
-	};
-
-	api.DataElement = function(config) {
-		var dataElement = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Data element config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Data element dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Data element items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Data element has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			dataElement.dimension = config.dimension;
-			dataElement.dimensionName = dimConf.dataElement.dimensionName;
-			dataElement.objectName = dimConf.dataElement.objectName;
-			dataElement.items = Ext.clone(config.items);
-
-			return dataElement;
-		}();
-	};
-
-	api.Operand = function(config) {
-		var operand = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Operand config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Operand dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Operand items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Operand has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			operand.dimension = config.dimension;
-			operand.dimensionName = dimConf.operand.dimensionName;
-			operand.objectName = dimConf.operand.objectName;
-			operand.items = Ext.clone(config.items);
-
-			// Replace operand id characters
-			for (var i = 0, id; i < operand.items.length; i++) {
-				id = operand.items[i].id;
-
-				if (id.indexOf('.') !== -1) {
-					id = id.replace('.', '-');
-					operand.items[i].id = id;
-				}
-			}
-
-			return operand;
-		}();
-	};
-
-	api.DataSet = function(config) {
-		var dataSet = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Data set config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Data set dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Data set items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Data set has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			dataSet.dimension = config.dimension;
-			dataSet.dimensionName = dimConf.dataSet.dimensionName;
-			dataSet.objectName = dimConf.dataSet.objectName;
-			dataSet.items = Ext.clone(config.items);
-
-			return dataSet;
-		}();
-	};
-
-	api.Period = function(config) {
-		var period = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Period config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Period dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Period items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Period has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			period.dimension = config.dimension;
-			period.dimensionName = dimConf.period.dimensionName;
-			period.objectName = dimConf.period.objectName;
-			period.items = Ext.clone(config.items);
-
-			return period;
-		}();
-	};
-
-	api.OrganisationUnit = function(config) {
-		var organisationUnit = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Organisation unit config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Organisation unit dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Organisation unit items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Organisation unit has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			organisationUnit.dimension = config.dimension;
-			organisationUnit.dimensionName = dimConf.organisationUnit.dimensionName;
-			organisationUnit.objectName = dimConf.organisationUnit.objectName;
-			organisationUnit.items = Ext.clone(config.items);
-
-			return organisationUnit;
-		}();
-	};
-
-	api.Dimension = function(config) {
-		var dimension = api.DimensionSuper(),
-			validateConfig;
-
-		validateConfig = function() {
-			if (!Ext.isObject(config)) {
-				alert('Dimension config is not an object');
-				return;
-			}
-
-			if (!Ext.isString(config.dimension)) {
-				alert('Dimension name is illegal');
-				return;
-			}
-
-			if (!Ext.isArray(config.items)) {
-				alert('Dimension items is not an array');
-				return;
-			}
-
-			if (!config.items.length) {
-				alert('Dimension has no items');
-				return;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			dimension.dimension = config.dimension;
-			dimension.dimensionName = config.dimension;
-			dimension.objectName = config.dimension;
-			dimension.items = Ext.clone(config.items);
-
-			return dimension;
-		}();
-	};
 
 	// Layout
 
-	api.Layout = function(config) {
-		var layout = {
-			type: 'column', // string
+	api.layout.Record = function(config) {
+		var record = {};
 
-			columns: null, // array of {dimension: <objectName>, items: [{id, name, code}]}
+		// id: string
 
-			rows: null, // array of {dimension: <objectName>, items: [{id, name, code}]}
+		return function() {
+			if (!Ext.isObject(config)) {
+				console.log('Record config is not an object: ' + config);
+				return;
+			}
 
-			filters: null, // array of {dimension: <objectName>, items: [{id, name, code}]}
+			if (!Ext.isString(config.id)) {
+				alert('Record id is not text: ' + config);
+				return;
+			}
 
-			showTrendLine: false, // boolean
+			record.id = config.id.replace('.', '-');
 
-			targetLineValue: null, // number
+			if (Ext.isString(config.name)) {
+				record.name = config.name;
+			}
 
-			targetLineTitle: null, // string
+			return Ext.clone(record);
+		}();
+	};
 
-			baseLineValue: null, // number
+	api.layout.Dimension = function(config) {
+		var dimension = {};
 
-			baseLineTitle: null, // string
+		// dimension: string
 
-			showValues: true, // boolean
+		// items: [Record]
 
-			hideLegend: false, // boolean
+		return function() {
+			if (!Ext.isObject(config)) {
+				console.log('Dimension config is not an object: ' + config);
+				return;
+			}
 
-			hideTitle: false, // boolean
+			if (!Ext.isString(config.dimension)) {
+				console.log('Dimension name is not text: ' + config);
+				return;
+			}
 
-			title: null, // string
+			if (config.dimension !== dv.conf.finals.dimension.category.objectName) {
+				var records = [];
 
-			domainAxisTitle: null, // string
-
-			rangeAxisTitle: null, // string
-
-			userOrganisationUnit: false, // boolean
-
-			userOrganisationUnitChildren: false // boolean
-		};
-
-		var validateConfig = function() {
-			var validateAxis;
-
-			validateAxis = function(axis) {
-				if (!(axis && Ext.isArray(axis) && axis.length)) {
+				if (!Ext.isArray(config.items)) {
+					console.log('Dimension items is not an array: ' + config);
 					return;
 				}
 
-				return true;
-			};
+				for (var i = 0; i < config.items.length; i++) {
+					record = api.layout.Record(config.items[i]);
 
-			if (!(config && Ext.isObject(config))) {
-				alert(dv.el + ': Layout config is not an object');
-				return;
-			}
+					if (record) {
+						records.push(record);
+					}
+				}
 
-			if (!(validateAxis(config.columns))) {
-				alert(dv.el + ': Columns config is invalid');
-				return;
-			}
-			if (!(validateAxis(config.rows))) {
-				alert(dv.el + ': Rows config is invalid');
-				return;
-			}
-			if (!(validateAxis(config.filters))) {
-				alert(dv.el + ': Filters config is invalid');
-				return;
-			}
+				config.items = records;
 
-			if (!Ext.isBoolean(config.showTrendLine)) {
-				config.showTrendLine = layout.showTrendLine;
-			}
-			if (!Ext.isNumber(config.targetLineValue)) {
-				delete config.targetLineValue;
-			}
-			if (!Ext.isString(config.targetLineTitle) || Ext.isEmpty(config.targetLineTitle)) {
-				delete config.targetLineTitle;
-			}
-			if (!Ext.isNumber(config.baseLineValue)) {
-				delete config.baseLineValue;
-			}
-			if (!Ext.isString(config.baseLineTitle) || Ext.isEmpty(config.baseLineTitle)) {
-				delete config.baseLineTitle;
-			}
-			if (!Ext.isBoolean(config.showValues)) {
-				config.showValues = layout.showValues;
-			}
-			if (!Ext.isBoolean(config.hideLegend)) {
-				config.hideLegend = layout.hideLegend;
-			}
-			if (!Ext.isBoolean(config.hideTitle)) {
-				config.hideTitle = layout.hideTitle;
-			}
-			if (!Ext.isString(config.title) || Ext.isEmpty(config.title)) {
-				delete config.title;
-			}
-			if (!Ext.isString(config.domainAxisTitle) || Ext.isEmpty(config.domainAxisTitle)) {
-				delete config.domainAxisTitle;
-			}
-			if (!Ext.isString(config.rangeAxisTitle) || Ext.isEmpty(config.rangeAxisTitle)) {
-				delete config.rangeAxisTitle;
-			}
-			if (!Ext.isBoolean(config.userOrganisationUnit)) {
-				config.userOrganisationUnit = layout.userOrganisationUnit;
-			}
-			if (!Ext.isBoolean(config.userOrganisationUnitChildren)) {
-				config.userOrganisationUnitChildren = layout.userOrganisationUnitChildren;
-			}
-
-			return true;
-		};
-
-		return function() {
-			if (!validateConfig()) {
-				return;
-			}
-
-			for (var key in config) {
-				if (config.hasOwnProperty(key)) {
-					layout[key] = config[key];
+				if (!config.items.length) {
+					console.log('Dimension has no valid items: ' + config);
+					return;
 				}
 			}
 
-			// Clint sync
-			if (Ext.isString(layout.targetLineLabel)) {
-				layout.targetLineTitle = layout.targetLineLabel;
-				delete layout.targetLineLabel;
+			dimension.dimension = config.dimension;
+			dimension.items = config.items;
+
+			return Ext.clone(dimension);
+		}();
+	};
+
+	api.layout.Layout = function(config) {
+		var layout = {};
+
+		// type: string ('column') - 'column', 'stackedColumn', 'bar', 'stackedBar', 'line', 'area', 'pie'
+
+		// columns: [Dimension]
+
+		// rows: [Dimension]
+
+		// filters: [Dimension]
+
+		// showTrendLine: boolean (false)
+
+		// targetLineValue: number
+
+		// targetLineTitle: string
+
+		// baseLineValue: number
+
+		// baseLineTitle: string
+
+		// showValues: boolean (true)
+
+		// hideLegend: boolean (false)
+
+		// hideTitle: boolean (false)
+
+		// domainAxisTitle: string
+
+		// rangeAxisTitle: string
+
+		// userOrganisationUnit: boolean (false)
+
+		// userOrganisationUnitChildren: boolean (false)
+
+		// parentGraphMap: object
+
+		var getValidatedDimensionArray = function(dimensionArray) {
+			var dimensions = [];
+
+			if (!(dimensionArray && Ext.isArray(dimensionArray) && dimensionArray.length)) {
+				return;
 			}
-			if (Ext.isString(layout.baseLineLabel)) {
-				layout.baseLineTitle = layout.baseLineLabel;
-				delete layout.baseLineLabel;
+
+			for (var i = 0, dimension; i < dimensionArray.length; i++) {
+				dimension = api.layout.Dimension(dimensionArray[i]);
+
+				if (dimension) {
+					dimensions.push(dimension);
+				}
 			}
-			if (Ext.isString(layout.domainAxisLabel)) {
-				layout.domainAxisTitle = layout.domainAxisLabel;
-				delete layout.domainAxisLabel;
+
+			dimensionArray = dimensions;
+
+			return dimensionArray.length ? dimensionArray : null;
+		};
+
+		return function() {
+			var a = [],
+				objectNames = [],
+				dimConf = dv.conf.finals.dimension;
+
+			config.columns = getValidatedDimensionArray(config.columns);
+			config.rows = getValidatedDimensionArray(config.rows);
+			config.filters = getValidatedDimensionArray(config.filters);
+
+			// Config must be an object
+			if (!(config && Ext.isObject(config))) {
+				console.log(dv.el + ': Layout config is not an object');
+				return;
 			}
-			if (Ext.isString(layout.rangeAxisLabel)) {
-				layout.rangeAxisTitle = layout.rangeAxisLabel;
-				delete layout.rangeAxisLabel;
+
+			// Series, category, filter
+			if (!config.columns) {
+				alert('No series dimension specified');
+				return;
 			}
-			if (Ext.isBoolean(layout.regression)) {
-				layout.showTrendLine = layout.regression;
-				delete layout.regression;
+			if (!config.rows) {
+				alert('No category dimension specified');
+				return;
 			}
-			if (Ext.isBoolean(layout.showData)) {
-				layout.showValues = layout.showData;
-				delete layout.showData;
+			if (!config.filters) {
+				alert('No filter dimensions specified');
+				return;
 			}
+
+			// At least one period specified
+			a = [].concat(config.columns, config.rows, config.filters);
+			for (var i = 0; i < a.length; i++) {
+				if (a[i]) {
+					objectNames.push(a[i].dimension);
+				}
+			}
+
+			if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
+				alert('At least one period must be specified as series, category or filter');
+				return;
+			}
+
+			// Layout
+			layout.type = config.type;
+
+			layout.columns = config.columns;
+			layout.rows = config.rows;
+			layout.filters = config.filters;
+
+			// Properties
+			layout.showTrendLine = Ext.isBoolean(config.regression) ? config.regression : (Ext.isBoolean(config.showTrendLine) ? config.showTrendLine : false);
+			layout.showValues = Ext.isBoolean(config.showData) ? config.showData : (Ext.isBoolean(config.showValues) ? config.showValues : true);
+
+			layout.hideLegend = Ext.isBoolean(config.hideLegend) ? config.hideLegend : false;
+			layout.hideTitle = Ext.isBoolean(config.hideTitle) ? config.hideTitle : false;
+
+			layout.targetLineValue = Ext.isNumber(config.targetLineValue) ? config.targetLineValue : undefined;
+			layout.targetLineTitle = Ext.isString(config.targetLineLabel) && !Ext.isEmpty(config.targetLineLabel) ? config.targetLineLabel :
+				(Ext.isString(config.targetLineTitle) && !Ext.isEmpty(config.targetLineTitle) ? config.targetLineTitle : undefined);
+			layout.baseLineValue = Ext.isNumber(config.baseLineValue) ? config.baseLineValue : undefined;
+			layout.baseLineTitle = Ext.isString(config.baseLineLabel) && !Ext.isEmpty(config.baseLineLabel) ? config.baseLineLabel :
+				(Ext.isString(config.baseLineTitle) && !Ext.isEmpty(config.baseLineTitle) ? config.baseLineTitle : undefined);
+
+			layout.title = Ext.isString(config.title) &&  !Ext.isEmpty(config.title) ? config.title : undefined;
+			layout.domainAxisTitle = Ext.isString(config.domainAxisLabel) && !Ext.isEmpty(config.domainAxisLabel) ? config.domainAxisLabel :
+				(Ext.isString(config.domainAxisTitle) && !Ext.isEmpty(config.domainAxisTitle) ? config.domainAxisTitle : undefined);
+			layout.rangeAxisTitle = Ext.isString(config.rangeAxisLabel) && !Ext.isEmpty(config.rangeAxisLabel) ? config.rangeAxisLabel :
+				(Ext.isString(config.rangeAxisTitle) && !Ext.isEmpty(config.rangeAxisTitle) ? config.rangeAxisTitle : undefined);
+
+			layout.userOrganisationUnit = Ext.isBoolean(config.userOrganisationUnit) ? config.userOrganisationUnit : false;
+			layout.userOrganisationUnitChildren = Ext.isBoolean(config.userOrganisationUnitChildren) ? config.userOrganisationUnitChildren : false;
+
+			layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : undefined;
 
 			return Ext.clone(layout);
 		}();
 	};
 
-	api.objectNameDimensionClassMap[dimConf.indicator.objectName] = api.Indicator;
-	api.objectNameDimensionClassMap[dimConf.dataElement.objectName] = api.DataElement;
-	api.objectNameDimensionClassMap[dimConf.operand.objectName] = api.Operand;
-	api.objectNameDimensionClassMap[dimConf.dataSet.objectName] = api.DataSet;
-	api.objectNameDimensionClassMap[dimConf.period.objectName] = api.Period;
-	api.objectNameDimensionClassMap[dimConf.organisationUnit.objectName] = api.OrganisationUnit;
+	// Response
+
+	api.response.Header = function(config) {
+		var header = {};
+
+		// name: string
+
+		// meta: boolean
+
+		return function() {
+			if (!Ext.isObject(config)) {
+				console.log('Header is not an object: ' + config);
+				return;
+			}
+
+			if (!Ext.isString(config.name)) {
+				console.log('Header name is not text: ' + config);
+				return;
+			}
+
+			if (!Ext.isBoolean(config.meta)) {
+				console.log('Header meta is not boolean: ' + config);
+				return;
+			}
+
+			header.name = config.name;
+			header.meta = config.meta;
+
+			return Ext.clone(header);
+		}();
+	};
+
+	api.response.Response = function(config) {
+		var response = {};
+
+		// headers: [Header]
+
+		return function() {
+			var headers = [];
+
+			if (!(config && Ext.isObject(config))) {
+				alert('Data response invalid');
+				return false;
+			}
+
+			if (!(config.headers && Ext.isArray(config.headers))) {
+				alert('Data response invalid');
+				return false;
+			}
+
+			for (var i = 0, header; i < config.headers.length; i++) {
+				header = api.response.Header(config.headers[i]);
+
+				if (header) {
+					headers.push(header);
+				}
+			}
+
+			config.headers = headers;
+
+			if (!config.headers.length) {
+				alert('No valid response headers');
+				return;
+			}
+
+			if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
+				alert('No values found');
+				return false;
+			}
+
+			if (config.headers.length !== config.rows[0].length) {
+				alert('Data invalid');
+				return false;
+			}
+
+			response.headers = config.headers;
+			response.metaData = config.metaData;
+			response.width = config.width;
+			response.height = config.height;
+			response.rows = config.rows;
+
+			return response;
+		}();
+	};
 
 	return api;
 };

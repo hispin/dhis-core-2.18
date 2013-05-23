@@ -99,8 +99,7 @@ Ext.onReady( function() {
 				dimConf = pt.conf.finals.dimension,
 				dx = dimConf.data.dimensionName,
 				co = dimConf.category.dimensionName,
-				nameDimArrayMap = {},
-				getDimension;
+				nameDimArrayMap = {};
 
 			config.columns = [];
 			config.rows = [];
@@ -141,8 +140,6 @@ Ext.onReady( function() {
 						}
 					}
 					else if (nameDimArrayMap.hasOwnProperty(dimName) && nameDimArrayMap[dimName]) {
-						//axes[i].push(Ext.clone(nameDimArrayMap[dimName]));
-
 						for (var k = 0; k < nameDimArrayMap[dimName].length; k++) {
 							axes[i].push(Ext.clone(nameDimArrayMap[dimName][k]));
 						}
@@ -3712,6 +3709,7 @@ Ext.onReady( function() {
 					xLayout,
 					dimMap,
 					recMap,
+					graphMap,
 					objectName,
 					periodRecords,
 					fixedPeriodRecords = [],
@@ -3848,7 +3846,7 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren.setValue(isOuc);
 
 				// If fav has organisation units, wait for tree callback before update
-				if (recMap[dimConf.organisationUnit.objectName] && graphMap) {
+				if (recMap[dimConf.organisationUnit.objectName] && Ext.isObject(graphMap)) {
 					treePanel.numberOfRecords = pt.util.object.getLength(graphMap);
 					for (var key in graphMap) {
 						if (graphMap.hasOwnProperty(key)) {
