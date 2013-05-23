@@ -2234,11 +2234,17 @@ function searchOptionSet( uid, query, success ) {
                 } else {
                     query = query.toLowerCase();
 
-                    _.each(obj.optionSet.options, function(item, idx) {
-                        if ( item.toLowerCase().indexOf( query ) != -1 ) {
-                            options.push(item);
+                    for ( var idx=0, len = obj.optionSet.options.length; idx < len; idx++ ) {
+                        var item = obj.optionSet.options[idx];
+
+                        if ( options.length >= MAX_DROPDOWN_DISPLAYED ) {
+                            break;
                         }
-                    });
+
+                        if ( item.toLowerCase().indexOf( query ) != -1 ) {
+                            options.push( item );
+                        }
+                    }
                 }
 
                 success( $.map( options, function ( item ) {
