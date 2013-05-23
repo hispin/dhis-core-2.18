@@ -555,6 +555,8 @@ PT.core.getUtils = function(pt) {
 					dimensionNameSortedIdsMap: {}
 				};
 
+			Ext.applyIf(xLayout, layout);
+
 			// Columns, rows, filters
 			if (layout.columns) {
 				for (var i = 0, dim, items, xDim; i < layout.columns.length; i++) {
@@ -711,7 +713,8 @@ PT.core.getUtils = function(pt) {
 
 			getSyncronizedXLayout = function(xLayout, response) {
 				var removeDimensionFromXLayout,
-					getHeaderNames;
+					getHeaderNames,
+					dimensions = [].concat(xLayout.columns, xLayout.rows, xLayout.filters);
 
 				removeDimensionFromXLayout = function(objectName) {
 					var getUpdatedAxis;
@@ -759,16 +762,30 @@ PT.core.getUtils = function(pt) {
 						co = dimConf.category.objectName,
 						layout;
 
+					// Use metaData ids if any
+					for (var i = 0, dim, metaDataDim, items; i < dimensions.length; i++) {
+						dim = dimensions[i];
+						metaDataDim = response.metaData[dim.objectName];
+
+						if (Ext.isArray(metaDataDim)) {
+							items = [];
+
+							for (var j = 0; j < metaDataDim.length; j++) {
+								items.push({id: metaDataDim[j]});
+							}
+
+							dim.items = items;
+						}
+					}
+
 					// Remove co from layout if it does not exist in response
 					if (Ext.Array.contains(xLayout.axisDimensionNames, co) && !(Ext.Array.contains(headerNames, co))) {
 						removeDimensionFromXLayout(co);
-
-						layout = pt.api.layout.Layout(xLayout);
-
-						return layout ? pt.util.pivot.getExtendedLayout(layout) : null;
 					}
 
-					return xLayout;
+					layout = pt.api.layout.Layout(xLayout);
+
+					return layout ? pt.util.pivot.getExtendedLayout(layout) : null;
 				}();
 			};
 
@@ -827,28 +844,32 @@ PT.core.getUtils = function(pt) {
 			getExtendedResponse = function(response, xLayout) {
 				response.nameHeaderMap = {};
 				response.idValueMap = {};
+				ids = [];
 
 				var extendHeaders = function() {
 
 					// Extend headers: index, items, size
 					for (var i = 0, header; i < response.headers.length; i++) {
 						header = response.headers[i];
+
+						// Index
 						header.index = i;
 
 						if (header.meta) {
 
-							// categories
-							if (header.name === pt.conf.finals.dimension.category.dimensionName) {
-								header.items = [].concat(response.metaData[pt.conf.finals.dimension.category.dimensionName]);
+							// Items: get ids from metadata
+							if (Ext.isArray(response.metaData[header.name])) {
+								header.items = Ext.clone(response.metaData[header.name]);
 							}
-							// periods
-							else if (header.name === pt.conf.finals.dimension.period.dimensionName) {
-								header.items = [].concat(response.metaData[pt.conf.finals.dimension.period.dimensionName]);
-							}
+							// Items: get ids from xLayout
 							else {
 								header.items = xLayout.dimensionNameIdsMap[header.name];
 							}
 
+							// Collect ids
+							ids = ids.concat(header.items);
+
+							// Size
 							header.size = header.items.length;
 						}
 					}
@@ -858,6 +879,17 @@ PT.core.getUtils = function(pt) {
 						header = response.headers[i];
 
 						response.nameHeaderMap[header.name] = header;
+					}
+				}();
+
+				var extendMetaData = function() {
+					for (var i = 0, id, splitId ; i < ids.length; i++) {
+						id = ids[i];
+
+						if (id.indexOf('-') !== -1) {
+							splitId = id.split('-');
+							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
+						}
 					}
 				}();
 
@@ -1778,7 +1810,7 @@ console.log("xLayout", xLayout);
 			}
 
 			Ext.Ajax.request({
-				url: pt.baseUrl + '/api/reportTables/' + id + '.json?links=false&viewClass=dimensional',
+				url: pt.baseUrl + '/api/reportTables/' + id + '.json?viewClass=dimensional&links=false',
 				method: 'GET',
 				failure: function(r) {
 					pt.util.mask.hideMask();
@@ -1798,7 +1830,7 @@ console.log("xLayout", xLayout);
 	return util;
 };
 
-PT.core.getAPI = function(pt) {
+PT.core.getApi = function(pt) {
 	var dimConf = pt.conf.finals.dimension,
 		api = {
 			layout: {
@@ -1914,7 +1946,7 @@ PT.core.getAPI = function(pt) {
 
 		// userOrganisationUnitChildren: boolean (false)
 
-		// parentGraphMap: string ('')
+		// parentGraphMap: object
 
 		// reportingPeriod: boolean (false) //report tables only
 
@@ -2001,11 +2033,11 @@ PT.core.getAPI = function(pt) {
 			layout.userOrganisationUnit = Ext.isBoolean(config.userOrganisationUnit) ? config.userOrganisationUnit : false;
 			layout.userOrganisationUnitChildren = Ext.isBoolean(config.userOrganisationUnitChildren) ? config.userOrganisationUnitChildren : false;
 
-			layout.parentGraphMap = Ext.isString(config.parentGraphMap) ? config.parentGraphMap : '';
+			layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : undefined;
 
-			layout.reportingPeriod = Ext.isBoolean(config.reportParams.paramReportingPeriod) ? config.reportParams.paramReportingPeriod : (Ext.isBoolean(config.reportingPeriod) ? config.reportingPeriod : false);
-			layout.organisationUnit = Ext.isBoolean(config.reportParams.paramOrganisationUnit) ? config.reportParams.paramOrganisationUnit : (Ext.isBoolean(config.organisationUnit) ? config.organisationUnit : false);
-			layout.parentOrganisationUnit = Ext.isBoolean(config.reportParams.paramParentOrganisationUnit) ? config.reportParams.paramParentOrganisationUnit : (Ext.isBoolean(config.parentOrganisationUnit) ? config.parentOrganisationUnit : false);
+			layout.reportingPeriod = Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramReportingPeriod) ? config.reportParams.paramReportingPeriod : (Ext.isBoolean(config.reportingPeriod) ? config.reportingPeriod : false);
+			layout.organisationUnit =  Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramOrganisationUnit) ? config.reportParams.paramOrganisationUnit : (Ext.isBoolean(config.organisationUnit) ? config.organisationUnit : false);
+			layout.parentOrganisationUnit =  Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramParentOrganisationUnit) ? config.reportParams.paramParentOrganisationUnit : (Ext.isBoolean(config.parentOrganisationUnit) ? config.parentOrganisationUnit : false);
 
 			layout.regression = Ext.isBoolean(config.regression) ? config.regression : false;
 			layout.cumulative = Ext.isBoolean(config.cumulative) ? config.cumulative : false;
@@ -2112,7 +2144,7 @@ PT.core.getInstance = function(config) {
 
 	pt.conf = PT.core.getConfigs();
 	pt.util = PT.core.getUtils(pt);
-	pt.api = PT.core.getAPI(pt);
+	pt.api = PT.core.getApi(pt);
 
 	return pt;
 };
