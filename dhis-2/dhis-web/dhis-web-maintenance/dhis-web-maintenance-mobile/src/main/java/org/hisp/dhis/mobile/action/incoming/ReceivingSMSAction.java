@@ -147,7 +147,6 @@ public class ReceivingSMSAction
                 if ( statusArray[i].toString().equalsIgnoreCase( smsStatus ) )
                 {
                     listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( statusArray[i] ) );
-                    System.out.println( "Status: " + statusArray[i].toString() );
                     break;
                 }
             }

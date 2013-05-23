@@ -53,6 +53,10 @@
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <action name="reimport" class="org.hisp.dhis.mobile.action.incoming.ReimportSMSAction">
+      <result name="success" type="redirect">showReceivingPage.action</result>
+    </action>
 	
     <!-- Patient Mobile Setting Action -->
 
