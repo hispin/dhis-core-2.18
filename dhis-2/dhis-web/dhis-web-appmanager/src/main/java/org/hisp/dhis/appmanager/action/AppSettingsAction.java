@@ -36,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id$
  */
 public class AppSettingsAction
     implements Action
@@ -59,11 +58,13 @@ public class AppSettingsAction
     public String getAppFolderPath()
     {
         appFolderPath = appManagerService.getAppFolderPath();
+        
         if ( null == appFolderPath || appFolderPath.isEmpty() )
         {
             appFolderPath = ServletActionContext.getServletContext().getRealPath( "/" ) + File.separatorChar + "apps";
             appManagerService.setAppFolderPath( appFolderPath );
         }
+        
         return appFolderPath;
     }
 

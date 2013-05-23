@@ -37,19 +37,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import static org.hisp.dhis.appmanager.AppManagerService.KEY_APP_FOLDER_PATH;
 import org.hisp.dhis.datavalue.DefaultDataValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id$
  */
 public class DefaultAppManagerService
     implements AppManagerService
 {
-
     private static final Log log = LogFactory.getLog( DefaultDataValueService.class );
 
     private HashMap<App, String> appFolderNames;
@@ -105,6 +102,7 @@ public class DefaultAppManagerService
                 }
             }
         }
+        
         return appList;
     }
 
@@ -123,6 +121,7 @@ public class DefaultAppManagerService
         {
             log.error( ex.getLocalizedMessage(), ex );
         }
+        
         appSettingManager.saveSystemSetting( KEY_APP_FOLDER_PATH, appFolderPath );
     }
 
@@ -139,6 +138,7 @@ public class DefaultAppManagerService
         {
             getInstalledApps();
         }
+        
         return appFolderNames.get( app );
     }
 }

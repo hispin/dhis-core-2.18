@@ -36,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id
  */
 public class AppListAction
     implements Action
@@ -75,11 +74,14 @@ public class AppListAction
         throws Exception
     {
         appList = appManagerService.getInstalledApps();
+        
         appFolderNames = new ArrayList<String>();
+        
         for ( App app : appList )
         {
             appFolderNames.add( appManagerService.getAppFolderName( app ) );
         }
+        
         return SUCCESS;
     }
 }
