@@ -1,0 +1,21 @@
+<script type="text/javascript">
+jQuery(function() {
+	/* make sure that the leftBar is always visible when entering page. */
+	leftBar.showAnimated()
+});
+</script>
+
+<h3>$i18n.getString( "dhis-web-appmanager" ) #*openHelp( "appManager" )*#</h3>
+
+<ul class="introList">
+    #foreach( $app in $appList )
+    <li class="introItem" onclick="window.location.href='/apps/$appFolderNames.get($foreach.index)/$app.launchPath'">
+        <span class="introItemHeader">
+            <img style="float:left; margin-right:15px" src="/apps/$appFolderNames.get($foreach.index)/$app.icons.icon48">
+            $app.name
+        </span>
+        <br>
+        $app.developer.name
+    </li>
+    #end
+</ul>

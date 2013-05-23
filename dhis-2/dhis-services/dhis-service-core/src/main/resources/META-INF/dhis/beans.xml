@@ -686,6 +686,8 @@
   <bean id="org.hisp.dhis.help.HelpManager" class="org.hisp.dhis.help.DefaultHelpManager" />
 
   <bean id="org.hisp.dhis.common.DimensionService" class="org.hisp.dhis.common.DefaultDimensionService" />
+  
+  <bean id="org.hisp.dhis.appmanager.AppManagerService" class="org.hisp.dhis.appmanager.DefaultAppManagerService" />
 
   <!-- I18nService -->
 
