@@ -178,23 +178,23 @@ public class DefaultProgramStageInstanceService
 
     public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n )
+        Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max, I18n i18n )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
 
         return programStageInstanceStore.getTabularReport( anonynousEntryForm, programStage, orgUnitLevelMap, organisationUnits, columns,
-            level, maxLevel, startDate, endDate, descOrder, completed, accessPrivateInfo, min, max, i18n );
+            level, maxLevel, startDate, endDate, descOrder, completed, accessPrivateInfo, displayOrgunitCode, min, max, i18n );
     }
 
     public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Boolean completed, Date startDate, Date endDate )
+        Collection<Integer> organisationUnits, int level, Boolean completed, Boolean displayOrgunitCode, Date startDate, Date endDate )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
         return programStageInstanceStore.getTabularReportCount( anonynousEntryForm, programStage, columns, organisationUnits, level,
-            maxLevel, startDate, endDate, completed );
+            maxLevel, startDate, endDate, completed, displayOrgunitCode );
     }
 
     public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )

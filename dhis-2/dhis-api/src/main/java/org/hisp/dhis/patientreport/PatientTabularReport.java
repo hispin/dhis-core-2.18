@@ -87,6 +87,8 @@ public class PatientTabularReport
     private Boolean userOrganisationUnitChildren;
 
     private List<String> filterValues = new ArrayList<String>();
+    
+    private Boolean displayOrgunitCode;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -223,6 +225,16 @@ public class PatientTabularReport
     public void setProgramStage( ProgramStage programStage )
     {
         this.programStage = programStage;
+    }
+
+    public Boolean getDisplayOrgunitCode()
+    {
+        return displayOrgunitCode;
+    }
+
+    public void setDisplayOrgunitCode( Boolean displayOrgunitCode )
+    {
+        this.displayOrgunitCode = displayOrgunitCode;
     }
 
 }

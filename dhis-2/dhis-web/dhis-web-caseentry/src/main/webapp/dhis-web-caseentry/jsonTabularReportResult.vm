@@ -1,4 +1,3 @@
-
 #set( $noRows = $grid.getRows().size() )
 {
 #set( $noHeader = $grid.getHeaders().size() )

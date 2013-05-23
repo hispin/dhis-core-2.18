@@ -85,11 +85,11 @@ public interface ProgramStageInstanceStore
     Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap, Collection<Integer> orgUnits,
         List<TabularReportColumn> columns, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n );
+        Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max, I18n i18n );
 
     int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, int maxLevel,
-        Date startDate, Date endDate, Boolean completed );
+        Date startDate, Date endDate, Boolean completed, Boolean displayOrgunitCode  );
 
     void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
