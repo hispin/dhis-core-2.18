@@ -1,0 +1,26 @@
+<script>
+	jQuery(document).ready(function() {
+            jQuery('#appSettingsForm').ajaxForm({
+                dataType:  'json',
+                success: function(data){
+                    setHeaderDelayMessage(data.message);
+                }
+            });
+	}); 
+</script>
+
+<h3>$i18n.getString( "appmanager_settings" )</h3>
+
+<form id="appSettingsForm" action="appSettings.action" method="post">
+  <table>
+    <tr>
+      <td>$i18n.getString( "appmanager_installation_folder" )</td>
+      <td><input type="text" id="appFolderPath" name="appFolderPath" style="width:40em" value="$!appFolderPath"/> </td>
+    </tr>
+    <tr>
+      <td>$i18n.getString( "appmanager_store_url" )</td>
+      <td><input type="text" id="appStoreUrl" name="appStoreUrl" style="width:40em" value="$!appStoreUrl"/> </td>
+    </tr>
+  </table>
+  <input type="submit" value="Save" />
+</form>

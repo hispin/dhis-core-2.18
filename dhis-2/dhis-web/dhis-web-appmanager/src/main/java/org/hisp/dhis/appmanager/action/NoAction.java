@@ -1,4 +1,4 @@
-package org.hisp.dhis.appmanager;
+package org.hisp.dhis.appmanager.action;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -27,53 +27,18 @@ package org.hisp.dhis.appmanager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Saptarshi Purkayastha
+ * @version $Id
  */
-public interface AppStoreService
+public class NoAction
+    implements Action
 {
-
-    String ID = AppStoreService.class.getName();
-
-    final String KEY_APP_FOLDER_PATH = "appFolderPath";
-
-    final String KEY_APP_STORE_URL = "appStoreUrl";
-
-    /**
-     * Returns the full path to the folder where apps are extracted
-     * @return app folder path 
-     */
-    String getAppFolderPath();
-
-    /**
-     * Returns the url of the app repository
-     * @return url of appstore 
-     */
-    String getAppStoreUrl();
-
-    /**
-     * Returns a list of all the installed apps at @see getAppFolderPath
-     * @return list of installed apps
-     */
-    List<App> getInstalledApps();
-
-    /**
-     * Returns the name of the specfic app folder
-     * @param app
-     * @return folder name of where app is installed
-     */
-    String getAppFolderName( App app );
-
-    /**
-     * Saves the folder in which apps will be expanded 
-     */
-    void setAppFolderPath( String appFolderPath );
-
-    /**
-     * Saves the URL of the apps repository
-     */
-    void setAppStoreUrl( String appStoreUrl );
-
+    @Override
+    public String execute()
+    {
+        return SUCCESS;
+    }
 }

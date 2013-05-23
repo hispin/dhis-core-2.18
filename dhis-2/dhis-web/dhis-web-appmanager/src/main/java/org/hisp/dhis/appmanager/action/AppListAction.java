@@ -1,7 +1,7 @@
-package org.hisp.dhis.appmanager;
+package org.hisp.dhis.appmanager.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,74 +26,60 @@ package org.hisp.dhis.appmanager;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.Serializable;
+
+import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
+import org.hisp.dhis.appmanager.App;
+import org.hisp.dhis.appmanager.AppManagerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Saptarshi
+ * @author Saptarshi Purkayastha
+ * @version $Id
  */
-public class AppDeveloper
-    implements Serializable
+public class AppListAction
+    implements Action
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -8865601558938806456L;
-
-    /**
-     * Required.
-     */
-    private String url;
-
-    /**
-     * Optional.
-     */
-    private String name;
-
-    private String company;
-
-    private String email;
-
     // -------------------------------------------------------------------------
-    // Logic
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    public String getUrl()
+    @Autowired
+    private AppManagerService appManagerService;
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private List<App> appList;
+
+    public List<App> getAppList()
     {
-        return url;
+        return appList;
     }
 
-    public void setUrl( String url )
+    private List<String> appFolderNames;
+
+    public List<String> getAppFolderNames()
     {
-        this.url = url;
+        return appFolderNames;
     }
 
-    public String getName()
-    {
-        return name;
-    }
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-    public void setName( String name )
+    @Override
+    public String execute()
+        throws Exception
     {
-        this.name = name;
-    }
-
-    public String getCompany()
-    {
-        return company;
-    }
-
-    public void setCompany( String company )
-    {
-        this.company = company;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setEmail( String email )
-    {
-        this.email = email;
+        appList = appManagerService.getInstalledApps();
+        appFolderNames = new ArrayList<String>();
+        for ( App app : appList )
+        {
+            appFolderNames.add( appManagerService.getAppFolderName( app ) );
+        }
+        return SUCCESS;
     }
 }

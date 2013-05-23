@@ -1,7 +1,7 @@
 package org.hisp.dhis.appmanager;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,74 +26,54 @@ package org.hisp.dhis.appmanager;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.io.Serializable;
+
+import java.util.List;
 
 /**
- * @author Saptarshi
+ * @author Saptarshi Purkayastha
  */
-public class AppDeveloper
-    implements Serializable
+public interface AppManagerService
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -8865601558938806456L;
+
+    String ID = AppManagerService.class.getName();
+
+    final String KEY_APP_FOLDER_PATH = "appFolderPath";
+
+    final String KEY_APP_STORE_URL = "appStoreUrl";
 
     /**
-     * Required.
+     * Returns the full path to the folder where apps are extracted
+     * @return app folder path 
      */
-    private String url;
+    String getAppFolderPath();
 
     /**
-     * Optional.
+     * Returns the url of the app repository
+     * @return url of appstore 
      */
-    private String name;
+    String getAppStoreUrl();
 
-    private String company;
+    /**
+     * Returns a list of all the installed apps at @see getAppFolderPath
+     * @return list of installed apps
+     */
+    List<App> getInstalledApps();
 
-    private String email;
+    /**
+     * Returns the name of the specfic app folder
+     * @param app
+     * @return folder name of where app is installed
+     */
+    String getAppFolderName( App app );
 
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
+    /**
+     * Saves the folder in which apps will be expanded 
+     */
+    void setAppFolderPath( String appFolderPath );
 
-    public String getUrl()
-    {
-        return url;
-    }
+    /**
+     * Saves the URL of the apps repository
+     */
+    void setAppStoreUrl( String appStoreUrl );
 
-    public void setUrl( String url )
-    {
-        this.url = url;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getCompany()
-    {
-        return company;
-    }
-
-    public void setCompany( String company )
-    {
-        this.company = company;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setEmail( String email )
-    {
-        this.email = email;
-    }
 }

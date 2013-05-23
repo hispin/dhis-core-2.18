@@ -1,0 +1,6 @@
+<h2>$i18n.getString( "dhis-web-appmanager" )</h2>
+<ul>
+    <li><a href="appList.action">$i18n.getString( "appmanager_list_app" )</a></li>
+    <li><a href="appSettings.action">$i18n.getString( "appmanager_settings" )</a></li>
+    <li><a href="appStore.action">$i18n.getString( "appmanager_go" )</a></li>
+</ul>
