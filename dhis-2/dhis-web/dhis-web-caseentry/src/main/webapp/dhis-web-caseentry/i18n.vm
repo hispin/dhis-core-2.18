@@ -188,4 +188,6 @@ confirm_delete_favorite: '$encoder.jsEscape($i18n.getString( 'confirm_delete_fav
 home: '$encoder.jsEscape($i18n.getString( 'home' ) , "'")',
 aggregate_options: '$encoder.jsEscape($i18n.getString( 'aggregate_options' ) , "'")',
 display_totals: '$encoder.jsEscape($i18n.getString( 'display_totals' ) , "'")',
+options: '$encoder.jsEscape($i18n.getString( 'options' ) , "'")',
+hide: '$encoder.jsEscape($i18n.getString( 'hide' ) , "'")'
 };
