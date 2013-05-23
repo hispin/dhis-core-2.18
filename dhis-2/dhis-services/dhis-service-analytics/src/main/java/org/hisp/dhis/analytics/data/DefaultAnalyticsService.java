@@ -345,6 +345,7 @@ public class DefaultAnalyticsService
         
         metaData.put( NAMES_META_KEY, uidNameMap );
         metaData.put( PERIOD_DIM_ID, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
+        metaData.put( ORGUNIT_DIM_ID, getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) );
         
         if ( cocIndex != null )
         {
@@ -703,7 +704,7 @@ public class DefaultAnalyticsService
                 {
                     OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
                     
-                    if ( unit != null )
+                    if ( unit != null && !ous.contains( unit ) )
                     {
                         ous.add( unit );
                     }
