@@ -1156,14 +1156,12 @@ Ext.onReady( function() {
 								Ext.getCmp('filterPanel').removeAll();
 								Ext.getCmp('filterPanel').doLayout();
 	
-								TR.cmp.params.dataelement.objects = [];
 								TR.store.dataelement.selected.removeAll();
 								if (f.dataElements) {
 									for (var i = 0; i < f.dataElements.length; i++) {
 										var name = TR.util.string.getEncodedString(f.dataElements[i].name);
 										var compulsory = f.dataElements[i].compulsory;
 										var valueType = f.dataElements[i].valueType;
-										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
 										TR.store.dataelement.selected.add({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
 										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType, f.dataElements[i].filter );
 									}
