@@ -46,6 +46,19 @@ public interface QueryPlanner
         throws IllegalQueryException;
     
     /**
+     * Validates whether the given table layout is valid for the given query. 
+     * Throws an IllegalQueryException if the query is not valid with a 
+     * descriptive message. Returns normally if the query is valid.
+     * 
+     * @param params the query.
+     * @param columns the column dimension identifiers.
+     * @param rows the row dimension identifiers.
+     * @throws IllegalQueryException if the query is invalid.
+     */
+    void validateTableLayout( DataQueryParams params, List<String> columns, List<String> rows )
+        throws IllegalQueryException;
+    
+    /**
      * Creates a list of DataQueryParams. It is mandatory to group the queries by
      * the following criteria: 1) partition / year 2) period type 3) organisation 
      * unit level. If the number of queries produced by this grouping is equal or

@@ -27,7 +27,7 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;

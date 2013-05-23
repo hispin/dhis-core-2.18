@@ -616,6 +616,10 @@ public class ReportTable
         final String subtitle = StringUtils.trimToEmpty( getParentOrganisationUnitName() ) + SPACE
             + StringUtils.trimToEmpty( reportingPeriodName );
 
+        valueMap = new HashMap<String, Double>( valueMap );
+        
+        sortKeys( valueMap );
+        
         grid.setTitle( name + " - " + subtitle );
 
         // ---------------------------------------------------------------------
@@ -684,7 +688,7 @@ public class ReportTable
 
             for ( List<NameableObject> column : gridColumns )
             {
-                String key = BaseAnalyticalObject.getIdentifer( column, row );
+                String key = getIdentifer( column, row );
                 
                 Double value = valueMap.get( key );
                 

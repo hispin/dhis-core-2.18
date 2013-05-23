@@ -33,11 +33,13 @@ import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_OPERAND_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
@@ -86,9 +88,8 @@ public class DataQueryParams
     
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ";";
-    public static final String DIMENSION_SEP = "-";
 
-    public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID );
+    public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATAELEMENT_OPERAND_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
     public static final int MAX_DIM_OPT_PERM = 10000;
@@ -571,7 +572,8 @@ public class DataQueryParams
     }
 
     /**
-     * Retrieves the options for the given dimension identifier.
+     * Retrieves the options for the given dimension identifier. Returns null if
+     * the dimension is not present.
      */
     public List<NameableObject> getDimensionOptions( String dimension )
     {
@@ -581,7 +583,8 @@ public class DataQueryParams
     }
     
     /**
-     * Retrieves the dimension with the given dimension identifier.
+     * Retrieves the dimension with the given dimension identifier. Returns null 
+     * if the dimension is not present.
      */
     public DimensionalObject getDimension( String dimension )
     {
@@ -704,6 +707,20 @@ public class DataQueryParams
         }
         
         return new ArrayList<String>();
+    }
+    
+    /**
+     * Splits the given string on the ; character and returns the items in a 
+     * list. Returns null if the given string is null.
+     */
+    public static List<String> getDimensionsFromParam( String param )
+    {
+        if ( param == null )
+        {
+            return null;
+        }
+        
+        return Arrays.asList( param.split( OPTION_SEP ) );
     }
     
     /**
@@ -944,16 +961,56 @@ public class DataQueryParams
     // Get and set helpers for dimensions or filter
     // -------------------------------------------------------------------------
   
+    /**
+     * Retrieves the options for the the dimension or filter with the given 
+     * identifier.
+     */
     public List<NameableObject> getDimensionOrFilter( String key )
     {
         return getDimensionOptions( key ) != null ? getDimensionOptions( key ) : getFilterOptions( key );
     }
     
+    /**
+     * Retrieves the options for the given dimension identifier. If the dx dimension
+     * is specified, all concrete dimensions (in|de|dc|ds) are returned as a single
+     * dimension. Returns an empty array if the dimension is not present.
+     */
+    public NameableObject[] getDimensionArrayCollapseDx( String dimension )
+    {
+        List<NameableObject> items = new ArrayList<NameableObject>();
+        
+        if ( DATA_X_DIM_ID.equals( dimension ) )
+        {
+            items.addAll( getDimensionOptionsNullSafe( INDICATOR_DIM_ID ) );
+            items.addAll( getDimensionOptionsNullSafe( DATAELEMENT_DIM_ID ) );
+            items.addAll( getDimensionOptionsNullSafe( DATAELEMENT_OPERAND_ID ) );
+            items.addAll( getDimensionOptionsNullSafe( DATASET_DIM_ID ) );
+        }
+        else
+        {
+            items.addAll( getDimensionOptionsNullSafe( dimension ) );
+        }
+        
+        return items.toArray( new NameableObject[0] );
+    }
+
+    /**
+     * Retrieves the options for the given dimension identifier. Returns an empty
+     * list if the dimension is not present.
+     */
+    public List<NameableObject> getDimensionOptionsNullSafe( String dimension )
+    {
+        return getDimensionOptions( dimension ) != null ? getDimensionOptions( dimension ) : new ArrayList<NameableObject>();
+    }
+    
+    /**
+     * Indicates whether a dimension or filter with the given identifier exists.
+     */
     public boolean hasDimensionOrFilter( String key )
     {
         return dimensions.indexOf( new BaseDimensionalObject( key ) ) != -1 || filters.indexOf( new BaseDimensionalObject( key ) ) != -1;
     }
-    
+        
     // -------------------------------------------------------------------------
     // Get and set helpers for dimensions
     // -------------------------------------------------------------------------

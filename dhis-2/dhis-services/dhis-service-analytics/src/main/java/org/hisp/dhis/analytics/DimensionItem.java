@@ -34,6 +34,8 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.system.util.CollectionUtils;
 
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+
 /**
  * @author Lars Helge Overland
  */
@@ -94,7 +96,7 @@ public class DimensionItem
         {
             for ( DimensionItem item : items )
             {
-                builder.append( item.getItem().getUid() ).append( DataQueryParams.DIMENSION_SEP );
+                builder.append( item.getItem().getUid() ).append( DIMENSION_SEP );
             }
             
             builder.deleteCharAt( builder.length() - 1 );

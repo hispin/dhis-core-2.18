@@ -27,6 +27,7 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,6 +49,20 @@ public interface AnalyticsService
      * @return aggregated data as a Grid object.
      */
     Grid getAggregatedDataValues( DataQueryParams params );
+    
+    /**
+     * Generates an aggregated value grid for the given query. The grid will
+     * represent a table with dimensions used as columns and rows as specified
+     * in columnDimensions and rowDimensions arguments.
+     * 
+     * @param params the data query parameters.
+     * @param tableLayout whether to render the grid as a table with columns and rows,
+     *        or as a normalized plain data source.
+     * @param columns the identifiers of the dimensions to use as columns.
+     * @param rows the identifiers of the dimensions to use as rows.
+     * @return aggregated data as a Grid object.
+     */
+    Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows );
 
     /**
      * Generates a mapping where the key represents the dimensional item identifiers
