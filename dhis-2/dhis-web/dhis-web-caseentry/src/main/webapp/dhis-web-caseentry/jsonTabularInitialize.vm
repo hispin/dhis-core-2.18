@@ -2,6 +2,7 @@
 	"user":
 	{
 		"id":"$!currentUser.id",
+		"name":"$!currentUser.name",
 		"accessPatientAttributes":$auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ),
 		"isAdmin":$!currentUser.userCredentials.isSuper(),
 		"ous":[
