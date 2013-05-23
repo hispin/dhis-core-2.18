@@ -56,8 +56,8 @@ import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.MeasureFilter;
 import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
@@ -96,7 +96,7 @@ public class JdbcAnalyticsManager
     @Async
     public Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params )
     {
-        ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
+        ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap = params.getDataPeriodAggregationPeriodMap();
         
         params.replaceAggregationPeriodsWithDataPeriods( dataPeriodAggregationPeriodMap );
         
@@ -133,7 +133,7 @@ public class JdbcAnalyticsManager
         return new AsyncResult<Map<String, Double>>( map );   
     }
     
-    public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<IdentifiableObject, IdentifiableObject> dataPeriodAggregationPeriodMap )
+    public void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap )
     {
         if ( params.isAggregationType( AVERAGE_INT_DISAGGREGATION ) )
         {
@@ -152,13 +152,13 @@ public class JdbcAnalyticsManager
                 
                 Assert.notNull( keyArray[periodIndex], keyArray.toString() );
                 
-                List<IdentifiableObject> periods = dataPeriodAggregationPeriodMap.get( PeriodType.getPeriodFromIsoString( keyArray[periodIndex] ) );
+                List<NameableObject> periods = dataPeriodAggregationPeriodMap.get( PeriodType.getPeriodFromIsoString( keyArray[periodIndex] ) );
                 
                 Assert.notNull( periods, dataPeriodAggregationPeriodMap.toString() );
                 
                 Double value = dataValueMap.get( key );
                 
-                for ( IdentifiableObject period : periods )
+                for ( NameableObject period : periods )
                 {
                     String[] keyCopy = keyArray.clone();
                     keyCopy[periodIndex] = ((Period) period).getIsoDate();

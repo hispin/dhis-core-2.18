@@ -32,7 +32,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
+import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -50,8 +50,8 @@ import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -207,11 +207,11 @@ public class QueryPlannerTest
     @Test
     public void testSetGetCopy()
     {
-        List<IdentifiableObject> desA = getList( deA, deB );
-        List<IdentifiableObject> ousA = getList( ouA, ouB );
-        List<IdentifiableObject> ousB = getList( ouC, ouD );
-        List<IdentifiableObject> pesA = getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) );
-        List<IdentifiableObject> pesB = getList( createPeriod( "200001" ), createPeriod( "200002" ) );
+        List<NameableObject> desA = getList( deA, deB );
+        List<NameableObject> ousA = getList( ouA, ouB );
+        List<NameableObject> ousB = getList( ouC, ouD );
+        List<NameableObject> pesA = getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ) );
+        List<NameableObject> pesB = getList( createPeriod( "200001" ), createPeriod( "200002" ) );
         
         DataQueryParams paramsA = new DataQueryParams();
         paramsA.setDataElements( desA );
@@ -353,7 +353,7 @@ public class QueryPlannerTest
         params.setPeriodType( QuarterlyPeriodType.NAME );
         params.setDataPeriodType( new YearlyPeriodType() );
         
-        ListMap<IdentifiableObject, IdentifiableObject> map = params.getDataPeriodAggregationPeriodMap();
+        ListMap<NameableObject, NameableObject> map = params.getDataPeriodAggregationPeriodMap();
         
         assertEquals( 2, map.size() );
         
@@ -637,9 +637,9 @@ public class QueryPlannerTest
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private static boolean samePeriodType( List<IdentifiableObject> isoPeriods )
+    private static boolean samePeriodType( List<NameableObject> isoPeriods )
     {
-        Iterator<IdentifiableObject> periods = new ArrayList<IdentifiableObject>( isoPeriods ).iterator();
+        Iterator<NameableObject> periods = new ArrayList<NameableObject>( isoPeriods ).iterator();
         
         PeriodType first = ((Period) periods.next()).getPeriodType();
         
@@ -656,9 +656,9 @@ public class QueryPlannerTest
         return true;
     }
     
-    private static boolean samePartition( List<IdentifiableObject> isoPeriods )
+    private static boolean samePartition( List<NameableObject> isoPeriods )
     {
-        Iterator<IdentifiableObject> periods = new ArrayList<IdentifiableObject>( isoPeriods ).iterator();
+        Iterator<NameableObject> periods = new ArrayList<NameableObject>( isoPeriods ).iterator();
         
         int year = new Cal().set( ((Period) periods.next()).getStartDate() ).getYear();
         

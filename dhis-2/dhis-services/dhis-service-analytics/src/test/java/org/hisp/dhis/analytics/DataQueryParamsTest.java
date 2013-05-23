@@ -41,7 +41,7 @@ import java.util.Map;
 
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionType;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
 import org.junit.Test;
 
@@ -81,7 +81,7 @@ public class DataQueryParamsTest
         
         assertFalse( params.hasPeriods() );
         
-        List<IdentifiableObject> periods = new ArrayList<IdentifiableObject>();
+        List<NameableObject> periods = new ArrayList<NameableObject>();
         
         params.getDimensions().add( new BaseDimensionalObject( PERIOD_DIM_ID, DimensionType.PERIOD, periods ) );
         

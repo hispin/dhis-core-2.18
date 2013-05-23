@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,36 +27,64 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-import java.util.concurrent.Future;
-
-import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.NameableObject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
  */
-public interface AnalyticsManager
+public class NameableObjectUtils
 {
     /**
-     * Retrieves aggregated data values for the given query. The data is returned
-     * as a mapping where the key is concatenated from the dimension options for
-     * all dimensions, and the value is the data value. This method is invoked
-     * asynchronously.
+     * Returns a list of NameableObjects.
      * 
-     * @param params the query to retrieve aggregated data for.
-     * @return a map.
+     * @param objects the NameableObjects to include in the list.
+     * @return a list of NameableObjects.
      */
-    Future<Map<String, Double>> getAggregatedDataValues( DataQueryParams params );
+    public static List<NameableObject> getList( NameableObject... objects )
+    {
+        List<NameableObject> list = new ArrayList<NameableObject>();
+        
+        for ( NameableObject object : objects )
+        {
+            list.add( object );
+        }
+        
+        return list;
+    }
     
     /**
-     * Inserts entries for the aggregation periods mapped to each data period
-     * in the given data value map. Removes the original entry for the data period.
+     * Returns a list with erasure NameableObject based on the given collection.
      * 
-     * @param dataValueMap map with entries for all data values produced for the query.
-     * @param params the query.
-     * @param dataPeriodAggregationPeriodMap the mapping between data periods and
-     *        aggregation periods for this query.
+     * @param collection the collection.
+     * @return a list of NameableObjects.
      */
-    void replaceDataPeriodsWithAggregationPeriods( Map<String, Double> dataValueMap, DataQueryParams params, ListMap<NameableObject, NameableObject> dataPeriodAggregationPeriodMap );
+    public static List<NameableObject> asList( Collection<? extends NameableObject> collection )
+    {
+        List<NameableObject> list = new ArrayList<NameableObject>();
+        list.addAll( collection );
+        return list;
+    }
+
+    /**
+     * Returns a list typed with the desired erasure based on the given collection.
+     * This operation implies an unchecked cast and it is the responsibility of
+     * the caller to make sure the cast is valid.
+     * 
+     * @param collection the collection.
+     * @return a list.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends NameableObject> List<T> asTypedList( Collection<NameableObject> collection )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( NameableObject object : collection )
+        {
+            list.add( (T) object );
+        }
+        
+        return list;
+    }
 }

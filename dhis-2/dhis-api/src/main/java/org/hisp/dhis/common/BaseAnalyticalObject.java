@@ -338,25 +338,25 @@ public abstract class BaseAnalyticalObject
         }        
         else if ( ORGUNIT_DIM_ID.equals( dimension ) && ( !organisationUnits.isEmpty() || hasUserOrgUnit() ) )
         {
-            List<IdentifiableObject> ouList = new ArrayList<IdentifiableObject>();
+            List<NameableObject> ouList = new ArrayList<NameableObject>();
             ouList.addAll( organisationUnits );
             ouList.addAll( transientOrganisationUnits );
             
             if ( userOrganisationUnit )
             {
-                ouList.add( new BaseIdentifiableObject( KEY_USER_ORGUNIT, KEY_USER_ORGUNIT, KEY_USER_ORGUNIT ) );
+                ouList.add( new BaseNameableObject( KEY_USER_ORGUNIT, KEY_USER_ORGUNIT, KEY_USER_ORGUNIT ) );
             }
             
             if ( userOrganisationUnitChildren )
             {
-                ouList.add( new BaseIdentifiableObject( KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN ) );
+                ouList.add( new BaseNameableObject( KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN ) );
             }
             
             objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, ouList ) );
         }
         else if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
         {
-            objects.add( new BaseDimensionalObject( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<IdentifiableObject>() ) );
+            objects.add( new BaseDimensionalObject( dimension, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<BaseNameableObject>() ) );
         }
         else if ( categoryDims.contains( dimension ) )
         {
@@ -366,7 +366,7 @@ public abstract class BaseAnalyticalObject
         }
         else // Group set
         {
-            ListMap<String, IdentifiableObject> deGroupMap = new ListMap<String, IdentifiableObject>();
+            ListMap<String, BaseNameableObject> deGroupMap = new ListMap<String, BaseNameableObject>();
             
             for ( DataElementGroup group : dataElementGroups )
             {
@@ -378,7 +378,7 @@ public abstract class BaseAnalyticalObject
                 objects.add( new BaseDimensionalObject( dimension, DimensionType.DATAELEMENT_GROUPSET, deGroupMap.get( dimension ) ) );
             }
             
-            ListMap<String, IdentifiableObject> ouGroupMap = new ListMap<String, IdentifiableObject>();
+            ListMap<String, BaseNameableObject> ouGroupMap = new ListMap<String, BaseNameableObject>();
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
@@ -406,7 +406,7 @@ public abstract class BaseAnalyticalObject
         return categoryDims;
     }
     
-    public static String getId( List<NameableObject> column, List<NameableObject> row )
+    public static String getIdentifer( List<NameableObject> column, List<NameableObject> row )
     {
         StringBuilder id = new StringBuilder();
         

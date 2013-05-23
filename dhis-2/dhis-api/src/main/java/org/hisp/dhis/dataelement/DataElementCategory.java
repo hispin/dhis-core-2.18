@@ -34,6 +34,7 @@ import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
@@ -139,11 +140,6 @@ public class DataElementCategory
         return null;
     }
 
-    public List<IdentifiableObject> getDimensionItems()
-    {
-        return new ArrayList<IdentifiableObject>( categoryOptions );
-    }
-
     // -------------------------------------------------------------------------
     // Dimensional object
     // -------------------------------------------------------------------------
@@ -154,9 +150,9 @@ public class DataElementCategory
     @JsonView( { DetailedView.class, DimensionalView.class } )
     @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0 )
-    public List<IdentifiableObject> getItems()
+    public List<NameableObject> getItems()
     {
-        return new ArrayList<IdentifiableObject>( categoryOptions );
+        return new ArrayList<NameableObject>( categoryOptions );
     }
     
     // -------------------------------------------------------------------------

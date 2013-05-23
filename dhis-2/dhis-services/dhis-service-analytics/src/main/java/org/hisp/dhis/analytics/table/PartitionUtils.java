@@ -33,8 +33,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.analytics.AnalyticsTableManager;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -96,11 +96,11 @@ public class PartitionUtils
         return PeriodType.getPeriodFromIsoString( isoPeriod );
     }
     
-    public static ListMap<String, IdentifiableObject> getTableNamePeriodMap( List<IdentifiableObject> periods, String tableName )
+    public static ListMap<String, NameableObject> getTableNamePeriodMap( List<NameableObject> periods, String tableName )
     {
-        ListMap<String, IdentifiableObject> map = new ListMap<String, IdentifiableObject>();
+        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
         
-        for ( IdentifiableObject period : periods )
+        for ( NameableObject period : periods )
         {
             map.putValue( getTableName( (Period) period, tableName ), period );
         }

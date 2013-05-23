@@ -76,6 +76,13 @@ public class BaseNameableObject
     {
     }
 
+    public BaseNameableObject( String uid, String code, String name )
+    {
+        this.uid = uid;
+        this.code = code;
+        this.name = name;
+    }
+    
     public BaseNameableObject( int id, String uid, String name, String shortName,
         String code, String description )
     {

@@ -225,7 +225,7 @@ public class DefaultDimensionService
             
             String dimensionId = dimension.getDimension();
             
-            List<IdentifiableObject> items = dimension.getItems();
+            List<NameableObject> items = dimension.getItems();
             
             if ( items != null )
             {

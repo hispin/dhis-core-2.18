@@ -61,7 +61,7 @@ public interface DimensionalObject
     
     String getDisplayName();
         
-    List<IdentifiableObject> getItems();
+    List<NameableObject> getItems();
     
     boolean isAllItems();
     
