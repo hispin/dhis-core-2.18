@@ -140,6 +140,45 @@ public class DefaultQueryPlanner
         }
     }
     
+    public void validateTableLayout( DataQueryParams params, List<String> columns, List<String> rows )
+    {
+        String violation = null;
+        
+        if ( ( columns == null || columns.isEmpty() ) && ( rows == null || rows.isEmpty() ) )
+        {
+            violation = "Cannot generate table layout when columns and rows are empty";
+        }
+        
+        if ( columns != null )
+        {
+            for ( String column : columns )
+            {
+                if ( params.getDimensionArrayCollapseDx( column ).length == 0 )
+                {
+                    violation = "Column must be present as dimension in query: " + column;
+                }
+            }
+        }
+        
+        if ( rows != null )
+        {
+            for ( String row : rows )
+            {
+                if ( params.getDimensionArrayCollapseDx( row ).length == 0 )
+                {
+                    violation = "Row must be present as dimension in query: " + row;
+                }
+            }
+        }
+        
+        if ( violation != null )
+        {
+            log.warn( "Validation failed: " + violation );
+            
+            throw new IllegalQueryException( violation );
+        }
+    }
+    
     public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName )
     {
         validate( params );

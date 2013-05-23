@@ -27,6 +27,7 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,7 +57,13 @@ public class MockAnalyticsService
     {
         throw new NotImplementedException();
     }
-    
+
+    @Override
+    public Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows )
+    {
+        throw new NotImplementedException();
+    }
+
     @Override
     public Map<String, Double> getAggregatedDataValueMapping( DataQueryParams params )
     {

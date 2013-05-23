@@ -44,6 +44,8 @@ public interface DimensionalObject
     final String CATEGORYOPTIONCOMBO_DIM_ID = "co";
     final String PERIOD_DIM_ID = "pe";
     final String ORGUNIT_DIM_ID = "ou";
+    
+    final String DIMENSION_SEP = "-";
 
     final List<String> DATA_X_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, DATAELEMENT_OPERAND_ID );
     

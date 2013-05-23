@@ -30,7 +30,6 @@ package org.hisp.dhis.analytics.data;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
-import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_SEP;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
@@ -45,12 +44,15 @@ import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
+import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,6 +78,7 @@ import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
@@ -105,6 +108,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DebugUtils;
@@ -354,6 +358,54 @@ public class DefaultAnalyticsService
         }
         
         grid.setMetaData( metaData );
+        
+        return grid;
+    }
+
+    @Override
+    public Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows )
+    {
+        if ( !tableLayout )
+        {
+            return getAggregatedDataValues( params );
+        }
+        
+        queryPlanner.validateTableLayout( params, columns, rows );
+        
+        Map<String, Double> valueMap = getAggregatedDataValueMapping( params );
+
+        ReportTable reportTable = new ReportTable();
+        
+        List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
+        List<NameableObject[]> tableRows = new ArrayList<NameableObject[]>();
+
+        if ( columns != null )
+        {            
+            for ( String dimension : columns )
+            {
+                reportTable.getColumnDimensions().add( dimension );
+                
+                tableColumns.add( params.getDimensionArrayCollapseDx( dimension ) );
+            }
+        }
+        
+        if ( rows != null )
+        {
+            for ( String dimension : rows )
+            {
+                reportTable.getRowDimensions().add( dimension );
+                
+                tableRows.add( params.getDimensionArrayCollapseDx( dimension ) );
+            }
+        }
+
+        reportTable.setGridColumns( new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations() );
+        reportTable.setGridRows( new CombinationGenerator<NameableObject>( tableRows.toArray( IRT2D ) ).getCombinations() );
+
+        addIfEmpty( reportTable.getGridColumns() ); 
+        addIfEmpty( reportTable.getGridRows() );
+
+        Grid grid = reportTable.getGrid( new ListGrid(), valueMap, false );
         
         return grid;
     }

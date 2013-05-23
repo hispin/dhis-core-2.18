@@ -172,7 +172,7 @@ public class BaseNameableObject
     {
         this.displayDescription = displayDescription;
     }
-
+    
     @Override
     public void mergeWith( IdentifiableObject other )
     {

@@ -35,10 +35,12 @@ import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -46,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodSerializer;
 import org.hisp.dhis.common.annotation.Scanned;
@@ -406,21 +409,60 @@ public abstract class BaseAnalyticalObject
         return categoryDims;
     }
     
+    /**
+     * Splits the keys of the given map on the dimension identifier separator, 
+     * sorts the identifiers, writes them out as a key and puts the key back into
+     * the map.
+     */
+    public static void sortKeys( Map<String, Double> valueMap )
+    {
+        Map<String, Double> map = new HashMap<String, Double>();
+        
+        for ( String key : valueMap.keySet() )
+        {
+            if ( key != null )
+            {
+                String[] ids = key.split( DIMENSION_SEP );
+                
+                Collections.sort( Arrays.asList( ids ) );
+                
+                String sortedKey = StringUtils.join( ids, DIMENSION_SEP );
+                
+                map.put( sortedKey, valueMap.get( key ) );
+            }
+        }
+        
+        valueMap.clear();
+        valueMap.putAll( map );
+    }
+    
+    /**
+     * Generates an identifier based on the given lists of NameableObjects. Uses
+     * the UIDs for each NameableObject, sorts them and writes them out as a key.
+     */
     public static String getIdentifer( List<NameableObject> column, List<NameableObject> row )
     {
-        StringBuilder id = new StringBuilder();
+        List<String> ids = new ArrayList<String>();
         
-        for ( NameableObject item : column )
+        if ( column != null )
         {
-            id.append( item.getUid() ).append( "-" );
+            for ( NameableObject item : column )
+            {
+                ids.add( item.getUid() );
+            }
         }
         
-        for ( NameableObject item : row )
+        if ( row != null )
         {
-            id.append( item.getUid() ).append( "-" );
+            for ( NameableObject item : row )
+            {
+                ids.add( item.getUid() );
+            }
         }
         
-        return id.substring( 0, id.length() - 1 );
+        Collections.sort( ids );
+        
+        return StringUtils.join( ids, DIMENSION_SEP );
     }
     
     public void mergeWith( BaseAnalyticalObject other )

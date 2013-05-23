@@ -34,6 +34,7 @@ import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
 import java.awt.BasicStroke;
@@ -53,7 +54,6 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.analytics.AnalyticsService;
-import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.ChartStore;
@@ -735,7 +735,7 @@ public class DefaultChartService
             {
                 categoryIndex++;
 
-                String key = series.getUid() + DataQueryParams.DIMENSION_SEP + category.getUid();
+                String key = series.getUid() + DIMENSION_SEP + category.getUid();
 
                 Double value = valueMap.get( key );
                 
