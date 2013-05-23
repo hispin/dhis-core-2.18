@@ -119,6 +119,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">javascript/table.js</param>
     </action>
 
     <action name="getReportTables" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
