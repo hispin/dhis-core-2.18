@@ -28,19 +28,20 @@ package org.hisp.dhis.analytics.table;
  */
 
 import static org.hisp.dhis.DhisConvenienceTest.createPeriod;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_TEMP_SUFFIX;
+import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
-import org.hisp.dhis.common.ListMap;
 import org.junit.Test;
 
 /**
@@ -91,7 +92,7 @@ public class PartitionUtilsTest
     @Test
     public void testGetTablePeriodMap()
     {        
-        ListMap<String, IdentifiableObject> map = PartitionUtils.getTableNamePeriodMap( getList( 
+        ListMap<String, NameableObject> map = PartitionUtils.getTableNamePeriodMap( getList( 
             createPeriod( "2000S1" ), createPeriod( "2000S2" ), createPeriod( "2001S1" ), createPeriod( "2001S2" ), createPeriod( "2002S1" ) ), TABLE_NAME );
         
         assertEquals( 3, map.size() );

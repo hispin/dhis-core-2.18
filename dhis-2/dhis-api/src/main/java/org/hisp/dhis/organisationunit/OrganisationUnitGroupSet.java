@@ -39,6 +39,7 @@ import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
@@ -166,11 +167,6 @@ public class OrganisationUnitGroupSet
         return sortedGroups;
     }
 
-    public List<IdentifiableObject> getDimensionItems()
-    {
-        return new ArrayList<IdentifiableObject>( organisationUnitGroups );
-    }
-
     // -------------------------------------------------------------------------
     // Dimensional object
     // -------------------------------------------------------------------------
@@ -181,9 +177,9 @@ public class OrganisationUnitGroupSet
     @JsonView( { DetailedView.class, DimensionalView.class } )
     @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0 )
-    public List<IdentifiableObject> getItems()
+    public List<NameableObject> getItems()
     {
-        return new ArrayList<IdentifiableObject>( organisationUnitGroups );
+        return new ArrayList<NameableObject>( organisationUnitGroups );
     }
     
     // -------------------------------------------------------------------------

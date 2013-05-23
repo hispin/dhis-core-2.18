@@ -27,7 +27,7 @@ package org.hisp.dhis.datasetreport.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getList;
+import static org.hisp.dhis.common.NameableObjectUtils.getList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
