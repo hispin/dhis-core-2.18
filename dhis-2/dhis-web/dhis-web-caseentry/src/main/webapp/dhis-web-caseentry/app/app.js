@@ -1422,7 +1422,7 @@ Ext.onReady( function() {
         },
 		window: {
 			setAnchorPosition: function(w, target) {
-				var vpw = TR.viewport.getWidth(),
+				var vpw = 1000,
 					targetx = target ? target.getPosition()[0] : 600,
 					winw = w.getWidth(),
 					y = target ? target.getPosition()[1] + target.getHeight() + 4 : 33;
@@ -3829,6 +3829,353 @@ Ext.onReady( function() {
 		}
 	});
 
+	
+	TR.app.OptionsWindow = function() {
+		var optionsWindow;
+		
+		var positionOrgunitField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id: 'positionOrgunitCbx',
+			fieldLabel: TR.i18n.orgunit,
+			labelWidth: 135,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			editable: false,
+			valueField: 'value',
+			displayField: 'name',
+			width: ( TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor ) - 40,
+			store:  new Ext.data.ArrayStore({
+				fields: ['value', 'name'],
+				data: [ ['1', TR.i18n.rows], 
+						['2', TR.i18n.columns], 
+						['3', TR.i18n.filters] ]
+			}),
+			value: '1',
+			listeners: {
+				added: function() {
+					TR.cmp.settings.positionOrgunit = this;
+				}
+			}
+		});
+			
+		var positionPeriodField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id: 'positionPeriodCbx',
+			fieldLabel: TR.i18n.period,
+			labelWidth: 135,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			editable: false,
+			valueField: 'value',
+			displayField: 'name',
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+			store:  new Ext.data.ArrayStore({
+				fields: ['value', 'name'],
+				data: [ ['1', TR.i18n.rows], 
+						['2', TR.i18n.columns], 
+						['3', TR.i18n.filters] ]
+			}),
+			value: '2',
+			listeners: {
+				added: function() {
+					TR.cmp.settings.positionPeriod = this;
+				}
+			}
+		});
+		
+		var positionDataField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id: 'positionDataCbx',
+			fieldLabel: TR.i18n.data,
+			labelWidth: 135,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			editable: false,
+			valueField: 'value',
+			displayField: 'name',
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+			store:  new Ext.data.ArrayStore({
+				fields: ['value', 'name'],
+				data: [ ['1', TR.i18n.rows], 
+						['2', TR.i18n.columns], 
+						['3', TR.i18n.filters] ]
+			}),
+			value: '3',
+			listeners: {
+				added: function() {
+					TR.cmp.settings.positionData = this;
+				}
+			}
+		});
+		
+		var aggregateTypeField = Ext.create('Ext.form.RadioGroup', {
+			id: 'aggregateType',
+			fieldLabel: TR.i18n.aggregate_type,
+			labelWidth: 135,
+			columns: 3,
+			vertical: true,
+			items: [{
+				boxLabel: TR.i18n.count,
+				name: 'aggregateType',
+				inputValue: 'count',
+				checked: true
+			}, 
+			{
+				boxLabel: TR.i18n.sum,
+				name: 'aggregateType',
+				inputValue: 'sum'
+			}, 
+			{
+				boxLabel: TR.i18n.avg,
+				name: 'aggregateType',
+				inputValue: 'avg'
+			}],
+			listeners: {
+				change : function(thisFormField, newValue, oldValue, eOpts) {
+				  var opt = newValue.aggregateType[0];
+				  
+				  if( opt==oldValue.aggregateType && newValue.aggregateType.length > 1){
+					opt = newValue.aggregateType[1];
+				  }
+				  
+				  if (opt=='sum' || opt=='avg') {
+					Ext.getCmp('deSumCbx').enable();
+				  }
+				  else  if (opt=='count'){
+					Ext.getCmp('deSumCbx').disable();
+				  }
+				}
+			}
+		});
+		
+		var deSumField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id: 'deSumCbx',
+			disabled: true,
+			fieldLabel: TR.i18n.sum_avg_of,
+			labelWidth: 135,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			editable: true,
+			typeAhead: true,
+			valueField: 'id',
+			displayField: 'name',
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+			store: TR.store.aggregateDataelement,
+			listeners: {
+				added: function() {
+					TR.cmp.settings.aggregateDataelement = this;
+				}
+			}
+		});
+		
+		var completedEventsField = Ext.create('Ext.form.field.Checkbox', {
+			cls: 'tr-checkbox',
+			id: 'completedEventsOpt',
+			style:'padding: 0px 0px 0px 3px;',
+			boxLabel: TR.i18n.use_completed_events,
+			boxLabelAlign: 'before',
+			labelWidth: 135
+		});
+		
+		var displayTotalsOptField = Ext.create('Ext.form.field.Checkbox', {
+			xtype: 'checkbox',
+			cls: 'tr-checkbox',
+			id: 'displayTotalsOpt',
+			style:'padding-left: 20px;',
+			boxLabel: TR.i18n.display_totals,
+			boxLabelAlign: 'before',
+			labelWidth: 135
+		});
+		
+		var facilityLBField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id: 'facilityLBCombobox',
+			fieldLabel: TR.i18n.use_data_from_level,
+			labelWidth: 135,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			editable: false,
+			valueField: 'value',
+			displayField: 'name',
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+			store:  new Ext.data.ArrayStore({
+				fields: ['value', 'name'],
+				data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
+			}),
+			value: 'all',
+			listeners: {
+				added: function() {
+					TR.cmp.settings.facilityLB = this;
+				}
+			}
+		});
+	
+		var levelField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id:'levelCombobox',
+			hidden: true,
+			fieldLabel: TR.i18n.show_hierachy_from_level,
+			labelWidth: 135,
+			name: TR.conf.finals.programs,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			editable: false,
+			valueField: 'value',
+			displayField: 'name',
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+			store: Ext.create('Ext.data.Store', {
+				fields: ['value', 'name'],
+				data: TR.init.system.level,
+			}),
+			value: '1',
+			listeners: {
+				added: function() {
+					TR.cmp.settings.level = this;
+				}
+			}
+		});
+		
+		var dataElementGroupByField = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'tr-combo',
+			id: 'dataElementGroupByCbx',
+			fieldLabel: TR.i18n.group_by,
+			labelWidth: 135,
+			emptyText: TR.i18n.please_select,
+			queryMode: 'local',
+			typeAhead: true,
+			editable: true,
+			valueField: 'id',
+			displayField: 'name',
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
+			store: TR.store.groupbyDataelement,
+			listeners: {
+				added: function() {
+					TR.cmp.settings.dataElementGroupBy = this;
+				},
+				select: function(cb) {
+					if( cb.getValue()!=null && cb.getValue()!='' 
+						&& Ext.getCmp('positionDataCbx').getValue() !='1'){
+						if( Ext.getCmp('positionOrgunitCbx').getValue() == '1' ){
+							Ext.getCmp('positionOrgunitCbx').setValue('3');
+							Ext.getCmp('positionPeriodCbx').setValue('2');
+						}
+						else {
+							Ext.getCmp('positionOrgunitCbx').setValue('2');
+							Ext.getCmp('positionPeriodCbx').setValue('3');
+						}
+						Ext.getCmp('positionDataCbx').setValue('1');
+						Ext.getCmp('aggregateType').items.items[1].setValue(false);
+						Ext.getCmp('aggregateType').items.items[2].setValue(false);
+						Ext.getCmp('aggregateType').items.items[1].disable();
+						Ext.getCmp('aggregateType').items.items[2].disable();
+						Ext.getCmp('aggregateType').items.items[0].setValue(true);
+					}
+					else
+					{
+						Ext.getCmp('aggregateType').items.items[1].enable();
+						Ext.getCmp('aggregateType').items.items[2].enable();
+					}
+				}
+			}
+		});
+			
+		var limitOptionField = Ext.create('Ext.form.field.Number',{
+			id: 'limitOption',
+			fieldLabel: TR.i18n.limit_records,
+			labelSeparator: '',
+			labelWidth: 135,
+			editable: true,
+			allowBlank:true,
+			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 30,
+			minValue: 1,
+			listeners: {
+				added: function() {
+					TR.cmp.settings.limitOption = this;
+				}
+			}
+		});
+						
+		optionsWindow = Ext.create('Ext.window.Window', {
+			title: TR.i18n.options,
+			bodyStyle: 'background-color:#fff; padding:8px 8px 8px',
+			closeAction: 'hide',
+			autoShow: true,
+			modal: true,
+			resizable: false,
+			hideOnBlur: true,
+			items: [
+				{
+					xtype: 'fieldset',
+					title: TR.i18n.position,
+					id: 'positionField',
+					layout: 'anchor',
+					collapsible: false,
+					collapsed: false,
+					defaults: {
+						anchor: '100%',
+						labelStyle: 'padding-left:4px;'
+					},
+					items: [
+						positionOrgunitField,
+						positionPeriodField,
+						positionDataField
+					]
+				},
+				{
+					xtype: 'fieldset',
+					layout: 'anchor',
+					collapsible: false,
+					collapsed: false,
+					defaults: {
+							anchor: '100%',
+							labelStyle: 'padding-left:4px;'
+					},
+					items: [
+						aggregateTypeField,
+						deSumField,
+						{
+							xtype: 'panel',
+							layout: 'column',
+							bodyStyle: 'border-style:none; background-color:transparent;',
+							items:[
+								completedEventsField,
+								displayTotalsOptField
+							]
+						},
+						facilityLBField,
+						levelField,
+						dataElementGroupByField,
+						limitOptionField
+					]
+				}
+			],
+			bbar: [
+				'->',
+				{
+					text: TR.i18n.hide,
+					handler: function() {
+						optionsWindow.hide();
+					}
+				},
+				{
+					text: '<b>' + TR.i18n.update + '</b>',
+					handler: function() {
+						TR.exe.execute();
+						optionsWindow.hide();
+					}
+				}
+			],
+			listeners: {
+				show: function(w) {
+					TR.util.window.setAnchorPosition(w, TR.cmp.toolbar.favoritee);
+				}
+			}
+		});
+		
+		return optionsWindow;
+	};
+	
     TR.viewport = Ext.create('Ext.container.Viewport', {
         layout: 'border',
         renderTo: Ext.getBody(),
@@ -5446,311 +5793,6 @@ Ext.onReady( function() {
 												TR.cmp.params.dataelement.panel = this;
 											}
 										}
-									},
-											
-									// OPTIONS
-									{
-										title: '<div style="height:17px;background-image:url(images/options.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.options + '</div>',
-										hideCollapseTool: true,
-										cls: 'tr-accordion-options',
-										items: [
-											{
-												xtype: 'fieldset',
-												title: TR.i18n.position,
-												id: 'positionField',
-												layout: 'anchor',
-												collapsible: false,
-												collapsed: false,
-												defaults: {
-													anchor: '100%',
-													labelStyle: 'padding-left:4px;'
-												},
-												items: [
-													{
-														xtype: 'combobox',
-														cls: 'tr-combo',
-														id: 'positionOrgunitCbx',
-														fieldLabel: TR.i18n.orgunit,
-														labelWidth: 135,
-														emptyText: TR.i18n.please_select,
-														queryMode: 'local',
-														editable: false,
-														valueField: 'value',
-														displayField: 'name',
-														width: ( TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor ) - 40,
-														store:  new Ext.data.ArrayStore({
-															fields: ['value', 'name'],
-															data: [ ['1', TR.i18n.rows], 
-																	['2', TR.i18n.columns], 
-																	['3', TR.i18n.filters] ]
-														}),
-														value: '1',
-														listeners: {
-															added: function() {
-																TR.cmp.settings.positionOrgunit = this;
-															}
-														}
-													},
-													{
-														xtype: 'combobox',
-														cls: 'tr-combo',
-														id: 'positionPeriodCbx',
-														fieldLabel: TR.i18n.period,
-														labelWidth: 135,
-														emptyText: TR.i18n.please_select,
-														queryMode: 'local',
-														editable: false,
-														valueField: 'value',
-														displayField: 'name',
-														width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-														store:  new Ext.data.ArrayStore({
-															fields: ['value', 'name'],
-															data: [ ['1', TR.i18n.rows], 
-																	['2', TR.i18n.columns], 
-																	['3', TR.i18n.filters] ]
-														}),
-														value: '2',
-														listeners: {
-															added: function() {
-																TR.cmp.settings.positionPeriod = this;
-															}
-														}
-													},
-													{
-														xtype: 'combobox',
-														cls: 'tr-combo',
-														id: 'positionDataCbx',
-														fieldLabel: TR.i18n.data,
-														labelWidth: 135,
-														emptyText: TR.i18n.please_select,
-														queryMode: 'local',
-														editable: false,
-														valueField: 'value',
-														displayField: 'name',
-														width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-														store:  new Ext.data.ArrayStore({
-															fields: ['value', 'name'],
-															data: [ ['1', TR.i18n.rows], 
-																	['2', TR.i18n.columns], 
-																	['3', TR.i18n.filters] ]
-														}),
-														value: '3',
-														listeners: {
-															added: function() {
-																TR.cmp.settings.positionData = this;
-															}
-														}
-													}
-												]
-											},
-											{
-												xtype: 'fieldset',
-												layout: 'anchor',
-												collapsible: false,
-												collapsed: false,
-												defaults: {
-														anchor: '100%',
-														labelStyle: 'padding-left:4px;'
-												},
-												items: [
-												{
-													xtype: 'radiogroup',
-													id: 'aggregateType',
-													fieldLabel: TR.i18n.aggregate_type,
-													labelWidth: 135,
-													columns: 3,
-													vertical: true,
-													items: [{
-														boxLabel: TR.i18n.count,
-														name: 'aggregateType',
-														inputValue: 'count',
-														checked: true
-													}, 
-													{
-														boxLabel: TR.i18n.sum,
-														name: 'aggregateType',
-														inputValue: 'sum'
-													}, 
-													{
-														boxLabel: TR.i18n.avg,
-														name: 'aggregateType',
-														inputValue: 'avg'
-													}],
-													listeners: {
-														change : function(thisFormField, newValue, oldValue, eOpts) {
-														  var opt = newValue.aggregateType[0];
-														  
-														  if( opt==oldValue.aggregateType && newValue.aggregateType.length > 1){
-															opt = newValue.aggregateType[1];
-														  }
-														  
-														  if (opt=='sum' || opt=='avg') {
-															Ext.getCmp('deSumCbx').enable();
-														  }
-														  else  if (opt=='count'){
-															Ext.getCmp('deSumCbx').disable();
-														  }
-														}
-													}
-												},
-												{
-													xtype: 'combobox',
-													cls: 'tr-combo',
-													id: 'deSumCbx',
-													disabled: true,
-													fieldLabel: TR.i18n.sum_avg_of,
-													labelWidth: 135,
-													emptyText: TR.i18n.please_select,
-													queryMode: 'local',
-													editable: true,
-													typeAhead: true,
-													valueField: 'id',
-													displayField: 'name',
-													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-													store: TR.store.aggregateDataelement,
-													listeners: {
-														added: function() {
-															TR.cmp.settings.aggregateDataelement = this;
-														}
-													}
-												},
-												{
-													xtype: 'panel',
-													layout: 'column',
-													bodyStyle: 'border-style:none; background-color:transparent;',
-													items:[
-														{
-															xtype: 'checkbox',
-															cls: 'tr-checkbox',
-															id: 'completedEventsOpt',
-															style:'padding: 0px 0px 0px 3px;',
-															boxLabel: TR.i18n.use_completed_events,
-															boxLabelAlign: 'before',
-															labelWidth: 135
-														},
-														{
-															xtype: 'checkbox',
-															cls: 'tr-checkbox',
-															id: 'displayTotalsOpt',
-															style:'padding-left: 20px;',
-															boxLabel: TR.i18n.display_totals,
-															boxLabelAlign: 'before',
-															labelWidth: 135
-														},
-													]
-												},
-												
-												{
-													xtype: 'combobox',
-													cls: 'tr-combo',
-													id: 'facilityLBCombobox',
-													fieldLabel: TR.i18n.use_data_from_level,
-													labelWidth: 135,
-													emptyText: TR.i18n.please_select,
-													queryMode: 'local',
-													editable: false,
-													valueField: 'value',
-													displayField: 'name',
-													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-													store:  new Ext.data.ArrayStore({
-														fields: ['value', 'name'],
-														data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
-													}),
-													value: 'all',
-													listeners: {
-														added: function() {
-															TR.cmp.settings.facilityLB = this;
-														}
-													}
-												},
-												{
-													xtype: 'combobox',
-													cls: 'tr-combo',
-													id:'levelCombobox',
-													hidden: true,
-													fieldLabel: TR.i18n.show_hierachy_from_level,
-													labelWidth: 135,
-													name: TR.conf.finals.programs,
-													emptyText: TR.i18n.please_select,
-													queryMode: 'local',
-													editable: false,
-													valueField: 'value',
-													displayField: 'name',
-													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-													store: Ext.create('Ext.data.Store', {
-														fields: ['value', 'name'],
-														data: TR.init.system.level,
-													}),
-													value: '1',
-													listeners: {
-														added: function() {
-															TR.cmp.settings.level = this;
-														}
-													}
-												},
-												{
-													xtype: 'combobox',
-													cls: 'tr-combo',
-													id: 'dataElementGroupByCbx',
-													fieldLabel: TR.i18n.group_by,
-													labelWidth: 135,
-													emptyText: TR.i18n.please_select,
-													queryMode: 'local',
-													typeAhead: true,
-													editable: true,
-													valueField: 'id',
-													displayField: 'name',
-													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
-													store: TR.store.groupbyDataelement,
-													listeners: {
-														added: function() {
-															TR.cmp.settings.dataElementGroupBy = this;
-														},
-														select: function(cb) {
-															if( cb.getValue()!=null && cb.getValue()!='' 
-																&& Ext.getCmp('positionDataCbx').getValue() !='1'){
-																if( Ext.getCmp('positionOrgunitCbx').getValue() == '1' ){
-																	Ext.getCmp('positionOrgunitCbx').setValue('3');
-																	Ext.getCmp('positionPeriodCbx').setValue('2');
-																}
-																else {
-																	Ext.getCmp('positionOrgunitCbx').setValue('2');
-																	Ext.getCmp('positionPeriodCbx').setValue('3');
-																}
-																Ext.getCmp('positionDataCbx').setValue('1');
-																Ext.getCmp('aggregateType').items.items[1].setValue(false);
-																Ext.getCmp('aggregateType').items.items[2].setValue(false);
-																Ext.getCmp('aggregateType').items.items[1].disable();
-																Ext.getCmp('aggregateType').items.items[2].disable();
-																Ext.getCmp('aggregateType').items.items[0].setValue(true);
-															}
-															else
-															{
-																Ext.getCmp('aggregateType').items.items[1].enable();
-																Ext.getCmp('aggregateType').items.items[2].enable();
-															}
-														}
-													}
-												},
-												{
-													xtype: 'numberfield',
-													id: 'limitOption',
-													fieldLabel: TR.i18n.limit_records,
-													labelSeparator: '',
-													labelWidth: 135,
-													editable: true,
-													allowBlank:true,
-													width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 30,
-													minValue: 1,
-													listeners: {
-														added: function() {
-															TR.cmp.settings.limitOption = this;
-														}
-													}
-												}
-												]
-											}
-										]
 									}
 								
 								]
@@ -5813,6 +5855,14 @@ Ext.onReady( function() {
 						text: TR.i18n.update,
 						handler: function() {
 							TR.exe.execute();
+						}
+					},
+					{
+						xtype: 'button',
+						cls: 'tr-toolbar-btn-2',
+						text: TR.i18n.options,
+						handler: function() {
+							TR.cmp.options.window.show();
 						}
 					},
 					{
@@ -6014,7 +6064,9 @@ Ext.onReady( function() {
         listeners: {
             afterrender: function(vp) {
                 TR.init.initialize(vp);
-				
+				TR.cmp.options.window = TR.app.OptionsWindow();
+				TR.cmp.options.window.hide();
+							
 				if( TR.init.system.accessPatientAttributes=='false')
 				{
 					Ext.getCmp('patientPropertiesDiv').setVisible(false);
