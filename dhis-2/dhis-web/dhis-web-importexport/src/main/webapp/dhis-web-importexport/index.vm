@@ -5,7 +5,7 @@ jQuery(function() {
 });
 </script>
 
-<h3>$i18n.getString( "dhis-web-maintenance-datadictionary" )</h3>
+<h3>$i18n.getString( "dhis-web-importexport" )</h3>
 
 <ul class="introList">
     #introListImgItem( "dxf2MetaDataImport.action" "metadata_import" "import" )
