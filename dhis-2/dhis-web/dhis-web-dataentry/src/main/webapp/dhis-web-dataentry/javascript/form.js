@@ -413,6 +413,28 @@ function addEventListeners()
         $( this ).css( 'width', '90%' );
     } );
 
+    $( '[name="entrytrueonly"]' ).each( function( i )
+    {
+        var id = $( this ).attr( 'id' );
+        var split = splitFieldId( id );
+
+        var dataElementId = split.dataElementId;
+        var optionComboId = split.optionComboId;
+
+        $( this ).unbind( 'focus' );
+        $( this ).unbind( 'change' );
+
+        $( this ).focus( valueFocus );
+        $( this ).blur( valueBlur );
+
+        $( this ).change( function()
+        {
+            saveTrueOnly( dataElementId, optionComboId, id );
+        } );
+
+        $( this ).css( 'width', '90%' );
+    } );
+
     $( '[name="entryoptionset"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
@@ -1101,12 +1123,14 @@ function insertDataValues()
 
     $( '[name="entryfield"]' ).val( '' );
     $( '[name="entryselect"]' ).val( '' );
+    $( '[name="entrytrueonly"]' ).removeAttr('checked');
     $( '[name="entryoptionset"]' ).val( '' );
     $( '[name="dyninput"]' ).val( '' );
     $( '[name="dynselect"]' ).val( '' );
 
     $( '[name="entryfield"]' ).css( 'background-color', COLOR_WHITE );
     $( '[name="entryselect"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="entrytrueonly"]' ).css( 'background-color', COLOR_WHITE );
     $( '[name="entryoptionset"]' ).css( 'background-color', COLOR_WHITE );
     $( '[name="dyninput"]' ).css( 'background-color', COLOR_WHITE );
 
@@ -1159,8 +1183,12 @@ function insertDataValues()
 
 	            if ( $( fieldId ).length > 0 ) // Insert for fixed input fields
 	            {
-	                $( fieldId ).val( value.val );
-	            }
+                    if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' ) {
+                        $( fieldId ).attr('checked', true);
+                    } else {
+                        $( fieldId ).val( value.val );
+                    }
+                }
 	            else // Insert for potential dynamic input fields
 	            {
                     var split = splitFieldId( value.id );
@@ -1184,7 +1212,7 @@ function insertDataValues()
         			}
 
     				var dynamicInputId = '#' + code + '-' + optionComboId + '-dyninput';
-    				
+
         			if ( $( dynamicInputId ).length == 0 )
     				{
         				log( 'Could not find find dynamic input element for option combo: ' + optionComboId );

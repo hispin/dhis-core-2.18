@@ -47,6 +47,8 @@
     <option value="false">$i18n.getString( "no" )</option>
   </select>
   <img name="commentlink" id="${commentId}"></td>
+  #elseif( $dataElement.type == 'trueOnly' )
+      <td><input name="entrytrueonly" id="${dataEntryId}" maxlength="255" type="checkbox"#if( !$hasAccess ) disabled="disabled"#end tabindex="$tabIndex"></td>
   #else
       #if( $dataElement.optionSet )
         <td><input name="entryoptionset" id="${dataEntryId}" maxlength="255" type="text"#if( !$hasAccess ) disabled="disabled"#end tabindex="$tabIndex"></td>
