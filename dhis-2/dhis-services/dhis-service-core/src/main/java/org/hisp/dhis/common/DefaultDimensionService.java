@@ -225,91 +225,96 @@ public class DefaultDimensionService
             
             String dimensionId = dimension.getDimension();
             
-            List<String> uids = getUids( dimension.getItems() );
+            List<IdentifiableObject> items = dimension.getItems();
             
-            if ( INDICATOR.equals( type ) )
+            if ( items != null )
             {
-                object.getIndicators().addAll( identifiableObjectManager.getByUid( Indicator.class, uids ) );
-            }
-            else if ( DATAELEMENT.equals( type ) )
-            {
-                object.getDataElements().addAll( identifiableObjectManager.getByUid( DataElement.class, uids ) );
-            }
-            else if ( DATAELEMENT_OPERAND.equals( type ) )
-            {
-                object.getDataElementOperands().addAll( operandService.getDataElementOperandsByUid( uids ) );
-            }
-            else if ( DATASET.equals( type ) )
-            {
-                object.getDataSets().addAll( identifiableObjectManager.getByUid( DataSet.class, uids ) );
-            }
-            else if ( PERIOD.equals( type ) )
-            {
-                List<RelativePeriodEnum> enums = new ArrayList<RelativePeriodEnum>();                
-                Set<Period> periods = new HashSet<Period>();
+                List<String> uids = getUids( items );
                 
-                for ( String isoPeriod : uids )
+                if ( INDICATOR.equals( type ) )
                 {
-                    if ( RelativePeriodEnum.contains( isoPeriod ) )
-                    {
-                        enums.add( RelativePeriodEnum.valueOf( isoPeriod ) );
-                    }
-                    else
-                    {
-                        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
+                    object.getIndicators().addAll( identifiableObjectManager.getByUid( Indicator.class, uids ) );
+                }
+                else if ( DATAELEMENT.equals( type ) )
+                {
+                    object.getDataElements().addAll( identifiableObjectManager.getByUid( DataElement.class, uids ) );
+                }
+                else if ( DATAELEMENT_OPERAND.equals( type ) )
+                {
+                    object.getDataElementOperands().addAll( operandService.getDataElementOperandsByUid( uids ) );
+                }
+                else if ( DATASET.equals( type ) )
+                {
+                    object.getDataSets().addAll( identifiableObjectManager.getByUid( DataSet.class, uids ) );
+                }
+                else if ( PERIOD.equals( type ) )
+                {
+                    List<RelativePeriodEnum> enums = new ArrayList<RelativePeriodEnum>();                
+                    Set<Period> periods = new HashSet<Period>();
                     
-                        if ( period != null )
+                    for ( String isoPeriod : uids )
+                    {
+                        if ( RelativePeriodEnum.contains( isoPeriod ) )
                         {
-                            periods.add( period );
+                            enums.add( RelativePeriodEnum.valueOf( isoPeriod ) );
                         }
-                    }
-                }
-
-                object.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
-                object.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
-            }
-            else if ( ORGANISATIONUNIT.equals( type ) )
-            {
-                List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>();
-                
-                for ( String ou : uids )
-                {
-                    if ( KEY_USER_ORGUNIT.equals( ou ) )
-                    {
-                        object.setUserOrganisationUnit( true );
-                    }
-                    else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) )
-                    {
-                        object.setUserOrganisationUnitChildren( true );
-                    }
-                    else
-                    {
-                        OrganisationUnit unit = identifiableObjectManager.get( OrganisationUnit.class, ou );
+                        else
+                        {
+                            Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
                         
-                        if ( unit != null )
-                        {
-                            ous.add( unit );
+                            if ( period != null )
+                            {
+                                periods.add( period );
+                            }
                         }
                     }
+    
+                    object.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
+                    object.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
                 }
-                
-                object.setOrganisationUnits( ous );
-            }
-            else if ( CATEGORY.equals( type ) )
-            {
-                DataElementCategoryDimension categoryDimension = new DataElementCategoryDimension();
-                categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
-                categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
-                
-                object.getCategoryDimensions().add( categoryDimension );
-            }
-            else if ( DATAELEMENT_GROUPSET.equals( type ) )
-            {
-                object.getDataElementGroups().addAll( identifiableObjectManager.getByUid( DataElementGroup.class, uids ) );
-            }
-            else if ( ORGANISATIONUNIT_GROUPSET.equals( type ) )
-            {
-                object.getOrganisationUnitGroups().addAll( identifiableObjectManager.getByUid( OrganisationUnitGroup.class, uids ) );
+                else if ( ORGANISATIONUNIT.equals( type ) )
+                {
+                    List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>();
+                    
+                    for ( String ou : uids )
+                    {
+                        if ( KEY_USER_ORGUNIT.equals( ou ) )
+                        {
+                            object.setUserOrganisationUnit( true );
+                        }
+                        else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) )
+                        {
+                            object.setUserOrganisationUnitChildren( true );
+                        }
+                        else
+                        {
+                            OrganisationUnit unit = identifiableObjectManager.get( OrganisationUnit.class, ou );
+                            
+                            if ( unit != null )
+                            {
+                                ous.add( unit );
+                            }
+                        }
+                    }
+                    
+                    object.setOrganisationUnits( ous );
+                }
+                else if ( CATEGORY.equals( type ) )
+                {
+                    DataElementCategoryDimension categoryDimension = new DataElementCategoryDimension();
+                    categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
+                    categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
+                    
+                    object.getCategoryDimensions().add( categoryDimension );
+                }
+                else if ( DATAELEMENT_GROUPSET.equals( type ) )
+                {
+                    object.getDataElementGroups().addAll( identifiableObjectManager.getByUid( DataElementGroup.class, uids ) );
+                }
+                else if ( ORGANISATIONUNIT_GROUPSET.equals( type ) )
+                {
+                    object.getOrganisationUnitGroups().addAll( identifiableObjectManager.getByUid( OrganisationUnitGroup.class, uids ) );
+                }
             }
         }
     }
