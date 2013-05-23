@@ -131,6 +131,7 @@ public class DefaultParserManager
         }
         catch ( SMSParserException e )
         {
+            e.printStackTrace();
             sms.setStatus( SmsMessageStatus.FAILED );
             incomingSmsService.update( sms );
             sendSMS( e.getMessage(), sms.getOriginator() );

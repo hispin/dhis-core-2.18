@@ -3,6 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+	<bean id="org.hisp.dhis.mobile.action.incoming.ReimportSMSAction"
+		class="org.hisp.dhis.mobile.action.incoming.ReimportSMSAction">
+		<property name="parserManager"
+			ref="org.hisp.dhis.sms.parse.DefaultParserManager" />
+		<property name="incomingSmsService"
+			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.mobile.caseentry.state.SelectedStateManager"
 		class="org.hisp.dhis.mobile.caseentry.state.DefaultSelectedStateManager">
 		<property name="patientService"
