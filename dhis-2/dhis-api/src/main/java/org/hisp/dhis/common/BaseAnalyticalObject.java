@@ -406,6 +406,23 @@ public abstract class BaseAnalyticalObject
         return categoryDims;
     }
     
+    public static String getId( List<NameableObject> column, List<NameableObject> row )
+    {
+        StringBuilder id = new StringBuilder();
+        
+        for ( NameableObject item : column )
+        {
+            id.append( item.getUid() ).append( "-" );
+        }
+        
+        for ( NameableObject item : row )
+        {
+            id.append( item.getUid() ).append( "-" );
+        }
+        
+        return id.substring( 0, id.length() - 1 );
+    }
+    
     public void mergeWith( BaseAnalyticalObject other )
     {
         super.mergeWith( other );
