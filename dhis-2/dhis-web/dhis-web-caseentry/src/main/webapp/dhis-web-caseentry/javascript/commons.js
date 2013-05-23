@@ -1682,13 +1682,17 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 				hideById('programInstanceDiv');
 				if( hasDataEntry=='true' || hasDataEntry==undefined ){
 					var programStageInstanceId = jQuery('.stage-object').attr('id').split('_')[1];
-					loadDataEntry( programStageInstanceId );
+					if( programStageInstanceId )
+					{
+						loadDataEntry( programStageInstanceId );
+					}
 				}
 			}
 			else{
 				showById('programInstanceDiv');
 				activeProgramInstanceDiv( programInstanceId );
 				if( activeProgramStageInstanceId != undefined 
+					&& activeProgramStageInstanceId!=false
 					&& ( hasDataEntry=='true' || hasDataEntry==undefined ))
 				{
 					loadDataEntry( activeProgramStageInstanceId );
