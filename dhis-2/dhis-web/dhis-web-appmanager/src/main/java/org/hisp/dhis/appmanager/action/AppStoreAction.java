@@ -28,13 +28,11 @@ package org.hisp.dhis.appmanager.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import static com.opensymphony.xwork2.Action.SUCCESS;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id
  */
 public class AppStoreAction
     implements Action
@@ -52,7 +50,8 @@ public class AppStoreAction
 
     private String appStoreUrl;
 
-    public String getAppStoreUrl() {
+    public String getAppStoreUrl()
+    {
         return appManagerService.getAppStoreUrl();
     }
 

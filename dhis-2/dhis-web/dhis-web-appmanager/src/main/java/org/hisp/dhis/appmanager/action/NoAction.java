@@ -31,7 +31,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id
  */
 public class NoAction
     implements Action

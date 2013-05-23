@@ -42,7 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id$
  */
 public class AddAppAction
     implements Action
@@ -50,6 +49,7 @@ public class AddAppAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     @Autowired
     private AppManagerService appManagerService;
 
@@ -114,6 +114,7 @@ public class AddAppAction
                 boolean manifestFound = false;
                 ZipInputStream zis = new ZipInputStream( new FileInputStream( file ) );
                 ZipEntry ze;
+                
                 while ( (ze = zis.getNextEntry()) != null )
                 {
                     if ( ze.getName().equals( "manifest.webapp" ) )
@@ -129,7 +130,9 @@ public class AddAppAction
                         message = i18n.getString( "appmanager_install_success" );
                     }
                 }
+                
                 zis.close();
+                
                 if ( !manifestFound )
                 {
                     message = i18n.getString( "appmanager_invalid_package" );
@@ -140,6 +143,7 @@ public class AddAppAction
                 message = i18n.getString( "appmanager_not_zip" );
             }
         }
+        
         return SUCCESS;
     }
 }
