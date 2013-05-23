@@ -67,9 +67,6 @@
 
     <property name="aggregateType" />
 
-    <many-to-one name="user" class="org.hisp.dhis.user.User"
-      column="userid" foreign-key="fk_patientaggregatereport_userid" />
-
     <property name="useCompletedEvents" />
 
     <property name="userOrganisationUnit" />
@@ -79,5 +76,18 @@
     <many-to-one name="deSum" class="org.hisp.dhis.dataelement.DataElement"
       column="desumid" foreign-key="fk_patientaggregatereport_dataelementsumtid" />
 
+    <!-- Access properties -->
+	
+    <many-to-one name="user" class="org.hisp.dhis.user.User"
+      column="userid" foreign-key="fk_patientaggregatereport_userid" />
+	
+    <property name="publicAccess" length="8" />
+
+    <set name="userGroupAccesses" table="patientaggregatereportusergroupaccesses">
+      <cache usage="read-write" />
+      <key column="patientaggregatereportid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
+    </set>
+    
   </class>
 </hibernate-mapping>

@@ -34,6 +34,8 @@ import org.hisp.dhis.document.Document;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.patientreport.PatientAggregateReport;
+import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -104,6 +106,12 @@ public final class SharingUtils
 
         SUPPORTED_TYPES.put( "chart", Chart.class );
         PUBLIC_AUTHORITIES.put( Chart.class, "F_CHART_PUBLIC_ADD" );
+        
+        SUPPORTED_TYPES.put( "patientTabularReport", PatientTabularReport.class );
+        PUBLIC_AUTHORITIES.put( PatientTabularReport.class, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD" );
+        
+        SUPPORTED_TYPES.put( "patientAggregateReport", PatientAggregateReport.class );
+        PUBLIC_AUTHORITIES.put( PatientAggregateReport.class, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD" );
     }
 
     public static boolean isSupported( String type )
