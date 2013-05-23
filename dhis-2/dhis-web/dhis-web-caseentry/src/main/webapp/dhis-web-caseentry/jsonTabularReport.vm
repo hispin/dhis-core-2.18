@@ -32,6 +32,7 @@
 	"level": "${tabularReport.level}",
 	"sortedOrgunitAsc": "${tabularReport.sortedOrgunitAsc}",
 	"facilityLB": "${tabularReport.facilityLB}",
+	"displayOrgunitCode": "$!tabularReport.displayOrgunitCode",
 	"useCompletedEvents": "$!tabularReport.useCompletedEvents",
 	"userOrganisationUnit": "$!tabularReport.userOrganisationUnit",
 	"userOrganisationUnitChildren": "$!tabularReport.userOrganisationUnitChildren",

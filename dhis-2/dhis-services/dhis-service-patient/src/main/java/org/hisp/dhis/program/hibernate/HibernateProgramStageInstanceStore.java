@@ -260,7 +260,7 @@ public class HibernateProgramStageInstanceStore
     public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap, Collection<Integer> orgUnits,
         List<TabularReportColumn> columns, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max, I18n i18n )
+        Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max, I18n i18n )
     {
         // ---------------------------------------------------------------------
         // Headers cols
@@ -273,7 +273,7 @@ public class HibernateProgramStageInstanceStore
 
         grid.addHeader( new GridHeader( "id", true, true ) );
         grid.addHeader( new GridHeader( programStage.getReportDateDescription(), false, true ) );
-
+        
         if ( anonynousEntryForm == null || !anonynousEntryForm )
         {
             for ( int i = level; i <= maxLevel; i++ )
@@ -281,6 +281,11 @@ public class HibernateProgramStageInstanceStore
                 String name = orgUnitLevelMap.containsKey( i ) ? orgUnitLevelMap.get( i ).getName() : "Level " + i;
                 grid.addHeader( new GridHeader( name, false, true ) );
             }
+        }
+       
+        if(displayOrgunitCode!=null && displayOrgunitCode)
+        {
+            grid.addHeader( new GridHeader( i18n.getString("orgunit_code"), false, true ) );
         }
 
         Collection<String> deKeys = new HashSet<String>();
@@ -305,7 +310,7 @@ public class HibernateProgramStageInstanceStore
         // ---------------------------------------------------------------------
 
         String sql = getTabularReportSql( anonynousEntryForm, false, programStage, columns, orgUnits, level, maxLevel,
-            startDate, endDate, descOrder, completed, accessPrivateInfo, min, max );
+            startDate, endDate, descOrder, completed, accessPrivateInfo, displayOrgunitCode, min, max );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -346,10 +351,10 @@ public class HibernateProgramStageInstanceStore
 
     public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, int maxLevel,
-        Date startDate, Date endDate, Boolean completed )
+        Date startDate, Date endDate, Boolean completed, Boolean displayOrgunitCode )
     {
         String sql = getTabularReportSql( anonynousEntryForm, true, programStage, columns, organisationUnits, level,
-            maxLevel, startDate, endDate, false, completed, null, null, null );
+            maxLevel, startDate, endDate, false, completed, null, displayOrgunitCode, null, null );
 
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
@@ -883,7 +888,7 @@ public class HibernateProgramStageInstanceStore
 
     private String getTabularReportSql( Boolean anonynousEntryForm, boolean count, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> orgUnits, int level, int maxLevel, Date startDate,
-        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Integer min, Integer max )
+        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max )
     {
         Set<String> deKeys = new HashSet<String>();
         String selector = count ? "count(*) " : "* ";
@@ -900,7 +905,12 @@ public class HibernateProgramStageInstanceStore
                     + i + ",";
             }
         }
-
+             
+        if( displayOrgunitCode!=null && displayOrgunitCode)
+        {
+            sql += "(select code from organisationunit where organisationunitid=psi.organisationunitid ) as code_,";
+        }
+        
         for ( TabularReportColumn column : columns )
         {
             if ( column.isFixedAttribute() )

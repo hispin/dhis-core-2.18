@@ -1092,6 +1092,7 @@ Ext.onReady( function() {
 								Ext.getCmp('userOrgunit').setValue( f.userOrganisationUnit );
 								Ext.getCmp('userOrgunitChildren').setValue( f.userOrganisationUnitChildren );								
 								Ext.getCmp('completedEventsOpt').setValue(f.useCompletedEvents);
+								Ext.getCmp('displayOrgunitCode').setValue(f.displayOrgunitCode);
 								
 								// Orgunits
 								
@@ -1131,38 +1132,7 @@ Ext.onReady( function() {
 										 storePatientProperty.load({params: {programId: f.programId}});
 									 }
 								 }
-                                                         
-								// Data element
-								
-								Ext.getCmp('filterPanel').removeAll();
-								Ext.getCmp('filterPanel').doLayout();
-	
-								TR.cmp.params.dataelement.objects = [];
-								TR.store.dataelement.selected.removeAll();
-								if (f.dataElements) {
-									for (var i = 0; i < f.dataElements.length; i++) {
-										var name = TR.util.string.getEncodedString(f.dataElements[i].name);
-										var compulsory = f.dataElements[i].compulsory;
-										var valueType = f.dataElements[i].valueType;
-										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
-										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType, f.dataElements[i].filter );
-									}
-									TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
-									
-									if( f.singleEvent == 'false' )
-									{
-										var store = TR.store.dataelement.available;
-										store.parent = f.programStageId;
-										if (TR.util.store.containsParent(store)) {
-											TR.util.store.loadFromStorage(store);
-											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-										}
-										else {
-											store.load({params: {programStageId: f.programStageId}});
-										}
-									}
-								}
-								
+                                        
 								// Program stage									
 								
 								var storeProgramStage = TR.store.programStage;
@@ -1179,6 +1149,39 @@ Ext.onReady( function() {
 									);
 								}
 								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								
+								
+								// Data element
+								
+								Ext.getCmp('filterPanel').removeAll();
+								Ext.getCmp('filterPanel').doLayout();
+	
+								TR.cmp.params.dataelement.objects = [];
+								TR.store.dataelement.selected.removeAll();
+								if (f.dataElements) {
+									for (var i = 0; i < f.dataElements.length; i++) {
+										var name = TR.util.string.getEncodedString(f.dataElements[i].name);
+										var compulsory = f.dataElements[i].compulsory;
+										var valueType = f.dataElements[i].valueType;
+										TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
+										TR.store.dataelement.selected.add({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
+										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType, f.dataElements[i].filter );
+									}
+									
+									if( f.singleEvent == 'false' )
+									{
+										var store = TR.store.dataelement.available;
+										store.parent = f.programStageId;
+										if (TR.util.store.containsParent(store)) {
+											TR.util.store.loadFromStorage(store);
+											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+										}
+										else {
+											store.load({params: {programStageId: f.programStageId}});
+										}
+									}
+								}
+								
 								
 								TR.exe.execute();
 								
@@ -1793,8 +1796,15 @@ Ext.onReady( function() {
 					{
 						completedEvent = "&completedEventsOpt=true";
 					}
+					
+					var displayOrgunitCode='';
+					if ( Ext.getCmp('displayOrgunitCode').getValue() == true )
+					{
+						displayOrgunitCode = "&displayOrgunitCode=true";
+					}
+					
   				    var exportForm = document.getElementById('exportForm');
-					exportForm.action = url + "?type=" + type + completedEvent;
+					exportForm.action = url + "?type=" + type + completedEvent + displayOrgunitCode;
 					exportForm.submit();
 				}
 				// Show report on grid
@@ -1862,6 +1872,11 @@ Ext.onReady( function() {
 				if( Ext.getCmp('completedEventsOpt').getValue() == true )
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
+				}
+				
+				if( Ext.getCmp('displayOrgunitCode').getValue()== true )
+				{
+					p.displayOrgunitCode = Ext.getCmp('displayOrgunitCode').getValue();
 				}
 				
 				// Get searching values
@@ -1975,8 +1990,8 @@ Ext.onReady( function() {
 				
 				// Get searching values
 				
-				var filterValues = document.getElementById('filterValues');
-				TR.util.list.clearList(filterValues);				
+				var filterValueList = document.getElementById('filterValues');
+				TR.util.list.clearList(filterValueList);				
 				
 				// Patient properties
 				
@@ -1989,11 +2004,24 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = propId + '_' + idx;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
+						var filterField = Ext.getCmp('filter_' + id);
+						var filterValue = "";
+						if( filterField.xtype == 'combobox' )
+						{
+							var values = Ext.getCmp('filter_' + id).getValue();
+							for( var i in values ){
+								filterValue += values[i] + ";";
+							}
+							filterValue = filterValue.substring(0,filterValue.length - 1  );
+						}
+						else{
+							filterValue = filterField.rawValue;
+						}
+						
 						var filter = propId + '_' + hidden 
-						if( filterValue!='' && filterValue!=TR.i18n.please_select ){
+						if( filterValue!=null && filterValue!=''){
 							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-							filter += '_' + filterOpt + ' ';
+							filter += '_' + filterOpt + '_';
 							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
@@ -2009,7 +2037,7 @@ Ext.onReady( function() {
 								filter += "'" + filterValue + "'";
 							}
 						}
-						TR.util.list.addOptionToList(filterValues, filter, '');
+						TR.util.list.addOptionToList(filterValueList, filter, '');
 					}
 				});
 				
@@ -2022,18 +2050,15 @@ Ext.onReady( function() {
 					for(var idx=0;idx<length;idx++)
 					{
 						var id = deId + '_' + idx;
-						var filterField = Ext.getCmp('filter_' + id);
-						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						
+						var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;						
+						var filterValue = Ext.getCmp('filter_' + id).rawValue;
 						var filter = deId + '_' + hidden + '_';
 						if( Ext.getCmp('filter_' + id).getValue()!=null 
 							&& Ext.getCmp('filter_' + id).getValue()!=''){
 							
 							filterValue = filterValue.toLowerCase();
-							var filterOpt = Ext.getCmp('filter_opt_' + id).rawValue;
-							filter += filterOpt + ' ';
-						
+							filter += filterOpt + '_';
 							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
@@ -2049,9 +2074,10 @@ Ext.onReady( function() {
 								filter += "'" + Ext.getCmp('filter_' + id).getValue() + "'";
 							}
 						}
-						TR.util.list.addOptionToList(filterValues, filter, '');
+						TR.util.list.addOptionToList(filterValueList, filter, '');
 					}
 				});
+				
 			},
 			isColHidden: function( colname ) {
 				var grid = TR.datatable.datatable;
@@ -2378,6 +2404,7 @@ Ext.onReady( function() {
 				else{
 					document.getElementById('deGroupBy').value = "";
 				}
+				
 				if( Ext.getCmp('limitOption').getValue() != null 
 					&& Ext.getCmp('limitOption').getValue() != '' ){
 					document.getElementById('limitRecords').value = Ext.getCmp('limitOption').getValue();
@@ -2806,7 +2833,7 @@ Ext.onReady( function() {
             return this.datatable;
             
         },
-		createColTable:function(){
+		createColTable: function(){
 			var cols = [];
 				
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -2844,6 +2871,20 @@ Ext.onReady( function() {
 				// Org unit level columns
 				
 				for( var i = 0; i <orgUnitCols; i++ )
+				{
+					cols[++index] = {
+						header: TR.value.columns[index].name, 
+						dataIndex: 'col' + index,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: 'meta_' + index,
+						sortable: false,
+						draggable: false,
+						hideable: false,
+						menuDisabled: true
+					}
+				}
+				
+				if( Ext.getCmp('displayOrgunitCode').getValue()== true )
 				{
 					cols[++index] = {
 						header: TR.value.columns[index].name, 
@@ -4020,6 +4061,16 @@ Ext.onReady( function() {
 			labelWidth: 135
 		});
 		
+		var displayOrgunitCodeField = Ext.create('Ext.form.field.Checkbox', {
+			xtype: 'checkbox',
+			cls: 'tr-checkbox',
+			id: 'displayOrgunitCode',
+			style:'padding-left: 20px;',
+			boxLabel: TR.i18n.display_orgunit_code,
+			boxLabelAlign: 'before',
+			labelWidth: 135
+		});
+		
 		var facilityLBField = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'tr-combo',
 			id: 'facilityLBCombobox',
@@ -4172,7 +4223,8 @@ Ext.onReady( function() {
 							bodyStyle: 'border-style:none; background-color:transparent;',
 							items:[
 								completedEventsField,
-								displayTotalsOptField
+								displayTotalsOptField,
+								displayOrgunitCodeField
 							]
 						},
 						facilityLBField,
@@ -4516,8 +4568,10 @@ Ext.onReady( function() {
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 													Ext.getCmp('datePeriodRangeDiv').setVisible(false);
 													Ext.getCmp('deSumCbx').setVisible(false);
+													Ext.getCmp('displayTotalsOpt').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(true);
+													Ext.getCmp('displayOrgunitCode').setVisible(true);
 													var level = Ext.getCmp('levelCombobox').getValue();
 													if( level==null || level!='' ){
 														Ext.getCmp('levelCombobox').setValue('1');
@@ -4560,10 +4614,12 @@ Ext.onReady( function() {
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
 													Ext.getCmp('btnSortBy').setVisible(false);
 													Ext.getCmp('patientPropertiesDiv').setVisible(false);
+													Ext.getCmp('displayOrgunitCode').setVisible(false);
 													
 													Ext.getCmp('datePeriodRangeDiv').setVisible(true);
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(true);
+													Ext.getCmp('displayTotalsOpt').setVisible(true);
 													Ext.getCmp('datePeriodRangeDiv').expand();
 													Ext.getCmp('filterPanel').setHeight(105);
 												}
@@ -6375,6 +6431,7 @@ Ext.onReady( function() {
 				Ext.getCmp('positionField').setVisible(false);
 				Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 				Ext.getCmp('datePeriodRangeDiv').setVisible(false);
+				Ext.getCmp('displayTotalsOpt').setVisible(false);
 				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 				Ext.getCmp('levelCombobox').setVisible(true);
 				Ext.getCmp('patientPropertiesDiv').setVisible(true);

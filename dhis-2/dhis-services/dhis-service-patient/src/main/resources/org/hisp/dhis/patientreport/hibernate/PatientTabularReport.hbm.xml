@@ -49,6 +49,8 @@
       <element type="text" column="filtervalue" />
     </list>
     
+    <property name="displayOrgunitCode" />
+    
     <!-- Access properties -->
    
     <many-to-one name="user" class="org.hisp.dhis.user.User"

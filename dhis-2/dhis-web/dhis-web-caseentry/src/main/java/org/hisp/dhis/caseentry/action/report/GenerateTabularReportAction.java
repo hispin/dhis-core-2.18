@@ -304,6 +304,13 @@ public class GenerateTabularReportAction
         return message;
     }
 
+    private Boolean displayOrgunitCode;
+
+    public void setDisplayOrgunitCode( Boolean displayOrgunitCode )
+    {
+        this.displayOrgunitCode = displayOrgunitCode;
+    }
+
     private boolean accessPrivateInfo = false;
 
     // -------------------------------------------------------------------------
@@ -404,22 +411,23 @@ public class GenerateTabularReportAction
         {
             if ( type == null ) // Tabular report
             {
-                totalRecords = programStageInstanceService.getTabularReportCount( anonynousEntryForm, programStage, columns,
-                    organisationUnits, level, useCompletedEvents, startValue, endValue );
+                totalRecords = programStageInstanceService.getTabularReportCount( anonynousEntryForm, programStage,
+                    columns, organisationUnits, level, useCompletedEvents, displayOrgunitCode, startValue, endValue );
 
                 total = getNumberOfPages( totalRecords );
 
                 this.paging = createPaging( totalRecords );
 
-                grid = programStageInstanceService.getTabularReport( anonynousEntryForm, programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, useCompletedEvents, accessPrivateInfo, getStartPos(),
-                    paging.getPageSize(), i18n );
+                grid = programStageInstanceService.getTabularReport( anonynousEntryForm, programStage, columns,
+                    organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, useCompletedEvents,
+                    accessPrivateInfo, displayOrgunitCode, getStartPos(), paging.getPageSize(), i18n );
             }
             // Download as Excel
             else
             {
-                grid = programStageInstanceService.getTabularReport( anonynousEntryForm, programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, useCompletedEvents, accessPrivateInfo, null, null, i18n );
+                grid = programStageInstanceService.getTabularReport( anonynousEntryForm, programStage, columns,
+                    organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, useCompletedEvents,
+                    accessPrivateInfo, displayOrgunitCode, null, null, i18n );
             }
         }
         catch ( SQLGrammarException ex )
@@ -469,7 +477,7 @@ public class GenerateTabularReportAction
                 column.setPrefix( prefix );
                 column.setIdentifier( values[1] );
                 column.setHidden( Boolean.parseBoolean( values[2] ) );
-                
+
                 column.setOperator( values.length == 5 ? TextUtils.lower( values[3] ) : null );
                 column.setQuery( values.length == 5 ? TextUtils.lower( values[4] ) : null );
 
