@@ -38,11 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
@@ -519,6 +522,26 @@ public class ReportTable
     }
 
     /**
+     * Checks whether the given List of IdentifiableObjects contains an object
+     * which is an OrganisationUnit and has the currentParent property set to
+     * true.
+     *
+     * @param objects the List of IdentifiableObjects.
+     */
+    public static boolean isCurrentParent( List<? extends IdentifiableObject> objects )
+    {
+        for ( IdentifiableObject object : objects )
+        {
+            if ( object != null && object instanceof OrganisationUnit && ((OrganisationUnit) object).isCurrentParent() )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    /**
      * Returns null-safe sort order, none if null.
      */
     public int sortOrder()
@@ -595,6 +618,117 @@ public class ReportTable
         }
     }
 
+    /**
+     * Generates a grid for this report table based on the given aggregate value
+     * map.
+     *
+     * @param grid the grid, should be empty and not null.
+     * @param valueMap the mapping of identifiers to aggregate values.
+     * @param format the I18nFormat.
+     * @return a grid.
+     */
+    public Grid getGrid( Grid grid, Map<String, Double> valueMap )
+    {
+        final String subtitle = StringUtils.trimToEmpty( getParentOrganisationUnitName() ) + SPACE
+            + StringUtils.trimToEmpty( getReportingPeriodName() );
+
+        grid.setTitle( getName() + " - " + subtitle );
+
+        // ---------------------------------------------------------------------
+        // Headers
+        // ---------------------------------------------------------------------
+
+        for ( String row : getRowDimensions() )
+        {
+            String name = StringUtils.defaultIfEmpty( DimensionalObject.PRETTY_NAMES.get( row ), row );
+            
+            grid.addHeader( new GridHeader( name + " ID", row + "_id", String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( name, row + "_name", String.class.getName(), false, true ) );
+            grid.addHeader( new GridHeader( name + " code", row + "_code", String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( name + " description", row + "_description", String.class.getName(), true, true ) );
+        }
+        
+        grid.addHeader( new GridHeader( "Reporting month", REPORTING_MONTH_COLUMN_NAME,
+            String.class.getName(), true, true ) );
+        grid.addHeader( new GridHeader( "Organisation unit parameter",
+            PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
+        grid.addHeader( new GridHeader( "Organisation unit is parent",
+            ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
+
+        final int startColumnIndex = grid.getHeaders().size();
+        final int numberOfColumns = getGridColumns().size();
+
+        for ( List<NameableObject> column : getGridColumns() )
+        {
+            grid.addHeader( new GridHeader( getPrettyColumnName( column ), getColumnName( column ), Double.class
+                .getName(), false, false ) );
+        }
+
+        // ---------------------------------------------------------------------
+        // Values
+        // ---------------------------------------------------------------------
+
+        for ( List<NameableObject> row : getGridRows() )
+        {
+            grid.addRow();
+
+            // -----------------------------------------------------------------
+            // Row meta data
+            // -----------------------------------------------------------------
+
+            for ( NameableObject object : row )
+            {
+                grid.addValue( object.getUid() );
+                grid.addValue( object.getName() );
+                grid.addValue( object.getCode() );
+                grid.addValue( object.getDescription() );
+            }
+            
+            grid.addValue( getReportingPeriodName() );
+            grid.addValue( getParentOrganisationUnitName() );
+            grid.addValue( isCurrentParent( row ) ? "Yes" : "No" );
+
+            // -----------------------------------------------------------------
+            // Row data values
+            // -----------------------------------------------------------------
+
+            for ( List<NameableObject> column : getGridColumns() )
+            {
+                String key = BaseAnalyticalObject.getId( column, row );
+                
+                Double value = valueMap.get( key );
+                
+                grid.addValue( value );
+            }
+        }
+
+        if ( isRegression() )
+        {
+            grid.addRegressionToGrid( startColumnIndex, numberOfColumns );
+        }
+
+        if ( isCumulative() )
+        {
+            grid.addCumulativesToGrid( startColumnIndex, numberOfColumns );
+        }
+
+        // ---------------------------------------------------------------------
+        // Sort and limit
+        // ---------------------------------------------------------------------
+
+        if ( sortOrder() != ReportTable.NONE )
+        {
+            grid.sortGrid( grid.getWidth(), sortOrder() );
+        }
+
+        if ( topLimit() > 0 )
+        {
+            grid.limitGrid( topLimit() );
+        }
+
+        return grid;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

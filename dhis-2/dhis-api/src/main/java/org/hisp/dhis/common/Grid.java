@@ -238,12 +238,28 @@ public interface Grid
     Grid addRegressionColumn( int columnIndex, boolean addHeader );
     
     /**
+     * Adds columns with regression values to the given grid.
+     *
+     * @param startColumnIndex the index of the first data column.
+     * @param numberOfColumns  the number of data columns.
+     */
+    Grid addRegressionToGrid( int startColumnIndex, int numberOfColumns );
+    
+    /**
      * Adds a cumulative column to the grid. Column must hold numeric data.
      * 
      * @param columnIndex the index of the base column.
      * @param addHeader indicates whether to add a grid header for the regression column.
      */
     Grid addCumulativeColumn( int columnIndex, boolean addHeader );
+    
+    /**
+     * Adds columns with cumulative values to the given grid.
+     *
+     * @param startColumnIndex the index of the first data column.
+     * @param numberOfColumns  the number of data columns.
+     */
+    Grid addCumulativesToGrid( int startColumnIndex, int numberOfColumns );
     
     /**
      * Substitutes the values in the meta columns with the mapped value in the

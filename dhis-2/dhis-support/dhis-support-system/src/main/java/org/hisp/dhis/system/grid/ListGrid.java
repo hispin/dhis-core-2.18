@@ -503,6 +503,18 @@ public class ListGrid
         return this;
     }
 
+    public Grid addRegressionToGrid( int startColumnIndex, int numberOfColumns )
+    {
+        for ( int i = 0; i < numberOfColumns; i++ )
+        {
+            int columnIndex = i + startColumnIndex;
+
+            this.addRegressionColumn( columnIndex, true );
+        }
+
+        return this;
+    }
+
     public Grid addCumulativeColumn( int columnIndex, boolean addHeader )
     {
         verifyGridState();
@@ -539,7 +551,19 @@ public class ListGrid
 
         return this;
     }
-    
+
+    public Grid addCumulativesToGrid( int startColumnIndex, int numberOfColumns )
+    {
+        for ( int i = 0; i < numberOfColumns; i++ )
+        {
+            int columnIndex = i + startColumnIndex;
+
+            this.addCumulativeColumn( columnIndex, true );
+        }
+
+        return this;
+    }
+
     public Grid substituteMetaData( Map<Object, Object> metaDataMap )
     {
         if ( metaDataMap == null || headers == null || headers.isEmpty() )
