@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller.mapping;
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -80,6 +81,9 @@ public class MapController
     @Autowired
     private DataElementService dataElementService;
 
+    @Autowired
+    private DataElementOperandService operandService;
+    
     @Autowired
     private PeriodService periodService;
 
@@ -227,6 +231,11 @@ public class MapController
         {
             view.setDataElement( dataElementService.getDataElement( view.getDataElement().getUid() ) );
         }
+        
+        if ( view.getDataElementOperand() != null )
+        {
+            view.setDataElementOperand( operandService.getDataElementOperandByUid( view.getDataElementOperand().getUid() ) );
+        }        
 
         if ( view.getPeriod() != null )
         {

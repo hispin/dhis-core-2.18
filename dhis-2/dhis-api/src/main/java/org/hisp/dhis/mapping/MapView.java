@@ -44,6 +44,7 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -85,6 +86,8 @@ public class MapView
 
     private DataElement dataElement;
 
+    private DataElementOperand dataElementOperand;
+    
     private Period period;
 
     private OrganisationUnit parentOrganisationUnit;
@@ -244,6 +247,20 @@ public class MapView
     public void setDataElement( DataElement dataElement )
     {
         this.dataElement = dataElement;
+    }
+
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public DataElementOperand getDataElementOperand()
+    {
+        return dataElementOperand;
+    }
+
+    public void setDataElementOperand( DataElementOperand dataElementOperand )
+    {
+        this.dataElementOperand = dataElementOperand;
     }
 
     @JsonProperty
