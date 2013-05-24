@@ -59,5 +59,7 @@ public interface PatientAttributeService
     PatientAttribute getPatientAttributeByGroupBy( boolean groupBy );
 
     Collection<PatientAttribute> getPatientAttributesWithoutGroup();
+    
+    Collection<PatientAttribute> getPatientAttributesByDisplayOnVisitSchedule( boolean displayOnVisitSchedule );
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,24 +27,27 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ ShowPatientAttributeVisitScheduleFormAction.java May 24, 2013
+ *          1:22:52 PM $
  */
-public class AddPatientAttributeAction
+public class ShowPatientAttributeVisitScheduleFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;
@@ -54,66 +57,24 @@ public class AddPatientAttributeAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientAttributeOptionService patientAttributeOptionService;
-
-    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
-    {
-        this.patientAttributeOptionService = patientAttributeOptionService;
-    }
-
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private List<PatientAttribute> availablePatientAttributes = new ArrayList<PatientAttribute>();
 
-    public void setName( String name )
+    public List<PatientAttribute> getAvailablePatientAttributes()
     {
-        this.name = name;
+        return availablePatientAttributes;
     }
 
-    private String description;
+    private List<PatientAttribute> selectedPatientAttributes = new ArrayList<PatientAttribute>();
 
-    public void setDescription( String description )
+    public List<PatientAttribute> getSelectedPatientAttributes()
     {
-        this.description = description;
+        return selectedPatientAttributes;
     }
 
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
-    private Boolean mandatory;
-
-    public void setMandatory( Boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-
-    private List<String> attrOptions;
-
-    public void setAttrOptions( List<String> attrOptions )
-    {
-        this.attrOptions = attrOptions;
-    }
-
-    private Boolean inherit;
-
-    public void setInherit( Boolean inherit )
-    {
-        this.inherit = inherit;
-    }
-
-    private String expression;
-
-    public void setExpression( String expression )
-    {
-        this.expression = expression;
-    }
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -121,34 +82,17 @@ public class AddPatientAttributeAction
     public String execute()
         throws Exception
     {
-        PatientAttribute patientAttribute = new PatientAttribute();
+        availablePatientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
 
-        patientAttribute.setName( name );
-        patientAttribute.setDescription( description );
-        patientAttribute.setValueType( valueType );
-        patientAttribute.setExpression( expression );
+        selectedPatientAttributes = new ArrayList<PatientAttribute>(
+            patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule( true ) );
 
-        mandatory = (mandatory == null) ? false : true;
-        patientAttribute.setMandatory( mandatory );
-
-        inherit = (inherit == null) ? false : true;
-        patientAttribute.setInherit( inherit );
-
-        patientAttributeService.savePatientAttribute( patientAttribute );
-
-        if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
-        {
-            PatientAttributeOption opt = null;
-            for ( String optionName : attrOptions )
-            {
-                opt = new PatientAttributeOption();
-                opt.setName( optionName );
-                opt.setPatientAttribute( patientAttribute );
-                patientAttribute.addAttributeOptions( opt );
-                patientAttributeOptionService.addPatientAttributeOption( opt );
-            }
-        }
+        availablePatientAttributes.removeAll( selectedPatientAttributes );
+        
+        Collections.sort( availablePatientAttributes, new PatientAttributeComparator() );
+        Collections.sort( selectedPatientAttributes, new PatientAttributeComparator() );
 
         return SUCCESS;
     }
+
 }

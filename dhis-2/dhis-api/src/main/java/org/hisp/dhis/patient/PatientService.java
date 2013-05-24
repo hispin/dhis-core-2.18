@@ -208,7 +208,8 @@ public interface PatientService
 
     void removeErollmentPrograms( Program program );
 
-    Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+    Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit,
+        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
     int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit );
 
@@ -217,7 +218,8 @@ public interface PatientService
 
     List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
 
-    Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, I18n i18n );
+    Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max,
+        I18n i18n );
 
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
 

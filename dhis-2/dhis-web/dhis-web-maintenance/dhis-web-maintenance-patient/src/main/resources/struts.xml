@@ -190,6 +190,23 @@
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
+		
+		<action name="patientAttributeVisitSchedule"
+			class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/patientAttributeVisitSchedule.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+		</action>
+		
+		<action name="savePatientAttributeVisitSchedule"
+			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction">
+			<result name="success" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+		</action>
 
 		<!-- Program -->
 

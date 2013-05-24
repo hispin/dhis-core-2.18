@@ -48,6 +48,7 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -253,9 +254,10 @@ public class HibernatePatientStore
     }
 
     @Override
-    public Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    public Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit,
+        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, min, max );
         Collection<Patient> patients = new HashSet<Patient>();
         try
         {
@@ -276,10 +278,10 @@ public class HibernatePatientStore
     }
 
     @Override
-    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
-        Integer max )
+    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit,
+        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, min, max );
         Collection<String> phoneNumbers = new HashSet<String>();
         try
         {
@@ -301,10 +303,10 @@ public class HibernatePatientStore
     }
 
     @Override
-    public List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
-        Integer max )
+    public List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, min, max );
         List<Integer> programStageInstanceIds = new ArrayList<Integer>();
         try
         {
@@ -327,18 +329,19 @@ public class HibernatePatientStore
 
     public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
     {
-        String sql = searchPatientSql( true, searchKeys, orgunit, null, null );
+        String sql = searchPatientSql( true, searchKeys, orgunit, null, null, null );
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     @Override
-    public Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit )
+    public Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit,
+        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
         // ---------------------------------------------------------------------
         // Get SQL and build grid
         // ---------------------------------------------------------------------
 
-        String sql = searchPatientSql( false, searchKeys, orgunit, null, null );
+        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, null, null );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -351,13 +354,24 @@ public class HibernatePatientStore
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String searchPatientSql( boolean count, List<String> searchKeys, OrganisationUnit orgunit, Integer min,
-        Integer max )
+    private String searchPatientSql( boolean count, List<String> searchKeys, OrganisationUnit orgunit,
+        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
         String selector = count ? "count(*) " : "* ";
 
         String sql = "select " + selector
             + " from ( select distinct p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber,";
+
+        if ( patientAttributes != null )
+        {
+            for ( PatientAttribute patientAttribute : patientAttributes )
+            {
+                sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
+                    + patientAttribute.getId() + " ) as " + Patient.PREFIX_PATIENT_ATTRIBUTE + "_"
+                    + patientAttribute.getId() + " ,";
+            }
+        }
+
         String patientWhere = "";
         String patientOperator = " where ";
         String patientGroupBy = " GROUP BY  p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber ";
