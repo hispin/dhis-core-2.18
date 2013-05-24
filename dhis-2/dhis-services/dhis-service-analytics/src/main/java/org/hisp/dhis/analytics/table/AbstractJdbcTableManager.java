@@ -139,11 +139,7 @@ public abstract class AbstractJdbcTableManager
 
     public boolean pruneTable( String tableName )
     {
-        final String sql = "select * from " + tableName + " limit 1";
-        
-        final boolean hasRows = jdbcTemplate.queryForRowSet( sql ).next();
-        
-        if ( !hasRows )
+        if ( !hasRows( tableName ) )
         {
             final String sqlDrop = "drop table " + tableName;
             
@@ -191,6 +187,23 @@ public abstract class AbstractJdbcTableManager
     // Supportive methods
     // -------------------------------------------------------------------------
   
+    /**
+     * Indicates whether the given table exists and has at least one row.
+     */
+    protected boolean hasRows( String tableName )
+    {
+        final String sql = "select * from " + tableName + " limit 1";
+        
+        try
+        {
+            return jdbcTemplate.queryForRowSet( sql ).next();
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            return false;
+        }
+    }
+    
     /**
      * Executes a SQL statement. Ignores existing tables/indexes when attempting
      * to create new.
