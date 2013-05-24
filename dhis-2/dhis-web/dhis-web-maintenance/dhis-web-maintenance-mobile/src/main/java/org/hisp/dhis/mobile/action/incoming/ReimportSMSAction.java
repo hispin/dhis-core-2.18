@@ -63,6 +63,18 @@ public class ReimportSMSAction
     {
         this.incomingSMS = incomingSMS;
     }
+    
+    private String message;
+    
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -82,10 +94,12 @@ public class ReimportSMSAction
         try
         {
             parserManager.parse( incomingSMS );
+            message = "SMS imported";
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            message = e.getMessage();
+            return "error";
         }
 
         return SUCCESS;
