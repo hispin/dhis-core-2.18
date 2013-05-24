@@ -75,6 +75,7 @@ public class OrganisationUnit
 
     public static final String KEY_USER_ORGUNIT = "USER_ORGUNIT";
     public static final String KEY_USER_ORGUNIT_CHILDREN = "USER_ORGUNIT_CHILDREN";
+    public static final String KEY_LEVEL = "LEVEL-";
 
     private static final List<String> FEATURETYPES = Arrays.asList( FEATURETYPE_NONE, FEATURETYPE_MULTIPOLYGON, FEATURETYPE_POLYGON, FEATURETYPE_POINT );
 

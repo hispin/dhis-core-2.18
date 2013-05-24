@@ -88,6 +88,7 @@ public class DataQueryParams
     
     private static final String DIMENSION_NAME_SEP = ":";
     private static final String OPTION_SEP = ";";
+    private static final String ITEM_SEP = "-";
 
     public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATAELEMENT_OPERAND_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
@@ -707,6 +708,48 @@ public class DataQueryParams
         }
         
         return new ArrayList<String>();
+    }
+    
+    /**
+     * Retrieves the level from a level parameter string, which is on the format
+     * LEVEL-<level>-<item> .
+     */
+    public static int getLevelFromLevelParam( String param )
+    {
+        if ( param == null )   
+        {
+            return 0;
+        }
+        
+        String[] split = param.split( ITEM_SEP );
+        
+        if ( split.length > 1 && MathUtils.isInteger( split[1] ) )
+        {
+            return Integer.parseInt( split[1] );
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * Retrieves the boundary dimension item from a level parameter string, which
+     * is on the format LEVEL-<level>-<item> .
+     */
+    public static String getBoundaryFromLevelParam( String param )
+    {
+        if ( param == null )   
+        {
+            return null;
+        }
+        
+        String[] split = param.split( ITEM_SEP );
+        
+        if ( split.length > 2 && split[2] != null )
+        {
+            return split[2];
+        }
+        
+        return null;
     }
     
     /**
