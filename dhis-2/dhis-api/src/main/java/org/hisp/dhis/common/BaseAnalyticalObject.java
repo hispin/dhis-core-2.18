@@ -465,43 +465,46 @@ public abstract class BaseAnalyticalObject
         return StringUtils.join( ids, DIMENSION_SEP );
     }
     
-    public void mergeWith( BaseAnalyticalObject other )
+    @Override
+    public void mergeWith( IdentifiableObject other )
     {
         super.mergeWith( other );
         
         if ( other.getClass().isInstance( this ) )
-        {            
+        {
+            BaseAnalyticalObject object = (BaseAnalyticalObject) other;
+            
             indicators.clear();
-            indicators.addAll( other.getIndicators() );
+            indicators.addAll( object.getIndicators() );
 
             dataElements.clear();
-            dataElements.addAll( other.getDataElements() );
+            dataElements.addAll( object.getDataElements() );
 
             dataElementOperands.clear();
-            dataElementOperands.addAll( other.getDataElementOperands() );
+            dataElementOperands.addAll( object.getDataElementOperands() );
             
             dataSets.clear();
-            dataSets.addAll( other.getDataSets() );
+            dataSets.addAll( object.getDataSets() );
             
             periods.clear();
-            periods.addAll( other.getPeriods() );
+            periods.addAll( object.getPeriods() );
 
-            relatives = other.getRelatives() == null ? relatives : other.getRelatives();
+            relatives = object.getRelatives() == null ? relatives : object.getRelatives();
             
             organisationUnits.clear();
-            organisationUnits.addAll( other.getOrganisationUnits() );
+            organisationUnits.addAll( object.getOrganisationUnits() );
             
             dataElementGroups.clear();
-            dataElementGroups.addAll( other.getDataElementGroups() );
+            dataElementGroups.addAll( object.getDataElementGroups() );
             
             organisationUnitGroups.clear();
-            organisationUnitGroups.addAll( other.getOrganisationUnitGroups() );
+            organisationUnitGroups.addAll( object.getOrganisationUnitGroups() );
             
             categoryDimensions.clear();
-            categoryDimensions.addAll( other.getCategoryDimensions() );
+            categoryDimensions.addAll( object.getCategoryDimensions() );
             
-            userOrganisationUnit = other.isUserOrganisationUnit();
-            userOrganisationUnitChildren = other.isUserOrganisationUnitChildren();            
+            userOrganisationUnit = object.isUserOrganisationUnit();
+            userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();            
         }
     }
 
