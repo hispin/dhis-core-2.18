@@ -48,19 +48,6 @@
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <!-- Aggregated values -->
-
-  <bean id="org.hisp.dhis.visualizer.action.GetAggregatedValuesAction"
-    class="org.hisp.dhis.visualizer.action.GetAggregatedValuesAction"
-    scope="prototype">
-    <property name="aggregatedDataValueService"
-      ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-    <property name="aggregatedOrgUnitDataValueService"
-      ref="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService" />
-    <property name="organisationUnitGroupService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-  </bean>
-
   <!-- Chart -->
 
   <bean id="org.hisp.dhis.visualizer.action.AddOrUpdateChartAction"

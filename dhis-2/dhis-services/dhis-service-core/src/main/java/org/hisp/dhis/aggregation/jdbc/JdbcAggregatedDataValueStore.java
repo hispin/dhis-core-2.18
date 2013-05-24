@@ -47,8 +47,6 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
@@ -57,8 +55,6 @@ import org.hisp.dhis.system.objectmapper.AggregatedDataSetCompletenessRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
-import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
-import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -432,7 +428,7 @@ public class JdbcAggregatedDataValueStore
             " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
             " AND aiv.periodid IN (" + periodids + ") ";
         
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     // -------------------------------------------------------------------------
@@ -467,32 +463,5 @@ public class JdbcAggregatedDataValueStore
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " ) ";
         
         return jdbcTemplate.query( sql, new AggregatedDataSetCompletenessRowMapper() );
-    }
-    
-    // -------------------------------------------------------------------------
-    // DataValue
-    // -------------------------------------------------------------------------
-
-    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
-    {
-        final String sql =
-            "SELECT * FROM datavalue " +
-            "WHERE dataelementid = " + dataElementId + " " +
-            "AND periodid = " + periodId + " " +
-            "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";
-        
-        return jdbcTemplate.query( sql, new DeflatedDataValueRowMapper() );
-    }
-    
-    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId ) //TODO remove
-    {
-        final String sql =
-            "SELECT * FROM datavalue " +
-            "WHERE dataelementid = " + dataElementId + " " +
-            "AND categoryoptioncomboid = " + categoryOptionComboId + " " +
-            "AND periodid = " + periodId + " " +
-            "AND sourceid = " + sourceId;
-        
-        return jdbcTemplate.queryForObject( sql, new DataValueRowMapper() );
     }
 }

@@ -30,10 +30,10 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14SemiPermanentDataValue;
@@ -71,7 +71,7 @@ public class SemiPermanentDataValueRowHandler
 
     public SemiPermanentDataValueRowHandler( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        AggregatedDataValueService aggregatedDataValueService,
+        DataValueService dataValueService,
         Map<Object, Integer> dataElementMapping,
         Map<Period, Integer> periodMapping, 
         Map<Object, Integer> organisationUnitMapping,
@@ -80,7 +80,7 @@ public class SemiPermanentDataValueRowHandler
     {
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
-        this.aggregatedDataValueService = aggregatedDataValueService;
+        this.dataValueService = dataValueService;
         this.dataElementMapping = dataElementMapping;
         this.periodMapping = periodMapping;
         this.organisationUnitMapping = organisationUnitMapping;

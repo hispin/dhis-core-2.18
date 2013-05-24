@@ -43,8 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kristian Nordal
- * @version $Id: DefaultDataValueService.java 5715 2008-09-17 14:05:28Z larshelg
- *          $
  */
 @Transactional
 public class DefaultDataValueService
@@ -108,7 +106,12 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValue( source, dataElement, period, optionCombo );
     }
-
+    
+    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
+    {
+        return dataValueStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
+    }
+    
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------
@@ -189,5 +192,10 @@ public class DefaultDataValueService
     public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit unit )
     {
         return dataValueStore.getDataValueMap( dataElements, period, unit );
+    }
+    
+    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
+    {
+        return dataValueStore.getDeflatedDataValues( dataElementId, periodId, sourceIds );
     }
 }

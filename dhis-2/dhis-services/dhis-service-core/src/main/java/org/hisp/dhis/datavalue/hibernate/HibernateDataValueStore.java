@@ -27,6 +27,8 @@ package org.hisp.dhis.datavalue.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,10 +48,13 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueStore;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
+import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.TextUtils;
@@ -156,7 +161,19 @@ public class HibernateDataValueStore
 
         return (DataValue) criteria.uniqueResult();
     }
-
+    
+    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
+    {
+        final String sql =
+            "SELECT * FROM datavalue " +
+            "WHERE dataelementid = " + dataElementId + " " +
+            "AND categoryoptioncomboid = " + categoryOptionComboId + " " +
+            "AND periodid = " + periodId + " " +
+            "AND sourceid = " + sourceId;
+        
+        return jdbcTemplate.queryForObject( sql, new DataValueRowMapper() );
+    }
+    
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------
@@ -438,5 +455,16 @@ public class HibernateDataValueStore
         }
         
         return map; 
+    }
+
+    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
+    {
+        final String sql =
+            "SELECT * FROM datavalue " +
+            "WHERE dataelementid = " + dataElementId + " " +
+            "AND periodid = " + periodId + " " +
+            "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";
+        
+        return jdbcTemplate.query( sql, new DeflatedDataValueRowMapper() );
     }
 }

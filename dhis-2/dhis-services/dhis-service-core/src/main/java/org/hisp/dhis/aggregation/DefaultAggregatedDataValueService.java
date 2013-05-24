@@ -33,8 +33,6 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -213,19 +211,5 @@ public class DefaultAggregatedDataValueService
         Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
-    }
-    
-    // -------------------------------------------------------------------------
-    // DataValue
-    // -------------------------------------------------------------------------
-    
-    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
-    {
-        return aggregatedDataValueStore.getDeflatedDataValues( dataElementId, periodId, sourceIds );
-    }
-    
-    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
-    {
-        return aggregatedDataValueStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
     }
 }

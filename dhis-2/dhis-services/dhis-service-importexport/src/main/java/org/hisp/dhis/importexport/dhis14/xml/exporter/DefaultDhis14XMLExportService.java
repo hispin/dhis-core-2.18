@@ -33,6 +33,7 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
@@ -92,11 +93,11 @@ public class DefaultDhis14XMLExportService
         this.periodService = periodService;
     }
 
-    private AggregatedDataValueService aggregatedDataValueService;
+    private DataValueService dataValueService;
 
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    public void setDataValueService( DataValueService dataValueService )
     {
-        this.aggregatedDataValueService = aggregatedDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -166,7 +167,7 @@ public class DefaultDhis14XMLExportService
             thread.registerXMLConverter( new UserConverter() );
             thread.registerXMLConverter( new UserRoleConverter() );
             
-            thread.registerCSVConverter( new DataValueConverter( periodService, aggregatedDataValueService, dataElementService ) );
+            thread.registerCSVConverter( new DataValueConverter( periodService, dataValueService, dataElementService ) );
             
             thread.start();
 

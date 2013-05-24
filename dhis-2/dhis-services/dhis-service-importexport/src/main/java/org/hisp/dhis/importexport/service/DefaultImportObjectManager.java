@@ -36,7 +36,6 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.constant.Constant;
@@ -56,6 +55,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -290,11 +290,11 @@ public class DefaultImportObjectManager
         this.periodService = periodService;
     }
 
-    private AggregatedDataValueService aggregatedDataValueService;
+    private DataValueService dataValueService;
 
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    public void setDataValueService( DataValueService dataValueService )
     {
-        this.aggregatedDataValueService = aggregatedDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -1055,7 +1055,7 @@ public class DefaultImportObjectManager
 
         Collection<ImportDataValue> importValues = importDataValueService.getImportDataValues( ImportObjectStatus.NEW );
 
-        Importer<DataValue> importer = new DataValueImporter( batchHandler, aggregatedDataValueService, params );
+        Importer<DataValue> importer = new DataValueImporter( batchHandler, dataValueService, params );
 
         for ( ImportDataValue importValue : importValues )
         {
