@@ -389,5 +389,7 @@ GIS.i18n = {
     home: '$encoder.jsEscape($i18n.getString( 'home' ) , "'")',
     google_streets: '$encoder.jsEscape($i18n.getString( 'google_streets' ) , "'")',
     google_hybrid: '$encoder.jsEscape($i18n.getString( 'google_hybrid' ) , "'")',
-    openstreetmap: '$encoder.jsEscape($i18n.getString( 'openstreetmap' ) , "'")'
+    openstreetmap: '$encoder.jsEscape($i18n.getString( 'openstreetmap' ) , "'")',
+    totals: '$encoder.jsEscape($i18n.getString( 'totals' ) , "'")',
+    details: '$encoder.jsEscape($i18n.getString( 'details' ) , "'")'
 };

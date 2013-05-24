@@ -35,6 +35,13 @@ GIS.core.getConfigs = function() {
 					dimensionName: 'dx',
 					objectName: 'de'
 				},
+				operand: {
+					id: 'operand',
+					value: 'operand',
+					param: 'dc',
+					dimensionName: 'dx',
+					objectName: 'dc'
+				},
 				period: {
 					id: 'period',
 					value: 'period',
@@ -78,13 +85,14 @@ GIS.core.getConfigs = function() {
 		},
 		url: {
 			path_api: '/api/',
-			path_gis: '/dhis-web-mapping/'
+			path_gis: '/dhis-web-mapping/',
+			path_commons: '../../dhis-web-commons-ajax-json/'
 		},
 		layout: {
 			widget: {
-				item_width: 262,
+				item_width: 288,
 				itemlabel_width: 95,
-				window_width: 284
+				window_width: 310
 			},
 			tool: {
 				item_width: 222,
@@ -1326,10 +1334,20 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 			indicator = gis.conf.finals.dimension.indicator,
 			dataElement = gis.conf.finals.dimension.dataElement,
 			period = gis.conf.finals.dimension.period,
-			organisationUnit = gis.conf.finals.dimension.organisationUnit;
+			organisationUnit = gis.conf.finals.dimension.organisationUnit,
+			dx;
 
+		// ou
 		paramString += 'dimension=ou:LEVEL-' + view.organisationUnitLevel.level + '-' + view.parentOrganisationUnit.id;
-		paramString += '&dimension=dx:' + view[type].id;
+
+		// dx
+		if (Ext.isString(view[type].id) && view[type].id.indexOf('-') !== -1) {
+			paramString += '&dimension=co&dimension=dx:' + view[type].id.substr(0, view[type].id.indexOf('-'));
+		}
+		else {
+			paramString += '&dimension=dx:' + view[type].id;
+		}
+
 		paramString += '&filter=pe:' + view.period.id;
 
 		Ext.Ajax.request({
