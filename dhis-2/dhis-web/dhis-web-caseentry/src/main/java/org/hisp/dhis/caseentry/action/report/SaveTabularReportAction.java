@@ -200,7 +200,7 @@ public class SaveTabularReportAction
     {
         userOrganisationUnit = (userOrganisationUnit == null) ? false : userOrganisationUnit;
         userOrganisationUnitChildren = (userOrganisationUnitChildren == null) ? false : userOrganisationUnitChildren;
-       displayOrgunitCode = (displayOrgunitCode == null) ? false : displayOrgunitCode;;
+        displayOrgunitCode = (displayOrgunitCode == null) ? false : displayOrgunitCode;;
        
         Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
             organisationUnitService.getOrganisationUnits( orgunitIds ) );

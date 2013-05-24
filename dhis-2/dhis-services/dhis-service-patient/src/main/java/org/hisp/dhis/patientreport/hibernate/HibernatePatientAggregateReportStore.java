@@ -27,14 +27,18 @@
 
 package org.hisp.dhis.patientreport.hibernate;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportStore;
+import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.user.User;
 
 /**
@@ -50,34 +54,64 @@ public class HibernatePatientAggregateReportStore
     @Override
     public Collection<PatientAggregateReport> get( User user, String query, Integer min, Integer max )
     {
-        return search( user, query, min, max ).list();
+        Criteria criteria = search( query );
+
+        List<PatientAggregateReport> result = new ArrayList<PatientAggregateReport>();
+        Collection<PatientAggregateReport> reports = criteria.list();
+
+        for ( PatientAggregateReport report : reports )
+        {
+            if ( SharingUtils.canRead( user, report ) )
+            {
+                result.add( report );
+            }
+        }
+
+        if ( min > result.size() )
+        {
+            min = result.size();
+        }
+
+        if ( max > result.size() )
+        {
+            max = result.size();
+        }
+
+        return result.subList( min, max );
     }
 
+    @SuppressWarnings( "unchecked" )
     public int countList( User user, String query )
     {
-        Number rs = (Number) search( user, query, null, null ).setProjection( Projections.rowCount() ).uniqueResult();
+        Criteria criteria = search( query );
 
-        return rs != null ? rs.intValue() : 0;
+        int count = 0;
+        Collection<PatientAggregateReport> reports = criteria.list();
+
+        for ( PatientAggregateReport report : reports )
+        {
+            if ( SharingUtils.canRead( user, report ) )
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
 
-    private Criteria search( User user, String query, Integer min, Integer max )
+    private Criteria search( String query )
     {
-        Criteria criteria = getCriteria( Restrictions.eq( "user", user ) );
+        Criteria criteria = getCriteria();
 
         if ( query != null )
         {
             criteria.add( Restrictions.ilike( "name", "%" + query + "%" ) );
         }
 
-        if ( min != null && max != null )
-        {
-            criteria.setFirstResult( min ).setMaxResults( max );
-        }
-        
         return criteria;
     }
 }
