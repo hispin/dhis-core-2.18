@@ -162,21 +162,6 @@
       <param name="stylesheets">style/dhis-web-reporting.css</param>
     </action>
 
-    <!-- PivotTable -->
-
-    <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/viewPivotTableForm.vm</param>
-      <param name="hideMenu">true</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/pivot.js</param>
-    </action>
-
-    <action name="getPivotTable" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction">
-      <result name="xls" type="gridXlsResult" />
-      <result name="json" type="velocity-json">/dhis-web-reporting/responsePivotTable.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <!-- Data Completeness -->
 
     <action name="displayViewDataCompletenessForm" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction">
