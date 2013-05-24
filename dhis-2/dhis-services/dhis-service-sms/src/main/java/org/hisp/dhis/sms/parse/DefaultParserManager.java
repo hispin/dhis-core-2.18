@@ -122,6 +122,7 @@ public class DefaultParserManager
 
     @Transactional
     public void parse( IncomingSms sms )
+        throws SMSParserException
     {
         try
         {
@@ -135,7 +136,7 @@ public class DefaultParserManager
             sms.setStatus( SmsMessageStatus.FAILED );
             incomingSmsService.update( sms );
             sendSMS( e.getMessage(), sms.getOriginator() );
-            return;
+            throw e;
         }
     }
 
