@@ -21,9 +21,17 @@
     
     <action name="addApp" class="org.hisp.dhis.appmanager.action.AddAppAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="failure" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="menu">/dhis-web-appmanager/menu.vm</param>
       <param name="javascripts">javascript/jquery.form.js</param>
       <interceptor-ref name="fileUploadStack" />
+    </action>
+    
+    <action name="deleteApp" class="org.hisp.dhis.appmanager.action.DeleteAppAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="page">/dhis-web-appmanager/index.vm</param>
+      <param name="menu">/dhis-web-appmanager/menu.vm</param>
+      <param name="javascripts">javascript/jquery.form.js</param>
     </action>
     
     <action name="appStore" class="org.hisp.dhis.appmanager.action.AppStoreAction">
@@ -40,7 +48,7 @@
       <param name="menu">/dhis-web-appmanager/menu.vm</param>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
-      <param name="javascripts">javascript/jquery.form.js</param>
+      <param name="javascripts">javascript/jquery.form.js,javascript/deleteApp.js</param>
     </action>
     
   </package>

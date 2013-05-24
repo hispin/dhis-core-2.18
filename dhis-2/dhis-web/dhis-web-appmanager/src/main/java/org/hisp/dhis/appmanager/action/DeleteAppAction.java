@@ -28,41 +28,50 @@ package org.hisp.dhis.appmanager.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
+ * @version $Id$
  */
-public class AppListAction
+public class DeleteAppAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
     @Autowired
     private AppManagerService appManagerService;
+
+    private SystemAuthoritiesProvider authoritiesProvider;
+
+    public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
+    {
+        this.authoritiesProvider = authoritiesProvider;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    private I18n i18n;
 
-    private List<App> appList;
-
-    public List<App> getAppList()
+    public void setI18n( I18n i18n )
     {
-        return appManagerService.getInstalledApps();
+        this.i18n = i18n;
     }
 
-    private List<String> appFolderNames;
+    private String message;
 
-    public List<String> getAppFolderNames()
+    public String getMessage()
     {
-        return appFolderNames;
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -73,10 +82,19 @@ public class AppListAction
     public String execute()
         throws Exception
     {
-        appFolderNames = new ArrayList<String>();
-        for ( App app : getAppList() )
+        String appName = ServletActionContext.getRequest().getParameter( "appName" );
+        if ( null != appName )
         {
-            appFolderNames.add( appManagerService.getAppFolderName( app ) );
+            for ( App app : appManagerService.getInstalledApps() )
+            {
+                if ( app.getName().equals( appName ) )
+                {
+                    String folderPath = appManagerService.getAppFolderPath() + File.separator
+                        + appManagerService.getAppFolderName( app );
+                    FileUtils.forceDelete( new File( folderPath ) );
+                    message = i18n.getString( "appmanager_delete_success" );
+                }
+            }
         }
         return SUCCESS;
     }
