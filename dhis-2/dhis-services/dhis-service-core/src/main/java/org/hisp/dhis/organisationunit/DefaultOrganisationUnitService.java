@@ -397,6 +397,11 @@ public class DefaultOrganisationUnitService
             addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
         }
 
+        for ( OrganisationUnit unit : result )
+        {
+            unit.setLevel( level );
+        }
+        
         return result;
     }
 
