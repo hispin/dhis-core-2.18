@@ -42,9 +42,11 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
 public class Event
 {
-    private String id;
+    private String programId;
 
-    private String eventId;
+    private String programStageId;
+
+    private String programStageInstanceId;
 
     private String organisationUnitId;
 
@@ -66,26 +68,38 @@ public class Event
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getId()
+    public String getProgramId()
     {
-        return id;
+        return programId;
     }
 
-    public void setId( String id )
+    public void setProgramId( String programId )
     {
-        this.id = id;
+        this.programId = programId;
     }
 
-    @JsonProperty
+    @JsonProperty( required = true )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getEventId()
+    public String getProgramStageId()
     {
-        return eventId;
+        return programStageId;
     }
 
-    public void setEventId( String eventId )
+    public void setProgramStageId( String programStageId )
     {
-        this.eventId = eventId;
+        this.programStageId = programStageId;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public String getProgramStageInstanceId()
+    {
+        return programStageInstanceId;
+    }
+
+    public void setProgramStageInstanceId( String programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
     }
 
     @JsonProperty
@@ -177,8 +191,9 @@ public class Event
     public String toString()
     {
         return "Event{" +
-            "id='" + id + '\'' +
-            ", eventId='" + eventId + '\'' +
+            "programId='" + programId + '\'' +
+            ", programStageId='" + programStageId + '\'' +
+            ", programStageInstanceId='" + programStageInstanceId + '\'' +
             ", organisationUnitId='" + organisationUnitId + '\'' +
             ", patientId='" + patientId + '\'' +
             ", eventDate='" + eventDate + '\'' +
