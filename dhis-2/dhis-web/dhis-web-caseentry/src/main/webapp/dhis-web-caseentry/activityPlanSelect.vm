@@ -27,6 +27,12 @@
 	<input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
 	<input type='hidden' id='export' name= 'export'>
 	<input type='hidden' class='stage-object-selected'>
+	<select id='displayOnVisitSchedule' name='displayOnVisitSchedule' class='hidden'>
+		#foreach( $patientAttribute in $patientAttributes)
+			<option value='$patientAttribute.id'>$patientAttribute.name</option>
+		#end
+	</select>
+	
 	<div id='selectDiv' class='advanced-search' style='width:550px;'>
 		<table style="margin-bottom:8px;width:550px;">    
 			<tr>

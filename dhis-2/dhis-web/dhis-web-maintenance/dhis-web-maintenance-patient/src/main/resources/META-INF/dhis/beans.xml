@@ -152,6 +152,22 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction"
+		class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction"
+		class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
 	<!-- Program -->
 
 	<bean id="org.hisp.dhis.patient.action.program.AddProgramAction"

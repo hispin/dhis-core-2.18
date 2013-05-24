@@ -42,6 +42,10 @@ public class HibernatePatientAttributeStore
     extends HibernateIdentifiableObjectStore<PatientAttribute>
     implements PatientAttributeStore
 {
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+    
     @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getByValueType( String valueType )
     {
@@ -66,9 +70,17 @@ public class HibernatePatientAttributeStore
         return (PatientAttribute) getCriteria( Restrictions.eq( "groupBy", groupBy ) ).uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getWithoutGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
     }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientAttribute> getByDisplayOnVisitSchedule( boolean displayOnVisitSchedule )
+    {
+        return getCriteria( Restrictions.eq( "displayOnVisitSchedule", displayOnVisitSchedule ) ).list();
+    }
+
+    
 }

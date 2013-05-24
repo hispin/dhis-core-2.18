@@ -78,6 +78,8 @@ public class PatientAttribute
     private Set<PatientAttributeOption> attributeOptions;
 
     private String expression;
+    
+    private Boolean displayOnVisitSchedule;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -233,6 +235,19 @@ public class PatientAttribute
     public void setExpression( String expression )
     {
         this.expression = expression;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getDisplayOnVisitSchedule()
+    {
+        return displayOnVisitSchedule;
+    }
+
+    public void setDisplayOnVisitSchedule( Boolean displayOnVisitSchedule )
+    {
+        this.displayOnVisitSchedule = displayOnVisitSchedule;
     }
 
 }

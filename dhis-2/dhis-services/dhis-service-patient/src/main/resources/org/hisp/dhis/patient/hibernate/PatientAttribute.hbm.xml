@@ -34,6 +34,8 @@
     <property name="inherit" column="inherit" />
 
     <property name="expression" column="expression" />
+    
+    <property name="displayOnVisitSchedule" />
 
   </class>
 </hibernate-mapping>

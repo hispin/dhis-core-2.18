@@ -1,6 +1,7 @@
 <h2>$i18n.getString( "patients" )</h2>
 <ul>
 	<li><a href="patientAttribute.action">$i18n.getString( "patient_attribute" )</a></li>
+	<li><a href="patientAttributeVisitSchedule.action">$i18n.getString( "patient_attribute_visit_schedule" )</a></li>
 	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
 	<li><a href="patientIdentifierType.action">$i18n.getString( "patient_identifier_type" )</a></li>
 	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>

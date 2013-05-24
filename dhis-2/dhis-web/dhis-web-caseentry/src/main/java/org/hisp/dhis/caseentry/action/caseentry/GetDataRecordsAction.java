@@ -39,8 +39,12 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
@@ -80,6 +84,20 @@ public class GetDataRecordsAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     private I18n i18n;
@@ -163,6 +181,20 @@ public class GetDataRecordsAction
         return grid;
     }
 
+    private List<PatientAttribute> patientAttributes;
+
+    public List<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
+    private Map<Integer, List<String>> patientAttributeValueMap = new HashMap<Integer, List<String>>();
+
+    public Map<Integer, List<String>> getPatientAttributeValueMap()
+    {
+        return patientAttributeValueMap;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -183,6 +215,9 @@ public class GetDataRecordsAction
         {
             if ( type == null )
             {
+                patientAttributes = new ArrayList<PatientAttribute>(
+                    patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule( true ) );
+
                 total = patientService.countSearchPatients( searchTexts, orgunit );
                 this.paging = createPaging( total );
 
@@ -191,12 +226,32 @@ public class GetDataRecordsAction
 
                 for ( Integer stageInstanceId : stageInstanceIds )
                 {
-                    programStageInstances.add( programStageInstanceService.getProgramStageInstance( stageInstanceId ) );
+                    // Get programStageInstance
+
+                    ProgramStageInstance programStageInstance = programStageInstanceService
+                        .getProgramStageInstance( stageInstanceId );
+                    programStageInstances.add( programStageInstance );
+
+                    // Get Patient-attributes
+
+                    Patient patient = programStageInstance.getProgramInstance().getPatient();
+                    if ( patientAttributeValueMap.get( patient.getId() ) == null )
+                    {
+                        List<String> values = new ArrayList<String>();
+                        for ( PatientAttribute patientAttribute : patientAttributes )
+                        {
+                            PatientAttributeValue patientAttributeValue = patientAttributeValueService
+                                .getPatientAttributeValue( patient, patientAttribute );
+                            String value = (patientAttributeValue == null) ? "" : patientAttributeValue.getValue();
+                            values.add( value );
+                        }
+                        patientAttributeValueMap.put( patient.getId(), values );
+                    }
                 }
             }
             else
             {
-                grid = patientService.getScheduledEventsReport( searchTexts, orgunit, i18n );
+                grid = patientService.getScheduledEventsReport( searchTexts, orgunit, null, null, i18n );
             }
         }
 
