@@ -14,21 +14,47 @@ GIS.core.getConfigs = function() {
 				type_vector: 'vector'
 			},
 			dimension: {
+				data: {
+					id: 'data',
+					value: 'data',
+					param: 'dx',
+					dimensionName: 'dx',
+					objectName: 'dx'
+				},
 				indicator: {
 					id: 'indicator',
-					param: 'in'
+					value: 'indicators',
+					param: 'in',
+					dimensionName: 'dx',
+					objectName: 'in'
 				},
 				dataElement: {
 					id: 'dataElement',
-					param: 'de'
+					value: 'dataElement',
+					param: 'de',
+					dimensionName: 'dx',
+					objectName: 'de'
 				},
 				period: {
 					id: 'period',
-					param: 'pe'
+					value: 'period',
+					param: 'pe',
+					dimensionName: 'pe',
+					objectName: 'pe'
 				},
 				organisationUnit: {
 					id: 'organisationUnit',
-					param: 'ou'
+					value: 'organisationUnit',
+					param: 'ou',
+					dimensionName: 'ou',
+					objectName: 'ou'
+				},
+				value: {
+					id: 'value',
+					value: 'value',
+					param: 'value',
+					dimensionName: 'value',
+					objectName: 'value'
 				}
 			},
 			widget: {
@@ -1295,52 +1321,69 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 		features = features || layer.features.slice(0);
 
 		var type = view.valueType,
-			dataUrl = 'mapValues/' + gis.conf.finals.dimension[type].param + '.jsonp',
+			dimConf = gis.conf.finals.dimension,
+			paramString = '?',
 			indicator = gis.conf.finals.dimension.indicator,
 			dataElement = gis.conf.finals.dimension.dataElement,
 			period = gis.conf.finals.dimension.period,
-			organisationUnit = gis.conf.finals.dimension.organisationUnit,
-			params = {};
+			organisationUnit = gis.conf.finals.dimension.organisationUnit;
 
-		params[type === indicator.id ? indicator.param : dataElement.param] = view[type].id;
-		params[period.param] = view.period.id;
-		params[organisationUnit.param] = view.parentOrganisationUnit.id;
-		params.le = view.organisationUnitLevel.id;
+		paramString += 'dimension=ou:LEVEL-' + view.organisationUnitLevel.level + '-' + view.parentOrganisationUnit.id;
+		paramString += '&dimension=dx:' + view[type].id;
+		paramString += '&filter=pe:' + view.period.id;
 
-		Ext.data.JsonP.request({
-			url: gis.baseUrl + gis.conf.url.path_api + dataUrl,
-			params: params,
+		Ext.Ajax.request({
+			url: gis.baseUrl + '/api/analytics.json' + paramString,
 			disableCaching: false,
 			scope: this,
 			success: function(r) {
-				var values = r,
+				//var values = r,
+				var response = Ext.decode(r.responseText),
+					dimConf = gis.conf.finals.dimension,
 					featureMap = {},
 					valueMap = {},
+					ouIndex,
+					dxIndex,
+					valueIndex,
 					newFeatures = [];
 
-				if (values.length === 0) {
-					alert(GIS.i18n.no_aggregated_data_found);
+				if (!(Ext.isObject(response) && Ext.isArray(response.rows) && response.rows.length)) {
+					alert(GIS.i18n.current_selection_no_data);
 					olmap.mask.hide();
 					return;
 				}
 
-				for (var i = 0; i < features.length; i++) {
-					var iid = features[i].attributes.internalId;
-					featureMap[iid] = true;
+				// ou index, value index
+				for (var i = 0; i < response.headers.length; i++) {
+					if (response.headers[i].name === dimConf.organisationUnit.dimensionName) {
+						ouIndex = i;
+					}
+					else if (response.headers[i].name === dimConf.data.dimensionName) {
+						dxIndex = i;
+					}
+					else if (response.headers[i].name === dimConf.value.dimensionName) {
+						valueIndex = i;
+					}
 				}
-				for (var i = 0; i < values.length; i++) {
-					var iid = values[i].organisationUnitId,
-						value = values[i].value;
-					valueMap[iid] = value;
+
+				// Feature map
+				for (var i = 0, id; i < features.length; i++) {
+					var id = features[i].attributes.id;
+					featureMap[id] = true;
+				}
+
+				// Value map
+				for (var i = 0; i < response.rows.length; i++) {
+					var id = response.rows[i][ouIndex],
+						value = parseFloat(response.rows[i][valueIndex]);
+					valueMap[id] = value;
 				}
 
 				for (var i = 0; i < features.length; i++) {
 					var feature = features[i],
-						iid = feature.attributes.internalId;
-					if (featureMap.hasOwnProperty(iid) && valueMap.hasOwnProperty(iid)) {
-						feature.attributes.value = valueMap[iid];
-						//var m = Math.random();
-						//feature.attributes.value = m < 0.3 ? -5 : m < 0.6 ? null : 1;
+						id = feature.attributes.id;
+					if (featureMap.hasOwnProperty(id) && valueMap.hasOwnProperty(id)) {
+						feature.attributes.value = valueMap[id];
 						feature.attributes.label = feature.attributes.name + ' (' + feature.attributes.value + ')';
 						newFeatures.push(feature);
 					}
