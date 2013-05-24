@@ -100,6 +100,11 @@ public interface DataValueStore
      */
     DataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
 
+    /**
+     * Returns a non-persisted DataValue.
+     */
+    DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
+    
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------
@@ -245,4 +250,13 @@ public interface DataValueStore
     int getDataValueCount( Date date );
     
     Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit unit );
+
+    /**
+     * Gets a Collection of DeflatedDataValues.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param periodId the Period identifier.
+     * @param sourceIds the Collection of Source identifiers.
+     */
+    Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds );
 }

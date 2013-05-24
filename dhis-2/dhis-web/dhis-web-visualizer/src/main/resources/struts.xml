@@ -54,18 +54,6 @@
       </result>
     </action>
 
-    <!-- Aggregated values -->
-
-    <action name="getAggregatedValues"
-      class="org.hisp.dhis.visualizer.action.GetAggregatedValuesAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-visualizer/jsonminAggregatedValues.vm
-      </result>
-      <result name="none" type="velocity-json">
-        /dhis-web-visualizer/void.vm
-      </result>
-    </action>
-
     <!-- Chart -->
 
     <action name="addOrUpdateSystemChart"

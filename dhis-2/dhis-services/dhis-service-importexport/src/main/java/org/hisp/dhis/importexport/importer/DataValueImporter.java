@@ -28,8 +28,8 @@ package org.hisp.dhis.importexport.importer;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.Importer;
@@ -41,7 +41,7 @@ import org.hisp.dhis.importexport.Importer;
 public class DataValueImporter
     extends AbstractImporter<DataValue> implements Importer<DataValue>
 {
-    protected AggregatedDataValueService aggregatedDataValueService;
+    protected DataValueService dataValueService;
     
     protected ImportParams params;
 
@@ -49,10 +49,10 @@ public class DataValueImporter
     {
     }
     
-    public DataValueImporter( BatchHandler<DataValue> batchHandler, AggregatedDataValueService aggregatedDataValueService, ImportParams params )
+    public DataValueImporter( BatchHandler<DataValue> batchHandler, DataValueService dataValueService, ImportParams params )
     {
         this.batchHandler = batchHandler;
-        this.aggregatedDataValueService = aggregatedDataValueService;
+        this.dataValueService = dataValueService;
         this.params = params;
     }
     
@@ -92,7 +92,7 @@ public class DataValueImporter
             return null;
         }
         
-        return aggregatedDataValueService.getDataValue( object.getDataElement().getId(), object.getOptionCombo().getId(), 
+        return dataValueService.getDataValue( object.getDataElement().getId(), object.getOptionCombo().getId(), 
             object.getPeriod().getId(), object.getSource().getId() );
     }
 

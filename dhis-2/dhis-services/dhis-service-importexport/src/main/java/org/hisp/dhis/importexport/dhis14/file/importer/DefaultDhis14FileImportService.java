@@ -36,7 +36,6 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.DataElement;
@@ -48,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.ImportDataValue;
@@ -210,11 +210,11 @@ public class DefaultDhis14FileImportService
         this.indicatorService = indicatorService;
     }
     
-    private AggregatedDataValueService aggregatedDataValueService;
-    
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
     {
-        this.aggregatedDataValueService = aggregatedDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private HibernateCacheManager cacheManager;
@@ -670,7 +670,7 @@ public class DefaultDhis14FileImportService
                 
         RowHandler rowHandler = new RoutineDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
-            aggregatedDataValueService,
+            dataValueService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
@@ -731,7 +731,7 @@ public class DefaultDhis14FileImportService
         
         RowHandler rowHandler = new SemiPermanentDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
-            aggregatedDataValueService,
+            dataValueService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodObjectMapping( params.skipMapping() ),
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),

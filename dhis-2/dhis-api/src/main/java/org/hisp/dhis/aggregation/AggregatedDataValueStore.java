@@ -32,8 +32,6 @@ import java.util.Collection;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
@@ -298,28 +296,4 @@ public interface AggregatedDataValueStore
      */
     Collection<DataSetCompletenessResult> getAggregatedDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds );
-    
-    // ----------------------------------------------------------------------
-    // DataValue
-    // ----------------------------------------------------------------------
-    
-    /**
-     * Gets a Collection of DeflatedDataValues.
-     * 
-     * @param dataElementId the DataElement identifier.
-     * @param periodId the Period identifier.
-     * @param sourceIds the Collection of Source identifiers.
-     */
-    Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds );
-    
-    /**
-     * Gets a DataValues. Note that this is a "deflated" data value as the objects
-     * in the composite identifier only has its id property populated.
-     * 
-     * @param dataElementId the DataElement identifier.
-     * @param categoryOptionComboId the DataElementCategoryOptionCombo identifier.
-     * @param periodId the Period identifier.
-     * @param sourceId the Source identifier.
-     */
-    DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
 }
