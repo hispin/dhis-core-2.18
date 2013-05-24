@@ -104,6 +104,8 @@ public class ActivityReportingServiceImpl
 
     private static final String PATIENT_REGISTERED = "patient_registered";
 
+    private static final String SINGLE_EVENT_UPLOADED = "single_event_uploaded";
+
     private ActivityComparator activityComparator = new ActivityComparator();
 
     // -------------------------------------------------------------------------
@@ -478,7 +480,6 @@ public class ActivityReportingServiceImpl
                 // patientMobile = getPatientModel( orgUnitId, patients.get( 0 )
                 // );
                 org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patients.get( 0 ) );
-                System.out.println( "patientmobile: " + patientMobile.getPrograms() );
                 return patientMobile;
             }
         }
@@ -502,42 +503,43 @@ public class ActivityReportingServiceImpl
     {
         if ( mobileProgramStage.isSingleEvent() )
         {
-            ProgramStage programStage = programStageService.getProgramStage( mobileProgramStage.getId() );
+            Patient patient = patientService.getPatient( patientId );
+            ProgramStageInstance prStageInstance = programStageInstanceService
+                .getProgramStageInstance( mobileProgramStage.getId() );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+            ProgramStage programStage = programStageService.getProgramStage( prStageInstance.getProgramStage().getId() );
 
+            // ---------------------------------------------------------------------
+            // Add a new program-instance
+            // ---------------------------------------------------------------------
             ProgramInstance programInstance = new ProgramInstance();
-
             programInstance.setEnrollmentDate( new Date() );
-
             programInstance.setDateOfIncident( new Date() );
-
             programInstance.setProgram( programStage.getProgram() );
-
             programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
+            programInstance.setPatient( patient );
+
+            patient.getPrograms().add( programStage.getProgram() );
+            patientService.updatePatient( patient );
 
             programInstanceService.addProgramInstance( programInstance );
 
+            // ---------------------------------------------------------------------
+            // Add a new program-stage-instance
+            // ---------------------------------------------------------------------
+
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
-
             programStageInstance.setProgramInstance( programInstance );
-
             programStageInstance.setProgramStage( programStage );
-
             programStageInstance.setDueDate( new Date() );
-
             programStageInstance.setExecutionDate( new Date() );
-
+            programStageInstance.setOrganisationUnit( organisationUnit );
             programStageInstance.setCompleted( true );
-
-            if ( patientId != 0 )
-            {
-                programStageInstance.setOrganisationUnit( patientService.getPatient( patientId ).getOrganisationUnit() );
-            }
-            else
-            {
-                programStageInstance.setOrganisationUnit( orgUnitService.getOrganisationUnit( orgUnitId ) );
-            }
-
             programStageInstanceService.addProgramStageInstance( programStageInstance );
+
+            // ---------------------------------------------------------------------
+            // Save value
+            // ---------------------------------------------------------------------
 
             List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> dataElements = mobileProgramStage
                 .getDataElements();
@@ -546,13 +548,18 @@ public class ActivityReportingServiceImpl
             {
                 DataElement dataElement = dataElementService.getDataElement( dataElements.get( i ).getId() );
 
-                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, dataElement,
-                    new Date(), dataElements.get( i ).getValue() );
+                PatientDataValue patientDataValue = new PatientDataValue();
+                patientDataValue.setDataElement( dataElement );
 
+                patientDataValue.setValue( dataElements.get( i ).getValue() );
+                patientDataValue.setProgramStageInstance( programStageInstance );
+                patientDataValue.setTimestamp( new Date() );
                 patientDataValueService.savePatientDataValue( patientDataValue );
+
             }
 
-            return ANONYMOUS_PROGRAM_UPLOADED;
+            return SINGLE_EVENT_UPLOADED;
+       
         }
         else
         {

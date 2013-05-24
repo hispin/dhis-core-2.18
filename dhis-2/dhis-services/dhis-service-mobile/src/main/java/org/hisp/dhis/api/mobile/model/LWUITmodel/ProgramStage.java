@@ -34,21 +34,22 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.Model;
 
- /**
+/**
  * @author Nguyen Kim Lai
  */
-public class ProgramStage extends Model
+public class ProgramStage
+    extends Model
 {
     private String clientVersion;
-    
+
     private boolean isRepeatable;
-    
+
     private boolean isCompleted;
-    
+
     private boolean isSingleEvent;
 
     private List<Section> sections;
-    
+
     private List<ProgramStageDataElement> dataElements = new ArrayList<ProgramStageDataElement>();
 
     public List<Section> getSections()
@@ -90,7 +91,7 @@ public class ProgramStage extends Model
     {
         this.isRepeatable = isRepeatable;
     }
-    
+
     public boolean isCompleted()
     {
         return isCompleted;
@@ -119,13 +120,13 @@ public class ProgramStage extends Model
         dout.writeBoolean( this.isRepeatable() );
         dout.writeBoolean( this.isCompleted() );
         dout.writeBoolean( this.isSingleEvent );
-        
+
         dout.writeInt( this.dataElements.size() );
         for ( int i = 0; i < this.dataElements.size(); i++ )
         {
             this.dataElements.get( i ).serialize( dout );
         }
-        
+
         dout.writeInt( this.sections.size() );
         for ( int i = 0; i < this.sections.size(); i++ )
         {
@@ -154,7 +155,7 @@ public class ProgramStage extends Model
         else
         {
         }
-        
+
         int sectionSize = dint.readInt();
         if ( sectionSize > 0 )
         {
