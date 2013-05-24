@@ -29,7 +29,9 @@ package org.hisp.dhis.appmanager.action;
 
 import com.opensymphony.xwork2.Action;
 import java.io.File;
+import java.util.List;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.hisp.dhis.i18n.I18n;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +86,13 @@ public class AppSettingsAction
     public void setAppStoreUrl( String appStoreUrl )
     {
         appManagerService.setAppStoreUrl( appStoreUrl );
+    }
+
+    private List<App> appList;
+
+    public List<App> getAppList()
+    {
+        return appManagerService.getInstalledApps();
     }
 
     private I18n i18n;

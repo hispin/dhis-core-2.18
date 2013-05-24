@@ -136,11 +136,13 @@ public class AddAppAction
                 if ( !manifestFound )
                 {
                     message = i18n.getString( "appmanager_invalid_package" );
+                    return "failure";
                 }
             }
             else
             {
                 message = i18n.getString( "appmanager_not_zip" );
+                return "failure";
             }
         }
         
