@@ -48,6 +48,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,6 +66,9 @@ public abstract class BaseEventService implements EventService
 
     @Autowired
     private ProgramService programService;
+
+    @Autowired
+    private ProgramStageService programStageService;
 
     @Autowired
     private ProgramInstanceService programInstanceService;
@@ -98,11 +102,25 @@ public abstract class BaseEventService implements EventService
 
     protected ImportSummary saveEvent( Event event )
     {
-        Program program = programService.getProgram( event.getId() );
+        Program program;
+
+        if ( event.getProgramId() != null )
+        {
+            program = programService.getProgram( event.getProgramId() );
+        }
+        else if ( event.getProgramStageId() != null )
+        {
+            ProgramStage programStage = programStageService.getProgramStage( event.getProgramStageId() );
+            program = programStage.getProgram();
+        }
+        else
+        {
+            return new ImportSummary( ImportStatus.ERROR, "No Event programId or programStageId was provided." );
+        }
 
         if ( program == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event ID does not point to a valid program." );
+            return new ImportSummary( ImportStatus.ERROR, "No valid Event programId or programStageId was provided." );
         }
         else
         {
