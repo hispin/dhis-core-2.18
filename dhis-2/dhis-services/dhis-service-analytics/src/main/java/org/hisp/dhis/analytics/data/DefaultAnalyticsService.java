@@ -759,10 +759,10 @@ public class DefaultAnalyticsService
                     int level = DataQueryParams.getLevelFromLevelParam( ou );
                     String boundaryId = DataQueryParams.getBoundaryFromLevelParam( ou );
                     
-                    if ( level > 0 && boundaryId != null )
-                    {
-                        OrganisationUnit boundary = organisationUnitService.getOrganisationUnit( boundaryId );
-                        
+                    OrganisationUnit boundary = null;
+                    
+                    if ( level > 0 && boundaryId != null && ( boundary = organisationUnitService.getOrganisationUnit( boundaryId ) ) != null )
+                    {                        
                         ous.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level, boundary ) );
                     }
                 }
