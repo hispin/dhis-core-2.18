@@ -46,7 +46,7 @@ public class Event
 
     private String programStageId;
 
-    private String programStageInstanceId;
+    private String eventId;
 
     private String organisationUnitId;
 
@@ -92,14 +92,14 @@ public class Event
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getProgramStageInstanceId()
+    public String getEventId()
     {
-        return programStageInstanceId;
+        return eventId;
     }
 
-    public void setProgramStageInstanceId( String programStageInstanceId )
+    public void setEventId( String eventId )
     {
-        this.programStageInstanceId = programStageInstanceId;
+        this.eventId = eventId;
     }
 
     @JsonProperty
@@ -193,7 +193,7 @@ public class Event
         return "Event{" +
             "programId='" + programId + '\'' +
             ", programStageId='" + programStageId + '\'' +
-            ", programStageInstanceId='" + programStageInstanceId + '\'' +
+            ", eventId='" + eventId + '\'' +
             ", organisationUnitId='" + organisationUnitId + '\'' +
             ", patientId='" + patientId + '\'' +
             ", eventDate='" + eventDate + '\'' +
