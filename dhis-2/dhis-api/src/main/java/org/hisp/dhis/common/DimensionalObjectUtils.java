@@ -54,7 +54,7 @@ public class DimensionalObjectUtils
         }
         
         return identifier;
-    }    
+    }
 
     /**
      * Creates a two-dimensional array of dimension items based on the list of
