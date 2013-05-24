@@ -127,19 +127,6 @@
     scope="prototype">
   </bean>
 
-  <!-- PivotTable -->
-
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
-    scope="prototype">
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
-    scope="prototype">
-    <property name="pivotTableService" ref="org.hisp.dhis.pivottable.PivotTableService" />
-  </bean>
-
   <!-- DataSet Report -->
 
   <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction"
