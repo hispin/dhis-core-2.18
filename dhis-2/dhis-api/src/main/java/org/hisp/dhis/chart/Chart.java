@@ -259,12 +259,12 @@ public class Chart
         this.series = series;
         this.category = category;
         this.filterDimensions.clear();
-        this.filterDimensions.add( filter ); //TODO
+        this.filterDimensions.add( filter );
     }
 
     public boolean isType( String type )
     {
-        return this.type != null && this.type.equals( type );
+        return this.type != null && this.type.equalsIgnoreCase( type );
     }
 
     public boolean isTargetLine()
