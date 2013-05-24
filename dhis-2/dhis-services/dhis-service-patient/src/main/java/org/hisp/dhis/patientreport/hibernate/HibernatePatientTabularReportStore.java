@@ -29,12 +29,9 @@ package org.hisp.dhis.patientreport.hibernate;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -56,12 +53,7 @@ public class HibernatePatientTabularReportStore
     @Override
     public Collection<PatientTabularReport> get( User user, String query, Integer min, Integer max )
     {
-        Criteria criteria = getCriteria();
-
-        if ( query != null )
-        {
-            criteria.add( Restrictions.ilike( "name", "%" + query + "%" ) );
-        }
+        Criteria criteria = search( query );
 
         List<PatientTabularReport> result = new ArrayList<PatientTabularReport>();
         Collection<PatientTabularReport> reports = criteria.list();
@@ -90,14 +82,9 @@ public class HibernatePatientTabularReportStore
     @Override
     public int countList( User user, String query )
     {
-        Criteria criteria = getCriteria();
+        Criteria criteria = search( query );
 
-        if ( query != null )
-        {
-            criteria.add( Restrictions.ilike( "name", "%" + query + "%" ) );
-        }
-
-        int result = 0;
+        int count = 0;
         @SuppressWarnings( "unchecked" )
         Collection<PatientTabularReport> reports = criteria.list();
 
@@ -105,18 +92,18 @@ public class HibernatePatientTabularReportStore
         {
             if ( SharingUtils.canRead( user, report ) )
             {
-                result++;
+                count++;
             }
         }
 
-        return result;
+        return count;
     }
 
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
 
-    private Criteria search( User user, String query, Integer min, Integer max )
+    private Criteria search( String query )
     {
         Criteria criteria = getCriteria();
 
@@ -124,17 +111,7 @@ public class HibernatePatientTabularReportStore
         {
             criteria.add( Restrictions.ilike( "name", "%" + query + "%" ) );
         }
-
-        Iterator<PatientTabularReport> iterReports = criteria.list().iterator();
-
-        while ( iterReports.hasNext() )
-        {
-            if ( !SharingUtils.canRead( user, iterReports.next() ) )
-            {
-                iterReports.remove();
-            }
-        }
-
+        
         return criteria;
     }
 

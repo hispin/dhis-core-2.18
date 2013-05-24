@@ -1,8 +1,17 @@
 #set( $programStage=$aggregateReport.programStage)
 {
 	"id": "${aggregateReport.id}",
+	"uid": "${aggregateReport.uid}",
 	"name": "$!encoder.jsonEncode( ${aggregateReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${aggregateReport.lastUpdated} )",
+	"access":
+	 {
+			 "manage":$security.canManage( $aggregateReport ),
+			 "write":$security.canWrite( $aggregateReport ),
+			 "read":$security.canRead( $aggregateReport ),
+			 "update":$security.canUpdate( $aggregateReport ),
+			 "delete":$security.canDelete( $aggregateReport )
+	 },
 	"programId": "${programStage.program.id}",
 	"singleEvent": 
 		#if($programStage.program.programStages.size() == 1 )

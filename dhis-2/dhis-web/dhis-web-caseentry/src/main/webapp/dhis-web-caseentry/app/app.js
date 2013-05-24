@@ -1644,7 +1644,7 @@ Ext.onReady( function() {
             }
 		}),
 		aggregateFavorite: Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'lastUpdated'],
+			fields: ['id', 'uid', 'name', 'lastUpdated', 'access'],
 			proxy: {
 				type: 'ajax',
 				reader: {
@@ -3341,7 +3341,7 @@ Ext.onReady( function() {
 										},
 										success: function(r) {
 											var sharing = Ext.decode(r.responseText),
-												window = TR.app.SharingWindow(sharing);
+												window = TR.app.SharingWindow(sharing, false);
 											window.show();
 										}
 									});
@@ -3734,6 +3734,9 @@ Ext.onReady( function() {
 					items: [
 						{
 							iconCls: 'tr-grid-row-icon-edit',
+							getClass: function(value, metaData, record) {
+								return 'tooltip-favorite-edit' + (!record.data.access.update ? ' disabled' : '');
+							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex);
 								nameWindow = new NameWindow(record.data.id);
@@ -3741,7 +3744,35 @@ Ext.onReady( function() {
 							}
 						},
 						{
+							iconCls: 'tr-grid-row-icon-sharing',
+							getClass: function(value, metaData, record) {
+								return 'tooltip-favorite-sharing' + (!record.data.access.manage ? ' disabled' : '');
+							},
+							handler: function(grid, rowIndex) {
+								var record = this.up('grid').store.getAt(rowIndex);
+
+								if (record.data.access.manage) {
+									Ext.Ajax.request({
+										url:TR.conf.finals.ajax.path_api + 'sharing?type=patientAggregateReport&id=' + record.data.uid,
+										method: 'GET',
+										failure: function(r) {
+											TR.util.mask.hideMask();
+											alert(r.responseText);
+										},
+										success: function(r) {
+											var sharing = Ext.decode(r.responseText),
+												window = TR.app.SharingWindow(sharing, true);
+											window.show();
+										}
+									});
+								}
+							}
+						},
+						{
 							iconCls: 'tr-grid-row-icon-delete',
+							getClass: function(value, metaData, record) {
+								return 'tooltip-favorite-overwrite' + (!record.data.access.update ? ' disabled' : '');
+							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex);
 									
@@ -4258,7 +4289,7 @@ Ext.onReady( function() {
 		return optionsWindow;
 	};
 		
-	TR.app.SharingWindow = function(sharing) {
+	TR.app.SharingWindow = function(sharing, isAggregate) {
 
 		// Objects
 		var UserGroupRow,
@@ -4306,7 +4337,7 @@ Ext.onReady( function() {
 				combo = Ext.create('Ext.form.field.ComboBox', {
 					fieldLabel: isPublicAccess ? TR.i18n.public_access : obj.name, //i18n
 					labelStyle: 'color:#333',
-					cls: 'dv-combo',
+					cls: 'tr-combo',
 					fieldStyle: 'padding-left:5px',
 					width: 380,
 					labelWidth: 250,
@@ -4449,6 +4480,13 @@ Ext.onReady( function() {
 			access: sharing.object.publicAccess
 		}, true, !sharing.meta.allowPublicAccess));
 
+		getURL = function(objectId) {
+			if(isAggregate){
+				return TR.conf.finals.ajax.path_api + 'sharing?type=patientAggregateReport&id=' + objectId;
+			}
+			return TR.conf.finals.ajax.path_api + 'sharing?type=patientTabularReport&id=' + objectId;
+		};
+		
 		if (Ext.isArray(sharing.object.userGroupAccesses)) {
 			for (var i = 0, userGroupRow; i < sharing.object.userGroupAccesses.length; i++) {
 				userGroupRow = UserGroupRow(sharing.object.userGroupAccesses[i]);
@@ -4485,7 +4523,7 @@ Ext.onReady( function() {
 					text: 'Save',
 					handler: function() {
 						Ext.Ajax.request({
-							url: TR.conf.finals.ajax.path_api + 'sharing?type=patientTabularReport&id=' + sharing.object.id,
+							url: getURL(sharing.object.id),
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
@@ -4499,19 +4537,30 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function(w) {
-					var pos = TR.cmp.caseBasedFavorite.window.getPosition();
-					w.setPosition(pos[0] + 5, pos[1] + 5);
-					TR.cmp.caseBasedFavorite.window.destroyOnBlur = false;
+					if(isAggregate){
+						var pos = TR.cmp.aggregateFavorite.window.getPosition();
+						w.setPosition(pos[0] + 5, pos[1] + 5);
+						TR.cmp.aggregateFavorite.window.destroyOnBlur = false;
+					}
+					else {
+						var pos = TR.cmp.caseBasedFavorite.window.getPosition();
+						w.setPosition(pos[0] + 5, pos[1] + 5);
+						TR.cmp.caseBasedFavorite.window.destroyOnBlur = false;
+					}
 				},
 				destroy: function() {
-					TR.cmp.caseBasedFavorite.window.destroyOnBlur = true;
+					if(isAggregate){
+						TR.cmp.aggregateFavorite.window.destroyOnBlur = true;
+					}
+					else{
+						TR.cmp.caseBasedFavorite.window.destroyOnBlur = true;
+					}
 				}
 			}
 		});
 
 		return window;
 	};
-	
 	
     TR.viewport = Ext.create('Ext.container.Viewport', {
         layout: 'border',
