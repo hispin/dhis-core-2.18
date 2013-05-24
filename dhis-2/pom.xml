@@ -927,7 +927,7 @@
       <dependency>
         <groupId>org.smslib</groupId>
         <artifactId>smslib</artifactId>
-        <version>3.5.2-r2307</version>
+        <version>3.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.rxtx</groupId>
