@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms.outcoming;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,14 +27,10 @@ package org.hisp.dhis.sms.outcoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -44,7 +40,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -52,7 +47,10 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dang Duy Hieu
@@ -86,7 +84,7 @@ public class ProcessingSendSMSAction
     {
         this.messageSender = messageSender;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -155,7 +153,7 @@ public class ProcessingSendSMSAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public String execute()
     {
         gatewayId = transportService.getDefaultGateway();
@@ -175,9 +173,9 @@ public class ProcessingSendSMSAction
         }
 
         User currentUser = currentUserService.getCurrentUser();
-        
+
         Set<User> recipientsList = new HashSet<User>();
-        
+
         if ( sendTarget != null && sendTarget.equals( "phone" ) )
         {
             try
@@ -185,8 +183,8 @@ public class ProcessingSendSMSAction
                 ObjectMapper mapper = new ObjectMapper().setVisibility( JsonMethod.FIELD, Visibility.ANY );
                 mapper.configure( DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
                 recipients = mapper.readValue( recipients.iterator().next(), Set.class );
-                
-                for( String each: recipients )
+
+                for ( String each : recipients )
                 {
                     User user = new User();
                     user.setPhoneNumber( each );
@@ -207,7 +205,7 @@ public class ProcessingSendSMSAction
             }
             //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
             message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
-            
+
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
@@ -277,7 +275,7 @@ public class ProcessingSendSMSAction
             }
 
             //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false);
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
         }
         else
         {
@@ -325,7 +323,7 @@ public class ProcessingSendSMSAction
             }
 
             //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, phones, gatewayId );
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false);
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
         }
 
         if ( message != null && !message.equals( "success" ) )

@@ -27,12 +27,6 @@
 
 package org.hisp.dhis.sms.outcoming;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -42,6 +36,12 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -153,7 +153,7 @@ public class SearchPatientAction
 
             total = patientService.countSearchPatients( searchTexts, organisationUnit );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, organisationUnit, paging.getStartPos(), paging
+            patients = patientService.searchPatients( searchTexts, organisationUnit, null, paging.getStartPos(), paging
                 .getPageSize() );
 
             if ( !searchBySelectedOrgunit )
