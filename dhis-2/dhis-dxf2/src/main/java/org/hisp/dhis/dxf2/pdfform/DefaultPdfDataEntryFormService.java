@@ -844,5 +844,4 @@ public class DefaultPdfDataEntryFormService
 
     // ------------ Period Related Methods [END] ------------
     // -----------------------------------------------------------------------------
-
 }

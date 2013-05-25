@@ -65,7 +65,6 @@ import java.text.ParseException;
 /**
  * @author James Chang <jamesbchang@gmail.com>
  */
-
 @Controller
 @RequestMapping(value = "/pdfForm")
 public class PDFFormController
@@ -237,6 +236,5 @@ public class PDFFormController
             os.flush();
             os.close();
         }
-
     }
 }
