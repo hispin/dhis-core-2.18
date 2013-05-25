@@ -54,60 +54,39 @@ import java.util.Set;
 
 public class PdfDataEntryFormUtil
 {
-
-    // public Static Values
     public static final int DATATYPE_DATASET = 0;
     public static final int DATATYPE_PROGRAMSTAGE = 1;
 
     public static final float UNITSIZE_DEFAULT = 10;
 
     // Label Names
+    
     public static final String LABELCODE_TEXTFIELD = "TXFD_";
-
     public static final String LABELCODE_BUTTON = "BTNFD_";
-
     public static final String LABELCODE_ORGID = LABELCODE_TEXTFIELD + "OrgID";
-
     public static final String LABELCODE_PERIODID = LABELCODE_TEXTFIELD + "PeriodID";
-
     public static final String LABELCODE_BUTTON_SAVEAS = LABELCODE_BUTTON + "SaveAs";
-
     public static final String LABELCODE_DATADATETEXTFIELD = "TXFDDT_";
-
     public static final String LABELCODE_DATAENTRYTEXTFIELD = "TXFDDV_";
-
     public static final String LABELCODE_PROGRAMSTAGEIDTEXTBOX = "TXPSTGID_";
-
 
     // Cell Related
 
     public final static float CELL_MIN_HEIGHT_DEFAULT = 13;
-
     public final static float CONTENT_HEIGHT_DEFAULT = 11;
-
     public final static int CELL_COLUMN_TYPE_LABEL = 0;
-
     public final static int CELL_COLUMN_TYPE_ENTRYFIELD = 1;
 
-
-    // private static values
     private static final String DATAVALUE_IMPORT_STOREBY = "admin";
-
     private static final String DATAVALUE_IMPORT_COMMENT = "Imported by PDF Data Entry Form";
-
     private static final String DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT = "yyyy-MM-dd";
-
     private static final String FOOTERTEXT_DEFAULT = "PDF Template generated from DHIS %s on %s";
-
     private static final String DATEFORMAT_FOOTER_DEFAULT = "MMMM dd, yyyy";
 
 
     // -------------------------------------------------------------------------
     // METHODS
     // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
-    // --- Document Setting Related [START]
 
     public static void setFooterOnDocument( Document document, String footerText, Font font )
     {
@@ -117,23 +96,18 @@ public class PdfDataEntryFormUtil
         footer.setBorder( Rectangle.NO_BORDER );
         footer.setAlignment( Element.ALIGN_RIGHT );
         document.setFooter( footer );
-
     }
 
-    // Set DefaultFooter
     public static void setDefaultFooterOnDocument( Document document, String serverName, Font font )
     {
-        // Set Footer
         String strFooterText = String.format( FOOTERTEXT_DEFAULT, serverName, (new SimpleDateFormat(
             DATEFORMAT_FOOTER_DEFAULT )).format( new Date() ) );
 
         setFooterOnDocument( document, strFooterText, font );
-
     }
 
     public static Rectangle getDefaultPageSize( int typeId )
     {
-
         if ( typeId == PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE )
         {
             return new Rectangle( PageSize.A4.getLeft(),
@@ -143,14 +117,7 @@ public class PdfDataEntryFormUtil
         {
             return PageSize.A4;
         }
-
     }
-
-    // --- Document Setting Related [END]
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
-    // --- PdfPCell Related [START]
 
     public static PdfPCell getPdfPCell( float minHeight )
     {
@@ -177,12 +144,6 @@ public class PdfDataEntryFormUtil
         return cell;
     }
 
-
-    // --- PdfPCell Related [END]
-    // -------------------------------------------------------------------------
-
-
-    // Retreive DataValue Informations from PDF inputStream.
     public static DataValueSet getDataValueSet( InputStream in )
         throws RuntimeException
     {
@@ -194,14 +155,12 @@ public class PdfDataEntryFormUtil
 
         try
         {
-
             reader = new PdfReader( in ); // new PdfReader(in, null);
 
             AcroFields form = reader.getAcroFields();
 
             if ( form != null )
             {
-
                 // TODO: MOVE THESE STATIC NAME VALUES TO inside of service
                 // class or PDFForm Class <-- should be in PDFForm Class.
                 String strOrgUID = form.getField( PdfDataEntryFormUtil.LABELCODE_ORGID );
@@ -240,12 +199,10 @@ public class PdfDataEntryFormUtil
                             .format( new Date() ) );
 
                         dataValueList.add( dataValue );
-
                     }
                 }
 
                 dataValueSet.setDataValues( dataValueList );
-
             }
             else
             {
@@ -259,19 +216,12 @@ public class PdfDataEntryFormUtil
         }
         finally
         {
-            reader.close();
+            if ( reader != null )
+            {
+                reader.close();
+            }
         }
 
         return dataValueSet;
     }
-
-
-    // -----------------------------------------------------------------------------
-    // --- For Import - ProgramStage [START]
-
-
-    // --- For Import - ProgramStage [END]
-    // -----------------------------------------------------------------------------
-
-
 }

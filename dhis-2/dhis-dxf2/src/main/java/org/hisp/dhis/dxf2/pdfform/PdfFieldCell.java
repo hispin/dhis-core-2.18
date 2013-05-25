@@ -48,21 +48,13 @@ import com.lowagie.text.pdf.RadioCheckField;
 public class PdfFieldCell
     implements PdfPCellEvent
 {
-
     public final static int TYPE_DEFAULT = 0;
-
     public final static int TYPE_BUTTON = 1;
-
     public final static int TYPE_TEXT_ORGUNIT = 2;
-
     public final static int TYPE_TEXT_NUMBER = 3;
-
     public final static int TYPE_CHECKBOX = 4;
-
     public final static int TYPE_RADIOBUTTON = 5;
-
     private final static float RADIOBUTTON_WIDTH = 10.0f;
-
     private final static float RADIOBUTTON_TEXTOFFSET = 3.0f;
 
     private PdfFormField parent;
@@ -143,18 +135,15 @@ public class PdfFieldCell
 
             switch ( type )
             {
-
                 case TYPE_RADIOBUTTON:
 
                     if ( parent != null )
                     {
-
                         float leftLoc = rect.getLeft();
                         float rightLoc = rect.getLeft() + RADIOBUTTON_WIDTH;
 
                         try
                         {
-
                             String text;
                             String value;
 
@@ -185,9 +174,7 @@ public class PdfFieldCell
 
                                 leftLoc = rightLoc;
                                 rightLoc += RADIOBUTTON_WIDTH;
-
                             }
-
                         }
                         catch ( Exception ex )
                         {
@@ -195,7 +182,6 @@ public class PdfFieldCell
                         }
 
                         writer.addAnnotation( parent );
-
                     }
 
                     break;

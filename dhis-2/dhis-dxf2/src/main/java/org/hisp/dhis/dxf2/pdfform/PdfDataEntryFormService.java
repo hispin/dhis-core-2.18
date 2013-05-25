@@ -36,5 +36,4 @@ public interface PdfDataEntryFormService
 {
     void generatePDFDataEntryForm( Document document, PdfWriter writer, String inputUid, int typeId,
         Rectangle pageSize, PdfFormFontSettings pdfFormFontSettings, I18nFormat format );
-
 }
