@@ -85,6 +85,7 @@ public class DeleteAppAction
         String appName = ServletActionContext.getRequest().getParameter( "appName" );
         if ( null != appName )
         {
+            // TODO: Move to AppManagerService
             for ( App app : appManagerService.getInstalledApps() )
             {
                 if ( app.getName().equals( appName ) )

@@ -27,13 +27,18 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.Action;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.io.InputStream;
 import org.apache.ant.compress.taskdefs.Unzip;
+import org.apache.commons.io.FileUtils;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipFile;
+import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
@@ -49,7 +54,7 @@ public class AddAppAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     @Autowired
     private AppManagerService appManagerService;
 
@@ -109,35 +114,41 @@ public class AddAppAction
     {
         if ( null != file )
         {
+            // TODO: Move to AppManagerService
             if ( StreamUtils.isZip( new BufferedInputStream( new FileInputStream( file ) ) ) )
             {
-                boolean manifestFound = false;
-                ZipInputStream zis = new ZipInputStream( new FileInputStream( file ) );
-                ZipEntry ze;
-                
-                while ( (ze = zis.getNextEntry()) != null )
+                ZipFile zip = new ZipFile( file );
+                ZipEntry entry = zip.getEntry( "manifest.webapp" );
+                if ( null != entry )
                 {
-                    if ( ze.getName().equals( "manifest.webapp" ) )
+                    InputStream inputStream = zip.getInputStream( entry );
+                    String appManifest = StreamUtils.convertStreamToString( inputStream );
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+                    App app = mapper.readValue( appManifest, App.class );
+
+                    // Delete if app is already installed
+                    if ( appManagerService.getInstalledApps().contains( app ) )
                     {
-                        manifestFound = true;
-                        //TODO: Check duplicate app installation
-                        String dest = appManagerService.getAppFolderPath() + File.separator
-                            + fileName.substring( 0, fileName.lastIndexOf( '.' ) );
-                        Unzip unzip = new Unzip();
-                        unzip.setSrc( file );
-                        unzip.setDest( new File( dest ) );
-                        unzip.execute();
-                        message = i18n.getString( "appmanager_install_success" );
+                        String folderPath = appManagerService.getAppFolderPath() + File.separator
+                            + appManagerService.getAppFolderName( app );
+                        FileUtils.forceDelete( new File( folderPath ) );
                     }
+
+                    String dest = appManagerService.getAppFolderPath() + File.separator
+                        + fileName.substring( 0, fileName.lastIndexOf( '.' ) );
+                    Unzip unzip = new Unzip();
+                    unzip.setSrc( file );
+                    unzip.setDest( new File( dest ) );
+                    unzip.execute();
+                    message = i18n.getString( "appmanager_install_success" );
                 }
-                
-                zis.close();
-                
-                if ( !manifestFound )
+                else
                 {
                     message = i18n.getString( "appmanager_invalid_package" );
                     return "failure";
                 }
+                zip.close();
             }
             else
             {
@@ -145,7 +156,7 @@ public class AddAppAction
                 return "failure";
             }
         }
-        
+
         return SUCCESS;
     }
 }
