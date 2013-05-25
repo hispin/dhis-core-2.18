@@ -76,9 +76,12 @@ public class IdentifiableObjectUtils
     {
         List<String> uids = new ArrayList<String>();
         
-        for ( T object : objects )
+        if ( objects != null )
         {
-            uids.add( object.getUid() );
+            for ( T object : objects )
+            {
+                uids.add( object.getUid() );
+            }
         }
         
         return uids;
@@ -127,9 +130,12 @@ public class IdentifiableObjectUtils
     {
         List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
         
-        for ( IdentifiableObject object : objects )
+        if ( objects != null )
         {
-            list.add( object );
+            for ( IdentifiableObject object : objects )
+            {
+                list.add( object );
+            }
         }
         
         return list;
@@ -161,9 +167,12 @@ public class IdentifiableObjectUtils
     {
         List<T> list = new ArrayList<T>();
         
-        for ( IdentifiableObject object : collection )
+        if ( collection != null )
         {
-            list.add( (T) object );
+            for ( IdentifiableObject object : collection )
+            {
+                list.add( (T) object );
+            }
         }
         
         return list;

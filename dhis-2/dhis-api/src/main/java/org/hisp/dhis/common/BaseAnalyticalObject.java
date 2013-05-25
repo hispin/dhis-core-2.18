@@ -250,7 +250,10 @@ public abstract class BaseAnalyticalObject
             
             for ( DataElementGroup group : dataElementGroups )
             {
-                deGroupMap.putValue( group.getGroupSet().getDimension(), group );
+                if ( group.getGroupSet() != null )
+                {
+                    deGroupMap.putValue( group.getGroupSet().getDimension(), group );
+                }
             }
             
             if ( deGroupMap.containsKey( dimension ) )
@@ -264,7 +267,10 @@ public abstract class BaseAnalyticalObject
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
-                ouGroupMap.putValue( group.getGroupSet().getUid(), group );
+                if ( group.getGroupSet() != null )
+                {
+                    ouGroupMap.putValue( group.getGroupSet().getUid(), group );
+                }
             }
             
             if ( ouGroupMap.containsKey( dimension ) )
@@ -373,7 +379,10 @@ public abstract class BaseAnalyticalObject
             
             for ( DataElementGroup group : dataElementGroups )
             {
-                deGroupMap.putValue( group.getGroupSet().getDimension(), group );
+                if ( group.getGroupSet() != null )
+                {
+                    deGroupMap.putValue( group.getGroupSet().getDimension(), group );
+                }
             }
             
             if ( deGroupMap.containsKey( dimension ) )
@@ -385,7 +394,10 @@ public abstract class BaseAnalyticalObject
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
-                ouGroupMap.putValue( group.getGroupSet().getUid(), group );
+                if ( group.getGroupSet() != null )
+                {
+                    ouGroupMap.putValue( group.getGroupSet().getUid(), group );
+                }
             }
             
             if ( ouGroupMap.containsKey( dimension ) )
