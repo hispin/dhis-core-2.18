@@ -543,6 +543,8 @@ public class OrganisationUnit
             thisParent = thisParent.getParent();
         }
 
+        this.level = currentLevel;
+        
         return currentLevel;
     }
 

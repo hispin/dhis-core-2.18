@@ -501,12 +501,12 @@ public class DefaultAnalyticsService
         
         List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
         
-        Map<String, Double> map = new HashMap<String, Double>();
-        
         for ( DataQueryParams query : queries )
         {
             futures.add( analyticsManager.getAggregatedDataValues( query ) );
         }
+
+        Map<String, Double> map = new HashMap<String, Double>();
         
         for ( Future<Map<String, Double>> future : futures )
         {

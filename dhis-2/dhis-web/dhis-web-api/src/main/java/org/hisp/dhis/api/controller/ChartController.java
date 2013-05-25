@@ -235,13 +235,23 @@ public class ChartController
         dimensionService.mergeAnalyticalObject( chart );
         
         chart.getFilterDimensions().clear();
-                
-        chart.setSeries( toDimension( chart.getColumns().get( 0 ).getDimension() ) );
-        chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
         
-        for ( DimensionalObject dimension : chart.getFilters() )
+        if ( chart.getColumns() != null )
         {
-            chart.getFilterDimensions().add( toDimension( dimension.getDimension() ) );
+            chart.setSeries( toDimension( chart.getColumns().get( 0 ).getDimension() ) );
+        }
+        
+        if ( chart.getRows() != null )
+        {
+            chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
+        }
+        
+        if ( chart.getFilters() != null )
+        {
+            for ( DimensionalObject dimension : chart.getFilters() )
+            {
+                chart.getFilterDimensions().add( toDimension( dimension.getDimension() ) );
+            }
         }
     }
 }

@@ -302,19 +302,28 @@ public class ReportTableController
         reportTable.getRowDimensions().clear();
         reportTable.getFilterDimensions().clear();
         
-        for ( DimensionalObject column : reportTable.getColumns() )
+        if ( reportTable.getColumns() != null )
         {
-            reportTable.getColumnDimensions().add( toDimension( column.getDimension() ) );
+            for ( DimensionalObject column : reportTable.getColumns() )
+            {
+                reportTable.getColumnDimensions().add( toDimension( column.getDimension() ) );
+            }
         }
         
-        for ( DimensionalObject row : reportTable.getRows() )
+        if ( reportTable.getRows() != null )
         {
-            reportTable.getRowDimensions().add( toDimension( row.getDimension() ) );
+            for ( DimensionalObject row : reportTable.getRows() )
+            {
+                reportTable.getRowDimensions().add( toDimension( row.getDimension() ) );
+            }
         }
         
-        for ( DimensionalObject filter : reportTable.getFilters() )
+        if ( reportTable.getFilters() != null )
         {
-            reportTable.getFilterDimensions().add( toDimension( filter.getDimension() ) );
+            for ( DimensionalObject filter : reportTable.getFilters() )
+            {
+                reportTable.getFilterDimensions().add( toDimension( filter.getDimension() ) );
+            }
         }
     }
 }
