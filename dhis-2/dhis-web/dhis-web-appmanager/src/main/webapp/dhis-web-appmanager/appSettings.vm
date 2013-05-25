@@ -36,7 +36,7 @@
         <col/>				
         <thead>				
           <tr>
-            <th>$i18n.getString( "appname" )</th>
+            <th>$i18n.getString( "appmanager_appname" )</th>
             <th>$i18n.getString( "version" )</th>
             <th class="{sorter: false}" style="width:120px;">$i18n.getString( "operations" )</th>
           </tr>

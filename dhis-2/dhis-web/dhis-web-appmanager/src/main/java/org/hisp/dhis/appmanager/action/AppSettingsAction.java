@@ -60,13 +60,13 @@ public class AppSettingsAction
     public String getAppFolderPath()
     {
         appFolderPath = appManagerService.getAppFolderPath();
-        
+
         if ( null == appFolderPath || appFolderPath.isEmpty() )
         {
             appFolderPath = ServletActionContext.getServletContext().getRealPath( "/" ) + File.separatorChar + "apps";
             appManagerService.setAppFolderPath( appFolderPath );
         }
-        
+
         return appFolderPath;
     }
 

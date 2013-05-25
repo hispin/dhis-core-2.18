@@ -14,4 +14,6 @@ jQuery(function() {
         <div id="progressbar"></div>
     </div>
 </div>
+#if( $!appStoreUrl )
 <iframe src="$appStoreUrl" seamless="true" style="width: 100%; height: 500px; border: none;"></iframe> 
+#end
