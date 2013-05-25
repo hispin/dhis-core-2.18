@@ -195,5 +195,8 @@
     class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.datadictionary.DataDictionary" />
   </bean>
+  
+  <bean id="pdfDataEntryFormService" class="org.hisp.dhis.dxf2.pdfform.DefaultPdfDataEntryFormService" scope="prototype">
+  </bean>
 
 </beans>
