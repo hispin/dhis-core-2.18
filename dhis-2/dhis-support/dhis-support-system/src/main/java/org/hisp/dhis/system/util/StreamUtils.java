@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -591,5 +592,18 @@ public class StreamUtils
     public static boolean exists( String path )
     {
         return new File( path ).exists();
+    }
+    
+    /**
+     * Converts an InputStream to String with encoding as UTF-8
+     * 
+     * @since 2.12
+     * @param inputStream the InputStream
+     * @return String after reading the InputStream
+     */
+    public static String convertStreamToString(InputStream inputStream)
+    {
+        Scanner s = new Scanner(inputStream, ENCODING_UTF8).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 }
