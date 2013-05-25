@@ -202,9 +202,9 @@ public class PDFFormController
     }
 
     @RequestMapping( value = "/programStage", method = RequestMethod.POST )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public void sendFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response )
-        throws IOException, Exception
+        throws Exception
     {
         InputStream in = request.getInputStream();
 
