@@ -48,6 +48,7 @@ import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,11 +92,9 @@ public class PDFFormController
     @Autowired
     private ContextUtils contextUtils;
 
-    // -------------------------------------------------------------------------
-    // GET / POST
-    // -------------------------------------------------------------------------
-
-    // --------------------- Data Set Related ---------------------
+    //--------------------------------------------------------------------------
+    // DataSet
+    //--------------------------------------------------------------------------
 
     @RequestMapping(value = "/dataSet/{dataSetUid}", method = RequestMethod.GET)
     public void getFormPDF_DataSet( HttpServletRequest request, HttpServletResponse response,
@@ -127,15 +126,13 @@ public class PDFFormController
         // STEP 4. - Output the data into Stream and close the stream.
         // write ByteArrayOutputStream to the ServletOutputStream
         writeToOutputStream( baos, response );
-
     }
 
-    @RequestMapping(value = "/DataSet", method = RequestMethod.POST)
-    // , consumes = MEDIA_TYPE_PDF)
+    @RequestMapping(value = "/dataSet", method = RequestMethod.POST)
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void sendFormPDF_DataSet( HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-
         // Step 1. Set up Import Option
         ImportStrategy strategy = ImportStrategy.NEW_AND_UPDATES;
         IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
@@ -168,14 +165,15 @@ public class PDFFormController
 
     }
 
-    // --------------------- Program Stage Related ---------------------
+    //--------------------------------------------------------------------------
+    // Program Stage
+    //--------------------------------------------------------------------------
 
     @RequestMapping(value = "/programStage/{programStageUid}", method = RequestMethod.GET)
-    public void getFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response, @PathVariable
-    String programStageUid )
+    public void getFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response,
+        @PathVariable String programStageUid )
         throws IOException, DocumentException, ParseException, I18nManagerException
     {
-
         // STEP 1. - Create Document and PdfWriter - with OutputStream and
         // document tie.
         Document document = new Document();
@@ -204,12 +202,11 @@ public class PDFFormController
         writeToOutputStream( baos, response );
     }
 
-    @RequestMapping(value = "/programStage", method = RequestMethod.POST)
-    // , consumes = MEDIA_TYPE_PDF)
+    @RequestMapping( value = "/programStage", method = RequestMethod.POST )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
     public void sendFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response )
         throws IOException, Exception
     {
-
         InputStream in = request.getInputStream();
 
         // Temporarily using Util class from same project.
@@ -219,12 +216,11 @@ public class PDFFormController
 
         // Step 5. Set the response - just simple OK response.
         ContextUtils.okResponse( response, "" );
-
     }
 
-    // -----------------------------------------------------------------------------
-    // ---------------------- Helper Class Related [START]
-    // ----------------------
+    //--------------------------------------------------------------------------
+    // Helpers
+    //--------------------------------------------------------------------------
 
     private void writeToOutputStream( ByteArrayOutputStream baos, HttpServletResponse response )
         throws IOException
