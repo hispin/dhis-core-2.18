@@ -11,6 +11,7 @@ jQuery(function() {
     #introListImgItem( "dxf2MetaDataImport.action" "metadata_import" "import" )
     #introListImgItem( "displayImportDataValueForm.action?importFormat=xml" "xml_data_import" "import" )
     #introListImgItem( "displayImportDataValueForm.action?importFormat=csv" "csv_data_import" "import" )
+    #introListImgItem( "displayImportDataValueForm.action?importFormat=pdf" "pdf_data_import" "import" )
     #introListImgItem( "displayExternalImportMenu.action" "dhis14_import" "import" )
     	
     #introListImgItem( "dxf2MetaDataExport.action" "metadata_export" "export" )

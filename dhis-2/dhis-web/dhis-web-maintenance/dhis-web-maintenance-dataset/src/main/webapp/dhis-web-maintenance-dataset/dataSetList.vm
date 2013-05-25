@@ -31,7 +31,7 @@
 		</table>
       <table class="listTable" id="listTable">
           <col/>          
-          <col width="230"/>
+          <col width="260"/>
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
@@ -71,6 +71,12 @@
                   <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"/></a>
                   #else
                   <img src="../images/edit_layout-denied.png">
+                  #end
+
+                  #if( $security.canUpdate( $dataSet ) )
+                  <a href="../api/pdfForm/DataSet/$dataSet.uid" title="$i18n.getString( 'pdf_data_entry_form' )" target="_blank"><img src="../images/pdf.png" alt="$i18n.getString( 'pdf_data_entry_form' )" width="24" height="24"/></a>
+                  #else
+                  <img src="../images/pdf-denied.png">
                   #end
 
                   #if( $security.canWrite( $dataSet ) )

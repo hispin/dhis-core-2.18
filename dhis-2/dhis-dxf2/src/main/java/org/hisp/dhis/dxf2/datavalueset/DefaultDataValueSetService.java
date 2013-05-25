@@ -27,25 +27,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.ImportStrategy.NEW;
-import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
-import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-import static org.hisp.dhis.system.util.ConversionUtils.wrap;
-import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import au.com.bytecode.opencsv.CSVReader;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -66,6 +48,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
@@ -82,7 +65,22 @@ import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import au.com.bytecode.opencsv.CSVReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.importexport.ImportStrategy.*;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
+import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
 /**
  * @author Lars Helge Overland
@@ -240,6 +238,23 @@ public class DefaultDataValueSetService
         }
     }
 
+    public ImportSummary saveDataValueSetPdf( InputStream in, ImportOptions importOptions, TaskId id )
+    {
+        try
+        {
+            DataValueSet dataValueSet = PdfDataEntryFormUtil.getDataValueSet( in );
+
+            return saveDataValueSet( importOptions, id, dataValueSet );
+        }
+        catch ( RuntimeException ex )
+        {
+            log.error( DebugUtils.getStackTrace( ex ) );
+            notifier.clear( id ).notify( id, ERROR, "Unfortunately the process failed, check the logs", true );
+            return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
+        }
+    }
+
+
     private ImportSummary saveDataValueSet( ImportOptions importOptions, TaskId id, DataValueSet dataValueSet )
     {
         notifier.clear( id ).notify( id, "Process started" );
@@ -352,9 +367,9 @@ public class DefaultDataValueSetService
             {
                 continue;
             }
-            
+
             String valueValid = ValidationUtils.dataValueIsValid( dataValue.getValue(), dataElement );
-            
+
             if ( valueValid != null )
             {
                 summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), valueValid ) );

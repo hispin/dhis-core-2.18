@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.dxf2.pdfform;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,14 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
+import com.lowagie.text.Document;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfWriter;
+import org.hisp.dhis.i18n.I18nFormat;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.Date;
-import java.util.Set;
-
-public interface DataValueSetService
+public interface PdfDataEntryFormService
 {
-    void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
+    void generatePDFDataEntryForm( Document document, PdfWriter writer, String inputUid, int typeId,
+        Rectangle pageSize, PdfFormFontSettings pdfFormFontSettings, I18nFormat format );
 
-    void writeDataValueSet( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream out );
-
-    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
-
-    ImportSummary saveDataValueSet( InputStream in );
-
-    ImportSummary saveDataValueSetJson( InputStream in );
-
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions );
-
-    ImportSummary saveDataValueSetJson( InputStream in, ImportOptions importOptions );
-
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
-
-    ImportSummary saveDataValueSetJson( InputStream in, ImportOptions importOptions, TaskId taskId );
-
-    ImportSummary saveDataValueSetCsv( Reader reader, ImportOptions importOptions, TaskId id );
-
-    ImportSummary saveDataValueSetPdf( InputStream in, ImportOptions importOptions, TaskId id );
 }
