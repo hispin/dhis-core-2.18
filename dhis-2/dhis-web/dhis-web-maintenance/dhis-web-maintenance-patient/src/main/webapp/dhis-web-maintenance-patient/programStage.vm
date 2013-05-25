@@ -41,10 +41,10 @@
 							  #if( $program.type=='1' )
 								<a href="javascript:removeItem( '$association.id', '$encoder.jsEncode( $association.name )', i18n_confirm_delete , 'removeProgramStage.action' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 							  #end
-							  							  
+
 							  <a href="javascript:showProgramStageDetails( $association.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 							  <a href="programStageSectionList.action?id=$association.id" title="$i18n.getString( 'section_management' )"><img src="images/sections.png" alt="$i18n.getString( 'section_management' )"></a>
-	                  		  <a href="../api/pdfForm/ProgramStage/$association.uid" title="$i18n.getString( 'pdf_data_entry_form' )" target="_blank"><img src="../images/pdf.png" alt="$i18n.getString( 'pdf_data_entry_form' )" width="24" height="24"/></a>	                  
+	                  		  <a href="../api/pdfForm/programStage/$association.uid" title="$i18n.getString( 'pdf_data_entry_form' )" target="_blank"><img src="../images/pdf.png" alt="$i18n.getString( 'pdf_data_entry_form' )" width="24" height="24"/></a>
 							  <a href="viewDataEntryForm.action?programStageId=$association.id" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
 							</td>
 						</tr>

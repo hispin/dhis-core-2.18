@@ -73,11 +73,7 @@
                   <img src="../images/edit_layout-denied.png">
                   #end
 
-                  #if( $security.canUpdate( $dataSet ) )
-                  <a href="../api/pdfForm/DataSet/$dataSet.uid" title="$i18n.getString( 'pdf_data_entry_form' )" target="_blank"><img src="../images/pdf.png" alt="$i18n.getString( 'pdf_data_entry_form' )" width="24" height="24"/></a>
-                  #else
-                  <img src="../images/pdf-denied.png">
-                  #end
+                  <a href="../api/pdfForm/dataSet/$dataSet.uid" title="$i18n.getString( 'pdf_data_entry_form' )" target="_blank"><img src="../images/pdf.png" alt="$i18n.getString( 'pdf_data_entry_form' )" width="24" height="24"/></a>
 
                   #if( $security.canWrite( $dataSet ) )
                   <a href="javascript:window.location.href='displayCompulsoryDataElementsForm.action?id=${dataSet.id}'" title="$i18n.getString( 'edit_compulsory_data_elements' )"><img src="../images/edit_compulsory_data_elements.png" alt="$i18n.getString( 'edit_compulsory_data_elements' )"/></a>
