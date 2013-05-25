@@ -27,9 +27,14 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.utils.PdfDataEntryFormImportUtil;
@@ -54,13 +59,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.ParseException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * @author James Chang <jamesbchang@gmail.com>
@@ -100,14 +101,15 @@ public class PDFFormController
         @PathVariable String dataSetUid )
         throws Exception
     {
-        // STEP 1. - Create Document and PdfWriter - with OutputStream and
-        // document tie.
-        Document document = new Document(); // TODO: can specify the size of
-        // document - like letter or A4
+        // 1. - Create Document and PdfWriter
+        
+        Document document = new Document(); // TODO: can specify the size of doc
+        
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = PdfWriter.getInstance( document, baos );
 
-        // STEP 2. Generate PDF Document Contents
+        // 2. Generate PDF Document Content
+        
         PdfFormFontSettings pdfFormFontSettings = new PdfFormFontSettings();
 
         PdfDataEntryFormUtil.setDefaultFooterOnDocument( document, request.getServerName(),
@@ -118,12 +120,13 @@ public class PDFFormController
             PdfDataEntryFormUtil.getDefaultPageSize( PdfDataEntryFormUtil.DATATYPE_DATASET ),
             new PdfFormFontSettings(), i18nManager.getI18nFormat() );
 
-        // STEP 3. - Response Header/Content Type Set
+        // 3. - Response Header/Content Type Set
+        
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.NO_CACHE );
         response.setContentLength( baos.size() );
 
-        // STEP 4. - Output the data into Stream and close the stream.
-        // write ByteArrayOutputStream to the ServletOutputStream
+        // 4. - Output the data into Stream and close the stream.
+        
         writeToOutputStream( baos, response );
     }
 
@@ -132,36 +135,36 @@ public class PDFFormController
     public void sendFormPDF_DataSet( HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
-        // Step 1. Set up Import Option
+        // 1. Set up Import Option
+        
         ImportStrategy strategy = ImportStrategy.NEW_AND_UPDATES;
         IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
         IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
         boolean dryRun = false;
-        boolean skipExistingCheck = false; // THIS IS THE DEFAULT CHOICE. DO WE
-        // USE THIS?
-
+        boolean skipExistingCheck = false;
+        
         ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy,
             skipExistingCheck );
 
-        // Step 2. Generate Task ID
+        // 2. Generate Task ID
+        
         TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
 
         notifier.clear( taskId );
 
-        // Step 3. Input Stream Check
+        // 3. Input Stream Check
+        
         InputStream in = request.getInputStream();
 
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
 
-        // No logging?
-        // log.info( options );
-
-        // Step 4. Save (Import) the data values.
+        // 4. Save (Import) the data values.
+        
         dataValueSetService.saveDataValueSetPdf( in, options, taskId );
 
         // Step 5. Set the response - just simple OK response.
+        
         ContextUtils.okResponse( response, "" );
-
     }
 
     //--------------------------------------------------------------------------
@@ -171,15 +174,16 @@ public class PDFFormController
     @RequestMapping(value = "/programStage/{programStageUid}", method = RequestMethod.GET)
     public void getFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response,
         @PathVariable String programStageUid )
-        throws IOException, DocumentException, ParseException, I18nManagerException
+        throws IOException, DocumentException, I18nManagerException
     {
-        // STEP 1. - Create Document and PdfWriter - with OutputStream and
-        // document tie.
+        // 1. - Create Document and PdfWriter
+        
         Document document = new Document();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = PdfWriter.getInstance( document, baos );
 
-        // STEP 2. Generate PDF Document Contents
+        // 2. Generate PDF Document Contents
+        
         PdfFormFontSettings pdfFormFontSettings = new PdfFormFontSettings();
 
         PdfDataEntryFormUtil.setDefaultFooterOnDocument( document, request.getServerName(),
@@ -187,17 +191,16 @@ public class PDFFormController
 
         pdfDataEntryFormService.generatePDFDataEntryForm( document, writer, programStageUid,
             PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE,
-            PdfDataEntryFormUtil.getDefaultPageSize( PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE )
-            // , new Rectangle( PageSize.A4.getLeft(),
-            // PageSize.A4.getBottom(), PageSize.A4.getTop(),
-            // PageSize.A4.getRight() )
-            , new PdfFormFontSettings(), i18nManager.getI18nFormat() );
+            PdfDataEntryFormUtil.getDefaultPageSize( PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE ), 
+            new PdfFormFontSettings(), i18nManager.getI18nFormat() );
 
-        // STEP 3. - Response Header/Content Type Set
+        // 3. - Response Header/Content Type Set
+        
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.NO_CACHE );
         response.setContentLength( baos.size() );
 
-        // STEP 4. - write ByteArrayOutputStream to the ServletOutputStream
+        // 4. - write ByteArrayOutputStream to the ServletOutputStream
+        
         writeToOutputStream( baos, response );
     }
 
@@ -209,11 +212,13 @@ public class PDFFormController
         InputStream in = request.getInputStream();
 
         // Temporarily using Util class from same project.
+        
         PdfDataEntryFormImportUtil pdfDataEntryFormImportUtil = new PdfDataEntryFormImportUtil();
 
         pdfDataEntryFormImportUtil.ImportProgramStage( in, i18nManager.getI18nFormat() );
 
         // Step 5. Set the response - just simple OK response.
+        
         ContextUtils.okResponse( response, "" );
     }
 
@@ -233,8 +238,11 @@ public class PDFFormController
         }
         finally
         {
-            os.flush();
-            os.close();
+            if ( os != null )
+            {
+                os.flush();
+                os.close();
+            }
         }
     }
 }

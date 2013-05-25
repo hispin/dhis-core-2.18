@@ -32,40 +32,24 @@ import java.awt.*;
 
 public class PdfFormFontSettings
 {
-    // Font Types
     public final static int FONTTYPE_BODY = 0;
-
     public final static int FONTTYPE_TITLE = 1;
-
     public final static int FONTTYPE_DESCRIPTION = 2;
-
     public final static int FONTTYPE_SECTIONHEADER = 3;
-
     public final static int FONTTYPE_FOOTER = 4;
 
-    // Font Default Sizes
     private final static float FONTSIZE_BODY = 10;
-
     private final static float FONTSIZE_TITLE = 16;
-
     private final static float FONTSIZE_DESCRIPTION = 11;
-
     private final static float FONTSIZE_SECTIONHEADER = 14;
-
     private final static float FONTSIZE_FOOTER = 8;
 
-    // Font Family Default
     private final static String FONTFAMILY = "HELVETICA";
 
-    // private variables
     private Font fontBody;
-
     private Font fontTitle;
-
     private Font fontDescription;
-
     private Font fontSectionHeader;
-
     private Font fontFooter;
 
     public PdfFormFontSettings()
@@ -79,7 +63,6 @@ public class PdfFormFontSettings
 
     public void setFont( int fontType, Font font )
     {
-
         switch ( fontType )
         {
             case FONTTYPE_BODY:
@@ -98,7 +81,6 @@ public class PdfFormFontSettings
                 fontFooter = font;
                 break;
         }
-
     }
 
     public Font getFont( int fontType )
