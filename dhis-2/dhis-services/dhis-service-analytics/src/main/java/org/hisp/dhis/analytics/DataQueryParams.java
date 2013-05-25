@@ -1006,7 +1006,7 @@ public class DataQueryParams
   
     /**
      * Retrieves the options for the the dimension or filter with the given 
-     * identifier.
+     * identifier. Returns null of the dimension of filter is not present.
      */
     public List<NameableObject> getDimensionOrFilter( String key )
     {

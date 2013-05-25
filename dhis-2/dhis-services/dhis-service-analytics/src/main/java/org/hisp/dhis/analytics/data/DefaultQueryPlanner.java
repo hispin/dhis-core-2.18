@@ -308,6 +308,11 @@ public class DefaultQueryPlanner
             }
         }
 
+        if ( subQueries.size() > queries.size() )
+        {
+            log.info( "Split on " + dimension + ": " + ( subQueries.size() / queries.size() ) );
+        }
+        
         return subQueries;
     }
 
@@ -354,6 +359,11 @@ public class DefaultQueryPlanner
         else
         {
             throw new IllegalQueryException( "Query does not contain any period dimension items" );
+        }
+        
+        if ( queries.size() > 1 )
+        {
+            log.info( "Split on partition: " + queries.size() );
         }
         
         return queries;
@@ -405,6 +415,11 @@ public class DefaultQueryPlanner
         {
             throw new IllegalQueryException( "Query does not contain any period dimension items" );
         }
+
+        if ( queries.size() > 1 )
+        {
+            log.info( "Split on period type: " + queries.size() );
+        }
         
         return queries;        
     }
@@ -450,6 +465,11 @@ public class DefaultQueryPlanner
         {
             queries.add( new DataQueryParams( params ) );
             return queries;
+        }
+
+        if ( queries.size() > 1 )
+        {
+            log.info( "Split on org unit level: " + queries.size() );
         }
         
         return queries;    
@@ -524,6 +544,11 @@ public class DefaultQueryPlanner
             query.setAggregationType( SUM );
             queries.add( query );
         }
+
+        if ( queries.size() > 1 )
+        {
+            log.info( "Split on aggregation type: " + queries.size() );
+        }
         
         return queries;
     }
@@ -550,6 +575,11 @@ public class DefaultQueryPlanner
             query.setDataElements( periodTypeDataElementMap.get( periodType ) );
             query.setDataPeriodType( periodType );
             queries.add( query );
+        }
+
+        if ( queries.size() > 1 )
+        {
+            log.info( "Split on data period type: " + queries.size() );
         }
         
         return queries;
