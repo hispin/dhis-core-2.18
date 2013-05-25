@@ -105,4 +105,13 @@ public class StreamUtilsTest
         assertEquals( 'm', reader.read() );
         assertEquals( 'l', reader.read() );
     }
+    
+    @Test
+    public void testConvertStreamToString()
+        throws Exception
+    {
+        String str = StreamUtils.convertStreamToString(plainStream);
+        assertTrue( str.contains("<dxf>") );
+        assertTrue( str.startsWith("<?xml version=\'1.0\'?>") );
+    }
 }
