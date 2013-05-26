@@ -51,7 +51,6 @@ public class AppTest
     {
         String appJson = FileUtils.readFileToString( new File( this.getClass().getResource( "/manifest.webapp" )
             .getFile() ) );
-        //System.out.println( "APPJSON = " + appJson );
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
         this.app = mapper.readValue( appJson, App.class );
@@ -96,4 +95,14 @@ public class AppTest
         Assert.assertNull( app.getDeveloper().getEmail() );
         Assert.assertNull( app.getDeveloper().getCompany() );
     }
+    
+    @Test
+    public void testActivities()
+    {
+        AppDhis dhisActivity = app.getActivities().getDhis();
+        Assert.assertEquals( dhisActivity.getHref(), "http://localhost:8080/dhis" );
+        dhisActivity.setHref("ALL TEST");
+        Assert.assertEquals( dhisActivity.getHref(), "ALL TEST" );
+    }
+    
 }

@@ -33,22 +33,23 @@ import java.io.Serializable;
 /**
  * @author Saptarshi
  */
-public class AppActivities
+public class AppDhis
     implements Serializable
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
-    private static final long serialVersionUID = 7530768303537807631L;
-    
-    @JsonProperty("dhis")
-    private AppDhis dhis;
+    private static final long serialVersionUID = -8854371580010728182L;
 
-    public AppDhis getDhis() {
-        return dhis;
+    @JsonProperty("href")
+    private String href;
+
+    public String getHref()
+    {
+        return href;
     }
 
-    public void setDhis(AppDhis dhis) {
-        this.dhis = dhis;
+    public void setHref(String href) {
+        this.href = href;
     }
 }

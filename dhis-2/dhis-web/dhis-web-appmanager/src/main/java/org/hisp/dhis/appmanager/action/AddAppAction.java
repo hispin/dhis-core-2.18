@@ -34,8 +34,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.io.FileUtils;
+import org.apache.struts2.ServletActionContext;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.hisp.dhis.appmanager.App;
@@ -43,6 +45,7 @@ import org.hisp.dhis.appmanager.AppManagerService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -126,7 +129,7 @@ public class AddAppAction
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
                     App app = mapper.readValue( appManifest, App.class );
-
+                    
                     // Delete if app is already installed
                     if ( appManagerService.getInstalledApps().contains( app ) )
                     {
@@ -141,14 +144,32 @@ public class AddAppAction
                     unzip.setSrc( file );
                     unzip.setDest( new File( dest ) );
                     unzip.execute();
+                    
+                    //Updating Dhis Server Location
+                    File updateManifest = new File(dest + File.separator + "manifest.webapp");
+                    App installedApp = mapper.readValue(updateManifest, App.class);
+                    
+                    if(installedApp.getActivities().getDhis().getHref().equals("*"))
+                    {
+                        //TODO: Check why ContextUtils.getContextPath is not working
+                        //String rootPath = ContextUtils.getContextPath(ServletActionContext.getRequest());
+                        HttpServletRequest req = ServletActionContext.getRequest();
+                        StringBuffer fullUrl = req.getRequestURL();
+                        String baseUrl = ContextUtils.getBaseUrl(req);
+                        String rootPath = fullUrl.substring(0,fullUrl.indexOf("/", baseUrl.length()));
+                        
+                        installedApp.getActivities().getDhis().setHref(rootPath);
+                        mapper.writeValue(updateManifest, installedApp);
+                    }
+                    zip.close();
                     message = i18n.getString( "appmanager_install_success" );
                 }
                 else
                 {
+                    zip.close();
                     message = i18n.getString( "appmanager_invalid_package" );
                     return "failure";
                 }
-                zip.close();
             }
             else
             {
