@@ -166,6 +166,17 @@ public class DataQueryParams
     }
     
     /**
+     * Returns a key representing a group of queries which should be run in 
+     * sequence. Currently queries with different aggregation type are run in
+     * sequence. It is not allowed for the implementation to differentiate on
+     * dimensional objects. TODO test including tableName (partition)
+     */
+    public String getSequentialQueryGroupKey()
+    {
+        return aggregationType != null ? aggregationType.toString() : null;
+    }
+    
+    /**
      * Indicates whether the filters of this query spans more than one partition.
      * If true it means that a period filter exists and that the periods span
      * multiple years.
