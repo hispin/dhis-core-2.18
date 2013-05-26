@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * @author Jan Henrik Overland
  */
-@JacksonXmlRootElement(localName = "mapLegendSet", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "mapLegendSet", namespace = DxfNamespaces.DXF_2_0 )
 public class MapLegendSet
     extends BaseIdentifiableObject
 {
@@ -109,8 +109,8 @@ public class MapLegendSet
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSymbolizer()
     {
         return symbolizer;
@@ -122,10 +122,9 @@ public class MapLegendSet
     }
 
     @JsonProperty
-    // @JsonDeserialize( using = JacksonMapLegendsDeserializer.class )
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "mapLegends", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "mapLegend", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "mapLegends", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "mapLegend", namespace = DxfNamespaces.DXF_2_0 )
     public Set<MapLegend> getMapLegends()
     {
         return mapLegends;
