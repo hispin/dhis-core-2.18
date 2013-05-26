@@ -45,6 +45,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
+import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.analytics.IllegalQueryException;
@@ -72,7 +73,6 @@ public class DefaultQueryPlanner
 {
     private static final Log log = LogFactory.getLog( DefaultQueryPlanner.class );
     
-    //TODO call getLevelOrgUnitMap once?
     //TODO shortcut group by methods when only 1 option?
     
     @Autowired
@@ -179,7 +179,7 @@ public class DefaultQueryPlanner
         }
     }
     
-    public List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName )
+    public DataQueryGroups planQuery( DataQueryParams params, int optimalQueries, String tableName )
     {
         validate( params );
 
@@ -232,40 +232,42 @@ public class DefaultQueryPlanner
             }
         }
 
-        if ( queries.size() >= optimalQueries )
+        DataQueryGroups queryGroups = new DataQueryGroups( queries );
+        
+        if ( queryGroups.isOptimal( optimalQueries ) )
         {
-            return queries;
+            return queryGroups;
         }
 
         // ---------------------------------------------------------------------
         // Group by data element
         // ---------------------------------------------------------------------
         
-        queries = splitByDimension( queries, DATAELEMENT_DIM_ID, optimalQueries );
+        queryGroups = splitByDimension( queryGroups, DATAELEMENT_DIM_ID, optimalQueries );
 
-        if ( queries.size() >= optimalQueries )
+        if ( queryGroups.isOptimal( optimalQueries ) )
         {
-            return queries;
+            return queryGroups;
         }
 
         // ---------------------------------------------------------------------
         // Group by data set
         // ---------------------------------------------------------------------
         
-        queries = splitByDimension( queries, DATASET_DIM_ID, optimalQueries );
+        queryGroups = splitByDimension( queryGroups, DATASET_DIM_ID, optimalQueries );
 
-        if ( queries.size() >= optimalQueries )
+        if ( queryGroups.isOptimal( optimalQueries ) )
         {
-            return queries;
+            return queryGroups;
         }
 
         // ---------------------------------------------------------------------
         // Group by organisation unit
         // ---------------------------------------------------------------------
         
-        queries = splitByDimension( queries, ORGUNIT_DIM_ID, optimalQueries );
+        queryGroups = splitByDimension( queryGroups, ORGUNIT_DIM_ID, optimalQueries );
 
-        return queries;
+        return queryGroups;
     }
         
     public boolean canQueryFromDataMart( DataQueryParams params )
@@ -280,13 +282,13 @@ public class DefaultQueryPlanner
     /**
      * Splits the given list of queries in sub queries on the given dimension.
      */
-    private List<DataQueryParams> splitByDimension( List<DataQueryParams> queries, String dimension, int optimalQueries )
+    private DataQueryGroups splitByDimension( DataQueryGroups queryGroups, String dimension, int optimalQueries )
     {
-        int optimalForSubQuery = MathUtils.divideToFloor( optimalQueries, queries.size() );
+        int optimalForSubQuery = MathUtils.divideToFloor( optimalQueries, queryGroups.getLargestGroupSize() );
         
         List<DataQueryParams> subQueries = new ArrayList<DataQueryParams>();
         
-        for ( DataQueryParams query : queries )
+        for ( DataQueryParams query : queryGroups.getAllQueries() )
         {
             DimensionalObject dim = query.getDimension( dimension );
 
@@ -308,12 +310,12 @@ public class DefaultQueryPlanner
             }
         }
 
-        if ( subQueries.size() > queries.size() )
+        if ( subQueries.size() > queryGroups.getAllQueries().size() )
         {
-            log.info( "Split on " + dimension + ": " + ( subQueries.size() / queries.size() ) );
+            log.info( "Split on " + dimension + ": " + ( subQueries.size() / queryGroups.getAllQueries().size() ) );
         }
         
-        return subQueries;
+        return new DataQueryGroups( subQueries );
     }
 
     // -------------------------------------------------------------------------

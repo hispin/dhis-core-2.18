@@ -58,7 +58,7 @@ public class Timer
         
         if ( !printDisabled )
         {
-            System.out.println( msg  + ": " + time + " micros" );
+            System.out.println( "Time: " + time + " micros: " + msg );
         }
         
         return time;

@@ -59,22 +59,27 @@ public interface QueryPlanner
         throws IllegalQueryException;
     
     /**
-     * Creates a list of DataQueryParams. It is mandatory to group the queries by
-     * the following criteria: 1) partition / year 2) period type 3) organisation 
-     * unit level. If the number of queries produced by this grouping is equal or
-     * larger than the number of optimal queries, those queries are returned. Next
-     * splits on organisation unit dimension, and returns if optimal queries are
-     * satisfied. Next splits on data element dimension, and returns if optimal
-     * queries are satisfied. 
+     * Creates a DataQueryGroups object. It is mandatory to group the queries by
+     * the following criteria: 1) partition / year 2) organisation  unit level
+     * 3) period type 4) aggregation type. The DataQueryGroups contains groups of 
+     * queries. The query groups should be run in sequence while the queries within
+     * each group should be run in parallel for optimal performance.
      * 
-     * Does not attempt to split on period or organisation unit group set dimensions, 
-     * as splitting on columns with low cardinality typically decreases performance.
+     * If the number of queries produced by this grouping is equal or
+     * larger than the number of optimal queries, those queries are returned. If
+     * not it will split on the data element dimension, data set dimension and
+     * organisation unit dimension, and return immediately after each step if
+     * optimal queries are met.
      * 
-     * @param params the data query params.
-     * @param optimalQueries the number of optimal queries for the planner to return.
+     * It does not attempt to split on period dimension as splitting on columns 
+     * with low cardinality typically does not improve performance.
+     * 
+     * @param params the data query parameters.
+     * @param optimalQueries the number of optimal queries for the planner to 
+     *        return for each query group.
      * @param tableName the base table name.
-     * @return list of data query params.
+     * @return a DataQueryGroups object.
      */
-    List<DataQueryParams> planQuery( DataQueryParams params, int optimalQueries, String tableName )
+    DataQueryGroups planQuery( DataQueryParams params, int optimalQueries, String tableName )
         throws IllegalQueryException;
 }

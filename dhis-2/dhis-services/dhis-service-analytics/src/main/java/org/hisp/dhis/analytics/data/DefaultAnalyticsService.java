@@ -73,6 +73,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsManager;
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.DimensionItem;
 import org.hisp.dhis.analytics.IllegalQueryException;
@@ -495,40 +496,45 @@ public class DefaultAnalyticsService
         
         Timer t = new Timer().start();
         
-        List<DataQueryParams> queries = queryPlanner.planQuery( params, optimalQueries, tableName );
+        DataQueryGroups queryGroups = queryPlanner.planQuery( params, optimalQueries, tableName );
         
-        t.getSplitTime( "Planned query, got: " + queries.size() + " for optimal: " + optimalQueries );
-        
-        List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
-        
-        for ( DataQueryParams query : queries )
-        {
-            futures.add( analyticsManager.getAggregatedDataValues( query ) );
-        }
+        t.getSplitTime( "Planned query, got: " + queryGroups.getLargestGroupSize() + " for optimal: " + optimalQueries );
 
         Map<String, Double> map = new HashMap<String, Double>();
         
-        for ( Future<Map<String, Double>> future : futures )
+        for ( List<DataQueryParams> queries : queryGroups.getSequentialQueries() )
         {
-            try
+            List<Future<Map<String, Double>>> futures = new ArrayList<Future<Map<String, Double>>>();
+            
+            for ( DataQueryParams query : queries )
             {
-                Map<String, Double> taskValues = future.get();
-                
-                if ( taskValues != null )
+                futures.add( analyticsManager.getAggregatedDataValues( query ) );
+            }
+    
+            for ( Future<Map<String, Double>> future : futures )
+            {
+                try
                 {
-                    map.putAll( taskValues );
+                    Map<String, Double> taskValues = future.get();
+                    
+                    if ( taskValues != null )
+                    {
+                        map.putAll( taskValues );
+                    }
+                }
+                catch ( Exception ex )
+                {
+                    log.error( DebugUtils.getStackTrace( ex ) );
+                    log.error( DebugUtils.getStackTrace( ex.getCause() ) );
+                    
+                    throw new RuntimeException( "Error during execution of aggregation query task", ex );
                 }
             }
-            catch ( Exception ex )
-            {
-                log.error( DebugUtils.getStackTrace( ex ) );
-                log.error( DebugUtils.getStackTrace( ex.getCause() ) );
-                
-                throw new RuntimeException( "Error during execution of aggregation query task", ex );
-            }
+            
+            t.getSplitTime( "Got aggregated values for query group" );
         }
         
-        t.getTime( "Got aggregated value" );
+        t.getTime( "Got aggregated values" );
         
         return map;
     }
