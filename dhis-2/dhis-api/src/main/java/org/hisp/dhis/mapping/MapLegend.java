@@ -96,6 +96,12 @@ public class MapLegend
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
