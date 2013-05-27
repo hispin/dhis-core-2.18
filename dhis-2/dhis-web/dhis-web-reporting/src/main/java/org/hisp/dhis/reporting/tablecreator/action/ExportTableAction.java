@@ -180,7 +180,7 @@ public class ExportTableAction
         
         Period period = PeriodType.getPeriodFromIsoString( pe );
         
-        Date date = period != null ? period.getStartDate() : new Date();
+        Date date = period != null ? period.getStartDate() : null;
         
         grid = reportTableService.getReportTableGrid( uid, format, date, ou );
 
