@@ -34,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id
  */
 public class AppStoreAction
     implements Action

@@ -27,12 +27,14 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Saptarshi Purkayastha
@@ -74,10 +76,12 @@ public class AppListAction
         throws Exception
     {
         appFolderNames = new ArrayList<String>();
+
         for ( App app : getAppList() )
         {
             appFolderNames.add( appManagerService.getAppFolderName( app ) );
         }
+
         return SUCCESS;
     }
 }

@@ -9,6 +9,7 @@
   <package name="dhis-web-appmanager" extends="dhis-web-commons" namespace="/dhis-web-appmanager">
     
     <!-- AppManager -->
+    
     <action name="index" class="org.hisp.dhis.appmanager.action.NoAction">
         <result name="success" type="redirect">appList.action</result>
     </action>
