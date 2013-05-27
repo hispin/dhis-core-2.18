@@ -81,7 +81,7 @@ public class ListUtils
      * @param list the list to select from.
      * @param indexes the indexes of the elements in the list to select.
      */
-    public static <T> List<T> getAll( List<T> list, List<Integer> indexes )
+    public static <T> List<T> getAtIndexes( List<T> list, List<Integer> indexes )
     {
         List<T> elements = new ArrayList<T>();
         
