@@ -953,6 +953,22 @@ GIS.core.MapLoader = function(gis) {
 		Ext.data.JsonP.request({
 			url: gis.baseUrl + gis.conf.url.path_api + 'maps/' + gis.map.id + '.jsonp?links=false',
 			success: function(r) {
+
+				// Operand
+				if (Ext.isArray(r.mapViews)) {
+					for (var i = 0, view; i < r.mapViews.length; i++) {
+						view = r.mapViews[i];
+
+						if (view) {
+							if (Ext.isObject(view.dataElementOperand) && Ext.isString(view.dataElementOperand.id)) {
+								view.dataElement = Ext.clone(view.dataElementOperand);
+								view.dataElement.id = view.dataElement.id.replace('.', '-');
+								delete view.dataElementOperand;
+							}
+						}
+					}
+				}
+
 				gis.map = r;
 				setMap();
 			},
@@ -1208,7 +1224,8 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 		loadData,
 		loadLegend,
 		afterLoad,
-		loader;
+		loader,
+		dimConf = gis.conf.finals.dimension;
 
 	compareView = function(view, doExecute) {
 		var src = layer.core.view;
@@ -1241,13 +1258,13 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 			return gis.conf.finals.widget.loadtype_organisationunit;
 		}
 		else {
-			if (view.valueType === gis.conf.finals.dimension.indicator.id && view.indicator.id !== src.indicator.id) {
+			if (view.valueType === dimConf.indicator.id && view.indicator.id !== src.indicator.id) {
 				if (doExecute) {
 					loadData(view);
 				}
 				return gis.conf.finals.widget.loadtype_data;
 			}
-			if (view.valueType === gis.conf.finals.dimension.dataElement.id && view.dataElement.id !== src.dataElement.id) {
+			if (view.valueType === dimConf.dataElement.id && view.dataElement.id !== src.dataElement.id) {
 				if (doExecute) {
 					loadData(view);
 				}
@@ -1341,10 +1358,10 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 		paramString += 'dimension=ou:LEVEL-' + view.organisationUnitLevel.level + '-' + view.parentOrganisationUnit.id;
 
 		// dx
-		if (Ext.isString(view[type].id) && view[type].id.indexOf('-') !== -1) {
+		if (view[type] && Ext.isString(view[type].id) && view[type].id.indexOf('-') !== -1) {
 			paramString += '&dimension=co&dimension=dx:' + view[type].id.substr(0, view[type].id.indexOf('-'));
 		}
-		else {
+		else if (view[type] && Ext.isString(view[type].id)) {
 			paramString += '&dimension=dx:' + view[type].id;
 		}
 
