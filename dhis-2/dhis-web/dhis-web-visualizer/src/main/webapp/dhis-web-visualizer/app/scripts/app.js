@@ -3765,15 +3765,17 @@ Ext.onReady( function() {
 
 			validateSpecialCases = function(layout) {
 				var dimConf = dv.conf.finals.dimension,
-					dimensions = [].concat(layout.columns, layout.rows, layout.filters),
+					dimensions,
 					objectNameDimensionMap = {};
-
-				for (var i = 0; i < dimensions.length; i++) {
-					objectNameDimensionMap[dimensions[i].dimension] = dimensions[i];
-				}
 
 				if (!layout) {
 					return;
+				}
+
+				dimensions = [].concat(layout.columns, layout.rows, layout.filters);
+
+				for (var i = 0; i < dimensions.length; i++) {
+					objectNameDimensionMap[dimensions[i].dimension] = dimensions[i];
 				}
 
 				if (layout.filters && layout.filters.length) {
