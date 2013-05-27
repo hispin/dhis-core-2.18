@@ -30,6 +30,7 @@ package org.hisp.dhis.reporttable;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -408,7 +409,7 @@ public class ReportTable
         {
             tableRows.add( getDimensionalObject( dimension, date, user, true, format ).getItems().toArray( IRT ) );
         }
-
+                
         gridColumns = new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations();
         gridRows = new CombinationGenerator<NameableObject>( tableRows.toArray( IRT2D ) ).getCombinations();
 
@@ -440,7 +441,8 @@ public class ReportTable
      */
     public boolean isDimensional()
     {
-        return dataElements != null && !dataElements.isEmpty() && columnDimensions.contains( DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID );
+        return dataElements != null && !dataElements.isEmpty() && ( 
+            columnDimensions.contains( CATEGORYOPTIONCOMBO_DIM_ID ) || rowDimensions.contains( CATEGORYOPTIONCOMBO_DIM_ID ) );
     }
 
     /**
