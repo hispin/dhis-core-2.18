@@ -4,11 +4,12 @@
     #foreach( $dataElement in $dataElementList )
 		<dataElement>
 			<id>$dataElement.id</id>
+			<uid>$encoder.xmlEncode( $dataElement.uid )</uid>
 			<name>$encoder.xmlEncode( $dataElement.name )</name>
 			<code>$!encoder.xmlEncode( $dataElement.code )</code>
 			<shortName>$encoder.xmlEncode( $dataElement.shortName )</shortName>
 			<type>$dataElement.type</type>
-			#set($deJSON = '{' + '"id"' + ":" + $dataElement.id + "," + '"name"' + ':"' + "$dataElement.name" + '",' + '"shortName"' + ':"' + "$dataElement.shortName" + '",' + '"type"' + ':"' + "$dataElement.getDetailedTextType()"  + '"}' );
+			#set($deJSON = '{' + '"id"' + ":" + $dataElement.id + "," + '"uid"' + ':"' + $dataElement.uid + '",' + '"name"' + ':"' + "$dataElement.name" + '",' + '"shortName"' + ':"' + "$dataElement.shortName" + '",' + '"type"' + ':"' + "$dataElement.getDetailedTextType()"  + '"}' )
 			<json>$deJSON</json>
 			<optionCombos> 
 			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos)

@@ -196,7 +196,7 @@
 							<select id="programStageIds" style="width:320px" onchange="getProgramStageDataElements( this.value )" >
 								<option value=''>[$i18n.getString( "please_select" )]</option>
 								#foreach( $p in $programStages)
-								<option value='$p.id'>$encoder.htmlEncode( $p.name )</option>
+								<option value='$p.id' uid='$p.uid'>$encoder.htmlEncode( $p.name )</option>
 								#end
 							</select>			
 						</td>			

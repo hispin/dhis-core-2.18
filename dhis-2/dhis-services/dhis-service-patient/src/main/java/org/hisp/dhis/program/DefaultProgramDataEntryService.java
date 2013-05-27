@@ -207,7 +207,7 @@ public class DefaultProgramDataEntryService
                     }
 
                     patientDataValue = getValue( patientDataValues, dataElementUid );
-
+System.out.println( "\n\n === \n patientDataValue : " + patientDataValue );
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
