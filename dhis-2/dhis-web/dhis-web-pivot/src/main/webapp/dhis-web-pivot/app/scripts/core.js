@@ -2022,33 +2022,35 @@ PT.core.getApi = function(pt) {
 				return;
 			}
 
-			// At least one period specified
-			a = [].concat(config.columns, config.rows, config.filters);
-			for (var i = 0; i < a.length; i++) {
-				if (a[i]) {
-					objectNames.push(a[i].dimension);
-				}
-			}
-
-			if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
-				alert(PT.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
-				return;
-			}
-
-			dims = [].concat(config.columns, config.rows, config.filters);
-			for (var i = 0, dim; i < dims.length; i++) {
+			// Get object names and isOu/isOuc
+			for (var i = 0, dim, dims = [].concat(config.columns, config.rows, config.filters); i < dims.length; i++) {
 				dim = dims[i];
 
 				if (dim) {
-					for (var j = 0; j < dims[i].items.length; j++) {
-						if (dims[i].items[j].id === 'USER_ORGUNIT') {
-							isOu = true;
-						}
-						else if (dims[i].items[j].id === 'USER_ORGUNIT_CHILDREN') {
-							isOuc = true;
+
+					// Object names
+					if (Ext.isString(dim.dimension)) {
+						objectNames.push(dim.dimension);
+					}
+
+					// isOu/isOuc
+					if (dim.dimension === dimConf.organisationUnit.objectName && Ext.isArray(dim.items)) {
+						for (var j = 0; j < dim.items.length; j++) {
+							if (dim.items[j].id === 'USER_ORGUNIT') {
+								isOu = true;
+							}
+							else if (dim.items[j].id === 'USER_ORGUNIT_CHILDREN') {
+								isOuc = true;
+							}
 						}
 					}
 				}
+			}
+
+			// At least one period
+			if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
+				alert(PT.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
+				return;
 			}
 
 			// Layout
