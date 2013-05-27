@@ -151,6 +151,11 @@ public class DataElementOperand
     @Override
     public String getUid()
     {
+        if ( uid != null )
+        {
+            return uid;
+        }
+        
         String uid = null;
         
         if ( dataElement != null )
@@ -522,6 +527,7 @@ public class DataElementOperand
     {
         return "DataElementOperand{" +
             "id=" + id +
+            ", uid=" + uid +
             ", dataElement=" + dataElement +
             ", categoryOptionCombo=" + categoryOptionCombo +
             ", dataElementId=" + dataElementId +
