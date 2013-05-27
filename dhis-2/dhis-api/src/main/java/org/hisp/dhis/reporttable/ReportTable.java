@@ -273,11 +273,6 @@ public class ReportTable
      */
     private OrganisationUnit parentOrganisationUnit;
 
-    /**
-     * The category option combos derived from the dimension set.
-     */
-    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -386,10 +381,10 @@ public class ReportTable
         
         if ( isDimensional() )
         {
-            categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( getCategoryCombo().getOptionCombos() );
-            verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
+            transientCategoryOptionCombos.addAll( getCategoryCombo().getSortedOptionCombos() );
+            verify( nonEmptyLists( transientCategoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
-
+        
         // Populate grid
         
         this.populateGridColumnsAndRows( date, user, format );
@@ -1012,18 +1007,6 @@ public class ReportTable
     public void setParentOrganisationUnit( OrganisationUnit parentOrganisationUnit )
     {
         this.parentOrganisationUnit = parentOrganisationUnit;
-    }
-
-    @JsonIgnore
-    public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
-    {
-        return categoryOptionCombos;
-    }
-
-    @JsonIgnore
-    public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
-    {
-        this.categoryOptionCombos = categoryOptionCombos;
     }
 
     @Override

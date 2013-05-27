@@ -57,6 +57,7 @@ import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryDimension;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -142,6 +143,8 @@ public abstract class BaseAnalyticalObject
     // -------------------------------------------------------------------------
 
     protected transient List<OrganisationUnit> transientOrganisationUnits = new ArrayList<OrganisationUnit>();
+    
+    protected transient List<DataElementCategoryOptionCombo> transientCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
         
     protected transient Date relativePeriodDate;
     
@@ -235,6 +238,12 @@ public abstract class BaseAnalyticalObject
             }
             
             type = DimensionType.ORGANISATIONUNIT;
+        }
+        else if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
+        {
+            items.addAll( transientCategoryOptionCombos );
+            
+            type = DimensionType.CATEGORY_OPTION_COMBO;
         }
         else if ( categoryDims.contains( dimension ) )
         {
