@@ -1064,7 +1064,23 @@ public class DataQueryParams
     {
         return dimensions.indexOf( new BaseDimensionalObject( key ) ) != -1 || filters.indexOf( new BaseDimensionalObject( key ) ) != -1;
     }
+    
+    /**
+     * Indicates whether a dimension with the given identifier exists. Returns
+     * true for the dx argument if any of the data dimensions is present.
+     */
+    public boolean hasDimensionCollapseDx( String dimension )
+    {
+        List<String> dims = getDimensionIdentifiersAsList();
         
+        if ( DATA_X_DIM_ID.equals( dimension ) )
+        {
+            return CollectionUtils.intersection( dims, DATA_DIMS ).size() > 0;
+        }
+        
+        return dims.contains( dimension );
+    }
+            
     // -------------------------------------------------------------------------
     // Get and set helpers for dimensions
     // -------------------------------------------------------------------------

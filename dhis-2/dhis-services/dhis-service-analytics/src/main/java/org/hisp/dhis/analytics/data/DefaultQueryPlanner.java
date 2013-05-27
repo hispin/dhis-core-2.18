@@ -153,7 +153,7 @@ public class DefaultQueryPlanner
         {
             for ( String column : columns )
             {
-                if ( params.getDimensionArrayCollapseDx( column ).length == 0 )
+                if ( !params.hasDimensionCollapseDx( column ) )
                 {
                     violation = "Column must be present as dimension in query: " + column;
                 }
@@ -164,7 +164,7 @@ public class DefaultQueryPlanner
         {
             for ( String row : rows )
             {
-                if ( params.getDimensionArrayCollapseDx( row ).length == 0 )
+                if ( !params.hasDimensionCollapseDx( row ) )
                 {
                     violation = "Row must be present as dimension in query: " + row;
                 }
