@@ -1210,7 +1210,7 @@ Ext.onReady( function() {
 
 					if (id && name) {
 						Ext.Ajax.request({
-							url: pt.baseUrl + '/api/reportTables/' + id + '.json?links=false',
+							url: pt.baseUrl + '/api/reportTables/' + id + '.json?viewClass=dimensional&links=false',
 							method: 'GET',
 							failure: function(r) {
 								pt.viewport.mask.show();
@@ -3777,7 +3777,7 @@ Ext.onReady( function() {
 
 						if (recMap[key]) {
 							s.add(recMap[key]);
-							dv.util.multiselect.filterAvailable({store: a}, {store: s});
+							pt.util.multiselect.filterAvailable({store: a}, {store: s});
 						}
 					}
 				}
