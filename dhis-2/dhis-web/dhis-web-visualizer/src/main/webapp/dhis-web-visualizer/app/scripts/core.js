@@ -1901,7 +1901,10 @@ DV.core.getApi = function(dv) {
 		return function() {
 			var a = [],
 				objectNames = [],
-				dimConf = dv.conf.finals.dimension;
+				dimConf = dv.conf.finals.dimension,
+				dims,
+				isOu = false,
+				isOuc = false;
 
 			config.columns = getValidatedDimensionArray(config.columns);
 			config.rows = getValidatedDimensionArray(config.rows);
@@ -1927,11 +1930,28 @@ DV.core.getApi = function(dv) {
 				return;
 			}
 
-			// At least one period specified
-			a = [].concat(config.columns, config.rows, config.filters);
-			for (var i = 0; i < a.length; i++) {
-				if (a[i]) {
-					objectNames.push(a[i].dimension);
+			// Get object names and isOu/isOuc
+			for (var i = 0, dim, dims = [].concat(config.columns, config.rows, config.filters); i < dims.length; i++) {
+				dim = dims[i];
+
+				if (dim) {
+
+					// Object names
+					if (Ext.isString(dim.dimension)) {
+						objectNames.push(dim.dimension);
+					}
+
+					// isOu/isOuc
+					if (dim.dimension === dimConf.organisationUnit.objectName && Ext.isArray(dim.items)) {
+						for (var j = 0; j < dim.items.length; j++) {
+							if (dim.items[j].id === 'USER_ORGUNIT') {
+								isOu = true;
+							}
+							else if (dim.items[j].id === 'USER_ORGUNIT_CHILDREN') {
+								isOuc = true;
+							}
+						}
+					}
 				}
 			}
 
@@ -1967,8 +1987,8 @@ DV.core.getApi = function(dv) {
 			layout.rangeAxisTitle = Ext.isString(config.rangeAxisLabel) && !Ext.isEmpty(config.rangeAxisLabel) ? config.rangeAxisLabel :
 				(Ext.isString(config.rangeAxisTitle) && !Ext.isEmpty(config.rangeAxisTitle) ? config.rangeAxisTitle : undefined);
 
-			layout.userOrganisationUnit = Ext.isBoolean(config.userOrganisationUnit) ? config.userOrganisationUnit : false;
-			layout.userOrganisationUnitChildren = Ext.isBoolean(config.userOrganisationUnitChildren) ? config.userOrganisationUnitChildren : false;
+			layout.userOrganisationUnit = isOu;
+			layout.userOrganisationUnitChildren = isOuc;
 
 			layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : undefined;
 
