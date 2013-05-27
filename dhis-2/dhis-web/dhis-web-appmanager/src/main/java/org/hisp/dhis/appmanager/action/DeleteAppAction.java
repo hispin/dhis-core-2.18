@@ -39,7 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Saptarshi Purkayastha
- * @version $Id$
  */
 public class DeleteAppAction
     implements Action
@@ -60,6 +59,7 @@ public class DeleteAppAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -83,6 +83,7 @@ public class DeleteAppAction
         throws Exception
     {
         String appName = ServletActionContext.getRequest().getParameter( "appName" );
+        
         if ( null != appName )
         {
             // TODO: Move to AppManagerService
@@ -97,6 +98,7 @@ public class DeleteAppAction
                 }
             }
         }
+        
         return SUCCESS;
     }
 }
