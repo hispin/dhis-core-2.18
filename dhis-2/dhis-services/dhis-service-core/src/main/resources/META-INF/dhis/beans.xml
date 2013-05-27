@@ -244,9 +244,9 @@
   </bean>
 
   <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
-    <property name="cacheable" value="true" />
     <property name="clazz" value="org.hisp.dhis.user.UserAuthorityGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.message.MessageConversationStore" class="org.hisp.dhis.message.hibernate.HibernateMessageConversationStore">
@@ -271,6 +271,7 @@
   <bean id="org.hisp.dhis.constant.ConstantStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.constant.Constant" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.version.VersionStore" class="org.hisp.dhis.version.hibernate.HibernateVersionStore">
