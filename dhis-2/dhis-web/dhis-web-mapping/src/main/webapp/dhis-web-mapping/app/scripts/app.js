@@ -501,7 +501,7 @@ Ext.onReady( function() {
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: gis.baseUrl + gis.conf.url.path_api + 'maps.json?viewClass=detailed&links=false',
+			defaultUrl: gis.baseUrl + gis.conf.url.path_api + 'maps.json?links=false',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 
@@ -1823,7 +1823,8 @@ Ext.onReady( function() {
 			createButton = Ext.create('Ext.button.Button', {
 				text: GIS.i18n.create,
 				handler: function() {
-					var name = nameTextfield.getValue(),
+					var dimConf = gis.conf.finals.dimension,
+						name = nameTextfield.getValue(),
 						layers = gis.util.map.getVisibleVectorLayers(),
 						layer,
 						lonlat = gis.olmap.getCenter(),
@@ -1836,6 +1837,12 @@ Ext.onReady( function() {
 							for (var i = 0; i < layers.length; i++) {
 								layer = layers[i];
 								view = layer.widget.getView();
+
+								// Operand
+								if (view.valueType === dimConf.dataElement.value && Ext.isObject(view.dataElement) && Ext.isString(view.dataElement.id) && view.dataElement.id.indexOf('-') !== -1) {
+									view.dataElementOperand = {id: view.dataElement.id.replace('-', '.')};
+									view.dataElement = null;
+								}
 
 								// add
 								view.layer = layer.id;
@@ -2016,16 +2023,6 @@ Ext.onReady( function() {
 								element.dom.setAttribute('onclick', 'Ext.get(this).load();');
 							}
 						};
-
-							//var el = Ext.get(record.data.id);
-							//if (el) {
-								//el = el.parent('td');
-								//el.addClsOnOver('link');
-								//el.gis = gis;
-								//el.map = {id: record.data.id};
-								//el.dom.setAttribute('onclick', 'Ext.get(this).gis.map = Ext.get(this).map; GIS.core.MapLoader(Ext.get(this).gis).load();');
-							//}
-						//};
 
 						Ext.defer(fn, 100);
 
@@ -2324,7 +2321,7 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function() {
-					this.setPosition(115, 37);
+					this.setPosition(115, 33);
 				}
 			}
 		});
@@ -3006,7 +3003,7 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				show: function() {
-					this.setPosition(185, 37);
+					this.setPosition(185, 33);
 				}
 			}
 		});
@@ -3506,6 +3503,9 @@ Ext.onReady( function() {
 			getView,
 			validateView,
 
+		// Convenience
+			dimConf = gis.conf.finals.dimension,
+
 			panel;
 
 		// Stores
@@ -3522,11 +3522,15 @@ Ext.onReady( function() {
 			},
 			isLoaded: false,
 			loadFn: function(fn) {
-				if (this.isLoaded) {
-					fn.call();
-				}
-				else {
-					this.load(fn);
+				if (Ext.isFunction(fn)) {
+					if (this.isLoaded) {
+						fn.call();
+					}
+					else {
+						this.load({
+							callback: fn
+						});
+					}
 				}
 			},
 			listeners: {
@@ -3561,7 +3565,7 @@ Ext.onReady( function() {
 			sortStore: function() {
 				this.sort('name', 'ASC');
 			},
-			setTotalsProxy: function(uid) {
+			setTotalsProxy: function(uid, preventLoad, callbackFn) {
 				var path;
 
 				if (Ext.isString(uid)) {
@@ -3585,14 +3589,20 @@ Ext.onReady( function() {
 					}
 				});
 
-				this.load({
-					scope: this,
-					callback: function() {
-						this.sortStore();
-					}
-				});
+				if (!preventLoad) {
+					this.load({
+						scope: this,
+						callback: function() {
+							this.sortStore();
+
+							if (Ext.isFunction(callbackFn)) {
+								callbackFn();
+							}
+						}
+					});
+				}
 			},
-			setDetailsProxy: function(uid) {
+			setDetailsProxy: function(uid, preventLoad, callbackFn) {
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
@@ -3603,17 +3613,23 @@ Ext.onReady( function() {
 						}
 					});
 
-					this.load({
-						scope: this,
-						callback: function() {
-							this.each(function(r) {
-								r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
-								r.set('name', r.data.operandName);
-							});
+					if (!preventLoad) {
+						this.load({
+							scope: this,
+							callback: function() {
+								this.each(function(r) {
+									r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
+									r.set('name', r.data.operandName);
+								});
 
-							this.sortStore();
-						}
-					});
+								this.sortStore();
+
+								if (Ext.isFunction(callbackFn)) {
+									callbackFn();
+								}
+							}
+						});
+					}
 				}
 				else {
 					alert('Invalid parameter');
@@ -3824,17 +3840,17 @@ Ext.onReady( function() {
 			labelWidth: gis.conf.layout.widget.itemlabel_width,
 			hidden: true,
 			store: gis.store.dataElementGroups,
-			loadAvailable: function() {
+			loadAvailable: function(preventLoad) {
 				var store = dataElementsByGroupStore,
 					detailLevel = dataElementDetailLevel.getValue(),
 					value = this.getValue();
 
-				if (value !== null) {
+				if (value) {
 					if (detailLevel === gis.conf.finals.dimension.dataElement.objectName) {
-						store.setTotalsProxy(value);
+						store.setTotalsProxy(value, preventLoad);
 					}
 					else {
-						store.setDetailsProxy(value);
+						store.setDetailsProxy(value, preventLoad);
 					}
 				}
 			},
@@ -3905,6 +3921,10 @@ Ext.onReady( function() {
 			displayField: 'text',
 			width: 65 - 2,
 			value: gis.conf.finals.dimension.dataElement.objectName,
+			onSelect: function() {
+				dataElementGroup.loadAvailable();
+				dataElement.clearValue();
+			},
 			store: {
 				fields: ['id', 'text'],
 				data: [
@@ -3914,8 +3934,7 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				select: function(cb) {
-					dataElementGroup.loadAvailable();
-					dataElement.clearValue();
+					cb.onSelect();
 				}
 			}
 		});
@@ -4261,22 +4280,42 @@ Ext.onReady( function() {
 			// Indicator and data element
 			valueTypeToggler(view.valueType);
 
-			var	indeGroupView = view.valueType === gis.conf.finals.dimension.indicator.id ? indicatorGroup : dataElementGroup,
+			var	indeGroupView = view.valueType === dimConf.indicator.id ? indicatorGroup : dataElementGroup,
 				indeGroupStore = indeGroupView.store,
-				indeGroupValue = view.valueType === gis.conf.finals.dimension.indicator.id ? view.indicatorGroup.id : view.dataElementGroup.id,
+				indeGroupRecord = view.valueType === dimConf.indicator.id ? view.indicatorGroup : view.dataElementGroup,
 
-				indeStore = view.valueType === gis.conf.finals.dimension.indicator.id ? indicatorsByGroupStore : dataElementsByGroupStore,
-				indeView = view.valueType === gis.conf.finals.dimension.indicator.id ? indicator : dataElement,
-				indeValue = view.valueType === gis.conf.finals.dimension.indicator.id ? view.indicator.id : view.dataElement.id;
+				indeStore = view.valueType === dimConf.indicator.id ? indicatorsByGroupStore : dataElementsByGroupStore,
+				indeView = view.valueType === dimConf.indicator.id ? indicator : dataElement,
+				indeRecord = view.valueType === dimConf.indicator.id ? view.indicator : view.dataElement;
 
-			indeGroupStore.loadFn( function() {
-				indeGroupView.setValue(indeGroupValue);
-			});
+			// in/de group
+			indeGroupStore.removeAll();
+			indeGroupStore.add(indeGroupRecord);
+			indeGroupView.setValue(indeGroupRecord.id);
 
-			indeStore.proxy.url = gis.baseUrl + gis.conf.url.path_api + view.valueType + 'Groups/' + indeGroupValue + '.json?links=false&paging=false';
-			indeStore.loadFn( function() {
-				indeView.setValue(indeValue);
-			});
+			// in/de/dc
+			if (view.valueType === dimConf.dataElement.id) {
+				if (Ext.isObject(view.dataElement) && Ext.isString(view.dataElement.id) && view.dataElement.id.indexOf('-') !== -1) {
+					dataElementDetailLevel.setValue(dimConf.operand.objectName);
+					indeStore.setDetailsProxy(indeGroupRecord.id, false, function() {
+						indeView.setValue(indeRecord.id);
+					});
+				}
+				else {
+					dataElementDetailLevel.setValue(dimConf.dataElement.objectName);
+					indeStore.setTotalsProxy(indeGroupRecord.id, false, function() {
+						indeView.setValue(indeRecord.id);
+					});
+				}
+			}
+			else {
+				indeStore.proxy.url = gis.baseUrl + '/api/indicatorGroups/' + indeGroupRecord.id + '.json?links=false&paging=false';
+				indeStore.load({
+					callback: function() {
+						indeView.setValue(indeRecord.id);
+					}
+				});
+			}
 
 			// Period
 			periodType.setValue(view.periodType);
@@ -4844,7 +4883,6 @@ Ext.onReady( function() {
 				{
 					xtype: 'form',
 					cls: 'el-border-0',
-					width: 270,
 					items: [
 						{
 							html: GIS.i18n.organisationunit_groupset,
