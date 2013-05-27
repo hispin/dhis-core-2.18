@@ -342,9 +342,9 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsByAggregationLevel( aggregationLevel ) );
     }
 
-    public ListMap<String, String> getDataElementCategoryOptionComboMap()
+    public ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids )
     {
-        return dataElementStore.getDataElementCategoryOptionComboMap();
+        return dataElementStore.getDataElementCategoryOptionComboMap( dataElementUids );
     }
     
     public Map<String, Integer> getDataElementUidIdMap()

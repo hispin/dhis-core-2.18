@@ -44,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
@@ -223,11 +224,12 @@ public class HibernateDataElementStore
         return getQuery( hql ).setInteger( "aggregationLevel", aggregationLevel ).list();
     }
 
-    public ListMap<String, String> getDataElementCategoryOptionComboMap()
+    public ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids )
     {
-        final String sql = "select de.uid, coc.uid from dataelement de "
-            + "join categorycombos_optioncombos cc on de.categorycomboid = cc.categorycomboid "
-            + "join categoryoptioncombo coc on cc.categoryoptioncomboid = coc.categoryoptioncomboid";
+        final String sql = 
+            "select dataelementuid, categoryoptioncombouid " +
+            "from _dataelementcategoryoptioncombo " +
+            "where dataelementuid in (" + TextUtils.getQuotedCommaDelimitedString( dataElementUids ) + ")";
 
         final ListMap<String, String> map = new ListMap<String, String>();
 

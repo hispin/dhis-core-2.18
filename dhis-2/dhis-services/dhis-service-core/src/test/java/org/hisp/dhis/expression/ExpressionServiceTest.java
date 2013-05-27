@@ -27,12 +27,12 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.hisp.dhis.expression.ExpressionService.DAYS_SYMBOL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
-import static org.hisp.dhis.expression.ExpressionService.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -66,27 +66,19 @@ public class ExpressionServiceTest
     extends DhisTest
 {
     private DataElementCategoryOption categoryOptionA;
-
     private DataElementCategoryOption categoryOptionB;
-
     private DataElementCategoryOption categoryOptionC;
-
     private DataElementCategoryOption categoryOptionD;
 
     private DataElementCategory categoryA;
-
     private DataElementCategory categoryB;
 
     private DataElementCategoryCombo categoryCombo;
 
     private DataElement dataElementA;
-
     private DataElement dataElementB;
-
     private DataElement dataElementC;
-
     private DataElement dataElementD;
-
     private DataElement dataElementE;
 
     private Period period;
@@ -96,21 +88,16 @@ public class ExpressionServiceTest
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
     private Constant constantA;
-
+    
     private String expressionA;
-
     private String expressionB;
-
     private String expressionC;
-
-    private String expressionD;
-    
+    private String expressionD;    
     private String expressionE;
-    
     private String expressionF;
+    private String expressionG;
 
     private String descriptionA;
-
     private String descriptionB;
     
     private Set<DataElement> dataElements = new HashSet<DataElement>();
@@ -199,6 +186,7 @@ public class ExpressionServiceTest
         expressionD = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+" + DAYS_SYMBOL;
         expressionE = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}*C{" + constantA.getUid() + "}";
         expressionF = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}";
+        expressionG = expressionF + "+#{" + dataElementB.getUid() + "}-#{" + dataElementC.getUid() + "}";
 
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -257,6 +245,19 @@ public class ExpressionServiceTest
         assertTrue( dataElements.contains( dataElementB ) );
     }
 
+    @Test
+    public void testGetDataElementTotalUids()
+    {
+        Set<String> uids = new HashSet<String>();
+        Set<String> empty = new HashSet<String>();
+        
+        uids.add( dataElementB.getUid() );
+        uids.add( dataElementC.getUid() );
+        
+        assertEquals( uids, expressionService.getDataElementTotalUids( expressionG ) );
+        assertEquals( empty, expressionService.getDataElementTotalUids( expressionA ) );
+    }
+    
     @Test
     public void testGetOperandsInExpression()
     {

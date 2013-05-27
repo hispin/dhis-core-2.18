@@ -172,6 +172,9 @@ public class DefaultResourceTableService
         generatePeriodTable();
         log.info( "Period table generated" );
         
+        generateDataElementCategoryOptionComboTable();
+        log.info( "Data element category option combo table generated" );
+        
         sqlViewService.createAllViewTables();
     }
     
@@ -525,5 +528,14 @@ public class DefaultResourceTableService
         }
 
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 3, TABLE_NAME_PERIOD_STRUCTURE, batchArgs );
+    }
+
+    // -------------------------------------------------------------------------
+    // DataElementCategoryOptionComboTable
+    // -------------------------------------------------------------------------
+
+    public void generateDataElementCategoryOptionComboTable()
+    {
+        resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
     }
 }

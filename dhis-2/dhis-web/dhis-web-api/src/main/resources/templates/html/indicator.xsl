@@ -31,20 +31,20 @@
           <td> <xsl:value-of select="d:description" /> </td>
         </tr>
         <tr>
-          <td>Denominator</td>
-          <td> <xsl:value-of select="d:denominator" /> </td>
-        </tr>
-        <tr>
-          <td>Denominator Description</td>
-          <td> <xsl:value-of select="d:denominatorDescription" /> </td>
-        </tr>
-        <tr>
           <td>Numerator</td>
           <td> <xsl:value-of select="d:numerator" /> </td>
         </tr>
         <tr>
           <td>Numerator Description</td>
           <td> <xsl:value-of select="d:numeratorDescription" /> </td>
+        </tr>
+        <tr>
+          <td>Denominator</td>
+          <td> <xsl:value-of select="d:denominator" /> </td>
+        </tr>
+        <tr>
+          <td>Denominator Description</td>
+          <td> <xsl:value-of select="d:denominatorDescription" /> </td>
         </tr>
         <tr>
           <td>Annualized</td>

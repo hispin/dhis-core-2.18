@@ -68,11 +68,13 @@ public interface ExpressionService
 
     final String OPERAND_EXPRESSION = "#\\{(\\w+)\\.?(\\w*)\\}";
     final String OPERAND_UID_EXPRESSION = "(\\w+)\\.?(\\w*)";
+    final String DATA_ELEMENT_TOTAL_EXPRESSION = "#\\{(\\w+)\\}";
     final String CONSTANT_EXPRESSION = "C\\{(\\w+)\\}";
     final String DAYS_EXPRESSION = "\\[days\\]";
 
     final Pattern OPERAND_PATTERN = Pattern.compile( OPERAND_EXPRESSION );
     final Pattern OPERAND_UID_PATTERN = Pattern.compile( OPERAND_UID_EXPRESSION );
+    final Pattern DATA_ELEMENT_TOTAL_PATTERN = Pattern.compile( DATA_ELEMENT_TOTAL_EXPRESSION );
     final Pattern CONSTANT_PATTERN = Pattern.compile( CONSTANT_EXPRESSION );
     final Pattern DAYS_PATTERN = Pattern.compile( DAYS_EXPRESSION );
 
@@ -132,6 +134,14 @@ public interface ExpressionService
      */
     Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
         Map<String, Double> constantMap, Integer days );
+    
+    /**
+     * Returns the uids of the data element totals in the given expression.
+     * 
+     * @param expression the expression.
+     * @return a set of data element uids.
+     */
+    Set<String> getDataElementTotalUids( String expression );
     
     /**
      * Returns all DataElements included in the given expression string.

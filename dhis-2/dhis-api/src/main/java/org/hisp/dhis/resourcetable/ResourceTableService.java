@@ -29,7 +29,6 @@ package org.hisp.dhis.resourcetable;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ResourceTableService.java 5459 2008-06-26 01:12:03Z larshelg $
  */
 public interface ResourceTableService
 {
@@ -81,4 +80,10 @@ public interface ResourceTableService
      * Generates a resource table for all periods.
      */
     void generatePeriodTable();
+    
+    /**
+     * Generates a resource table for all data elements and relevant category
+     * option combinations.
+     */
+    void generateDataElementCategoryOptionComboTable();
 }

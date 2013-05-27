@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataset.DataSet;
@@ -290,9 +291,10 @@ public interface DataElementService
      * Returns a mapping of data element uid and associated category option combo
      * uids.
      * 
+     * @param dataElementUids the uids of the data elements to include in the map.
      * @return a ListMap.
      */
-    ListMap<String, String> getDataElementCategoryOptionComboMap();
+    ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids );
     
     Map<String, Integer> getDataElementUidIdMap();
 
