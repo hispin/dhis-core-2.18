@@ -274,7 +274,11 @@ public class DefaultAnalyticsService
         // ---------------------------------------------------------------------
 
         if ( params.getDataSets() != null )
-        {            
+        {
+            // -----------------------------------------------------------------
+            // Get complete data set registrations
+            // -----------------------------------------------------------------
+
             DataQueryParams dataSourceParams = new DataQueryParams( params );
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
@@ -282,40 +286,49 @@ public class DefaultAnalyticsService
 
             Map<String, Double> aggregatedDataMap = getAggregatedCompletenessValueMap( dataSourceParams );
 
-            DataQueryParams dataTargetParams = new DataQueryParams( params );
-            dataTargetParams.setDimensions( ListUtils.getAll( dataTargetParams.getDimensions(), dataTargetParams.getCompletenessDimensionIndexes() ) );
-            dataTargetParams.setFilters( ListUtils.getAll( dataTargetParams.getFilters(), dataTargetParams.getCompletenessFilterIndexes() ) );
-            dataTargetParams.setAggregationType( AggregationType.COUNT );
-            dataTargetParams.setSkipPartitioning( true );
+            // -----------------------------------------------------------------
+            // Get completeness targets
+            // -----------------------------------------------------------------
 
-            Map<String, Double> targetMap = getAggregatedCompletenessTargetMap( dataTargetParams );
+            List<Integer> completenessDimIndexes = dataSourceParams.getCompletenessDimensionIndexes();
+            List<Integer> completenessFilterIndexes = dataSourceParams.getCompletenessFilterIndexes();
             
-            Map<String, PeriodType> dsPtMap = dataSourceParams.getDataSetPeriodTypeMap();
-            
+            DataQueryParams targetParams = new DataQueryParams( dataSourceParams );
+
+            targetParams.setDimensions( ListUtils.getAtIndexes( targetParams.getDimensions(), completenessDimIndexes ) );
+            targetParams.setFilters( ListUtils.getAtIndexes( targetParams.getFilters(), completenessFilterIndexes ) );
+            targetParams.setSkipPartitioning( true );
+
+            Map<String, Double> targetMap = getAggregatedCompletenessTargetMap( targetParams );
+
             Integer periodIndex = dataSourceParams.getPeriodDimensionIndex();
             Integer dataSetIndex = dataSourceParams.getDataSetDimensionIndex();
-            
-            List<Integer> completenessDimIndexes = dataTargetParams.getCompletenessDimensionIndexes();
-            
+
+            Map<String, PeriodType> dsPtMap = dataSourceParams.getDataSetPeriodTypeMap();
+
+            // -----------------------------------------------------------------
+            // Join data maps, calculate completeness and add to grid
+            // -----------------------------------------------------------------
+
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
-                List<String> row = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
+                List<String> dataRow = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
                 
-                List<String> targetRow = ListUtils.getAll( row, completenessDimIndexes );
+                List<String> targetRow = ListUtils.getAtIndexes( dataRow, completenessDimIndexes );
                 String targetKey = StringUtils.join( targetRow, DIMENSION_SEP );
                 Double target = targetMap.get( targetKey );
                              
                 if ( target != null && entry.getValue() != null )
                 {
-                    PeriodType queryPt = PeriodType.getPeriodTypeFromIsoString( row.get( periodIndex ) );
-                    PeriodType dataPt = dsPtMap.get( row.get( dataSetIndex ) );
+                    PeriodType queryPt = PeriodType.getPeriodTypeFromIsoString( dataRow.get( periodIndex ) );
+                    PeriodType dataPt = dsPtMap.get( dataRow.get( dataSetIndex ) );
                     
                     target = target * queryPt.getPeriodSpan( dataPt );
                     
                     double value = entry.getValue() * PERCENT / target;
                     
                     grid.addRow();
-                    grid.addValues( row.toArray() );
+                    grid.addValues( dataRow.toArray() );
                     grid.addValue( MathUtils.getRounded( value, 1 ) );
                 }
             }
