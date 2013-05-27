@@ -882,7 +882,10 @@ function entryFormContainerOnReady()
             TOGGLE.init();
 
             jQuery( "#entryForm :input" ).each( function () {
-                if ( jQuery( this ).attr( 'options' ) != null && jQuery( this ).attr( 'options' ) == 'true' ) {
+                if ( jQuery( this ).attr( 'options' ) != null 
+					&& jQuery( this ).attr( 'options' ) == 'true' 
+					&& ( jQuery( this ).attr( 'disabled' ) == null  
+						|| jQuery( this ).attr( 'disabled' ) != 'disabled' ) ){
                     autocompletedField( jQuery( this ).attr( 'id' ) );
                 }
                 else if ( jQuery( this ).attr( 'username' ) != null && jQuery( this ).attr( 'username' ) == 'true' ) {
