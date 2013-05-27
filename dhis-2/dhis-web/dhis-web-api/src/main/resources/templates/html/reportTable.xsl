@@ -29,48 +29,6 @@
         <td colspan="6">period yyyy-MM-dd (opt)</td>
       </tr>
 	  </table><br/>
-
-	  <table>
-      <tr>
-        <td>Dynamic Data</td>
-        <td><a href="data.html">html</a></td>
-        <td><a href="data.json">json</a></td>
-        <td><a href="data.xls">xls</a></td>
-        <td><a href="data.pdf">pdf</a></td>
-      </tr>
-      <tr>
-        <td>in</td>
-        <td>indicator uids</td>
-      </tr>
-      <tr>
-        <td>de</td>
-        <td>data element uids</td>
-      </tr>
-      <tr>
-        <td>ds</td>
-        <td>data set uids</td>
-      </tr>
-      <tr>
-        <td>ou</td>
-        <td>org unit uids</td>
-      </tr>
-      <tr>
-        <td>crosstab</td>
-        <td>crosstab dimensions</td>
-      </tr>
-      <tr>
-        <td>orgUnitIsParent</td>
-        <td>true/false</td>
-      </tr>
-      <tr>
-        <td>minimal</td>
-        <td>true/false</td>
-      </tr>
-      <tr>
-        <td>[relative periods]</td>
-        <td>[boolean values]</td>
-      </tr>
-      </table><br/>
 	  
       <table>
         <tr>
@@ -84,18 +42,6 @@
         <tr>
           <td>Code</td>
           <td> <xsl:value-of select="@code" /> </td>
-        </tr>
-        <tr>
-          <td>DoIndicators</td>
-          <td> <xsl:value-of select="d:doIndicators" /> </td>
-        </tr>
-        <tr>
-          <td>DoPeriods</td>
-          <td> <xsl:value-of select="d:doPeriods" /> </td>
-        </tr>
-        <tr>
-          <td>DoUnits</td>
-          <td> <xsl:value-of select="d:doUnits" /> </td>
         </tr>
         <tr>
           <td>Regression</td>
