@@ -104,8 +104,8 @@ function getProgramStageDataElements( id )
 			associationId: id
 		}, function( xml ){			
 			jQuery( xml ).find( 'dataElement' ).each( function(i, item ){
-				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "' dename='" + jQuery( item ).find( "name" ).text() + "' decode='" + jQuery( item ).find( "code" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
-				dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "' dename='" + jQuery( item ).find( "name" ).text() + "' decode='" + jQuery( item ).find( "code" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "' dename='" + jQuery( item ).find( "name" ).text() + "' decode='" + jQuery( item ).find( "code" ).text() + "' >" + jQuery( item ).find( "name" ).text() + "</option>");
+				dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "' dename='" + jQuery( item ).find( "name" ).text() + "' decode='" + jQuery( item ).find( "code" ).text() + "' >" + jQuery( item ).find( "name" ).text() + "</option>");
 			});
 		});
 	}
