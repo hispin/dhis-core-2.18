@@ -200,8 +200,6 @@ public class MapController
     // Supportive methods
     //--------------------------------------------------------------------------
 
-    // TODO use the import service instead
-
     private void mergeMap( Map map )
     {
         if ( map.getUser() != null )

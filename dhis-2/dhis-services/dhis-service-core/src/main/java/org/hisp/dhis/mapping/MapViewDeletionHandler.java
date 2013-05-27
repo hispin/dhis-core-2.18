@@ -31,6 +31,8 @@ import java.util.Iterator;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -54,6 +56,13 @@ public class MapViewDeletionHandler
     {
         this.mappingService = mappingService;
     }
+    
+    private DataElementOperandService operandService;
+
+    public void setOperandService( DataElementOperandService operandService )
+    {
+        this.operandService = operandService;
+    }
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -63,6 +72,18 @@ public class MapViewDeletionHandler
     protected String getClassName()
     {
         return MapView.class.getName();
+    }
+    
+    @Override
+    public void deleteMapView( MapView mapView )
+    {
+        DataElementOperand operand = mapView.getDataElementOperand();
+        
+        if ( operand != null )
+        {
+            mapView.setDataElementOperand( null );
+            operandService.deleteDataElementOperand( operand );
+        }
     }
     
     @Override

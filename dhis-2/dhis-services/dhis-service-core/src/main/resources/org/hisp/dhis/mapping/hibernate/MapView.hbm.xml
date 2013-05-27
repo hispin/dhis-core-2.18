@@ -34,10 +34,11 @@
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
       foreign-key="fk_mapview_dataelementid" />
       
-    <one-to-one name="dataElementOperand" class="org.hisp.dhis.dataelement.DataElementOperand"
-      foreign-key="fk_mapview_dataelementoperandid" cascade="all-delete-orphan" />
+    <many-to-one name="dataElementOperand" class="org.hisp.dhis.dataelement.DataElementOperand" column="dataelementoperandid"
+      foreign-key="fk_mapview_dataelementoperandid" cascade="all" />
 
-    <many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid" foreign-key="fk_mapview_periodid" />
+    <many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid" 
+        foreign-key="fk_mapview_periodid" />
 
     <many-to-one name="parentOrganisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
       column="parentorganisationunitid" foreign-key="fk_mapview_parentorganisationunitid" />

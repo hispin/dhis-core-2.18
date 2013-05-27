@@ -962,6 +962,7 @@
 
   <bean id="org.hisp.dhis.mapping.MapViewDeletionHandler" class="org.hisp.dhis.mapping.MapViewDeletionHandler">
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    <property name="operandService" ref="org.hisp.dhis.dataelement.DataElementOperandService" />
   </bean>
 
   <!-- DeletionManager -->
