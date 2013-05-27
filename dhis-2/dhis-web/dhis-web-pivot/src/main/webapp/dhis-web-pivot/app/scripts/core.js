@@ -841,7 +841,9 @@ PT.core.getUtils = function(pt) {
 						items = Ext.Array.unique(items);
 					}
 
-					paramString += ':' + items.join(';');
+					if (dimName !== dimConf.category.dimensionName) {
+						paramString += ':' + items.join(';');
+					}
 
 					if (i < (sortedAxisDimensionNames.length - 1)) {
 						paramString += '&';

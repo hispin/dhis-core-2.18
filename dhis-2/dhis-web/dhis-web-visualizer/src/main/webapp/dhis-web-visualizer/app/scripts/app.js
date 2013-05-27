@@ -3164,7 +3164,7 @@ Ext.onReady( function() {
 				height: 180,
 				valueField: 'id',
 				displayField: 'name',
-				ddReorder: true,
+				ddReorder: false,
 				store: dv.store.fixedPeriodSelected,
 				tbar: [
 					' ',
