@@ -15,7 +15,7 @@
 <div class="settingHeader">$i18n.getString( "data_mart" )</div>
 
 <div class="setting">
-    <input type="checkbox" id="dataMart" checked="checked" />
+    <input type="checkbox" id="dataMart" />
     <label for="dataMart" onclick="toggleDataMart()">$i18n.getString( "data_mart_tables_update" )</label>
 </div>
 
