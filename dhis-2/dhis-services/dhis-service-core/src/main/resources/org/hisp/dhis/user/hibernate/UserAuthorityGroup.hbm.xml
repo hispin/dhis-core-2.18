@@ -8,6 +8,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.user.UserAuthorityGroup" table="userrole">
 
+    <cache usage="read-write" />
+
     <id name="id" column="userroleid">
       <generator class="native" />
     </id>
