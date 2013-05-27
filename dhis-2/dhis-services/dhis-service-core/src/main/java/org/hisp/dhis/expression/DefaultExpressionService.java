@@ -487,10 +487,13 @@ public class DefaultExpressionService
             {
                 final ListMap<String, String> dataElementMap = dataElementService.getDataElementCategoryOptionComboMap( dataElementTotals );
                 
-                for ( Indicator indicator : indicators )
+                if ( !dataElementMap.isEmpty() )
                 {
-                    indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator() != null ? indicator.getExplodedNumerator() : "", dataElementMap ) );
-                    indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator() != null ? indicator.getExplodedDenominator() : "", dataElementMap ) );
+                    for ( Indicator indicator : indicators )
+                    {
+                        indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator() != null ? indicator.getExplodedNumerator() : "", dataElementMap ) );
+                        indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator() != null ? indicator.getExplodedDenominator() : "", dataElementMap ) );
+                    }
                 }
             }
         }
