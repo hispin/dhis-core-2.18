@@ -23,6 +23,7 @@
     </set>
 
     <set name="authorities" table="userroleauthorities">
+      <cache usage="read-write" />
       <key column="userroleid" foreign-key="fk_userroleauthorities_userroleid" />
       <element type="string" column="authority" />
     </set>

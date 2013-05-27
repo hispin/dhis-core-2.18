@@ -244,6 +244,7 @@
   </bean>
 
   <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    <property name="cacheable" value="true" />
     <property name="clazz" value="org.hisp.dhis.user.UserAuthorityGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
