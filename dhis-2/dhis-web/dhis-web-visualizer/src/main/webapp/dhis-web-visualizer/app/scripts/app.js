@@ -4204,13 +4204,12 @@ Ext.onReady( function() {
 					treePanel.numberOfRecords = dv.util.object.getLength(graphMap);
 					for (var key in graphMap) {
 						if (graphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, graphMap[key], true);
+							treePanel.multipleExpand(key, graphMap[key], false);
 						}
 					}
 				}
 				else {
 					treePanel.reset();
-					//update();
 				}
 			};
 
