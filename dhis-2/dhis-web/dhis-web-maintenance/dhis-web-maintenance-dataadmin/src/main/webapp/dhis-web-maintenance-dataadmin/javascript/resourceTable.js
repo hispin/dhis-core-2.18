@@ -11,9 +11,10 @@ function generateResourceTable()
     var categoryOptionComboName = document.getElementById( "categoryOptionComboName" ).checked;
     var dataElementStructure = document.getElementById( "dataElementStructure" ).checked;
     var periodStructure = document.getElementById( "periodStructure" ).checked;
+    var dataElementCategoryOptionCombo = document.getElementById( "dataElementCategoryOptionCombo" ).checked;
     
     if ( organisationUnit || dataElementGroupSetStructure || indicatorGroupSetStructure || organisationUnitGroupSetStructure || 
-    		categoryStructure || categoryOptionComboName || dataElementStructure || periodStructure )
+    		categoryStructure || categoryOptionComboName || dataElementStructure || periodStructure || dataElementCategoryOptionCombo )
     {
         setWaitMessage( i18n_generating_resource_tables );
             
@@ -25,7 +26,8 @@ function generateResourceTable()
             categoryStructure: categoryStructure,
             categoryOptionComboName: categoryOptionComboName,
             dataElementStructure: dataElementStructure,
-            periodStructure: periodStructure
+            periodStructure: periodStructure,
+            dataElementCategoryOptionCombo: dataElementCategoryOptionCombo
         };
             
 		$.ajax({
@@ -55,5 +57,6 @@ function toggleAll()
 	document.getElementById( "categoryStructure" ).checked = selected;
 	document.getElementById( "categoryOptionComboName" ).checked = selected;
 	document.getElementById( "dataElementStructure" ).checked = selected;	
-	document.getElementById( "periodStructure" ).checked = selected;	
+	document.getElementById( "periodStructure" ).checked = selected;
+	document.getElementById( "dataElementCategoryOptionCombo" ).checked = selected;
 }

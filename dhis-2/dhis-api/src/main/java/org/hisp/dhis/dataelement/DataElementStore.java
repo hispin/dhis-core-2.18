@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.ListMap;
@@ -171,9 +172,10 @@ public interface DataElementStore
      * Returns a mapping of data element uid and associated category option combo
      * uids.
      * 
+     * @param dataElementUids the uids of the data elements to include in the map.
      * @return a ListMap.
      */
-    ListMap<String, String> getDataElementCategoryOptionComboMap();
+    ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids );
     
     Collection<DataElement> get( DataSet dataSet, String key, Integer max );
 }

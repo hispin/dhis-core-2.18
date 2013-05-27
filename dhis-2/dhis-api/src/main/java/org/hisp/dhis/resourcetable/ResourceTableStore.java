@@ -45,7 +45,7 @@ public interface ResourceTableStore
     final String TABLE_NAME_ORGANISATION_UNIT_STRUCTURE = "_orgunitstructure";
     final String TABLE_NAME_DATA_ELEMENT_STRUCTURE = "_dataelementstructure";
     final String TABLE_NAME_PERIOD_STRUCTURE = "_periodstructure";
-    final String TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE = "_period_no_disagg_structure";
+    final String TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO = "_dataelementcategoryoptioncombo";
     
     /**
      * Performs a batch update.
@@ -56,28 +56,16 @@ public interface ResourceTableStore
      */
     void batchUpdate( int columns, String tableName, List<Object[]> batchArgs );
     
-    // -------------------------------------------------------------------------
-    // OrganisationUnitStructure
-    // -------------------------------------------------------------------------
-    
     /**
      * Creates a table.
      */
     void createOrganisationUnitStructure( int maxLevel );
-    
-    // -------------------------------------------------------------------------
-    // DataElementCategoryOptionComboName
-    // -------------------------------------------------------------------------
     
     /**
      * Creates a table.
      */
     void createDataElementCategoryOptionComboName();
     
-    // -------------------------------------------------------------------------
-    // GroupSetStructure
-    // -------------------------------------------------------------------------
-
     /**
      * Creates table.
      * 
@@ -115,4 +103,9 @@ public interface ResourceTableStore
      * Creates table.
      */
     void createPeriodStructure();
+
+    /**
+     * Creates and generates table.
+     */
+    public void createAndGenerateDataElementCategoryOptionCombo();
 }

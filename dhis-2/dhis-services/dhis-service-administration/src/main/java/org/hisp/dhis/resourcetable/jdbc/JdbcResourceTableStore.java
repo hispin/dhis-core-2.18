@@ -274,4 +274,38 @@ public class JdbcResourceTableStore
         
         jdbcTemplate.update( sql );
     }
+
+    // -------------------------------------------------------------------------
+    // DataElementCategoryOptionComboTable
+    // -------------------------------------------------------------------------
+
+    public void createAndGenerateDataElementCategoryOptionCombo()
+    {
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE IF EXISTS " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        final String sql = 
+            "select de.uid as dataelementuid, coc.uid as categoryoptioncombouid " +
+            "into " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + " " +
+            "from dataelement de " +
+            "join categorycombos_optioncombos cc on de.categorycomboid = cc.categorycomboid " +
+            "join categoryoptioncombo coc on cc.categoryoptioncomboid = coc.categoryoptioncomboid";
+        
+        log.info( "Create data element category option combo SQL: " + sql );
+        
+        jdbcTemplate.update( sql );
+        
+        final String index = "CREATE INDEX dataelement_categoryoptioncombo ON " + 
+            TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + " (dataelementuid, categoryoptioncombouid)";
+        
+        log.info( "Create data element category option combo index: " + index );
+
+        jdbcTemplate.update( index );        
+    }
 }

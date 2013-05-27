@@ -61,6 +61,13 @@ public class GenerateResourceTableAction
         this.resourceTableService = resourceTableService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -120,12 +127,12 @@ public class GenerateResourceTableAction
     {
         this.periodStructure = periodStructure;
     }
+    
+    private boolean dataElementCategoryOptionCombo;
 
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setDataElementCategoryOptionCombo( boolean dataElementCategoryOptionCombo )
     {
-        this.currentUserService = currentUserService;
+        this.dataElementCategoryOptionCombo = dataElementCategoryOptionCombo;
     }
 
     private String message;
@@ -184,6 +191,11 @@ public class GenerateResourceTableAction
         if ( periodStructure )
         {
             resourceTableService.generatePeriodTable();
+        }
+        
+        if ( dataElementCategoryOptionCombo )
+        {
+            resourceTableService.generateDataElementCategoryOptionComboTable();
         }
 
         log.info( "'" + currentUserService.getCurrentUsername() + "': Generated resource tables" );
