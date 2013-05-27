@@ -334,7 +334,7 @@ public class DataQueryParams
      */
     public int getIndicatorDimensionIndex()
     {
-        return getInputDimensionNamesAsList().indexOf( INDICATOR_DIM_ID );
+        return getDimensionIdentifiersAsList().indexOf( INDICATOR_DIM_ID );
     }
     
     /**
@@ -342,7 +342,7 @@ public class DataQueryParams
      */
     public int getDataElementDimensionIndex()
     {
-        return getInputDimensionNamesAsList().indexOf( DATAELEMENT_DIM_ID );
+        return getDimensionIdentifiersAsList().indexOf( DATAELEMENT_DIM_ID );
     }
     
     /**
@@ -350,7 +350,7 @@ public class DataQueryParams
      */
     public int getDataSetDimensionIndex()
     {
-        return getInputDimensionNamesAsList().indexOf( DATASET_DIM_ID );
+        return getDimensionIdentifiersAsList().indexOf( DATASET_DIM_ID );
     }
 
     /**
@@ -358,7 +358,7 @@ public class DataQueryParams
      */
     public int getCategoryOptionComboDimensionIndex()
     {
-        return getInputDimensionNamesAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
+        return getDimensionIdentifiersAsList().indexOf( CATEGORYOPTIONCOMBO_DIM_ID );
     }
     
     /**
@@ -366,7 +366,7 @@ public class DataQueryParams
      */
     public int getPeriodDimensionIndex()
     {
-        return getInputDimensionNamesAsList().indexOf( PERIOD_DIM_ID );
+        return getDimensionIdentifiersAsList().indexOf( PERIOD_DIM_ID );
     }
     
     /**
@@ -834,7 +834,7 @@ public class DataQueryParams
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<String> getInputDimensionNamesAsList()
+    private List<String> getDimensionIdentifiersAsList()
     {
         List<String> list = new ArrayList<String>();
         

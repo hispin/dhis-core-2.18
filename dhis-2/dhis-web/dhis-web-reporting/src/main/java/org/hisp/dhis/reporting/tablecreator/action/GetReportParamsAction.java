@@ -175,7 +175,7 @@ public class GetReportParamsAction
             }
         }
         
-        if ( reportParams.isParamReportingMonth() && relatives != null )
+        if ( reportParams != null && reportParams.isParamReportingMonth() && relatives != null )
         {
             CalendarPeriodType periodType = (CalendarPeriodType) relatives.getPeriodType();
             periods = periodType.generateLast5Years( new Date() );
