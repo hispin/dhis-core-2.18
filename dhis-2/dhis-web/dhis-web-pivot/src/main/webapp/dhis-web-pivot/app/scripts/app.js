@@ -3556,12 +3556,12 @@ Ext.onReady( function() {
 				}
 			});
 
-			openTableLayoutTab = function(type) {
+			openTableLayoutTab = function(type, isNewTab) {
 				if (pt.baseUrl && pt.paramString) {
 					var url = pt.baseUrl + '/api/analytics.' + type + pt.paramString;
 					url += '&tableLayout=true&columns=' + pt.xLayout.columnDimensionNames.join(';') + '&rows=' + pt.xLayout.rowDimensionNames.join(';');
 
-					window.open(url, '_blank');
+					window.open(url, isNewTab ? '_blank' : '_top');
 				}
 			};
 
@@ -3597,7 +3597,7 @@ Ext.onReady( function() {
 							text: 'HTML (.html)',
 							iconCls: 'pt-menu-item-xls',
 							handler: function() {
-								openTableLayoutTab('html');
+								openTableLayoutTab('html', true);
 							}
 						},
 						{
@@ -3610,16 +3610,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-csv',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.json' + pt.paramString);
-								}
-							}
-						},
-						{
-							text: 'CSV',
-							iconCls: 'pt-menu-item-csv',
-							handler: function() {
-								if (pt.baseUrl && pt.paramString) {
-									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.paramString;
+									window.open(pt.baseUrl + '/api/analytics.json' + pt.paramString, '_blank');
 								}
 							}
 						},
@@ -3628,7 +3619,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-csv',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.xml' + pt.paramString);
+									window.open(pt.baseUrl + '/api/analytics.xml' + pt.paramString, '_blank');
 								}
 							}
 						},
@@ -3638,6 +3629,15 @@ Ext.onReady( function() {
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
 									window.location.href = pt.baseUrl + '/api/analytics.xls' + pt.paramString;
+								}
+							}
+						},
+						{
+							text: 'CSV',
+							iconCls: 'pt-menu-item-csv',
+							handler: function() {
+								if (pt.baseUrl && pt.paramString) {
+									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.paramString;
 								}
 							}
 						}
@@ -3885,13 +3885,12 @@ Ext.onReady( function() {
 					treePanel.numberOfRecords = pt.util.object.getLength(graphMap);
 					for (var key in graphMap) {
 						if (graphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, graphMap[key], true);
+							treePanel.multipleExpand(key, graphMap[key], false);
 						}
 					}
 				}
 				else {
 					treePanel.reset();
-					//update();
 				}
 			};
 
