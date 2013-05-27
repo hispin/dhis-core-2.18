@@ -760,8 +760,8 @@ PT.core.getUtils = function(pt) {
 				return function() {
 					var headerNames = getHeaderNames(),
 						xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
-						isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT'),
-						isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.items, 'USER_ORGUNIT_CHILDREN'),
+						isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT'),
+						isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
 						co = dimConf.category.objectName,
 						ou = dimConf.organisationUnit.objectName,
 						layout;
@@ -880,7 +880,7 @@ PT.core.getUtils = function(pt) {
 						if (header.meta) {
 
 							// Items
-							header.items = Ext.clone(xLayout.dimensionNameIdsMap[header.name]);
+							header.items = Ext.clone(xLayout.dimensionNameIdsMap[header.name]) || [];
 
 							// Size
 							header.size = header.items.length;
