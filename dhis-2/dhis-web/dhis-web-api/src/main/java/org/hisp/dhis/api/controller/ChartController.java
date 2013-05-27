@@ -215,10 +215,10 @@ public class ChartController
             chart.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
         }
         
-        I18nFormat format = i18nManager.getI18nFormat();
-        
         if ( chart.getPeriods() != null && !chart.getPeriods().isEmpty() )
         {
+            I18nFormat format = i18nManager.getI18nFormat();
+            
             for ( Period period : chart.getPeriods() )
             {
                 period.setName( format.formatPeriod( period ) );
