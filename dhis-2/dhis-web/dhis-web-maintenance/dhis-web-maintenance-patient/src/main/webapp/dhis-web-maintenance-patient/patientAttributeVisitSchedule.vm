@@ -1,6 +1,6 @@
-<h3>$i18n.getString( "patient_attribute_visit_schedule" )</h3>
+<h3>$i18n.getString( "patient_attribute_visit_schedule_form" )</h3>
 																			
-<form id="patientAttributeVisitScheduleForm" name="patientAttributeVisitScheduleForm" action="savePatientAttributeVisitSchedule.action" method="post" action='savePatientAttributeVisitSchedule.action'>
+<form id="patientAttributeVisitScheduleForm" name="patientAttributeVisitScheduleForm" action="savePatientAttributeVisitSchedule.action" method="post" action='savePatientAttributeVisitSchedule.action' onsubmit="selectAllById('selectedAttributeIds');">
 
 <table>
 	<colgroup>
