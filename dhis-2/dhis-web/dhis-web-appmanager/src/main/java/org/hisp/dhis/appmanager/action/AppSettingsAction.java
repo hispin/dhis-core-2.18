@@ -65,7 +65,15 @@ public class AppSettingsAction
 
         if ( null == appFolderPath || appFolderPath.isEmpty() )
         {
-            appFolderPath = ServletActionContext.getServletContext().getRealPath( "/" ) + File.separatorChar + "apps";
+            String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
+            if ( realPath.endsWith( "/" ) || realPath.endsWith( "\\" ) )
+            {
+                appFolderPath = realPath + "apps";
+            }
+            else
+            {
+                appFolderPath = realPath + File.separatorChar + "apps";
+            }
             appManagerService.setAppFolderPath( appFolderPath );
         }
 

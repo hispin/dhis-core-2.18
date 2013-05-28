@@ -12,9 +12,9 @@ jQuery(function() {
 	<li style="margin-left: 15px; margin-top: 6px;">$i18n.getString( "appmanager_you_have_no_apps_installed" )</li>
 #else
     #foreach( $app in $appList )
-    <li class="introItem" onclick="window.location.href='/apps/$appFolderNames.get($foreach.index)/$app.launchPath'">
+    <li class="introItem" onclick="window.location.href='$appsRootUrl/$appFolderNames.get($foreach.index)/$app.launchPath'">
         <span class="introItemHeader">
-            <img style="float:left; margin-right:15px" src="/apps/$appFolderNames.get($foreach.index)/$app.icons.icon48">
+            <img style="float:left; margin-right:15px" src="$appsRootUrl/$appFolderNames.get($foreach.index)/$app.icons.icon48">
             ${app.name}
         </span>
         <br>

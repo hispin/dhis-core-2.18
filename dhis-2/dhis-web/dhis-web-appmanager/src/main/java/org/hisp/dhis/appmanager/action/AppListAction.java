@@ -35,6 +35,9 @@ import org.hisp.dhis.appmanager.AppManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.util.ContextUtils;
 
 /**
  * @author Saptarshi Purkayastha
@@ -65,6 +68,30 @@ public class AppListAction
     public List<String> getAppFolderNames()
     {
         return appFolderNames;
+    }
+
+    //TODO: create settings to set for external server like Apache2/nginx
+    // Should be a per-app setting
+    private String appsRootUrl = new String();
+
+    public String getAppsRootUrl()
+    {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
+        String appFolderPath = appManagerService.getAppFolderPath();
+        String baseUrl = ContextUtils.getBaseUrl( request );
+        String contextPath = request.getContextPath();
+        if ( !contextPath.isEmpty() )
+        {
+            appsRootUrl = baseUrl.substring( 0, baseUrl.length() - 1 ) + request.getContextPath() + "/"
+                + ((appFolderPath.replace( "//", "/" )).replace( realPath, "" )).replace( '\\', '/' );
+        }
+        else
+        {
+            appsRootUrl = baseUrl.substring( 0, baseUrl.length() - 1 )
+                + ((appFolderPath.replace( "//", "/" )).replace( realPath, "" )).replace( '\\', '/' );
+        }
+        return appsRootUrl;
     }
 
     // -------------------------------------------------------------------------

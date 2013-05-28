@@ -40,6 +40,7 @@
       <param name="page">/dhis-web-appmanager/getApps.vm</param>
       <param name="menu">/dhis-web-appmanager/menu.vm</param>
       <param name="javascripts">javascript/jquery.form.js,javascript/uploadApp.js</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
     
     <action name="appSettings" class="org.hisp.dhis.appmanager.action.AppSettingsAction">
@@ -48,8 +49,8 @@
       <param name="page">/dhis-web-appmanager/appSettings.vm</param>
       <param name="menu">/dhis-web-appmanager/menu.vm</param>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
       <param name="javascripts">javascript/jquery.form.js,javascript/deleteApp.js</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
     
   </package>
