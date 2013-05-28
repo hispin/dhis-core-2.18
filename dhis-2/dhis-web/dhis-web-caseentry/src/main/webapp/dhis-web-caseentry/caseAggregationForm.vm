@@ -19,7 +19,11 @@
 				</td>
 				<td>
 					<select id="dataSetId" name="dataSetId" style="width: 30em">
+						#if( $datasets.size()== 0 )
+						<option value=''>[$i18n.getString('none_dataset')]</option>
+						#elseif( $datasets.size() > 1 )
 						<option value=''>[$i18n.getString('please_select')]</option>
+						#end
 						#foreach ( $dataSet in $datasets )
 							<option value='$dataSet.id' title='$dataSet.displayName'>$dataSet.displayName</option>
 						#end
@@ -30,14 +34,14 @@
 			<tr>
 				<td>$i18n.getString( "from" )</td>
 				<td>
-					<input type='text' id="startDate" name="startDate" style="width:392px;" />
+					<input type='text' id="startDate" name="startDate" style="width:355px;" />
 				</td>
 			</tr>
 			
 			<tr>
 				<td>$i18n.getString( "to" )</td>
 				<td>
-					<input type='text' id="endDate" name="endDate" style="width:392px;" />
+					<input type='text' id="endDate" name="endDate" style="width:355px;" />
 					<script>
 						datePickerInRange( 'startDate','endDate', true, true );
 					</script>
