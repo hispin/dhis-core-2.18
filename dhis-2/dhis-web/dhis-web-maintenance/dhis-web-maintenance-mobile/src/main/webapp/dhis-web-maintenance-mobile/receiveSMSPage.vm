@@ -198,7 +198,7 @@
 					<input type="hidden" id="$incomingSms.id" value="$incomingSms.text" onblur="makeVisible( $incomingSms.id, $velocityCount )"/></td>
 				<td>$incomingSms.originator</td>
 				<td>$incomingSms.status</td>
-				<td style="text-align:center">#if($incomingSms.status == 'FAILED' || $incomingSms.status == 'INCOMING')<a href="javascript:reimport('$incomingSms.id', '$incomingSms.text')"> Re-import </a> #else None #end</td>
+				<td style="text-align:center">#if($incomingSms.status == 'FAILED' || $incomingSms.status == 'INCOMING')<a href="javascript:reimport('$i18n.getString( 'reimport_confirm' )','$incomingSms.id', '$incomingSms.text')"> Re-import </a> #else None #end</td>
 				<td style="text-align:center"><a href="javascript:removeSingleItem( '$incomingSms.id', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>				
 			</tr>
 			#end
