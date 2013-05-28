@@ -47,7 +47,11 @@
 				<td>$i18n.getString('program')</td>
 				<td>
 					<select id='programIdAddPatient' name='programIdAddPatient' class="{validate:{required:true}}" >
-						<option value="">[$i18n.getString("please_select")]</option>
+						#if($programs.size()==0)
+						<option value="">[$i18n.getString( "none_program" )]</option>
+						#elseif($programs.size()>1)
+						<option value="">[$i18n.getString( "please_select" )]</option>
+						#end
 						#foreach($program in $programs)
 							#if($program.type=='1') 
 								<option value="$program.id" type='$program.type'>$program.displayName</option>

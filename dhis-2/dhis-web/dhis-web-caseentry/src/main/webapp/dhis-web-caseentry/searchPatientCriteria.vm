@@ -11,7 +11,7 @@
 		<td>
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
-		<td rowspan='3' valign='bottom'>
+		<td rowspan='4' valign='bottom'>
 			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" >
 			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" >
 			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" >
@@ -21,7 +21,11 @@
 		<td>$i18n.getString('program')</td>
 		<td>
 			<select id='programIdAddPatient' name='programIdAddPatient' onchange='enableBtn();'>
+				#if($programs.size()==0)
+				<option value="">[$i18n.getString( "none_program" )]</option>
+				#elseif($programs.size()>1)
 				<option value='' type='2' id='emptyProgramOption'>[$i18n.getString("please_select")]</option>
+				#end
 				#foreach($program in $programs)
 					<option value="$program.id" type='$program.type'>$program.displayName</option>
 				#end
@@ -32,7 +36,7 @@
 	<tr id='scheduleVisitTR' class='hidden'>
 		<td>$i18n.getString('scheduled_visits')</td>
 		<td>
-			<select id='scheduledVisitDays' name='scheduledVisitDays' onchange='javascript:listAllPatient();' >
+			<select id='scheduledVisitDays' name='scheduledVisitDays' >
 				<option value=''>[$i18n.getString("please_select")]</option>
 				<option value='0'>$i18n.getString("today")</option>
 				<option value='7'>$i18n.getString("last_7_days")</option>
@@ -141,6 +145,8 @@
 	var i18n_specify_search_criteria = '$encoder.jsEscape( $i18n.getString( "specify_search_criteria" ) , "'")';
 	var i18n_clear = '$encoder.jsEscape( $i18n.getString( "clear" ) , "'")';
 	var i18n_view_all = '[' + '$encoder.jsEscape( $i18n.getString( "view_all" ) , "'")' + ']';
+	var i18n_none_program = '[' + '$encoder.jsEscape( $i18n.getString( "none_program" ) , "'")' + ']';
+	var i18n_please_select = '[' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'")' + ']';
 	
 	datePicker( 'startDueDate', true );
 	datePicker( 'endDueDate', true );
