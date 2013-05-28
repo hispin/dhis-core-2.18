@@ -745,12 +745,12 @@ body.x-windows {
  *--------------------------------------------------------------------------*/
 
 	/* Menu item icon */
-.dv-menu-item-data {
-    background-image:url('../images/pdf.png');
+.dv-menu-item-image {
+    background-image:url('../images/dl_image.png');
     padding-left: 18px;
 }
-.dv-menu-item-image {
-    background-image:url('../images/png.png');
+.dv-menu-item-datasource {
+    background-image:url('../images/dl_datasource.png');
     padding-left: 18px;
 }
 

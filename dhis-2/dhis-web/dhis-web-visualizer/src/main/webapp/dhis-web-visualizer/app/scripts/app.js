@@ -3940,57 +3940,66 @@ Ext.onReady( function() {
 				disabled: true,
 				menu: {
 					cls: 'dv-menu',
-					width: 105,
 					shadow: false,
 					showSeparator: false,
 					items: [
 						{
-							text: DV.i18n.image_png,
+							xtype: 'label',
+							text: DV.i18n.graphics,
+							style: 'padding:7px 5px 5px 7px; font-weight:bold'
+						},
+						{
+							text: DV.i18n.image_png + ' (.png)',
 							iconCls: 'dv-menu-item-image',
 							handler: function() {
 								dv.util.chart.submitSvgForm('png');
 							}
 						},
 						{
-							text: 'PDF',
+							text: 'PDF (.pdf)',
 							iconCls: 'dv-menu-item-image',
 							handler: function() {
 								dv.util.chart.submitSvgForm('pdf');
 							}
 						},
 						{
-							text: 'Excel (XLS)',
-							iconCls: 'dv-menu-item-data',
-							handler: function() {
-								if (dv.baseUrl && dv.paramString) {
-									window.location.href = dv.baseUrl + '/api/analytics.xls' + dv.paramString;
-								}
-							}
-						},
-						{
-							text: 'CSV',
-							iconCls: 'dv-menu-item-data',
-							handler: function() {
-								if (dv.baseUrl && dv.paramString) {
-									window.location.href = dv.baseUrl + '/api/analytics.csv' + dv.paramString;
-								}
-							}
+							xtype: 'label',
+							text: DV.i18n.plain_data_sources,
+							style: 'padding:7px 5px 5px 7px; font-weight:bold'
 						},
 						{
 							text: 'JSON',
-							iconCls: 'dv-menu-item-data',
+							iconCls: 'dv-menu-item-datasource',
 							handler: function() {
 								if (dv.baseUrl && dv.paramString) {
-									window.open(dv.baseUrl + '/api/analytics.json' + dv.paramString);
+									window.open(dv.baseUrl + '/api/analytics.json' + dv.util.chart.getParamString(dv.xLayout, true));
 								}
 							}
 						},
 						{
 							text: 'XML',
-							iconCls: 'dv-menu-item-data',
+							iconCls: 'dv-menu-item-datasource',
 							handler: function() {
 								if (dv.baseUrl && dv.paramString) {
-									window.open(dv.baseUrl + '/api/analytics.xml' + dv.paramString);
+									window.open(dv.baseUrl + '/api/analytics.xml' + dv.util.chart.getParamString(dv.xLayout, true));
+								}
+							}
+						},
+						{
+							text: 'Microsoft Excel',
+							iconCls: 'dv-menu-item-datasource',
+							handler: function() {
+								if (dv.baseUrl && dv.paramString) {
+									window.location.href = dv.baseUrl + '/api/analytics.xls' + dv.util.chart.getParamString(dv.xLayout, true);
+								}
+							}
+						},
+						{
+							text: 'CSV',
+							iconCls: 'dv-menu-item-datasource',
+							handler: function() {
+								if (dv.baseUrl && dv.paramString) {
+									window.location.href = dv.baseUrl + '/api/analytics.csv' + dv.util.chart.getParamString(dv.xLayout, true);
 								}
 							}
 						}

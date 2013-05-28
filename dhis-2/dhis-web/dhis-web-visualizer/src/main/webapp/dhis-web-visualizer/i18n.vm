@@ -191,5 +191,7 @@ DV.i18n = {
 	can_edit_and_view: '$encoder.jsEscape($i18n.getString( 'can_edit_and_view' ) , "'")',
 	search_for_user_groups: '$encoder.jsEscape($i18n.getString( 'search_for_user_groups' ) , "'")',
 	public_access: '$encoder.jsEscape($i18n.getString( 'public_access' ) , "'")',
-	detailed_data_elements_cannot_be_specified_as_filter: '$encoder.jsEscape($i18n.getString( 'detailed_data_elements_cannot_be_specified_as_filter' ) , "'")'		
+	detailed_data_elements_cannot_be_specified_as_filter: '$encoder.jsEscape($i18n.getString( 'detailed_data_elements_cannot_be_specified_as_filter' ) , "'")',
+	plain_data_sources: '$encoder.jsEscape($i18n.getString( 'plain_data_sources' ) , "'")',
+	graphics: '$encoder.jsEscape($i18n.getString( 'graphics' ) , "'")'
 };

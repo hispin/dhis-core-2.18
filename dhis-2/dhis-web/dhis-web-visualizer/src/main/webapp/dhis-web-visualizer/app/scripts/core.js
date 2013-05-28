@@ -623,10 +623,63 @@ DV.core.getUtil = function(dv) {
 			return xLayout;
 		},
 
+		getParamString: function(xLayout, isSorted) {
+			var axisDimensionNames = isSorted ? xLayout.sortedAxisDimensionNames : xLayout.axisDimensionNames,
+				filterDimensions = isSorted ? xLayout.sortedFilterDimensions : xLayout.filterDimensions,
+				dimensionNameIdsMap = isSorted ? xLayout.dimensionNameSortedIdsMap : xLayout.dimensionNameIdsMap,
+				paramString = '?',
+				dimConf = dv.conf.finals.dimension,
+				addCategoryDimension = false,
+				map = xLayout.dimensionNameItemsMap,
+				dx = dimConf.indicator.dimensionName;
+
+			for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
+				dimName = axisDimensionNames[i];
+
+				paramString += 'dimension=' + dimName;
+
+				items = Ext.clone(dimensionNameIdsMap[dimName]);
+
+				if (dimName === dx) {
+					for (var j = 0, index; j < items.length; j++) {
+						index = items[j].indexOf('-');
+
+						if (index > 0) {
+							addCategoryDimension = true;
+							items[j] = items[j].substr(0, index);
+						}
+					}
+
+					items = Ext.Array.unique(items);
+				}
+
+				if (dimName !== dimConf.category.dimensionName) {
+					paramString += ':' + items.join(';');
+				}
+
+				if (i < (axisDimensionNames.length - 1)) {
+					paramString += '&';
+				}
+			}
+
+			if (addCategoryDimension) {
+				paramString += '&dimension=' + dv.conf.finals.dimension.category.dimensionName;
+			}
+
+			if (Ext.isArray(filterDimensions) && filterDimensions.length) {
+				for (var i = 0, dim; i < filterDimensions.length; i++) {
+					dim = filterDimensions[i];
+
+					paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
+				}
+			}
+
+			return paramString;
+		},
+
 		createChart: function(layout, dv) {
 			var dimConf = dv.conf.finals.dimension,
 				getSyncronizedXLayout,
-				getParamString,
 				getExtendedResponse,
 				getDefaultStore,
 				getDefaultNumericAxis,
@@ -641,60 +694,6 @@ DV.core.getUtil = function(dv) {
 				validateUrl,
 				generator = {},
 				initialize;
-
-			getParamString = function(xLayout) {
-				var sortedAxisDimensionNames = xLayout.sortedAxisDimensionNames,
-					sortedFilterDimensions = xLayout.sortedFilterDimensions,
-					dimensionNameSortedIdsMap = xLayout.dimensionNameSortedIdsMap,
-					paramString = '?',
-					dimConf = dv.conf.finals.dimension,
-					addCategoryDimension = false,
-					map = xLayout.dimensionNameItemsMap,
-					dx = dimConf.indicator.dimensionName;
-
-				for (var i = 0, dimName, items; i < sortedAxisDimensionNames.length; i++) {
-					dimName = sortedAxisDimensionNames[i];
-
-					paramString += 'dimension=' + dimName;
-
-					items = Ext.clone(dimensionNameSortedIdsMap[dimName]);
-
-					if (dimName === dx) {
-						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('-');
-
-							if (index > 0) {
-								addCategoryDimension = true;
-								items[j] = items[j].substr(0, index);
-							}
-						}
-
-						items = Ext.Array.unique(items);
-					}
-
-					if (dimName !== dimConf.category.dimensionName) {
-						paramString += ':' + items.join(';');
-					}
-
-					if (i < (sortedAxisDimensionNames.length - 1)) {
-						paramString += '&';
-					}
-				}
-
-				if (addCategoryDimension) {
-					paramString += '&dimension=' + dv.conf.finals.dimension.category.dimensionName;
-				}
-
-				if (Ext.isArray(sortedFilterDimensions) && sortedFilterDimensions.length) {
-					for (var i = 0, dim; i < sortedFilterDimensions.length; i++) {
-						dim = sortedFilterDimensions[i];
-
-						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
-					}
-				}
-
-				return paramString;
-			};
 
 			getSyncronizedXLayout = function(xLayout, response) {
 				var dimensions = [].concat(xLayout.columns, xLayout.rows, xLayout.filters),
@@ -1656,9 +1655,9 @@ console.log("baseLineFields", store.baseLineFields);
 					xResponse,
 					chart;
 
-				xLayout = dv.util.chart.getExtendedLayout(layout);
+				xLayout = util.chart.getExtendedLayout(layout);
 
-				dv.paramString = getParamString(xLayout);
+				dv.paramString = util.chart.getParamString(xLayout, true);
 				url = dv.init.contextPath + '/api/analytics.json' + dv.paramString;
 
 				if (!validateUrl(url)) {

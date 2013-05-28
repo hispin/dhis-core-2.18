@@ -818,6 +818,7 @@ PT.core.getUtils = function(pt) {
 						isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
 						co = dimConf.category.objectName,
 						ou = dimConf.organisationUnit.objectName,
+
 						layout;
 
 					// Set items from init/metaData/xLayout
@@ -854,9 +855,12 @@ PT.core.getUtils = function(pt) {
 						}
 					}
 
-					// Remove co from layout if it does not exist in response
-					if (Ext.Array.contains(xLayout.axisDimensionNames, co) && !(Ext.Array.contains(headerNames, co))) {
-						removeDimensionFromXLayout(co);
+					// Remove dimensions from layout that do not exist in response
+					for (var i = 0, dimensionName; i < xLayout.axisDimensionNames.length; i++) {
+						dimensionName = xLayout.axisDimensionNames[i];
+						if (!Ext.Array.contains(headerNames, dimensionName)) {
+							removeDimensionFromXLayout(dimensionName);
+						}
 					}
 
 					layout = pt.api.layout.Layout(xLayout);
