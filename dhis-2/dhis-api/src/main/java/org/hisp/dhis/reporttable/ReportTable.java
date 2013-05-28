@@ -43,6 +43,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -54,13 +55,10 @@ import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.User;
@@ -73,51 +71,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The ReportTable object represents a customizable database table. It has
- * features like crosstabulation, relative periods, parameters, and display
- * columns.
- *
  * @author Lars Helge Overland
  */
 @JacksonXmlRootElement( localName = "reportTable", namespace = DxfNamespaces.DXF_2_0)
 public class ReportTable
     extends BaseAnalyticalObject
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 5618655666320890565L;
-    
-    public static final String DATAELEMENT_ID = "dataelementid";
-    public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
-    public static final String CATEGORYOPTION_ID = "categoryoptionid";
-
-    public static final String INDICATOR_ID = "indicatorid";
-    public static final String INDICATOR_UID = "indicatoruid";
-    public static final String INDICATOR_NAME = "indicatorname";
-    public static final String INDICATOR_CODE = "indicatorcode";
-    public static final String INDICATOR_DESCRIPTION = "indicatordescription";
-
-    public static final String DATASET_ID = "datasetid";
-
-    public static final String PERIOD_ID = "periodid";
-    public static final String PERIOD_UID = "perioduid";
-    public static final String PERIOD_NAME = "periodname";
-    public static final String PERIOD_CODE = "periodcode";
-    public static final String PERIOD_DESCRIPTION = "perioddescription";
-
-    public static final String ORGANISATIONUNIT_ID = "organisationunitid";
-    public static final String ORGANISATIONUNIT_UID = "organisationunituid";
-    public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
-    public static final String ORGANISATIONUNIT_CODE = "organisationunitcode";
-    public static final String ORGANISATIONUNIT_DESCRIPTION = "organisationunitdescription";
-
-    public static final String ORGANISATIONUNITGROUP_ID = "organisationunitgroupid";
-    public static final String ORGANISATIONUNITGROUP_UID = "organisationunitgroupuid";
-    public static final String ORGANISATIONUNITGROUP_NAME = "organisationunitgroupname";
-    public static final String ORGANISATIONUNITGROUP_CODE = "organisationunitgroupcode";
-    public static final String ORGANISATIONUNITGROUP_DESCRIPTION = "organisationunitgroupdescription";
-
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
@@ -148,35 +107,17 @@ public class ReportTable
     public static final NameableObject[] IRT = new NameableObject[0];
     public static final NameableObject[][] IRT2D = new NameableObject[0][];
 
-    public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>()
-    {
-        {
-            put( CATEGORYCOMBO_ID, "Category combination ID" );
-            put( INDICATOR_ID, "Indicator ID" );
-            put( PERIOD_ID, "Period ID" );
-            put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
-            put( ORGANISATIONUNITGROUP_ID, "Organisation unit group ID" );
-        }
-    };
-
-    public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>()
-    {
-        {
-            put( Indicator.class, INDICATOR_ID );
-            put( DataElement.class, DATAELEMENT_ID );
-            put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
-            put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
-            put( DataSet.class, DATASET_ID );
-            put( Period.class, PERIOD_ID );
-            put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
-            put( OrganisationUnitGroup.class, ORGANISATIONUNITGROUP_ID );
-        }
-    };
-
     private static final String EMPTY = "";
 
     private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
 
+    private static final Map<String, String> COLUMN_NAMES = DimensionalObjectUtils.asMap( 
+        DATA_X_DIM_ID, "data",
+        CATEGORYOPTIONCOMBO_DIM_ID, "categoryoptioncombo",
+        PERIOD_DIM_ID, "period",
+        ORGUNIT_DIM_ID, "organisationunit"
+    );
+    
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -648,12 +589,13 @@ public class ReportTable
 
         for ( String row : rowDimensions )
         {
-            String name = StringUtils.defaultIfEmpty( DimensionalObject.PRETTY_NAMES.get( row ), row );
+            String name = StringUtils.defaultIfEmpty( DimensionalObject.PRETTY_NAMES.get( row ), row );            
+            String col = StringUtils.defaultIfEmpty( COLUMN_NAMES.get( row ), row );
             
-            grid.addHeader( new GridHeader( name + " ID", row + "_id", String.class.getName(), true, true ) );
-            grid.addHeader( new GridHeader( name, row + "_name", String.class.getName(), false, true ) );
-            grid.addHeader( new GridHeader( name + " code", row + "_code", String.class.getName(), true, true ) );
-            grid.addHeader( new GridHeader( name + " description", row + "_description", String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( name + " ID", col + "id", String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( name, col + "name", String.class.getName(), false, true ) );
+            grid.addHeader( new GridHeader( name + " code", col + "code", String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( name + " description", col + "description", String.class.getName(), true, true ) );
         }
         
         if ( paramColumns )
