@@ -3645,6 +3645,15 @@ Ext.onReady( function() {
 									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.util.pivot.getParamString(pt.xLayout, true);
 								}
 							}
+						},
+						{
+							text: 'JRXML',
+							iconCls: 'pt-menu-item-datasource',
+							handler: function() {
+								if (pt.baseUrl && pt.paramString) {
+									window.open(pt.baseUrl + '/api/analytics.jrxml' + pt.util.pivot.getParamString(pt.xLayout, true), '_blank');
+								}
+							}
 						}
 					],
 					listeners: {
