@@ -3570,74 +3570,73 @@ Ext.onReady( function() {
 				disabled: true,
 				menu: {
 					cls: 'pt-menu',
-					width: 140,
 					shadow: false,
 					showSeparator: false,
 					items: [
 						{
 							xtype: 'label',
-							text: 'Table layout',
+							text: PT.i18n.table_layout,
 							style: 'padding:7px 5px 5px 7px; font-weight:bold'
 						},
 						{
 							text: 'Microsoft Excel (.xls)',
-							iconCls: 'pt-menu-item-xls',
+							iconCls: 'pt-menu-item-tablelayout',
 							handler: function() {
 								openTableLayoutTab('xls');
 							}
 						},
 						{
 							text: 'CSV (.csv)',
-							iconCls: 'pt-menu-item-xls',
+							iconCls: 'pt-menu-item-tablelayout',
 							handler: function() {
 								openTableLayoutTab('csv');
 							}
 						},
 						{
 							text: 'HTML (.html)',
-							iconCls: 'pt-menu-item-xls',
+							iconCls: 'pt-menu-item-tablelayout',
 							handler: function() {
 								openTableLayoutTab('html', true);
 							}
 						},
 						{
 							xtype: 'label',
-							text: 'Plain data source',
+							text: PT.i18n.plain_data_sources,
 							style: 'padding:7px 5px 5px 7px; font-weight:bold'
 						},
 						{
 							text: 'JSON',
-							iconCls: 'pt-menu-item-csv',
+							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.json' + pt.util.pivot.getParamString(pt.xLayout), '_blank');
+									window.open(pt.baseUrl + '/api/analytics.json' + pt.util.pivot.getParamString(pt.xLayout, true), '_blank');
 								}
 							}
 						},
 						{
 							text: 'XML',
-							iconCls: 'pt-menu-item-csv',
+							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.xml' + pt.util.pivot.getParamString(pt.xLayout), '_blank');
+									window.open(pt.baseUrl + '/api/analytics.xml' + pt.util.pivot.getParamString(pt.xLayout, true), '_blank');
 								}
 							}
 						},
 						{
 							text: 'Microsoft Excel',
-							iconCls: 'pt-menu-item-xls',
+							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.location.href = pt.baseUrl + '/api/analytics.xls' + pt.util.pivot.getParamString(pt.xLayout);
+									window.location.href = pt.baseUrl + '/api/analytics.xls' + pt.util.pivot.getParamString(pt.xLayout, true);
 								}
 							}
 						},
 						{
 							text: 'CSV',
-							iconCls: 'pt-menu-item-csv',
+							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.util.pivot.getParamString(pt.xLayout);
+									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.util.pivot.getParamString(pt.xLayout, true);
 								}
 							}
 						}

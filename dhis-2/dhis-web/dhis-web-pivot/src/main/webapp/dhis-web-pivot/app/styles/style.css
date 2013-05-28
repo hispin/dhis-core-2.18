@@ -474,12 +474,16 @@ td .bad div {
  *--------------------------------------------------------------------------*/
 
 	/* Menu item icon */
-.pt-menu-item-xls {
-    background-image:url('../images/pdf.png');
+.pt-menu-item-image {
+    background-image:url('../images/dl_image.png');
     padding-left: 18px;
 }
-.pt-menu-item-csv {
-    background-image:url('../images/pdf.png');
+.pt-menu-item-tablelayout {
+    background-image:url('../images/dl_tablelayout.png');
+    padding-left: 18px;
+}
+.pt-menu-item-datasource {
+    background-image:url('../images/dl_datasource.png');
     padding-left: 18px;
 }
 
