@@ -411,6 +411,22 @@ public class DataQueryParams
     }
     
     /**
+     * Returns the period type of the first period specified as filter. Returns
+     * null if there is no period filter.
+     */
+    public PeriodType getFilterPeriodType()
+    {
+        List<NameableObject> filterPeriods = getFilterPeriods();
+        
+        if ( filterPeriods != null && !filterPeriods.isEmpty() )
+        {
+            return ( (Period) filterPeriods.get( 0 ) ).getPeriodType();
+        }
+        
+        return null;
+    }
+    
+    /**
      * Returns the number of dimension option permutations. Merges the three data
      * dimensions into one prior to the calculation.
      */
