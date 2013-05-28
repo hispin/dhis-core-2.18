@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -150,8 +151,8 @@ public class DataQueryParams
     
     /**
      * Ensures conformity for this query. The category option combo dimension
-     * can only be present if the data element dimension exists and the indicator
-     * and data set dimensions do not exist.
+     * and any category dimensions can only be present if the data element 
+     * dimension exists and the indicator and data set dimensions do not exist.
      */
     public DataQueryParams conform()
     {
@@ -160,6 +161,7 @@ public class DataQueryParams
             dimensions.contains( new BaseDimensionalObject( DATASET_DIM_ID ) ) )
         {
             removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
+            removeDimensions( DimensionType.CATEGORY );
         }
         
         return this;
@@ -317,6 +319,24 @@ public class DataQueryParams
         this.dimensions.remove( new BaseDimensionalObject( dimension ) );
         
         return this;
+    }
+    
+    /**
+     * Removes dimensions of the given type.
+     */
+    public void removeDimensions( DimensionType type )
+    {
+        Iterator<DimensionalObject> iterator = dimensions.iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            DimensionalObject dimension = iterator.next();
+            
+            if ( DimensionType.CATEGORY.equals( dimension.getType() ) )
+            {
+                iterator.remove();
+            }
+        }
     }
 
     /**
@@ -542,7 +562,7 @@ public class DataQueryParams
                 dimensionOptions.add( options.toArray( DIM_OPT_ARR ) );
             }
         }
-                
+        
         CombinationGenerator<DimensionItem> generator = new CombinationGenerator<DimensionItem>( dimensionOptions.toArray( DIM_OPT_2D_ARR ) );
         
         List<List<DimensionItem>> permutations = generator.getCombinations();
