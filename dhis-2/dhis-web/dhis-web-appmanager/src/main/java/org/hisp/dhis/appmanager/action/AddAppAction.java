@@ -122,7 +122,7 @@ public class AddAppAction
             {
                 ZipFile zip = new ZipFile( file );
                 ZipEntry entry = zip.getEntry( "manifest.webapp" );
-                
+
                 if ( null != entry )
                 {
                     InputStream inputStream = zip.getInputStream( entry );
@@ -162,7 +162,7 @@ public class AddAppAction
                         installedApp.getActivities().getDhis().setHref( rootPath );
                         mapper.writeValue( updateManifest, installedApp );
                     }
-                    
+
                     zip.close();
                     message = i18n.getString( "appmanager_install_success" );
                 }

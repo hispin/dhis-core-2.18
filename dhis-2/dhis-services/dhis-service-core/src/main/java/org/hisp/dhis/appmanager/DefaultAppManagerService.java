@@ -37,6 +37,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import static org.hisp.dhis.appmanager.AppManagerService.KEY_APP_FOLDER_PATH;
 import org.hisp.dhis.datavalue.DefaultDataValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,19 +110,21 @@ public class DefaultAppManagerService
     @Override
     public void setAppFolderPath( String appFolderPath )
     {
-        try
+        if(!appFolderPath.isEmpty())
         {
-            File folder = new File( appFolderPath );
-            if ( !folder.exists() )
+            try
             {
-                FileUtils.forceMkdir( folder );
+                File folder = new File( appFolderPath );
+                if ( !folder.exists() )
+                {
+                    FileUtils.forceMkdir( folder );
+                }
+            }
+            catch ( IOException ex )
+            {
+                log.error( ex.getLocalizedMessage(), ex );
             }
         }
-        catch ( IOException ex )
-        {
-            log.error( ex.getLocalizedMessage(), ex );
-        }
-        
         appSettingManager.saveSystemSetting( KEY_APP_FOLDER_PATH, appFolderPath );
     }
 
