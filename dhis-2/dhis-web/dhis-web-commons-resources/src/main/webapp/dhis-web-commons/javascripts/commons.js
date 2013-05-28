@@ -826,6 +826,8 @@ function removeItem( itemId, itemName, confirmation, action, success )
     
     if ( result )
     {
+    	setHeaderWaitMessage( i18n_deleting );
+    	
     	$.postJSON(
     	    action,
     	    {
@@ -847,11 +849,11 @@ function removeItem( itemId, itemName, confirmation, action, success )
 						success.call();
 					}
   
-					showSuccessMessage( i18n_delete_success );
+					setHeaderDelayMessage( i18n_delete_success );
     	    	}
     	    	else if ( json.response == "error" )
     	    	{ 
-					showWarningMessage( json.message );
+					setHeaderMessage( json.message );
     	    	}
     	    }
     	);

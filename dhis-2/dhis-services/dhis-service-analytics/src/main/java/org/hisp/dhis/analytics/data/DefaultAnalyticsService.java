@@ -420,9 +420,7 @@ public class DefaultAnalyticsService
         addIfEmpty( reportTable.getGridColumns() ); 
         addIfEmpty( reportTable.getGridRows() );
 
-        Grid grid = reportTable.getGrid( new ListGrid(), valueMap, false );
-        
-        return grid;
+        return reportTable.getGrid( new ListGrid(), valueMap, false );
     }
     
     @Override
