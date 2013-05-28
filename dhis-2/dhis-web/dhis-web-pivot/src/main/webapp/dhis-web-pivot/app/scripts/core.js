@@ -818,7 +818,6 @@ PT.core.getUtils = function(pt) {
 						isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
 						co = dimConf.category.objectName,
 						ou = dimConf.organisationUnit.objectName,
-
 						layout;
 
 					// Set items from init/metaData/xLayout
@@ -850,7 +849,7 @@ PT.core.getUtils = function(pt) {
 							}
 							// Items: get items from xLayout
 							else {
-								dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
+								dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);
 							}
 						}
 					}
