@@ -1016,7 +1016,7 @@
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/programTrackingSelect.vm</param>
-      <param name="menu">/dhis-web-caseentry/trackingMenu.vm</param>
+      <param name="menu">/dhis-web-caseentry/registrationMenu.vm</param>
       <param name="stylesheets">style/style.css</param>
       <param name="javascripts">
         ../dhis-web-commons/ouwt/ouwt.js,
@@ -1115,7 +1115,7 @@
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/activityPlanSelect.vm</param>
-      <param name="menu">/dhis-web-caseentry/trackingMenu.vm</param>
+      <param name="menu">/dhis-web-caseentry/registrationMenu.vm</param>
       <param name="stylesheets">style/style.css</param>
       <param name="javascripts">
         ../dhis-web-commons/ouwt/ouwt.js,

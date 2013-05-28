@@ -30,7 +30,7 @@
 	<thead>
 		<tr>
 			<th>#</th>
-			<th>$i18n.getString('followup')</th>
+			<th>$i18n.getString('risk')</th>
 			<th>$i18n.getString('date_scheduled')</th>
 			<th>$i18n.getString('full_name')</th>
 			<th>$i18n.getString('phone_number')</th>
@@ -49,8 +49,11 @@
 			</td>
 			<td>
 				#set( $comment = $!programStageInstance.programInstance.patientComment.commentText )
-				<a href='javascript:markForFollowup($programStageInstance.programInstance.id, false)' #if( $$!programStageInstance.programInstance.followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$comment' ><img src='../images/marked.png'></a>
-				<a href='javascript:markForFollowup($programStageInstance.programInstance.id, true)' #if( $$!programStageInstance.programInstance.followup == 'true') class='hidden' #end id='imgUnmarkFollowup' ><img src='../images/unmarked.png'></a>			
+				#if( $$!programStageInstance.programInstance.followup == 'true') 
+				<img src='../images/marked.png' alt='$comment'>
+				#else
+				<img src='../images/unmarked.png'>			
+				#end
 			</td>
 			<td>
 				#if($!programStageInstance.executionDate)

@@ -7,14 +7,18 @@
 	#if( $patient )
 		<table>
 			<tr>            
-				<td>
+				<td class='coordinates1'>
 					<span class='bold' id="patientName">$i18n.getString( "full_name" ):</span>
 				</td>
-				<td>
+				<td class='coordinates2'>
 					$encoder.htmlEncode( $patient.getFullName() ) ( $i18n.getString( "$patient.gender" ) )
 				</td>
-				<td class='bold text-column' style="vertical-align:top">$i18n.getString('program'): </td>
-				<td style="vertical-align:right">$program.displayName</td>
+				<td class='bold coordinates1'>$i18n.getString('program'):</td>
+				<td class='coordinates2'>$program.displayName</td>
+				<td rowspan='2'>
+					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, false)' #if( $programStageInstance.programInstance.followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$i18n.getString("unmark_followup")' ><img src='../images/marked_large.png'></a>
+					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, true)' #if( $programStageInstance.programInstance.followup == 'true') class='hidden' #end id='imgUnmarkFollowup' title='$i18n.getString("mark_followup")' ><img src='../images/unmarked_large.png'></a>			
+				</td>
 			</tr>
 			<tr>
 				<td>
@@ -23,8 +27,8 @@
 				<td>
 					$format.formatDate( $patient.birthDate ) ( $encoder.htmlEncode( $patient.getAge() ) )
 				</td>
-				<td class='bold text-column' style="vertical-align:top">$i18n.getString('program_stage'): </td>
-				<td style="vertical-align:right">$programStageInstance.programStage.displayName</td>
+				<td class='bold coordinates1' style="vertical-align:top">$i18n.getString('program_stage'):</td>
+				<td class='coordinates2'>$programStageInstance.programStage.displayName</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr>
 		</table>
