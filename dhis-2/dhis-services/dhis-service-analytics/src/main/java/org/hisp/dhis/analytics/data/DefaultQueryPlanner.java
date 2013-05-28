@@ -116,6 +116,11 @@ public class DefaultQueryPlanner
         {
             violation = "Indicators cannot be specified as filter";
         }
+
+        if ( params.getFilters().contains( new BaseDimensionalObject( DATASET_DIM_ID ) ) )
+        {
+            violation = "Data sets cannot be specified as filter";
+        }
         
         if ( params.getFilters().contains( new BaseDimensionalObject( CATEGORYOPTIONCOMBO_DIM_ID ) ) )
         {
