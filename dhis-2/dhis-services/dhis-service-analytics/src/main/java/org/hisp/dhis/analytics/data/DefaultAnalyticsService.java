@@ -322,9 +322,9 @@ public class DefaultAnalyticsService
                 if ( target != null && entry.getValue() != null )
                 {
                     PeriodType queryPt = PeriodType.getPeriodTypeFromIsoString( dataRow.get( periodIndex ) );
-                    PeriodType dataPt = dsPtMap.get( dataRow.get( dataSetIndex ) );
+                    PeriodType dataSetPt = dsPtMap.get( dataRow.get( dataSetIndex ) );
                     
-                    target = target * queryPt.getPeriodSpan( dataPt );
+                    target = target * queryPt.getPeriodSpan( dataSetPt );
                     
                     double value = entry.getValue() * PERCENT / target;
                     
