@@ -269,4 +269,6 @@
 	jQuery('[name=mainPagelink]').html(i18n_main_form_link);
 	var i18n_history = '$encoder.jsEscape( $i18n.getString( "history" ) , "'" )';
 	var i18n_this_field_is_required = '$encoder.jsEscape( $i18n.getString( "this_field_is_required" ) , "'" )';
+	var i18n_comment = '$encoder.jsEscape( $i18n.getString( "comment" ) , "'")';
+	var i18n_message = '$encoder.jsEscape( $i18n.getString( "message" ) , "'")';
 </script>

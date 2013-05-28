@@ -5,6 +5,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	jQuery('#programIdAddPatient').width(width-30);
 	showById( "programLoader" );
 	disable('programIdAddPatient');
+	disable('listPatientBtn');
 	showById('mainLinkLbl');
 	showById('searchDiv');
 	hideById('listEventDiv');
@@ -38,6 +39,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 			}
 			else if(count>1){
 				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+				enable('listPatientBtn');
 			}
 			
 			enableBtn();

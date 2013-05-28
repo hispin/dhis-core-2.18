@@ -15,7 +15,7 @@
 			<th>$i18n.getString( "message" )</th>
 		</tr>
 	</thead>
-	<tbody id='commentReportTB' name="commentTB">
+	<tbody id='commentReportTB' name="messageTB">
 		#set( $mark = false )
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $comment in $programStageInstance.patientComments )
