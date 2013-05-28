@@ -12,10 +12,18 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	clearListById('programIdAddPatient');
 	$.postJSON( 'singleEventPrograms.action', {}, function( json )
 		{
-			jQuery( '#programIdAddPatient').append( '<option value="" programStageId="">[' + i18n_please_select + ']</option>' );
+			var count = 0;
 			for ( i in json.programs ) {
 				jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 			}
+			
+			if(json.programs.length==0){
+				jQuery( '#programIdAddPatient').prepend( '<option value="" >' + i18n_none_program + '</option>' );
+			}
+			else if(json.programs.length>1){
+				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+			}
+			
 			enableBtn();
 			hideById('programLoader');
 			jQuery('#programIdAddPatient').width(width);
