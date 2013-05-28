@@ -386,6 +386,9 @@ public class DefaultAnalyticsService
             return getAggregatedDataValues( params );
         }
         
+        ListUtils.removeEmptys( columns );
+        ListUtils.removeEmptys( rows );
+        
         queryPlanner.validateTableLayout( params, columns, rows );
         
         Map<String, Double> valueMap = getAggregatedDataValueMapping( params );

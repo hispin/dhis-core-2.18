@@ -753,7 +753,7 @@ public class DataQueryParams
         
         if ( param.split( DIMENSION_NAME_SEP ).length > 1 )
         {
-            return Arrays.asList( param.split( DIMENSION_NAME_SEP )[1].split( OPTION_SEP ) );
+            return new ArrayList<String>( Arrays.asList( param.split( DIMENSION_NAME_SEP )[1].split( OPTION_SEP ) ) );
         }
         
         return new ArrayList<String>();
@@ -812,7 +812,7 @@ public class DataQueryParams
             return null;
         }
         
-        return Arrays.asList( param.split( OPTION_SEP ) );
+        return new ArrayList<String>( Arrays.asList( param.split( OPTION_SEP ) ) );
     }
     
     /**
