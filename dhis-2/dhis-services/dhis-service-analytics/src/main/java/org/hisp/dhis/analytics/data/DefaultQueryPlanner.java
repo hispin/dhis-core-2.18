@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
@@ -153,7 +154,7 @@ public class DefaultQueryPlanner
         {
             for ( String column : columns )
             {
-                if ( !params.hasDimensionCollapseDx( column ) )
+                if ( !StringUtils.isEmpty( column ) && !params.hasDimensionCollapseDx( column ) )
                 {
                     violation = "Column must be present as dimension in query: " + column;
                 }
@@ -164,7 +165,7 @@ public class DefaultQueryPlanner
         {
             for ( String row : rows )
             {
-                if ( !params.hasDimensionCollapseDx( row ) )
+                if ( !StringUtils.isEmpty( row ) && !params.hasDimensionCollapseDx( row ) )
                 {
                     violation = "Row must be present as dimension in query: " + row;
                 }
