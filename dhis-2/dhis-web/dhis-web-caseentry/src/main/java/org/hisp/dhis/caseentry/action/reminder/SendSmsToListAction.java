@@ -77,10 +77,12 @@ public class SendSmsToListAction
 
     private Boolean searchBySelectedOrgunit;
 
+    private Boolean followup;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
@@ -99,6 +101,11 @@ public class SendSmsToListAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
+    }
+
+    public void setFollowup( Boolean followup )
+    {
+        this.followup = followup;
     }
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -151,10 +158,10 @@ public class SendSmsToListAction
             : null;
 
         Collection<Integer> programStageInstanceIds = patientService.getProgramStageInstances( searchTexts,
-            organisationUnit, null, null );
+            organisationUnit, followup, null, null );
 
         Set<String> phoneNumberList = new HashSet<String>( patientService.getPatientPhoneNumbers( searchTexts,
-            organisationUnit, null, null ) );
+            organisationUnit, followup, null, null ) );
         try
         {
             OutboundSms outboundSms = new OutboundSms();

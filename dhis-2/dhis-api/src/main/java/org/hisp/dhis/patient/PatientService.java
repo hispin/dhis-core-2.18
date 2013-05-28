@@ -209,16 +209,16 @@ public interface PatientService
     void removeErollmentPrograms( Program program );
 
     Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
+       Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit );
+    int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup );
 
-    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup, Integer min,
         Integer max );
 
-    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup, Integer min, Integer max );
 
-    Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max,
+    Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup, Integer min, Integer max,
         I18n i18n );
 
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );

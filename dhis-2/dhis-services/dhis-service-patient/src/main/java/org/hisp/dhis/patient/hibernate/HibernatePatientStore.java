@@ -255,9 +255,9 @@ public class HibernatePatientStore
 
     @Override
     public Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, min, max );
+        String sql = searchPatientSql( false, searchKeys, orgunit, followup, patientAttributes, min, max );
         Collection<Patient> patients = new HashSet<Patient>();
         try
         {
@@ -279,9 +279,9 @@ public class HibernatePatientStore
 
     @Override
     public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, min, max );
+        String sql = searchPatientSql( false, searchKeys, orgunit, followup, patientAttributes, min, max );
         Collection<String> phoneNumbers = new HashSet<String>();
         try
         {
@@ -303,10 +303,10 @@ public class HibernatePatientStore
     }
 
     @Override
-    public List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+    public List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, min, max );
+        String sql = searchPatientSql( false, searchKeys, orgunit, followup, patientAttributes, min, max );
         List<Integer> programStageInstanceIds = new ArrayList<Integer>();
         try
         {
@@ -327,21 +327,21 @@ public class HibernatePatientStore
         return programStageInstanceIds;
     }
 
-    public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
+    public int countSearch( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup )
     {
-        String sql = searchPatientSql( true, searchKeys, orgunit, null, null, null );
+        String sql = searchPatientSql( true, searchKeys, orgunit, followup, null, null, null );
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     @Override
     public Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
         // ---------------------------------------------------------------------
         // Get SQL and build grid
         // ---------------------------------------------------------------------
 
-        String sql = searchPatientSql( false, searchKeys, orgunit, patientAttributes, null, null );
+        String sql = searchPatientSql( false, searchKeys, orgunit, followup, patientAttributes, null, null );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -355,7 +355,7 @@ public class HibernatePatientStore
     // -------------------------------------------------------------------------
 
     private String searchPatientSql( boolean count, List<String> searchKeys, OrganisationUnit orgunit,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {
         String selector = count ? "count(*) " : "* ";
 
@@ -633,6 +633,10 @@ public class HibernatePatientStore
         }
 
         sql += from + patientWhere;
+        if ( followup != null )
+        {
+            sql += " AND pgi.followup=" + followup;
+        }
         if ( isSearchEvent )
         {
             sql += patientGroupBy;
