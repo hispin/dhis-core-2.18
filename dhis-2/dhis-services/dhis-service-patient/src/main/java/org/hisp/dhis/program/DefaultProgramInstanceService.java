@@ -49,7 +49,6 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
-import org.smslib.OutboundMessage;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
