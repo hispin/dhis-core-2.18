@@ -11,9 +11,9 @@ function criteriaChanged()
     window.location.href = url;
 }
 
-function reimport( itemId, itemName, success )
+function reimport(confirmation, itemId, itemName, success )
 {                
-    var result = window.confirm( "confirm_delete" + "\n\n" + itemName );
+    var result = window.confirm( confirmation + "\n\n" + itemName );
     var action = "reimport.action";
     if ( result )
     {
@@ -32,10 +32,12 @@ function reimport( itemId, itemName, success )
 					}
   
 					showSuccessMessage( json.message );
+					setTimeout("window.location.reload();", 3000);
     	    	}
     	    	else if ( json.response == "error" )
     	    	{ 
 					showWarningMessage( json.message );
+					setTimeout("window.location.reload();", 3000);
     	    	}
     	    }
     	);
