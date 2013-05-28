@@ -102,16 +102,13 @@ public class GridUtils
     private static final NodeFilter HTML_ROW_FILTER = new OrFilter( new TagNameFilter( "td" ), new TagNameFilter( "th" ) );    
     
     private static final WritableCellFormat XLS_FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
-        WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
+        WritableFont.ARIAL, 10, WritableFont.BOLD, false ) );
 
-    private static final WritableCellFormat XLS_FORMAT_SUBTITLE = new WritableCellFormat( new WritableFont(
-        WritableFont.TAHOMA, 12, WritableFont.NO_BOLD, false ) );
-    
     private static final WritableCellFormat XLS_FORMAT_LABEL = new WritableCellFormat( new WritableFont(
-        WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true ) );
+        WritableFont.ARIAL, 10, WritableFont.NO_BOLD, true ) );
     
     private static final WritableCellFormat XLS_FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL,
-        11, WritableFont.NO_BOLD, false ) );
+        10, WritableFont.NO_BOLD, false ) );
 
     private static final Encoder ENCODER = new Encoder();
     
@@ -273,15 +270,17 @@ public class GridUtils
 
         int columnIndex = 0;
 
-        sheet.addCell( new Label( 0, rowNumber++, grid.getTitle(), XLS_FORMAT_TTTLE ) );
-
-        rowNumber++;
-
-        String subTitle = StringUtils.isNotEmpty( grid.getSubtitle() ) ? 
-            ( grid.getSubtitle() + "  (" + getGeneratedString() + ")" ) : grid.getSubtitle();
+        if ( StringUtils.isNotEmpty( grid.getTitle() ) )
+        {
+            sheet.addCell( new Label( 0, rowNumber++, grid.getTitle(), XLS_FORMAT_TTTLE ) );
+            rowNumber++;
+        }
         
-        sheet.addCell( new Label( 0, rowNumber++, subTitle, XLS_FORMAT_SUBTITLE ) );
-        rowNumber++;
+        if ( StringUtils.isNotEmpty( grid.getSubtitle() ) )
+        {
+            sheet.addCell( new Label( 0, rowNumber++, grid.getSubtitle(), XLS_FORMAT_TTTLE ) );
+            rowNumber++;
+        }
         
         for ( GridHeader header : grid.getVisibleHeaders() )
         {

@@ -699,6 +699,24 @@ public class DataQueryParams
         
         return this;
     }
+
+    /**
+     * Get all filter items.
+     */
+    public List<NameableObject> getFilterItems()
+    {
+        List<NameableObject> filterItems = new ArrayList<NameableObject>();
+        
+        for ( DimensionalObject filter : filters )
+        {
+            if ( filter != null && filter.getItems() != null )
+            {
+                filterItems.addAll( filter.getItems() );
+            }
+        }
+        
+        return filterItems;
+    }
     
     // -------------------------------------------------------------------------
     // Static methods

@@ -27,10 +27,10 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +47,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
@@ -257,22 +258,27 @@ public class ReportTable
     /**
      * All crosstabulated columns.
      */
-    private List<List<NameableObject>> gridColumns = new ArrayList<List<NameableObject>>();
+    private transient List<List<NameableObject>> gridColumns = new ArrayList<List<NameableObject>>();
 
     /**
      * All rows.
      */
-    private List<List<NameableObject>> gridRows = new ArrayList<List<NameableObject>>();
+    private transient List<List<NameableObject>> gridRows = new ArrayList<List<NameableObject>>();
 
     /**
      * The name of the reporting month based on the report param.
      */
-    private String reportingPeriodName;
+    private transient String reportingPeriodName;
 
     /**
      * The parent organisation unit.
      */
-    private OrganisationUnit parentOrganisationUnit;
+    private transient OrganisationUnit parentOrganisationUnit;
+    
+    /**
+     * The title of the report table grid.
+     */
+    private transient String title;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -399,6 +405,7 @@ public class ReportTable
     {
         List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
         List<NameableObject[]> tableRows = new ArrayList<NameableObject[]>();
+        List<NameableObject> filterItems = new ArrayList<NameableObject>();
         
         for ( String dimension : columnDimensions )
         {
@@ -409,12 +416,19 @@ public class ReportTable
         {
             tableRows.add( getDimensionalObject( dimension, date, user, true, format ).getItems().toArray( IRT ) );
         }
-                
+        
+        for ( String filter : filterDimensions )
+        {
+            filterItems.addAll( getDimensionalObject( filter, date, user, true, format ).getItems() );
+        }
+
         gridColumns = new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations();
         gridRows = new CombinationGenerator<NameableObject>( tableRows.toArray( IRT2D ) ).getCombinations();
 
         addIfEmpty( gridColumns ); 
         addIfEmpty( gridRows );
+        
+        title = IdentifiableObjectUtils.join( filterItems );
     }
     
     @Override
@@ -610,14 +624,23 @@ public class ReportTable
      */
     public Grid getGrid( Grid grid, Map<String, Double> valueMap, boolean paramColumns )
     {
-        final String subtitle = StringUtils.trimToEmpty( getParentOrganisationUnitName() ) + SPACE
-            + StringUtils.trimToEmpty( reportingPeriodName );
-
         valueMap = new HashMap<String, Double>( valueMap );
         
         sortKeys( valueMap );
-        
-        grid.setTitle( name + " - " + subtitle );
+
+        // ---------------------------------------------------------------------
+        // Title
+        // ---------------------------------------------------------------------
+
+        if ( name != null )
+        {        
+            grid.setTitle( name );
+            grid.setSubtitle( title );
+        }
+        else
+        {
+            grid.setTitle( title );
+        }
 
         // ---------------------------------------------------------------------
         // Headers
@@ -1009,6 +1032,17 @@ public class ReportTable
     public void setParentOrganisationUnit( OrganisationUnit parentOrganisationUnit )
     {
         this.parentOrganisationUnit = parentOrganisationUnit;
+    }
+
+    @JsonIgnore
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle( String title )
+    {
+        this.title = title;
     }
 
     @Override
