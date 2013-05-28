@@ -62,6 +62,7 @@ import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -1081,9 +1082,11 @@ public class DataQueryParams
     /**
      * Retrieves the options for the given dimension identifier. If the dx dimension
      * is specified, all concrete dimensions (in|de|dc|ds) are returned as a single
-     * dimension. Returns an empty array if the dimension is not present.
+     * dimension. If the co dimension is specified, all category option combos for
+     * the first data element is returned. Returns an empty array if the dimension 
+     * is not present.
      */
-    public NameableObject[] getDimensionArrayCollapseDx( String dimension )
+    public NameableObject[] getDimensionArrayCollapseDxExplodeCoc( String dimension )
     {
         List<NameableObject> items = new ArrayList<NameableObject>();
         
@@ -1093,6 +1096,17 @@ public class DataQueryParams
             items.addAll( getDimensionOptionsNullSafe( DATAELEMENT_DIM_ID ) );
             items.addAll( getDimensionOptionsNullSafe( DATAELEMENT_OPERAND_ID ) );
             items.addAll( getDimensionOptionsNullSafe( DATASET_DIM_ID ) );
+        }
+        else if ( CATEGORYOPTIONCOMBO_DIM_ID.equals( dimension ) )
+        {
+            List<NameableObject> des = getDimensionOrFilter( DATAELEMENT_DIM_ID );
+            
+            if ( des != null && !des.isEmpty() )
+            {
+                DataElement de = (DataElement) des.get( 0 );
+                
+                items.addAll( de.getCategoryCombo().getSortedOptionCombos() );
+            }
         }
         else
         {
