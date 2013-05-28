@@ -52,6 +52,7 @@ import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
 import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
 import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 
@@ -307,6 +308,8 @@ public class DefaultAnalyticsService
 
             Map<String, PeriodType> dsPtMap = dataSourceParams.getDataSetPeriodTypeMap();
 
+            PeriodType filterPeriodType = dataSourceParams.getFilterPeriodType();
+            
             // -----------------------------------------------------------------
             // Join data maps, calculate completeness and add to grid
             // -----------------------------------------------------------------
@@ -318,10 +321,10 @@ public class DefaultAnalyticsService
                 List<String> targetRow = ListUtils.getAtIndexes( dataRow, completenessDimIndexes );
                 String targetKey = StringUtils.join( targetRow, DIMENSION_SEP );
                 Double target = targetMap.get( targetKey );
-                             
+                
                 if ( target != null && entry.getValue() != null )
                 {
-                    PeriodType queryPt = PeriodType.getPeriodTypeFromIsoString( dataRow.get( periodIndex ) );
+                    PeriodType queryPt = filterPeriodType != null ? filterPeriodType : getPeriodTypeFromIsoString( dataRow.get( periodIndex ) );
                     PeriodType dataSetPt = dsPtMap.get( dataRow.get( dataSetIndex ) );
                     
                     target = target * queryPt.getPeriodSpan( dataSetPt );
