@@ -1,15 +1,12 @@
-#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) )
-<h2>$i18n.getString( "patient" )&nbsp;</h2>
-<ul>
-	<li><a href="patient.action">$i18n.getString( "find_and_add_person" )</a></li>
-</ul>
-#end
-
-#if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) 
+#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) 
+	|| $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) 
 	|| $auth.hasAccess( "dhis-web-caseentry", "smsReminderSelect" ) )
-<h2>$i18n.getString( "tracking" )&nbsp;</h2>
+<h2>$i18n.getString( "patient" )&nbsp;</h2>
 #end
 <ul>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) )
+		<li><a href="patient.action">$i18n.getString( "find_and_add_person" )</a></li>
+	#end
     #if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) )
 		<li><a href="activityPlanSelect.action">$i18n.getString( "activity_plan" )</a></li>     
 	#end
