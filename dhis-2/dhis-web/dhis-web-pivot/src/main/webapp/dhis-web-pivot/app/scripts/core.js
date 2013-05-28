@@ -863,6 +863,7 @@ PT.core.getUtils = function(pt) {
 						}
 					}
 
+					// Re-layout
 					layout = pt.api.layout.Layout(xLayout);
 
 					return layout ? pt.util.pivot.getExtendedLayout(layout) : null;

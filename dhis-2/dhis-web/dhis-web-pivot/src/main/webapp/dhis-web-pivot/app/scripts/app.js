@@ -3436,6 +3436,12 @@ Ext.onReady( function() {
 							alert(PT.i18n.categories_cannot_be_specified_as_filter);
 							return;
 						}
+
+						// Data sets as filter
+						if (layout.filters[i].dimension === dimConf.category.objectName) {
+							alert(PT.i18n.data_sets_cannot_be_specified_as_filter);
+							return;
+						}
 					}
 				}
 
@@ -3828,7 +3834,7 @@ Ext.onReady( function() {
 
 						pt.viewport.colStore.add({
 							id: dim.dimensionName,
-							name: dim.name
+							name: dimConf.objectNameMap[dim.dimensionName].name
 						});
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
@@ -3841,7 +3847,7 @@ Ext.onReady( function() {
 
 						pt.viewport.rowStore.add({
 							id: dim.dimensionName,
-							name: dim.name
+							name: dimConf.objectNameMap[dim.dimensionName].name
 						});
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
@@ -3854,7 +3860,7 @@ Ext.onReady( function() {
 
 						pt.viewport.filterStore.add({
 							id: dim.dimensionName,
-							name: dim.name
+							name: dimConf.objectNameMap[dim.dimensionName].name
 						});
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
