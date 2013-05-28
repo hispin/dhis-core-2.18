@@ -195,6 +195,13 @@ public class GetDataRecordsAction
         return patientAttributeValueMap;
     }
 
+    private Boolean followup;
+
+    public void setFollowup( Boolean followup )
+    {
+        this.followup = followup;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -218,10 +225,10 @@ public class GetDataRecordsAction
                 patientAttributes = new ArrayList<PatientAttribute>(
                     patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule( true ) );
 
-                total = patientService.countSearchPatients( searchTexts, orgunit );
+                total = patientService.countSearchPatients( searchTexts, orgunit, followup );
                 this.paging = createPaging( total );
 
-                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit,
+                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit, followup,
                     paging.getStartPos(), paging.getPageSize() );
 
                 for ( Integer stageInstanceId : stageInstanceIds )
@@ -251,7 +258,7 @@ public class GetDataRecordsAction
             }
             else
             {
-                grid = patientService.getScheduledEventsReport( searchTexts, orgunit, null, null, i18n );
+                grid = patientService.getScheduledEventsReport( searchTexts, orgunit, followup, null, null, i18n );
             }
         }
 

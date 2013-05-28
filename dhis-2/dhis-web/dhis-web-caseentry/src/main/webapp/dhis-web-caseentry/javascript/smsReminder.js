@@ -77,9 +77,12 @@ function listAllPatient()
 				+ startDate + "_" + endDate + "_" 
 				+ getFieldValue('orgunitId') + "_true_" 
 				+ getFieldValue('statusEvent');
-	
+	var followup = "";
+	if( byId('followup').checked ){
+		followup = "?followup=true";
+	}
 	showLoader();
-	jQuery('#listEventDiv').load('getSMSPatientRecords.action',
+	jQuery('#listEventDiv').load('getSMSPatientRecords.action' + followup,
 		{
 			programId:programId,
 			listAll:false,

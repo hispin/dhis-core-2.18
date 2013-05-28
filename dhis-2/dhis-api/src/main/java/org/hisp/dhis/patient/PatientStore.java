@@ -68,7 +68,7 @@ public interface PatientStore
 
     void removeErollmentPrograms( Program program );
 
-    int countSearch( List<String> searchKeys, OrganisationUnit orgunit );
+    int countSearch( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup );
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
 
@@ -76,16 +76,16 @@ public interface PatientStore
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
-    Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit,
+    Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit,
+    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit,
+    Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
 }

@@ -11,7 +11,7 @@
 		<td>
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
-		<td rowspan='4' valign='bottom'>
+		<td rowspan='5' valign='bottom'>
 			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" >
 			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" >
 			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" >
@@ -54,6 +54,12 @@
 				<option value='3'>$i18n.getString("scheduled_in_future")</option> 
 				<option value='5'>$i18n.getString("skipped")</option> 
 			</select>
+		</td>
+	</tr>
+	<tr id='followupTR' class='hidden'>
+		<td>$i18n.getString('show_only_risk_cases')</td>
+		<td>
+			<input type='checkbox' id='followup' name='followup' />
 		</td>
 	</tr>
 </table>
