@@ -141,7 +141,6 @@ function loadDataEntryDialog( programStageInstanceId )
 		{
 			setFieldValue( 'programStageInstanceId', programStageInstanceId );
 			showById('patientInforTB');
-			showById('postCommentTbl');
 		}).dialog(
 		{
 			title:i18n_program_stage,

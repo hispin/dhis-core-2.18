@@ -814,6 +814,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                         "<tr>",
                         "<td>" + item.createdDate + "</td>",
                         "<td>" + item.creator + "</td>",
+						"<td>" + i18n_comment + "</td>",
                         "<td>" + item.text + "</td>",
                         "</tr>"
                     ].join(' ');
