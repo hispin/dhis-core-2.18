@@ -833,7 +833,7 @@ public class DefaultAnalyticsService
         
         if ( dec != null && dec.isDataDimension() )
         {
-            List<NameableObject> decos = asList( categoryService.getDataElementCategoriesByUid( items ) );
+            List<NameableObject> decos = asList( categoryService.getDataElementCategoryOptionsByUid( items ) );
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORY, null, dec.getDisplayName(), decos );
             
