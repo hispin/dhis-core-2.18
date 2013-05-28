@@ -106,7 +106,7 @@ function loadDataEntryDialog( programStageInstanceId, programStageUid )
 {
 	jQuery('[id=programStageInstanceId]').val(programStageInstanceId);
 	jQuery('.stage-object-selected').attr('psuid',programStageUid);
-	$('#contentDataRecord' ).load("dataentryform.action",
+	$('#contentDataRecord' ).load("viewProgramStageRecords.action",
 		{
 			programStageInstanceId: programStageInstanceId
 		}, function(){
@@ -115,7 +115,6 @@ function loadDataEntryDialog( programStageInstanceId, programStageUid )
 			jQuery('#programStageUid').val(programStageUid);
 			showById('reportDateDiv');
 			showById('patientInforTB');
-			showById('postCommentTbl');
 			showById('entryForm');
 			showById('inputCriteriaDiv');
 		}).dialog(
