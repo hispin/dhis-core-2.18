@@ -118,7 +118,9 @@ public class CombinationGenerator<T>
         
         for ( int i = 0; i < no; i++ )
         {
-            current.add( objects[i][indexes[i]] );
+            int index = indexes[i];
+            
+            current.add( objects[i][index] );
         }
         
         return current;
