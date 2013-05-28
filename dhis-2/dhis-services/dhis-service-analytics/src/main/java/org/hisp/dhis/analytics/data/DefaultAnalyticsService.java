@@ -86,6 +86,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -419,6 +420,8 @@ public class DefaultAnalyticsService
 
         addIfEmpty( reportTable.getGridColumns() ); 
         addIfEmpty( reportTable.getGridRows() );
+        
+        reportTable.setTitle( IdentifiableObjectUtils.join( params.getFilterItems() ) );
 
         return reportTable.getGrid( new ListGrid(), valueMap, false );
     }
