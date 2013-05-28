@@ -33,26 +33,30 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION
 import static org.hisp.dhis.analytics.AggregationType.SUM;
 import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
 import static org.hisp.dhis.analytics.DataQueryParams.MAX_DIM_OPT_PERM;
+import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
-import static org.hisp.dhis.common.DimensionalObject.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.table.PartitionUtils;
 import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
@@ -154,7 +158,7 @@ public class DefaultQueryPlanner
         {
             for ( String column : columns )
             {
-                if ( !StringUtils.isEmpty( column ) && !params.hasDimensionCollapseDx( column ) )
+                if ( !params.hasDimensionCollapseDx( column ) )
                 {
                     violation = "Column must be present as dimension in query: " + column;
                 }
@@ -165,7 +169,7 @@ public class DefaultQueryPlanner
         {
             for ( String row : rows )
             {
-                if ( !StringUtils.isEmpty( row ) && !params.hasDimensionCollapseDx( row ) )
+                if ( !params.hasDimensionCollapseDx( row ) )
                 {
                     violation = "Row must be present as dimension in query: " + row;
                 }
