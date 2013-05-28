@@ -701,10 +701,64 @@ PT.core.getUtils = function(pt) {
 			return xLayout;
 		},
 
+		getParamString: function(xLayout, isSorted) {
+			var axisDimensionNames = isSorted ? xLayout.sortedAxisDimensionNames : xLayout.axisDimensionNames,
+				filterDimensions = isSorted ? xLayout.sortedFilterDimensions : xLayout.filterDimensions,
+				dimensionNameIdsMap = isSorted ? xLayout.dimensionNameSortedIdsMap : xLayout.dimensionNameIdsMap,
+				paramString = '?',
+				dimConf = pt.conf.finals.dimension,
+				addCategoryDimension = false,
+				map = xLayout.dimensionNameItemsMap,
+				dx = dimConf.indicator.dimensionName;
+
+			for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
+				dimName = axisDimensionNames[i];
+
+				paramString += 'dimension=' + dimName;
+
+				items = Ext.clone(dimensionNameIdsMap[dimName]);
+
+				if (dimName === dx) {
+					for (var j = 0, index; j < items.length; j++) {
+						index = items[j].indexOf('-');
+
+						if (index > 0) {
+							addCategoryDimension = true;
+							items[j] = items[j].substr(0, index);
+						}
+					}
+
+					items = Ext.Array.unique(items);
+				}
+
+				if (dimName !== dimConf.category.dimensionName) {
+					paramString += ':' + items.join(';');
+				}
+
+				if (i < (axisDimensionNames.length - 1)) {
+					paramString += '&';
+				}
+			}
+
+			if (addCategoryDimension) {
+				paramString += '&dimension=' + pt.conf.finals.dimension.category.dimensionName;
+			}
+
+			if (Ext.isArray(filterDimensions) && filterDimensions.length) {
+				for (var i = 0, dim; i < filterDimensions.length; i++) {
+					dim = filterDimensions[i];
+
+					paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
+				}
+			}
+
+			return paramString;
+		},
+
 		createTable: function(layout, pt) {
 			var dimConf = pt.conf.finals.dimension,
 				getSyncronizedXLayout,
-				getParamString,
+				//getParamString,
 				getExtendedResponse,
 				getExtendedAxis,
 				validateUrl,
@@ -809,60 +863,6 @@ PT.core.getUtils = function(pt) {
 
 					return layout ? pt.util.pivot.getExtendedLayout(layout) : null;
 				}();
-			};
-
-			getParamString = function(xLayout) {
-				var sortedAxisDimensionNames = xLayout.sortedAxisDimensionNames,
-					sortedFilterDimensions = xLayout.sortedFilterDimensions,
-					dimensionNameSortedIdsMap = xLayout.dimensionNameSortedIdsMap,
-					paramString = '?',
-					dimConf = pt.conf.finals.dimension,
-					addCategoryDimension = false,
-					map = xLayout.dimensionNameItemsMap,
-					dx = dimConf.indicator.dimensionName;
-
-				for (var i = 0, dimName, items; i < sortedAxisDimensionNames.length; i++) {
-					dimName = sortedAxisDimensionNames[i];
-
-					paramString += 'dimension=' + dimName;
-
-					items = Ext.clone(dimensionNameSortedIdsMap[dimName]);
-
-					if (dimName === dx) {
-						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('-');
-
-							if (index > 0) {
-								addCategoryDimension = true;
-								items[j] = items[j].substr(0, index);
-							}
-						}
-
-						items = Ext.Array.unique(items);
-					}
-
-					if (dimName !== dimConf.category.dimensionName) {
-						paramString += ':' + items.join(';');
-					}
-
-					if (i < (sortedAxisDimensionNames.length - 1)) {
-						paramString += '&';
-					}
-				}
-
-				if (addCategoryDimension) {
-					paramString += '&dimension=' + pt.conf.finals.dimension.category.dimensionName;
-				}
-
-				if (Ext.isArray(sortedFilterDimensions) && sortedFilterDimensions.length) {
-					for (var i = 0, dim; i < sortedFilterDimensions.length; i++) {
-						dim = sortedFilterDimensions[i];
-
-						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
-					}
-				}
-
-				return paramString;
 			};
 
 			getExtendedResponse = function(response, xLayout) {
@@ -1747,7 +1747,7 @@ PT.core.getUtils = function(pt) {
 				xLayout = util.pivot.getExtendedLayout(layout);
 
 				// Param string
-				pt.paramString = getParamString(xLayout);
+				pt.paramString = util.pivot.getParamString(xLayout, true);
 				url = pt.init.contextPath + '/api/analytics.json' + pt.paramString;
 
 				// Validate request size
