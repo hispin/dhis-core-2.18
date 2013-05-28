@@ -11,6 +11,7 @@
 			<th>$i18n.getString( "date" )</th>
 			<th>$i18n.getString( "program_stage" )</th>
 			<th>$i18n.getString( "sender" )</th>
+			<th>$i18n.getString( "type" )</th>
 			<th>$i18n.getString( "message" )</th>
 		</tr>
 	</thead>
@@ -21,6 +22,7 @@
 				<tr id="comment_$comment.id" #alternate( $mark )>
 					<td>$format.formatDateTime($comment.createdDate)</td>
 					<td>$programStageInstance.programStage.displayName</td>
+					<td>$i18n.getString('comment')</td>
 					<td>$comment.creator</td>
 					<td>$comment.commentText</td>
 				</tr>
@@ -33,6 +35,7 @@
 					<td>$format.formatDateTime($!sms.date)</td>
 					<td>$programStageInstance.programStage.displayName</td>
 					<td>$sms.sender</td>
+					<td>$i18n.getString('message')</td>
 					<td>$sms.message</td>
 				</tr>
 				#set( $mark = !$mark )

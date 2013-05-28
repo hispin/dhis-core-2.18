@@ -20,7 +20,7 @@
 			<li><a href="#tab-3">$i18n.getString("reschedule_and_set_status")</a></li>
 			<li><a href="#tab-4">$i18n.getString("comments_and_sms_message")</a></li>
 		#end
-		<li><a href="#tab-5">$i18n.getString("program_reports")</a></li>
+		<li><a href="#tab-5">$i18n.getString("program_report")</a></li>
 	</ul>
 	
 	#if( $hasDataEntry == 'true')

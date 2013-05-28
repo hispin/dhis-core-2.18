@@ -1,7 +1,7 @@
 <h3>
  <a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
  &#8226; $i18n.getString( 'patient_dashboard' )
- &raquo; <a href="javascript:dashboardHistoryToggle();" >$i18n.getString( 'history' )</a>
+ &raquo; <a href="javascript:dashboardHistoryToggle();" >$i18n.getString( 'access_log' )</a>
 </h3>
 
 <div class='dashboard-area'>
