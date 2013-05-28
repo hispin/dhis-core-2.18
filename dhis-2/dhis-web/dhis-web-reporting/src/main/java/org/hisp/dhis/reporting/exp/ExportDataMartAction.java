@@ -65,6 +65,9 @@ public class ExportDataMartAction
     // TODO: experiment with different sizes for this to stop data dribbling out
     private static final int GZIPBUFFER = 8192;
 
+    // dummy figure to keep legacy mydatamart happy
+    private static final int DUMMYCOUNT = 100000;
+
     private static final Log log = LogFactory.getLog( ExportDataMartAction.class );
 
     private static final DateFormat dateFormat = new SimpleDateFormat( "yyyyMMdd" );
@@ -233,8 +236,12 @@ public class ExportDataMartAction
         OutputStream out = null;
 
         // how many rows do we expect
-        int count = exportPivotViewService.count( requestType, pType, start, end, dataSourceLevel, dataSourceRoot );
-
+        // int count = exportPivotViewService.count( requestType, pType, start, end, dataSourceLevel, dataSourceRoot );
+        
+        // Turns out it is too expensive to count the size of the resultset on large datamarts
+        // so we just return a dummy value here
+        int count = DUMMYCOUNT;
+        
         ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_GZIP, true, filename, true );
 
         // write number of rows to custom header

@@ -38,7 +38,7 @@
     <id>0</id>
     <uuid/>
     <name><xsl:value-of select="$name"/></name>
-    <shortName><xsl:value-of select="$name"/></shortName>
+    <shortName><xsl:value-of select="substring($name,1,50)"/></shortName>
     <code/>
     <openingDate/>
     <closedDate/>
