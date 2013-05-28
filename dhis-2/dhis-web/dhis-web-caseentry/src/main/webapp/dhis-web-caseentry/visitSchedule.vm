@@ -16,7 +16,7 @@
 		</td>
 		<!-- Progam Enrollement -->
 		<td style="height:24px" valign="bottom">       
-            <div class="commentHeader">$encoder.htmlEncode( $i18n.getString( "program_enrollement" ) )</div>
+            <div class="commentHeader">$encoder.htmlEncode( $i18n.getString( "program_enrollment" ) )</div>
         </td>
     </tr>
     <tr>
@@ -86,13 +86,16 @@
 		<tr>
 			<td><span class="commentHeader">$i18n.getString('message')</span><td>
 		</tr>
+		<tbody id="commentTB">
 		#foreach($sms in $programInstance.outboundSms)
 			<tr>
 				<td>
-				($format.formatDateTime($!sms.date) - $encoder.htmlEncode($sms.sender) )
-				$encoder.htmlEncode($sms.message)</td>
+					($format.formatDateTime($!sms.date) - $encoder.htmlEncode($sms.sender) )
+					$encoder.htmlEncode($sms.message)
+				</td>
 			</tr>
 		#end
+		</tbody>
 	</table>
 #end
 
