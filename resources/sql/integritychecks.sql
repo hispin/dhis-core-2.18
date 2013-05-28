@@ -115,7 +115,7 @@ select * from dataelementcategoryoption where categoryoptionid not in (select di
 
 select * from dataelementcategory where categoryid not in (select distinct categoryid from categories_categoryoptions);
 
--- Get categories without category combos
+-- Get categories without category combos (not an error but could be removed)
 
 select * from dataelementcategory where categoryid not in (select distinct categoryid from categorycombos_categories);
 

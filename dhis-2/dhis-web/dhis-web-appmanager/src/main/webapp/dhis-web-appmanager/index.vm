@@ -8,14 +8,18 @@ jQuery(function() {
 <h3>$i18n.getString( "dhis-web-appmanager" ) #*openHelp( "appManager" )*#</h3>
 
 <ul class="introList">
+#if( $appList.isEmpty() )
+	<li style="margin-left: 15px; margin-top: 6px;">$i18n.getString( "appmanager_you_have_no_apps_installed" )</li>
+#else
     #foreach( $app in $appList )
     <li class="introItem" onclick="window.location.href='/apps/$appFolderNames.get($foreach.index)/$app.launchPath'">
         <span class="introItemHeader">
             <img style="float:left; margin-right:15px" src="/apps/$appFolderNames.get($foreach.index)/$app.icons.icon48">
-            $app.name
+            ${app.name}
         </span>
         <br>
-        $app.developer.name
+        ${app.developer.name}
     </li>
     #end
+#end
 </ul>

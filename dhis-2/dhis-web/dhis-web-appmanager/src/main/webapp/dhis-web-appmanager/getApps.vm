@@ -6,8 +6,8 @@ jQuery(function() {
 });
 </script>
 <div>
-    <div style="float:left"><h3>$i18n.getString( "appmanager_go" ) #*openHelp( "appManager" )*#</h3></div>
-    <div style="float:right"> 
+    <h3>$i18n.getString( "appmanager_go" ) #*openHelp( "appManager" )*#</h3>
+    <div>
         <form id="uploadPackageForm" enctype="multipart/form-data" method="post">
         $i18n.getString( "appmanager_upload_app_package" ):<input type="file" id="upload" name="upload" accept="application/zip,.zip" />
         </form>

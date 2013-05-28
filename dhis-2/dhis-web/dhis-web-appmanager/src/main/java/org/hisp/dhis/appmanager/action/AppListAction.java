@@ -53,14 +53,14 @@ public class AppListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<App> appList;
+    private List<App> appList = new ArrayList<App>();
 
     public List<App> getAppList()
     {
         return appManagerService.getInstalledApps();
     }
 
-    private List<String> appFolderNames;
+    private List<String> appFolderNames = new ArrayList<String>();
 
     public List<String> getAppFolderNames()
     {
@@ -75,8 +75,6 @@ public class AppListAction
     public String execute()
         throws Exception
     {
-        appFolderNames = new ArrayList<String>();
-
         for ( App app : getAppList() )
         {
             appFolderNames.add( appManagerService.getAppFolderName( app ) );
