@@ -37,7 +37,7 @@
 	    #elseif( $ip.reportTableInterpretation )	        
 	        <a class="bold"
 	           title="$i18n.getString( 'click_to_view_report_table' )" 
-	           href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}${pe}${ou}">
+	           href="../dhis-web-pivot/app/index.html?id=${ip.reportTable.uid}${pe}${ou}">
 	           $encoder.htmlEncode( $ip.reportTable.name )</a>
 	    #elseif( $ip.dataSetReportInterpretation )
 	        <a class="bold"
