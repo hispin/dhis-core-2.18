@@ -92,11 +92,12 @@ public interface AnalyticsService
      * @param filterParams the filter URL parameters.
      * @param aggregationType the aggregation type.
      * @param measureCriteria the measure criteria.
+     * @param skipMeta whether to skip the meta data part of the response.
      * @param format the i18n format.
      * @return a data query parameter object created based on the given URL info.
      */
     DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        AggregationType aggregationType, String measureCriteria, I18nFormat format );
+        AggregationType aggregationType, String measureCriteria, boolean skipMeta, I18nFormat format );
     
     /**
      * Creates a data query parameter object from the given BaseAnalyticalObject.

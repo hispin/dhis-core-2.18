@@ -110,6 +110,8 @@ public class DataQueryParams
     
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
     
+    private boolean skipMeta;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -1026,6 +1028,16 @@ public class DataQueryParams
     public void setMeasureCriteria( Map<MeasureFilter, Double> measureCriteria )
     {
         this.measureCriteria = measureCriteria;
+    }
+
+    public boolean isSkipMeta()
+    {
+        return skipMeta;
+    }
+
+    public void setSkipMeta( boolean skipMeta )
+    {
+        this.skipMeta = skipMeta;
     }
 
     // -------------------------------------------------------------------------
