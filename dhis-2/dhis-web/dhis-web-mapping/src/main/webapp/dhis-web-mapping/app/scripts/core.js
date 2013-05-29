@@ -1369,7 +1369,7 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 		paramString += '&filter=pe:' + view.period.id;
 
 		// Skip metaData
-		paramString += '&skipMeta=false';
+		paramString += '&skipMeta=true';
 
 		Ext.Ajax.request({
 			url: gis.baseUrl + '/api/analytics.json' + paramString,
