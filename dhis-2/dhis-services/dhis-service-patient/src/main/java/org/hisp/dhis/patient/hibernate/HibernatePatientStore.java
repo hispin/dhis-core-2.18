@@ -610,7 +610,7 @@ public class HibernatePatientStore
             if ( isPriorityEvent )
             {
                 subSQL += ",pgi.followup ";
-                orderBy = " ORDER BY pgi.followup desc, duedate asc ";
+                orderBy = " ORDER BY pgi.followup desc, p.patientid, p.firstname, p.middlename, p.lastname, duedate asc ";
                 patientGroupBy += ",pgi.followup ";
             }
             else
