@@ -49,6 +49,11 @@
 		</td>
 		<td>&nbsp;</td>
 		<td align="right">
+			#if($programInstance.followup)
+				#set($followup=$programInstance.followup)
+			#else
+				#set($followup='false')
+			#end
 			<input type="button" class='patient-object' id="newEncounterBtn_$!programInstance.id" name="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript:showCreateNewEvent('$!programInstance.id');" >
 		</td>
 	</tr>			
