@@ -703,6 +703,21 @@ public class RelativePeriods
     }
 
     /**
+     * Returns a date.
+     *
+     * @param months the number of months to subtract from the current date.
+     * @param date the date representing now, ignored if null.
+     * @return a date.
+     */
+    private static Date subtractMonths( int months, Date date )
+    {
+        Calendar cal = PeriodType.createCalendarInstance( date );
+        cal.add( Calendar.MONTH, (months * -1) );
+
+        return cal.getTime();
+    }
+
+    /**
      * Sets the name and short name of the given Period. The name will be
      * formatted to the real period name if the given dynamicNames argument is
      * true. The short name will be formatted in any case.
@@ -713,7 +728,7 @@ public class RelativePeriods
      * @param format       the I18nFormat.
      * @return a period.
      */
-    private Period setName( Period period, String periodName, boolean dynamicNames, I18nFormat format )
+    public static Period setName( Period period, String periodName, boolean dynamicNames, I18nFormat format )
     {
         period.setName( dynamicNames && format != null ? format.formatPeriod( period ) : periodName );
         period.setShortName( format != null ? format.formatPeriod( period ) : null );
@@ -723,26 +738,11 @@ public class RelativePeriods
     /**
      * Returns a date.
      *
-     * @param months the number of months to subtract from the current date.
-     * @param date the date representing now, ignored if null.
-     * @return a date.
-     */
-    private Date subtractMonths( int months, Date date )
-    {
-        Calendar cal = PeriodType.createCalendarInstance( date );
-        cal.add( Calendar.MONTH, (months * -1) );
-
-        return cal.getTime();
-    }
-
-    /**
-     * Returns a date.
-     *
      * @param months the number of weeks to subtract from the current date.
      * @param date the date representing now, ignored if null.
      * @return a date.
      */
-    public Date subtractWeeks( int weeks, Date date )
+    public static Date subtractWeeks( int weeks, Date date )
     {
         Calendar cal = PeriodType.createCalendarInstance( date );
         cal.add( Calendar.DAY_OF_YEAR, (weeks * -7) );
