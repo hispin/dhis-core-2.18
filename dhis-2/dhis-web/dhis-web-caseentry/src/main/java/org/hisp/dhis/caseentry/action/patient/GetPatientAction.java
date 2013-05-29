@@ -195,7 +195,6 @@ public class GetPatientAction
 
         if ( customRegistrationForm == null )
         {
-
             // -------------------------------------------------------------------------
             // Get identifier-types && attributes
             // -------------------------------------------------------------------------
@@ -209,14 +208,19 @@ public class GetPatientAction
             identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
             Collection<PatientAttribute> patientAttributesInProgram = new HashSet<PatientAttribute>();
             
+            noGroupAttributes = patientAttributeService.getPatientAttributesWithoutGroup();
+            
             Collection<Program> programs = programService.getAllPrograms();
             programs.remove(program);
+            
             for ( Program _program : programs )
             {
                 identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
                 patientAttributesInProgram.removeAll( _program.getPatientAttributes() );
+                noGroupAttributes.removeAll( _program.getPatientAttributes() );
             }
 
+            
             attributeGroups = new ArrayList<PatientAttributeGroup>(
                 attributeGroupService.getAllPatientAttributeGroups() );
             Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
@@ -231,9 +235,7 @@ public class GetPatientAction
                 }
             }
             
-            noGroupAttributes = patientAttributeService.getPatientAttributesWithoutGroup();
-            noGroupAttributes.removeAll( patientAttributesInProgram );
-            
+           
             // -------------------------------------------------------------------------
             // Get data
             // -------------------------------------------------------------------------
