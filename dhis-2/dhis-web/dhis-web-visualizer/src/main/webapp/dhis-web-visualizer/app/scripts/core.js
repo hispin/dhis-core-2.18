@@ -1589,42 +1589,48 @@ console.log("baseLineFields", store.baseLineFields);
 
 			generator.pie = function(xResponse, xLayout) {
 				var store = getDefaultStore(xResponse, xLayout),
-					series = [{
-						type: 'pie',
-						field: store.rangeFields[0],
-						lengthField: store.rangeFields[0],
-						donut: 7,
-						showInLegend: true,
-						highlight: {
-							segment: {
-								margin: 5
-							}
-						},
-						label: {
-							field: dv.conf.finals.data.domain,
-							display: 'middle',
-							contrast: true,
-							font: '14px ' + dv.conf.chart.style.fontFamily,
-							renderer: function(value) {
-								var record = store.getAt(store.findExact(dv.conf.finals.data.domain, value));
-
-								return record.data[store.rangeFields[0]];
-							}
-						},
-						style: {
-							opacity: 0.8,
-							stroke: '#555'
-						},
-						tips: {
-							trackMouse: true,
-							cls: 'dv-chart-tips',
-							renderer: function(item) {
-								this.update('<div style="text-align:center"><div style="font-size:17px; font-weight:bold">' + item.data[store.rangeFields[0]] + '</div><div style="font-size:10px">' + item.data[dv.conf.finals.data.domain] + '</div></div>');
-							}
-						}
-					}],
+					series,
 					colors,
-					chart;
+					chart,
+					label = {
+						field: dv.conf.finals.data.domain
+					};
+
+				// Label
+				if (xLayout.showValues) {
+					label.display = 'middle';
+					label.contrast = true;
+					label.font = '14px ' + dv.conf.chart.style.fontFamily;
+					label.renderer = function(value) {
+						var record = store.getAt(store.findExact(dv.conf.finals.data.domain, value));
+						return record.data[store.rangeFields[0]];
+					};
+				}
+
+				// Series
+				series = [{
+					type: 'pie',
+					field: store.rangeFields[0],
+					donut: 7,
+					showInLegend: true,
+					highlight: {
+						segment: {
+							margin: 5
+						}
+					},
+					label: label,
+					style: {
+						opacity: 0.8,
+						stroke: '#555'
+					},
+					tips: {
+						trackMouse: true,
+						cls: 'dv-chart-tips',
+						renderer: function(item) {
+							this.update('<div style="text-align:center"><div style="font-size:17px; font-weight:bold">' + item.data[store.rangeFields[0]] + '</div><div style="font-size:10px">' + item.data[dv.conf.finals.data.domain] + '</div></div>');
+						}
+					}
+				}];
 
 				// Theme
 				colors = dv.conf.chart.theme.dv1.slice(0, xResponse.nameHeaderMap[xLayout.rowDimensionNames[0]].items.length);
@@ -1640,10 +1646,9 @@ console.log("baseLineFields", store.baseLineFields);
 
 				// Chart
 				chart = getDefaultChart(store, null, series, xResponse, xLayout);
-
 				chart.legend.position = 'right';
 				chart.legend.isVertical = true;
-				chart.insetPadding = 40;
+				chart.insetPadding = 20;
 				chart.shadow = true;
 
 				return chart;
@@ -1738,9 +1743,14 @@ console.log("layout", layout);
 					alert(r.responseText);
 				},
 				success: function(r) {
-					var layout = dv.api.layout.Layout(Ext.decode(r.responseText));
+					var layoutConfig = Ext.decode(r.responseText),
+						layout = dv.api.layout.Layout(layoutConfig);
 
 					if (layout) {
+						layout.id = layoutConfig.id;
+						layout.name = layoutConfig.name;
+						dv.favorite = Ext.clone(layout);
+
 						dv.viewport.setFavorite(layout);
 					}
 				}

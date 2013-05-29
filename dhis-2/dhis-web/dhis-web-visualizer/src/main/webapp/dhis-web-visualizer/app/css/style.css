@@ -85,6 +85,16 @@ body.x-windows {
     border-right: 2px solid white;
 }
 
+	/* User select */
+.user-select {
+	-webkit-touch-callout: text;
+	-webkit-user-select: text;
+	-khtml-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+}
+
 	/* Scrollbar */
 .x-scroller-vertical {
 	border: 0 none;
