@@ -76,10 +76,15 @@
 							> $userName.getUsername() </option>
 						#end
 					</select>
+				#elseif($dataElement.type=="trueOnly")
+					<select name="$key">
+						<option value="">$i18n.getString("please_select")</option>
+						<option #if( $prevDataValues.get( $key ) == "true" ) selected="selected" #end value="true">$i18n.getString("yes")</option>
+					</select>		
 				#else
 					<input type="text" name="$key" value="$!prevDataValues.get($key)" />
 				#end
-	
+			
 			#elseif ($dataElement.getOptionSet())
 				#set( $options = $dataElement.getOptionSet().getOptions() )
 				<select type="text" name="$key" />
