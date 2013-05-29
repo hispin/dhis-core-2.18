@@ -59,7 +59,6 @@
 		#end
 		
 		<tr>
-			<td class='coordinates1'></td>
 			<td colspan='3'>
 				<table>
 					<tbody id="commentTB"></tbody>
