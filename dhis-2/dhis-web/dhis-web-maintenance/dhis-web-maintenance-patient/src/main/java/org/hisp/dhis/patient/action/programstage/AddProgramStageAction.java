@@ -221,7 +221,7 @@ public class AddProgramStageAction
     {
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         irregular = (irregular == null) ? false : irregular;
-        autoGenerateEvent = (autoGenerateEvent == null) ? true : autoGenerateEvent;
+        autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
         validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
         displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
         captureCoordinates =  (captureCoordinates == null) ? false : captureCoordinates;
