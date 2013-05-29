@@ -2248,7 +2248,7 @@ function StorageManager()
 }
 
 // -----------------------------------------------------------------------------
-// OptionSet
+// Option set
 // -----------------------------------------------------------------------------
 
 function searchOptionSet( uid, query, success ) {
@@ -2361,7 +2361,6 @@ function autocompleteOptionSetField( idField, optionSetUid ) {
         return;
     }
 
-    input.css( "width", "85%" );
     input.autocomplete( {
         delay: 0,
         minLength: 0,
