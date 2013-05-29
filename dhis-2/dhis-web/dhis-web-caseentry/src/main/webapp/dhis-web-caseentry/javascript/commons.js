@@ -2071,14 +2071,14 @@ function markForFollowup( programInstanceId, followup )
 		{   
 			 if( followup )
 			 {
-				showById('imgMarkFollowup');
-				hideById('imgUnmarkFollowup');
+				jQuery('[name=imgMarkFollowup]').show();
+				jQuery('[name=imgUnmarkFollowup]').hide();
 				showById("followup_" + programInstanceId);
 			 }
 			 else
 			 {
-				hideById('imgMarkFollowup');
-				showById('imgUnmarkFollowup');
+				jQuery('[name=imgMarkFollowup]').hide();
+				jQuery('[name=imgUnmarkFollowup]').show();
 				hideById("followup_" + programInstanceId);
 			 }
 		});

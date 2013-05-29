@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +41,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -211,18 +213,50 @@ public class PatientDashboardAction
     {
         patient = patientService.getPatient( patientId );
 
+        Collection<Program> programs = programService
+            .getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
+        programs.addAll( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
+
         // ---------------------------------------------------------------------
         // Get patient-attribute-values
         // ---------------------------------------------------------------------
 
         attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Iterator<PatientAttributeValue> iterAttribute = attributeValues.iterator();
+
+        for ( Program program : programs )
+        {
+            Collection<PatientAttribute> atttributes = program.getPatientAttributes();
+            while ( iterAttribute.hasNext() )
+            {
+                PatientAttributeValue attributeValue = iterAttribute.next();
+                if ( !atttributes.contains( attributeValue.getPatientAttribute() ) )
+                {
+                    iterAttribute.remove();
+                }
+            }
+        }
 
         // ---------------------------------------------------------------------
         // Get patient-identifiers
         // ---------------------------------------------------------------------
 
         identifiers = patient.getIdentifiers();
-
+        Iterator<PatientIdentifier> iterIdentifier = identifiers.iterator();
+        
+        for ( Program program : programs )
+        {
+            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
+            while ( iterIdentifier.hasNext() )
+            {
+                PatientIdentifier identifier = iterIdentifier.next();
+                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
+                {
+                    iterIdentifier.remove();
+                }
+            }
+        }
+        
         // ---------------------------------------------------------------------
         // Get relationship
         // ---------------------------------------------------------------------
@@ -234,8 +268,6 @@ public class PatientDashboardAction
         // ---------------------------------------------------------------------
         // Get program enrollment
         // ---------------------------------------------------------------------
-
-        Collection<Program> programs = programService.getProgramsByCurrentUser();
 
         activeProgramInstances = new HashSet<ProgramInstance>();
 
@@ -257,10 +289,6 @@ public class PatientDashboardAction
                 }
             }
         }
-
-        // ---------------------------------------------------------------------
-        // Get program-indicators
-        // ---------------------------------------------------------------------
 
         // ---------------------------------------------------------------------
         // Patient-Audit
