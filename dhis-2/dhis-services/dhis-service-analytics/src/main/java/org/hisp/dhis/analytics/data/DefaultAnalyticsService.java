@@ -221,6 +221,8 @@ public class DefaultAnalyticsService
 
             Map<String, Double> constantMap = constantService.getConstantMap();
 
+            Period filterPeriod = dataSourceParams.getFilterPeriod();
+            
             for ( Indicator indicator : indicators )
             {
                 for ( List<DimensionItem> options : dimensionItemPermutations )
@@ -231,7 +233,7 @@ public class DefaultAnalyticsService
                     
                     if ( valueMap != null )
                     {
-                        Period period = (Period) DimensionItem.getPeriodItem( options );
+                        Period period = filterPeriod != null ? filterPeriod : (Period) DimensionItem.getPeriodItem( options );
                         
                         Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
                         
