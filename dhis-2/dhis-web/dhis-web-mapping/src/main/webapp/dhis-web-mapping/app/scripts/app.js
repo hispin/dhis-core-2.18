@@ -3874,7 +3874,10 @@ Ext.onReady( function() {
 			forceSelection: true,
 			width: gis.conf.layout.widget.item_width - 65,
 			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			listConfig: {loadMask: false},
+			listConfig: {
+				loadMask: false,
+				minWidth: 188
+			},
 			store: dataElementsByGroupStore,
 			listeners: {
 				select: function() {
