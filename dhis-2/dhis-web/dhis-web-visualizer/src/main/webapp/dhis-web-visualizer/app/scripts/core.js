@@ -1649,6 +1649,7 @@ console.log("baseLineFields", store.baseLineFields);
 				chart.legend.position = 'right';
 				chart.legend.isVertical = true;
 				chart.insetPadding = 20;
+				chart.padding = '20 0 20 20';
 				chart.shadow = true;
 
 				return chart;
@@ -1747,9 +1748,9 @@ console.log("layout", layout);
 						layout = dv.api.layout.Layout(layoutConfig);
 
 					if (layout) {
-						layout.id = layoutConfig.id;
-						layout.name = layoutConfig.name;
 						dv.favorite = Ext.clone(layout);
+						dv.favorite.id = layoutConfig.id;
+						dv.favorite.name = layoutConfig.name;
 
 						dv.viewport.setFavorite(layout);
 					}

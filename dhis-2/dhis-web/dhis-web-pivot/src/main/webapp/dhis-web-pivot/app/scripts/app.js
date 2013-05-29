@@ -1934,6 +1934,7 @@ Ext.onReady( function() {
 				width: 500,
 				bodyStyle: 'padding:5px 5px 3px; background-color:#fff',
 				resizable: true,
+				destroyOnBlur: true,
 				modal: true,
 				items: [
 					textArea,
@@ -1954,6 +1955,10 @@ Ext.onReady( function() {
 						pt.util.window.setAnchorPosition(w, pt.viewport.interpretationButton);
 
 						document.body.oncontextmenu = true;
+
+						if (!w.hasDestroyOnBlurHandler) {
+							pt.util.window.addDestroyOnBlurHandler(w);
+						}
 					},
 					hide: function() {
 						document.body.oncontextmenu = function(){return false;};
