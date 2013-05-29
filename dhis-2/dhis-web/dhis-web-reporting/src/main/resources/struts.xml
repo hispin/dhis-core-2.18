@@ -48,16 +48,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <!-- Chart -->
-
-    <action name="viewChart" class="org.hisp.dhis.reporting.chart.action.ViewChartAction">
-      <result name="success" type="chart"></result>
-    </action>
-
-    <action name="generateChart" class="org.hisp.dhis.reporting.chart.action.GenerateChartAction">
-      <result name="success" type="chart"></result>
-    </action>
-
     <!-- Report -->
 
     <action name="displayAddReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction">
