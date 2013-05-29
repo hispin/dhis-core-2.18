@@ -29,7 +29,6 @@ package org.hisp.dhis.chart;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -49,6 +48,10 @@ import org.jfree.chart.plot.PlotOrientation;
 public interface ChartService
 {
     String ID = ChartService.class.getName();
+
+    // -------------------------------------------------------------------------
+    // JFreeChart
+    // -------------------------------------------------------------------------
 
     JFreeChart getJFreeChart( int id, I18nFormat format );
 
@@ -70,14 +73,15 @@ public interface ChartService
 
     JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format );
 
-    JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
-                              List<OrganisationUnit> organisationUnits, String series, String category, String filter, boolean regression, I18nFormat format );
-
     JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
                               Map<String, Double> categoryValues );
 
     JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
                                      Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format );
+
+    // -------------------------------------------------------------------------
+    // Chart CRUD
+    // -------------------------------------------------------------------------
 
     int addChart( Chart chart );
 
