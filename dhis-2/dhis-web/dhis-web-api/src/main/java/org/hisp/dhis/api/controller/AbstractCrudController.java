@@ -87,18 +87,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-        if ( options.hasLinks() )
-        {
-            WebUtils.generateLinks( metaData );
-        }
-
-        if ( SharingUtils.isSupported( getEntityClass() ) )
-        {
-            for ( T object : entityList )
-            {
-                addAccessProperties( object );
-            }
-        }
+        handleLinksAndAccess( options, metaData, entityList );
 
         postProcessEntities( entityList );
         postProcessEntities( entityList, parameters );
@@ -118,10 +107,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-        if ( options.hasLinks() )
-        {
-            WebUtils.generateLinks( metaData );
-        }
+        handleLinksAndAccess( options, metaData, entityList );
 
         postProcessEntities( entityList );
         postProcessEntities( entityList, parameters );
@@ -344,6 +330,22 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         ((BaseIdentifiableObject) object).setAccess( access );
     }
 
+    protected void handleLinksAndAccess( WebOptions options, WebMetaData metaData, List<T> entityList )
+    {
+        if ( options != null && options.hasLinks() )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        if ( entityList != null && SharingUtils.isSupported( getEntityClass() ) )
+        {
+            for ( T object : entityList )
+            {
+                addAccessProperties( object );
+            }
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // Reflection helpers
     //--------------------------------------------------------------------------
