@@ -129,7 +129,7 @@
 						#if( $status!=1 && $status!=5 && $flag=='false')
 							<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 								programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
-								onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' >
+								onclick='javascript:setFieldValue("programIdAddPatient",$programInstance.program.id);loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' >
 								<td id='td_$programInstance.id'>
 									<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
 									<img id='followup_$programInstance.id' src='images/risk_small.png' #if($programInstance.followup=='true') #else class='hidden' #end >
@@ -178,7 +178,7 @@
 							#set($programStageInstanceId = $programStageInstance.id)
 						#end
 					#end
-					<tr onclick='javascript:loadActiveProgramStageRecords($programInstance.id);' >
+					<tr onclick='javascript:setFieldValue("programIdAddPatient",$programInstance.program.id);loadActiveProgramStageRecords($programInstance.id);' >
 						<td>
 							<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
 						</td>
