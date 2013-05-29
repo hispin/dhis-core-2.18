@@ -1819,7 +1819,7 @@ Ext.onReady( function() {
 		}
 
 		window = Ext.create('Ext.window.Window', {
-			title: 'Sharing layout',
+			title: DV.i18n.sharing_settings,
 			bodyStyle: 'padding:6px 6px 0px; background-color:#fff',
 			resizable: false,
 			modal: true,

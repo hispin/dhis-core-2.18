@@ -1201,10 +1201,10 @@ console.log("baseLineFields", store.baseLineFields);
 				});
 			};
 
-			getDefaultLegend = function(store, xResponse) {
+			getDefaultLegend = function(store, xLayout, xResponse) {
 				var itemLength = 30,
 					charLength = 7,
-					numberOfItems = store.rangeFields.length,
+					numberOfItems,
 					numberOfChars = 0,
 					str = '',
 					width,
@@ -1212,21 +1212,32 @@ console.log("baseLineFields", store.baseLineFields);
 					position = 'top',
 					padding = 0;
 
-				for (var i = 0, name, ids; i < store.rangeFields.length; i++) {
-					if (store.rangeFields[i].indexOf('-') !== -1) {
-						ids = store.rangeFields[i].split('-');
-						name = xResponse.metaData.names[ids[0]] + ' ' + xResponse.metaData.names[ids[1]];
-					}
-					else {
-						name = xResponse.metaData.names[store.rangeFields[i]];
-					}
+				if (xLayout.type === dv.conf.finals.chart.pie) {
+					numberOfItems = store.getCount();
+					store.each(function(r) {
+						str += r.data[store.domainFields[0]];
+					});
+				}
+				else {
+					numberOfItems = store.rangeFields.length;
 
-					str += name;
+					for (var i = 0, name, ids; i < store.rangeFields.length; i++) {
+						if (store.rangeFields[i].indexOf('-') !== -1) {
+							ids = store.rangeFields[i].split('-');
+							name = xResponse.metaData.names[ids[0]] + ' ' + xResponse.metaData.names[ids[1]];
+						}
+						else {
+							name = xResponse.metaData.names[store.rangeFields[i]];
+						}
+
+						str += name;
+					}
 				}
 
 				numberOfChars = str.length;
 
 				width = (numberOfItems * itemLength) + (numberOfChars * charLength);
+//alert(width + ' > ' + dv.viewport.centerRegion.getWidth() + '\n' + str);
 
 				if (width > dv.viewport.centerRegion.getWidth() - 50) {
 					isVertical = true;
@@ -1329,7 +1340,7 @@ console.log("baseLineFields", store.baseLineFields);
 
 				// Legend
 				if (!xLayout.hideLegend) {
-					config.legend = getDefaultLegend(store, xResponse);
+					config.legend = getDefaultLegend(store, xLayout, xResponse);
 
 					if (config.legend.position === 'right') {
 						config.insetPadding = 40;
@@ -1646,10 +1657,9 @@ console.log("baseLineFields", store.baseLineFields);
 
 				// Chart
 				chart = getDefaultChart(store, null, series, xResponse, xLayout);
-				chart.legend.position = 'right';
-				chart.legend.isVertical = true;
-				chart.insetPadding = 20;
-				chart.padding = '20 0 20 20';
+				//chart.legend.position = 'right';
+				//chart.legend.isVertical = true;
+				chart.insetPadding = 40;
 				chart.shadow = true;
 
 				return chart;
