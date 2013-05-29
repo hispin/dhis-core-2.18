@@ -35,22 +35,6 @@
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
 
-  <!-- Charts -->
-
-  <bean id="org.hisp.dhis.reporting.chart.action.GenerateChartAction" class="org.hisp.dhis.reporting.chart.action.GenerateChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chart.action.ViewChartAction" class="org.hisp.dhis.reporting.chart.action.ViewChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
   <!-- TableCreator -->
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
