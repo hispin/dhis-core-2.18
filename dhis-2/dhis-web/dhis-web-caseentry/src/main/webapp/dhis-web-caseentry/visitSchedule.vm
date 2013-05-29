@@ -32,8 +32,8 @@
 			#else
 				#set($followup='false')
 			#end
-			<a href='javascript:markForFollowup($programInstance.id, false)' #if( $followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$i18n.getString("unmark_followup")' ><img src='../images/marked_large.png'></a>
-			<a href='javascript:markForFollowup($programInstance.id, true)' #if( $followup == 'true') class='hidden' #end id='imgUnmarkFollowup' title='$i18n.getString("mark_followup")' ><img src='../images/unmarked_large.png'></a>			
+			<a href='javascript:markForFollowup($programInstance.id, false)' #if( $followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$i18n.getString("unmark_followup")' ><img src='images/risk_large.png'></a>
+			<a href='javascript:markForFollowup($programInstance.id, true)' #if( $followup == 'true') class='hidden' #end id='imgUnmarkFollowup' title='$i18n.getString("mark_followup")' ><img src='images/unrisk_large.png'></a>			
 		</td>
 		<td rowspan='3' colspan='8'>
 			<textarea id="comment" name='comment' maxlength="360" style="height:100px;width:100%">$!encoder.htmlEncode( $programInstance.patientComment.commentText )</textarea>
