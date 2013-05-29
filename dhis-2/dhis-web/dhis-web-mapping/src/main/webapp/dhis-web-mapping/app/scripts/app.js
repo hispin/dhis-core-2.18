@@ -3582,7 +3582,7 @@ Ext.onReady( function() {
 
 				this.setProxy({
 					type: 'ajax',
-					url: gis.conf.url.path_api + path,
+					url: gis.baseUrl + gis.conf.url.path_api + path,
 					reader: {
 						type: 'json',
 						root: 'dataElements'
