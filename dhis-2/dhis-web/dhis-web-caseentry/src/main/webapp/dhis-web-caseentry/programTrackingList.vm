@@ -127,7 +127,7 @@
 	</ul>
 	
 	<div id='tab-1'>
-		<table class="mainPageTable">
+		<table class="mainPageTable" id='messageList'>
 			<colgroup>
 				<col width="160px"/>
 				<col width="160px"/>
@@ -182,6 +182,9 @@
 		setFieldValue('programStageName', "$programStageInstance.programStage.displayName");
 		setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
 		$('#tabs').tabs();
+		tableSorter( 'messageList' );
+		var sorting = [[0,1]];
+		$("#messageList").trigger("sorton", [sorting]);
 	});
 
 	

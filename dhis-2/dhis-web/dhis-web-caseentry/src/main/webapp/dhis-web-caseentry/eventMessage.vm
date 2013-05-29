@@ -1,5 +1,5 @@
 #set($programStageInstances = $programInstance.programStageInstances)
-<table class="mainPageTable">
+<table class="mainPageTable listTable" id='messageList'>
 	<colgroup>
 		<col width="160px"/>
 		<col width="160px"/>
@@ -8,11 +8,11 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th>$i18n.getString( "date" )</th>
-			<th>$i18n.getString( "program_stage" )</th>
-			<th>$i18n.getString( "sender" )</th>
-			<th>$i18n.getString( "type" )</th>
-			<th>$i18n.getString( "message" )</th>
+			<th class="{sorter: false}">$i18n.getString( "date" )</th>
+			<th class="{sorter: false}">$i18n.getString( "program_stage" )</th>
+			<th class="{sorter: false}">$i18n.getString( "sender" )</th>
+			<th class="{sorter: false}">$i18n.getString( "type" )</th>
+			<th class="{sorter: false}">$i18n.getString( "message" )</th>
 		</tr>
 	</thead>
 	<tbody id='commentReportTB' name="messageTB">
@@ -22,8 +22,8 @@
 				<tr id="comment_$comment.id" #alternate( $mark )>
 					<td>$format.formatDateTime($comment.createdDate)</td>
 					<td>$programStageInstance.programStage.displayName</td>
-					<td>$i18n.getString('comment')</td>
 					<td>$comment.creator</td>
+					<td>$i18n.getString('comment')</td>
 					<td>$comment.commentText</td>
 				</tr>
 				#set( $mark = !$mark )
@@ -48,4 +48,7 @@
 <input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' onclick='commentDivToggle(true);'>
 <script>
 	commentDivToggle(true);
+	tableSorter( 'messageList' );
+	var sorting = [[0,1]];
+	$("#messageList").trigger("sorton", [sorting]);
 </script>
