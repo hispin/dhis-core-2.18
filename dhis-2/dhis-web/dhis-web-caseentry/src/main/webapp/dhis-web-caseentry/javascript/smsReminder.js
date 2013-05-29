@@ -90,7 +90,6 @@ function listAllPatient()
 		}, 
 		function()
 		{
-			setInnerHTML('searchInforLbl',i18n_list_all_patients);
 			showById('colorHelpLink');
 			showById('listEventDiv');
 			hideLoader();

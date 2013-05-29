@@ -2073,11 +2073,13 @@ function markForFollowup( programInstanceId, followup )
 			 {
 				showById('imgMarkFollowup');
 				hideById('imgUnmarkFollowup');
+				showById("followup_" + programInstanceId);
 			 }
 			 else
 			 {
 				hideById('imgMarkFollowup');
 				showById('imgUnmarkFollowup');
+				hideById("followup_" + programInstanceId);
 			 }
 		});
 }
