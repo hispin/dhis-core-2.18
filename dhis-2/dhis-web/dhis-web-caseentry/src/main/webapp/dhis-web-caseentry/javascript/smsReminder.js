@@ -132,6 +132,9 @@ function advancedSearch( params )
 
 function programTrackingList( programStageInstanceId, isSendSMS ) 
 {
+	hideById('listEventDiv');
+	hideById('searchDiv');
+	showLoader();
 	setFieldValue('sendToList', "false");
 	$('#smsManagementDiv' ).load("programTrackingList.action",
 		{
@@ -143,6 +146,7 @@ function programTrackingList( programStageInstanceId, isSendSMS )
 			hideById('searchDiv');
 			hideById('listEventDiv');
 			showById('smsManagementDiv');
+			hideLoader();
 		});
 }
 
