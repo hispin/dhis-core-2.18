@@ -410,7 +410,8 @@ function addEventListeners()
             saveBoolean( dataElementId, optionComboId, id );
         } );
 
-        $( this ).css( 'width', '90%' );
+        $( this ).css( 'width', '88%' );
+        $( this ).css( 'margin-right', '2px' );
     } );
 
     $( '[name="entrytrueonly"]' ).each( function( i )
@@ -2361,6 +2362,7 @@ function autocompleteOptionSetField( idField, optionSetUid ) {
         return;
     }
 
+    input.css( "width", "85%" );
     input.autocomplete( {
         delay: 0,
         minLength: 0,
@@ -2387,7 +2389,7 @@ function autocompleteOptionSetField( idField, optionSetUid ) {
 
     var button = $( "<a style='width:20px; margin-bottom:-5px;height:20px;'>" )
         .attr( "tabIndex", -1 )
-        .attr( "title", 'i18n_show_all_items' )
+        .attr( "title", i18n_show_all_items )
         .appendTo( wrapper )
         .button( {
             icons: {

@@ -45,6 +45,7 @@ input[type=text],textarea
   padding-right: 2px;
   padding-left: 2px;
   height: 28px;
+  white-space: nowrap;
 }
 
 .formSection th
