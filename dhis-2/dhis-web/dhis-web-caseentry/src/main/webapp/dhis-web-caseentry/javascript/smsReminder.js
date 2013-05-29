@@ -1,4 +1,4 @@
-
+isAjax = true;
 function orgunitSelected( orgUnits, orgUnitNames )
 {
 	var width = jQuery('#programIdAddPatient').width();
@@ -93,7 +93,6 @@ function listAllPatient()
 			setInnerHTML('searchInforLbl',i18n_list_all_patients);
 			showById('colorHelpLink');
 			showById('listEventDiv');
-			setTableStyles();
 			hideLoader();
 		});
 }

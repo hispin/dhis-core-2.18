@@ -29,9 +29,7 @@
 	<col width='30%'/>
 	<thead>
 		<tr>
-			<th>#</th>
 			<th>$i18n.getString('risk')</th>
-			<th>$i18n.getString('date_scheduled')</th>
 			<th>$i18n.getString('full_name')</th>
 			<th>$i18n.getString('phone_number')</th>
 			<th>$i18n.getString( "events" )</th>
@@ -39,15 +37,15 @@
 		</tr>
 	</thead>
 	<tbody id="list">
-	#set( $mark = false ) 
+	#set($patientId='')
+	#set($count=1)
+	#set($class='listRow')
+	#set($alterclass='listAlternateRow')
 	#foreach( $programStageInstance in $programStageInstances )
 		#set($patient = $programStageInstance.programInstance.patient)
-		<tr id='tr$programStageInstance.id'>
-			<td>
-				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-				$nr
-			</td>
-			<td>
+		<tr>
+			#if( $patientId != $patient.id )
+			<td name="infor_$patient.id" class='$class'>
 				#set( $comment = $!programStageInstance.programInstance.patientComment.commentText )
 				#if( $$!programStageInstance.programInstance.followup == 'true') 
 				<img src='../images/marked.png' alt='$comment'>
@@ -55,15 +53,8 @@
 				<img src='../images/unmarked.png'>			
 				#end
 			</td>
-			<td>
-				#if($!programStageInstance.executionDate)
-					$format.formatDate($!programStageInstance.executionDate)
-				#else
-					$format.formatDate($!programStageInstance.dueDate)
-				#end
-			</td>
 			
-			<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
+			<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
 				#set($value="")
 				#foreach( $identifierType in $identifierTypes)
 					#foreach( $identifier in $patient.identifiers)
@@ -79,16 +70,45 @@
 				$value
 			</a></td>
 			
-			<td>$!patient.phoneNumber</td>
+			<td name='infor_$patient.id' class='$class'>$!patient.phoneNumber</td>
+				#set($rowspan=1)
+				#if($class=='listRow')
+					#set($class='listAlternateRow')
+					#set($alterclass='listRow')
+				#else
+					#set($class='listRow')
+					#set($alterclass='listAlternateRow')
+				#end
+			#else
+				#set($rowspan=$rowspan+1)
+				<script>
+					jQuery("[name=infor_" + "$patient.id]").attr('rowspan',$rowspan)
+				</script>
+			#end
 			
-			<td><a href="javascript:programTrackingList( $programStageInstance.id, false );">$programStageInstance.programStage.displayName</a></td>
-			
-			<td>
-				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
-				<a href="javascript:programTrackingList( $programStageInstance.id, false );" title="$i18n.getString( 'reschedule_and_set_status' )"><img src="images/data_entry.png" alt="$i18n.getString( 'reschedule_and_set_status' )"></a>   
-				<a href="javascript:showPatientHistory('$patient.id')" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
+			<td class='$alterclass'>
+				<a href="javascript:programTrackingList( $programStageInstance.id, false );">
+					$programStageInstance.programStage.displayName
+					(#if($!programStageInstance.executionDate)
+						$format.formatDate($!programStageInstance.executionDate)
+					#else
+						$format.formatDate($!programStageInstance.dueDate)
+					#end)
+				</a>
 			</td>
 			
+			#if( $patientId != $patient.id ) 
+			<td class='$alterclass' name='opt_$patient.id'>
+				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
+				<a href="javascript:showPatientHistory('$patient.id')" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
+			</td>
+			#else
+				<script>
+					jQuery("[name=opt_" + "$patient.id]").attr('rowspan',$rowspan)
+				</script>
+			#end
+			
+			#set( $patientId = $patient.id )
 		</tr>
 	#end
 	</tbody>
