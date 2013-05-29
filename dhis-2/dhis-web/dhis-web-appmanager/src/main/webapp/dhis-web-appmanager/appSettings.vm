@@ -19,6 +19,10 @@
       <td><input type="text" id="appFolderPath" name="appFolderPath" style="width:40em" value="$!appFolderPath"/> </td>
     </tr>
     <tr>
+      <td>$i18n.getString( "appmanager_baseurl" )</td>
+      <td><input type="text" id="appBaseUrl" name="appBaseUrl" style="width:40em" value="$!appBaseUrl"/> </td>
+    </tr>
+    <tr>
       <td>$i18n.getString( "appmanager_store_url" )</td>
       <td><input type="text" id="appStoreUrl" name="appStoreUrl" style="width:40em" value="$!appStoreUrl"/> </td>
     </tr>

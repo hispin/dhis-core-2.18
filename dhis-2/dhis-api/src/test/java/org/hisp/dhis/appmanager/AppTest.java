@@ -65,33 +65,33 @@ public class AppTest
     @Test
     public void testRequiredProperties()
     {
-        Assert.assertEquals( app.getVersion(), "0.1" );
-        Assert.assertEquals( app.getName(), "Test App" );
-        Assert.assertEquals( app.getLaunchPath(), "/index.html" );
-        Assert.assertEquals( app.getInstallsAllowedFrom()[0], "*" );
-        Assert.assertEquals( app.getDefaultLocale(), "en" );
+        Assert.assertEquals( "0.1", app.getVersion() );
+        Assert.assertEquals( "Test App", app.getName() );
+        Assert.assertEquals( "/index.html", app.getLaunchPath() );
+        Assert.assertEquals( "*", app.getInstallsAllowedFrom()[0] );
+        Assert.assertEquals( "en", app.getDefaultLocale() );
     }
 
     // TODO: Complete test for skipped optional properties 
     @Test
     public void testOptionalProperties()
     {
-        Assert.assertEquals( app.getDescription(), "Test Description" );
+        Assert.assertEquals( "Test Description", app.getDescription() );
     }
 
     @Test
     public void testIcons()
     {
-        Assert.assertEquals( app.getIcons().getIcon16(), "/img/icons/mortar-16.png" );
-        Assert.assertEquals( app.getIcons().getIcon48(), "/img/icons/mortar-48.png" );
-        Assert.assertEquals( app.getIcons().getIcon128(), "/img/icons/mortar-128.png" );
+        Assert.assertEquals( "/img/icons/mortar-16.png", app.getIcons().getIcon16() );
+        Assert.assertEquals( "/img/icons/mortar-48.png", app.getIcons().getIcon48() );
+        Assert.assertEquals( "/img/icons/mortar-128.png", app.getIcons().getIcon128() );
     }
 
     @Test
     public void testDeveloper()
     {
-        Assert.assertEquals( app.getDeveloper().getName(), "Test Developer" );
-        Assert.assertEquals( app.getDeveloper().getUrl(), "http://test" );
+        Assert.assertEquals( "Test Developer", app.getDeveloper().getName() );
+        Assert.assertEquals( "http://test", app.getDeveloper().getUrl() );
         Assert.assertNull( app.getDeveloper().getEmail() );
         Assert.assertNull( app.getDeveloper().getCompany() );
     }
@@ -100,9 +100,9 @@ public class AppTest
     public void testActivities()
     {
         AppDhis dhisActivity = app.getActivities().getDhis();
-        Assert.assertEquals( dhisActivity.getHref(), "http://localhost:8080/dhis" );
+        Assert.assertEquals( "http://localhost:8080/dhis", dhisActivity.getHref() );
         dhisActivity.setHref("ALL TEST");
-        Assert.assertEquals( dhisActivity.getHref(), "ALL TEST" );
+        Assert.assertEquals( "ALL TEST", dhisActivity.getHref() );
     }
     
 }
