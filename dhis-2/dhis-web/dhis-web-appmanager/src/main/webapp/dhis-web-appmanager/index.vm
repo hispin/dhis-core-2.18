@@ -15,10 +15,10 @@ jQuery(function() {
     <li class="introItem" onclick="window.location.href='$appsRootUrl/$appFolderNames.get($foreach.index)/$app.launchPath'">
         <span class="introItemHeader">
             <img style="float:left; margin-right:15px" src="$appsRootUrl/$appFolderNames.get($foreach.index)/$app.icons.icon48">
-            ${app.name}
+            ${app.name}&nbsp;&nbsp;(version ${app.version})
         </span>
         <br>
-        ${app.developer.name}
+        by ${app.developer.name}
     </li>
     #end
 #end

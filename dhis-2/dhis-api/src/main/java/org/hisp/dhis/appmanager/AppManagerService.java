@@ -38,9 +38,17 @@ public interface AppManagerService
     String ID = AppManagerService.class.getName();
 
     final String KEY_APP_FOLDER_PATH = "appFolderPath";
+    
+    final String KEY_APP_BASE_URL = "appBaseUrl";
 
     final String KEY_APP_STORE_URL = "appStoreUrl";
-
+    
+    /**
+     * Gets the Base URL for accessing the apps
+     * @return the apps baseurl
+     */
+    String getAppBaseUrl();
+    
     /**
      * Returns the full path to the folder where apps are extracted
      * @return app folder path 
@@ -68,12 +76,20 @@ public interface AppManagerService
 
     /**
      * Saves the folder in which apps will be expanded 
+     * @param appFolderPath
      */
     void setAppFolderPath( String appFolderPath );
 
     /**
      * Saves the URL of the apps repository
+     * @param appStoreUrl
      */
     void setAppStoreUrl( String appStoreUrl );
+    
+    /**
+     * Saves the base URL where apps are installed
+     * @param appBaseUrl 
+     */
+    void setAppBaseUrl( String appBaseUrl );
 
 }

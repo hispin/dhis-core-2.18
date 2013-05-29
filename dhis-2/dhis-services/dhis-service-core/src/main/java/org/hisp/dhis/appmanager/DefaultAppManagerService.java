@@ -144,4 +144,14 @@ public class DefaultAppManagerService
         
         return appFolderNames.get( app );
     }
+
+    @Override
+    public String getAppBaseUrl() {
+        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_BASE_URL ) );
+    }
+
+    @Override
+    public void setAppBaseUrl(String appBaseUrl) {
+        appSettingManager.saveSystemSetting( KEY_APP_BASE_URL, appBaseUrl );
+    }
 }
