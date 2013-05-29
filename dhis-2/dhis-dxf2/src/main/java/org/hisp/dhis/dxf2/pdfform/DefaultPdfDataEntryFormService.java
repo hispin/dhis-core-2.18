@@ -46,7 +46,10 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.RadioCheckField;
 import com.lowagie.text.pdf.TextField;
+
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -217,6 +220,7 @@ public class DefaultPdfDataEntryFormService
             insertTable_DataSetSections( mainTable, writer, rectangle, dataSet.getDataElements(), "" );
         }
     }
+    
 
     private void insertTable_DataSetSections( PdfPTable mainTable, PdfWriter writer, Rectangle rectangle,
         Collection<DataElement> dataElements, String sectionName )
@@ -233,42 +237,49 @@ public class DefaultPdfDataEntryFormService
 
         // Create A Table To Add For Each Section
         PdfPTable table = new PdfPTable( 2 );
-
+        
+        // For each DataElement and Category Combo of the dataElement, create row.
         for ( DataElement dataElement : dataElements )
         {
-
-            addCell_Text( table, dataElement.getDisplayName(), Element.ALIGN_RIGHT );
-
-            String strFieldLabel = PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD + dataElement.getUid() + "_"
-                + dataElement.getCategoryCombo().getSortedOptionCombos().get( 0 ).getUid();
-
-            String dataElementTextType = dataElement.getType();
-
-            // Yes Only case - render as check-box
-            if ( dataElementTextType.equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
+            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo()
+                .getSortedOptionCombos() )
             {
-                addCell_WithCheckBox( table, writer, strFieldLabel );
-            }
-            else if ( dataElementTextType.equals( DataElement.VALUE_TYPE_BOOL ) )
-            {
-                // Create Yes - true, No - false, Select..
-                String[] optionList = new String[]{ "[No Value]", "Yes", "No" };
-                String[] valueList = new String[]{ "", "true", "false" };
 
-                // addCell_WithRadioButton(table, writer, strFieldLabel);
-                addCell_WithDropDownListField( table, strFieldLabel, optionList, valueList, rectangle, writer );
-            }
-            else if ( dataElementTextType.equals( DataElement.VALUE_TYPE_NUMBER ) )
-            {
-                rectangle = new Rectangle( TEXTBOXWIDTH_NUMBERTYPE, PdfDataEntryFormUtil.CONTENT_HEIGHT_DEFAULT );
+                addCell_Text( table, dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName(), Element.ALIGN_RIGHT );
 
-                addCell_WithTextField( table, rectangle, writer, strFieldLabel, PdfFieldCell.TYPE_TEXT_NUMBER );
-            }
-            else //DataElement.VALUE_TYPE_DATE
-            {
-                // NOTE: When Rendering for DataSet, DataElement's OptionSet does not get rendered.
-                // Only for events, it gets rendered as drop-down list.
-                addCell_WithTextField( table, rectangle, writer, strFieldLabel );
+                String strFieldLabel = PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD + dataElement.getUid() + "_"
+                    + categoryOptionCombo.getUid();
+
+                String dataElementTextType = dataElement.getType();
+
+                // Yes Only case - render as check-box
+                if ( dataElementTextType.equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
+                {
+                    addCell_WithCheckBox( table, writer, strFieldLabel );
+                }
+                else if ( dataElementTextType.equals( DataElement.VALUE_TYPE_BOOL ) )
+                {
+                    // Create Yes - true, No - false, Select..
+                    String[] optionList = new String[] { "[No Value]", "Yes", "No" };
+                    String[] valueList = new String[] { "", "true", "false" };
+
+                    // addCell_WithRadioButton(table, writer, strFieldLabel);
+                    addCell_WithDropDownListField( table, strFieldLabel, optionList, valueList, rectangle, writer );
+                }
+                else if ( dataElementTextType.equals( DataElement.VALUE_TYPE_NUMBER ) )
+                {
+                    rectangle = new Rectangle( TEXTBOXWIDTH_NUMBERTYPE, PdfDataEntryFormUtil.CONTENT_HEIGHT_DEFAULT );
+
+                    addCell_WithTextField( table, rectangle, writer, strFieldLabel, PdfFieldCell.TYPE_TEXT_NUMBER );
+                }
+                else
+                // DataElement.VALUE_TYPE_DATE
+                {
+                    // NOTE: When Rendering for DataSet, DataElement's OptionSet
+                    // does not get rendered.
+                    // Only for events, it gets rendered as drop-down list.
+                    addCell_WithTextField( table, rectangle, writer, strFieldLabel );
+                }
             }
         }
 
@@ -277,6 +288,21 @@ public class DefaultPdfDataEntryFormService
 
         mainTable.addCell( cell_withInnerTable );
     }
+
+    private static boolean isDisabled( DataElement dataElement, DataElementCategoryOptionCombo dataElementCategoryOptionCombo, List<DataElementOperand> greyedFields )
+    {
+        for ( DataElementOperand operand : greyedFields )
+        {
+            if ( dataElement.getUid().equals( operand.getDataElement().getUid() )
+                && dataElementCategoryOptionCombo.getUid().equals( operand.getCategoryOptionCombo().getUid() ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     private void setProgramStage_DocumentContent( Document document, PdfWriter writer, String programStageUid )
         throws IOException, DocumentException, ParseException, Exception
