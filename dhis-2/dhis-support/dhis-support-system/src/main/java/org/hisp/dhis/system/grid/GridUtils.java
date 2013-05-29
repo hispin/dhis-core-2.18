@@ -105,10 +105,10 @@ public class GridUtils
         WritableFont.ARIAL, 10, WritableFont.BOLD, false ) );
 
     private static final WritableCellFormat XLS_FORMAT_LABEL = new WritableCellFormat( new WritableFont(
-        WritableFont.ARIAL, 10, WritableFont.BOLD, true ) );
+        WritableFont.ARIAL, 10, WritableFont.BOLD, false ) );
     
-    private static final WritableCellFormat XLS_FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL,
-        10, WritableFont.NO_BOLD, false ) );
+    private static final WritableCellFormat XLS_FORMAT_TEXT = new WritableCellFormat( new WritableFont( 
+        WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false ) );
 
     private static final Encoder ENCODER = new Encoder();
     
