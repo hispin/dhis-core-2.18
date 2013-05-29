@@ -1365,14 +1365,17 @@ GIS.core.LayerLoaderThematic = function(gis, layer) {
 			paramString += '&dimension=dx:' + view[type].id;
 		}
 
+		// Filter
 		paramString += '&filter=pe:' + view.period.id;
+
+		// Skip metaData
+		paramString += '&skipMeta=false';
 
 		Ext.Ajax.request({
 			url: gis.baseUrl + '/api/analytics.json' + paramString,
 			disableCaching: false,
 			scope: this,
 			success: function(r) {
-				//var values = r,
 				var response = Ext.decode(r.responseText),
 					dimConf = gis.conf.finals.dimension,
 					featureMap = {},
