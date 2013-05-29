@@ -16,8 +16,8 @@
 				<td class='bold coordinates1'>$i18n.getString('program'):</td>
 				<td class='coordinates2'>$program.displayName</td>
 				<td rowspan='2'>
-					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, false)' #if( $programStageInstance.programInstance.followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$i18n.getString("unmark_risk")' ><img src='images/risk_large.png'></a>
-					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, true)' #if( $programStageInstance.programInstance.followup == 'true') class='hidden' #end id='imgUnmarkFollowup' title='$i18n.getString("mark_risk")' ><img src='images/unrisk_large.png'></a>			
+					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, false)' #if( $programStageInstance.programInstance.followup == 'false') class='hidden' #end name='imgMarkFollowup' title='$i18n.getString("imgMarkFollowup")' ><img src='images/risk_large.png'></a>
+					<a href='javascript:markForFollowup($programStageInstance.programInstance.id, true)' #if( $programStageInstance.programInstance.followup == 'true') class='hidden' #end name='imgUnmarkFollowup' title='$i18n.getString("imgMarkFollowup")' ><img src='images/unrisk_large.png'></a>			
 				</td>
 			</tr>
 			<tr>

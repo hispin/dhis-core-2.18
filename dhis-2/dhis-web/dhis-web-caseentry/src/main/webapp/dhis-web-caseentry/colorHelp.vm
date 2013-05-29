@@ -12,8 +12,8 @@
 			#end
 			
 			$i18n.getString('toggle_risk_status')
-			<a href='javascript:markForFollowup($programInstance.id, false)' #if( $followup == 'false') class='hidden' #end id='imgMarkFollowup' title='$i18n.getString("unmark_risk")' ><img src='images/risk_large.png'></a>
-			<a href='javascript:markForFollowup($programInstance.id, true)' #if( $followup == 'true') class='hidden' #end id='imgUnmarkFollowup' title='$i18n.getString("mark_risk")' ><img src='images/unrisk_large.png'></a>			
+			<a href='javascript:markForFollowup($programInstance.id, false)' #if( $followup == 'false') class='hidden' #end name='imgMarkFollowup' title='$i18n.getString("toggle_risk_status")' ><img src='images/risk_large.png'></a>
+			<a href='javascript:markForFollowup($programInstance.id, true)' #if( $followup == 'true') class='hidden' #end name='imgUnmarkFollowup' title='$i18n.getString("toggle_risk_status")' ><img src='images/unrisk_large.png'></a>			
 		</td>
 	</tr>
 </table>
