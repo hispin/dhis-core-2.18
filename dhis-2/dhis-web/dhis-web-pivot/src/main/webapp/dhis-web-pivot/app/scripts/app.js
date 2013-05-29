@@ -1418,7 +1418,7 @@ Ext.onReady( function() {
 												params: Ext.encode(favorite),
 												success: function() {
 													pt.favorite = favorite;
-													//pt.viewport.interpretationButton.enable();
+													pt.viewport.interpretationButton.enable();
 													pt.store.tables.loadStore();
 												}
 											});
@@ -1875,6 +1875,99 @@ Ext.onReady( function() {
 		});
 
 		return window;
+	};
+
+	PT.app.InterpretationWindow = function() {
+		var textArea,
+			linkPanel,
+			shareButton,
+			window;
+
+		if (Ext.isObject(pt.favorite) && Ext.isString(pt.favorite.id)) {
+			textArea = Ext.create('Ext.form.field.TextArea', {
+				cls: 'pt-textarea',
+				height: 130,
+				fieldStyle: 'padding-left: 4px; padding-top: 3px',
+				emptyText: PT.i18n.write_your_interpretation,
+				enableKeyEvents: true,
+				listeners: {
+					keyup: function() {
+						shareButton.xable();
+					}
+				}
+			});
+
+			linkPanel = Ext.create('Ext.panel.Panel', {
+				html: '<b>Link: </b><span class="user-select">' + pt.baseUrl + '/dhis-web-visualizer/app/index.html?id=' + pt.favorite.id + '</span>',
+				style: 'padding-top: 9px; padding-bottom: 6px',
+				bodyStyle: 'border: 0 none'
+			});
+
+			shareButton = Ext.create('Ext.button.Button', {
+				text: PT.i18n.share,
+				disabled: true,
+				xable: function() {
+					this.setDisabled(!textArea.getValue());
+				},
+				handler: function() {
+					if (textArea.getValue()) {
+						Ext.Ajax.request({
+							url: pt.conf.finals.ajax.path_api + 'interpretations/reportTable/' + pt.favorite.id,
+							method: 'POST',
+							params: textArea.getValue(),
+							headers: {'Content-Type': 'text/html'},
+							success: function() {
+								textArea.reset();
+								pt.viewport.interpretationButton.disable();
+								window.hide();
+								//PT.util.notification.interpretation(PT.i18n.interpretation_was_shared + '.');
+							}
+						});
+					}
+				}
+			});
+
+			window = Ext.create('Ext.window.Window', {
+				title: PT.i18n.share + ' ' + PT.i18n.interpretation + '<span style="font-weight:normal; font-size:11px"> (' + pt.favorite.name + ') </span>',
+				layout: 'fit',
+				//iconCls: 'dv-window-title-interpretation',
+				width: 500,
+				bodyStyle: 'padding:5px 5px 3px; background-color:#fff',
+				resizable: true,
+				modal: true,
+				items: [
+					textArea,
+					linkPanel
+				],
+				bbar: {
+					cls: 'pt-toolbar-bbar',
+					defaults: {
+						height: 24
+					},
+					items: [
+						'->',
+						shareButton
+					]
+				},
+				listeners: {
+					show: function(w) {
+						pt.util.window.setAnchorPosition(w, pt.viewport.interpretationButton);
+
+						document.body.oncontextmenu = true;
+					},
+					hide: function() {
+						document.body.oncontextmenu = function(){return false;};
+					},
+					destroy: function() {
+						pt.viewport.interpretationWindow = null;
+					}
+				}
+			});
+
+			return window;
+		}
+
+		return;
 	};
 
 	PT.app.init.onInitialize = function(r) {
@@ -3664,6 +3757,43 @@ Ext.onReady( function() {
 				}
 			});
 
+			interpretationButton = Ext.create('Ext.button.Button', {
+				text: PT.i18n.share,
+				menu: {},
+				disabled: true,
+				xable: function() {
+					if (pt.favorite) {
+						this.enable();
+						this.disabledTooltip.destroy();
+					}
+					else {
+						if (pt.xLayout) {
+							this.disable();
+							this.createTooltip();
+						}
+					}
+				},
+				disabledTooltip: null,
+				createTooltip: function() {
+					this.disabledTooltip = Ext.create('Ext.tip.ToolTip', {
+						target: this.getEl(),
+						html: PT.i18n.save_load_favorite_before_sharing,
+						'anchor': 'bottom'
+					});
+				},
+				handler: function() {
+					if (pt.viewport.interpretationWindow) {
+						pt.viewport.interpretationWindow.destroy();
+					}
+
+					pt.viewport.interpretationWindow = PT.app.InterpretationWindow();
+
+					if (pt.viewport.interpretationWindow) {
+						pt.viewport.interpretationWindow.show();
+					}
+				}
+			});
+
 			centerRegion = Ext.create('Ext.panel.Panel', {
 				region: 'center',
 				bodyStyle: 'padding:1px',
@@ -3698,6 +3828,7 @@ Ext.onReady( function() {
 						},
 						favoriteButton,
 						downloadButton,
+						interpretationButton,
                         '->',
 						{
 							text: PT.i18n.table,
@@ -3765,8 +3896,13 @@ Ext.onReady( function() {
 					isOu = false,
 					isOuc = false;
 
+				// State
+				pt.viewport.interpretationButton.enable();
+
+				// Create chart
 				pt.util.pivot.createTable(layout, pt);
 
+				// Set gui
 				xLayout = pt.util.pivot.getExtendedLayout(layout);
 				dimMap = xLayout.objectNameDimensionsMap;
 				recMap = xLayout.objectNameItemsMap;
@@ -3919,6 +4055,7 @@ Ext.onReady( function() {
 				optionsButton: optionsButton,
 				favoriteButton: favoriteButton,
 				downloadButton: downloadButton,
+				interpretationButton: interpretationButton,
 				userOrganisationUnit: userOrganisationUnit,
 				userOrganisationUnitChildren: userOrganisationUnitChildren,
 				setFavorite: setFavorite,

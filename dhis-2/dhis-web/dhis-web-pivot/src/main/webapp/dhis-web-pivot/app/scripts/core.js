@@ -1839,9 +1839,14 @@ console.log("xLayout", xLayout);
 					alert(r.responseText);
 				},
 				success: function(r) {
-					var layout = pt.api.layout.Layout(Ext.decode(r.responseText));
+					var layoutConfig = Ext.decode(r.responseText),
+						layout = pt.api.layout.Layout(layoutConfig);
 
 					if (layout) {
+						pt.favorite = Ext.clone(layout);
+						pt.favorite.id = layoutConfig.id;
+						pt.favorite.name = layoutConfig.name;
+
 						pt.viewport.setFavorite(layout);
 					}
 				}
