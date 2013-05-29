@@ -126,6 +126,8 @@ public abstract class BaseAnalyticalObject
 
     protected boolean userOrganisationUnitChildren;
 
+    protected boolean rewindRelativePeriods;
+
     // -------------------------------------------------------------------------
     // Analytical properties
     // -------------------------------------------------------------------------
@@ -147,7 +149,9 @@ public abstract class BaseAnalyticalObject
     protected transient List<DataElementCategoryOptionCombo> transientCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
         
     protected transient Date relativePeriodDate;
-    
+
+    protected transient OrganisationUnit relativeOrganisationUnit;
+        
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -213,11 +217,20 @@ public abstract class BaseAnalyticalObject
         }
         else if ( PERIOD_DIM_ID.equals( dimension ) )
         {
+            setPeriodNames( periods, dynamicNames, format );
+            
             items.addAll( periods );
             
             if ( hasRelativePeriods() )
             {
-                items.addAll( relatives.getRelativePeriods( date, format, dynamicNames ) ); //TODO dyn names if period is on rows
+                if ( rewindRelativePeriods )
+                {
+                    items.addAll( relatives.getRewindedRelativePeriods( 1, date, format, dynamicNames ) );
+                }
+                else
+                {
+                    items.addAll( relatives.getRelativePeriods( date, format, dynamicNames ) );
+                }
             }
             
             type = DimensionType.PERIOD;
@@ -234,7 +247,7 @@ public abstract class BaseAnalyticalObject
             
             if ( userOrganisationUnitChildren && user != null && user.hasOrganisationUnit() )
             {
-                items.addAll( user.getOrganisationUnit().getChildren() );
+                items.addAll( user.getOrganisationUnit().getSortedChildren() );
             }
             
             type = DimensionType.ORGANISATIONUNIT;
@@ -428,6 +441,14 @@ public abstract class BaseAnalyticalObject
         }
         
         return categoryDims;
+    }
+
+    private void setPeriodNames( List<Period> periods, boolean dynamicNames, I18nFormat format )
+    {
+        for ( Period period : periods )
+        {
+            RelativePeriods.setName( period, null, dynamicNames, format );
+        }
     }
     
     /**
@@ -701,14 +722,39 @@ public abstract class BaseAnalyticalObject
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isRewindRelativePeriods()
+    {
+        return rewindRelativePeriods;
+    }
+
+    public void setRewindRelativePeriods( boolean rewindRelativePeriods )
+    {
+        this.rewindRelativePeriods = rewindRelativePeriods;
+    }
+
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
 
     @JsonIgnore
+    public List<OrganisationUnit> getTransientOrganisationUnits()
+    {
+        return transientOrganisationUnits;
+    }
+
+    @JsonIgnore
     public Date getRelativePeriodDate()
     {
         return relativePeriodDate;
+    }
+
+    @JsonIgnore
+    public OrganisationUnit getRelativeOrganisationUnit()
+    {
+        return relativeOrganisationUnit;
     }
 
     // -------------------------------------------------------------------------

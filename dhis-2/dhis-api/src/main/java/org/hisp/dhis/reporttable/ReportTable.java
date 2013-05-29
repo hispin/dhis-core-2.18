@@ -212,11 +212,6 @@ public class ReportTable
     private transient String reportingPeriodName;
 
     /**
-     * The parent organisation unit.
-     */
-    private transient OrganisationUnit parentOrganisationUnit;
-    
-    /**
      * The title of the report table grid.
      */
     private transient String title;
@@ -314,14 +309,14 @@ public class ReportTable
         if ( organisationUnit != null && hasReportParams() && reportParams.isParamParentOrganisationUnit() )
         {
             organisationUnit.setCurrentParent( true );
-            this.parentOrganisationUnit = organisationUnit;
+            this.relativeOrganisationUnit = organisationUnit;
             addTransientOrganisationUnits( organisationUnit.getChildren() );
             addTransientOrganisationUnit( organisationUnit );
         }
 
         if ( organisationUnit != null && hasReportParams() && reportParams.isParamOrganisationUnit() )
         {
-            this.parentOrganisationUnit = organisationUnit;
+            this.relativeOrganisationUnit = organisationUnit;
             addTransientOrganisationUnit( organisationUnit );
         }
 
@@ -495,7 +490,7 @@ public class ReportTable
      */
     public String getParentOrganisationUnitName()
     {
-        return parentOrganisationUnit != null ? parentOrganisationUnit.getName() : EMPTY;
+        return relativeOrganisationUnit != null ? relativeOrganisationUnit.getName() : EMPTY;
     }
 
     public boolean isDoIndicators()
@@ -962,18 +957,6 @@ public class ReportTable
     public void setGridRows( List<List<NameableObject>> gridRows )
     {
         this.gridRows = gridRows;
-    }
-
-    @JsonIgnore
-    public OrganisationUnit getParentOrganisationUnit()
-    {
-        return parentOrganisationUnit;
-    }
-
-    @JsonIgnore
-    public void setParentOrganisationUnit( OrganisationUnit parentOrganisationUnit )
-    {
-        this.parentOrganisationUnit = parentOrganisationUnit;
     }
 
     @JsonIgnore

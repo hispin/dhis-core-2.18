@@ -27,18 +27,15 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
@@ -46,7 +43,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.comparator.AscendingPeriodEndDateComparator;
+import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -64,8 +61,6 @@ public class Chart
 {
     private static final long serialVersionUID = 2570074075484545534L;
     
-    private static final Comparator<Period> PERIOD_COMPARATOR = new AscendingPeriodEndDateComparator();
-
     public static final String SIZE_NORMAL = "normal";
     public static final String SIZE_WIDE = "wide";
     public static final String SIZE_TALL = "tall";
@@ -110,8 +105,6 @@ public class Chart
 
     private boolean showData;
 
-    private boolean rewindRelativePeriods;
-
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -119,8 +112,8 @@ public class Chart
     private transient I18nFormat format;
 
     private transient List<Period> relativePeriods = new ArrayList<Period>();
-
-    private transient List<OrganisationUnit> relativeOrganisationUnits = new ArrayList<OrganisationUnit>();
+    
+    private transient User user;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -136,24 +129,55 @@ public class Chart
     }
 
     // -------------------------------------------------------------------------
+    // Init
+    // -------------------------------------------------------------------------
+
+    public void init( User user, Date date, OrganisationUnit organisationUnit, I18nFormat format )
+    {
+        this.user = user;
+        this.relativePeriodDate = date;
+        this.relativeOrganisationUnit = organisationUnit;
+        this.format = format;        
+    }
+    
+    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
     public List<NameableObject> series()
     {
-        return dimensionToList( series );
+        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true, format );
+        
+        return object != null ? object.getItems() : null;
     }
 
     public List<NameableObject> category()
     {
-        return dimensionToList( category );
+        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true, format );
+        
+        return object != null ? object.getItems() : null;
     }
 
-    public NameableObject filter()
+    public List<NameableObject> filters()
     {
-        List<NameableObject> list = dimensionToList( filterDimensions.get( 0 ) ); //TODO
-
-        return list != null && !list.isEmpty() ? list.iterator().next() : null;
+        List<NameableObject> filterItems = new ArrayList<NameableObject>();
+        
+        for ( String filter : filterDimensions )
+        {
+            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true, format );
+            
+            if ( object != null )
+            {
+                filterItems.addAll( object.getItems() );
+            }
+        }
+        
+        return filterItems;
+    }
+    
+    public String generateTitle()
+    {
+        return IdentifiableObjectUtils.join( filters() );
     }
 
     @Override
@@ -167,22 +191,12 @@ public class Chart
             filters.addAll( getDimensionalObjectList( filter ) );
         }
     }
-        
-    public String generateTitle()
-    {
-        if ( PERIOD_DIM_ID.equals( filterDimensions.get( 0 ) ) )
-        {
-            return format.formatPeriod( getAllPeriods().get( 0 ) );
-        }
-
-        return filter().getName();
-    }
 
     public List<OrganisationUnit> getAllOrganisationUnits()
     {
-        if ( relativeOrganisationUnits != null && !relativeOrganisationUnits.isEmpty() )
+        if ( transientOrganisationUnits != null && !transientOrganisationUnits.isEmpty() )
         {
-            return relativeOrganisationUnits;
+            return transientOrganisationUnits;
         }
         else
         {
@@ -211,40 +225,6 @@ public class Chart
         }
         
         return list;
-    }
-
-    private List<NameableObject> dimensionToList( String dimension )
-    {
-        List<NameableObject> list = new ArrayList<NameableObject>();
-
-        if ( DATA_X_DIM_ID.equals( dimension ) )
-        {
-            list.addAll( dataElements );
-            list.addAll( indicators );
-            list.addAll( dataSets );
-        }
-        else if ( PERIOD_DIM_ID.equals( dimension ) )
-        {
-            List<Period> periods = getAllPeriods();
-            namePeriods( periods, format );
-            Collections.sort( periods, PERIOD_COMPARATOR );
-            list.addAll( periods );
-        }
-        else if ( ORGUNIT_DIM_ID.equals( dimension ) )
-        {
-            list.addAll( getAllOrganisationUnits() );
-        }
-
-        return list;
-    }
-
-    private void namePeriods( List<Period> periods, I18nFormat format )
-    {
-        for ( Period period : periods )
-        {
-            period.setName( format.formatPeriod( period ) );
-            period.setShortName( format.formatPeriod( period ) );
-        }
     }
 
     /**
@@ -539,18 +519,6 @@ public class Chart
     public void setRelativePeriods( List<Period> relativePeriods )
     {
         this.relativePeriods = relativePeriods;
-    }
-
-    @JsonIgnore
-    public List<OrganisationUnit> getRelativeOrganisationUnits()
-    {
-        return relativeOrganisationUnits;
-    }
-
-    @JsonIgnore
-    public void setRelativeOrganisationUnits( List<OrganisationUnit> relativeOrganisationUnits )
-    {
-        this.relativeOrganisationUnits = relativeOrganisationUnits;
     }
 
     // -------------------------------------------------------------------------

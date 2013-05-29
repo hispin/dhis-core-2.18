@@ -41,7 +41,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -189,43 +188,21 @@ public class DefaultChartService
         return getJFreeChart( chart, null, null, format );
     }
 
-    public JFreeChart getJFreeChart( Chart chart, Date date, OrganisationUnit unit, I18nFormat format )
+    public JFreeChart getJFreeChart( Chart chart, Date date, OrganisationUnit organisationUnit, I18nFormat format )
     {
-        if ( chart.hasRelativePeriods() )
+        User user = currentUserService.getCurrentUser();
+
+        if ( organisationUnit == null && user != null )
         {
-            List<Period> periods = chart.isRewindRelativePeriods() ?
-                chart.getRelatives().getRewindedRelativePeriods( 1, date, format, true ) :
-                chart.getRelatives().getRelativePeriods( date, format, true );
-
-            chart.setRelativePeriods( periodService.reloadPeriods( periods ) );
+            organisationUnit = user.getOrganisationUnit();
         }
+        
+        chart.init( user, date, organisationUnit, format );
 
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser != null && chart.hasUserOrgUnit() && 
-            ( currentUser.getOrganisationUnit() != null || unit != null ) )
-        {
-            if ( unit == null )
-            {
-                unit = currentUser.getOrganisationUnit();
-            }
-            
-            if ( chart.isUserOrganisationUnit() )
-            {
-                chart.getRelativeOrganisationUnits().add( unit );
-            }
-            else if ( chart.isUserOrganisationUnitChildren() )
-            {
-                chart.getRelativeOrganisationUnits().addAll( unit.hasChild() ? unit.getSortedChildren() : Arrays.asList( unit ) );
-            }
-        }
-
-        chart.setFormat( format );
-
-        return getJFreeChart( chart, !chart.isHideSubtitle(), format );
+        return getJFreeChart( chart, !chart.isHideSubtitle() );
     }
 
-    public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
+    public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format ) //TODO remove?
     {
         List<Period> periods = periodService.reloadPeriods(
             new RelativePeriods().setLast12Months( true ).getRelativePeriods( format, true ) );
@@ -245,11 +222,11 @@ public class DefaultChartService
         chart.getOrganisationUnits().add( unit );
         chart.setFormat( format );
 
-        return getJFreeChart( chart, title, format );
+        return getJFreeChart( chart, title );
     }
 
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
-        I18nFormat format )
+        I18nFormat format ) //TODO remove?
     {
         List<Period> periods = periodService.reloadPeriods(
             new RelativePeriods().setThisYear( true ).getRelativePeriods( format, true ) );
@@ -269,7 +246,7 @@ public class DefaultChartService
         chart.setOrganisationUnits( parent.getSortedChildren() );
         chart.setFormat( format );
 
-        return getJFreeChart( chart, title, format );
+        return getJFreeChart( chart, title );
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
@@ -290,7 +267,7 @@ public class DefaultChartService
         chart.setFormat( format );
         chart.setName( chart.generateTitle() );
 
-        return getJFreeChart( chart, false, format );
+        return getJFreeChart( chart, false );
     }
 
     public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
@@ -527,7 +504,7 @@ public class DefaultChartService
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
-    private JFreeChart getJFreeChart( Chart chart, boolean subTitle, I18nFormat format )
+    private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
@@ -538,7 +515,7 @@ public class DefaultChartService
 
         CategoryPlot plot = null;
 
-        CategoryDataset[] dataSets = getCategoryDataSet( chart, format );
+        CategoryDataset[] dataSets = getCategoryDataSet( chart );
 
         if ( chart.isType( TYPE_LINE ) )
         {
@@ -718,10 +695,10 @@ public class DefaultChartService
         return multiplePieChart;
     }
 
-    private CategoryDataset[] getCategoryDataSet( Chart chart, I18nFormat format )
+    private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
-        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, format );
-
+        Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
+        
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
 
