@@ -182,9 +182,6 @@
 		setFieldValue('programStageName', "$programStageInstance.programStage.displayName");
 		setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
 		$('#tabs').tabs();
-		tableSorter( 'messageList' );
-		var sorting = [[0,1]];
-		$("#messageList").trigger("sorton", [sorting]);
 	});
 
 	
@@ -193,6 +190,10 @@
 			programReports(getFieldValue('programInstanceId'));
 		}
 	});
+	
+	tableSorter( 'messageList' );
+	var sorting = [[0,1]];
+	$("#messageList").trigger("sorton", [sorting]);
 	
 	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
 	var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
