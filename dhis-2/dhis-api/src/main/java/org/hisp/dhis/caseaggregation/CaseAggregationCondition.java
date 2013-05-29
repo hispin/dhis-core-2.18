@@ -85,6 +85,8 @@ public class CaseAggregationCondition
 
     public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
     
+    public static String OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE = "executionDate";
+    
     public static String MINUS_OPERATOR = "DATEDIFF";
 
     public static String AUTO_STORED_BY = "DHIS-SYSTEM";
@@ -97,7 +99,7 @@ public class CaseAggregationCondition
 
     public static final String dataelementRegExp = MINUS_OPERATOR + "{1}\\s*\\(\\s*(\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT
         + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID + "[0-9]+)+\\])\\s*(,)+\\s*("
-        + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + ")+\\s*\\)\\s*";
+        + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + ")+\\s*\\)\\s*";
 
     // -------------------------------------------------------------------------
     // Fields
