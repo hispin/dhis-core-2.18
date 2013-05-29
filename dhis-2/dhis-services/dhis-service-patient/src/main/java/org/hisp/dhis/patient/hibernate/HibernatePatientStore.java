@@ -615,7 +615,7 @@ public class HibernatePatientStore
             }
             else
             {
-                orderBy = " ORDER BY duedate asc ";
+                orderBy = " ORDER BY p.patientid, p.firstname, p.middlename, p.lastname, duedate asc ";
             }
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
