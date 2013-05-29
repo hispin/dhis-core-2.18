@@ -44,11 +44,13 @@ input[type=text],textarea
 {
   padding-right: 2px;
   padding-left: 2px;
+  height: 28px;
 }
 
 .formSection th
 {
   text-align: center;
+  min-width: 46px;
 }
 
 .sectionFilter
