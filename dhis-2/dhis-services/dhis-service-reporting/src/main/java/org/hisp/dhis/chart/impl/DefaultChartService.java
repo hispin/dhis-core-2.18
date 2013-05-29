@@ -103,7 +103,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 @Transactional
 public class DefaultChartService
@@ -199,10 +198,10 @@ public class DefaultChartService
         
         chart.init( user, date, organisationUnit, format );
 
-        return getJFreeChart( chart, !chart.isHideSubtitle() );
+        return getJFreeChart( chart );
     }
 
-    public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format ) //TODO remove?
+    public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
     {
         List<Period> periods = periodService.reloadPeriods(
             new RelativePeriods().setLast12Months( true ).getRelativePeriods( format, true ) );
@@ -220,13 +219,14 @@ public class DefaultChartService
         chart.getIndicators().add( indicator );
         chart.setRelativePeriods( periods );
         chart.getOrganisationUnits().add( unit );
+        chart.setHideSubtitle( title );
         chart.setFormat( format );
 
-        return getJFreeChart( chart, title );
+        return getJFreeChart( chart );
     }
 
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
-        I18nFormat format ) //TODO remove?
+        I18nFormat format )
     {
         List<Period> periods = periodService.reloadPeriods(
             new RelativePeriods().setThisYear( true ).getRelativePeriods( format, true ) );
@@ -244,30 +244,10 @@ public class DefaultChartService
         chart.getIndicators().add( indicator );
         chart.setRelativePeriods( periods );
         chart.setOrganisationUnits( parent.getSortedChildren() );
+        chart.setHideSubtitle( title );
         chart.setFormat( format );
 
-        return getJFreeChart( chart, title );
-    }
-
-    public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
-        List<Period> periods, List<OrganisationUnit> organisationUnits,
-        String series, String category, String filter,
-        boolean regression, I18nFormat format )
-    {
-        Chart chart = new Chart();
-
-        chart.setType( TYPE_COLUMN );
-        chart.setDimensions( series, category, filter );
-        chart.setHideLegend( false );
-        chart.setRegression( regression );
-        chart.setIndicators( indicators );
-        chart.setDataElements( dataElements );
-        chart.setRelativePeriods( periods );
-        chart.setOrganisationUnits( organisationUnits );
-        chart.setFormat( format );
-        chart.setName( chart.generateTitle() );
-
-        return getJFreeChart( chart, false );
+        return getJFreeChart( chart );
     }
 
     public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
@@ -504,7 +484,7 @@ public class DefaultChartService
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
-    private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
+    private JFreeChart getJFreeChart( Chart chart )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
@@ -571,7 +551,7 @@ public class DefaultChartService
             plot.addRangeMarker( getMarker( chart.getBaseLineValue(), chart.getBaseLineLabel() ) );
         }
 
-        if ( subTitle )
+        if ( chart.isHideSubtitle() )
         {
             jFreeChart.addSubtitle( getSubTitle( chart ) );
         }
