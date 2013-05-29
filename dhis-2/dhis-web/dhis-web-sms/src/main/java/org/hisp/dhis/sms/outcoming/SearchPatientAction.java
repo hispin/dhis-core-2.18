@@ -151,9 +151,9 @@ public class SearchPatientAction
         {
             organisationUnit = (searchBySelectedOrgunit) ? organisationUnit : null;
 
-            total = patientService.countSearchPatients( searchTexts, organisationUnit );
+            total = patientService.countSearchPatients( searchTexts, organisationUnit, null );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, organisationUnit, null, paging.getStartPos(), paging
+            patients = patientService.searchPatients( searchTexts, organisationUnit, null, null, paging.getStartPos(), paging
                 .getPageSize() );
 
             if ( !searchBySelectedOrgunit )
