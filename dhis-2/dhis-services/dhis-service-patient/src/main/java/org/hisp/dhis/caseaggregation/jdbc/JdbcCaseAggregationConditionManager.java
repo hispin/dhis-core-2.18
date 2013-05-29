@@ -367,7 +367,7 @@ public class JdbcCaseAggregationConditionManager
             sql += "GROUP BY ou.organisationunitid, ou.name";
 
         }
-        System.out.println( "\n\n === \n " + sql );
+        
         sql = sql.replaceAll( "COMBINE", "" );
 
         return sql;

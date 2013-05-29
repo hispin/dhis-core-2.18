@@ -50,8 +50,9 @@
 		</div>
 	#end
 	
-	#if( ($identifierTypes && $identifierTypes.size() > 0)
-		|| ($patientAttributes && $patientAttributes.size() > 0) )
+	#if($auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" )  &&
+		( ($identifierTypes && $identifierTypes.size() > 0)
+		|| ($patientAttributes && $patientAttributes.size() > 0) ) )
 		<!-- Identifiers and Attributes TAB -->
 		<div id="tab-2">
 			<form id='patientPropertyForm' name='patientPropertyForm' method="POST">
