@@ -97,6 +97,8 @@ public class EditSMSCommandForm
     private String codeSeparator;
 
     private String defaultMessage;
+    
+    private String receivedMessage;
 
     private int selectedCommandID = -1;
 
@@ -136,6 +138,7 @@ public class EditSMSCommandForm
             c.setSeparator( separator );
             c.setCodes( codeSet );
             c.setDefaultMessage( defaultMessage );
+            c.setReceivedMessage( receivedMessage );
             if( userGroupID != null && userGroupID > -1 )
             {
                 c.setUserGroup( userGroupService.getUserGroup( userGroupID ) );
@@ -254,8 +257,13 @@ public class EditSMSCommandForm
         }
     }
 
-    public Integer getUserGroupID()
+    public void setUserGroupID( Integer userGroupID )
     {
-        return userGroupID;
+        this.userGroupID = userGroupID;
+    }
+
+    public void setReceivedMessage( String receivedMessage )
+    {
+        this.receivedMessage = receivedMessage;
     }
 }

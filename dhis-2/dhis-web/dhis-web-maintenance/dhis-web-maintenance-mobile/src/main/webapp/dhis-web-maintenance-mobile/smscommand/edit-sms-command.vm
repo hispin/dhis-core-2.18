@@ -77,8 +77,11 @@
 				</select>
 			</td>
 		</tr>
+		<tr>
+			<td style="width:150px">Confirm Message: </td>
+			<td><textarea cols="35" type="text" name="receivedMessage">#if($smsCommand.receivedMessage)$smsCommand.receivedMessage#end</textarea></td>
+		</tr>
 		#end
-		
         <tr>
             <td style="width:150px">$i18n.getString( "no_codes_message" )</td>
             <td><textarea cols="35" type="text" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>

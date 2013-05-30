@@ -53,12 +53,14 @@ public class SMSCommand
 
     private String defaultMessage;
     
+    private String receivedMessage;
+    
     private UserGroup userGroup;
 
     private boolean currentPeriodUsedForReporting = false; // default is prev
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
-        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup )
+        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage )
     {
         super();
         this.name = name;
@@ -70,6 +72,7 @@ public class SMSCommand
         this.codeSeparator = codeSeparator;
         this.defaultMessage = defaultMessage;
         this.userGroup = userGroup;
+        this.receivedMessage = receivedMessage;
     }
     
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
@@ -251,5 +254,15 @@ public class SMSCommand
     public void setUserGroup( UserGroup userGroup )
     {
         this.userGroup = userGroup;
+    }
+
+    public String getReceivedMessage()
+    {
+        return receivedMessage;
+    }
+
+    public void setReceivedMessage( String receivedMessage )
+    {
+        this.receivedMessage = receivedMessage;
     }
 }
