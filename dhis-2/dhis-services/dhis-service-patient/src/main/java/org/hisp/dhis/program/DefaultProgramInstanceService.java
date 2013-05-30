@@ -376,6 +376,15 @@ public class DefaultProgramInstanceService
             }
         }
 
+        PatientComment patientComment = programInstance.getPatientComment();
+        if( patientComment != null )
+        {
+            grid.addRow();
+            grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
+                + format.formatDateTime( patientComment.getCreatedDate() ) );
+            grid.addValue( patientComment.getCommentText() );
+        }
+            
         // Get sms of the program-instance
 
         List<OutboundSms> messasges = programInstance.getOutboundSms();
