@@ -155,7 +155,7 @@ jQuery( document ).ready( function()
 		
 		<tr>
 			<td><label>$i18n.getString( "display_on_all_orgunits" )</label></td>
-			<td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true' checked></td>
+			<td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true'></td>
 			<td></td>
 		</tr>
 		
