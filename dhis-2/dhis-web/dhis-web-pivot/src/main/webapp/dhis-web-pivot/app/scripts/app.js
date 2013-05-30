@@ -1898,7 +1898,7 @@ Ext.onReady( function() {
 			});
 
 			linkPanel = Ext.create('Ext.panel.Panel', {
-				html: '<b>Link: </b><span class="user-select">' + pt.baseUrl + '/dhis-web-visualizer/app/index.html?id=' + pt.favorite.id + '</span>',
+				html: '<b>Link: </b><span class="user-select">' + pt.baseUrl + '/dhis-web-pivot/app/index.html?id=' + pt.favorite.id + '</span>',
 				style: 'padding-top: 9px; padding-bottom: 6px',
 				bodyStyle: 'border: 0 none'
 			});
