@@ -27,6 +27,7 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -170,7 +171,6 @@ public class PdfDataEntryFormUtil
     }
 
     public static DataValueSet getDataValueSet( InputStream in )
-        throws RuntimeException
     {
         PdfReader reader = null;
 
@@ -180,7 +180,7 @@ public class PdfDataEntryFormUtil
 
         try
         {
-            reader = new PdfReader( in ); // new PdfReader(in, null);
+            reader = new PdfReader( in );
 
             AcroFields form = reader.getAcroFields();
 
@@ -197,13 +197,10 @@ public class PdfDataEntryFormUtil
 
                 for ( String fldName : fldNames )
                 {
-
                     if ( fldName.startsWith( PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD ) )
                     {
-
                         String[] strArrFldName = fldName.split( "_" );
 
-                        // Create DataValues to be put in a DataValueSet
                         org.hisp.dhis.dxf2.datavalue.DataValue dataValue = new org.hisp.dhis.dxf2.datavalue.DataValue();
 
                         dataValue.setDataElement( strArrFldName[1] );
@@ -227,13 +224,12 @@ public class PdfDataEntryFormUtil
             }
             else
             {
-                throw new RuntimeException( "Could not generate PDF AcroFields form from the file." );
+                throw new RuntimeException( "Could not generate PDF AcroFields form from input" );
             }
-
         }
-        catch ( Exception e )
+        catch ( IOException ex )
         {
-            throw new RuntimeException( e.getMessage() );
+            throw new RuntimeException( ex );
         }
         finally
         {
