@@ -106,5 +106,6 @@
 	"useCompletedEvents": "$!aggregateReport.useCompletedEvents",
 	"displayTotals": "$!aggregateReport.displayTotals",
 	"userOrganisationUnit": "$!aggregateReport.userOrganisationUnit",
-	"userOrganisationUnitChildren": "$!aggregateReport.userOrganisationUnitChildren"
+	"userOrganisationUnitChildren": "$!aggregateReport.userOrganisationUnitChildren",
+	"useFormNameDataElement": "$!aggregateReport.useFormNameDataElement"
 }

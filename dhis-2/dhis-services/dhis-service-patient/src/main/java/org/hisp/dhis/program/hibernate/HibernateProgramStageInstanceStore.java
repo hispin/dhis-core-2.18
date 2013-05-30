@@ -257,6 +257,7 @@ public class HibernateProgramStageInstanceStore
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
+    @Override
     public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap, Collection<Integer> orgUnits,
         List<TabularReportColumn> columns, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
@@ -351,10 +352,10 @@ public class HibernateProgramStageInstanceStore
 
     public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, int maxLevel,
-        Date startDate, Date endDate, Boolean completed, Boolean displayOrgunitCode )
+        Date startDate, Date endDate, Boolean completed )
     {
         String sql = getTabularReportSql( anonynousEntryForm, true, programStage, columns, organisationUnits, level,
-            maxLevel, startDate, endDate, false, completed, null, displayOrgunitCode, null, null );
+            maxLevel, startDate, endDate, false, completed, null, null, null, null );
 
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
@@ -484,7 +485,7 @@ public class HibernateProgramStageInstanceStore
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
         List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
-        I18nFormat format, I18n i18n )
+        Boolean useFormNameDataElement, I18nFormat format, I18n i18n )
     {
         String sql = "";
         String filterSQL = filterSQLStatement( deFilters );
@@ -499,8 +500,13 @@ public class HibernateProgramStageInstanceStore
         String subTitle = " ";
         if ( deSum != null )
         {
-            subTitle = i18n.getString( "group_by" ) + ": "
-                + dataElementService.getDataElement( deSum ).getDisplayName() + "; ";
+            DataElement dataElement = dataElementService.getDataElement( deSum );
+            String dename = dataElement.getDisplayName();
+            if ( useFormNameDataElement != null || useFormNameDataElement )
+            {
+                dename = dataElement.getFormNameFallback();
+            }
+            subTitle = i18n.getString( "group_by" ) + ": " + dename + "; ";
         }
 
         // Filter is only one orgunit
@@ -645,7 +651,7 @@ public class HibernateProgramStageInstanceStore
         else if ( position == PatientAggregateReport.POSITION_ROW_DATA_COLUMN_PERIOD && deGroupBy != null )
         {
             sql = getAggregateReportSQL9( programStage, orgunitIds.iterator().next(), facilityLB, filterSQL, deGroupBy,
-                deSum, periods, aggregateType, limit, useCompletedEvents, format );
+                deSum, periods, aggregateType, limit, useCompletedEvents, useFormNameDataElement, format );
         }
 
         // Type = 6 && With group-by
@@ -888,7 +894,7 @@ public class HibernateProgramStageInstanceStore
 
     private String getTabularReportSql( Boolean anonynousEntryForm, boolean count, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> orgUnits, int level, int maxLevel, Date startDate,
-        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode,
+        Date endDate, Boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode,
         Integer min, Integer max )
     {
         Set<String> deKeys = new HashSet<String>();
@@ -1074,7 +1080,7 @@ public class HibernateProgramStageInstanceStore
         }
 
         sql += "psi.executiondate ";
-        sql += descOrder ? "desc " : "";
+        sql += (descOrder == null || descOrder) ? "desc " : "";
         sql += ") as tabular ";
         sql += where; // filters
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
@@ -1917,7 +1923,7 @@ public class HibernateProgramStageInstanceStore
      **/
     private String getAggregateReportSQL9( ProgramStage programStage, Integer root, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods, String aggregateType,
-        Integer limit, Boolean useCompletedEvents, I18nFormat format )
+        Integer limit, Boolean useCompletedEvents, Boolean useFormNameDataElement,I18nFormat format )
     {
         String sql = "";
         Collection<Integer> allOrgunitIds = getOrganisationUnits( root, facilityLB );
@@ -1956,7 +1962,13 @@ public class HibernateProgramStageInstanceStore
 
         String firstPeriodName = "";
 
-        String groupByName = dataElementService.getDataElement( deGroupBy ).getDisplayName();
+        DataElement dataElement = dataElementService.getDataElement( deGroupBy );
+        String groupByName = dataElement.getDisplayName();
+        if ( useFormNameDataElement != null || useFormNameDataElement )
+        {
+            groupByName = dataElement.getFormNameFallback();
+        }
+        
         for ( String deValue : deValues )
         {
             sql += "(SELECT DISTINCT '" + deValue + "' as \"" + groupByName + "\", ";

@@ -89,7 +89,7 @@ public interface ProgramStageInstanceStore
 
     int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, int maxLevel,
-        Date startDate, Date endDate, Boolean completed, Boolean displayOrgunitCode  );
+        Date startDate, Date endDate, Boolean completed );
 
     void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
@@ -106,7 +106,7 @@ public interface ProgramStageInstanceStore
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
         List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
-        I18nFormat format, I18n i18n );
+        Boolean useFormNameDataElement, I18nFormat format, I18n i18n );
 
     Collection<ProgramStageInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, Boolean completed );

@@ -27,7 +27,12 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import static org.hisp.dhis.patientreport.PatientTabularReport.*;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEMENT;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_FIXED_ATTRIBUTE;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER_TYPE;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_NUMBER_DATA_ELEMENT;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
+import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -311,6 +316,13 @@ public class GenerateTabularReportAction
         this.displayOrgunitCode = displayOrgunitCode;
     }
 
+    private Boolean useFormNameDataElement;
+
+    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
+    {
+        this.useFormNameDataElement = useFormNameDataElement;
+    }
+
     private boolean accessPrivateInfo = false;
 
     // -------------------------------------------------------------------------
@@ -412,7 +424,7 @@ public class GenerateTabularReportAction
             if ( type == null ) // Tabular report
             {
                 totalRecords = programStageInstanceService.getTabularReportCount( anonynousEntryForm, programStage,
-                    columns, organisationUnits, level, useCompletedEvents, displayOrgunitCode, startValue, endValue );
+                    columns, organisationUnits, level, useCompletedEvents, startValue, endValue );
 
                 total = getNumberOfPages( totalRecords );
 
@@ -531,7 +543,15 @@ public class GenerateTabularReportAction
                     {
                         column.setDateType( true );
                     }
-                    column.setName( dataElement.getFormNameFallback() );
+                    
+                    if ( useFormNameDataElement != null && useFormNameDataElement )
+                    {
+                        column.setName( dataElement.getFormNameFallback() );
+                    }
+                    else
+                    {
+                        column.setName( dataElement.getDisplayName() );  
+                    }
                 }
 
                 columns.add( column );
