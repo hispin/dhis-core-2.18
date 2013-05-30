@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,6 +56,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
+import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
@@ -115,6 +117,13 @@ public class DefaultParserManager
     public void setMessageConversationStore( MessageConversationStore messageConversationStore )
     {
         this.messageConversationStore = messageConversationStore;
+    }
+    
+    private MessageSender messageSender;
+
+    public void setMessageSender( MessageSender messageSender )
+    {
+        this.messageSender = messageSender;
     }
 
     @Autowired
@@ -282,17 +291,6 @@ public class DefaultParserManager
 
     private void runDhisMessageAlertParser( String senderNumber, String message, SMSCommand command )
     {
-        /*
-         * IParser parser = new DhisMessageAlertParser();
-         * 
-         * if ( !StringUtils.isBlank( command.getSeparator() ) ) {
-         * parser.setSeparator( command.getSeparator() ); }
-         * 
-         * message = message.trim();
-         * 
-         * Map<String, String> parsedMessage = parser.parse( message );
-         */
-
         UserGroup userGroup = command.getUserGroup();
 
         if ( userGroup != null )
@@ -318,6 +316,10 @@ public class DefaultParserManager
 
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
+                //forward to user group by SMS
+                messageSender.sendMessage( command.getName(), message, sender, receivers, true );
+                
+                //forward to user group by dhis message
                 if ( sender != null )
                 {
                     receivers.add( sender );
@@ -334,6 +336,10 @@ public class DefaultParserManager
                     conversation.addUserMessage( new UserMessage( receiver, read ) );
                 }
                 messageConversationStore.save( conversation );
+                //confirm SMS was received and forwarded completely
+                Set<User> feedbackList = new HashSet<User>();
+                feedbackList.add( sender );
+                messageSender.sendMessage( command.getName(), command.getReceivedMessage(), null, feedbackList, true );
             }
         }
     }

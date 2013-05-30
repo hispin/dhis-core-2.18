@@ -72,7 +72,7 @@ public class SmsLibService
 
     private final String SMPP_GATEWAY = "smpp_gw";
 
-    private Map<String, String> gatewayMap = new HashMap<String, String>();
+    public static Map<String, String> gatewayMap = new HashMap<String, String>();
 
     private GateWayFactory gatewayFactory = new GateWayFactory();
 
@@ -148,6 +148,8 @@ public class SmsLibService
         OutboundMessage outboundMessage = new OutboundMessage( recipient, sms.getMessage() );
         
         outboundMessage.setEncoding( MessageEncodings.ENCUCS2 );
+        
+        outboundMessage.setStatusReport( true );
 
         String longNumber = config.getLongNumber();
 

@@ -100,44 +100,44 @@ public class UpdateBulkGateWayConfigAction
     {
         if ( gatewayType != null && gatewayType.equals( "bulksms" ) )
         {
-            SmsConfiguration config = smsConfigurationManager.getSmsConfiguration();
+            SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
 
-            if ( config != null )
+            if ( smsConfig != null )
             {
-                BulkSmsGatewayConfig gatewayConfig = (BulkSmsGatewayConfig) smsConfigurationManager
+                BulkSmsGatewayConfig bulkGatewayConfig = (BulkSmsGatewayConfig) smsConfigurationManager
                     .checkInstanceOfGateway( BulkSmsGatewayConfig.class );
 
                 int index = -1;
 
-                if ( gatewayConfig == null )
+                if ( bulkGatewayConfig == null )
                 {
-                    gatewayConfig = new BulkSmsGatewayConfig();
+                    bulkGatewayConfig = new BulkSmsGatewayConfig();
                 }
                 else
                 {
-                    index = config.getGateways().indexOf( gatewayConfig );
+                    index = smsConfig.getGateways().indexOf( bulkGatewayConfig );
                 }
 
-                gatewayConfig.setName( name );
-                gatewayConfig.setPassword( password );
-                gatewayConfig.setUsername( username );
-                gatewayConfig.setRegion( region );
+                bulkGatewayConfig.setName( name );
+                bulkGatewayConfig.setPassword( password );
+                bulkGatewayConfig.setUsername( username );
+                bulkGatewayConfig.setRegion( region );
 
-                if ( config.getGateways() == null || config.getGateways().isEmpty() )
+                if ( smsConfig.getGateways() == null || smsConfig.getGateways().isEmpty() )
                 {
-                    gatewayConfig.setDefault( true );
+                    bulkGatewayConfig.setDefault( true );
                 }
 
                 if ( index >= 0 )
                 {
-                    config.getGateways().set( index, gatewayConfig );
+                    smsConfig.getGateways().set( index, bulkGatewayConfig );
                 }
                 else
                 {
-                    config.getGateways().add( gatewayConfig );
+                    smsConfig.getGateways().add( bulkGatewayConfig );
                 }
 
-                smsConfigurationManager.updateSmsConfiguration( config );
+                smsConfigurationManager.updateSmsConfiguration( smsConfig );
             }
         }
 
