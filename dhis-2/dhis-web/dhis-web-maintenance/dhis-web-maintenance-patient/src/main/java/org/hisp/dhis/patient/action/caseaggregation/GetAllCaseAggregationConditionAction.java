@@ -27,10 +27,14 @@
 
 package org.hisp.dhis.patient.action.caseaggregation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 
@@ -65,7 +69,7 @@ public class GetAllCaseAggregationConditionAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
+
     private Integer dataSetId;
 
     public void setDataSetId( Integer dataSetId )
@@ -85,9 +89,9 @@ public class GetAllCaseAggregationConditionAction
         return aggregationConditions;
     }
 
-    private Collection<DataSet> dataSets;
+    private List<DataSet> dataSets;
 
-    public Collection<DataSet> getDataSets()
+    public List<DataSet> getDataSets()
     {
         return dataSets;
     }
@@ -100,7 +104,9 @@ public class GetAllCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        dataSets = dataSetService.getAllDataSets();
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( dataSetId == null )
         {
