@@ -38,7 +38,7 @@ public class DataValue
 {
     private String value;
 
-    private String dataElementId;
+    private String dataElement;
 
     private Boolean providedElsewhere = false;
 
@@ -60,14 +60,14 @@ public class DataValue
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getDataElementId()
+    public String getDataElement()
     {
-        return dataElementId;
+        return dataElement;
     }
 
-    public void setDataElementId( String dataElementId )
+    public void setDataElement( String dataElement )
     {
-        this.dataElementId = dataElementId;
+        this.dataElement = dataElement;
     }
 
     @JsonProperty
@@ -87,7 +87,7 @@ public class DataValue
     {
         return "DataValue{" +
             "value='" + value + '\'' +
-            ", dataElementId='" + dataElementId + '\'' +
+            ", dataElement='" + dataElement + '\'' +
             ", providedElsewhere=" + providedElsewhere +
             '}';
     }
