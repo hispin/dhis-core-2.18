@@ -35,6 +35,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.CMYKColor;
 import com.lowagie.text.pdf.PdfAnnotation;
 import com.lowagie.text.pdf.PdfAppearance;
@@ -171,10 +172,11 @@ public class DefaultPdfDataEntryFormService
 
             document.add( mainTable );
 
-            document.add( Chunk.NEWLINE );
-            document.add( Chunk.NEWLINE );
+            // Hide the 'Save As' button for now.
+            //document.add( Chunk.NEWLINE );
+            //document.add( Chunk.NEWLINE );
 
-            insertSaveAsButton( document, writer, PdfDataEntryFormUtil.LABELCODE_BUTTON_SAVEAS );
+            //insertSaveAsButton( document, writer, PdfDataEntryFormUtil.LABELCODE_BUTTON_SAVEAS );
         }
     }
 
@@ -400,18 +402,19 @@ public class DefaultPdfDataEntryFormService
         table.setWidths( cellWidths );
 
         // Create Header
-        table.addCell( new PdfPCell( new Phrase( "Date" ) ) );
+        addCell_Text( table, "Date", Element.ALIGN_CENTER );
 
         // Add Program Data Elements Columns
         for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
         {
             DataElement dataElement = programStageDataElement.getDataElement();
 
-            table.addCell( new PdfPCell( new Phrase( dataElement.getDisplayFormName() ) ) );
+            addCell_Text( table, dataElement.getDisplayFormName(), Element.ALIGN_CENTER );
         }
 
-        table.addCell( new PdfPCell( new Phrase( TEXT_BLANK ) ) );
+        addCell_Text( table, TEXT_BLANK, Element.ALIGN_CENTER );
 
+        
         // ADD A HIDDEN INFO FOR ProgramStageID
         // Print rows, having the data elements repeating on each column.
 
@@ -593,7 +596,7 @@ public class DefaultPdfDataEntryFormService
 
         cell.setPhrase( new Phrase( text, font ) );
 
-        table.addCell( cell );
+        table.addCell( cell ); // TODO: change this with cellEvent?
     }
 
     private void addCell_WithTextField( PdfPTable table, Rectangle rect, PdfWriter writer, String strfldName )
@@ -630,8 +633,8 @@ public class DefaultPdfDataEntryFormService
         nameField.setText( value );
 
         nameField.setAlignment( Element.ALIGN_RIGHT );
-        nameField.setFontSize( PdfDataEntryFormUtil.UNITSIZE_DEFAULT );
-
+        nameField.setFont( pdfFormFontSettings.getFont( PdfFormFontSettings.FONTTYPE_BODY ).getBaseFont() );
+        
         PdfPCell cell = PdfDataEntryFormUtil.getPdfPCell( PdfDataEntryFormUtil.CELL_MIN_HEIGHT_DEFAULT,
             PdfDataEntryFormUtil.CELL_COLUMN_TYPE_ENTRYFIELD );
         cell.setCellEvent( new PdfFieldCell( nameField.getTextField(), (int) (rect.getWidth()), fieldCellType, writer ) );

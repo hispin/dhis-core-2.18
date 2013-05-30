@@ -51,38 +51,53 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-
 public class PdfDataEntryFormUtil
 {
     public static final int DATATYPE_DATASET = 0;
+
     public static final int DATATYPE_PROGRAMSTAGE = 1;
 
     public static final float UNITSIZE_DEFAULT = 10;
 
     // Label Names
-    
+
     public static final String LABELCODE_TEXTFIELD = "TXFD_";
+
     public static final String LABELCODE_BUTTON = "BTNFD_";
+
     public static final String LABELCODE_ORGID = LABELCODE_TEXTFIELD + "OrgID";
+
     public static final String LABELCODE_PERIODID = LABELCODE_TEXTFIELD + "PeriodID";
+
     public static final String LABELCODE_BUTTON_SAVEAS = LABELCODE_BUTTON + "SaveAs";
+
     public static final String LABELCODE_DATADATETEXTFIELD = "TXFDDT_";
+
     public static final String LABELCODE_DATAENTRYTEXTFIELD = "TXFDDV_";
+
     public static final String LABELCODE_PROGRAMSTAGEIDTEXTBOX = "TXPSTGID_";
 
     // Cell Related
 
-    public final static float CELL_MIN_HEIGHT_DEFAULT = 13;
+    public final static float CELL_MIN_HEIGHT_DEFAULT = 14;
+
     public final static float CONTENT_HEIGHT_DEFAULT = 11;
+
     public final static int CELL_COLUMN_TYPE_LABEL = 0;
+
     public final static int CELL_COLUMN_TYPE_ENTRYFIELD = 1;
 
-    private static final String DATAVALUE_IMPORT_STOREBY = "admin";
-    private static final String DATAVALUE_IMPORT_COMMENT = "Imported by PDF Data Entry Form";
-    private static final String DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT = "yyyy-MM-dd";
-    private static final String FOOTERTEXT_DEFAULT = "PDF Template generated from DHIS %s on %s";
-    private static final String DATEFORMAT_FOOTER_DEFAULT = "MMMM dd, yyyy";
+    public final static int CELL_COLUMN_TYPE_HEADER = 2;
 
+    private static final String DATAVALUE_IMPORT_STOREBY = "admin";
+
+    private static final String DATAVALUE_IMPORT_COMMENT = "Imported by PDF Data Entry Form";
+
+    private static final String DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT = "yyyy-MM-dd";
+
+    private static final String FOOTERTEXT_DEFAULT = "PDF Template generated from DHIS %s on %s";
+
+    private static final String DATEFORMAT_FOOTER_DEFAULT = "MMMM dd, yyyy";
 
     // -------------------------------------------------------------------------
     // METHODS
@@ -110,8 +125,8 @@ public class PdfDataEntryFormUtil
     {
         if ( typeId == PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE )
         {
-            return new Rectangle( PageSize.A4.getLeft(),
-                PageSize.A4.getBottom(), PageSize.A4.getTop(), PageSize.A4.getRight() );
+            return new Rectangle( PageSize.A4.getLeft(), PageSize.A4.getBottom(), PageSize.A4.getTop(),
+                PageSize.A4.getRight() );
         }
         else
         {
@@ -129,16 +144,28 @@ public class PdfDataEntryFormUtil
         PdfPCell cell = new PdfPCell();
         cell.setMinimumHeight( minHeight );
         cell.setBorder( Rectangle.NO_BORDER );
+        cell.setPadding( 1f );
 
-        if ( cellContentType == CELL_COLUMN_TYPE_LABEL )
+        switch ( cellContentType )
         {
-            cell.setHorizontalAlignment( Element.ALIGN_RIGHT );
-            cell.setVerticalAlignment( Element.ALIGN_TOP );
-        }
-        else if ( cellContentType == CELL_COLUMN_TYPE_ENTRYFIELD )
-        {
+        case CELL_COLUMN_TYPE_ENTRYFIELD:
             cell.setHorizontalAlignment( Element.ALIGN_CENTER );
             cell.setVerticalAlignment( Element.ALIGN_MIDDLE );
+
+            break;
+
+        case CELL_COLUMN_TYPE_HEADER:
+            cell.setHorizontalAlignment( Element.ALIGN_CENTER );
+            cell.setVerticalAlignment( Element.ALIGN_MIDDLE );
+
+            break;
+
+        case CELL_COLUMN_TYPE_LABEL:
+            cell.setHorizontalAlignment( Element.ALIGN_RIGHT );
+            cell.setVerticalAlignment( Element.ALIGN_TOP );
+
+        default:
+            break;
         }
 
         return cell;
@@ -161,8 +188,6 @@ public class PdfDataEntryFormUtil
 
             if ( form != null )
             {
-                // TODO: MOVE THESE STATIC NAME VALUES TO inside of service
-                // class or PDFForm Class <-- should be in PDFForm Class.
                 String strOrgUID = form.getField( PdfDataEntryFormUtil.LABELCODE_ORGID );
                 String strPeriodID = form.getField( PdfDataEntryFormUtil.LABELCODE_PERIODID );
 
