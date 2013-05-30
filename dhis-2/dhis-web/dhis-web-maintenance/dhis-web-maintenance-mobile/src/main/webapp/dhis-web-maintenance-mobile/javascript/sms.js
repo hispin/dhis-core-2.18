@@ -11,9 +11,9 @@ function criteriaChanged()
     window.location.href = url;
 }
 
-function reimport(confirmation, itemId, itemName, success )
+function reimport(confirmation, itemId, success )
 {                
-    var result = window.confirm( confirmation + "\n\n" + itemName );
+    var result = window.confirm( confirmation );
     var action = "reimport.action";
     if ( result )
     {
