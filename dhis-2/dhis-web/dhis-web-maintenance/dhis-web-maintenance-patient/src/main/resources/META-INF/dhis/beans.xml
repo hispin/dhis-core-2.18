@@ -1144,5 +1144,14 @@
 			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
 		</property>
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction"
+		class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction"
+		scope="prototype">
+		<property name="programIndicatorService">
+			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
+		</property>
+	</bean>
 
 </beans>

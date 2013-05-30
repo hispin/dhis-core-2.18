@@ -49,10 +49,13 @@ function getPatientDataElements()
 			var deSumId = jQuery('#deSumId');
 			for ( i in json.dataElements )
 			{ 
-				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
-				if( json.dataElements[i].type=='int')
+				if( json.dataElements[i].type=='int' || json.dataElements[i].type=='date'  )
 				{
-					deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+					dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+					if( json.dataElements[i].type=='int')
+					{
+						deSumId.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+					}
 				}
 			}
 			
@@ -93,13 +96,13 @@ function insertOperator( value )
 
 function getConditionDescription ()
 {
-	var valueType = getFieldValue('valueType');
-	if( valueType == 'int' ){
-		hideById('rootDateTR');
-	}
-	else{
-		showById('rootDateTR');
-	}
+	$.postJSON( 'getProgramIndicatorDescripttion.action', 
+	{ 
+		expression:getFieldValue('expression') 
+	},function (json)
+	{
+		byId('aggregationDescription').innerHTML = json.message;
+	})
 }
 
 function programIndicatorOnChange()

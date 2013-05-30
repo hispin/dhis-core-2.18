@@ -58,4 +58,6 @@ public interface ProgramIndicatorService
 
     Map<String, String> getProgramIndicatorValues( ProgramInstance programInstance );
 
+    String getExpressionDescription( String expression );
+
 }

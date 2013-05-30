@@ -58,7 +58,7 @@ jQuery( document ).ready( function()
 		<td>
 			<select style="width:336px;" id="rootDate" name="rootDate" class="{validate:{required:true}}">
 				<option value='incident_date'>$i18n.getString('incident_date')</option>
-				<option value='execution_date'>$i18n.getString('execution_date')</option>
+				<option value='execution_date'>$i18n.getString('report_date')</option>
 				<option value='current_date'>$i18n.getString('current_date')</option>
 			</select>
 		</td>
