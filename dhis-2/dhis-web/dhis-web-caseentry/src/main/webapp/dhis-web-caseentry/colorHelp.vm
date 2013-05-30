@@ -4,7 +4,7 @@
 		<td>
 			<a href="javascript:showColorHelp()" id="colorHelpLink" title="$i18n.getString( 'what_do_colors_mean' )">$i18n.getString('what_do_colors_mean')</a>
 		</td>
-		<td style='float:right'>
+		<td style='float:right' id='toogleRiskStatusTD' class='hidden'>
 			#if($programInstance.followup)
 				#set($followup=$programInstance.followup)
 			#else
