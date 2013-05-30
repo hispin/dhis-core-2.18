@@ -9,8 +9,9 @@
 															
 <h3>$i18n.getString( "create_new_aggregation_query_builder" )</h3>
 
-<form id="addCaseAggregationForm" action="addCaseAggregation.action" method="post" >
+<form id="addCaseAggregationForm" action="addCaseAggregation.action" method="post" onsubmit='setFieldValue("dataSetId",getFieldValue("dataSets") );' >
 
+<input type='hidden' id='dataSetId' name='dataSetId'>
 <table> 
 	<thead>
       <tr>
@@ -104,7 +105,7 @@
 <p>	
 	<input type="submit" value="$i18n.getString( 'add' )" />
 	<input type="button" value="$i18n.getString( 'test_condition' )" onclick='testCaseAggregationCondition();'/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onClick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onClick="cancelOnClick();" />
 </p>
 
 </form>
