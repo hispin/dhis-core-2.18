@@ -120,6 +120,8 @@ public class PatientAggregateReport
 
     private Boolean userOrganisationUnitChildren;
 
+    private Boolean useFormNameDataElement;
+    
     // User created
 
     private User user;
@@ -305,6 +307,16 @@ public class PatientAggregateReport
     public void setDeSum( DataElement deSum )
     {
         this.deSum = deSum;
+    }
+
+    public Boolean getUseFormNameDataElement()
+    {
+        return useFormNameDataElement;
+    }
+
+    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
+    {
+        this.useFormNameDataElement = useFormNameDataElement;
     }
 
 }

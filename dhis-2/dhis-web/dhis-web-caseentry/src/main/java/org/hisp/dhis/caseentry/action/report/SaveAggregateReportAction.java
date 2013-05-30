@@ -220,7 +220,14 @@ public class SaveAggregateReportAction
     {
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
-
+    
+    private Boolean useFormNameDataElement;
+    
+    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
+    {
+        this.useFormNameDataElement = useFormNameDataElement;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -260,7 +267,8 @@ public class SaveAggregateReportAction
         aggregateReport.setFacilityLB( facilityLB );
         aggregateReport.setLimitRecords( limitRecords );
         aggregateReport.setPosition( position );
-
+        aggregateReport.setUseFormNameDataElement( useFormNameDataElement );
+        
         if ( deGroupBy != null )
         {
             aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );

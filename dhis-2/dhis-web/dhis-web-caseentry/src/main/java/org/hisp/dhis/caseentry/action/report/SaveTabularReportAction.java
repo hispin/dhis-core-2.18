@@ -121,6 +121,8 @@ public class SaveTabularReportAction
 
     private Boolean displayOrgunitCode;
 
+    private Boolean useFormNameDataElement;
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -190,6 +192,11 @@ public class SaveTabularReportAction
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
+    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
+    {
+        this.useFormNameDataElement = useFormNameDataElement;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -200,8 +207,9 @@ public class SaveTabularReportAction
     {
         userOrganisationUnit = (userOrganisationUnit == null) ? false : userOrganisationUnit;
         userOrganisationUnitChildren = (userOrganisationUnitChildren == null) ? false : userOrganisationUnitChildren;
-        displayOrgunitCode = (displayOrgunitCode == null) ? false : displayOrgunitCode;;
-       
+        displayOrgunitCode = (displayOrgunitCode == null) ? false : displayOrgunitCode;
+        ;
+
         Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
             organisationUnitService.getOrganisationUnits( orgunitIds ) );
 
@@ -220,6 +228,7 @@ public class SaveTabularReportAction
         tabularReport.setSortedOrgunitAsc( orderByOrgunitAsc );
         tabularReport.setUser( currentUserService.getCurrentUser() );
         tabularReport.setDisplayOrgunitCode( displayOrgunitCode );
+        tabularReport.setUseFormNameDataElement( useFormNameDataElement );
 
         if ( useCompletedEvents != null )
         {

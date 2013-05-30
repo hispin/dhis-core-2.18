@@ -95,7 +95,7 @@ public interface ProgramStageInstanceService
 
     int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
         List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Boolean completed,
-        Boolean displayOrgunitCode, Date startDate, Date endDate );
+        Date startDate, Date endDate );
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 
@@ -114,7 +114,7 @@ public interface ProgramStageInstanceService
     Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
         List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
-        I18nFormat format, I18n i18n );
+        Boolean useFormNameDataElement, I18nFormat format, I18n i18n );
 
     // -------------------------------------------------------------------------
     // Statistical

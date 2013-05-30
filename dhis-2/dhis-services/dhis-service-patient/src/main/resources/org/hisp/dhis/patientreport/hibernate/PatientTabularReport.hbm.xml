@@ -51,6 +51,8 @@
     
     <property name="displayOrgunitCode" />
     
+    <property name="useFormNameDataElement" />
+    
     <!-- Access properties -->
    
     <many-to-one name="user" class="org.hisp.dhis.user.User"

@@ -176,25 +176,30 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( patient, completed );
     }
 
-    public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max, I18n i18n )
+    @Override
+    public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
+        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Date startDate,
+        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode,
+        Integer min, Integer max, I18n i18n )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
 
-        return programStageInstanceStore.getTabularReport( anonynousEntryForm, programStage, orgUnitLevelMap, organisationUnits, columns,
-            level, maxLevel, startDate, endDate, descOrder, completed, accessPrivateInfo, displayOrgunitCode, min, max, i18n );
+        return programStageInstanceStore.getTabularReport( anonynousEntryForm, programStage, orgUnitLevelMap,
+            organisationUnits, columns, level, maxLevel, startDate, endDate, descOrder, completed, accessPrivateInfo,
+            displayOrgunitCode, min, max, i18n );
     }
 
-    public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Boolean completed, Boolean displayOrgunitCode, Date startDate, Date endDate )
+    @Override
+    public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
+        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Boolean completed,
+        Date startDate, Date endDate )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
-        return programStageInstanceStore.getTabularReportCount( anonynousEntryForm, programStage, columns, organisationUnits, level,
-            maxLevel, startDate, endDate, completed, displayOrgunitCode );
+        return programStageInstanceStore.getTabularReportCount( anonynousEntryForm, programStage, columns,
+            organisationUnits, level, maxLevel, startDate, endDate, completed );
     }
 
     public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
@@ -346,7 +351,7 @@ public class DefaultProgramStageInstanceService
         grid.addValue( "" );
 
         // Total programs discontinued (un-enrollments)
-        
+
         int totalDiscontinued = programInstanceService.countProgramInstancesByStatus( ProgramInstance.STATUS_CANCELLED,
             program, orgunitIds, startDate, endDate );
         grid.addRow();
@@ -484,10 +489,10 @@ public class DefaultProgramStageInstanceService
     public Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
         String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
         List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
-        I18nFormat format, I18n i18n )
+        Boolean useFormNameDataElement, I18nFormat format, I18n i18n )
     {
         return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, facilityLB, deGroupBy,
-            deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, displayTotals, format, i18n );
+            deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, displayTotals, useFormNameDataElement, format, i18n );
     }
 
     @Override
@@ -509,9 +514,10 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.getOrgunitIds( startDate, endDate );
     }
-    
+
     @Override
-    public Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n )
+    public Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate,
+        String endDate, I18n i18n )
     {
         return programStageInstanceStore.getCompleteness( orgunit, program, startDate, endDate, i18n );
     }

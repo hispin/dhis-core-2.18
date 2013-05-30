@@ -214,6 +214,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE patient ALTER COLUMN underage DROP NOT NULL");
         executeSql( "ALTER TABLE program ALTER COLUMN dateofenrollmentdescription DROP NOT NULL");
         executeSql( "UPDATE program SET displayOnAllOrgunit=true where displayOnAllOrgunit is null" );
+        executeSql( "UPDATE program SET useFormNameDataElement=true where useFormNameDataElement is null" );
+        
         
     }
 

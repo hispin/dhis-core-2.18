@@ -1877,6 +1877,15 @@ Ext.onReady( function() {
 					p.displayOrgunitCode = Ext.getCmp('displayOrgunitCode').getValue();
 				}
 				
+				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true )
+				{
+					p.useFormNameDataElement = Ext.getCmp('useFormNameDataElementOpt').getValue();
+				}
+				else
+				{
+					p.useFormNameDataElement = "false";
+				}
+				
 				// Get searching values
 				p.filterValues = [];
 				
@@ -1979,6 +1988,15 @@ Ext.onReady( function() {
 				document.getElementById('userOrganisationUnit').value = Ext.getCmp('userOrgunit').getValue();
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
 
+				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true )
+				{
+					document.getElementById('useFormNameDataElement').value = Ext.getCmp('useFormNameDataElementOpt').getValue();
+				}
+				else
+				{
+					document.getElementById('useFormNameDataElement').value = "false";
+				}
+				
 				// orgunits
 				var orgunitIdList = document.getElementById('orgunitIds');
 				TR.util.list.clearList(orgunitIdList);
@@ -2307,6 +2325,13 @@ Ext.onReady( function() {
 					p.deGroupBy = Ext.getCmp('dataElementGroupByCbx').getValue().split('_')[1];
 				}
 				
+				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true ){
+					p.useFormNameDataElement = Ext.getCmp('useFormNameDataElementOpt').getValue();
+				}
+				else{
+					p.useFormNameDataElement = "false";
+				}
+				
 				// Filter values for data-elements
 				
 				p.deFilters = [];
@@ -2394,6 +2419,13 @@ Ext.onReady( function() {
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
 				document.getElementById('facilityLB').value = TR.cmp.settings.facilityLB.getValue();
 				document.getElementById('position').value = TR.state.aggregateReport.getPosition();
+				
+				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true ){
+					document.getElementById('useFormNameDataElement').value = Ext.getCmp('useFormNameDataElementOpt').getValue();
+				}
+				else{
+					document.getElementById('useFormNameDataElement').value = "false";
+				}
 				
 				if( Ext.getCmp('dataElementGroupByCbx').getValue() != null 
 					&& Ext.getCmp('dataElementGroupByCbx').getValue() != '' ){
@@ -2834,6 +2866,8 @@ Ext.onReady( function() {
 		createColTable: function(){
 			var cols = [];
 				
+			// Case-based tabular report
+			
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 			{
 				var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
@@ -2912,7 +2946,7 @@ Ext.onReady( function() {
 				// Data element columns
 				
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
-					cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, r.data.compulsory, r.data.name, index );
+					cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, r.data.compulsory, TR.value.columns[index].name, index );
 				});
 			
 			}
@@ -4100,6 +4134,17 @@ Ext.onReady( function() {
 			labelWidth: 135
 		});
 		
+		var useFormNameDataElementField = Ext.create('Ext.form.field.Checkbox', {
+			xtype: 'checkbox',
+			cls: 'tr-checkbox',
+			id: 'useFormNameDataElementOpt',
+			style:'padding-left: 20px;',
+			boxLabel: TR.i18n.use_data_element_form_names,
+			boxLabelAlign: 'before',
+			labelWidth: 135,
+			checked: true
+		});
+		
 		var facilityLBField = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'tr-combo',
 			id: 'facilityLBCombobox',
@@ -4253,7 +4298,8 @@ Ext.onReady( function() {
 							items:[
 								completedEventsField,
 								displayTotalsOptField,
-								displayOrgunitCodeField
+								displayOrgunitCodeField,
+								useFormNameDataElementField
 							]
 						},
 						facilityLBField,
@@ -4619,6 +4665,7 @@ Ext.onReady( function() {
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(true);
 													Ext.getCmp('displayOrgunitCode').setVisible(true);
+													
 													var level = Ext.getCmp('levelCombobox').getValue();
 													if( level==null || level!='' ){
 														Ext.getCmp('levelCombobox').setValue('1');

@@ -236,6 +236,13 @@ public class GenerateAggregateReportAction
         this.displayTotals = displayTotals;
     }
 
+    private Boolean useFormNameDataElement;
+
+    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
+    {
+        this.useFormNameDataElement = useFormNameDataElement;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -253,8 +260,8 @@ public class GenerateAggregateReportAction
 
     public String execute()
     {
-        displayTotals = ( displayTotals == null )? false : displayTotals;
-        
+        displayTotals = (displayTotals == null) ? false : displayTotals;
+
         // ---------------------------------------------------------------------
         // Get user orgunits
         // ---------------------------------------------------------------------
@@ -346,7 +353,8 @@ public class GenerateAggregateReportAction
         }
 
         grid = programStageInstanceService.getAggregateReport( position, programStage, orgunitIds, facilityLB,
-            deGroupBy, deSum, deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, displayTotals, format, i18n );
+            deGroupBy, deSum, deFilterMap, periods, aggregateType, limitRecords, useCompletedEvents, displayTotals,
+            useFormNameDataElement, format, i18n );
 
         return type == null ? SUCCESS : type;
     }
@@ -384,7 +392,7 @@ public class GenerateAggregateReportAction
             rp.clear().setLast3Months( true );
             periods.addAll( periodService.reloadPeriods( rp.getRelativePeriods() ) );
         }
-        
+
         if ( relativePeriods.contains( "last12Months" ) )
         {
             rp.clear().setLast12Months( true );
