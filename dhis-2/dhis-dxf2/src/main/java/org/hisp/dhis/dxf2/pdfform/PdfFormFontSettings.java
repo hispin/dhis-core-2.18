@@ -61,6 +61,8 @@ public class PdfFormFontSettings
         fontFooter = createFont( FONTTYPE_FOOTER );
     }
 
+    //TODO use map instead of fixed properties
+    
     public void setFont( int fontType, Font font )
     {
         switch ( fontType )

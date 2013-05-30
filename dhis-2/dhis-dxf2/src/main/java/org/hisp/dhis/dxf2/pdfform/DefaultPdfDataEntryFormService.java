@@ -27,30 +27,16 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.CMYKColor;
-import com.lowagie.text.pdf.PdfAnnotation;
-import com.lowagie.text.pdf.PdfAppearance;
-import com.lowagie.text.pdf.PdfBorderDictionary;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfFormField;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.RadioCheckField;
-import com.lowagie.text.pdf.TextField;
+import java.awt.Color;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -67,13 +53,25 @@ import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.*;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.CMYKColor;
+import com.lowagie.text.pdf.PdfAnnotation;
+import com.lowagie.text.pdf.PdfAppearance;
+import com.lowagie.text.pdf.PdfBorderDictionary;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfFormField;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.RadioCheckField;
+import com.lowagie.text.pdf.TextField;
 
 public class DefaultPdfDataEntryFormService
     implements PdfDataEntryFormService
@@ -291,21 +289,6 @@ public class DefaultPdfDataEntryFormService
         mainTable.addCell( cell_withInnerTable );
     }
 
-    private static boolean isDisabled( DataElement dataElement, DataElementCategoryOptionCombo dataElementCategoryOptionCombo, List<DataElementOperand> greyedFields )
-    {
-        for ( DataElementOperand operand : greyedFields )
-        {
-            if ( dataElement.getUid().equals( operand.getDataElement().getUid() )
-                && dataElementCategoryOptionCombo.getUid().equals( operand.getCategoryOptionCombo().getUid() ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
     private void setProgramStage_DocumentContent( Document document, PdfWriter writer, String programStageUid )
         throws IOException, DocumentException, ParseException, Exception
     {
@@ -431,7 +414,6 @@ public class DefaultPdfDataEntryFormService
                 DataElement dataElement = programStageDataElement.getDataElement();
 
                 OptionSet optionSet = dataElement.getOptionSet();
-                String optionSetName = "";
 
                 // addCell_Text(table, dataElement.getFormName());
 
@@ -443,8 +425,6 @@ public class DefaultPdfDataEntryFormService
 
                 if ( optionSet != null )
                 {
-                    optionSetName = optionSet.getName();
-
                     String query = ""; // Get All Option
 
                     // TODO: This gets repeated <- Create an array of the
@@ -661,7 +641,7 @@ public class DefaultPdfDataEntryFormService
         dropDown.setWidget( rect, PdfAnnotation.HIGHLIGHT_INVERT );
         dropDown.setFieldName( strfldName );
 
-        dropDown.setMKBorderColor( CMYKColor.BLACK );
+        dropDown.setMKBorderColor( Color.BLACK );
 
         PdfPCell cell = PdfDataEntryFormUtil.getPdfPCell( PdfDataEntryFormUtil.CELL_MIN_HEIGHT_DEFAULT,
             PdfDataEntryFormUtil.CELL_COLUMN_TYPE_ENTRYFIELD );
