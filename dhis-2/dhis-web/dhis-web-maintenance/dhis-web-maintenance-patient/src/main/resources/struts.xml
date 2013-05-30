@@ -1176,6 +1176,13 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="getProgramIndicatorDescripttion"
+			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+		</action>
 
 	</package>
 </struts>

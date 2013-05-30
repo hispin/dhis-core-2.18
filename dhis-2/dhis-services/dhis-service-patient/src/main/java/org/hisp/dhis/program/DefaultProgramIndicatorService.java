@@ -27,9 +27,6 @@
 
 package org.hisp.dhis.program;
 
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.Collection;
@@ -57,9 +54,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultProgramIndicatorService
     implements ProgramIndicatorService
 {
-    private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-        + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -212,6 +206,48 @@ public class DefaultProgramIndicatorService
         return result;
     }
 
+    public String getExpressionDescription( String expression )
+    {
+        StringBuffer description = new StringBuffer();
+
+        Pattern patternCondition = Pattern.compile( ProgramIndicator.regExp );
+
+        Matcher matcher = patternCondition.matcher( expression );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( ProgramIndicator.SEPARATOR_OBJECT );
+
+            String[] ids = info[1].split( ProgramIndicator.SEPARATOR_ID );
+
+            int programStageId = Integer.parseInt( ids[0] );
+            ProgramStage programStage = programStageService.getProgramStage( programStageId );
+            String programStageName = "The program stage not exist";
+            if ( programStage != null )
+            {
+                programStageName = programStage.getDisplayName();
+            }
+
+            int dataElementId = Integer.parseInt( ids[1] );
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+            String dataelementName = "The data element not exist";
+            if ( dataElement != null )
+            {
+                dataelementName = dataElement.getDisplayName();
+            }
+
+            matcher.appendReplacement( description, "[" + ProgramIndicator.OBJECT_PROGRAM_STAGE_DATAELEMENT + ProgramIndicator.SEPARATOR_OBJECT + programStageName + ProgramIndicator.SEPARATOR_ID
+                + dataelementName + "]" );
+        }
+
+        matcher.appendTail( description );
+
+        return description.toString();
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -232,15 +268,15 @@ public class DefaultProgramIndicatorService
 
         StringBuffer description = new StringBuffer();
 
-        Pattern pattern = Pattern.compile( regExp );
+        Pattern pattern = Pattern.compile( ProgramIndicator.regExp );
         Matcher matcher = pattern.matcher( expression );
         while ( matcher.find() )
         {
             DataElement dataElement = null;
 
-            String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( SEPARATOR_OBJECT )[1];
-            String[] infor = key.split( SEPARATOR_ID );
-            
+            String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( ProgramIndicator.SEPARATOR_OBJECT )[1];
+            String[] infor = key.split( ProgramIndicator.SEPARATOR_ID );
+
             Integer programStageId = Integer.parseInt( infor[0] );
             ProgramStage programStage = programStageService.getProgramStage( programStageId );
 

@@ -68,6 +68,13 @@ public class GetProgramIndicatorAction
         return programIndicator;
     }
 
+    private String description;
+
+    public String getDescription()
+    {
+        return description;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -78,6 +85,8 @@ public class GetProgramIndicatorAction
     {
         programIndicator = programIndicatorService.getProgramIndicator( id );
 
+        description = programIndicatorService.getExpressionDescription( programIndicator.getExpression() );
+        
         return SUCCESS;
     }
 
