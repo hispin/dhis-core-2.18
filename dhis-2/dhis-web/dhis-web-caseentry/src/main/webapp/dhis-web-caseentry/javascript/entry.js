@@ -1186,7 +1186,7 @@ function autocompletedUsernameField( idField )
 
 function filterOnSection()
 {
-    var value = 'sec_' + $( '#filterDataSetSection option:selected' ).val();
+    var value = $( '#filterDataSetSection option:selected' ).val();
     
     if ( value == 'all' )
     {
@@ -1195,6 +1195,6 @@ function filterOnSection()
     else
     {
         $( '.formSection' ).hide();
-        $( '#' + value ).show();
+        $( '#sec_' + value ).show();
     }
 }
