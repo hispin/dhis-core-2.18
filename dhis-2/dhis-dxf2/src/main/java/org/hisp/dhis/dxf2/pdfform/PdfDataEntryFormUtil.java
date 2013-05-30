@@ -27,6 +27,17 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -35,21 +46,8 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.AcroFields.Item;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfReader;
-import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 public class PdfDataEntryFormUtil
 {
@@ -194,8 +192,6 @@ public class PdfDataEntryFormUtil
                 Period period = PeriodType.createPeriodExternalId( strPeriodID );
 
                 // Loop Through the Fields and get data.
-                HashMap<String, AcroFields.Item> fields = form.getFields();
-                Set<Entry<String, Item>> entrySet = fields.entrySet();
 
                 Set<String> fldNames = form.getFields().keySet();
 
