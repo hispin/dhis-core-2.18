@@ -176,6 +176,9 @@
 		}
 	});
 	
+	showById('toogleRiskStatusTD');
+	jQuery('#tb_$!programInstance.id').css('margin-top',-25);
+	
 	if( jQuery('#tabs li').length == 1){
 		programReports(getFieldValue('programInstanceId'));
 	}
