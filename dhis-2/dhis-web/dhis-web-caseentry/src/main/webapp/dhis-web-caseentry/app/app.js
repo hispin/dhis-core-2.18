@@ -30,7 +30,7 @@ TR.conf = {
 					obj.system.level.push({value: r.levels[i].value, name: r.levels[i].name});
 				}
 				
-				obj.system.accessPatientAttributes = r.accessPatientAttributes;
+				obj.system.accessPatientAttributes = r.user.accessPatientAttributes;
 				
 				return obj;
 			}
@@ -6456,16 +6456,7 @@ Ext.onReady( function() {
                 TR.init.initialize(vp);
 				TR.cmp.options.window = TR.app.OptionsWindow();
 				TR.cmp.options.window.hide();
-							
-				if( TR.init.system.accessPatientAttributes=='false')
-				{
-					Ext.getCmp('patientPropertiesDiv').setVisible(false);
-				}
-				else
-				{
-					Ext.getCmp('patientPropertiesDiv').setVisible(true);
-				}
-				
+				Ext.getCmp('patientPropertiesDiv').setVisible(TR.init.system.accessPatientAttributes);
 				Ext.getCmp('reportTypeGroup').setValue(true);
 				Ext.getCmp('limitOption').setVisible(false);
 				dataElementTabTitle.innerHTML = TR.i18n.data_elements;
@@ -6481,7 +6472,6 @@ Ext.onReady( function() {
 				Ext.getCmp('displayTotalsOpt').setVisible(false);
 				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 				Ext.getCmp('levelCombobox').setVisible(true);
-				Ext.getCmp('patientPropertiesDiv').setVisible(true);
 				
 				Ext.getCmp('dateRangeDiv').setVisible(true);
 				Ext.getCmp('relativePeriodsDiv').setVisible(false); 
