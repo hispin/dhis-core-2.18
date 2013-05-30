@@ -104,13 +104,13 @@ public abstract class BaseEventService implements EventService
     {
         Program program;
 
-        if ( event.getProgramId() != null )
+        if ( event.getProgram() != null )
         {
-            program = programService.getProgram( event.getProgramId() );
+            program = programService.getProgram( event.getProgram() );
         }
-        else if ( event.getProgramStageId() != null )
+        else if ( event.getProgramStage() != null )
         {
-            ProgramStage programStage = programStageService.getProgramStage( event.getProgramStageId() );
+            ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
             program = programStage.getProgram();
         }
         else
@@ -132,7 +132,7 @@ public abstract class BaseEventService implements EventService
             }
         }
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrganisationUnitId() );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
 
         if ( organisationUnit == null )
         {
@@ -218,11 +218,11 @@ public abstract class BaseEventService implements EventService
 
         for ( DataValue dataValue : event.getDataValues() )
         {
-            DataElement dataElement = dataElementService.getDataElement( dataValue.getDataElementId() );
+            DataElement dataElement = dataElementService.getDataElement( dataValue.getDataElement() );
 
             if ( dataElement == null )
             {
-                importSummary.getConflicts().add( new ImportConflict( "dataElementId", dataValue.getDataElementId() + " is not a valid dataElementId." ) );
+                importSummary.getConflicts().add( new ImportConflict( "dataElementId", dataValue.getDataElement() + " is not a valid dataElementId." ) );
                 importSummary.getDataValueCount().incrementIgnored();
             }
             else

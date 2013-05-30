@@ -42,9 +42,9 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
 public class Events
 {
-    private String programId;
+    private String program;
 
-    private String programInstanceId;
+    private String programInstance;
 
     private List<Event> events = new ArrayList<Event>();
 
@@ -54,26 +54,26 @@ public class Events
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getProgramId()
+    public String getProgram()
     {
-        return programId;
+        return program;
     }
 
-    public void setProgramId( String programId )
+    public void setProgram( String program )
     {
-        this.programId = programId;
+        this.program = program;
     }
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public String getProgramInstanceId()
+    public String getProgramInstance()
     {
-        return programInstanceId;
+        return programInstance;
     }
 
-    public void setProgramInstanceId( String programInstanceId )
+    public void setProgramInstance( String programInstance )
     {
-        this.programInstanceId = programInstanceId;
+        this.programInstance = programInstance;
     }
 
     @JsonProperty( "eventList" )
@@ -93,8 +93,8 @@ public class Events
     public String toString()
     {
         return "Events{" +
-            "programId='" + programId + '\'' +
-            ", programInstanceId='" + programInstanceId + '\'' +
+            "program='" + program + '\'' +
+            ", programInstance='" + programInstance + '\'' +
             ", events=" + events +
             '}';
     }
