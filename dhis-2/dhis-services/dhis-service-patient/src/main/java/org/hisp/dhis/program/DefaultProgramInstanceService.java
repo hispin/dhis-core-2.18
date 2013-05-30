@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
@@ -82,6 +83,13 @@ public class DefaultProgramInstanceService
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -208,8 +216,6 @@ public class DefaultProgramInstanceService
         attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
         attrGrid.addHeader( new GridHeader( "", true, false ) );
 
-        Collection<PatientAttribute> patientAttributes = patient.getAttributes();
-
         // ---------------------------------------------------------------------
         // Add fixed attribues
         // ---------------------------------------------------------------------
@@ -240,24 +246,35 @@ public class DefaultProgramInstanceService
         // Add dynamic attribues
         // ---------------------------------------------------------------------
 
-        for ( PatientAttribute patientAttribute : patientAttributes )
+        Collection<Program> programs = programService
+            .getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
+        programs.addAll( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
+
+        Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
+            .getPatientAttributeValues( patient );
+        Iterator<PatientAttributeValue> iterAttribute = attributeValues.iterator();
+
+        for ( Program program : programs )
+        {
+            Collection<PatientAttribute> atttributes = program.getPatientAttributes();
+            while ( iterAttribute.hasNext() )
+            {
+                PatientAttributeValue attributeValue = iterAttribute.next();
+                if ( !atttributes.contains( attributeValue.getPatientAttribute() ) )
+                {
+                    iterAttribute.remove();
+                }
+            }
+        }
+
+        for ( PatientAttributeValue attributeValue : attributeValues )
         {
             attrGrid.addRow();
-            attrGrid.addValue( patientAttribute.getDisplayName() );
-            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
-                patientAttribute );
-            String value = "";
-            if ( attributeValue == null )
+            attrGrid.addValue( attributeValue.getPatientAttribute().getDisplayName() );
+            String value = attributeValue.getValue();
+            if ( attributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_BOOL ) )
             {
-                value = PatientAttributeValue.UNKNOWN;
-            }
-            else if ( attributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_BOOL ) )
-            {
-                value = i18n.getString( attributeValue.getValue() );
-            }
-            else
-            {
-                value = attributeValue.getValue();
+                value = i18n.getString( value );
             }
 
             attrGrid.addValue( value );
@@ -267,21 +284,36 @@ public class DefaultProgramInstanceService
         // Add identifier
         // ---------------------------------------------------------------------
 
-        for ( PatientIdentifier identifier : patient.getIdentifiers() )
+        Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
+        Iterator<PatientIdentifier> iterIdentifier = identifiers.iterator();
+
+        for ( Program program : programs )
+        {
+            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
+            while ( iterIdentifier.hasNext() )
+            {
+                PatientIdentifier identifier = iterIdentifier.next();
+                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
+                {
+                    iterIdentifier.remove();
+                }
+            }
+        }
+
+        for ( PatientIdentifier identifier : identifiers )
         {
             attrGrid.addRow();
-
             PatientIdentifierType idType = identifier.getIdentifierType();
             if ( idType != null )
             {
                 attrGrid.addValue( idType.getName() );
-                attrGrid.addValue( identifier.getIdentifier() );
             }
             else
             {
                 attrGrid.addValue( i18n.getString( "system_identifier" ) );
-                attrGrid.addValue( identifier.getIdentifier() );
+
             }
+            attrGrid.addValue( identifier.getIdentifier() );
         }
 
         grids.add( attrGrid );
@@ -296,15 +328,18 @@ public class DefaultProgramInstanceService
         {
             for ( ProgramInstance programInstance : programInstances )
             {
-                Grid gridProgram = getProgramInstanceReport( programInstance, i18n, format );
+                if ( programs.contains( programInstance.getProgram() ) )
+                {
+                    Grid gridProgram = getProgramInstanceReport( programInstance, i18n, format );
 
-                // ---------------------------------------------------------------------
-                // Grids for program-stage-instance
-                // ---------------------------------------------------------------------
+                    // ---------------------------------------------------------------------
+                    // Grids for program-stage-instance
+                    // ---------------------------------------------------------------------
 
-                getProgramStageInstancesReport( gridProgram, programInstance, format, i18n );
+                    getProgramStageInstancesReport( gridProgram, programInstance, format, i18n );
 
-                grids.add( gridProgram );
+                    grids.add( gridProgram );
+                }
             }
         }
 
@@ -377,14 +412,14 @@ public class DefaultProgramInstanceService
         }
 
         PatientComment patientComment = programInstance.getPatientComment();
-        if( patientComment != null )
+        if ( patientComment != null )
         {
             grid.addRow();
             grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
                 + format.formatDateTime( patientComment.getCreatedDate() ) );
             grid.addValue( patientComment.getCommentText() );
         }
-            
+
         // Get sms of the program-instance
 
         List<OutboundSms> messasges = programInstance.getOutboundSms();
