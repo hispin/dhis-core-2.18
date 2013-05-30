@@ -544,3 +544,8 @@ function displayNameOnChange( displayName )
 	}
 }
 
+function cancelOnClick()
+{
+	var dataSetId = getFieldValue("dataSets"); 
+	window.location.href='caseAggregation.action?dataSetId=' + dataSetId;
+}

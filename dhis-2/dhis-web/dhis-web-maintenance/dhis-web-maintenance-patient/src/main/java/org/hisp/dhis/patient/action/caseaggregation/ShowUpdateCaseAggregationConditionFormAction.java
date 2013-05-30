@@ -28,12 +28,15 @@
 package org.hisp.dhis.patient.action.caseaggregation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -82,6 +85,8 @@ public class ShowUpdateCaseAggregationConditionFormAction
     private List<DataSet> dataSets;
 
     private List<Program> programs;
+    
+    private DataSet dataSet;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -151,6 +156,11 @@ public class ShowUpdateCaseAggregationConditionFormAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -167,6 +177,16 @@ public class ShowUpdateCaseAggregationConditionFormAction
         caseAggregation = aggregationConditionService.getCaseAggregationCondition( id );
         description = aggregationConditionService.getConditionDescription( caseAggregation.getAggregationExpression() );
 
+        DataElement dataelement = caseAggregation.getAggregationDataElement();
+        for ( DataSet _dataSet : dataSets )
+        {
+            if ( _dataSet.getDataElements().contains( dataelement ) )
+            {
+                dataSet = _dataSet;
+                break;
+            }
+        }
+        
         return SUCCESS;
     }
 }

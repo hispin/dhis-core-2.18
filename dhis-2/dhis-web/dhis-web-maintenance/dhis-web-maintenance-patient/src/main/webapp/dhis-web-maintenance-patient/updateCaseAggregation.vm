@@ -9,9 +9,10 @@
 
 <h3>$i18n.getString( "edit_aggregation_query_builder" )</h3>
 
-<form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" >
+<form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" onsubmit='setFieldValue("dataSetId",getFieldValue("dataSets") );' >
 
 <input type='hidden' id='id' name='id' value='$caseAggregation.id'>
+<input type='hidden' id='dataSetId' name='dataSetId' value='$dataSet.id'>
 <table> 
 	<thead>
       <tr>
@@ -31,8 +32,8 @@
 		<td>
 			<select id="dataSets" name="dataSets" onchange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
-				#foreach( $dataSet in $dataSets)
-					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.displayName</option>
+				#foreach( $ds in $dataSets)
+					<option value="$ds.id" #if( $dataSet.id=="$ds.id") selected #end >$ds.displayName</option>
 				#end
 			</select>
 		</td>				
@@ -105,7 +106,7 @@
 <p>
 	<input type="submit" value="$i18n.getString( 'update' )" >
 	<input type="button" value="$i18n.getString( 'test_condition' )" onclick='testCaseAggregationCondition();'/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" >
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="cancelOnClick();" >
 </p>
 
 </form>

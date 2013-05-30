@@ -68,6 +68,8 @@ public class AddCaseAggregationConditionAction
 
     private Integer deSumId;
 
+    private Integer dataSetId;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -75,6 +77,16 @@ public class AddCaseAggregationConditionAction
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
         this.aggregationConditionService = aggregationConditionService;
+    }
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
     }
 
     public void setDataElementService( DataElementService dataElementService )

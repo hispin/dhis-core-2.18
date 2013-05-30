@@ -35,6 +35,7 @@ import java.util.List;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 
@@ -105,20 +106,24 @@ public class GetAllCaseAggregationConditionAction
         throws Exception
     {
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        aggregationConditions = aggregationConditionService.getAllCaseAggregationCondition();
+
+        for ( CaseAggregationCondition aggCondition : aggregationConditions )
+        {
+            DataElement dataElement = aggCondition.getAggregationDataElement();
+
+            dataSets.addAll( dataElement.getDataSets() );
+        }
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
-        if ( dataSetId == null )
+        if ( dataSetId != null )
         {
-            aggregationConditions = aggregationConditionService.getAllCaseAggregationCondition();
+            DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-            return SUCCESS;
+            aggregationConditions = aggregationConditionService.getCaseAggregationCondition( dataSet.getDataElements() );
         }
-
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
-        aggregationConditions = aggregationConditionService.getCaseAggregationCondition( dataSet.getDataElements() );
-
+        
         return SUCCESS;
     }
 }
