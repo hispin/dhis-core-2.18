@@ -87,7 +87,7 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:organisationUnits|d:programStages|d:userRoles" mode="short" />
+      <xsl:apply-templates select="d:programStages|d:userRoles|d:organisationUnits" mode="short" />
     </div>
   </xsl:template>
 
