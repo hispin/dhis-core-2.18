@@ -30,6 +30,7 @@ package org.hisp.dhis.api.utils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -48,7 +49,7 @@ public class WebUtils
 {
     private static final Log log = LogFactory.getLog( WebUtils.class );
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static void generateLinks( WebMetaData metaData )
     {
         Class<?> baseType = null;
@@ -56,9 +57,10 @@ public class WebUtils
 
         for ( Field field : fields )
         {
-            if ( ReflectionUtils.isCollection( field.getName(), metaData, IdentifiableObject.class ) )
+            if ( ReflectionUtils.isCollection( field.getName(), metaData, IdentifiableObject.class ) ||
+                ReflectionUtils.isCollection( field.getName(), metaData, DimensionalObject.class ) )
             {
-                List<IdentifiableObject> objects = new ArrayList<IdentifiableObject>( (Collection<IdentifiableObject>) ReflectionUtils.getFieldObject( field, metaData ) );
+                List<Object> objects = new ArrayList<Object>( (Collection<?>) ReflectionUtils.getFieldObject( field, metaData ) );
 
                 if ( !objects.isEmpty() )
                 {
@@ -69,7 +71,7 @@ public class WebUtils
 
                     baseType = objects.get( 0 ).getClass();
 
-                    for ( IdentifiableObject object : objects )
+                    for ( Object object : objects )
                     {
                         generateLinks( object );
                     }
@@ -77,16 +79,22 @@ public class WebUtils
             }
         }
 
-        if ( metaData.getPager() != null && baseType != null )
+        if ( baseType == null )
+        {
+            log.warn( "baseType was not found, returning." );
+            return;
+        }
+
+        if ( metaData.getPager() != null )
         {
             String basePath = ContextUtils.getPath( baseType );
             Pager pager = metaData.getPager();
 
             if ( pager.getPage() < pager.getPageCount() )
             {
-                String nextPath = basePath + "?page=" + ( pager.getPage() + 1 );
+                String nextPath = basePath + "?page=" + (pager.getPage() + 1);
                 nextPath += pager.pageSizeIsDefault() ? "" : "&pageSize=" + pager.getPageSize();
-                
+
                 pager.setNextPage( nextPath );
             }
 
@@ -99,9 +107,9 @@ public class WebUtils
                 }
                 else
                 {
-                    String prevPath = basePath + "?page=" + ( pager.getPage() - 1 );
+                    String prevPath = basePath + "?page=" + (pager.getPage() - 1);
                     prevPath += pager.pageSizeIsDefault() ? "" : "&pageSize=" + pager.getPageSize();
-                    
+
                     pager.setPrevPage( prevPath );
                 }
             }

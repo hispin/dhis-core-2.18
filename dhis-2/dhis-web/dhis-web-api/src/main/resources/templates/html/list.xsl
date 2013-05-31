@@ -19,7 +19,7 @@
       d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes|d:reports|d:constants|
       d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:userGroups|d:userAuthorityGroups|
       d:reportTables|d:mapLegends|d:mapLegendSets|d:mapLayers|d:optionSets|d:interpretations|
-      d:sections|d:userRoles|d:organisationUnitLevels|d:programs|d:programStages">
+      d:sections|d:userRoles|d:organisationUnitLevels|d:programs|d:programStages|d:dimensions">
 
     <h3>
       <xsl:value-of select="local-name()" />

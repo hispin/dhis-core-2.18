@@ -28,8 +28,9 @@ package org.hisp.dhis.api.utils;
  */
 
 import javassist.util.proxy.ProxyObject;
-
 import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -184,7 +185,7 @@ public class ContextUtils
         response.setContentType( CONTENT_TYPE_TEXT );
 
         PrintWriter writer = null;
-        
+
         try
         {
             writer = response.getWriter();
@@ -218,7 +219,17 @@ public class ContextUtils
             clazz = clazz.getSuperclass();
         }
 
-        String resourcePath = ExchangeClasses.getAllExportMap().get( clazz );
+        String resourcePath;
+
+        // special case
+        if ( DimensionalObject.class.isAssignableFrom( clazz ) )
+        {
+            resourcePath = ExchangeClasses.getAllExportMap().get( BaseDimensionalObject.class );
+        }
+        else
+        {
+            resourcePath = ExchangeClasses.getAllExportMap().get( clazz );
+        }
 
         return getRootPath( getRequest() ) + "/" + resourcePath;
     }
@@ -272,15 +283,15 @@ public class ContextUtils
     /**
      * Adds basic authentication by adding an Authorization header to the
      * given HttpHeaders object.
-     * 
-     * @param headers the HttpHeaders object.
+     *
+     * @param headers  the HttpHeaders object.
      * @param username the user name.
      * @param password the password.
      */
     public static void setBasicAuth( HttpHeaders headers, String username, String password )
     {
-        String authorisation = username + ":" + password;        
-        byte[] encodedAuthorisation = Base64.encode( authorisation.getBytes() );        
+        String authorisation = username + ":" + password;
+        byte[] encodedAuthorisation = Base64.encode( authorisation.getBytes() );
         headers.add( "Authorization", "Basic " + new String( encodedAuthorisation ) );
     }
 }

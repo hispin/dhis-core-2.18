@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping( value = DimensionController.RESOURCE_PATH )
+@RequestMapping(value = DimensionController.RESOURCE_PATH)
 public class DimensionController
 {
     public static final String RESOURCE_PATH = "/dimensions";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -53,26 +55,38 @@ public class DimensionController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDimension( @PathVariable( "uid" ) String uid, Model model )
+    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    public String getDimension( @PathVariable("uid") String uid,
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, Model model )
     {
         DimensionalObject dimension = dimensionService.getDimension( uid );
-        
+
         model.addAttribute( "model", dimension );
         model.addAttribute( "viewClass", "dimensional" );
-        
+
+        if ( links )
+        {
+            WebUtils.generateLinks( dimension );
+        }
+
         return "dimension";
     }
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDimensions( Model model )
+    public String getDimensions(
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, Model model )
     {
         WebMetaData metaData = new WebMetaData();
-        
-        metaData.setDimensions( dimensionService.getAllDimensions() );        
-        
+
+        metaData.setDimensions( dimensionService.getAllDimensions() );
+
         model.addAttribute( "model", metaData );
-        
+
+        if ( links )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
         return "dimensions";
     }
 }
