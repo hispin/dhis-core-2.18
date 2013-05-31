@@ -87,8 +87,25 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:programStages|d:userRoles|d:organisationUnits" mode="short" />
+      <xsl:apply-templates select="d:programStages|d:userRoles" mode="short" />
+      <xsl:apply-templates select="d:organisationUnits" mode="short" />
     </div>
+  </xsl:template>
+
+  <xsl:template match="d:program" mode="short">
+    <h3>Program</h3>
+    <table>
+      <xsl:apply-templates select="." mode="row"/>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="d:programs" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>Programs</h3>
+      <table class="programs">
+        <xsl:apply-templates mode="row"/>
+      </table>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
