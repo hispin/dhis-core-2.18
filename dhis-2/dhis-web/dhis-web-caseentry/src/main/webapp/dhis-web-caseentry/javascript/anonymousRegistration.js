@@ -1025,7 +1025,7 @@ function updateDataForm() {
     jQuery( '.stage-object-selected' ).attr( 'psid', programStageId );
     setInnerHTML( 'programName', programName );
     jQuery('#executionDate').css('width',430);
-    jQuery('#executionDate').css('margin-right',30);
+    jQuery('#executionDate').css('margin-right',34);
 
     if ( getFieldValue( 'completed' ) == 'true' ) {
         disable( "completeBtn" );
