@@ -618,6 +618,10 @@ function runCompleteEvent( isCreateEvent )
 
                         disableCompletedButton(true);
                         hideLoader();
+
+                        if ( isCreateEvent ) {
+                            showAddEventForm();
+                        }
                     }
                 }
             });
