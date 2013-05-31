@@ -1,7 +1,5 @@
-package org.hisp.dhis.option;
-
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,37 +25,21 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
+package org.hisp.dhis.option.comparator;
+
+import java.util.Comparator;
+
+import org.hisp.dhis.option.OptionSet;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
+ * @version $ OptionSetComparator.java May 31, 2013 11:23:50 AM $
  */
-public interface OptionService
+public class OptionSetNameComparator
+    implements Comparator<OptionSet>
 {
-    final String ID = OptionService.class.getName();
-
-    int saveOptionSet( OptionSet optionSet );
-
-    void updateOptionSet( OptionSet optionSet );
-
-    OptionSet getOptionSet( int id );
-
-    OptionSet getOptionSet( String uid );
-
-    OptionSet getOptionSetByName( String name );
-
-    void deleteOptionSet( OptionSet optionSet );
-
-    Collection<OptionSet> getAllOptionSets();
-
-    List<String> getOptions( int optionSetId, String name, Integer max );
-
-    Integer getOptionSetsCountByName( String name );
-
-    Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max );
-
-    Collection<OptionSet> getOptionSetsBetween( int first, int max );
-    
-    Integer getOptionSetCount();
+    public int compare( OptionSet optionSet0, OptionSet optionSet1 )
+    {
+        return optionSet0.getDisplayName().compareTo( optionSet1.getDisplayName() );
+    }
 }

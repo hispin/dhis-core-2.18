@@ -31,6 +31,7 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18nService;
@@ -120,5 +121,25 @@ public class DefaultOptionService
         }
 
         return options;
+    }
+    
+    public Integer getOptionSetsCountByName( String name )
+    {
+        return optionStore.getCountLikeName( name );
+    }
+
+    public Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max )
+    {
+        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllLikeNameOrderedName( name, first, max ) ));
+    }
+
+    public Collection<OptionSet> getOptionSetsBetween( int first, int max )
+    {
+        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllOrderedName( first, max ) ));
+    }
+    
+    public Integer getOptionSetCount()
+    {
+        return optionStore.getCount();
     }
 }
