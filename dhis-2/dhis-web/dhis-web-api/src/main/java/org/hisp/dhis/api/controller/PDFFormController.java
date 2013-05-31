@@ -35,6 +35,8 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.utils.PdfDataEntryFormImportUtil;
@@ -70,6 +72,8 @@ import com.lowagie.text.pdf.PdfWriter;
 @RequestMapping(value = "/pdfForm")
 public class PDFFormController
 {
+    private static final Log log = LogFactory.getLog( PDFFormController.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -103,7 +107,7 @@ public class PDFFormController
     {
         // 1. - Create Document and PdfWriter
         
-        Document document = new Document(); // TODO: can specify the size of doc
+        Document document = new Document();
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = PdfWriter.getInstance( document, baos );
@@ -118,7 +122,7 @@ public class PDFFormController
         pdfDataEntryFormService.generatePDFDataEntryForm( document, writer, dataSetUid,
             PdfDataEntryFormUtil.DATATYPE_DATASET,
             PdfDataEntryFormUtil.getDefaultPageSize( PdfDataEntryFormUtil.DATATYPE_DATASET ),
-            new PdfFormFontSettings(), i18nManager.getI18nFormat() );
+            pdfFormFontSettings, i18nManager.getI18nFormat() );
 
         // 3. - Response Header/Content Type Set
         
@@ -145,6 +149,8 @@ public class PDFFormController
         
         ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy,
             skipExistingCheck );
+                
+        log.info( options );
 
         // 2. Generate Task ID
         
@@ -192,7 +198,7 @@ public class PDFFormController
         pdfDataEntryFormService.generatePDFDataEntryForm( document, writer, programStageUid,
             PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE,
             PdfDataEntryFormUtil.getDefaultPageSize( PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE ), 
-            new PdfFormFontSettings(), i18nManager.getI18nFormat() );
+            pdfFormFontSettings, i18nManager.getI18nFormat() );
 
         // 3. - Response Header/Content Type Set
         

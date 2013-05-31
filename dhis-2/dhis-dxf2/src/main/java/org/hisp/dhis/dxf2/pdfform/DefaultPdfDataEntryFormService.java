@@ -484,14 +484,14 @@ public class DefaultPdfDataEntryFormService
         // Create A table to add for each group AT HERE
         PdfPTable table = new PdfPTable( 2 ); // Code 1
 
-        addCell_Text( table, "OrganizationID", Element.ALIGN_LEFT );
+        addCell_Text( table, "Organization unit identifier", Element.ALIGN_LEFT );
         addCell_WithTextField( table, rectangle, writer, PdfDataEntryFormUtil.LABELCODE_ORGID,
             PdfFieldCell.TYPE_TEXT_ORGUNIT );
 
         String[] periodsTitle = getPeriodTitles( periods, format );
         String[] periodsValue = getPeriodValues( periods );
 
-        addCell_Text( table, "PeriodID", Element.ALIGN_LEFT );
+        addCell_Text( table, "Period", Element.ALIGN_LEFT );
         addCell_WithDropDownListField( table, PdfDataEntryFormUtil.LABELCODE_PERIODID, periodsTitle, periodsValue,
             rectangle, writer );
 

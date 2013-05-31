@@ -27,7 +27,6 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,6 +96,12 @@ public class PdfDataEntryFormUtil
     private static final String FOOTERTEXT_DEFAULT = "PDF Template generated from DHIS %s on %s";
 
     private static final String DATEFORMAT_FOOTER_DEFAULT = "MMMM dd, yyyy";
+
+    private static final String ERROR_INVALID_PERIOD = "Invalid period: ";
+
+    private static final String ERROR_EMPTY_ORG_UNIT = "The organisation unit was not specified";
+
+    private static final String ERROR_EMPTY_PERIOD = "The period was not specified.";
 
     // -------------------------------------------------------------------------
     // METHODS
@@ -186,10 +191,28 @@ public class PdfDataEntryFormUtil
 
             if ( form != null )
             {
-                String strOrgUID = form.getField( PdfDataEntryFormUtil.LABELCODE_ORGID );
-                String strPeriodID = form.getField( PdfDataEntryFormUtil.LABELCODE_PERIODID );
 
-                Period period = PeriodType.createPeriodExternalId( strPeriodID );
+                // Process OrgUnitUID and PeriodID from the PDF Form
+
+                String orgUnitUID = form.getField( PdfDataEntryFormUtil.LABELCODE_ORGID ).trim();
+                String periodID = form.getField( PdfDataEntryFormUtil.LABELCODE_PERIODID ).trim();
+
+                if ( periodID == "" )
+                {
+                    throw new IllegalArgumentException( ERROR_EMPTY_PERIOD );
+                }
+
+                if ( orgUnitUID == "" )
+                {
+                    throw new IllegalArgumentException( ERROR_EMPTY_ORG_UNIT );
+                }
+
+                Period period = PeriodType.createPeriodExternalId( periodID );
+
+                if ( period == null )
+                {
+                    throw new IllegalArgumentException( ERROR_INVALID_PERIOD + periodID );
+                }
 
                 // Loop Through the Fields and get data.
 
@@ -205,7 +228,7 @@ public class PdfDataEntryFormUtil
 
                         dataValue.setDataElement( strArrFldName[1] );
                         dataValue.setCategoryOptionCombo( strArrFldName[2] );
-                        dataValue.setOrgUnit( strOrgUID );
+                        dataValue.setOrgUnit( orgUnitUID );
                         dataValue.setPeriod( period.getIsoDate() );
 
                         dataValue.setValue( form.getField( fldName ) );
@@ -227,7 +250,7 @@ public class PdfDataEntryFormUtil
                 throw new RuntimeException( "Could not generate PDF AcroFields form from input" );
             }
         }
-        catch ( IOException ex )
+        catch ( Exception ex )
         {
             throw new RuntimeException( ex );
         }
