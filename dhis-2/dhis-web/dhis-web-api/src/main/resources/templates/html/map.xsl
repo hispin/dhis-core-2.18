@@ -12,6 +12,10 @@
           <td> <xsl:value-of select="@id" /> </td>
         </tr>
         <tr>
+          <td>Created</td>
+          <td> <xsl:value-of select="@created" /> </td>
+        </tr>
+        <tr>
           <td>Last Updated</td>
           <td> <xsl:value-of select="@lastUpdated" /> </td>
         </tr>
