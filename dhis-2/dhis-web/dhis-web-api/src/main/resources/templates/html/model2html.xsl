@@ -55,6 +55,7 @@
   <xsl:include href="interpretation.xsl" />
   <xsl:include href="dataValueSets.xsl" />
   <xsl:include href="optionSets.xsl" />
+  <xsl:include href="program.xsl" />
 
   <!-- Config elements -->
 
