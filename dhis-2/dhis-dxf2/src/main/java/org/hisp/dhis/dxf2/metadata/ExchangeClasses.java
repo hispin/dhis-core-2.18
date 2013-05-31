@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.metadata;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
@@ -90,6 +91,9 @@ final public class ExchangeClasses
     // these are the ones that are available for dxf2 import
     private static Map<Class<? extends IdentifiableObject>, String> importClasses;
 
+    // these will be listed on the global resource page
+    private static Map<Class<? extends IdentifiableObject>, String> publicResourceClasses;
+
     static
     {
         allExportClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>();
@@ -118,7 +122,7 @@ final public class ExchangeClasses
         allExportClasses.put( DataElement.class, "dataElements" );
         allExportClasses.put( DataElementGroup.class, "dataElementGroups" );
         allExportClasses.put( DataElementGroupSet.class, "dataElementGroupSets" );
-        
+
         allExportClasses.put( DataElementOperand.class, "dataElementOperands" );
 
         allExportClasses.put( IndicatorType.class, "indicatorTypes" );
@@ -151,6 +155,8 @@ final public class ExchangeClasses
         allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( ProgramStage.class, "programStages" );
 
+        allExportClasses.put( BaseDimensionalObject.class, "dimensions" );
+
         exportClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( allExportClasses );
         importClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( allExportClasses );
 
@@ -168,7 +174,7 @@ final public class ExchangeClasses
         exportClasses.remove( ProgramStage.class );
         importClasses.remove( Program.class );
         importClasses.remove( ProgramStage.class );
-        
+
         // special class which is created on demand in association with other objects
         exportClasses.remove( DataElementOperand.class );
         importClasses.remove( DataElementOperand.class );
