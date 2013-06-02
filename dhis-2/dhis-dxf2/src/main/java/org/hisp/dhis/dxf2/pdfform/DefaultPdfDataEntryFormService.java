@@ -121,7 +121,7 @@ public class DefaultPdfDataEntryFormService
         {
             this.pdfFormFontSettings = pdfFormFontSettings;
             this.format = format;
-            
+
             document.setPageSize( pageSize );
 
             document.open();
@@ -171,10 +171,11 @@ public class DefaultPdfDataEntryFormService
             document.add( mainTable );
 
             // Hide the 'Save As' button for now.
-            //document.add( Chunk.NEWLINE );
-            //document.add( Chunk.NEWLINE );
+            // document.add( Chunk.NEWLINE );
+            // document.add( Chunk.NEWLINE );
 
-            //insertSaveAsButton( document, writer, PdfDataEntryFormUtil.LABELCODE_BUTTON_SAVEAS );
+            // insertSaveAsButton( document, writer,
+            // PdfDataEntryFormUtil.LABELCODE_BUTTON_SAVEAS );
         }
     }
 
@@ -220,7 +221,6 @@ public class DefaultPdfDataEntryFormService
             insertTable_DataSetSections( mainTable, writer, rectangle, dataSet.getDataElements(), "" );
         }
     }
-    
 
     private void insertTable_DataSetSections( PdfPTable mainTable, PdfWriter writer, Rectangle rectangle,
         Collection<DataElement> dataElements, String sectionName )
@@ -237,15 +237,23 @@ public class DefaultPdfDataEntryFormService
 
         // Create A Table To Add For Each Section
         PdfPTable table = new PdfPTable( 2 );
-        
-        // For each DataElement and Category Combo of the dataElement, create row.
+
+        // For each DataElement and Category Combo of the dataElement, create
+        // row.
         for ( DataElement dataElement : dataElements )
         {
             for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo()
                 .getSortedOptionCombos() )
             {
 
-                addCell_Text( table, dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName(), Element.ALIGN_RIGHT );
+                String categoryOptionComboDisplayName = "";
+
+                // Hide Default category option combo name
+                if ( !categoryOptionCombo.isDefault() )
+                    categoryOptionComboDisplayName = categoryOptionCombo.getDisplayName();
+
+                addCell_Text( table, dataElement.getDisplayName() + " " + categoryOptionComboDisplayName,
+                    Element.ALIGN_RIGHT );
 
                 String strFieldLabel = PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD + dataElement.getUid() + "_"
                     + categoryOptionCombo.getUid();
@@ -351,7 +359,8 @@ public class DefaultPdfDataEntryFormService
         Collection<ProgramStageDataElement> programStageDataElements )
         throws IOException, DocumentException
     {
-        // Add one to column count due to date entry + one hidden height set field.
+        // Add one to column count due to date entry + one hidden height set
+        // field.
         int colCount = programStageDataElements.size() + 1 + 1;
 
         PdfPTable table = new PdfPTable( colCount ); // Code 1
@@ -397,7 +406,6 @@ public class DefaultPdfDataEntryFormService
 
         addCell_Text( table, TEXT_BLANK, Element.ALIGN_CENTER );
 
-        
         // ADD A HIDDEN INFO FOR ProgramStageID
         // Print rows, having the data elements repeating on each column.
 
@@ -614,7 +622,7 @@ public class DefaultPdfDataEntryFormService
 
         nameField.setAlignment( Element.ALIGN_RIGHT );
         nameField.setFont( pdfFormFontSettings.getFont( PdfFormFontSettings.FONTTYPE_BODY ).getBaseFont() );
-        
+
         PdfPCell cell = PdfDataEntryFormUtil.getPdfPCell( PdfDataEntryFormUtil.CELL_MIN_HEIGHT_DEFAULT,
             PdfDataEntryFormUtil.CELL_COLUMN_TYPE_ENTRYFIELD );
         cell.setCellEvent( new PdfFieldCell( nameField.getTextField(), (int) (rect.getWidth()), fieldCellType, writer ) );
@@ -701,7 +709,7 @@ public class DefaultPdfDataEntryFormService
         PdfFormField radiogroupField = PdfFormField.createRadioButton( writer, true );
         radiogroupField.setFieldName( strfldName );
 
-        cell.setCellEvent( new PdfFieldCell( radiogroupField, new String[]{ "Yes", "No", "null" }, new String[]{
+        cell.setCellEvent( new PdfFieldCell( radiogroupField, new String[] { "Yes", "No", "null" }, new String[] {
             "true", "false", "" }, "", 30.0f, PdfFieldCell.TYPE_RADIOBUTTON, writer ) );
 
         table.addCell( cell );
