@@ -6,6 +6,7 @@
 	</tr>
 </table>
 
+#set($noPatient=0)
 #if( $programStageInstances && $programStageInstances.size()>0 )
 
 <table class='listTable gridTable'>
@@ -22,7 +23,6 @@
 		</tr>
 	</thead>
 	<tbody id="list">
-	#set($noPatient=0)
 	#set($patientId='')
 	#set($count=1)
 	#set($class='listRow')
@@ -113,6 +113,6 @@
 	var i18n_patient = '$encoder.jsEscape( $i18n.getString( "patient" ) , "'")';
 	var i18n_with = '$encoder.jsEscape( $i18n.getString( "with" ) , "'")';
 	var i18n_events = '$encoder.jsEscape( $i18n.getString( "status_events" ) , "'")';
-	var totalHeader = $noPatient + " " + i18n_patient + " " + i18n_with + " " + jQuery('#statusEvent option:selected').text() + " " + i18n_events
+	var totalHeader = '$!noPatient' + " " + i18n_patient + " " + i18n_with + " " + jQuery('#statusEvent option:selected').text() + " " + i18n_events
 	setInnerHTML('totalTd', totalHeader);
 </script>
