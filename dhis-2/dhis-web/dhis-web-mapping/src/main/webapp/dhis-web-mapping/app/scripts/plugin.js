@@ -90,10 +90,6 @@ Ext.onReady( function() {
 		};
 
 		afterRender = function(vp) {
-			if (window.google) {
-				gis.layer.googleStreets.setVisibility(true);
-			}
-
 			var len = Ext.query('.zoomInButton').length;
 
 			for (var i = 0; i < len; i++) {

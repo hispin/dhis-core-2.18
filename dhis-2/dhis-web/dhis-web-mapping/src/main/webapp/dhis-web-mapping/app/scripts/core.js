@@ -1779,7 +1779,8 @@ GIS.core.LayerLoaderFacility = function(gis, layer) {
 };
 
 GIS.core.getInstance = function(config) {
-	var gis = {};
+	var gis = {},
+		layers = [];
 
 	gis.baseUrl = config && config.baseUrl ? config.baseUrl : '../..';
 	gis.el = config && config.el ? config.el : null;
@@ -1790,17 +1791,20 @@ GIS.core.getInstance = function(config) {
 	gis.olmap = GIS.core.getOLMap(gis);
 	gis.layer = GIS.core.getLayers(gis);
 
-	gis.olmap.addLayers([
-		gis.layer.googleStreets,
-		gis.layer.googleHybrid,
-		gis.layer.openStreetMap,
+	if (window.google) {
+		layers.push(gis.layer.googleStreets, gis.layer.googleHybrid);
+	}
+
+	layers.push(gis.layer.openStreetMap,
 		gis.layer.thematic4,
 		gis.layer.thematic3,
 		gis.layer.thematic2,
 		gis.layer.thematic1,
 		gis.layer.boundary,
 		gis.layer.facility
-	]);
+	);
+
+	gis.olmap.addLayers(layers);
 
 	return gis;
 };

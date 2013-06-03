@@ -615,7 +615,9 @@ Ext.onReady( function() {
 							}
 							that.updateItem(value);
 
-							gis.viewport.downloadButton.xable();
+							if (gis.viewport) {
+								gis.viewport.downloadButton.xable();
+							}
 						}
 					}
 				});
@@ -907,7 +909,7 @@ Ext.onReady( function() {
 				layer: layer,
 				text: layer.name,
 				imageUrl: 'images/' + layer.id + '_14.png',
-				value: layer.id === visibleLayer.id ? true : false,
+				value: layer.id === visibleLayer.id && window.google ? true : false,
 				opacity: layer.layerOpacity,
 				numberFieldDisabled: layer.id !== visibleLayer.id
 			});
@@ -916,9 +918,7 @@ Ext.onReady( function() {
 			items.push(layer.item);
 		}
 
-		if (window.google) {
-			visibleLayer.item.setValue(true);
-		}
+		visibleLayer.item.setValue(!!window.google);
 
         panel = Ext.create('Ext.panel.Panel', {
 			renderTo: 'layerItems',
@@ -5230,11 +5230,6 @@ Ext.onReady( function() {
 						id: id
 					};
 					GIS.core.MapLoader(gis).load();
-				}
-
-                // Background
-				if (!window.google) {
-					gis.layer.openStreetMap.item.setValue(false);
 				}
 			};
 
