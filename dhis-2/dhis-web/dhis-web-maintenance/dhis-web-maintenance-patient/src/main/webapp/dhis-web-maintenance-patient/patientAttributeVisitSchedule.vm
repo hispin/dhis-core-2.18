@@ -38,7 +38,7 @@
 	</tr>  
 	<tr>
 		<td colspan='2'>
-			<input type="submit" value="$i18n.getString( 'add' )" />
+			<input type="submit" value="$i18n.getString( 'save' )" />
 			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttributeGroup.action'"/>
 		</td>
 	</tr>
