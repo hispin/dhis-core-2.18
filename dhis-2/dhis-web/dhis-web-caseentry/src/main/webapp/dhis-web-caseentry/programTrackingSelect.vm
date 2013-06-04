@@ -21,7 +21,7 @@
 		isDashboard = true;
 		showById('dueDateTR');
 		showById('followupTR');
-		setFieldValue('listPatientBtn','$encoder.jsEscape( $i18n.getString( "list_events" ) , "'")');
+		setFieldValue('listPatientBtn','$encoder.jsEscape( $i18n.getString( "show_activity_list" ) , "'")');
 		
 		mainPage = 0;
 	});	
