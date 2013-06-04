@@ -5560,7 +5560,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
       <section>
         <title>Program enrollment</title>
         <para>When a person is enrolled into any health programme, he/she is being provided with an
-          identifier number (e.g PARA, parish) and declared some attributes which belong to the
+          identifier number (e.g. PARA, parish) and declared some attributes which belong to the
           program. Later, the person is provided with various services through the treatment which
           are being recorded. Based on the services of the program by the time, the system creates
           an activity plan for the person.</para>
@@ -5610,6 +5610,10 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
         <listitem>
           <para>Person Attribute</para>
           <para>Create, modify and view Person attributes. An attribute can be used to register extra information for a Person.</para>
+        </listitem>
+        <listitem>
+          <para>Patient Attribute Visit Schedule</para>
+          <para>Allow to configure which person attributes that are added to the visit schedule. This is very useful when the list is printed and used for tracking in the community. </para>
         </listitem>
         <listitem>
           <para>Person Attribute Group</para>
@@ -5669,17 +5673,31 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
  </para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Value Type</emphasis> - Data type of value inputed. In addition to supporting basic data such as <emphasis role="italic">Number</emphasis>, <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Yes/No</emphasis>, <emphasis role="italic">Date</emphasis>, the system supports a value type as <emphasis role="italic">Predefined value</emphasis> for defining attribute values. Users only can select on value in the defined list for each person registered. E.g code values which record the information on access to HIV prevention services can be pre-defined, include <emphasis role="italic">T</emphasis>, <emphasis role="italic">TR</emphasis>, <emphasis role="italic">TRR</emphasis>, <emphasis role="italic">TRRD</emphasis>, <emphasis role="italic">TRRDm</emphasis>, <emphasis role="italic">TRRDmDb</emphasis> as <emphasis role="italic">PMTCT Code</emphasis> attribute.</para>
+            <para><emphasis role="italic">Value Type</emphasis> - Data type of value to be entered.
+              In addition to supporting basic data such as <emphasis role="italic">Number</emphasis>, <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Yes/No</emphasis>, <emphasis role="italic">Yes Only, Date</emphasis>, the system supports a
+              value type as <emphasis role="italic">Predefined value</emphasis> for defining
+              attribute values. Users only can select on value in the defined list for each person
+              registered. E.g. code values which record the information on access to HIV prevention
+              services can be pre-defined, include <emphasis role="italic">T</emphasis>, <emphasis role="italic">TR</emphasis>, <emphasis role="italic">TRR</emphasis>, <emphasis role="italic">TRRD</emphasis>, <emphasis role="italic">TRRDm</emphasis>, <emphasis role="italic">TRRDmDb</emphasis> as <emphasis role="italic">PMTCT Code</emphasis>
+              attribute.</para>
             <para>The system also supports a value type as <emphasis role="italic">Calculated</emphasis> for calculating a number based on other attribute values, e,g. caculate gestational age, EDD, ... in Mother care program.</para>
           </listitem>
         </itemizedlist>
+      </section>
+      <section id='patient_attribute_visit_schedule'>
+        <title>Patient attribute visit schedule</title>
+        <para>This function supports configuration for  person attributes that are added to the visit schedule.This is very useful when the list is printed and used for tracking in the community. </para>
+        <para>Select patient attributes on the left section and move them to the right section and click <emphasis role="italic">Save</emphasis> button.</para>
       </section>
       <section id="patient_attribute_group">
         <title>Person attribute group</title>
         <para>To access the person attribute group maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it and select <emphasis role="italic">Person Attribute Group</emphasis> option.</para>
         <para>To create a new attribute group, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Attribute Group</emphasis> window to go to <emphasis role="italic">Add New Person Attribute Group</emphasis> window , click the <emphasis role="italic">Add new</emphasis> button. Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select attributes that should belong to the group from the left panel. </para>
         <para>Click the <emphasis role="italic">Move selected items</emphasis> button to add the selected attributes to the attribute group. Click the <emphasis role="italic">Remove selected items</emphasis> button to remove attributes from the group that have been selected in the right panel. </para>
-        <para>Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes.The created attribute members will be displayed by the attribute groups into person registration form.</para>
+        <para>Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or
+          the <emphasis role="italic">Cancel</emphasis> button to discard any changes. The created
+          attribute members will be displayed by the attribute groups into person registration
+          form.</para>
         <para>To sort order of attribute groups for displaying  in person registration form, click <emphasis role="italic">Move up</emphasis> and <emphasis role="italic">Move down </emphasis>button next to <emphasis role="italic">Selected attributes</emphasis> section.</para>
       </section>
       <section id="patient_identifier_type">
@@ -5701,7 +5719,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
             <para><emphasis role="italic">Related</emphasis> - Representative re-uses the  identifier of  person.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Number of characters</emphasis> -  Maximum number of characters for value inputed. </para>
+            <para><emphasis role="italic">Number of characters</emphasis> - Maximum number of
+              characters for value to be entered. </para>
           </listitem>
           <listitem>
             <para><emphasis role="italic">Type</emphasis> - Data type of value inputted, includes <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Number</emphasis> and <emphasis role="italic">Letter Only</emphasis>.</para>
@@ -5718,8 +5737,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
         <title>Person registration form</title>
         <para>Person registration form section provides a mechanism for defining custom registration form for each available program in system or for normal registration form.</para>
         <para>To access the person registration form maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it and select <emphasis role="italic">Person Registration Form</emphasis> option.</para>
-        <para>To define a custom program registration form, please select a program in list and click <emphasis role="italic">Add</emphasis> button.</para>
-        <para>To define a normal  registration form, please don&apos;t select any program in list and click <emphasis role="italic">Add</emphasis> button.</para>
+        <para>To define a custom program registration form, please select a program in list and click <emphasis role="italic">Add</emphasis> icon, the first icon corresponding the program you want to design.</para>
+        <para>Check on<emphasis role="italic"> Auto save person registration forms</emphasis> checkbox in to save the data entry form to being designed.</para>
       </section>
       <section id="program">
         <title>Program and Program stage</title>
@@ -5749,17 +5768,26 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
             <listitem>
               <para><emphasis role="italic">Block entry form after completed</emphasis> - Check on it for blocking entry form after completed. The data values in the entry form cannot be changed until the status of the event is reset as incomplete.</para>
             </listitem>
+            <listitem>
+              <para><emphasis role="italic">Remind completing program after a program stage completed</emphasis> - After an event is completed, the system remind if the user want to complete the program.</para>
+            </listitem>
           </itemizedlist>
           <para><emphasis role="italic">Enrollment details</emphasis> section - </para>
           <itemizedlist>
             <listitem>
+              <para><emphasis role="italic">Disable registration fields</emphasis> - Registration fields in default form include full name, gender, dob type,  date of birth,  phone number, date of death, is dead and health worker. Other attributes and identifier  are not required. In custom form, user can define a registration form required above fields.</para>
+            </listitem>
+            <listitem>
               <para><emphasis role="italic">Generate events by enrollment date</emphasis> - Check on it for auto-generating due dates of events from program-stages of this program    based on the enrollment date. If it is not checked, the due dates are generated based on incident date.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Ignore to generate overdue events</emphasis> - When a person enrolls into the program, the  events corresponding to the program-stages are created. If this field is checked, the system will ignore to generate overdue events. </para>
+              <para><emphasis role="italic">Skip to generate overdue events</emphasis> - When a person enrolls into the program, the  events corresponding to the program-stages are created. If this field is checked, the system will ignore to generate overdue events. </para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Only enroll one </emphasis>- Check on it if a person only can enroll the program one time. For example, Child Vaccination Program, Post-mortem examination, PSI&apos;s IPC process. This will avoid a person enrolling more than one into a program when it doesn&apos;t make sense.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Display on all organisation units </emphasis>- Check on it if user want to use  the program on all  organisation units no mater what the program is assigned to the organisation unit or not. Unchecnk if the program is only used on organisation units assigned.</para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Show incident date</emphasis> - Set show/hide incident date field when a person enroll in this program.</para>
@@ -5774,11 +5802,26 @@ For example: the date in which a person enrolls to the system.</para>
             <listitem>
               <para><emphasis role="italic">Identifiers / attributes <emphasis role="italic">section</emphasis></emphasis> - Select identifier-types and person attributes which belong to the program. Check  <emphasis role="italic">Displayed in list</emphasis> checkboxes of identifier types to display its value in person list instead of person&apos;s full-name.</para>
             </listitem>
+            <listitem>
+              <para>Template reminder message section -  Define  template reminder messages which are used for sending messages for person automatically. There are four fields -
+</para>
+              <para>1) <emphasis role="italic">Date to compare</emphasis> - Select the incident date or enrollment date for calculating the date to send messages for persons. </para>
+              <para>2) <emphasis role="italic">Days before/after due date </emphasis>-  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.
+</para>
+              <para>3) <emphasis role="italic">Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include <emphasis role="italic">person first name</emphasis>,<emphasis role="italic"> program name</emphasis>, <emphasis role="italic">incident date, days since incident date, enrollment date, days since enrollment date, organisation unit name</emphasis>. Double-click on an option to insert it into template message field below.
+</para>
+              <para>4) <emphasis role="italic">Message</emphasis> - Content of template message. E.g.
+            Dear {patient-name}, please come to your appointment at {due-date}.
+</para>
+              <para>Click <emphasis role="italic">Add more...</emphasis> button to add more template reminder messages.</para>
+            </listitem>
           </itemizedlist>
           <para>To assign a program for organisation units, click<emphasis role="italic"> Assign program to organisation units</emphasis> icon, the first icon under Operations, corresponding to the program you would like and select organisation units where provide the program.</para>
-          <para>To assign a program for user roles, click <emphasis role="italic">Assign program to userroles</emphasis> icon, the second icon under Operations, corresponding to the program you would like. Please select user role which you want in <emphasis role="italic">Available</emphasis> section and click <emphasis role="italic">Move selected items</emphasis> button or double click on the user role to move to <emphasis role="italic">Selected</emphasis> section. Finally, click <emphasis role="italic">Ok</emphasis> to finish.</para>
+          <para>To assign a program for user roles, click <emphasis role="italic">Assign program to userroles</emphasis> icon, the second icon under Operations, corresponding to the
+            program you would like. Please select user role which you want in <emphasis role="italic">Available</emphasis> section and click <emphasis role="italic">Move selected items</emphasis> button or double click on the user role to move to <emphasis role="italic">Selected</emphasis> section. Finally, click <emphasis role="italic">OK</emphasis> to finish.</para>
           <para>To create validation rules for programs, click <emphasis role="italic">Program validation rule management</emphasis> icon, the fifth icon under Operations, corresponding to the program you would like. Then click <emphasis role="italic">Add</emphasis> button and enter values for the fields in form to create a new one. A validation rule is based on an expression which defines a relationship between data element values. The expression has a left side and a right side and an operator  which defines whether the former must be less than, equal to or greater than the latter. The expression forms a condition which should assert that certain logical criteria are met. For instance, a validation rule could  assert that an  admitted date  given is before the discharged date. </para>
-          <para>To set authority for sharing the program, click Sharing Settings icon, the sixth icon under Operations, corresponding to the program you would like. You can see a default authority and <emphasis role="italic">Public Access</emphasis> in the form with three authorities as follows -</para>
+          <para>To define a program indicator, click <emphasis role="italic">Program Indicator management </emphasis>icon under Operations, corresponding to the program you would like. </para>
+          <para>To set authority for sharing the program, click Sharing Settings icon, the seventh icon under Operations, corresponding to the program you would like. You can see a default authority and <emphasis role="italic">Public Access</emphasis> in the form with three authorities as follows -</para>
           <itemizedlist>
             <listitem>
               <para><emphasis role="italic">None</emphasis> - The program is private one. Just the user who created it can see and use it.</para>
@@ -5795,7 +5838,7 @@ For example: the date in which a person enrolls to the system.</para>
         </section>
         <section>
           <title>Program stage</title>
-          <para>To define a program stage, click the <emphasis role="italic">Program Stage Management</emphasis> icon, the seventh icon under Operations, corresponding to the program you would like  and then <emphasis role="italic">Add new</emphasis> button. Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select the data elements that should belong to the group from the left panel. Click the <emphasis role="italic">Move</emphasis> selected button to add the selected data elements to the right panel. Click the Remove selected button to remove data elements that have been selected in the right panel. Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes.</para>
+          <para>To define a program stage, click the <emphasis role="italic">Program Stage Management</emphasis> icon, the forth icon under Operations, corresponding to the program you would like  and then <emphasis role="italic">Add new</emphasis> button. Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select the data elements that should belong to the group from the left panel. Click the <emphasis role="italic">Move</emphasis> selected button to add the selected data elements to the right panel. Click the Remove selected button to remove data elements that have been selected in the right panel. Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes.</para>
           <para>Basic information -</para>
           <para><emphasis role="italic">Program stage details</emphasis> section - </para>
           <itemizedlist>
@@ -5809,7 +5852,9 @@ For example: the date in which a person enrolls to the system.</para>
               <para><emphasis role="italic">Scheduled days from start</emphasis> - The minimum number of days to wait for starting the program stage.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Auto-generate event</emphasis> - Un-check this to prevent for creating an event of this program stage  automatically when a person enroll into the program.</para>
+              <para><emphasis role="italic">Auto-generate event</emphasis> - Uncheck this to prevent
+                for creating an event of this program stage automatically when a person enroll into
+                the program.</para>
             </listitem>
           </itemizedlist>
           <para><emphasis role="italic">Repeatable program stage details</emphasis> section - </para>
@@ -5818,7 +5863,10 @@ For example: the date in which a person enrolls to the system.</para>
               <para><emphasis role="italic">Repeatable</emphasis> - specify the program stage as repeatable or not.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Display generate event box after completed</emphasis> - Un-check on it if you don&apos;t want to display <emphasis role="italic">Create new event box </emphasis>to create new event for a repeatable stage after clicking <emphasis role="italic">Complete</emphasis> button for an event of the stage  in data entry form. This field is checked as default.</para>
+              <para><emphasis role="italic">Display generate event box after completed</emphasis> -
+                Uncheck on it if you don&apos;t want to display <emphasis role="italic">Create new event box </emphasis>to create new event for a repeatable stage after clicking
+                  <emphasis role="italic">Complete</emphasis> button for an event of the stage in
+                data entry form. This field is checked as default.</para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Standard interval days</emphasis> - Specify the number of days to repeat the repeatable program stage.</para>
@@ -5843,7 +5891,8 @@ For example: the date in which a person enrolls to the system.</para>
           <para><emphasis role="italic">1) Days before/after due date</emphasis> -  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.</para>
           <para><emphasis role="italic">2) Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include person&apos;s first name, program&apos;s name, program stage&apos;s name, due date of event, interval between current date and due date and organisation unit&apos;s name. </para>
           <para>Double-click on an option to insert it into template message field below.</para>
-          <para><emphasis role="italic">3) Message</emphasis> - Content of template message. E.g Dear {patient-name}, please come to your appointment at {due-date}.</para>
+          <para><emphasis role="italic">3) Message</emphasis> - Content of template message. E.g.
+            Dear {patient-name}, please come to your appointment at {due-date}.</para>
           <note>
             <para>Click <emphasis role="italic">Add more... </emphasis>button to add more template reminder messages.</para>
           </note>
@@ -5965,13 +6014,18 @@ For example: the date in which a person enrolls to the system.</para>
                   <emphasis role="underline">Condition section </emphasis>
                 </emphasis>
               </emphasis>
-            </emphasis>- This section contains comparing operations (&lt;, &lt;=, &gt;, &gt;=, =, != ), calculation operation (+), priority operation ( ( ) ), boolean values (Yes, No), status operations (=NULL, != NULL), relation operations (AND, OR). These operations are used for supporting in setting condition for query. </para>
+            </emphasis>- This section contains comparing operations (&lt;, &lt;=, &gt;, &gt;=, =, != ), calculation operation (+), priority operation ( ( ) ), boolean values (Yes, No), status operations (=NULL, != NULL, DateDiff(xxx, Incident date), DateDiff(xxx, Enrollment date), DateDiff(xxx, Report date)  ), relation operations (AND, OR, COMBINE). These operations are used for supporting in setting condition for query. </para>
+          <note>
+            <para>COMBINE operator is used for calculate number of children organidation units completed all program-stage-instances. E.g For the formula like this [PSIC:1149293]  COMBINE [PSIC:1150010]. The system will calculated the number of children orgunits of the selected orgunit which have all program-stage-instances with stage-id as <emphasis role="italic">1149293</emphasis> and <emphasis role="italic">1150010</emphasis> completed. You can find this special formula [PSIC:xxx] by clicking on <emphasis role="italic">Completed</emphasis> option in <emphasis role="italic">Program</emphasis> tab.</para>
+          </note>
           <para><emphasis role="italic">
               <emphasis role="bold">
                 <emphasis role="underline">Description section</emphasis>
               </emphasis>
             </emphasis> - Show description for the condition above. </para>
-          <para>E.g To get number of <emphasis role="italic">girls</emphasis> who got <emphasis role="italic">Vitamin A dose 6</emphasis> enrolled <emphasis role="italic">Child Health program</emphasis> on <emphasis role="italic">January 2012</emphasis>. Then query is created as in the figure below. Note that January 2012 is period parameter which user will select when generate report. It is not set in the query.</para>
+          <para>E.g. To get number of <emphasis role="italic">girls</emphasis> who got <emphasis role="italic">Vitamin A dose 6</emphasis> enrolled <emphasis role="italic">Child Health program</emphasis> on <emphasis role="italic">January 2012</emphasis>. Then
+            query is created as in the figure below. Note that January 2012 is period parameter
+            which user will select when generate report. It is not set in the query.</para>
         </section>
         <section>
           <title>Sample of person aggregation</title>
@@ -5994,7 +6048,9 @@ For example: the date in which a person enrolls to the system.</para>
             <listitem>
               <para>From <emphasis role="italic">Services</emphasis> menu, go to <emphasis role="italic">Individual Records </emphasis>option and click on it. Select <emphasis role="italic">Person</emphasis> option below <emphasis role="italic">Registration</emphasis> header in the left menu to register three persons named <emphasis role="italic">Micheal</emphasis>, <emphasis role="italic">Alice</emphasis> and <emphasis role="italic">Tom</emphasis> in <emphasis role="italic">Ngelehun CHC</emphasis> and enroll them into <emphasis role="italic">Child Health Program</emphasis>.</para>
               <para>1) For  <emphasis role="italic">Micheal</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into <emphasis role="italic">Child Health Program</emphasis>. Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
-              <para>2) For  <emphasis role="italic">Alice</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into Child Health Program. Enter Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
+              <para>2) For <emphasis role="italic">Alice</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into Child Health Program. Enter
+                value for <emphasis role="italic">BCG dose give date</emphasis> data element as
+                  &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
               <para>3) For    <emphasis role="italic">Tom</emphasis>,  no enter any data value for <emphasis role="italic">Birth Details</emphasis> stage.</para>
               <warning>
                 <para>Before entering data value for the stage, choose <emphasis role="italic">Report Date</emphasis> as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
@@ -6040,9 +6096,19 @@ For example: the date in which a person enrolls to the system.</para>
       </section>
       <section id="scheduling_aggregation_query_builder">
         <title>Schedule automated aggregation</title>
-        <para>The aggregation query builder jobs can be automatically scheduled to run on regular intervals. At midnight, this job runs and get all datasets which have data elements  defined into Aggregate Query Builder formulas. Based on the period types of datasets, the system runs formulas at the end of end-date of current period. E.g if today is on 1A.M. in 2013-02-01, the system gets a monthly dataset and other period-type datasets with aggregate formulas, then system will only run aggregate formulas of the monthly  dataset with period as Jan 2013.</para>
+        <para>The aggregation query builder jobs can be automatically scheduled to run on regular
+          intervals. At midnight, this job runs and get all datasets which have data elements
+          defined into Aggregate Query Builder formulas. Based on the period types of datasets, the
+          system runs formulas at the end of end-date of current period. E.g. if today is on 1A.M.
+          in 2013-02-01, the system gets a monthly dataset and other period-type datasets with
+          aggregate formulas, then system will only run aggregate formulas of the monthly dataset
+          with period as Jan 2013.</para>
         <para>Select an option in <emphasis role="italic">Task strategy </emphasis>to set way to get period list for aggregating. There four options - </para>
-        <para>1) <emphasis role="italic">Last month</emphasis> - Get period list by period-types of data sets from last month to current date.  E.g for daily datasets, if current date is <emphasis role="italic">2013-03-09</emphasis>, period list is get from <emphasis role="italic"> 2013-02-09</emphasis> to <emphasis role="italic"> 2013-03-09</emphasis>. For month datasets, periods list is <emphasis role="italic">Feb 2013</emphasis> and <emphasis role="italic">Mar 2013.</emphasis></para>
+        <para>1) <emphasis role="italic">Last month</emphasis> - Get period list by period-types of
+          data sets from last month to current date. E.g. for daily datasets, if current date is
+            <emphasis role="italic">2013-03-09</emphasis>, period list is get from <emphasis role="italic"> 2013-02-09</emphasis> to <emphasis role="italic"> 2013-03-09</emphasis>.
+          For month datasets, periods list is <emphasis role="italic">Feb 2013</emphasis> and
+            <emphasis role="italic">Mar 2013.</emphasis></para>
         <para>2) <emphasis role="italic">Last 3 month</emphasis> - Get periods by from last 3 month to current date.</para>
         <para>3) <emphasis role="italic">Last 6 month</emphasis> - Get periods by from last 6 month to current date</para>
         <para>4) <emphasis role="italic">Last 12 month</emphasis> - Get periods by from last 12 month to current date</para>
@@ -6063,7 +6129,7 @@ For example: the date in which a person enrolls to the system.</para>
           <para>Visit Schedule provides for the user at a facility or in an area a list of upcoming visits to better plan for daily/weekly activities.</para>
         </listitem>
         <listitem>
-          <para>Program Tracking</para>
+          <para>Lost to follow-up</para>
           <para>Support the work practices around tracking persons within a health program that have not shown up for a scheduled visit (stage), e.g. that are lost to follow-up. </para>
         </listitem>
         <listitem>
@@ -6094,6 +6160,10 @@ For example: the date in which a person enrolls to the system.</para>
           <para>Program statistics on program performance, e.g. drop-out rates, how many completed every month/year - counts/percentages etc.  </para>
         </listitem>
         <listitem>
+          <para>Program stage completeness</para>
+          <para>Monitor the completeness of events and produce completeness reports for each program </para>
+        </listitem>
+        <listitem>
           <para>Manual Person Aggregation</para>
           <para>Generate routine data values from patient data by month (or other intervals if desired) and organisation unit.
 </para>
@@ -6105,8 +6175,12 @@ For example: the date in which a person enrolls to the system.</para>
         <warning>
           <para>No matter what program persons need  to enroll, they must register into the system first. Then health providers will enroll the persons into relevant  programs. E.g. every pregnant women and the child need to be registered first as a person, then they will be enrolled in Mother Care program or Child Health program.</para>
         </warning>
-        <para>To access <emphasis role="italic">Person management </emphasis>function, from the <emphasis>Services</emphasis> menu, go the the <emphasis>Individual Records </emphasis>option and click on it. Select <emphasis>Find/Add Person</emphasis> option on the left menu to proceed. Then, after to select organisation unit.</para>
-        <para>Click the<emphasis role="italic"> List All Persons</emphasis> button to list all persons in the selected organisation unit. If a program in list on the right side is selected, the system will load persons who enolled into the program.</para>
+        <para>To access <emphasis role="italic">Person management </emphasis>function, from the
+            <emphasis>Services</emphasis> menu, go the <emphasis>Individual Records </emphasis>option and click on it. Select <emphasis>Find/Add Person</emphasis> option on
+          the left menu to proceed. Then, after to select organisation unit.</para>
+        <para>Click the<emphasis role="italic"> List All Persons</emphasis> button to list all
+          persons in the selected organisation unit. If a program in list on the right side is
+          selected, the system will load persons who enrolled into the program.</para>
         <para>For the registration process, the details - which are related to the personal information, identification, contact and location details, and health provider details, are entered.</para>
         <orderedlist inheritnum="inherit" continuation="restarts" arch="">
           <listitem>
@@ -6165,7 +6239,8 @@ For example: the date in which a person enrolls to the system.</para>
               </imageobject>
             </mediaobject>
           </screenshot>
-          <para>The <emphasis role="italic">Demographics</emphasis> section provides links for editing profile  and changing other location of the person. Click on <emphasis role="italic">Edit profile</emphasis> link to update individual information of person. Click on <emphasis role="italic">Change location</emphasis> link to change other location for the person</para>
+          <para>Click on the<emphasis role="italic"> View access log link </emphasis>in the top-right of the dashboard to open history of access log to this person.</para>
+          <para>The <emphasis role="italic">Demographics</emphasis> section provides links for editing profile  and changing other location of the person. Click on <emphasis role="italic">Edit profile</emphasis> link to update individual information of person. Click on <emphasis role="italic">Change location</emphasis> link to change other location for the person.</para>
           <para>Click on a program link in <emphasis role="italic">Active programs</emphasis> section to open the data entry form for the next visit of the selected program. A form is open below with five tab - </para>
           <orderedlist>
             <listitem>
@@ -6185,11 +6260,12 @@ For example: the date in which a person enrolls to the system.</para>
                 </mediaobject>
               </screenshot>
               <para>Click <emphasis role="italic">Update</emphasis> button to update enrollment date and incident date and re-schedule visit plan by the new incident date.</para>
-              <para>Click <emphasis role="italic">Complete/Quit</emphasis> button to complete/quite the active program.</para>
+              <para>Click <emphasis role="italic">Complete</emphasis> button to complete the active program.</para>
+              <para>Click <emphasis role="italic">Quit</emphasis> button to quite the active program. At that time, the status of over-due events are set as skipped. And events scheduled in the future are removed.</para>
               <para>Click <emphasis role="italic">Re-enroll </emphasis>button to re-enroll a completed program.</para>
               <para>If the program enrollment which no stage has data values, you can see  button <emphasis role="italic">Remove</emphasis> next to <emphasis role="italic">Re-enroll</emphasis> button. Click on it to delete this program enrollment.</para>
               <para>After entering a  message in the field, click <emphasis role="italic">Post comment</emphasis> icon, the <emphasis role="italic">first icon</emphasis> under <emphasis role="italic">Message</emphasis> column, next to message text field to add a comment for the event. For sending a reminder message, click on <emphasis role="italic">Send message</emphasis> icon, the <emphasis role="italic">second icon</emphasis> under <emphasis role="italic">Message</emphasis> column.</para>
-			  <note>
+              <note>
                 <para>Only allow to edit due dates of events with status as overdue or scheduled in future.</para>
               </note>
             </listitem>
@@ -6304,7 +6380,10 @@ The case update  is designed in the same manner so that services which are recei
         <section>
           <title>Advanced search persons</title>
           <para>The <emphasis>Advanced search</emphasis> function is used for searching available persons based on  full-name, identifiers and person attribute values.</para>
-          <para>To access <emphasis role="italic">Advanced search</emphasis> function, from the <emphasis>Services</emphasis> menu, go the the <emphasis>Individual Records </emphasis>option and click on it. Select <emphasis>Find/Add Person</emphasis> option on the left menu to proceed. Then, after selecting organisation unit,  click on the <emphasis>Search</emphasis> button on the right side.</para>
+          <para>To access <emphasis role="italic">Advanced search</emphasis> function, from the
+              <emphasis>Services</emphasis> menu, go the <emphasis>Individual Records </emphasis>option and click on it. Select <emphasis>Find/Add Person</emphasis> option on
+            the left menu to proceed. Then, after selecting organisation unit, click on the
+              <emphasis>Search</emphasis> button on the right side.</para>
           <para> A search form is appeared after clicking. User  has to select  criteria and input values into the function.</para>
           <screenshot>
             <mediaobject>
@@ -6322,80 +6401,81 @@ The case update  is designed in the same manner so that services which are recei
             </mediaobject>
           </screenshot>
           <note>
-            <para>Please check <emphasis role="italic">Seach in all facilities</emphasis> checkbox for searching whole organisation hierachy tree.</para>
+            <para>Please check <emphasis role="italic">Search in all facilities</emphasis> checkbox
+              for searching whole organisation hierarchy tree.</para>
           </note>
         </section>
       </section>
-      <section>
-        <title>Tracking</title>
-        <para>This function supports the work practices around tracking persons within a health program that have not shown up for a scheduled visit (stage), e.g. that are lost to follow-up. </para>
-        <section id="visit_schedule">
-          <title>Visit Schedule</title>
-          <para>This will be used to provide the user at a facility or in an area with a list of upcoming visits to better plan for daily/weekly activities. This can also be used as quick navigation to the data entry screen when using the system as a live/real-time data entry system.</para>
-          <para>To access <emphasis role="italic">Visit Schedule </emphasis>module, from the <emphasis role="italic">Services</emphasis> menu, go to the<emphasis role="italic"> Individual Records </emphasis>option. Select <emphasis role="italic">Visit Schedule</emphasis> option on left menu. Visit schedule management  is opened. </para>
-          <para>To get visit schedule for a program, please do as follows - </para>
-          <orderedlist>
-            <listitem>
-              <para>Select a program - Specify program for getting events.</para>
-            </listitem>
-            <listitem>
-              <para>Select start-date and end-date - The system gets active events based on the these dates</para>
-            </listitem>
-            <listitem>
-              <para>Use data from level(s) - Specify the level which you need to get events. If the option is Children only, individual data will be get  from the children of the selected organisation unit. If the option is Selected, individual data will be get from the selected organisation unit. If the option is All, individual data will be get from both selected organisation unit and its children.</para>
-            </listitem>
-            <listitem>
-              <para>Click <emphasis role="italic">Generate</emphasis> button to generate visit schedule. The result is displayed below. And click <emphasis role="italic">Export XLS </emphasis>button to export the result to excel file</para>
-            </listitem>
-          </orderedlist>
-          <screenshot>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="70%" fileref="resources/images/patients_programs/visit_schedule.PNG" format="PNG"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-          <para>Click active event below <emphasis role="italic">Program stage </emphasis>column or <emphasis role="italic">second icon</emphasis>, corresponding to the event which you would like to open the data entry screen.</para>
-          <para>Click <emphasis role="italic">Person Dashboard</emphasis> icon, the <emphasis role="italic">first icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open dashboard of the person corresponding to the event.</para>
-          <para>Click <emphasis role="italic">Person details and history</emphasis> icon, the <emphasis role="italic">third icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open the person history.</para>
-        </section>
-        <section id="program_tracking">
-          <title>Program Tracking</title>
-          <para>This function supports the work practices around tracking persons within a health program that have not shown up for a scheduled visit, e.g. that are lost to follow-up.</para>
-          <para>To access <emphasis role="italic">Program Tracking </emphasis>module, from the <emphasis role="italic">Services</emphasis> menu, go to the<emphasis role="italic"> Individual Records </emphasis>option and select <emphasis role="italic">Program Tracking</emphasis> option on left menu. </para>
-          <para>To get tracking for a program, please do as follows - </para>
-          <orderedlist>
-            <listitem>
-              <para>Select organisation unit on the left panel.</para>
-            </listitem>
-            <listitem>
-              <para>Select a program in list on the main panel.</para>
-            </listitem>
-            <listitem>
-              <para>Click on <emphasis role="italic">Schedule today</emphasis> button to load  over-due events happen on current date. Besides, you can select on<emphasis role="italic"> Schedule 7 days </emphasis>or <emphasis role="italic">Schedule 30 days </emphasis>button to load over-due events happen in  date range corresponding.</para>
-            </listitem>
-          </orderedlist>
-          <screenshot>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="70%" depth="" fileref="resources/images/patients_programs/tracking_program.png" format="PNG"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-          <para>Click on <emphasis role="italic">person&apos;s name</emphasis> link or <emphasis role="italic">Person Dashboard</emphasis> icon, the<emphasis role="italic"> first ico</emphasis>n under <emphasis role="italic">Operations</emphasis> to open his/her dashboard.</para>
-          <para>Click on an <emphasis role="italic">event <emphasis role="italic">or</emphasis> the Reschedule and set status<emphasis role="italic"> icon</emphasis>, <emphasis role="italic">the <emphasis role="italic">second icon </emphasis><emphasis role="italic">
-                  <emphasis role="italic">under</emphasis>
-                </emphasis></emphasis> Operations</emphasis> to re-schedule and set status for the selected event or see all tracking history for this event.</para>
-          <para>Click <emphasis role="italic">Person details and history</emphasis> icon, the <emphasis role="italic">third icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open the person history.</para>
-          <para>To search events by status and  some criteria such as name, identifiers or attributes, click on <emphasis role="italic">Search</emphasis> button next to <emphasis role="italic">List All Persons</emphasis>. A advanced search criteria is shown. After to fill search key values, click on <emphasis role="italic">Search</emphasis> button on this form to display result or click on <emphasis role="italic">Send message</emphasis> button to send a reminder message for person in result.</para>
-          <screenshot>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="70%" fileref="resources/images/patients_programs/program_tracking_search_function.png" format="PNG"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </section>
+      <section id="visit_schedule">
+        <title>Visit Schedule</title>
+        <para>This will be used to provide the user at a facility or in an area with a list of upcoming visits to better plan for daily/weekly activities. This can also be used as quick navigation to the data entry screen when using the system as a live/real-time data entry system.</para>
+        <para>To access <emphasis role="italic">Visit Schedule </emphasis>module, from the <emphasis role="italic">Services</emphasis> menu, go to the<emphasis role="italic"> Individual Records </emphasis>option. Select <emphasis role="italic">Visit Schedule</emphasis> option on left menu. Visit schedule management  is opened. </para>
+        <para>To get visit schedule for a program, please do as follows - </para>
+        <orderedlist>
+          <listitem>
+            <para>Select a program - Specify program for getting events.</para>
+          </listitem>
+          <listitem>
+            <para>Select start-date and end-date - The system gets active events based on the these dates</para>
+          </listitem>
+          <listitem>
+            <para>Use data from level(s) - Specify the level which you need to get events. If the option is Children only, individual data will be get  from the children of the selected organisation unit. If the option is Selected, individual data will be get from the selected organisation unit. If the option is All, individual data will be get from both selected organisation unit and its children.</para>
+          </listitem>
+          <listitem>
+            <para>Click <emphasis role="italic">Show Event List</emphasis> button to generate visit schedule. The result is displayed below. And click <emphasis role="italic">Export XLS </emphasis>button to export the result to excel file.</para>
+          </listitem>
+        </orderedlist>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" fileref="resources/images/patients_programs/visit_schedule.PNG" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Click active event below <emphasis role="italic">Program stage </emphasis>column or <emphasis role="italic">second icon</emphasis>, corresponding to the event which you would like to open the data entry screen.</para>
+        <para>Click <emphasis role="italic">Person Dashboard</emphasis> icon, the <emphasis role="italic">first icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open dashboard of the person corresponding to the event.</para>
+        <para>Click <emphasis role="italic">Person details and history</emphasis> icon, the <emphasis role="italic">third icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open the person history.</para>
+      </section>
+      <section id="program_tracking">
+        <title>Lost to follow-up</title>
+        <para>This function supports the work practices around tracking persons within a health program that have not shown up for a scheduled visit, e.g. that are lost to follow-up.</para>
+        <para>To access <emphasis role="italic">Program Tracking </emphasis>module, from the <emphasis role="italic">Services</emphasis> menu, go to the<emphasis role="italic"> Individual Records </emphasis>option and select <emphasis role="italic">Program Tracking</emphasis> option on left menu. </para>
+        <para>To get tracking for a program, please do as follows - </para>
+        <orderedlist>
+          <listitem>
+            <para>Select organisation unit on the left panel.</para>
+          </listitem>
+          <listitem>
+            <para>Select a program in list on the main panel.</para>
+          </listitem>
+          <listitem>
+            <para>Select  a status event you want to get.</para>
+          </listitem>
+          <listitem>
+            <para>Check on Show only Risk cases if you only want to show risk cases in result.</para>
+          </listitem>
+          <listitem>
+            <para>Click <emphasis role="italic">Show Event List </emphasis>button.</para>
+          </listitem>
+        </orderedlist>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" depth="" fileref="resources/images/patients_programs/tracking_program.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>Click on an event  to re-schedule and set status for the selected event or see all tracking history for this event.</para>
+        <para>Click on <emphasis role="italic">person&apos;s name</emphasis> link or <emphasis role="italic">Person Dashboard</emphasis> icon, the<emphasis role="italic"> first ico</emphasis>n under <emphasis role="italic">Operations</emphasis> to open his/her dashboard.</para>
+        <para>Click <emphasis role="italic">Person details and history</emphasis> icon, the <emphasis role="italic">second icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the event which you would like to open the person history.</para>
+        <para>To search events by status and  some criteria such as name, identifiers or attributes, click on <emphasis role="italic">Search</emphasis> button next to <emphasis role="italic">List All Persons</emphasis>. A advanced search criteria is shown. After to fill search key values, click on <emphasis role="italic">Search</emphasis> button on this form to display result or click on <emphasis role="italic">Send message</emphasis> button to send a reminder message for person in result.</para>
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" fileref="resources/images/patients_programs/program_tracking_search_function.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
       </section>
       <section>
         <title>Data entry</title>
@@ -6410,7 +6490,10 @@ The case update  is designed in the same manner so that services which are recei
               <para>The system loads multi events with registration which belong to the selected organisation unit.</para>
             </listitem>
             <listitem>
-              <para>Select a program in the list and click on <emphasis role="italic">List All Person </emphasis>button. An event list  of persons who enrolled into the selected program is shown.</para>
+              <para>Select a <emphasis role="italic">program</emphasis> in the list </para>
+            </listitem>
+            <listitem>
+              <para>Select an option in <emphasis role="italic">Schedule visits</emphasis> combobox to get events corresponding to the period options. There are three options, includes <emphasis role="italic">Today</emphasis>, <emphasis role="italic">Last 7 days</emphasis> and <emphasis role="italic">Last 30 days</emphasis>.</para>
               <screenshot>
                 <mediaobject>
                   <imageobject>
@@ -6470,6 +6553,9 @@ The case update  is designed in the same manner so that services which are recei
               <para>Click on <emphasis role="italic">Data entry</emphasis> icon - the first icon, to update value for the event.</para>
             </listitem>
           </orderedlist>
+          <note>
+            <para>Currently, we supported offline functionality for single event without registration entry form.</para>
+          </note>
         </section>
       </section>
       <section>
@@ -6483,6 +6569,9 @@ The case update  is designed in the same manner so that services which are recei
             </listitem>
             <listitem>
               <para><emphasis role="italic">Statistical Program</emphasis> - Statistical reports on program performance, e.g. drop-out rates, how many completed every month/year - counts/percentages etc.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Program stage completeness</emphasis> - Monitor the completeness of events and produce completeness reports for each program. </para>
             </listitem>
           </itemizedlist></para>
         <section id="program_summary_report">
@@ -6522,8 +6611,10 @@ The case update  is designed in the same manner so that services which are recei
         <section>
           <title>Tabular report</title>
           <para>This is  an interactive reporting tool for tracker-data using tabular presentation with dynamic filters for each person attribute/data element.</para>
-          <para>There are two types of reports. The first one is case-based report.
-It supports to filter events by each person attributes and data elements. The second one is aggregate report. It allows for aggregation on simple filters annd dynamic updates to report view based on changes to filters.</para>
+          <para>There are two types of reports. The first one is case-based report. It supports to
+            filter events by each person attributes and data elements. The second one is aggregate
+            report. It allows for aggregation on simple filters and dynamic updates to report view
+            based on changes to filters.</para>
           <para>To access the tabular report function, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records</emphasis> option and click on it. Select <emphasis role="italic">Tabular report</emphasis> option below Reports header on left menu to proceed. </para>
           <para>To start a case-based report, the first step is to select a program in the list. Follow these steps -</para>
           <orderedlist>
@@ -6578,7 +6669,9 @@ It supports to filter events by each person attributes and data elements. The se
               <para>Select <emphasis role="italic">date</emphasis> period ranges  / relative periods / fixed periods in corresponding tab.</para>
             </listitem>
             <listitem>
-              <para>Select one or many <emphasis role="italic">organisation units</emphasis> by clicking on the hierachy organisation tree or check on <emphasis role="italic">User organisation unit</emphasis> / <emphasis role="italic">User organisation unit chilren</emphasis> checkboxes. Besides, you can also select a group in list and system will load all organisation units which belong to the selected one.</para>
+              <para>Select one or many <emphasis role="italic">organisation units</emphasis> by
+                clicking on the hierarchy organisation tree or check on <emphasis role="italic">User organisation unit</emphasis> / <emphasis role="italic">User organisation unit children</emphasis> checkboxes. Besides, you can also select a group in list and
+                system will load all organisation units which belong to the selected one.</para>
             </listitem>
             <listitem>
               <para>In <emphasis role="italic">Data filters </emphasis>tab, Select a <emphasis role="italic">program stage</emphasis>. Double-click data elements which you need to show into the result to move it from <emphasis role="italic">Available</emphasis>field to the <emphasis role="italic">Selected</emphasis> field</para>
@@ -6621,7 +6714,10 @@ It supports to filter events by each person attributes and data elements. The se
                     <para>Organisation unit: Filters; Period: Filters; Data: Rows</para>
                   </listitem>
                 </itemizedlist></para>
-              <para>2) <emphasis role="italic">Aggregate type</emphasis> - Have three options. The first one is used for calculating number of events which satisfy the fitlers. The others are used for calculating sum/average data values of the select data element in <emphasis role="italic">Sum/Avg of </emphasis>option.</para>
+              <para>2) <emphasis role="italic">Aggregate type</emphasis> - Have three options. The
+                first one is used for calculating number of events which satisfy the filters. The
+                others are used for calculating sum/average data values of the select data element
+                in <emphasis role="italic">Sum/Avg of </emphasis>option.</para>
               <para>3) <emphasis role="italic">Sum/Avg of </emphasis>- Select a number data element in list to calculate sum/avg data values of its if aggregate type option is sum or avg.</para>
               <para>4) <emphasis role="italic">Use completed events</emphasis> - Check it if you want to get only completed events.</para>
               <para>5) <emphasis role="italic">Use data from level(s) </emphasis>-  Specify the level which you need to get events. If the option is <emphasis role="italic">Children only</emphasis>, individual data will be aggregated from the children of the selected organisation unit. If the option is <emphasis role="italic">Selected</emphasis>, individual data  will be aggregated from the selected organisation unit. If the option is <emphasis role="italic">All</emphasis>, individual data will be aggregated  from both selected organisation unit and its children.</para>
@@ -6706,6 +6802,10 @@ It supports to filter events by each person attributes and data elements. The se
               <para><emphasis role="italic">Visits overdue (%)</emphasis> column is percent of visits overdue (#) / the number of all visits scheduled.</para>
             </listitem>
           </orderedlist>
+        </section>
+        <section id="program_stage_completeness">
+          <title>Program stage completeness</title>
+          <para>To generate the completeness of events, select an organisation unit on the left panel. Then select a program which you would like. After to select two dates for Start date  and End date field. Finally, click Generate button. The result is children organisation units where finished all events of the selected program by the date range you selected.</para>
         </section>
       </section>
       <section id="run_case_aggregation">

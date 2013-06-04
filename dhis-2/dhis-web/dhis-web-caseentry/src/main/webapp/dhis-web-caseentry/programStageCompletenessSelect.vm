@@ -42,13 +42,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td>$i18n.getString('show_events_since')</td>
+				<td>$i18n.getString('start_date')</td>
 				<td>
 					<input type='text' id='startDate' name='startDate'>
 				</td>
 			</tr>
 			<tr>
-				<td>$i18n.getString('show_events_up_to')</td>
+				<td>$i18n.getString('end_date')</td>
 				<td>
 					<input type='text' id='endDate' name='endDate'>
 				</td>
