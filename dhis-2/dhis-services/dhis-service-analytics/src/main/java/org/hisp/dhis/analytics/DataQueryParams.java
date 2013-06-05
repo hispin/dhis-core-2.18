@@ -154,8 +154,8 @@ public class DataQueryParams
     
     /**
      * Ensures conformity for this query. The category option combo dimension
-     * and any category dimensions can only be present if the data element 
-     * dimension exists and the indicator and data set dimensions do not exist.
+     * can only be present if the data element dimension exists and the indicator 
+     * and data set dimensions do not exist.
      */
     public DataQueryParams conform()
     {
@@ -164,7 +164,6 @@ public class DataQueryParams
             dimensions.contains( new BaseDimensionalObject( DATASET_DIM_ID ) ) )
         {
             removeDimension( CATEGORYOPTIONCOMBO_DIM_ID );
-            removeDimensions( DimensionType.CATEGORY );
         }
         
         return this;
