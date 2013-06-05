@@ -20,7 +20,7 @@
 				<tr>
 					<th>$i18n.getString( "role" )</th>
 					<th>$i18n.getString( "description" )</th>
-					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th class="{sorter: false}" style="width:120px;">$i18n.getString( "operations" )</th>
 				</tr>
 				</thead>
 				<tbody id="list">
