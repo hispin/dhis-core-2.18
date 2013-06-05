@@ -3898,6 +3898,7 @@ Ext.onReady( function() {
 					objectName,
 					periodRecords,
 					fixedPeriodRecords = [],
+                    dimNames = [],
 					isOu = false,
 					isOuc = false;
 
@@ -3908,6 +3909,7 @@ Ext.onReady( function() {
 				pt.util.pivot.createTable(layout, pt);
 
 				// Set gui
+
 				xLayout = pt.util.pivot.getExtendedLayout(layout);
 				dimMap = xLayout.objectNameDimensionsMap;
 				recMap = xLayout.objectNameItemsMap;
@@ -3979,39 +3981,57 @@ Ext.onReady( function() {
 				pt.viewport.filterStore.removeAll();
 
 				if (layout.columns) {
+                    dimNames = [];
+
 					for (var i = 0, dim; i < layout.columns.length; i++) {
 						dim = dimConf.objectNameMap[layout.columns[i].dimension];
 
-						pt.viewport.colStore.add({
-							id: dim.dimensionName,
-							name: dimConf.objectNameMap[dim.dimensionName].name
-						});
+                        if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
+                            pt.viewport.colStore.add({
+                                id: dim.dimensionName,
+                                name: dimConf.objectNameMap[dim.dimensionName].name
+                            });
+
+                            dimNames.push(dim.dimensionName);
+                        }
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
 					}
 				}
 
 				if (layout.rows) {
+                    dimNames = [];
+
 					for (var i = 0, dim; i < layout.rows.length; i++) {
 						dim = dimConf.objectNameMap[layout.rows[i].dimension];
 
-						pt.viewport.rowStore.add({
-							id: dim.dimensionName,
-							name: dimConf.objectNameMap[dim.dimensionName].name
-						});
+                        if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
+                            pt.viewport.rowStore.add({
+                                id: dim.dimensionName,
+                                name: dimConf.objectNameMap[dim.dimensionName].name
+                            });
+
+                            dimNames.push(dim.dimensionName);
+                        }
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
 					}
 				}
 
 				if (layout.filters) {
+                    dimNames = [];
+
 					for (var i = 0, dim; i < layout.filters.length; i++) {
 						dim = dimConf.objectNameMap[layout.filters[i].dimension];
 
-						pt.viewport.filterStore.add({
-							id: dim.dimensionName,
-							name: dimConf.objectNameMap[dim.dimensionName].name
-						});
+                        if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
+                            pt.viewport.filterStore.add({
+                                id: dim.dimensionName,
+                                name: dimConf.objectNameMap[dim.dimensionName].name
+                            });
+
+                            dimNames.push(dim.dimensionName);
+                        }
 
 						pt.viewport.dimensionStore.remove(pt.viewport.dimensionStore.getById(dim.dimensionName));
 					}
