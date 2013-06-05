@@ -1212,7 +1212,7 @@ Ext.onReady( function() {
 
 					if (id && name) {
 						Ext.Ajax.request({
-							url: dv.init.contextPath + '/api/charts/' + id + '.json?links=false',
+							url: dv.init.contextPath + '/api/charts/' + id + '.json?viewClass=dimensional&links=false',
 							method: 'GET',
 							failure: function(r) {
 								dv.util.mask.hideMask();
