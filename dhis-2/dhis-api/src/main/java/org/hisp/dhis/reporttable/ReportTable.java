@@ -58,6 +58,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
@@ -191,6 +192,11 @@ public class ReportTable
      * The font size of the text in the table.
      */
     private String fontSize;
+    
+    /**
+     * The legend set in the table.
+     */
+    private MapLegendSet legendSet;
     
     // -------------------------------------------------------------------------
     // Transient properties
@@ -921,6 +927,19 @@ public class ReportTable
         this.fontSize = fontSize;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public MapLegendSet getLegendSet()
+    {
+        return legendSet;
+    }
+
+    public void setLegendSet( MapLegendSet legendSet )
+    {
+        this.legendSet = legendSet;
+    }
+
     // -------------------------------------------------------------------------
     // Get- and set-methods for transient properties
     // -------------------------------------------------------------------------
@@ -990,6 +1009,7 @@ public class ReportTable
             digitGroupSeparator = reportTable.getDigitGroupSeparator();
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
+            legendSet = reportTable.getLegendSet();
             
             columnDimensions.clear();
             columnDimensions.addAll( reportTable.getColumnDimensions() );

@@ -239,7 +239,7 @@ PT.core.getConfigs = function() {
 		displayDensity: {
 			'compact': '3px',
 			'normal': '5px',
-			'comfortable': '10px'
+			'comfortable': '10px',
 		},
 		fontSize: {
 			'small': '10px',
@@ -483,14 +483,14 @@ PT.core.getUtils = function(pt) {
 			return (tmp.indexOf(".") > -1) ? (tmp.length - tmp.indexOf(".") - 1) : 0;
 		},
 
-		roundIf: function(x, fix) {
+		roundIf: function(x, prec) {
 			if (Ext.isString(x)) {
 				x = parseFloat(x);
 			}
 
-			if (Ext.isNumber(x) && Ext.isNumber(fix)) {
+			if (Ext.isNumber(x) && Ext.isNumber(prec)) {
 				var dec = pt.util.number.getNumberOfDecimals(x);
-				return parseFloat(dec > fix ? x.toFixed(fix) : x);
+				return parseFloat(dec > prec ? Ext.Number.toFixed(x, prec) : x);
 			}
 			return x;
 		},
@@ -503,6 +503,34 @@ PT.core.getUtils = function(pt) {
 			}
 
 			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, pt.conf.pivot.digitGroupSeparator[nf]);
+		}
+	};
+
+	util.color = {
+		hexToRgb: function(hex) {
+			var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+			hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+				return r + r + g + g + b + b;
+			});
+
+			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : null;
+		},
+		getContrast: function(hex) {
+			if (Ext.isString(hex)) {
+				var rgb = util.color.hexToRgb(hex),
+					factor = (rgb.r + rgb.g + rgb.b);
+
+				if (factor < 210) {
+					return '#ffffff';
+				}
+			}
+
+			return '#000000';
 		}
 	};
 
@@ -757,8 +785,8 @@ PT.core.getUtils = function(pt) {
 
 		createTable: function(layout, pt) {
 			var dimConf = pt.conf.finals.dimension,
+				legendSet = layout.legendSet ? pt.init.idLegendSetMap[layout.legendSet.id] : undefined,
 				getSyncronizedXLayout,
-				//getParamString,
 				getExtendedResponse,
 				getExtendedAxis,
 				validateUrl,
@@ -1140,7 +1168,7 @@ PT.core.getUtils = function(pt) {
 			validateUrl = function(url) {
 				if (!Ext.isString(url) || url.length > 2000) {
 					var percent = ((url.length - 2000) / url.length) * 100;
-					alert('Too many parameters selected. Please reduce the number of parameters by at least ' + percent.toFixed(0) + '%.');
+					alert('Too many parameters selected. Please reduce the number of parameters by at least ' + Ext.Number.toFixed(percent, 0) + '%.');
 					return;
 				}
 
@@ -1187,28 +1215,94 @@ PT.core.getUtils = function(pt) {
 					htmlArray;
 
 				getTdHtml = function(config) {
-					var cls,
+					var bgColor,
+						legends,
+						cls,
 						colSpan,
 						rowSpan,
 						htmlValue,
 						displayDensity,
-						fontSize;
+						fontSize,
+						html = '',
+						isLegendSet = Ext.isObject(legendSet) && Ext.isArray(legendSet.legends) && legendSet.legends.length,
+						isValue = Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty;
 
-					if (!(config && Ext.isObject(config))) {
+					if (!Ext.isObject(config)) {
 						return '';
 					}
 
-					cls = config.cls ? config.cls : '';
-					cls += config.hidden ? ' td-hidden' : '';
-					cls += config.collapsed ? ' td-collapsed' : '';
-					colSpan = config.colSpan ? 'colspan="' + config.colSpan + '"' : '';
-					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '"' : '';
+					// Background color from legend set
+					if (isValue && isLegendSet) {
+						legends = legendSet.legends;
+
+						for (var i = 0, value; i < legends.length; i++) {
+							value = parseFloat(config.value);
+
+							if (Ext.Number.constrain(value, legends[i].sv, legends[i].ev) === value) {
+								bgColor = legends[i].color;
+							}
+						}
+					}
+
+					colSpan = config.colSpan ? 'colspan="' + config.colSpan + '" ' : '';
+					rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '" ' : '';
 					htmlValue = config.collapsed ? '&nbsp;' : config.htmlValue || config.value || '&nbsp;';
 					htmlValue = config.type !== 'dimension' ? pt.util.number.pp(htmlValue, layout.digitGroupSeparator) : htmlValue;
 					displayDensity = pt.conf.pivot.displayDensity[config.displayDensity] || pt.conf.pivot.displayDensity[layout.displayDensity];
 					fontSize = pt.conf.pivot.fontSize[config.fontSize] || pt.conf.pivot.fontSize[layout.fontSize];
 
-					return '<td class="' + cls + '" ' + colSpan + ' ' + rowSpan + ' style="padding:' + displayDensity + '; font-size:' + fontSize + ';">' + htmlValue + '</td>';
+					//var randomFromInterval = function(from,to) {
+						//return Math.floor(Math.random() * (to - from + 1) + from);
+					//};
+
+					//var a = ['#ff0000', '#e7ea22', '#00ff00'];
+
+					//var n = randomFromInterval(0,2);
+					//console.log(n);
+
+//if (Ext.isString(config.type) && config.type.substr(0,5) === 'value') {
+					//bgColor = a[n];
+				//}
+
+					if (bgColor) {
+						cls = 'legend';
+						cls += config.hidden ? ' td-hidden' : '';
+						cls += config.collapsed ? ' td-collapsed' : '';
+
+						html += '<td class="' + cls + '" ';
+						html += colSpan + rowSpan + '>';
+						html += '<div class="legendCt">';
+						html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
+						html += '<div class="arrowCt ' + config.cls + '">';
+						html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
+						html += '</div>';
+						html += '</div></div></td>';
+
+						//cls = 'legend';
+						//cls += config.hidden ? ' td-hidden' : '';
+						//cls += config.collapsed ? ' td-collapsed' : '';
+
+						//html += '<td class="' + cls + '" ';
+						//html += colSpan + rowSpan + '>';
+						//html += '<div class="legendCt">';
+						//html += '<div style="display:table-cell; padding:' + displayDensity + '; font-size:' + fontSize + '"';
+						//html += config.cls ? ' class="' + config.cls + '">' : '';
+						//html += htmlValue + '</div>';
+						//html += '<div class="legendColor" style="background-color:' + bgColor + '">&nbsp;</div>';
+						//html += '</div></td>';
+					}
+					else {
+						cls = config.cls ? config.cls : '';
+						cls += config.hidden ? ' td-hidden' : '';
+						cls += config.collapsed ? ' td-collapsed' : '';
+
+						html += '<td class="' + cls + '" ';
+						html += colSpan + rowSpan;
+						html += 'style="padding:' + displayDensity + '; font-size:' + fontSize + ';">' + htmlValue;
+						html += '</td>';
+					}
+
+					return html;
 				};
 
 				doSubTotals = function(xAxis) {
@@ -1839,8 +1933,9 @@ console.log("xLayout", xLayout);
 					alert(r.responseText);
 				},
 				success: function(r) {
-					var layoutConfig = Ext.decode(r.responseText),
-						layout = pt.api.layout.Layout(layoutConfig);
+					var layoutConfig = Ext.decode(r.responseText);
+
+					var	layout = pt.api.layout.Layout(layoutConfig);
 
 					if (layout) {
 						pt.favorite = Ext.clone(layout);
@@ -1969,6 +2064,8 @@ PT.core.getApi = function(pt) {
 
 		// digitGroupSeparator: string ('space') - 'none', 'comma', 'space'
 
+		// legendSet: object
+
 		// userOrganisationUnit: boolean (false)
 
 		// userOrganisationUnitChildren: boolean (false)
@@ -2074,9 +2171,10 @@ PT.core.getApi = function(pt) {
 			layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
 			layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
 
-			layout.displayDensity = Ext.isString(config.displayDensity) &&  !Ext.isEmpty(config.displayDensity) ? config.displayDensity : 'normal';
-			layout.fontSize = Ext.isString(config.fontSize) &&  !Ext.isEmpty(config.fontSize) ? config.fontSize : 'normal';
-			layout.digitGroupSeparator = Ext.isString(config.digitGroupSeparator) &&  !Ext.isEmpty(config.digitGroupSeparator) ? config.digitGroupSeparator : 'space';
+			layout.displayDensity = Ext.isString(config.displayDensity) && !Ext.isEmpty(config.displayDensity) ? config.displayDensity : 'normal';
+			layout.fontSize = Ext.isString(config.fontSize) && !Ext.isEmpty(config.fontSize) ? config.fontSize : 'normal';
+			layout.digitGroupSeparator = Ext.isString(config.digitGroupSeparator) && !Ext.isEmpty(config.digitGroupSeparator) ? config.digitGroupSeparator : 'space';
+			layout.legendSet = Ext.isObject(config.legendSet) && Ext.isString(config.legendSet.id) ? config.legendSet : undefined;
 
 			layout.userOrganisationUnit = isOu;
 			layout.userOrganisationUnitChildren = isOuc;

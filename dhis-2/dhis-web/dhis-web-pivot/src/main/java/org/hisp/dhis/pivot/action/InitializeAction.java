@@ -37,6 +37,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -75,6 +76,13 @@ public class InitializeAction
     public void setDimensionService( DimensionService dimensionService )
     {
         this.dimensionService = dimensionService;
+    }
+    
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     private I18nFormat format;
@@ -235,6 +243,8 @@ public class InitializeAction
         last5Years = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
         dimensions = dimensionService.getAllDimensions();
+        
+        legendSets = mappingService.getAllMapLegendSets();
 
         return SUCCESS;
     }
