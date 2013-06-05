@@ -576,6 +576,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataelement ALTER COLUMN domaintype SET NOT NULL" );
         executeSql( "update dataelementcategory set datadimension = false where datadimension is null" );
         
+        executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
+        executeSql( "alter table sqlview rename column viewid to sqlviewid" );
+        
         log.info( "Tables updated" );
     }
 
