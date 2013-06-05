@@ -146,6 +146,7 @@ Ext.onReady( function() {
 			var svgArray = [],
 				svg = '',
 				namespace,
+                title = Ext.htmlEncode(title),
 				titleSVG,
 				legendSVG = '',
 				scalelineSVG,
@@ -184,6 +185,13 @@ Ext.onReady( function() {
 					when,
 					where,
 					legend;
+
+                // Html encode
+                for (var key in legendConfig) {
+                    if (legendConfig.hasOwnProperty(key)) {
+                        legendConfig[key] = Ext.htmlEncode(legendConfig[key]);
+                    }
+                }
 
 				// SVG
 				svgArray.push(layer.div.innerHTML);
@@ -3049,7 +3057,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.download,
 			handler: function() {
 				var type = format.getValue(),
-					title = Ext.htmlEncode(name.getValue()),
+					title = name.getValue(),
 					svg = gis.util.svg.getString(title, gis.util.map.getVisibleVectorLayers()),
 					exportForm = document.getElementById('exportForm');
 
