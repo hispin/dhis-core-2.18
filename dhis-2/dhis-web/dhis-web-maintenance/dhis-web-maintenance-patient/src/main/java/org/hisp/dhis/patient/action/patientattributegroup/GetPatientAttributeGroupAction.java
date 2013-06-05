@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -104,7 +104,7 @@ public class GetPatientAttributeGroupAction
 
         patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesWithoutGroup() );
 
-        Collections.sort( patientAttributes, new PatientAttributeComparator() );
+        Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

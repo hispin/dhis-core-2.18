@@ -36,6 +36,8 @@
     <property name="expression" column="expression" />
     
     <property name="displayOnVisitSchedule" />
+    
+    <property name="sortOrderInVisitSchedule" />
 
   </class>
 </hibernate-mapping>
