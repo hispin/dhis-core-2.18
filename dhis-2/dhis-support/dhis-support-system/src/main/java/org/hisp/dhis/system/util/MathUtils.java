@@ -47,7 +47,7 @@ public class MathUtils
     private static final double TOLERANCE = 0.01; 
     
     public static final String NUMERIC_REGEXP = "^(0|-?[1-9]\\d*)(\\.\\d+)?$";    
-    public static final String NUMERIC_LENIENT_REGEXP = "^(-?\\d+)(\\.\\d+)?$";
+    public static final String NUMERIC_LENIENT_REGEXP = "^(-?[0-9]+)(\\.[0-9]+)?$";
     
     private static final Pattern NUMERIC_PATTERN = Pattern.compile( NUMERIC_REGEXP );
     private static final Pattern NUMERIC_LENIENT_PATTERN = Pattern.compile( NUMERIC_LENIENT_REGEXP );
