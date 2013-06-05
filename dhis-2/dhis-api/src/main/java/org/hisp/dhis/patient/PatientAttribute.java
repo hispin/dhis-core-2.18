@@ -80,6 +80,8 @@ public class PatientAttribute
     private String expression;
     
     private Boolean displayOnVisitSchedule;
+    
+    private Integer sortOrderInVisitSchedule;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -248,6 +250,19 @@ public class PatientAttribute
     public void setDisplayOnVisitSchedule( Boolean displayOnVisitSchedule )
     {
         this.displayOnVisitSchedule = displayOnVisitSchedule;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getSortOrderInVisitSchedule()
+    {
+        return sortOrderInVisitSchedule;
+    }
+
+    public void setSortOrderInVisitSchedule( Integer sortOrderInVisitSchedule )
+    {
+        this.sortOrderInVisitSchedule = sortOrderInVisitSchedule;
     }
 
 }

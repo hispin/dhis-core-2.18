@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,7 +75,7 @@ public class GetPatientAttributeListAction
     {
         patientAttributes = new ArrayList<PatientAttribute>(patientAttributeService.getAllPatientAttributes());
         
-        Collections.sort( patientAttributes, new PatientAttributeComparator() );
+        Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

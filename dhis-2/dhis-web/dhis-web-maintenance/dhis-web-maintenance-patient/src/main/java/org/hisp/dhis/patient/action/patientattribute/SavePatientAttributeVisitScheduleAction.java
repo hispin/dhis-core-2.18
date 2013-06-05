@@ -74,12 +74,14 @@ public class SavePatientAttributeVisitScheduleAction
     {
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
         
+        int index = 1;
         for ( Integer attributeId : selectedAttributeIds )
         {
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( attributeId );
             patientAttribute.setDisplayOnVisitSchedule( true );
+            patientAttribute.setSortOrderInVisitSchedule( index );
             patientAttributeService.updatePatientAttribute( patientAttribute );
-            
+            index ++;
             patientAttributes.remove( patientAttribute );
         }
         
@@ -87,6 +89,7 @@ public class SavePatientAttributeVisitScheduleAction
         for ( PatientAttribute patientAttribute : patientAttributes )
         {
             patientAttribute.setDisplayOnVisitSchedule( false );
+            patientAttribute.setSortOrderInVisitSchedule( 0 );
             patientAttributeService.updatePatientAttribute( patientAttribute ); 
         }
         

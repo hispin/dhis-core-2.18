@@ -35,6 +35,10 @@
 				#end
 			</select>
 		</td>
+		<td>
+			<a href="javascript:moveUpSelectedOption( 'selectedAttributeIds')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
+			<a href="javascript:moveDownSelectedOption( 'selectedAttributeIds' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
+		</td>
 	</tr>  
 	<tr>
 		<td colspan='2'>

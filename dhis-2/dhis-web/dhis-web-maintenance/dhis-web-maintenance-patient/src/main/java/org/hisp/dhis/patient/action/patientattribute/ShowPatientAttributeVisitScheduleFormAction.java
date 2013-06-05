@@ -28,13 +28,13 @@
 package org.hisp.dhis.patient.action.patientattribute;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
+import org.hisp.dhis.patient.comparator.PatientAttributeSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -82,16 +82,13 @@ public class ShowPatientAttributeVisitScheduleFormAction
     public String execute()
         throws Exception
     {
-        availablePatientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
-
+        availablePatientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule(false) );
+        Collections.sort( availablePatientAttributes, IdentifiableObjectNameComparator.INSTANCE );
+        
         selectedPatientAttributes = new ArrayList<PatientAttribute>(
             patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule( true ) );
-
-        availablePatientAttributes.removeAll( selectedPatientAttributes );
+        Collections.sort( availablePatientAttributes, new PatientAttributeSortOrderComparator());
         
-        Collections.sort( availablePatientAttributes, new PatientAttributeComparator() );
-        Collections.sort( selectedPatientAttributes, new PatientAttributeComparator() );
-
         return SUCCESS;
     }
 
