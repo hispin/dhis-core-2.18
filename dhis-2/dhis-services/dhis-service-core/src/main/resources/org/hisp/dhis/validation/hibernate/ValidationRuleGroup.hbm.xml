@@ -10,7 +10,7 @@
   
     <cache usage="read-write" />
       
-    <id name="id" column="validationgroupid">
+    <id name="id" column="validationrulegroupid">
       <generator class="native" />
     </id>
     &identifiableProperties;

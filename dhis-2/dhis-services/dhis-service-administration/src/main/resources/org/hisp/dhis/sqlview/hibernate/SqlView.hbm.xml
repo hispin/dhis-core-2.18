@@ -8,7 +8,7 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.sqlview.SqlView" table="sqlview">
 
-    <id name="id" column="viewid">
+    <id name="id" column="sqlviewid">
       <generator class="native" />
     </id>
     &identifiableProperties;

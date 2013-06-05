@@ -27,7 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.SQLException;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
@@ -47,13 +47,17 @@ public class IdentityPopulator
 {
     private static final Log log = LogFactory.getLog( IdentityPopulator.class );
 
-    private static String[] tables = { "chart", "constant", "concept", "attribute", "indicatortype", "indicatorgroupset", "indicator",
+    private static final String[] tables = { "chart", "constant", "concept", "attribute", "indicatortype", "indicatorgroupset", "indicator",
         "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel", "document",
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
         "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
         "maplegendset", "maplayer", "section", "optionset", "program", "programstage"
     };
+    
+    private static final Map<String, String> TABLE_ID_MAP = DimensionalObjectUtils.asMap( 
+        "dataelementcategoryoption", "categoryoptionid",
+        "dataelementcategory", "categoryid" );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -67,7 +71,7 @@ public class IdentityPopulator
     // -------------------------------------------------------------------------
 
     public void execute()
-        throws SQLException
+        throws Exception
     {
         for ( String table : tables )
         {
@@ -82,7 +86,7 @@ public class IdentityPopulator
                 while ( resultSet.next() )
                 {
                     ++count;
-                    String idColumn = table + "id";
+                    String idColumn = getIdColumn( table );
                     int id = resultSet.getInt( idColumn );
                     String sql = "update " + table + " set uid = '" + CodeGenerator.generateCode() + "' where " + idColumn + " = " + id;
                     jdbcTemplate.update( sql );
@@ -102,7 +106,7 @@ public class IdentityPopulator
                 while ( resultSet.next() )
                 {
                     ++count;
-                    String idColumn = table + "id";
+                    String idColumn = getIdColumn( table );
                     int id = resultSet.getInt( idColumn );
                     String sql = "update " + table + " set lastupdated = '" + timestamp + "' where " + idColumn + " = " + id;
                     jdbcTemplate.update( sql );
@@ -120,7 +124,7 @@ public class IdentityPopulator
                 while ( resultSet.next() )
                 {
                     ++count;
-                    String idColumn = table + "id";
+                    String idColumn = getIdColumn( table );
                     int id = resultSet.getInt( idColumn );
                     String sql = "update " + table + " set created = '" + timestamp + "' where " + idColumn + " = " + id;
                     jdbcTemplate.update( sql );
@@ -131,9 +135,11 @@ public class IdentityPopulator
                     log.info( count + " timestamps set on " + table );
                 }
             }
-            catch ( BadSqlGrammarException ex )
+            catch ( Exception ex )
             {
-                log.error( "Problem updating " + table + ": ", ex );
+                log.error( "Problem updating: " + table + ", id column: " + getIdColumn( table ), ex );
+                
+                throw ex;
             }
         }
 
@@ -148,6 +154,11 @@ public class IdentityPopulator
         log.debug( "Organisation unit uuids updated" );        
     }
 
+    private String getIdColumn( String table )
+    {
+        return TABLE_ID_MAP.containsKey( table ) ? TABLE_ID_MAP.get( table ) : ( table + "id" );        
+    }
+    
     private void createUidConstraints()
     {
         for ( String table : tables )
