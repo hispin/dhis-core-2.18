@@ -27,7 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 import java.io.InputStream;
@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.DimensionService;
-import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
@@ -302,28 +301,8 @@ public class ReportTableController
         reportTable.getRowDimensions().clear();
         reportTable.getFilterDimensions().clear();
         
-        if ( reportTable.getColumns() != null )
-        {
-            for ( DimensionalObject column : reportTable.getColumns() )
-            {
-                reportTable.getColumnDimensions().add( toDimension( column.getDimension() ) );
-            }
-        }
-        
-        if ( reportTable.getRows() != null )
-        {
-            for ( DimensionalObject row : reportTable.getRows() )
-            {
-                reportTable.getRowDimensions().add( toDimension( row.getDimension() ) );
-            }
-        }
-        
-        if ( reportTable.getFilters() != null )
-        {
-            for ( DimensionalObject filter : reportTable.getFilters() )
-            {
-                reportTable.getFilterDimensions().add( toDimension( filter.getDimension() ) );
-            }
-        }
+        reportTable.getColumnDimensions().addAll( getUniqueDimensions( reportTable.getColumns() ) );
+        reportTable.getRowDimensions().addAll( getUniqueDimensions( reportTable.getRows() ) );
+        reportTable.getFilterDimensions().addAll( getUniqueDimensions( reportTable.getFilters() ) );        
     }
 }

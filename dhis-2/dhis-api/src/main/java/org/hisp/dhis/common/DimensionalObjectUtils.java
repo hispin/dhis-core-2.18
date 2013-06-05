@@ -55,6 +55,33 @@ public class DimensionalObjectUtils
         
         return identifier;
     }
+    
+    /**
+     * Creates a unique list of dimension identifiers based on the given list
+     * of DimensionalObjects.
+     * 
+     * @param dimensions the list of DimensionalObjects.
+     * @return list of dimension identifiers.
+     */
+    public static List<String> getUniqueDimensions( List<DimensionalObject> dimensions )
+    {
+        List<String> dims = new ArrayList<String>();
+        
+        if ( dimensions != null )
+        {
+            for ( DimensionalObject dimension : dimensions )
+            {
+                String dim = toDimension( dimension.getDimension() );
+                
+                if ( dim != null && !dims.contains( dim ) )
+                {
+                    dims.add( dim );
+                }
+            }
+        }
+        
+        return dims;
+    }
 
     /**
      * Creates a two-dimensional array of dimension items based on the list of
