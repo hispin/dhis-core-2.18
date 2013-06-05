@@ -24,6 +24,7 @@ Ext.onReady( function() {
 	PT.app.getInits = function(r) {
 		var init = Ext.decode(r.responseText);
 
+		// Root nodes
 		for (var i = 0; i < init.rootNodes.length; i++) {
 			init.rootNodes[i].path = '/' + pt.conf.finals.root.id + '/' + init.rootNodes[i].id;
 		}
@@ -36,6 +37,14 @@ Ext.onReady( function() {
 			dim.dimensionName = dim.id;
 			dim.objectName = pt.conf.finals.dimension.dimension.objectName;
 			pt.conf.finals.dimension.objectNameMap[dim.id] = dim;
+		}
+
+		// Legend set map
+		init.idLegendSetMap = {};
+
+		for (var i = 0, set; i < init.legendSets.length; i++) {
+			set = init.legendSets[i];
+			init.idLegendSetMap[set.id] = set;
 		}
 
 		// Viewport afterrender
@@ -266,9 +275,6 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				load: function(s) {
-					//s.each( function(r) {
-						//r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
-					//});
 					pt.util.store.addToStorage(s);
 					pt.util.multiselect.filterAvailable({store: s}, {store: store.indicatorSelected});
 				}
@@ -296,9 +302,6 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				load: function(s) {
-					//s.each( function(r) {
-						//r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
-					//});
 					pt.util.store.addToStorage(s);
 					pt.util.multiselect.filterAvailable({store: s}, {store: store.dataElementSelected});
 				}
@@ -328,9 +331,7 @@ Ext.onReady( function() {
 			listeners: {
 				load: function(s) {
 					this.isLoaded = true;
-					//s.each( function(r) {
-						//r.data.name = pt.conf.util.jsonEncodeString(r.data.name);
-					//});
+
 					pt.util.store.addToStorage(s);
 					pt.util.multiselect.filterAvailable({store: s}, {store: store.dataSetSelected});
 				}
@@ -365,7 +366,7 @@ Ext.onReady( function() {
 			data: []
 		});
 
-		store.tables = Ext.create('Ext.data.Store', {
+		store.reportTable = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
 				type: 'ajax',
@@ -405,6 +406,19 @@ Ext.onReady( function() {
 					this.sort('name', 'ASC');
 				}
 			}
+		});
+
+		store.legendSet = Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'index'],
+			data: function() {
+				var data = pt.init.legendSets;
+				data.unshift({id: 0, name: PT.i18n.none, index: -1});
+				return data;
+			}(),
+			sorters: [
+				{property: 'index', direction: 'ASC'},
+				{property: 'name', direction: 'ASC'}
+			]
 		});
 
 		return store;
@@ -869,6 +883,20 @@ Ext.onReady( function() {
 		});
 		pt.viewport.digitGroupSeparator = digitGroupSeparator;
 
+		legendSet = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'pt-combo',
+			style: 'margin-bottom:3px',
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: PT.i18n.legend_set,
+			valueField: 'id',
+			displayField: 'name',
+			editable: false,
+			value: 0,
+			store: pt.store.legendSet
+		});
+		pt.viewport.legendSet = legendSet;
+
 		reportingPeriod = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: PT.i18n.reporting_period,
 			style: 'margin-bottom:4px',
@@ -946,7 +974,6 @@ Ext.onReady( function() {
 		});
 		pt.viewport.topLimit = topLimit;
 
-
 		data = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
@@ -963,7 +990,8 @@ Ext.onReady( function() {
 			items: [
 				displayDensity,
 				fontSize,
-				digitGroupSeparator
+				digitGroupSeparator,
+				legendSet
 			]
 		};
 
@@ -997,6 +1025,7 @@ Ext.onReady( function() {
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
 					digitGroupSeparator: digitGroupSeparator.getValue(),
+					legendSet: {id: legendSet.getValue()},
 					reportingPeriod: reportingPeriod.getValue(),
 					organisationUnit: organisationUnit.getValue(),
 					parentOrganisationUnit: parentOrganisationUnit.getValue(),
@@ -1013,6 +1042,7 @@ Ext.onReady( function() {
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
 				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
 				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
+				legendSet.setValue(Ext.isObject(layout.legendSet) && Ext.isString(layout.legendSet.id) ? layout.legendSet.id : 0);
 				reportingPeriod.setValue(Ext.isBoolean(layout.reportingPeriod) ? layout.reportingPeriod : false);
 				organisationUnit.setValue(Ext.isBoolean(layout.organisationUnit) ? layout.organisationUnit : false);
 				parentOrganisationUnit.setValue(Ext.isBoolean(layout.parentOrganisationUnit) ? layout.parentOrganisationUnit : false);
@@ -1070,6 +1100,10 @@ Ext.onReady( function() {
 					if (!w.hasHideOnBlurHandler) {
 						pt.util.window.addHideOnBlurHandler(w);
 					}
+
+					if (!legendSet.store.isLoaded) {
+						legendSet.store.load();
+					}
 				}
 			}
 		});
@@ -1107,7 +1141,7 @@ Ext.onReady( function() {
 			windowWidth = 500,
 			windowCmpWidth = windowWidth - 22;
 
-		pt.store.tables.on('load', function(store, records) {
+		pt.store.reportTable.on('load', function(store, records) {
 			var pager = store.proxy.reader.jsonData.pager;
 
 			info.setText('Page ' + pager.page + ' of ' + pager.pageCount);
@@ -1154,7 +1188,7 @@ Ext.onReady( function() {
 
 		NameWindow = function(id) {
 			var window,
-				record = pt.store.tables.getById(id);
+				record = pt.store.reportTable.getById(id);
 
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
@@ -1176,6 +1210,9 @@ Ext.onReady( function() {
 					var favorite = getBody();
 					favorite.name = nameTextfield.getValue();
 
+					//tmp
+					//delete favorite.legendSet;
+
 					if (favorite && favorite.name) {
 						Ext.Ajax.request({
 							url: pt.baseUrl + '/api/reportTables/',
@@ -1191,7 +1228,7 @@ Ext.onReady( function() {
 
 								pt.favorite = favorite;
 
-								pt.store.tables.loadStore();
+								pt.store.reportTable.loadStore();
 
 								//pt.viewport.interpretationButton.enable();
 
@@ -1220,6 +1257,9 @@ Ext.onReady( function() {
 								reportTable = Ext.decode(r.responseText);
 								reportTable.name = name;
 
+								//tmp
+								//delete reportTable.legendSet;
+
 								Ext.Ajax.request({
 									url: pt.baseUrl + '/api/reportTables/' + reportTable.id,
 									method: 'PUT',
@@ -1230,7 +1270,7 @@ Ext.onReady( function() {
 										alert(r.responseText);
 									},
 									success: function(r) {
-										pt.store.tables.loadStore();
+										pt.store.reportTable.loadStore();
 										window.destroy();
 									}
 								});
@@ -1306,7 +1346,7 @@ Ext.onReady( function() {
 
 						var value = this.getValue(),
 							url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
-							store = pt.store.tables;
+							store = pt.store.reportTable;
 
 						store.page = 1;
 						store.loadStore(url);
@@ -1320,7 +1360,7 @@ Ext.onReady( function() {
 			handler: function() {
 				var value = searchTextfield.getValue(),
 					url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
-					store = pt.store.tables;
+					store = pt.store.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
 				store.loadStore(url);
@@ -1332,7 +1372,7 @@ Ext.onReady( function() {
 			handler: function() {
 				var value = searchTextfield.getValue(),
 					url = value ? pt.baseUrl + '/api/reportTables/query/' + value + '.json?links=false' : null,
-					store = pt.store.tables;
+					store = pt.store.reportTable;
 
 				store.page = store.page + 1;
 				store.loadStore(url);
@@ -1419,7 +1459,7 @@ Ext.onReady( function() {
 												success: function() {
 													pt.favorite = favorite;
 													pt.viewport.interpretationButton.enable();
-													pt.store.tables.loadStore();
+													pt.store.reportTable.loadStore();
 												}
 											});
 										}
@@ -1472,7 +1512,7 @@ Ext.onReady( function() {
 											url: pt.baseUrl + '/api/reportTables/' + record.data.id,
 											method: 'DELETE',
 											success: function() {
-												pt.store.tables.loadStore();
+												pt.store.reportTable.loadStore();
 											}
 										});
 									}
@@ -1486,7 +1526,7 @@ Ext.onReady( function() {
 					width: 6
 				}
 			],
-			store: pt.store.tables,
+			store: pt.store.reportTable,
 			bbar: [
 				info,
 				'->',
@@ -1503,7 +1543,7 @@ Ext.onReady( function() {
 					this.store.page = 1;
 					this.store.loadStore();
 
-					pt.store.tables.on('load', function() {
+					pt.store.reportTable.on('load', function() {
 						if (this.isVisible()) {
 							this.fireEvent('afterrender');
 						}

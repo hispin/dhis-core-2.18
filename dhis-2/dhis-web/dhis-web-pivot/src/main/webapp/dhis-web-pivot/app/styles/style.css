@@ -212,16 +212,32 @@ table.pivot {
 	text-align: right;
 }
 
-td .good div {
-	background-color: #bbddbb;
-	color: #000;
+	/* Legend */
+.pivot td.legend {
+	padding: 0;
 }
-td .medium div {
 
+.pivot div.legendCt {
+	display: table;
+	float: right;
+	width: 100%;
 }
-td .bad div {
-	background-color: #eacccc;
-	color: #000;
+.pivot div.arrowCt {
+	display: table-cell;
+	vertical-align: top;
+	width: 8px;
+}
+.pivot div.arrow {
+	width: 0;
+	height: 0;
+}
+.pivot div.number {
+	display: table-cell;
+}
+
+.pivot div.legendColor {
+	display: table-cell;
+	width: 2px;
 }
 
 
