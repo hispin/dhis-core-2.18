@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 
 import java.io.IOException;
@@ -41,7 +42,6 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.DimensionService;
-import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
@@ -246,12 +246,6 @@ public class ChartController
             chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
         }
         
-        if ( chart.getFilters() != null )
-        {
-            for ( DimensionalObject dimension : chart.getFilters() )
-            {
-                chart.getFilterDimensions().add( toDimension( dimension.getDimension() ) );
-            }
-        }
+        chart.getFilterDimensions().addAll( getUniqueDimensions( chart.getFilters() ) );
     }
 }
