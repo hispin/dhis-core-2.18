@@ -1215,7 +1215,7 @@ public class HibernateProgramStageInstanceStore
             sql += " UNION ";
         }
         sql = sql.substring( 0, sql.length() - 6 );
-        sql += ") ORDER BY orgunit asc ";
+        sql += " ORDER BY orgunit asc ";
         if ( limit != null )
         {
             sql += "LIMIT " + limit;
@@ -1306,7 +1306,7 @@ public class HibernateProgramStageInstanceStore
         }
 
         sql = sql.substring( 0, sql.length() - 6 ) + " ";
-        sql += " ) ORDER BY orgunit asc ";
+        sql += " ORDER BY orgunit asc ";
         if ( limit != null )
         {
             sql += "LIMIT " + limit;
@@ -1395,7 +1395,7 @@ public class HibernateProgramStageInstanceStore
             }
         }
 
-        sql = sql.substring( 0, sql.length() - 10 ) + " ) ";
+        sql = sql.substring( 0, sql.length() - 10 );
         if ( limit != null )
         {
             sql += " LIMIT " + limit;
