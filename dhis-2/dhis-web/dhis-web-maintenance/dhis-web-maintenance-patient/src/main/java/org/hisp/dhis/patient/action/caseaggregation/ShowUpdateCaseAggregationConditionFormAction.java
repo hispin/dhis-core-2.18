@@ -41,7 +41,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.comparator.ProgramNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -166,7 +165,7 @@ public class ShowUpdateCaseAggregationConditionFormAction
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
-        Collections.sort( programs, new ProgramNameComparator() );
+        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
         patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
         Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );

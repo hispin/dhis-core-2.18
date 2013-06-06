@@ -32,11 +32,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.comparator.ProgramDisplayNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -105,7 +105,7 @@ public class GetPatientRegistrationFormListAction
             }
         }
 
-        Collections.sort( programs, new ProgramDisplayNameComparator() );
+        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

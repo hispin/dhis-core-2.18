@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -108,7 +108,7 @@ public class SelectProgramStageDataElementAction
                     }
                 }
 
-                Collections.sort( programStages, new ProgramStageNameComparator() );
+                Collections.sort( programStages, IdentifiableObjectNameComparator.INSTANCE );
             }
         }
         
