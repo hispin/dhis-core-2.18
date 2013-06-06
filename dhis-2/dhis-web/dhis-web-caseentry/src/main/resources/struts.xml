@@ -865,6 +865,13 @@
       </result>
       <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
     </action>
+    
+    <action name="loadProgramStageSections"
+      class="org.hisp.dhis.caseentry.action.report.GetProgramStageSectionsAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageSections.vm
+      </result>
+      <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+    </action>
 
     <action name="loadDataElements"
       class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
