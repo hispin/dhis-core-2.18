@@ -510,17 +510,14 @@ public class HibernateProgramStageInstanceStore
         }
 
         // Filter is only one orgunit
+        
+       
         if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
         {
             String orgunitName = organisationUnitService.getOrganisationUnit( orgunitIds.iterator().next() )
                 .getDisplayName();
-
-            String filterDataDes = getFilterDataDescription( deFilters );
-            if ( !filterDataDes.isEmpty() )
-            {
-                filterDataDes = "; " + i18n.getString( "data_filter" ) + ": " + filterDataDes;
-            }
-            grid.setSubtitle( subTitle + i18n.getString( "orgunit" ) + ": " + orgunitName + filterDataDes );
+            
+            grid.setSubtitle( subTitle + i18n.getString( "orgunit" ) + ": " + orgunitName );
         }
         // Filter is only one period
         else if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT
@@ -541,14 +538,8 @@ public class HibernateProgramStageInstanceStore
                 String endDate = format.formatDate( period.getEndDate() );
                 periodName += startDate + " -> " + endDate;
             }
-
-            String filterDataDes = getFilterDataDescription( deFilters );
-            if ( !filterDataDes.isEmpty() )
-            {
-                filterDataDes = "; " + i18n.getString( "data_filter" ) + ": " + filterDataDes;
-            }
-
-            grid.setSubtitle( subTitle + i18n.getString( "period" ) + ": " + periodName + filterDataDes );
+            
+            grid.setSubtitle( subTitle + i18n.getString( "period" ) + ": " + periodName );
         }
         else
         {
@@ -582,20 +573,12 @@ public class HibernateProgramStageInstanceStore
             }
 
             // Data filter description
-            String filterDataDes = "";
-            if ( position == PatientAggregateReport.POSITION_ROW_ORGUNIT_COLUMN_PERIOD
-                || position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_ORGUNIT
-                || position == PatientAggregateReport.POSITION_ROW_ORGUNIT_ROW_PERIOD
-                || position == PatientAggregateReport.POSITION_ROW_PERIOD
-                || position == PatientAggregateReport.POSITION_ROW_ORGUNIT )
+            String filterDataDes = getFilterDataDescription( deFilters );
+            if ( !filterDataDes.isEmpty() )
             {
-                filterDataDes = getFilterDataDescription( deFilters );
-                if ( !filterDataDes.isEmpty() )
-                {
-                    filterDataDes = i18n.getString( "data_filter" ) + ": " + filterDataDes + "; ";
-                }
+                filterDataDes = "; " + i18n.getString( "data_filter" ) + ": " + filterDataDes;
             }
-
+            
             subTitle += filterOrgunitDes + filterPeriodDes + filterDataDes;
             if ( subTitle.isEmpty() )
             {
@@ -607,6 +590,8 @@ public class HibernateProgramStageInstanceStore
             }
         }
 
+        
+        
         // ---------------------------------------------------------------------
         // Get SQL and build grid
         // ---------------------------------------------------------------------
