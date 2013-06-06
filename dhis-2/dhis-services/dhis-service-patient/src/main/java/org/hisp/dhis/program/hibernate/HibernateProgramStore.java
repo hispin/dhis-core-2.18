@@ -102,7 +102,8 @@ public class HibernateProgramStore
 
             for ( Program program : getAll() )
             {
-                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
+                if ( userRoles.contains( UserAuthorityGroup.AUTHORITY_ALL )
+                    || CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
                 {
                     programs.add( program );
                 }
@@ -127,7 +128,8 @@ public class HibernateProgramStore
 
             for ( Program program : getByType( type ) )
             {
-                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
+                if ( userRoles.contains( UserAuthorityGroup.AUTHORITY_ALL )
+                    || CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
                 {
                     programs.add( program );
                 }
@@ -146,13 +148,13 @@ public class HibernateProgramStore
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
-        
+
         if ( orgunit != null )
         {
             criteria.createAlias( "organisationUnits", "orgunit" );
             criteria.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
         }
-        
+
         return criteria.list();
     }
 
