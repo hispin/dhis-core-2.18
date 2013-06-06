@@ -77,6 +77,8 @@ public class DataElementRowHandler
         final DataElement dataElement = (DataElement) object;
         
         dataElement.setActive( true );
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement.setZeroIsSignificant( false );
                     
         if ( dataElement.getCode() != null && dataElement.getCode().trim().length() == 0 )
         {
