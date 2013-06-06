@@ -189,6 +189,24 @@ public class DataElementOperand
         return name;
     }
     
+    @Override
+    public String getShortName()
+    {
+        String shortName = null;
+        
+        if ( dataElement != null )
+        {
+            shortName = dataElement.getShortName();
+        }
+        
+        if ( categoryOptionCombo != null )
+        {
+            shortName += SPACE + categoryOptionCombo.getName();
+        }
+        
+        return shortName;
+    }
+    
     /**
      * Tests whether the operand has any aggregation levels.
      */
