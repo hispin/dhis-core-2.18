@@ -1,4 +1,3 @@
-
 #if($message)
 	<span id='message' style="display:block;">$message</span>
 #else
