@@ -1225,7 +1225,7 @@ PT.core.getUtils = function(pt) {
 						fontSize,
 						html = '',
 						isLegendSet = Ext.isObject(legendSet) && Ext.isArray(legendSet.legends) && legendSet.legends.length,
-						isValue = Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty;
+						isValue = Ext.isObject(config) && Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty;
 
 					if (!Ext.isObject(config)) {
 						return '';
