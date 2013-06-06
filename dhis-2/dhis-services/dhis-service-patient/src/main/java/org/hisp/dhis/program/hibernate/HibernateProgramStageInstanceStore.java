@@ -589,8 +589,6 @@ public class HibernateProgramStageInstanceStore
                 grid.setSubtitle( subTitle );
             }
         }
-
-        
         
         // ---------------------------------------------------------------------
         // Get SQL and build grid
@@ -1191,15 +1189,15 @@ public class HibernateProgramStageInstanceStore
                     sql += filterSQL + "LIMIT 1 ) ";
                 }
 
-                sql += "as \"" + periodName + "\" ,";
+                sql += " as \"" + periodName + "\" ,";
             }
             // -- end period
 
             sql = sql.substring( 0, sql.length() - 1 ) + " ";
-            sql += " ) ";
+            sql += " ) ) ";
             sql += " UNION ";
         }
-        sql = sql.substring( 0, sql.length() - 6 );
+        sql = sql.substring( 0, sql.length() - 10 );
         sql += " ORDER BY orgunit asc ";
         if ( limit != null )
         {
@@ -1290,13 +1288,14 @@ public class HibernateProgramStageInstanceStore
             }
         }
 
-        sql = sql.substring( 0, sql.length() - 6 ) + " ";
+        sql = sql.substring( 0, sql.length() - 6 ) + " ) ";
+       
         sql += " ORDER BY orgunit asc ";
         if ( limit != null )
         {
             sql += "LIMIT " + limit;
         }
-
+        
         return sql;
     }
 
@@ -1370,10 +1369,10 @@ public class HibernateProgramStageInstanceStore
                     }
                     sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                     sql += "     psi_1.executiondate <= '" + endDate + "' ";
-                    sql += filterSQL + " LIMIT 1 ) ";
+                    sql += filterSQL + " LIMIT 1 ";
                 }
 
-                sql += " as " + aggregateType;
+                sql += " ) as " + aggregateType;
                 sql += ") ";
                 sql += " UNION ALL ";
 
@@ -1381,6 +1380,9 @@ public class HibernateProgramStageInstanceStore
         }
 
         sql = sql.substring( 0, sql.length() - 10 );
+        
+        if( periods.size() > 1 )
+        
         if ( limit != null )
         {
             sql += " LIMIT " + limit;
@@ -2246,7 +2248,8 @@ public class HibernateProgramStageInstanceStore
             for ( int i = 1; i <= cols; i++ )
             {
                 // meta column
-                if ( rs.getMetaData().getColumnType( i ) == Types.VARCHAR )
+                if ( rs.getMetaData().getColumnType( i ) == Types.VARCHAR 
+                    || rs.getMetaData().getColumnType( i ) == Types.OTHER )
                 {
                     grid.addValue( rs.getObject( i ) );
                 }
