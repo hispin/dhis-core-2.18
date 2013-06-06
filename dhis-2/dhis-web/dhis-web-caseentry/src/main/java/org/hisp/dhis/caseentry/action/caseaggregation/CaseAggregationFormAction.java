@@ -76,13 +76,14 @@ public class CaseAggregationFormAction
         Collection<CaseAggregationCondition> aggConditions = aggregationConditionService
             .getAllCaseAggregationCondition();
 
+        Collection<DataSet> uniqueDataSetList = new HashSet<DataSet>();        
         for ( CaseAggregationCondition aggCondition : aggConditions )
         {
             DataElement dataElement = aggCondition.getAggregationDataElement();
 
-            datasets.addAll( dataElement.getDataSets() );
+            uniqueDataSetList.addAll( dataElement.getDataSets() );
         }
-        
+        datasets.addAll(uniqueDataSetList);
         Collections.sort( datasets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
