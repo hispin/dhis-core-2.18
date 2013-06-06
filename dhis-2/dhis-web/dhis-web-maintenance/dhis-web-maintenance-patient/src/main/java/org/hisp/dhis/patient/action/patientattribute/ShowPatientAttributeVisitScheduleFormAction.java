@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.comparator.PatientAttributeSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -87,7 +86,7 @@ public class ShowPatientAttributeVisitScheduleFormAction
         
         selectedPatientAttributes = new ArrayList<PatientAttribute>(
             patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule( true ) );
-        Collections.sort( availablePatientAttributes, new PatientAttributeSortOrderComparator());
+        Collections.sort( availablePatientAttributes, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }
