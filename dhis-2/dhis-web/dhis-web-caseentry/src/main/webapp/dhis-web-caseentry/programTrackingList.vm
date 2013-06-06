@@ -120,7 +120,7 @@
 	</div>
 </div>			
 
-<div id='tabs'>
+<div id='tabs-tracking'>
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("comments_and_sms_message")</a></li>
 		<li><a href="#tab-2">$i18n.getString("program_report")</a></li>
@@ -181,11 +181,11 @@
 	jQuery(document).ready(	function(){
 		setFieldValue('programStageName', "$programStageInstance.programStage.displayName");
 		setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
-		$('#tabs').tabs();
+		$('#tabs-tracking').tabs();
 	});
 
 	
-	$( "#tabs" ).bind( "tabsselect", function(event, ui) {
+	$( "#tabs-tracking" ).bind( "tabsselect", function(event, ui) {
 		if( ui.tab.hash == '#tab-2' ){
 			programReports(getFieldValue('programInstanceId'));
 		}
