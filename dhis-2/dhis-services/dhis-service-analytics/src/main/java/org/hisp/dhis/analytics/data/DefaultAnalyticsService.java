@@ -96,6 +96,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -171,6 +172,9 @@ public class DefaultAnalyticsService
     
     @Autowired
     private CurrentUserService currentUserService;
+    
+    @Autowired
+    private DataElementOperandService operandService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -670,6 +674,7 @@ public class DefaultAnalyticsService
             List<NameableObject> indicators = new ArrayList<NameableObject>();
             List<NameableObject> dataElements = new ArrayList<NameableObject>();
             List<NameableObject> dataSets = new ArrayList<NameableObject>();
+            List<NameableObject> operandDataElements = new ArrayList<NameableObject>();
             
             options : for ( String uid : items )
             {
@@ -697,6 +702,14 @@ public class DefaultAnalyticsService
                     continue options;
                 }
                 
+                DataElementOperand dc = operandService.getDataElementOperandByUid( uid );
+                
+                if ( dc != null )
+                {
+                    operandDataElements.add( dc.getDataElement() );
+                    continue options;
+                }
+                
                 throw new IllegalQueryException( "Data dimension option identifier does not reference any option: " + uid );                
             }
             
@@ -715,7 +728,13 @@ public class DefaultAnalyticsService
                 dataDimensions.add( new BaseDimensionalObject( DATASET_DIM_ID, DimensionType.DATASET, dataSets ) );
             }
             
-            if ( indicators.isEmpty() && dataElements.isEmpty() && dataSets.isEmpty() )
+            if ( !operandDataElements.isEmpty() )
+            {
+                dataDimensions.add( new BaseDimensionalObject( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, operandDataElements ) );
+                dataDimensions.add( new BaseDimensionalObject( CATEGORYOPTIONCOMBO_DIM_ID, DimensionType.CATEGORY_OPTION_COMBO, new ArrayList<NameableObject>() ) );
+            }
+            
+            if ( indicators.isEmpty() && dataElements.isEmpty() && dataSets.isEmpty() && operandDataElements.isEmpty() )
             {
                 throw new IllegalQueryException( "Dimension dx is present in query without any valid dimension options" );
             }

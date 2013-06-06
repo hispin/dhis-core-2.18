@@ -60,6 +60,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -693,6 +694,10 @@ public class DefaultChartService
                 categoryIndex++;
 
                 String key = series.getUid() + DIMENSION_SEP + category.getUid();
+
+                // Replace potential operand separator with dimension separator
+                
+                key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP );
 
                 Double value = valueMap.get( key );
                 
