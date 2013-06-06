@@ -215,8 +215,10 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
 
 	<!-- Single-event DataEntry -->
@@ -894,6 +896,8 @@
 		class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageSectionService"
+			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 	</bean>
 
 	<bean
@@ -967,7 +971,6 @@
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
 
-
 	<bean
 		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
 		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
@@ -976,6 +979,11 @@
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.caseentry.action.report.GetProgramStageSectionsAction"
+		class="org.hisp.dhis.caseentry.action.report.GetProgramStageSectionsAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
 
 	<!-- Patient Aggregate Report -->
 

@@ -46,6 +46,7 @@ TR.conf = {
 			initialize: 'tabularInitialize.action',
 			patientproperties_get: 'loadPatientProperties.action',
 			programstages_get: 'loadReportProgramStages.action',
+			programstagesections_get: 'loadProgramStageSections.action',
 			dataelements_get: 'loadDataElements.action',
 			organisationunitchildren_get: 'getOrganisationUnitChildren.action',
 			organisationunit_getbygroup: 'getOrganisationUnitPathsByGroup.action',
@@ -1506,12 +1507,31 @@ Ext.onReady( function() {
 					}
 					else
 					{
-						Ext.getCmp('programStageCombobox').disable();
 						var programStageId = TR.store.programStage.data.items[0].raw.id;
+						
+						Ext.getCmp('programStageCombobox').disable();
 						Ext.getCmp('programStageCombobox').setValue( programStageId );
 						
+						// Load sections if any
+						
+						var store = TR.store.programStageSection;
+						TR.store.programStageSection.loadData([],false);
+						if( !TR.store.programStageSection.isLoad )
+						{
+							store.loadData([],false);
+						}
+						store.parent = programStageId;
+						
+						if (TR.util.store.containsParent(store)) {
+							TR.util.store.loadFromStorage(store);
+						}
+						else {
+							store.load({params: {programStageId: programStageId}});
+						}
+						
 						// Load data element list
-						var store = TR.store.dataelement.available;
+						
+						store = TR.store.dataelement.available;
 						TR.store.dataelement.available.loadData([],false);
 						if( !TR.store.programStage.isLoadFromFavorite)
 						{
@@ -1527,6 +1547,39 @@ Ext.onReady( function() {
 							store.load({params: {programStageId: programStageId}});
 						}
 					}
+				}
+			}
+		}),
+		programStageSection: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name'],
+			proxy: {
+				type: 'ajax',
+				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.programstagesections_get,
+				reader: {
+					type: 'json',
+					root: 'sections'
+				}
+			},
+			isLoad: false,
+			listeners:{
+				load: function(s) {
+					Ext.override(Ext.LoadMask, {
+						 onHide: function() {
+							  this.callParent();
+						 }
+					});
+					
+					if( TR.store.programStageSection.data.items.length == 0 ){
+						Ext.getCmp('sectionCombobox').setVisible(false);
+					}
+					else{
+						Ext.getCmp('sectionCombobox').setVisible(true);
+						TR.store.programStageSection.insert(0, {
+							'id': "",
+							'name': TR.i18n.please_select
+						});
+					}
+					Ext.getCmp('sectionCombobox').setValue( "" );
 				}
 			}
 		}),
@@ -4773,6 +4826,8 @@ Ext.onReady( function() {
 												TR.store.patientProperty.available.removeAll();
 												TR.store.patientProperty.selected.removeAll();
 											}
+											
+											TR.store.programStageSection.loadData([],false);
 										
 											// PROGRAM-STAGE										
 											var storeProgramStage = TR.store.programStage;
@@ -4811,10 +4866,27 @@ Ext.onReady( function() {
 											TR.cmp.params.programStage = this;
 										},  
 										select: function(cb) {
+											var programStageId = cb.getValue();
+											
+											// Get section from the selected program stage
+											
+											var sectionStore = TR.store.programStageSection;
+											sectionStore.loadData([],false);
+											sectionStore.parent = programStageId;
+											
+											if (TR.util.store.containsParent(sectionStore)) {
+												TR.util.store.loadFromStorage(sectionStore);
+											}
+											else {
+												sectionStore.load({params: {programStageId: cb.getValue()}});
+											}
+											
+											// Get data element from the selected program stage
+											
 											TR.state.isFilter = false;
 											var store = TR.store.dataelement.available;
 											TR.store.dataelement.selected.loadData([],false);
-											store.parent = cb.getValue();
+											store.parent = programStageId;
 											
 											if (TR.util.store.containsParent(store)) {
 												TR.util.store.loadFromStorage(store);
@@ -5959,6 +6031,43 @@ Ext.onReady( function() {
 										title: '<div id="dataElementTabTitle" style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.data_filter + '</div>',
 										hideCollapseTool: true,
 										items: [
+											{
+												xtype: 'combobox',
+												cls: 'tr-combo',
+												id: 'sectionCombobox',
+												fieldLabel: TR.i18n.section,
+												emptyText: TR.i18n.please_select,
+												queryMode: 'local',
+												editable: false,
+												valueField: 'id',
+												displayField: 'name',
+												width: TR.conf.layout.west_fieldset_width - 20,
+												store: TR.store.programStageSection,
+												listeners: {
+													added: function() {
+														TR.cmp.settings.programStageSections = this;
+													},
+													select: function(cb) {
+														var store = TR.store.dataelement.available;
+														TR.store.dataelement.selected.loadData([],false);
+														store.parent = cb.getValue();
+														
+														if (TR.util.store.containsParent(store)) {
+															TR.util.store.loadFromStorage(store);
+															TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+														}
+														else {
+															if( cb.getValue() == '' ){
+																var programStageId = TR.cmp.params.programStage.getValue();
+																store.load({params: {programStageId: programStageId}});
+															}
+															else{
+																store.load({params: {sectionId: cb.getValue()}});
+															}
+														}
+													}
+												}
+											},
 											{
 												xtype: 'panel',
 												layout: 'column',

@@ -27,23 +27,22 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
-import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @version $ GetProgramStageSectionsAction.java Jun 5, 2013 1:43:18 PM $
  */
-public class LoadDataElementsAction
+public class GetProgramStageSectionsAction
     implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -53,13 +52,6 @@ public class LoadDataElementsAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private ProgramStageSectionService programStageSectionService;
-
-    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
-    {
-        this.programStageSectionService = programStageSectionService;
     }
 
     // -------------------------------------------------------------------------
@@ -73,18 +65,11 @@ public class LoadDataElementsAction
         this.programStageId = programStageId;
     }
 
-    private Integer sectionId;
+    private List<ProgramStageSection> sections;
 
-    public void setSectionId( Integer sectionId )
+    public List<ProgramStageSection> getSections()
     {
-        this.sectionId = sectionId;
-    }
-
-    private Collection<ProgramStageDataElement> psDataElements;
-
-    public Collection<ProgramStageDataElement> getPsDataElements()
-    {
-        return psDataElements;
+        return sections;
     }
 
     // -------------------------------------------------------------------------
@@ -95,16 +80,10 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
-        {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
-        }
-        else if( sectionId != null )
-        {
-            ProgramStageSection section = programStageSectionService.getProgramStageSection( sectionId );
-            psDataElements = section.getProgramStageDataElements();
-        }
-        
+        sections = new ArrayList<ProgramStageSection>( programStageService.getProgramStage( programStageId )
+            .getProgramStageSections() );
+
         return SUCCESS;
     }
+
 }
