@@ -32,11 +32,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -113,7 +113,7 @@ public class GetProgramListAction
         throws Exception
     {
         programs = new ArrayList<Program>( programService.getAllPrograms() );
-        Collections.sort( programs, new ProgramNameComparator() );
+        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
         
         if ( id == null )
         {

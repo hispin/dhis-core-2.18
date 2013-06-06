@@ -39,7 +39,6 @@ import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -215,7 +214,7 @@ public class ViewDataEntryFormAction
 
         programStages.remove( programStage );
 
-        Collections.sort( programStages, new ProgramStageNameComparator() );
+        Collections.sort( programStages, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Get selected program-stage

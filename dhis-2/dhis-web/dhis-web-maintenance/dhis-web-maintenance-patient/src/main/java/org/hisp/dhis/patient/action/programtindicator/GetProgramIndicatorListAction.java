@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicator;
 import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.comparator.ProgramIndicatorComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -101,7 +101,7 @@ public class GetProgramIndicatorListAction
 
         programIndicators = new ArrayList<ProgramIndicator>( programIndicatorService.getProgramIndicators( program ) );
 
-        Collections.sort( programIndicators, new ProgramIndicatorComparator() );
+        Collections.sort( programIndicators, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
