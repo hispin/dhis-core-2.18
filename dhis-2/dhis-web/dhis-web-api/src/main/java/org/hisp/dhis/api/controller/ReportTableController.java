@@ -106,6 +106,9 @@ public class ReportTableController
     
     @Autowired
     private DimensionService dimensionService;
+    
+    @Autowired
+    private MappingService mappingService;
 
     @Autowired
     private I18nManager i18nManager;
@@ -304,6 +307,11 @@ public class ReportTableController
         
         reportTable.getColumnDimensions().addAll( getUniqueDimensions( reportTable.getColumns() ) );
         reportTable.getRowDimensions().addAll( getUniqueDimensions( reportTable.getRows() ) );
-        reportTable.getFilterDimensions().addAll( getUniqueDimensions( reportTable.getFilters() ) );        
+        reportTable.getFilterDimensions().addAll( getUniqueDimensions( reportTable.getFilters() ) );
+        
+        if ( reportTable.getLegendSet() != null )
+        {
+            reportTable.setLegendSet( mappingService.getMapLegendSet( reportTable.getLegendSet().getUid() ) );
+        }
     }
 }
