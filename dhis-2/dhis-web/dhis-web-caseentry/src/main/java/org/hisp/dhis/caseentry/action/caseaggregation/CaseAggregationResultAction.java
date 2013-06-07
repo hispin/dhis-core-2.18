@@ -39,7 +39,6 @@ import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -54,7 +53,7 @@ import com.opensymphony.xwork2.Action;
 public class CaseAggregationResultAction
     implements Action
 {
-   // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -77,13 +76,6 @@ public class CaseAggregationResultAction
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
         this.aggregationConditionService = aggregationConditionService;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     private OrganisationUnitService organisationUnitService;

@@ -27,27 +27,15 @@
 
 package org.hisp.dhis.caseentry.action.caseaggregation;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import org.apache.camel.component.dataset.DataSet;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.program.ProgramStageInstance;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,11 +52,7 @@ public class CaseAggregationResultDetailsAction
 
     private OrganisationUnitService organisationUnitService;
 
-    private PeriodService periodService;
-
     private CaseAggregationConditionService aggregationConditionService;
-
-    private PatientDataValueService patientDataValueService;
 
     private I18nFormat format;
 
@@ -105,26 +89,16 @@ public class CaseAggregationResultDetailsAction
         this.isoPeriod = isoPeriod;
     }
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
-    {
-        this.patientDataValueService = patientDataValueService;
-    }
-
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
         this.aggregationConditionService = aggregationConditionService;
-    }
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     public void setOrgunitId( Integer orgunitId )
     {
         this.orgunitId = orgunitId;
     }
-    
+
     public void setAggConditionName( String aggConditionName )
     {
         this.aggConditionName = aggConditionName;
