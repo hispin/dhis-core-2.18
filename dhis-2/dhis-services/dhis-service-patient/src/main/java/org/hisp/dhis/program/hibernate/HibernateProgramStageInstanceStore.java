@@ -511,7 +511,6 @@ public class HibernateProgramStageInstanceStore
 
         // Filter is only one orgunit
         
-       
         if ( position == PatientAggregateReport.POSITION_ROW_PERIOD_COLUMN_DATA )
         {
             String orgunitName = organisationUnitService.getOrganisationUnit( orgunitIds.iterator().next() )

@@ -2644,8 +2644,9 @@ Ext.onReady( function() {
 							{
 								filterValue = Ext.getCmp('filter_' + id).getValue();
 							}
-							if( filterValue == null || ( filterValue == '' && filterValue != 0 )
-							|| filterValue==TR.i18n.please_select ){
+							if( filterValue == null 
+								|| filterValue == '' || filterValue != 0
+								|| filterValue==TR.i18n.please_select ){
 								isValid = false;
 							}
 						}
@@ -4769,6 +4770,15 @@ Ext.onReady( function() {
 													Ext.getCmp('displayTotalsOpt').setVisible(true);
 													Ext.getCmp('datePeriodRangeDiv').expand();
 													Ext.getCmp('filterPanel').setHeight(105);
+													
+													TR.store.dateRange.loadData([],false);
+													TR.store.dateRange.add(
+														{
+															'startDate': Ext.getCmp('startDate').rawValue,
+															'endDate': Ext.getCmp('endDate').rawValue
+														}
+													);
+													
 												}
 											}
 										}
