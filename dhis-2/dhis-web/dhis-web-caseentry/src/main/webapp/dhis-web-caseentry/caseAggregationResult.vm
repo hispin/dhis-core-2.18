@@ -23,7 +23,9 @@
 			<tr>
 				<th><input type='checkbox' onchange="toogleAllCheckBoxes( '$divIdx', this.checked );"></th>
 				#foreach( $header in $grid.getVisibleHeaders() )
-				<th #if( $header.meta ) style="text-align:left" #end>$!encoder.htmlEncode( $header.name )</th>
+					#if($velocityCount!=2)
+						<th #if( $header.meta ) style="text-align:left" #end>$!encoder.htmlEncode( $header.name )</th>
+					#end
 				#end
 				<th>$i18n.getString('operator')</th>
 			</tr>
@@ -50,7 +52,13 @@
 					</td>
 					
 					#foreach( $col in $row )
-						#if($velocityCount>6) <td>$col</td> #end
+						#if($velocityCount == 7)
+							<td>$col
+						#elseif($velocityCount==8) 
+							$col</td>
+						#elseif( $velocityCount > 8 )
+							<td>$col</td> 
+						#end
 					#end
 					<td>
 						<a href='javascript:viewResultDetails( "$grid.title", $organisationunitid, "$periodid")' title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
