@@ -269,7 +269,7 @@ public class LoadDataEntryAction
         }
         else
         {
-            return INPUT;
+            return SUCCESS;
         }
 
         // ---------------------------------------------------------------------
