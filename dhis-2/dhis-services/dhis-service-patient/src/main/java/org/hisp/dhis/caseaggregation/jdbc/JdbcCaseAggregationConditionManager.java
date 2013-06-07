@@ -160,9 +160,9 @@ public class JdbcCaseAggregationConditionManager
     {
         Collection<Integer> _orgunitIds = getServiceOrgunit( DateUtils.getMediumDateString( period.getStartDate() ),
             DateUtils.getMediumDateString( period.getEndDate() ) );
-        orgunitIds.retainAll( _orgunitIds );
+        _orgunitIds.retainAll( orgunitIds );
 
-        if ( orgunitIds.size() > 0 )
+        if ( _orgunitIds.size() > 0 )
         {
             Grid grid = new ListGrid();
             grid.setTitle( caseAggregationCondition.getDisplayName() );
@@ -184,11 +184,11 @@ public class JdbcCaseAggregationConditionManager
                 caseAggregationCondition.getOperator(), caseAggregationCondition.getAggregationDataElement().getId(),
                 caseAggregationCondition.getAggregationDataElement().getDisplayName(), caseAggregationCondition
                     .getOptionCombo().getId(), caseAggregationCondition.getOptionCombo().getDisplayName(), deSumId,
-                orgunitIds, period );
+                _orgunitIds, period );
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
             grid.addRows( rs );
-
+            
             return grid;
         }
 
@@ -369,7 +369,7 @@ public class JdbcCaseAggregationConditionManager
         }
         
         sql = sql.replaceAll( "COMBINE", "" );
-
+        
         return sql;
     }
 
@@ -967,7 +967,7 @@ public class JdbcCaseAggregationConditionManager
         sql += " UNION ";
         sql += "( select distinct organisationunitid from patient where registrationdate>='" + startDate
             + "' and registrationdate<='" + endDate + "')";
-
+        
         Collection<Integer> orgunitIds = new HashSet<Integer>();
         orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
         {

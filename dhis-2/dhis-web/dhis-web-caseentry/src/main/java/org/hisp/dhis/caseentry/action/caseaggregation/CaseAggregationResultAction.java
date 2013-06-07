@@ -30,20 +30,15 @@ package org.hisp.dhis.caseentry.action.caseaggregation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -59,13 +54,7 @@ import com.opensymphony.xwork2.Action;
 public class CaseAggregationResultAction
     implements Action
 {
-    private String ADD_STATUS = "add";
-
-    private String UPDATE_STATUS = "update";
-
-    private String DELETE_STATUS = "delete";
-
-    // -------------------------------------------------------------------------
+   // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
