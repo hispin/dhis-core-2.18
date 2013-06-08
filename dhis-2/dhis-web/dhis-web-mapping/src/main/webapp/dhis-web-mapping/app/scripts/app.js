@@ -5209,7 +5209,7 @@ Ext.onReady( function() {
 
 				gis.olmap.events.register('click', null, function(e) {
 					if (gis.olmap.relocate.active) {
-						var el = document.getElementById('mouseposition').childNodes[0],
+						var el = Ext.query('#mouseposition')[0],
 							coordinates = '[' + el.childNodes[1].data + ',' + el.childNodes[3].data + ']',
 							center = gis.viewport.centerRegion;
 
