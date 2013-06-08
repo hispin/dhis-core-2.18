@@ -6,8 +6,8 @@
   <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.mapgeneration.MapGenerationService" class="org.hisp.dhis.mapgeneration.GeoToolsMapGenerationService">
-    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
   </bean>
 
 </beans>

@@ -32,12 +32,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -46,8 +42,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -117,151 +111,9 @@ public class DefaultMappingService
         this.periodService = periodService;
     }
 
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
-    private ConfigurationService configurationService;
-
-    public void setConfigurationService( ConfigurationService configurationService )
-    {
-        this.configurationService = configurationService;
-    }
-
     // -------------------------------------------------------------------------
     // MappingService implementation
     // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
-    // OrganisationUnits
-    // -------------------------------------------------------------------------
-
-    /**
-     * Returns the relevant OrganisationUnits for the given parent identifier
-     * and / or level.
-     *
-     * @param parentOrganisationUnitId the OrganisationUnit level.
-     * @param level                    the OrganisationUnit level.
-     * @return a collection of OrganisationUnits.
-     */
-    private Collection<OrganisationUnit> getOrganisationUnits( Integer parentOrganisationUnitId, Integer level )
-    {
-        Collection<OrganisationUnit> organisationUnits = null;
-
-        if ( parentOrganisationUnitId != null && level != null )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
-                organisationUnitService.getOrganisationUnit( parentOrganisationUnitId ) );
-        }
-        else if ( level != null )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level );
-        }
-        else if ( parentOrganisationUnitId != null )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId ).getChildren();
-        }
-
-        return organisationUnits;
-    }
-
-    // -------------------------------------------------------------------------
-    // IndicatorMapValues
-    // -------------------------------------------------------------------------
-
-    /**
-     * Generates a collection AggregatedMapValues. Only one of Period and
-     * start/end date can be specified. At least one of parent organisation unit
-     * and level must be specified. Period should be specified with "real time"
-     * aggregation strategy, any may be specified with "batch" aggregation
-     * strategy.
-     *
-     * @param indicatorId              the Indicator identifier.
-     * @param periodId                 the Period identifier. Ignored if null.
-     * @param parentOrganisationUnitId the parent OrganisationUnit identifier.
-     *                                 Ignored if null.
-     * @param level                    the OrganisationUnit level. Ignored if null.
-     * @return a collection of AggregatedMapValues.
-     */
-    public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
-        int parentOrganisationUnitId, Integer level )
-    {
-        Collection<OrganisationUnit> units = getOrganisationUnits( parentOrganisationUnitId, level );
-
-        return getIndicatorMapValues( indicatorId, periodId, units );
-    }
-
-    public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
-        Collection<OrganisationUnit> units )
-    {
-        Collection<AggregatedMapValue> values = aggregatedDataValueService.getAggregatedIndicatorMapValues(
-            indicatorId, periodId, ConversionUtils.getIdentifiers( OrganisationUnit.class, units ) );
-
-        for ( AggregatedMapValue value : values )
-        {
-            value.setValue( MathUtils.getRounded( value.getValue(), 2 ) );
-        }
-
-        return values;
-    }
-
-    // -------------------------------------------------------------------------
-    // DataElementMapValues
-    // -------------------------------------------------------------------------
-
-    /**
-     * Generates a collection AggregatedMapValues. Only one of Period and
-     * start/end date can be specified. At least one of parent organisation unit
-     * and level must be specified. Period should be specified with "real time"
-     * aggregation strategy, any may be specified with "batch" aggregation
-     * strategy.
-     *
-     * @param dataElementId            the DataElement identifier.
-     * @param periodId                 the Period identifier. Ignored if null.
-     * @param parentOrganisationUnitId the parent OrganisationUnit identifier.
-     *                                 Ignored if null.
-     * @param level                    the OrganisationUnit level. Ignored if null.
-     * @return a collection of AggregatedMapValues.
-     */
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId, Integer level )
-    {
-        Collection<OrganisationUnit> units = getOrganisationUnits( parentOrganisationUnitId, level );
-
-        return getDataElementMapValues( dataElementId, periodId, units );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        Collection<OrganisationUnit> units )
-    {
-        Collection<AggregatedMapValue> values = aggregatedDataValueService.getAggregatedDataMapValues( dataElementId,
-            periodId, ConversionUtils.getIdentifiers( OrganisationUnit.class, units ) );
-
-        for ( AggregatedMapValue value : values )
-        {
-            value.setValue( MathUtils.getRounded( value.getValue(), 2 ) );
-        }
-
-        return values;
-    }
-
-    public Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId,
-        Integer organisationUnitId )
-    {
-        DataElementGroup group = configurationService.getConfiguration().getInfrastructuralDataElements();
-
-        if ( group == null )
-        {
-            return new HashSet<AggregatedMapValue>();
-        }
-
-        Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, group.getMembers() );
-
-        return aggregatedDataValueService.getAggregatedDataMapValues( dataElementIds, periodId, organisationUnitId );
-    }
 
     // -------------------------------------------------------------------------
     // MapLegend

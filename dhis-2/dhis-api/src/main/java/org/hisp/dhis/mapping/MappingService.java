@@ -31,9 +31,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
 /**
  * @author Jan Henrik Overland
  * @version $Id$
@@ -58,26 +55,6 @@ public interface MappingService
     final String MAP_LAYER_TYPE_BASELAYER = "baselayer";
     final String MAP_LAYER_TYPE_OVERLAY = "overlay";
     
-    // -------------------------------------------------------------------------
-    // IndicatorMapValue
-    // -------------------------------------------------------------------------
-
-    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId,
-                                                          Integer level );
-
-    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, Collection<OrganisationUnit> units );
-
-    // -------------------------------------------------------------------------
-    // DataMapValue
-    // -------------------------------------------------------------------------
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-                                                            int parentOrganisationUnitId, Integer level );
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, Collection<OrganisationUnit> units );
-
-    Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId );
-
     // -------------------------------------------------------------------------
     // MapLegend
     // -------------------------------------------------------------------------
