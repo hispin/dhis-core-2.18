@@ -27,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-aggregationengine-default</artifactId>
+      <artifactId>dhis-service-analytics</artifactId>
     </dependency>
     
     <!-- Other -->

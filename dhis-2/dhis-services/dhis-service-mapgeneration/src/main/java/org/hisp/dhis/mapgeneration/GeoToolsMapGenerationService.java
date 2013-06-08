@@ -27,16 +27,21 @@ package org.hisp.dhis.mapgeneration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.NameableObjectUtils.getList;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
 import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -65,11 +70,11 @@ public class GeoToolsMapGenerationService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private MappingService mappingService;
+    private AnalyticsService analyticsService;
 
-    public void setMappingService( MappingService mappingService )
+    public void setAnalyticsService( AnalyticsService analyticsService )
     {
-        this.mappingService = mappingService;
+        this.analyticsService = analyticsService;
     }
 
     // -------------------------------------------------------------------------
@@ -126,24 +131,44 @@ public class GeoToolsMapGenerationService
     private InternalMapLayer buildSingleInternalMapLayer( MapView mapView )
     {
         Assert.isTrue( mapView != null );
-        Assert.isTrue( mapView.getValueType() != null );
 
         boolean isIndicator = MapView.VALUE_TYPE_INDICATOR.equals( mapView.getValueType() );
 
-        Collection<AggregatedMapValue> mapValues;
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
+            getOrganisationUnitsAtLevel( mapView.getOrganisationUnitLevel().getLevel(), mapView.getParentOrganisationUnit() ) );
+
+        DataQueryParams params = new DataQueryParams();
         
-        if ( isIndicator )
+        if ( mapView.getIndicator() != null )
         {
-            mapValues = mappingService.getIndicatorMapValues( mapView.getIndicator().getId(), mapView.getPeriod()
-                .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
+            params.setIndicators( getList( mapView.getIndicator() ) );
         }
-        else
+        else if ( mapView.getDataElement() != null )
         {
-            mapValues = mappingService.getDataElementMapValues( mapView.getDataElement().getId(), mapView.getPeriod()
-                .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
+            params.setDataElements( getList( mapView.getDataElement() ) );
         }
         
-        if ( !( mapValues != null && mapValues.size() > 0 ) )
+        //TODO operands
+
+        params.setOrganisationUnits( organisationUnits );
+        params.setFilterPeriods( getList( mapView.getPeriod() ) );
+        
+        Grid grid = analyticsService.getAggregatedDataValues( params );
+        
+        Collection<MapValue> mapValues = new ArrayList<MapValue>();
+
+        for ( List<Object> row : grid.getRows() )
+        {
+            if ( row != null && row.size() >= 3 )
+            {
+                String ou = (String) row.get( 1 );
+                Double value = (Double) row.get( 2 );
+                
+                mapValues.add( new MapValue( ou, value ) );
+            }
+        }
+                
+        if ( mapValues.isEmpty() )
         {
             return null;
         }
@@ -188,14 +213,14 @@ public class GeoToolsMapGenerationService
 
         // Build and set the internal GeoTools map objects for the layer
         
-        for ( AggregatedMapValue mapValue : mapValues )
+        for ( MapValue mapValue : mapValues )
         {
             // Get the org unit for this map value
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOu() );
             
             if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
             {
-                buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue, orgUnit );
+                buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue.getValue(), orgUnit );
             }
         }
 
@@ -215,12 +240,12 @@ public class GeoToolsMapGenerationService
     }
 
     private GeoToolsMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
-        AggregatedMapValue mapValue, OrganisationUnit orgUnit )
+        double mapValue, OrganisationUnit orgUnit )
     {
         // Create and setup an internal map object
         GeoToolsMapObject mapObject = new GeoToolsMapObject();
         mapObject.setName( orgUnit.getName() );
-        mapObject.setValue( mapValue.getValue() );
+        mapObject.setValue( mapValue );
         mapObject.setFillOpacity( mapLayer.getOpacity() );
         mapObject.setStrokeColor( mapLayer.getStrokeColor() );
         mapObject.setStrokeWidth( mapLayer.getStrokeWidth() );

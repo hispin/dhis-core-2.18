@@ -41,7 +41,6 @@ import org.amplecode.quick.mapper.RowMapper;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueStore;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.aggregation.StoreIterator;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
@@ -50,10 +49,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.objectmapper.AggregatedDataMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedDataSetCompletenessRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
-import org.hisp.dhis.system.objectmapper.AggregatedIndicatorMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -273,49 +270,6 @@ public class JdbcAggregatedDataValueStore
     }
     
     // -------------------------------------------------------------------------
-    // AggregatedDataMapValue
-    // -------------------------------------------------------------------------
-    
-    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds )
-    {
-        final String sql = 
-            "SELECT a.periodid, o.organisationunitid, o.name, SUM(a.value) AS value " +
-            "FROM aggregateddatavalue AS a " +
-            "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
-            "WHERE a.dataelementid  = " + dataElementId + " " +
-            "AND a.periodid = " + periodId + " " + 
-            "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ") " +
-            "GROUP BY a.periodid, o.organisationunitid, o.name";
-        
-        return jdbcTemplate.query( sql, new AggregatedDataMapValueRowMapper() );
-    }
-
-    public Collection<AggregatedMapValue> getAggregatedDataMapValues( Collection<Integer> dataElementIds, int periodId, int organisationUnitId )
-    {
-        final String sql = 
-            "SELECT d.name, a.periodid, SUM(a.value) AS value " +
-            "FROM aggregateddatavalue AS a " +
-            "JOIN dataelement AS d ON (a.dataelementid = d.dataelementid) " +
-            "WHERE a.dataelementid IN (" + getCommaDelimitedString( dataElementIds ) + ") " +
-            "AND a.periodid = " + periodId + " " + 
-            "AND a.organisationunitid = " + organisationUnitId + " " +
-            "GROUP BY d.name, a.periodid";
-        
-        return jdbcTemplate.query( sql, new org.springframework.jdbc.core.RowMapper<AggregatedMapValue>()
-        {
-            public AggregatedMapValue mapRow( ResultSet resultSet, int rowNum )
-                throws SQLException
-            {
-                AggregatedMapValue value = new AggregatedMapValue();
-                value.setDataElementName( resultSet.getString( 1 ) );
-                value.setPeriodId( resultSet.getInt( 2 ) );
-                value.setValue( resultSet.getDouble( 3 ) );
-                return value;
-            }
-        } );
-    }
-
-    // -------------------------------------------------------------------------
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
 
@@ -429,23 +383,6 @@ public class JdbcAggregatedDataValueStore
             " AND aiv.periodid IN (" + periodids + ") ";
         
         return jdbcTemplate.queryForObject( sql, Integer.class );
-    }
-
-    // -------------------------------------------------------------------------
-    // AggregatedIndicatorMapValue
-    // -------------------------------------------------------------------------
-
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds )
-    {
-        final String sql = 
-            "SELECT a.periodid, o.organisationunitid, o.name, a.value, a.factor, a.numeratorvalue, a.denominatorvalue " +
-            "FROM aggregatedindicatorvalue AS a " +
-            "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
-            "WHERE a.indicatorid  = " + indicatorId + " " +
-            "AND a.periodid = " + periodId + " " +
-            "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ")";
-        
-        return jdbcTemplate.query( sql, new AggregatedIndicatorMapValueRowMapper() );
     }
 
     // -------------------------------------------------------------------------
