@@ -166,6 +166,12 @@ public class ChartController
     {
         Chart chart = chartService.getChartNoAcl( uid );
 
+        if ( chart == null )
+        {
+            ContextUtils.notFoundResponse( response, "Chart does not exist: " + uid );
+            return;
+        }
+        
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
         
         JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, unit, i18nManager.getI18nFormat() );
