@@ -67,6 +67,8 @@ public class HibernateOrganisationUnitLevelStore
     {
         final String sql = "SELECT MAX(level) FROM orgunitlevel";
 
-        return jdbcTemplate.queryForObject( sql, Integer.class );
+        Integer level = jdbcTemplate.queryForObject( sql, Integer.class );
+        
+        return level != null ? level : 0;
     }
 }
