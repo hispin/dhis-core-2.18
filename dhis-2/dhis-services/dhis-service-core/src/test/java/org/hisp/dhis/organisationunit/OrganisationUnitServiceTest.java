@@ -744,4 +744,18 @@ public class OrganisationUnitServiceTest
         assertNull( organisationUnitService.getOrganisationUnitLevel( idA ) );
         assertNull( organisationUnitService.getOrganisationUnitLevel( idB ) );
     }
+    
+    @Test
+    public void getMaxLevels()
+    {
+        assertEquals( 0, organisationUnitService.getMaxOfOrganisationUnitLevels() );
+
+        OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
+        OrganisationUnitLevel levelB = new OrganisationUnitLevel( 2, "District" );
+
+        organisationUnitService.addOrganisationUnitLevel( levelA );
+        organisationUnitService.addOrganisationUnitLevel( levelB );
+
+        assertEquals( 2, organisationUnitService.getMaxOfOrganisationUnitLevels() );
+    }
 }
