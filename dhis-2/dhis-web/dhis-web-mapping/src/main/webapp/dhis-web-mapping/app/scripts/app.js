@@ -159,6 +159,8 @@ Ext.onReady( function() {
 				return false;
 			}
 
+			layers = layers.reverse();
+
 			namespace = 'xmlns="http://www.w3.org/2000/svg"';
 
 			svg = '<svg ' + namespace + ' width="' + center.getWidth() + '" height="' + center.getHeight() + '"></svg>';
@@ -3445,7 +3447,7 @@ Ext.onReady( function() {
 				{
 					xtype: 'form',
 					cls: 'el-border-0',
-					width: 270,
+					//width: 270,
 					items: [
 						{
 							html: GIS.i18n.organisation_unit_level_parent,
