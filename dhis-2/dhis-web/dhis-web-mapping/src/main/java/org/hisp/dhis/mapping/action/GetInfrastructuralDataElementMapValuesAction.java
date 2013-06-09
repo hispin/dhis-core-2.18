@@ -27,10 +27,24 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import static org.hisp.dhis.common.NameableObjectUtils.getList;
 
-import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.mapping.MappingService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,13 +59,21 @@ public class GetInfrastructuralDataElementMapValuesAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
+    @Autowired
+    private AnalyticsService analyticsService;
 
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
-    }
-
+    @Autowired
+    private PeriodService periodService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private ConfigurationService configurationService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -74,9 +96,9 @@ public class GetInfrastructuralDataElementMapValuesAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<AggregatedMapValue> object;
+    private Map<DataElement, Double> object = new HashMap<DataElement, Double>(); 
 
-    public Collection<AggregatedMapValue> getObject()
+    public Map<DataElement, Double> getObject()
     {
         return object;
     }
@@ -88,8 +110,34 @@ public class GetInfrastructuralDataElementMapValuesAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getInfrastructuralDataElementMapValues( periodId, organisationUnitId );
-
+        DataElementGroup group = configurationService.getConfiguration().getInfrastructuralDataElements();
+        
+        if ( group == null )
+        {
+            return SUCCESS;
+        }
+        
+        List<DataElement> dataElements = new ArrayList<DataElement>( group.getMembers() );
+        Period period = periodService.getPeriod( periodId );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        
+        DataQueryParams params = new DataQueryParams();
+        params.setDataElements( dataElements );
+        params.setFilterPeriods( getList( period ) );
+        params.setFilterOrganisationUnits( getList( organisationUnit ) );
+        
+        Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+        
+        for ( String deId : map.keySet() )
+        {
+            DataElement de = dataElementService.getDataElement( deId );
+            
+            if ( de != null )
+            {
+                object.put( de, map.get( deId ) );
+            }
+        }
+        
         return SUCCESS;
     }
 }
