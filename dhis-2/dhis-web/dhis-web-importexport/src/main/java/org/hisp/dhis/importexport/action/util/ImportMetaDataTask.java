@@ -82,9 +82,9 @@ public class ImportMetaDataTask
             {
                 metaData = JacksonUtils.fromJson( inputStream, MetaData.class );
             }
-            catch ( IOException e )
+            catch ( IOException ex )
             {
-                log.error( "(IOException) Unable to parse meta-data while reading input stream" );
+                log.error( "(IOException) Unable to parse meta-data while reading input stream", ex );
                 return;
             }
         }
