@@ -175,6 +175,12 @@ public class ReportController
     {
         Report report = reportService.getReport( uid );
 
+        if ( report == null )
+        {
+            ContextUtils.notFoundResponse( response, "Report does not exist: " + uid );
+            return null;
+        }
+        
         if ( organisationUnitUid == null && report.hasReportTable() && report.getReportTable().hasReportParams()
             && report.getReportTable().getReportParams().isOrganisationUnitSet() )
         {
