@@ -60,9 +60,11 @@ public class Options
         }
 
         String patterns[] = new String[] {
+            "yyyy-MM-dd",
+            "yyyyMM",
+            "yyyy",
             "dd/MM/yyyy",
-            "MM/yyyy",
-            "yyyy"
+            "MM/yyyy"
         };
 
         for ( String pattern : patterns )
