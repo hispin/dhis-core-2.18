@@ -92,6 +92,11 @@ public class SmsSender
     @Override
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
+        if ( transportService == null || SmsLibService.gatewayMap == null || SmsLibService.gatewayMap.get( "bulk_gw" ) == null )
+        {
+            return null;
+        }
+        
         String message = null;
 
         Set<User> toSendList = new HashSet<User>();
@@ -141,6 +146,7 @@ public class SmsSender
 
             }
         }
+        
         return message;
     }
 
