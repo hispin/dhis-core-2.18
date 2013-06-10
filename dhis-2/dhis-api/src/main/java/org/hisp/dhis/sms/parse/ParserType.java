@@ -4,5 +4,7 @@ public enum ParserType
 {
     KEY_VALUE_PARSER,
     J2ME_PARSER,
-    ALERT_PARSER;
+    ALERT_PARSER,
+    UNREGISTERED_PARSER,
+    ;
 }
