@@ -26,13 +26,16 @@
       <td>$i18n.getString( "appmanager_store_url" )</td>
       <td><input type="text" id="appStoreUrl" name="appStoreUrl" style="width:40em" value="$!appStoreUrl"/> </td>
     </tr>
+    <tr>
+      <td></td>
+      <td><input type="submit" value="Save" style="width:120px" /></td>
+    </tr>
   </table>
-  <input type="submit" value="Save" />
 </form>
 
 <h3>$i18n.getString( "appmanager_management" )</h3>
 
-<table style="width:100%">
+<table style="width:80%">
   <tr>
     <td style="vertical-align:top">
       <table class="listTable" id="userList" width='100%'>
@@ -42,7 +45,7 @@
           <tr>
             <th>$i18n.getString( "appmanager_appname" )</th>
             <th>$i18n.getString( "version" )</th>
-            <th class="{sorter: false}" style="width:120px;">$i18n.getString( "operations" )</th>
+            <th class="{sorter: false}" style="width:75px;">$i18n.getString( "operations" )</th>
           </tr>
         </thead>
         <tbody id="list">
@@ -51,7 +54,7 @@
           <tr id="tr${app.name.replace(' ','_')}" #alternate( $mark )>
             <td>$encoder.htmlEncode( $app.name )</td>
             <td>$encoder.htmlEncode( $app.version )</td>
-            <td style="text-align:right">
+            <td>
               <a href="javascript:deleteApp( '$encoder.jsEncode( $app.name.replace(' ','_') )', '$encoder.jsEncode( $app.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png"></a>
             </td>
           </tr>
