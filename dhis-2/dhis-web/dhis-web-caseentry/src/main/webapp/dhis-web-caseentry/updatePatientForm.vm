@@ -76,8 +76,10 @@
 			<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
 		</tr>	
 		<tr>
-			<td></td>
-			<td>$!systemIdentifier</td>
+			<td colspan='2'><br><div id='barcodePatient'></div></td>
+			<script>
+					$("#barcodePatient").barcode("$!systemIdentifier", "code39",{barWidth:2, barHeight:30});
+			</script>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>

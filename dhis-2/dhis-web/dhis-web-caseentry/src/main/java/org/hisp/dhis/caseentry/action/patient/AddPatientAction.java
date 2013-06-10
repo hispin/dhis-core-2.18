@@ -253,7 +253,6 @@ public class AddPatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-
                 value = request.getParameter( PREFIX_IDENTIFIER + identifierType.getId() );
 
                 if ( StringUtils.isNotBlank( value ) )
