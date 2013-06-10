@@ -154,6 +154,18 @@ public class GetPatientAction
     {
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
         patient = patientService.getPatient( id );
+        
+        // Get system identifier
+        
+        for ( PatientIdentifier identifier : patient.getIdentifiers() )
+        {
+            if ( identifier.getIdentifierType() == null )
+            {
+                systemIdentifier = identifier.getIdentifier();
+                break;
+            }
+        }
+        
         healthWorkers = patient.getOrganisationUnit().getUsers();
         Program program = null;
 
@@ -287,15 +299,6 @@ public class GetPatientAction
                     patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
                         patientAttributeValue.getValue() );
                 }
-            }
-        }
-        // Get system identifier
-        for ( PatientIdentifier identifier : patient.getIdentifiers() )
-        {
-            if ( identifier.getIdentifierType() == null )
-            {
-                systemIdentifier = identifier.getIdentifier();
-                break;
             }
         }
 
