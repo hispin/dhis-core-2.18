@@ -66,7 +66,7 @@
 				<input type="text"  #if($smsCommand.separator) value="$smsCommand.separator" #end name="separator" style="width:20em" class="validate" />
 			</td>
 		</tr> 
-		#elseif( $smsCommand.parserType == 'ALERT_PARSER' )
+		#elseif( $smsCommand.parserType == 'ALERT_PARSER' || $smsCommand.parserType == 'UNREGISTERED_PARSER' )
 		<tr>
 			<td>$i18n.getString( "userGroup" )</td>
 			<td>

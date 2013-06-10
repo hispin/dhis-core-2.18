@@ -114,7 +114,7 @@ public class CreateSMSCommandForm
             DataSet dataset = dataSetService.getDataSet( selectedDataSetID );
             command.setDataset( dataset );
         }
-        else if ( parserType.equals( ParserType.ALERT_PARSER ) )
+        else if ( parserType.equals( ParserType.ALERT_PARSER ) || parserType.equals( ParserType.UNREGISTERED_PARSER ) )
         {
             UserGroup userGroup = new UserGroup();
             userGroup = userGroupService.getUserGroup( userGroupID );

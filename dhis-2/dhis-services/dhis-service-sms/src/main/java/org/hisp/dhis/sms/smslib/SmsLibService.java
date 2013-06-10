@@ -52,6 +52,7 @@ import org.smslib.Message.MessageEncodings;
 import org.smslib.Service.ServiceStatus;
 
 import java.io.IOException;
+import java.lang.Character.UnicodeBlock;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +148,15 @@ public class SmsLibService
 
         OutboundMessage outboundMessage = new OutboundMessage( recipient, sms.getMessage() );
         
-        outboundMessage.setEncoding( MessageEncodings.ENCUCS2 );
+        //Check if text contain any specific unicode character
+        for( char each: sms.getMessage().toCharArray())
+        {
+            if( !Character.UnicodeBlock.of(each).equals( UnicodeBlock.BASIC_LATIN ) )
+            {
+                outboundMessage.setEncoding( MessageEncodings.ENCUCS2 );
+                break;
+            }
+        }
         
         outboundMessage.setStatusReport( true );
 

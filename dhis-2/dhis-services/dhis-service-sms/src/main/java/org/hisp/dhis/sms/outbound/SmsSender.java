@@ -35,7 +35,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.sms.SmsServiceException;
-import org.hisp.dhis.sms.smslib.SmsLibService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -103,11 +102,6 @@ public class SmsSender
 
         String gatewayId = transportService.getDefaultGateway();
         
-        if ( SmsLibService.gatewayMap.get( "bulk_gw" ).equals( gatewayId ) )
-        {
-            //bulk is limited in sending long SMS. to be continue....
-        }
-
         if ( gatewayId != null && !gatewayId.trim().isEmpty() )
         {
             for ( User user : users )
@@ -135,15 +129,53 @@ public class SmsSender
 
             if ( outboundSmsService != null || outboundSmsService.isEnabled() )
             {
-                text = createMessage( subject, text, sender );
-
                 phoneNumbers = getRecipientsPhoneNumber( toSendList );
-
-                if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+                /*if ( SmsLibService.gatewayMap.get( "bulk_gw" ).equals( gatewayId ) )
                 {
-                    message = sendMessage( text, phoneNumbers, gatewayId );
+                    try
+                    {
+                        String hexText = toHex( text.getBytes( "unicode" ) );
+                        if ( hexText.length() > MAX_HEX_CHAR )
+                        {
+ 
+                            List<String> splitTextList = new ArrayList<String>();
+                            splitTextList = splitLongHexString( hexText, text, splitTextList );
+                            for ( String each: splitTextList )
+                            {
+                                //text = createMessage( subject, each, sender );
+                                
+                                if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+                                {
+                                    //message = sendMessage( text, phoneNumbers, gatewayId );
+                                    message = sendMessage( each, phoneNumbers, gatewayId );
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //text = createMessage( subject, text, sender );
+                            
+                            if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+                            {
+                                message = sendMessage( text, phoneNumbers, gatewayId );
+                            }
+                        }
+                    }
+                    catch ( UnsupportedEncodingException e )
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
-
+                else*/
+                {
+                    text = createMessage( subject, text, sender );
+                    
+                    if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+                    {
+                        message = sendMessage( text, phoneNumbers, gatewayId );
+                    }
+                }
             }
         }
         
@@ -229,8 +261,6 @@ public class SmsSender
     }
 
     private String sendMessage( String text, Set<String> recipients, String gateWayId )
-    // private String sendMessage( String text, Set<String> recipients, String
-    // gateWayId, boolean isUnicode )
     {
         String message = null;
         OutboundSms sms = new OutboundSms();
@@ -251,7 +281,7 @@ public class SmsSender
         return message;
     }
 
-    public static String toHex( byte[] buf )
+    public String toHex( byte[] buf )
     {
         char[] chars = new char[2 * buf.length];
         for ( int i = 0; i < buf.length; ++i )
@@ -262,7 +292,7 @@ public class SmsSender
         return new String( chars );
     }
 
-    public static List<String> spitLongHexString( String hexString, String message, List<String> result )
+    public List<String> splitLongHexString( String hexString, String message, List<String> result )
     {
 
         String firstTempHex = null;
@@ -289,7 +319,7 @@ public class SmsSender
         }
         else
         {
-            return spitLongHexString( secondTempHex, secondTempString, result );
+            return splitLongHexString( secondTempHex, secondTempString, result );
         }
     }
 }
