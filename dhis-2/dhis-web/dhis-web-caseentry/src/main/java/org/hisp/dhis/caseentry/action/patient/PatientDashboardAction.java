@@ -221,38 +221,36 @@ public class PatientDashboardAction
         // Get patient-attribute-values
         // ---------------------------------------------------------------------
 
-        attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
-        Iterator<PatientAttributeValue> iterAttribute = attributeValues.iterator();
-
+        Collection<PatientAttributeValue> _attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        attributeValues = new HashSet<PatientAttributeValue>();
+        
         for ( Program program : programs )
         {
             Collection<PatientAttribute> atttributes = program.getPatientAttributes();
-            while ( iterAttribute.hasNext() )
+            for ( PatientAttributeValue attributeValue : _attributeValues )
             {
-                PatientAttributeValue attributeValue = iterAttribute.next();
-                if ( !atttributes.contains( attributeValue.getPatientAttribute() ) )
+                if ( atttributes.contains( attributeValue.getPatientAttribute() ) )
                 {
-                    iterAttribute.remove();
+                    attributeValues.add( attributeValue );
                 }
             }
         }
-
+        
         // ---------------------------------------------------------------------
         // Get patient-identifiers
         // ---------------------------------------------------------------------
 
-        identifiers = patient.getIdentifiers();
-        Iterator<PatientIdentifier> iterIdentifier = identifiers.iterator();
+        Collection<PatientIdentifier> _identifiers = patient.getIdentifiers();
+        identifiers = new HashSet<PatientIdentifier>();
         
         for ( Program program : programs )
         {
             Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
-            while ( iterIdentifier.hasNext() )
+            for ( PatientIdentifier identifier : _identifiers )
             {
-                PatientIdentifier identifier = iterIdentifier.next();
                 if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
                 {
-                    iterIdentifier.remove();
+                    identifiers.add(identifier);
                 }
             }
         }
