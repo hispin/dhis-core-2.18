@@ -93,6 +93,7 @@ public class SmsSender
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
         String message = null;
+        
         if ( transportService == null || SmsLibService.gatewayMap == null )
         {
             message = "No gateway";

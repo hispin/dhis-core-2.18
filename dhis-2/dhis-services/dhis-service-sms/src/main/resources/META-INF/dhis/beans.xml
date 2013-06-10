@@ -62,7 +62,6 @@
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
     <property name="messageSender" ref="org.hisp.dhis.sms.outbound.SmsSender" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
   </bean>
   
 </beans>
