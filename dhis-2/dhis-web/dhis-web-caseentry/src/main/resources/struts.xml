@@ -538,6 +538,9 @@
       <param name="page">
         /dhis-web-caseentry/updatePatientForm.vm
       </param>
+       <param name="javascripts">
+      	../dhis-web-commons/javascripts/jQuery/jquery-barcode.min.js
+      </param>
       <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
     </action>
 
