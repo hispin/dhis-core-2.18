@@ -3,7 +3,7 @@
 <link href="../dhis-web-commons/css/widgets.css" media="screen" rel="stylesheet" type="text/css">
 <link href="../dhis-web-commons/css/print.css" media="print" rel="stylesheet" type="text/css">
 <link href="../favicon.ico" rel="shortcut icon">
-<link rel="stylesheet" type="text/css" href="http://localhost:8080/dhis/dhis-web-commons/ckeditor/skins/kama/editor.css?t=B8DJ5M3"/>
+<link rel="stylesheet" type="text/css" href="../dhis-web-commons/ckeditor/skins/kama/editor.css?t=B8DJ5M3"/>
 
 <script type="text/javascript">
   

@@ -17,6 +17,8 @@ function removeRegistrationForm( programId, programName )
 		, function(json) {
 			hideById('active_' + programId);
 			showById('define_' + programId);
+			hideById('update_' + programId);
+			showById('add_' + programId);
 		});
 	}
 }

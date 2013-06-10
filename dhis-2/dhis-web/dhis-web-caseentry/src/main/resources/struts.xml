@@ -538,7 +538,7 @@
       <param name="page">
         /dhis-web-caseentry/updatePatientForm.vm
       </param>
-       <param name="javascripts">
+      <param name="javascripts">
       	../dhis-web-commons/javascripts/jQuery/jquery-barcode.min.js
       </param>
       <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
@@ -720,6 +720,9 @@
       class="org.hisp.dhis.caseentry.action.patient.ShowRelationshipListAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/relationshipList.vm</param>
+       <param name="javascripts">
+      		../dhis-web-commons/javascripts/jQuery/jquery-barcode.min.js
+      </param>
       <param name="requiredAuthorities">F_RELATIONSHIP_MANAGEMENT</param>
     </action>
 
