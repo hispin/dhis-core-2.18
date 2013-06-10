@@ -21,7 +21,7 @@ function autoUpload() {
                     jQuery(".ui-progressbar-value").html('');
                     jQuery("#progressbar").hide();
                 }, 4000);
-                jQuery.growlUI( JSON.parse(xhr.responseText).response, JSON.parse(xhr.responseText).message, JSON.parse(xhr.responseText).response, 2000 );
+                setHeaderDelayMessage(JSON.parse(xhr.responseText).message);
                 jQuery("#uploadPackageForm")[0].reset();
             }
         };
