@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.smslib.SmsLibService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -91,12 +92,12 @@ public class SmsSender
     @Override
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
-        if ( transportService == null || SmsLibService.gatewayMap == null || SmsLibService.gatewayMap.get( "bulk_gw" ) == null )
-        {
-            return null;
-        }
-        
         String message = null;
+        if ( transportService == null || SmsLibService.gatewayMap == null )
+        {
+            message = "No gateway";
+            return message;
+        }
 
         Set<User> toSendList = new HashSet<User>();
 
