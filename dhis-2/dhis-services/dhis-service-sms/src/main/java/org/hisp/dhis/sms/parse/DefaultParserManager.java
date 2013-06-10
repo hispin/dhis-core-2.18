@@ -131,13 +131,6 @@ public class DefaultParserManager
         this.messageSender = messageSender;
     }
 
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
     @Autowired
     private IncomingSmsService incomingSmsService;
 
@@ -235,7 +228,7 @@ public class DefaultParserManager
         }
         if ( !foundCommand )
         {
-            Collection<Patient> patientList = patientService.getPatientsByPhone( sender, null, null );
+            Collection<Patient> patientList = new ArrayList<Patient>(); //TODO FIX! //patientService.getPatientsByPhone( sender, null, null );
             
             if ( patientList != null && patientList.size() > 0 )
             {
