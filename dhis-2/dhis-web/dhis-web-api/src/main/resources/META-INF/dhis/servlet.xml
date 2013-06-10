@@ -19,6 +19,10 @@
 
   <context:component-scan base-package="org.hisp.dhis.api" />
 
+  <bean id="fixedContentNegotiationStrategy" class="org.springframework.web.accept.FixedContentNegotiationStrategy">
+    <constructor-arg name="defaultContentType" value="application/json" />
+  </bean>
+
   <bean id="headerContentNegotiationStrategy" class="org.springframework.web.accept.HeaderContentNegotiationStrategy" />
 
   <bean id="pathExtensionContentNegotiationStrategy" class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
@@ -38,6 +42,7 @@
       <list>
         <ref bean="pathExtensionContentNegotiationStrategy" />
         <ref bean="headerContentNegotiationStrategy" />
+        <ref bean="fixedContentNegotiationStrategy" />
       </list>
     </constructor-arg>
   </bean>
