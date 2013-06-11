@@ -27,6 +27,7 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.Action;
@@ -37,6 +38,8 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
@@ -54,6 +57,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AddAppAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( AddAppAction.class );
+    
+    private static final String FAILURE = "failure";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -115,69 +122,83 @@ public class AddAppAction
     public String execute()
         throws Exception
     {
-        if ( null != file )
+        if ( file == null )
         {
-            // TODO: Move to AppManagerService
-            if ( StreamUtils.isZip( new BufferedInputStream( new FileInputStream( file ) ) ) )
+            message = i18n.getString( "appmanager_no_file_specified" );
+            log.warn( "No file specified" );
+            return FAILURE;
+        }
+
+        if ( !StreamUtils.isZip( new BufferedInputStream( new FileInputStream( file ) ) ) )
+        {
+            message = i18n.getString( "appmanager_not_zip" );
+            log.warn( "App is not a zip archive" );
+            return FAILURE;
+        }
+        
+        ZipFile zip = new ZipFile( file );
+        ZipEntry entry = zip.getEntry( "manifest.webapp" );
+
+        if ( entry == null)
+        {
+            zip.close();
+            message = i18n.getString( "appmanager_manifest_not_found" );
+            log.warn( "Manifest file could not be found in app" );
+            return FAILURE;
+        }
+        
+        try
+        {
+            InputStream inputStream = zip.getInputStream( entry );
+            String appManifest = StreamUtils.convertStreamToString( inputStream );
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+            App app = mapper.readValue( appManifest, App.class );
+
+            // Delete if app is already installed
+            if ( appManagerService.getInstalledApps().contains( app ) )
             {
-                ZipFile zip = new ZipFile( file );
-                ZipEntry entry = zip.getEntry( "manifest.webapp" );
-
-                if ( null != entry )
-                {
-                    InputStream inputStream = zip.getInputStream( entry );
-                    String appManifest = StreamUtils.convertStreamToString( inputStream );
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-                    App app = mapper.readValue( appManifest, App.class );
-
-                    // Delete if app is already installed
-                    if ( appManagerService.getInstalledApps().contains( app ) )
-                    {
-                        String folderPath = appManagerService.getAppFolderPath() + File.separator
-                            + appManagerService.getAppFolderName( app );
-                        FileUtils.forceDelete( new File( folderPath ) );
-                    }
-
-                    String dest = appManagerService.getAppFolderPath() + File.separator
-                        + fileName.substring( 0, fileName.lastIndexOf( '.' ) );
-                    Unzip unzip = new Unzip();
-                    unzip.setSrc( file );
-                    unzip.setDest( new File( dest ) );
-                    unzip.execute();
-
-                    // Updating Dhis Server Location
-                    File updateManifest = new File( dest + File.separator + "manifest.webapp" );
-                    App installedApp = mapper.readValue( updateManifest, App.class );
-
-                    if ( installedApp.getActivities().getDhis().getHref().equals( "*" ) )
-                    {
-                        // TODO: Check why ContextUtils.getContextPath is not working
-                        // String rootPath = ContextUtils.getContextPath(ServletActionContext.getRequest());
-                        HttpServletRequest req = ServletActionContext.getRequest();
-                        StringBuffer fullUrl = req.getRequestURL();
-                        String baseUrl = ContextUtils.getBaseUrl( req );
-                        String rootPath = fullUrl.substring( 0, fullUrl.indexOf( "/", baseUrl.length() ) );
-
-                        installedApp.getActivities().getDhis().setHref( rootPath );
-                        mapper.writeValue( updateManifest, installedApp );
-                    }
-
-                    zip.close();
-                    message = i18n.getString( "appmanager_install_success" );
-                }
-                else
-                {
-                    zip.close();
-                    message = i18n.getString( "appmanager_invalid_package" );
-                    return "failure";
-                }
+                String folderPath = appManagerService.getAppFolderPath() + File.separator
+                    + appManagerService.getAppFolderName( app );
+                FileUtils.forceDelete( new File( folderPath ) );
             }
-            else
+
+            String dest = appManagerService.getAppFolderPath() + File.separator
+                + fileName.substring( 0, fileName.lastIndexOf( '.' ) );
+            Unzip unzip = new Unzip();
+            unzip.setSrc( file );
+            unzip.setDest( new File( dest ) );
+            unzip.execute();
+
+            // Updating dhis server location
+            File updateManifest = new File( dest + File.separator + "manifest.webapp" );
+            App installedApp = mapper.readValue( updateManifest, App.class );
+
+            if ( installedApp.getActivities().getDhis().getHref().equals( "*" ) )
             {
-                message = i18n.getString( "appmanager_not_zip" );
-                return "failure";
+                // TODO: Check why ContextUtils.getContextPath is not working
+                // String rootPath = ContextUtils.getContextPath(ServletActionContext.getRequest());
+                HttpServletRequest req = ServletActionContext.getRequest();
+                StringBuffer fullUrl = req.getRequestURL();
+                String baseUrl = ContextUtils.getBaseUrl( req );
+                String rootPath = fullUrl.substring( 0, fullUrl.indexOf( "/", baseUrl.length() ) );
+
+                installedApp.getActivities().getDhis().setHref( rootPath );
+                mapper.writeValue( updateManifest, installedApp );
             }
+
+            zip.close();
+            message = i18n.getString( "appmanager_install_success" );
+        }
+        catch ( JsonParseException ex )
+        {
+            message = i18n.getString( "appmanager_invalid_json" );
+            log.error( "Error parsing JSON in manifest", ex );
+            return FAILURE;
+        }
+        finally
+        {
+            zip.close();
         }
 
         return SUCCESS;
