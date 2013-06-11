@@ -1393,6 +1393,14 @@ function getPreviousEntryField( field )
     }
 }
 
+/**
+ * Convenience method which can be used in custom form scripts. Do not change.
+ */
+function onFormLoad( fn )
+{
+	$( 'body' ).off( EVENT_FORM_LOADED ).on( EVENT_FORM_LOADED, fn );
+}
+
 // -----------------------------------------------------------------------------
 // Data completeness
 // -----------------------------------------------------------------------------
