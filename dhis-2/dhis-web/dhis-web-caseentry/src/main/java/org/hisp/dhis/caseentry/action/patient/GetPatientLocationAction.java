@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientService;
 
 import com.opensymphony.xwork2.Action;
@@ -75,6 +76,20 @@ public class GetPatientLocationAction
         return patientId;
     }
 
+    private String systemIdentifier;
+
+    public String getSystemIdentifier()
+    {
+        return systemIdentifier;
+    }
+
+    private Patient patient;
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -82,8 +97,17 @@ public class GetPatientLocationAction
     public String execute()
         throws Exception
     {
-        Patient patient = patientService.getPatient( patientId );
+        patient = patientService.getPatient( patientId );
 
+        for( PatientIdentifier identifier : patient.getIdentifiers() )
+        {
+            if( identifier.getIdentifierType()== null)
+            {
+                systemIdentifier = identifier.getIdentifier();
+                break;
+            }
+        }
+        
         selectionTreeManager.setSelectedOrganisationUnit( patient.getOrganisationUnit() );
 
         return SUCCESS;

@@ -8,6 +8,35 @@
 	&#8226; <a href="javascript:showPatientDashboardForm($patientId);">$i18n.getString( 'patient_dashboard' )</a>
 	&#8226; $i18n.getString( "change_location" )
 </h3>
+	
+<table>
+	<tr>
+		<td colspan='3' style="padding-right:10px">
+			<h3>$patient.getFullName()</h3>
+		</td>
+	</tr>
+	<tr>
+		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
+		<td>$i18n.getString('gender'):</td>
+		<td>
+			#if($patient.gender=='F')
+				<img src='images/female_small.png'>
+			#else
+				<img src='images/male_small.png'>
+			#end
+		</td>
+	</tr>
+	<tr>
+		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
+		<td>$i18n.getString('dob_type'):</td>
+		<td>$!format.formatDate($!patient.birthDate)</td>
+	</tr>
+	<tr>
+		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
+		<td>$i18n.getString('age'):</td>
+		<td>$!patient.getAge()</td>
+	</tr>
+</table>
 
 <form method='post'>
 	<table>
