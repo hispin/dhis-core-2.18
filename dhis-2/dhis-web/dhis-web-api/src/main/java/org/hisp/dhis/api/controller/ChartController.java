@@ -51,6 +51,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.user.UserService;
 import org.jfree.chart.ChartUtilities;
@@ -159,6 +160,7 @@ public class ChartController
     @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date date,
+        @RequestParam( value = "pe", required = false) String pe,
         @RequestParam( value = "ou", required = false ) String ou,
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
@@ -173,6 +175,12 @@ public class ChartController
         }
         
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
+        
+        if ( pe != null )
+        {
+            Period period = PeriodType.getPeriodFromIsoString( pe );            
+            date = period != null ? period.getStartDate() : date;
+        }
         
         JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, unit, i18nManager.getI18nFormat() );
 
