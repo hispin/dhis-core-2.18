@@ -64,6 +64,11 @@ public class HibernateDataEntryFormStore
 
     public int addDataEntryForm( DataEntryForm dataEntryForm )
     {
+        if ( dataEntryForm != null )
+        {
+            dataEntryForm.setFormat( DataEntryForm.CURRENT_FORMAT );
+        }
+        
         Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataEntryForm );
