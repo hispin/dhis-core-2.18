@@ -66,15 +66,12 @@ public class DataSet
     extends BaseNameableObject
 {
     public static final String TYPE_DEFAULT = "default";
-
     public static final String TYPE_SECTION = "section";
-
     public static final String TYPE_CUSTOM = "custom";
-
     public static final String TYPE_SECTION_MULTIORG = "multiorg_section";
 
     public static final int NO_EXPIRY = 0;
-
+    
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
