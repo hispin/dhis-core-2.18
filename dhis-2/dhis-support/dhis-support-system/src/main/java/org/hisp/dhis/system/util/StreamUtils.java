@@ -593,7 +593,7 @@ public class StreamUtils
     {
         return new File( path ).exists();
     }
-    
+
     /**
      * Converts an InputStream to String with encoding as UTF-8
      * 
@@ -601,9 +601,9 @@ public class StreamUtils
      * @param inputStream the InputStream
      * @return String after reading the InputStream
      */
-    public static String convertStreamToString(InputStream inputStream)
+    public static String convertStreamToString( InputStream inputStream )
     {
-        Scanner s = new Scanner(inputStream, ENCODING_UTF8).useDelimiter("\\A");
+        Scanner s = new Scanner( inputStream, ENCODING_UTF8 ).useDelimiter( "\\A" );
         return s.hasNext() ? s.next() : "";
     }
 }
