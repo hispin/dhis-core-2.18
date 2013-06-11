@@ -63,7 +63,7 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:program" mode="short" />
+      <xsl:apply-templates select="d:program|d:programStageDataElements" mode="short" />
     </div>
   </xsl:template>
 
@@ -74,6 +74,40 @@
         <xsl:apply-templates mode="row"/>
       </table>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="d:programStageDataElements" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>ProgramStage DataElements</h3>
+        <xsl:for-each select="d:programStageDataElement">
+          <table>
+            <tr>
+              <td>Compulsory</td>
+              <td colspan="4"> <xsl:value-of select="d:compulsory" /> </td>
+            </tr>
+            <tr>
+              <td>allowProvidedElsewhere</td>
+              <td colspan="4"> <xsl:value-of select="d:allowProvidedElsewhere" /> </td>
+            </tr>
+            <tr>
+              <td>displayInReports</td>
+              <td colspan="4"> <xsl:value-of select="d:displayInReports" /> </td>
+            </tr>
+            <xsl:call-template name="local-de" />
+          </table>
+          <br />
+        </xsl:for-each>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="local-de">
+    <tr>
+      <td> <xsl:value-of select="d:dataElement/@name"/> </td>
+      <td> <a href="../dataElements/{d:dataElement/@id}">html</a> </td>
+      <td> <a href="../dataElements/{d:dataElement/@id}.xml">xml</a> </td>
+      <td> <a href="../dataElements/{d:dataElement/@id}.json">json</a> </td>
+      <td> <a href="../dataElements/{d:dataElement/@id}.jsonp">jsonp</a> </td>
+    </tr>
   </xsl:template>
 
 </xsl:stylesheet>
