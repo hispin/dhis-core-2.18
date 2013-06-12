@@ -78,7 +78,7 @@
 		<tr>
 			<td colspan='2'><br><div id='barcodePatient'></div></td>
 			<script>
-					$("#barcodePatient").barcode("$!systemIdentifier", "code39",{barWidth:2, barHeight:30});
+					$("#barcodePatient").barcode("$!systemIdentifier", "ean13",{barWidth:2, barHeight:30});
 			</script>
 		</tr>
 		<tr>
