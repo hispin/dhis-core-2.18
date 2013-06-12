@@ -11,7 +11,13 @@
 					<span class='bold' id="patientName">$i18n.getString( "full_name" ):</span>
 				</td>
 				<td class='coordinates2'>
-					$encoder.htmlEncode( $patient.getFullName() ) ( $i18n.getString( "$patient.gender" ) )
+					$encoder.htmlEncode( $patient.getFullName() ) 
+					( #if($patient.gender=='F')
+							<img src='images/female_small.png'>
+						#else
+							<img src='images/male_small.png'>
+						#end
+					)
 				</td>
 				<td class='bold coordinates1'>$i18n.getString('program'):</td>
 				<td class='coordinates2'>$program.displayName</td>

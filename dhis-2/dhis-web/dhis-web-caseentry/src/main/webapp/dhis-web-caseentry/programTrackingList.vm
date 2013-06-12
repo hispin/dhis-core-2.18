@@ -20,6 +20,15 @@
 					<td>$encoder.htmlEncode($programStageInstance.programInstance.patient.getFullName()) ( $programStageInstance.programInstance.patient.gender )</td>
 				</tr>
 				<tr>
+					<td class="bold">$i18n.getString("gender")</td>
+					<td>#if($patient.gender=='F')
+							<img src='images/female_small.png'>
+						#else
+							<img src='images/male_small.png'>
+						#end
+					</td>
+				</tr>
+				<tr>
 					<td class="bold">$i18n.getString( "date_of_birth" ):</td>
 					<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate ) ( $programStageInstance.programInstance.patient.getAge() )</td>
 				</tr>

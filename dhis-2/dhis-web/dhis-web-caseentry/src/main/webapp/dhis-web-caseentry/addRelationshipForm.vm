@@ -39,7 +39,11 @@
             <tr>
                 <td class="bold">$i18n.getString( "gender" ):</td>
                 <td>            
-                    $encoder.htmlEncode( $patient.gender )
+                    #if($patient.gender=='F')
+						<img src='images/female_small.png'>
+					#else
+						<img src='images/male_small.png'>
+					#end
                 </td>
             </tr>    
             <tr>

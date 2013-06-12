@@ -11,9 +11,9 @@
 	
 <table>
 	<tr>
-		<td colspan='3' style="padding-right:10px">
-			<h3>$patient.getFullName()</h3>
-		</td>
+		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
+		<td>$i18n.getString('full_name'):</td>
+		<td>$patient.getFullName()</td>
 	</tr>
 	<tr>
 		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>

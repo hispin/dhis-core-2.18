@@ -19,7 +19,12 @@
 				</tr>
 				<tr>
 					<td class="bold text-column">$i18n.getString( "gender" ): </td>
-					<td>$i18n.getString( $patient.gender )<td>
+					<td>#if($patient.gender=='F')
+							<img src='images/female_small.png'>
+						#else
+							<img src='images/male_small.png'>
+						#end
+					<td>
 				</tr>
 				<tr>
 					<td class="bold text-column">$i18n.getString( "date_of_birth" ): </td>
