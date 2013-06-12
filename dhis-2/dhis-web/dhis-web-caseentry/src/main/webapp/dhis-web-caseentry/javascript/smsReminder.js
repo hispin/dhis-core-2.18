@@ -284,3 +284,22 @@ function onClickBackBtn()
 		validateAdvancedSearch();
 	}
 }
+
+// load program instance history
+function programTrackingReport( programInstanceId )
+{
+	$('#programTrackingReportDiv').load("getProgramReportHistory.action", 
+		{
+			programInstanceId:programInstanceId
+		}).dialog(
+		{
+			title:i18n_program_report,
+			maximize:true, 
+			closable:true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width:850,
+			height:500
+		});
+}
+
