@@ -390,11 +390,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean newObject( User user, T object )
     {
-        if ( !SharingUtils.canCreatePublic( user, object ) || !SharingUtils.canCreatePrivate( user, object ) )
+        if ( !SharingUtils.canCreatePublic( user, object ) && !SharingUtils.canCreatePrivate( user, object ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
 
+            log.warn( "You do have create access to class type." );
+            
             return false;
         }
 
