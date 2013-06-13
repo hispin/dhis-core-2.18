@@ -218,7 +218,7 @@ public class DefaultChartService
         chart.setDimensions( DimensionalObject.DATA_X_DIM_ID, DimensionalObject.PERIOD_DIM_ID, DimensionalObject.ORGUNIT_DIM_ID );
         chart.setHideLegend( true );
         chart.getIndicators().add( indicator );
-        chart.setRelativePeriods( periods );
+        chart.setPeriods( periods );
         chart.getOrganisationUnits().add( unit );
         chart.setHideSubtitle( title );
         chart.setFormat( format );
@@ -243,7 +243,7 @@ public class DefaultChartService
         chart.setDimensions( DimensionalObject.DATA_X_DIM_ID, DimensionalObject.ORGUNIT_DIM_ID, DimensionalObject.PERIOD_DIM_ID );
         chart.setHideLegend( true );
         chart.getIndicators().add( indicator );
-        chart.setRelativePeriods( periods );
+        chart.setPeriods( periods );
         chart.setOrganisationUnits( parent.getSortedChildren() );
         chart.setHideSubtitle( title );
         chart.setFormat( format );
