@@ -3,7 +3,7 @@
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
 
-<table style="margin-bottom:8px">    
+<table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv">    
 	<tr>
 		<td>
 			<label>$i18n.getString( "registering_unit" )</label>
@@ -68,7 +68,7 @@
 	</tr>
 </table>
 
-<div id='advanced-search' class='hidden advanced-search'>
+<div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
 	<table>	
 		#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
 			<tr id='searchBySelectedUnitTD'>

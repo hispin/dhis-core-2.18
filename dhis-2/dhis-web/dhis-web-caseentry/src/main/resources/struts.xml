@@ -749,9 +749,8 @@
 
     <action name="searchRelationshipPatient"
       class="org.hisp.dhis.caseentry.action.patient.SearchRelationshipPatientAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-caseentry/responseRelationshipPatients.vm
-      </result>
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/relationshipPatients.vm</param>
       <param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
     </action>
 

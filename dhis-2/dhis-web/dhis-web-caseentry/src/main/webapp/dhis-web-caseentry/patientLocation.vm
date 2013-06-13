@@ -28,7 +28,7 @@
 	</tr>
 	<tr>
 		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
-		<td>$i18n.getString('dob_type'):</td>
+		<td>$i18n.getString('date_of_birth'):</td>
 		<td>$!format.formatDate($!patient.birthDate)</td>
 	</tr>
 	<tr>
