@@ -155,7 +155,7 @@ public class SaveRelationshipAction
 
         relationship.setRelationshipType( relationshipType );
         relationshipService.saveRelationship( relationship );
-
+        
         return SUCCESS;
     }
 }
