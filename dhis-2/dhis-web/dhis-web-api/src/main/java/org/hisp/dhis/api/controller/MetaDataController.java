@@ -121,7 +121,7 @@ public class MetaDataController
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE, "metaData.json", true );
 
-        JacksonUtils.toXmlWithView( response.getOutputStream(), metaData, ExportView.class );
+        JacksonUtils.toJsonWithView( response.getOutputStream(), metaData, ExportView.class );
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip" }, produces = "*/*" )
