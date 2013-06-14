@@ -177,6 +177,13 @@ public class AddProgramStageAction
         this.templateMessages = templateMessages;
     }
 
+    private List<Integer> sendTo = new ArrayList<Integer>();
+
+    public void setSendTo( List<Integer> sendTo )
+    {
+        this.sendTo = sendTo;
+    }
+
     private Boolean autoGenerateEvent;
 
     public void setAutoGenerateEvent( Boolean autoGenerateEvent )
@@ -204,14 +211,14 @@ public class AddProgramStageAction
     {
         this.displayGenerateEventBox = displayGenerateEventBox;
     }
-    
+
     private Boolean captureCoordinates;
-    
+
     public void setCaptureCoordinates( Boolean captureCoordinates )
     {
         this.captureCoordinates = captureCoordinates;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -224,8 +231,8 @@ public class AddProgramStageAction
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
         validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
         displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
-        captureCoordinates =  (captureCoordinates == null) ? false : captureCoordinates;
-        
+        captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
+
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
 
@@ -247,6 +254,7 @@ public class AddProgramStageAction
             PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
+            reminder.setSendTo( sendTo.get( i ) );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );

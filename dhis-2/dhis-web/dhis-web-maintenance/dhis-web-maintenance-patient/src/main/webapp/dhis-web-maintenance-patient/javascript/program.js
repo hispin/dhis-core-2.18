@@ -139,7 +139,6 @@ function selectProperties()
 	}
 }
 
-
 function selectAllProperties()
 {
 	var selectedList = jQuery("#selectedList");
@@ -168,7 +167,6 @@ function unSelectProperties()
 		}
 	});
 }
-
 
 function unSelectAllProperties()
 {
@@ -281,6 +279,17 @@ function generateTemplateMessageForm()
 				+ 	'<td><label>' + i18n_days_before_after_comparison_date + '</label></td>'
 				+ 	'<td><input type="text" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/></td>'
 				+ '</tr>'
+				+ '<tr>'
+				+ 	'<td><label>' + i18n_send_to + '</label></td>'
+				+ 	'<td>'
+				+ 		'<select id="sendTo' + rowId + '" name="sendTo' + rowId + '" class="sendTo" >'
+				+ 			'<option value="1">' + i18n_patient + '</option>'
+				+ 			'<option value="2">' + i18n_health_worker + '</option>'
+				+ 			'<option value="3">' + i18n_orgunit_registered + '</option>'
+				+ 			'<option value="4">' + i18n_all_users_in_orgunit_registered + '</option>'
+				+ 		'</select>'
+				+	'</td>'
+				+ '/<tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+	'<td>' + i18n_params + '</td>'
 				+	'<td>'

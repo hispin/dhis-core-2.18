@@ -37,6 +37,9 @@ jQuery( document ).ready( function()
 		var allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
 		allowProvidedElsewhere.empty();
 		
+		var sendTo = jQuery( "#sendTo" );
+		sendTo.empty();
+		
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			
 			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
@@ -58,6 +61,9 @@ jQuery( document ).ready( function()
 		});
 		jQuery(".templateMessage").each( function( i, item ){ 
 			templateMessages.append( "<option value='" + item.value + "' selected='true'>" +item.value+"</option>" );
+		});
+		jQuery(".sendTo").each( function( i, item ){ 
+			sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );
 		});
 	});
 	
