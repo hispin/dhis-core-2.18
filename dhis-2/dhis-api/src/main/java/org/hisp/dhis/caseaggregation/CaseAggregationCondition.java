@@ -101,6 +101,9 @@ public class CaseAggregationCondition
         + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID + "[0-9]+)+\\])\\s*(,)+\\s*("
         + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + ")+\\s*\\)\\s*";
 
+    // Group 2
+    public static final String operatorRegExp = "\\]\\s*(>=|<=|!=|>|<|=)+\\s*(.*)"; 
+    
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
