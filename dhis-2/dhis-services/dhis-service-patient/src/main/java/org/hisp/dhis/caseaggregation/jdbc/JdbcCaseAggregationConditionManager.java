@@ -377,6 +377,8 @@ public class JdbcCaseAggregationConditionManager
     @Override
     public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
     {
+        caseExpression = formatExpression( caseExpression );
+        
         String sql = "SELECT ";
 
         boolean hasPatients = hasPatientCriteria( caseExpression );
