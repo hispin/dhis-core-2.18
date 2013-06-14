@@ -17,6 +17,8 @@
     <property name="templateMessage" />
     
  	<property name="dateToCompare" />
+ 	
+ 	<property name="sendTo" />
  
   </class>
 </hibernate-mapping>

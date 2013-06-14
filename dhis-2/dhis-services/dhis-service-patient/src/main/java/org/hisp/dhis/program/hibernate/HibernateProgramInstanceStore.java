@@ -212,23 +212,14 @@ public class HibernateProgramInstanceStore
 
     public Collection<SchedulingProgramObject> getSendMesssageEvents( String dateToCompare )
     {
-        String sql = "SELECT pi.programinstanceid, p.phonenumber, prm.templatemessage, "
-            + "         p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
-            + "         pg.name as programName, pi.dateofincident , "
-            + "         pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
-            + "         (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
-            + "       FROM patient p INNER JOIN programinstance pi "
-            + "              ON p.patientid=pi.patientid INNER JOIN program pg "
-            + "              ON pg.programid=pi.programid INNER JOIN organisationunit org "
-            + "              ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
-            + "              ON prm.programid = pi.programid " 
-            + "       WHERE pi.status= " + ProgramInstance.STATUS_ACTIVE
-            + "         and p.phonenumber is not NULL and p.phonenumber != ''   "
-            + "         and prm.templatemessage is not NULL and prm.templatemessage != ''   "
-            + "         and pg.type=1 and prm.daysallowedsendmessage is not null    "
-            + "         and ( DATE(now()) - DATE(pi." + dateToCompare + ") ) = prm.daysallowedsendmessage "
-            + "         and prm.dateToCompare='" + dateToCompare + "'";
+        String sql = " ( " + sendToPatientSql( dateToCompare ) + " ) ";
+
+        sql += " UNION ( " + sendToHealthWorkerSql( dateToCompare ) + " ) ";
+
+        sql += " UNION ( " + sendMessageToOrgunitRegisteredSql( dateToCompare ) + " ) ";
         
+        sql += " UNION ( " + sendMessageToUsersSql( dateToCompare ) + " ) ";
+
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
         int cols = rs.getMetaData().getColumnCount();
@@ -244,9 +235,17 @@ public class HibernateProgramInstanceStore
                 String patientName = rs.getString( "firstName" );
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
-                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];// just get date, remove timestamp
+                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];// just
+                                                                                       // get
+                                                                                       // date,
+                                                                                       // remove
+                                                                                       // timestamp
                 String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
-                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];// just get date, remove timestamp
+                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];// just
+                                                                                        // get
+                                                                                        // date,
+                                                                                        // remove
+                                                                                        // timestamp
                 String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
 
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
@@ -254,8 +253,10 @@ public class HibernateProgramInstanceStore
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE, erollmentDate );
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE, daysSinceEnrollementDate );
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE, daysSinceIncidentDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE,
+                    daysSinceEnrollementDate );
+                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
+                    daysSinceIncidentDate );
             }
 
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
@@ -268,5 +269,99 @@ public class HibernateProgramInstanceStore
 
         return schedulingProgramObjects;
     }
+    
 
+    private String sendToPatientSql( String dateToCompare )
+    {
+        return "SELECT pi.programinstanceid, p.phonenumber, prm.templatemessage, "
+            + "         p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
+            + "         pg.name as programName, pi.dateofincident , "
+            + "         pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
+            + "         (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
+            + "       FROM patient p INNER JOIN programinstance pi "
+            + "              ON p.patientid=pi.patientid INNER JOIN program pg "
+            + "              ON pg.programid=pi.programid INNER JOIN organisationunit org "
+            + "              ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
+            + "              ON prm.programid = pi.programid " + "       WHERE pi.status= "
+            + ProgramInstance.STATUS_ACTIVE + "         and p.phonenumber is not NULL and p.phonenumber != ''   "
+            + "         and prm.templatemessage is not NULL and prm.templatemessage != ''   "
+            + "         and pg.type=1 and prm.daysallowedsendmessage is not null    "
+            + "         and ( DATE(now()) - DATE(pi." + dateToCompare + ") ) = prm.daysallowedsendmessage "
+            + "         and prm.dateToCompare='" + dateToCompare + "' and prm.sendto = "
+            + PatientReminder.SEND_TO_PATIENT;
+    }
+
+    private String sendToHealthWorkerSql( String dateToCompare )
+    {
+        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
+            + "   pg.name as programName, pi.dateofincident, pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
+            + "       (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
+            + "    FROM patient p INNER JOIN programinstance pi "
+            + "           ON p.patientid=pi.patientid INNER JOIN program pg "
+            + "           ON pg.programid=pi.programid INNER JOIN organisationunit org "
+            + "           ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
+            + "           ON prm.programid = pi.programid INNER JOIN users us "
+            + "           ON us.userid=p.healthworkerid INNER JOIN userinfo uif "
+            + "           ON us.userid=uif.userinfoid "
+            + "    WHERE pi.status = "
+            + ProgramInstance.STATUS_ACTIVE
+            + "      and uif.phonenumber is not NULL and uif.phonenumber != '' "
+            + "      and prm.templatemessage is not NULL and prm.templatemessage != '' "
+            + "      and pg.type=1 and prm.daysallowedsendmessage is not null "
+            + "      and ( DATE(now()) - DATE( pi."
+            + dateToCompare
+            + " ) ) = prm.daysallowedsendmessage "
+            + "      and prm.dateToCompare='"
+            + dateToCompare
+            + "'     and prm.sendto =  " + PatientReminder.SEND_TO_HEALTH_WORKER;
+    }
+
+    private String sendMessageToOrgunitRegisteredSql( String dateToCompare )
+    {
+        return "SELECT pi.programinstanceid, org.phonenumber, prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
+            + "   pg.name as programName, pi.dateofincident, pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
+            + "       (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
+            + "    FROM patient p INNER JOIN programinstance pi "
+            + "           ON p.patientid=pi.patientid INNER JOIN program pg "
+            + "           ON pg.programid=pi.programid INNER JOIN organisationunit org "
+            + "           ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
+            + "           ON prm.programid = pi.programid "
+            + "    WHERE pi.status = "
+            + ProgramInstance.STATUS_ACTIVE
+            + "      and org.phonenumber is not NULL and org.phonenumber != '' "
+            + "      and prm.templatemessage is not NULL and prm.templatemessage != '' "
+            + "      and pg.type=1 and prm.daysallowedsendmessage is not null "
+            + "      and ( DATE(now()) - DATE( pi."
+            + dateToCompare
+            + " ) ) = prm.daysallowedsendmessage "
+            + "      and prm.dateToCompare='"
+            + dateToCompare
+            + "'     and prm.sendto =  " + PatientReminder.SEND_TO_ORGUGNIT_REGISTERED;
+    }
+
+    private String sendMessageToUsersSql( String dateToCompare )
+    {
+        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName, pg.name as programName, pi.dateofincident ,"
+            + "pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
+            + "(DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
+            + "FROM patient p INNER JOIN programinstance pi "
+            + "    ON p.patientid=pi.patientid INNER JOIN program pg "
+            + "    ON pg.programid=pi.programid INNER JOIN organisationunit org "
+            + "    ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
+            + "    ON prm.programid = pi.programid INNER JOIN usermembership ums "
+            + "    ON ums.organisationunitid = p.organisationunitid INNER JOIN userinfo uif "
+            + "    ON uif.userinfoid = ums.userinfoid "
+            + "WHERE pi.status=  0 "
+            + "         and uif.phonenumber is not NULL and uif.phonenumber != '' "
+            + "         and prm.templatemessage is not NULL and prm.templatemessage != '' "
+            + "         and pg.type=1 and prm.daysallowedsendmessage is not null "
+            + "         and ( DATE(now()) - DATE( "
+            + dateToCompare
+            + " ) ) = prm.daysallowedsendmessage "
+            + "         and prm.dateToCompare='"
+            + dateToCompare
+            + "'        and prm.sendto = "
+            + PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
+    }
+    
 }

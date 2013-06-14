@@ -221,6 +221,13 @@ public class AddProgramAction
         this.datesToCompare = datesToCompare;
     }
 
+    private List<Integer> sendTo = new ArrayList<Integer>();
+
+    public void setSendTo( List<Integer> sendTo )
+    {
+        this.sendTo = sendTo;
+    }
+
     private Boolean disableRegistrationFields;
 
     public void setDisableRegistrationFields( Boolean disableRegistrationFields )
@@ -316,6 +323,7 @@ public class AddProgramAction
             PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
             reminder.setDateToCompare( datesToCompare.get( i ) );
+            reminder.setSendTo( sendTo.get( i ) );
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );

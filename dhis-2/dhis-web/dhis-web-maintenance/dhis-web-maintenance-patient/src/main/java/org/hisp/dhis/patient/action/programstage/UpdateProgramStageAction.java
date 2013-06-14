@@ -170,6 +170,13 @@ public class UpdateProgramStageAction
         this.templateMessages = templateMessages;
     }
 
+    private List<Integer> sendTo = new ArrayList<Integer>();
+
+    public void setSendTo( List<Integer> sendTo )
+    {
+        this.sendTo = sendTo;
+    }
+
     private Boolean autoGenerateEvent;
 
     public void setAutoGenerateEvent( Boolean autoGenerateEvent )
@@ -238,6 +245,7 @@ public class UpdateProgramStageAction
             PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
+            reminder.setSendTo( sendTo.get( i ) );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );

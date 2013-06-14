@@ -34,6 +34,9 @@ jQuery( document ).ready( function()
 		var templateMessages = jQuery( "#templateMessages" );
 		templateMessages.empty();
 		
+		var sendTo = jQuery( "#sendTo" );
+		sendTo.empty();
+		
 		allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
 		allowProvidedElsewhere.empty();
 		
@@ -58,6 +61,9 @@ jQuery( document ).ready( function()
 		});
 		jQuery(".templateMessage").each( function( i, item ){ 
 			templateMessages.append( "<option value='" + item.value + "' selected='true'>" +item.value+"</option>" );
+		});
+		jQuery(".sendTo").each( function( i, item ){ 
+			sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );
 		});
 	});
 	

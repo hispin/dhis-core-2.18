@@ -39,11 +39,11 @@ public class PatientReminder
     private static final long serialVersionUID = 3101502417481903219L;
 
     public static final String DUE_DATE_TO_COMPARE = "duedate";
-    
+
     public static final String ENROLLEMENT_DATE_TO_COMPARE = "enrollmentdate";
-    
+
     public static final String INCIDENT_DATE_TO_COMPARE = "dateofincident";
-    
+
     public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "{patient-name}";
 
     public static final String TEMPLATE_MESSSAGE_PROGRAM_NAME = "{program-name}";
@@ -64,6 +64,14 @@ public class PatientReminder
 
     public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE = "{days-since-incident-date}";
 
+    public static final int SEND_TO_PATIENT = 1;
+
+    public static final int SEND_TO_HEALTH_WORKER = 2;
+
+    public static final int SEND_TO_ORGUGNIT_REGISTERED = 3;
+
+    public static final int SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED = 4;
+
     private int id;
 
     private String name;
@@ -73,6 +81,8 @@ public class PatientReminder
     private String templateMessage;
 
     private String dateToCompare;
+
+    private Integer sendTo;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -142,6 +152,16 @@ public class PatientReminder
     public void setDateToCompare( String dateToCompare )
     {
         this.dateToCompare = dateToCompare;
+    }
+
+    public Integer getSendTo()
+    {
+        return sendTo;
+    }
+
+    public void setSendTo( Integer sendTo )
+    {
+        this.sendTo = sendTo;
     }
 
 }
