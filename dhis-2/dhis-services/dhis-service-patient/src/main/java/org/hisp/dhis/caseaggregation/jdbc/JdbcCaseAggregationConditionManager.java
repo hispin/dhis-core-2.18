@@ -287,6 +287,7 @@ public class JdbcCaseAggregationConditionManager
         Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
         Collection<Integer> orgunitIds, Period period )
     {
+        caseExpression = formatExpression( caseExpression );
         String sql = "SELECT '" + aggregateDeId + "' as dataelementid, '" + optionComboId
             + "' as categoryoptioncomboid, ou.organisationunitid as sourceid, '" + period.getId() + "' as periodid,'"
             + CaseAggregationCondition.AUTO_STORED_BY + "' as comment, ";
@@ -1068,4 +1069,20 @@ public class JdbcCaseAggregationConditionManager
         return false;
     }
 
+    private String formatExpression( String expression )
+    {
+        StringBuffer result = new StringBuffer();
+        Pattern pattern = Pattern.compile( CaseAggregationCondition.operatorRegExp );
+        Matcher matcher = pattern.matcher( expression );
+        while ( matcher.find() )
+        {
+            String value = matcher.group( 2 );
+            value = value.startsWith( "\'" ) ? value : "\'" + value;
+            value = value.endsWith( "\'" ) ? value : value + "\'";
+            
+            value = "]" + matcher.group( 1 ) + " " + value;
+            matcher.appendReplacement( result, value );
+        }
+        return result.toString();
+    }
 }
