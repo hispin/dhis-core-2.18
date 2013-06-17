@@ -26,7 +26,7 @@
 
 <pre style="font-size:12pt;">
 <![CDATA[
-<dataValueSet xmlns="http://dhis2.org/schema/dxf/2.0" period="periodISODate" dataSet="dataSetID" orgUnit="orgUnitID">
+<dataValueSet xmlns="http://dhis2.org/schema/dxf/2.0" period="periodISODate" orgUnit="orgUnitID" dataSet="dataSetID" completeDate="yyyy-MM-dd">
   <dataValues>
     <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="1" />
     <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="2" />
