@@ -102,7 +102,7 @@ public class CaseAggregationCondition
         + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|" + OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + ")+\\s*\\)\\s*";
 
     // Group 2
-    public static final String operatorRegExp = "\\]\\s*(>=|<=|!=|>|<|=)+\\s*(.*)"; 
+    public static final String operatorRegExp = "]\\s*(>=|<=|!=|>|<|=)+\\s*([0-9]+)"; 
     
     // -------------------------------------------------------------------------
     // Fields
