@@ -35,12 +35,12 @@ import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class AddMapViewToDashboardAction
     implements Action
@@ -51,26 +51,14 @@ public class AddMapViewToDashboardAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private CurrentUserService currentUserService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
+    @Autowired
     private DashboardService dashboardService;
 
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
-    
+    @Autowired
     private MappingService mappingService;
-
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
-    }
 
     // -------------------------------------------------------------------------
     // Input

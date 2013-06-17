@@ -18,6 +18,12 @@
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
 
+    <!-- Dashboard -->
+    
+    <bean id="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
+        class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
+        scope="prototype"/>
+
 	<!-- OrganisationUnit -->
 
 	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitChildrenAction"
@@ -61,7 +67,7 @@
         class="org.hisp.dhis.mapping.action.GetInfrastructuralDataElementMapValuesAction" scope="prototype">
     </bean>
 
-<!-- Period -->
+    <!-- Period -->
 
 	<bean id="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
 		class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction" scope="prototype">

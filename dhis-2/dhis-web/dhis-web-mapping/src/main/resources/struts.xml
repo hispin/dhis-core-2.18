@@ -15,6 +15,12 @@
       <result name="success" type="redirect">app/index.html</result>
     </action>
 	
+	<!-- Dashboard -->
+	
+	<action name="addMapViewToDashboard" class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction">
+	  <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+	</action>
+	
     <!-- Security -->
 	  
     <action name="deleteMapLegendSet" class="org.hisp.dhis.mapping.action.NoAction">
