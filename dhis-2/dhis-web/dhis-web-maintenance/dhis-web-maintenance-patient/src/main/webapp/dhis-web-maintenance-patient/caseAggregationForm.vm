@@ -156,7 +156,7 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="254">$!caseAggregation.aggregationExpression</textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" onkeyup='getConditionDescription();' maxlength="1000">$!caseAggregation.aggregationExpression</textarea>
 			</fieldset>
 		</td>
 	</tr>
