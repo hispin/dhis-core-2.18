@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.sms.outbound;
 
+import java.lang.Character.UnicodeBlock;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,9 +55,7 @@ public class SmsSender
 {
     private static final Log log = LogFactory.getLog( SmsSender.class );
 
-    private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
-
-    private static final int MAX_HEX_CHAR = 280;
+    private static int MAX_CHAR = 160;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -93,7 +93,7 @@ public class SmsSender
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
         String message = null;
-        
+
         if ( transportService == null || SmsLibService.gatewayMap == null )
         {
             message = "No gateway";
@@ -103,7 +103,7 @@ public class SmsSender
         Set<User> toSendList = new HashSet<User>();
 
         String gatewayId = transportService.getDefaultGateway();
-        
+
         if ( gatewayId != null && !gatewayId.trim().isEmpty() )
         {
             for ( User user : users )
@@ -132,47 +132,43 @@ public class SmsSender
             if ( outboundSmsService != null || outboundSmsService.isEnabled() )
             {
                 phoneNumbers = getRecipientsPhoneNumber( toSendList );
-                /*if ( SmsLibService.gatewayMap.get( "bulk_gw" ).equals( gatewayId ) )
+                
+                text = createMessage( subject, text, sender );
+                
+                //Bulk is limited in sending long SMS, need to cut into small pieces
+                if ( SmsLibService.gatewayMap.get( "bulk_gw" ).equals( gatewayId ) )
                 {
-                    try
+                    //Check if text contain any specific unicode character
+                    for( char each: text.toCharArray())
                     {
-                        String hexText = toHex( text.getBytes( "unicode" ) );
-                        if ( hexText.length() > MAX_HEX_CHAR )
+                        if( !Character.UnicodeBlock.of(each).equals( UnicodeBlock.BASIC_LATIN ) )
                         {
- 
-                            List<String> splitTextList = new ArrayList<String>();
-                            splitTextList = splitLongHexString( hexText, text, splitTextList );
-                            for ( String each: splitTextList )
-                            {
-                                //text = createMessage( subject, each, sender );
-                                
-                                if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
-                                {
-                                    //message = sendMessage( text, phoneNumbers, gatewayId );
-                                    message = sendMessage( each, phoneNumbers, gatewayId );
-                                }
-                            }
+                            MAX_CHAR = 40;
+                            break;
                         }
-                        else
+                    }
+                    if ( text.length() > MAX_CHAR )
+                    {
+                        List<String> splitTextList = new ArrayList<String>();
+                        splitTextList = splitLongUnicodeString( text, splitTextList );
+                        for ( String each : splitTextList )
                         {
-                            //text = createMessage( subject, text, sender );
-                            
                             if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
                             {
-                                message = sendMessage( text, phoneNumbers, gatewayId );
+                                message = sendMessage( each, phoneNumbers, gatewayId );
                             }
                         }
                     }
-                    catch ( UnsupportedEncodingException e )
+                    else
                     {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+                        {
+                            message = sendMessage( text, phoneNumbers, gatewayId );
+                        }
                     }
                 }
-                else*/
+                else
                 {
-                    text = createMessage( subject, text, sender );
-                    
                     if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
                     {
                         message = sendMessage( text, phoneNumbers, gatewayId );
@@ -180,7 +176,7 @@ public class SmsSender
                 }
             }
         }
-        
+
         return message;
     }
 
@@ -283,45 +279,30 @@ public class SmsSender
         return message;
     }
 
-    public String toHex( byte[] buf )
+    public List<String> splitLongUnicodeString( String message, List<String> result )
     {
-        char[] chars = new char[2 * buf.length];
-        for ( int i = 0; i < buf.length; ++i )
-        {
-            chars[2 * i] = HEX_CHARS[(buf[i] & 0xF0) >>> 4];
-            chars[2 * i + 1] = HEX_CHARS[buf[i] & 0x0F];
-        }
-        return new String( chars );
-    }
-
-    public List<String> splitLongHexString( String hexString, String message, List<String> result )
-    {
-
-        String firstTempHex = null;
-        String secondTempHex = null;
         String firstTempString = null;
         String secondTempString = null;
         int indexToCut;
 
-        firstTempHex = hexString.substring( 0, MAX_HEX_CHAR );
+        firstTempString = message.substring( 0, MAX_CHAR );
 
-        int lastSpaceIndex = firstTempHex.lastIndexOf( "0020" );
+        indexToCut = firstTempString.lastIndexOf( " " );
 
-        firstTempHex = firstTempHex.substring( 0, lastSpaceIndex );
-        indexToCut = (firstTempHex.length() - 4) / 4;
-        firstTempString = message.substring( 0, indexToCut );
+        firstTempString = firstTempString.substring( 0, indexToCut );
+
         result.add( firstTempString );
 
-        secondTempHex = "feff" + hexString.substring( firstTempHex.length() + 4, hexString.length() );
         secondTempString = message.substring( indexToCut + 1, message.length() );
-        if ( secondTempHex.length() <= MAX_HEX_CHAR )
+
+        if ( secondTempString.length() <= MAX_CHAR )
         {
             result.add( secondTempString );
             return result;
         }
         else
         {
-            return splitLongHexString( secondTempHex, secondTempString, result );
+            return splitLongUnicodeString( secondTempString, result );
         }
     }
 }
