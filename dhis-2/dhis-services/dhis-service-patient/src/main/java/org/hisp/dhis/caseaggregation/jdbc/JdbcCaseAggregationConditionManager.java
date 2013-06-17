@@ -1085,6 +1085,9 @@ public class JdbcCaseAggregationConditionManager
             value = "]" + matcher.group( 1 ) + " " + value;
             matcher.appendReplacement( result, value );
         }
+
+        matcher.appendTail( result );
+
         return result.toString();
     }
 }
