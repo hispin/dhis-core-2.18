@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>$encoder.htmlEncode( ${applicationTitle} )</title>        
+        <title>$!encoder.htmlEncode( ${applicationTitle} )</title>        
         <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -20,17 +20,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-    	<h1 style="display:none">$encoder.htmlEncode( ${applicationTitle} )</h1>
+    	<h1 style="display:none">$!encoder.htmlEncode( ${applicationTitle} )</h1>
     	<div style="display:none">DHIS 2</div>
         <div>       
         #if ( $keyFlag )
             <img id="flagArea" src="../flags/${keyFlagImage}">
         #end
         #if ( $applicationTitle )
-            <span id="titleArea">$encoder.htmlEncode( ${applicationTitle} )</span>
+            <span id="titleArea">$!encoder.htmlEncode( ${applicationTitle} )</span>
         #end        
         #if ( $keyApplicationIntro )
-            <span id="introArea">${keyApplicationIntro}</span>
+            <span id="introArea">$!{keyApplicationIntro}</span>
         #end
         </div>
         #if ( $keyConfig.selfRegistrationAllowed() )
@@ -77,9 +77,9 @@
             <span id="loginMessage">Wrong username or password</span>
             #end
             #if ( $keyApplicationNotification )
-            <div id="notificationArea">${keyApplicationNotification}</div>
+            <div id="notificationArea">$!{keyApplicationNotification}</div>
             #end
         </div>
-        <div id="footerArea"><span>Powered by <a href="http://www.dhis2.org">DHIS 2</a>&nbsp;&nbsp;${keyApplicationFooter}</div>
+        <div id="footerArea"><span>Powered by <a href="http://www.dhis2.org">DHIS 2</a>&nbsp;&nbsp;$!{keyApplicationFooter}</div>
     </body>
 </html>
