@@ -61,7 +61,8 @@
     <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />  
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
-    <property name="messageSender" ref="org.hisp.dhis.sms.outbound.SmsSender" />
+    <property name="smsMessageSender" ref="org.hisp.dhis.sms.outbound.SmsSender" />
+    <property name="emailMessageSender" ref="emailMessageSender" />
   </bean>
   
 </beans>

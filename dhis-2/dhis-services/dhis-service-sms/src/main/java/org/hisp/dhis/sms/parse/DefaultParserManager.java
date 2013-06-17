@@ -53,6 +53,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.message.EmailMessageSender;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
@@ -60,7 +61,6 @@ import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -124,11 +124,18 @@ public class DefaultParserManager
         this.messageConversationStore = messageConversationStore;
     }
 
-    private MessageSender messageSender;
+    private MessageSender smsMessageSender;
 
-    public void setMessageSender( MessageSender messageSender )
+    public void setSmsMessageSender( MessageSender smsMessageSender )
     {
-        this.messageSender = messageSender;
+        this.smsMessageSender = smsMessageSender;
+    }
+
+    private MessageSender emailMessageSender;
+    
+    public void setEmailMessageSender( MessageSender emailMessageSender )
+    {
+        this.emailMessageSender = emailMessageSender;
     }
 
     @Autowired
@@ -358,7 +365,10 @@ public class DefaultParserManager
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
                 // forward to user group by SMS
-                messageSender.sendMessage( command.getName(), message, sender, receivers, true );
+                smsMessageSender.sendMessage( command.getName(), message, sender, receivers, true );
+                
+                // forward to user group by E-mail
+                emailMessageSender.sendMessage( command.getName(), message, sender, receivers, false );
 
                 // forward to user group by dhis message
                 if ( sender != null )
@@ -380,7 +390,8 @@ public class DefaultParserManager
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
                 feedbackList.add( sender );
-                messageSender.sendMessage( command.getName(), command.getReceivedMessage(), null, feedbackList, true );
+                smsMessageSender.sendMessage( command.getName(), command.getReceivedMessage(), null, feedbackList, true );
+                
             }
         }
     }
