@@ -351,7 +351,7 @@ public class HibernateProgramInstanceStore
             + "    ON prm.programid = pi.programid INNER JOIN usermembership ums "
             + "    ON ums.organisationunitid = p.organisationunitid INNER JOIN userinfo uif "
             + "    ON uif.userinfoid = ums.userinfoid "
-            + "WHERE pi.status=  0 "
+            + "WHERE pi.status= " + ProgramInstance.STATUS_ACTIVE
             + "         and uif.phonenumber is not NULL and uif.phonenumber != '' "
             + "         and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "         and pg.type=1 and prm.daysallowedsendmessage is not null "
