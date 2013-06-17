@@ -5,6 +5,7 @@
                 applicationTitle: getFieldValue( 'applicationTitle' ),
                 applicationIntro: getFieldValue( 'applicationIntro' ),
                 applicationNotification: getFieldValue( 'applicationNotification' ),
+                applicationFooter: getFieldValue( 'applicationFooter' ),
                 currentStyle: getFieldValue( 'currentStyle' ),
 				flag: getFieldValue( 'flag' ),
 				startModule: getFieldValue( 'startModule' )
@@ -23,13 +24,17 @@
 
 <div class="setting"><input type="text" id="applicationTitle" name="applicationTitle" maxlength="40" value="$!{applicationTitle}"/></div>
 
-<div class="settingLabel">$i18n.getString( "application_introduction" )</div>
+<div class="settingLabel">$i18n.getString( "application_introduction" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
 
-<div class="setting"><input type="text" id="applicationIntro" name="applicationIntro" maxlength="80" value="$!{keyApplicationIntro}"/></div>
+<div class="setting"><textarea id="applicationIntro" name="applicationIntro">$!{keyApplicationIntro}</textarea></div>
 
-<div class="settingLabel">$i18n.getString( "application_notification" )</div>
+<div class="settingLabel">$i18n.getString( "application_notification" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
 
 <div class="setting"><textarea id="applicationNotification" name="applicationNotification">$!{keyApplicationNotification}</textarea></div>
+
+<div class="settingLabel">$i18n.getString( "application_footer" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+
+<div class="setting"><textarea id="applicationFooter" name="applicationFooter">$!{keyApplicationFooter}</textarea></div>
 
 <div class="settingLabel">$i18n.getString( "style" )</div>
 
