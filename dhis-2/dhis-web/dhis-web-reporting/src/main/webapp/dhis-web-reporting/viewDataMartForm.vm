@@ -15,8 +15,8 @@
 <div class="settingHeader">$i18n.getString( "data_mart" )</div>
 
 <div class="setting">
-    <input type="checkbox" id="dataMart" />
-    <label for="dataMart" onclick="toggleDataMart()">$i18n.getString( "data_mart_tables_update" )</label>
+    <input type="checkbox" id="dataMart" onclick="toggleDataMart()"/>
+    <label for="dataMart">$i18n.getString( "data_mart_tables_update" )</label>
 </div>
 
 <div class="settingLabel">$i18n.getString( "aggregation_period_types" )</div>
