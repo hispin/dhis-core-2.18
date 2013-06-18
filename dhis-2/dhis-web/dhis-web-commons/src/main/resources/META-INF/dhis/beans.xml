@@ -24,6 +24,7 @@
         <value>dhis-web-maintenance-patient</value>
         <value>dhis-web-maintenance-settings</value>
         <value>dhis-web-maintenance-user</value>
+        <value>dhis-web-appmanager</value>
         <value>dhis-web-dashboard-integration</value>
         <value>dhis-web-dataentry</value>
         <value>dhis-web-validationrule</value>
@@ -33,7 +34,9 @@
         <value>dhis-web-caseentry</value>
         <value>dhis-web-light</value>
         <value>dhis-web-mobile</value>
+        <value>dhis-web-pivot</value>
         <value>dhis-web-reporting</value>
+        <value>dhis-web-sms</value>
       </list>
     </property>
   </bean>
