@@ -409,13 +409,17 @@ public class JdbcCaseAggregationConditionManager
                     DateUtils.getMediumDateString( period.getStartDate() ),
                     DateUtils.getMediumDateString( period.getEndDate() ) );
         }
-        else if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+        else
         {
-            sql += "p.firstName, p.middleName, p.lastName, p.gender, p.birthDate, p.phoneNumber, ";
-        }
-        else if ( hasDataelement )
-        {
-            sql += "pdv.value,";
+            if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+            {
+                sql += "p.firstName, p.middleName, p.lastName, p.gender, p.birthDate, p.phoneNumber, ";
+            }
+
+            if ( hasDataelement )
+            {
+                sql += "pdv.value,";
+            }
         }
 
         sql += "pgs.name as program_stage, psi.executiondate as report_date ";
@@ -1081,7 +1085,6 @@ public class JdbcCaseAggregationConditionManager
             String match = matcher.group();
 
             match = match.replaceAll( "[\\[\\]]", "" );
-
             String[] info = match.split( SEPARATOR_OBJECT );
 
             if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
