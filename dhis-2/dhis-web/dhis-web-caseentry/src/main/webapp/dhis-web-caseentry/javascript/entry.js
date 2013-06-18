@@ -591,7 +591,7 @@ function runCompleteEvent( isCreateEvent )
                 hideLoader();
 
                 if ( isCreateEvent ) {
-                    showAddEventForm();
+                    showAddEventForm(isCreateEvent);
                 }
             } ).fail(function() {
                 if ( getProgramType() == 3 ) {
@@ -620,7 +620,7 @@ function runCompleteEvent( isCreateEvent )
                         hideLoader();
 
                         if ( isCreateEvent ) {
-                            showAddEventForm();
+                            showAddEventForm( isCreateEvent );
                         }
                     }
                 }
