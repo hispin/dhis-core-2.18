@@ -36,6 +36,54 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 
 /**
+ * This interface is responsible for retrieving aggregated data. Data will be
+ * returned in a grid object or as a dimensional key-value mapping. 
+ * 
+ * Most objects accept a DataQueryParams object which encapsulates the query 
+ * parameters. The dimensions in the response will appear in the same order as
+ * they are set on the DataQueryParams object. You can use various methods for
+ * setting indicators, data elements, data sets, periods, organisation units,
+ * categories, data element group sets and organisation unit group sets on the
+ * the DataQueryParams object. Objects can be defined as dimensions or filters.
+ * 
+ * Example usage for setting multiple indicators and a period as dimensions
+ * and an organisation unit as filter. In the grid response the first column
+ * will contain indicator identifiers, the second column will contain period
+ * identifiers and the third column will contain aggregated values. Note that
+ * the organisation unit is excluded since it is defined as a filter:
+ * 
+ * <pre>
+ * <code>
+ * DataQueryParams params = new DataQueryParams();
+ * 
+ * params.setIndicators( indicators );
+ * params.setPeriod( period );
+ * params.setFilterOrganisationUnit( organisationUnit );
+ * 
+ * Grid grid = analyticsService.getAggregatedDataValues( params );
+ * </code>
+ * </pre>
+ * 
+ * Example usage for including category option combos in the response. Note that 
+ * the index position of category option combos will follow the order of when the
+ * enableCategoryOptionCombos method was called. In the map response, the keys
+ * will represent the dimensions defined in the DataQueryParams object and will
+ * contain dimension identifiers separated by the "-" character. The key will
+ * be of type String and contain a data element identifier, a category option 
+ * combo identifier and an organisation unit identifier in that order. The map 
+ * values will be the aggregated values of type Double:
+ * 
+ * <pre>
+ * <code>
+ * DataQueryParams params = new DataQueryParams();
+ * 
+ * params.setDataElement( dataElement );
+ * params.enableCategoryOptionCombos();
+ * params.setOrganisationUnits( organisationUnits );
+ * params.setFilterPeriod( period );
+ * 
+ * Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+ * 
  * @author Lars Helge Overland
  */
 public interface AnalyticsService
@@ -53,7 +101,7 @@ public interface AnalyticsService
     /**
      * Generates an aggregated value grid for the given query. The grid will
      * represent a table with dimensions used as columns and rows as specified
-     * in columnDimensions and rowDimensions arguments.
+     * in columns and rows dimension arguments.
      * 
      * @param params the data query parameters.
      * @param tableLayout whether to render the grid as a table with columns and rows,

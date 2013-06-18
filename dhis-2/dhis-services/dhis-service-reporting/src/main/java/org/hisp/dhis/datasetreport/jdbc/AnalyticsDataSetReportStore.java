@@ -27,8 +27,6 @@ package org.hisp.dhis.datasetreport.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.NameableObjectUtils.getList;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,8 +82,8 @@ public class AnalyticsDataSetReportStore
         DataQueryParams params = new DataQueryParams();
         
         params.setDataElements( dataElements );
-        params.setPeriods( getList( period ) );
-        params.setOrganisationUnits( getList( unit ) );
+        params.setPeriod( period );
+        params.setOrganisationUnit( unit );
         params.enableCategoryOptionCombos();
         
         if ( groups != null && !groups.isEmpty() )
@@ -131,8 +129,8 @@ public class AnalyticsDataSetReportStore
                 DataQueryParams params = new DataQueryParams();
                 
                 params.setDataElements( dataElements );
-                params.setPeriods( getList( period ) );
-                params.setOrganisationUnits( getList( unit ) );
+                params.setPeriod( period );
+                params.setOrganisationUnit( unit );
                 params.setCategory( category );            
 
                 if ( groups != null && !groups.isEmpty() )
@@ -171,8 +169,8 @@ public class AnalyticsDataSetReportStore
         DataQueryParams params = new DataQueryParams();
         
         params.setDataElements( dataElements );
-        params.setPeriods( getList( period ) );
-        params.setOrganisationUnits( getList( unit ) );
+        params.setPeriod( period );
+        params.setOrganisationUnit( unit );
 
         if ( groups != null && !groups.isEmpty() )
         {
@@ -208,8 +206,8 @@ public class AnalyticsDataSetReportStore
         DataQueryParams params = new DataQueryParams();
         
         params.setIndicators( indicators );
-        params.setPeriods( getList( period ) );
-        params.setOrganisationUnits( getList( unit ) );
+        params.setPeriod( period );
+        params.setOrganisationUnit( unit );
 
         if ( groups != null && !groups.isEmpty() )
         {

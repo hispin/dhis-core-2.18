@@ -36,10 +36,10 @@ import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_OPERAND_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
@@ -1190,6 +1190,11 @@ public class DataQueryParams
         setDimensionOptions( INDICATOR_DIM_ID, DimensionType.INDICATOR, null, asList( indicators ) );
     }
     
+    public void setIndicator( NameableObject indicator )
+    {
+        setIndicators( getList( indicator ) );
+    }
+    
     public List<NameableObject> getDataElements()
     {
         return getDimensionOptions( DATAELEMENT_DIM_ID );
@@ -1198,6 +1203,11 @@ public class DataQueryParams
     public void setDataElements( List<? extends NameableObject> dataElements )
     {
         setDimensionOptions( DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT, null, asList( dataElements ) );
+    }
+    
+    public void setDataElement( NameableObject dataElement )
+    {
+        setDataElements( getList( dataElement ) );
     }
     
     public List<NameableObject> getDataSets()
@@ -1210,6 +1220,11 @@ public class DataQueryParams
         setDimensionOptions( DATASET_DIM_ID, DimensionType.DATASET, null, asList( dataSets ) );
     }
     
+    public void setDataSet( NameableObject dataSet )
+    {
+        setDataSets( getList( dataSet ) );
+    }
+    
     public List<NameableObject> getPeriods()
     {
         return getDimensionOptions( PERIOD_DIM_ID );
@@ -1218,6 +1233,11 @@ public class DataQueryParams
     public void setPeriods( List<? extends NameableObject> periods )
     {
         setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, null, asList( periods ) );
+    }
+    
+    public void setPeriod( NameableObject period )
+    {
+        setPeriods( getList( period ) );
     }
 
     public List<NameableObject> getOrganisationUnits()
@@ -1228,6 +1248,11 @@ public class DataQueryParams
     public void setOrganisationUnits( List<? extends NameableObject> organisationUnits )
     {
         setDimensionOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, asList( organisationUnits ) );
+    }
+    
+    public void setOrganisationUnit( NameableObject organisationUnit )
+    {
+        setOrganisationUnits( getList( organisationUnit ) );
     }
     
     public List<DimensionalObject> getDataElementGroupSets()
@@ -1287,6 +1312,11 @@ public class DataQueryParams
         setFilterOptions( PERIOD_DIM_ID, DimensionType.PERIOD, null, periods );
     }
     
+    public void setFilterPeriod( Period period )
+    {
+        setFilterPeriods( getList( period ) );
+    }
+    
     public List<NameableObject> getFilterOrganisationUnits()
     {
         return getFilterOptions( ORGUNIT_DIM_ID );
@@ -1295,6 +1325,11 @@ public class DataQueryParams
     public void setFilterOrganisationUnits( List<NameableObject> organisationUnits )
     {
         setFilterOptions( ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, organisationUnits );
+    }
+    
+    public void setFilterOrganisationUnit( NameableObject organisationUnit )
+    {
+        setFilterOrganisationUnits( getList( organisationUnit ) );
     }
     
     public void setFilter( String filter, DimensionType type, NameableObject item )
