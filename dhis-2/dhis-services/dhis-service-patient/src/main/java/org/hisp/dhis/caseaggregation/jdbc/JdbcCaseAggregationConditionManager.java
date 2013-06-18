@@ -63,8 +63,11 @@ import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
@@ -106,6 +109,20 @@ public class JdbcCaseAggregationConditionManager
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -188,7 +205,7 @@ public class JdbcCaseAggregationConditionManager
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
             grid.addRows( rs );
-            
+
             return grid;
         }
 
@@ -287,7 +304,6 @@ public class JdbcCaseAggregationConditionManager
         Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
         Collection<Integer> orgunitIds, Period period )
     {
-        caseExpression = formatExpression( caseExpression );
         String sql = "SELECT '" + aggregateDeId + "' as dataelementid, '" + optionComboId
             + "' as categoryoptioncomboid, ou.organisationunitid as sourceid, '" + period.getId() + "' as periodid,'"
             + CaseAggregationCondition.AUTO_STORED_BY + "' as comment, ";
@@ -368,17 +384,15 @@ public class JdbcCaseAggregationConditionManager
             sql += "GROUP BY ou.organisationunitid, ou.name";
 
         }
-        
+
         sql = sql.replaceAll( "COMBINE", "" );
-        
+
         return sql;
     }
 
     @Override
     public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
     {
-        caseExpression = formatExpression( caseExpression );
-        
         String sql = "SELECT ";
 
         boolean hasPatients = hasPatientCriteria( caseExpression );
@@ -550,7 +564,7 @@ public class JdbcCaseAggregationConditionManager
                 periodid = rs.getInt( "periodid" );
             }
 
-            if ( periodid == null)
+            if ( periodid == null )
             {
                 String insertSql = "insert into period (periodtypeid,startdate,enddate) " + " VALUES " + "("
                     + periodTypeId + ",'" + start + "','" + end + "' )";
@@ -757,7 +771,15 @@ public class JdbcCaseAggregationConditionManager
 
         if ( isExist )
         {
-            sql += " AND _pdv.value ";
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            {
+                sql += " AND ( cast( _pdv.value as " + statementBuilder.getDoubleColumnType() + " )  ) ";
+            }
+            else
+            {
+                sql += " AND _pdv.value ";
+            }
         }
 
         return sql;
@@ -970,7 +992,7 @@ public class JdbcCaseAggregationConditionManager
         sql += " UNION ";
         sql += "( select distinct organisationunitid from patient where registrationdate>='" + startDate
             + "' and registrationdate<='" + endDate + "')";
-        
+
         Collection<Integer> orgunitIds = new HashSet<Integer>();
         orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
         {
@@ -1071,23 +1093,4 @@ public class JdbcCaseAggregationConditionManager
         return false;
     }
 
-    private String formatExpression( String expression )
-    {
-        StringBuffer result = new StringBuffer();
-        Pattern pattern = Pattern.compile( CaseAggregationCondition.operatorRegExp );
-        Matcher matcher = pattern.matcher( expression );
-        while ( matcher.find() )
-        {
-            String value = matcher.group( 2 );
-            value = value.startsWith( "\'" ) ? value : "\'" + value;
-            value = value.endsWith( "\'" ) ? value : value + "\'";
-            
-            value = "]" + matcher.group( 1 ) + " " + value;
-            matcher.appendReplacement( result, value );
-        }
-
-        matcher.appendTail( result );
-
-        return result.toString();
-    }
 }
