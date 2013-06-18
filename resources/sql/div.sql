@@ -140,6 +140,14 @@ where not exists (
   where orgunitgroupid=o.orgunitgroupid)
 order by type,name;
 
+-- Display overview of data elements and related category option combos
+
+select de.uid as deuid, de.name as dename, coc.uid as cocuid, con.categoryoptioncomboname
+from dataelement de
+join categorycombos_optioncombos cc using(categorycomboid)
+join categoryoptioncombo coc using(categoryoptioncomboid)
+join _categoryoptioncomboname con using(categoryoptioncomboid);
+
 -- Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
 
 insert into usersetting (userinfoid, name, value)
