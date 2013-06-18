@@ -850,12 +850,11 @@ function backEventList() {
     searchEvents( eval( getFieldValue( 'listAll' ) ) );
 }
 
-function showAddEventForm() {
+function showAddEventForm( isCreateEvent ) {
     showById( 'eventActionMenu' );
     jQuery( "[name=eventActionLink]" ).hide();
     hideById( 'dataEntryMenu' );
     setInnerHTML( 'dataEntryFormDiv', '' );
-    setFieldValue( 'executionDate', '' );
     hideById( 'selectDiv' );
     hideById( 'searchDiv' );
     hideById( 'listDiv' );
@@ -864,8 +863,10 @@ function showAddEventForm() {
     hideById( 'actionDiv' );
     showById( 'dataEntryInfor' );
     setFieldValue( 'programStageInstanceId', '0' );
-    byId( 'executionDate' ).style.backgroundColor = "#ffffff";
     setInnerHTML( 'programName', jQuery( '#programId option:selected' ).text() );
+	if( isCreateEvent != undefined ){
+		addNewEvent();
+	}
 }
 
 function addNewEvent() {
