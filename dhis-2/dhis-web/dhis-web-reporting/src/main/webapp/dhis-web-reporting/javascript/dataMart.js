@@ -35,7 +35,7 @@ function pingNotificationsTimeout()
 
 function toggleDataMart()
 {
-	if ( $( '#dataMart' ).is( ':checked' ) )
+	if ( !$( '#dataMart' ).is( ':checked' ) )
 	{
 		$( '.dataMart' ).attr( 'disabled', 'disabled' );
 	}
