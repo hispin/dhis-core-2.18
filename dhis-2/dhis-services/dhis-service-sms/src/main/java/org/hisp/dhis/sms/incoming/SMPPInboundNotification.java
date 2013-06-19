@@ -35,34 +35,26 @@ import org.smslib.Message.MessageTypes;
 public class SMPPInboundNotification
     implements IInboundMessageNotification
 {    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private IncomingSmsService incomingSmsService;
-
-    @Override
-    public void process( AGateway gateway, MessageTypes msgType, InboundMessage msg )
-    {
-        IncomingSms incomingSms = new IncomingSms();
-
-        incomingSms.setOriginator( msg.getOriginator() );
-
-        incomingSms.setEncoding( SmsMessageEncoding.ENC7BIT );
-
-        incomingSms.setSentDate( msg.getDate() );
-
-        incomingSms.setReceivedDate( msg.getDate() );
-
-        incomingSms.setText( msg.getText() );
-
-        incomingSms.setGatewayId( msg.getGatewayId() );
-
-        incomingSms.setStatus( SmsMessageStatus.PROCESSED );
-
-        incomingSms.setStatusMessage( "imported" );
-        
-        incomingSmsService.save( incomingSms );
-    }
 
     public void setIncomingSmsService( IncomingSmsService incomingSmsService )
     {
         this.incomingSmsService = incomingSmsService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void process( AGateway gateway, MessageTypes msgType, InboundMessage message )
+    {
+        IncomingSms incomingSms = incomingSmsService.convertToIncomingSms( message );
+        
+        incomingSmsService.save( incomingSms );
     }
 }

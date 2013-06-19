@@ -53,5 +53,4 @@ public interface IncomingSmsStore
     void delete( IncomingSms incomingSms);
     
     Collection<IncomingSms> getAllUnparsedSmses();
-
 }
