@@ -24,6 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.sms.parse;
 
 import java.util.HashMap;
@@ -35,8 +36,7 @@ import java.util.Map;
  * @version DhisMessageAlertParser.java 2:09:49 PM May 17, 2013 $
  */
 public class DhisMessageAlertParser implements IParser
-{
-    
+{    
     @Override
     public Map<String, String> parse( String sms )
     {
@@ -54,5 +54,4 @@ public class DhisMessageAlertParser implements IParser
     public void setSeparator( String separator )
     {
     }
-
 }

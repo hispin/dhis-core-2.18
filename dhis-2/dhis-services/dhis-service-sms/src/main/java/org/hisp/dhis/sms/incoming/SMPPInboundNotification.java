@@ -59,7 +59,6 @@ public class SMPPInboundNotification
         incomingSms.setStatusMessage( "imported" );
         
         incomingSmsService.save( incomingSms );
-
     }
 
     public void setIncomingSmsService( IncomingSmsService incomingSmsService )

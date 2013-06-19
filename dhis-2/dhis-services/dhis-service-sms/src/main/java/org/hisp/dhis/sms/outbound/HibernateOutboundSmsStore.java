@@ -53,14 +53,14 @@ public class HibernateOutboundSmsStore
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @Override
     public int save( OutboundSms sms )
     {
@@ -74,7 +74,6 @@ public class HibernateOutboundSmsStore
         {
             sms.setDate( new Date() );
         }
-
     }
 
     @Override
@@ -91,25 +90,28 @@ public class HibernateOutboundSmsStore
         Session session = sessionFactory.getCurrentSession();
         return session.createCriteria( OutboundSms.class ).addOrder( Order.asc( "date" ) ).list();
     }
-    
+
     @Override
     public List<OutboundSms> get( OutboundSmsStatus status )
     {
         int realStatus = 0;
-        
-        if(status.equals( OutboundSmsStatus.OUTBOUND )){
+
+        if ( status.equals( OutboundSmsStatus.OUTBOUND ) )
+        {
             realStatus = OutboundSmsStatus.OUTBOUND.ordinal();
         }
-        else if(status.equals( OutboundSmsStatus.SENT )){
+        else if ( status.equals( OutboundSmsStatus.SENT ) )
+        {
             realStatus = OutboundSmsStatus.SENT.ordinal();
         }
-        else{
+        else
+        {
             realStatus = OutboundSmsStatus.ERROR.ordinal();
         }
-        
+
         String sql = "select osm.id as outboundsmsid, message, ore.elt as phonenumber, date "
-        		+ "from outbound_sms osm inner join outbound_sms_recipients ore " 
-        		+ "on osm.id=ore.outbound_sms_id where status = " + realStatus ;
+            + "from outbound_sms osm inner join outbound_sms_recipients ore "
+            + "on osm.id=ore.outbound_sms_id where status = " + realStatus;
         try
         {
             List<OutboundSms> OutboundSmsList = jdbcTemplate.query( sql, new RowMapper<OutboundSms>()
@@ -118,12 +120,12 @@ public class HibernateOutboundSmsStore
                     throws SQLException
                 {
                     OutboundSms outboundSms = new OutboundSms( rs.getString( 2 ), rs.getString( 3 ) );
-                    outboundSms.setId(  rs.getInt( 1 ) );
+                    outboundSms.setId( rs.getInt( 1 ) );
                     outboundSms.setDate( rs.getDate( 4 ) );
                     return outboundSms;
                 }
-            });
-            
+            } );
+
             return OutboundSmsList;
         }
         catch ( Exception ex )
@@ -132,7 +134,7 @@ public class HibernateOutboundSmsStore
             return null;
         }
     }
-    
+
     @Override
     public void update( OutboundSms sms )
     {

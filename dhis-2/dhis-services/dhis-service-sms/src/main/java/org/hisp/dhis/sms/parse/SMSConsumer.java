@@ -40,11 +40,12 @@ public class SMSConsumer
 
     private MessageQueue messageQueue;
 
-    SMSConsumerThread thread;
+    private SMSConsumerThread thread;
 
     public void start()
     {
         messageQueue.initialize();
+        
         if ( thread == null )
         {
             thread = new SMSConsumerThread();
@@ -75,9 +76,9 @@ public class SMSConsumer
                 {
                     fetchAndParseSMS();
                 }
-                catch ( Exception e )
+                catch ( Exception ex )
                 {
-//                    e.printStackTrace();
+                    //ex.printStackTrace();
                 }
                 try
                 {

@@ -128,41 +128,34 @@ public class TestOutboundSmsService
     @Override
     public List<OutboundSms> getAllOutboundSms()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public int saveOutboundSms( OutboundSms sms )
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public void updateOutboundSms( OutboundSms sms )
     {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public List<OutboundSms> getOutboundSms( OutboundSmsStatus status )
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void deleteById( Integer outboundSmsId )
     {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public String getDefaultGateway()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 }

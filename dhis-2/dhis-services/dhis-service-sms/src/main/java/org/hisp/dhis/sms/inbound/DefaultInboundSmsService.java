@@ -147,8 +147,8 @@ public class DefaultInboundSmsService
         {
             e.printStackTrace();
         }
+        
         msgList.clear();
-
     }
 
     @Override
@@ -168,7 +168,6 @@ public class DefaultInboundSmsService
     @Override
     public IncomingSms getNextUnprocessed()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
