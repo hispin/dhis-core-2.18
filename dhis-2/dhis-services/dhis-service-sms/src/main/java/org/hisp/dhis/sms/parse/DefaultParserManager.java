@@ -53,7 +53,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.message.EmailMessageSender;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
@@ -237,7 +236,7 @@ public class DefaultParserManager
         {
             Collection<Patient> patientList = new ArrayList<Patient>(); //TODO FIX! //patientService.getPatientsByPhone( sender, null, null );
             
-            if ( patientList != null && patientList.size() > 0 )
+            if ( !patientList.isEmpty() )
             {
                 for ( Patient each : patientList )
                 {
@@ -343,7 +342,8 @@ public class DefaultParserManager
 
         if ( userGroup != null )
         {
-            Collection users = userService.getUsersByPhoneNumber( senderNumber );
+            Collection<User> users = userService.getUsersByPhoneNumber( senderNumber );
+            
             if ( users != null && users.size() > 1 )
             {
                 String messageMoreThanOneUser = "System only accepts sender's number assigned for one user, but found more than one user for this number: ";
@@ -360,7 +360,7 @@ public class DefaultParserManager
             }
             else if ( users != null && users.size() == 1 )
             {
-                User sender = (User) users.iterator().next();
+                User sender = users.iterator().next();
 
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
@@ -390,8 +390,7 @@ public class DefaultParserManager
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
                 feedbackList.add( sender );
-                smsMessageSender.sendMessage( command.getName(), command.getReceivedMessage(), null, feedbackList, true );
-                
+                smsMessageSender.sendMessage( command.getName(), command.getReceivedMessage(), null, feedbackList, true );                
             }
         }
     }
@@ -416,6 +415,7 @@ public class DefaultParserManager
 
                 conversation.addUserMessage( new UserMessage( receiver, read ) );
             }
+            
             messageConversationStore.save( conversation );
         }
     }
@@ -551,6 +551,7 @@ public class DefaultParserManager
         {
             return null;
         }
+        
         Date date = null;
         String dateString = message.trim().split( " " )[0];
         SimpleDateFormat format = new SimpleDateFormat( "ddMM" );
@@ -1063,5 +1064,4 @@ public class DefaultParserManager
     {
         return incomingSmsService;
     }
-
 }
