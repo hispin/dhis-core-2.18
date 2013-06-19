@@ -36,21 +36,21 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 
 /**
- * This interface is responsible for retrieving aggregated data. Data will be
- * returned in a grid object or as a dimensional key-value mapping. 
+ * <p>This interface is responsible for retrieving aggregated data. Data will be
+ * returned in a grid object or as a dimensional key-value mapping.</p>
  * 
- * Most objects accept a DataQueryParams object which encapsulates the query 
+ * <p>Most objects accept a DataQueryParams object which encapsulates the query 
  * parameters. The dimensions in the response will appear in the same order as
  * they are set on the DataQueryParams object. You can use various methods for
  * setting indicators, data elements, data sets, periods, organisation units,
  * categories, data element group sets and organisation unit group sets on the
- * the DataQueryParams object. Objects can be defined as dimensions or filters.
+ * the DataQueryParams object. Objects can be defined as dimensions or filters.</p>
  * 
- * Example usage for setting multiple indicators and a period as dimensions
+ * <p>Example usage for setting multiple indicators and a period as dimensions
  * and an organisation unit as filter. In the grid response the first column
  * will contain indicator identifiers, the second column will contain period
  * identifiers and the third column will contain aggregated values. Note that
- * the organisation unit is excluded since it is defined as a filter:
+ * the organisation unit is excluded since it is defined as a filter:</p>
  * 
  * <pre>
  * <code>
@@ -64,14 +64,14 @@ import org.hisp.dhis.i18n.I18nFormat;
  * </code>
  * </pre>
  * 
- * Example usage for including category option combos in the response. Note that 
+ * <p>Example usage for including category option combos in the response. Note that 
  * the index position of category option combos will follow the order of when the
  * enableCategoryOptionCombos method was called. In the map response, the keys
  * will represent the dimensions defined in the DataQueryParams object and will
  * contain dimension identifiers separated by the "-" character. The key will
  * be of type String and contain a data element identifier, a category option 
  * combo identifier and an organisation unit identifier in that order. The map 
- * values will be the aggregated values of type Double:
+ * values will be the aggregated values of type Double:</p>
  * 
  * <pre>
  * <code>
@@ -83,6 +83,8 @@ import org.hisp.dhis.i18n.I18nFormat;
  * params.setFilterPeriod( period );
  * 
  * Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
+ * </code>
+ * </pre>
  * 
  * @author Lars Helge Overland
  */
