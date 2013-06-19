@@ -29,8 +29,9 @@ package org.hisp.dhis.startup;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.StatementBuilder;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -45,19 +46,11 @@ public class TableCreator
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private StatementBuilder statementBuilder;
-
-    public void setStatementBuilder( StatementBuilder statementBuilder )
-    {
-        this.statementBuilder = statementBuilder;
-    }
+    
+    @Autowired
+    private AggregatedDataValueService aggregatedDataValueService;    
     
     // -------------------------------------------------------------------------
     // StartupRoutine implementation
@@ -65,12 +58,7 @@ public class TableCreator
 
     public void execute()
     {
-        createSilently( statementBuilder.getCreateAggregatedDataValueTable( false ), "aggregateddatavalue" );
-        createSilently( statementBuilder.getCreateAggregatedOrgUnitDataValueTable( false ), "aggregatedorgunitdatavalue" );
-        createSilently( statementBuilder.getCreateAggregatedIndicatorTable( false ), "aggregatedindicatorvalue" );
-        createSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable( false ), "aggregatedorgunitindicatorvalue" );
-        createSilently( statementBuilder.getCreateDataSetCompletenessTable(), "aggregateddatasetcompleteness" );
-        createSilently( statementBuilder.getCreateOrgUnitDataSetCompletenessTable(), "aggregatedorgunitdatasetcompleteness" );
+        aggregatedDataValueService.createDataMart();
         
         createSilently( "CREATE INDEX crosstab ON datavalue ( periodid, sourceid )", "crosstab" );
         createSilently( "CREATE INDEX messageconversation_lastmessage ON messageconversation (lastmessage)", "messageconversation_lastmessage" );

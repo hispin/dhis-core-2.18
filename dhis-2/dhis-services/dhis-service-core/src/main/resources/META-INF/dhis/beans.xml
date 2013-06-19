@@ -235,6 +235,7 @@
 
   <bean id="org.hisp.dhis.aggregation.AggregatedDataValueStore" class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedDataValueStore">
     <property name="statementManager" ref="statementManager" />
+    <property name="statementBuilder" ref="statementBuilder" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
@@ -762,8 +763,6 @@
   </bean>
 
   <bean id="org.hisp.dhis.startup.TableCreator" class="org.hisp.dhis.startup.TableCreator">
-    <property name="jdbcTemplate" ref="jdbcTemplate" />
-    <property name="statementBuilder" ref="statementBuilder" />
     <property name="name" value="TableCreator" />
     <property name="runlevel" value="3" />
   </bean>
