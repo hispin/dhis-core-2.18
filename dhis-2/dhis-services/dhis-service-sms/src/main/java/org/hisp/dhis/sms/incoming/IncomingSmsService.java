@@ -1,11 +1,5 @@
 package org.hisp.dhis.sms.incoming;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.hisp.dhis.sms.queue.MessageQueue;
-import org.smslib.InboundMessage;
-
 /*
  * Copyright (c) 2011, University of Oslo
  * All rights reserved.
@@ -33,6 +27,11 @@ import org.smslib.InboundMessage;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.List;
+
+import org.hisp.dhis.sms.queue.MessageQueue;
+import org.smslib.InboundMessage;
 
 /**
  * Service providing support for retrieving incoming SMSes.
@@ -67,4 +66,6 @@ public interface IncomingSmsService
     public void setIncomingSmsQueue( MessageQueue incomingSmsQueue );
     
     Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
+    
+    IncomingSms convertToIncomingSms( InboundMessage message );
 }

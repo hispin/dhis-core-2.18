@@ -93,7 +93,7 @@ public class DefaultInboundSmsService
         {
             for ( InboundMessage each : msgList )
             {
-                IncomingSms incomingSms = tranferToIncomingSms( each );
+                IncomingSms incomingSms = convertToIncomingSms( each );
 
                 result.add( incomingSms );
             }
@@ -121,6 +121,7 @@ public class DefaultInboundSmsService
         {
             e.printStackTrace();
         }
+        
         return msgList;
     }
 
@@ -183,28 +184,18 @@ public class DefaultInboundSmsService
         return incomingSmsStore.getSmsByStatus( status );
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private IncomingSms tranferToIncomingSms( InboundMessage inboundMessage )
+    @Override
+    public IncomingSms convertToIncomingSms( InboundMessage message )
     {
         IncomingSms incomingSms = new IncomingSms();
 
-        incomingSms.setOriginator( inboundMessage.getOriginator() );
-
+        incomingSms.setOriginator( message.getOriginator() );
         incomingSms.setEncoding( SmsMessageEncoding.ENC7BIT );
-
-        incomingSms.setSentDate( inboundMessage.getDate() );
-
-        incomingSms.setReceivedDate( inboundMessage.getDate() );
-
-        incomingSms.setText( inboundMessage.getText() );
-
-        incomingSms.setGatewayId( inboundMessage.getGatewayId() );
-
+        incomingSms.setSentDate( message.getDate() );
+        incomingSms.setReceivedDate( message.getDate() );
+        incomingSms.setText( message.getText() );
+        incomingSms.setGatewayId( message.getGatewayId() );
         incomingSms.setStatus( SmsMessageStatus.PROCESSED );
-
         incomingSms.setStatusMessage( "imported" );
 
         return incomingSms;
