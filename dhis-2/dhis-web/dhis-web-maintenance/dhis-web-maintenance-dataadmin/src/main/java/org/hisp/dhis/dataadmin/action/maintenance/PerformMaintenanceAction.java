@@ -32,7 +32,6 @@ import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
@@ -86,14 +85,7 @@ public class PerformMaintenanceAction
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
-    
-    private AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService;
-    
-    public void setAggregatedOrgUnitDataValueService( AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService )
-    {
-        this.aggregatedOrgUnitDataValueService = aggregatedOrgUnitDataValueService;
-    }
-    
+        
     private DataMartManager dataMartManager;
 
     public void setDataMartManager( DataMartManager dataMartManager )
@@ -177,11 +169,8 @@ public class PerformMaintenanceAction
         
         if ( clearDataMart )
         {
-            aggregatedDataValueService.deleteAggregatedDataValues();
-            aggregatedDataValueService.deleteAggregatedIndicatorValues();
-            
-            aggregatedOrgUnitDataValueService.deleteAggregatedDataValues();
-            aggregatedOrgUnitDataValueService.deleteAggregatedIndicatorValues();
+            aggregatedDataValueService.dropDataMart();
+            aggregatedDataValueService.createDataMart();
             
             log.info( "'" + currentUserService.getCurrentUsername() + "': Cleared data mart" );
         }

@@ -46,6 +46,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
@@ -71,6 +72,13 @@ public class JdbcAggregatedDataValueStore
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
     }
     
     private StatementManager statementManager; //TODO remove
@@ -400,5 +408,41 @@ public class JdbcAggregatedDataValueStore
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " ) ";
         
         return jdbcTemplate.query( sql, new AggregatedDataSetCompletenessRowMapper() );
+    }
+
+    public void dropDataMart()
+    {
+        executeSilently( "drop table aggregateddatavalue" );
+        executeSilently( "drop table aggregatedorgunitdatavalue" );
+        executeSilently( "drop table aggregatedindicatorvalue" );
+        executeSilently( "drop table aggregatedorgunitindicatorvalue" );
+        executeSilently( "drop table aggregateddatasetcompleteness" );
+        executeSilently( "drop table aggregatedorgunitdatasetcompleteness" );
+    }
+    
+    public void createDataMart()
+    {
+        executeSilently( statementBuilder.getCreateAggregatedDataValueTable( false ) );
+        executeSilently( statementBuilder.getCreateAggregatedOrgUnitDataValueTable( false ) );
+        executeSilently( statementBuilder.getCreateAggregatedIndicatorTable( false ) );
+        executeSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable( false ) );
+        executeSilently( statementBuilder.getCreateDataSetCompletenessTable() );
+        executeSilently( statementBuilder.getCreateOrgUnitDataSetCompletenessTable() );        
+    }
+    
+    // -------------------------------------------------------------------------
+    // Supportive
+    // -------------------------------------------------------------------------
+
+    private void executeSilently( final String sql )
+    {
+        try
+        {
+            jdbcTemplate.execute( sql );
+        }
+        catch ( Exception ex )
+        {
+            // Ignore
+        }
     }
 }

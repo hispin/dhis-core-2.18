@@ -189,4 +189,18 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.getAggregatedDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
     }
+
+    // -------------------------------------------------------------------------
+    // Data mart
+    // -------------------------------------------------------------------------
+    
+    public void dropDataMart()
+    {
+        aggregatedDataValueStore.dropDataMart();
+    }
+    
+    public void createDataMart()
+    {
+        aggregatedDataValueStore.createDataMart();
+    }
 }

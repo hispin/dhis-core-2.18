@@ -261,4 +261,18 @@ public interface AggregatedDataValueStore
      */
     Collection<DataSetCompletenessResult> getAggregatedDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds );
+
+    // ----------------------------------------------------------------------
+    // Data mart
+    // ----------------------------------------------------------------------
+
+    /**
+     * Drops all data mart tables.
+     */
+    void dropDataMart();
+    
+    /**
+     * Creates all data mart tables.
+     */
+    void createDataMart();
 }
