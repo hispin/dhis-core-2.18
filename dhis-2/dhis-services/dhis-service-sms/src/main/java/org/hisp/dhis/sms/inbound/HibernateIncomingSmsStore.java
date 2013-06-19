@@ -50,7 +50,6 @@ public class HibernateIncomingSmsStore
 
     private SessionFactory sessionFactory;
     
-
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
@@ -63,8 +62,7 @@ public class HibernateIncomingSmsStore
     @Override
     public int save( IncomingSms sms )
     {
-        return (Integer) sessionFactory.getCurrentSession().save( sms );
-        
+        return (Integer) sessionFactory.getCurrentSession().save( sms );        
     }
 
     @Override
@@ -100,8 +98,7 @@ public class HibernateIncomingSmsStore
     }
 
     @Override
-    public long getSmsCount()
-    
+    public long getSmsCount()    
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( IncomingSms.class );
@@ -130,5 +127,4 @@ public class HibernateIncomingSmsStore
         criteria.add( Restrictions.eq( "parsed", false ) );
         return criteria.list();
     }
-
 }

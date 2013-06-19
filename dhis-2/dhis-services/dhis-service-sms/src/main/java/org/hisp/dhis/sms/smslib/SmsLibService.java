@@ -571,6 +571,7 @@ public class SmsLibService
         {
             gatewayId = gatewayMap.get( MODEM_GATEWAY );
         }
+        
         return gatewayId;
     }
 }

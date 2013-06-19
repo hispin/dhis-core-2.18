@@ -186,19 +186,19 @@ public class SmsSender
 
     private boolean isQualifiedReceiver( User user )
     {
-        // if receiver is raw number
-        if ( user.getFirstName() == null )
+        if ( user.getFirstName() == null ) // If receiver is raw number
         {
             return true;
-        }
-        // if receiver is user
-        else
+        }        
+        else // If receiver is user
         {
             UserSetting userSetting = userService
                 .getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
+            
             if ( userSetting != null )
             {
                 boolean sendSMSNotification = (Boolean) userSetting.getValue();
+                
                 if ( sendSMSNotification == true )
                 {
                     return true;
@@ -235,8 +235,7 @@ public class SmsSender
 
         text = name + subject + ": " + text;
 
-        // Simplistic cut off 160 characters
-        int length = text.length();
+        int length = text.length(); // Simplistic cut off 160 characters
 
         return (length > 160) ? text.substring( 0, 157 ) + "..." : text;
     }

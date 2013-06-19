@@ -92,7 +92,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultParserManager
     implements ParserManager
 {
-
     public static final String ANONYMOUS_USER_NAME = "Anonymous";
 
     private static final Log log = LogFactory.getLog( DefaultParserManager.class );

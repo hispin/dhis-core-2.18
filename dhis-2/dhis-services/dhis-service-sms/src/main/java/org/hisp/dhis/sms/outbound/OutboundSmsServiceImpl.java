@@ -158,6 +158,4 @@ public class OutboundSmsServiceImpl
             return "Exception sending message " + sms + e.getMessage();
         }
     }
-
-
 }

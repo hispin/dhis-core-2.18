@@ -6,11 +6,6 @@ package org.hisp.dhis.sms.parse;
 
 import java.util.Map;
 
-/**
- * 
- * @author Christian
- */
-
 public interface IParser
 {
     static final String DATA_ENTRY_KEYWORD = "DHISDATAENTRYKEYWORD";

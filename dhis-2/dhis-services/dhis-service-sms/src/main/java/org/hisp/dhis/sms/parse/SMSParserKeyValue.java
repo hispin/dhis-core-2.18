@@ -26,7 +26,6 @@ public class SMSParserKeyValue
     @Override
     public Map<String, String> parse( String sms )
     {
-
         HashMap<String, String> output = new HashMap<String, String>();
 
         Matcher m = pattern.matcher( sms );
