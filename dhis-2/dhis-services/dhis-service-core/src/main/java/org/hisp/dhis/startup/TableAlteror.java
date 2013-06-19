@@ -462,6 +462,13 @@ public class TableAlteror
         executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
         executeSql( "update chart set hidetitle = false where hidetitle is null" );
+
+        // Move chart filters to chart_filters table
+        
+        executeSql( "insert into chart_filters (chartid, sort_order, filter) select chartid, 0, filter from chart" );
+        executeSql( "alter table chart drop column filter" );
+                
+        // Upgrade chart dimension identifiers
         
         executeSql( "update chart set series = 'dx' where series = 'data'" );
         executeSql( "update chart set series = 'pe' where series = 'period'" );
@@ -472,9 +479,6 @@ public class TableAlteror
         executeSql( "update chart_filters set filter = 'dx' where filter = 'data'" );
         executeSql( "update chart_filters set filter = 'pe' where filter = 'period'" );
         executeSql( "update chart_filters set filter = 'ou' where filter = 'organisationunit'" );
-        
-        executeSql( "insert into chart_filters (chartid, sort_order, filter) select chartid, 0, filter from chart" );
-        executeSql( "alter table chart drop column filter" );
                 
         executeSql( "update users set selfregistered = false where selfregistered is null" );
         executeSql( "update users set disabled = false where disabled is null" );
