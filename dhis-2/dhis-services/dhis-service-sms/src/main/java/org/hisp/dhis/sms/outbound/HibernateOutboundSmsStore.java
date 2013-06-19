@@ -61,6 +61,10 @@ public class HibernateOutboundSmsStore
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // -------------------------------------------------------------------------
+    // Implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public int save( OutboundSms sms )
     {
@@ -112,6 +116,7 @@ public class HibernateOutboundSmsStore
         String sql = "select osm.id as outboundsmsid, message, ore.elt as phonenumber, date "
             + "from outbound_sms osm inner join outbound_sms_recipients ore "
             + "on osm.id=ore.outbound_sms_id where status = " + realStatus;
+        
         try
         {
             List<OutboundSms> OutboundSmsList = jdbcTemplate.query( sql, new RowMapper<OutboundSms>()

@@ -296,7 +296,6 @@ public class SmsLibService
 
         message = "success";
 
-        // Add gateways
         if ( config.getGateways() == null || config.getGateways().isEmpty() )
         {
             message = "unable_load_configuration_cause_of_there_is_no_gateway";
@@ -500,7 +499,6 @@ public class SmsLibService
     @Override
     public List<OutboundSms> getAllOutboundSms()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 

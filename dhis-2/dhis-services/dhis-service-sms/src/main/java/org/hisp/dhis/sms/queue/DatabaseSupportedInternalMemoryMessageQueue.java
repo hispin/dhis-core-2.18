@@ -39,7 +39,15 @@ public class DatabaseSupportedInternalMemoryMessageQueue
 {
     private List<IncomingSms> queue = new ArrayList<IncomingSms>();
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private IncomingSmsStore smsStore;
+
+    // -------------------------------------------------------------------------
+    // Implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public void put( IncomingSms message )

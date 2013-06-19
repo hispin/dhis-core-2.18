@@ -32,10 +32,9 @@ import java.util.Map;
 
  /**
  * @author Nguyen Kim Lai
- *
- * @version DhisMessageAlertParser.java 2:09:49 PM May 17, 2013 $
  */
-public class DhisMessageAlertParser implements IParser
+public class DhisMessageAlertParser 
+    implements IParser
 {    
     @Override
     public Map<String, String> parse( String sms )

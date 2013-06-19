@@ -74,7 +74,6 @@ public class GateWayFactory
 
     public AGateway createSMPPGatewayConfig( SMPPGatewayConfig config )
     {
-
         AGateway gateway = new JSMPPGateway( config.getName(), config.getAddress(), config.getPort(),
             new BindAttributes( config.getUsername(), config.getPassword(), "cp", BindType.TRANSCEIVER ) );
         gateway.setInbound( true );

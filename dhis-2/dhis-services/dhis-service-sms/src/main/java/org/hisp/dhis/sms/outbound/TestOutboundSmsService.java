@@ -55,7 +55,11 @@ public class TestOutboundSmsService
 
     private boolean enabled = true;
 
-    private String message = "success";
+    private static final String MESSAGE = "success";
+
+    // -------------------------------------------------------------------------
+    // Implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public String sendMessage( OutboundSms sms, String gatewayId )
@@ -68,7 +72,7 @@ public class TestOutboundSmsService
 
         log.debug( "Send message: " + sms );
 
-        return message;
+        return MESSAGE;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class TestOutboundSmsService
     {
         this.enabled = config.isEnabled();
         log.debug( "initialize()" );
-        return message;
+        return MESSAGE;
     }
 
     @Override
