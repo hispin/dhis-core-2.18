@@ -184,10 +184,10 @@ public class DefaultInboundSmsService
     }
 
     // -------------------------------------------------------------------------
-    // Support methods
+    // Supportive methods
     // -------------------------------------------------------------------------
 
-    public IncomingSms tranferToIncomingSms( InboundMessage inboundMessage )
+    private IncomingSms tranferToIncomingSms( InboundMessage inboundMessage )
     {
         IncomingSms incomingSms = new IncomingSms();
 

@@ -70,7 +70,6 @@ public class GateWayFactory
         }
 
         throw new SmsServiceException( "Gateway config of unknown type: " + config.getClass().getName() );
-
     }
 
     public AGateway createSMPPGatewayConfig( SMPPGatewayConfig config )
