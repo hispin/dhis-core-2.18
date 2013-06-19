@@ -58,6 +58,7 @@ import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -171,7 +172,14 @@ public class HibernateDataValueStore
             "AND periodid = " + periodId + " " +
             "AND sourceid = " + sourceId;
         
-        return jdbcTemplate.queryForObject( sql, new DataValueRowMapper() );
+        try
+        {
+            return jdbcTemplate.queryForObject( sql, new DataValueRowMapper() );
+        }
+        catch ( EmptyResultDataAccessException ex )
+        {
+            return null;
+        }
     }
     
     // -------------------------------------------------------------------------
