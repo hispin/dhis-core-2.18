@@ -71,7 +71,6 @@ import org.smslib.helper.Logger;
  * </ul>
  * 
  */
-
 public class SimplisticHttpGetGateWay
     extends AGateway
 {
@@ -178,5 +177,4 @@ public class SimplisticHttpGetGateWay
         // FIXME: ?
         return 500;
     }
-
 }

@@ -38,10 +38,20 @@ public class J2MEDataEntryParser
 {
     private SMSCommand smsCommand;
 
+    public J2MEDataEntryParser()
+    {
+    }
+    
+    public J2MEDataEntryParser( SMSCommand smsCommand )
+    {
+        this.smsCommand = smsCommand;
+    }
+    
     @Override
     public Map<String, String> parse( String sms )
     {
         String[] keyValuePairs = null;
+        
         if ( sms.indexOf( "#" ) > -1 )
         {
             keyValuePairs = sms.split( "#" );

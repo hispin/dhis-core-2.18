@@ -115,7 +115,6 @@ public class SMSConsumer
         {
             this.stop = true;
         }
-
     }
 
     public void setMessageQueue( MessageQueue messageQueue )
