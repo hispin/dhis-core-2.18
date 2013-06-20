@@ -201,6 +201,7 @@ public class DefaultPatientRegistrationFormService
                 }
                 else
                 {
+                    int id = identifierType.getId();
                     // Get value
                     String value = "";
                     if ( patient != null )
@@ -214,7 +215,7 @@ public class DefaultPatientRegistrationFormService
                         }
                     }
 
-                    inputHtml = "<input id=\"iden" + uid + "\" name=\"iden" + uid + "\" tabindex=\"" + index
+                    inputHtml = "<input id=\"iden" + id + "\" name=\"iden" + id + "\" tabindex=\"" + index
                         + "\" value=\"" + value + "\" ";
 
                     inputHtml += "class=\"{validate:{required:" + identifierType.isMandatory() + ",";
