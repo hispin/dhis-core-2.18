@@ -156,16 +156,19 @@
 </script>
 <input id="pollingInterval" name="pollingInterval" type="hidden" value="$pollingInterval"/>
 <h3>$i18n.getString( "show_receive_sms_form" )</h3>
-<form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="post" >
+<form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="get" >
 	<div style="text-align:right; width:840px">	
 		<div style="float: left">
-			<select style="width: 150px" name="smsStatus" onchange="criteriaChanged(this)">
+			<select style="width: 150px" name="smsStatus" onchange="javascript:document.forms['receiveSmsPage'].submit();">
 				<option value="">$i18n.getString( "all" )</option>
 				<option value="INCOMING" #if($smsStatus == 'INCOMING') selected='selected' #end>$i18n.getString( "incoming" )</option>
 				<option value="PROCESSED" #if($smsStatus == 'PROCESSED') selected='selected' #end>$i18n.getString( "processed" )</option>
 				<option value="FAILED" #if($smsStatus == 'FAILED') selected='selected' #end>$i18n.getString( "failed" )</option>
 				<option value="UNHANDLED" #if($smsStatus == 'UNHANDLED') selected='selected' #end>$i18n.getString( "unhandled" )</option>
 			</select>
+			<input type="text" name="keyword" #if($keyword) value="$keyword" #else value="" #end style="width: 150px"/>
+			<input type="submit" name="filer" value="Filer"/>
+			<input type="reset" name="clear" value="Clear"/>
 		</div>
 		<div style="float: right">
 			<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>
