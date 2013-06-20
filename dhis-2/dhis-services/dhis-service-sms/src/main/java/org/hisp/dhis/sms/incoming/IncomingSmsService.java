@@ -65,7 +65,8 @@ public interface IncomingSmsService
     
     public void setIncomingSmsQueue( MessageQueue incomingSmsQueue );
     
-    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
-    
+    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword );
+
     IncomingSms convertToIncomingSms( InboundMessage message );
+
 }

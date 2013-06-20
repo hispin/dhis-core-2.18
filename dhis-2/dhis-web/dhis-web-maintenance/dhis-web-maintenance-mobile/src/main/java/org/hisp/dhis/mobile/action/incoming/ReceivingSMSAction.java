@@ -102,6 +102,18 @@ public class ReceivingSMSAction
         this.smsStatus = smsStatus;
     }
 
+    private String keyword;
+
+    public String getKeyword()
+    {
+        return keyword;
+    }
+
+    public void setKeyword( String keyword )
+    {
+        this.keyword = keyword;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -134,9 +146,12 @@ public class ReceivingSMSAction
             incomingSmsService.deleteAllFromModem();
         }
 
+        if ( keyword == null )
+            keyword = "";
+
         if ( smsStatus == null || smsStatus.trim().equals( "" ) )
         {
-            listIncomingSms = incomingSmsService.listAllMessage();
+            listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( null, keyword.trim() ) );
         }
         else
         {
@@ -146,7 +161,8 @@ public class ReceivingSMSAction
             {
                 if ( statusArray[i].toString().equalsIgnoreCase( smsStatus ) )
                 {
-                    listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( statusArray[i] ) );
+                    listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( statusArray[i],
+                        keyword.trim() ) );
                     break;
                 }
             }

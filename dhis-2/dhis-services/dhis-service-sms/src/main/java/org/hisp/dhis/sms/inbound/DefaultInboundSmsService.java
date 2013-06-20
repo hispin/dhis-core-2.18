@@ -179,9 +179,9 @@ public class DefaultInboundSmsService
     }
 
     @Override
-    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status )
+    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword )
     {
-        return incomingSmsStore.getSmsByStatus( status );
+        return incomingSmsStore.getSmsByStatus( status, keyword );
     }
 
     @Override
