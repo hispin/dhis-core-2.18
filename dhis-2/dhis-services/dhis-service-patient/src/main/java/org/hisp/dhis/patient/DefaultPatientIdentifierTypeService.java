@@ -93,6 +93,11 @@ public class DefaultPatientIdentifierTypeService
         return i18n( i18nService, patientIdentifierTypeStore.getByName( name ) );
     }
 
+    public PatientIdentifierType getPatientIdentifierTypeByUid( String uid )
+    {
+        return i18n( i18nService, patientIdentifierTypeStore.getByUid( uid ) );
+    }
+
     public Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory )
     {
         return i18n( i18nService, patientIdentifierTypeStore.get( mandatory ) );
