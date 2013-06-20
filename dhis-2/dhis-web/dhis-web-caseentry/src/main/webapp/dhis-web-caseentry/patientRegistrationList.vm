@@ -104,27 +104,18 @@
 					#end
 						
 					#set($value="")
-					#foreach( $identifierType in $identifierTypes)
-						#foreach( $identifier in $patient.identifiers)
-							#if($identifier.identifierType.id==$identifierType.id)
-								#set($value=$identifier.identifier)
-							#end
-							#if($!identifier.identifierType)
-							#else
-								#set($systemId=$identifier.identifier)
-							#end
+					#foreach( $identifier in $patient.identifiers)
+						#if($!identifier.identifierType)
+							#set($value=$identifier.identifier)
+						#else
+							#set($systemId=$identifier.identifier)
 						#end
 					#end
 					#if($value=="")
 						#set($value=$!patient.getFullName())
 					#end
 					#if($value=="")
-						#foreach( $identifier in $patient.identifiers)
-							#if($!identifier.identifierType)
-							#else
-								#set($value=$identifier.identifier)
-							#end
-						#end
+						#set($value=$systemId)
 					#end
 					<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
 						<a>$encoder.htmlEncode($value)</a>
