@@ -193,7 +193,7 @@ public class DefaultPatientRegistrationFormService
             else if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 String uid = identifierMatcher.group( 1 );
-                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( uid );
+                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierTypeByUid( uid );
                 if ( identifierType == null )
                 {
                     inputHtml = "<input value='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + uid

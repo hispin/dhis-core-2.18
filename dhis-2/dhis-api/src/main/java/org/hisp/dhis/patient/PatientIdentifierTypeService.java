@@ -48,6 +48,8 @@ public interface PatientIdentifierTypeService
     
     PatientIdentifierType getPatientIdentifierType( String name );
     
+    PatientIdentifierType  getPatientIdentifierTypeByUid ( String uid );
+    
     Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory );
     
     Collection<PatientIdentifierType> getDisplayedPatientIdentifierTypes( boolean personDisplayName );
