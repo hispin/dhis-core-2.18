@@ -34,6 +34,7 @@
   width: 295px;
   overflow: hidden;
   margin-bottom: 15px;
+  border-radius: 3px;
 }
 
 .linkArea div
@@ -49,6 +50,7 @@
   width: 310px;
   overflow: hidden;
   margin-bottom: 15px;
+  border-radius: 3px;
 }
 
 .chartArea div
