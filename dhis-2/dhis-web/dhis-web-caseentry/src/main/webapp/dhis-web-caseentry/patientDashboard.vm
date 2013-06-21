@@ -25,6 +25,14 @@
 					<td>$encoder.htmlEncode($!patient.getFullName())</td>
 				</tr>
 				#end
+				#foreach( $identifier in $identifiers )
+				<tr>
+					#if($!identifier.identifierType)
+						<td>$identifier.identifierType.displayName</td>
+						<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
+					#end
+				</tr>
+				#end
 				<tr>
 					<td>$i18n.getString("location")</td>
 					<td>$encoder.htmlEncode($!patient.organisationUnit.name)</td>
@@ -57,13 +65,6 @@
 					</td>
 				</tr>
 				
-				#foreach($key in $programIndicatorsMap.keySet())
-				<tr class='bold'>
-					<td>$encoder.htmlEncode($key)</td>
-					<td>$!programIndicatorsMap.get($key)</td>
-				</tr>
-				#end
-				
 				<tr>
 					<td>$i18n.getString("health_worker")</td>
 					<td>
@@ -74,17 +75,12 @@
 						#end
 					</td>
 				</tr>
-				#foreach( $identifier in $identifiers )
-				<tr>
-					#if($!identifier.identifierType)
-						<td>$identifier.identifierType.displayName</td>
-					#else
-						<td>$i18n.getString("system_identifier")</td>
-					#end
-					<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
+				#foreach($key in $programIndicatorsMap.keySet())
+				<tr class='bold'>
+					<td>$encoder.htmlEncode($key)</td>
+					<td>$!programIndicatorsMap.get($key)</td>
 				</tr>
 				#end
-				
 				#foreach( $attributeValue in $attributeValues )
 				<tr>
 					<td>$attributeValue.patientAttribute.displayName</td>
@@ -99,6 +95,15 @@
 							$encoder.htmlEncode($attributeValue.value)
 						#end	
 					</td>
+				</tr>
+				#end
+				#foreach( $identifier in $identifiers )
+				<tr>
+					#if($!identifier.identifierType)
+					#else
+						<td>$i18n.getString("system_identifier")</td>
+						<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
+					#end
 				</tr>
 				#end
 			</table>
