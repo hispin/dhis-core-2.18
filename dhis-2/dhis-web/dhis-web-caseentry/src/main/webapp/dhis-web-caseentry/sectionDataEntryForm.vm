@@ -69,7 +69,11 @@
 								#elseif( $programStageDataElement.dataElement.type == "date" )
 									<input name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( '$programStageDataElement.dataElement.uid' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="date-field datefield" >
 									<script type="text/javascript">
-										datePicker( '$programStageDataElement.programStage.uid'+ '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
+										#if($programStageDataElement.allowDateInFuture=='true')
+											datePicker( '$programStageDataElement.programStage.uid'+ '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
+										#else
+											datePickerValid( '$programStageDataElement.programStage.uid'+ '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
+										#end
 									</script> 
 								#elseif($hasOptionSet=='true')
 									<input name="entryfield" options='$hasOptionSet' class="auto-field optionset" #if($hasOptionSet == 'true') #end data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
