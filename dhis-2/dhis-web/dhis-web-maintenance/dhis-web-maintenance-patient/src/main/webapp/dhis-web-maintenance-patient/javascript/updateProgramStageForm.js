@@ -28,17 +28,20 @@ jQuery( document ).ready( function()
 		var displayInReports = jQuery( "#displayInReports" );
 		displayInReports.empty();
 		
+		var allowDateInFutures = jQuery( "#allowDateInFutures" );
+		allowDateInFutures.empty();
+		
 		var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
 		daysAllowedSendMessages.empty();
 		
 		var templateMessages = jQuery( "#templateMessages" );
 		templateMessages.empty();
 		
+		var allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
+		allowProvidedElsewhere.empty();
+		
 		var sendTo = jQuery( "#sendTo" );
 		sendTo.empty();
-		
-		allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
-		allowProvidedElsewhere.empty();
 		
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			
@@ -55,6 +58,10 @@ jQuery( document ).ready( function()
 			var displayInReport = jQuery( item ).find( "input[name='displayInReport']:first");
 			checked = displayInReport.attr('checked') ? true : false;
 			displayInReports.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+		
+			var allowDateInFuture = jQuery( item ).find( "input[name='allowDateInFuture']:first");
+			checked = allowDateInFuture.attr('checked') ? true : false;
+			allowDateInFutures.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
 		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
 			daysAllowedSendMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );

@@ -20,6 +20,8 @@
 	<property name="sortOrder" column="sort_order" />
 	
 	<property name="displayInReports"/>
+	
+	<property name="allowDateInFuture"/>
 
   </class>
 </hibernate-mapping>

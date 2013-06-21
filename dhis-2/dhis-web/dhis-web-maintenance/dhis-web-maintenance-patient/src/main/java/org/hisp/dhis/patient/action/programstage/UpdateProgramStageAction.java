@@ -212,6 +212,13 @@ public class UpdateProgramStageAction
         this.captureCoordinates = captureCoordinates;
     }
 
+    private List<Boolean> allowDateInFutures;
+
+    public void setAllowDateInFutures( List<Boolean> allowDateInFutures )
+    {
+        this.allowDateInFutures = allowDateInFutures;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -260,6 +267,7 @@ public class UpdateProgramStageAction
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
+            Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
 
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
@@ -270,6 +278,7 @@ public class UpdateProgramStageAction
                     this.compulsories.get( i ), new Integer( i ) );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
+                programStageDataElement.setAllowDateInFuture( allowDate );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
@@ -278,6 +287,7 @@ public class UpdateProgramStageAction
                 programStageDataElement.setSortOrder( new Integer( i ) );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
+                programStageDataElement.setAllowDateInFuture( allowDate );
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );

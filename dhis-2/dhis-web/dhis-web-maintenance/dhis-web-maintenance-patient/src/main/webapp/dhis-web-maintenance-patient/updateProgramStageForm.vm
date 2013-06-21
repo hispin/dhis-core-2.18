@@ -92,6 +92,7 @@
 					<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>
 					<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>
 					<select id="displayInReports" name='displayInReports' multiple="multiple" class="hidden"></select>
+					<select id="allowDateInFutures" name='allowDateInFutures' multiple="multiple" class="hidden"></select>     
 				</th>
 			</tr>
 		</thead>
@@ -125,6 +126,7 @@
 								<th>$i18n.getString( "compulsory" )</th>
 								<th>$i18n.getString( "allow_provided_elsewhere" )</th>
 								<th>$i18n.getString( "display_in_reports" )</th>
+								<th>$i18n.getString( "date_in_future" )</th>
 							</tr>
 						</thead>
 						<tbody id="selectedList">
@@ -134,6 +136,13 @@
 									<td align="center"><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
 									<td align="center"><input type="checkbox" name="allowProvided" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.allowProvidedElsewhere == true ) checked #end /></td>
 									<td align="center"><input type="checkbox" name="displayInReport" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.displayInReports == true ) checked #end /></td>
+									<td align="center">
+										#if($programStageDataElement.dataElement.type=='date')
+										<input type="checkbox" name="allowDateInFuture" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.allowDateInFuture == true ) checked #end />
+										#else
+										<input type="hidden" name="allowDateInFuture" />
+										#end
+									</td>
 								</tr>
 							#end
 						</tbody>
