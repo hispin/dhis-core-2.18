@@ -74,6 +74,8 @@ public class ProgramStageDataElement
 
     private Boolean displayInReports;
 
+    private Boolean allowDateInFuture;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -101,7 +103,7 @@ public class ProgramStageDataElement
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -115,7 +117,7 @@ public class ProgramStageDataElement
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataElement getDataElement()
     {
         return dataElement;
@@ -128,7 +130,7 @@ public class ProgramStageDataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getAllowProvidedElsewhere()
     {
         return allowProvidedElsewhere;
@@ -141,7 +143,7 @@ public class ProgramStageDataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isCompulsory()
     {
         return compulsory;
@@ -164,7 +166,7 @@ public class ProgramStageDataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayInReports()
     {
         return displayInReports;
@@ -173,6 +175,16 @@ public class ProgramStageDataElement
     public void setDisplayInReports( Boolean displayInReports )
     {
         this.displayInReports = displayInReports;
+    }
+
+    public Boolean getAllowDateInFuture()
+    {
+        return allowDateInFuture;
+    }
+
+    public void setAllowDateInFuture( Boolean allowDateInFuture )
+    {
+        this.allowDateInFuture = allowDateInFuture;
     }
 
     // -------------------------------------------------------------------------

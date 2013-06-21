@@ -103,6 +103,12 @@ function selectDataElements()
 			html += "<td align='center'><input type='checkbox' name='compulsory'></td>";
 			html += "<td align='center'><input type='checkbox' name='allowProvided'></td>";
 			html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
+			if( jQuery(item).attr('valuetype') =='date'){
+				html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+			}
+			else{
+				html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+			}
 			html += "</tr>";
 			selectedList.append( html );
 			jQuery( item ).remove();
@@ -119,6 +125,12 @@ function selectAllDataElements()
 		html += "<td align='center'><input type='checkbox' name='compulsory'></td>";
 		html += "<td align='center'><input type='checkbox' name='allowProvided'></td>";
 		html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
+		if( jQuery(item).attr('valuetype') =='date'){
+			html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+		}
+		else{
+			html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+		}
 		html += "</tr>";
 		selectedList.append( html );
 		jQuery( item ).remove();
@@ -132,7 +144,7 @@ function unSelectDataElements()
 		item = jQuery(item);
 		if( item.hasClass("selected") )
 		{		
-			availableList.append( "<option value='" + item.attr( "id" ) + "' selected='true'>" + item.find("td:first").text() + "</option>" );
+			availableList.append( "<option value='" + item.attr( "id" ) + "' selected='true' valuetype='" + item.valuetype + "'>" + item.find("td:first").text() + "</option>" );
 			item.remove();
 		}
 	});
@@ -144,7 +156,7 @@ function unSelectAllDataElements()
 	var availableList = jQuery("#availableList");
 	jQuery("#selectedList").find("tr").each( function( i, item ){
 		item = jQuery(item);
-		availableList.append( "<option value='" + item.attr( "id" ) + "' selected='true'>" + item.find("td:first").text() + "</option>" );
+		availableList.append( "<option value='" + item.attr( "id" ) + "' selected='true' valuetype='" + item.valuetype + "'>" + item.find("td:first").text() + "</option>" );
 		item.remove();
 	});
 }

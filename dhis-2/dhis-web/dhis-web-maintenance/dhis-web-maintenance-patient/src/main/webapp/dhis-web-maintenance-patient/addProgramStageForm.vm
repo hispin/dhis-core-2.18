@@ -10,7 +10,7 @@
 	<select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>
 	<select id='templateMessages' name="templateMessages" multiple="multiple" class="hidden"></select>
 	<select id='sendTo' name="sendTo" multiple="multiple" class="hidden"></select>
-
+	
 <table>
 	<thead>
 		<tr><th colspan="2">$i18n.getString( "program_stage_details" )</th></tr>
@@ -92,6 +92,7 @@
 			<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>     
 			<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>     
 			<select id="displayInReports" name='displayInReports' multiple="multiple" class="hidden"></select>     
+			<select id="allowDateInFutures" name='allowDateInFutures' multiple="multiple" class="hidden"></select>     
 		</th>
       </tr>
     </thead>
@@ -125,6 +126,7 @@
 							<th>$i18n.getString( "compulsory" )</th>
 							<th>$i18n.getString( "allow_provided_elsewhere" )</th>
 							<th>$i18n.getString( "display_in_reports" )</th>
+							<th>$i18n.getString( "date_in_future" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>
