@@ -49,7 +49,7 @@
                     </tr>
                     <tr>
                         <td><label for="j_password">Password</label></td>
-                        <td><input type="password" id="j_password" name="j_password" style="width:240px; height:20px;"></td>
+                        <td><input type="password" id="j_password" name="j_password" style="width:240px; height:20px;" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td></td>
