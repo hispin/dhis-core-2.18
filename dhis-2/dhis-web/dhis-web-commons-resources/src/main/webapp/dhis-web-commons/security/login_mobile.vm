@@ -35,6 +35,7 @@
         <select id="mobileVersion" name="mobileVersion" style="width: 100%;">
             <option value="basic">Basic</option>
             <option value="smartphone">Smartphone</option>
+            <option value="desktop">Desktop</option>
         </select>
 	</p>
 </div>
