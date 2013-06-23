@@ -99,6 +99,10 @@ public class MappedRedirectStrategy
         {
             url = getRootPath( request ) + "/mobile";
         }
+        else if ( device.isMobile() && mobileVersion.equals( "desktop" ) )
+        {
+            url = getRootPath( request ) + "/";
+        }
 
         log.debug( "Redirecting to " + url );
 
