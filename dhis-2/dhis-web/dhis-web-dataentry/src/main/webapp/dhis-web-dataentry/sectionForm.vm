@@ -1,26 +1,28 @@
-#set( $marker = 0 )
 #set( $tabIndex = 1 )
 #set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
 
 #foreach( $section in $sections )
+    #set( $categoryComboId = $sectionCombos.get( $section.id ) )
+    #set( $title = $section.displayName )
 
-#if( $marker == 1 )
-  #set( $marker = 0 )
-#else
-  #set( $marker = 1 )
+    #renderSection($categoryComboId, {"title": $title })
 #end
 
+#macro( renderSection $categoryComboId $args )
+#if( $!args.title )
 <table class="formSection" style="margin-bottom: 20px;">
 <tr>
   <td>
-    <div class="cent"><h3>$encoder.htmlEncode( $section.displayName )</h3></div>
+    <div class="cent"><h3>$encoder.htmlEncode( $args.title )</h3></div>
   </td>
 </tr>
+#else
+<table class="formSection">
+#end
 <tr>
   <td>
     <div>
     <table cellspacing="0">
-    #set( $categoryComboId = $sectionCombos.get( $section.id ) )
     #set( $colCount = $numberOfTotalColumns.get( $categoryComboId ) )
     #set( $categories = $orderedCategories.get( $categoryComboId ) )
     #set( $optionsMap = $orderedOptionsMap.get( $categoryComboId ) )
@@ -59,7 +61,7 @@
     #set( $dataEntryId = "${dataElement.uid}-${optionCombo.uid}-val" )
     #set( $commentId = "${dataElement.uid}-${optionCombo.uid}-comment" )
     #set( $greyedField = false )
-    #set( $greyedField = $greyedFields.get( "${dataElement.uid}:${optionCombo.uid}" ) )  
+    #set( $greyedField = $greyedFields.get( "${dataElement.uid}:${optionCombo.uid}" ) )
     #if( $dataElement.type == "bool" )
     <td><select name="entryselect" id="$dataEntryId" tabindex="$tabIndex"#if( $greyedField || !$hasAccess ) disabled="disabled"#end>
       <option value="">[$i18n.getString( "no_value" )]</option>
