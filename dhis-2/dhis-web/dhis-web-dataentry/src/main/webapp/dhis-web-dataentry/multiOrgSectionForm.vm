@@ -36,7 +36,7 @@
     <tr>
         <td rowspan="$rowSpan"></td>
         #foreach( $dataElement in $section.dataElements )
-        <th colspan="$colCount">$dataElement.name</th>
+        <th colspan="$colCount">$dataElement.displayName</th>
         #end
     </tr>
 
@@ -50,7 +50,7 @@
             #foreach( $dataElement in $section.dataElements )
                 #foreach( $col in $cols )
                     #foreach( $categoryOption in $categoryOptions )
-                        <th colspan="$colCount"><span align="center">${encoder.htmlEncode( $categoryOption.name )}</span></th>
+                        <th colspan="$colCount"><span align="center">${encoder.htmlEncode( $categoryOption.displayName )}</span></th>
                     #end
                 #end
             #end
@@ -61,7 +61,7 @@
     #set( $count = 0 )
     #set( $mark = 0 )
     #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryComboId )  )
-    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>#end
+    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.displayName )}</span>#end
 
     #foreach( $organisationUnit in $organisationUnits )
         #if( $mark == 1 )
@@ -72,7 +72,7 @@
         #set( $count = $count + 1 )
         #set( $dataEntryId = "${organisationUnit.id}-${dataElement.uid}-${optionCombo.uid}-val" )
         <tr>
-            <td #if( $mark == 1 )class="alt"#else class="reg"#end>${encoder.htmlEncode( $organisationUnit.name )}</td>
+            <td #if( $mark == 1 )class="alt"#else class="reg"#end>${encoder.htmlEncode( $organisationUnit.displayName )}</td>
 
             #foreach( $dataElement in $section.dataElements )
                 <span class="hidden" id="${dataElement.uid}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span>

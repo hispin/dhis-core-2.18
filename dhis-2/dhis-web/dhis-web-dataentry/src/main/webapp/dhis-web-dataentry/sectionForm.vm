@@ -35,7 +35,7 @@
     #set( $cols = $colRepeat.get( $category.id ) )
     #foreach( $col in $cols )
     #foreach( $categoryOption in $categoryOptions )
-    <th colspan="$colCount"><span align="center">#if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.name )}#end</span></th>
+    <th colspan="$colCount"><span align="center">#if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.displayName )}#end</span></th>
     #end
     #end
     </tr>
@@ -44,7 +44,7 @@
     #set( $count = 0 )
     #set( $mark = 0 )
     #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryComboId )  )
-    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
+    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.uid}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.displayName )}</span>
     #end
     #foreach( $dataElement in $section.dataElements )
     #if( $mark == 1 )
