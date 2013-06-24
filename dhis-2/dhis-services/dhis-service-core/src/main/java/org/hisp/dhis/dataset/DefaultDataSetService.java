@@ -117,6 +117,11 @@ public class DefaultDataSetService
 
     public DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nIndicators, boolean i18nOrgUnits )
     {
+        return getDataSet( id, i18nDataElements, i18nIndicators, i18nOrgUnits, false );
+    }
+
+    public DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nIndicators, boolean i18nOrgUnits, boolean i18nSections )
+    {
         DataSet dataSet = getDataSet( id );
 
         if ( i18nDataElements )
@@ -132,6 +137,11 @@ public class DefaultDataSetService
         if ( i18nOrgUnits )
         {
             i18n( i18nService, dataSet.getSources() );
+        }
+
+        if ( i18nSections && dataSet.hasSections() )
+        {
+            i18n( i18nService, dataSet.getSections() );
         }
 
         return dataSet;
