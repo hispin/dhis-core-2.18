@@ -91,6 +91,12 @@ input[type=text],input[type=password]
   padding-right: 5px;
 }
 
+#loginField input[type=text],input[type=password]
+{
+  width: 240px;
+  height: 20px;
+}
+
 #loginMessage
 {
   background-color: #3b6da1;
@@ -113,7 +119,8 @@ input[type=text],input[type=password]
   border-radius: 3px;
 }
 
-#notificationArea a {
+#notificationArea a 
+{
   color: #6b90b8;
 }
 
@@ -160,6 +167,7 @@ input[type=text],input[type=password]
   border: 1px solid #444;
   border-radius: 3px;
   color: #222;
+  width: 120px;
 }
 
 .button:hover 

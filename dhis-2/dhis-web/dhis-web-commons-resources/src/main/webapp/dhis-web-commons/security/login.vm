@@ -45,17 +45,17 @@
                 <table>
                     <tr>
                         <td><label for="j_username">Username</label></td>
-                        <td><input type="text" id="j_username" name="j_username" style="width:240px; height:20px;"></td>
+                        <td><input type="text" id="j_username" name="j_username"></td>
                     </tr>
                     <tr>
                         <td><label for="j_password">Password</label></td>
-                        <td><input type="password" id="j_password" name="j_password" style="width:240px; height:20px;" autocomplete="off"></td>
+                        <td><input type="password" id="j_password" name="j_password" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>
-                            <input id="submit" class="button" type="submit" value="Login" style="width:120px">
-                            <input id="reset" class="button" type="reset" value="Clear" style="width:120px">
+                            <input id="submit" class="button" type="submit" value="Login">
+                            <input id="reset" class="button" type="reset" value="Clear">
                         </td>
                     </tr>
                     <tr>
