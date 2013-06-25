@@ -221,8 +221,7 @@ public class JdbcAnalyticsTableManager
             columns.add( col );
         }
         
-        List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes().subList( 0, 7 );
-        periodTypes.add( PeriodType.getAvailablePeriodTypes().get( 8 ) );
+        List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
         
         for ( PeriodType periodType : periodTypes )
         {
