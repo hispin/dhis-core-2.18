@@ -178,7 +178,7 @@ function showUpdateGroup()
                         indicatorGroups[id] = jQuery( '#addIndicatorGroupForm #name' ).val();
                         loadAvailableGroups();
                         jQuery( '#addIndicatorGroupForm' ).dialog( 'close' );
-                        showSuccessMessage( i18n_update_success );
+                        setHeaderDelayMessage( i18n_update_success );
                     } );
                 } else
                 {
@@ -209,10 +209,10 @@ function deleteIndicatorGroup()
             {
                 indicatorGroups.splice( id, 1 );
                 loadAvailableGroups();
-                showSuccessMessage( json.message );
+                setHeaderDelayMessage( json.message );
             } else
             {
-                showErrorMessage( json.message );
+            	setHeaderDelayMessage( json.message );
             }
         } );
     }
@@ -225,7 +225,7 @@ function updateGroupMembers()
     jQuery.getJSON( "updateIndicatorGroupEditor.action?id=" + id + "&"
             + toQueryString( '#view_1 #selectedIndicators', 'groupMembers' ), function( json )
     {
-        showSuccessMessage( i18n_update_success );
+    	setHeaderDelayMessage( i18n_update_success );
     } );
 }
 
@@ -344,7 +344,7 @@ function showUpdateGroup2()
                         indicatorGroups[id] = jQuery( '#addIndicatorGroupForm #name' ).val();
                         loadAvailableGroups();
                         jQuery( '#addIndicatorGroupForm' ).dialog( 'close' );
-                        showSuccessMessage( i18n_update_success );
+                        setHeaderDelayMessage( i18n_update_success );
                     } );
                 } else
                 {
@@ -374,10 +374,10 @@ function deleteIndicatorGroup2()
             {
                 indicatorGroups.splice( id, 1 );
                 loadAvailableGroups();
-                showSuccessMessage( json.message );
+                setHeaderDelayMessage( json.message );
             } else
             {
-                showErrorMessage( json.message );
+            	setHeaderDelayMessage( json.message );
             }
         } );
     }
@@ -390,6 +390,6 @@ function assignGroupsForIndicator()
     jQuery.getJSON( "asignGroupsForIndicator.action?indicatorId=" + id + "&"
             + toQueryString( '#view_2 #assignedGroups', 'indicatorGroups' ), function( json )
     {
-        showSuccessMessage( i18n_update_success );
+    	setHeaderDelayMessage( i18n_update_success );
     } );
 }

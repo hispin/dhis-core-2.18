@@ -206,7 +206,7 @@ function validateAdvancedSearch()
 			var elementName = $(this).attr('name');
 			if( elementName=='searchText' && jQuery( item ).val() == '')
 			{
-				showWarningMessage( i18n_specify_search_criteria );
+				setHeaderDelayMessage( i18n_specify_search_criteria );
 				flag = false;
 			}
 		});

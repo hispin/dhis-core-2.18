@@ -390,7 +390,7 @@ function matchObject()
 	
 	if ( selectedIndex == -1 )
 	{
-		showWarningMessage( i18n_no_item_to_match );
+		setHeaderDelayMessage( i18n_no_item_to_match );
 	}
 	else
 	{

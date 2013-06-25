@@ -8,7 +8,7 @@
 
         if(result)
         {
-            showWaitMessage( i18n_deleting_lock_exceptions, 0 );
+            setHeaderMessage( i18n_deleting_lock_exceptions, 0 );
 
             $.postJSON(
            	    "batchRemoveLockException.action",
@@ -27,11 +27,11 @@
        	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
        					jQuery( "table.listTable tbody" ).trigger("update");
 
-       					showSuccessMessage( i18n_delete_success );
+       					setHeaderDelayMessage( i18n_delete_success );
            	    	}
            	    	else if ( json.response == "error" )
            	    	{
-       					showWarningMessage( json.message );
+       					setHeaderDelayMessage( json.message );
            	    	}
            	    }
            	);

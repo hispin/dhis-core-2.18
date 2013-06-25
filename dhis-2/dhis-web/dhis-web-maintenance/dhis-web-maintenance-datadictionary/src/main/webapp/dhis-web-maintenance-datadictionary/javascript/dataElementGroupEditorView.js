@@ -214,7 +214,7 @@ function showUpdateGroup()
                         dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
                         loadAvailableGroups();
                         jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
-                        showSuccessMessage( i18n_update_success );
+                        setHeaderDelayMessage( i18n_update_success );
                     } );
                 } else
                 {
@@ -260,7 +260,7 @@ function showUpdateGroup2()
                         dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
                         loadAvailableGroups();
                         jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
-                        showSuccessMessage( i18n_update_success );
+                        setHeaderDelayMessage( i18n_update_success );
                     } );
                 } else
                 {
@@ -288,10 +288,10 @@ function deleteDataElemenGroup()
             {
                 dataElementGroups.splice( id, 1 );
                 loadAvailableGroups();
-                showSuccessMessage( json.message );
+                setHeaderDelayMessage( json.message );
             } else
             {
-                showErrorMessage( json.message );
+            	setHeaderDelayMessage( json.message );
             }
         } );
     }
@@ -311,10 +311,10 @@ function deleteDataElemenGroupView2()
             {
                 dataElementGroups.splice( id, 1 );
                 loadAvailableGroups();
-                showSuccessMessage( json.message );
+                setHeaderDelayMessage( json.message );
             } else
             {
-                showErrorMessage( json.message );
+            	setHeaderDelayMessage( json.message );
             }
         } );
     }
@@ -327,7 +327,7 @@ function updateGroupMembers()
     jQuery.getJSON( "updateDataElementGroupEditor.action?id=" + id + "&"
             + toQueryString( '#view_1 #selectedDataElements', 'groupMembers' ), function( json )
     {
-        showSuccessMessage( i18n_update_success );
+    	setHeaderDelayMessage( i18n_update_success );
     } );
 }
 
@@ -380,6 +380,6 @@ function assignGroupsForDataElement()
     jQuery.getJSON( "asignGroupsForDataElement.action?dataElementId=" + dataElementId + "&"
             + toQueryString( '#view_2 #assignedGroups', 'dataElementGroups' ), function( json )
     {
-        showSuccessMessage( i18n_update_success );
+    	setHeaderDelayMessage( i18n_update_success );
     } );
 }
