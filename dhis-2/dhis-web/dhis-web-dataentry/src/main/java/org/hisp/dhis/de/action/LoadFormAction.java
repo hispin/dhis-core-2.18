@@ -28,6 +28,7 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -307,6 +308,30 @@ public class LoadFormAction
 
         String displayMode = dataSet.getDataSetType();
 
+        if ( displayMode.equals( DataSet.TYPE_DEFAULT ) )
+        {
+            DataSet newDataSet = new DataSet();
+            newDataSet.mergeWith( dataSet );
+            dataSet = newDataSet;
+
+            for ( int i = 0; i < orderedCategoryCombos.size(); i++ )
+            {
+                Section section = new Section();
+                section.setId( i );
+                section.setSortOrder( i );
+
+                // generate a random uid so that equals work
+                section.setUid( CodeGenerator.generateCode() );
+
+                section.setDataSet( dataSet );
+                dataSet.getSections().add( section );
+
+                section.getDataElements().addAll( orderedDataElements.get( orderedCategoryCombos.get( i ) ) );
+            }
+
+            displayMode = DataSet.TYPE_SECTION;
+        }
+
         // ---------------------------------------------------------------------
         // For multi-org unit we only support custom forms
         // ---------------------------------------------------------------------
@@ -337,6 +362,7 @@ public class LoadFormAction
 
             displayMode = DataSet.TYPE_SECTION_MULTIORG;
         }
+
         if ( displayMode.equals( DataSet.TYPE_SECTION ) )
         {
             getSectionForm( dataElements, dataSet );

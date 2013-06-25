@@ -1,8 +1,0 @@
-
-#set( $tabIndex = 1 )
-#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
-
-#foreach( $categoryCombo in $orderedCategoryCombos )
-    #set( $dataElements = $orderedDataElements.get( $categoryCombo ) )
-    #renderSection( $categoryCombo.id $dataElements )
-#end
