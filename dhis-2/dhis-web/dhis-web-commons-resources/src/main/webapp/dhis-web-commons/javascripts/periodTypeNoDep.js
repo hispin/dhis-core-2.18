@@ -327,7 +327,7 @@ function FinancialOctoberPeriodType( format_yyyymmdd, monthNames, fnFilter )
 			date.setDate( date.getDate() + 1 );
 			period['startDate'] = format_yyyymmdd( date );
 			period['name'] = monthNames[9] + ' ' + date.getFullYear() + ' - ' + monthNames[8] + ' ' + ( date.getFullYear() + 1 );
-			period['id'] = 'FinancialOct_' + period['startDate'];
+			period['id'] = date.getFullYear() + 'Oct';
 			periods.push( period );
 			date.setDate( date.getDate() - 1 );
 		}
@@ -359,7 +359,7 @@ function FinancialJulyPeriodType( format_yyyymmdd, monthNames, fnFilter )
 			date.setDate( date.getDate() + 1 );
 			period['startDate'] = format_yyyymmdd( date );
 			period['name'] = monthNames[6] + ' ' + date.getFullYear() + ' - ' + monthNames[5] + ' ' + ( date.getFullYear() + 1 );
-			period['id'] = 'FinancialJuly_' + period['startDate'];
+			period['id'] = date.getFullYear() + 'July';
 			periods.push( period );
 			date.setDate( date.getDate() - 1 );
 		}
@@ -391,7 +391,7 @@ function FinancialAprilPeriodType( format_yyyymmdd, monthNames, fnFilter )
 			date.setDate( date.getDate() + 1 );
 			period['startDate'] = format_yyyymmdd( date );
 			period['name'] = monthNames[3] + ' ' + date.getFullYear() + ' - ' + monthNames[2] + ' ' + ( date.getFullYear() + 1 );
-			period['id'] = 'FinancialApril_' + period['startDate'];
+			period['id'] = date.getFullYear() + 'April';
 			periods.push( period );
 			date.setDate( date.getDate() - 1 );
 		}
