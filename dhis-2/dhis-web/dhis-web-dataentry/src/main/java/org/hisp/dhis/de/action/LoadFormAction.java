@@ -282,7 +282,7 @@ public class LoadFormAction
             {
                 int categoryOptionSize = cat.getCategoryOptions().size();
 
-                if ( catColSpan > 0 && categoryOptionSize > 0 )
+                if ( categoryOptionSize > 0 && catColSpan >= categoryOptionSize )
                 {
                     catColSpan = catColSpan / categoryOptionSize;
                     int total = optionCombos.size() / (catColSpan * categoryOptionSize);
