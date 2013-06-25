@@ -367,7 +367,7 @@ public abstract class BaseAnalyticalObject
             
             objects.add( new BaseDimensionalObject( dimension, DimensionType.PERIOD, periodList ) );
         }        
-        else if ( ORGUNIT_DIM_ID.equals( dimension ) && ( !organisationUnits.isEmpty() || hasUserOrgUnit() ) )
+        else if ( ORGUNIT_DIM_ID.equals( dimension ) && ( !organisationUnits.isEmpty() || !transientOrganisationUnits.isEmpty() || hasUserOrgUnit() ) )
         {
             List<NameableObject> ouList = new ArrayList<NameableObject>();
             ouList.addAll( organisationUnits );
