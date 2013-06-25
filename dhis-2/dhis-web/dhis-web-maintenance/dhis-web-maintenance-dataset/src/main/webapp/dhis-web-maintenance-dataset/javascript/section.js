@@ -49,7 +49,7 @@ function addSectionSubmit()
 	} 
 	else 
 	{
-		showWarningMessage( i18n_please_select_dataset_categorycombo );		
+		setHeaderDelayMessage( i18n_please_select_dataset_categorycombo );		
 	}
 }
 

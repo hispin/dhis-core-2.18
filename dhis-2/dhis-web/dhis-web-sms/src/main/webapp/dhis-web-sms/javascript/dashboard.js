@@ -22,7 +22,7 @@ function validationError()
 {
 	if ( $( "#selectionTree" ).length && selectionTreeSelection.getSelected().length == 0 )
 	{
-		setMessage( i18n_please_select_unit );
+		setHeaderDelayMessage( i18n_please_select_unit );
 		return true;
 	}
 	
