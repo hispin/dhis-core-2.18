@@ -13,7 +13,7 @@
       <key-many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid" foreign-key="fk_datavalue_categoryoptioncomboid" />
     </composite-id>
 
-    <property name="value" />
+    <property name="value" length="255" />
 
     <property name="storedBy" column="storedby" length="100" />
 

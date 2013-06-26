@@ -374,6 +374,14 @@ public class DefaultDataValueSetService
                 summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), valueValid ) );
                 continue;
             }
+            
+            String commentValid = ValidationUtils.commentIsValid( dataValue.getComment() );
+            
+            if ( commentValid != null )
+            {
+                summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), commentValid ) );
+                continue;
+            }
 
             if ( periodMap.containsKey( dataValue.getPeriod() ) )
             {
