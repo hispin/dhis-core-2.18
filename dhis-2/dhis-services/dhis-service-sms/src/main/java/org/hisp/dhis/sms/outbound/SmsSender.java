@@ -136,7 +136,7 @@ public class SmsSender
                 text = createMessage( subject, text, sender );
                 
                 // Bulk is limited in sending long SMS, need to cut into small pieces
-                if ( SmsLibService.gatewayMap.get( "bulk_gw" ).equals( gatewayId ) )
+                if ( SmsLibService.gatewayMap.get( "bulk_gw" )!= null && SmsLibService.gatewayMap.get( "bulk_gw" ).equals( gatewayId ) )
                 {
                     // Check if text contain any specific unicode character
                     for( char each: text.toCharArray())
