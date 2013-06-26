@@ -254,6 +254,12 @@ Ext.onReady( function() {
 			}
 		};
 
+		util.str = {
+			replaceAll: function(str, find, replace) {
+				return str.replace(new RegExp(find, 'g'), replace);
+			}
+		};
+		
 		return util;
 	};
 
@@ -287,10 +293,9 @@ Ext.onReady( function() {
 		});
 
 		store.dataElementAvailable = Ext.create('Ext.data.Store', {
-			fields: ['id', 'name'],
+			fields: ['id', 'name', 'dataElementId', 'optionComboId', 'operandName'],
 			proxy: {
 				type: 'ajax',
-				url: pt.conf.finals.ajax.path_visualizer + pt.conf.finals.ajax.dataelement_get,
 				reader: {
 					type: 'json',
 					root: 'dataElements'
@@ -299,6 +304,64 @@ Ext.onReady( function() {
 			storage: {},
 			sortStore: function() {
 				this.sort('name', 'ASC');
+			},
+			setTotalsProxy: function(uid) {
+				var path;
+
+				if (Ext.isString(uid)) {
+					path = pt.conf.finals.ajax.dataelement_get + uid + '.json?links=false&paging=false';
+				}
+				else if (uid === 0) {
+					path = pt.conf.finals.ajax.dataelement_getall;
+				}
+
+				if (!path) {
+					alert('Invalid parameter');
+					return;
+				}
+
+				this.setProxy({
+					type: 'ajax',
+					url: pt.conf.finals.ajax.path_api + path,
+					reader: {
+						type: 'json',
+						root: 'dataElements'
+					}
+				});
+
+				this.load({
+					scope: this,
+					callback: function() {
+						this.sortStore();
+					}
+				});
+			},
+			setDetailsProxy: function(uid) {
+				if (Ext.isString(uid)) {
+					this.setProxy({
+						type: 'ajax',
+						url: pt.conf.finals.ajax.path_commons + 'getOperands.action?uid=' + uid,
+						reader: {
+							type: 'json',
+							root: 'operands'
+						}
+					});
+
+					this.load({
+						scope: this,
+						callback: function() {
+							this.each(function(r) {
+								r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
+								r.set('name', r.data.operandName);
+							});
+
+							this.sortStore();
+						}
+					});
+				}
+				else {
+					alert('Invalid parameter');
+				}
 			},
 			listeners: {
 				load: function(s) {
@@ -1159,10 +1222,12 @@ Ext.onReady( function() {
 		});
 
 		getBody = function() {
-			var favorite;
+			var favorite,
+				dimensions;
 
 			if (pt.layout) {
 				favorite = Ext.clone(pt.layout);
+				dimensions = [].concat(favorite.columns, favorite.rows, favorite.filters);
 
 				// Server sync
 				favorite.totals = favorite.showTotals;
@@ -1181,6 +1246,15 @@ Ext.onReady( function() {
 				delete favorite.parentOrganisationUnit;
 
 				delete favorite.parentGraphMap;
+				
+				// Replace operand id characters
+				for (var i = 0; i < dimensions.length; i++) {
+					if (dimensions[i].dimension === pt.conf.finals.dimension.operand.objectName) {
+						for (var j = 0; j < dimensions[i].items.length; j++) {
+							dimensions[i].items[j].id = dimensions[i].items[j].id.replace('-', '.');
+						}
+					}
+				}
 			}
 
 			return favorite;
@@ -1970,7 +2044,7 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: PT.i18n.share + ' ' + PT.i18n.interpretation + '<span style="font-weight:normal; font-size:11px"> (' + pt.favorite.name + ') </span>',
 				layout: 'fit',
-				//iconCls: 'dv-window-title-interpretation',
+				//iconCls: 'pt-window-title-interpretation',
 				width: 500,
 				bodyStyle: 'padding:5px 5px 3px; background-color:#fff',
 				resizable: true,
@@ -2330,13 +2404,110 @@ Ext.onReady( function() {
 				}
 			});
 
+			dataElementGroupStore = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name', 'index'],
+				proxy: {
+					type: 'ajax',
+					url: pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.dataelementgroup_get,
+					reader: {
+						type: 'json',
+						root: 'dataElementGroups'
+					}
+				},
+				listeners: {
+					load: function(s) {
+						if (dataElementDetailLevel.getValue() === pt.conf.finals.dimension.dataElement.objectName) {
+							s.add({
+								id: 0,
+								name: '[ ' + PT.i18n.all_data_element_groups + ' ]',
+								index: -1
+							});
+						}
+
+						s.sort([
+							{property: 'index', direction: 'ASC'},
+							{property: 'name', direction: 'ASC'}
+						]);
+					}
+				}
+			});
+
+			dataElementGroupComboBox = Ext.create('Ext.form.field.ComboBox', {
+				cls: 'pt-combo',
+				style: 'margin:0 2px 2px 0',
+				width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 90,
+				valueField: 'id',
+				displayField: 'name',
+				emptyText: PT.i18n.select_data_element_group,
+				editable: false,
+				store: dataElementGroupStore,
+				loadAvailable: function() {
+					var store = pt.store.dataElementAvailable,
+						detailLevel = dataElementDetailLevel.getValue(),
+						value = this.getValue();
+
+					if (value !== null) {
+						if (detailLevel === pt.conf.finals.dimension.dataElement.objectName) {
+							store.setTotalsProxy(value);
+						}
+						else {
+							store.setDetailsProxy(value);
+						}
+					}
+				},
+				listeners: {
+					select: function(cb) {
+						cb.loadAvailable();
+					}
+				}
+			});
+
+			dataElementDetailLevel = Ext.create('Ext.form.field.ComboBox', {
+				cls: 'pt-combo',
+				style: 'margin-bottom:2px',
+				baseBodyCls: 'small',
+				queryMode: 'local',
+				editable: false,
+				valueField: 'id',
+				displayField: 'text',
+				width: 90 - 2,
+				value: pt.conf.finals.dimension.dataElement.objectName,
+				store: {
+					fields: ['id', 'text'],
+					data: [
+						{id: pt.conf.finals.dimension.dataElement.objectName, text: PT.i18n.totals},
+						{id: pt.conf.finals.dimension.operand.objectName, text: PT.i18n.details}
+					]
+				},
+				listeners: {
+					select: function(cb) {
+						var record = dataElementGroupStore.getById(0);
+
+						if (cb.getValue() === pt.conf.finals.dimension.operand.objectName && record) {
+							dataElementGroupStore.remove(record);
+						}
+
+						if (cb.getValue() === pt.conf.finals.dimension.dataElement.objectName && !record) {
+							dataElementGroupStore.insert(0, {
+								id: 0,
+								name: '[ ' + PT.i18n.all_data_element_groups + ' ]',
+								index: -1
+							});
+						}
+
+						dataElementGroupComboBox.loadAvailable();
+						pt.store.dataElementSelected.removeAll();
+					}
+				}
+			});
+
 			dataElement = {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-data">' + PT.i18n.data_elements + '</div>',
 				hideCollapseTool: true,
 				getDimension: function() {
 					var config = {
-						dimension: pt.conf.finals.dimension.dataElement.objectName,
+						dimension: dataElementDetailLevel.getValue(),
 						items: []
 					};
 
@@ -2358,66 +2529,12 @@ Ext.onReady( function() {
 				},
 				items: [
 					{
-						xtype: 'combobox',
-						cls: 'pt-combo',
-						style: 'margin-bottom:2px; margin-top:0px',
-						width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding,
-						valueField: 'id',
-						displayField: 'name',
-						emptyText: PT.i18n.select_data_element_group,
-						editable: false,
-						store: {
-							xtype: 'store',
-							fields: ['id', 'name', 'index'],
-							proxy: {
-								type: 'ajax',
-								url: pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.dataelementgroup_get,
-								reader: {
-									type: 'json',
-									root: 'dataElementGroups'
-								}
-							},
-							listeners: {
-								load: function(s) {
-									s.add({
-										id: 0,
-										name: PT.i18n.all_data_element_groups,
-										index: -1
-									});
-									s.sort([
-										{
-											property: 'index',
-											direction: 'ASC'
-										},
-										{
-											property: 'name',
-											direction: 'ASC'
-										}
-									]);
-								}
-							}
-						},
-						listeners: {
-							select: function(cb) {
-								var store = pt.store.dataElementAvailable;
-								store.parent = cb.getValue();
-
-								if (pt.util.store.containsParent(store)) {
-									pt.util.store.loadFromStorage(store);
-									pt.util.multiselect.filterAvailable(dataElementAvailable, dataElementSelected);
-								}
-								else {
-									if (cb.getValue() === 0) {
-										store.proxy.url = pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.dataelement_getall;
-										store.load();
-									}
-									else {
-										store.proxy.url = pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.dataelement_get + cb.getValue() + '.json';
-										store.load();
-									}
-								}
-							}
-						}
+						xtype: 'container',
+						layout: 'column',
+						items: [
+							dataElementGroupComboBox,
+							dataElementDetailLevel
+						]
 					},
 					{
 						xtype: 'panel',
@@ -3674,10 +3791,18 @@ Ext.onReady( function() {
 			};
 
 			validateSpecialCases = function(layout) {
-				var dimConf = pt.conf.finals.dimension;
+				var dimConf = pt.conf.finals.dimension,
+					dimensions,
+					objectNameDimensionMap = {};
 
 				if (!layout) {
 					return;
+				}
+
+				dimensions = [].concat(layout.columns, layout.rows, layout.filters);
+
+				for (var i = 0; i < dimensions.length; i++) {
+					objectNameDimensionMap[dimensions[i].dimension] = dimensions[i];
 				}
 
 				if (layout.filters && layout.filters.length) {
@@ -3701,6 +3826,24 @@ Ext.onReady( function() {
 							return;
 						}
 					}
+				}
+
+				// dc and in
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.indicator.objectName]) {
+					alert('Indicators and detailed data elements cannot be specified together');
+					return;
+				}
+
+				// dc and de
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataElement.objectName]) {
+					alert('Detailed data elements and totals cannot be specified together');
+					return;
+				}
+
+				// dc and ds
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataSet.objectName]) {
+					alert('Data sets and detailed data elements cannot be specified together');
+					return;
 				}
 
 				// Degs and datasets in the same query
