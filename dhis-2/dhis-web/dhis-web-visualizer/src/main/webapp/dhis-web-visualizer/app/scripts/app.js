@@ -1984,9 +1984,9 @@ Ext.onReady( function() {
 			var buttons = [],
 				buttonAddedListener,
 				column,
-				stackedColumn,
+				stackedcolumn,
 				bar,
-				stackedBar,
+				stackedbar,
 				line,
 				area,
 				pie,
@@ -2062,9 +2062,9 @@ Ext.onReady( function() {
 				}
 			});
 
-			stackedColumn = Ext.create('Ext.button.Button', {
+			stackedcolumn = Ext.create('Ext.button.Button', {
 				xtype: 'button',
-				chartType: dv.conf.finals.chart.stackedColumn,
+				chartType: dv.conf.finals.chart.stackedcolumn,
 				icon: 'images/column-stacked.png',
 				name: dv.conf.finals.chart.stackedcolumn,
 				tooltipText: DV.i18n.stacked_column_chart,
@@ -2084,9 +2084,9 @@ Ext.onReady( function() {
 				}
 			});
 
-			stackedBar = Ext.create('Ext.button.Button', {
+			stackedbar = Ext.create('Ext.button.Button', {
 				xtype: 'button',
-				chartType: dv.conf.finals.chart.stackedBar,
+				chartType: dv.conf.finals.chart.stackedbar,
 				icon: 'images/bar-stacked.png',
 				name: dv.conf.finals.chart.stackedbar,
 				tooltipText: DV.i18n.stacked_bar_chart,
@@ -2168,9 +2168,9 @@ Ext.onReady( function() {
 						style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 6px'
 					},
 					column,
-					stackedColumn,
+					stackedcolumn,
 					bar,
-					stackedBar,
+					stackedbar,
 					line,
 					area,
 					pie
