@@ -630,10 +630,11 @@
         <version>1.2</version>
       </dependency>
       <dependency>
-        <groupId>net.sf.opencsv</groupId>
-        <artifactId>opencsv</artifactId>
-        <version>2.3</version>
+        <groupId>net.sourceforge.javacsv</groupId>
+        <artifactId>javacsv</artifactId>
+        <version>2.0</version>
       </dependency>
+            
       <!--DBMS -->
       <dependency>
         <groupId>com.h2database</groupId>

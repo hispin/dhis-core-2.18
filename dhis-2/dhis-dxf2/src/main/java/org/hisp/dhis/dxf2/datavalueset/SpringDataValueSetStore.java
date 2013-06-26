@@ -49,11 +49,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import com.csvreader.CsvWriter;
 
 public class SpringDataValueSetStore
     implements DataValueSetStore
 {
+    private static final char CSV_DELIM = ',';
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -73,7 +75,7 @@ public class SpringDataValueSetStore
     
     public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
     {
-        DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CSVWriter( writer ) );
+        DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
         
         writeDataValueSet( null, null, null, null, dataElements, periods, orgUnits, dataValueSet );
     }

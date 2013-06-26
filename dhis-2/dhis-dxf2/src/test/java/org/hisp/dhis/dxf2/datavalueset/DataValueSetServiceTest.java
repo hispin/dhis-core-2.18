@@ -27,15 +27,14 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.CODE;
 import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UID;
 import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.io.InputStreamReader;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisTest;
@@ -190,7 +189,7 @@ public class DataValueSetServiceTest
         throws Exception
     {
         ImportSummary summary = dataValueSetService.saveDataValueSetCsv( 
-            new InputStreamReader( new ClassPathResource( "datavalueset/dataValueSetB.csv" ).getInputStream() ), null, null );
+            new ClassPathResource( "datavalueset/dataValueSetB.csv" ).getInputStream(), null, null );
         
         assertImportDataValues( summary );
     }

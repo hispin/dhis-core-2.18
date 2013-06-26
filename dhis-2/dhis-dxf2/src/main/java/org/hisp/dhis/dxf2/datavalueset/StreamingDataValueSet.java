@@ -187,7 +187,10 @@ public class StreamingDataValueSet
 
     public void close()
     {
-        writer.closeElement();
-        writer.closeDocument();
+        if ( writer != null )
+        {
+            writer.closeElement();
+            writer.closeDocument();
+        }
     }
 }

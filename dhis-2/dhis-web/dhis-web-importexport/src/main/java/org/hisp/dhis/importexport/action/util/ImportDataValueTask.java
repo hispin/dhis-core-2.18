@@ -27,12 +27,11 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStream;
+
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskId;
-
-import java.io.InputStream;
-import java.io.Reader;
 
 /**
  * @author Lars Helge Overland
@@ -46,16 +45,14 @@ public class ImportDataValueTask
 
     private DataValueSetService dataValueSetService;
     private InputStream in;
-    private Reader reader;
     private ImportOptions options;
     private TaskId taskId;
     private String format;
 
-    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, Reader reader, ImportOptions options, TaskId taskId, String format )
+    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, ImportOptions options, TaskId taskId, String format )
     {
         this.dataValueSetService = dataValueSetService;
         this.in = in;
-        this.reader = reader;
         this.options = options;
         this.taskId = taskId;
         this.format = format;
@@ -66,7 +63,7 @@ public class ImportDataValueTask
     {
         if ( FORMAT_CSV.equals( format ) )
         {
-            dataValueSetService.saveDataValueSetCsv( reader, options, taskId );
+            dataValueSetService.saveDataValueSetCsv( in, options, taskId );
         }
         else if ( FORMAT_PDF.equals( format ) )
         {
