@@ -51,7 +51,7 @@ public interface DataAnalysisStore
      * @param dataElement the DataElement.
      * @param categoryOptionCombo the DataElementCategoryOptionCombo.
      * @param organisationUnit the OrganisationUnit.
-     * @return the standard deviation.
+     * @return a mapping between organisation unit identifier and its standard deviation.
      */
     Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits );
     
@@ -62,10 +62,20 @@ public interface DataAnalysisStore
      * @param dataElement the DataElement.
      * @param categoryOptionCombo the DataElementCategoryOptionCombo.
      * @param organisationUnit the OrganisationUnit.
-     * @return the average.
+     * @return a mapping between organisation unit identifier and its average data value.
      */
     Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits );
     
+    /**
+     * Generates a collection of data value violations of min-max predefined values.
+     * 
+     * @param dataElements the data elements.
+     * @param categoryOptionCombos the category option combos.
+     * @param periods the periods.
+     * @param organisationUnits the organisation units.
+     * @param limit the max limit of violations to return.
+     * @return a collection of data value violations.
+     */
     Collection<DeflatedDataValue> getMinMaxViolations( Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> categoryOptionCombos,
         Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, int limit );
     
