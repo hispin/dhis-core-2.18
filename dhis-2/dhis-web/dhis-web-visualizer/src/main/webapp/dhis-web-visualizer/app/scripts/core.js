@@ -1260,7 +1260,6 @@ console.log("baseLineFields", store.baseLineFields);
 				numberOfChars = str.length;
 
 				width = (numberOfItems * itemLength) + (numberOfChars * charLength);
-//alert(width + ' > ' + dv.viewport.centerRegion.getWidth() + '\n' + str);
 
 				if (width > dv.viewport.centerRegion.getWidth() - 50) {
 					isVertical = true;
@@ -2005,7 +2004,7 @@ DV.core.getApi = function(dv) {
 			}
 
 			// Layout
-			layout.type = config.type;
+			layout.type = config.type.toLowerCase();
 
 			layout.columns = config.columns;
 			layout.rows = config.rows;

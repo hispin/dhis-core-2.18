@@ -10,6 +10,7 @@ PT.core.getConfigs = function() {
         ajax: {
             path_pivot: '../',
             path_api: '../../api/',
+            path_commons: '../../dhis-web-commons-ajax-json/',
             initialize: 'initialize.action',
             redirect: 'dhis-web-commons-about/redirect.action',
             data_get: 'chartValues.json',
@@ -966,14 +967,20 @@ PT.core.getUtils = function(pt) {
 					}
 				}();
 
-				var createValueIds = function() {
+				var createValueIdMap = function() {
 					var valueHeaderIndex = response.nameHeaderMap[pt.conf.finals.dimension.value.value].index,
-						dimensionNames = xLayout.axisDimensionNames,
+						coHeader = response.nameHeaderMap[pt.conf.finals.dimension.category.dimensionName],
+						axisDimensionNames = xLayout.axisDimensionNames,
 						idIndexOrder = [];
 
 					// idIndexOrder
-					for (var i = 0; i < dimensionNames.length; i++) {
-						idIndexOrder.push(response.nameHeaderMap[dimensionNames[i]].index);
+					for (var i = 0; i < axisDimensionNames.length; i++) {
+						idIndexOrder.push(response.nameHeaderMap[axisDimensionNames[i]].index);
+
+						// If co exists in response, add co after dx
+						if (coHeader && axisDimensionNames[i] === pt.conf.finals.dimension.data.dimensionName) {
+							idIndexOrder.push(coHeader.index);
+						}
 					}
 
 					// idValueMap
@@ -1460,9 +1467,9 @@ PT.core.getUtils = function(pt) {
 						valueObjectsRow = [];
 
 						for (var j = 0, id, value, htmlValue, empty; j < colSize; j++) {
-							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
+							id = (xColAxis ? pt.util.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? pt.util.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
 							empty = false;
-
+							
 							if (map[id]) {
 								value = parseFloat(map[id]);
 								htmlValue = pt.util.number.roundIf(map[id], 1).toString();
@@ -2007,7 +2014,7 @@ PT.core.getApi = function(pt) {
 				return;
 			}
 
-			record.id = config.id;
+			record.id = config.id.replace('.', '-');
 
 			if (Ext.isString(config.name)) {
 				record.name = config.name;

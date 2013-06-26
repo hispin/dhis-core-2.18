@@ -2634,7 +2634,7 @@ Ext.onReady( function() {
 			dataElementGroupComboBox = Ext.create('Ext.form.field.ComboBox', {
 				cls: 'dv-combo',
 				style: 'margin:0 2px 2px 0',
-				width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding - 110,
+				width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding - 90,
 				valueField: 'id',
 				displayField: 'name',
 				emptyText: DV.i18n.select_data_element_group,
@@ -2669,7 +2669,7 @@ Ext.onReady( function() {
 				editable: false,
 				valueField: 'id',
 				displayField: 'text',
-				width: 110 - 2,
+				width: 90 - 2,
 				value: dv.conf.finals.dimension.dataElement.objectName,
 				store: {
 					fields: ['id', 'text'],

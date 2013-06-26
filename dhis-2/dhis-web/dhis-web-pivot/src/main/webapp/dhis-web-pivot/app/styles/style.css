@@ -550,6 +550,10 @@ table.pivot {
     height: 32px;
 }
 
+.x-btn-default-small {
+	border-radius: 1px;
+}
+
 .x-btn-default-toolbar-small-pressed {
 	border-color: #bbb;
     background-image: none;
@@ -829,16 +833,15 @@ table.pivot {
 	padding: 6px 5px 4px 8px;
 	border: 0 none;
 	cursor: pointer;
-	border-top-left-radius: 1px;
-	border-top-right-radius: 1px;
+	border-radius: 0;
     background-image: none;
     background-color: #e0e0e0;
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dcdcdc), color-stop(100%, #e5e5e5)) !important;
-    background-image: -webkit-linear-gradient(top, #dcdcdc, #e5e5e5) !important;
-    background-image: -moz-linear-gradient(top, #dcdcdc, #e5e5e5) !important;
-    background-image: -o-linear-gradient(top, #dcdcdc, #e5e5e5) !important;
-    background-image: -ms-linear-gradient(top, #dcdcdc, #e5e5e5) !important;
-    background-image: linear-gradient(top, #dcdcdc, #e5e5e5) !important;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dedede), color-stop(100%, #e6e6e6)) !important;
+    background-image: -webkit-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: -moz-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: -o-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: -ms-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: linear-gradient(top, #dddddd, #e6e6e6) !important;
 }
 	/* accordion title dock, default, collapsed */
 .pt-accordion .collapsed .x-accordion-hd {
@@ -847,8 +850,7 @@ table.pivot {
 
 	/* accordion title dock outer, shared */
 .pt-accordion .x-accordion-item {
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
+	border-radius: 1px;
 }
 	/* accordion title dock outer, default */
 .pt-accordion .x-accordion-item {
