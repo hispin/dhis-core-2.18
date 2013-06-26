@@ -387,6 +387,21 @@ body.x-windows {
 
 
 /*----------------------------------------------------------------------------
+ * DV Button
+ *--------------------------------------------------------------------------*/
+
+.dv-button-icon-gear {
+	width: 22px !important;
+	height: 22px !important;
+	background: url('../images/gear_18.png') no-repeat;
+}
+
+.dv-button-organisationunitselection .x-btn-center {
+	width: 18px !important;
+}
+
+
+/*----------------------------------------------------------------------------
  * Tooltip
  *--------------------------------------------------------------------------*/
 
@@ -747,6 +762,21 @@ body.x-windows {
 	/* Menu item color */
 .x-menu-item-text {
     color: #111;
+}
+
+
+/*----------------------------------------------------------------------------
+ * DV Menu
+ *--------------------------------------------------------------------------*/
+
+.dv-menu-item-selected {
+    background-image:url('../images/check.png');
+    padding-left: 18px;
+}
+
+	/* Menu align */
+.dv-btn-menu {
+	margin-top: 2px;
 }
 
 

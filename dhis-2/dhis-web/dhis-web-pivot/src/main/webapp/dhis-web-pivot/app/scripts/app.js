@@ -2033,9 +2033,13 @@ Ext.onReady( function() {
 				fixedPeriodAvailable,
 				fixedPeriodSelected,
 				period,
+				treePanel,
 				userOrganisationUnit,
 				userOrganisationUnitChildren,
-				treePanel,
+				userOrganisationUnitPanel,
+				organisationUnitLevel,
+				tool,
+				toolPanel,
 				organisationUnit,
 				dimensionIdAvailableStoreMap = {},
 				dimensionIdSelectedStoreMap = {},
@@ -3256,6 +3260,7 @@ Ext.onReady( function() {
 
 			userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
 				columnWidth: 0.5,
+				style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
 				boxLabel: PT.i18n.user_organisation_unit,
 				labelWidth: pt.conf.layout.form_label_width,
 				handler: function(chb, checked) {
@@ -3265,17 +3270,114 @@ Ext.onReady( function() {
 
 			userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
 				columnWidth: 0.5,
+				style: 'padding-top:2px; margin-bottom:0',
 				boxLabel: PT.i18n.user_organisation_unit_children,
 				labelWidth: pt.conf.layout.form_label_width,
 				handler: function(chb, checked) {
 					treePanel.xable(checked, userOrganisationUnit.getValue());
 				}
 			});
-
+			
+			userOrganisationUnitPanel = Ext.create('Ext.panel.Panel', {
+				columnWidth: 0.9,
+				layout: 'column',
+				bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:7px',
+				items: [
+					userOrganisationUnit,
+					userOrganisationUnitChildren
+				]
+			});
+			
+			organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
+				cls: 'pt-combo',
+				style: 'margin-bottom:0',
+				width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 38,
+				valueField: 'level',
+				displayField: 'name',
+				emptyText: PT.i18n.select_organisation_unit_level,
+				editable: false,
+				hidden: true,
+				store: {
+					fields: ['id', 'name', 'level'],
+					data: pt.init.organisationUnitLevels
+				}
+			});
+			
+			toolMenu = Ext.create('Ext.menu.Menu', {
+				shadow: false,
+				showSeparator: false,
+				menuValue: 'explicit',
+				clickHandler: function(param) {
+					var items = this.items.items;
+					this.menuValue = param;
+					
+					// Menu item icon cls
+					for (var i = 0; i < items.length; i++) {
+						if (items[i].param === param) {
+							items[i].setIconCls('pt-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('');
+						}
+					}
+						
+					// Gui
+					if (param === 'explicit') {
+						userOrganisationUnit.show();
+						userOrganisationUnitChildren.show();
+						organisationUnitLevel.hide();
+						
+						if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+							treePanel.disable();
+						}
+					}
+					else if (param === 'boundary') {
+						userOrganisationUnit.hide();
+						userOrganisationUnitChildren.hide();
+						organisationUnitLevel.show();
+						treePanel.enable();
+					}
+				},
+				items: [
+					{
+						text: PT.i18n.select_organisation_units + '&nbsp;&nbsp;',
+						param: 'explicit',
+						iconCls: 'pt-menu-item-selected'
+					},
+					{
+						text: PT.i18n.select_boundaries_and_level + '&nbsp;&nbsp;',
+						param: 'boundary'
+					}
+				],
+				listeners: {
+					afterrender: function() {
+						this.getEl().addCls('pt-btn-menu');
+					},
+					click: function(menu, item) {
+						this.clickHandler(item.param);
+					}
+				}
+			});
+			
+			tool = Ext.create('Ext.button.Button', {
+				cls: 'pt-button-organisationunitselection',
+				iconCls: 'pt-button-icon-gear',
+				width: 36,
+				height: 24,
+				menu: toolMenu
+			});
+			
+			toolPanel = Ext.create('Ext.panel.Panel', {
+				width: 36,
+				bodyStyle: 'border:0 none; text-align:right',
+				style: 'margin-right:2px',
+				items: tool
+			});
+			
 			organisationUnit = {
 				xtype: 'panel',
 				title: '<div class="pt-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
-				bodyStyle: 'padding-top:5px',
+				bodyStyle: 'padding:2px',
 				hideCollapseTool: true,
 				collapsed: false,
 				getDimension: function() {
@@ -3284,21 +3386,28 @@ Ext.onReady( function() {
 							dimension: pt.conf.finals.dimension.organisationUnit.objectName,
 							items: []
 						};
-
-					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
-						if (userOrganisationUnit.getValue()) {
-							config.items.push({id: 'USER_ORGUNIT'});
+						
+					if (toolMenu.menuValue === 'explicit') {
+						if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+							if (userOrganisationUnit.getValue()) {
+								config.items.push({id: 'USER_ORGUNIT'});
+							}
+							if (userOrganisationUnitChildren.getValue()) {
+								config.items.push({id: 'USER_ORGUNIT_CHILDREN'});
+							}
 						}
-						if (userOrganisationUnitChildren.getValue()) {
-							config.items.push({id: 'USER_ORGUNIT_CHILDREN'});
+						else {
+							for (var i = 0; i < r.length; i++) {
+								config.items.push({id: r[i].data.id});
+							}
 						}
 					}
-					else {
+					else if (toolMenu.menuValue === 'boundary') {
 						for (var i = 0; i < r.length; i++) {
-							config.items.push({id: r[i].data.id});
+							config.items.push({id: 'LEVEL-' + organisationUnitLevel.getValue() + '-' + r[i].data.id});
 						}
 					}
-
+					
 					return config.items.length ? config : null;
 				},
 				onExpand: function() {
@@ -3310,14 +3419,25 @@ Ext.onReady( function() {
 				items: [
 					{
 						layout: 'column',
-						bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:7px',
+						bodyStyle: 'border:0 none',
+						style: 'padding-bottom:2px',
 						items: [
-							userOrganisationUnit,
-							userOrganisationUnitChildren
+							toolPanel,
+							{
+								width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 38,
+								layout: 'column',
+								bodyStyle: 'border:0 none',
+								items: [
+									userOrganisationUnit,
+									userOrganisationUnitChildren,
+									organisationUnitLevel
+								]
+							}							
 						]
 					},
 					treePanel
 				],
+				suppressExpand: false,
 				listeners: {
 					added: function() {
 						pt.cmp.dimension.panels.push(this);
@@ -3940,7 +4060,8 @@ Ext.onReady( function() {
 					fixedPeriodRecords = [],
                     dimNames = [],
 					isOu = false,
-					isOuc = false;
+					isOuc = false,
+					isLevel = false;
 
 				// State
 				pt.viewport.interpretationButton.enable();
@@ -4089,11 +4210,29 @@ Ext.onReady( function() {
 						if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
 							isOuc = true;
 						}
+						if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
+							isLevel = true;
+						}
 					}
 				}
+				
+				if (isLevel) {
+					var ouRecords = recMap[dimConf.organisationUnit.objectName],
+						level;
+						
+					if (Ext.isArray(ouRecords) && ouRecords.length) {
+						level = ouRecords[i].id.split('-')[1];
+					}
+					
+					toolMenu.clickHandler('boundary');
+					organisationUnitLevel.setValue(level);
+				}
+				else {
+					toolMenu.clickHandler('explicit');					
 
-				userOrganisationUnit.setValue(isOu);
-				userOrganisationUnitChildren.setValue(isOuc);
+					userOrganisationUnit.setValue(isOu);
+					userOrganisationUnitChildren.setValue(isOuc);
+				}
 
 				// If fav has organisation units, wait for tree callback before update
 				if (recMap[dimConf.organisationUnit.objectName] && Ext.isObject(graphMap)) {

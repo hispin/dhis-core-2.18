@@ -39,6 +39,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -194,6 +195,13 @@ public class InitializeAction
         return legendSets;
     }
     
+    private Collection<OrganisationUnitLevel> levels;
+
+    public Collection<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -245,6 +253,8 @@ public class InitializeAction
         dimensions = dimensionService.getAllDimensions();
         
         legendSets = mappingService.getAllMapLegendSets();
+        
+        levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }
