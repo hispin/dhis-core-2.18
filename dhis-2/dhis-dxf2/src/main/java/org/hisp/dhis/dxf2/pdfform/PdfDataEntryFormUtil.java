@@ -49,6 +49,10 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfReader;
 
+/**
+ * @author James Chang
+ */
+
 public class PdfDataEntryFormUtil
 {
     public static final int DATATYPE_DATASET = 0;
@@ -216,6 +220,7 @@ public class PdfDataEntryFormUtil
 
                 // Loop Through the Fields and get data.
 
+                @SuppressWarnings( "unchecked" )
                 Set<String> fldNames = form.getFields().keySet();
 
                 for ( String fldName : fldNames )

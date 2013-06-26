@@ -45,6 +45,10 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PushbuttonField;
 import com.lowagie.text.pdf.RadioCheckField;
 
+/**
+ * @author James Chang
+ */
+
 public class PdfFieldCell
     implements PdfPCellEvent
 {
@@ -132,6 +136,8 @@ public class PdfFieldCell
         {
 
             PdfContentByte canvasText = canvases[PdfPTable.TEXTCANVAS];
+            
+            // PENDING LOGIC
             // PdfContentByte canvasLine = canvases[PdfPTable.LINECANVAS];
             //
             // float margin = 2;
@@ -143,10 +149,8 @@ public class PdfFieldCell
             //
             // canvasLine.rectangle( x1, y1, x2 - x1, y2 - y1 );
 
-            switch ( type )
+            if ( type == TYPE_RADIOBUTTON )
             {
-            case TYPE_RADIOBUTTON:
-
                 if ( parent != null )
                 {
                     float leftLoc = rect.getLeft();
@@ -193,10 +197,9 @@ public class PdfFieldCell
 
                     writer.addAnnotation( parent );
                 }
-
-                break;
-
-            case TYPE_BUTTON:
+            }
+            else if ( type == TYPE_BUTTON )
+            {
                 // Add the push button
                 PushbuttonField button = new PushbuttonField( writer, rect, name );
                 button.setBackgroundColor( new GrayColor( 0.75f ) );
@@ -213,39 +216,38 @@ public class PdfFieldCell
 
                 formField = button.getField();
                 formField.setAction( PdfAction.javaScript( jsAction, writer ) );
-
-                break;
-
-            case TYPE_CHECKBOX:
-
+            }
+            else if ( type == TYPE_CHECKBOX )
+            {
                 // Start from the middle of the cell width.
                 float startingPoint = rect.getLeft() + ((rect.getWidth() + width) / 2.0f);
 
                 formField.setWidget(
                     new Rectangle( startingPoint, rect.getBottom(), startingPoint + width, rect.getTop() ),
                     PdfAnnotation.HIGHLIGHT_NONE );
+            }
+            else
+            {
 
-                break;
+                if ( type == TYPE_TEXT_ORGUNIT )
+                {
+                    formField.setAdditionalActions( PdfName.BL, PdfAction.javaScript(
+                        "if(event.value == '') app.alert('Warning! Please Enter The Org ID.');", writer ) );
+                }
 
-            case TYPE_TEXT_ORGUNIT:
-                formField.setAdditionalActions( PdfName.BL, PdfAction.javaScript(
-                    "if(event.value == '') app.alert('Warning! Please Enter The Org ID.');", writer ) );
+                // TYPE_TEXT_NUMBER case included as well here.
 
-            case TYPE_TEXT_NUMBER:
-
-            default:
-
+                // PENDING LOGIC
                 // Add -1, +1 to create cellpadding effect - spacing between
                 // rows/cells
                 // formField.setWidget(
                 // new Rectangle( rect.getLeft() + 1, rect.getBottom() + 1,
                 // rect.getLeft() + width - 1, rect.getTop() - 1 ),
                 // PdfAnnotation.HIGHLIGHT_NONE );
+
                 formField.setWidget(
                     new Rectangle( rect.getLeft(), rect.getBottom(), rect.getLeft() + width, rect.getTop() ),
                     PdfAnnotation.HIGHLIGHT_NONE );
-
-                break;
 
             }
 
