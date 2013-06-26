@@ -513,6 +513,16 @@ table.pivot {
     padding-left: 18px;
 }
 
+.pt-menu-item-selected {
+    background-image:url('../images/check.png');
+    padding-left: 18px;
+}
+
+	/* Menu align */
+.pt-btn-menu {
+	margin-top: 2px;
+}
+
 /*----------------------------------------------------------------------------
  * Button
  *--------------------------------------------------------------------------*/
@@ -552,6 +562,19 @@ table.pivot {
     background-image: linear-gradient(top, #d1d1d1,#e5e5e5);
 }
 
+/*----------------------------------------------------------------------------
+ * PT Button
+ *--------------------------------------------------------------------------*/
+
+.pt-button-icon-gear {
+	width: 22px !important;
+	height: 22px !important;
+	background: url('../images/gear_18.png') no-repeat;
+}
+
+.pt-button-organisationunitselection .x-btn-center {
+	width: 18px !important;
+}
 
 /*----------------------------------------------------------------------------
  * Tooltip

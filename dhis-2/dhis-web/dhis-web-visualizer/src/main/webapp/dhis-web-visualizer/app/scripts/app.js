@@ -2018,9 +2018,13 @@ Ext.onReady( function() {
 				fixedPeriodAvailable,
 				fixedPeriodSelected,
 				period,
+				treePanel,
 				userOrganisationUnit,
 				userOrganisationUnitChildren,
-				treePanel,
+				userOrganisationUnitPanel,
+				organisationUnitLevel,
+				tool,
+				toolPanel,
 				organisationUnit,
 				dimensionIdAvailableStoreMap = {},
 				dimensionIdSelectedStoreMap = {},
@@ -3562,6 +3566,7 @@ Ext.onReady( function() {
 
 			userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
 				columnWidth: 0.5,
+				style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
 				boxLabel: DV.i18n.user_organisation_unit,
 				labelWidth: dv.conf.layout.form_label_width,
 				handler: function(chb, checked) {
@@ -3571,6 +3576,7 @@ Ext.onReady( function() {
 
 			userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
 				columnWidth: 0.5,
+				style: 'padding-top:2px; margin-bottom:0',
 				boxLabel: DV.i18n.user_organisation_unit_children,
 				labelWidth: dv.conf.layout.form_label_width,
 				handler: function(chb, checked) {
@@ -3578,10 +3584,106 @@ Ext.onReady( function() {
 				}
 			});
 
+			userOrganisationUnitPanel = Ext.create('Ext.panel.Panel', {
+				columnWidth: 0.9,
+				layout: 'column',
+				bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:7px',
+				items: [
+					userOrganisationUnit,
+					userOrganisationUnitChildren
+				]
+			});
+			
+			organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
+				cls: 'dv-combo',
+				style: 'margin-bottom:0',
+				width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding - 38,
+				valueField: 'level',
+				displayField: 'name',
+				emptyText: DV.i18n.select_organisation_unit_level,
+				editable: false,
+				hidden: true,
+				store: {
+					fields: ['id', 'name', 'level'],
+					data: dv.init.organisationUnitLevels
+				}
+			});
+			
+			toolMenu = Ext.create('Ext.menu.Menu', {
+				shadow: false,
+				showSeparator: false,
+				menuValue: 'explicit',
+				clickHandler: function(param) {
+					var items = this.items.items;
+					this.menuValue = param;
+					
+					// Menu item icon cls
+					for (var i = 0; i < items.length; i++) {
+						if (items[i].param === param) {
+							items[i].setIconCls('dv-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('');
+						}
+					}
+						
+					// Gui
+					if (param === 'explicit') {
+						userOrganisationUnit.show();
+						userOrganisationUnitChildren.show();
+						organisationUnitLevel.hide();
+						
+						if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+							treePanel.disable();
+						}
+					}
+					else if (param === 'boundary') {
+						userOrganisationUnit.hide();
+						userOrganisationUnitChildren.hide();
+						organisationUnitLevel.show();
+						treePanel.enable();
+					}
+				},
+				items: [
+					{
+						text: DV.i18n.select_organisation_units + '&nbsp;&nbsp;',
+						param: 'explicit',
+						iconCls: 'dv-menu-item-selected'
+					},
+					{
+						text: DV.i18n.select_boundaries_and_level + '&nbsp;&nbsp;',
+						param: 'boundary'
+					}
+				],
+				listeners: {
+					afterrender: function() {
+						this.getEl().addCls('dv-btn-menu');
+					},
+					click: function(menu, item) {
+						this.clickHandler(item.param);
+					}
+				}
+			});
+			
+			tool = Ext.create('Ext.button.Button', {
+				cls: 'dv-button-organisationunitselection',
+				iconCls: 'dv-button-icon-gear',
+				width: 36,
+				height: 24,
+				menu: toolMenu
+			});
+			
+			toolPanel = Ext.create('Ext.panel.Panel', {
+				width: 36,
+				bodyStyle: 'border:0 none; text-align:right',
+				style: 'margin-right:2px',
+				items: tool
+			});
+			
 			organisationUnit = {
 				xtype: 'panel',
 				title: '<div class="dv-panel-title-organisationunit">' + DV.i18n.organisation_units + '</div>',
-				bodyStyle: 'padding-top:5px',
+				bodyStyle: 'padding:2px',
 				hideCollapseTool: true,
 				collapsed: false,
 				getDimension: function() {
@@ -3590,21 +3692,28 @@ Ext.onReady( function() {
 							dimension: dv.conf.finals.dimension.organisationUnit.objectName,
 							items: []
 						};
-
-					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
-						if (userOrganisationUnit.getValue()) {
-							config.items.push({id: 'USER_ORGUNIT'});
+						
+					if (toolMenu.menuValue === 'explicit') {
+						if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+							if (userOrganisationUnit.getValue()) {
+								config.items.push({id: 'USER_ORGUNIT'});
+							}
+							if (userOrganisationUnitChildren.getValue()) {
+								config.items.push({id: 'USER_ORGUNIT_CHILDREN'});
+							}
 						}
-						if (userOrganisationUnitChildren.getValue()) {
-							config.items.push({id: 'USER_ORGUNIT_CHILDREN'});
+						else {
+							for (var i = 0; i < r.length; i++) {
+								config.items.push({id: r[i].data.id});
+							}
 						}
 					}
-					else {
+					else if (toolMenu.menuValue === 'boundary') {
 						for (var i = 0; i < r.length; i++) {
-							config.items.push({id: r[i].data.id});
+							config.items.push({id: 'LEVEL-' + organisationUnitLevel.getValue() + '-' + r[i].data.id});
 						}
 					}
-
+					
 					return config.items.length ? config : null;
 				},
 				onExpand: function() {
@@ -3616,10 +3725,20 @@ Ext.onReady( function() {
 				items: [
 					{
 						layout: 'column',
-						bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:7px',
+						bodyStyle: 'border:0 none',
+						style: 'padding-bottom:2px',
 						items: [
-							userOrganisationUnit,
-							userOrganisationUnitChildren
+							toolPanel,
+							{
+								width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding - 38,
+								layout: 'column',
+								bodyStyle: 'border:0 none',
+								items: [
+									userOrganisationUnit,
+									userOrganisationUnitChildren,
+									organisationUnitLevel
+								]
+							}							
 						]
 					},
 					treePanel
@@ -3885,7 +4004,7 @@ Ext.onReady( function() {
 
 						// Categories as filter
 						//if (layout.filters[i].dimension === dimConf.category.objectName) {
-							//alert(PT.i18n.categories_cannot_be_specified_as_filter);
+							//alert(DV.i18n.categories_cannot_be_specified_as_filter);
 							//return;
 						//}
 

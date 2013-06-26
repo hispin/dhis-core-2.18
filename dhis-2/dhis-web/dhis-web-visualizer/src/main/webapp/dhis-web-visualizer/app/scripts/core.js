@@ -3,7 +3,7 @@ DV.core = {
 };
 
 Ext.onReady( function() {
-
+	
 DV.core.getConfig = function() {
 	var conf = {};
 
@@ -700,6 +700,17 @@ DV.core.getUtil = function(dv) {
 					xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
 					isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT'),
 					isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
+					isLevel = function() {
+						if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
+							for (var i = 0; i < xOuDimension.ids.length; i++) {
+								if (xOuDimension.ids[i].substr(0,5) === 'LEVEL') {
+									return true;
+								}
+							}
+						}
+						
+						return false;
+					}(),
 					ou = dimConf.organisationUnit.objectName,
 					layout;
 
@@ -717,6 +728,18 @@ DV.core.getUtil = function(dv) {
 							}
 							if (isUserOrgunitChildren) {
 								dim.items = dim.items.concat(dv.init.user.ouc);
+							}
+						}
+						else if (isLevel) {
+							
+							// Items: get ids from metadata -> items
+							for (var j = 0, ids = Ext.clone(response.metaData[dim.dimensionName]); j < ids.length; j++) {
+								dim.items.push({
+									id: ids[j],
+									name: response.metaData.names[ids[j]]
+								});
+								
+								dim.items = dv.util.array.sortObjectsByString(dim.items);
 							}
 						}
 						else {
@@ -1524,8 +1547,7 @@ console.log("baseLineFields", store.baseLineFields);
 
 					//if (xLayout.showValues) {
 						//line.label = {
-							//display: 'rotate',
-							//'text-anchor': 'middle',
+							//display: 'over',
 							//field: store.rangeFields[i]
 						//};
 					//}
@@ -1674,7 +1696,7 @@ console.log("baseLineFields", store.baseLineFields);
 				xLayout = util.chart.getExtendedLayout(layout);
 
 				dv.paramString = util.chart.getParamString(xLayout, true);
-				url = dv.init.contextPath + '/api/analytics.json' + dv.paramString;
+				url = dv.init.contextPath + '/api/analytics.json' + dv.paramString;				
 
 				if (!validateUrl(url)) {
 					return;
