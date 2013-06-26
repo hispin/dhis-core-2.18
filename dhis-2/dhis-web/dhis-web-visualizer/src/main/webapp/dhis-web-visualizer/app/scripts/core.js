@@ -103,9 +103,9 @@ DV.core.getConfig = function() {
             category: 'category',
             filter: 'filter',
             column: 'column',
-            stackedColumn: 'stackedColumn',
+            stackedcolumn: 'stackedcolumn',
             bar: 'bar',
-            stackedBar: 'stackedBar',
+            stackedbar: 'stackedbar',
             line: 'line',
             area: 'area',
             pie: 'pie'
@@ -1030,7 +1030,7 @@ console.log("baseLineFields", store.baseLineFields);
 					axis;
 
 				// Set maximum if stacked + extra line
-				if ((xLayout.type === typeConf.stackedColumn || xLayout.type === typeConf.stackedBar) &&
+				if ((xLayout.type === typeConf.stackedcolumn || xLayout.type === typeConf.stackedbar) &&
 					(xLayout.showTrendLine || xLayout.targetLineValue || xLayout.baseLineValue)) {
 					var a = [store.getMaximum(), store.getMaximumSum()];
 					maximum = Math.ceil(Ext.Array.max(a) * 1.1);
@@ -1422,7 +1422,7 @@ console.log("baseLineFields", store.baseLineFields);
 				return getDefaultChart(store, axes, series, xResponse, xLayout);
 			};
 
-			generator.stackedColumn = function(xResponse, xLayout) {
+			generator.stackedcolumn = function(xResponse, xLayout) {
 				var chart = this.column(xResponse, xLayout);
 
 				for (var i = 0, item; i < chart.series.items.length; i++) {
@@ -1503,7 +1503,7 @@ console.log("baseLineFields", store.baseLineFields);
 				return getDefaultChart(store, axes, series, xResponse, xLayout);
 			};
 
-			generator.stackedBar = function(xResponse, xLayout) {
+			generator.stackedbar = function(xResponse, xLayout) {
 				var chart = this.bar(xResponse, xLayout);
 
 				for (var i = 0, item; i < chart.series.items.length; i++) {
@@ -1888,7 +1888,7 @@ DV.core.getApi = function(dv) {
 	api.layout.Layout = function(config) {
 		var layout = {};
 
-		// type: string ('column') - 'column', 'stackedColumn', 'bar', 'stackedBar', 'line', 'area', 'pie'
+		// type: string ('column') - 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
 
 		// columns: [Dimension]
 
