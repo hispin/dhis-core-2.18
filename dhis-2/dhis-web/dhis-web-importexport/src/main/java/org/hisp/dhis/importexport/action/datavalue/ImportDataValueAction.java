@@ -27,14 +27,9 @@ package org.hisp.dhis.importexport.action.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.action.util.ImportDataValueTask.FORMAT_CSV;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -150,13 +145,11 @@ public class ImportDataValueAction
         
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
         
-        Reader reader = FORMAT_CSV.equals( importFormat ) ? new BufferedReader( new InputStreamReader( in ) ) : null;
-
         ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy, skipExistingCheck );
         
         log.info( options );
         
-        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, reader, options, taskId, importFormat ) );
+        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, options, taskId, importFormat ) );
         
         return SUCCESS;
     }

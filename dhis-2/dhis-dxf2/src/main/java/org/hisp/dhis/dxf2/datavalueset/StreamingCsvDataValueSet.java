@@ -32,36 +32,33 @@ import java.io.IOException;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.dxf2.datavalue.StreamingCsvDataValue;
 
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
+import com.csvreader.CsvReader;
+import com.csvreader.CsvWriter;
 
 public class StreamingCsvDataValueSet
     extends DataValueSet
 {
-    private CSVWriter writer;
+    private CsvWriter writer;
     
-    private CSVReader reader;
+    private CsvReader reader;
     
-    private String[] nextRow;
-    
-    public StreamingCsvDataValueSet( CSVWriter writer )
+    public StreamingCsvDataValueSet( CsvWriter writer )
     {
-        this.writer = writer;        
-        this.writer.writeNext( StreamingCsvDataValue.getHeaders() ); // Write headers
-    }
-    
-    public StreamingCsvDataValueSet( CSVReader reader )
-    {
-        this.reader = reader;
+        this.writer = writer;
         
         try
         {
-            this.reader.readNext(); // Skip first row / headers
+            this.writer.writeRecord( StreamingCsvDataValue.getHeaders() ); // Write headers
         }
         catch ( IOException ex )
         {
-            throw new RuntimeException( ex );
+            throw new RuntimeException( "Failed to write CSV headers", ex );
         }
+    }
+    
+    public StreamingCsvDataValueSet( CsvReader reader )
+    {
+        this.reader = reader;
     }
     
     @Override
@@ -69,7 +66,7 @@ public class StreamingCsvDataValueSet
     {
         try
         {
-            return ( nextRow = reader.readNext() ) != null;            
+            return reader.readRecord();
         }
         catch ( IOException ex )
         {
@@ -80,7 +77,14 @@ public class StreamingCsvDataValueSet
     @Override
     public DataValue getNextDataValue()
     {
-        return new StreamingCsvDataValue( nextRow );
+        try
+        {
+            return new StreamingCsvDataValue( reader.getValues() );
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( "Failed to get CSV values", ex );
+        }
     }
 
     @Override
@@ -92,13 +96,14 @@ public class StreamingCsvDataValueSet
     @Override
     public void close()
     {
-        try
+        if ( writer != null )
         {
             writer.close();
         }
-        catch ( IOException ex )
+        
+        if ( reader != null )
         {
-            throw new RuntimeException( ex );
+            reader.close();
         }
     }    
 }

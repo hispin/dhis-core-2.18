@@ -29,20 +29,21 @@ package org.hisp.dhis.dxf2.datavalue;
 
 import static org.hisp.dhis.system.util.TextUtils.valueOf;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import com.csvreader.CsvWriter;
 
 public class StreamingCsvDataValue
     extends DataValue
 {
-    private CSVWriter writer;
+    private CsvWriter writer;
     
     private List<String> values;
     
-    public StreamingCsvDataValue( CSVWriter writer )
+    public StreamingCsvDataValue( CsvWriter writer )
     {
         this.writer = writer;
         this.values = new ArrayList<String>();
@@ -183,7 +184,14 @@ public class StreamingCsvDataValue
     {
         String[] row = new String[values.size()];
         
-        writer.writeNext( values.toArray( row ) );
+        try
+        {
+            writer.writeRecord( values.toArray( row ) );
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( "Failed to write CSV record", ex );
+        }
     }
     
     public static String[] getHeaders()

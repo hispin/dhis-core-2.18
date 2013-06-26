@@ -27,16 +27,15 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
-
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.Date;
 import java.util.Set;
+
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.scheduling.TaskId;
 
 public interface DataValueSetService
 {
@@ -58,7 +57,7 @@ public interface DataValueSetService
 
     ImportSummary saveDataValueSetJson( InputStream in, ImportOptions importOptions, TaskId taskId );
 
-    ImportSummary saveDataValueSetCsv( Reader reader, ImportOptions importOptions, TaskId id );
+    ImportSummary saveDataValueSetCsv( InputStream in, ImportOptions importOptions, TaskId id );
 
     ImportSummary saveDataValueSetPdf( InputStream in, ImportOptions importOptions, TaskId id );
 }
