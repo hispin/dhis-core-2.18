@@ -61,7 +61,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.CMYKColor;
 import com.lowagie.text.pdf.PdfAnnotation;
 import com.lowagie.text.pdf.PdfAppearance;
 import com.lowagie.text.pdf.PdfBorderDictionary;
@@ -72,6 +71,10 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.RadioCheckField;
 import com.lowagie.text.pdf.TextField;
+
+/**
+ * @author James Chang
+ */
 
 public class DefaultPdfDataEntryFormService
     implements PdfDataEntryFormService
@@ -148,13 +151,17 @@ public class DefaultPdfDataEntryFormService
         throws IOException, DocumentException, ParseException, Exception
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetUid );
-
+                       
         if ( dataSet == null )
         {
             throw new Exception( "Error - DataSet not found for UID " + dataSetUid );
         }
         else
         {
+            
+            // Get I18n locale language translated version of DataSet
+            dataSet = dataSetService.getDataSet( dataSet.getId(), true, true, false );
+                
             setDataSet_DocumentTopSection( document, dataSet );
 
             document.add( Chunk.NEWLINE );
@@ -185,7 +192,7 @@ public class DefaultPdfDataEntryFormService
         document.add( new Paragraph( dataSet.getDisplayName(), pdfFormFontSettings
             .getFont( PdfFormFontSettings.FONTTYPE_TITLE ) ) );
 
-        document.add( new Paragraph( dataSet.getDescription(), pdfFormFontSettings
+        document.add( new Paragraph( dataSet.getDisplayDescription(), pdfFormFontSettings
             .getFont( PdfFormFontSettings.FONTTYPE_DESCRIPTION ) ) );
     }
 
@@ -552,6 +559,7 @@ public class DefaultPdfDataEntryFormService
     }
 
     // Insert 'Save As' button to document.
+    @SuppressWarnings( "unused" )
     private void insertSaveAsButton( Document document, PdfWriter writer, String name )
         throws DocumentException
     {
@@ -699,6 +707,7 @@ public class DefaultPdfDataEntryFormService
         table.addCell( cell );
     }
 
+    @SuppressWarnings( "unused" )
     private void addCell_WithRadioButton( PdfPTable table, PdfWriter writer, String strfldName )
     {
         // Add to the main table
