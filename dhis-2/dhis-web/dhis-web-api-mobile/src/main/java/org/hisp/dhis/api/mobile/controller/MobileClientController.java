@@ -55,8 +55,8 @@ public class MobileClientController
 
     @RequestMapping( method = RequestMethod.GET, value = "/{version}" )
     @ResponseBody
-    public OrgUnits getOrgUnitsForUser( HttpServletRequest request, @PathVariable
-    String version )
+    public OrgUnits getOrgUnitsForUser( HttpServletRequest request, 
+        @PathVariable String version )
         throws NotAllowedException
     {
         User user = currentUserService.getCurrentUser();
@@ -80,8 +80,8 @@ public class MobileClientController
 
     @RequestMapping( method = RequestMethod.GET, value = "/{version}/LWUIT" )
     @ResponseBody
-    public OrgUnits getOrgUnitsForUserLWUIT( HttpServletRequest request, @PathVariable
-    String version )
+    public OrgUnits getOrgUnitsForUserLWUIT( HttpServletRequest request, 
+        @PathVariable String version )
         throws NotAllowedException
     {
         User user = currentUserService.getCurrentUser();
