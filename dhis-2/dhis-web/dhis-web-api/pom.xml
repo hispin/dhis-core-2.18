@@ -81,6 +81,10 @@
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports-fonts</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-api-mobile</artifactId>
+    </dependency> <!-- remove this -->
   </dependencies>
 
   <properties>
