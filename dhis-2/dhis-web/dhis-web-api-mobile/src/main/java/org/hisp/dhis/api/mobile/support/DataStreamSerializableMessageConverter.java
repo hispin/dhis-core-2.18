@@ -41,28 +41,32 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 public class DataStreamSerializableMessageConverter
     implements HttpMessageConverter<DataStreamSerializable>
 {
-
     @Override
     public boolean canRead( Class<?> clazz, MediaType mediaType )
     {
-    	if (mediaType == null){
-    		return DataStreamSerializable.class.isAssignableFrom( clazz );
-    	}
-    	else {
-    		return MediaTypes.MEDIA_TYPES.contains( mediaType) && DataStreamSerializable.class.isAssignableFrom( clazz );
-    	}
+        if ( mediaType == null )
+        {
+            return DataStreamSerializable.class.isAssignableFrom( clazz );
+        }
+        else
+        {
+            return MediaTypes.MEDIA_TYPES.contains( mediaType )
+                && DataStreamSerializable.class.isAssignableFrom( clazz );
+        }
     }
-
 
     @Override
     public boolean canWrite( Class<?> clazz, MediaType mediaType )
     {
-    	if (mediaType == null){
-    		return DataStreamSerializable.class.isAssignableFrom( clazz );
-    	}
-    	else {
-    		return MediaTypes.MEDIA_TYPES.contains( mediaType) && DataStreamSerializable.class.isAssignableFrom( clazz );
-    	}
+        if ( mediaType == null )
+        {
+            return DataStreamSerializable.class.isAssignableFrom( clazz );
+        }
+        else
+        {
+            return MediaTypes.MEDIA_TYPES.contains( mediaType )
+                && DataStreamSerializable.class.isAssignableFrom( clazz );
+        }
     }
 
     @Override
@@ -85,7 +89,5 @@ public class DataStreamSerializableMessageConverter
     {
         outputMessage.getHeaders().setContentType( contentType );
         DataStreamSerializer.write( entity, outputMessage.getBody() );
-
     }
-
 }

@@ -34,7 +34,6 @@ import org.springframework.http.MediaType;
 
 public class MediaTypes
 {
-
     public static String ACTIVITYVALUELIST_SERIALIZED = "application/vnd.org.dhis2.activityvaluelist+serialized";
     public static MediaType ACTIVITYVALUELIST_SERIALIZED_TYPE = 
         MediaType.parseMediaType( ACTIVITYVALUELIST_SERIALIZED );
@@ -54,5 +53,4 @@ public class MediaTypes
 
     public static List<MediaType> MEDIA_TYPES = Arrays.asList( new MediaType[] { ACTIVITYVALUELIST_SERIALIZED_TYPE,
             DATASETVALUE_SERIALIZED_TYPE, MOBILE_SERIALIZED_TYPE, MOBILE_SERIALIZED_TYPE_WITH_CHARSET } );
-
 }

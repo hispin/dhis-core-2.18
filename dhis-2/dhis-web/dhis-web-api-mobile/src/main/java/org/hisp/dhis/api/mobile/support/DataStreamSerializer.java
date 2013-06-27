@@ -41,7 +41,6 @@ import com.jcraft.jzlib.ZOutputStream;
 
 public class DataStreamSerializer
 {
-
     public static DataStreamSerializable read( Class<? extends DataStreamSerializable> clazz, InputStream input )
         throws IOException
     {
@@ -82,8 +81,16 @@ public class DataStreamSerializer
         }
         finally
         {
-            dos.flush();
-            gzip.finish();
+            if ( dos != null )
+            {
+                dos.flush();
+                dos.close();
+            }
+            
+            if ( gzip != null )
+            {
+                gzip.finish();
+            }
         }
     }
 
@@ -96,5 +103,4 @@ public class DataStreamSerializer
         out.flush();
         return baos;
     }
-
 }
