@@ -128,7 +128,7 @@ Ext.onReady( function() {
 				nameDimArrayMap[dimConf.dataElement.objectName],
 				nameDimArrayMap[dimConf.operand.objectName],
 				nameDimArrayMap[dimConf.dataSet.objectName]
-			));
+			));			
 
 			// Columns, rows, filters
 			for (var i = 0, nameArrays = [columnDimNames, rowDimNames, filterDimNames], axes = [config.columns, config.rows, config.filters], dimNames; i < nameArrays.length; i++) {
@@ -3799,8 +3799,8 @@ Ext.onReady( function() {
 					return;
 				}
 
-				dimensions = [].concat(layout.columns, layout.rows, layout.filters);
-
+				dimensions = Ext.Array.clean([].concat(layout.columns, layout.rows, layout.filters));
+				
 				for (var i = 0; i < dimensions.length; i++) {
 					objectNameDimensionMap[dimensions[i].dimension] = dimensions[i];
 				}
@@ -3965,7 +3965,7 @@ Ext.onReady( function() {
 
 			openTableLayoutTab = function(type, isNewTab) {
 				if (pt.baseUrl && pt.paramString) {
-					var url = pt.baseUrl + '/api/analytics.' + type + pt.util.pivot.getParamString(pt.xLayout);
+					var url = pt.baseUrl + '/api/analytics.' + type + pt.paramString;
 					url += '&tableLayout=true&columns=' + pt.xLayout.columnDimensionNames.join(';') + '&rows=' + pt.xLayout.rowDimensionNames.join(';');
 
 					window.open(url, isNewTab ? '_blank' : '_top');
@@ -4016,7 +4016,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.json' + pt.util.pivot.getParamString(pt.xLayout, true), '_blank');
+									window.open(pt.baseUrl + '/api/analytics.json' + pt.paramString, '_blank');
 								}
 							}
 						},
@@ -4025,7 +4025,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.xml' + pt.util.pivot.getParamString(pt.xLayout, true), '_blank');
+									window.open(pt.baseUrl + '/api/analytics.xml' + pt.paramString, '_blank');
 								}
 							}
 						},
@@ -4034,7 +4034,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.location.href = pt.baseUrl + '/api/analytics.xls' + pt.util.pivot.getParamString(pt.xLayout, true);
+									window.location.href = pt.baseUrl + '/api/analytics.xls' + pt.paramString;
 								}
 							}
 						},
@@ -4043,7 +4043,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.util.pivot.getParamString(pt.xLayout, true);
+									window.location.href = pt.baseUrl + '/api/analytics.csv' + pt.paramString;
 								}
 							}
 						},
@@ -4052,7 +4052,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-menu-item-datasource',
 							handler: function() {
 								if (pt.baseUrl && pt.paramString) {
-									window.open(pt.baseUrl + '/api/analytics.jrxml' + pt.util.pivot.getParamString(pt.xLayout, true), '_blank');
+									window.open(pt.baseUrl + '/api/analytics.jrxml' + pt.paramString, '_blank');
 								}
 							}
 						}
