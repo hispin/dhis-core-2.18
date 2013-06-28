@@ -246,7 +246,6 @@ div#menuDropDown4
   background-color: #4a6f4d;
   height: 535px;
   width: 235px;
-  float: left;
   position: absolute;
   top: 44px;
   left: 0px;
@@ -260,7 +259,6 @@ div#menuDropDown4
 
 #leftBarContents
 {
-  color: black;
   font-size: 12px;
 }
 
