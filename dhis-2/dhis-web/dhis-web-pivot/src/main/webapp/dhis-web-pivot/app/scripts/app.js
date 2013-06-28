@@ -2017,7 +2017,7 @@ Ext.onReady( function() {
 						apiUrl = pt.baseUrl + '/api/reportTables/' + pt.favorite.id + '/data.html',
 						html = '';
 					
-					html += '<div><b>Chart link: </b><span class="user-select"><a href="' + reportTableUrl + '" target="_blank">' + reportTableUrl + '</a></span></div>';
+					html += '<div><b>Pivot link: </b><span class="user-select"><a href="' + reportTableUrl + '" target="_blank">' + reportTableUrl + '</a></span></div>';
 					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
 				}(),
