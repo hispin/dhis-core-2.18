@@ -1472,7 +1472,7 @@ PT.core.getUtils = function(pt) {
 						for (var j = 0, id, value, htmlValue, empty; j < colSize; j++) {
 							id = (xColAxis ? pt.util.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? pt.util.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
 							empty = false;
-console.log(id);							
+							
 							if (idValueMap[id]) {
 								value = parseFloat(idValueMap[id]);
 								htmlValue = pt.util.number.roundIf(idValueMap[id], 1).toString();
