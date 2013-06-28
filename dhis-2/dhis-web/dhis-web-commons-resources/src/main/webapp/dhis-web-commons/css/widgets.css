@@ -141,18 +141,19 @@ div.thingy
 
 div#orgUnitTree 
 {
-  font-size: 9pt; /* Size to change */
+  font-size: 9pt;
   padding-top: 4px;
 }
 
 #leftBarContents div#orgUnitTree 
 {
-  font-size: 9pt; /* Size to change */
+  font-size: 9pt;
   background-color: white;
   overflow: auto;
   width: 233px;
   height: 298px;
-  border: 1px inset #FFFFFF;
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
 }
 
 div#orgUnitTree ul 
@@ -163,21 +164,15 @@ div#orgUnitTree ul
 
 div#orgUnitTree ul li:last-child 
 {
-    background-position: 0pt -1766px;
+  background-position: 0pt -1766px;
 }
 
 div#orgUnitTree li 
 {
   list-style-type: none;
-  white-space: nowrap; /* Makes list items never wrap */
-  margin-top: 0pt;
-  margin-right: 0pt;
-  margin-bottom: 0pt;
-  margin-left: 0pt;
-  padding-top: 1px;
-  padding-right: 0pt;
-  padding-bottom: 1px;
-  padding-left: 14px;
+  white-space: nowrap;
+  margin-top: 0;
+  padding: 1px 0 1px 15px;
   background-color: transparent;
   background-image: url('../../images/treeview-gray-line.gif');
   background-repeat: no-repeat;
@@ -193,6 +188,9 @@ div#orgUnitTree span.toggle
 
 div#orgUnitTree a 
 {
+  display: inline;
+  border: 0;
+  padding: 0;
   color: #5C0000;
   text-decoration: none;
   cursor: pointer;
