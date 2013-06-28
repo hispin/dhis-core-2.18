@@ -246,13 +246,12 @@ div#menuDropDown4
   background-color: #b91010;
   height: 535px;
   width: 235px;
-  float: left;
   position: absolute;
   top: 46px;
   left: 0px;
   padding-top: 6px;
-  border-right: 1px solid #10375f;
-  border-bottom: 1px solid #10375f;
+  border-right: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
   filter: alpha(opacity=90);
   opacity: 0.90;
   border-bottom-right-radius: 5px;
@@ -260,7 +259,6 @@ div#menuDropDown4
 
 #leftBarContents
 {
-  color: black;
   font-size: 12px;
 }
 
