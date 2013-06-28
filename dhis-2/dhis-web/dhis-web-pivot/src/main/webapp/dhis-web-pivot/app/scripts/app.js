@@ -2012,8 +2012,16 @@ Ext.onReady( function() {
 			});
 
 			linkPanel = Ext.create('Ext.panel.Panel', {
-				html: '<b>Link: </b><span class="user-select">' + pt.baseUrl + '/dhis-web-pivot/app/index.html?id=' + pt.favorite.id + '</span>',
-				style: 'padding-top: 9px; padding-bottom: 6px',
+				html: function() {
+					var reportTableUrl = pt.baseUrl + '/dhis-web-pivot/app/index.html?id=' + pt.favorite.id,
+						apiUrl = pt.baseUrl + '/api/reportTables/' + pt.favorite.id + '/data.html',
+						html = '';
+					
+					html += '<div><b>Chart link: </b><span class="user-select"><a href="' + reportTableUrl + '" target="_blank">' + reportTableUrl + '</a></span></div>';
+					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
+					return html;
+				}(),
+				style: 'padding-top: 8px; padding-bottom: 5px',
 				bodyStyle: 'border: 0 none'
 			});
 
