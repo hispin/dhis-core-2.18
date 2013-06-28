@@ -3846,6 +3846,12 @@ Ext.onReady( function() {
 					return;
 				}
 
+				// dc and co
+				if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.category.objectName]) {
+					alert('Categories and detailed data elements cannot be specified together');
+					return;
+				}
+
 				// Degs and datasets in the same query
 				//if (Ext.Array.contains(dimensionNames, dimConf.data.dimensionName) && pt.store.dataSetSelected.data.length) {
 					//for (var i = 0; i < pt.init.degs.length; i++) {

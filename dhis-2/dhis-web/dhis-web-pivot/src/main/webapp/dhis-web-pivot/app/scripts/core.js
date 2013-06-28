@@ -738,7 +738,8 @@ PT.core.getUtils = function(pt) {
 				dimConf = pt.conf.finals.dimension,
 				addCategoryDimension = false,
 				map = xLayout.dimensionNameItemsMap,
-				dx = dimConf.indicator.dimensionName;
+				dx = dimConf.indicator.dimensionName,
+				co = dimConf.category.dimensionName;
 
 			for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
 				dimName = axisDimensionNames[i];
@@ -759,8 +760,8 @@ PT.core.getUtils = function(pt) {
 
 					items = Ext.Array.unique(items);
 				}
-
-				if (dimName !== dimConf.category.dimensionName) {
+				
+				if (dimName !== co) {
 					paramString += ':' + items.join(';');
 				}
 
@@ -768,7 +769,7 @@ PT.core.getUtils = function(pt) {
 					paramString += '&';
 				}
 			}
-
+			
 			if (addCategoryDimension) {
 				paramString += '&dimension=' + pt.conf.finals.dimension.category.dimensionName;
 			}
@@ -970,6 +971,8 @@ PT.core.getUtils = function(pt) {
 				var createValueIdMap = function() {
 					var valueHeaderIndex = response.nameHeaderMap[pt.conf.finals.dimension.value.value].index,
 						coHeader = response.nameHeaderMap[pt.conf.finals.dimension.category.dimensionName],
+						dx = dimConf.data.dimensionName,
+						co = dimConf.category.dimensionName,
 						axisDimensionNames = xLayout.axisDimensionNames,
 						idIndexOrder = [];
 
@@ -977,8 +980,8 @@ PT.core.getUtils = function(pt) {
 					for (var i = 0; i < axisDimensionNames.length; i++) {
 						idIndexOrder.push(response.nameHeaderMap[axisDimensionNames[i]].index);
 
-						// If co exists in response, add co after dx
-						if (coHeader && axisDimensionNames[i] === pt.conf.finals.dimension.data.dimensionName) {
+						// If co exists in response and is not added in layout, add co after dx
+						if (coHeader && !Ext.Array.contains(axisDimensionNames, co) && axisDimensionNames[i] === dx) {
 							idIndexOrder.push(coHeader.index);
 						}
 					}
@@ -1462,17 +1465,17 @@ PT.core.getUtils = function(pt) {
 					}
 
 					// Value objects
-					for (var i = 0, valueItemsRow, valueObjectsRow, map = Ext.clone(xResponse.idValueMap); i < rowSize; i++) {
+					for (var i = 0, valueItemsRow, valueObjectsRow, idValueMap = Ext.clone(xResponse.idValueMap); i < rowSize; i++) {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
 						for (var j = 0, id, value, htmlValue, empty; j < colSize; j++) {
 							id = (xColAxis ? pt.util.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? pt.util.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
 							empty = false;
-							
-							if (map[id]) {
-								value = parseFloat(map[id]);
-								htmlValue = pt.util.number.roundIf(map[id], 1).toString();
+console.log(id);							
+							if (idValueMap[id]) {
+								value = parseFloat(idValueMap[id]);
+								htmlValue = pt.util.number.roundIf(idValueMap[id], 1).toString();
 							}
 							else {
 								value = 0;
@@ -1963,9 +1966,8 @@ console.log("xLayout", xLayout);
 					alert(r.responseText);
 				},
 				success: function(r) {
-					var layoutConfig = Ext.decode(r.responseText);
-
-					var	layout = pt.api.layout.Layout(layoutConfig);
+					var layoutConfig = Ext.decode(r.responseText),
+						layout = pt.api.layout.Layout(layoutConfig);
 
 					if (layout) {
 						pt.favorite = Ext.clone(layout);
