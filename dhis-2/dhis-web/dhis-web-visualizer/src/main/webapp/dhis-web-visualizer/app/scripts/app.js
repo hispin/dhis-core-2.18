@@ -284,7 +284,7 @@ Ext.onReady( function() {
 				a.store.clearFilter();
 				this.filterAvailable(a, s);
 			},
-			filterAvailable: function(a, s) {
+			filterAvailable: function(a, s) {				
 				a.store.filterBy( function(r) {
 					var keep = true;
 					s.store.each( function(r2) {
@@ -598,7 +598,7 @@ Ext.onReady( function() {
 				this.load({
 					scope: this,
 					callback: function() {
-						this.sortStore();
+						dv.util.multiselect.filterAvailable({store: this}, {store: store.dataElementSelected});
 					}
 				});
 			},
@@ -620,13 +620,18 @@ Ext.onReady( function() {
 								r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
 								r.set('name', r.data.operandName);
 							});
-
-							this.sortStore();
+							
+							dv.util.multiselect.filterAvailable({store: this}, {store: store.dataElementSelected});
 						}
 					});
 				}
 				else {
 					alert('Invalid parameter');
+				}
+			},
+			listeners: {
+				load: function(s) {
+					
 				}
 			}
 		});
@@ -4378,6 +4383,7 @@ Ext.onReady( function() {
 				dv.util.chart.createChart(layout, dv);
 
 				// Set gui
+				
 				xLayout = dv.util.chart.getExtendedLayout(layout);
 				dimMap = xLayout.objectNameDimensionsMap;
 				recMap = xLayout.objectNameItemsMap;
@@ -4404,7 +4410,7 @@ Ext.onReady( function() {
 				objectName = dimConf.operand.objectName;
 				if (dimMap[objectName]) {
 					dv.store.dataElementSelected.add(Ext.clone(recMap[objectName]));
-					dv.util.multiselect.filterAvailable({store: dv.store.dataSetAvailable}, {store: dv.store.dataSetSelected});
+					dv.util.multiselect.filterAvailable({store: dv.store.dataElementAvailable}, {store: dv.store.dataElementSelected});
 					dv.viewport.dataElementDetailLevel.setValue(objectName);
 				}
 

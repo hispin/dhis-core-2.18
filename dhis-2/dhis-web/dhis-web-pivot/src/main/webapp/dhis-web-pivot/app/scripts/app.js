@@ -332,11 +332,12 @@ Ext.onReady( function() {
 				this.load({
 					scope: this,
 					callback: function() {
-						this.sortStore();
+						pt.util.multiselect.filterAvailable({store: this}, {store: store.dataElementSelected});
 					}
 				});
 			},
 			setDetailsProxy: function(uid) {
+				console.log(uid);
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
@@ -354,8 +355,8 @@ Ext.onReady( function() {
 								r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
 								r.set('name', r.data.operandName);
 							});
-
-							this.sortStore();
+							
+							pt.util.multiselect.filterAvailable({store: this}, {store: store.dataElementSelected});
 						}
 					});
 				}
@@ -4249,6 +4250,14 @@ Ext.onReady( function() {
 					pt.util.multiselect.filterAvailable({store: pt.store.dataElementAvailable}, {store: pt.store.dataElementSelected});
 				}
 
+				// Operands
+				objectName = dimConf.operand.objectName;
+				if (dimMap[objectName]) {
+					pt.store.dataElementSelected.add(Ext.clone(recMap[objectName]));
+					pt.util.multiselect.filterAvailable({store: pt.store.dataElementAvailable}, {store: pt.store.dataElementSelected});
+					dataElementDetailLevel.setValue(objectName);
+				}
+
 				// Data sets
 				pt.store.dataSetSelected.removeAll();
 				objectName = dimConf.dataSet.objectName;
@@ -4419,6 +4428,7 @@ Ext.onReady( function() {
 				interpretationButton: interpretationButton,
 				userOrganisationUnit: userOrganisationUnit,
 				userOrganisationUnitChildren: userOrganisationUnitChildren,
+				dataElementDetailLevel: dataElementDetailLevel,
 				setFavorite: setFavorite,
 				items: [
 					westRegion,
