@@ -1900,8 +1900,16 @@ Ext.onReady( function() {
 			});
 
 			linkPanel = Ext.create('Ext.panel.Panel', {
-				html: '<b>Link: </b><span class="user-select">' + dv.baseUrl + '/dhis-web-visualizer/app/index.html?id=' + dv.favorite.id + '</span>',
-				style: 'padding-top: 9px; padding-bottom: 6px',
+				html: function() {
+					var chartUrl = dv.baseUrl + '/dhis-web-visualizer/app/index.html?id=' + dv.favorite.id,
+						apiUrl = dv.baseUrl + '/api/charts/' + dv.favorite.id + '/data',
+						html = '';
+					
+					html += '<div><b>Chart link: </b><span class="user-select"><a href="' + chartUrl + '" target="_blank">' + chartUrl + '</a></span></div>';
+					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
+					return html;
+				}(),
+				style: 'padding-top: 8px; padding-bottom: 5px',
 				bodyStyle: 'border: 0 none'
 			});
 
