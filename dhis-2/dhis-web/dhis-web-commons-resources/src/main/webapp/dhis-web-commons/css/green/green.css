@@ -243,59 +243,50 @@ div#menuDropDown4
 
 #leftBar
 {
-  background-color: #4a6f4d;
-  height: 535px;
+  height: 580px;
   width: 235px;
   position: absolute;
-  top: 44px;
+  top: 46px;
   left: 0px;
   padding-top: 6px;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  filter: alpha(opacity=90);
-  opacity: 0.90;
-  border-bottom-right-radius: 5px;
+  border-right: 1px solid #ececec;
 }
 
 #leftBarContents
 {
-  font-size: 12px;
+  font-size: 9pt;
 }
 
 #leftBarContents h2
 {
-  font-size: 10px;
-  text-transform: uppercase;
-  background-color: #679a6d;
-  margin: 16px 15px 0px 15px;
-  padding: 7px 0px 5px 11px;
-  color: white;
+  font-size: 9pt;
+  margin: 16px 20px 2px 20px;
+  padding: 7px 0 7px 0;
   font-weight: normal;
-  border-radius: 3px;
+  font-family: LiberationSansBold, arial;
 }
 
 #leftBarContents ul
 {
-  margin-left: 26px;
   list-style-type: none;
-  color: white;
+  padding: 0;
+  margin: 0 20px 0 20px;
 }
 
-#leftBarContents li
+#leftBarContents ul a
 {
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-
-#leftBarContents a
-{
-  color: white;
+  display: block;
+  color: #333;
   text-decoration: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #ececec;
 }
 
 #leftBarContents a:hover
 {
-  color: #acc8de;
+  text-decoration: underline;
 }
 
 /*----------------------------------------------------------------------------*/
