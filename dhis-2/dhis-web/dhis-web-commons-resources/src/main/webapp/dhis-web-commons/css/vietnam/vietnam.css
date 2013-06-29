@@ -401,6 +401,12 @@ a.menuLink:hover
   border-radius: 5px;
 }
 
+.introIcon
+{
+  float: left; 
+  margin-right: 25px;
+}
+
 .introItem
 {
   padding: 12px;
