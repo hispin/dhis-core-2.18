@@ -751,7 +751,7 @@
 			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/listPatientIdentifierType.vm</param>
+				/dhis-web-maintenance-patient/patientIdentifierType.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js</param>
 		</action>
