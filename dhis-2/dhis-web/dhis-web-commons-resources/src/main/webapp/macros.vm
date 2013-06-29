@@ -81,7 +81,7 @@
 
 #macro( introListImgItem $action $objectKey $image )
 <li class="introItem" onclick="window.location.href='${action}'">
-  <span class="introItemHeader"><img src="../icons/${image}.png" style="float:left; margin-right:15px">$i18n.getString( "${objectKey}" )</span><br>$i18n.getString( "intro_${objectKey}" )
+  <span class="introItemHeader"><img src="../icons/${image}.png" class="introIcon">$i18n.getString( "${objectKey}" )</span><br>$i18n.getString( "intro_${objectKey}" )
 </li>
 #end
 

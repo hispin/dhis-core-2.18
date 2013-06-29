@@ -391,27 +391,31 @@ a.menuLink:hover
 {
   display: none;
   list-style-type:none;
-  width: 450px;
-  background-color: #d5efd5;
-  border: 1px solid #a4d2a3;
+  width: 465px;
   padding-top: 15px;
   padding-bottom: 20px;
   padding-left: 5px;
   padding-right: 5px;
-  border-radius: 5px;
+  color: #444;
+}
+
+.introIcon
+{
+  float: left; 
+  margin-right: 25px;
 }
 
 .introItem
 {
-  padding: 12px;
+  padding: 18px;
   cursor: pointer;
   min-height: 44px;
-  border-radius: 3px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .introItem:hover
 {
-  background-color: #a4d2a3;
+  background-color: #f6f6f6;
 }
 
 .introItemHeader
