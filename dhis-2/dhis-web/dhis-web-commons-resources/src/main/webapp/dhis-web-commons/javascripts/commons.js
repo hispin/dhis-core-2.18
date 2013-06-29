@@ -668,7 +668,8 @@ function hideInfo()
  */
 function showDetails()
 {
-    $( '#detailsArea' ).show( "fast" );
+	$( '#detailsData' ).css( 'width', '270px' );
+    $( '#detailsArea' ).show();
 }
 
 /**
@@ -676,7 +677,8 @@ function showDetails()
  */
 function hideDetails()
 {
-    $( '#detailsArea' ).hide( "fast" );
+	$( '#detailsData' ).css( 'width', '0' );
+    $( '#detailsArea' ).hide();
 }
 
 /**
