@@ -66,26 +66,44 @@ div#rightBar
 #detailsData
 {
   vertical-align: top;
-  width: 20em;
-  padding-left: 2em;
+  width: 0;
+  padding-left: 15px;
 }
 
-#detailsArea
+#detailsArea 
 {
   display: none;
-}
-
-#warningArea
-{
+  border: 1px solid #ececec;
   position: fixed;
-  right: 10px;
-  top: 200px;
-  display: none;
+  top: 150px;
+  width: 233px;
+  margin-right: 20px;
+  padding: 15px;
+  overflow: auto;
+  color: #222;
+}
+
+#detailsArea label 
+{
+  font-family: LiberationSansBold, arial;
+  font-size: 13px;
 }
 
 #hideDetailsArea
 {
   float: right;
+}
+
+#warningArea
+{
+  display: none;
+  border: 1px solid #9d0000;
+  background-color: #f48d8d;
+  position: fixed;
+  top: 150px;
+  width: 233px;
+  padding: 15px;
+  overflow: auto;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,33 +338,6 @@ span#info
   border: 1px solid #12cd17;
   width: 500px;
   border-radius: 3px;
-}
-
-div#detailsArea 
-{
-  border: 1px solid #a9c2dc;
-  background-color: #ebf0f6;
-  position: fixed;
-  width: 18em;
-  max-height: 75%;
-  padding: 0.5em;
-  overflow: auto;
-  border-radius: 3px;
-}
-
-div#detailsArea label 
-{
-  font-family: LiberationSansBold, arial;
-  font-size: 13px;
-}
-
-div#warningArea
-{
-  border: 1px solid #9d0000;
-  background-color: #f48d8d;
-  position: fixed;
-  width: 18em;
-  padding: 0.5em;
 }
 
 div#headerMessage
