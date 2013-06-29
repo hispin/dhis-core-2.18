@@ -66,22 +66,16 @@
       <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"
         onclick="window.location.href='../dhis-web-dashboard-integration/interpretation.action'" style="cursor:pointer" title="$i18n.getString( 'view_intepretations' )">
 
+      <ul id="menuLinkArea">
       #if( $maintenanceModules.size() > 0 )
-      <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
-      #end
-      <img id="menuSeparator2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
-      <img id="menuSeparator3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
-      <img id="menuSeparator4" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
-      <img id="menuSeparator5" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
-
-      #if( $maintenanceModules.size() > 0 )
-      <div id="menuLink1" class="menuLink">$i18n.getString( "maintenance" )</div>
+      <li><a id="menuLink1" href="../dhis-web-commons-about/modules.action" class="menuLink">$i18n.getString( "maintenance" )</a></li>
       #end
       #if( $serviceModules.size() > 0 )
-      <div id="menuLink2" class="menuLink">$i18n.getString( "services" )</div>
+      <li><a id="menuLink2" href="../dhis-web-commons-about/modules.action" class="menuLink">$i18n.getString( "services" )</a></li>
       #end
-      <div id="menuLink3" class="menuLink">$i18n.getString( "help" )</div>
-      <div id="menuLink4" class="menuLink">$i18n.getString( "profile" )</div>
+      <li><a id="menuLink3" href="../dhis-web-commons-about/functions.action" class="menuLink">$i18n.getString( "help" )</a></li>
+      <li><a id="menuLink4" href="../dhis-web-commons-about/functions.action" class="menuLink">$i18n.getString( "profile" )</a></li>
+      </ul>
 
       #if( $maintenanceModules.size() > 0 )
       <div id="menuDropDown1" class="menuDropDownArea" >
