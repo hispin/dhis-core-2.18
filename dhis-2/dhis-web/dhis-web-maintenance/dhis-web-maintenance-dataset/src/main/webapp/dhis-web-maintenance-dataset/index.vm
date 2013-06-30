@@ -10,5 +10,5 @@ jQuery(function() {
 <ul class="introList">
     #introListImgItem( "dataSet.action" "dataset" "dataset" )
     #introListImgItem( "section.action" "dataset_section" "section" )
-    #introListImgItem( "displayEditorForm.action" "dataset_assignment_editor" "dataset" )
+    #introListImgItem( "displayEditorForm.action" "dataset_assignment_editor" "assignment" )
 </ul>
