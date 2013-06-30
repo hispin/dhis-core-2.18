@@ -9,5 +9,5 @@ jQuery(function() {
 
 <ul class="introList">
     #introListImgItem( "showMobileDataSet.action" "mobile_dataset" "mobile" )
-    #introListImgItem( "patientMobileSetting.action" "patient_mobile_setting" "mobile" )
+    #introListImgItem( "patientMobileSetting.action" "patient_mobile_setting" "mobilesettings" )
 </ul>
