@@ -404,6 +404,13 @@ a.menuLink:hover
   border-radius: 5px;
 }
 
+.introTwoColList
+{
+  padding-left: 0;
+  padding-right: 0;
+  width: 347px;
+}
+
 .introIcon
 {
   float: left; 

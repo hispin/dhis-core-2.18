@@ -399,6 +399,13 @@ a.menuLink:hover
   color: #444;
 }
 
+.introTwoColList
+{
+  padding-left: 0;
+  padding-right: 0;
+  width: 347px;
+}
+
 .introIcon
 {
   float: left; 
