@@ -106,53 +106,53 @@ a.menuLink:hover
 #menuLink1
 {
   position: absolute;
-  left: 582px;
+  left: 595px;
 }
 
 #menuLink2
 {
   position: absolute;
-  left: 682px;
+  left: 695px;
 }
 
 #menuLink3
 {
   position: absolute;
-  left: 782px;
+  left: 795px;
 }
 
 #menuLink4
 {
   position: absolute;
-  left: 882px;
+  left: 895px;
 }
 
 #menuDropDown1
 {
   position: absolute;
   top: 44px;
-  left: 580px;
+  left: 595px;
 }
 
 #menuDropDown2
 {
   position: absolute;
   top: 44px;
-  left: 680px;
+  left: 695px;
 }
 
 #menuDropDown3
 {
   position: absolute;
   top: 44px;
-  left: 780px;
+  left: 795px;
 }
 
 #menuDropDown4
 {
   position: absolute;
   top: 44px;
-  left: 780px;
+  left: 795px;
 }
 
 .menuDropDownArea
