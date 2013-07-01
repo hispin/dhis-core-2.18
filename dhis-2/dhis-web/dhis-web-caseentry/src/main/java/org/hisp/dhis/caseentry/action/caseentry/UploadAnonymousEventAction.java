@@ -117,28 +117,22 @@ public class UploadAnonymousEventAction implements Action
 
         Map<String, Object> executionDate = (Map<String, Object>) input.get( "executionDate" );
 
-        Integer programId;
-        Integer organisationUnitId;
+        Date date = format.parseDate( (String) executionDate.get( "executionDate" ) );
+
+        Boolean completed = null;
 
         try
         {
-            programId = Integer.parseInt( (String) executionDate.get( "programId" ) );
-            organisationUnitId = Integer.parseInt( (String) executionDate.get( "organisationUnitId" ) );
+            String completeString = (String) executionDate.get( "completed" );
+
+            if ( completeString != null )
+            {
+                completed = Boolean.parseBoolean( completeString );
+            }
         }
-        catch ( NumberFormatException e )
+        catch ( ClassCastException ignored )
         {
-            message = e.getMessage();
-            return ERROR;
         }
-
-        Date date = format.parseDate( (String) executionDate.get( "executionDate" ) );
-
-        if ( programId == null || date == null || organisationUnitId == null )
-        {
-            return INPUT;
-        }
-
-        Boolean completed = (Boolean) executionDate.get( "completed" );
 
         Coordinate coordinate = null;
         Map<String, String> coord = (Map<String, String>) input.get( "coordinate" );
@@ -158,7 +152,45 @@ public class UploadAnonymousEventAction implements Action
 
         }
 
-        ProgramStageInstance programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed, coordinate );
+        Integer programId;
+        Integer organisationUnitId;
+        Integer programStageInstanceId;
+        ProgramStageInstance programStageInstance;
+
+        try
+        {
+            programStageInstanceId = Integer.parseInt( (String) executionDate.get( "programStageInstanceId" ) );
+        }
+        catch ( NumberFormatException e )
+        {
+            programStageInstanceId = null;
+        }
+
+        if ( programStageInstanceId != null )
+        {
+            programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+            updateExecutionDate( programStageInstance, date, completed, coordinate );
+        }
+        else
+        {
+            try
+            {
+                programId = Integer.parseInt( (String) executionDate.get( "programId" ) );
+                organisationUnitId = Integer.parseInt( (String) executionDate.get( "organisationUnitId" ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                message = e.getMessage();
+                return ERROR;
+            }
+
+            if ( date == null )
+            {
+                return INPUT;
+            }
+
+            programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed, coordinate );
+        }
 
         Map<String, Object> values = (Map<String, Object>) input.get( "values" );
 
@@ -177,6 +209,38 @@ public class UploadAnonymousEventAction implements Action
         }
 
         return SUCCESS;
+    }
+
+    private void updateExecutionDate( ProgramStageInstance programStageInstance, Date date, Boolean completed, Coordinate coordinate )
+    {
+        if ( date != null )
+        {
+            programStageInstance.setDueDate( date );
+            programStageInstance.setExecutionDate( date );
+        }
+
+        if ( completed != null )
+        {
+            programStageInstance.setCompleted( completed );
+            programStageInstance.setCompletedDate( new Date() );
+            programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+        }
+
+        if ( programStageInstance.getProgramStage().getCaptureCoordinates() )
+        {
+            if ( coordinate != null && coordinate.isValid() )
+            {
+                programStageInstance.setCoordinates( coordinate.getCoordinateString() );
+            }
+            else
+            {
+                programStageInstance.setCoordinates( null );
+            }
+        }
+
+        message = programStageInstance.getId() + "";
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
     }
 
     private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date, Boolean completed,
