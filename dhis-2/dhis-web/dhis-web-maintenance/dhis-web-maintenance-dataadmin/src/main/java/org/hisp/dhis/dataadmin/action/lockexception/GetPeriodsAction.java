@@ -49,8 +49,6 @@ import com.opensymphony.xwork2.Action;
 public class GetPeriodsAction
     implements Action
 {
-    private static final int MAX_PERIODS = 24;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -118,11 +116,6 @@ public class GetPeriodsAction
         List<Period> periods = periodType.generateLast5Years( new Date() );
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         Collections.reverse( periods );
-
-        if ( periods.size() > MAX_PERIODS )
-        {
-            periods = periods.subList( 0, MAX_PERIODS );
-        }
 
         return periods;
     }
