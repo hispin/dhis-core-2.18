@@ -13,8 +13,6 @@
 <h3>$i18n.getString( "resource" ) #openHelp( "resource" )</h3>
 
 <table class="mainPageTable">
-    <col>       
-    <col width="280">
     <tr>
         <td style="vertical-align:top">
             <table width="100%">

@@ -16,8 +16,6 @@
 <h3>$i18n.getString( "standard_report" ) #openHelp( "standard_reports" )</h3>
 
 <table class="mainPageTable">
-	<col>		
-	<col width="280">
     <tr>
         <td style="vertical-align:top">
             <table width="100%">
@@ -40,7 +38,7 @@
                 <tbody id="list">
                 #foreach ( $report in $reports )
                 <tr id="tr${report.id}">
-                    <td>$encoder.htmlEncode( $report.name )</td>
+                    <td onclick="showReportDetails( $report.id )">$encoder.htmlEncode( $report.name )</td>
                     <td style="text-align:right">
                     	<a href="getReportParams.action?uid=${report.uid}&mode=report&type=${report.type}" title="$i18n.getString( 'create' )">                    	
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'create' )"></a>                   
@@ -70,7 +68,7 @@
             </table>
 			<p></p>
 			#parse( "/dhis-web-commons/paging/paging.vm" )
-                        
+        
         </td>
         <td id="detailsData">
 
