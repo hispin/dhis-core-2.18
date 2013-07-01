@@ -33,8 +33,9 @@ package org.hisp.dhis.api.webdomain.form;
 public enum InputType
 {
     TEXT,
-    POSITIVE_INTEGER,
+    LONG_TEXT,
     BOOLEAN,
+    TRUE_ONLY,
     DATE,
     NUMBER,
     INTEGER,

@@ -105,7 +105,15 @@ public class FormUtils
                 {
                     Field field = new Field();
 
-                    field.setLabel( dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName() );
+                    if ( categoryOptionCombo.isDefault() )
+                    {
+                        field.setLabel( dataElement.getDisplayName() );
+                    }
+                    else
+                    {
+                        field.setLabel( dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName() );
+                    }
+
                     field.setDataElement( dataElement.getUid() );
                     field.setCategoryOptionCombo( categoryOptionCombo.getUid() );
                     field.setType( inputTypeFromDataElement( dataElement ) );
@@ -140,12 +148,10 @@ public class FormUtils
             {
                 return InputType.TEXT;
             }
-            /*
-            else if ( dataElement.getTextType().equalsIgnoreCase( "longtext" ) )
+            if ( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getTextType() ) )
             {
-                return InputType.TEXT_LONG;
+                return InputType.LONG_TEXT;
             }
-            */
         }
         else if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() ) )
         {
@@ -170,12 +176,10 @@ public class FormUtils
         {
             return InputType.BOOLEAN;
         }
-        /*
-        else if ( dataElement.getType().equalsIgnoreCase( "trueOnly" ) )
+        else if ( DataElement.VALUE_TYPE_TRUE_ONLY.equals( dataElement.getType() ) )
         {
             return InputType.TRUE_ONLY;
         }
-        */
         else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
         {
             return InputType.DATE;

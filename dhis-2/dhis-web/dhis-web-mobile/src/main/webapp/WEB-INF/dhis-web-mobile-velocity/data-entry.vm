@@ -220,15 +220,23 @@
         var dataValues = [];
 
         _.each(fields, function(field) {
-           var field = $(field);
+            var field = $( field );
 
-           var dataValue = {
-            dataElement: field.data('dataelement'),
-            categoryOptionCombo: field.data('categoryoptioncombo'),
-            value: field.val()
-           };
+            var val = '';
 
-           dataValues.push( dataValue );
+            if ( field.attr( 'type' ) == 'checkbox' ) {
+                val = field.attr( 'checked' ) == 'checked' ? 'true' : 'false';
+            } else {
+                val = field.val();
+            }
+
+            var dataValue = {
+                dataElement: field.data( 'dataelement' ),
+                categoryOptionCombo: field.data( 'categoryoptioncombo' ),
+                value: val
+            };
+
+            dataValues.push( dataValue );
         });
 
         dataValueSet.dataValues = dataValues;
@@ -320,6 +328,8 @@
 
                     <% if( field.type == 'TEXT' ) { %>
                         <input type="text" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
+                    <% } else if( field.type == 'LONG_TEXT' ) { %>
+                        <input type="text" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'DATE' ) { %>
                         <input type="date" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'BOOLEAN' ) { %>
@@ -328,6 +338,8 @@
                             <option value="true" <% if( value == "true" ) { %> selected="selected" <% } %>>$i18n.getString("yes")</option>
                             <option value="false" <% if( value == "false" ) { %> selected="selected" <% } %>>$i18n.getString("no")</option>
                         </select>
+                    <% } else if( field.type == 'TRUE_ONLY' ) { %>
+                        <input type="checkbox" id='<%= fieldId %>' <% if( value == 'true' ) { %> checked="checked" <% } %> name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" />
                     <% } else if( field.type == 'INTEGER' ) { %>
                         <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'INTEGER_POSITIVE' ) { %>
