@@ -1,15 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Search button for orgunit                                                  */
-/*----------------------------------------------------------------------------*/
-
-.searchOrgunit
-{
-  display: none; 
-  position: absolute;
-  width: 200px;
-  margin-left: 22px;
-  z-index: 9999;
-}
 
 /*----------------------------------------------------------------------------*/
 /* Right bar                                                                  */
@@ -22,7 +10,7 @@ div#rightBar
   height: 454px;
   width: 300px;
   float: right;
-  position: absolute;
+  position: fixed;
   top: 85px;
   right: 10px;
   border: 1px solid #a4d2a3;
@@ -159,7 +147,7 @@ div.thingy
 #showLeftBar
 {
   display: none;
-  position: fixed;
+  position: absolute;
   left: 23px;
   top: 53px;
   font-family: LiberationSansBold, arial;
@@ -455,7 +443,6 @@ span.error
 
 div.inputCriteria
 {
-  position: relative;
   border: 1px solid #a4d2a3;
   background-color: #d5efd5;
   padding-top: 10px;

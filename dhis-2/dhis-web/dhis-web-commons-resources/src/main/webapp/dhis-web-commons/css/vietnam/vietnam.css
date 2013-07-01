@@ -56,7 +56,8 @@ input[type=text],input[type=password],textarea
 {
   background-color: #b40303;
   height: 44px;
-  position: absolute;
+  position: fixed;
+  z-index: 10;
   top: 0px;
   left: 0px;
   right: 0px;
@@ -209,7 +210,7 @@ a.menuLink:hover
   background-color: #b91010;
   height: 535px;
   width: 235px;
-  position: absolute;
+  position: fixed;
   top: 44px;
   left: 0px;
   padding-top: 6px;
@@ -389,7 +390,6 @@ a.menuLink:hover
 
 .introList
 {
-  display: none;
   list-style-type:none;
   width: 450px;
   background-color: #d5efd5;

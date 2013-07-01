@@ -66,10 +66,6 @@ function pageInit()
 	{
 		hideDropDownTimeout();
 	} );
-	
-	// Intro fade in
-	
-	$( ".introList" ).fadeIn();
 }
 
 function setTableStyles()
