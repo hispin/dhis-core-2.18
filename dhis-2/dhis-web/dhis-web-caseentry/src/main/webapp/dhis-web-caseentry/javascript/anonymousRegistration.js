@@ -992,7 +992,7 @@ var service = (function () {
                         var data = {};
                         data.id = programStageInstanceId;
                         data.executionDate = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
-                        data.executionDate.completed = false;
+                        data.executionDate.completed = 'false';
 
                         this.set( 'dataValues', data );
                     });
