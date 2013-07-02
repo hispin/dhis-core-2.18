@@ -33,135 +33,134 @@ import java.io.Serializable;
  * @author Chau Thu Tran
  * @version PatientReminder.java 1:07:58 PM Sep 18, 2012 $
  */
-public class PatientReminder
-    implements Serializable
-{
-    private static final long serialVersionUID = 3101502417481903219L;
+public class PatientReminder implements Serializable {
+	private static final long serialVersionUID = 3101502417481903219L;
 
-    public static final String DUE_DATE_TO_COMPARE = "duedate";
+	public static final String DUE_DATE_TO_COMPARE = "duedate";
 
-    public static final String ENROLLEMENT_DATE_TO_COMPARE = "enrollmentdate";
+	public static final String ENROLLEMENT_DATE_TO_COMPARE = "enrollmentdate";
 
-    public static final String INCIDENT_DATE_TO_COMPARE = "dateofincident";
+	public static final String INCIDENT_DATE_TO_COMPARE = "dateofincident";
 
-    public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "{patient-name}";
+	public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "{patient-name}";
 
-    public static final String TEMPLATE_MESSSAGE_PROGRAM_NAME = "{program-name}";
+	public static final String TEMPLATE_MESSSAGE_PROGRAM_NAME = "{program-name}";
 
-    public static final String TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME = "{program-stage-name}";
+	public static final String TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME = "{program-stage-name}";
 
-    public static final String TEMPLATE_MESSSAGE_DUE_DATE = "{due-date}";
+	public static final String TEMPLATE_MESSSAGE_DUE_DATE = "{due-date}";
 
-    public static final String TEMPLATE_MESSSAGE_ORGUNIT_NAME = "{orgunit-name}";
+	public static final String TEMPLATE_MESSSAGE_ORGUNIT_NAME = "{orgunit-name}";
 
-    public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE = "{days-since-due-date}";
+	public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE = "{days-since-due-date}";
 
-    public static final String TEMPLATE_MESSSAGE_INCIDENT_DATE = "{incident-date}";
+	public static final String TEMPLATE_MESSSAGE_INCIDENT_DATE = "{incident-date}";
 
-    public static final String TEMPLATE_MESSSAGE_ENROLLMENT_DATE = "{enrollement-date}";
+	public static final String TEMPLATE_MESSSAGE_ENROLLMENT_DATE = "{enrollement-date}";
 
-    public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE = "{days-since-enrollment-date}";
+	public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE = "{days-since-enrollment-date}";
 
-    public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE = "{days-since-incident-date}";
+	public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE = "{days-since-incident-date}";
 
-    public static final int SEND_TO_PATIENT = 1;
+	public static final int SEND_TO_PATIENT = 1;
 
-    public static final int SEND_TO_HEALTH_WORKER = 2;
+	public static final int SEND_TO_HEALTH_WORKER = 2;
 
-    public static final int SEND_TO_ORGUGNIT_REGISTERED = 3;
+	public static final int SEND_TO_ORGUGNIT_REGISTERED = 3;
 
-    public static final int SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED = 4;
+	public static final int SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED = 4;
 
-    private int id;
+	public static final int SEND_WHEN_TO_EMROLLEMENT = 1;
 
-    private String name;
+	public static final int SEND_WHEN_TO_C0MPLETED_EVENT = 2;
 
-    private Integer daysAllowedSendMessage;
+	private int id;
 
-    private String templateMessage;
+	private String name;
 
-    private String dateToCompare;
+	private Integer daysAllowedSendMessage;
 
-    private Integer sendTo;
+	private String templateMessage;
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+	private String dateToCompare;
 
-    public PatientReminder()
-    {
+	private Integer sendTo;
 
-    }
+	private Integer whenToSend;
 
-    public PatientReminder( String name, Integer daysAllowedSendMessage, String templateMessage )
-    {
-        this.name = name;
-        this.daysAllowedSendMessage = daysAllowedSendMessage;
-        this.templateMessage = templateMessage;
-    }
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Getter && Setter
-    // -------------------------------------------------------------------------
+	public PatientReminder(String name, Integer daysAllowedSendMessage,
+			String templateMessage) {
+		this.name = name;
+		this.daysAllowedSendMessage = daysAllowedSendMessage;
+		this.templateMessage = templateMessage;
+	}
 
-    public int getId()
-    {
-        return id;
-    }
+	// -------------------------------------------------------------------------
+	// Getter && Setter
+	// -------------------------------------------------------------------------
 
-    public void setId( int id )
-    {
-        this.id = id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getDaysAllowedSendMessage()
-    {
-        return daysAllowedSendMessage;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setDaysAllowedSendMessage( Integer daysAllowedSendMessage )
-    {
-        this.daysAllowedSendMessage = daysAllowedSendMessage;
-    }
+	public Integer getDaysAllowedSendMessage() {
+		return daysAllowedSendMessage;
+	}
 
-    public String getTemplateMessage()
-    {
-        return templateMessage;
-    }
+	public void setDaysAllowedSendMessage(Integer daysAllowedSendMessage) {
+		this.daysAllowedSendMessage = daysAllowedSendMessage;
+	}
 
-    public void setTemplateMessage( String templateMessage )
-    {
-        this.templateMessage = templateMessage;
-    }
+	public String getTemplateMessage() {
+		return templateMessage;
+	}
 
-    public String getDateToCompare()
-    {
-        return dateToCompare;
-    }
+	public void setTemplateMessage(String templateMessage) {
+		this.templateMessage = templateMessage;
+	}
 
-    public void setDateToCompare( String dateToCompare )
-    {
-        this.dateToCompare = dateToCompare;
-    }
+	public String getDateToCompare() {
+		return dateToCompare;
+	}
 
-    public Integer getSendTo()
-    {
-        return sendTo;
-    }
+	public void setDateToCompare(String dateToCompare) {
+		this.dateToCompare = dateToCompare;
+	}
 
-    public void setSendTo( Integer sendTo )
-    {
-        this.sendTo = sendTo;
-    }
+	public Integer getSendTo() {
+		return sendTo;
+	}
+
+	public void setSendTo(Integer sendTo) {
+		this.sendTo = sendTo;
+	}
+
+	public Integer getWhenToSend() {
+		return whenToSend;
+	}
+
+	public void setWhenToSend(Integer whenToSend) {
+		this.whenToSend = whenToSend;
+	}
+
+	public PatientReminder() {
+
+	}
 
 }

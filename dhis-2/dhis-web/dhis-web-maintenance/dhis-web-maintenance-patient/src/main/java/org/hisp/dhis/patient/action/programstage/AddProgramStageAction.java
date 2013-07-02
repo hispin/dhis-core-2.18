@@ -183,6 +183,13 @@ public class AddProgramStageAction
     {
         this.sendTo = sendTo;
     }
+    
+    private List<Integer> whenToSend = new ArrayList<Integer>();
+
+    public void setWhenToSend( List<Integer> whenToSend )
+    {
+        this.whenToSend = whenToSend;
+    }
 
     private Boolean autoGenerateEvent;
 
@@ -262,6 +269,7 @@ public class AddProgramStageAction
                 templateMessages.get( i ) );
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
+            reminder.setWhenToSend( whenToSend.get( i ) );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );

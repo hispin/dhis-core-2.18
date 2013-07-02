@@ -2399,7 +2399,7 @@ public class HibernateProgramStageInstanceStore
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
             + "     and psi.executiondate is null "
             + "     and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "     and prm.sendto = " + PatientReminder.SEND_TO_PATIENT;
+            + "     and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_PATIENT;
     }
 
     private String sendMessageToHealthWorkerSql()
@@ -2430,7 +2430,7 @@ public class HibernateProgramStageInstanceStore
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
             + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "               and prm.sendto = " + PatientReminder.SEND_TO_HEALTH_WORKER;
+            + "               and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_HEALTH_WORKER;
     }
 
     private String sendMessageToOrgunitRegisteredSql()
@@ -2459,7 +2459,7 @@ public class HibernateProgramStageInstanceStore
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
             + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "               and prm.sendto = " +  + PatientReminder.SEND_TO_ORGUGNIT_REGISTERED;
+            + "               and prm.whentosend is null and prm.sendto = " +  + PatientReminder.SEND_TO_ORGUGNIT_REGISTERED;
     }
 
     private String sendMessageToUsersSql()
@@ -2490,6 +2490,6 @@ public class HibernateProgramStageInstanceStore
             + "       and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "       and psi.executiondate is null "
             + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "       and prm.sendto = " +  PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
+            + "       and prm.whentosend is null and prm.sendto = " +  PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
     }
 }

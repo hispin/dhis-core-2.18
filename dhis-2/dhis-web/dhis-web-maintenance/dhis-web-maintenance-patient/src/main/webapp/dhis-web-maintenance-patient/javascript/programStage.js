@@ -8,7 +8,7 @@ function addProgramStage()
 {
 	var programId = document.getElementById('id').value;
 
-	if( programId == "null"  || programId == "" )
+	if( programId == "null" || programId == "" )
 	{
 		showWarningMessage( i18n_please_select_program );
 	}
@@ -276,6 +276,15 @@ function generateTemplateMessageForm()
 	
 	var contend = '<tr name="tr' + rowId + '" class="listAlternateRow" >'
 				+ 	'<td colspan="2">' + i18n_reminder + ' ' + rowId + '<a href="javascript:removeTemplateMessageForm('+ rowId +')"> ( '+ i18n_remove_reminder + ' )</a></td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+ 	'<td><label>' + i18n_when_to_send + '</label></td>'
+				+ 	'<td>'
+				+ 		'<select id="whenToSend' + rowId + '" name="whenToSend' + rowId + '" class="whenToSend" >'
+				+ 			'<option value="">' + i18n_from_the_day_set + '</option>'
+				+ 			'<option value="2">' + i18n_complete_event + '</option>'
+				+ 		'</select>'
+				+	'</td>'
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_days_before_after_due_date + '</label></td>'
