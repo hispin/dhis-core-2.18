@@ -157,12 +157,12 @@ public class CompleteDataEntryAction
         programStageInstance.setCompletedDate( date );
         programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
 
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
         // Send message when to completed the event
 
         sendSMSToCompletedEvent( programStageInstance );
-        
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
         // ---------------------------------------------------------------------
         // Check Completed status for all of ProgramStageInstance of
         // ProgramInstance
@@ -185,6 +185,8 @@ public class CompleteDataEntryAction
 
             programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
             programInstance.setEndDate( new Date() );
+
+            sendSMSToCompletedProgram( programInstance );
 
             programInstanceService.updateProgramInstance( programInstance );
 
@@ -223,37 +225,14 @@ public class CompleteDataEntryAction
 
             if ( reminder != null )
             {
-                sendMessage( reminder, programStageInstance, patient );
+                sendEventMessage( reminder, programStageInstance, patient );
             }
         }
     }
-    
-    private void sendMessage( PatientReminder reminder, ProgramStageInstance programStageInstance, Patient patient )
-    {
-        Set<String> phoneNumbers = new HashSet<String>();
 
-        switch ( reminder.getSendTo() )
-        {
-        case PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
-            Collection<User> users = patient.getOrganisationUnit().getUsers();
-            for ( User user : users )
-            {
-                if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
-                {
-                    phoneNumbers.add( user.getPhoneNumber() );
-                }
-            }
-            break;
-        case PatientReminder.SEND_TO_HEALTH_WORKER:
-            phoneNumbers.add( patient.getHealthWorker().getPhoneNumber() );
-            break;
-        case PatientReminder.SEND_TO_ORGUGNIT_REGISTERED:
-            phoneNumbers.add( patient.getOrganisationUnit().getPhoneNumber() );
-            break;
-        default:
-            phoneNumbers.add( patient.getPhoneNumber() );
-            break;
-        }
+    private void sendEventMessage( PatientReminder reminder, ProgramStageInstance programStageInstance, Patient patient )
+    {
+        Set<String> phoneNumbers = getPhonenumbers( reminder, patient );
 
         if ( phoneNumbers.size() > 0 )
         {
@@ -280,7 +259,7 @@ public class CompleteDataEntryAction
                 outboundSms.setRecipients( phoneNumbers );
                 outboundSms.setSender( currentUserService.getCurrentUsername() );
                 outboundSmsService.sendMessage( outboundSms, null );
-                
+
                 List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
                 if ( outboundSmsList == null )
                 {
@@ -288,7 +267,6 @@ public class CompleteDataEntryAction
                 }
                 outboundSmsList.add( outboundSms );
                 programStageInstance.setOutboundSms( outboundSmsList );
-                programStageInstanceService.updateProgramStageInstance( programStageInstance );
             }
             catch ( SmsServiceException e )
             {
@@ -296,6 +274,118 @@ public class CompleteDataEntryAction
             }
         }
     }
-    
-    
+
+    private void sendSMSToCompletedProgram( ProgramInstance programInstance )
+    {
+        Patient patient = programInstance.getPatient();
+
+        if ( patient != null )
+        {
+            Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
+            PatientReminder reminder = null;
+            for ( PatientReminder rm : reminders )
+            {
+                if ( rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                {
+                    reminder = rm;
+                    break;
+                }
+            }
+
+            if ( reminder != null )
+            {
+                sendProgramMessage( reminder, programInstance, patient );
+            }
+        }
+    }
+
+    private void sendProgramMessage( PatientReminder reminder, ProgramInstance programInstance, Patient patient )
+    {
+        Set<String> phoneNumbers = getPhonenumbers( reminder, patient );
+
+        if ( phoneNumbers.size() > 0 )
+        {
+
+            String msg = reminder.getTemplateMessage();
+
+            String patientName = patient.getFirstName();
+            String organisationunitName = patient.getOrganisationUnit().getName();
+            String programName = programInstance.getProgram().getName();
+            String daysSinceEnrollementDate = DateUtils.daysBetween( new Date(), programInstance.getEnrollmentDate() )
+                + "";
+            String daysSinceIncidentDate = DateUtils.daysBetween( new Date(), programInstance.getDateOfIncident() )
+                + "";
+            String incidentDate = format.formatDate( programInstance.getDateOfIncident() );
+            String erollmentDate = format.formatDate( programInstance.getEnrollmentDate() );
+
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_ENROLLMENT_DATE, erollmentDate );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE, daysSinceEnrollementDate );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE, daysSinceIncidentDate );
+
+            try
+            {
+                OutboundSms outboundSms = new OutboundSms();
+                outboundSms.setMessage( msg );
+                outboundSms.setRecipients( phoneNumbers );
+                outboundSms.setSender( currentUserService.getCurrentUsername() );
+                outboundSmsService.sendMessage( outboundSms, null );
+
+                List<OutboundSms> outboundSmsList = programInstance.getOutboundSms();
+                if ( outboundSmsList == null )
+                {
+                    outboundSmsList = new ArrayList<OutboundSms>();
+                }
+                outboundSmsList.add( outboundSms );
+                programInstance.setOutboundSms( outboundSmsList );
+            }
+            catch ( SmsServiceException e )
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Set<String> getPhonenumbers( PatientReminder reminder, Patient patient )
+    {
+        Set<String> phoneNumbers = new HashSet<String>();
+
+        switch ( reminder.getSendTo() )
+        {
+        case PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
+            Collection<User> users = patient.getOrganisationUnit().getUsers();
+            for ( User user : users )
+            {
+                if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                {
+                    phoneNumbers.add( user.getPhoneNumber() );
+                }
+            }
+            break;
+        case PatientReminder.SEND_TO_HEALTH_WORKER:
+            if ( patient.getHealthWorker() != null && patient.getHealthWorker().getPhoneNumber() != null )
+            {
+                phoneNumbers.add( patient.getHealthWorker().getPhoneNumber() );
+            }
+            break;
+        case PatientReminder.SEND_TO_ORGUGNIT_REGISTERED:
+            if ( patient.getOrganisationUnit().getPhoneNumber() != null
+                && !patient.getOrganisationUnit().getPhoneNumber().isEmpty() )
+            {
+                phoneNumbers.add( patient.getOrganisationUnit().getPhoneNumber() );
+            }
+            break;
+        default:
+            if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
+            {
+                phoneNumbers.add( patient.getPhoneNumber() );
+            }
+            break;
+        }
+        return phoneNumbers;
+    }
+
 }

@@ -73,6 +73,8 @@ public class PatientReminder implements Serializable {
 	public static final int SEND_WHEN_TO_EMROLLEMENT = 1;
 
 	public static final int SEND_WHEN_TO_C0MPLETED_EVENT = 2;
+	
+	public static final int SEND_WHEN_TO_C0MPLETED_PROGRAM = 3;
 
 	private int id;
 

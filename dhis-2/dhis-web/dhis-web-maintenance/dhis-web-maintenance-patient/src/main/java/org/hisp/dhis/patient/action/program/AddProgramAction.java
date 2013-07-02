@@ -98,6 +98,13 @@ public class AddProgramAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    private List<Integer> whenToSend = new ArrayList<Integer>();
+
+    public void setWhenToSend( List<Integer> whenToSend )
+    {
+        this.whenToSend = whenToSend;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -324,6 +331,7 @@ public class AddProgramAction
                 templateMessages.get( i ) );
             reminder.setDateToCompare( datesToCompare.get( i ) );
             reminder.setSendTo( sendTo.get( i ) );
+            reminder.setWhenToSend( whenToSend.get( i ) );
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );
