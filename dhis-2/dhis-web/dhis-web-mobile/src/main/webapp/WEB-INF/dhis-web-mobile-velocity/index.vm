@@ -140,8 +140,8 @@
         </ul>
 	</section>
 
-    <footer data-role="footer" data-theme="b">
-        <h1></h1>
+    <footer data-role="footer" data-theme="b" class="ui-bar">
+        <a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a>
    	</footer>
 
 </section>
