@@ -35,7 +35,7 @@
         </div>
         #if ( $keyConfig.selfRegistrationAllowed() )
         <div id="accountArea">
-        	<a class="greenButtonLink" href="account.action">Create an account</a>
+        	<a class="greenButtonLink" href="account.action">$i18n.getString( "create_an_account" )</a>
         </div>
         #end
         <div id="loginField">
@@ -44,11 +44,11 @@
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
                     <tr>
-                        <td><label for="j_username">Username</label></td>
+                        <td><label for="j_username">$i18n.getString( "login_username" )</label></td>
                         <td><input type="text" id="j_username" name="j_username"></td>
                     </tr>
                     <tr>
-                        <td><label for="j_password">Password</label></td>
+                        <td><label for="j_password">$i18n.getString( "login_password" )</label></td>
                         <td><input type="password" id="j_password" name="j_password" autocomplete="off"></td>
                     </tr>
                     <tr>
@@ -63,10 +63,10 @@
                         <td style="padding-top:8px">
                         	<span id="loginFormFooter">
                         	#if( $keyAccountRecovery )
-                        	<a href="recovery.action">Forgot password?</a>&nbsp;
+                        	<a href="recovery.action">$i18n.getString( "forgot_password" )</a>&nbsp;
                         	#end
                         	#if( $keyConfig.selfRegistrationAllowed() )
-                        	<a href="account.action">Create an account</a>	
+                        	<a href="account.action">$i18n.getString( "create_an_account" )</a>	
 	                        #end
 	                        </span>
                         </td>
@@ -74,12 +74,12 @@
                 </table>
             </form>
             #if( $failed == true )
-            <span id="loginMessage">Wrong username or password</span>
+            <span id="loginMessage">$i18n.getString( "wrong_username_or_password" )</span>
             #end
             #if ( $keyApplicationNotification )
             <div id="notificationArea">$!{keyApplicationNotification}</div>
             #end
         </div>
-        <div id="footerArea"><span>Powered by <a href="http://www.dhis2.org">DHIS 2</a>&nbsp;&nbsp;$!{keyApplicationFooter}</div>
+        <div id="footerArea"><span>$i18n.getString( "powered_by" ) <a href="http://www.dhis2.org">DHIS 2</a>&nbsp;&nbsp;$!{keyApplicationFooter}</div>
     </body>
 </html>
