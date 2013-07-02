@@ -26,11 +26,17 @@
  */
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
@@ -38,7 +44,12 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -78,6 +89,20 @@ public class CompleteDataEntryAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private OutboundSmsService outboundSmsService;
+
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    {
+        this.outboundSmsService = outboundSmsService;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -134,10 +159,14 @@ public class CompleteDataEntryAction
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
-        // ----------------------------------------------------------------------
+        // Send message when to completed the event
+
+        sendSMSToCompletedEvent( programStageInstance );
+        
+        // ---------------------------------------------------------------------
         // Check Completed status for all of ProgramStageInstance of
         // ProgramInstance
-        // ----------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         if ( !programStageInstance.getProgramInstance().getProgram().getType()
             .equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
@@ -170,4 +199,103 @@ public class CompleteDataEntryAction
 
         return "programcompleted";
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void sendSMSToCompletedEvent( ProgramStageInstance programStageInstance )
+    {
+        Patient patient = programStageInstance.getProgramInstance().getPatient();
+
+        if ( patient != null )
+        {
+            Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
+            PatientReminder reminder = null;
+            for ( PatientReminder rm : reminders )
+            {
+                if ( rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                {
+                    reminder = rm;
+                    break;
+                }
+            }
+
+            if ( reminder != null )
+            {
+                sendMessage( reminder, programStageInstance, patient );
+            }
+        }
+    }
+    
+    private void sendMessage( PatientReminder reminder, ProgramStageInstance programStageInstance, Patient patient )
+    {
+        Set<String> phoneNumbers = new HashSet<String>();
+
+        switch ( reminder.getSendTo() )
+        {
+        case PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
+            Collection<User> users = patient.getOrganisationUnit().getUsers();
+            for ( User user : users )
+            {
+                if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                {
+                    phoneNumbers.add( user.getPhoneNumber() );
+                }
+            }
+            break;
+        case PatientReminder.SEND_TO_HEALTH_WORKER:
+            phoneNumbers.add( patient.getHealthWorker().getPhoneNumber() );
+            break;
+        case PatientReminder.SEND_TO_ORGUGNIT_REGISTERED:
+            phoneNumbers.add( patient.getOrganisationUnit().getPhoneNumber() );
+            break;
+        default:
+            phoneNumbers.add( patient.getPhoneNumber() );
+            break;
+        }
+
+        if ( phoneNumbers.size() > 0 )
+        {
+
+            String msg = reminder.getTemplateMessage();
+
+            String patientName = patient.getFirstName();
+            String organisationunitName = patient.getOrganisationUnit().getName();
+            String programName = programStageInstance.getProgramInstance().getProgram().getName();
+            String programStageName = programStageInstance.getProgramStage().getName();
+            String daysSinceDueDate = DateUtils.daysBetween( new Date(), programStageInstance.getDueDate() ) + "";
+            String dueDate = format.formatDate( programStageInstance.getDueDate() );
+
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+            msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
+            try
+            {
+                OutboundSms outboundSms = new OutboundSms();
+                outboundSms.setMessage( msg );
+                outboundSms.setRecipients( phoneNumbers );
+                outboundSms.setSender( currentUserService.getCurrentUsername() );
+                outboundSmsService.sendMessage( outboundSms, null );
+                
+                List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
+                if ( outboundSmsList == null )
+                {
+                    outboundSmsList = new ArrayList<OutboundSms>();
+                }
+                outboundSmsList.add( outboundSms );
+                programStageInstance.setOutboundSms( outboundSmsList );
+                programStageInstanceService.updateProgramStageInstance( programStageInstance );
+            }
+            catch ( SmsServiceException e )
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
 }

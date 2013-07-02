@@ -219,6 +219,13 @@ public class UpdateProgramStageAction
         this.allowDateInFutures = allowDateInFutures;
     }
 
+    private List<Integer> whenToSend = new ArrayList<Integer>();
+
+    public void setWhenToSend( List<Integer> whenToSend )
+    {
+        this.whenToSend = whenToSend;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -253,6 +260,7 @@ public class UpdateProgramStageAction
                 templateMessages.get( i ) );
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
+            reminder.setWhenToSend( whenToSend.get( i ) );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );
