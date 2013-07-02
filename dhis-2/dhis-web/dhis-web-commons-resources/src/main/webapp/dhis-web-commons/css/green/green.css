@@ -396,7 +396,7 @@ a.menuLink:hover
 .introList
 {
   list-style-type:none;
-  width: 465px;
+  width: 490px;
   padding-top: 10px;
   padding-bottom: 20px;
   padding-left: 5px;
@@ -413,8 +413,7 @@ a.menuLink:hover
 
 .introIcon
 {
-  float: left; 
-  margin-right: 25px;
+  float: left;
 }
 
 .introItem
@@ -435,6 +434,11 @@ a.menuLink:hover
   font-family: LiberationSansBold, arial;
   color: #3F693F;
   font-size: 13px;
+}
+
+.introItemText
+{
+  margin-left: 73px;
 }
 
 /*----------------------------------------------------------------------------*/
