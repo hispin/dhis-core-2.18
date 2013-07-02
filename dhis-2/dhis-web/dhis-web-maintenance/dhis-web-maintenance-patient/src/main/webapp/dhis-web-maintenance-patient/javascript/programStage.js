@@ -278,7 +278,7 @@ function generateTemplateMessageForm()
 				+ 	'<td colspan="2">' + i18n_reminder + ' ' + rowId + '<a href="javascript:removeTemplateMessageForm('+ rowId +')"> ( '+ i18n_remove_reminder + ' )</a></td>'
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
-				+ 	'<td><label>' + i18n_when_to_send + '</label></td>'
+				+ 	'<td><label>' + i18n_send_when_to + '</label></td>'
 				+ 	'<td>'
 				+ 		'<select id="whenToSend' + rowId + '" name="whenToSend' + rowId + '" class="whenToSend" >'
 				+ 			'<option value="">' + i18n_from_the_day_set + '</option>'
