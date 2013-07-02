@@ -5,7 +5,7 @@
   <bean id="org.hisp.dhis.i18n.locale.LocaleManager" class="org.hisp.dhis.i18n.locale.UserSettingLocaleManager">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="userSettingKey" value="currentLocale" />
-    <property name="defaultLocale" value="en_GB" />
+    <property name="defaultLocale" value="en" />
   </bean>
 
   <bean id="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" class="org.hisp.dhis.i18n.resourcebundle.DefaultResourceBundleManager">

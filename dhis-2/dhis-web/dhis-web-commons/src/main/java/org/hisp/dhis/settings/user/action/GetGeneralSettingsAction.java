@@ -110,7 +110,7 @@ public class GetGeneralSettingsAction
     {
         return currentLocale;
     }
-
+    
     private List<Locale> availableLocalesDb;
 
     public List<Locale> getAvailableLocalesDb()
@@ -183,6 +183,11 @@ public class GetGeneralSettingsAction
 
         currentLocale = localeManager.getCurrentLocale();
 
+        if ( !availableLocales.contains( currentLocale ) )
+        {
+            currentLocale = localeManager.getFallbackLocale();
+        }
+        
         // ---------------------------------------------------------------------
         // Get available locales in db
         // ---------------------------------------------------------------------
@@ -198,7 +203,7 @@ public class GetGeneralSettingsAction
         } );
 
         currentLocaleDb = i18nService.getCurrentLocale();
-
+        
         // ---------------------------------------------------------------------
         // Get Auto-save data entry form
         // ---------------------------------------------------------------------

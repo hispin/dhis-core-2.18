@@ -38,7 +38,7 @@ public interface LocaleManager
 {
     final String ID = LocaleManager.class.getName();
     
-    final Locale DHIS_STANDARD_LOCALE = Locale.UK;
+    final Locale DHIS_STANDARD_LOCALE = new Locale.Builder().setLanguage( "en" ).build();
 
     Locale getCurrentLocale();
 

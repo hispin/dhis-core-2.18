@@ -27,7 +27,6 @@ package org.hisp.dhis.i18n.resourcebundle;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.util.PathUtils;
 
