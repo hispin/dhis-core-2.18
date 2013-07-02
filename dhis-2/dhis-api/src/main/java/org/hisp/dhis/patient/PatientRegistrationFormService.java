@@ -58,6 +58,10 @@ public interface PatientRegistrationFormService
 
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
 
+    final Pattern SUGGESTED_VALUE_PATTERN = Pattern.compile( "suggested='(\\w*)'" );
+    
+    final Pattern CLASS_PATTERN = Pattern.compile( "class='(\\w*)'" );
+
     // --------------------------------------------------------------------------
     // ProgramDataEntryService
     // --------------------------------------------------------------------------

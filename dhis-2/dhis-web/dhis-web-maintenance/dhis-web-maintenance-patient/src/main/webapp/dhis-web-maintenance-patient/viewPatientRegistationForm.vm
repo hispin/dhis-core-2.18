@@ -125,7 +125,7 @@
 		</tr>
 		<tr>
 			<td>
-				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'fixedAttr' )">
+				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" onclick='suggestionSelectorToggle()' ondblclick="insertElement( 'fixedAttr' )">
 					<option value="registrationDate">$i18n.getString('registration_date') #if($disableRegistrationFields=='false')*#end</option>
 					<option value="fullName">$i18n.getString('full_name') #if($disableRegistrationFields=='false')*#end</option>
 					<option value="gender">$i18n.getString('gender') #if($disableRegistrationFields=='false')*#end</option>
@@ -136,6 +136,24 @@
 					<option value="isDead">$i18n.getString('is_dead')</option>
 					<option value="healthWorker">$i18n.getString('health_worker')</option>
 				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' id='suggestedField' style='width:350px;'>
+				<select style='width:350px;display:none;' id='genderSelector'>
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					<option value="M">$i18n.getString( "male" )</option>
+					<option value="F">$i18n.getString( "female" )</option>
+					<option value="T">$i18n.getString( "transgender" )</option>
+				</select>
+				<select style='width:350px;display:none;' id='dobTypeSelector'>
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					<option value="V">$i18n.getString( "verified" )</option>
+					<option value="D">$i18n.getString( "declared" )</option>
+					<option value="A">$i18n.getString( "approximated" )</option>
+				</select>
+				<input type='checkbox' id='hiddenField'/>$i18n.getString("is_hidden")
 			</td>
 		</tr>
 	</table>

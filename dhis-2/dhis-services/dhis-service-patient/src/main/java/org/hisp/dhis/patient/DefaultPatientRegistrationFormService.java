@@ -148,7 +148,7 @@ public class DefaultPatientRegistrationFormService
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
-
+        
         while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -160,6 +160,9 @@ public class DefaultPatientRegistrationFormService
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dynamicAttrMatcher = DYNAMIC_ATTRIBUTE_PATTERN.matcher( inputHtml );
             Matcher programMatcher = PROGRAM_PATTERN.matcher( inputHtml );
+            Matcher suggestedMarcher = SUGGESTED_VALUE_PATTERN.matcher( inputHtml );
+            Matcher classMarcher = CLASS_PATTERN.matcher( inputHtml );
+            
             index++;
 
             if ( fixedAttrMatcher.find() && fixedAttrMatcher.groupCount() > 0 )
@@ -168,6 +171,7 @@ public class DefaultPatientRegistrationFormService
 
                 // Get value
                 String value = "";
+                String hidden = "";
                 if ( patient != null )
                 {
                     Object object = getValueFromPatient( StringUtils.capitalize( fixedAttr ), patient );
@@ -187,8 +191,17 @@ public class DefaultPatientRegistrationFormService
                         }
                     }
                 }
-
-                inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), healthWorkers, i18n, index );
+                else if( suggestedMarcher.find())
+                {
+                    value = suggestedMarcher.group( 1 );
+                }
+                
+                if( classMarcher.find() )
+                {
+                    hidden = classMarcher.group( 1 );
+                }
+                
+                inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), hidden, healthWorkers, i18n, index );
             }
             else if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -365,7 +378,7 @@ public class DefaultPatientRegistrationFormService
         return inputHtml;
     }
 
-    private String getFixedAttributeField( String inputHtml, String fixedAttr, String value,
+    private String getFixedAttributeField( String inputHtml, String fixedAttr, String value, String hidden,
         Collection<User> healthWorkers, I18n i18n, int index )
     {
         inputHtml = TAG_OPEN + "input id=\"" + fixedAttr + "\" name=\"" + fixedAttr + "\" tabindex=\"" + index
@@ -374,19 +387,19 @@ public class DefaultPatientRegistrationFormService
         // Fullname fields
         if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_FULLNAME ) )
         {
-            inputHtml += " class=\"{validate:{required:true, rangelength:[3,50]}}\" " + TAG_CLOSE;
+            inputHtml += " class=\"{validate:{required:true, rangelength:[3,50]}}\" " + hidden + " " + TAG_CLOSE;
         }
 
         // Phone number fields
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_PHONE_NUMBER ) )
         {
-            inputHtml += " class=\"{validate:{phone:true}}\" " + TAG_CLOSE;
+            inputHtml += " class=\"{validate:{phone:true}}\" " + hidden + " " + TAG_CLOSE;
         }
 
         // Gender selector
         if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_GENDER ) )
         {
-            inputHtml = inputHtml.replaceFirst( "input", "select" ) + ">";
+            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
 
             if ( value.equals( "" ) || value.equals( Patient.FEMALE ) )
             {
@@ -414,7 +427,7 @@ public class DefaultPatientRegistrationFormService
             || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_DEATH_DATE )
             || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
         {
-            inputHtml += TAG_CLOSE;
+            inputHtml += " class='" + hidden + "' "+ TAG_CLOSE;
             if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_BIRTHDATE )
                 || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
             {
@@ -429,7 +442,7 @@ public class DefaultPatientRegistrationFormService
         // DobType field
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_DOB_TYPE ) )
         {
-            inputHtml = inputHtml.replaceFirst( "input", "select" ) + ">";
+            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >" ;
 
             if ( value.equals( "" ) || value.equals( Patient.DOB_TYPE_VERIFIED + "" ) )
             {
@@ -456,7 +469,7 @@ public class DefaultPatientRegistrationFormService
         // Health-worker field
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_HEALTH_WORKER ) )
         {
-            inputHtml = inputHtml.replaceFirst( "input", "select" ) + ">";
+            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
             inputHtml += "<option value=\"\" selected >" + i18n.getString( "please_select" ) + "</option>";
 
             for ( User healthWorker : healthWorkers )
@@ -474,7 +487,7 @@ public class DefaultPatientRegistrationFormService
         // IsDead field
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_IS_DEAD ) )
         {
-            inputHtml += " type='checkbox' ";
+            inputHtml += " type='checkbox' class='" + hidden + "' ";
 
             if ( value.equals( "true" ) )
             {

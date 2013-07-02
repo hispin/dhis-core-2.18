@@ -291,8 +291,7 @@ function insertElement( type )
 	
 	if( type == 'fixedAttr' ){
 		var element = jQuery('#fixedAttrSelector option:selected');
-		if( element.length == 0 ) return;
-		
+		if( element.length == 0 ) return;		
 		id = 'fixedattributeid="' + element.attr('value') + '"';
 		value = element.text();
 	}
@@ -318,7 +317,30 @@ function insertElement( type )
 		value = element.text();
 	}
 	
-	var htmlCode = "<input " + id + " value=\"[" + value + "]\" title=\"" + value + "\">";
+	var htmlCode = "<input " + id + " value=\"[" + value + "]\" title=\"" + value + "\" ";
+	
+	var suggestedValue = getFieldValue('genderSelector');
+	if( jQuery('#genderSelector').is(":visible") )
+	{
+		htmlCode += " suggested='" + suggestedValue + "' ";
+	}
+	suggestedValue = getFieldValue('dobTypeSelector');
+	if( jQuery('#dobTypeSelector').is(":visible") )
+	{
+		htmlCode += " suggested='" + suggestedValue + "' ";
+	}
+	suggestedValue = getFieldValue('suggestedField');
+	if( jQuery('#suggestedField').is(":visible") )
+	{
+		htmlCode += " suggested='" + suggestedValue + "' ";
+	}
+	
+	var isHidden = jQuery('#hiddenField').attr('checked');
+	if(isHidden)
+	{
+		htmlCode += " class='hidden' ";
+	}
+	htmlCode += " >";
 	
 	if( checkExisted( id ) ){		
 		setMessage( "<span class='bold'>" + i18n_property_is_inserted + "</span>" );
@@ -435,3 +457,19 @@ function deleteRegistrationFormFromView()
 		window.location.href = 'delRegistrationEntryFormAction.action?id=' + getFieldValue('id');
 	}
 }
+
+function suggestionSelectorToggle()
+{
+	hideById('genderSelector');
+	hideById('dobTypeSelector');
+	showById('suggestedField');
+	if( getFieldValue('fixedAttrSelector')=='gender' ){
+		hideById('suggestedField');
+		showById('genderSelector');
+	}
+	else if(getFieldValue('fixedAttrSelector')=='dobType'){
+		hideById('suggestedField');
+		showById('dobTypeSelector');
+	}
+}
+
