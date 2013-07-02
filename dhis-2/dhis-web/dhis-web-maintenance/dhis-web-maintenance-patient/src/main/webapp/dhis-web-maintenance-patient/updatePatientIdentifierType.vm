@@ -55,6 +55,7 @@
 					<option value="string" #if( $patientIdentifierType.type=='string' ) selected="selected" #end>$i18n.getString( "text" )</option>
 					<option value="number" #if( $patientIdentifierType.type=='number' ) selected="selected" #end>$i18n.getString( "number" )</option>
 					<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "letter_only" )</option>
+					<option value="orgunitCount" #if( $patientIdentifierType.type=='orgunitCount' ) selected="selected" #end>$i18n.getString( "orgunit_count" )</option>
 				</select>
 			</td>		
 			<td></td>				

@@ -51,6 +51,8 @@ public class PatientIdentifierType
     public static final String VALUE_TYPE_NUMBER = "number";
 
     public static final String VALUE_TYPE_LETTER = "letter";
+    
+    public static final String VALUE_TYPE_ORGUNIT_COUNT = "orgunitCount";
 
     private String description;
 

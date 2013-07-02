@@ -47,6 +47,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -105,6 +106,13 @@ public class ShowAddPatientFormAction
     public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
     {
         this.attributeGroupService = attributeGroupService;
+    }
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     private I18n i18n;
@@ -188,6 +196,13 @@ public class ShowAddPatientFormAction
         return attributeGroups;
     }
 
+    private String orgunitCountIdentifier;
+
+    public String getOrgunitCountIdentifier()
+    {
+        return orgunitCountIdentifier;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -227,8 +242,8 @@ public class ShowAddPatientFormAction
 
             Collection<PatientAttribute> patientAttributesInProgram = new HashSet<PatientAttribute>();
             Collection<Program> programs = programService.getAllPrograms();
-            programs.remove(program);
-            
+            programs.remove( program );
+
             for ( Program _program : programs )
             {
                 identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
@@ -253,6 +268,32 @@ public class ShowAddPatientFormAction
             noGroupAttributes.removeAll( patientAttributesInProgram );
         }
 
+        orgunitCountIdentifier = generateOrgunitIdentifier( organisationUnit );
+
         return SUCCESS;
+    }
+
+    private String generateOrgunitIdentifier( OrganisationUnit organisationUnit )
+    {
+        String value = organisationUnit.getCode();
+
+        int totalPatient = patientService.countGetPatientsByOrgUnit( organisationUnit );
+        if ( totalPatient < 10 )
+        {
+            value += "000" + totalPatient;
+        }
+        else if ( totalPatient < 100 )
+        {
+            value += "00" + totalPatient;
+        }
+        else if ( totalPatient < 1000 )
+        {
+            value += "0" + totalPatient;
+        }
+        else
+        {
+            value += totalPatient;
+        }
+        return value;
     }
 }
