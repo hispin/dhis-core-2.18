@@ -275,6 +275,8 @@
     <property name="identifiableObjectManager" ref="org.hisp.dhis.common.IdentifiableObjectManager" />
   </bean>
 
+  <bean id="org.hisp.dhis.i18n.action.GetStringsFromLocaleAction" class="org.hisp.dhis.i18n.action.GetStringsFromLocaleAction"/>
+
   <!-- About -->
 
   <bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype">

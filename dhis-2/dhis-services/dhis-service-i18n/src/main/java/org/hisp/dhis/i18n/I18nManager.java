@@ -1,5 +1,7 @@
 package org.hisp.dhis.i18n;
 
+import java.util.Locale;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -38,6 +40,8 @@ public interface I18nManager
 
     I18n getI18n( Class<?> clazz ) throws I18nManagerException;
 
+    public I18n getI18n( Class<?> clazz, Locale locale ) throws I18nManagerException;
+    
     I18n getI18n( String clazzName ) throws I18nManagerException;
 
     I18nFormat getI18nFormat() throws I18nManagerException;

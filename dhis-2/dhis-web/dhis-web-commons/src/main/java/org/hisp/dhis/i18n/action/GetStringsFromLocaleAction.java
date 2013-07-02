@@ -1,4 +1,4 @@
-package org.hisp.dhis.security.action;
+package org.hisp.dhis.i18n.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,80 +27,68 @@ package org.hisp.dhis.security.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
+import java.util.Locale.Builder;
 
-import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mobile.device.Device;
-import org.springframework.mobile.device.DeviceResolver;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author mortenoh
+ * @author Lars Helge Overland
  */
-public class LoginAction
+public class GetStringsFromLocaleAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DeviceResolver deviceResolver;
-
-    public void setDeviceResolver( DeviceResolver deviceResolver )
-    {
-        this.deviceResolver = deviceResolver;
-    }
-    
     @Autowired
-    private ResourceBundleManager resourceBundleManager;
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private Boolean failed = false;
-
-    public void setFailed( Boolean failed )
-    {
-        this.failed = failed;
-    }
-
-    public Boolean getFailed()
-    {
-        return failed;
-    }
+    private I18nManager manager;
     
-    private List<Locale> availableLocales;
-
-    public List<Locale> getAvailableLocales()
+    private String language;
+    
+    public void setLanguage( String language )
     {
-        return availableLocales;
+        this.language = language;
+    }
+
+    private String country;
+
+    public void setCountry( String country )
+    {
+        this.country = country;
+    }
+
+    private I18n i18nObject;
+
+    public I18n getI18nObject()
+    {
+        return i18nObject;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        Device device = deviceResolver.resolveDevice( ServletActionContext.getRequest() );
-
-        ServletActionContext.getResponse().addHeader( "Login-Page", "true" );
-
-        if ( device.isMobile() )
-        {
-            return "mobile";
-        }
-
-        availableLocales = new ArrayList<Locale>( resourceBundleManager.getAvailableLocales() );
+        Builder builder = new Locale.Builder();
         
-        return "standard";
+        if ( language != null )
+        {
+            builder.setLanguage( language );
+        }
+        
+        if ( country != null )
+        {
+            builder.setRegion( country );
+        }
+        
+        Locale locale = builder.build();
+        
+        i18nObject = manager.getI18n( this.getClass(), locale );
+        
+        return SUCCESS;
     }
 }

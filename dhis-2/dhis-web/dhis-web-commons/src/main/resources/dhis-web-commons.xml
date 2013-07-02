@@ -118,6 +118,10 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="loginStrings" class="org.hisp.dhis.i18n.action.GetStringsFromLocaleAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/security/loginStrings.vm</result>
+    </action>
+
     <action name="account" class="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction">
       <result name="success" type="velocity">/dhis-web-commons/useraccount/account.vm</result>
       <result name="error" type="redirect">login.action</result>
@@ -132,7 +136,7 @@
       <result name="success" type="velocity">/dhis-web-commons/useraccount/restore.vm</result>
       <result name="error" type="redirect">login.action</result>
     </action>
-
+    
   </package>
 
   <!-- Organisation Unit Selection Tree -->
