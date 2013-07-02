@@ -131,6 +131,7 @@
 					<option value="gender">$i18n.getString('gender') #if($disableRegistrationFields=='false')*#end</option>
 					<option value="dobType">$i18n.getString('dob_type') #if($disableRegistrationFields=='false')*#end</option>
 					<option value="birthDate">$i18n.getString('birth_date') #if($disableRegistrationFields=='false')*#end</option>
+					<option value="age">$i18n.getString('age_year') #if($disableRegistrationFields=='false')*#end</option>
 					<option value="phoneNumber">$i18n.getString('phone_number')</option>
 					<option value="deathDate">$i18n.getString('death_date')</option>
 					<option value="isDead">$i18n.getString('is_dead')</option>

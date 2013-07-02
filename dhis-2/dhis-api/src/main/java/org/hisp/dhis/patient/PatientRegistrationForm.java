@@ -40,6 +40,7 @@ public class PatientRegistrationForm
     public static String FIXED_ATTRIBUTE_FULLNAME = "fullName";
     public static String FIXED_ATTRIBUTE_GENDER = "gender";
     public static String FIXED_ATTRIBUTE_BIRTHDATE = "birthDate";
+    public static String FIXED_ATTRIBUTE_AGE = "age";
     public static String FIXED_ATTRIBUTE_PHONE_NUMBER = "phoneNumber";
     public static String FIXED_ATTRIBUTE_DEATH_DATE = "deathDate";
     public static String FIXED_ATTRIBUTE_REGISTRATION_DATE = "registrationDate";

@@ -50,7 +50,7 @@
 				<option value="A" #if($patient.dobType=='A') selected #end >$i18n.getString( "approximated" )</option>
 			</select>
 			<input type="text" id="birthDate" name="birthDate" value='$!format.formatDate($!patient.birthDate)' style='width:136px;' />
-			<input type="text" id="age" name="age" placeholder="Enter age in years..." value='$!patient.getIntegerValueOfAge()' class="{validate:{number:true}}" style='width:136px;' />
+			<input type="text" id="age" name="age" placeholder="$i18n.getString('enter_age_in_years')" value='$!patient.getIntegerValueOfAge()' class="{validate:{number:true}}" style='width:136px;' />
 		</td>
 	</tr>
 
