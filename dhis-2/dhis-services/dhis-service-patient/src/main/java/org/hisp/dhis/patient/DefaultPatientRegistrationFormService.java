@@ -395,7 +395,13 @@ public class DefaultPatientRegistrationFormService
         {
             inputHtml += " class=\"{validate:{phone:true}}\" " + hidden + " " + TAG_CLOSE;
         }
-
+        
+        // Age fields
+        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_AGE ) )
+        {
+            inputHtml += " class=\"{validate:{number:true}}\" " + hidden + " " + TAG_CLOSE;
+        }
+        
         // Gender selector
         if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_GENDER ) )
         {

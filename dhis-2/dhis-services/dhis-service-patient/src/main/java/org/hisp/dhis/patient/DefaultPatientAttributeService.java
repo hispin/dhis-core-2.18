@@ -29,14 +29,8 @@ package org.hisp.dhis.patient;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.period.CalendarPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
