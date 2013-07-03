@@ -1,6 +1,7 @@
-
 #if($!customRegistrationForm)
 	$customRegistrationForm
+#elseif($!patientRegistrationForm)
+	#parse( "/dhis-web-caseentry/defaultPatientForm.vm" )
 #else
 	## Macro for generating the jQuery validation rules 
 	#macro( validate $type $require )
@@ -10,7 +11,7 @@
 		{validate:{required:true}}
 	  #end
 	#end
-
+	
 #if($!program && $program.disableRegistrationFields )
 
 #else

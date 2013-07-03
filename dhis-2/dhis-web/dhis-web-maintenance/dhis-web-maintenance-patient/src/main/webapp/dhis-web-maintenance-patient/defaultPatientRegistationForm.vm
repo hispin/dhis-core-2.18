@@ -1,0 +1,216 @@
+<h3>$i18n.getString( "create_new_patient_attribute_group" )</h3>
+																			
+<form id="defaultPatientRegistrationForm" name="defaultPatientRegistrationForm" action="saveDefaultPatientRegistrationForm.action" method="post" onsubmit="selectAllById('fixedAttributes');selectAllById('dynamicAttributeIds');selectAllById('identifierTypeIds');">
+
+<table>
+	<tr>
+		<th colspan="2">$i18n.getString( "default_registration_form" )</th>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+		<td><input type="text" id="name" name="name" class="{validate:{required:true}}" value='$!registrationForm.name'/></td>
+	</tr> 
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
+</table>
+
+<table>
+	<colgroup>
+		<col style='width:300px'/>
+		<col/>
+		<col style='width:300px'/>
+	</colgroup>
+	<tr>
+		<th>$i18n.getString( "available_fixed_attributes" )</th>
+		<th>$i18n.getString( "filter" )</th>
+		<th>$i18n.getString( "selected_fixed_attributes" )
+			<input type='hidden' id='hasAttributes' name='hasAttributes' class="{validate:{required:true}}">
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<select id="availableFixedAttributes" name='availableFixedAttributes' multiple="multiple" ondblclick="moveSelectedById( 'availableFixedAttributes', 'fixedAttributes' )" style="width:450px;height:270px">
+				#set($hasRegistrationDate = false)
+				#set($hasFullName = false)
+				#set($hasGender = false)
+				#set($hasDobType = false)
+				#set($hasBirthDate = false)
+				#set($hasAge = false)
+				#set($hasPhoneNumber = false)
+				#set($hasDeathDate = false)
+				#set($hasIsDead = false)
+				#set($hasHealthWorker = false)
+				#foreach( $fixedAttribute in $registrationForm.fixedAttributes )
+					#if($fixedAttribute=='registrationDate')
+						#set($hasRegistrationDate = true)
+					#end
+					#if($fixedAttribute=='fullName')
+						#set($hasFullName = true)
+					#end
+					#if($fixedAttribute=='gender')
+						#set($hasGender = true)
+					#end
+					#if($fixedAttribute=='dobType')
+						#set($hasDobType = true)
+					#end
+					#if($fixedAttribute=='birthDate')
+						#set($hasBirthDate = true)
+					#end
+					#if($fixedAttribute=='age')
+						#set($hasAge = true)
+					#end
+					#if($fixedAttribute=='phoneNumber')
+						#set($hasPhoneNumber = true)
+					#end
+					#if($fixedAttribute=='deathDate')
+						#set($hasDeathDate = true)
+					#end
+					#if($fixedAttribute=='isDead')
+						#set($hasIsDead = true)
+					#end
+					#if($fixedAttribute=='healthWorker')
+						#set($hasHealthWorker = true)
+					#end
+				#end
+				
+				#if($hasRegistrationDate==false)
+					<option value="registrationDate">$i18n.getString('registration_date')</option>
+				#end
+				#if($hasFullName==false)
+					<option value="fullName">$i18n.getString('full_name')</option>
+				#end
+				#if($hasGender==false)
+					<option value="gender">$i18n.getString('gender')</option>
+				#end
+				#if($hasDobType==false)
+					<option value="dobType">$i18n.getString('dob_type')</option>
+				#end
+				#if($hasBirthDate==false)
+					<option value="birthDate">$i18n.getString('birth_date')</option>
+				#end
+				#if($hasAge==false)
+					<option value="age">$i18n.getString('age_years')</option>
+				#end
+				#if($hasPhoneNumber==false)
+					<option value="phoneNumber">$i18n.getString('phone_number')</option>
+				#end
+				#if($hasDeathDate==false)
+					<option value="deathDate">$i18n.getString('death_date')</option>
+				#end
+				#if($hasIsDead==false)
+					<option value="isDead">$i18n.getString('is_dead')</option>
+				#end
+				#if($hasHealthWorker==false)
+					<option value="healthWorker">$i18n.getString('health_worker')</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableFixedAttributes', 'fixedAttributes' )" class='filterButton'/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'fixedAttributes', 'availableFixedAttributes' )" class='filterButton'/>
+			<input type="button" value="&gt;&gt;" onclick="moveAllById( 'availableFixedAttributes', 'fixedAttributes' )" class='filterButton' /><br/>
+			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'fixedAttributes', 'availableFixedAttributes' )" class='filterButton' />
+		</td>
+		<td>	
+			<select style='width:100%' multiple="multiple" id="fixedAttributes" name="fixedAttributes" ondblclick="moveSelectedById( 'fixedAttributes', 'availableFixedAttributes' )" size="15" >
+				#foreach( $fixedAttribute in $registrationForm.fixedAttributes )
+				<option value='$fixedAttribute'>$i18n.getString($fixedAttribute)</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<a href="javascript:moveUpSelectedOption( 'fixedAttributes')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
+			<a href="javascript:moveDownSelectedOption( 'fixedAttributes' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
+		</td>
+	</tr>  
+</table>
+
+<table>
+	<colgroup>
+		<col style='width:300px'/>
+		<col/>
+		<col style='width:300px'/>
+	</colgroup>
+	<tr>
+		<th>$i18n.getString( "available_identifier_types" )</th>
+		<th>$i18n.getString( "filter" )</th>
+		<th>$i18n.getString( "selected_identifier_types" )<th>
+	</tr>
+	<tr>
+		<td>
+			<select id="availableIdentifierTypes" name='availableIdentifierTypes' multiple="multiple" ondblclick="moveSelectedById( 'availableIdentifierTypes', 'identifierTypeIds' )" style="width:450px;height:270px">
+				#foreach($identifierType in $identifierTypes)
+				<option value='$identifierType.id'>$identifierType.displayName</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableIdentifierTypes', 'identifierTypeIds' )" class='filterButton'/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'identifierTypeIds', 'availableIdentifierTypes' )" class='filterButton'/>
+			<input type="button" value="&gt;&gt;" onclick="moveAllById( 'availableIdentifierTypes', 'identifierTypeIds' )" class='filterButton' /><br/>
+			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'identifierTypeIds', 'availableIdentifierTypes' )" class='filterButton' />
+		</td>
+		<td>
+			<select style='width:100%' multiple="multiple" id="identifierTypeIds" name="identifierTypeIds" ondblclick="moveSelectedById( 'identifierTypeIds', 'availableIdentifierTypes' )"  size="15" >
+				#foreach( $identifierType in $registrationForm.identifierTypes )
+				<option value='$identifierType.id'>$identifierType.displayName</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<a href="javascript:moveUpSelectedOption( 'identifierTypeIds')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
+			<a href="javascript:moveDownSelectedOption( 'identifierTypeIds' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
+		</td>
+	</tr>  
+</table>
+
+<table>
+	<colgroup>
+		<col style='width:300px'/>
+		<col/>
+		<col style='width:300px'/>
+	</colgroup>
+	<tr>
+		<th>$i18n.getString( "available_dynamic_attributes" )</th>
+		<th>$i18n.getString( "filter" )</th>
+		<th>$i18n.getString( "selected_dynamic_attributes" )</th>
+	</tr>
+	<tr>
+		<td>
+			<select id="availableAttributes" name='availableAttributes' multiple="multiple" ondblclick="moveSelectedById( 'availableAttributes', 'dynamicAttributeIds' )" style="width:450px;height:270px">
+				#foreach($attribute in $attributes)
+				<option value='$attribute.id'>$attribute.displayName</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableAttributes', 'dynamicAttributeIds' )" class='filterButton'/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'dynamicAttributeIds', 'availableAttributes' )" class='filterButton'/>
+			<input type="button" value="&gt;&gt;" onclick="moveAllById( 'availableAttributes', 'dynamicAttributeIds' )" class='filterButton' /><br/>
+			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'dynamicAttributeIds', 'availableAttributes' )" class='filterButton' />
+		</td>
+		<td>
+			<select style='width:100%' multiple="multiple" id="dynamicAttributeIds" name="dynamicAttributeIds" size="15" ondblclick="moveSelectedById( 'dynamicAttributeIds', 'availableAttributes' )">
+				#foreach( $dynamicAttribute in $registrationForm.dynamicAttributes )
+				<option value='$dynamicAttribute.id'>$dynamicAttribute.displayName</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<a href="javascript:moveUpSelectedOption( 'dynamicAttributeIds')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
+			<a href="javascript:moveDownSelectedOption( 'dynamicAttributeIds' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
+		</td>
+	</tr>  
+</table>
+
+<p>
+	<input type="submit" value="$i18n.getString( 'add' )" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttributeGroup.action'"/>
+</p>
+
+</form>
+
+<script>
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+</script>
