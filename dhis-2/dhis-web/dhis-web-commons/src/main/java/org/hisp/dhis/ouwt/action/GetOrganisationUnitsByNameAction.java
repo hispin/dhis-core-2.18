@@ -27,13 +27,12 @@ package org.hisp.dhis.ouwt.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Chau Thu Tran
@@ -42,7 +41,7 @@ public class GetOrganisationUnitsByNameAction
     implements Action
 {
     private static final int MAX = 14;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -85,7 +84,7 @@ public class GetOrganisationUnitsByNameAction
         throws Exception
     {
         organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( term, 0, MAX ) );
-        
+
         return SUCCESS;
     }
 }
