@@ -203,6 +203,13 @@ public class ShowAddPatientFormAction
         return orgunitCountIdentifier;
     }
 
+    private PatientRegistrationForm patientRegistrationForm;
+
+    public PatientRegistrationForm getPatientRegistrationForm()
+    {
+        return patientRegistrationForm;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -211,13 +218,13 @@ public class ShowAddPatientFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
-
+        
         if ( programId == null )
         {
-            PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
+            patientRegistrationForm = patientRegistrationFormService
                 .getCommonPatientRegistrationForm();
 
-            if ( patientRegistrationForm != null )
+            if ( patientRegistrationForm != null && patientRegistrationForm.getDataEntryForm() != null )
             {
                 customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
                     patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
@@ -226,10 +233,10 @@ public class ShowAddPatientFormAction
         else
         {
             program = programService.getProgram( programId );
-            PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
+            patientRegistrationForm = patientRegistrationFormService
                 .getPatientRegistrationForm( program );
 
-            if ( patientRegistrationForm != null )
+            if ( patientRegistrationForm != null && patientRegistrationForm.getDataEntryForm() != null )
             {
                 customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
                     patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
