@@ -207,13 +207,14 @@ a.menuLink:hover
 
 #leftBar
 {
-  height: 580px;
+  height: 100%;
+  background-color: #fafafa;
   width: 235px;
   position: fixed;
   top: 46px;
   left: 0px;
   padding-top: 6px;
-  border-right: 1px solid #ececec;
+  border-right: 1px solid #e8e8e8;
 }
 
 #leftBarContents
@@ -240,17 +241,18 @@ a.menuLink:hover
 #leftBarContents ul a
 {
   display: block;
-  color: #333;
+  color: #303030;
   text-decoration: none;
   padding-top: 8px;
   padding-bottom: 8px;
   cursor: pointer;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 #leftBarContents a:hover
 {
   text-decoration: underline;
+  background-color: #f4f4f4;
 }
 
 /*----------------------------------------------------------------------------*/

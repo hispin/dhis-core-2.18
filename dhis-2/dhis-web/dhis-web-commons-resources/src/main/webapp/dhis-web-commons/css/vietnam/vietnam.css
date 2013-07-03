@@ -207,52 +207,52 @@ a.menuLink:hover
 
 #leftBar
 {
-  background-color: #b91010;
-  height: 535px;
+  height: 100%;
+  background-color: #fafafa;
   width: 235px;
   position: fixed;
-  top: 44px;
+  top: 46px;
   left: 0px;
   padding-top: 6px;
-  border-right: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
-  filter: alpha(opacity=90);
-  opacity: 0.90;
-  border-bottom-right-radius: 5px;
+  border-right: 1px solid #e8e8e8;
 }
 
 #leftBarContents
 {
-  font-size: 12px;
+  font-size: 9pt;
 }
 
 #leftBarContents h2
 {
-  font-size: 14px;
-  background-color: #cf4343;
-  margin: 16px 15px 0px 15px;
-  padding: 5px 0px 4px 10px;
-  color: white;
+  font-size: 9pt;
+  margin: 16px 20px 2px 20px;
+  padding: 7px 0 7px 0;
   font-weight: normal;
-  border-radius: 3px;
+  font-family: LiberationSansBold, arial;
 }
 
 #leftBarContents ul
 {
-  margin-left: 26px;
   list-style-type: none;
-  color: white;
+  padding: 0;
+  margin: 0 20px 0 20px;
 }
 
-#leftBarContents a
+#leftBarContents ul a
 {
-  color: white;
+  display: block;
+  color: #303030;
   text-decoration: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 #leftBarContents a:hover
 {
-  color: #acc8de;
+  text-decoration: underline;
+  background-color: #f4f4f4;
 }
 
 /*----------------------------------------------------------------------------*/
