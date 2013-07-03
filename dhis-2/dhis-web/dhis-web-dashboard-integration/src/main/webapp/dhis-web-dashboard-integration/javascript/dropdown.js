@@ -121,7 +121,7 @@ function showShareHelp()
 	} );
 }
 
-function search( e )
+function search()
 {
 	var query = $.trim( $( "#searchField" ).val() );
 	
