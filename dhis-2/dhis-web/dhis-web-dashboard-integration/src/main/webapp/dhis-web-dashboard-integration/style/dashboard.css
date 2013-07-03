@@ -93,9 +93,16 @@
   position: absolute;
   left: 411px;
   height: 22px;
-  width: 552px;
+  width: 486px;
   border: 1px solid #aaa;
   padding: 5px 6px 0 6px;
+}
+
+#searchButton
+{
+  position: absolute;
+  margin-top: 6px;
+  left: 915px;
 }
 
 #searchField
@@ -114,7 +121,7 @@
   position: absolute;
   margin-top: 29px;
   left: 411px;
-  width: 564px;
+  width: 498px;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   border-left: 1px solid #bbb;
