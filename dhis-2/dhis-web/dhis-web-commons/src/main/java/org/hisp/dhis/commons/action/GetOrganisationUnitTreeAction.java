@@ -128,6 +128,13 @@ public class GetOrganisationUnitTreeAction
         this.parentId = parentId;
     }
 
+    private String byName;
+
+    public void setByName( String byName )
+    {
+        this.byName = byName;
+    }
+
     private boolean realRoot;
 
     public boolean isRealRoot()
@@ -142,6 +149,27 @@ public class GetOrganisationUnitTreeAction
     public String execute()
         throws Exception
     {
+        if ( byName != null )
+        {
+            List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( byName );
+
+            if ( !organisationUnitByName.isEmpty() )
+            {
+                OrganisationUnit child = organisationUnitByName.get( 0 );
+                organisationUnits.add( child );
+                OrganisationUnit parent = child.getParent();
+
+                do
+                {
+                    organisationUnits.add( parent );
+                    organisationUnits.addAll( parent.getChildren() );
+                }
+                while ( (parent = parent.getParent()) != null );
+
+                return "partial";
+            }
+        }
+
         if ( parentId != null )
         {
             OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );

@@ -485,11 +485,33 @@ function Selection()
 
             subtree.reloadTree();
             selection.sync( false, selection.responseReceived );
-            // selection.responseReceived();
         }
         else
         {
-            $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+            $.ajax( {
+                url: '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
+                data: { byName: name }
+            } ).done(function(data) {
+                if ( data.realRoot === undefined ) {
+                    if ( sessionStorage["organisationUnits"] === undefined )
+                    {
+                        sessionStorage["organisationUnits"] = JSON.stringify( data.organisationUnits );
+                    }
+                    else
+                    {
+                        var units = JSON.parse( sessionStorage["organisationUnits"] );
+                        $.extend(units, data.organisationUnits);
+                        sessionStorage["organisationUnits"] = JSON.stringify( units );
+                    }
+
+                    $.extend(organisationUnits, data.organisationUnits);
+                    selection.findByName();
+                }
+
+                $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+            } ).fail(function() {
+                $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+            });
         }
     };
 
@@ -692,7 +714,7 @@ function Subtree()
                         } 
                         else 
                         {
-                            units = JSON.parse( sessionStorage["organisationUnits"] );
+                            var units = JSON.parse( sessionStorage["organisationUnits"] );
                             $.extend(units, data.organisationUnits);
                             sessionStorage["organisationUnits"] = JSON.stringify( units );
                         }
