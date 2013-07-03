@@ -114,14 +114,14 @@
   position: absolute;
   margin-top: 29px;
   left: 411px;
-  width: 568px;
+  width: 564px;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   border-left: 1px solid #bbb;
   background-color: #fff;
   display: none;
   overflow: hidden;
-  z-index: 20;
+  z-index: 5;
 }
 
 #hitDiv ul
