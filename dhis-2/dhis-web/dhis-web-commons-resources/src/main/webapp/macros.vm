@@ -114,7 +114,7 @@
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230]}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230]}}" />
 	</td>
 </tr>
 #end
@@ -129,7 +129,7 @@
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<select style="width: 244px;" id="$!args.id" name="$!name" class="{validate:{required:$args.mandatory}}">
+		<select id="$!args.id" name="$!name" class="{validate:{required:$args.mandatory}}">
 			<option value="" />
 			<option value="true" #if( $!args.value=="true" )selected="selected"#end>Yes</option>
 			<option value="false" #if( $!args.value=="false" )selected="selected"#end>No</option>
@@ -154,7 +154,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory}}" />
 	</td>
 </tr>
 #end
@@ -169,7 +169,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,number:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,number:true}}" />
 	</td>
 </tr>
 #end
@@ -184,7 +184,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,integer:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,integer:true}}" />
 	</td>
 </tr>
 #end
@@ -199,7 +199,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,positive_integer:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,positive_integer:true}}" />
 	</td>
 </tr>
 #end
@@ -214,7 +214,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,negative_integer:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,negative_integer:true}}" />
 	</td>
 </tr>
 #end
@@ -229,7 +229,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
-		<select style="width: 244px;" id="$!args.id" name="$name" class="{validate:{required:$args.mandatory}}">
+		<select id="$!args.id" name="$name" class="{validate:{required:$args.mandatory}}">
 		<option value="" #if( $choice == $args.value )selected="selected"#end />
 		#foreach( $choice in $args.choices )
 			<option value="$choice" #if( $args.value == $choice )selected="selected"#end>$choice</option>
