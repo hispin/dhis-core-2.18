@@ -34,7 +34,7 @@ import org.hisp.dhis.sqlview.SqlViewService;
 
 /**
  * Updates a existing sqlview in database.
- * 
+ *
  * @author Dang Duy Hieu
  * @version $Id ExportSqlViewResultAction.java July 12, 2010$
  */
@@ -77,7 +77,7 @@ public class ExportSqlViewResultAction
     }
 
     private SqlView sqlView;
-    
+
     public SqlView getSqlView()
     {
         return sqlView;
@@ -102,12 +102,8 @@ public class ExportSqlViewResultAction
     public String execute()
     {
         sqlView = sqlViewService.getSqlView( id );
-        
-        grid = sqlViewService.getSqlViewGrid( sqlView, null );
-        
-        this.paging = this.createPaging( grid.getHeight() );
 
-        grid.limitGrid( paging.getStartPos(), paging.getEndPos() );
+        grid = sqlViewService.getSqlViewGrid( sqlView, null );
 
         return type != null ? type : DEFAULT_TYPE;
     }
