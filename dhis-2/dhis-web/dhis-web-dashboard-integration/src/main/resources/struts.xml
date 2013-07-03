@@ -16,7 +16,7 @@
 			<param name="page">/dhis-web-dashboard-integration/mainForm.vm</param>
 			<param name="hideMenu">true</param>
 			<param name="stylesheets">style/dashboard.css</param>
-			<param name="javascripts">javascript/dropdown.js</param>
+			<param name="javascripts">javascript/dashboard.js</param>
 		</action>
 
 		<action name="provideContent"
