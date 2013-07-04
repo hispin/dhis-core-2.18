@@ -46,9 +46,12 @@ public interface ReportService
     final String REPORTTYPE_XLS = "xls";
 
     final String PARAM_RELATIVE_PERIODS = "periods";
+    final String PARAM_RELATIVE_ISO_PERIODS = "periods_iso";
     final String PARAM_ORG_UNITS = "organisationunits";
+    final String PARAM_ORG_UNITS_UID = "organisationunits_uid";
     final String PARAM_ORGANISATIONUNIT_LEVEL = "organisationunit_level";
     final String PARAM_ORGANISATIONUNIT_LEVEL_COLUMN = "organisationunit_level_column";
+    final String PARAM_ORGANISATIONUNIT_UID_LEVEL_COLUMN = "organisationunit_uid_level_column";
     final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "organisationunit_name";
     final String PARAM_PERIOD_NAME = "period_name";
 

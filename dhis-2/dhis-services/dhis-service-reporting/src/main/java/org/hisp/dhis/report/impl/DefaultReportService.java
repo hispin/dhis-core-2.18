@@ -48,6 +48,7 @@ import net.sf.jasperreports.engine.util.JRProperties;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -73,7 +74,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultReportService
     implements ReportService
 {
-    public static final String ORGANISATIONUNIT_LEVEL_COLUMN_PREFIX = "idlevel";
+    public static final String ORGUNIT_LEVEL_COLUMN_PREFIX = "idlevel";
+    public static final String ORGUNIT_UID_LEVEL_COLUMN_PREFIX = "uidlevel";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -151,7 +153,8 @@ public class DefaultReportService
             
             params.put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, orgUnit.getName() );
             params.put( PARAM_ORGANISATIONUNIT_LEVEL, level );
-            params.put( PARAM_ORGANISATIONUNIT_LEVEL_COLUMN, ORGANISATIONUNIT_LEVEL_COLUMN_PREFIX + level );
+            params.put( PARAM_ORGANISATIONUNIT_LEVEL_COLUMN, ORGUNIT_LEVEL_COLUMN_PREFIX + level );
+            params.put( PARAM_ORGANISATIONUNIT_UID_LEVEL_COLUMN, ORGUNIT_UID_LEVEL_COLUMN_PREFIX + level );
         }
 
         JasperPrint print = null;
@@ -175,14 +178,19 @@ public class DefaultReportService
             {
                 if ( report.hasRelativePeriods() )
                 {
-                    Collection<Period> periods = periodService.reloadPeriods( report.getRelatives().getRelativePeriods( reportDate, null, false ) );
-                    String periodString = getCommaDelimitedString( getIdentifiers( Period.class, periods ) );
-                    params.put( PARAM_RELATIVE_PERIODS, periodString );
+                    List<Period> relativePeriods = report.getRelatives().getRelativePeriods( reportDate, null, false );
+                    
+                    String periodString = getCommaDelimitedString( getIdentifiers( Period.class, periodService.reloadPeriods( relativePeriods ) ) );
+                    String isoPeriodString = getCommaDelimitedString( IdentifiableObjectUtils.getUids( relativePeriods ) );
+                    
+                    params.put( PARAM_RELATIVE_PERIODS, periodString );                    
+                    params.put( PARAM_RELATIVE_ISO_PERIODS, isoPeriodString );
                 }
                 
                 if ( report.hasReportParams() && report.getReportParams().isParamOrganisationUnit() && orgUnit != null )
                 {
                     params.put( PARAM_ORG_UNITS, String.valueOf( orgUnit.getId() ) );
+                    params.put( PARAM_ORG_UNITS_UID, String.valueOf( orgUnit.getUid() ) );
                 }
 
                 Connection connection = DataSourceUtils.getConnection( dataSource );
