@@ -26,11 +26,11 @@
  */
 package org.hisp.dhis.program;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +40,7 @@ import java.util.Set;
  * @author Abyot Asalefew
  * @version $Id$
  */
-public class ProgramStageInstance
-    implements Serializable
+public class ProgramStageInstance extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -57,8 +56,6 @@ public class ProgramStageInstance
     public static final int LATE_VISIT_STATUS = 4;
 
     public static final int SKIPPED_STATUS = 5;
-
-    private int id;
 
     private ProgramInstance programInstance;
 
@@ -143,22 +140,6 @@ public class ProgramStageInstance
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    /**
-     * @return the id
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId( int id )
-    {
-        this.id = id;
-    }
 
     /**
      * @return the programInstance
