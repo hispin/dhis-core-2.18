@@ -33,3 +33,16 @@ function removePatientIdentifierType( patientIdentifierTypeId, name )
 {
     removeItem( patientIdentifierTypeId, name, i18n_confirm_delete, 'removePatientIdentifierType.action' );
 }
+
+function typeOnChange()
+{
+	var type = getFieldValue('type');
+	if(type=='orgunitCount')
+	{
+		disable('noChars');
+	}
+	else
+	{
+		enable('noChars');
+	}
+}
