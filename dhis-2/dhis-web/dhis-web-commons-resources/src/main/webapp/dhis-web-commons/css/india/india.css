@@ -160,9 +160,9 @@ a.menuLink:hover
 {
   font-size: 9pt;
   color: #fff;
-  border-right: 1px solid #282c35;
-  border-bottom: 1px solid #282c35;
-  border-left: 1px solid #282c35;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
+  border-left: 1px solid #888;
   padding-left: 5px;
   padding-right: 5px;
   width: 189px;
