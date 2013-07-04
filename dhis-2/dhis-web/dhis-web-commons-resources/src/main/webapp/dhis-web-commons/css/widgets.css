@@ -1,5 +1,34 @@
 
 /*----------------------------------------------------------------------------*/
+/* Scrollbar (Webkit)                                                        */
+/*----------------------------------------------------------------------------*/
+
+::-webkit-scrollbar 
+{
+  width: 11px;
+}
+
+::-webkit-scrollbar-track:horizontal
+{
+  background-color: #eee;
+}
+
+::-webkit-scrollbar-thumb:horizontal 
+{
+  background-color: #bbb;
+}
+
+::-webkit-scrollbar-track:vertical
+{
+    background-color: #eee;
+}
+
+::-webkit-scrollbar-thumb:vertical 
+{
+  background-color: #bbb;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Right bar                                                                  */
 /*----------------------------------------------------------------------------*/
 
@@ -233,7 +262,8 @@ div#orgUnitTree a
 
 div#orgUnitTree a:hover 
 {
-  color: #808080;
+  color: #555;
+  background-color: #fff;
 }
 
 div#orgUnitTree a.selected 
