@@ -46,7 +46,7 @@ import java.io.InputStream;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = EventController.RESOURCE_PATH )
+@RequestMapping(value = EventController.RESOURCE_PATH)
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -58,40 +58,23 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public void postXmlEvents( HttpServletResponse response, InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
-
-        if ( importSummaries.getImportSummaries().size() == 1 )
-        {
-            JacksonUtils.toXml( response.getOutputStream(), importSummaries.getImportSummaries().get( 0 ) );
-        }
-        else
-        {
-            JacksonUtils.toXml( response.getOutputStream(), importSummaries );
-        }
+        JacksonUtils.toXml( response.getOutputStream(), importSummaries );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public void postJsonEvents( HttpServletResponse response, InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
-
-        if ( importSummaries.getImportSummaries().size() == 1 )
-        {
-            JacksonUtils.toJson( response.getOutputStream(), importSummaries.getImportSummaries().get( 0 ) );
-        }
-        else
-        {
-            JacksonUtils.toJson( response.getOutputStream(), importSummaries );
-        }
-
+        JacksonUtils.toJson( response.getOutputStream(), importSummaries );
     }
 
-    @ExceptionHandler( IllegalArgumentException.class )
+    @ExceptionHandler(IllegalArgumentException.class)
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
