@@ -218,6 +218,7 @@ public class TableAlteror
         executeSql( "UPDATE program SET displayOnAllOrgunit=true where displayOnAllOrgunit is null" );
         executeSql( "UPDATE program SET useFormNameDataElement=true where useFormNameDataElement is null" );
         executeSql( "ALTER TABLE caseaggregationcondition ALTER COLUMN aggregationexpression TYPE varchar(1000)");
+        executeSql( "update patientattribute set displayonvisitschedule = false where displayonvisitschedule is null");
     }
 
     // -------------------------------------------------------------------------
