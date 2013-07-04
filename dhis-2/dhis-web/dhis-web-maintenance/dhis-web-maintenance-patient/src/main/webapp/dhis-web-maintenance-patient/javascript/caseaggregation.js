@@ -451,7 +451,7 @@ function filterDataElement( event, value, fieldName, backupFieldsName )
 			
 	jQuery('#' + backupFieldsName + " option ").each( function(){
 		var option = jQuery(this);
-		if (valueType=='' || valueType.indexOf( option.attr('valueType').toLowerCase() ) != -1 )
+		if (valueType=='' || valueType == option.attr('valueType') )
 		{
 			if(value.length == 0 )
 			{
