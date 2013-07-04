@@ -43,7 +43,7 @@
 		<tr>
 			<td><label for="noChars">$i18n.getString( "no_of_char" )</label></td>
 			<td>
-				<input style="width: 330px;" type="text" name="noChars" id="noChars" value="$!patientIdentifierType.noChars" class="{validate:{required:false, number:true}}" />
+				<input style="width: 330px;" type="text" name="noChars" id="noChars" #if( $patientIdentifierType.type=='orgunitCount' ) disabled #end value="$!patientIdentifierType.noChars" class="{validate:{required:false, number:true}}" />
 			</td>		
 			<td></td>				
 		</tr> 	

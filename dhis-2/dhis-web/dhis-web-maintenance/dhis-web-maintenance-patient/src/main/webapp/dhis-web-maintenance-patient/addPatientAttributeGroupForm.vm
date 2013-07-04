@@ -41,7 +41,7 @@
 		</td>
 		<td>
 			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributes', 'selectedAttributes' )" class='filterButton'/><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributes', 'availableAttributes' )" class='filterButton'/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributes', 'availableAttributes' )" class='filterButton'/><br/>
 			<input type="button" value="&gt;&gt;" onclick="moveAllById( 'availableAttributes', 'selectedAttributes' )" class='filterButton' /><br/>
 			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'selectedAttributes', 'availableAttributes' )" class='filterButton' />
 		</td>
