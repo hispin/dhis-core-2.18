@@ -20,7 +20,7 @@
         </tr>
 		 <tr>
 			<td colspan='2'>
-				$i18n.getString("filter_by_type"): <select type='text' id='deValueType' name='deValueType' onchange="filterDataElement(event, this.value, 'dataElements','dataElementBackups');" style='width:245px;'>
+				$i18n.getString("filter_by_type"): <select type='text' id='deValueType' name='deValueType' onchange="filterDataElement(event, getFieldValue('txtSearchValue'), 'dataElements','dataElementBackups');" style='width:245px;'>
 					<option value=''>[$i18n.getString('view_all')]</option>
 					<option value="int">$i18n.getString( "number" )</option>
 					<option value="string">$i18n.getString( "text" )</option>
