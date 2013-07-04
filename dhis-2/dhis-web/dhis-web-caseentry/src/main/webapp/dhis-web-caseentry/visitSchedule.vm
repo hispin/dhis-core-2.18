@@ -201,7 +201,7 @@
 	</tbody>
 	</table>
 	
-	<div id='smsDiv' class='hidden'>
+	<div id='smsDiv' name="smsDiv" class='hidden'>
 		<table>
 			<tr>
 				<td>$i18n.getString("send_to")</td>
