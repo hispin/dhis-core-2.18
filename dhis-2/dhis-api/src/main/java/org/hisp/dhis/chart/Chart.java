@@ -114,6 +114,8 @@ public class Chart
     private transient List<Period> relativePeriods = new ArrayList<Period>();
     
     private transient User user;
+    
+    private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -132,11 +134,13 @@ public class Chart
     // Init
     // -------------------------------------------------------------------------
 
-    public void init( User user, Date date, OrganisationUnit organisationUnit, I18nFormat format )
+    @Override
+    public void init( User user, Date date, OrganisationUnit organisationUnit, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format )
     {
         this.user = user;
         this.relativePeriodDate = date;
         this.relativeOrganisationUnit = organisationUnit;
+        this.organisationUnitsAtLevel = organisationUnitsAtLevel;
         this.format = format;        
     }
     
@@ -146,14 +150,14 @@ public class Chart
 
     public List<NameableObject> series()
     {
-        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true, format );
+        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true, organisationUnitsAtLevel, format );
         
         return object != null ? object.getItems() : null;
     }
 
     public List<NameableObject> category()
     {
-        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true, format );
+        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true, organisationUnitsAtLevel, format );
         
         return object != null ? object.getItems() : null;
     }
@@ -164,7 +168,7 @@ public class Chart
         
         for ( String filter : filterDimensions )
         {
-            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true, format );
+            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true, organisationUnitsAtLevel, format );
             
             if ( object != null )
             {

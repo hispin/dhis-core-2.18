@@ -37,6 +37,7 @@ import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
 import static org.hisp.dhis.common.DimensionType.PERIOD;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
@@ -285,6 +286,20 @@ public class DefaultDimensionService
                         else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) )
                         {
                             object.setUserOrganisationUnitChildren( true );
+                        }
+                        else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
+                        {
+                            int level = DimensionalObjectUtils.getLevelFromLevelParam( ou );
+                            
+                            String boundary = DimensionalObjectUtils.getBoundaryFromLevelParam( ou );
+
+                            OrganisationUnit unit = identifiableObjectManager.get( OrganisationUnit.class, boundary );
+                            
+                            if ( level > 0 && unit != null )
+                            {
+                                object.setOrganisationUnitLevel( level );
+                                ous.add( unit );
+                            }
                         }
                         else
                         {

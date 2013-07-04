@@ -169,12 +169,17 @@ public class DefaultAnalyticsService
     
     @Autowired
     private ConstantService constantService;
-    
-    @Autowired
-    private CurrentUserService currentUserService;
-    
+
     @Autowired
     private DataElementOperandService operandService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService; // Testing purposes
+    }
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -808,6 +813,7 @@ public class DefaultAnalyticsService
                 else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
                 {
                     int level = DataQueryParams.getLevelFromLevelParam( ou );
+                    
                     String boundaryId = DataQueryParams.getBoundaryFromLevelParam( ou );
                     
                     OrganisationUnit boundary = null;

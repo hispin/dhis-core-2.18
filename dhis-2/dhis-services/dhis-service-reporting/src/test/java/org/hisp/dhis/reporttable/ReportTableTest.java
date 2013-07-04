@@ -261,7 +261,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             true, true, false, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -313,7 +313,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             false, false, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -363,7 +363,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             true, false, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -413,7 +413,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             true, true, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -443,7 +443,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             false, false, false, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -473,7 +473,7 @@ public class ReportTableTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
             true, true, false, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -513,7 +513,7 @@ public class ReportTableTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
             false, false, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -551,7 +551,7 @@ public class ReportTableTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, units, 
             true, false, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -591,7 +591,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
             true, true, false, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -631,7 +631,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
             false, false, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();
@@ -669,7 +669,7 @@ public class ReportTableTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, units, 
             true, false, true, relatives, null, "january_2000" );
 
-        reportTable.init( null, null, null, i18nFormat );
+        reportTable.init( null, null, null, null, i18nFormat );
 
         List<String> columnDims = reportTable.getColumnDimensions();
         List<String> rowDims = reportTable.getRowDimensions();

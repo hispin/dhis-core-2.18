@@ -136,6 +136,8 @@
 
     <property name="userOrganisationUnitChildren" />
 
+    <property name="organisationUnitLevel" />
+
     <property name="showData" />
 
     <property name="rewindRelativePeriods" />

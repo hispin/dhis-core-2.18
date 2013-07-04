@@ -405,6 +405,18 @@ public class DefaultOrganisationUnitService
         return result;
     }
 
+    public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, Collection<OrganisationUnit> parents )
+    {
+        Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
+        
+        for ( OrganisationUnit parent : parents )
+        {
+            result.addAll( getOrganisationUnitsAtLevel( level, parent ) );
+        }
+        
+        return result;
+    }
+
     /**
      * Support method for getOrganisationUnitsAtLevel(). Adds all children at a
      * given targetLevel to a result collection. The parent's children are at

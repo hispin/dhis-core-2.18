@@ -299,7 +299,8 @@ public class ReportTable
     // Init
     // -------------------------------------------------------------------------
 
-    public void init( User user, Date date, OrganisationUnit organisationUnit, I18nFormat format )
+    @Override
+    public void init( User user, Date date, OrganisationUnit organisationUnit, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format )
     {
         verify( ( periods != null && !periods.isEmpty() ) || hasRelativePeriods(), "Must contain periods or relative periods" );
 
@@ -336,14 +337,14 @@ public class ReportTable
         
         // Populate grid
         
-        this.populateGridColumnsAndRows( date, user, format );
+        this.populateGridColumnsAndRows( date, user, organisationUnitsAtLevel, format );
     }
     
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
     
-    public void populateGridColumnsAndRows( Date date, User user, I18nFormat format )
+    public void populateGridColumnsAndRows( Date date, User user, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format )
     {
         List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
         List<NameableObject[]> tableRows = new ArrayList<NameableObject[]>();
@@ -351,17 +352,17 @@ public class ReportTable
         
         for ( String dimension : columnDimensions )
         {
-            tableColumns.add( getDimensionalObject( dimension, date, user, false, format ).getItems().toArray( IRT ) );
+            tableColumns.add( getDimensionalObject( dimension, date, user, false, organisationUnitsAtLevel, format ).getItems().toArray( IRT ) );
         }
         
         for ( String dimension : rowDimensions )
         {
-            tableRows.add( getDimensionalObject( dimension, date, user, true, format ).getItems().toArray( IRT ) );
+            tableRows.add( getDimensionalObject( dimension, date, user, true, organisationUnitsAtLevel, format ).getItems().toArray( IRT ) );
         }
         
         for ( String filter : filterDimensions )
         {
-            filterItems.addAll( getDimensionalObject( filter, date, user, true, format ).getItems() );
+            filterItems.addAll( getDimensionalObject( filter, date, user, true, organisationUnitsAtLevel, format ).getItems() );
         }
 
         gridColumns = new CombinationGenerator<NameableObject>( tableColumns.toArray( IRT2D ) ).getCombinations();
