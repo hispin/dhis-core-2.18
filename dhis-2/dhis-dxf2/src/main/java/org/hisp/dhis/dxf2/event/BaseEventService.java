@@ -335,4 +335,39 @@ public abstract class BaseEventService implements EventService
             patientDataValueService.deletePatientDataValue( patientDataValue );
         }
     }
+
+    @Override
+    public Event getEvent( String uid )
+    {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( uid );
+
+        if ( programStageInstance == null )
+        {
+            return null;
+        }
+
+        Event event = new Event();
+
+        event.setCompleted( programStageInstance.isCompleted() );
+        event.setEvent( uid );
+        event.setEventDate( programStageInstance.getExecutionDate().toString() );
+        event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
+        event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
+        event.setProgramStage( programStageInstance.getProgramStage().getUid() );
+        event.setStoredBy( programStageInstance.getCompletedUser() );
+
+        Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
+
+        for ( PatientDataValue patientDataValue : patientDataValues )
+        {
+            DataValue value = new DataValue();
+            value.setDataElement( patientDataValue.getDataElement().getUid() );
+            value.setValue( patientDataValue.getValue() );
+            value.setProvidedElsewhere( patientDataValue.getProvidedElsewhere() );
+
+            event.getDataValues().add( value );
+        }
+
+        return event;
+    }
 }

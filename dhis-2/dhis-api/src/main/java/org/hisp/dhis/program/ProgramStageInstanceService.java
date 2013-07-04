@@ -56,6 +56,8 @@ public interface ProgramStageInstanceService
 
     ProgramStageInstance getProgramStageInstance( int id );
 
+    ProgramStageInstance getProgramStageInstance( String uid );
+
     ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );
 
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage );

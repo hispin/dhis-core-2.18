@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
-public class Event
+public class Event extends BaseLinkableObject
 {
     private String program;
 
@@ -67,7 +68,7 @@ public class Event
     }
 
     @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getProgram()
     {
         return program;
@@ -79,7 +80,7 @@ public class Event
     }
 
     @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getProgramStage()
     {
         return programStage;
@@ -91,7 +92,7 @@ public class Event
     }
 
     @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getEvent()
     {
         return event;
@@ -103,7 +104,7 @@ public class Event
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getOrgUnit()
     {
         return orgUnit;
@@ -115,7 +116,7 @@ public class Event
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getPatient()
     {
         return patient;
@@ -127,7 +128,7 @@ public class Event
     }
 
     @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getEventDate()
     {
         return eventDate;
@@ -139,7 +140,7 @@ public class Event
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public Boolean getCompleted()
     {
         return completed;
@@ -151,7 +152,7 @@ public class Event
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getStoredBy()
     {
         return storedBy;
@@ -193,7 +194,7 @@ public class Event
         return "Event{" +
             "program='" + program + '\'' +
             ", programStage='" + programStage + '\'' +
-            ", eventId='" + event + '\'' +
+            ", event='" + event + '\'' +
             ", orgUnit='" + orgUnit + '\'' +
             ", patient='" + patient + '\'' +
             ", eventDate='" + eventDate + '\'' +

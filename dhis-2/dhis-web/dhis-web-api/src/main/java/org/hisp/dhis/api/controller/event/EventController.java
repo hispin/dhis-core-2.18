@@ -27,20 +27,27 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.event.Event;
 import org.hisp.dhis.dxf2.event.EventService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -51,6 +58,10 @@ public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
 
+    //--------------------------------------------------------------------------
+    // Dependencies
+    //--------------------------------------------------------------------------
+
     @Autowired
     private EventService eventService;
 
@@ -58,19 +69,42 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public void postXmlEvents( HttpServletResponse response, InputStream inputStream ) throws IOException
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getEvent( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
+        WebOptions options = new WebOptions( parameters );
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
+            return null;
+        }
+
+        if ( options.hasLinks() )
+        {
+            event.setHref( ContextUtils.getRootPath( request ) + "/events/" + uid );
+        }
+
+        model.addAttribute( "model", event );
+
+        return StringUtils.uncapitalize( "event" );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        ImportSummaries importSummaries = eventService.saveEventsXml( request.getInputStream() );
         JacksonUtils.toXml( response.getOutputStream(), importSummaries );
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public void postJsonEvents( HttpServletResponse response, InputStream inputStream ) throws IOException
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
+        ImportSummaries importSummaries = eventService.saveEventsJson( request.getInputStream() );
         JacksonUtils.toJson( response.getOutputStream(), importSummaries );
     }
 

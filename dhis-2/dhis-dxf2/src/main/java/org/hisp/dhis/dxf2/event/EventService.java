@@ -45,4 +45,6 @@ public interface EventService
     ImportSummary saveEventJson( InputStream inputStream ) throws IOException;
 
     ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException;
+
+    Event getEvent( String uid );
 }
