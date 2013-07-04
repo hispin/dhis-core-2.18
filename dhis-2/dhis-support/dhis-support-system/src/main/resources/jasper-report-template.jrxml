@@ -16,7 +16,7 @@
         <band splitType="Stretch"/>
     </background>
     <title>
-        <band height="315" splitType="Stretch">
+        <band height="335" splitType="Stretch">
             <staticText>
                 <reportElement uuid="ac60f476-8e83-423f-b4a9-626128dc5563" x="0" y="14" width="558" height="37"/>
                 <textElement>
@@ -114,6 +114,11 @@
                 <textElement/>
                 <textFieldExpression><![CDATA[$P{organisationunit_uid_level_column}]]></textFieldExpression>
             </textField>
+            <staticText>
+                <reportElement uuid="0cd878e0-db70-494c-9b8a-0011618db404" x="1" y="303" width="571" height="19"/>
+                <textElement/>
+                <text><![CDATA[Tip: To make params render as text in SQL queries, put a "!" after $P in the parameter syntax. ]]></text>
+            </staticText>
         </band>
     </title>
     <pageHeader>
