@@ -127,6 +127,7 @@ public class AddPatientAttributeAction
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
         patientAttribute.setExpression( expression );
+        patientAttribute.setDisplayOnVisitSchedule( false );
 
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
