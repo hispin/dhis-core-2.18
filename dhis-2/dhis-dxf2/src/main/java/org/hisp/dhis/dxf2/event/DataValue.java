@@ -47,7 +47,7 @@ public class DataValue
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getValue()
     {
         return value;
@@ -59,7 +59,7 @@ public class DataValue
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getDataElement()
     {
         return dataElement;
@@ -71,7 +71,7 @@ public class DataValue
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true )
     public Boolean getProvidedElsewhere()
     {
         return providedElsewhere;
