@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "patient_registration_form_management" ) #openHelp( "person_registration_form" )</h3>
 
-<table width="70%">
+<table class='mainPageTable'>
 	#set($display = 'block')
 	#foreach( $registrationForm in $registrationForms )
 		#if( $!registrationForm.program )
@@ -38,11 +38,11 @@
 						#end	
 					</td>  
 					<td style="text-align:center">
-					  <a id='update_$registrationForm.program.id' href="javascript:updateNewForm($registrationForm.id, '$!registrationForm.program.id')" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-					  <a id='add_$registrationForm.program.id' href="javascript:addNewForm($registrationForm.program.id)" title="$i18n.getString( 'design_data_entry_form' )" style='display:none;'><img src="../images/add.png" alt="$i18n.getString( 'design_data_entry_form' )" ></a>
+					  <a href="javascript:showDefaultRegistrationForm('$!registrationForm.program.id');"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
 					  
-					  <a href="javascript:showDefaultRegistrationForm('$!registrationForm.program.id');"><img src='../images/edit_layout.png' alt="$i18n.getString( 'design_data_entry_form' )"></a>
-					  
+					  <a id='update_$registrationForm.program.id' href="javascript:updateNewForm($registrationForm.id, '$!registrationForm.program.id')" title="$i18n.getString( 'edit' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
+					  <a id='add_$registrationForm.program.id' href="javascript:addNewForm($registrationForm.program.id)" title="$i18n.getString( 'design_data_entry_form' )" style='display:none;'><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )" ></a>
+					 
 					  <a href="javascript:removeRegistrationForm( '$!registrationForm.program.id', '$!encoder.jsEncode( $registrationForm.program.name )')" title="$i18n.getString( "remove" )"><img id='active_$registrationForm.program.id' src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					  <img id='define_$registrationForm.program.id' style='display:none;' src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>
@@ -54,9 +54,9 @@
 					<td>$encoder.htmlEncode( $program.name )</td>  
 					<td>[$i18n.getString('none')]</td>   					
 					<td style="text-align:center">
-					  <a href="javascript:addNewForm($program.id)" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/add.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
-					  <a href="javascript:showDefaultRegistrationForm($program.id);"><img src='../images/edit_layout.png' alt="$i18n.getString( 'design_data_entry_form' )"></a>
-					  <img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
+					  	<a href="javascript:showDefaultRegistrationForm($program.id);"><img src='../images/edit.png' alt="$i18n.getString( 'design_data_entry_form' )"></a>
+						<a href="javascript:addNewForm($program.id)" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
+						<img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>
 				</tr>
 				#end
@@ -65,8 +65,8 @@
 					<td>$i18n.getString('all')</td>  
 					<td>[$i18n.getString('none')]</td>   					
 					<td style="text-align:center">
-					  <a href="javascript:addNewForm('')" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/add.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
-					  <a href="javascript:showDefaultRegistrationForm('');"><img src='../images/edit_layout.png' alt="$i18n.getString( 'design_data_entry_form' )"></a>
+					  <a href="javascript:showDefaultRegistrationForm('');"><img src='../images/edit.png' alt="$i18n.getString( 'design_data_entry_form' )"></a>
+					  <a href="javascript:addNewForm('')" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
 					  <img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>
 				</tr>
