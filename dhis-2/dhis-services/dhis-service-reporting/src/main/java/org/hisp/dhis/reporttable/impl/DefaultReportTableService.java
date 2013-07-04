@@ -27,6 +27,7 @@ package org.hisp.dhis.reporttable.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -109,8 +110,15 @@ public class DefaultReportTableService
         ReportTable reportTable = getReportTable( uid );
                 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-                
-        reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, organisationUnit, format );
+
+        List<OrganisationUnit> atLevel = new ArrayList<OrganisationUnit>();
+        
+        if ( reportTable.getOrganisationUnitLevel() != null && reportTable.getOrganisationUnits() != null )
+        {
+            atLevel.addAll( organisationUnitService.getOrganisationUnitsAtLevel( reportTable.getOrganisationUnitLevel(), reportTable.getOrganisationUnits() ) );
+        }
+        
+        reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, organisationUnit, atLevel, format );
 
         Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( reportTable, format );
 

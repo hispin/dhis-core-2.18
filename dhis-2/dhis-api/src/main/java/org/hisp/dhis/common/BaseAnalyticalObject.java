@@ -38,6 +38,7 @@ import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,11 +85,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
  * This class contains associations to dimensional meta-data. Should typically
  * be sub-classed by analytical objects like tables, maps and charts.
  * 
+ * Implementation note: Objects currently managing this class are AnalyticsService,
+ * DefaultDimensionService and the getDimensionalObject and getDimensionalObjectList 
+ * methods of this class.
+ * 
  * @author Lars Helge Overland
  */
 public abstract class BaseAnalyticalObject
     extends BaseIdentifiableObject
-{
+{    
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -126,6 +131,8 @@ public abstract class BaseAnalyticalObject
 
     protected boolean userOrganisationUnitChildren;
 
+    protected Integer organisationUnitLevel;
+    
     protected boolean rewindRelativePeriods;
 
     // -------------------------------------------------------------------------
@@ -156,6 +163,8 @@ public abstract class BaseAnalyticalObject
     // Logic
     // -------------------------------------------------------------------------
 
+    public abstract void init( User user, Date date, OrganisationUnit organisationUnit, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format );
+    
     public abstract void populateAnalyticalProperties();
     
     public boolean hasUserOrgUnit()
@@ -198,7 +207,7 @@ public abstract class BaseAnalyticalObject
      * @param format the I18nFormat.
      * @return a DimensionalObject.
      */
-    protected DimensionalObject getDimensionalObject( String dimension, Date date, User user, boolean dynamicNames, I18nFormat format )
+    protected DimensionalObject getDimensionalObject( String dimension, Date date, User user, boolean dynamicNames, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format )
     {       
         List<NameableObject> items = new ArrayList<NameableObject>();
         
@@ -248,6 +257,11 @@ public abstract class BaseAnalyticalObject
             if ( userOrganisationUnitChildren && user != null && user.hasOrganisationUnit() )
             {
                 items.addAll( user.getOrganisationUnit().getSortedChildren() );
+            }
+            
+            if ( organisationUnitLevel != null && organisationUnitsAtLevel != null )
+            {
+                items.addAll( organisationUnitsAtLevel );
             }
             
             type = DimensionType.ORGANISATIONUNIT;
@@ -381,6 +395,16 @@ public abstract class BaseAnalyticalObject
             if ( userOrganisationUnitChildren )
             {
                 ouList.add( new BaseNameableObject( KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN ) );
+            }
+            
+            if ( organisationUnitLevel != null )
+            {
+                for ( OrganisationUnit unit : organisationUnits )
+                {
+                    String id = KEY_LEVEL + organisationUnitLevel + DimensionalObject.DIMENSION_SEP + unit.getUid();
+                    
+                    ouList.add( new BaseNameableObject( id, id, id ) );
+                }
             }
             
             objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, ouList ) );
@@ -546,7 +570,8 @@ public abstract class BaseAnalyticalObject
             categoryDimensions.addAll( object.getCategoryDimensions() );
             
             userOrganisationUnit = object.isUserOrganisationUnit();
-            userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();            
+            userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();
+            organisationUnitLevel = object.getOrganisationUnitLevel();
         }
     }
 
@@ -720,6 +745,19 @@ public abstract class BaseAnalyticalObject
     public void setUserOrganisationUnitChildren( boolean userOrganisationUnitChildren )
     {
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public Integer getOrganisationUnitLevel()
+    {
+        return organisationUnitLevel;
+    }
+
+    public void setOrganisationUnitLevel( Integer organisationUnitLevel )
+    {
+        this.organisationUnitLevel = organisationUnitLevel;
     }
 
     @JsonProperty
