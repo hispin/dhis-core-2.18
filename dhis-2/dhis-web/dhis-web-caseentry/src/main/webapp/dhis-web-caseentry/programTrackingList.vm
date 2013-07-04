@@ -8,6 +8,7 @@
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.id'>
 <input type='hidden' id='ps_$programStageInstance.id' name='ps_$programStageInstance.id' programStageName='$programStageInstance.programStage.displayName' >
 
+#set($programInstance = $programStageInstance.programInstance)
 <div class='dashboard-area'>
 	#set($status = $programStageInstance.getEventStatus())
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
