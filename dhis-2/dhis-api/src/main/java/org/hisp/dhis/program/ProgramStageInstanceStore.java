@@ -26,12 +26,7 @@
  */
 package org.hisp.dhis.program;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -42,12 +37,17 @@ import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
 public interface ProgramStageInstanceStore
-    extends GenericStore<ProgramStageInstance>
+    extends GenericIdentifiableObjectStore<ProgramStageInstance>
 {
     String ID = ProgramStageInstanceStore.class.getName();
 
@@ -67,12 +67,12 @@ public interface ProgramStageInstanceStore
 
     /**
      * Get all {@link ProgramStageInstance program stage instances} for unit.
-     * 
-     * @param unit - the unit to get instances for.
-     * @param after - optional date the instance should be on or after.
-     * @param before - optional date the instance should be on or before.
+     *
+     * @param unit      - the unit to get instances for.
+     * @param after     - optional date the instance should be on or after.
+     * @param before    - optional date the instance should be on or before.
      * @param completed - optional flag to only get completed (<code>true</code>
-     *        ) or uncompleted (<code>false</code>) instances.
+     *                  ) or uncompleted (<code>false</code>) instances.
      * @return
      */
     public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );

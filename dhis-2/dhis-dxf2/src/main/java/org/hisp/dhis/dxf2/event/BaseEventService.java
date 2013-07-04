@@ -204,6 +204,8 @@ public abstract class BaseEventService implements EventService
         ProgramStageInstance programStageInstance = saveEventDate( program, organisationUnit, eventDate,
             event.getCompleted(), event.getCoordinate() );
 
+        importSummary.setReference( programStageInstance.getUid() );
+
         String storedBy = event.getStoredBy();
 
         if ( storedBy == null )

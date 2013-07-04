@@ -96,6 +96,7 @@ public class DefaultProgramStageInstanceService
 
     public int addProgramStageInstance( ProgramStageInstance programStageInstance )
     {
+        programStageInstance.setAutoFields();
         return programStageInstanceStore.save( programStageInstance );
     }
 
@@ -126,6 +127,7 @@ public class DefaultProgramStageInstanceService
 
     public void updateProgramStageInstance( ProgramStageInstance programStageInstance )
     {
+        programStageInstance.setAutoFields();
         programStageInstanceStore.update( programStageInstance );
     }
 
