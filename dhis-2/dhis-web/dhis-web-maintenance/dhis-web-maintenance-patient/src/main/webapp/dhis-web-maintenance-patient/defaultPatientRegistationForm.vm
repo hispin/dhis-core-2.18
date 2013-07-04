@@ -1,7 +1,7 @@
-<h3>$i18n.getString( "create_new_patient_attribute_group" )</h3>
+<h3>$i18n.getString( "create_default_registration_form" )</h3>
 																			
 <form id="defaultPatientRegistrationForm" name="defaultPatientRegistrationForm" action="saveDefaultPatientRegistrationForm.action" method="post" onsubmit="selectAllById('fixedAttributes');selectAllById('dynamicAttributeIds');selectAllById('identifierTypeIds');">
-
+<input type='hidden' id='programId' name='programId' value='$!program.id'/>
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "default_registration_form" )</th>

@@ -30,15 +30,17 @@
     </list>
      
     <list name="dynamicAttributes" table="patientregistrationform_attributes">
-      <key column="patientregistrationformid" />
+      <key column="patientregistrationformid" foreign-key="fk_attributes_patientregistrationformid" />
       <list-index column="sort_order" base="1" />
-      <one-to-many class="org.hisp.dhis.patient.PatientAttribute" />
+      <many-to-many class="org.hisp.dhis.patient.PatientAttribute" column="patientattributeid" 
+      	foreign-key="fk_patientregistrationform_attributes_patientregistrationformid" />
     </list>
     
     <list name="identifierTypes" table="patientregistrationform_identifierTypes">
-      <key column="patientattributegroupid" />
+      <key column="patientregistrationformid" foreign-key="fk_identifierTypes_patientregistrationformid" />
       <list-index column="sort_order" base="1" />
-      <one-to-many class="org.hisp.dhis.patient.PatientIdentifierType" />
+      <many-to-many class="org.hisp.dhis.patient.PatientIdentifierType" column="patientidentifiertypeid"
+      	foreign-key="fk_patientregistrationform_identifiertype_patientregistrationformid" />
     </list>
     
   </class>
