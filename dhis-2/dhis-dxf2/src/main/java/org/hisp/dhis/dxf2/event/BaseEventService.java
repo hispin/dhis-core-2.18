@@ -54,6 +54,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -369,6 +371,64 @@ public abstract class BaseEventService implements EventService
         }
 
         return event;
+    }
+
+    @Override
+    public void updateEvent( Event event )
+    {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
+
+        if ( programStageInstance == null )
+        {
+            return;
+        }
+
+        OrganisationUnit organisationUnit = null;
+
+        if ( event.getOrgUnit() != null )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
+        }
+        else
+        {
+            organisationUnit = programStageInstance.getOrganisationUnit();
+        }
+
+        Date date = new Date();
+
+        programStageInstance.setDueDate( date );
+        programStageInstance.setExecutionDate( date );
+        programStageInstance.setOrganisationUnit( organisationUnit );
+        programStageInstance.setCompletedUser( event.getStoredBy() );
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
+        Set<PatientDataValue> patientDataValues = new HashSet<PatientDataValue>( patientDataValueService.getPatientDataValues( programStageInstance ) );
+
+        for ( DataValue value : event.getDataValues() )
+        {
+            DataElement dataElement = dataElementService.getDataElement( value.getDataElement() );
+
+            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
+
+            if ( patientDataValue != null )
+            {
+                patientDataValue.setValue( value.getValue() );
+                patientDataValue.setProvidedElsewhere( value.getProvidedElsewhere() );
+                patientDataValueService.updatePatientDataValue( patientDataValue );
+
+                patientDataValues.remove( patientDataValue );
+            }
+            else
+            {
+                saveDataValue( programStageInstance, event.getStoredBy(), dataElement, value.getValue(), value.getProvidedElsewhere() );
+            }
+        }
+
+        for ( PatientDataValue value : patientDataValues )
+        {
+            patientDataValueService.deletePatientDataValue( value );
+        }
     }
 
     @Override

@@ -48,5 +48,7 @@ public interface EventService
 
     Event getEvent( String uid );
 
+    void updateEvent( Event event );
+
     void deleteEvent( Event event );
 }
