@@ -37,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,14 +45,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = EventController.RESOURCE_PATH)
+@RequestMapping( value = EventController.RESOURCE_PATH )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -84,17 +82,18 @@ public class EventController
 
         if ( options.hasLinks() )
         {
-            event.setHref( ContextUtils.getRootPath( request ) + "/events/" + uid );
+            event.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + uid );
         }
 
         model.addAttribute( "model", event );
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
-        return StringUtils.uncapitalize( "event" );
+        return "event";
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         ImportSummaries importSummaries = eventService.saveEventsXml( request.getInputStream() );
         JacksonUtils.toXml( response.getOutputStream(), importSummaries );
@@ -102,13 +101,13 @@ public class EventController
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         ImportSummaries importSummaries = eventService.saveEventsJson( request.getInputStream() );
         JacksonUtils.toJson( response.getOutputStream(), importSummaries );
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler( IllegalArgumentException.class )
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
