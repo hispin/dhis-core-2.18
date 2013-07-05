@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,9 +44,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -94,7 +97,7 @@ public class EventController
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postXmlObject( HttpServletResponse response, HttpServletRequest request ) throws Exception
+    public void postXmlEvent( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         ImportSummaries importSummaries = eventService.saveEventsXml( request.getInputStream() );
 
@@ -114,7 +117,7 @@ public class EventController
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postJsonObject( HttpServletResponse response, HttpServletRequest request ) throws Exception
+    public void postJsonEvent( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         ImportSummaries importSummaries = eventService.saveEventsJson( request.getInputStream() );
 
@@ -130,6 +133,52 @@ public class EventController
         }
 
         JacksonUtils.toJson( response.getOutputStream(), importSummaries );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_DELETE')" )
+    public void deleteEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid )
+    {
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event could not be found." );
+            return;
+        }
+
+        eventService.deleteEvent( event );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_UPDATE')" )
+    public void putXmlEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws IOException
+    {
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event could not be found." );
+            return;
+        }
+
+        Event updatedEvent = JacksonUtils.fromXml( request.getInputStream(), Event.class );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_UPDATE')" )
+    public void putJsonEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws IOException
+    {
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event could not be found." );
+            return;
+        }
+
+        Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
     }
 
     @ExceptionHandler( IllegalArgumentException.class )
