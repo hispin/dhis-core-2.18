@@ -23,7 +23,7 @@
               
                 <td onclick="showPatientIdentifierTypeDetails( $identifierType.id )">$encoder.htmlEncode( $identifierType.displayName )</td>                
                 
-                <td style="text-align:center"#alternate( $mark )>
+                <td style="text-align:center" #alternate( $mark )>
                   <a href="showUpdatePatientIdentifierTypeForm.action?id=$identifierType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
                   <a href="javascript:translate( 'PatientIdentifierType', '$identifierType.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 				  <a href="javascript:removePatientIdentifierType( '$identifierType.id', '$encoder.jsEncode( $identifierType.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>

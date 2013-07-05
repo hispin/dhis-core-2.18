@@ -89,6 +89,8 @@ public class CaseAggregationCondition
 
     public static String MINUS_OPERATOR = "DATEDIFF";
 
+    public static String MINUS_DATAELEMENT_OPERATOR = "DEDATEDIFF";
+
     public static String AUTO_STORED_BY = "DHIS-SYSTEM";
 
     public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PATIENT + "|"
@@ -101,6 +103,11 @@ public class CaseAggregationCondition
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID
         + "[0-9]+)+\\])\\s*(,)+\\s*(" + OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE + "|"
         + OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE + "|" + OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE + ")+\\s*\\)\\s*";
+
+    public static final String minusDataelementRegExp = MINUS_DATAELEMENT_OPERATOR + "{1}\\s*\\(\\s*(\\["
+        + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID
+        + "[0-9]+)+\\])\\s*(,)\\s*(\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+"
+        + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID + "[0-9]+)+\\])\\s*\\)\\s*(>=|<=|!=|>|<|=){1}\\s*([0-9]+)";
 
     // -------------------------------------------------------------------------
     // Fields

@@ -423,6 +423,7 @@ function getCaseAggConditionByDataset()
 		}
 		, function( html ) 
 		{
+			setTableStyles();
 			setInnerHTML('list', html );
 		} );
 }

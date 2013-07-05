@@ -346,7 +346,7 @@ public class JdbcCaseAggregationConditionManager
                 if ( hasPatients )
                 {
                     sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
-                    sql += "INNER JOIN patient p on p.patientid=pi.patientid  ";
+                    sql += "INNER JOIN patient p on p.patientid=pi.patientid ";
                 }
                 else if ( (hasProgramInstances && !hasPatients)
                     || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
@@ -607,7 +607,31 @@ public class JdbcCaseAggregationConditionManager
 
         String sqlOrgunitCompleted = "";
 
-        // Get minus(date, date) out from the expression and run them later
+        // Get minus(date dataelement, date dataelement) out from the expression
+        // and run them later
+
+        Map<Integer, String> minus2SQLMap = new HashMap<Integer, String>();
+        int idx2 = 0;
+        Pattern patternMinus2 = Pattern.compile( CaseAggregationCondition.minusDataelementRegExp );
+        Matcher matcherMinus2 = patternMinus2.matcher( caseExpression );
+        while ( matcherMinus2.find() )
+        {
+            String[] ids1 = matcherMinus2.group( 2 ).split( SEPARATOR_ID );
+            String[] ids2 = matcherMinus2.group( 5 ).split( SEPARATOR_ID );
+
+            minus2SQLMap.put(
+                idx2,
+                getConditionForMisus2DataElement( orgunitIds, ids1[1], ids1[2], ids2[1], ids2[2],
+                    matcherMinus2.group( 6 ) + matcherMinus2.group( 7 ), startDate, endDate ) );
+
+            caseExpression = caseExpression.replace( matcherMinus2.group( 0 ),
+                CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR + "_" + idx2 );
+
+            idx2++;
+        }
+
+        // Get minus(date dataelement, date) out from the expression and run
+        // them later
 
         Map<Integer, String> minusSQLMap = new HashMap<Integer, String>();
         int idx = 0;
@@ -744,6 +768,12 @@ public class JdbcCaseAggregationConditionManager
         for ( int key = 0; key < idx; key++ )
         {
             sql = sql.replace( CaseAggregationCondition.MINUS_OPERATOR + "_" + key, minusSQLMap.get( key ) );
+        }
+
+        for ( int key = 0; key < idx2; key++ )
+        {
+            sql = sql
+                .replace( CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR + "_" + key, minus2SQLMap.get( key ) );
         }
 
         return sql + " ) ";
@@ -982,6 +1012,28 @@ public class JdbcCaseAggregationConditionManager
             + ") " + "                 AND _psi.programstageid = " + programStageId + " AND _psi.executionDate>='"
             + startDate + "' AND _psi.executionDate <= '" + endDate + "' "
             + "                 AND ( DATE(_pdv.value) - DATE(" + compareSide + ") ) ";
+    }
+
+    private String getConditionForMisus2DataElement( Collection<Integer> orgunitIds, String programStageId1,
+        String dataElementId1, String programStageId2, String dataElementId2, String compareSide, String startDate,
+        String endDate )
+    {
+        return " EXISTS ( SELECT * FROM ( SELECT  * FROM patientdatavalue _pdv INNER JOIN programstageinstance _psi "
+            + "                         ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
+            + "                 JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
+            + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid and _pdv.dataelementid= " + dataElementId1 
+            + "                 AND _psi.organisationunitid in ("+ TextUtils.getCommaDelimitedString( orgunitIds )+") "
+            + "                 AND _psi.programstageid = " + programStageId1
+            + "                 AND _psi.executionDate>='" + startDate + "'  "
+            + "                 AND _psi.executionDate <= '" + endDate + "' ) AS d1 cross join "
+            + "         (  SELECT * FROM patientdatavalue _pdv INNER JOIN programstageinstance _psi "
+            + "                        ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
+            + "                  JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
+            + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid and _pdv.dataelementid= " + dataElementId2
+            + "                 AND _psi.organisationunitid in ("+ TextUtils.getCommaDelimitedString( orgunitIds )+") "
+            + "                 AND _psi.programstageid =  " + programStageId2
+            + "                 AND _psi.executionDate>='" + startDate + "'  "
+            + "                 AND _psi.executionDate <= '" + endDate + "' ) AS d2 WHERE DATE(d1.value ) - DATE(d2.value) " + compareSide;
     }
 
     /**

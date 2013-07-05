@@ -146,6 +146,7 @@
 			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , dateOfIncident) " );' value="$i18n.getString('minus_with_dateOfIncident')" />
 			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , enrollmentDate) " );' value="$i18n.getString('minus_with_enrollmentDate')" />
 			<input type='button' style="width:175px;" onclick='insertOperator( "DATEDIFF( , executionDate) " );' value="$i18n.getString('minus_with_executionDate')" />
+			<input type='button' style="width:175px;" onclick='insertOperator( "DEDATEDIFF( , ) " );' value="$i18n.getString('minus_with_dataelement')" />
 			<span style='padding-left:110px'>
 				<input type='button' style="width:45px;" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" value="$i18n.getString('clear')" />
 			</span>

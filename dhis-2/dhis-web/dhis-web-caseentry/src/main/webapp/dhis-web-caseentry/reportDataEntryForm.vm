@@ -12,12 +12,11 @@
 				</td>
 				<td class='coordinates2'>
 					$encoder.htmlEncode( $patient.getFullName() ) 
-					( #if($patient.gender=='F')
-							<img src='images/female_small.png'>
-						#else
-							<img src='images/male_small.png'>
-						#end
-					)
+					#if($patient.gender=='F')
+						<img src='images/female_small.png'>
+					#else
+						<img src='images/male_small.png'>
+					#end
 				</td>
 				<td class='bold coordinates1'>$i18n.getString('program'):</td>
 				<td class='coordinates2'>$program.displayName</td>

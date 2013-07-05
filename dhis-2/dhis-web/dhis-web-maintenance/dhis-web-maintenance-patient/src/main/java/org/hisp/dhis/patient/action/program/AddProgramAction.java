@@ -347,6 +347,7 @@ public class AddProgramAction
             programStage.setDescription( description );
             programStage.setProgram( program );
             programStage.setMinDaysFromStart( 0 );
+            programStage.setAutoGenerateEvent( true );
             programStage.setReportDateDescription( REPORT_DATE_DESCRIPTION );
 
             programStageService.saveProgramStage( programStage );
