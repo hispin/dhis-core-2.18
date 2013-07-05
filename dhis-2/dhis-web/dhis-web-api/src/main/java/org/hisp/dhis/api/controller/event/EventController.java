@@ -32,6 +32,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dxf2.event.Event;
 import org.hisp.dhis.dxf2.event.EventService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,6 +97,18 @@ public class EventController
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         ImportSummaries importSummaries = eventService.saveEventsXml( request.getInputStream() );
+
+        for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
+        {
+            importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+        }
+
+        if ( importSummaries.getImportSummaries().size() == 1 )
+        {
+            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+            response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+        }
+
         JacksonUtils.toXml( response.getOutputStream(), importSummaries );
     }
 
@@ -104,6 +117,18 @@ public class EventController
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         ImportSummaries importSummaries = eventService.saveEventsJson( request.getInputStream() );
+
+        for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
+        {
+            importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+        }
+
+        if ( importSummaries.getImportSummaries().size() == 1 )
+        {
+            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+            response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+        }
+
         JacksonUtils.toJson( response.getOutputStream(), importSummaries );
     }
 
