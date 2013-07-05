@@ -30,6 +30,7 @@ package org.hisp.dhis.patient.action.caseaggregation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
@@ -105,16 +106,17 @@ public class GetAllCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Collection<DataSet> _datasets = new HashSet<DataSet>();
         aggregationConditions = aggregationConditionService.getAllCaseAggregationCondition();
 
         for ( CaseAggregationCondition aggCondition : aggregationConditions )
         {
             DataElement dataElement = aggCondition.getAggregationDataElement();
 
-            dataSets.addAll( dataElement.getDataSets() );
+            _datasets.addAll( dataElement.getDataSets() );
         }
 
+        dataSets = new ArrayList<DataSet>( _datasets );
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( dataSetId != null )
