@@ -51,6 +51,8 @@ public class ImportSummary
 
     private String reference;
 
+    private String href;
+
     public ImportSummary()
     {
     }
@@ -132,5 +134,17 @@ public class ImportSummary
     public void setReference( String reference )
     {
         this.reference = reference;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getHref()
+    {
+        return href;
+    }
+
+    public void setHref( String href )
+    {
+        this.href = href;
     }
 }
