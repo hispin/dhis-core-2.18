@@ -164,6 +164,10 @@ public class EventController
         }
 
         Event updatedEvent = JacksonUtils.fromXml( request.getInputStream(), Event.class );
+        updatedEvent.setEvent( uid );
+
+        eventService.updateEvent( updatedEvent );
+        ContextUtils.okResponse( response, "" );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
@@ -179,11 +183,17 @@ public class EventController
         }
 
         Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
+        updatedEvent.setEvent( uid );
+
+        eventService.updateEvent( updatedEvent );
+        ContextUtils.okResponse( response, "" );
     }
 
+    /*
     @ExceptionHandler( IllegalArgumentException.class )
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
     }
+    */
 }
