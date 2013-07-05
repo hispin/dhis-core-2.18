@@ -144,7 +144,7 @@ public class EventController
 
         if ( event == null )
         {
-            ContextUtils.notFoundResponse( response, "Event could not be found." );
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
             return;
         }
 
@@ -159,7 +159,7 @@ public class EventController
 
         if ( event == null )
         {
-            ContextUtils.notFoundResponse( response, "Event could not be found." );
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
             return;
         }
 
@@ -174,7 +174,7 @@ public class EventController
 
         if ( event == null )
         {
-            ContextUtils.notFoundResponse( response, "Event could not be found." );
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
             return;
         }
 
