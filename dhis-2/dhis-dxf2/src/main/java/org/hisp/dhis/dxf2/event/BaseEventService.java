@@ -370,4 +370,15 @@ public abstract class BaseEventService implements EventService
 
         return event;
     }
+
+    @Override
+    public void deleteEvent( Event event )
+    {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
+
+        if ( programStageInstance != null )
+        {
+            programStageInstanceService.deleteProgramStageInstance( programStageInstance );
+        }
+    }
 }
