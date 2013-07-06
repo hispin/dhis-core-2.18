@@ -230,7 +230,7 @@ public class GeoToolsMap
         // Create style for this map object
         if ( mapObject.getGeometry() instanceof Point )
         {
-            style = SLD.createPointStyle( null, mapObject.getStrokeColor(), mapObject.getFillColor(),
+            style = SLD.createPointStyle( "Circle", mapObject.getStrokeColor(), mapObject.getFillColor(),
                 mapObject.getFillOpacity(), mapObject.getRadius() );
         }
         else if ( mapObject.getGeometry() instanceof Polygon || mapObject.getGeometry() instanceof MultiPolygon )
