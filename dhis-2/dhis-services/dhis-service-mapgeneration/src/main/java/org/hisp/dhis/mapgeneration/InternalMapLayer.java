@@ -97,9 +97,14 @@ public class InternalMapLayer
         for ( InternalMapObject mapObject : mapObjects )
         {
             if ( min == null || mapObject.getValue() < min.getValue() )
+            {
                 min = mapObject;
+            }
+            
             if ( max == null || mapObject.getValue() > max.getValue() )
+            {
                 max = mapObject;
+            }
         }
 
         // Determine and set the radius for each of the map objects according to

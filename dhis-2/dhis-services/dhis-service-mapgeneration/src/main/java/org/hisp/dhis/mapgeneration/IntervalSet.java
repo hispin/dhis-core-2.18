@@ -204,18 +204,15 @@ public class IntervalSet
      */
     private static void distributeAndUpdateMapObjectsForMapLayer( InternalMapLayer mapLayer, IntervalSet set )
     {
-
         // For each map object, determine in which interval it belongs
         for ( InternalMapObject obj : mapLayer.getAllMapObjects() )
         {
             for ( Interval in : set.intervals )
             {
-
                 // If the map object's value is within this interval's
                 // boundaries, add it to this interval
                 if ( obj.getValue() >= in.getValueLow() && obj.getValue() <= in.getValueHigh() )
                 {
-
                     // Add map object to interval and set interval for map
                     // object
                     in.addMember( obj );
