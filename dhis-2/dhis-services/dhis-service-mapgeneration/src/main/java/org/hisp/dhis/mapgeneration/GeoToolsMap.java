@@ -65,6 +65,12 @@ import com.vividsolutions.jts.geom.Polygon;
 public class GeoToolsMap
     extends InternalMap
 {
+    private static final String CIRCLE = "Circle";
+    private static final String POINT = "Point";
+    private static final String POLYGON = "Polygon";
+    private static final String MULTI_POLYGON = "MultiPolygon";
+    private static final String GEOMETRIES = "geometries";
+    
     // The flat list of map objects in this map.
     private List<GeoToolsMapObject> mapObjects;
 
@@ -126,7 +132,7 @@ public class GeoToolsMap
     {
         for ( InternalMapObject mapObject : layer.getAllMapObjects() )
         {
-            this.addMapObject( (GeoToolsMapObject) mapObject );
+            addMapObject( (GeoToolsMapObject) mapObject );
         }
     }
 
@@ -136,7 +142,7 @@ public class GeoToolsMap
         {
             for ( InternalMapObject mapObject : layer.getAllMapObjects() )
             {
-                this.addMapObject( (GeoToolsMapObject) mapObject );
+                addMapObject( (GeoToolsMapObject) mapObject );
             }
         }
     }
@@ -213,24 +219,21 @@ public class GeoToolsMap
     private Layer createFeatureLayerFromMapObject( GeoToolsMapObject mapObject )
         throws SchemaException
     {
-        SimpleFeatureType featureType;
-        SimpleFeatureBuilder featureBuilder;
-        SimpleFeature feature;
-        DefaultFeatureCollection featureCollection;
+        SimpleFeatureType featureType = createFeatureType( mapObject.getGeometry() );
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder( featureType );
+        DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
+        
         Style style = null;
 
-        featureType = createFeatureType( mapObject.getGeometry() );
-        featureBuilder = new SimpleFeatureBuilder( featureType );
         featureBuilder.add( mapObject.getGeometry() );
-        feature = featureBuilder.buildFeature( null );
+        SimpleFeature feature = featureBuilder.buildFeature( null );
 
-        featureCollection = new DefaultFeatureCollection();
         featureCollection.add( feature );
 
         // Create style for this map object
         if ( mapObject.getGeometry() instanceof Point )
         {
-            style = SLD.createPointStyle( "Circle", mapObject.getStrokeColor(), mapObject.getFillColor(),
+            style = SLD.createPointStyle( CIRCLE, mapObject.getStrokeColor(), mapObject.getFillColor(),
                 mapObject.getFillOpacity(), mapObject.getRadius() );
         }
         else if ( mapObject.getGeometry() instanceof Polygon || mapObject.getGeometry() instanceof MultiPolygon )
@@ -256,22 +259,22 @@ public class GeoToolsMap
 
         if ( geom instanceof Point )
         {
-            type = "Point";
+            type = POINT;
         }
         else if ( geom instanceof Polygon )
         {
-            type = "Polygon";
+            type = POLYGON;
         }
         else if ( geom instanceof MultiPolygon )
         {
-            type = "MultiPolygon";
+            type = MULTI_POLYGON;
         }
         else
         {
             throw new IllegalArgumentException();
         }
 
-        return DataUtilities.createType( "geometries", "geometry:" + type + ":srid=3785" );
+        return DataUtilities.createType( GEOMETRIES, "geometry:" + type + ":srid=3785" );
     }
 
     /**
