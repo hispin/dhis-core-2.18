@@ -34,7 +34,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsService;
@@ -137,36 +139,18 @@ public class GeoToolsMapGenerationService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
             getOrganisationUnitsAtLevel( mapView.getOrganisationUnitLevel().getLevel(), mapView.getParentOrganisationUnit() ) );
 
-        DataQueryParams params = new DataQueryParams();
+        Map<String, OrganisationUnit> uidOuMap = new HashMap<String, OrganisationUnit>();
         
-        if ( mapView.getIndicator() != null )
+        for ( OrganisationUnit ou : organisationUnits )
         {
-            params.setIndicators( getList( mapView.getIndicator() ) );
-        }
-        else if ( mapView.getDataElement() != null )
-        {
-            params.setDataElements( getList( mapView.getDataElement() ) );
+            uidOuMap.put( ou.getUid(), ou );
         }
         
-        //TODO operands
-
-        params.setOrganisationUnits( organisationUnits );
-        params.setFilterPeriods( getList( mapView.getPeriod() ) );
+        mapView.setOrganisationUnitsAtLevel( organisationUnits );
         
-        Grid grid = analyticsService.getAggregatedDataValues( params );
+        Grid grid = getDataGrid( mapView );
         
-        Collection<MapValue> mapValues = new ArrayList<MapValue>();
-
-        for ( List<Object> row : grid.getRows() )
-        {
-            if ( row != null && row.size() >= 3 )
-            {
-                String ou = (String) row.get( 1 );
-                Double value = (Double) row.get( 2 );
-                
-                mapValues.add( new MapValue( ou, value ) );
-            }
-        }
+        Collection<MapValue> mapValues = getMapValues( grid );
                 
         if ( mapValues.isEmpty() )
         {
@@ -216,7 +200,7 @@ public class GeoToolsMapGenerationService
         for ( MapValue mapValue : mapValues )
         {
             // Get the org unit for this map value
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOu() );
+            OrganisationUnit orgUnit = uidOuMap.get( mapValue.getOu() );
             
             if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
             {
@@ -239,6 +223,51 @@ public class GeoToolsMapGenerationService
         return mapLayer;
     }
 
+    /**
+     * Creates a Grid with aggregated data.
+     */
+    private Grid getDataGrid( MapView mapView )
+    {
+        DataQueryParams params = new DataQueryParams();
+        
+        if ( mapView.getIndicator() != null )
+        {
+            params.setIndicators( getList( mapView.getIndicator() ) );
+        }
+        else if ( mapView.getDataElement() != null )
+        {
+            params.setDataElements( getList( mapView.getDataElement() ) );
+        }
+        
+        //TODO operands
+
+        params.setOrganisationUnits( mapView.getOrganisationUnitsAtLevel() );
+        params.setFilterPeriods( getList( mapView.getPeriod() ) );
+        
+        return analyticsService.getAggregatedDataValues( params );
+    }
+    
+    /**
+     * Creates a list of aggregated map values.
+     */
+    private List<MapValue> getMapValues( Grid grid )
+    {
+        List<MapValue> mapValues = new ArrayList<MapValue>();
+
+        for ( List<Object> row : grid.getRows() )
+        {
+            if ( row != null && row.size() >= 3 )
+            {
+                String ou = (String) row.get( 1 );
+                Double value = (Double) row.get( 2 );
+                
+                mapValues.add( new MapValue( ou, value ) );
+            }
+        }
+
+        return mapValues;
+    }
+    
     private GeoToolsMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
         double mapValue, OrganisationUnit orgUnit )
     {
