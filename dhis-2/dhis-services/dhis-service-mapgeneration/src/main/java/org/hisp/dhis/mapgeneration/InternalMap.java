@@ -28,7 +28,8 @@ package org.hisp.dhis.mapgeneration;
  */
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -43,87 +44,61 @@ import java.util.List;
  * @author Kjetil Andresen <kjetand@ifi.uio.no>
  * @author Olai Solheim <olais@ifi.uio.no>
  */
-public abstract class InternalMap
+public class InternalMap
 {
-    // The background color used by this map.
     protected Color backgroundColor = null;
 
-    // True if anti-aliasing is enabled, false otherwise.
     protected boolean isAntiAliasingEnabled = true;
+    
+    private List<InternalMapObject> mapObjects = new ArrayList<InternalMapObject>();
 
-    // The default map image width, in pixels.
-    protected static final int DEFAULT_MAP_WIDTH = 500;
-
-    /**
-     * Gets the background color of this map.
-     * 
-     * @return the background color, or null if not set
-     */
+    public InternalMap()
+    {
+    }
+    
     public Color getBackgroundColor()
     {
-        return this.backgroundColor;
+        return backgroundColor;
     }
 
-    /**
-     * Sets the background color of this map.
-     * 
-     * Setting this to null enables a transparent background.
-     * 
-     * @param backgroundColor the background color
-     */
     public void setBackgroundColor( Color backgroundColor )
     {
         this.backgroundColor = backgroundColor;
     }
 
-    /**
-     * Returns true if anti-aliasing is enabled for rendering, false otherwise.
-     * 
-     * @return true if anti-aliasing is enabled, false otherwise
-     */
     public boolean isAntiAliasingEnabled()
     {
-        return this.isAntiAliasingEnabled;
+        return isAntiAliasingEnabled;
     }
 
-    /**
-     * Sets if anti-aliasing should be enabled for rendering.
-     * 
-     * @param b true to enable anti-aliasing, false to disable
-     */
-    public void setAntiAliasingEnabled( boolean b )
+    public void setAntiAliasingEnabled( boolean isAntiAliasingEnabled )
     {
-        this.isAntiAliasingEnabled = b;
+        this.isAntiAliasingEnabled = isAntiAliasingEnabled;
     }
 
-    /**
-     * Adds a map layer to this map.
-     * 
-     * @param layer the layer
-     */
-    public abstract void addMapLayer( InternalMapLayer layer );
+    public List<InternalMapObject> getMapObjects()
+    {
+        return mapObjects;
+    }
 
-    /**
-     * Adds all map layers contained in the list.
-     * 
-     * @param layers the list of layers
-     */
-    public abstract void addAllMapLayers( List<InternalMapLayer> layers );
+    public void setMapObjects( List<InternalMapObject> mapObjects )
+    {
+        this.mapObjects = mapObjects;
+    }
+    
+    //TODO remove
 
-    /**
-     * Renders all map objects contained in this map to an image with the
-     * default image width.
-     * 
-     * @return the java.awt.image.BufferedImage representing this map
-     */
-    public abstract BufferedImage render();
+    public InternalMap( InternalMapLayer layer )
+    {
+        this.mapObjects = new LinkedList<InternalMapObject>();
+        this.addMapLayer( layer );
+    }
 
-    /**
-     * Renders all map objects contained in this map to an image with the
-     * specified width.
-     * 
-     * @param width the desired width of the map
-     * @return the java.awt.image.BufferedImage representing this map
-     */
-    public abstract BufferedImage render( int imageWidth );
+    public void addMapLayer( InternalMapLayer layer )
+    {
+        for ( InternalMapObject mapObject : layer.getAllMapObjects() )
+        {
+            this.mapObjects.add( mapObject );
+        }
+    }
 }

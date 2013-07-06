@@ -28,8 +28,34 @@ package org.hisp.dhis.mapgeneration;
  */
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
+import org.geotools.renderer.GTRenderer;
+import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Utility class.
@@ -40,7 +66,15 @@ public class MapUtils
 {
     private static final String COLOR_PREFIX = "#";
     private static final int COLOR_RADIX = 16;
+
+    private static final String CIRCLE = "Circle";
+    private static final String POINT = "Point";
+    private static final String POLYGON = "Polygon";
+    private static final String MULTI_POLYGON = "MultiPolygon";
+    private static final String GEOMETRIES = "geometries";
     
+    private static final int DEFAULT_MAP_WIDTH = 500;
+
     /**
      * Linear interpolation of int.
      * 
@@ -130,5 +164,153 @@ public class MapUtils
     public static boolean nodeIsNonEmpty( JsonNode json )
     {
         return json != null && json.size() > 0;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Map
+    // -------------------------------------------------------------------------
+
+    public static BufferedImage render( InternalMap map )
+    {
+        return render( map, DEFAULT_MAP_WIDTH );
+    }
+
+    public static BufferedImage render( InternalMap map, int imageWidth )
+    {
+        MapContent mapContent = new MapContent();
+
+        // Convert map objects to features, and add them to the map
+        for ( InternalMapObject mapObject : map.getMapObjects() )
+        {
+            try
+            {
+                mapContent.addLayer( createFeatureLayerFromMapObject( mapObject ) );
+            }
+            catch ( SchemaException ex )
+            {
+                throw new RuntimeException( "Could not add map object: " + mapObject.toString() + ": " + ex.getMessage() );
+            }
+        }
+
+        // Create a renderer for this map
+        GTRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent( mapContent );
+
+        // Calculate image height
+        // TODO Might want to add a margin of say 25 pixels surrounding the map
+        ReferencedEnvelope mapBounds = mapContent.getMaxBounds();
+        double imageHeightFactor = mapBounds.getSpan( 1 ) / mapBounds.getSpan( 0 );
+        Rectangle imageBounds = new Rectangle( 0, 0, imageWidth, (int) Math.ceil( imageWidth * imageHeightFactor ) );
+
+        // Create an image and get the graphics context from it
+        BufferedImage image = new BufferedImage( imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_ARGB );
+        Graphics2D g = (Graphics2D) image.getGraphics();
+
+        // Draw a background if the background color is specified
+        // NOTE It will be transparent otherwise, which is desired
+        if ( map.getBackgroundColor() != null )
+        {
+            g.setColor( map.getBackgroundColor() );
+            g.fill( imageBounds );
+        }
+
+        // Enable anti-aliasing if specified
+        if ( map.isAntiAliasingEnabled() )
+        {
+            g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+        }
+        else
+        {
+            g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF );
+        }
+
+        // Render the map
+        renderer.paint( g, imageBounds, mapBounds );
+
+        mapContent.dispose();
+        
+        return image;
+    }
+
+    /**
+     * Creates a feature layer based on a map object.
+     */
+    public static Layer createFeatureLayerFromMapObject( InternalMapObject mapObject )
+        throws SchemaException
+    {
+        SimpleFeatureType featureType = createFeatureType( mapObject.getGeometry() );
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder( featureType );
+        DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
+        
+        Style style = null;
+
+        featureBuilder.add( mapObject.getGeometry() );
+        SimpleFeature feature = featureBuilder.buildFeature( null );
+
+        featureCollection.add( feature );
+
+        // Create style for this map object
+        if ( mapObject.getGeometry() instanceof Point )
+        {
+            style = SLD.createPointStyle( CIRCLE, mapObject.getStrokeColor(), mapObject.getFillColor(),
+                mapObject.getFillOpacity(), mapObject.getRadius() );
+        }
+        else if ( mapObject.getGeometry() instanceof Polygon || mapObject.getGeometry() instanceof MultiPolygon )
+        {
+            style = SLD.createPolygonStyle( mapObject.getStrokeColor(), mapObject.getFillColor(),
+                mapObject.getFillOpacity() );
+        }
+        else
+        {
+            style = SLD.createSimpleStyle( featureType );
+        }
+
+        return new FeatureLayer( featureCollection, style );
+    }
+
+    /**
+     * Creates a feature type for a GeoTools geometric primitive.
+     */
+    public static SimpleFeatureType createFeatureType( Geometry geom )
+        throws SchemaException
+    {
+        String type = "";
+
+        if ( geom instanceof Point )
+        {
+            type = POINT;
+        }
+        else if ( geom instanceof Polygon )
+        {
+            type = POLYGON;
+        }
+        else if ( geom instanceof MultiPolygon )
+        {
+            type = MULTI_POLYGON;
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+
+        return DataUtilities.createType( GEOMETRIES, "geometry:" + type + ":srid=3785" );
+    }
+
+    /**
+     * Creates an image with text indicating an error.
+     */
+    public static BufferedImage createErrorImage( String error )
+    {
+        String str = "Error creating map image: " + error;
+        BufferedImage image = new BufferedImage( 500, 25, BufferedImage.TYPE_INT_RGB );
+        Graphics2D g = image.createGraphics();
+
+        g.setColor( Color.WHITE );
+        g.fill( new Rectangle( 500, 25 ) );
+
+        g.setColor( Color.RED );
+        g.drawString( str, 1, 12 );
+
+        return image;
     }
 }
