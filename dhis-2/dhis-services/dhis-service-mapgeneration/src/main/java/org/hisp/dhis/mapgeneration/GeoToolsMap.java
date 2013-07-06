@@ -36,8 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -217,7 +216,7 @@ public class GeoToolsMap
         SimpleFeatureType featureType;
         SimpleFeatureBuilder featureBuilder;
         SimpleFeature feature;
-        SimpleFeatureCollection featureCollection;
+        DefaultFeatureCollection featureCollection;
         Style style = null;
 
         featureType = createFeatureType( mapObject.getGeometry() );
@@ -225,7 +224,7 @@ public class GeoToolsMap
         featureBuilder.add( mapObject.getGeometry() );
         feature = featureBuilder.buildFeature( null );
 
-        featureCollection = FeatureCollections.newCollection();
+        featureCollection = new DefaultFeatureCollection();
         featureCollection.add( feature );
 
         // Create style for this map object
@@ -283,7 +282,7 @@ public class GeoToolsMap
     {
         String str = "Error creating map image: " + error;
         BufferedImage image = new BufferedImage( 500, 25, BufferedImage.TYPE_INT_RGB );
-        Graphics2D g = (Graphics2D) image.createGraphics();
+        Graphics2D g = image.createGraphics();
 
         g.setColor( Color.WHITE );
         g.fill( new Rectangle( 500, 25 ) );
