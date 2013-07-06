@@ -27,6 +27,9 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -119,6 +122,8 @@ public class MapView
     private transient String parentGraph;
 
     private transient int parentLevel;
+
+    private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
 
     public MapView()
     {
@@ -489,6 +494,16 @@ public class MapView
     public void setParentLevel( int parentLevel )
     {
         this.parentLevel = parentLevel;
+    }
+
+    public List<OrganisationUnit> getOrganisationUnitsAtLevel()
+    {
+        return organisationUnitsAtLevel;
+    }
+
+    public void setOrganisationUnitsAtLevel( List<OrganisationUnit> organisationUnitsAtLevel )
+    {
+        this.organisationUnitsAtLevel = organisationUnitsAtLevel;
     }
 
     @Override
