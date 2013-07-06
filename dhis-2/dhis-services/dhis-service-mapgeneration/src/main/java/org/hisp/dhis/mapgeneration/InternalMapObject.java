@@ -29,12 +29,20 @@ package org.hisp.dhis.mapgeneration;
 
 import java.awt.Color;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.SchemaException;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * An internal representation of a map object in a map layer.
@@ -53,6 +61,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class InternalMapObject
 {
+    private static final String CIRCLE = "Circle";
+    private static final String POINT = "Point";
+    private static final String POLYGON = "Polygon";
+    private static final String MULTI_POLYGON = "MultiPolygon";
+    private static final String GEOMETRIES = "geometries";
+    
     protected String name;
 
     protected double value;
@@ -166,6 +180,63 @@ public class InternalMapObject
         return primitive;
     }
 
+    public Style getStyle()
+    {
+        Style style = null;
+
+        if ( geometry instanceof Point )
+        {
+            style = SLD.createPointStyle( CIRCLE, strokeColor, fillColor,
+                fillOpacity, radius );
+        }
+        else if ( geometry instanceof Polygon || geometry instanceof MultiPolygon )
+        {
+            style = SLD.createPolygonStyle( strokeColor, fillColor,
+                fillOpacity );
+        }
+        else
+        {
+            style = SLD.createSimpleStyle( getFeatureType() );
+        }
+        
+        return style;
+    }    
+
+    /**
+     * Creates a feature type for a GeoTools geometric primitive.
+     */
+    public SimpleFeatureType getFeatureType()
+    {
+        String type = "";
+
+        if ( geometry instanceof Point )
+        {
+            type = POINT;
+        }
+        else if ( geometry instanceof Polygon )
+        {
+            type = POLYGON;
+        }
+        else if ( geometry instanceof MultiPolygon )
+        {
+            type = MULTI_POLYGON;
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+
+        try
+        {
+            return DataUtilities.createType( GEOMETRIES, "geometry:" + type + ":srid=3785" );
+        }
+        catch ( SchemaException ex )
+        {
+            throw new RuntimeException( "failed to create geometry", ex );
+        }
+    }
+
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

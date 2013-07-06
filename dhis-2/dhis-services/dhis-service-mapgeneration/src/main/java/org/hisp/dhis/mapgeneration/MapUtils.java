@@ -33,9 +33,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
@@ -43,19 +41,11 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Utility class.
@@ -67,12 +57,6 @@ public class MapUtils
     private static final String COLOR_PREFIX = "#";
     private static final int COLOR_RADIX = 16;
 
-    private static final String CIRCLE = "Circle";
-    private static final String POINT = "Point";
-    private static final String POLYGON = "Polygon";
-    private static final String MULTI_POLYGON = "MultiPolygon";
-    private static final String GEOMETRIES = "geometries";
-    
     private static final int DEFAULT_MAP_WIDTH = 500;
 
     /**
@@ -182,14 +166,7 @@ public class MapUtils
         // Convert map objects to features, and add them to the map
         for ( InternalMapObject mapObject : map.getMapObjects() )
         {
-            try
-            {
-                mapContent.addLayer( createFeatureLayerFromMapObject( mapObject ) );
-            }
-            catch ( SchemaException ex )
-            {
-                throw new RuntimeException( "Could not add map object: " + mapObject.toString() + ": " + ex.getMessage() );
-            }
+            mapContent.addLayer( createFeatureLayerFromMapObject( mapObject ) );
         }
 
         // Create a renderer for this map
@@ -236,64 +213,19 @@ public class MapUtils
      * Creates a feature layer based on a map object.
      */
     public static Layer createFeatureLayerFromMapObject( InternalMapObject mapObject )
-        throws SchemaException
     {
-        SimpleFeatureType featureType = createFeatureType( mapObject.getGeometry() );
+        Style style = mapObject.getStyle();
+        
+        SimpleFeatureType featureType = mapObject.getFeatureType();
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder( featureType );
         DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
         
-        Style style = null;
-
         featureBuilder.add( mapObject.getGeometry() );
         SimpleFeature feature = featureBuilder.buildFeature( null );
 
         featureCollection.add( feature );
 
-        // Create style for this map object
-        if ( mapObject.getGeometry() instanceof Point )
-        {
-            style = SLD.createPointStyle( CIRCLE, mapObject.getStrokeColor(), mapObject.getFillColor(),
-                mapObject.getFillOpacity(), mapObject.getRadius() );
-        }
-        else if ( mapObject.getGeometry() instanceof Polygon || mapObject.getGeometry() instanceof MultiPolygon )
-        {
-            style = SLD.createPolygonStyle( mapObject.getStrokeColor(), mapObject.getFillColor(),
-                mapObject.getFillOpacity() );
-        }
-        else
-        {
-            style = SLD.createSimpleStyle( featureType );
-        }
-
         return new FeatureLayer( featureCollection, style );
-    }
-
-    /**
-     * Creates a feature type for a GeoTools geometric primitive.
-     */
-    public static SimpleFeatureType createFeatureType( Geometry geom )
-        throws SchemaException
-    {
-        String type = "";
-
-        if ( geom instanceof Point )
-        {
-            type = POINT;
-        }
-        else if ( geom instanceof Polygon )
-        {
-            type = POLYGON;
-        }
-        else if ( geom instanceof MultiPolygon )
-        {
-            type = MULTI_POLYGON;
-        }
-        else
-        {
-            throw new IllegalArgumentException();
-        }
-
-        return DataUtilities.createType( GEOMETRIES, "geometry:" + type + ":srid=3785" );
     }
 
     /**
