@@ -99,8 +99,8 @@ public class GeoToolsMapGenerationService
         
         // Build internal representation of a map using GeoTools, then render it
         // to an image
-        GeoToolsMap gtMap = new GeoToolsMap( mapLayer );
-        BufferedImage mapImage = gtMap.render( height );
+        InternalMap map = new InternalMap( mapLayer );
+        BufferedImage mapImage = MapUtils.render( map, height );
 
         // Build the legend set, then render it to an image
         LegendSet legendSet = new LegendSet( mapLayer );
@@ -268,11 +268,11 @@ public class GeoToolsMapGenerationService
         return mapValues;
     }
     
-    private GeoToolsMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
+    private InternalMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
         double mapValue, OrganisationUnit orgUnit )
     {
         // Create and setup an internal map object
-        GeoToolsMapObject mapObject = new GeoToolsMapObject();
+        InternalMapObject mapObject = new InternalMapObject();
         mapObject.setName( orgUnit.getName() );
         mapObject.setValue( mapValue );
         mapObject.setFillOpacity( mapLayer.getOpacity() );
@@ -281,7 +281,7 @@ public class GeoToolsMapGenerationService
 
         // Build and set the GeoTools-specific geometric primitive that outlines
         // the org unit on the map
-        mapObject.buildAndApplyGeometryForOrganisationUnit( orgUnit );
+        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( orgUnit ) );
 
         // Add the map object to the map layer
         mapLayer.addMapObject( mapObject );

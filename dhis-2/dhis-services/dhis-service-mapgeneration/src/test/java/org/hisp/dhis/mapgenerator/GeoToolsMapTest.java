@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.mapgeneration.GeoToolsMap;
+import org.hisp.dhis.mapgeneration.InternalMap;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,12 +17,12 @@ import org.junit.Test;
 public class GeoToolsMapTest
     extends DhisSpringTest
 {
-    private GeoToolsMap geoToolsMap;
+    private InternalMap geoToolsMap;
 
     @Override
     public void setUpTest()
     {
-        geoToolsMap = new GeoToolsMap();
+        geoToolsMap = new InternalMap();
     }
 
     @Test
