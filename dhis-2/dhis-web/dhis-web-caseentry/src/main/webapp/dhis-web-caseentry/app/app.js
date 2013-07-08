@@ -809,62 +809,61 @@ Ext.onReady( function() {
 			},
 			convert: function( position )
 			{
+				Ext.getCmp('positionRowCbx').store.removeAll();
+				Ext.getCmp('positionColCbx').store.removeAll();
+				Ext.getCmp('positionFilterCbx').store.removeAll();
+				
 				switch( eval(position) ){
 				
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_PERIOD :
-					Ext.getCmp('positionOrgunitCbx').setValue(1);
-					Ext.getCmp('positionPeriodCbx').setValue(2);
-					Ext.getCmp('positionDataCbx').setValue(3);
+					Ext.getCmp('positionRowCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionColCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionFilterCbx').store.add({id:3, name:TR.i18n.data});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_ORGUNIT :
-					Ext.getCmp('positionOrgunitCbx').setValue(2);
-					Ext.getCmp('positionPeriodCbx').setValue(1);
-					Ext.getCmp('positionDataCbx').setValue(3);
+					Ext.getCmp('positionRowCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionColCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionFilterCbx').store.add({id:3, name:TR.i18n.data});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT_ROW_PERIOD :
-					Ext.getCmp('positionOrgunitCbx').setValue(1);
-					Ext.getCmp('positionPeriodCbx').setValue(1);
-					Ext.getCmp('positionDataCbx').setValue(3);
+					Ext.getCmp('positionRowCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionRowCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionFilterCbx').store.add({id:3, name:TR.i18n.data});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_PERIOD :
-					Ext.getCmp('positionOrgunitCbx').setValue(3);
-					Ext.getCmp('positionPeriodCbx').setValue(1);
-					Ext.getCmp('positionDataCbx').setValue(3);
+					Ext.getCmp('positionRowCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionFilterCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionFilterCbx').store.add({id:3, name:TR.i18n.data});
 					break;
-				case TR.conf.reportPosition.POSITION_ROW_PERIOD :
-					Ext.getCmp('positionOrgunitCbx').setValue(3);
-					Ext.getCmp('positionPeriodCbx').setValue(1);
-					Ext.getCmp('positionDataCbx').setValue(2);
+				case TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA :
+					Ext.getCmp('positionRowCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionColCbx').store.add({id:3, name:TR.i18n.data});
+					Ext.getCmp('positionFilterCbx').store.add({id:1, name:TR.i18n.organisation_units});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT :
-					Ext.getCmp('positionOrgunitCbx').setValue(1);
-					Ext.getCmp('positionPeriodCbx').setValue(2);
-					Ext.getCmp('positionDataCbx').setValue(3);
+					Ext.getCmp('positionRowCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionFilterCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionFilterCbx').store.add({id:3, name:TR.i18n.data});
 					break;	
-				case TR.conf.reportPosition.POSITION_ROW_PERIOD_COLUMN_DATA :
-					Ext.getCmp('positionOrgunitCbx').setValue(3);
-					Ext.getCmp('positionPeriodCbx').setValue(1);
-					Ext.getCmp('positionDataCbx').setValue(2);
-					break;
 				case TR.conf.reportPosition.POSITION_ROW_ORGUNIT_COLUMN_DATA :
-					Ext.getCmp('positionOrgunitCbx').setValue(1);
-					Ext.getCmp('positionPeriodCbx').setValue(3);
-					Ext.getCmp('positionDataCbx').setValue(2);
+					Ext.getCmp('positionRowCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionColCbx').store.add({id:3, name:TR.i18n.data});
+					Ext.getCmp('positionFilterCbx').store.add({id:2, name:TR.i18n.periods});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA :
-					Ext.getCmp('positionOrgunitCbx').setValue(3);
-					Ext.getCmp('positionPeriodCbx').setValue(3);
-					Ext.getCmp('positionDataCbx').setValue(1);
+					Ext.getCmp('positionRowCbx').store.add({id:3, name:TR.i18n.data});
+					Ext.getCmp('positionFilterCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionFilterCbx').store.add({id:1, name:TR.i18n.organisation_units});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_PERIOD :
-					Ext.getCmp('positionOrgunitCbx').setValue(3);
-					Ext.getCmp('positionPeriodCbx').setValue(2);
-					Ext.getCmp('positionDataCbx').setValue(1);
+					Ext.getCmp('positionRowCbx').store.add({id:3, name:TR.i18n.data});
+					Ext.getCmp('positionColCbx').store.add({id:2, name:TR.i18n.periods});
+					Ext.getCmp('positionFilterCbx').store.add({id:1, name:TR.i18n.organisation_units});
 					break;
 				case TR.conf.reportPosition.POSITION_ROW_DATA_COLUMN_ORGUNIT :
-					Ext.getCmp('positionOrgunitCbx').setValue(2);
-					Ext.getCmp('positionPeriodCbx').setValue(3);
-					Ext.getCmp('positionDataCbx').setValue(1);
+					Ext.getCmp('positionRowCbx').store.add({id:3, name:TR.i18n.data});
+					Ext.getCmp('positionColCbx').store.add({id:1, name:TR.i18n.organisation_units});
+					Ext.getCmp('positionFilterCbx').store.add({id:2, name:TR.i18n.periods});
 					break;
 				}
 			}
