@@ -98,7 +98,6 @@ public class DataSetBatchHandlerTest
     // -------------------------------------------------------------------------
 
     @Test
-    @Ignore
     public void testAddObject()
     {
         batchHandler.addObject( dataSetA );

@@ -191,6 +191,13 @@ public class AddDataSetAction
         this.renderAsTabs = renderAsTabs;
     }
 
+    private boolean renderHorizontally;
+
+    public void setRenderHorizontally( boolean renderHorizontally )
+    {
+        this.renderHorizontally = renderHorizontally;
+    }
+
     private Collection<String> dataElementsSelectedList = new HashSet<String>();
 
     public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
@@ -250,6 +257,7 @@ public class AddDataSetAction
         dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setSkipOffline( skipOffline );
         dataSet.setRenderAsTabs( renderAsTabs );
+        dataSet.setRenderHorizontally( renderHorizontally );
 
         dataSetService.addDataSet( dataSet );
 
