@@ -105,6 +105,8 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "fieldcombinationrequired" );
         statementBuilder.setColumn( "validcompleteonly" );
         statementBuilder.setColumn( "skipoffline" );
+        statementBuilder.setColumn( "renderastabs" );
+        statementBuilder.setColumn( "renderhorizontally" );
     }
 
     protected void setValues( DataSet dataSet )
@@ -118,11 +120,13 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.isMobile() );
         statementBuilder.setValue( dataSet.isAllowFuturePeriods() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
-        statementBuilder.setValue( dataSet.getExpiryDays() );    
+        statementBuilder.setValue( dataSet.getExpiryDays() );
         statementBuilder.setValue( dataSet.isNotifyCompletingUser() );
         statementBuilder.setValue( dataSet.isSkipAggregation() );
         statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
         statementBuilder.setValue( dataSet.isValidCompleteOnly() );
         statementBuilder.setValue( dataSet.isSkipOffline() );
+        statementBuilder.setValue( dataSet.isRenderAsTabs() );
+        statementBuilder.setValue( dataSet.isRenderHorizontally() );
     }
 }

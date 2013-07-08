@@ -35,7 +35,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -114,7 +113,6 @@ public class DataSetBatchHandlerTest
     }
 
     @Test
-    @Ignore
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( dataSetA, true );
@@ -127,7 +125,6 @@ public class DataSetBatchHandlerTest
     }
 
     @Test
-    @Ignore
     public void testUpdateObject()
     {
         int id = batchHandler.insertObject( dataSetA, true );
