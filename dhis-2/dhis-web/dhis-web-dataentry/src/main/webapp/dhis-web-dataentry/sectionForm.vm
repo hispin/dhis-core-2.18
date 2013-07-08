@@ -2,9 +2,29 @@
 #set( $tabIndex = 1 )
 #set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
 
-#foreach( $section in $sections )
-    #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-    #renderSection( $categoryComboId, $section.dataElements, $section.displayName )
+#if( $dataSet.renderAsTabs )
+    <div id="tabs">
+        <ul>
+        #foreach( $section in $sections )
+            #if( $section.displayName )
+                <li><a href="#tab-${section.uid}">$encoder.htmlEncode( $section.displayName )</a></li>
+            #else
+                <li><a href="#tab-${section.uid}">$i18n.getString("section") $velocityCount</a></li>
+            #end
+        #end
+        </ul>
+        #foreach( $section in $sections )
+            <div id="tab-${section.uid}">
+                #set( $categoryComboId = $sectionCombos.get( $section.id ) )
+                #renderSection( $categoryComboId, $section.dataElements )
+            </div>
+        #end
+    </div>
+#else
+    #foreach( $section in $sections )
+        #set( $categoryComboId = $sectionCombos.get( $section.id ) )
+        #renderSection( $categoryComboId, $section.dataElements, $section.displayName )
+    #end
 #end
 
 #*

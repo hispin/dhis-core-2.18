@@ -219,6 +219,13 @@ public class LoadFormAction
         return dataElementsNotInForm;
     }
 
+    private DataSet dataSet;
+
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -226,7 +233,7 @@ public class LoadFormAction
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
+        dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( dataSet, null,
             null ) );
