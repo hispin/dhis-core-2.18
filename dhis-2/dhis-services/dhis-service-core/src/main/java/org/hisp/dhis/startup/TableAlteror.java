@@ -503,6 +503,7 @@ public class TableAlteror
 
         executeSql( "UPDATE dataset SET skipaggregation = false WHERE skipaggregation IS NULL" );
         executeSql( "UPDATE dataset SET skipoffline = false WHERE skipoffline IS NULL" );
+        executeSql( "UPDATE dataset SET renderastabs = false WHERE renderastabs IS NULL" );
 
         executeSql( "UPDATE categorycombo SET skiptotal = false WHERE skiptotal IS NULL" );
 

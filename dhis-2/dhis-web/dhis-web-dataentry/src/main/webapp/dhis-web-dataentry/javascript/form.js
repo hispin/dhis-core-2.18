@@ -564,6 +564,10 @@ function loadForm( dataSetId, multiOrg )
 
         if ( !multiOrganisationUnit )
         {
+            if ( dataSets[dataSetId].renderAsTabs ) {
+                $( "#tabs" ).tabs();
+            }
+
             enableSectionFilter();
             insertDynamicOptions();
         }
@@ -586,6 +590,10 @@ function loadForm( dataSetId, multiOrg )
 
             if( !multiOrganisationUnit )
             {
+                if ( dataSets[dataSetId].renderAsTabs ) {
+                    $( "#tabs" ).tabs();
+                }
+
                 enableSectionFilter();
                 insertDynamicOptions();
             }
