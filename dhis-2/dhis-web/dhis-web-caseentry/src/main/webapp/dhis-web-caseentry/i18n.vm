@@ -195,5 +195,9 @@ can_edit_and_view: '$encoder.jsEscape($i18n.getString( 'can_edit_and_view' ) , "
 public_access: '$encoder.jsEscape($i18n.getString( 'public_access' ) , "'")',
 display_orgunit_code: '$encoder.jsEscape($i18n.getString( 'display_orgunit_code' ) , "'")',
 use_data_element_form_names: '$encoder.jsEscape($i18n.getString( 'use_data_element_form_names' ) , "'")',
-section: '$encoder.jsEscape($i18n.getString( 'section' ) , "'")'
+section: '$encoder.jsEscape($i18n.getString( 'section' ) , "'")',
+table_layout: '$encoder.jsEscape($i18n.getString( 'table_layout' ) , "'")',
+column: '$encoder.jsEscape($i18n.getString( 'column' ) , "'")',
+row: '$encoder.jsEscape($i18n.getString( 'row' ) , "'")',
+periods: '$encoder.jsEscape($i18n.getString( 'periods' ) , "'")',
 };
