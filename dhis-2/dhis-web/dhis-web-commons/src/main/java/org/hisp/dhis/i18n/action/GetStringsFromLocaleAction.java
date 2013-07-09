@@ -27,14 +27,12 @@ package org.hisp.dhis.i18n.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Locale;
-import java.util.Locale.Builder;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Locale;
 
 /**
  * @author Lars Helge Overland
@@ -44,9 +42,9 @@ public class GetStringsFromLocaleAction
 {
     @Autowired
     private I18nManager manager;
-    
+
     private String language;
-    
+
     public void setLanguage( String language )
     {
         this.language = language;
@@ -73,22 +71,26 @@ public class GetStringsFromLocaleAction
     public String execute()
         throws Exception
     {
-        Builder builder = new Locale.Builder();
-        
+        Locale locale;
+
         if ( language != null )
         {
-            builder.setLanguage( language );
+            if ( country != null )
+            {
+                locale = new Locale( language, country );
+            }
+            else
+            {
+                locale = new Locale( language );
+            }
         }
-        
-        if ( country != null )
+        else
         {
-            builder.setRegion( country );
+            locale = null;
         }
-        
-        Locale locale = builder.build();
-        
+
         i18nObject = manager.getI18n( this.getClass(), locale );
-        
+
         return SUCCESS;
     }
 }
