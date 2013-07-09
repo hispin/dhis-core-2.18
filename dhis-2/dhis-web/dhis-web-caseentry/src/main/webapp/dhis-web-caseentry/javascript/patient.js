@@ -124,25 +124,18 @@ function showAddPatientForm()
 	
 }
 
-function validateAddPatient( isContinue, disableRegistrationFields )
+function validateAddPatient( isContinue )
 {	
-	if( disableRegistrationFields=='' || disableRegistrationFields=='false' )
-	{
-		$("#patientForm :input").attr("disabled", true);
-		$("#patientForm").find("select").attr("disabled", true);
-		$.ajax({
-			type: "POST",
-			url: 'validatePatient.action',
-			data: getParamsForDiv('patientForm'),
-			success: function(data){
-				addValidationCompleted(data,isContinue);
-			}
-		});	
-	}
-	else
-	{
-		addPatient( isContinue );
-	}
+	$("#patientForm :input").attr("disabled", true);
+	$("#patientForm").find("select").attr("disabled", true);
+	$.ajax({
+		type: "POST",
+		url: 'validatePatient.action',
+		data: getParamsForDiv('patientForm'),
+		success: function(data){
+			addValidationCompleted(data,isContinue);
+		}
+	});	
 }
 
 function addValidationCompleted( data, isContinue )

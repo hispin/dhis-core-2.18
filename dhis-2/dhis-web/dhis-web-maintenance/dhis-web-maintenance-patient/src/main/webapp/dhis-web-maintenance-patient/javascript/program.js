@@ -41,9 +41,6 @@ function showProgramDetails( programId )
 		var remindCompleted = ( json.program.remindCompleted == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'remindCompletedField', remindCompleted );   	
 		
-		var disableRegistrationFields = ( json.program.disableRegistrationFields == 'true') ? i18n_yes : i18n_no;
-		setInnerHTML( 'disableRegistrationFieldsField', disableRegistrationFields );   	
-		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

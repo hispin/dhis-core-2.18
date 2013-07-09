@@ -51,16 +51,11 @@
 <form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="post">
 
 <input type="hidden" name="programId" id="programId" value="$!program.id"/>
-<input type="hidden" name="disableRegistrationFields" id="disableRegistrationFields" value="$!program.disableRegistrationFields"/>
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
 
 <h3>$i18n.getString( "add_patient_registration_form" )</h3>
 <h4>$!program.displayName</h4>
 
-#set($disableRegistrationFields=false)
-#if($program)
-	#set($disableRegistrationFields=$program.disableRegistrationFields)
-#end
 <div class="container" >
 	<table id="detailsList" width="100%">
 		<col/>
@@ -126,12 +121,12 @@
 		<tr>
 			<td>
 				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" onclick='suggestionSelectorToggle()' ondblclick="insertElement( 'fixedAttr' )">
-					<option value="registrationDate">$i18n.getString('registration_date') #if($disableRegistrationFields=='false')*#end</option>
-					<option value="fullName">$i18n.getString('full_name') #if($disableRegistrationFields=='false')*#end</option>
-					<option value="gender">$i18n.getString('gender') #if($disableRegistrationFields=='false')*#end</option>
-					<option value="dobType">$i18n.getString('dob_type') #if($disableRegistrationFields=='false')*#end</option>
-					<option value="birthDate">$i18n.getString('birth_date') #if($disableRegistrationFields=='false')*#end</option>
-					<option value="age">$i18n.getString('age_years') #if($disableRegistrationFields=='false')*#end</option>
+					<option value="registrationDate">$i18n.getString('registration_date')</option>
+					<option value="fullName">$i18n.getString('full_name')</option>
+					<option value="gender">$i18n.getString('gender')</option>
+					<option value="dobType">$i18n.getString('dob_type')</option>
+					<option value="birthDate">$i18n.getString('birth_date')</option>
+					<option value="age">$i18n.getString('age_years')</option>
 					<option value="phoneNumber">$i18n.getString('phone_number')</option>
 					<option value="deathDate">$i18n.getString('death_date')</option>
 					<option value="isDead">$i18n.getString('is_dead')</option>
@@ -170,7 +165,7 @@
 			<td>
 				<select id="identifiersSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'iden' )">
 					#foreach( $identifierType in $identifierTypes )
-						<option value="$identifierType.uid" mandatory='$identifierType.mandatory'>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory=='true' && $disableRegistrationFields=='false') * #end </option>
+						<option value="$identifierType.uid" mandatory='$identifierType.mandatory'>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory=='true') * #end </option>
 					#end
 				</select>
 			</td>

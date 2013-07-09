@@ -121,8 +121,6 @@ public class Program
 
     private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
 
-    private Boolean disableRegistrationFields = false;
-
     /**
      * All OrganisationUnitGroup that register data with this program.
      */
@@ -520,19 +518,7 @@ public class Program
     {
         this.patientReminders = patientReminders;
     }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getDisableRegistrationFields()
-    {
-        return disableRegistrationFields;
-    }
-
-    public void setDisableRegistrationFields( Boolean disableRegistrationFields )
-    {
-        this.disableRegistrationFields = disableRegistrationFields;
-    }
-
+    
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
