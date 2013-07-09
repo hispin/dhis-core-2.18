@@ -28,7 +28,6 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -122,10 +121,6 @@ public class UpdatePatientAction
 
     private Integer healthWorker;
 
-    private Character dobType;
-
-    private String registrationDate;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -204,7 +199,6 @@ public class UpdatePatientAction
             patient.setHealthWorker( userService.getUser( healthWorker ) );
         }
 
-        Date _birthDate = new Date();
         if ( birthDate != null || age != null )
         {
             verified = (verified == null) ? false : verified;
@@ -226,7 +220,6 @@ public class UpdatePatientAction
                 patient.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
             }
 
-            _birthDate = patient.getBirthDate();
             patient.setDobType( dobType );
         }
         
@@ -382,11 +375,6 @@ public class UpdatePatientAction
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
-    public void setDobType( Character dobType )
-    {
-        this.dobType = dobType;
-    }
-
     public void setFormat( I18nFormat format )
     {
         this.format = format;
@@ -485,11 +473,6 @@ public class UpdatePatientAction
     public void setVerified( Boolean verified )
     {
         this.verified = verified;
-    }
-
-    public void setRegistrationDate( String registrationDate )
-    {
-        this.registrationDate = registrationDate;
     }
 
 }
