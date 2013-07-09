@@ -249,7 +249,10 @@ public class UpdateProgramStageAction
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
-        programStage.setAutoGenerateEvent( autoGenerateEvent );
+        if ( !programStage.getProgram().isSingleEvent() )
+        {
+            programStage.setAutoGenerateEvent( autoGenerateEvent );
+        }
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setCaptureCoordinates( captureCoordinates );
 
