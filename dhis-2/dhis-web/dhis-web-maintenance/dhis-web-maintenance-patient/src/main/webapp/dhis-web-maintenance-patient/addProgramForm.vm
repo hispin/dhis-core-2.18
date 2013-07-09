@@ -147,12 +147,6 @@ jQuery( document ).ready( function()
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "disable_registration_fields" )</label></td>
-			<td><input type="checkbox" id="disableRegistrationFields" name="disableRegistrationFields" value='true' ></td>
-			<td></td>
-		</tr>
-		
-		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
 			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true'></td>
 			<td></td>

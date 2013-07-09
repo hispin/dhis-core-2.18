@@ -209,7 +209,7 @@ public class TableAlteror
 
         updateProgramInstanceStatus();
         
-        executeSql( "UPDATE program SET disableRegistrationFields=false where disableRegistrationFields is null" );
+        executeSql( "ALTER TABLE program DROP COLUMN disableRegistrationFields" );
         executeSql( "ALTER TABLE program ALTER COLUMN dateofincidentdescription DROP NOT NULL");
         executeSql( "ALTER TABLE patient ALTER COLUMN birthdate DROP NOT NULL");
         executeSql( "ALTER TABLE patient ALTER COLUMN gender DROP NOT NULL");

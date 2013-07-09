@@ -235,13 +235,6 @@ public class AddProgramAction
         this.sendTo = sendTo;
     }
 
-    private Boolean disableRegistrationFields;
-
-    public void setDisableRegistrationFields( Boolean disableRegistrationFields )
-    {
-        this.disableRegistrationFields = disableRegistrationFields;
-    }
-
     private Boolean displayOnAllOrgunit;
 
     public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
@@ -263,7 +256,6 @@ public class AddProgramAction
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         onlyEnrollOnce = (onlyEnrollOnce == null) ? false : onlyEnrollOnce;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
-        disableRegistrationFields = (disableRegistrationFields == null) ? false : disableRegistrationFields;
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
 
         Program program = new Program();
@@ -279,7 +271,6 @@ public class AddProgramAction
         program.setBlockEntryForm( blockEntryForm );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
         program.setRemindCompleted( remindCompleted );
-        program.setDisableRegistrationFields( disableRegistrationFields );
         program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
 
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )

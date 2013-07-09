@@ -16,7 +16,6 @@
 	"blockEntryForm": "$!program.blockEntryForm",
 	"onlyEnrollOnce": "$!program.onlyEnrollOnce",
 	"remindCompleted": "$!program.remindCompleted",
-	"disableRegistrationFields": "$!program.disableRegistrationFields",
 	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit"
   }
 }

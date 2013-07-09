@@ -12,9 +12,6 @@
 	  #end
 	#end
 	
-#if($!program && $program.disableRegistrationFields )
-
-#else
 	<tr id='registrationDateTR'>
 		<td class='text-column'><label for="registration_date">$i18n.getString( "registration_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column" colspan='2'>
@@ -122,8 +119,6 @@
 	</tr>
 
 	<tr><td>&nbsp;</td></tr>
-
-#end
 
 #if( $identifierTypes.size() > 0)
 	<!--IDENTIFIERS -->
