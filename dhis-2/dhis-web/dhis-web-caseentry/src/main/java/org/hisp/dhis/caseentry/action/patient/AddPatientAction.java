@@ -223,15 +223,6 @@ public class AddPatientAction
             _birthDate = patient.getBirthDate();
             patient.setDobType( dobType );
         }
-//        else
-//        {
-//            Character dobType = Patient.DOB_TYPE_DECLARED;
-//            Calendar today = Calendar.getInstance();
-//            PeriodType.clearTimeOfDay( today );
-//            Date date = today.getTime();
-//            patient.setBirthDate( date ); 
-//            patient.setDobType( dobType );
-//        }
 
         // -----------------------------------------------------------------------------
         // Registration Date
