@@ -1,3 +1,13 @@
+<script>
+jQuery(document).ready(	function(){
+	validation( 'defaultPatientRegistrationForm', function(form){
+		form.submit();
+	});
+	
+	byId('name').focus();
+});	
+</script>
+
 <h3>$i18n.getString( "create_default_registration_form" )</h3>
 																			
 <form id="defaultPatientRegistrationForm" name="defaultPatientRegistrationForm" action="saveDefaultPatientRegistrationForm.action" method="post" onsubmit="selectAllById('fixedAttributes');selectAllById('dynamicAttributeIds');selectAllById('identifierTypeIds');">
@@ -25,7 +35,6 @@
 		<th>$i18n.getString( "available_fixed_attributes" )</th>
 		<th>$i18n.getString( "filter" )</th>
 		<th>$i18n.getString( "selected_fixed_attributes" )
-			<input type='hidden' id='hasAttributes' name='hasAttributes' class="{validate:{required:true}}">
 		</th>
 	</tr>
 	<tr>

@@ -122,60 +122,63 @@ public class ValidatePatientAction
 
     public String execute()
     {
-        fullName = fullName.trim();
-
-        int startIndex = fullName.indexOf( ' ' );
-        int endIndex = fullName.lastIndexOf( ' ' );
-
-        String firstName = fullName.toString();
-        String middleName = "";
-        String lastName = "";
-
-        if ( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName != null )
         {
-            firstName = fullName.substring( 0, startIndex );
-            if ( startIndex == endIndex )
-            {
-                middleName = "";
-                lastName = fullName.substring( startIndex + 1, fullName.length() );
-            }
-            else
-            {
-                middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex + 1, fullName.length() );
-            }
-        }
+            fullName = fullName.trim();
 
-        if ( !checkedDuplicate )
-        {
-            patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
-                gender );
+            int startIndex = fullName.indexOf( ' ' );
+            int endIndex = fullName.lastIndexOf( ' ' );
 
-            if ( patients != null && patients.size() > 0 )
+            String firstName = fullName.toString();
+            String middleName = "";
+            String lastName = "";
+
+            if ( fullName.indexOf( ' ' ) != -1 )
             {
-                message = i18n.getString( "patient_duplicate" );
-
-                boolean flagDuplicate = false;
-                for ( Patient p : patients )
+                firstName = fullName.substring( 0, startIndex );
+                if ( startIndex == endIndex )
                 {
-                    if ( id == null || (id != null && p.getId().intValue() != id.intValue()) )
-                    {
-                        flagDuplicate = true;
-                        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-                            .getPatientAttributeValues( p );
+                    middleName = "";
+                    lastName = fullName.substring( startIndex + 1, fullName.length() );
+                }
+                else
+                {
+                    middleName = fullName.substring( startIndex + 1, endIndex );
+                    lastName = fullName.substring( endIndex + 1, fullName.length() );
+                }
+            }
 
-                        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+            if ( !checkedDuplicate && birthDate != null && gender != null )
+            {
+                patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
+                    gender );
+
+                if ( patients != null && patients.size() > 0 )
+                {
+                    message = i18n.getString( "patient_duplicate" );
+
+                    boolean flagDuplicate = false;
+                    for ( Patient p : patients )
+                    {
+                        if ( id == null || (id != null && p.getId().intValue() != id.intValue()) )
                         {
-                            patientAttributeValueMap
-                                .put( p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(),
+                            flagDuplicate = true;
+                            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+                                .getPatientAttributeValues( p );
+
+                            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+                            {
+                                patientAttributeValueMap.put( p.getId() + "_"
+                                    + patientAttributeValue.getPatientAttribute().getId(),
                                     patientAttributeValue.getValue() );
+                            }
                         }
                     }
-                }
 
-                if ( flagDuplicate )
-                {
-                    return PATIENT_DUPLICATE;
+                    if ( flagDuplicate )
+                    {
+                        return PATIENT_DUPLICATE;
+                    }
                 }
             }
         }
@@ -196,20 +199,6 @@ public class ValidatePatientAction
                 message = i18n.getString( "please_choose_relationshipType_for_this_under_age_patient" );
                 return INPUT;
             }
-        }
-
-        Patient p = new Patient();
-        p.setGender( gender );
-
-        if ( birthDate != null )
-        {
-            birthDate = birthDate.trim();
-            p.setBirthDate( format.parseDate( birthDate ) );
-
-        }
-        else
-        {
-            p.setBirthDateFromAge( age.intValue(), ageType );
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -251,6 +240,23 @@ public class ValidatePatientAction
         // ---------------------------------------------------------------------
         // Check Enrollment for adding patient single event with registration
         // ---------------------------------------------------------------------
+
+        Patient p = new Patient();
+        if ( gender != null )
+        {
+            p.setGender( gender );
+        }
+
+        if ( birthDate != null )
+        {
+            birthDate = birthDate.trim();
+            p.setBirthDate( format.parseDate( birthDate ) );
+
+        }
+        else if ( age != null )
+        {
+            p.setBirthDateFromAge( age.intValue(), ageType );
+        }
 
         if ( programId != null )
         {

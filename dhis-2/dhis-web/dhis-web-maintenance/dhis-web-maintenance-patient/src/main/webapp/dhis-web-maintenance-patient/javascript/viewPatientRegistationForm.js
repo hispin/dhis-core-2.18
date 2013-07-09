@@ -118,7 +118,7 @@ function programAttrOnClick()
 	showById('programAttrTab');
 }
 
-function getRequiredFields()
+function getDefaultRequiredFields()
 {
 	var requiredFields = {};
 	if( getFieldValue("disableRegistrationFields")!='true' )
@@ -184,6 +184,38 @@ function getRequiredFields()
 		}
 	
 	}
+	return requiredFields;
+}
+
+function validateProgramFields()
+{
+	jQuery('#programAttrSelector option').each(function() {
+		var item = jQuery(this);
+		if( item.attr('mandatory')=='true'){
+			requiredFields['programid=' + item.val()] = item.text();
+		}
+	});
+	
+	var html = jQuery("#designTextarea").ckeditorGet().getData();
+	var input = jQuery( html ).find("input");
+	if( input.length > 0 )
+	{
+		input.each( function(i, item){	
+			var key = "";
+			var inputKey = jQuery(item).attr('fixedattributeid');
+			if( jQuery(item).attr('programid')!=undefined ){
+				inputKey = jQuery(item).attr('programid');
+				key = 'programid=' + inputKey
+			}
+			
+			for (var idx in requiredFields){
+				if( key == idx){
+					delete requiredFields[idx];
+				}
+			}
+		});
+	}
+	
 	return requiredFields;
 }
 
@@ -398,10 +430,6 @@ function validateDataEntryForm(form)
 	if( name =='' || name.length<4 || name.length > 150 )
 	{
 		setHeaderDelayMessage( i18n_enter_a_name );
-		return false;
-	}
-	else if ( !validateForm() )
-	{
 		return false;
 	}
 	else

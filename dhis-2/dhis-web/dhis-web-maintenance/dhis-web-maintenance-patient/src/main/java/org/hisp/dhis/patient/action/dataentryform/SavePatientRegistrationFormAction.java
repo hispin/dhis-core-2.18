@@ -76,7 +76,7 @@ public class SavePatientRegistrationFormAction
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-    
+
     private String name;
 
     public void setName( String name )
@@ -144,9 +144,19 @@ public class SavePatientRegistrationFormAction
         else
         {
             DataEntryForm dataEntryForm = registrationForm.getDataEntryForm();
-            dataEntryForm.setName( name );
-            dataEntryForm.setHtmlCode( designTextarea );
-            dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            if ( dataEntryForm == null )
+            {
+                dataEntryForm = new DataEntryForm( name, designTextarea );
+                dataEntryFormService.addDataEntryForm( dataEntryForm );
+            }
+            else
+            {
+                dataEntryForm.setName( name );
+                dataEntryForm.setHtmlCode( designTextarea );
+                dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            }
+            registrationForm.setDataEntryForm( dataEntryForm );
+            patientRegistrationFormService.updatePatientRegistrationForm( registrationForm );
         }
 
         Integer dataEntryFormId = dataEntryFormService.getDataEntryFormByName( name ).getId();
