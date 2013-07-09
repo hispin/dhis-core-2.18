@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +54,7 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
@@ -203,7 +205,7 @@ public class AddPatientAction
         {
             verified = (verified == null) ? false : verified;
 
-            Character dobType = (verified) ? 'V' : 'D';
+            Character dobType = (verified) ? Patient.DOB_TYPE_VERIFIED : Patient.DOB_TYPE_DECLARED;
 
             if ( !verified && age != null )
             {
@@ -223,6 +225,15 @@ public class AddPatientAction
             _birthDate = patient.getBirthDate();
             patient.setDobType( dobType );
         }
+//        else
+//        {
+//            Character dobType = Patient.DOB_TYPE_DECLARED;
+//            Calendar today = Calendar.getInstance();
+//            PeriodType.clearTimeOfDay( today );
+//            Date date = today.getTime();
+//            patient.setBirthDate( date ); 
+//            patient.setDobType( dobType );
+//        }
 
         // -----------------------------------------------------------------------------
         // Registration Date
@@ -276,6 +287,7 @@ public class AddPatientAction
         {
             gender = Patient.FEMALE;
         }
+        
         String identifier = PatientIdentifierGenerator.getNewIdentifier( _birthDate, gender );
 
         PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, identifier );

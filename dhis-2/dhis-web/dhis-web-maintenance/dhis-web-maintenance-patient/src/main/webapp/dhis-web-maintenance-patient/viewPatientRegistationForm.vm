@@ -15,7 +15,7 @@
 			
 		jQuery('#designTextarea').ckeditor();
 		#if($!registrationForm)
-			jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $!registrationForm.dataEntryForm.htmlCode, "'" )');
+			jQuery("#designTextarea").ckeditorGet().setData('$!encoder.jsEscape( $registrationForm.dataEntryForm.htmlCode , "'" )');
 		#end
 		
 	});
@@ -48,7 +48,7 @@
 }
 </style>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="post">
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="get">
 
 <input type="hidden" name="programId" id="programId" value="$!program.id"/>
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
@@ -96,7 +96,6 @@
         <td>
 		    <button type="button" id="saveButton" onclick="isSave='true';validateDataEntryForm();">$i18n.getString( 'save' )</button>
             <button type="submit" id="saveAndCloseButton" onclick="isSave='false';"/>$i18n.getString( 'save_and_close' )</button>
-            <button type="button" id="validateButton" onclick="validateFormOnclick();">$i18n.getString( 'validate_form' )</button>
             <button type="button" id="cancelButton" onclick="window.location='patientRegistrationForm.action'">$i18n.getString( 'cancel' )</button>
 			&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 		    <button type="button" id="propertiesButton" onclick="openPropertiesSelector()"/>$i18n.getString( 'insert_properties' )</button>
