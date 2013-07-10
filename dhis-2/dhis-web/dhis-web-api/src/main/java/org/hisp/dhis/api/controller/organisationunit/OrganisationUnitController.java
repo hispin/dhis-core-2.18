@@ -76,6 +76,13 @@ public class OrganisationUnitController
 
         boolean levelSorted = options.getOptions().containsKey( "levelSorted" ) && Boolean.parseBoolean( options.getOptions().get( "levelSorted" ) );
 
+        Integer level = null;
+
+        if ( options.getOptions().containsKey( "level" ) )
+        {
+            level = Integer.parseInt( options.getOptions().get( "level" ) );
+        }
+
         if ( lastUpdated != null )
         {
             entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
@@ -84,6 +91,10 @@ public class OrganisationUnitController
             {
                 Collections.sort( entityList, OrganisationUnitByLevelComparator.INSTANCE );
             }
+        }
+        else if ( level != null )
+        {
+            entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
         }
         else if ( levelSorted )
         {
@@ -108,8 +119,8 @@ public class OrganisationUnitController
     }
 
     @Override
-    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
