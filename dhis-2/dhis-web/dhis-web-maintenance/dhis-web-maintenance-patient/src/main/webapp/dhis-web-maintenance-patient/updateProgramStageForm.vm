@@ -179,7 +179,7 @@
 				<tr name="tr$index">
 					<td><label>$i18n.getString( "send_when_to" )</label></td>
 					<td>
-						<select type="text" id="whenToSend$index" name="whenToSend$index" class="whenToSend">
+						<select type="text" id="whenToSend$index" name="whenToSend$index" class="whenToSend" onchange='whenToSendOnChange($index)' >
 							<option value="" >$i18n.getString("from_the_day_set")</option>
 							<option value="2" #if($!reminder.whenToSend==2) selected #end >$i18n.getString("complete_event")</option>
 						</select>
@@ -187,7 +187,9 @@
 				</tr>
 				<tr name="tr$index">
 					<td><label>$i18n.getString( "days_before_after_due_date" )</label></td>
-					<td><input type="text" id="daysAllowedSendMessage$index" name="daysAllowedSendMessage$index" class="daysAllowedSendMessage {validate:{required:true,number:true}}" value="$!reminder.daysAllowedSendMessage"/></td>
+					<td><input type="text" id="daysAllowedSendMessage$index" name="daysAllowedSendMessage$index" 
+						class="daysAllowedSendMessage {validate:{required:true,number:true}}" value="$!reminder.daysAllowedSendMessage"
+						#if($!reminder.whenToSend==2) disabled #end /></td>
 				</tr>
 				<tr name="tr$index">
 					<td><label>$i18n.getString( "send_to" )</label></td>
