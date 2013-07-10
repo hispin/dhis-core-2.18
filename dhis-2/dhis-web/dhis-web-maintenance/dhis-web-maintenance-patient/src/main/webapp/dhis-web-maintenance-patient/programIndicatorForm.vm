@@ -17,7 +17,7 @@
         </tr>
         <tr>
 			<td>
-				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);"></select>
+				<select id="dataElements" name="dataElements" size="8" style="height:120px;" ondblclick="insertDataElement(this);"></select>
 			</td>
 		</tr>
       </table>

@@ -5,7 +5,7 @@ jQuery(document).ready(	function(){
 	});
 	
 	byId('name').focus();
-});	
+});
 </script>
 
 <h3>$i18n.getString( "create_default_registration_form" )</h3>
