@@ -1150,7 +1150,7 @@
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramIndicator.vm</param>
-			<param name="javascripts">javascript/programIndicator.js</param>
+			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
 			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
 
@@ -1165,7 +1165,7 @@
 			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramIndicator.vm</param>
-			<param name="javascripts">javascript/programIndicator.js</param>
+			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
 			<param name="requiredAuthorities">F_UPDATE_PROGRAM_INDICATOR</param>
 		</action>
 
