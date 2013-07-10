@@ -280,7 +280,7 @@ function generateTemplateMessageForm()
 				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_send_when_to + '</label></td>'
 				+ 	'<td>'
-				+ 		'<select id="whenToSend' + rowId + '" name="whenToSend' + rowId + '" class="whenToSend" >'
+				+ 		'<select id="whenToSend' + rowId + '" name="whenToSend' + rowId + '" class="whenToSend" onchange="whenToSendOnChange(' + rowId + ')">'
 				+ 			'<option value="">' + i18n_from_the_day_set + '</option>'
 				+ 			'<option value="2">' + i18n_complete_event + '</option>'
 				+ 		'</select>'
@@ -325,4 +325,15 @@ function generateTemplateMessageForm()
 function removeTemplateMessageForm( rowId )
 {
 	jQuery("[name=tr" + rowId + "]").remove();
+}
+
+function whenToSendOnChange(index)
+{
+	var whenToSend = getFieldValue('whenToSend' + index );
+	if(whenToSend==2){
+		disable('daysAllowedSendMessage' + index );
+	}
+	else{
+		enable('daysAllowedSendMessage' + index );
+	}
 }
