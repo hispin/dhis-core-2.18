@@ -125,10 +125,18 @@
     #set( $colRepeat = $catColRepeat.get( $categoryComboId ) )
     #set( $isDefaultCategory = $categories.get( 0 ).name == "default" )
 
+    #if( $isDefaultCategory )
+        #set( $colSpan = 1 )
+        #set( $rowSpan = $optionsMap.size() )
+    #else
+        #set( $colSpan = ( $colCount / 2) + 1 )
+        #set( $rowSpan = $optionsMap.size() + 1)
+    #end
+
     <tr>
-        <td></td>
+        <td colspan="$colSpan"></td>
         #foreach( $organisationUnit in $organisationUnits )
-        <th colspan="$colCount"><span align="center">${encoder.htmlEncode( $organisationUnit.displayName )}</span></th>
+        <th><span align="center">${encoder.htmlEncode( $organisationUnit.displayName )}</span></th>
         #end
     </tr>
 
@@ -144,14 +152,13 @@
         #set( $mark = 1 )
         #end
         #set( $count = $count + 1 )
-
+        #if( $isDefaultCategory )
         <tr>
-            <td #if( $mark == 1 )class="alt"#else class="reg"#end>${encoder.htmlEncode( $dataElement.displayName )}</td>
+            <td rowspan="$colCount" #if( $mark == 1 )class="alt"#else class="reg"#end>${encoder.htmlEncode( $dataElement.displayName )}</td>
 
             #foreach( $organisationUnit in $organisationUnits )
-                #if( $isDefaultCategory )
-                    <span class="hidden" id="${dataElement.uid}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span>
-                    #foreach( $optionCombo in $optionCombos )
+                <span class="hidden" id="${dataElement.uid}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span>
+                #foreach( $optionCombo in $optionCombos )
                     #set( $dataEntryId = "${organisationUnit.id}-${dataElement.uid}-${optionCombo.uid}-val" )
                     #set( $greyedField = false )
                     #set( $greyedField = $greyedFields.get( "$dataElement.uid:$optionCombo.uid" ) )
@@ -172,13 +179,12 @@
                     #end
                     </td>
                     #set( $tabIndex = $tabIndex + 1 )
-                    #end
-                #else
                 #end
             #end
         </tr>
+        #else
+        #end
     #end
-
 	</table>
     </div>
     </td>
