@@ -34,6 +34,7 @@ import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.Model;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.OptionSet;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
@@ -52,7 +53,24 @@ public class ModelMapping
         if ( dataElement.getOptionSet() != null && dataElement.getOptionSet().getOptions().size() <= 50 )
         {
             de.setOptionSet( getOptionSet( dataElement ) );
-        }
+        }        
+        return de;
+    }
+
+    public ProgramStageDataElement getDataElementLWUIT( org.hisp.dhis.dataelement.DataElement dataElement )
+    {
+        ProgramStageDataElement de = new ProgramStageDataElement();
+        de.setId( dataElement.getId() );
+        de.setName( dataElement.getFormNameFallback() );
+        de.setType( dataElement.getType() );
+
+        de.setCategoryOptionCombos( getCategoryOptionCombos( dataElement ) );
+
+        // Limit the optionset transfer to the client
+        if ( dataElement.getOptionSet() != null && dataElement.getOptionSet().getOptions().size() <= 50 )
+        {
+            de.setOptionSet( getOptionSet( dataElement ) );
+        }     
         
         return de;
     }
@@ -61,24 +79,6 @@ public class ModelMapping
     {
         org.hisp.dhis.option.OptionSet dhisOptionSet = dataElement.getOptionSet();
         OptionSet mobileOptionSet = new OptionSet();
-        if ( dhisOptionSet != null )
-        {
-            mobileOptionSet.setId( dhisOptionSet.getId() );
-            mobileOptionSet.setName( dhisOptionSet.getName() );
-            mobileOptionSet.setOptions( dhisOptionSet.getOptions() );
-        }
-        else
-        {
-            return null;
-        }
-
-        return mobileOptionSet;
-    }
-
-    public org.hisp.dhis.api.mobile.model.OptionSet getLWUITOptionSet( org.hisp.dhis.dataelement.DataElement dataElement )
-    {
-        org.hisp.dhis.option.OptionSet dhisOptionSet = dataElement.getOptionSet();
-        org.hisp.dhis.api.mobile.model.OptionSet mobileOptionSet = new org.hisp.dhis.api.mobile.model.OptionSet();
         if ( dhisOptionSet != null )
         {
             mobileOptionSet.setId( dhisOptionSet.getId() );

@@ -38,7 +38,9 @@ import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageSection;
 import org.springframework.beans.factory.annotation.Required;
 
 public class DefaultProgramService
@@ -63,6 +65,18 @@ public class DefaultProgramService
         for ( org.hisp.dhis.program.Program program : programService.getPrograms( unit ) )
         {
             programs.add( getProgram( program.getId(), localeString ) );
+        }
+
+        return programs;
+    }
+    
+    public List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> getProgramsLWUIT( OrganisationUnit unit )
+    {
+        List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> programs = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
+
+        for ( org.hisp.dhis.program.Program program : programService.getPrograms( unit ) )
+        {
+            programs.add( getProgramLWUIT( program.getId()) );
         }
 
         return programs;
@@ -147,6 +161,90 @@ public class DefaultProgramService
 
             prStgs.add( prStg );
 
+        }
+
+        pr.setProgramStages( prStgs );
+
+        return pr;
+    }
+    
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Program getProgramLWUIT( int programId )
+    {
+        org.hisp.dhis.program.Program program = programService.getProgram( programId );
+
+        //program = i18n( i18nService, locale, program );
+
+        org.hisp.dhis.api.mobile.model.LWUITmodel.Program pr = new org.hisp.dhis.api.mobile.model.LWUITmodel.Program();
+
+        pr.setId( program.getId() );
+        pr.setName( program.getName() );
+        pr.setVersion( program.getVersion() );
+        pr.setStatus( ProgramInstance.STATUS_ACTIVE );
+
+        List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> prStgs = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
+
+        for ( org.hisp.dhis.program.ProgramStage programStage : program.getProgramStages() )
+        {
+            //programStage = i18n( i18nService, locale, programStage );
+
+            org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage prStg = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
+
+            prStg.setId( programStage.getId() );
+
+            prStg.setName( programStage.getName() );
+            
+            prStg.setRepeatable( programStage.getIrregular() );
+            
+            prStg.setCompleted( false );
+            
+            prStg.setSingleEvent( program.isSingleEvent() );
+
+            List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> des = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement>();
+
+            Set<ProgramStageDataElement> programStageDataElements =  programStage.getProgramStageDataElements();
+
+            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+            {
+                //programStagedataElement = i18n( i18nService, locale, programStagedataElement );
+
+                org.hisp.dhis.dataelement.DataElement dataElement = programStageDataElement.getDataElement();
+
+                org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement de = modelMapping.getDataElementLWUIT( dataElement );
+                
+                de.setCompulsory( programStageDataElement.isCompulsory() );
+                
+                de.setNumberType( programStageDataElement.getDataElement().getNumberType() );
+
+                des.add( de );
+            }
+
+            prStg.setDataElements( des );
+            
+            // Set all program sections
+            List<org.hisp.dhis.api.mobile.model.LWUITmodel.Section> mobileSections = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Section>();
+            if ( programStage.getProgramStageSections().size() > 0 )
+            {
+                for ( ProgramStageSection eachSection : programStage.getProgramStageSections() )
+                {
+                    org.hisp.dhis.api.mobile.model.LWUITmodel.Section mobileSection = new org.hisp.dhis.api.mobile.model.LWUITmodel.Section();
+                    mobileSection.setId( eachSection.getId() );
+                    mobileSection.setName( eachSection.getName() );
+
+                    // Set all data elements' id, then we could have full from
+                    // data element list of program stage
+                    List<Integer> dataElementIds = new ArrayList<Integer>();
+                    for ( ProgramStageDataElement eachPogramStageDataElement : eachSection
+                        .getProgramStageDataElements() )
+                    {
+                        dataElementIds.add( eachPogramStageDataElement.getDataElement().getId() );
+                    }
+                    mobileSection.setDataElementIds( dataElementIds );
+                    mobileSections.add( mobileSection );
+                }
+            }
+            prStg.setSections( mobileSections );
+
+            prStgs.add( prStg );
         }
 
         pr.setProgramStages( prStgs );

@@ -253,7 +253,6 @@ public class SmsSender
                 recipients.add( phoneNumber );
             }
         }
-
         return recipients;
     }
 
@@ -274,7 +273,6 @@ public class SmsSender
 
             log.warn( "Unable to send message through sms: " + sms, e );
         }
-
         return message;
     }
 
