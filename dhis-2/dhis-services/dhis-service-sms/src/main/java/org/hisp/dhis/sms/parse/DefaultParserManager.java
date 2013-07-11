@@ -362,7 +362,7 @@ public class DefaultParserManager
                 User sender = users.iterator().next();
 
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
-
+                
                 // forward to user group by SMS
                 smsMessageSender.sendMessage( command.getName(), message, sender, receivers, true );
                 

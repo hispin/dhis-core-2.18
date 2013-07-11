@@ -97,7 +97,15 @@ public class ProgramStageDataElement extends Model
             optionSet.serialize( dout );
         }
         
-        dout.writeUTF( this.getValue() );
+        if ( this.getValue() == null )
+        {
+            dout.writeBoolean( false );
+        }
+        else
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( this.getValue() );
+        }
     }
     
     @Override
@@ -127,7 +135,15 @@ public class ProgramStageDataElement extends Model
             this.optionSet = new OptionSet();
             this.optionSet.deSerialize( dint );
         }
-        this.setValue( dint.readUTF() );
+
+        if ( dint.readBoolean() == false )
+        {
+            this.setValue( null );
+        }
+        else
+        {
+            this.setValue( dint.readUTF() );
+        }
     }
     
     public String getClientVersion()

@@ -167,7 +167,7 @@
 				<option value="UNHANDLED" #if($smsStatus == 'UNHANDLED') selected='selected' #end>$i18n.getString( "unhandled" )</option>
 			</select>
 			<input type="text" name="keyword" #if($keyword) value="$keyword" #else value="" #end style="width: 150px"/>
-			<input type="submit" name="filer" value="Filer"/>
+			<input type="submit" name="filter" value="Filter"/>
 			<input type="reset" name="clear" value="Clear"/>
 		</div>
 		<div style="float: right">

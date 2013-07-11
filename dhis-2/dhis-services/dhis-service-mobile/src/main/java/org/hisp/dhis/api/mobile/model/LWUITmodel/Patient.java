@@ -31,10 +31,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.IDN;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.PatientIdentifier;
@@ -59,8 +59,6 @@ public class Patient
 
     private List<PatientAttribute> patientAttValues;
 
-    private PatientAttribute groupAttribute;
-
     private List<PatientIdentifier> identifiers;
 
     private String gender;
@@ -72,6 +70,10 @@ public class Patient
     private Character dobType;
 
     private List<Program> programs;
+    
+    //private List<Integer> programsID;
+    
+    //private Map<Integer, String> patientDataValues;
 
     private List<Program> enrollmentPrograms;
 
@@ -102,6 +104,26 @@ public class Patient
     {
         this.programs = programs;
     }
+
+    /*public List<Integer> getProgramsID()
+    {
+        return programsID;
+    }
+
+    public void setProgramsID( List<Integer> programsID )
+    {
+        this.programsID = programsID;
+    }
+    
+    public Map<Integer, String> getPatientDataValues()
+    {
+        return patientDataValues;
+    }
+
+    public void setPatientDataValues( Map<Integer, String> patientDataValues )
+    {
+        this.patientDataValues = patientDataValues;
+    }*/
 
     public List<Relationship> getRelationships()
     {
@@ -197,16 +219,6 @@ public class Patient
     public void setAge( int age )
     {
         this.age = age;
-    }
-
-    public PatientAttribute getGroupAttribute()
-    {
-        return groupAttribute;
-    }
-
-    public void setGroupAttribute( PatientAttribute groupAttribute )
-    {
-        this.groupAttribute = groupAttribute;
     }
 
     public List<PatientAttribute> getPatientAttValues()
@@ -310,8 +322,16 @@ public class Patient
         dout.writeUTF( this.getFirstName() );
         dout.writeUTF( this.getMiddleName() );
         dout.writeUTF( this.getLastName() );
-        dout.writeInt( this.getAge() );
-        dout.writeUTF( this.getOrganisationUnitName() );
+        
+        if ( organisationUnitName != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( organisationUnitName );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
 
         if ( gender != null )
         {
@@ -365,27 +385,20 @@ public class Patient
             dout.writeBoolean( false );
         }
 
-        /*
-         * Write attribute which is used as group factor of beneficiary - false:
-         * no group factor, true: with group factor
-         */
-        if ( this.getGroupAttribute() != null )
+        // Write Patient Attribute
+        if ( patientAttValues != null )
         {
-            dout.writeBoolean( true );
-            this.getGroupAttribute().serialize( dout );
+            dout.writeInt( patientAttValues.size() );
+            for ( PatientAttribute patientAtt : patientAttValues )
+            {
+                patientAtt.serialize( dout );
+            }
         }
         else
         {
-            dout.writeBoolean( false );
+            dout.writeInt( 0 );
         }
-
-        List<PatientAttribute> atts = this.getPatientAttValues();
-        dout.writeInt( atts.size() );
-        for ( PatientAttribute att : atts )
-        {
-            dout.writeUTF( att.getName() + ":" + att.getValue() );
-        }
-
+        
         // Write PatientIdentifier
         if ( identifiers != null )
         {
@@ -395,6 +408,10 @@ public class Patient
                 each.serialize( dout );
             }
         }
+        else
+        {
+            dout.writeInt( 0 );
+        }
 
         // Write Program
         dout.writeInt( programs.size() );
@@ -402,7 +419,20 @@ public class Patient
         {
             each.serialize( dout );
         }
+        /*dout.writeInt( programsID.size() );
+        for ( Integer each : programsID )
+        {
+            dout.writeInt( each );
+        }
 
+        // Write Patient Data Value
+        dout.writeInt( patientDataValues.keySet().size() );
+        for ( Integer key : patientDataValues.keySet() )
+        {
+            dout.writeInt( key );
+            dout.writeUTF( patientDataValues.get( key ) );
+        }*/
+        
         // Write Relationships
         dout.writeInt( relationships.size() );
         for ( Relationship each : relationships )
@@ -418,7 +448,7 @@ public class Patient
             each.serialize( dout );
         }
 
-        // Write Enrolled
+        // Write Enrolled Relationships
 
         dout.writeInt( enrollmentRelationships.size() );
         for ( Relationship each : enrollmentRelationships )
@@ -436,9 +466,30 @@ public class Patient
     {
         this.setId( din.readInt() );
         this.setFirstName( din.readUTF() );
-        this.setGender( din.readUTF() );
-        this.setPhoneNumber( din.readUTF() );
-
+        this.setMiddleName( din.readUTF() );
+        this.setLastName( din.readUTF() );
+        
+        // Org Name
+        if ( din.readBoolean() )
+        {
+            this.setOrganisationUnitName( din.readUTF() );
+        }
+        else
+        {
+            this.setOrganisationUnitName( null );
+        }
+        
+        // Gender
+        if ( din.readBoolean() )
+        {
+            this.setGender( din.readUTF() );
+        }
+        else
+        {
+            this.setGender( null );
+        }
+        
+        // DOB Type
         if ( din.readBoolean() )
         {
             char dobTypeDeserialized = din.readChar();
@@ -448,7 +499,8 @@ public class Patient
         {
             this.setDobType( null );
         }
-
+        
+        // DOB
         if ( din.readBoolean() )
         {
             this.setBirthDate( new Date( din.readLong() ) );
@@ -458,29 +510,131 @@ public class Patient
             this.setBirthDate( null );
         }
 
-        // atts & identifiers
+        // doesn't transfer blood group to client
+        din.readBoolean();
+        
+        // Registration Date
+        if ( din.readBoolean() )
+        {
+            this.setRegistrationDate( new Date( din.readLong() ) );
+        }
+        else
+        {
+            this.setRegistrationDate( null );
+        }
 
-        this.patientAttValues = new ArrayList<PatientAttribute>();
+        // Phone Number
+        if ( din.readBoolean() )
+        {
+            this.setPhoneNumber( din.readUTF() );
+        }
+        else
+        {
+            this.setPhoneNumber( null );
+        }
+        
+        // Patient Attribute & Identifiers
         int attsNumb = din.readInt();
-        for ( int j = 0; j < attsNumb; j++ )
+        if( attsNumb > 0 )
         {
-            PatientAttribute pa = new PatientAttribute();
-            pa.deSerialize( din );
-            this.patientAttValues.add( pa );
-
+            this.patientAttValues = new ArrayList<PatientAttribute>();
+            for ( int j = 0; j < attsNumb; j++ )
+            {
+                PatientAttribute pa = new PatientAttribute();
+                pa.deSerialize( din );
+                this.patientAttValues.add( pa );
+            }
+        }
+        else
+        {
+            this.patientAttValues = null;
         }
 
-        this.identifiers = new ArrayList<PatientIdentifier>();
         int numbIdentifiers = din.readInt();
-
-        for ( int i = 0; i < numbIdentifiers; i++ )
+        if ( numbIdentifiers > 0 )
         {
-            PatientIdentifier identifier = new PatientIdentifier();
-            identifier.deSerialize( din );
-            this.identifiers.add( identifier );
-
+            this.identifiers = new ArrayList<PatientIdentifier>();
+            for ( int i = 0; i < numbIdentifiers; i++ )
+            {
+                PatientIdentifier identifier = new PatientIdentifier();
+                identifier.deSerialize( din );
+                this.identifiers.add( identifier );
+    
+            }
         }
-
+        else
+        {
+            this.identifiers = null;
+        }
+        
+        // Program & Relationship
+        int numbPrograms = din.readInt();
+        if ( numbPrograms > 0 )
+        {
+            this.programs = new ArrayList<Program>();
+            for ( int i = 0; i < numbPrograms; i++ )
+            {
+                Program program = new Program();
+                program.deSerialize( din );
+                this.programs.add( program );
+    
+            }
+        }
+        else
+        {
+            this.programs = null;
+        }
+        
+        int numbRelationships = din.readInt();
+        if ( numbRelationships > 0 )
+        {
+            this.relationships = new ArrayList<Relationship>();
+            for ( int i = 0; i < numbRelationships; i++ )
+            {
+                Relationship relationship = new Relationship();
+                relationship.deSerialize( din );
+                this.relationships.add( relationship );
+    
+            }
+        }
+        else
+        {
+            this.relationships = null;
+        }
+        
+        int numbEnrollmentPrograms = din.readInt();
+        if ( numbEnrollmentPrograms > 0 )
+        {
+            this.enrollmentPrograms = new ArrayList<Program>();
+            for ( int i = 0; i < numbEnrollmentPrograms; i++ )
+            {
+                Program program = new Program();
+                program.deSerialize( din );
+                this.enrollmentPrograms.add( program );
+    
+            }
+        }
+        else
+        {
+            this.enrollmentPrograms = null;
+        }
+        
+        int numbEnrollmentRelationships = din.readInt();
+        if ( numbEnrollmentRelationships > 0 )
+        {
+            this.enrollmentRelationships = new ArrayList<Relationship>();
+            for ( int i = 0; i < numbEnrollmentRelationships; i++ )
+            {
+                Relationship relationship = new Relationship();
+                relationship.deSerialize( din );
+                this.enrollmentRelationships.add( relationship );
+    
+            }
+        }
+        else
+        {
+            this.enrollmentRelationships = null;
+        }
     }
 
     @Override
@@ -583,168 +737,14 @@ public class Patient
     public void serializeVersion2_8( DataOutputStream out )
         throws IOException
     {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream( bout );
-
-        dout.writeInt( this.getId() );
-        dout.writeUTF( this.getFirstName() );
-        dout.writeUTF( this.getMiddleName() );
-        dout.writeUTF( this.getLastName() );
-        dout.writeInt( this.getAge() );
-
-        if ( gender != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeUTF( gender );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        if ( dobType != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeChar( dobType );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        if ( birthDate != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeLong( birthDate.getTime() );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-        // doesn't transfer blood group to client
-        dout.writeBoolean( false );
-
-        if ( registrationDate != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeLong( registrationDate.getTime() );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        /*
-         * Write attribute which is used as group factor of beneficiary - false:
-         * no group factor, true: with group factor
-         */
-        if ( this.getGroupAttribute() != null )
-        {
-            dout.writeBoolean( true );
-            this.getGroupAttribute().serialize( dout );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        List<PatientAttribute> atts = this.getPatientAttValues();
-        dout.writeInt( atts.size() );
-        for ( PatientAttribute att : atts )
-        {
-            dout.writeUTF( att.getName() + ":" + att.getValue() );
-        }
-
-        // Write PatientIdentifier
-        dout.writeInt( identifiers.size() );
-        for ( PatientIdentifier each : identifiers )
-        {
-            each.serializeVersion2_8( dout );
-        }
-
-        bout.flush();
-        bout.writeTo( out );
+        // TODO Auto-generated method stub
     }
 
     @Override
     public void serializeVersion2_9( DataOutputStream dout )
         throws IOException
     {
-        dout.writeInt( this.getId() );
-        dout.writeUTF( this.getFirstName() );
-        dout.writeUTF( this.getMiddleName() );
-        dout.writeUTF( this.getLastName() );
-        dout.writeInt( this.getAge() );
-
-        if ( gender != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeUTF( gender );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        if ( dobType != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeChar( dobType );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        if ( birthDate != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeLong( birthDate.getTime() );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-        // doesn't transfer blood group to client
-        dout.writeBoolean( false );
-
-        if ( registrationDate != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeLong( registrationDate.getTime() );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        /*
-         * Write attribute which is used as group factor of beneficiary - false:
-         * no group factor, true: with group factor
-         */
-        if ( this.getGroupAttribute() != null )
-        {
-            dout.writeBoolean( true );
-            this.getGroupAttribute().serialize( dout );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        List<PatientAttribute> atts = this.getPatientAttValues();
-        dout.writeInt( atts.size() );
-        for ( PatientAttribute att : atts )
-        {
-            dout.writeUTF( att.getName() + ":" + att.getValue() );
-        }
-
-        // Write PatientIdentifier
-        dout.writeInt( identifiers.size() );
-        for ( PatientIdentifier each : identifiers )
-        {
-            each.serializeVersion2_9( dout );
-        }
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -752,7 +752,6 @@ public class Patient
         throws IOException
     {
         // TODO Auto-generated method stub
-
     }
 
 }
