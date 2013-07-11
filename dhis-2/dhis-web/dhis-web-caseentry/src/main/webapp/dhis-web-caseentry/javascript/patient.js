@@ -38,14 +38,102 @@ selection.setListenerFunction( organisationUnitSelected );
 // List && Search patients
 // -----------------------------------------------------------------------------
 
-function listAllPatient()
+function Patient()
 {
-	jQuery('#loaderDiv').show();
-	hideById('listPatientDiv');
-	hideById('editPatientDiv');
-	hideById('migrationPatientDiv');
-	hideById('advanced-search');
+	var patientId;
+	var	fullName;
 	
+	this.advancedSearch = function(params)
+	{
+		$.ajax({
+			url: 'searchRegistrationPatient.action',
+			type:"POST",
+			data: params,
+			success: function( html ){
+					setTableStyles();
+					statusSearching = 1;
+					setInnerHTML( 'listPatientDiv', html );
+					showById('listPatientDiv');
+					setFieldValue('listAll',false);
+					jQuery( "#loaderDiv" ).hide();
+				}
+			});
+	};
+	
+	this.remove = function( confirm_delete )
+	{
+		removeItem( this.patientId, this.fullName, i18n_confirm_delete, 'removePatient.action' );
+	};
+	
+	this.add = function(params,isContinue)
+	{
+		$.ajax({
+		  type: "POST",
+		  url: 'addPatient.action',
+		  data: params,
+		  success: function(json) {
+			if(json.response=='success')
+			{
+				var patientId = json.message.split('_')[0];
+				var programId = getFieldValue('programIdAddPatient');
+				var	dateOfIncident = jQuery('#patientForm [id=dateOfIncident]').val();
+				var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
+						
+				if( getFieldValue('programIdAddPatient')!='' && enrollmentDate != '')
+				{
+					jQuery.postJSON( "saveProgramEnrollment.action",
+					{
+						patientId: patientId,
+						programId: programId,
+						dateOfIncident: dateOfIncident,
+						enrollmentDate: enrollmentDate
+					}, 
+					function( json ) 
+					{    
+						if(isContinue){
+							jQuery("#patientForm :input").each( function(){
+								if( $(this).attr('id') != "registrationDate" 
+									&& $(this).attr('type') != 'button'
+									&& $(this).attr('type') != 'submit' 
+									&& $(this).attr('id') !='enrollmentDate' )
+								{
+									$(this).val("");
+								}
+							});
+							$("#patientForm :input").attr("disabled", false);
+							$("#patientForm").find("select").attr("disabled", false);
+						}
+						else{
+							showPatientDashboardForm( patientId );
+						}
+					});
+				}
+				else if(isContinue){
+						jQuery("#patientForm :input").each( function(){
+							if( $(this).attr('id') != "registrationDate" 
+								&& $(this).attr('type') != 'button'
+								&& $(this).attr('type') != 'submit'  )
+							{
+								$(this).val("");
+							}
+						});
+						$("#patientForm :input").attr("disabled", false);
+						$("#patientForm").find("select").attr("disabled", false);
+				}
+				else
+				{
+					$("#patientForm :input").attr("disabled", false);
+					$("#patientForm").find("select").attr("disabled", false);
+					showPatientDashboardForm( patientId );
+				}
+			}
+		  }
+		 });
+	}
+}
+
+Patient.listAll = function()
+{
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
 	if( getFieldValue('programIdAddPatient')=='')
@@ -77,35 +165,46 @@ function listAllPatient()
 	}
 }
 
+function listAllPatient()
+{
+	jQuery('#loaderDiv').show();
+	hideById('listPatientDiv');
+	hideById('editPatientDiv');
+	hideById('migrationPatientDiv');
+	hideById('advanced-search');
+	
+	Patient.listAll();
+}
+
 function advancedSearch( params )
 {
-	$.ajax({
-		url: 'searchRegistrationPatient.action',
-		type:"POST",
-		data: params,
-		success: function( html ){
-				setTableStyles();
-				statusSearching = 1;
-				setInnerHTML( 'listPatientDiv', html );
-				showById('listPatientDiv');
-				setFieldValue('listAll',false);
-				jQuery( "#loaderDiv" ).hide();
-			}
-		});
+	var patient = new Patient();
+	patient.advancedSearch( params );
 }
 
 // -----------------------------------------------------------------------------
 // Remove patient
 // -----------------------------------------------------------------------------
 
-function removePatient( patientId, fullName )
+function removePatient( patientId, fullName, i18n_confirm_delete )
 {
-	removeItem( patientId, fullName, i18n_confirm_delete, 'removePatient.action' );
+	var patient = new Patient();
+	patient.patientId = patientId;
+	patient.fullName = fullName;
+	patient.remove( confirm_delete );
 }
 
 // -----------------------------------------------------------------------------
 // Add Patient
 // -----------------------------------------------------------------------------
+
+function addPatient( isContinue )
+{		
+	var patient = new Patient();
+	var params = 'programId=' + getFieldValue('programIdAddPatient') + '&' + getParamsForDiv('patientForm');
+	patient.add(params);
+    return false;
+}
 
 function showAddPatientForm()
 {
@@ -168,73 +267,6 @@ function addValidationCompleted( data, isContinue )
 	}
 }
 
-function addPatient( isContinue )
-{		
-	var params = 'programId=' + getFieldValue('programIdAddPatient') + '&' + getParamsForDiv('patientForm');
-	$.ajax({
-      type: "POST",
-      url: 'addPatient.action',
-      data: params,
-      success: function(json) {
-		if(json.response=='success')
-		{
-			var patientId = json.message.split('_')[0];
-			var programId = getFieldValue('programIdAddPatient');
-			var	dateOfIncident = jQuery('#patientForm [id=dateOfIncident]').val();
-			var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
-					
-			if( getFieldValue('programIdAddPatient')!='' && enrollmentDate != '')
-			{
-				jQuery.postJSON( "saveProgramEnrollment.action",
-				{
-					patientId: patientId,
-					programId: programId,
-					dateOfIncident: dateOfIncident,
-					enrollmentDate: enrollmentDate
-				}, 
-				function( json ) 
-				{    
-					if(isContinue){
-						jQuery("#patientForm :input").each( function(){
-							if( $(this).attr('id') != "registrationDate" 
-								&& $(this).attr('type') != 'button'
-								&& $(this).attr('type') != 'submit' 
-								&& $(this).attr('id') !='enrollmentDate' )
-							{
-								$(this).val("");
-							}
-						});
-						$("#patientForm :input").attr("disabled", false);
-						$("#patientForm").find("select").attr("disabled", false);
-					}
-					else{
-						showPatientDashboardForm( patientId );
-					}
-				});
-			}
-			else if(isContinue){
-					jQuery("#patientForm :input").each( function(){
-						if( $(this).attr('id') != "registrationDate" 
-							&& $(this).attr('type') != 'button'
-							&& $(this).attr('type') != 'submit'  )
-						{
-							$(this).val("");
-						}
-					});
-					$("#patientForm :input").attr("disabled", false);
-					$("#patientForm").find("select").attr("disabled", false);
-			}
-			else
-			{
-				$("#patientForm :input").attr("disabled", false);
-				$("#patientForm").find("select").attr("disabled", false);
-				showPatientDashboardForm( patientId );
-			}
-		}
-      }
-     });
-    return false;
-}
 
 // ----------------------------------------------------------------
 // Click Back to main form
@@ -275,7 +307,7 @@ function loadPatientList()
 	}
 	else if( statusSearching == 0)
 	{
-		listAllPatient();
+		Patient.listAll();
 	}
 	else if( statusSearching == 1 )
 	{
