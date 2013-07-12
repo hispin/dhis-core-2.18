@@ -253,7 +253,11 @@ public class SetProgramInstanceStatusAction
         default:
             if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
             {
-                phoneNumbers.add( patient.getPhoneNumber() );
+                String[] _phoneNumbers = patient.getPhoneNumber().split( ";" );
+                for ( String phoneNumber : _phoneNumbers )
+                {
+                    phoneNumbers.add(phoneNumber);
+                }
             }
             break;
         }
