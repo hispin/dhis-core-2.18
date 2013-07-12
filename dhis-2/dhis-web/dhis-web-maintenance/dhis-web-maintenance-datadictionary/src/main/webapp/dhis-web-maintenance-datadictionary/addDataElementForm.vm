@@ -1,6 +1,5 @@
 <script type="text/javascript">
-	jQuery( document ).ready( function()
-	{
+	jQuery( document ).ready( function() {
 	    validation2( 'addDataElementForm', function( form )
 	    {
 	        dhis2.select.selectAll( jQuery( '#aggregationLevels' ) );

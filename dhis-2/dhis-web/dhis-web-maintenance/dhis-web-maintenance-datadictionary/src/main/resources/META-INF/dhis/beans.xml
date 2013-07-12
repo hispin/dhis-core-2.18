@@ -73,7 +73,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction" class="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction"
+  <bean id="org.hisp.dhis.dd.action.dataelement.ShowDataElementFormAction" class="org.hisp.dhis.dd.action.dataelement.ShowDataElementFormAction"
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
