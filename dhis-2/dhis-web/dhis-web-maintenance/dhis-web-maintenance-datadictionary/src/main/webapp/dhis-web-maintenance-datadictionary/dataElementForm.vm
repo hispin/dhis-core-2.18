@@ -42,6 +42,12 @@
 #end
 
 #if( $update )
+<p style="width: 100%; text-align: right;">
+    <input type="button" value="$i18n.getString( 'clone' )" onclick="window.location.href='showAddDataElementForm.action?id=$!dataElement.id'" style="width:10em" />
+</p>
+#end
+
+#if( $update )
 <form id="updateDataElementForm" action="updateDataElement.action" method="post" class="inputForm">
 <input type="hidden" id="id" name="id" value="$!dataElement.id"/>
 #else
@@ -281,11 +287,5 @@
     #end
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElement.action'" style="width:10em" />
 </p>
-
-#if( $update )
-<p>
-    <input type="button" value="$i18n.getString( 'clone' )" onclick="window.location.href='showAddDataElementForm.action?id=$!dataElement.id'" style="width:10em" />
-</p>
-#end
 
 </form>
