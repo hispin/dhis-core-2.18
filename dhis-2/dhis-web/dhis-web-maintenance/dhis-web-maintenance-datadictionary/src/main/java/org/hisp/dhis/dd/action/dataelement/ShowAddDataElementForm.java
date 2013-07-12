@@ -27,15 +27,12 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -48,7 +45,10 @@ import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Hans S. Toemmerholt
@@ -163,6 +163,20 @@ public class ShowAddDataElementForm
         return legendSets;
     }
 
+    private String dataElementId;
+
+    public void setDataElementId( String dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
+
+    private DataElement dataElement;
+
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -187,13 +201,18 @@ public class ShowAddDataElementForm
         optionSets = new ArrayList<OptionSet>( optionService.getAllOptionSets() );
 
         legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
-        
+
         Collections.sort( dataElementCategoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
         Collections.sort( optionSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( legendSets, IdentifiableObjectNameComparator.INSTANCE );
-                
+
+        if ( dataElementId != null )
+        {
+            dataElement = dataElementService.getDataElement( dataElementId );
+        }
+
         return SUCCESS;
     }
 }
