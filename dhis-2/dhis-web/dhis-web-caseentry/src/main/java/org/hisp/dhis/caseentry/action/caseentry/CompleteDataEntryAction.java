@@ -213,19 +213,13 @@ public class CompleteDataEntryAction
         if ( patient != null )
         {
             Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
-            PatientReminder reminder = null;
             for ( PatientReminder rm : reminders )
             {
-                if ( rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                if ( rm != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
                 {
-                    reminder = rm;
+                    sendEventMessage( rm, programStageInstance, patient );
                     break;
                 }
-            }
-
-            if ( reminder != null )
-            {
-                sendEventMessage( reminder, programStageInstance, patient );
             }
         }
     }
@@ -282,19 +276,13 @@ public class CompleteDataEntryAction
         if ( patient != null )
         {
             Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
-            PatientReminder reminder = null;
             for ( PatientReminder rm : reminders )
             {
-                if ( rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                if ( rm != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
                 {
-                    reminder = rm;
+                    sendProgramMessage( rm, programInstance, patient );
                     break;
                 }
-            }
-
-            if ( reminder != null )
-            {
-                sendProgramMessage( reminder, programInstance, patient );
             }
         }
     }
