@@ -69,7 +69,8 @@
 				#if($hasCommonForm=='false')
 				 <tr id="tr${registrationForm.id}">
 					<td>$i18n.getString('all')</td>  
-					<td>[$i18n.getString('none')]</td>   					
+					<td>[$i18n.getString('none')]</td>  
+					<td>[$i18n.getString('none')]</td> 					
 					<td style="text-align:center">
 					  <a href="javascript:showDefaultRegistrationForm('');" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
 					  <a href="javascript:addNewForm('')" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
