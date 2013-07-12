@@ -77,7 +77,7 @@ public class HibernateIncomingSmsStore
     public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword )
     {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( IncomingSms.class );
+        Criteria criteria = session.createCriteria( IncomingSms.class ).addOrder( Order.desc( "sentDate" ) );
         if ( status != null )
         {
             criteria.add( Restrictions.eq( "status", status ) );

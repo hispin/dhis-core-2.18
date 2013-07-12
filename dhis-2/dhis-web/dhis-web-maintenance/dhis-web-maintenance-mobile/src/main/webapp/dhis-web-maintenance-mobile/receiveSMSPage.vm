@@ -175,25 +175,28 @@
 		</div>	
 	</div>
 	<br/>
-	<table id="detailsSmsList" class="listTable" style="width:840px">
+	<table id="detailsSmsList" class="listTable" style="width:100%">
 		<col width="40px"/>
+		<col width="40px"/>
+		<col width="200px"/>
+		<col width="100px"/>
 		<col width="60px"/>
-		<col width="400px"/>
-		<col width="150px"/>
-		<col width="60px"/>
+		<col width="120px"/>
 		<col width="70px"/>
+		<col width="40px"/>
 		<thead>
 			<th style="text-align:center"><a href="#" onclick="checkAll()" title="$i18n.getString( 'check_all' )"><img src="../images/check.png"/></a></th>
 			<th style="text-align:center">$i18n.getString( "no." )</th>
 			<th>$i18n.getString( "message" )</th>
 			<th>$i18n.getString( "phone_number" )</th>
 			<th>$i18n.getString( "status" )</th>
+			<th>$i18n.getString( "date" )</th>
 			<th style="text-align:center">$i18n.getString( "action" )</th>
 			<th style="text-align:center">$i18n.getString( "delete" )</th>
 		</thead>
 		<tbody>
 			#foreach( $incomingSms in $listIncomingSms )
-			<tr id="tr${incomingSms.id}">
+			<tr id="tr${incomingSms.id}" height="40">
 				<td style="text-align:center"><input type="checkbox" name="mycheck" value="$incomingSms.id"/></td>			
 				<td style="text-align:center">$velocityCount</td>
 				<td>
@@ -201,6 +204,7 @@
 					<input type="hidden" id="$incomingSms.id" value="$incomingSms.text" onblur="makeVisible( $incomingSms.id, $velocityCount )"/></td>
 				<td>$incomingSms.originator</td>
 				<td>$incomingSms.status</td>
+				<td>$incomingSms.sentDate.toLocaleString()</td>
 				<td style="text-align:center">#if($incomingSms.status == 'FAILED' || $incomingSms.status == 'INCOMING')<a href="javascript:reimport('$i18n.getString( 'reimport_confirm' )','$incomingSms.id')"> Re-import </a> #else None #end</td>
 				<td style="text-align:center"><a href="javascript:removeSingleItem( '$incomingSms.id', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>				
 			</tr>
