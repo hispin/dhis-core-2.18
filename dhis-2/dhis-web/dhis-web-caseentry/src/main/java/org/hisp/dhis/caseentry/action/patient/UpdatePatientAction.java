@@ -90,7 +90,7 @@ public class UpdatePatientAction
     {
         this.systemSettingManager = systemSettingManager;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -111,7 +111,7 @@ public class UpdatePatientAction
 
     private String gender;
 
-    private String phoneNumber;
+    private String[] phoneNumber;
 
     private boolean underAge;
 
@@ -179,12 +179,24 @@ public class UpdatePatientAction
         // Set Other information for patient
         // ---------------------------------------------------------------------
 
-        phoneNumber = (phoneNumber!=null && phoneNumber.trim().equals( systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE ) )) ? null : phoneNumber;
+        String phone = "";
 
+        for ( String _phoneNumber : phoneNumber )
+        {
+            _phoneNumber = (_phoneNumber != null && _phoneNumber.isEmpty() && _phoneNumber.trim().equals(
+                systemSettingManager.getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE ) )) ? null
+                : _phoneNumber;
+            if ( _phoneNumber != null )
+            {
+                phone += _phoneNumber + ";";
+            }
+        }
+
+        phone = (phone.isEmpty()) ? null : phone.substring( 0, phone.length() - 1 );
+
+        patient.setPhoneNumber( phone );
         patient.setGender( gender );
         patient.setIsDead( false );
-        patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
         patient.setIsDead( isDead );
@@ -222,7 +234,7 @@ public class UpdatePatientAction
 
             patient.setDobType( dobType );
         }
-        
+
         // -------------------------------------------------------------------------------------
         // Save PatientIdentifier
         // -------------------------------------------------------------------------------------
@@ -435,7 +447,7 @@ public class UpdatePatientAction
         this.gender = gender;
     }
 
-    public void setPhoneNumber( String phoneNumber )
+    public void setPhoneNumber( String[] phoneNumber )
     {
         this.phoneNumber = phoneNumber;
     }
