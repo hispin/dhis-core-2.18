@@ -2111,3 +2111,20 @@ function saveComment( programInstanceId )
 			 $( '#comment' ).css( 'background-color', COLOR_GREEN );
 		});
 }
+
+function addPhoneNumberField(phoneNumberAreaCode)
+{	
+	$('.phoneNumberTR').last().after(
+		'<tr class="phoneNumberTR">'
+		+ '	<td></td>'
+		+ '	<td class="input-column">'
+		+ '		<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}" value="'+phoneNumberAreaCode+'"/>'
+		+ '		<input type="button" value="-" onclick="removePhoneNumberField(this)" style="width:20px;" class="{validate:{phone:true}}" value="' + phoneNumberAreaCode + '"/>'
+		+ '	</td>'
+		+ '</tr>' );
+}
+
+function removePhoneNumberField(_this)
+{
+	$(_this).parent().parent().remove();
+}

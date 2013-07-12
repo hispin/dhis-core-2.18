@@ -59,10 +59,11 @@
 		</td>
 	</tr>
 
-	<tr>
+	<tr class='phoneNumberTR'>
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 		<td class="input-column">
 			<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}"/>
+			<input type="button" value='+' style='width:20px;' onclick='addPhoneNumberField("$!phoneNumberAreaCode");' />
 		</td>
 	</tr>
 
@@ -265,8 +266,13 @@
 		showById('birthDate');
 	#end
 	
-	#if( $!patient.phoneNumber && $patient.phoneNumber!="") 
-		setFieldValue('phoneNumber',"$!patient.phoneNumber")
+	#if( $!patient.phoneNumber && $patient.phoneNumber!="")
+		var phoneNumbers = "$!patient.phoneNumber".split(';');
+		setFieldValue('phoneNumber',phoneNumbers[0]);
+		for( var i = 1;i<phoneNumbers.length;i++ )
+		{
+			addPhoneNumberField(phoneNumbers[i]);
+		}
 	#else 
 		setFieldValue('phoneNumber',"$!phoneNumberAreaCode")
 	#end
