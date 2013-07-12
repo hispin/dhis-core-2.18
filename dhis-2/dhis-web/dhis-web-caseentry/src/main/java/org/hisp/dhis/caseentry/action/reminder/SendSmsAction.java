@@ -131,7 +131,11 @@ public class SendSmsAction
         switch ( sendTo )
         {
         case PatientReminder.SEND_TO_PATIENT:
-            phoneNumbers.add( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() );
+            String[] _phoneNumbers = programStageInstance.getProgramInstance().getPatient().getPhoneNumber().split( ";" );
+            for ( String phoneNumber : _phoneNumbers )
+            {
+                phoneNumbers.add(phoneNumber);
+            }
             break;
         case PatientReminder.SEND_TO_HEALTH_WORKER:
             phoneNumbers

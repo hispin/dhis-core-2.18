@@ -69,6 +69,7 @@ import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
@@ -659,6 +660,15 @@ public abstract class DeletionHandler
     {
     }
 
+    public String allowDeletePatientRegistrationForm( PatientRegistrationForm patientRegistrationForm )
+    {
+        return null;
+    }
+
+    public void deletePatientRegistrationForm( PatientRegistrationForm patientRegistrationForm )
+    {
+    }
+    
     public String allowDeleteConstant( Constant constant )
     {
         return null;
