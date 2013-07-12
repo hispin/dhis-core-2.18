@@ -210,19 +210,13 @@ public class SetProgramInstanceStatusAction
         if ( patient != null )
         {
             Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
-            PatientReminder reminder = null;
             for ( PatientReminder rm : reminders )
             {
                 if ( rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM )
                 {
-                    reminder = rm;
+                    sendProgramMessage( rm, programInstance, patient );
                     break;
                 }
-            }
-
-            if ( reminder != null )
-            {
-                sendProgramMessage( reminder, programInstance, patient );
             }
         }
     }
