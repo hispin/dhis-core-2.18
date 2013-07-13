@@ -27,6 +27,8 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Locale;
+
 import com.lowagie.text.Element;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
@@ -70,6 +72,10 @@ public class PdfFieldCell
 
     private final static float RADIOBUTTON_TEXTOFFSET = 3.0f;
 
+    private final static float offSetTop = 0.5f;
+
+    private final static float offSetLeft = 3.0f;
+    
     private PdfFormField parent;
 
     private PdfFormField formField;
@@ -77,6 +83,8 @@ public class PdfFieldCell
     private PdfWriter writer;
 
     private float width;
+    
+    private float height;
 
     private int type;
 
@@ -91,19 +99,23 @@ public class PdfFieldCell
     private String text;
 
     private String name;
-
-    public PdfFieldCell( PdfFormField formField, int width, PdfWriter writer )
+    
+    
+    // Constructors
+    public PdfFieldCell( PdfFormField formField, float width, float height, PdfWriter writer )
     {
         this.formField = formField;
         this.width = width;
+        this.height = height;
         this.writer = writer;
         this.type = TYPE_DEFAULT;
     }
 
-    public PdfFieldCell( PdfFormField formField, int width, int type, PdfWriter writer )
+    public PdfFieldCell( PdfFormField formField, float width, float height, int type, PdfWriter writer )
     {
         this.formField = formField;
         this.width = width;
+        this.height = height;
         this.writer = writer;
         this.type = type;
     }
@@ -118,7 +130,7 @@ public class PdfFieldCell
         this.jsAction = jsAction;
     }
 
-    public PdfFieldCell( PdfFormField parent, String[] texts, String[] values, String checkValue, float width,
+    public PdfFieldCell( PdfFormField parent, String[] texts, String[] values, String checkValue, float width, float height,
         int type, PdfWriter writer )
     {
         this.writer = writer;
@@ -128,6 +140,7 @@ public class PdfFieldCell
         this.values = values;
         this.checkValue = checkValue;
         this.width = width;
+        this.height = height;
     }
 
     public void cellLayout( PdfPCell cell, Rectangle rect, PdfContentByte[] canvases )
@@ -137,18 +150,6 @@ public class PdfFieldCell
 
             PdfContentByte canvasText = canvases[PdfPTable.TEXTCANVAS];
             
-            // PENDING LOGIC
-            // PdfContentByte canvasLine = canvases[PdfPTable.LINECANVAS];
-            //
-            // float margin = 2;
-            //
-            // float x1 = rect.getLeft() + margin;
-            // float x2 = rect.getRight() - margin;
-            // float y1 = rect.getTop() - margin;
-            // float y2 = rect.getBottom() + margin;
-            //
-            // canvasLine.rectangle( x1, y1, x2 - x1, y2 - y1 );
-
             if ( type == TYPE_RADIOBUTTON )
             {
                 if ( parent != null )
@@ -160,14 +161,14 @@ public class PdfFieldCell
                     {
                         String text;
                         String value;
-
+                        
                         for ( int i = 0; i < texts.length; i++ )
                         {
 
                             text = texts[i];
                             value = values[i];
 
-                            Rectangle radioRec = new Rectangle( leftLoc, rect.getBottom(), rightLoc, rect.getTop() );
+                            Rectangle radioRec = new Rectangle( leftLoc, rect.getTop() - height, rightLoc, rect.getTop() );
 
                             RadioCheckField rf = new RadioCheckField( writer, radioRec, "RDBtn_" + text, value );
 
@@ -184,7 +185,7 @@ public class PdfFieldCell
                             rightLoc += width;
 
                             ColumnText.showTextAligned( canvasText, Element.ALIGN_LEFT, new Phrase( text ), leftLoc
-                                + RADIOBUTTON_TEXTOFFSET, (radioRec.getBottom() + radioRec.getTop()) / 2, 0 );
+                                + RADIOBUTTON_TEXTOFFSET, height, 0 );
 
                             leftLoc = rightLoc;
                             rightLoc += RADIOBUTTON_WIDTH;
@@ -219,13 +220,16 @@ public class PdfFieldCell
             }
             else if ( type == TYPE_CHECKBOX )
             {
-                // Start from the middle of the cell width.
-                float startingPoint = rect.getLeft() + ((rect.getWidth() + width) / 2.0f);
-
+                float extraCheckBoxOffset_Left = 2.0f;
+                float extraCheckBoxOffset_Top = 1.5f;
+                
                 formField.setWidget(
-                    new Rectangle( startingPoint, rect.getBottom(), startingPoint + width, rect.getTop() ),
+                    new Rectangle( rect.getLeft() + offSetLeft + extraCheckBoxOffset_Left
+                        , rect.getTop() - height - offSetTop - extraCheckBoxOffset_Top
+                        , rect.getLeft() + width + offSetLeft + extraCheckBoxOffset_Left
+                        , rect.getTop() - offSetTop - extraCheckBoxOffset_Top ),
                     PdfAnnotation.HIGHLIGHT_NONE );
-            }
+            }            
             else
             {
 
@@ -235,18 +239,10 @@ public class PdfFieldCell
                         "if(event.value == '') app.alert('Warning! Please Enter The Org ID.');", writer ) );
                 }
 
-                // TYPE_TEXT_NUMBER case included as well here.
-
-                // PENDING LOGIC
-                // Add -1, +1 to create cellpadding effect - spacing between
-                // rows/cells
-                // formField.setWidget(
-                // new Rectangle( rect.getLeft() + 1, rect.getBottom() + 1,
-                // rect.getLeft() + width - 1, rect.getTop() - 1 ),
-                // PdfAnnotation.HIGHLIGHT_NONE );
+                // TYPE_TEXT_NUMBER and TYPE_CHECKBOX cases included as well here.
 
                 formField.setWidget(
-                    new Rectangle( rect.getLeft(), rect.getBottom(), rect.getLeft() + width, rect.getTop() ),
+                    new Rectangle( rect.getLeft() + offSetLeft, rect.getTop() - height - offSetTop, rect.getLeft() + width + offSetLeft, rect.getTop() - offSetTop ),
                     PdfAnnotation.HIGHLIGHT_NONE );
 
             }

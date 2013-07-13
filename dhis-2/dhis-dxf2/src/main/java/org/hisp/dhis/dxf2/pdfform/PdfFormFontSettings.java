@@ -90,6 +90,7 @@ public class PdfFormFontSettings
         {
         case FONTTYPE_BODY:
             font.setSize( FONTSIZE_BODY );
+            font.setColor( Color.BLACK );
             break;
         case FONTTYPE_TITLE:
             font.setSize( FONTSIZE_TITLE );
