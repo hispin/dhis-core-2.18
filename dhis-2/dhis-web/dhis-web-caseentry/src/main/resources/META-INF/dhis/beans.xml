@@ -108,6 +108,8 @@
 			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programIndicatorService"
+			ref="org.hisp.dhis.program.ProgramIndicatorService" />
 	</bean>
 
 	<bean
