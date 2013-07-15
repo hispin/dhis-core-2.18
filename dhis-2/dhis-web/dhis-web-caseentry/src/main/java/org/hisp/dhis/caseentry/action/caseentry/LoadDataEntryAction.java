@@ -44,6 +44,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
+import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -147,9 +148,16 @@ public class LoadDataEntryAction
 
     private Map<String, Double> calAttributeValueMap = new HashMap<String, Double>();
 
+    private ProgramIndicatorService programIndicatorService;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+    
+    public void setProgramIndicatorService( ProgramIndicatorService programIndicatorService )
+    {
+        this.programIndicatorService = programIndicatorService;
+    }
 
     public void setOrganisationUnitId( Integer organisationUnitId )
     {
@@ -244,6 +252,13 @@ public class LoadDataEntryAction
         return latitude;
     }
 
+    private Map<String, String> programIndicatorsMap = new HashMap<String, String>();
+
+    public Map<String, String> getProgramIndicatorsMap()
+    {
+        return programIndicatorsMap;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -281,26 +296,37 @@ public class LoadDataEntryAction
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-        Boolean displayProvidedOtherFacility = program.getDisplayProvidedOtherFacility() == null || !program.getDisplayProvidedOtherFacility();
+        Boolean displayProvidedOtherFacility = program.getDisplayProvidedOtherFacility() == null
+            || !program.getDisplayProvidedOtherFacility();
 
         if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
         {
-            sections = new ArrayList<ProgramStageSection>(
-                programStageSectionService.getProgramStages( programStage ) );
+            sections = new ArrayList<ProgramStageSection>( programStageSectionService.getProgramStages( programStage ) );
 
             Collections.sort( sections, new ProgramStageSectionSortOrderComparator() );
         }
         else if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_CUSTOM ) )
         {
             customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
-                dataEntryForm.getHtmlCode(), null, displayProvidedOtherFacility.toString(), i18n,
-                programStage, null, organisationUnit );
+                dataEntryForm.getHtmlCode(), null, displayProvidedOtherFacility.toString(), i18n, programStage, null,
+                organisationUnit );
         }
 
         if ( programStageInstance != null )
         {
-            organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit() :
-                organisationUnitService.getOrganisationUnit( organisationUnitId );
+            // ---------------------------------------------------------------------
+            // Get program indicators
+            // ---------------------------------------------------------------------
+
+            programIndicatorsMap.putAll( programIndicatorService.getProgramIndicatorValues( programStageInstance
+                .getProgramInstance() ) );
+
+            // ---------------------------------------------------------------------
+            // Get registration orgunit
+            // ---------------------------------------------------------------------
+
+            organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit()
+                : organisationUnitService.getOrganisationUnit( organisationUnitId );
 
             if ( program.isRegistration() )
             {
