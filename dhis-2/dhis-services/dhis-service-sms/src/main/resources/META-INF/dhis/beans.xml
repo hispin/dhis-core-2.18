@@ -55,11 +55,14 @@
 
   <bean id="org.hisp.dhis.sms.parse.DefaultParserManager" class="org.hisp.dhis.sms.parse.DefaultParserManager"
     depends-on="org.hisp.dhis.user.UserService">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="smsCommandService" ref="smsCommandService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />  
-    <property name="dataValueSMSListener" ref="org.hisp.dhis.sms.DataValueSMSListener" />
-    <property name="j2meDataValueSMSListener" ref="org.hisp.dhis.sms.J2MEDataValueSMSListener" />
-    <property name="unregisteredSMSListener" ref="org.hisp.dhis.sms.UnregisteredSMSListener" />
-    <property name="dhisMessageAlertListener" ref="org.hisp.dhis.sms.DHISMessageAlertListener" />
+    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
+    <property name="smsMessageSender" ref="org.hisp.dhis.sms.outbound.SmsSender" />
+    <property name="emailMessageSender" ref="emailMessageSender" />
   </bean>
   
 </beans>
