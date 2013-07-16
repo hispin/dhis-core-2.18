@@ -53,7 +53,6 @@ import com.lowagie.text.pdf.PdfReader;
 /**
  * @author James Chang
  */
-
 public class PdfDataEntryFormUtil
 {
     public static final int DATATYPE_DATASET = 0;
@@ -145,11 +144,6 @@ public class PdfDataEntryFormUtil
         }
     }
 
-//  public static PdfPCell getPdfPCell( float minHeight )
-//  {
-//      return getPdfPCell( minHeight, CELL_COLUMN_TYPE_LABEL );
-//  }
-
     public static PdfPCell getPdfPCell( boolean hasBorder )
     {
         return getPdfPCell( CELL_MIN_HEIGHT_DEFAULT, CELL_COLUMN_TYPE_ENTRYFIELD, hasBorder );
@@ -174,24 +168,24 @@ public class PdfDataEntryFormUtil
 
         switch ( cellContentType )
         {
-        case CELL_COLUMN_TYPE_ENTRYFIELD:
-            cell.setHorizontalAlignment( Element.ALIGN_CENTER );
-            cell.setVerticalAlignment( Element.ALIGN_MIDDLE );
-
-            break;
-
-        case CELL_COLUMN_TYPE_HEADER:
-            cell.setHorizontalAlignment( Element.ALIGN_CENTER );
-            cell.setVerticalAlignment( Element.ALIGN_MIDDLE );
-
-            break;
-
-        case CELL_COLUMN_TYPE_LABEL:
-            cell.setHorizontalAlignment( Element.ALIGN_RIGHT );
-            cell.setVerticalAlignment( Element.ALIGN_TOP );
-
-        default:
-            break;
+            case CELL_COLUMN_TYPE_ENTRYFIELD:
+                cell.setHorizontalAlignment( Element.ALIGN_CENTER );
+                cell.setVerticalAlignment( Element.ALIGN_MIDDLE );
+    
+                break;
+    
+            case CELL_COLUMN_TYPE_HEADER:
+                cell.setHorizontalAlignment( Element.ALIGN_CENTER );
+                cell.setVerticalAlignment( Element.ALIGN_MIDDLE );
+    
+                break;
+    
+            case CELL_COLUMN_TYPE_LABEL:
+                cell.setHorizontalAlignment( Element.ALIGN_RIGHT );
+                cell.setVerticalAlignment( Element.ALIGN_TOP );
+    
+            default:
+                break;
         }
 
         return cell;
