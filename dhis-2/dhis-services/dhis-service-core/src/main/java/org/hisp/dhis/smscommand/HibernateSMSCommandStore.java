@@ -59,12 +59,12 @@ public class HibernateSMSCommandStore
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
         criteria.add( Restrictions.eq( "id", id ) );
-        
+
         if ( criteria.list() != null && criteria.list().size() > 0 )
         {
             return (SMSCommand) criteria.list().get( 0 );
         }
-        
+
         return null;
     }
 
@@ -80,7 +80,7 @@ public class HibernateSMSCommandStore
         t.commit();
         s.flush();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     @Override
     public Collection<SMSCommand> getJ2MESMSCommands()
@@ -88,5 +88,19 @@ public class HibernateSMSCommandStore
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
         criteria.add( Restrictions.eq( "parserType", ParserType.J2ME_PARSER ) );
         return criteria.list();
+    }
+
+    @Override
+    public SMSCommand getSMSCommand( String commandName, ParserType parserType )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
+        criteria.add( Restrictions.eq( "parserType", parserType ) );
+        criteria.add( Restrictions.eq( "name", commandName ) );
+        if ( criteria.list() != null && criteria.list().size() > 0 )
+        {
+            return (SMSCommand) criteria.list().get( 0 );
+        }
+
+        return null;
     }
 }

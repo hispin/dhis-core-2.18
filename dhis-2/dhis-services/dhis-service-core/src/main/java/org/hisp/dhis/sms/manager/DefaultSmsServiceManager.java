@@ -1,3 +1,5 @@
+package org.hisp.dhis.sms.manager;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,32 +27,87 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.sms.parse;
-
-import java.util.HashMap;
 import java.util.Map;
+import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.SmsServiceManager;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
- /**
- * @author Nguyen Kim Lai
- */
-public class DhisMessageAlertParser 
-    implements IParser
-{    
+public class DefaultSmsServiceManager
+    implements SmsServiceManager
+{
+
     @Override
-    public Map<String, String> parse( String sms )
+    public Map<String, String> getGatewayMap()
     {
-        HashMap<String, String> output = new HashMap<String, String>();
-        
-        String userGroupCode = sms.substring( 0, sms.indexOf( " " ) );
-        String content = sms.substring( userGroupCode.length());
-        
-        output.put( userGroupCode.trim(), content.trim() );
-        
-        return output;
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public void setSeparator( String separator )
+    public void stopService()
     {
+        // TODO Auto-generated method stub
+
     }
+
+    @Override
+    public void startService()
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void reloadConfig()
+        throws SmsServiceException
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public String getServiceStatus()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getMessageStatus()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getDefaultGateway()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String sendMessage( OutboundSms sms, String gatewayId )
+        throws SmsServiceException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String sendMessage( OutboundSms sms )
+        throws SmsServiceException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String sendMessage( String message, String phoneNumber )
+        throws SmsServiceException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

@@ -15,16 +15,16 @@
   <dependencies>
 
     <!-- DHIS -->
-
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api</artifactId>
     </dependency>
-    <dependency>
+    
+   <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
     </dependency>
-
+    
     <!-- SMS -->
 
     <dependency>

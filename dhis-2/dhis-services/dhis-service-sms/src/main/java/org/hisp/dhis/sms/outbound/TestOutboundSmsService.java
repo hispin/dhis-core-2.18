@@ -162,4 +162,20 @@ public class TestOutboundSmsService
     {
         return null;
     }
+
+    @Override
+    public String sendMessage( OutboundSms sms )
+        throws SmsServiceException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String sendMessage( String message, String phoneNumber )
+        throws SmsServiceException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -3,47 +3,62 @@ package org.hisp.dhis.smscommand;
 import java.util.Collection;
 import java.util.Set;
 
+import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCommandStore;
 
-public class DefaultSMSCommandService implements SMSCommandService{
-    
+public class DefaultSMSCommandService
+    implements SMSCommandService
+{
+
     private SMSCommandStore smsCommandStore;
 
     @Override
-    public void updateSMSCommand(SMSCommand cmd) {
+    public void updateSMSCommand( SMSCommand cmd )
+    {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
-    public Collection<SMSCommand> getSMSCommands() {
+    public Collection<SMSCommand> getSMSCommands()
+    {
         return smsCommandStore.getSMSCommands();
     }
 
-    public void setSmsCommandStore(SMSCommandStore smsCommandStore) {
+    public void setSmsCommandStore( SMSCommandStore smsCommandStore )
+    {
         this.smsCommandStore = smsCommandStore;
     }
 
-    public void save(SMSCommand cmd){
-        smsCommandStore.save(cmd);
+    public void save( SMSCommand cmd )
+    {
+        smsCommandStore.save( cmd );
     }
-    
-    public SMSCommand getSMSCommand(int id){
-        return smsCommandStore.getSMSCommand(id);
-    }
-    
 
-    public void save(Set<SMSCode> codes){
-        smsCommandStore.save(codes);
+    public SMSCommand getSMSCommand( int id )
+    {
+        return smsCommandStore.getSMSCommand( id );
     }
-    
-    public void delete(SMSCommand cmd){
-       smsCommandStore.delete(cmd);
+
+    public void save( Set<SMSCode> codes )
+    {
+        smsCommandStore.save( codes );
+    }
+
+    public void delete( SMSCommand cmd )
+    {
+        smsCommandStore.delete( cmd );
     }
 
     @Override
     public Collection<SMSCommand> getJ2MESMSCommands()
     {
         return smsCommandStore.getJ2MESMSCommands();
+    }
+
+    @Override
+    public SMSCommand getSMSCommand( String commandName, ParserType parserType )
+    {
+        return smsCommandStore.getSMSCommand( commandName, parserType );
     }
 }

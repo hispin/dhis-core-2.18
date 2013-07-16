@@ -51,13 +51,19 @@ public interface OutboundSmsService
     String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException;
 
-    List<OutboundSms> getAllOutboundSms();
-    
-    int saveOutboundSms( OutboundSms sms);
+    String sendMessage( OutboundSms sms )
+        throws SmsServiceException;
 
-    void updateOutboundSms( OutboundSms sms);
-    
+    String sendMessage( String message, String phoneNumber )
+        throws SmsServiceException;
+
+    List<OutboundSms> getAllOutboundSms();
+
+    int saveOutboundSms( OutboundSms sms );
+
+    void updateOutboundSms( OutboundSms sms );
+
     void deleteById( Integer outboundSmsId );
-    
+
     List<OutboundSms> getOutboundSms( OutboundSmsStatus status );
 }
