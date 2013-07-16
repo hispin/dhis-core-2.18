@@ -27,8 +27,6 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Locale;
-
 import com.lowagie.text.Element;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
