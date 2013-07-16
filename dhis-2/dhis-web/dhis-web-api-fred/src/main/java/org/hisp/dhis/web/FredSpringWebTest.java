@@ -27,7 +27,7 @@ package org.hisp.dhis.web;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.webapi.v1.utils.ObjectMapperFactoryBean;
 import org.junit.Before;
@@ -59,8 +59,8 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration( locations = {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
     "classpath*:/META-INF/dhis/beans.xml",
     "classpath*:/META-INF/dhis/webapi-fred.xml" }
 )
