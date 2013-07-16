@@ -61,6 +61,7 @@ public class Options
 
         String patterns[] = new String[] {
             "yyyy-MM-dd",
+            "yyyy-MM",
             "yyyyMMdd",
             "yyyyMM",
             "yyyy"
