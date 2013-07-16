@@ -91,11 +91,14 @@
 				<p><label class="bold">$i18n.getString( "display_date_of_incident" ):</label><br><span id="displayIncidentDateField"></span></p>                                 <p><label class="bold">$i18n.getString( "generated_events_by_enrollment_date" ):</label><br><span id="generatedByEnrollmentDateField"></span></p>
 				<p><label class="bold">$i18n.getString( "skip_to_generate_overdue_events" ):</label><br><span id="ignoreOverdueEventsField"></span></p>
 				<p><label class="bold">$i18n.getString( "only_enroll_once" ):</label><br><span id="onlyEnrollOnceField"></span></p>
-				<p><label class="bold">$i18n.getString( "display_on_all_orgunits" ):</label><br><span id="displayOnAllOrgunitField"></span></p>
+				<p><label class="bold">$i18n.getString( "used_by_all_orgunits" ):</label><br><span id="displayOnAllOrgunitField"></span></p>
 				<p><label class="bold">$i18n.getString( "block_entry_form_after_completed" ):</label><br><span id="blockEntryFormField"></span></p>
 				<p><label class="bold">$i18n.getString( "remind_completing_program_after_program_stage_completed" ):</label><br><span id="remindCompletedField"></span></p>
-				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>                          
+				<p><label class="bold">$i18n.getString( "use_birth_date_as_incident_date" ):</label><br><span id="useBirthDateAsIncidentDate"></span></p>                              
+				<p><label class="bold">$i18n.getString( "show_incident_date" ):</label><br><span id="displayIncidentDate"></span></p>                              
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>                              
+				<p><label class="bold">$i18n.getString( "use_birth_date_as_enrollment_date" ):</label><br><span id="useBirthDateAsEnrollmentDate"></span></p>                              
+				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>                          
 				<p><label class="bold">$i18n.getString( "number_of_attributes" ):</label><br><span id="noAttributesField"></span></p>
 				<p><label class="bold">$i18n.getString( "number_of_identifier_types" ):</label><br><span id="noIdentifierTypesField"></span></p>
 			</div>

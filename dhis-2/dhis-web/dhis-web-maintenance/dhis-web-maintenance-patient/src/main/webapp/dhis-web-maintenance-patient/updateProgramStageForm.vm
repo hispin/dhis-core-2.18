@@ -4,7 +4,7 @@
 
 <h4>$programStage.program.displayName</h4>
 
-<form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="get">
+<form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post">
 	<input type="hidden" id="id" name="id" value="$programStage.id"/>
 	<input type="hidden" id="programId" name="programId" value="$programStage.program.id"/>
 	<select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>

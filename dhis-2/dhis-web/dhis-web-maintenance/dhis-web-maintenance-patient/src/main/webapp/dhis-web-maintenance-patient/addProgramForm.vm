@@ -165,14 +165,20 @@ jQuery( document ).ready( function()
 		</tr>
 		
 		<tr>
-			<td><label>$i18n.getString( "display_on_all_orgunits" )</label></td>
+			<td><label>$i18n.getString( "used_by_all_orgunits" )</label></td>
 			<td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true'></td>
 			<td></td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "show_incident_date" )</label></td>
-			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' checked onchange='programOnChange();'></td>
+			<td><label>$i18n.getString( "use_birth_date_as_incident_date" )</label></td>
+			<td><input type="checkbox" id="useBirthDateAsIncidentDate" name="useBirthDateAsIncidentDate" value='true'></td>
+			<td></td>
+		</tr>
+		
+		<tr name='nonAnonymous'>
+			<td><label>$i18n.getString( "use_birth_date_as_enrollment_date" )</label></td>
+			<td><input type="checkbox" id="useBirthDateAsEnrollmentDate" name="useBirthDateAsEnrollmentDate" value='true' ></td>
 			<td></td>
 		</tr>
 		

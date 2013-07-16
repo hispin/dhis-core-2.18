@@ -41,6 +41,12 @@ function showProgramDetails( programId )
 		var remindCompleted = ( json.program.remindCompleted == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'remindCompletedField', remindCompleted );   	
 		
+		var useBirthDateAsIncidentDate = ( json.program.useBirthDateAsIncidentDate == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'useBirthDateAsIncidentDateField', useBirthDateAsIncidentDate );   	
+		
+		var useBirthDateAsEnrollmentDate = ( json.program.useBirthDateAsEnrollmentDate == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'useBirthDateAsEnrollmentDateField', useBirthDateAsEnrollmentDate );   	
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

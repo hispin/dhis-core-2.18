@@ -88,6 +88,10 @@
 	
 	<property name="displayOnAllOrgunit" />
 	
+	<property name="useBirthDateAsIncidentDate" />
+	
+	<property name="useBirthDateAsEnrollmentDate" />
+	
 	<!-- Access properties -->
 	
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_program_userid" />
