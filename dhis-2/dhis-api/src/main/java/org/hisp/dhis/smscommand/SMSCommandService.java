@@ -30,6 +30,8 @@ package org.hisp.dhis.smscommand;
 import java.util.Collection;
 import java.util.Set;
 
+import org.hisp.dhis.sms.parse.ParserType;
+
 public interface SMSCommandService
 {
     void updateSMSCommand( SMSCommand cmd );
@@ -45,4 +47,6 @@ public interface SMSCommandService
     void delete( SMSCommand cmd );
     
     Collection<SMSCommand> getJ2MESMSCommands();
+    
+    SMSCommand getSMSCommand( String commandName, ParserType parserType );
 }

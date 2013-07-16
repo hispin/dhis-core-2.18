@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms.parse;
+package org.hisp.dhis.sms;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,64 +27,33 @@ package org.hisp.dhis.sms.parse;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import org.hisp.dhis.smscommand.SMSCommand;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
-public class J2MEDataEntryParser
-    implements IParser
+public interface SmsServiceManager
 {
-    private SMSCommand smsCommand;
+    Map<String, String> getGatewayMap();
 
-    public J2MEDataEntryParser()
-    {
-    }
-    
-    public J2MEDataEntryParser( SMSCommand smsCommand )
-    {
-        this.smsCommand = smsCommand;
-    }
-    
-    @Override
-    public Map<String, String> parse( String sms )
-    {
-        String[] keyValuePairs = null;
-        
-        if ( sms.indexOf( "#" ) > -1 )
-        {
-            keyValuePairs = sms.split( "#" );
-        }
-        else
-        {
-            keyValuePairs = new String[1];
-            keyValuePairs[0] = sms;
-        }
+    void stopService();
 
-        Map<String, String> keyValueMap = new HashMap<String, String>();
-        for ( String keyValuePair : keyValuePairs )
-        {
-            String[] token = keyValuePair.split( Pattern.quote( smsCommand.getSeparator() ) );
-            keyValueMap.put( token[0], token[1] );
-        }
+    void startService();
 
-        return keyValueMap;
-    }
+    void reloadConfig()
+        throws SmsServiceException;
 
-    @Override
-    public void setSeparator( String separator )
-    {
-        // TODO Auto-generated method stub
-    }
+    String getServiceStatus();
 
-    public SMSCommand getSmsCommand()
-    {
-        return smsCommand;
-    }
+    String getMessageStatus();
 
-    public void setSmsCommand( SMSCommand smsCommand )
-    {
-        this.smsCommand = smsCommand;
-    }
+    String getDefaultGateway();
+
+    String sendMessage( OutboundSms sms, String gatewayId )
+        throws SmsServiceException;
+
+    String sendMessage( OutboundSms sms )
+        throws SmsServiceException;
+
+    String sendMessage( String message, String phoneNumber )
+        throws SmsServiceException;
 }

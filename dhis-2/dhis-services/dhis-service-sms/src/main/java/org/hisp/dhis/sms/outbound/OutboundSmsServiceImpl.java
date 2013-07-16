@@ -100,10 +100,47 @@ public class OutboundSmsServiceImpl
         {
             throw new SmsServiceNotEnabledException();
         }
-        
+
         if ( transportService != null )
         {
             return sendMessageInternal( sms, gatewayId );
+        }
+
+        return "outboundsms_saved";
+    }
+
+    @Override
+    @Transactional
+    public String sendMessage( OutboundSms sms )
+        throws SmsServiceException
+    {
+        if ( !enabled )
+        {
+            throw new SmsServiceNotEnabledException();
+        }
+
+        if ( transportService != null )
+        {
+            return sendMessageInternal( sms, transportService.getDefaultGateway() );
+        }
+
+        return "outboundsms_saved";
+    }
+
+    @Override
+    @Transactional
+    public String sendMessage( String message, String phoneNumber )
+        throws SmsServiceException
+    {
+        if ( !enabled )
+        {
+            throw new SmsServiceNotEnabledException();
+        }
+
+        if ( transportService != null )
+        {
+            String defaultGatewayId = transportService.getDefaultGateway();
+            return sendMessageInternal( new OutboundSms( message, phoneNumber ), defaultGatewayId );
         }
 
         return "outboundsms_saved";
@@ -122,13 +159,14 @@ public class OutboundSmsServiceImpl
     }
 
     @Override
-    public void updateOutboundSms( OutboundSms sms)
+    public void updateOutboundSms( OutboundSms sms )
     {
         outboundSmsStore.update( sms );
     }
-    
+
     @Override
-    public int saveOutboundSms(OutboundSms sms) {
+    public int saveOutboundSms( OutboundSms sms )
+    {
         return outboundSmsStore.save( sms );
     }
 
@@ -138,7 +176,7 @@ public class OutboundSmsServiceImpl
         OutboundSms sms = outboundSmsStore.get( outboundSmsId );
         outboundSmsStore.delete( sms );
     }
-    
+
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
@@ -148,7 +186,7 @@ public class OutboundSmsServiceImpl
         try
         {
             String message = transportService.sendMessage( sms, id );
-            
+
             return message;
         }
         catch ( SmsServiceException e )
@@ -159,4 +197,5 @@ public class OutboundSmsServiceImpl
             return "Exception sending message " + sms + e.getMessage();
         }
     }
+
 }
