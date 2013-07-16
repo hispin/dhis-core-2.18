@@ -158,7 +158,7 @@
 	<table style="width:600px; margin-bottom: 0;" class="listTable">
 			<tr>
 				<th style='width:220px' colspan='2'><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> <em title="$i18n.getString( "required" )" class="required">*</em> </th>
-				<th colspan="2"><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();" style="margin-left:10px;width:300px;" ></th>
+				<th colspan="2"><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();" style="padding-left: 2px; margin-left:6px;width:300px;" ></th>
 					<script type="text/javascript">
 					   datePickerValid( 'executionDate', false );
 					</script> 
