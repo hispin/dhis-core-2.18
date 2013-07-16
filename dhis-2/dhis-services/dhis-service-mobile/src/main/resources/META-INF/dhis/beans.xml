@@ -55,14 +55,4 @@
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
-   <bean id="org.hisp.dhis.mobile.sms.J2MEDataValueSMSListener" class="org.hisp.dhis.mobile.sms.J2MEDataValueSMSListener">
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-  </bean>
-  
-
 </beans>
