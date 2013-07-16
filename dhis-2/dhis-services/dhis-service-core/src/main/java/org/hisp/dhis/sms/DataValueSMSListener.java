@@ -73,7 +73,7 @@ public class DataValueSMSListener
 
     private DataValueService dataValueService;
 
-    private OutboundSmsService outboundSmsService;
+//    private OutboundSmsService outboundSmsService;
 
     private DataElementCategoryService dataElementCategoryService;
 
@@ -494,14 +494,14 @@ public class DataValueSMSListener
         }
         notInReport = notInReport.substring( 0, notInReport.length() - 1 );
 
-        if ( codesWithoutDataValues.size() > 0 )
-        {
-            outboundSmsService.sendMessage( reportBack + notInReport, sender );
-        }
-        else
-        {
-            outboundSmsService.sendMessage( reportBack, sender );
-        }
+//        if ( codesWithoutDataValues.size() > 0 )
+//        {
+//            outboundSmsService.sendMessage( reportBack + notInReport, sender );
+//        }
+//        else
+//        {
+//            outboundSmsService.sendMessage( reportBack, sender );
+//        }
     }
 
     private void registerCompleteDataSet( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
@@ -552,15 +552,15 @@ public class DataValueSMSListener
         this.dataValueService = dataValueService;
     }
 
-    public OutboundSmsService getOutboundSmsService()
-    {
-        return outboundSmsService;
-    }
-
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
-    {
-        this.outboundSmsService = outboundSmsService;
-    }
+//    public OutboundSmsService getOutboundSmsService()
+//    {
+//        return outboundSmsService;
+//    }
+//
+//    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+//    {
+//        this.outboundSmsService = outboundSmsService;
+//    }
 
     public SMSCommandService getSmsCommandService()
     {

@@ -970,41 +970,6 @@
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
     <property name="operandService" ref="org.hisp.dhis.dataelement.DataElementOperandService" />
   </bean>
-
-  <!-- SMS Listener -->
-  
-  <bean id="org.hisp.dhis.sms.DataValueSMSListener" class="org.hisp.dhis.sms.DataValueSMSListener">
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-  </bean>
-  
-   <bean id="org.hisp.dhis.sms.UnregisteredSMSListener" class="org.hisp.dhis.sms.UnregisteredSMSListener">
-    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-  </bean>
-  
-   <bean id="org.hisp.dhis.sms.DHISMessageAlertListener" class="org.hisp.dhis.sms.DHISMessageAlertListener">
-    <property name="smsMessageSender" ref="org.hisp.dhis.sms.outbound.SmsSender" />
-    <property name="emailMessageSender" ref="emailMessageSender" />
-    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-  </bean>
-  
-   <bean id="org.hisp.dhis.sms.J2MEDataValueSMSListener" class="org.hisp.dhis.sms.J2MEDataValueSMSListener">
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="smsCommandService" ref="smsCommandService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-  </bean>
   
   <!-- DeletionManager -->
 
