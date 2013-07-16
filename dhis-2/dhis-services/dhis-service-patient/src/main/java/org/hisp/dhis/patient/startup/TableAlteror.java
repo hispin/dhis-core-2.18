@@ -219,6 +219,8 @@ public class TableAlteror
         executeSql( "UPDATE program SET useFormNameDataElement=true where useFormNameDataElement is null" );
         executeSql( "ALTER TABLE caseaggregationcondition ALTER COLUMN aggregationexpression TYPE varchar(1000)");
         executeSql( "update patientattribute set displayonvisitschedule = false where displayonvisitschedule is null");
+        executeSql( "update program set useBirthDateAsIncidentDate = false where useBirthDateAsIncidentDate is null");
+        executeSql( "update program set useBirthDateAsEnrollmentDate = false where useBirthDateAsEnrollmentDate is null");
     }
 
     // -------------------------------------------------------------------------

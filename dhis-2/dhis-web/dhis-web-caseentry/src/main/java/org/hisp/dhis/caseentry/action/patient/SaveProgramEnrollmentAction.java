@@ -159,10 +159,27 @@ public class SaveProgramEnrollmentAction
 
         Program program = programService.getProgram( programId );
 
+        if ( enrollmentDate == null || enrollmentDate.isEmpty() )
+        {
+            if ( program.getUseBirthDateAsIncidentDate() )
+            {
+                enrollmentDate = format.formatDate( patient.getBirthDate() );
+            }
+        }
+        
         if ( dateOfIncident == null || dateOfIncident.isEmpty() )
         {
-            dateOfIncident = enrollmentDate;
+            if ( program.getUseBirthDateAsIncidentDate() )
+            {
+                dateOfIncident = format.formatDate( patient.getBirthDate() );
+            }
+            else
+            {
+                dateOfIncident = enrollmentDate;
+            }
         }
+        
+        
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             ProgramInstance.STATUS_ACTIVE );

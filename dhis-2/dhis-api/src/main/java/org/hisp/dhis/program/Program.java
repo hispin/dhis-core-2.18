@@ -130,6 +130,11 @@ public class Program
      * Allow enrolling person to all orgunit no matter what the program is assigned for the orgunit or not
      */
     private Boolean displayOnAllOrgunit = true;
+    
+    
+    private Boolean useBirthDateAsIncidentDate;
+    
+    private Boolean useBirthDateAsEnrollmentDate;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -543,6 +548,30 @@ public class Program
     public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
     {
         this.displayOnAllOrgunit = displayOnAllOrgunit;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getUseBirthDateAsIncidentDate()
+    {
+        return useBirthDateAsIncidentDate;
+    }
+
+    public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
+    {
+        this.useBirthDateAsIncidentDate = useBirthDateAsIncidentDate;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getUseBirthDateAsEnrollmentDate()
+    {
+        return useBirthDateAsEnrollmentDate;
+    }
+
+    public void setUseBirthDateAsEnrollmentDate( Boolean useBirthDateAsEnrollmentDate )
+    {
+        this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
 
 }

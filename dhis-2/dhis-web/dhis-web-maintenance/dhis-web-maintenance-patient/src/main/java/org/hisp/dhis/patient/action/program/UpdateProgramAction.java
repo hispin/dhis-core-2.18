@@ -238,6 +238,20 @@ public class UpdateProgramAction
         this.whenToSend = whenToSend;
     }
 
+    private Boolean useBirthDateAsIncidentDate;
+
+    public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
+    {
+        this.useBirthDateAsIncidentDate = useBirthDateAsIncidentDate;
+    }
+
+    private Boolean useBirthDateAsEnrollmentDate;
+
+    public void setUseBirthDateAsEnrollmentDate( Boolean useBirthDateAsEnrollmentDate )
+    {
+        this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -252,6 +266,8 @@ public class UpdateProgramAction
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
+        useBirthDateAsIncidentDate = (useBirthDateAsIncidentDate == null) ? false : useBirthDateAsIncidentDate;
+        useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -266,7 +282,9 @@ public class UpdateProgramAction
         program.setOnlyEnrollOnce( onlyEnrollOnce );
         program.setRemindCompleted( remindCompleted );
         program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
-
+        program.setUseBirthDateAsIncidentDate( useBirthDateAsIncidentDate );
+        program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
+        
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
