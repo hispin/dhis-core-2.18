@@ -27,9 +27,9 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hisp.dhis.web.webapi.v1.domain.MessageResponse;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ public final class MessageUtils
     {
         objectMapper = new ObjectMapper();
         objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
-        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_EMPTY );
+        objectMapper.setSerializationInclusion( JsonInclude.Include.NON_EMPTY );
     }
 
     public static String jsonMessage( String message ) throws IOException

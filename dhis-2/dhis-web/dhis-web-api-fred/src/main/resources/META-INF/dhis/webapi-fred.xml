@@ -89,7 +89,7 @@
 
     <property name="defaultViews">
       <list>
-        <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+        <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
           <property name="objectMapper" ref="objectMapperFactoryBean" />
           <property name="modelKey" value="entity" />
           <property name="extractValueFromSingleKeyModel" value="true" />

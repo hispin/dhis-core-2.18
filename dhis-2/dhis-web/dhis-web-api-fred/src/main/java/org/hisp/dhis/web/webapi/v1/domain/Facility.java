@@ -27,7 +27,7 @@ package org.hisp.dhis.web.webapi.v1.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.hibernate.validator.constraints.Length;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
 import org.hisp.dhis.web.webapi.v1.validation.group.Update;

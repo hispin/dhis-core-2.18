@@ -27,7 +27,7 @@ package org.hisp.dhis.web.webapi.v1.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -199,7 +199,7 @@ public class FacilityServiceController
         }
     }
 
-    @RequestMapping( value = "/cql", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE )
+    @RequestMapping(value = "/cql", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> cqlRequest( @RequestBody String cqlString ) throws IOException, CQLException
     {
         HttpHeaders headers = new HttpHeaders();

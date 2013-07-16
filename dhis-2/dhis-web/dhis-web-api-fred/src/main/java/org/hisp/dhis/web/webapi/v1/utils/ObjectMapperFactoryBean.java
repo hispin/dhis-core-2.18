@@ -27,10 +27,10 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
 
@@ -45,8 +45,8 @@ public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
     {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
-        objectMapper.configure( SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false );
-        objectMapper.setSerializationInclusion( JsonSerialize.Inclusion.NON_NULL );
+        objectMapper.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS );
+        objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
 
         return objectMapper;
     }
