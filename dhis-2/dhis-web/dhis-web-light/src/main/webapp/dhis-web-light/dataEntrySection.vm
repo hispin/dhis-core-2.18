@@ -84,6 +84,11 @@
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "negativeNumber" )
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+				#elseif($dataElement.type=="trueOnly")
+					<select name="$key">
+						<option value="">$i18n.getString("please_select")</option>
+						<option #if( $prevDataValues.get( $key ) == "true" ) selected="selected" #end value="true">$i18n.getString("yes")</option>
+					</select>	
 				#end
 				#end
 			#end
