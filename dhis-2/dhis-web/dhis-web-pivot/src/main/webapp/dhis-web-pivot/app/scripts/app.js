@@ -4018,7 +4018,7 @@ Ext.onReady( function() {
 
 			openTableLayoutTab = function(type, isNewTab) {
 				if (pt.baseUrl && pt.paramString) {
-					var url = pt.baseUrl + '/api/analytics.' + type + pt.paramString;
+					var url = pt.baseUrl + '/api/analytics.' + type + pt.util.pivot.getParamString(pt.xLayout);
 					url += '&tableLayout=true&columns=' + pt.xLayout.columnDimensionNames.join(';') + '&rows=' + pt.xLayout.rowDimensionNames.join(';');
 
 					window.open(url, isNewTab ? '_blank' : '_top');
