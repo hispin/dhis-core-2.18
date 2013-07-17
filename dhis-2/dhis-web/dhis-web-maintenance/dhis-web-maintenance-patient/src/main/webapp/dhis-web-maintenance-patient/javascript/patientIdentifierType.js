@@ -17,7 +17,7 @@ function showPatientIdentifierTypeDetails( patientIdentifierTypeId )
 			setInnerHTML( 'relatedField', boolValueMap[boolType] );
 			setInnerHTML( 'noCharsField', json.patientIdentifierType.noChars );
 			
-			var valueTypeMap = { 'text':i18n_string, 'number':i18n_number, 'letter':i18n_letter_only, 'orgunitCount': i18n_orgunit_count };
+			var valueTypeMap = { 'string':i18n_string, 'number':i18n_number, 'letter':i18n_letter_only, 'orgunitCount': i18n_orgunit_count };
 			var valueType = json.patientIdentifierType.type;
 			setInnerHTML( 'typeField', valueTypeMap[valueType] );
 			
