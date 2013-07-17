@@ -53,7 +53,7 @@
 		</tr>
 
 		<tr>
-			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="description">$i18n.getString( "description" )</label></td>
 			<td colspan="3"><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )"></td>
 		</tr>
 

@@ -96,7 +96,6 @@ public class ValidateRoleAction
     {
         if ( name != null )
         {
-
             UserAuthorityGroup match = userService.getUserAuthorityGroupByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -105,7 +104,6 @@ public class ValidateRoleAction
 
                 return ERROR;
             }
-
         }
 
         message = i18n.getString( "everything_is_ok" );
