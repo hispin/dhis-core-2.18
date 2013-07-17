@@ -437,12 +437,15 @@ body.x-windows {
 	background-image: none;
 	background-color: transparent;
 }
+.x-mask-msg div {
+    background-position: 11px center;
+}
 .x-mask-msg .x-mask-loading {
 	border: 0 none;
 	background-color: #000;
 	color: #fff;
 	border-radius: 2px;
-	padding: 10px 9px 10px 25px;
+	padding: 12px 14px 12px 30px;
 	opacity: 0.65;
 }
 
