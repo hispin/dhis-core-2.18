@@ -51,10 +51,6 @@ var validationRules = {
         "name" : {
             "required" : true,
             "rangelength" : [ 2, 140 ]
-        },
-        "description" : {
-            "required" : true,
-            "rangelength" : [ 2, 210 ]
         }
     },
     "userGroup" : {
