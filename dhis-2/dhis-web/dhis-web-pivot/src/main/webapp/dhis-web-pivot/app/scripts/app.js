@@ -1242,7 +1242,7 @@ Ext.onReady( function() {
 
 			if (pt.layout) {
 				favorite = Ext.clone(pt.layout);
-				dimensions = [].concat(favorite.columns, favorite.rows, favorite.filters);
+				dimensions = [].concat(favorite.columns || [], favorite.rows || [], favorite.filters || []);
 
 				// Server sync
 				favorite.totals = favorite.showTotals;
