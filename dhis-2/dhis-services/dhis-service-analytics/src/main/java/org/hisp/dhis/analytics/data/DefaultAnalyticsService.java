@@ -254,7 +254,7 @@ public class DefaultAnalyticsService
                                                         
                             grid.addRow();
                             grid.addValues( DimensionItem.getItemIdentifiers( row ) );
-                            grid.addValue( MathUtils.getRounded( value, 1 ) );
+                            grid.addValue( MathUtils.getRounded( value ) );
                         }
                     }
                 }
@@ -277,7 +277,7 @@ public class DefaultAnalyticsService
             {
                 grid.addRow();
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
-                grid.addValue( entry.getValue() );
+                grid.addValue( MathUtils.getRounded( entry.getValue() ) );
             }
         }
 
@@ -343,7 +343,7 @@ public class DefaultAnalyticsService
                     
                     grid.addRow();
                     grid.addValues( dataRow.toArray() );
-                    grid.addValue( MathUtils.getRounded( value, 1 ) );
+                    grid.addValue( MathUtils.getRounded( value ) );
                 }
             }
         }
@@ -360,7 +360,7 @@ public class DefaultAnalyticsService
             {
                 grid.addRow();
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
-                grid.addValue( entry.getValue() );
+                grid.addValue( MathUtils.getRounded( entry.getValue() ) );
             }
         }
 

@@ -241,4 +241,16 @@ public class MathUtilsTest
     {
         assertEquals( 7.5, MathUtils.getAverage( Arrays.asList( 5.0, 5.0, 10.0, 10.0 ) ), 0.01 );
     }
+    
+    @Test
+    public void testGetRounded()
+    {
+        assertEquals( 10, MathUtils.getRounded( 10.00 ), 0.01 );
+        assertEquals( 10, MathUtils.getRounded( 10 ), 0.01 );
+        assertEquals( 0.53, MathUtils.getRounded( 0.5281 ), 0.01 );
+        assertEquals( 0.5, MathUtils.getRounded( 0.5 ), 0.01 );
+        assertEquals( 0, MathUtils.getRounded( 0 ), 0.01 );
+        assertEquals( -0.43, MathUtils.getRounded( -0.43123 ), 0.01 );
+        assertEquals( -10, MathUtils.getRounded( -10.00 ), 0.01 );        
+    }
 }
