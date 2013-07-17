@@ -29,10 +29,9 @@ package org.hisp.dhis.light.settings.action;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.validator.EmailValidator;
 import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -147,14 +146,7 @@ public class SaveSettingsFormAction
         user.setSurname( surname );
         user.setPhoneNumber( phoneNumber );
 
-        if ( StringUtils.isNotBlank( email ) )
-        {
-            if ( EmailValidator.getInstance().isValid( email ) )
-            {
-                user.setEmail( email );
-            }
-        }
-        else
+        if ( ValidationUtils.emailIsValid( email ) )
         {
             user.setEmail( email );
         }
@@ -162,7 +154,7 @@ public class SaveSettingsFormAction
         userService.updateUser( user );
 
         // ---------------------------------------------------------------------
-        // Update locale settings (ui)
+        // Update UI locale settings
         // ---------------------------------------------------------------------
 
         localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
