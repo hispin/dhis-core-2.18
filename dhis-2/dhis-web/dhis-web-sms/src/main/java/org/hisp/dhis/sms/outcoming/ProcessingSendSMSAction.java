@@ -27,13 +27,10 @@ package org.hisp.dhis.sms.outcoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,10 +44,11 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
@@ -155,6 +153,7 @@ public class ProcessingSendSMSAction
 
     @SuppressWarnings("unchecked")
     public String execute()
+        throws Exception
     {
         gatewayId = transportService.getDefaultGateway();
 
@@ -178,31 +177,17 @@ public class ProcessingSendSMSAction
 
         if ( sendTarget != null && sendTarget.equals( "phone" ) )
         {
-            try
-            {
-                ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY );
-                mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
-                recipients = mapper.readValue( recipients.iterator().next(), Set.class );
+            ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY );
+            mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
+            recipients = mapper.readValue( recipients.iterator().next(), Set.class );
 
-                for ( String each : recipients )
-                {
-                    User user = new User();
-                    user.setPhoneNumber( each );
-                    recipientsList.add( user );
-                }
-            }
-            catch ( JsonParseException e )
+            for ( String each : recipients )
             {
-                e.printStackTrace();
+                User user = new User();
+                user.setPhoneNumber( each );
+                recipientsList.add( user );
             }
-            catch ( JsonMappingException e )
-            {
-                e.printStackTrace();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
+            
             //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
             message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
 
@@ -282,26 +267,11 @@ public class ProcessingSendSMSAction
             Patient patient = null;
             //Set<String> phones = new HashSet<String>();
 
-            try
-            {
-                ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY );
-                mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
+            ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY );
+            mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
 
-                recipients = mapper.readValue( recipients.iterator().next(), Set.class );
-            }
-            catch ( JsonParseException e )
-            {
-                e.printStackTrace();
-            }
-            catch ( JsonMappingException e )
-            {
-                e.printStackTrace();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-
+            recipients = mapper.readValue( recipients.iterator().next(), Set.class );
+            
             for ( String patientId : recipients )
             {
                 patient = patientService.getPatient( Integer.parseInt( patientId ) );
