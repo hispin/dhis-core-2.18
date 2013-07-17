@@ -27,13 +27,13 @@ package org.hisp.dhis.sms.outcoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.Action;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -180,8 +180,8 @@ public class ProcessingSendSMSAction
         {
             try
             {
-                ObjectMapper mapper = new ObjectMapper().setVisibility( JsonMethod.FIELD, Visibility.ANY );
-                mapper.configure( DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+                ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY );
+                mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
                 recipients = mapper.readValue( recipients.iterator().next(), Set.class );
 
                 for ( String each : recipients )
@@ -284,8 +284,8 @@ public class ProcessingSendSMSAction
 
             try
             {
-                ObjectMapper mapper = new ObjectMapper().setVisibility( JsonMethod.FIELD, Visibility.ANY );
-                mapper.configure( DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+                ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY );
+                mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
 
                 recipients = mapper.readValue( recipients.iterator().next(), Set.class );
             }
