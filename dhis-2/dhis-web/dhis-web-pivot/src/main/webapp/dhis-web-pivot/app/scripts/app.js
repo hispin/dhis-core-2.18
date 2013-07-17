@@ -4225,7 +4225,7 @@ Ext.onReady( function() {
                                             disabled: !PT.isSessionStorage || !pt.layout,
                                             handler: function() {
                                                 if (PT.isSessionStorage) {
-                                                    pt.util.pivot.setSessionStorage(pt.layout, 'analytical', '/dhis-web-visualizer/app/index.html?s=analytical');
+                                                    pt.util.pivot.setSessionStorage(pt.layout, 'analytical', pt.baseUrl + '/dhis-web-visualizer/app/index.html?s=analytical');
                                                 }
                                             }
                                         },

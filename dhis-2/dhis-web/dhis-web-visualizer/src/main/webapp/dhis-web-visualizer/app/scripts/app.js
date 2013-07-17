@@ -4371,7 +4371,7 @@ Ext.onReady( function() {
                                             disabled: !DV.isSessionStorage || !dv.layout,
                                             handler: function() {
                                                 if (DV.isSessionStorage) {
-                                                    dv.util.chart.setSessionStorage(dv.layout, 'analytical', '/dhis-web-pivot/app/index.html?s=analytical');
+                                                    dv.util.chart.setSessionStorage(dv.layout, 'analytical', dv.baseUrl + '/dhis-web-pivot/app/index.html?s=analytical');
                                                 }
                                             }
                                         },
