@@ -1,11 +1,5 @@
 package org.hisp.dhis.importexport.xml;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -33,18 +27,23 @@ import java.util.Locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
+import org.apache.commons.math.util.MathUtils;
+
 /**
  * 
  * @author bobj
- *
- * Some static helper functions
- *
  */
 public class Util
 {
     /**
      * Compensating for Excel wonky storage for dates
-     *
+     * 
      * @param xltimestr the number of days since 1/1/1900 as undertood by excel
      * @return
      */
@@ -69,28 +68,30 @@ public class Util
     }
 
     /**
-     * Tokenizer to convert coordinates in GML to a sequence of <coord>nnn,nnn</coord>
+     * Tokenizer to convert coordinates in GML to a sequence of
+     * <coord>nnn,nnn</coord>
+     * 
      * @param coordinates
      * @return
      */
-    public static String gmlToCoords(String coordinates, String decimalPlacesAsString) 
-            throws ParseException
+    public static String gmlToCoords( String coordinates, String decimalPlacesAsString )
+        throws ParseException
     {
-        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
-        
-        int decimalPlaces = Integer.parseInt( decimalPlacesAsString);
-        String formatString = "%."+decimalPlaces+"f,%."+decimalPlaces+"f";
-        StringBuilder sb = new StringBuilder();
-        String[] coords = coordinates.split( "\\s");
+        NumberFormat nf = NumberFormat.getInstance( Locale.ENGLISH );
 
-        for (String coordAsString : coords)
+        int decimals = Integer.parseInt( decimalPlacesAsString );
+        
+        StringBuilder sb = new StringBuilder();
+        String[] coords = coordinates.split( "\\s" );
+
+        for ( String coordAsString : coords )
         {
-            String[] latlon = coordAsString.split( ",");
+            String[] latlon = coordAsString.split( "," );
             double lat = nf.parse( latlon[0] ).doubleValue();
             double lon = nf.parse( latlon[1] ).doubleValue();
-            sb.append( "<coord>");
-            sb.append( String.format(formatString, lat, lon));
-            sb.append( "</coord>");
+            sb.append( "<coord>" );
+            sb.append( MathUtils.round( lat, decimals ) + "," + MathUtils.round( lon, decimals ) );
+            sb.append( "</coord>" );
         }
 
         return sb.toString();

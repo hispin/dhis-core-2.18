@@ -27,31 +27,24 @@ package org.hisp.dhis.importexport.xml;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.text.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- *
  * @author bobj
  */
-public class UtilTest {
-
+public class UtilTest
+{
     @Test
     public void testCoords()
+        throws Exception
     {
-        String src = "34.5,65,7 1234.67890,0.0056";
+        String src = "34.5,65,7 1234.67890,0.0056 451.23,-0.232561";
         String decimals = "4";
-        
-        String expected = "<coord>34.5000,65.0000</coord><coord>1234.6789,0.0056</coord>";
-        
-        try
-        {
-            String result = Util.gmlToCoords( src, decimals );
-            Assert.assertEquals( expected, result );
-        } catch ( ParseException ex )
-        {
-            Assert.fail( ex.getMessage() );
-        }
+
+        String expected = "<coord>34.5,65.0</coord><coord>1234.6789,0.0056</coord><coord>451.23,-0.2326</coord>";
+
+        String result = Util.gmlToCoords( src, decimals );
+        Assert.assertEquals( expected, result );
     }
 }
