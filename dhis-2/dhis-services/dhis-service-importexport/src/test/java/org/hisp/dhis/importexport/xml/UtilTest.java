@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.xml;
  */
 
 import java.text.ParseException;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
