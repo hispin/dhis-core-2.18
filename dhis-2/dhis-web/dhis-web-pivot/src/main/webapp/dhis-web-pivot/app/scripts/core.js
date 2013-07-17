@@ -934,7 +934,7 @@ PT.core.getUtils = function(pt) {
 					layout = pt.api.layout.Layout(xLayout);
 				
 					if (layout) {
-						dimensions = [].concat(layout.columns, layout.rows, layout.filters);
+						dimensions = [].concat(layout.columns || [], layout.rows || [], layout.filters || []);
 						
 						for (var i = 0, idNameMap = response.metaData.names, dimItems; i < dimensions.length; i++) {							
 							dimItems = dimensions[i].items;
@@ -1250,12 +1250,12 @@ PT.core.getUtils = function(pt) {
 				for (var i = 0; i < aAllObjects.length; i++) {
 					for (var j = 0, object; j < aAllObjects[i].length; j++) {
 						object = aAllObjects[i][j];
-console.log(object.uuid, object);
+//console.log(object.uuid, object);
 						uuidObjectMap[object.uuid] = object;
 					}
 				}
 
-console.log("aAllObjects", aAllObjects);				
+//console.log("aAllObjects", aAllObjects);				
 				
 				return {
 					type: type,
