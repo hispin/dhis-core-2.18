@@ -168,6 +168,9 @@ table.pivot {
 	background-color: #dae6f8;
 	text-align: center;
 }
+.pivot-dim.highlighted {
+	background-color: #c5d8f6;
+}
 .pivot-dim-subtotal {
 	background-color: #cad6e8;
 	text-align: center;
@@ -612,12 +615,15 @@ table.pivot {
 	background-image: none;
 	background-color: transparent;
 }
+.x-mask-msg div {
+    background-position: 11px center;
+}
 .x-mask-msg .x-mask-loading {
 	border: 0 none;
 	background-color: #000;
 	color: #fff;
 	border-radius: 2px;
-	padding: 10px 9px 10px 25px;
+	padding: 12px 14px 12px 30px;
 	opacity: 0.65;
 }
 

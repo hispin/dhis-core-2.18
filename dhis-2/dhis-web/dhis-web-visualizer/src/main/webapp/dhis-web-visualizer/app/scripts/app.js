@@ -1,3 +1,5 @@
+DV.isSessionStorage = 'sessionStorage' in window && window['sessionStorage'] !== null;
+
 DV.app = {};
 DV.app.init = {};
 
@@ -17,7 +19,7 @@ Ext.onReady( function() {
 
 	// Init
 
-	var dv = DV.core.getInstance();
+	dv = DV.core.getInstance();
 	DV.core.instances.push(dv);
 
 	DV.app.getInit = function(r) {
@@ -40,7 +42,7 @@ Ext.onReady( function() {
 		// Viewport afterrender
 		init.afterRender = function() {
 
-			// Resize event handler
+			// Add resize event handler
 			dv.viewport.westRegion.on('resize', function() {
 				var panel = dv.util.dimension.panel.getExpanded();
 
@@ -49,7 +51,7 @@ Ext.onReady( function() {
 				}
 			});
 
-			// Left gui
+			// Left gui scrollbar
 			var viewportHeight = dv.viewport.westRegion.getHeight(),
 				numberOfTabs = dv.init.dimensions.length + 5,
 				tabHeight = 28,
@@ -67,13 +69,23 @@ Ext.onReady( function() {
 				dv.viewport.westRegion.hasScrollbar = true;
 			}
 
+            // Expand first panel
 			dv.cmp.dimension.panels[0].expand();
 
-			// Load favorite from url
-			var id = dv.util.url.getUrlParam('id');
+			// Look for url params
+			var id = dv.util.url.getUrlParam('id'),
+                session = dv.util.url.getUrlParam('s'),
+                layout;
 
 			if (id) {
 				dv.util.chart.loadChart(id);
+			}
+            else if (Ext.isString(session) && DV.isSessionStorage && Ext.isObject(JSON.parse(sessionStorage.getItem('dhis2'))) && session in JSON.parse(sessionStorage.getItem('dhis2'))) {
+                layout = dv.api.layout.Layout(dv.util.chart.analytical2layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]));
+
+				if (layout) {
+					dv.viewport.setFavorite(layout);
+				}
 			}
 
 			// Fade in
@@ -284,7 +296,7 @@ Ext.onReady( function() {
 				a.store.clearFilter();
 				this.filterAvailable(a, s);
 			},
-			filterAvailable: function(a, s) {				
+			filterAvailable: function(a, s) {
 				a.store.filterBy( function(r) {
 					var keep = true;
 					s.store.each( function(r2) {
@@ -369,15 +381,15 @@ Ext.onReady( function() {
 
 		util.window.setAnchorPosition = function(w, target) {
 			var vpw = dv.viewport.getWidth(),
-				targetx = target ? target.getPosition()[0] : 4,
+				targetX = target ? target.getPosition()[0] : 4,
 				winw = w.getWidth(),
 				y = target ? target.getPosition()[1] + target.getHeight() + 4 : 33;
 
-			if ((targetx + winw) > vpw) {
+			if ((targetX + winw) > vpw) {
 				w.setPosition((vpw - winw - 2), y);
 			}
 			else {
-				w.setPosition(targetx, y);
+				w.setPosition(targetX, y);
 			}
 		};
 
@@ -516,7 +528,7 @@ Ext.onReady( function() {
 					return x;
 				}
 
-				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, dv.conf.pivot.digitGroupSeparator[nf]);
+				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, dv.conf.chart.digitGroupSeparator[nf]);
 			}
 		};
 
@@ -620,7 +632,7 @@ Ext.onReady( function() {
 								r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
 								r.set('name', r.data.operandName);
 							});
-							
+
 							dv.util.multiselect.filterAvailable({store: this}, {store: store.dataElementSelected});
 						}
 					});
@@ -631,7 +643,7 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				load: function(s) {
-					
+
 				}
 			}
 		});
@@ -1909,7 +1921,7 @@ Ext.onReady( function() {
 					var chartUrl = dv.baseUrl + '/dhis-web-visualizer/app/index.html?id=' + dv.favorite.id,
 						apiUrl = dv.baseUrl + '/api/charts/' + dv.favorite.id + '/data',
 						html = '';
-					
+
 					html += '<div><b>Chart link: </b><span class="user-select"><a href="' + chartUrl + '" target="_blank">' + chartUrl + '</a></span></div>';
 					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
@@ -3606,7 +3618,7 @@ Ext.onReady( function() {
 					userOrganisationUnitChildren
 				]
 			});
-			
+
 			organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
 				cls: 'dv-combo',
 				style: 'margin-bottom:0',
@@ -3621,7 +3633,7 @@ Ext.onReady( function() {
 					data: dv.init.organisationUnitLevels
 				}
 			});
-			
+
 			toolMenu = Ext.create('Ext.menu.Menu', {
 				shadow: false,
 				showSeparator: false,
@@ -3629,7 +3641,7 @@ Ext.onReady( function() {
 				clickHandler: function(param) {
 					var items = this.items.items;
 					this.menuValue = param;
-					
+
 					// Menu item icon cls
 					for (var i = 0; i < items.length; i++) {
 						if (items[i].param === param) {
@@ -3639,13 +3651,13 @@ Ext.onReady( function() {
 							items[i].setIconCls('');
 						}
 					}
-						
+
 					// Gui
 					if (param === 'explicit') {
 						userOrganisationUnit.show();
 						userOrganisationUnitChildren.show();
 						organisationUnitLevel.hide();
-						
+
 						if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
 							treePanel.disable();
 						}
@@ -3677,7 +3689,7 @@ Ext.onReady( function() {
 					}
 				}
 			});
-			
+
 			tool = Ext.create('Ext.button.Button', {
 				cls: 'dv-button-organisationunitselection',
 				iconCls: 'dv-button-icon-gear',
@@ -3685,14 +3697,14 @@ Ext.onReady( function() {
 				height: 24,
 				menu: toolMenu
 			});
-			
+
 			toolPanel = Ext.create('Ext.panel.Panel', {
 				width: 36,
 				bodyStyle: 'border:0 none; text-align:right',
 				style: 'margin-right:2px',
 				items: tool
 			});
-			
+
 			organisationUnit = {
 				xtype: 'panel',
 				title: '<div class="dv-panel-title-organisationunit">' + DV.i18n.organisation_units + '</div>',
@@ -3705,7 +3717,7 @@ Ext.onReady( function() {
 							dimension: dv.conf.finals.dimension.organisationUnit.objectName,
 							items: []
 						};
-						
+
 					if (toolMenu.menuValue === 'explicit') {
 						if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
 							if (userOrganisationUnit.getValue()) {
@@ -3726,7 +3738,7 @@ Ext.onReady( function() {
 							config.items.push({id: 'LEVEL-' + organisationUnitLevel.getValue() + '-' + r[i].data.id});
 						}
 					}
-					
+
 					return config.items.length ? config : null;
 				},
 				onExpand: function() {
@@ -3751,7 +3763,7 @@ Ext.onReady( function() {
 									userOrganisationUnitChildren,
 									organisationUnitLevel
 								]
-							}							
+							}
 						]
 					},
 					treePanel
@@ -4077,7 +4089,7 @@ Ext.onReady( function() {
 
 				// State
 				dv.viewport.interpretationButton.disable();
-				dv.favorite = undefined;
+				dv.favorite = null;
 
 				// Create chart
 				dv.util.chart.createChart(layout, dv);
@@ -4282,6 +4294,20 @@ Ext.onReady( function() {
 				}
 			});
 
+			defaultButton = Ext.create('Ext.button.Button', {
+				text: DV.i18n.chart,
+				toggleGroup: 'module',
+				pressed: true,
+				handler: function() {
+					if (!this.pressed) {
+						this.toggle();
+					}
+				}
+			});
+
+			getLinkMenu = function(anchorCmp) {
+			};
+
 			centerRegion = Ext.create('Ext.panel.Panel', {
 				region: 'center',
 				bodyStyle: 'padding:0; text-align:center',
@@ -4325,22 +4351,62 @@ Ext.onReady( function() {
 						'->',
 						{
 							text: DV.i18n.table,
-							toggleGroup: 'module',
+                            toggleGroup: 'module',
+                            menu: {},
 							handler: function(b) {
-								window.location.href = '../../dhis-web-pivot/app/index.html';
+                                b.menu = Ext.create('Ext.menu.Menu', {
+                                    closeAction: 'destroy',
+                                    shadow: false,
+                                    showSeparator: false,
+                                    items: [
+                                        {
+                                            text: 'Go to pivot tables', //i18n
+                                            handler: function() {
+                                                window.location.href = dv.baseUrl + '/dhis-web-pivot/app/index.html';
+                                            }
+                                        },
+                                        '-',
+                                        {
+                                            text: 'View chart as table' + '&nbsp;&nbsp;', //i18n
+                                            disabled: !DV.isSessionStorage || !dv.layout,
+                                            handler: function() {
+                                                if (DV.isSessionStorage) {
+                                                    dv.util.chart.setSessionStorage(dv.layout, 'analytical', '/dhis-web-pivot/app/index.html?s=analytical');
+                                                }
+                                            }
+                                        },
+                                        {
+                                            text: 'View last table' + '&nbsp;&nbsp;', //i18n
+                                            disabled: !(DV.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
+                                            handler: function() {
+                                                window.location.href = dv.baseUrl + '/dhis-web-pivot/app/index.html?s=table';
+                                            }
+                                        }
+                                    ],
+                                    listeners: {
+                                        show: function() {
+                                            dv.util.window.setAnchorPosition(b.menu, b);
+                                        },
+                                        hide: function() {
+                                            b.menu.destroy();
+                                            defaultButton.toggle();
+                                        },
+                                        destroy: function(m) {
+                                            b.menu = null;
+                                        }
+                                    }
+                                });
+
+								b.menu.show();
 							}
 						},
-						{
-							text: DV.i18n.chart,
-							toggleGroup: 'module',
-							pressed: true,
-							handler: dv.util.button.type.toggleHandler
-						},
+                        defaultButton,
 						{
 							text: DV.i18n.map,
-							toggleGroup: 'module',
+                            toggleGroup: 'module',
+                            //menu: {},
 							handler: function(b) {
-								window.location.href = '../../dhis-web-mapping/app/index.html';
+                                window.location.href = dv.baseUrl + '/dhis-web-mapping/app/index.html';
 							}
 						},
 						getSeparator(),
@@ -4348,7 +4414,7 @@ Ext.onReady( function() {
 							xtype: 'button',
 							text: DV.i18n.home,
 							handler: function() {
-								window.location.href = '../../dhis-web-commons-about/redirect.action';
+								window.location.href = dv.baseUrl + '/dhis-web-commons-about/redirect.action';
 							}
 						});
 
@@ -4374,7 +4440,8 @@ Ext.onReady( function() {
 					periodRecords,
 					fixedPeriodRecords = [],
 					isOu = false,
-					isOuc = false;
+					isOuc = false,
+                    isLevel = false;
 
 				// State
 				dv.viewport.interpretationButton.enable();
@@ -4383,7 +4450,7 @@ Ext.onReady( function() {
 				dv.util.chart.createChart(layout, dv);
 
 				// Set gui
-				
+
 				xLayout = dv.util.chart.getExtendedLayout(layout);
 				dimMap = xLayout.objectNameDimensionsMap;
 				recMap = xLayout.objectNameItemsMap;
@@ -4468,7 +4535,9 @@ Ext.onReady( function() {
 				dv.viewport.filter.setValue(xLayout.filterDimensionNames);
 
 				// Options
-				dv.viewport.optionsWindow.setOptions(layout);
+                if (dv.viewport.optionsWindow) {
+                    dv.viewport.optionsWindow.setOptions(layout);
+                }
 
 				// Organisation units
 				if (recMap[dimConf.organisationUnit.objectName]) {
@@ -4479,11 +4548,29 @@ Ext.onReady( function() {
 						if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
 							isOuc = true;
 						}
+						if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
+							isLevel = true;
+						}
 					}
 				}
 
-				userOrganisationUnit.setValue(isOu);
-				userOrganisationUnitChildren.setValue(isOuc);
+				if (isLevel) {
+					var ouRecords = recMap[dimConf.organisationUnit.objectName],
+						level;
+
+					if (Ext.isArray(ouRecords) && ouRecords.length) {
+						level = ouRecords[i].id.split('-')[1];
+					}
+
+					toolMenu.clickHandler('boundary');
+					organisationUnitLevel.setValue(level);
+				}
+				else {
+					toolMenu.clickHandler('explicit');
+
+					userOrganisationUnit.setValue(isOu);
+					userOrganisationUnitChildren.setValue(isOuc);
+				}
 
 				// If fav has organisation units, wait for tree callback before update
 				if (recMap[dimConf.organisationUnit.objectName] && Ext.isObject(graphMap)) {
