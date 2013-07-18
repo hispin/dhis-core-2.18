@@ -11,7 +11,7 @@
 			validateProgramEnrollment();
 		});
 		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
-		setFieldValue("dateOfIncidentField", "");
+		
 		var unSave = false;
 	});	
 </script>
@@ -42,12 +42,14 @@
 		
 		<tr id='enrollmentDateTR' class='hidden'>
 			<td class='text-column'><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-			<td colspan='2' class='input-column'><input type="text" id="enrollmentDateField" name="enrollmentDateField" class="{validate:{required:true}}"></td>
+			<td colspan='2' class='input-column'>
+				<input type="text" id="enrollmentDateField" name="enrollmentDateField" class="{validate:{required:true}}" >
+			</td>
 		</tr>
 		
 		<tr id='dateOfIncidentTR' class='hidden'>
 			<td class='text-column'><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-			<td colspan='2' class='input-column'><input type="text" id="dateOfIncidentField" name="dateOfIncidentField"  class="{validate:{required:true}}"></td>
+			<td colspan='2' class='input-column'><input type="text" id="dateOfIncidentField" name="dateOfIncidentField" class="{validate:{required:true}}" ></td>
 		</tr>
 	
 		<tr>
@@ -75,4 +77,5 @@
 <script>
 	var i18n_enroll = '$encoder.jsEscape( $i18n.getString( "enroll" ) , "'")';
 	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';
+	var birthDate = '$!format.formatDate($!patient.birthDate)';
 </script>

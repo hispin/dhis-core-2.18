@@ -1272,6 +1272,16 @@ function programOnchange( programId )
 		{
 			id:programId
 		}, function(){
+			if(getFieldValue('useBirthDateAsEnrollmentDate')=='true'){ 
+				setFieldValue("enrollmentDateField", birthDate)
+			}
+			
+			if(getFieldValue('useBirthDateAsIncidentDate')=='true'){ 
+				setFieldValue("dateOfIncidentField", birthDate)
+			}
+			else{
+				setFieldValue("dateOfIncidentField", "");
+			}
 			showById('identifierAndAttributeDiv');
 		});
 	}
