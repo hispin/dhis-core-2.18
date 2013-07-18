@@ -31,12 +31,25 @@ dhis2.commons.getCurrentPage = function() {
 	return $.cookie( "currentPage" );
 }
 
+dhis2.commons.getCurrentKey = function() {
+	return $.cookie( "currentKey" );
+}
+
 dhis2.commons.redirectCurrentPage = function( url ) {
 	var currentPage = dhis2.commons.getCurrentPage();
+	var currentKey = dhis2.commons.getCurrentKey();
 	var separator = url && url.indexOf( "?" ) == -1 ? "?" : "&";
-	var redirect = currentPage ? ( url + separator + "currentPage=" + currentPage ) : url;
-	window.location.href = redirect;
-}
+
+    var redirect = url;
+
+    if ( currentPage && currentKey ) {
+        redirect = currentPage ? ( url + separator + "currentPage=" + currentPage + "&key=" + currentKey ) : url;
+    } else if ( currentPage ) {
+        redirect = currentPage ? ( url + separator + "currentPage=" + currentPage ) : url;
+    }
+
+    window.location.href = redirect;
+};
 
 // -----------------------------------------------------------------------------
 // Global variables
