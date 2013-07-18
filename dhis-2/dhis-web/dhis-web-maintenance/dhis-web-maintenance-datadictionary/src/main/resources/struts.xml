@@ -58,7 +58,7 @@
     </action>
 
     <action name="addDataElement" class="org.hisp.dhis.dd.action.dataelement.AddDataElementAction">
-      <result name="success" type="redirect">dataElement.action</result>
+      <result name="success" type="redirect">dataElement.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
@@ -70,7 +70,7 @@
     </action>
 
     <action name="updateDataElement" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction">
-      <result name="success" type="redirect">dataElement.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">dataElement.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 

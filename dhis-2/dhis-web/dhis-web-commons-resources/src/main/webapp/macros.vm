@@ -89,12 +89,23 @@
 #end
 
 #macro( filterDiv $action )
-<form id="filterKeyForm" action="${action}.action" method="POST">	
+<form id="filterKeyForm" action="${action}.action" method="GET" onsubmit="submitFilter()">
 	<input type="text" id="key" name="key" value="$!encoder.htmlEncode( $key )" placeholder="$i18n.getString( 'filter_by_name' )" class="filterInput" />
 	<input type="hidden" id="curKey" name="curKey" value="$!encoder.htmlEncode( $key )"/>
-	<input type="submit" value="$i18n.getString( 'filter' )" class="filterButton" />
-	<input type="button" value="$i18n.getString( 'clear' )" onclick="window.location.href='${action}.action'" class="filterButton" />
+	<input type="submit" id="filterButton" value="$i18n.getString( 'filter' )" class="filterButton" />
+	<input type="button" value="$i18n.getString( 'clear' )" onclick="javascript:clearFilter()" class="filterButton" />
 </form>
+<script>
+function submitFilter() {
+    jQuery.cookie( "currentKey", $( '#key' ).val() );
+}
+
+function clearFilter() {
+    jQuery.cookie( "currentPage", null );
+    jQuery.cookie( "currentKey", null );
+    window.location.href = '${action}.action';
+}
+</script>
 #end
 
 #macro( trHeader $text )
