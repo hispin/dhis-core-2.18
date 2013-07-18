@@ -60,7 +60,7 @@ var i18n_view_comment = '$encoder.jsEscape( $i18n.getString( "view_comment" ) , 
 <h3 id="moduleHeader">$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
 
 <div id="currentSelection">
-	<span style="float:left;cursor:pointer;margin-right:5px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
+	<span id="closeCurrentSelection"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
 	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> - <span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span>
 </div>
@@ -70,7 +70,7 @@ var i18n_view_comment = '$encoder.jsEscape( $i18n.getString( "view_comment" ) , 
     <input type="button" value="$i18n.getString( 'print' )" onclick="window.print()" id="printButton" style="width:120px"/>
 </div>
 
-<div id="selectionBox" class="inputCriteria" style="width:534px;height:95px;">
+<div id="selectionBox" class="inputCriteria" style="width:534px">
 <table>
 	<tr>
 		<td><label for="selectedOrganisationUnit">$i18n.getString( "organisation_unit" )</label></td>
@@ -100,26 +100,26 @@ var i18n_view_comment = '$encoder.jsEscape( $i18n.getString( "view_comment" ) , 
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 
-<div id="contentDiv" class="page" style="margin-left:2px;margin-bottom:8px;"></div>
+<div id="contentDiv" class="page"></div>
 
 <div id="historyDiv" class="page"></div>
 
 <div id="validationDiv" class="page"></div>
 
-<div id="completenessDiv" class="page inputCriteria" style="display:none;width:386px;height:29px;">
+<div id="completenessDiv" class="page inputCriteria">
 <input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="registerCompleteDataSet()" style="width:120px">
 <input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'incomplete' )" onclick="undoCompleteDataSet()" style="width:120px">
 <input type="button" id="validateButton" value="$i18n.getString( 'run_validation' )" onclick="validate( false )" style="width:120px">
 </div>
 
-<div id="infoDiv" class="page inputCriteria" style="display:none;width:386px;height:20px;">
-<span style="color:#505050">$i18n.getString( "completed_by" ): </span><span id="completedBy"></span>
-<span style="color:#505050"> $i18n.getString( "at" ): </span><span id="completedDate"></span>
+<div id="infoDiv" class="page inputCriteria">
+<span class="tipText">$i18n.getString( "completed_by" ): </span><span id="completedBy"></span>
+<span class="tipText"> $i18n.getString( "at" ): </span><span id="completedDate"></span>
 <a href="javascript:displayUserDetails()">$i18n.getString( "see_details" )</a>
 </div>
 
 
-<div id="completedByDiv" style="display:none" class="page">
+<div id="completedByDiv" class="page">
 <h3><span id="userFullName"></span></h3>
 <table>
 	<tr>

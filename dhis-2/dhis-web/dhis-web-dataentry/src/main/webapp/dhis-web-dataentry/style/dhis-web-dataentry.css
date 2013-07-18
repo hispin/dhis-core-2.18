@@ -14,17 +14,48 @@
   border-radius: 3px;
 }
 
-.currentRow
-{
-  background-color: #d5ffc5;
-  padding-right: 50px;
-}
-
 #actions
 {
   float: right;
   width: 160px;
   text-align: right;
+}
+
+#closeCurrentSelection
+{
+  float:left;
+  cursor:pointer;
+  margin-right:5px;
+}
+
+#contentDiv
+{
+  margin-bottom: 8px;
+}
+
+#completenessDiv
+{
+  display: none;
+  width: 386px;
+  height: 29px;
+}
+
+#infoDiv
+{
+  display: none;
+  width: 386px;
+  height: 20px;
+}
+
+#completedByDiv
+{
+  display: none;
+}
+
+.currentRow
+{
+  background-color: #d5ffc5;
+  padding-right: 50px;
 }
 
 .hidden 
