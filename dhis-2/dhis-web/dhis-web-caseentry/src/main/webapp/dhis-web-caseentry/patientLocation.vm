@@ -10,11 +10,37 @@
 </h3>
 	
 <table>
+	#set($value="")
+	#set($flag=false)
+	#foreach( $identifier in $patient.identifiers)
+		#if($!identifier.identifierType)
+			#set($value=$identifier.identifier)
+		#else
+			#set($systemId=$identifier.identifier)
+		#end
+	#end
+	#if($value=="")
+		#set($value=$!patient.getFullName())
+	#else
+		#set($flag=true)
+	#end
+	#if($value=="")
+		#set($value=$systemId)
+	#end
+					
+	#if($patient.getFullName()=='')
 	<tr>
 		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
-		<td>$i18n.getString('full_name'):</td>
-		<td>$patient.getFullName()</td>
+		<td>
+			#if($flag==true)
+				$i18n.getString('identifier'):
+			#else
+				$i18n.getString('full_name'):
+			#end
+		</td>
+		<td>$value</td>
 	</tr>
+	#end
 	<tr>
 		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
 		<td>$i18n.getString('gender'):</td>
