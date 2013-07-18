@@ -183,24 +183,8 @@ public class MapUtils
         BufferedImage image = new BufferedImage( imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        // Draw a background if the background color is specified
-        // NOTE It will be transparent otherwise, which is desired
-        if ( map.getBackgroundColor() != null )
-        {
-            g.setColor( map.getBackgroundColor() );
-            g.fill( imageBounds );
-        }
-
-        // Enable anti-aliasing if specified
-        if ( map.isAntiAliasingEnabled() )
-        {
-            g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-        }
-        else
-        {
-            g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF );
-        }
-
+        g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+        
         // Render the map
         renderer.paint( g, imageBounds, mapBounds );
 
