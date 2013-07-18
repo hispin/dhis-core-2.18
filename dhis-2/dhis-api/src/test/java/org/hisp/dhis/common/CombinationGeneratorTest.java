@@ -108,20 +108,6 @@ public class CombinationGeneratorTest
     }
 
     @Test
-    public void testGetNextD()
-    {
-        IdentifiableObject[] a1 = {a,b};
-        IdentifiableObject[] a2 = {};
-        
-        CombinationGenerator<IdentifiableObject> generator = new CombinationGenerator<IdentifiableObject>( a1, a2 );
-        
-        assertTrue( equals( generator.getNext(), a ) );
-        assertTrue( equals( generator.getNext(), b ) );
-        assertNull( generator.getNext() );
-        assertNull( generator.getNext() );
-    }
-    
-    @Test
     public void testHasNextA()
     {
         IdentifiableObject[] a1 = {a,b,c,d};
