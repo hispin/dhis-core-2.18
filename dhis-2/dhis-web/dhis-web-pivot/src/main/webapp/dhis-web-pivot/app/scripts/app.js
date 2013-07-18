@@ -4309,7 +4309,7 @@ Ext.onReady( function() {
                     dimNames = [],
 					isOu = false,
 					isOuc = false,
-					isLevel = false;
+					level;
 
 				// State
 				pt.viewport.interpretationButton.enable();
@@ -4470,25 +4470,17 @@ Ext.onReady( function() {
 							isOuc = true;
 						}
 						if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
-							isLevel = true;
+							level = parseInt(ouRecords[i].id.split('-')[1]);
 						}
 					}
 				}
 				
-				if (isLevel) {
-					var ouRecords = recMap[dimConf.organisationUnit.objectName],
-						level;
-						
-					if (Ext.isArray(ouRecords) && ouRecords.length) {
-						level = ouRecords[i].id.split('-')[1];
-					}
-					
+				if (level) {					
 					toolMenu.clickHandler('boundary');
 					organisationUnitLevel.setValue(level);
 				}
 				else {
-					toolMenu.clickHandler('explicit');					
-
+					toolMenu.clickHandler('explicit');
 					userOrganisationUnit.setValue(isOu);
 					userOrganisationUnitChildren.setValue(isOuc);
 				}
