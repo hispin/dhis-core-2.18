@@ -481,17 +481,16 @@ PT.core.getUtils = function(pt) {
 	util.number = {
 		getNumberOfDecimals: function(x) {
 			var tmp = new String(x);
-			return (tmp.indexOf(".") > -1) ? (tmp.length - tmp.indexOf(".") - 1) : 0;
+			return (tmp.indexOf('.') > -1) ? (tmp.length - tmp.indexOf('.') - 1) : 0;
 		},
 
 		roundIf: function(x, prec) {
-			if (Ext.isString(x)) {
-				x = parseFloat(x);
-			}
+			x = parseFloat(x);
+			prec = parseFloat(prec);
 
 			if (Ext.isNumber(x) && Ext.isNumber(prec)) {
 				var dec = pt.util.number.getNumberOfDecimals(x);
-				return parseFloat(dec > prec ? Ext.Number.toFixed(x, prec) : x);
+				return dec > prec ? Ext.Number.toFixed(x, prec) : x;
 			}
 			return x;
 		},
@@ -1559,7 +1558,7 @@ PT.core.getUtils = function(pt) {
 							
 							if (idValueMap[id]) {
 								value = parseFloat(idValueMap[id]);
-								htmlValue = pt.util.number.roundIf(idValueMap[id], 1).toString();
+								htmlValue = value.toString();
 							}
 							else {
 								value = 0;
@@ -1600,7 +1599,7 @@ PT.core.getUtils = function(pt) {
 								type: 'valueTotal',
 								cls: 'pivot-value-total',
 								value: total,
-								htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(total, 1).toString() : '&nbsp;',
+								htmlValue: Ext.Array.contains(empty, false) ? parseFloat(total).toString() : '&nbsp;',
 								empty: !Ext.Array.contains(empty, false)
 							});
 
@@ -1661,13 +1660,11 @@ PT.core.getUtils = function(pt) {
 								row.push(item);
 
 								if (colCount === colUniqueFactor) {
-									rowSubTotal = pt.util.number.roundIf(rowSubTotal, 1);
-
 									row.push({
 										type: 'valueSubtotal',
 										cls: 'pivot-value-subtotal',
 										value: rowSubTotal,
-										htmlValue: Ext.Array.contains(empty, false) ? rowSubTotal.toString() : '&nbsp',
+										htmlValue: Ext.Array.contains(empty, false) ? parseFloat(rowSubTotal).toString() : '&nbsp',
 										empty: !Ext.Array.contains(empty, false),
 										collapsed: !Ext.Array.contains(collapsed, false)
 									});
@@ -1749,7 +1746,7 @@ PT.core.getUtils = function(pt) {
 									tmpValueObjects[tmpCount++].push({
 										type: item.type === 'value' ? 'valueSubtotal' : 'valueSubtotalTotal',
 										value: subTotal,
-										htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(subTotal, 1).toString() : '&nbsp;',
+										htmlValue: Ext.Array.contains(empty, false) ? parseFloat(subTotal).toString() : '&nbsp;',
 										collapsed: collapsed,
 										cls: item.type === 'value' ? 'pivot-value-subtotal' : 'pivot-value-subtotal-total'
 									});
@@ -1775,7 +1772,7 @@ PT.core.getUtils = function(pt) {
 									type: 'valueTotalSubgrandtotal',
 									cls: 'pivot-value-total-subgrandtotal',
 									value: subTotal,
-									htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(subTotal, 1).toString() : '&nbsp;',
+									htmlValue: Ext.Array.contains(empty, false) ? parseFloat(subTotal).toString() : '&nbsp;',
 									empty: !Ext.Array.contains(empty, false),
 									collapsed: !Ext.Array.contains(collapsed, false)
 								});
@@ -1841,7 +1838,7 @@ PT.core.getUtils = function(pt) {
 							totalColObjects.push({
 								type: 'valueTotal',
 								value: total,
-								htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(total, 1).toString() : '&nbsp;',
+								htmlValue: Ext.Array.contains(empty, false) ? parseFloat(total).toString() : '&nbsp;',
 								empty: !Ext.Array.contains(empty, false),
 								cls: 'pivot-value-total'
 							});
@@ -1866,7 +1863,7 @@ PT.core.getUtils = function(pt) {
 									tmp.push({
 										type: 'valueTotalSubgrandtotal',
 										value: subTotal,
-										htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(subTotal, 1).toString() : '&nbsp;',
+										htmlValue: Ext.Array.contains(empty, false) ? parseFloat(subTotal).toString() : '&nbsp;',
 										empty: !Ext.Array.contains(empty, false),
 										cls: 'pivot-value-total-subgrandtotal'
 									});
@@ -1899,14 +1896,13 @@ PT.core.getUtils = function(pt) {
 
 							total += obj.value;
 							empty.push(obj.empty);
-							//values.push(totalColObjects[i].value);
 						}
 
 						if (xColAxis && xRowAxis) {
 							a.push(getTdHtml({
 								type: 'valueGrandTotal',
 								cls: 'pivot-value-grandtotal',
-								htmlValue: Ext.Array.contains(empty, false) ? pt.util.number.roundIf(total, 1).toString() : '&nbsp;',
+								htmlValue: Ext.Array.contains(empty, false) ? parseFloat(total).toString() : '&nbsp;',
 								empty: !Ext.Array.contains(empty, false)
 							}));
 						}
