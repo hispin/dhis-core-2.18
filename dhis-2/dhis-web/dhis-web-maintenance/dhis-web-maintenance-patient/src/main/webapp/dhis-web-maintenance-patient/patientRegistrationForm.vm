@@ -37,10 +37,18 @@
 						#end	
 					</td>  
 					<td>
-						$!encoder.htmlEncode( $registrationForm.name )
+						#if($!registrationForm.name)
+							$!encoder.htmlEncode( $registrationForm.name )
+						#else
+							[$i18n.getString('none')]
+						#end
 					</td> 
 					<td>
-						$!encoder.htmlEncode( $registrationForm.dataEntryForm.name )
+						#if($!registrationForm.dataEntryForm)
+							$!encoder.htmlEncode( $registrationForm.dataEntryForm.name )
+						#else
+							[$i18n.getString('none')]
+						#end
 					</td>   					
 					<td style="text-align:center">
 					  <a href="javascript:showDefaultRegistrationForm('$!registrationForm.program.id');" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>

@@ -291,7 +291,7 @@ function generateTemplateMessageForm()
 				+ 	'<td><label>' + i18n_days_before_after_comparison_date + '</label></td>'
 				+ 	'<td><input type="text" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/></td>'
 				+ '</tr>'
-				+ '<tr>'
+				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_send_to + '</label></td>'
 				+ 	'<td>'
 				+ 		'<select id="sendTo' + rowId + '" name="sendTo' + rowId + '" class="sendTo" >'
