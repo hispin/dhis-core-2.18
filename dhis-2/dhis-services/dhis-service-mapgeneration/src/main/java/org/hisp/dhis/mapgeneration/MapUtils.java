@@ -154,12 +154,12 @@ public class MapUtils
     // Map
     // -------------------------------------------------------------------------
 
-    public static BufferedImage render( InternalMap map )
+    public static BufferedImage render( InternalMapLayer map )
     {
         return render( map, DEFAULT_MAP_WIDTH );
     }
 
-    public static BufferedImage render( InternalMap map, int imageWidth )
+    public static BufferedImage render( InternalMapLayer map, int imageWidth )
     {
         MapContent mapContent = new MapContent();
 

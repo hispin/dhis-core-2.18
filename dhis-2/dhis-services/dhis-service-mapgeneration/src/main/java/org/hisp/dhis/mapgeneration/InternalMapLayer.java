@@ -29,7 +29,7 @@ package org.hisp.dhis.mapgeneration;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.period.Period;
 import org.springframework.util.Assert;
@@ -72,7 +72,7 @@ public class InternalMapLayer
 
     protected IntervalSet intervalSet;
 
-    protected Collection<InternalMapObject> mapObjects;
+    protected List<InternalMapObject> mapObjects;
 
     /**
      * Constructs a map layer with no initial map objects.
@@ -133,7 +133,7 @@ public class InternalMapLayer
      * 
      * @return the list of map objects
      */
-    public Collection<InternalMapObject> getAllMapObjects()
+    public List<InternalMapObject> getMapObjects()
     {
         return this.mapObjects;
     }
