@@ -69,10 +69,10 @@ public class MapViewController
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    private ContextUtils contextUtils;
+    private MapGenerationService mapGenerationService;
 
     @Autowired
-    private MapGenerationService mapGenerationService;
+    private ContextUtils contextUtils;
 
     @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
     public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception

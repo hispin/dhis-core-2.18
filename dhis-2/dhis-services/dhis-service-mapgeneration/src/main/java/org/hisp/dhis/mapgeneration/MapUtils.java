@@ -154,19 +154,23 @@ public class MapUtils
     // Map
     // -------------------------------------------------------------------------
 
-    public static BufferedImage render( InternalMapLayer map )
+    public static BufferedImage render( InternalMap map )
     {
         return render( map, DEFAULT_MAP_WIDTH );
     }
 
-    public static BufferedImage render( InternalMapLayer map, int imageWidth )
+    public static BufferedImage render( InternalMap map, int imageWidth )
     {
         MapContent mapContent = new MapContent();
 
         // Convert map objects to features, and add them to the map
-        for ( InternalMapObject mapObject : map.getMapObjects() )
+        
+        for ( InternalMapLayer mapLayer : map.getLayers() )
         {
-            mapContent.addLayer( createFeatureLayerFromMapObject( mapObject ) );
+            for ( InternalMapObject mapObject : mapLayer.getMapObjects() )
+            {
+                mapContent.addLayer( createFeatureLayerFromMapObject( mapObject ) );
+            }
         }
 
         // Create a renderer for this map

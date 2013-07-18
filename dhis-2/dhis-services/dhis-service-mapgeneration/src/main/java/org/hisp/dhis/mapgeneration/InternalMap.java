@@ -1,7 +1,7 @@
 package org.hisp.dhis.mapgeneration;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,40 +27,24 @@ package org.hisp.dhis.mapgeneration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.mapping.Map;
-import org.hisp.dhis.mapping.MapView;
-
-/**
- * The MapGenerationService interface generates map images from Map objects.
- * 
- * Map objects may be built by adding layers to them, and once passed to
- * generateMapImage it will render an image representing the map according to
- * the properties defined by Map and MapView.
- * 
- * TODO Extend with more configuration options, e.g. width
- * 
- * @author Kenneth Solbø Andersen <kennetsa@ifi.uio.no>
- * @author Olai Solheim <olais@ifi.uio.no>
- */
-public interface MapGenerationService
+public class InternalMap
 {
-    public final String ID = MapGenerationService.class.getName();
+    private List<InternalMapLayer> layers = new ArrayList<InternalMapLayer>();
     
-    /**
-     * Generate an image that represents this map.
-     * 
-     * @param mapView the map view that will be rendered
-     * @return the rendered map image or null if there is no data for the map view.
-     */
-    public BufferedImage generateMapImage( MapView mapView );
-    
-    /**
-     * Generate an image that represents this map.
-     * 
-     * @param mapView the map view that will be rendered
-     * @return the rendered map image or null if there is no data for the map view.
-     */
-    public BufferedImage generateMapImage( Map map );
+    public InternalMap()
+    {
+    }
+
+    public List<InternalMapLayer> getLayers()
+    {
+        return layers;
+    }
+
+    public void setLayers( List<InternalMapLayer> layers )
+    {
+        this.layers = layers;
+    }
 }
