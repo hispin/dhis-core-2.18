@@ -27,7 +27,6 @@ package org.hisp.dhis.mapgeneration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,36 +45,12 @@ import java.util.List;
  */
 public class InternalMap
 {
-    protected Color backgroundColor = null;
-
-    protected boolean isAntiAliasingEnabled = true;
-    
     private List<InternalMapObject> mapObjects = new ArrayList<InternalMapObject>();
 
     public InternalMap()
     {
     }
     
-    public Color getBackgroundColor()
-    {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor( Color backgroundColor )
-    {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public boolean isAntiAliasingEnabled()
-    {
-        return isAntiAliasingEnabled;
-    }
-
-    public void setAntiAliasingEnabled( boolean isAntiAliasingEnabled )
-    {
-        this.isAntiAliasingEnabled = isAntiAliasingEnabled;
-    }
-
     public List<InternalMapObject> getMapObjects()
     {
         return mapObjects;
