@@ -236,7 +236,7 @@ a.menuLink:hover
 {
   list-style-type: none;
   padding: 0;
-  margin: 0 13px;
+  margin: 0 10px;
 }
 
 #leftBarContents ul a
@@ -244,15 +244,15 @@ a.menuLink:hover
   display: block;
   color: #303030;
   text-decoration: none;
-  padding: 8px 7px;
+  padding: 8px 8px;
   cursor: pointer;
   border-bottom: 1px solid #ddd;
 }
 
 #leftBarContents a:hover
 {
-  text-decoration: underline;
-  background-color: #f1f3f3;
+  text-decoration: none;
+  background-color: #e6ecec;
 }
 
 /*----------------------------------------------------------------------------*/
