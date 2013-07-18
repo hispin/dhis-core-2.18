@@ -42,9 +42,33 @@ public interface MessageService
 
     final String META_USER_AGENT = "User-agent: ";
 
+    /**
+     * Sends a message to the in-box of the given recipients.
+     * 
+     * @param subject the message subject.
+     * @param text the message text.
+     * @param metaData message meta-data.
+     * @param users the recipients of the message.
+     * 
+     * @return the identifier of the created message conversation.
+     */
     int sendMessage( String subject, String text, String metaData, Set<User> users );
 
-    int sendMessage( String subject, String text, String metaData, Set<User> users, boolean includeFeedbackRecipients );
+    /**
+     * Sends a message to the in-box of the given recipients.
+     * 
+     * @param subject the message subject.
+     * @param text the message text.
+     * @param metaData message meta-data.
+     * @param users the recipients of the message.
+     * @param includeFeedbackRecipients include the feedback recipients user group
+     *        in the message recipients.
+     * @param forceNotifications send notifications to message senders ignoring
+     *        whether users have enabled it.
+     *        
+     * @return the identifier of the created message conversation.
+     */
+    int sendMessage( String subject, String text, String metaData, Set<User> users, boolean includeFeedbackRecipients, boolean forceNotifications );
 
     int sendFeedback( String subject, String text, String metaData );
 
