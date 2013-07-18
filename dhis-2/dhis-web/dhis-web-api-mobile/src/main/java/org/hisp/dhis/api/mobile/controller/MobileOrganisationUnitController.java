@@ -47,6 +47,10 @@ public class MobileOrganisationUnitController
 
     private static final String DATASET_REPORT_UPLOADED = "dataset_report_uploaded";
 
+    private static final String PATIENT_REGISTERED = "patient_registered";
+
+    private static final String PATIENT_REGISTER_FAIL = "patient_registered_fail";
+
     @Autowired
     private ActivityReportingService activityReportingService;
 
@@ -408,9 +412,14 @@ public class MobileOrganisationUnitController
     public String savePatient( @PathVariable int id, @RequestBody Patient patient )
         throws NotAllowedException
     {
-
-        return activityReportingService.savePatient( patient, id );
-
+        if ( activityReportingService.savePatient( patient, id ) != null )
+        {
+            return PATIENT_REGISTERED;
+        }
+        else
+        {
+            return PATIENT_REGISTER_FAIL;
+        }
     }
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/getVariesInfo" )

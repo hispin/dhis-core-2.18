@@ -57,6 +57,9 @@ public interface ActivityReportingService
     public Patient findPatient( String name, int orgUnitId )
         throws NotAllowedException;
 
+    public Patient findPatient( int patientId )
+        throws NotAllowedException;
+
     public String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
         throws NotAllowedException;
 
@@ -83,8 +86,11 @@ public interface ActivityReportingService
 
     public Program findProgram( String programInfo )
         throws NotAllowedException;
-    public Patient findLatestPatient() throws NotAllowedException;
-    
-    public String savePatient(Patient patient, int orgUnitId) throws NotAllowedException;
+
+    public Patient findLatestPatient()
+        throws NotAllowedException;
+
+    public Integer savePatient( Patient patient, int orgUnitId )
+        throws NotAllowedException;
 
 }

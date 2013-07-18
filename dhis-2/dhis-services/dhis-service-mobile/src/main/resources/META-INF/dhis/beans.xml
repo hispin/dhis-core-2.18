@@ -54,5 +54,5 @@
     <property name="clazz" value="org.hisp.dhis.patient.PatientMobileSetting"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
-  
+
 </beans>
