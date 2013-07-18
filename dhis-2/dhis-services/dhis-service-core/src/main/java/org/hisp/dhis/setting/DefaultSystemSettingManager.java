@@ -128,7 +128,7 @@ public class DefaultSystemSettingManager
 
     public String getFlagImage()
     {
-        String flag = (String) getSystemSetting( KEY_FLAG );
+        String flag = (String) getSystemSetting( KEY_FLAG, DEFAULT_FLAG );
 
         return flag != null ? flag + ".png" : null;
     }

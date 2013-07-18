@@ -24,7 +24,7 @@
     	<div style="display:none">DHIS 2</div>
         <div>       
         #if ( $keyFlag )
-            <img id="flagArea" src="../flags/${keyFlagImage}">
+            <img id="flagArea" src="../flags/$!{keyFlagImage}">
         #end
         #if ( $applicationTitle )
             <span id="titleArea">$!encoder.htmlEncode( ${applicationTitle} )</span>
