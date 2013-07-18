@@ -44,7 +44,8 @@ dhis2.commons.redirectCurrentPage = function( url ) {
 
     if ( currentPage && currentKey ) {
         redirect = currentPage ? ( url + separator + "currentPage=" + currentPage + "&key=" + currentKey ) : url;
-    } else if ( currentPage ) {
+    } 
+    else if ( currentPage ) {
         redirect = currentPage ? ( url + separator + "currentPage=" + currentPage ) : url;
     }
 
