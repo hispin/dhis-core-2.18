@@ -36,13 +36,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -85,23 +85,38 @@ public class GeoToolsMapGenerationService
 
     public BufferedImage generateMapImage( MapView mapView )
     {
-        Assert.isTrue( mapView != null );
+        Map map = new Map();
+        
+        map.getMapViews().add( mapView );
+        
+        return generateMapImage( map );
+    }
+    
+    public BufferedImage generateMapImage( Map map )
+    {
+        Assert.isTrue( map != null );
 
         int height = 512;
 
-        // Build internal map layer representation
-        InternalMapLayer mapLayer = buildSingleInternalMapLayer( mapView );
-
-        if ( mapLayer == null )
+        InternalMap internalMap = new InternalMap();
+        
+        for ( MapView mapView : map.getMapViews() )
+        {        
+            InternalMapLayer mapLayer = buildSingleInternalMapLayer( mapView );
+            
+            internalMap.getLayers().add( mapLayer );
+        }
+        
+        if ( internalMap.getLayers().isEmpty() )
         {
             return null;
         }
         
         // Build representation of a map using GeoTools, then render as image
-        BufferedImage mapImage = MapUtils.render( mapLayer, height );
+        BufferedImage mapImage = MapUtils.render( internalMap, height );
 
         // Build the legend set, then render it to an image
-        LegendSet legendSet = new LegendSet( mapLayer );
+        LegendSet legendSet = new LegendSet( internalMap.getLayers().get( 0 ) ); //TODO
         BufferedImage legendImage = legendSet.render( height );
 
         // Combine the legend image and the map image into one image
@@ -137,7 +152,7 @@ public class GeoToolsMapGenerationService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
             getOrganisationUnitsAtLevel( mapView.getOrganisationUnitLevel().getLevel(), mapView.getParentOrganisationUnit() ) );
 
-        Map<String, OrganisationUnit> uidOuMap = new HashMap<String, OrganisationUnit>();
+        java.util.Map<String, OrganisationUnit> uidOuMap = new HashMap<String, OrganisationUnit>();
         
         for ( OrganisationUnit ou : organisationUnits )
         {
