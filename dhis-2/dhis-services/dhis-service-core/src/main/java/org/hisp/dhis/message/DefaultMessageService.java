@@ -97,11 +97,11 @@ public class DefaultMessageService
 
     public int sendMessage( String subject, String text, String metaData, Set<User> users )
     {
-        return sendMessage( subject, text, metaData, users, false );
+        return sendMessage( subject, text, metaData, users, false, false );
     }
 
     public int sendMessage( String subject, String text, String metaData, Set<User> users_,
-        boolean includeFeedbackRecipients )
+        boolean includeFeedbackRecipients, boolean forceNotifications )
     {
         Set<User> users = new HashSet<User>( users_ );
 
@@ -150,14 +150,14 @@ public class DefaultMessageService
 
         int id = saveMessageConversation( conversation );
 
-        invokeMessageSenders( subject, text, sender, users );
+        invokeMessageSenders( subject, text, sender, users, forceNotifications );
 
         return id;
     }
 
     public int sendFeedback( String subject, String text, String metaData )
     {
-        return sendMessage( subject, text, metaData, new HashSet<User>(), true );
+        return sendMessage( subject, text, metaData, new HashSet<User>(), true, false );
     }
 
     public void sendReply( MessageConversation conversation, String text, String metaData )
@@ -170,7 +170,7 @@ public class DefaultMessageService
 
         updateMessageConversation( conversation );
 
-        invokeMessageSenders( conversation.getSubject(), text, sender, new HashSet<User>( conversation.getUsers() ) );
+        invokeMessageSenders( conversation.getSubject(), text, sender, new HashSet<User>( conversation.getUsers() ), false );
     }
 
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
@@ -218,7 +218,7 @@ public class DefaultMessageService
         {
             int id = saveMessageConversation( conversation );
             
-            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, new HashSet<User>( conversation.getUsers() ) );
+            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, new HashSet<User>( conversation.getUsers() ), false );
 
             return id;
         }
@@ -301,13 +301,13 @@ public class DefaultMessageService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void invokeMessageSenders( String subject, String text, User sender, Set<User> users )
+    private void invokeMessageSenders( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {
         for ( MessageSender messageSender : messageSenders )
         {
             log.debug( "Invoking message sender: " + messageSender.getClass().getSimpleName() );
             
-            messageSender.sendMessage( subject, text, sender, new HashSet<User>( users ), false );
+            messageSender.sendMessage( subject, text, sender, new HashSet<User>( users ), forceSend );
         }
     }
 }
