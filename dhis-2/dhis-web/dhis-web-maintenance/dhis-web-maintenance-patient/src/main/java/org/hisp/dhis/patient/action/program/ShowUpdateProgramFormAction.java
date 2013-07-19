@@ -73,7 +73,7 @@ public class ShowUpdateProgramFormAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -169,7 +169,7 @@ public class ShowUpdateProgramFormAction
             availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
             availableAttributes.removeAll(  new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
         }
-
+        
         return SUCCESS;
     }
 }

@@ -44,7 +44,10 @@ jQuery( document ).ready( function()
 		sendTo.empty();
 		
 		var whenToSend = jQuery( "#whenToSend" );
-		whenToSend.empty();		
+		whenToSend.empty();
+		
+		var userGroup = jQuery( "#userGroup" );
+		userGroup.empty();
 		
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			
@@ -77,6 +80,9 @@ jQuery( document ).ready( function()
 		});
 		jQuery(".whenToSend").each( function( i, item ){ 
 			whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );
+		});
+		jQuery(".userGroup").each( function( i, item ){ 
+			userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );
 		});
 	});
 	

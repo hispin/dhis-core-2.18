@@ -29,6 +29,8 @@ package org.hisp.dhis.patient;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.user.UserGroup;
+
 /**
  * @author Chau Thu Tran
  * @version PatientReminder.java 1:07:58 PM Sep 18, 2012 $
@@ -70,6 +72,8 @@ public class PatientReminder implements Serializable {
 
 	public static final int SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED = 4;
 
+	public static final int SEND_TO_USER_GROUP = 5;
+
 	public static final int SEND_WHEN_TO_EMROLLEMENT = 1;
 
 	public static final int SEND_WHEN_TO_C0MPLETED_EVENT = 2;
@@ -89,6 +93,8 @@ public class PatientReminder implements Serializable {
 	private Integer sendTo;
 
 	private Integer whenToSend;
+	
+	private UserGroup userGroup;
 
 	// -------------------------------------------------------------------------
 	// Constructors
@@ -164,5 +170,13 @@ public class PatientReminder implements Serializable {
 	public PatientReminder() {
 
 	}
+
+        public UserGroup getUserGroup() {
+                return userGroup;
+        }
+
+        public void setUserGroup( UserGroup userGroup ) {
+                this.userGroup = userGroup;
+        }
 
 }

@@ -27,6 +27,13 @@ package org.hisp.dhis.sms.smslib;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.lang.Character.UnicodeBlock;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -45,18 +52,11 @@ import org.smslib.AGateway;
 import org.smslib.GatewayException;
 import org.smslib.IInboundMessageNotification;
 import org.smslib.IOutboundMessageNotification;
+import org.smslib.Message.MessageEncodings;
 import org.smslib.OutboundMessage;
 import org.smslib.SMSLibException;
 import org.smslib.Service;
-import org.smslib.Message.MessageEncodings;
 import org.smslib.Service.ServiceStatus;
-
-import java.io.IOException;
-import java.lang.Character.UnicodeBlock;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class SmsLibService
     implements OutboundSmsTransportService
@@ -172,7 +172,7 @@ public class SmsLibService
         try
         {
             log.info( "Sending message " + sms );
-
+            
             if ( gatewayId == null || gatewayId.isEmpty() )
             {
                 sent = getService().sendMessage( outboundMessage );

@@ -237,7 +237,7 @@ public class UpdateProgramAction
     {
         this.whenToSend = whenToSend;
     }
-
+    
     private Boolean useBirthDateAsIncidentDate;
 
     public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
