@@ -110,7 +110,7 @@
 
 <p>
 	<input type="submit" name="update" value="$i18n.getString( 'update' )" style="width:10em" />
-	<input type="button" name="cancel" onclick="window.location.href='categoryCombo.action'" value="$i18n.getString( 'cancel' )" style="width:10em" />
+	<input type="button" name="cancel" onclick="dhis2.commons.redirectCurrentPage( 'categoryCombo.action' )" value="$i18n.getString( 'cancel' )" style="width:10em" />
 </p>
        
 </form>

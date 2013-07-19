@@ -119,7 +119,7 @@
   
   <p>
     <input type="submit" value="$i18n.getString( 'save' )" style="width:100px"/>
-    <input type="button" onclick="window.location.href='category.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
+    <input type="button" onclick="dhis2.commons.redirectCurrentPage( 'category.action' )" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
   </p>
         
 </form>

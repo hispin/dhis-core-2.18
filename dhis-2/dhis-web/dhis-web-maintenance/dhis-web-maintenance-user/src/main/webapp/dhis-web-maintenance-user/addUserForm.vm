@@ -17,7 +17,7 @@
 	
 	    jQuery( "#cancel" ).click( function()
 	    {
-	        referrerBack( "alluser.action" );
+            dhis2.commons.redirectCurrentPage( 'alluser.action' );
 	    } );
 	
 		jQuery("#availableList").dhisAjaxSelect({
