@@ -44,7 +44,7 @@
 	  <td></td>
 	  <td colspan="3">
 		<input type="submit"  value="$i18n.getString( 'add' )" style="width:100px">
-		<input type="button" onclick="window.location.href='categoryOption.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
+		<input type="button" onclick="dhis2.commons.redirectCurrentPage( 'categoryOption.action' )" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
       </td>
 	</tr>
   </table>

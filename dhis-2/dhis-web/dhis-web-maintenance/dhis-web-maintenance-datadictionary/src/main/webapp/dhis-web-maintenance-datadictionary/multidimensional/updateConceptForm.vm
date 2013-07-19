@@ -30,7 +30,7 @@
 	<tr>
 		<td></td>
 		<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
-		<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='concept.action'" style="width:10em"/></td>
+		<input type="button" value="$i18n.getString( 'cancel' )" onclick="dhis2.commons.redirectCurrentPage( 'concept.action' )" style="width:10em"/></td>
 	</tr>
 </table>
 

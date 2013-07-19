@@ -106,7 +106,7 @@
   
   <p>
   	<input type="submit" value="$i18n.getString( 'add' )" style="width:100px">
-    <input type="button" onclick="window.location.href='category.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/>
+    <input type="button" onclick="dhis2.commons.redirectCurrentPage( 'category.action' )" value="$i18n.getString( 'cancel' )" style="width:100px"/>
   </p>
   
 </form>

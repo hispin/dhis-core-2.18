@@ -139,12 +139,12 @@
     </action>
 
     <action name="addDataSet" class="org.hisp.dhis.dataset.action.AddDataSetAction">
-      <result name="success" type="redirect">dataSet.action</result>
+      <result name="success" type="redirect">dataSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataSet" class="org.hisp.dhis.dataset.action.UpdateDataSetAction">
-      <result name="success" type="redirect">dataSet.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">dataSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
 

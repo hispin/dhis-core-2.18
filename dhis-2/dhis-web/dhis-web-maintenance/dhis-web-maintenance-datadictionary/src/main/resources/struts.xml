@@ -154,7 +154,7 @@
     </action>
 
     <action name="addDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
-      <result name="success" type="redirect">dataElementGroup.action</result>
+      <result name="success" type="redirect">dataElementGroup.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
@@ -166,7 +166,7 @@
     </action>
 
     <action name="updateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-      <result name="success" type="redirect">dataElementGroup.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">dataElementGroup.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
@@ -198,7 +198,7 @@
     </action>
 
     <action name="addDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction">
-      <result name="success" type="redirect">dataElementGroupSet.action</result>
+      <result name="success" type="redirect">dataElementGroupSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATAELEMENTGROUPSET_PUBLIC_ADD, F_DATAELEMENTGROUPSET_PRIVATE_ADD</param>
     </action>
 
@@ -211,7 +211,7 @@
     </action>
 
     <action name="updateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
-      <result name="success" type="redirect">dataElementGroupSet.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">dataElementGroupSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
     </action>
 
@@ -251,8 +251,7 @@
     </action>
 
     <action name="saveIndicatorSortOrder" class="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction">
-      <result name="success" type="redirect">indicator.action
-      </result>
+      <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
     </action>
 
     <action name="removeIndicator" class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">
@@ -274,7 +273,7 @@
     </action>
 
     <action name="addIndicator" class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
-      <result name="success" type="redirect">indicator.action</result>
+      <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
@@ -286,7 +285,7 @@
     </action>
 
     <action name="updateIndicator" class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
-      <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
 
@@ -374,7 +373,7 @@
     </action>
 
     <action name="addIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
-      <result name="success" type="redirect">indicatorGroup.action</result>
+      <result name="success" type="redirect">indicatorGroup.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
@@ -386,7 +385,7 @@
     </action>
 
     <action name="updateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
-      <result name="success" type="redirect">indicatorGroup.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">indicatorGroup.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
@@ -408,7 +407,7 @@
     </action>
 
     <action name="addIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction">
-      <result name="success" type="redirect">indicatorGroupSet.action</result>
+      <result name="success" type="redirect">indicatorGroupSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_INDICATORGROUPSET_PUBLIC_ADD, F_INDICATORGROUPSET_PRIVATE_ADD</param>
     </action>
 
@@ -420,7 +419,7 @@
     </action>
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
-      <result name="success" type="redirect">indicatorGroupSet.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">indicatorGroupSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_UPDATE</param>
     </action>
 
@@ -463,7 +462,7 @@
     </action>
 
     <action name="addIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.AddIndicatorTypeAction">
-      <result name="success" type="redirect">indicatorType.action</result>
+      <result name="success" type="redirect">indicatorType.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 
@@ -475,7 +474,7 @@
     </action>
 
     <action name="updateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.UpdateIndicatorTypeAction">
-      <result name="success" type="redirect">indicatorType.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">indicatorType.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
     </action>
 
@@ -499,19 +498,13 @@
     </action>
 
     <action name="getDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-maintenance-datadictionary/jsonDataDictionary.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-maintenance-datadictionary/jsonDataDictionary.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATADICTIONARY_DELETE</param>
     </action>
@@ -550,17 +543,13 @@
     </action>
 
     <action name="addDataElementCategory" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction">
-      <result name="success" type="redirect">category.action</result>
+      <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementCategory" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -571,14 +560,12 @@
     </action>
 
     <action name="getDataElementCategory" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonDataElementCategory.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementCategory.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="updateDataElementCategory" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
-      <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -590,38 +577,34 @@
     </action>
 
     <action name="removeDataElementCategory" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
 
     <!-- CategoryOption -->
 
-	<action name="categoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionListAction">
+    <action name="categoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
-    
+
     <action name="showAddDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryOptionForm.vm</param>
       <param name="javascripts">javascript/categoryOption.js</param>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
-    
+
     <action name="addDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction">
-      <result name="success" type="redirect">categoryOption.action</result>
+      <result name="success" type="redirect">categoryOption.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
-	<action name="showUpdateDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
+    <action name="showUpdateDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
@@ -629,21 +612,17 @@
     </action>
 
     <action name="updateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction">
-      <result name="success" type="redirect">categoryOption.action</result>
+      <result name="success" type="redirect">categoryOption.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
     <action name="removeDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
-    
+
     <action name="getDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonDataElementCategoryOption.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementCategoryOption.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -657,17 +636,13 @@
     </action>
 
     <action name="addDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action</result>
+      <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -679,14 +654,12 @@
     </action>
 
     <action name="getDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonCategoryCombo.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonCategoryCombo.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="updateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -698,12 +671,8 @@
     </action>
 
     <action name="removeDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
@@ -722,29 +691,21 @@
     <!-- Validate CategoryOption -->
 
     <action name="validateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <!-- Concept Name -->
 
     <action name="getConcept" class="org.hisp.dhis.dd.action.concept.GetConceptAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonConcept.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonConcept.vm</result>
     </action>
 
     <action name="concept" class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="page">
-        /dhis-web-maintenance-datadictionary/multidimensional/concept.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/concept.vm</param>
       <param name="javascripts">javascript/concept.js</param>
       <param name="requiredAuthorities">F_CONCEPT_MANAGEMENT</param>
     </action>
@@ -752,9 +713,7 @@
     <action name="showAddConceptForm" class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="page">
-        /dhis-web-maintenance-datadictionary/multidimensional/addConceptForm.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addConceptForm.vm</param>
       <param name="javascripts">javascript/concept.js</param>
       <param name="requiredAuthorities">F_CONCEPT_ADD</param>
     </action>
@@ -762,42 +721,32 @@
     <action name="showUpdateConceptForm" class="org.hisp.dhis.dd.action.concept.GetConceptAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="page">
-        /dhis-web-maintenance-datadictionary/multidimensional/updateConceptForm.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateConceptForm.vm</param>
       <param name="javascripts">javascript/concept.js</param>
       <param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
     </action>
 
     <action name="validateAddUpdateConcept" class="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="addConcept" class="org.hisp.dhis.dd.action.concept.AddConceptAction">
-      <result name="success" type="redirect">concept.action</result>
+      <result name="success" type="redirect">concept.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <result name="error" type="redirect">index.action</result>
       <param name="requiredAuthorities">F_CONCEPT_ADD</param>
     </action>
 
     <action name="updateConceptInstance" class="org.hisp.dhis.dd.action.concept.UpdateConceptAction">
-      <result name="success" type="redirect">concept.action?currentPage=${keyCurrentPage}</result>
+      <result name="success" type="redirect">concept.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <result name="error" type="redirect">index.action</result>
       <param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
     </action>
 
     <action name="removeConcept" class="org.hisp.dhis.dd.action.concept.RemoveConceptAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_CONCEPT_DELETE</param>
     </action>
