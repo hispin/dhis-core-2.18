@@ -4575,11 +4575,12 @@ Ext.onReady( function() {
 				// If fav has organisation units, wait for tree callback before update
 				if (recMap[dimConf.organisationUnit.objectName] && Ext.isObject(graphMap)) {
 					treePanel.numberOfRecords = dv.util.object.getLength(graphMap);
-					for (var key in graphMap) {
-						if (graphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, graphMap[key], false);
-						}
-					}
+
+                    for (var i = 0, a = xLayout.objectNameItemsMap[dimConf.organisationUnit.objectName]; i < a.length; i++) {
+                        if (graphMap.hasOwnProperty(a[i].id)) {
+                            treePanel.multipleExpand(a[i].id, graphMap[a[i].id], false);
+                        }
+                    }
 				}
 				else {
 					treePanel.reset();
