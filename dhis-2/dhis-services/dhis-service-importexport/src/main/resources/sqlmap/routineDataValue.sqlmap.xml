@@ -40,7 +40,6 @@
 
 	<select id="getRoutineDataValuesOutOfRange" resultClass="java.lang.Integer">
 		SELECT COUNT(*) FROM RoutineData WHERE EntryNumber > 2147483647 UNION
-		SELECT COUNT(*) FROM RoutineDataArchive WHERE EntryNumber > 2147483647
 	</select>
 
 </sqlMap>
