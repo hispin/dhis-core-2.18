@@ -17,11 +17,11 @@
     {
         if( $( '#dataSets' ).is(':checked'))
         {
-            $( '#sections' ).attr('checked', true);
+            $( '#sections' ).attr( 'checked', true );
         }
         else
         {
-            $( '#sections' ).attr('checked', false);
+            $( '#sections' ).removeAttr('checked');
         }
 
         if( $( '#categories' ).is(':checked'))
@@ -32,9 +32,9 @@
         }
         else
         {
-            $( '#categoryCombos' ).attr( 'checked', false );
-            $( '#categoryOptionCombos' ).attr('checked', false);
-            $( '#categoryOptions' ).attr('checked', false);
+            $( '#categoryCombos' ).removeAttr( 'checked');
+            $( '#categoryOptionCombos' ).removeAttr('checked');
+            $( '#categoryOptions' ).removeAttr('checked');
         }
 
         if( $( '#mapLegendSets' ).is(':checked') )
@@ -43,7 +43,7 @@
         }
         else
         {
-            $( '#mapLegends' ).attr('checked', false);
+            $( '#mapLegends' ).removeAttr('checked');
         }
 
         if( $( '#maps' ).is(':checked') )
@@ -52,7 +52,7 @@
         }
         else
         {
-            $( '#mapViews' ).attr('checked', false);
+            $( '#mapViews' ).removeAttr('checked');
         }
 
         var url = "../api/metaData";
@@ -82,12 +82,12 @@
 
 <form id="exportForm" name="exportForm">
 
-<input id="categoryCombos" name="categoryCombos" type="checkbox" value="false" style="display: none;" />
-<input id="categoryOptionCombos" name="categoryOptionCombos" type="checkbox" value="false" style="display: none;" />
-<input id="categoryOptions" name="categoryOptions" type="checkbox" value="false" style="display: none;" />
-<input id="sections" name="sections" type="checkbox" value="false" style="display: none;" />
-<input id="mapViews" name="mapViews" type="checkbox" value="false" style="display: none;" />
-<input id="mapLegends" name="mapLegends" type="checkbox" value="false" style="display: none;" />
+<input id="categoryCombos" name="categoryCombos" type="checkbox" value="true" style="display: none;" />
+<input id="categoryOptionCombos" name="categoryOptionCombos" type="checkbox" value="true" style="display: none;" />
+<input id="categoryOptions" name="categoryOptions" type="checkbox" value="true" style="display: none;" />
+<input id="sections" name="sections" type="checkbox" value="true" style="display: none;" />
+<input id="mapViews" name="mapViews" type="checkbox" value="true" style="display: none;" />
+<input id="mapLegends" name="mapLegends" type="checkbox" value="true" style="display: none;" />
 
 <fieldset style="width: 80%; border: 1px solid #ccc; padding: 15px;">
     <div style="width: 200px; float: left;"><input id="attributeTypes" name="attributeTypes" type="checkbox" value="true" /> <label for="attributeTypes"> Attribute Types</label></div>
