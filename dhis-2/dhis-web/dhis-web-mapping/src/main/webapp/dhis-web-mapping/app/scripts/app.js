@@ -3056,7 +3056,7 @@ Ext.onReady( function() {
 		});
 
 		button = Ext.create('Ext.button.Button', {
-			text: GIS.i18n.download,
+			text: GIsvS.i18n.download,
 			handler: function() {
 				var type = format.getValue(),
 					title = name.getValue(),
