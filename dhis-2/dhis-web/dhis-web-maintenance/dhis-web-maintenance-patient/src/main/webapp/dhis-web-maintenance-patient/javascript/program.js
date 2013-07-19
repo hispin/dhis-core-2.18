@@ -274,7 +274,7 @@ function generateTemplateMessageForm()
 				+ 	'<td>'
 				+ 		'<select id="whenToSend' + rowId + '" name="whenToSend' + rowId + '" class="whenToSend" onchange="whenToSendOnChange(' + rowId + ')" >'
 				+ 			'<option value="">' + i18n_from_the_day_set + '</option>'
-				+ 			'<option value="3">' + i18n_complete_program + '</option>'
+				+ 			'<option value="2">' + i18n_complete_program + '</option>'
 				+ 		'</select>'
 				+	'</td>'
 				+ '</tr>'

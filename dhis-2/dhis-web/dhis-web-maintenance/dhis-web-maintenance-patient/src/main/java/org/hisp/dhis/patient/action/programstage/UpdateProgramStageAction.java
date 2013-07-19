@@ -39,6 +39,8 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -74,7 +76,14 @@ public class UpdateProgramStageAction
     {
         this.programStageDataElementService = programStageDataElementService;
     }
-
+    
+    private UserGroupService userGroupService;
+    
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -225,6 +234,13 @@ public class UpdateProgramStageAction
     {
         this.whenToSend = whenToSend;
     }
+    
+    private List<Integer> userGroup = new ArrayList<Integer>();
+    
+    public void setUserGroup( List<Integer> userGroup )
+    {
+        this.userGroup = userGroup;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -256,6 +272,7 @@ public class UpdateProgramStageAction
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setCaptureCoordinates( captureCoordinates );
 
+        // SMS Reminder
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < this.daysAllowedSendMessages.size(); i++ )
         {
@@ -264,6 +281,8 @@ public class UpdateProgramStageAction
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
+            reminder.setUserGroup( selectedUserGroup );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );

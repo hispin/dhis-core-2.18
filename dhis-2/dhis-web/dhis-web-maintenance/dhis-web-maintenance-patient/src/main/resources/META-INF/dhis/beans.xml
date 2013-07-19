@@ -300,6 +300,7 @@
 		class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean
@@ -325,6 +326,8 @@
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="userGroupService"
+			ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean

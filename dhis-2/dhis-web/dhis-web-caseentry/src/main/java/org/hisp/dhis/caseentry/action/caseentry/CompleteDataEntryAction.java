@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
@@ -104,7 +105,14 @@ public class CompleteDataEntryAction
     {
         this.format = format;
     }
+    
+    private MessageService messageService;
 
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -230,7 +238,6 @@ public class CompleteDataEntryAction
 
         if ( phoneNumbers.size() > 0 )
         {
-
             String msg = reminder.getTemplateMessage();
 
             String patientName = patient.getFirstName();
@@ -267,6 +274,13 @@ public class CompleteDataEntryAction
                 e.printStackTrace();
             }
         }
+        // send to user group
+        else
+        {
+            String msg = getStringMsgFromTemplateMsg( reminder, programStageInstance, patient );
+            String programStageName = programStageInstance.getProgramStage().getName();
+            messageService.sendMessage( programStageName, msg, null, reminder.getUserGroup().getMembers(),false, true );
+        }
     }
 
     private void sendSMSToCompletedProgram( ProgramInstance programInstance )
@@ -278,7 +292,7 @@ public class CompleteDataEntryAction
             Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
             for ( PatientReminder rm : reminders )
             {
-                if ( rm != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                if ( rm != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM )
                 {
                     sendProgramMessage( rm, programInstance, patient );
                     break;
@@ -366,6 +380,21 @@ public class CompleteDataEntryAction
                 phoneNumbers.add( patient.getOrganisationUnit().getPhoneNumber() );
             }
             break;
+        case PatientReminder.SEND_TO_USER_GROUP:
+            /*UserGroup userGroup = reminder.getUserGroup();
+            if ( userGroup != null && userGroup.getMembers().size() > 0 )
+            {
+                Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
+                for ( User user : receivers )
+                {
+                    if( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                    {
+                        phoneNumbers.add( user.getPhoneNumber() );
+                    }
+                }
+            }*/
+            phoneNumbers.clear();
+            break;
         default:
             if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
             {
@@ -374,6 +403,27 @@ public class CompleteDataEntryAction
             break;
         }
         return phoneNumbers;
+    }
+    
+    public String getStringMsgFromTemplateMsg( PatientReminder reminder, ProgramStageInstance programStageInstance, Patient patient  )
+    {
+        String msg = reminder.getTemplateMessage();
+
+        String patientName = patient.getFirstName();
+        String organisationunitName = patient.getOrganisationUnit().getName();
+        String programName = programStageInstance.getProgramInstance().getProgram().getName();
+        String programStageName = programStageInstance.getProgramStage().getName();
+        String daysSinceDueDate = DateUtils.daysBetween( new Date(), programStageInstance.getDueDate() ) + "";
+        String dueDate = format.formatDate( programStageInstance.getDueDate() );
+
+        msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+        msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+        msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
+        msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
+        msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+        msg = msg.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
+        
+        return msg;
     }
 
 }

@@ -122,6 +122,7 @@
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean
