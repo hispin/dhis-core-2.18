@@ -1852,7 +1852,7 @@ console.log("layout", layout);
 
                         // in or last item (one only) - rest as filter
                         if (dim.dimension === dimConf.indicator.objectName || (i === analytical.columns.length - 1)) {
-                            layoutConfig.filters = layoutConfig.filters.concat(layoutConfig.columns);
+                            layoutConfig.filters.push(layoutConfig.columns.pop());
                             layoutConfig.columns = [dim];
                         }
                         else {
@@ -1878,7 +1878,7 @@ console.log("layout", layout);
 
                         // in or last item (one only) - rest as filter
                         if (dim.dimension === dimConf.indicator.objectName || (i === analytical.rows.length - 1)) {
-                            layoutConfig.filters = layoutConfig.filters.concat(layoutConfig.rows);
+                            layoutConfig.filters.push(layoutConfig.rows.pop());
                             layoutConfig.rows = [dim];
                         }
                         else {

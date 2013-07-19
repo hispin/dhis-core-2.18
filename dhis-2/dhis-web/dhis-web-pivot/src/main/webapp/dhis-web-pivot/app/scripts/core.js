@@ -2107,7 +2107,6 @@ console.log("xLayout", xLayout);
 			var that = this,
 				uuids = pt.uuidDimUuidsMap[uuid],
 				layoutConfig = Ext.clone(pt.layout),
-				dimensions = [].concat(layoutConfig.columns, layoutConfig.rows),
 				objects = [],
 				dhis2,
 				menu;
@@ -2119,20 +2118,22 @@ console.log("xLayout", xLayout);
 				objects.push(pt.uuidObjectMap[uuids[i]]);
 			}
 			
-			// clear layout items
-			for (var i = 0; i < dimensions.length; i++) {
-				dimensions[i].items = [];
+			// clear layoutConfig dimension items
+			for (var i = 0, a = [].concat(layoutConfig.columns, layoutConfig.rows); i < a.length; i++) {
+				a[i].items = [];
 			}
 			
 			// add new items
 			for (var i = 0, obj, axis; i < objects.length; i++) {
 				obj = objects[i];
-				axis = obj.axis === 'col' ? layoutConfig.columns : layoutConfig.rows;
-				
-				axis[obj.dim].items.push({
-					id: obj.id,
-					name: pt.xResponse.metaData.names[obj.id]
-				});
+				axis = obj.axis === 'col' ? layoutConfig.columns || [] : layoutConfig.rows || [];
+
+				if (axis.length) {
+					axis[obj.dim].items.push({
+						id: obj.id,
+						name: pt.xResponse.metaData.names[obj.id]
+					});
+				}
 			}
 
 			// menu
