@@ -193,7 +193,7 @@ public class GreySectionAction
             {
                 int categoryOptionSize = cat.getCategoryOptions().size();
                 
-                if ( catColSpan > 0 && categoryOptionSize > 0 )
+                if ( categoryOptionSize > 0 && catColSpan >= categoryOptionSize )
                 {
                     catColSpan = catColSpan / categoryOptionSize;
 
