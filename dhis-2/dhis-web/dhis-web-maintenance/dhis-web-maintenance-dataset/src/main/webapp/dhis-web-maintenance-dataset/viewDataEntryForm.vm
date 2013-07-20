@@ -130,32 +130,11 @@
 					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
-			<tr id="dynamicElementsTab">
-				<td>
-					<div id="dynamicElementSelect" style="margin-bottom: 10px;">
-						<div style="color:#666; margin-top:5px; margin-bottom:5px;">$i18n.getString( "select_category_combo_for_which_to_insert" )</div>
-						<select id="categoryComboSelect" style="width: 100%; margin-bottom: 10px;">
-							#foreach( $categoryCombo in $categoryCombos )
-							<option value="$categoryCombo.uid">$encoder.htmlEncode( $categoryCombo.displayName )</option>
-							#end
-						</select><br>
-						<button type="button" id="startButton">$i18n.getString( "start" )</button>
-						<div style="height:155px"></div>
-					</div>
-					<div id="dynamicElementInsert" style="margin-bottom: 10px; display:none;">
-						<div style="color:#666; margin-top:5px; margin-bottom:5px;">$i18n.getString( "insert_input_fields_into_the_form" )</div>
-						<select id="dynamicElementSelector" multiple="multiple" style="height: 177px; margin-bottom: 10px; width: 100%;"></select><br>
-						<button type="button" id="insertDynamicElementButton">$i18n.getString( "insert_data_element_drop_down" )</button>
-						<button type="button" id="doneButton">$i18n.getString( "done" )</button>
-					</div>
-				</td>
-			</tr>
 			<tr>
 				<td>
 					<button type="button" id="dataElementsButton">$i18n.getString( "data_elements" )</button>
 					<button type="button" id="totalsButton">$i18n.getString( "totals" )</button>
-					<button type="button" id="indicatorsButton">$i18n.getString( "indicators" )</button>
-					<button type="button" id="dynamicElementsButton">$i18n.getString( "dynamic_elements" )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+					<button type="button" id="indicatorsButton">$i18n.getString( "indicators" )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 					<button type="button" id="insertButton">$i18n.getString( "insert" )</button>
 					<input type="checkbox" id="greyedField"><label for="greyedField">$i18n.getString( "grey_field" )</label>
 				</td>

@@ -112,19 +112,6 @@ function generateExpression( expression )
     return expression;
 }
 
-function saveDynamicVal( code, optionComboId, fieldId )
-{
-    var dataElementId = $( '#' + code + '-dynselect option:selected' ).val();
-    
-    if ( !isDefined( dataElementId ) || dataElementId == -1 )
-    {
-    	log( 'There is no select list in form or no option selected for code: ' + code );
-    	return;
-    }
-    
-    saveVal( dataElementId, optionComboId, fieldId );
-}
-
 function saveVal( dataElementId, optionComboId, fieldId )
 {
 	var fieldIds = fieldId.split( "-" );

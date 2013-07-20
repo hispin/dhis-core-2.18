@@ -1,7 +1,4 @@
 
-var currentDynamicElementCode = null;
-var currentCategoryComboId = null;
-var currentCategoryComboName = null;
 var timeOut;
 
 $( document ).ready( function() {
@@ -20,12 +17,10 @@ $( document ).ready( function() {
 		var dataElementSelector = $("#dataElementSelector");
 		var totalSelector = $("#totalSelector");
 		var indicatorSelector = $("#indicatorSelector");
-		var dynamicElementSelector = $("#dynamicElementSelector");
 
 		dataElementSelector.height( dialog.height() - 97 );
 		totalSelector.height( dialog.height() - 97 );
 		indicatorSelector.height( dialog.height() - 97 );
-		dynamicElementSelector.height( dialog.height() - 120 );
 	});
 
 	$("#imageDialog").dialog({
@@ -65,14 +60,7 @@ $( document ).ready( function() {
 	$("#insertImagesButton").click(function() {
 		$("#imageDialog").dialog("open");
 	});
-	
-	$("#startButton").button("option", "icons", { primary: "ui-icon-triangle-1-e" });
-	$("#startButton").click( showDynamicElementInsert );
-	$("#doneButton").click( showDynamicElementSelect );
-	
-	$("#insertDynamicElementButton").button("option", "icons", { primary: "ui-icon-plusthick" });
-	$("#insertDynamicElementButton").click( insertDropDownList );
-	
+		
 	showDataElements();
 
 	$("#dataElementsButton").addClass("ui-state-active2");
@@ -81,7 +69,6 @@ $( document ).ready( function() {
 		$("#dataElementsButton").addClass("ui-state-active2");
 		$("#totalsButton").removeClass("ui-state-active2");
 		$("#indicatorsButton").removeClass("ui-state-active2");
-		$("#dynamicElementsButton").removeClass("ui-state-active2");
 
 		showDataElements();
 	});
@@ -90,7 +77,6 @@ $( document ).ready( function() {
 		$("#dataElementsButton").removeClass("ui-state-active2");
 		$("#totalsButton").addClass("ui-state-active2");
 		$("#indicatorsButton").removeClass("ui-state-active2");
-		$("#dynamicElementsButton").removeClass("ui-state-active2");
 		
 		showTotals();
 	});
@@ -99,18 +85,8 @@ $( document ).ready( function() {
 		$("#dataElementsButton").removeClass("ui-state-active2");
 		$("#totalsButton").removeClass("ui-state-active2");
 		$("#indicatorsButton").addClass("ui-state-active2");
-		$("#dynamicElementsButton").removeClass("ui-state-active2");
 
 		showIndicators();
-	});
-
-	$("#dynamicElementsButton").click(function() {	
-		$("#dataElementsButton").removeClass("ui-state-active2");
-		$("#totalsButton").removeClass("ui-state-active2");
-		$("#indicatorsButton").removeClass("ui-state-active2");
-		$("#dynamicElementsButton").addClass("ui-state-active2");
-
-		showDynamicElements();
 	});
 
 	$("#insertButton").click(function() {
@@ -122,9 +98,6 @@ $( document ).ready( function() {
 		}
 		else if( $("#indicatorsTab").is(":visible") ) {
 			insertIndicator();
-		}
-		else if( $("#dynamicElementsTab").is(":visible") ) {
-			insertDynamicElement();
 		}
 	});
 	
@@ -216,8 +189,7 @@ $( document ).ready( function() {
 			dataSetId: dataSetId
 		}
 	});
-		
-	$("#dynamicElementSelector").dblclick(insertDynamicElement);
+
 	$("#imageSelector").dblclick(insertImage);
 	
 	if( autoSave )
@@ -233,7 +205,6 @@ function showDataElements() {
 	$("#totalsFilter").hide();
 	$("#indicatorsTab").hide();
 	$("#indicatorsFilter").hide();
-	$("#dynamicElementsTab").hide();
 }
 
 function showTotals() {
@@ -243,7 +214,6 @@ function showTotals() {
 	$("#totalsFilter").show();
 	$("#indicatorsTab").hide();
 	$("#indicatorsFilter").hide();
-	$("#dynamicElementsTab").hide();
 }
 
 function showIndicators() {
@@ -253,17 +223,6 @@ function showIndicators() {
 	$("#totalsFilter").hide();
 	$("#indicatorsTab").show();
 	$("#indicatorsFilter").show();
-	$("#dynamicElementsTab").hide();
-}
-
-function showDynamicElements() {
-	$("#dataElementsTab").hide();
-	$("#dataElementsFilter").hide();
-	$("#totalsTab").hide();
-	$("#totalsFilter").hide();
-	$("#indicatorsTab").hide();
-	$("#indicatorsFilter").hide();
-	$("#dynamicElementsTab").show();	
 }
 
 function filterSelectList( select_id, filter )
@@ -391,68 +350,6 @@ function insertIndicator() {
 	} else {
 		setHeaderDelayMessage( i18n_no_indicator_was_selected );
 	}
-}
-
-/**
- * A unique code is used to associate the data element drop down with the input
- * fields for each category option combo.  The format for select / drop down list
- * is:
- * 
- * id="<unique code>-dynselect" dyncselect="<category combo id>"
- */
-function insertDropDownList() {
-	var oEditor = $("#designTextarea").ckeditorGet();
-	if ( currentDynamicElementCode && currentCategoryComboId ) {
-		var id = currentDynamicElementCode + "-dynselect";
-		var template = '<input id="' + id + '" dynselect="' + currentCategoryComboId + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:15em;" />';
-		oEditor.insertHtml( template );
-	}
-}
-
-/**
- * A unique code is used to associate the data element drop down with the input
- * fields for each category option combo. The format for input field identifier 
- * is:
- * 
- * id="<unique code>-<category option combo id>-dyninput"
- */
-function insertDynamicElement() {
-	var oEditor = $("#designTextarea").ckeditorGet();
-	var $option = $("#dynamicElementSelector option:selected");
-	
-	if( $option.length !== 0 ) {
-		var categoryOptionComboId = $option.val();
-		var categoryOptionComboName = $option.text();
-		var id = currentDynamicElementCode + "-" + categoryOptionComboId + "-dyninput";
-		
-		var template = '<input id="' + id + '" code="' + currentDynamicElementCode + '" value="[ ' + categoryOptionComboName + ' ]" title="' + categoryOptionComboName + '" style="width:7em;text-align:center;" />';
-		oEditor.insertHtml( template );
-	}
-}
-
-function showDynamicElementSelect() {
-	$("#dynamicElementSelect").show();
-	$("#dynamicElementInsert").hide();	
-}
-
-function showDynamicElementInsert() {
-	$("#dynamicElementSelect").hide();
-	$("#dynamicElementInsert").show();
-	
-	var categoryComboId = $("#categoryComboSelect option:selected").val();
-	var categoryComboName = $("#categoryComboSelect option:selected").text();
-
-	currentDynamicElementCode = getRandomCode();
-	currentCategoryComboId = categoryComboId;
-	currentCategoryComboName = categoryComboName;
-	
-	clearListById( "dynamicElementSelector" );
-	
-	var optionCombos = $.getJSON( "../dhis-web-commons-ajax-json/getCategoryOptionCombos.action?categoryComboUid=" + categoryComboId, function( json ) {
-		$.each( json.categoryOptionCombos, function( index, value ) {
-			addOptionById( "dynamicElementSelector", value.uid, value.name );
-		} );
-	} );	
 }
 
 function insertImage() {
