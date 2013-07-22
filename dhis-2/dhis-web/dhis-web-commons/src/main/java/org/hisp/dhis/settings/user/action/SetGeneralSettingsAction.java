@@ -27,7 +27,7 @@ package org.hisp.dhis.settings.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
+import static org.hisp.dhis.user.UserSettingService.*;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
@@ -98,6 +98,13 @@ public class SetGeneralSettingsAction
         this.currentStyle = style;
     }
 
+    private String analysisDisplayProperty;
+
+    public void setAnalysisDisplayProperty( String analysisDisplayProperty )
+    {
+        this.analysisDisplayProperty = analysisDisplayProperty;
+    }
+
     private Boolean messageEmailNotification;
 
     public void setMessageEmailNotification( Boolean messageEmailNotification )
@@ -139,6 +146,8 @@ public class SetGeneralSettingsAction
             .trimToNull( currentLocaleDb ) ) );
 
         styleManager.setUserStyle( currentStyle );
+        
+        userSettingService.saveUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY, analysisDisplayProperty );
         
         userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
 
