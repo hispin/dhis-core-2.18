@@ -96,6 +96,7 @@ public abstract class AbstractGridView extends AbstractView
             IdentifiableObject identifiableObject = (IdentifiableObject) object;
 
             Grid grid = new ListGrid();
+            grid.setTitle( identifiableObject.getClass().getSimpleName() );
             grid.addEmptyHeaders( 2 );
 
             grid.addRow().addValue( "UID" ).addValue( identifiableObject.getUid() );
