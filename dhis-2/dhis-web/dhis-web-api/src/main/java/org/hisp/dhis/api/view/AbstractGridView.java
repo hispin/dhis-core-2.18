@@ -66,7 +66,7 @@ public abstract class AbstractGridView extends AbstractView
 
             for ( Field field : fields )
             {
-                Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), webMetaData );
+                List<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), webMetaData );
 
                 if ( identifiableObjects.isEmpty() )
                 {
@@ -74,6 +74,8 @@ public abstract class AbstractGridView extends AbstractView
                 }
 
                 Grid grid = new ListGrid();
+                grid.setTitle( identifiableObjects.get( 0 ).getClass().getSimpleName() + "s" );
+
                 grid.addHeader( new GridHeader( "UID", false, false ) );
                 grid.addHeader( new GridHeader( "Name", false, false ) );
                 grid.addHeader( new GridHeader( "Code", false, false ) );
@@ -94,14 +96,11 @@ public abstract class AbstractGridView extends AbstractView
             IdentifiableObject identifiableObject = (IdentifiableObject) object;
 
             Grid grid = new ListGrid();
-            grid.addHeader( new GridHeader( "UID", false, false ) );
-            grid.addHeader( new GridHeader( "Name", false, false ) );
-            grid.addHeader( new GridHeader( "Code", false, false ) );
+            grid.addEmptyHeaders( 2 );
 
-            grid.addRow();
-            grid.addValue( identifiableObject.getUid() );
-            grid.addValue( identifiableObject.getName() );
-            grid.addValue( identifiableObject.getCode() );
+            grid.addRow().addValue( "UID" ).addValue( identifiableObject.getUid() );
+            grid.addRow().addValue( "Name" ).addValue( identifiableObject.getName() );
+            grid.addRow().addValue( "Code" ).addValue( identifiableObject.getCode() );
 
             grids.add( grid );
         }
