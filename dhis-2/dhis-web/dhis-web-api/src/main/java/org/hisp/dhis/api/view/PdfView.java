@@ -44,7 +44,6 @@ import org.springframework.web.servlet.view.document.AbstractPdfView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
@@ -58,24 +57,23 @@ public class PdfView extends AbstractPdfView
 
     @Override
     protected void buildPdfDocument( Map<String, Object> model, Document document, PdfWriter writer,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws DocumentException
     {
         Object object = model.get( "model" );
 
         if ( WebMetaData.class.isAssignableFrom( object.getClass() ) )
         {
             WebMetaData webMetaData = (WebMetaData) object;
-            buildList( webMetaData, document, writer, request, response );
+            buildList( webMetaData, document );
         }
         else
         {
             IdentifiableObject identifiableObject = (IdentifiableObject) object;
-            buildSingleObject( identifiableObject, document, writer, request, response );
+            buildSingleObject( identifiableObject, document );
         }
     }
 
-    private void buildList( WebMetaData webMetaData, Document document, PdfWriter writer,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    private void buildList( WebMetaData webMetaData, Document document ) throws DocumentException
     {
         Collection<Field> fields = ReflectionUtils.collectFields( WebMetaData.class, PredicateUtils.idObjectCollections );
 
@@ -102,8 +100,7 @@ public class PdfView extends AbstractPdfView
         }
     }
 
-    private void buildSingleObject( IdentifiableObject identifiableObject, Document document, PdfWriter writer,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    private void buildSingleObject( IdentifiableObject identifiableObject, Document document ) throws DocumentException
     {
         PdfPTable table = new PdfPTable( 2 );
         table.setSpacingAfter( 10 );
@@ -111,7 +108,7 @@ public class PdfView extends AbstractPdfView
         document.add( table );
     }
 
-    private void renderIdentifiableObject( IdentifiableObject identifiableObject, PdfPTable table ) throws DocumentException, IOException
+    private void renderIdentifiableObject( IdentifiableObject identifiableObject, PdfPTable table )
     {
         table.addCell( new Phrase( "Name", boldFont ) );
         table.addCell( identifiableObject.getDisplayName() );
@@ -129,7 +126,7 @@ public class PdfView extends AbstractPdfView
         table.addCell( identifiableObject.getLastUpdated().toString() );
     }
 
-    private void renderIdentifiableObjectRowHeader( PdfPTable table ) throws DocumentException, IOException
+    private void renderIdentifiableObjectRowHeader( PdfPTable table ) throws DocumentException
     {
         table.setWidths( new int[]{ 3, 1 } );
 
@@ -142,7 +139,7 @@ public class PdfView extends AbstractPdfView
         table.addCell( uidCell );
     }
 
-    private void renderIdentifiableObjectRow( IdentifiableObject identifiableObject, PdfPTable table ) throws DocumentException, IOException
+    private void renderIdentifiableObjectRow( IdentifiableObject identifiableObject, PdfPTable table )
     {
         PdfPCell nameCell = new PdfPCell( new Phrase( identifiableObject.getDisplayName() ) );
         nameCell.setHorizontalAlignment( Element.ALIGN_LEFT );
