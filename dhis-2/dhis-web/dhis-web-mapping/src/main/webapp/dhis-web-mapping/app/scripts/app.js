@@ -3057,7 +3057,7 @@ Ext.onReady( function() {
 		});
 
 		button = Ext.create('Ext.button.Button', {
-			text: GIsvS.i18n.download,
+			text: GIS.i18n.download,
 			handler: function() {
 				var type = format.getValue(),
 					title = name.getValue(),
@@ -3098,7 +3098,7 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function() {
-					this.setPosition(253, 37);
+					this.setPosition(253, 33);
 				}
 			}
 		});
@@ -5069,6 +5069,7 @@ Ext.onReady( function() {
 
 						a.push({
 							text: GIS.i18n.table,
+							iconCls: 'gis-button-icon-table',
                             toggleGroup: 'module',
 							handler: function(b) {
                                 window.location.href = '../../dhis-web-pivot/app/index.html';
@@ -5077,6 +5078,7 @@ Ext.onReady( function() {
 
 						a.push({
 							text: GIS.i18n.chart,
+							iconCls: 'gis-button-icon-chart',
                             toggleGroup: 'module',
 							handler: function(b) {
                                 window.location.href = '../../dhis-web-visualizer/app/index.html';
@@ -5085,6 +5087,7 @@ Ext.onReady( function() {
 
 						a.push({
 							text: GIS.i18n.map,
+							iconCls: 'gis-button-icon-map',
                             toggleGroup: 'module',
                             pressed: true
 						});

@@ -491,7 +491,7 @@ table.pivot {
 
 	/* Menu item */
 .x-menu-item-link {
-    padding: 4px 5px 4px 28px;
+    padding: 4px 5px 4px 26px;
 }
 	/* Menu item color */
 .x-menu-item-text {
@@ -503,6 +503,10 @@ table.pivot {
  *--------------------------------------------------------------------------*/
 
 	/* Menu item icon */
+.pt-menu-item-noicon .x-menu-item-link {
+	padding-left: 10px;
+}
+	
 .pt-menu-item-image {
     background-image:url('../images/dl_image.png');
     padding-left: 18px;
@@ -579,9 +583,20 @@ table.pivot {
 	background: url('../images/gear_18.png') no-repeat;
 }
 
+.pt-button-icon-table {
+	background: url('../images/table_14.png') no-repeat;
+}
+.pt-button-icon-chart {
+	background: url('../images/chart_14.png') no-repeat;
+}
+.pt-button-icon-map {
+	background: url('../images/map_14.png') no-repeat;
+}
+
 .pt-button-organisationunitselection .x-btn-center {
 	width: 18px !important;
 }
+
 
 /*----------------------------------------------------------------------------
  * Tooltip

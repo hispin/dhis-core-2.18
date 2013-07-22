@@ -2,17 +2,26 @@
  *
  * Panel
  * DV Panel
+ * 
  * Combobox
  * DV Combobox
+ * 
  * MultiSelect
  * DV MultiSelect
+ * 
  * Checkbox
  * DV Checkbox
+ * 
  * Toolbar
  * DV Toolbar
+ * 
+ * Menu
+ * DV Menu
+ * 
  * Button
  * Tooltip
  * LoadMask
+ * 
  * DV Grid
  * DV Window
  * DV Label
@@ -21,8 +30,6 @@
  * DV Accordion
  * DV Textarea
  * DV Tips
- * Menu
- * DV Menu
 */
 
 /* General */
@@ -347,6 +354,64 @@ body.x-windows {
 
 
 /*----------------------------------------------------------------------------
+ * Menu
+ *--------------------------------------------------------------------------*/
+
+.x-menu-body {
+    border-color: #bbb;
+    border-radius: 2px;
+}
+
+.x-menu-item-active .x-menu-item-link {
+	border-radius: 0;
+	border-color: #e1e1e1;
+	background-color: #e1e1e1;
+	background-image: none;
+}
+.x-menu-body {
+	padding: 0;
+}
+
+	/* Menu item */
+.x-menu-item-link {
+    padding: 4px 5px 4px 26px;
+}
+	/* Menu item color */
+.x-menu-item-text {
+    color: #111;
+}
+
+
+/*----------------------------------------------------------------------------
+ * DV Menu
+ *--------------------------------------------------------------------------*/
+
+	/* Menu item icon */
+.dv-menu-item-noicon .x-menu-item-link {
+	padding-left: 10px;
+}
+	
+.dv-menu-item-image {
+    background-image:url('../images/dl_image.png');
+    padding-left: 18px;
+}
+.dv-menu-item-datasource {
+    background-image:url('../images/dl_datasource.png');
+    padding-left: 18px;
+}
+
+.dv-menu-item-selected {
+    background-image:url('../images/check.png');
+    padding-left: 18px;
+}
+
+	/* Menu align */
+.dv-btn-menu {
+	margin-top: 2px;
+}
+
+
+/*----------------------------------------------------------------------------
  * Button
  *--------------------------------------------------------------------------*/
 
@@ -398,6 +463,16 @@ body.x-windows {
 	width: 22px !important;
 	height: 22px !important;
 	background: url('../images/gear_18.png') no-repeat;
+}
+
+.dv-button-icon-table {
+	background: url('../images/table_14.png') no-repeat;
+}
+.dv-button-icon-chart {
+	background: url('../images/chart_14.png') no-repeat;
+}
+.dv-button-icon-map {
+	background: url('../images/map_14.png') no-repeat;
 }
 
 .dv-button-organisationunitselection .x-btn-center {
@@ -740,108 +815,4 @@ body.x-windows {
     color: #444;
 	-webkit-text-stroke: 0;
 }
-
-
-/*----------------------------------------------------------------------------
- * Menu
- *--------------------------------------------------------------------------*/
-
-.x-menu-body {
-    border-color: #bbb;
-    border-radius: 2px;
-}
-
-.x-menu-item-active .x-menu-item-link {
-	border-radius: 0;
-	border-color: #e1e1e1;
-	background-color: #e1e1e1;
-	background-image: none;
-}
-.x-menu-body {
-	padding: 0;
-}
-
-	/* Menu item */
-.x-menu-item-link {
-    padding: 4px 5px 4px 28px;
-}
-	/* Menu item color */
-.x-menu-item-text {
-    color: #111;
-}
-
-
-/*----------------------------------------------------------------------------
- * DV Menu
- *--------------------------------------------------------------------------*/
-
-.dv-menu-item-selected {
-    background-image:url('../images/check.png');
-    padding-left: 18px;
-}
-
-	/* Menu align */
-.dv-btn-menu {
-	margin-top: 2px;
-}
-
-
-/*----------------------------------------------------------------------------
- * DV Menu
- *--------------------------------------------------------------------------*/
-
-	/* Menu item icon */
-.dv-menu-item-image {
-    background-image:url('../images/dl_image.png');
-    padding-left: 18px;
-}
-.dv-menu-item-datasource {
-    background-image:url('../images/dl_datasource.png');
-    padding-left: 18px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
