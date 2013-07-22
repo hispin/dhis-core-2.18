@@ -7,8 +7,9 @@ function performMaintenance()
     var zeroValues = document.getElementById( "zeroValues" ).checked;
     var dataSetCompleteness = document.getElementById( "dataSetCompleteness" ).checked;
     var prunePeriods = document.getElementById( "prunePeriods" ).checked;
+    var updateCategoryOptionCombos = document.getElementById( "updateCategoryOptionCombos" ).checked;
     
-    if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || dataSetCompleteness || prunePeriods )
+    if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || dataSetCompleteness || prunePeriods || updateCategoryOptionCombos )
     {
         setWaitMessage( i18n_performing_maintenance );
         
@@ -17,7 +18,8 @@ function performMaintenance()
             "&dataMartIndex=" + dataMartIndex +
             "&zeroValues=" + zeroValues +
             "&dataSetCompleteness=" + dataSetCompleteness +
-            "&prunePeriods=" + prunePeriods;
+            "&prunePeriods=" + prunePeriods +
+            "&updateCategoryOptionCombos=" + updateCategoryOptionCombos;
         
 		$.ajax({
 			   type: "POST",

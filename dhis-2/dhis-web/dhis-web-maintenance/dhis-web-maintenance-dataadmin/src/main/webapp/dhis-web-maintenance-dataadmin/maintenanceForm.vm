@@ -43,6 +43,11 @@
 </p>
 
 <p>
+    <input type="checkbox" id="updateCategoryOptionCombos"/>
+    <label for="updateCategoryOptionCombos">$i18n.getString( "update_category_option_combos" )</label>
+</p>
+
+<p>
     <input type="button" value="Select all" id="selectAllButton" style="width:100px">
 	<input type="button" value="$i18n.getString( 'perform_maintenance' )" onclick="performMaintenance()" style="width:170px"/>
 </p>

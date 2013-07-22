@@ -400,6 +400,12 @@ public interface DataElementCategoryService
     void updateOptionCombos( DataElementCategoryCombo categoryCombo );
 
     /**
+     * Generates the complete set of category option combos for all category
+     * combos.
+     */
+    void updateAllOptionCombos();
+    
+    /**
      * Populates all transient properties on each Operand in the given collection.
      *
      * @param operands the collection of Operands.
