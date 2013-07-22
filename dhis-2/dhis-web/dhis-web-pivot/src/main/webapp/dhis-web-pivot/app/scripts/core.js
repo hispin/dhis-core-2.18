@@ -1544,7 +1544,7 @@ PT.core.getUtils = function(pt) {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
-						for (var j = 0, id, value, htmlValue, empty, uuid, uuids; j < colSize; j++) {
+						for (var j = 0, id, value, htmlValue, empty, uuid, uuids = []; j < colSize; j++) {
 							empty = false;
 							
 							// meta data uid
@@ -1554,7 +1554,12 @@ PT.core.getUtils = function(pt) {
 							uuid = Ext.data.IdGenerator.get('uuid').generate();
 							
 							// col and row dim element ids
-							uuids = [].concat(xColAxis.objects.all[xColAxis.dims - 1][j].uuids, xRowAxis.objects.all[xRowAxis.dims - 1][i].uuids);							
+							if (xColAxis) {
+								uuids = uuids.concat(xColAxis.objects.all[xColAxis.dims - 1][j].uuids);
+							}
+							if (xRowAxis) {
+								uuids = uuids.concat(xRowAxis.objects.all[xRowAxis.dims - 1][i].uuids);
+							}
 							
 							if (idValueMap[id]) {
 								value = parseFloat(idValueMap[id]);
