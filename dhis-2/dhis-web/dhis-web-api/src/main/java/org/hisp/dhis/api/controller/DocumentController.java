@@ -72,7 +72,13 @@ public class DocumentController
     public void getDocumentContent( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
     {
         Document document = documentService.getDocument( uid );
-
+        
+        if ( document == null )
+        {
+            ContextUtils.notFoundResponse( response, "Resource not found for identifier: " + uid );
+            return;
+        }
+        
         if ( document.isExternal() )
         {
             response.sendRedirect( response.encodeRedirectURL( document.getUrl() ) );

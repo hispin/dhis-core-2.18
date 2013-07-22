@@ -29,6 +29,7 @@ package org.hisp.dhis.chart;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -101,9 +102,9 @@ public interface ChartService
 
     Collection<Chart> getCharts( final Collection<Integer> identifiers );
 
-    Collection<Chart> getChartsBetween( int first, int max );
+    List<Chart> getChartsBetween( int first, int max );
 
-    Collection<Chart> getChartsBetweenByName( String name, int first, int max );
+    List<Chart> getChartsBetweenByName( String name, int first, int max );
 
     int getChartCount();
 

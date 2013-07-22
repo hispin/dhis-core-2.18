@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -185,13 +186,13 @@ public class DefaultUserService
     }
 
     @Override
-    public Collection<User> getAllUsersBetween( int first, int max )
+    public List<User> getAllUsersBetween( int first, int max )
     {
         return userStore.getAllOrderedName( first, max );
     }
     
     @Override
-    public Collection<User> getAllUsersBetweenByName( String name, int first, int max )
+    public List<User> getAllUsersBetweenByName( String name, int first, int max )
     {
         return userStore.getAllLikeNameOrderedName( name, first, max );
     }

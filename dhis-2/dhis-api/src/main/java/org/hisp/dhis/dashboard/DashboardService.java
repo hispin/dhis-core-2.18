@@ -28,9 +28,7 @@ package org.hisp.dhis.dashboard;
  */
 
 import java.util.Collection;
-import java.util.List;
 
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
@@ -44,7 +42,7 @@ public interface DashboardService
 {
     final String ID = DashboardService.class.getName();
 
-    List<IdentifiableObject> search( String query );
+    DashboardSearchResult search( String query );
     
     void saveDashboardContent( DashboardContent dashboardContent );
 

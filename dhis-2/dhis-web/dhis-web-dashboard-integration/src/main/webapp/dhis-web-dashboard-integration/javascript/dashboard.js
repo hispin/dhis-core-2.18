@@ -131,9 +131,85 @@ function search()
 		return false;
 	}
 	
-	var hits = $.get( "search.action", { q:query }, function( data ) {
-		$( "#hitDiv" ).show().html( data );
+	var hits = $.get( "../api/dashboards/search/" + query, function( data ) {
+		$( "#hitDiv" ).show().html( getSearchResultList( data ) );		
 	} );		
+}
+
+function getSearchResultList( data )
+{
+	var html = "<ul>";
+	
+	if ( data.searchCount > 0 )
+	{
+		if ( data.userCount > 0 )
+		{
+			html += "<li class='hitHeader'>Users</li>";			
+			for ( var i in data.users )
+			{
+				var o = data.users[i];
+				html += "<li><a href='profile.action?id=" + o.id + "'><img src='../images/user_small.png'>" + o.name + "</a></li>";
+			}
+		}
+		
+		if ( data.chartCount > 0 )
+		{
+			html += "<li class='hitHeader'>Charts</li>";
+			for ( var i in data.charts )
+			{
+				var o = data.charts[i];
+				html += "<li><a href='../dhis-web-visualizer/app/index.html?id=" + o.id + "'><img src='../images/chart_small.png'>" + o.name + "</a></li>";
+			}
+		}
+		
+		if ( data.mapCount > 0 )
+		{
+			html += "<li class='hitHeader'>Maps</li>";
+			for ( var i in data.maps )
+			{
+				var o = data.maps[i];
+				html += "<li><a href='../dhis-web-mapping/app/index.html?id=" + o.id + "'><img src='../images/map_small.png'>" + o.name + "</a></li>";
+			}
+		}
+		
+		if ( data.reportTableCount > 0 )
+		{
+			html += "<li class='hitHeader'>Pivot tables</li>";
+			for ( var i in data.reportTables )
+			{
+				var o = data.reportTables[i];
+				html += "<li><a href='../dhis-web-pivot/app/index.html?id=" + o.id + "'><img src='../images/table_small.png'>" + o.name + "</a></li>";
+			}
+		}
+		
+		if ( data.reportCount > 0 )
+		{
+			html += "<li class='hitHeader'>Standard reports</li>";
+			for ( var i in data.reports )
+			{
+				var o = data.reports[i];
+				html += "<li><a href='../dhis-web-reporting/getReportParams.action?uid=" + o.id + "&mode=report'><img src='../images/table_small.png'>" + o.name + "</a></li>";
+			}
+		}
+		
+		if ( data.resourceCount > 0 )
+		{
+			html += "<li class='hitHeader'>Resources</li>";
+			for ( var i in data.resources )
+			{
+				var o = data.resources[i];
+				html += "<li><a href='../api/documents/" + o.id + "/data'><img src='../images/document_small.png'>" + o.name + "</a></li>";
+			}
+		}
+	}
+	else
+	{
+		html += "<li class='hitHeader'>No results found</li>";
+	}
+	
+	html += "</ul>";
+	
+	return html;
 }
 
 function hideSearch()

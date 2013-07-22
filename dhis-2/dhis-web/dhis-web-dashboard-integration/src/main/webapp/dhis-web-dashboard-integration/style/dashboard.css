@@ -124,12 +124,13 @@
   margin-top: 29px;
   left: 411px;
   width: 498px;
+  max-height: 520px;
+  overflow-y: scroll;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   border-left: 1px solid #bbb;
   background-color: #fff;
   display: none;
-  overflow: hidden;
   z-index: 5;
   box-shadow: #ccc 0px 1px 2px 0px;
 }
@@ -142,14 +143,32 @@
 #hitDiv a
 {
   display: block;
-  width: 100%;
   padding: 7px 6px 7px 12px;
+}
+
+#hitDiv img
+{
+  margin-right: 7px;
+}
+
+.hitHeader
+{
+  padding: 5px 6px 5px 33px;
+  margin: 2px 0;
+  border-bottom: 1px solid #ddd;
+  color: #336C8B;
+  font-family: LiberationSansBold;
 }
 
 #hitDiv a:hover
 {
   text-decoration: none;
   background-color: #eee;
+}
+
+#hitDiv::-webkit-scrollbar-track:vertical
+{
+    background-color: #fff;
 }
 
 #shareForm
