@@ -104,7 +104,10 @@ public class GeoToolsMapGenerationService
         {        
             InternalMapLayer mapLayer = buildSingleInternalMapLayer( mapView );
             
-            internalMap.getLayers().add( mapLayer );
+            if ( mapLayer != null )
+            {
+                internalMap.getLayers().add( mapLayer );
+            }
         }
         
         if ( internalMap.getLayers().isEmpty() )
@@ -145,7 +148,10 @@ public class GeoToolsMapGenerationService
 
     private InternalMapLayer buildSingleInternalMapLayer( MapView mapView )
     {
-        Assert.isTrue( mapView != null );
+        if ( mapView == null || mapView.getPeriod() == null || mapView.getParentOrganisationUnit() == null )
+        {
+            return null;
+        }
 
         boolean isIndicator = MapView.VALUE_TYPE_INDICATOR.equals( mapView.getValueType() );
 
@@ -164,7 +170,7 @@ public class GeoToolsMapGenerationService
         Grid grid = getDataGrid( mapView );
         
         Collection<MapValue> mapValues = getMapValues( grid );
-                
+        
         if ( mapValues.isEmpty() )
         {
             return null;
