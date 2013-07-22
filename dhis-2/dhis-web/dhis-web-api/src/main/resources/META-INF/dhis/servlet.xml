@@ -33,6 +33,7 @@
         <entry key="jsonp" value="application/javascript" />
         <entry key="xml" value="application/xml" />
         <entry key="png" value="image/png" />
+        <entry key="pdf" value="application/pdf" />
       </map>
     </constructor-arg>
   </bean>
@@ -60,6 +61,8 @@
         <bean class="org.hisp.dhis.api.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="true" />
         </bean>
+
+        <bean class="org.hisp.dhis.api.view.PdfView" />
       </list>
     </property>
 
