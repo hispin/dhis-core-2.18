@@ -163,8 +163,8 @@ a.menuLink:hover
   border-right: 1px solid #888;
   border-bottom: 1px solid #888;
   border-left: 1px solid #888; 
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
   width: 189px;
   background-color: #276696;
   display: none;
@@ -186,7 +186,6 @@ a.menuLink:hover
 .menuDropDownBox a
 {
   display: block;
-  width: 169px;
   padding-top: 8px;
   padding-left: 10px;
   padding-bottom: 7px;
