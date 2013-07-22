@@ -305,7 +305,7 @@ function generateTemplateMessageForm()
 				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_user_group + '</label></td>'
 				+ 	'<td>'
-				+	java
+				+	program_stage_SMS_reminder_form
 				+	'</td>'
 				+ '/<tr>'
 				+ '<tr name="tr' + rowId + '">'
