@@ -20,7 +20,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) )</label></td>
 			<td>
 				<textarea id="description" name="description">$!encoder.htmlEncode( $!sqlViewObject.description )</textarea>
 			</td>

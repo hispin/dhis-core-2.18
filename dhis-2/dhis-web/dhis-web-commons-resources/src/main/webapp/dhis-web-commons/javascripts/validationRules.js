@@ -177,9 +177,6 @@ var validationRules = {
             "required" : true,
             "rangelength" : [ 2, 50 ]
         },
-        "description" : {
-            "required" : true
-        },
         "sqlquery" : {
             "required" : true
         }
