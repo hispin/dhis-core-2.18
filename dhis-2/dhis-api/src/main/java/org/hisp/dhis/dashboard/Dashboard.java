@@ -1,9 +1,5 @@
 package org.hisp.dhis.dashboard;
 
-import java.util.List;
-
-import org.hisp.dhis.user.User;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -31,25 +27,40 @@ import org.hisp.dhis.user.User;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author Lars Helge Overland
- */
-public interface DashboardService
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
+public class Dashboard
+    extends BaseIdentifiableObject
 {
-    final String ID = DashboardService.class.getName();
+    private List<DashboardItem> items = new ArrayList<DashboardItem>();
 
-    DashboardSearchResult search( String query );
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public Dashboard()
+    {
+    }
     
-    int saveDashboard( Dashboard dashboard );
-    
-    void updateDashboard( Dashboard dashboard );
-    
-    void deleteDashboard( Dashboard dashboard );
-    
-    Dashboard getDashboard( int id );
-    
-    Dashboard getDashboard( String uid );
-    
-    List<Dashboard> getByUser( User user );
+    public Dashboard( String name )
+    {
+        this.name = name;
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public List<DashboardItem> getItems()
+    {
+        return items;
+    }
+
+    public void setItems( List<DashboardItem> items )
+    {
+        this.items = items;
+    }
 }

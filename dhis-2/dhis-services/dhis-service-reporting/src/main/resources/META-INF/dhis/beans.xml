@@ -125,6 +125,12 @@
   
   <!-- Dashboard -->
 
+  <bean id="org.hisp.dhis.dashboard.DashboardStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    <property name="clazz" value="org.hisp.dhis.dashboard.Dashboard" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
+
   <bean id="org.hisp.dhis.dashboard.DashboardContentStore" class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardContentStore">
     <property name="clazz" value="org.hisp.dhis.dashboard.DashboardContent" />
     <property name="sessionFactory" ref="sessionFactory" />
@@ -133,6 +139,7 @@
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.DashboardService" class="org.hisp.dhis.dashboard.impl.DefaultDashboardService">
+    <property name="dashboardStore" ref="org.hisp.dhis.dashboard.DashboardStore" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
