@@ -112,7 +112,7 @@ public class GreySectionAction
         return sectionIsMultiDimensional;
     }
 
-    Map<Integer, Collection<DataElementCategoryOption>> optionsMap = new HashMap<Integer, Collection<DataElementCategoryOption>>();
+    private Map<Integer, Collection<DataElementCategoryOption>> optionsMap = new HashMap<Integer, Collection<DataElementCategoryOption>>();
 
     public Map<Integer, Collection<DataElementCategoryOption>> getOptionsMap()
     {

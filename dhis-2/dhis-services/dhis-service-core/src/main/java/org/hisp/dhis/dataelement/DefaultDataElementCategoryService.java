@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.concept.Concept;
@@ -53,6 +55,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataElementCategoryService
     implements DataElementCategoryService
 {
+    private static final Log log = LogFactory.getLog( DefaultDataElementCategoryService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -540,16 +544,34 @@ public class DefaultDataElementCategoryService
         List<DataElementCategoryOptionCombo> generatedOptionCombos = categoryCombo.generateOptionCombosList();
         Set<DataElementCategoryOptionCombo> persistedOptionCombos = categoryCombo.getOptionCombos();
 
+        boolean modified = false;
+        
         for ( DataElementCategoryOptionCombo optionCombo : generatedOptionCombos )
         {
             if ( !persistedOptionCombos.contains( optionCombo ) )
-            {
+            {                
                 categoryCombo.getOptionCombos().add( optionCombo );
                 addDataElementCategoryOptionCombo( optionCombo );
+
+                log.info( "Added missing category option combo: " + optionCombo + " for category combo: " + categoryCombo.getName() );
+                modified = true;
             }
         }
 
-        updateDataElementCategoryCombo( categoryCombo );
+        if ( modified )
+        {        
+            updateDataElementCategoryCombo( categoryCombo );
+        }
+    }
+    
+    public void updateAllOptionCombos()
+    {
+        Collection<DataElementCategoryCombo> categoryCombos = getAllDataElementCategoryCombos();
+        
+        for ( DataElementCategoryCombo categoryCombo : categoryCombos )
+        {
+            updateOptionCombos( categoryCombo );
+        }
     }
 
     public Map<String, Integer> getDataElementCategoryOptionComboUidIdMap()
