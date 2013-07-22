@@ -461,13 +461,13 @@
 		class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
+	
 	<!-- Dashboard -->
 
 	<bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
 		class="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
 		scope="prototype">
 		<property name="dashboardManager" ref="org.hisp.dhis.dashboard.DashboardManager" />
-		<property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
 	</bean>

@@ -8,7 +8,6 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dashboard.DashboardConfiguration;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardManager;
-import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.CurrentUserService;
@@ -22,13 +21,6 @@ public class ProvideContentAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
 
     private DashboardManager dashboardManager;
 
@@ -50,7 +42,7 @@ public class ProvideContentAction
     {
         this.chartService = chartService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -107,7 +99,7 @@ public class ProvideContentAction
 
         User user = currentUserService.getCurrentUser();
 
-        DashboardContent content = dashboardService.getDashboardContent( user );
+        DashboardContent content = dashboardManager.getDashboardContent( user );
 
         reportTables = content.getReportTables();
 

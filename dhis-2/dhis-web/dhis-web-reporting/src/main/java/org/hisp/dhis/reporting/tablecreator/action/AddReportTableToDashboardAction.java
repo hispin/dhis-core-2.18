@@ -30,11 +30,12 @@ package org.hisp.dhis.reporting.tablecreator.action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,13 +59,6 @@ public class AddReportTableToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
-    
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -72,6 +66,9 @@ public class AddReportTableToDashboardAction
         this.reportTableService = reportTableService;
     }
 
+    @Autowired
+    private DashboardManager dashboardManager;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -93,13 +90,13 @@ public class AddReportTableToDashboardAction
         
         if ( user != null )
         {        
-            DashboardContent content = dashboardService.getDashboardContent( user );
+            DashboardContent content = dashboardManager.getDashboardContent( user );
             
             ReportTable reportTable = reportTableService.getReportTable( id );
             
             content.addReportTable( reportTable );
             
-            dashboardService.saveDashboardContent( content );
+            dashboardManager.saveDashboardContent( content );
             
             log.info( "Added report table '" + reportTable.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
