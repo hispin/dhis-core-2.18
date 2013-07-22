@@ -131,7 +131,7 @@ function search()
 		return false;
 	}
 	
-	var hits = $.get( "../api/dashboards/search/" + query, function( data ) {
+	var hits = $.get( "../api/dashboards/q/" + query, function( data ) {
 		$( "#hitDiv" ).show().html( getSearchResultList( data ) );		
 	} );		
 }

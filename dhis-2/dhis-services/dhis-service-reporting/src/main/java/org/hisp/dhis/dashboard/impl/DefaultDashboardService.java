@@ -27,20 +27,16 @@ package org.hisp.dhis.dashboard.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardContentStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
-import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -60,6 +56,13 @@ public class DefaultDashboardService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private HibernateIdentifiableObjectStore<Dashboard> dashboardStore;
+    
+    public void setDashboardStore( HibernateIdentifiableObjectStore<Dashboard> dashboardStore )
+    {
+        this.dashboardStore = dashboardStore;
+    }
 
     private UserService userService;
     
@@ -107,6 +110,7 @@ public class DefaultDashboardService
     // DashboardService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public DashboardSearchResult search( String query )
     {
         DashboardSearchResult result = new DashboardSearchResult();
@@ -120,5 +124,40 @@ public class DefaultDashboardService
         
         return result;
     }
-    
+
+    @Override
+    public int saveDashboard( Dashboard dashboard )
+    {
+        return dashboardStore.save( dashboard );
+    }
+
+    @Override
+    public void updateDashboard( Dashboard dashboard )
+    {
+        dashboardStore.update( dashboard );
+    }
+
+    @Override
+    public void deleteDashboard( Dashboard dashboard )
+    {
+        dashboardStore.delete( dashboard );
+    }
+
+    @Override
+    public Dashboard getDashboard( int id )
+    {
+        return dashboardStore.get( id );
+    }
+
+    @Override
+    public Dashboard getDashboard( String uid )
+    {
+        return dashboardStore.getByUid( uid );
+    }
+
+    @Override
+    public List<Dashboard> getByUser( User user )
+    {
+        return dashboardStore.getByUser( user );
+    }
 }
