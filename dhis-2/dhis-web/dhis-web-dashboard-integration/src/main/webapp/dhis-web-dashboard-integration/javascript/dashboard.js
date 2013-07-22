@@ -188,7 +188,7 @@ function getSearchResultList( data )
 			for ( var i in data.reports )
 			{
 				var o = data.reports[i];
-				html += "<li><a href='../dhis-web-reporting/getReportParams.action?uid=" + o.id + "&mode=report'><img src='../images/table_small.png'>" + o.name + "</a></li>";
+				html += "<li><a href='../dhis-web-reporting/getReportParams.action?uid=" + o.id + "&mode=report'><img src='../images/standard_report_small.png'>" + o.name + "</a></li>";
 			}
 		}
 		
