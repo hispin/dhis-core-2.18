@@ -30,7 +30,7 @@ package org.hisp.dhis.mapping.action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -55,8 +55,8 @@ public class AddMapViewToDashboardAction
     private CurrentUserService currentUserService;
 
     @Autowired
-    private DashboardService dashboardService;
-
+    private DashboardManager dashboardManager;
+    
     @Autowired
     private MappingService mappingService;
 
@@ -81,13 +81,13 @@ public class AddMapViewToDashboardAction
         
         if ( user != null )
         {        
-            DashboardContent content = dashboardService.getDashboardContent( user );
+            DashboardContent content = dashboardManager.getDashboardContent( user );
             
             Map map = mappingService.getMap( id );
             
             content.addMap( map );
             
-            dashboardService.saveDashboardContent( content );
+            dashboardManager.saveDashboardContent( content );
             
             log.info( "Added mapview '" + map.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }

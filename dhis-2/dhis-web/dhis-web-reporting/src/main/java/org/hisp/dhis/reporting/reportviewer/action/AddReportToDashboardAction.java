@@ -30,11 +30,12 @@ package org.hisp.dhis.reporting.reportviewer.action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,13 +58,6 @@ public class AddReportToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
-
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -71,6 +65,9 @@ public class AddReportToDashboardAction
         this.reportService = reportService;
     }
 
+    @Autowired
+    private DashboardManager dashboardManager;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -92,13 +89,13 @@ public class AddReportToDashboardAction
         
         if ( user != null )
         {        
-            DashboardContent content = dashboardService.getDashboardContent( user );
+            DashboardContent content = dashboardManager.getDashboardContent( user );
         
             Report report = reportService.getReport( id );
             
             content.addReport( report );
             
-            dashboardService.saveDashboardContent( content );
+            dashboardManager.saveDashboardContent( content );
             
             log.info( "Added report '" + report.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }

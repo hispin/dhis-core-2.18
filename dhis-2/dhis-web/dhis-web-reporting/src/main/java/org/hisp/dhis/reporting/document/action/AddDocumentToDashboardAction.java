@@ -30,11 +30,12 @@ package org.hisp.dhis.reporting.document.action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,19 +58,15 @@ public class AddDocumentToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
-    
     private DocumentService documentService;
 
     public void setDocumentService( DocumentService documentService )
     {
         this.documentService = documentService;
     }
+
+    @Autowired
+    private DashboardManager dashboardManager;
     
     // -------------------------------------------------------------------------
     // Input
@@ -92,13 +89,13 @@ public class AddDocumentToDashboardAction
         
         if ( user != null )
         {        
-            DashboardContent content = dashboardService.getDashboardContent( user );
+            DashboardContent content = dashboardManager.getDashboardContent( user );
         
             Document document = documentService.getDocument( id );
             
             content.addDocument( document );
             
-            dashboardService.saveDashboardContent( content );
+            dashboardManager.saveDashboardContent( content );
             
             log.info( "Added document '" + document.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
