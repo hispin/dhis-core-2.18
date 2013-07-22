@@ -27,8 +27,14 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -47,4 +53,24 @@ public interface DashboardManager
     Set<String> getContentProviderNames();
     
     DashboardConfiguration getConfiguration();
+    
+    void saveDashboardContent( DashboardContent dashboardContent );
+
+    void updateDashboardContent( DashboardContent dashboardContent );
+    
+    DashboardContent getDashboardContent( int id );
+
+    DashboardContent getDashboardContent( User user );
+
+    Collection<DashboardContent> getAllDashboardContent();
+    
+    void deleteDashboardContent( DashboardContent content );
+
+    Collection<DashboardContent> getByDocument( Document document );
+    
+    Collection<DashboardContent> getByMap( org.hisp.dhis.mapping.Map map );
+    
+    Collection<DashboardContent> getByReport( Report report );
+    
+    Collection<DashboardContent> getByReportTable( ReportTable reportTable );
 }

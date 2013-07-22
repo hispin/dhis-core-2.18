@@ -28,11 +28,12 @@ package org.hisp.dhis.dashboard.action;
  */
 
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,12 +54,8 @@ public class RemoveReportTableAction
         this.currentUserService = currentUserService;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
+    @Autowired
+    private DashboardManager dashboardManager;
     
     private ReportTableService reportTableService;
 
@@ -88,13 +85,13 @@ public class RemoveReportTableAction
         
         if ( user != null )
         {
-            DashboardContent content = dashboardService.getDashboardContent( user );
+            DashboardContent content = dashboardManager.getDashboardContent( user );
             
             ReportTable table = reportTableService.getReportTable( id );
             
             if ( content.getReportTables().remove( table ) )
             {
-                dashboardService.saveDashboardContent( content );
+                dashboardManager.saveDashboardContent( content );
             }            
         }
         

@@ -28,11 +28,12 @@ package org.hisp.dhis.dashboard.action;
  */
 
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,12 +54,8 @@ public class RemoveDocumentAction
         this.currentUserService = currentUserService;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
+    @Autowired
+    private DashboardManager dashboardManager;
     
     private DocumentService documentService;
 
@@ -88,13 +85,13 @@ public class RemoveDocumentAction
         
         if ( user != null )
         {
-            DashboardContent content = dashboardService.getDashboardContent( user );
+            DashboardContent content = dashboardManager.getDashboardContent( user );
             
             Document document = documentService.getDocument( id );
             
             if ( content.getDocuments().remove( document ) )
             {
-                dashboardService.saveDashboardContent( content );
+                dashboardManager.saveDashboardContent( content );
             }
         }
         
