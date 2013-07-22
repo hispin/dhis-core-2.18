@@ -2149,6 +2149,7 @@ console.log("xLayout", xLayout);
 				items: [
 					{
 						text: 'View selection as chart' + '&nbsp;&nbsp;', //i18n
+						iconCls: 'pt-button-icon-chart',
 						param: 'chart',
 						handler: function() {
 							that.setSessionStorage(layoutConfig, 'analytical', pt.baseUrl + '/dhis-web-visualizer/app/index.html?s=analytical');
@@ -2167,6 +2168,7 @@ console.log("xLayout", xLayout);
 					},
 					{
 						text: 'View selection as map' + '&nbsp;&nbsp;', //i18n
+						iconCls: 'pt-button-icon-map',
 						param: 'map',
 						disabled: true,
 						handler: function() {

@@ -4157,6 +4157,7 @@ Ext.onReady( function() {
 
 			defaultButton = Ext.create('Ext.button.Button', {
 				text: PT.i18n.table,
+				iconCls: 'pt-button-icon-table',
 				toggleGroup: 'module',
 				pressed: true,
 				handler: function() {
@@ -4205,6 +4206,7 @@ Ext.onReady( function() {
                         defaultButton,
 						{
 							text: PT.i18n.chart,
+							iconCls: 'pt-button-icon-chart',
                             toggleGroup: 'module',
                             menu: {},
 							handler: function(b) {
@@ -4214,7 +4216,8 @@ Ext.onReady( function() {
                                     showSeparator: false,
                                     items: [
                                         {
-                                            text: 'Go to charts', //i18n
+                                            text: 'Go to charts' + '&nbsp;&nbsp;', //i18n
+                                            cls: 'pt-menu-item-noicon',
                                             handler: function() {
                                                 window.location.href = pt.baseUrl + '/dhis-web-visualizer/app/index.html';
                                             }
@@ -4222,6 +4225,7 @@ Ext.onReady( function() {
                                         '-',
                                         {
                                             text: 'View table as chart' + '&nbsp;&nbsp;', //i18n
+                                            cls: 'pt-menu-item-noicon',
                                             disabled: !PT.isSessionStorage || !pt.layout,
                                             handler: function() {
                                                 if (PT.isSessionStorage) {
@@ -4231,6 +4235,7 @@ Ext.onReady( function() {
                                         },
                                         {
                                             text: 'View last chart' + '&nbsp;&nbsp;', //i18n
+                                            cls: 'pt-menu-item-noicon',
                                             disabled: !(PT.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
                                             handler: function() {
 												window.location.href = pt.baseUrl + '/dhis-web-visualizer/app/index.html?s=chart';
@@ -4256,6 +4261,7 @@ Ext.onReady( function() {
 						},
 						{
 							text: PT.i18n.map,
+							iconCls: 'pt-button-icon-map',
                             toggleGroup: 'module',
                             //menu: {},
 							handler: function(b) {

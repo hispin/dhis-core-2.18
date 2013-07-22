@@ -4296,6 +4296,7 @@ Ext.onReady( function() {
 
 			defaultButton = Ext.create('Ext.button.Button', {
 				text: DV.i18n.chart,
+				iconCls: 'dv-button-icon-chart',
 				toggleGroup: 'module',
 				pressed: true,
 				handler: function() {
@@ -4351,6 +4352,7 @@ Ext.onReady( function() {
 						'->',
 						{
 							text: DV.i18n.table,
+							iconCls: 'dv-button-icon-table',
                             toggleGroup: 'module',
                             menu: {},
 							handler: function(b) {
@@ -4360,7 +4362,8 @@ Ext.onReady( function() {
                                     showSeparator: false,
                                     items: [
                                         {
-                                            text: 'Go to pivot tables', //i18n
+                                            text: 'Go to pivot tables' + '&nbsp;&nbsp;', //i18n
+                                            cls: 'dv-menu-item-noicon',
                                             handler: function() {
                                                 window.location.href = dv.baseUrl + '/dhis-web-pivot/app/index.html';
                                             }
@@ -4368,6 +4371,7 @@ Ext.onReady( function() {
                                         '-',
                                         {
                                             text: 'View chart as table' + '&nbsp;&nbsp;', //i18n
+                                            cls: 'dv-menu-item-noicon',
                                             disabled: !DV.isSessionStorage || !dv.layout,
                                             handler: function() {
                                                 if (DV.isSessionStorage) {
@@ -4377,6 +4381,7 @@ Ext.onReady( function() {
                                         },
                                         {
                                             text: 'View last table' + '&nbsp;&nbsp;', //i18n
+                                            cls: 'dv-menu-item-noicon',
                                             disabled: !(DV.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
                                             handler: function() {
                                                 window.location.href = dv.baseUrl + '/dhis-web-pivot/app/index.html?s=table';
@@ -4403,6 +4408,7 @@ Ext.onReady( function() {
                         defaultButton,
 						{
 							text: DV.i18n.map,
+							iconCls: 'dv-button-icon-map',
                             toggleGroup: 'module',
                             //menu: {},
 							handler: function(b) {

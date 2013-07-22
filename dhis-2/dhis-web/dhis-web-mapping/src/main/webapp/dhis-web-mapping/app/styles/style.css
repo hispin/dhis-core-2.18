@@ -1,24 +1,45 @@
 /* General
  * OpenLayers
  *
+ * Combobox
+ * GIS Combobox
+ * 
  * Panel
- * Form
+ * 
+ * GIS form
+ * 
  * Button
+ * GIS Button
+ * 
  * Toolbar
+ * 
  * Menu
+ * GIS Menu
+ * 
  * Treepanel
  * Colorpicker
- * Window
- * Grid
- * TextField
- * TextArea
+ * 
+ * GIS Window
+ * 
+ * GIS Grid
+ * 
+ * GIS TextField
+ * 
+ * GIS TextArea
+ * 
  * Checkbox
- * NumberField
- * Label
+ * 
+ * GIS NumberField
+ * 
+ * GIS Label
+ * 
  * Tooltip
 */
 
-/* General */
+
+/*----------------------------------------------------------------------------
+ * General
+ *--------------------------------------------------------------------------*/
 
 html * {
 	font-family: arial, sans-serif, liberation sans, consolas !important;
@@ -102,7 +123,10 @@ html * {
 	display: none;
 }
 
-/* OpenLayers overrides */
+
+/*----------------------------------------------------------------------------
+ * Openlayers
+ *--------------------------------------------------------------------------*/
 
 .olControlPanel { /* Control panel */
 	position: absolute;
@@ -191,6 +215,7 @@ html * {
 	font-weight: bold;
 }
 
+
 /*----------------------------------------------------------------------------
  * Combobox
  *--------------------------------------------------------------------------*/
@@ -211,6 +236,7 @@ html * {
     color: #111;
 }
 
+
 /*----------------------------------------------------------------------------
  * GIS Combobox
  *--------------------------------------------------------------------------*/
@@ -230,7 +256,9 @@ html * {
 }
 
 
-/* Panel */
+/*----------------------------------------------------------------------------
+ * Panel
+ *--------------------------------------------------------------------------*/
 
 .x-panel-header	{ /* Panel header */
 	height: 30px;
@@ -238,7 +266,9 @@ html * {
 }
 
 
-/* Form */
+/*----------------------------------------------------------------------------
+ * GIS form
+ *--------------------------------------------------------------------------*/
 
 .gis-form-subtitle,
 .gis-form-subtitle-first { /* Subtitle panel */
@@ -273,7 +303,10 @@ html * {
 	border-radius: 1px;
 }
 
-/* Button */
+
+/*----------------------------------------------------------------------------
+ * Button
+ *--------------------------------------------------------------------------*/
 
 .x-btn-arrow {
 	background-image: url('../images/arrow.png') !important;
@@ -301,7 +334,25 @@ html * {
     background-image: linear-gradient(top, #d1d1d1,#e5e5e5);
 }
 
-/* Toolbar */
+
+/*----------------------------------------------------------------------------
+ * GIS Button
+ *--------------------------------------------------------------------------*/
+
+.gis-button-icon-table {
+	background: url('../images/table_14.png') no-repeat;
+}
+.gis-button-icon-chart {
+	background: url('../images/chart_14.png') no-repeat;
+}
+.gis-button-icon-map {
+	background: url('../images/map_14.png') no-repeat;
+}
+
+
+/*----------------------------------------------------------------------------
+ * Toolbar
+ *--------------------------------------------------------------------------*/
 
 .x-toolbar-default {
 	background-image: none;
@@ -357,12 +408,20 @@ html * {
 			border-color: #999;
 		}
 
-/* Menu */
+
+/*----------------------------------------------------------------------------
+ * Menu
+ *--------------------------------------------------------------------------*/
 
 .x-menu-body { /* General menu */
 	background: #fff !important;
 	padding: 0;
 }
+
+
+/*----------------------------------------------------------------------------
+ * GIS Menu
+ *--------------------------------------------------------------------------*/
 
 .gis-toolbar-btn-menu-first { /* Boundary layer menu spacing from viewport */
 	left: 3px !important;
@@ -370,10 +429,7 @@ html * {
 
 	/* Menu item */
 	.x-menu-item-link { /* Menu item normal */
-		line-height: 12px;
-		padding-right: 8px;
-		padding-bottom: 6px;
-		padding-left: 30px;
+		padding: 4px 5px 4px 26px;
 	}
 	.x-menu-item-active .x-menu-item-link { /* Menu item hover */
 		background: #ddd;
@@ -403,6 +459,7 @@ html * {
 	.gis-menu-item-icon-favorite {
 		left: 6px;
 	}
+	
 	.gis-menu-item-icon-edit {
 		background: url('../images/edit_16.png') no-repeat;
 	}
@@ -444,7 +501,9 @@ html * {
 	}
 
 
-/* Treepanel */
+/*----------------------------------------------------------------------------
+ * Treepanel
+ *--------------------------------------------------------------------------*/
 
 .x-tree-panel .x-grid-row .x-grid-cell-inner { /* Tree font */
 	font-size: 10px !important;
@@ -457,7 +516,10 @@ html * {
 	padding: 3px 0 0px 3px;
 }
 
-/* ColorPicker */
+
+/*----------------------------------------------------------------------------
+ * Color picker
+ *--------------------------------------------------------------------------*/
 
 .x-color-picker a { /* Square spacing */
 	padding: 0;
@@ -467,7 +529,10 @@ html * {
 	height: 14px;
 }
 
-/* Window */
+
+/*----------------------------------------------------------------------------
+ * GIS Window
+ *--------------------------------------------------------------------------*/
 
 .gis-window-widget-feature {
 	padding: 0;
@@ -550,7 +615,10 @@ html * {
 	background: url('../images/measure_14.png') no-repeat;
 }
 
-/* Grid */
+
+/*----------------------------------------------------------------------------
+ * GIS Grid
+ *--------------------------------------------------------------------------*/
 
 .gis-grid-row-icon-edit,
 .gis-grid-row-icon-overwrite,
@@ -632,18 +700,27 @@ html * {
 	text-decoration: underline;
 }
 
-/* TextField */
+
+/*----------------------------------------------------------------------------
+ * GIS Textfield
+ *--------------------------------------------------------------------------*/
 
 .gis-textfield input.x-form-text {
 	border-radius: 1px;
 }
 
-/* Textarea */
+
+/*----------------------------------------------------------------------------
+ * GIS Textarea
+ *--------------------------------------------------------------------------*/
 .gis-textarea .x-form-field {
 	font-size: 11px;
 }
 
-/* Checkbox */
+
+/*----------------------------------------------------------------------------
+ * Checkbox
+ *--------------------------------------------------------------------------*/
 
 .x-form-checkbox {
     background-image: url('../images/checkbox.gif');
@@ -655,14 +732,20 @@ label.x-form-cb-label {
     cursor: hand;
 }
 
-/* NumberField */
+
+/*----------------------------------------------------------------------------
+ * GIS Numberfield
+ *--------------------------------------------------------------------------*/
 
 .gis-numberfield input.x-form-text {
 	border-top-left-radius: 1px;
 	border-bottom-left-radius: 1px;
 }
 
-/* Label */
+
+/*----------------------------------------------------------------------------
+ * GIS Label
+ *--------------------------------------------------------------------------*/
 
 .gis-label-info {
 	font-size: 10px !important;
@@ -672,7 +755,10 @@ label.x-form-cb-label {
 	line-height: 21px;
 }
 
-/* Tooltip */
+
+/*----------------------------------------------------------------------------
+ * Tooltip
+ *--------------------------------------------------------------------------*/
 .x-tip {
     border-radius: 2px;
     padding: 1px 4px;
