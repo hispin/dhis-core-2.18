@@ -27,14 +27,12 @@ package org.hisp.dhis.dashboard.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardContentStore;
+import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
@@ -58,7 +56,6 @@ public class DefaultDashboardService
     implements DashboardService
 {
     private static final int MAX_PER_OBJECT = 5;
-    private static final int MAX_OBJECTS = 15;
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -117,38 +114,18 @@ public class DefaultDashboardService
     // DashboardService implementation
     // -------------------------------------------------------------------------
 
-    public List<IdentifiableObject> search( String query )
+    public DashboardSearchResult search( String query )
     {
-        List<IdentifiableObject> objects = new ArrayList<IdentifiableObject>();
+        DashboardSearchResult result = new DashboardSearchResult();
         
-        int remaining = 0;
+        result.setUsers( userService.getAllUsersBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        result.setCharts( chartService.getChartsBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        result.setMaps( mappingService.getMapsBetweenLikeName( query, 0, MAX_PER_OBJECT ) );
+        result.setReportTables( reportTableService.getReportTablesBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        result.setReports( reportService.getReportsBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        result.setResources( documentService.getDocumentsBetweenByName( query, 0, MAX_PER_OBJECT ) );
         
-        objects.addAll( userService.getAllUsersBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        objects.addAll( chartService.getChartsBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        objects.addAll( mappingService.getMapsBetweenLikeName( query, 0, MAX_PER_OBJECT ) );
-
-        remaining = MAX_OBJECTS - objects.size();
-        
-        if ( remaining > 0 )
-        {
-            objects.addAll( reportService.getReportsBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        }
-        
-        remaining = MAX_OBJECTS - objects.size();
-        
-        if ( remaining > 0 )
-        {
-            objects.addAll( reportTableService.getReportTablesBetweenByName( query, 0, Math.min( remaining, MAX_PER_OBJECT ) ) );
-        }
-
-        remaining = MAX_OBJECTS - objects.size();
-        
-        if ( remaining > 0 )
-        {
-            objects.addAll( documentService.getDocumentsBetweenByName( query, 0, Math.min( remaining, MAX_PER_OBJECT ) ) );
-        }
-        
-        return objects;
+        return result;
     }
     
     public void saveDashboardContent( DashboardContent dashboardContent )

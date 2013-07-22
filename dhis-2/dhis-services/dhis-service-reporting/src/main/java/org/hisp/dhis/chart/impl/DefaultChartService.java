@@ -822,12 +822,12 @@ public class DefaultChartService
         return chartStore.getCountLikeName( name );
     }
 
-    public Collection<Chart> getChartsBetween( int first, int max )
+    public List<Chart> getChartsBetween( int first, int max )
     {
         return chartStore.getAllOrderedName( first, max );
     }
 
-    public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
+    public List<Chart> getChartsBetweenByName( String name, int first, int max )
     {
         return chartStore.getAllLikeNameOrderedName( name, first, max );
     }
