@@ -17,8 +17,9 @@ Ext.onReady( function() {
 
 	// Init
 
-	var gis = GIS.core.getInstance();
-	GIS.app.instances = [gis];
+	gis = GIS.core.getInstance();
+	
+	GIS.core.instances = [gis];
 
 	GIS.app.getInits = function(r) {
 		var init = Ext.decode(r.responseText);
@@ -5311,7 +5312,6 @@ Ext.onReady( function() {
 			GIS.core.createSelectHandlers(gis, layer);
 
 			gis.viewport = createViewport();
-			gis.viewport.gis = gis;
 		}();
 	};
 
