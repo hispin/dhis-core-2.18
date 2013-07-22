@@ -70,7 +70,7 @@ public class GetProgramAction
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -138,7 +138,7 @@ public class GetProgramAction
     {
         return availableOrgunitGroups;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -152,7 +152,7 @@ public class GetProgramAction
         availableOrgunitGroups.removeAll( program.getOrganisationUnitGroups() );
 
         selectionTreeManager.setSelectedOrganisationUnits( program.getOrganisationUnits() );
-
+        
         return SUCCESS;
     }
 }

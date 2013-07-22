@@ -40,6 +40,8 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -73,6 +75,13 @@ public class UpdateProgramAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
+    }
+    
+    private UserGroupService userGroupService;
+    
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -251,6 +260,13 @@ public class UpdateProgramAction
     {
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
+    
+    private List<Integer> userGroup = new ArrayList<Integer>();
+    
+    public void setUserGroup( List<Integer> userGroup )
+    {
+        this.userGroup = userGroup;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -334,6 +350,8 @@ public class UpdateProgramAction
             reminder.setDateToCompare( datesToCompare.get( i ) );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
+            reminder.setUserGroup( selectedUserGroup );
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );

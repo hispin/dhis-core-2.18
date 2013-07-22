@@ -118,7 +118,7 @@ public class GetProgramStageAction
 
         programStageDataElements = programStage.getProgramStageDataElements();
         
-        userGroups = new ArrayList<UserGroup>(userGroupService.getAllUserGroups());
+        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
         return SUCCESS;
     }
