@@ -61,13 +61,6 @@ public class DefaultDashboardService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DashboardContentStore dashboardContentStore;
-
-    public void setDashboardContentStore( DashboardContentStore dashboardContentStore )
-    {
-        this.dashboardContentStore = dashboardContentStore;
-    }
-    
     private UserService userService;
     
     public void setUserService( UserService userService )
@@ -128,55 +121,4 @@ public class DefaultDashboardService
         return result;
     }
     
-    public void saveDashboardContent( DashboardContent dashboardContent )
-    {
-        dashboardContentStore.save( dashboardContent );
-    }
-
-    public void updateDashboardContent( DashboardContent dashboardContent )
-    {
-        dashboardContentStore.update( dashboardContent );
-    }
-    
-    public DashboardContent getDashboardContent( int id )
-    {
-        return dashboardContentStore.get( id );
-    }
-
-    public DashboardContent getDashboardContent( User user )
-    {
-        DashboardContent content = dashboardContentStore.get( user.getId() );
-
-        return content != null ? content : new DashboardContent( user );
-    }
-
-    public Collection<DashboardContent> getAllDashboardContent()
-    {
-        return dashboardContentStore.getAll();
-    }
-    
-    public void deleteDashboardContent( DashboardContent content )
-    {
-        dashboardContentStore.delete( content );
-    }
-    
-    public Collection<DashboardContent> getByDocument( Document document )
-    {
-        return dashboardContentStore.getByDocument( document );
-    }
-    
-    public Collection<DashboardContent> getByMap( Map map )
-    {
-        return dashboardContentStore.getByMap( map );
-    }
-    
-    public Collection<DashboardContent> getByReport( Report report )
-    {
-        return dashboardContentStore.getByReport( report );
-    }
-    
-    public Collection<DashboardContent> getByReportTable( ReportTable reportTable )
-    {
-        return dashboardContentStore.getByReportTable( reportTable );
-    }
 }

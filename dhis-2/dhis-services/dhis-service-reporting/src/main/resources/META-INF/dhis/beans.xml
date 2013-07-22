@@ -133,7 +133,6 @@
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.DashboardService" class="org.hisp.dhis.dashboard.impl.DefaultDashboardService">
-    <property name="dashboardContentStore" ref="org.hisp.dhis.dashboard.DashboardContentStore" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
@@ -146,25 +145,21 @@
 
   <bean id="reportContentProvider" class="org.hisp.dhis.dashboard.provider.ReportContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
     <property name="key" value="reports" />
   </bean>
 
   <bean id="documentContentProvider" class="org.hisp.dhis.dashboard.provider.DocumentContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
     <property name="key" value="documents" />
   </bean>
 
   <bean id="reportTableContentProvider" class="org.hisp.dhis.dashboard.provider.ReportTableContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
     <property name="key" value="reportTables" />
   </bean>
 
   <bean id="mapViewContentProvider" class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
     <property name="key" value="maps" />
   </bean>
 
@@ -182,6 +177,7 @@
 
   <bean id="org.hisp.dhis.dashboard.DashboardManager" class="org.hisp.dhis.dashboard.manager.DefaultDashboardManager">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+    <property name="dashboardContentStore" ref="org.hisp.dhis.dashboard.DashboardContentStore" />
     <property name="contentProviders">
       <map>
         <entry key="report">
@@ -275,9 +271,7 @@
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dashboard.DashboardContentDeletionHandler" class="org.hisp.dhis.dashboard.DashboardContentDeletionHandler">
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
-  </bean>
+  <bean id="org.hisp.dhis.dashboard.DashboardContentDeletionHandler" class="org.hisp.dhis.dashboard.DashboardContentDeletionHandler" />
 
   <!-- DeletionManager -->
 

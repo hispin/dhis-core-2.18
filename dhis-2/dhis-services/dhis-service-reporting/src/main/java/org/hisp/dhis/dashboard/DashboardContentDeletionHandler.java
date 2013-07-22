@@ -35,6 +35,7 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -43,12 +44,8 @@ import org.hisp.dhis.user.User;
 public class DashboardContentDeletionHandler
     extends DeletionHandler
 {
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
+    @Autowired
+    private DashboardManager dashboardManager;
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -62,57 +59,56 @@ public class DashboardContentDeletionHandler
     @Override
     public void deleteReport( Report report )
     {
-        Collection<DashboardContent> contents = dashboardService.getByReport( report );
+        Collection<DashboardContent> contents = dashboardManager.getByReport( report );
         
         for ( DashboardContent content : contents )
         {
             content.getReports().remove( report );
-            dashboardService.updateDashboardContent( content );
+            dashboardManager.updateDashboardContent( content );
         }
     }
             
     @Override
     public void deleteDocument( Document document )
     {
-        Collection<DashboardContent> contents = dashboardService.getByDocument( document );
+        Collection<DashboardContent> contents = dashboardManager.getByDocument( document );
         
         for ( DashboardContent content : contents )
         {
             content.getDocuments().remove( document );
-            dashboardService.updateDashboardContent( content );
-            
+            dashboardManager.updateDashboardContent( content );            
         }
     }
     
     @Override
     public void deleteReportTable( ReportTable reportTable )
     {
-        Collection<DashboardContent> contents = dashboardService.getByReportTable( reportTable );
+        Collection<DashboardContent> contents = dashboardManager.getByReportTable( reportTable );
         
         for ( DashboardContent content : contents )
         {
             content.getReportTables().remove( reportTable );
-            dashboardService.updateDashboardContent( content );
+            dashboardManager.updateDashboardContent( content );
         }        
     }
     
     @Override
     public void deleteMap( Map map )
     {
-        Collection<DashboardContent> contents = dashboardService.getByMap( map );
+        Collection<DashboardContent> contents = dashboardManager.getByMap( map );
         
         for ( DashboardContent content : contents )
         {
             content.getMaps().remove( map );
-            dashboardService.updateDashboardContent( content );
+            dashboardManager.updateDashboardContent( content );
         }
     }
     
     @Override
     public void deleteUser( User user )
     {
-        DashboardContent content = dashboardService.getDashboardContent( user );
+        DashboardContent content = dashboardManager.getDashboardContent( user );
         
-        dashboardService.deleteDashboardContent( content );
+        dashboardManager.deleteDashboardContent( content );
     }
 }

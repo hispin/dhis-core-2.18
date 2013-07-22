@@ -34,10 +34,11 @@ import java.util.Map;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -57,12 +58,8 @@ public class DocumentContentProvider
         this.currentUserService = currentUserService;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
+    @Autowired
+    private DashboardManager dashboardManager;
     
     private String key;
     
@@ -83,7 +80,7 @@ public class DocumentContentProvider
         
         if ( user != null )
         {
-            DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
+            DashboardContent dashboardContent = dashboardManager.getDashboardContent( user );
             
             List<Document> documents = dashboardContent.getDocuments();
             

@@ -33,8 +33,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dashboard.DashboardConfiguration;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.dashboard.provider.ContentProvider;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -62,6 +68,13 @@ public class DefaultDashboardManager
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
+    }
+
+    private DashboardContentStore dashboardContentStore;
+
+    public void setDashboardContentStore( DashboardContentStore dashboardContentStore )
+    {
+        this.dashboardContentStore = dashboardContentStore;
     }
     
     // -------------------------------------------------------------------------
@@ -119,6 +132,58 @@ public class DefaultDashboardManager
         return config != null ? config : new DashboardConfiguration();
     }
 
+    public void saveDashboardContent( DashboardContent dashboardContent )
+    {
+        dashboardContentStore.save( dashboardContent );
+    }
+
+    public void updateDashboardContent( DashboardContent dashboardContent )
+    {
+        dashboardContentStore.update( dashboardContent );
+    }
+    
+    public DashboardContent getDashboardContent( int id )
+    {
+        return dashboardContentStore.get( id );
+    }
+
+    public DashboardContent getDashboardContent( User user )
+    {
+        DashboardContent content = dashboardContentStore.get( user.getId() );
+
+        return content != null ? content : new DashboardContent( user );
+    }
+
+    public Collection<DashboardContent> getAllDashboardContent()
+    {
+        return dashboardContentStore.getAll();
+    }
+    
+    public void deleteDashboardContent( DashboardContent content )
+    {
+        dashboardContentStore.delete( content );
+    }
+    
+    public Collection<DashboardContent> getByDocument( Document document )
+    {
+        return dashboardContentStore.getByDocument( document );
+    }
+    
+    public Collection<DashboardContent> getByMap( org.hisp.dhis.mapping.Map map )
+    {
+        return dashboardContentStore.getByMap( map );
+    }
+    
+    public Collection<DashboardContent> getByReport( Report report )
+    {
+        return dashboardContentStore.getByReport( report );
+    }
+    
+    public Collection<DashboardContent> getByReportTable( ReportTable reportTable )
+    {
+        return dashboardContentStore.getByReportTable( reportTable );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
