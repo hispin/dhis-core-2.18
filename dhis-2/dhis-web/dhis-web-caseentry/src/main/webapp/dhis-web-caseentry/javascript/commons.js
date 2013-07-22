@@ -2129,7 +2129,7 @@ function addPhoneNumberField(phoneNumberAreaCode)
 		+ '	<td></td>'
 		+ '	<td class="input-column">'
 		+ '		<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}" value="'+phoneNumberAreaCode+'"/>'
-		+ '		<input type="button" value="-" onclick="removePhoneNumberField(this)" style="width:20px;" class="{validate:{phone:true}}" value="' + phoneNumberAreaCode + '"/>'
+		+ '		<input type="button" value="-" onclick="removePhoneNumberField(this)" style="width:20px;" />'
 		+ '	</td>'
 		+ '</tr>' );
 }
@@ -2137,4 +2137,17 @@ function addPhoneNumberField(phoneNumberAreaCode)
 function removePhoneNumberField(_this)
 {
 	$(_this).parent().parent().remove();
+}
+
+function addCustomPhoneNumberField( phoneNumber )
+{
+	var idx = $('.phoneNumberTR').length + 1;
+	$('.phoneNumberTR').last().after(
+		'<br/><input type="text" id="phoneNumber" name="phoneNumber" class="idxPhoneNumber' + idx + ' {validate:{phone:true}}" value=\"' + phoneNumber + '\" />'
+		+ '    <input type="button" value="-" class="phoneNumberTR idxPhoneNumber' + idx + '" onclick="removeCustomPhoneNumberField(' + idx + ')" style="width:20px;" />');
+}
+
+function removeCustomPhoneNumberField(idx)
+{
+	$('.idxPhoneNumber' + idx).remove();
 }

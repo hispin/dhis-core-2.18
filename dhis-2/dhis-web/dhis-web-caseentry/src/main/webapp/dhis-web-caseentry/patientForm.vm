@@ -63,7 +63,7 @@
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 		<td class="input-column">
 			<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}"/>
-			<input type="button" value='+' style='width:20px;' onclick='addPhoneNumberField("$!phoneNumberAreaCode");' />
+			<input type="button" value='+' style='width:20px;' onclick='addPhoneNumberField($!phoneNumberAreaCode);' />
 		</td>
 	</tr>
 
@@ -258,6 +258,7 @@
 #end
 
 <script>
+	var phoneNumberAreaCode = "$!phoneNumberAreaCode";
 	#if($!patient.dobType && $!patient.dobType=='A') 
 		showById('age');
 		hideById('birthDate');
@@ -266,14 +267,19 @@
 		showById('birthDate');
 	#end
 	
-	#if( $!patient.phoneNumber && $patient.phoneNumber!="")
-		var phoneNumbers = "$!patient.phoneNumber".split(';');
-		setFieldValue('phoneNumber',phoneNumbers[0]);
+	var phoneNumbers = "$!patient.phoneNumber".split(';');
+	setFieldValue('phoneNumber',phoneNumbers[0]);
+	#if($!customRegistrationForm)
+		for( var i = 1;i<phoneNumbers.length;i++ )
+		{
+			addCustomPhoneNumberField(phoneNumbers[i]);
+		}
+	#elseif( $!patient.phoneNumber && $patient.phoneNumber!="")
 		for( var i = 1;i<phoneNumbers.length;i++ )
 		{
 			addPhoneNumberField(phoneNumbers[i]);
 		}
 	#else 
-		setFieldValue('phoneNumber',"$!phoneNumberAreaCode")
+		setFieldValue('phoneNumber',phoneNumberAreaCode)
 	#end
 </script>

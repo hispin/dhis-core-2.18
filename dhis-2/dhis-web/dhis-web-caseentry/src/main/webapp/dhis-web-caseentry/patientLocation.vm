@@ -30,7 +30,6 @@
 					
 	#if($patient.getFullName()=='')
 	<tr>
-		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
 		<td>
 			#if($flag==true)
 				$i18n.getString('identifier'):
@@ -42,7 +41,6 @@
 	</tr>
 	#end
 	<tr>
-		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
 		<td>$i18n.getString('gender'):</td>
 		<td>
 			#if($patient.gender=='F')
@@ -53,12 +51,10 @@
 		</td>
 	</tr>
 	<tr>
-		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
 		<td>$i18n.getString('date_of_birth'):</td>
 		<td>$!format.formatDate($!patient.birthDate)</td>
 	</tr>
 	<tr>
-		<td style="background-color:#88be3b; height:26px;">&nbsp;</td>
 		<td>$i18n.getString('age'):</td>
 		<td>$!patient.getAge()</td>
 	</tr>
