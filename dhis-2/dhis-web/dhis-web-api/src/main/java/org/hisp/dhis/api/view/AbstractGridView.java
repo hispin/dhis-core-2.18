@@ -31,6 +31,7 @@ import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.PredicateUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -76,8 +77,17 @@ public abstract class AbstractGridView extends AbstractView
                 Grid grid = new ListGrid();
                 grid.setTitle( identifiableObjects.get( 0 ).getClass().getSimpleName() + "s" );
 
+                boolean nameable = false;
+
                 grid.addHeader( new GridHeader( "UID", false, false ) );
                 grid.addHeader( new GridHeader( "Name", false, false ) );
+
+                if ( NameableObject.class.isAssignableFrom( identifiableObjects.get( 0 ).getClass() ) )
+                {
+                    grid.addHeader( new GridHeader( "ShortName", false, false ) );
+                    nameable = true;
+                }
+
                 grid.addHeader( new GridHeader( "Code", false, false ) );
 
                 for ( IdentifiableObject identifiableObject : identifiableObjects )
@@ -85,6 +95,12 @@ public abstract class AbstractGridView extends AbstractView
                     grid.addRow();
                     grid.addValue( identifiableObject.getUid() );
                     grid.addValue( identifiableObject.getName() );
+
+                    if ( nameable )
+                    {
+                        grid.addValue( ((NameableObject) identifiableObject).getShortName() );
+                    }
+
                     grid.addValue( identifiableObject.getCode() );
                 }
 
@@ -101,6 +117,13 @@ public abstract class AbstractGridView extends AbstractView
 
             grid.addRow().addValue( "UID" ).addValue( identifiableObject.getUid() );
             grid.addRow().addValue( "Name" ).addValue( identifiableObject.getName() );
+
+            if ( NameableObject.class.isAssignableFrom( identifiableObject.getClass() ) )
+            {
+                grid.addRow().addValue( "ShortName" ).addValue( ((NameableObject) identifiableObject).getShortName() );
+                grid.addRow().addValue( "Description" ).addValue( ((NameableObject) identifiableObject).getDescription() );
+            }
+
             grid.addRow().addValue( "Code" ).addValue( identifiableObject.getCode() );
 
             grids.add( grid );
