@@ -127,7 +127,7 @@ public class DashboardController
         
         dashboardService.mergeDashboardItem( item );
         
-        dashboard.getItems().add( item );
+        dashboard.getItems().add( 0, item );
         
         dashboardService.updateDashboard( dashboard );
         
