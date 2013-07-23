@@ -37,6 +37,7 @@ function exportStageCompleteness( type )
 	params += "&programId=" + getFieldValue('programId');
 	params += "&startDate=" + getFieldValue('startDate');
 	params += "&endDate=" + getFieldValue('endDate');
+	params += "&facilityLB=" + $('input[name=facilityLB]:checked').val();
 	
 	var url = "generateProgramStageCompleteness.action?" + params;
 	window.location.href = url;

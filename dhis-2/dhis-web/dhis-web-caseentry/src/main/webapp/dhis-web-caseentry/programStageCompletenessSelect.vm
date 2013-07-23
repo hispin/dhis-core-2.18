@@ -16,6 +16,7 @@
 <h3 id='mainLinkLbl'>$i18n.getString( "program_stage_completeness_form" ) #openHelp('program_stage_completeness')</h3>
 <form id='activityPlanForm' name='activityPlanForm'>
 	<input type='hidden' id='export' value='export'>
+	
 	<div id='selectDiv' style='width:550px;'>
 		<table style="margin-bottom:8px;width:550px;">    
 			<tr>
@@ -72,7 +73,7 @@
 		</table>
 		<p>
 			<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'generate' )" onclick="setFieldValue('export', false);">
-			<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);">
+			<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);setFieldValue('facilityLB',$('input[name=facilityLB]:checked').val());">
 		</p>
 	
 	</div>
