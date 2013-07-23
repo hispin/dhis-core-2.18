@@ -134,36 +134,41 @@ public class DefaultDashboardService
         {
             for ( DashboardItem item : dashboard.getItems() )
             {
-                if ( item.getChart() != null )
-                {
-                    item.setChart( chartService.getChart( item.getChart().getUid() ) );
-                }
-                
-                if ( item.getChart() != null )
-                {
-                    item.setMap( mappingService.getMap( item.getMap().getUid() ) );
-                }
-                
-                if ( item.getUsers() != null )
-                {
-                    item.setUsers( userService.getUsersByUid( getUids( item.getUsers() ) ) );
-                }
-                
-                if ( item.getReportTables() != null )
-                {
-                    item.setReportTables( reportTableService.getReportTablesByUid( getUids( item.getReportTables() ) ) );
-                }
-                
-                if ( item.getReports() != null )
-                {
-                    item.setReports( reportService.getReportsByUid( getUids( item.getReports() ) ) );
-                }
-                
-                if ( item.getResources() != null )
-                {
-                    item.setResources( documentService.getDocumentsByUid( getUids( item.getResources() ) ) );
-                }
+                mergeDashboardItem( item );
             }
+        }
+    }
+    
+    public void mergeDashboardItem( DashboardItem item )
+    {
+        if ( item.getChart() != null )
+        {
+            item.setChart( chartService.getChart( item.getChart().getUid() ) );
+        }
+        
+        if ( item.getChart() != null )
+        {
+            item.setMap( mappingService.getMap( item.getMap().getUid() ) );
+        }
+        
+        if ( item.getUsers() != null )
+        {
+            item.setUsers( userService.getUsersByUid( getUids( item.getUsers() ) ) );
+        }
+        
+        if ( item.getReportTables() != null )
+        {
+            item.setReportTables( reportTableService.getReportTablesByUid( getUids( item.getReportTables() ) ) );
+        }
+        
+        if ( item.getReports() != null )
+        {
+            item.setReports( reportService.getReportsByUid( getUids( item.getReports() ) ) );
+        }
+        
+        if ( item.getResources() != null )
+        {
+            item.setResources( documentService.getDocumentsByUid( getUids( item.getResources() ) ) );
         }
     }
 

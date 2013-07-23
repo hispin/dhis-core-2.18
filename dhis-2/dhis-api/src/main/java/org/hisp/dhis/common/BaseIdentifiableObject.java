@@ -121,7 +121,7 @@ public class BaseIdentifiableObject
     public BaseIdentifiableObject()
     {
     }
-
+    
     public BaseIdentifiableObject( int id, String uid, String name )
     {
         this.id = id;

@@ -45,6 +45,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+/**
+ * @author Lars Helge Overland
+ */
 @JacksonXmlRootElement( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0)
 public class DashboardItem
     extends BaseIdentifiableObject
@@ -67,6 +70,11 @@ public class DashboardItem
 
     public DashboardItem()
     {
+    }
+
+    public DashboardItem( String uid )
+    {
+        this.uid = uid;
     }
 
     // -------------------------------------------------------------------------
