@@ -37,6 +37,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -115,12 +116,16 @@ public class MetaData
 
     private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
+    private List<Dashboard> dashboards = new ArrayList<Dashboard>();
+    
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
 
     private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
 
+    private List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
+    
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
@@ -169,8 +174,6 @@ public class MetaData
 
     private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
 
-    private List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
-    
     public MetaData()
     {
     }
@@ -617,6 +620,19 @@ public class MetaData
     }
 
     @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dashboards", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dashboard", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Dashboard> getDashboards()
+    {
+        return dashboards;
+    }
+
+    public void setDashboards( List<Dashboard> dashboards )
+    {
+        this.dashboards = dashboards;
+    }
+
+    @JsonProperty
     @JacksonXmlElementWrapper( localName = "maps", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "map", namespace = DxfNamespaces.DXF_2_0 )
     public List<Map> getMaps()
@@ -739,6 +755,7 @@ public class MetaData
         return "MetaData{" +
             "attributeTypes=" + attributeTypes +
             ", documents=" + documents +
+            ", dashboards=" + dashboards +
             ", constants=" + constants +
             ", concepts=" + concepts +
             ", users=" + users +
