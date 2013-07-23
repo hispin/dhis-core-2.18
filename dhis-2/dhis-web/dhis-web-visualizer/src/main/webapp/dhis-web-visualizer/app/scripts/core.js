@@ -1835,6 +1835,7 @@ console.log("layout", layout);
 
             layoutConfig.columns = [];
             layoutConfig.rows = [];
+            layoutConfig.filters = layoutConfig.filters || [];
 
             // Series
             if (Ext.isArray(analytical.columns) && analytical.columns.length) {
