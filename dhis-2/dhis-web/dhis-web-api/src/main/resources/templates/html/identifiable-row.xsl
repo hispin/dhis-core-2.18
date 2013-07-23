@@ -9,6 +9,9 @@
       <td> <a href="{@href}.xml">xml</a> </td>
       <td> <a href="{@href}.json">json</a> </td>
       <td> <a href="{@href}.jsonp">jsonp</a> </td>
+      <td> <a href="{@href}.pdf">pdf</a> </td>
+      <td> <a href="{@href}.xls">xls</a> </td>
+      <td> <a href="{@href}.csv">csv</a> </td>
     </tr>
   </xsl:template>
 
