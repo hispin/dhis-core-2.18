@@ -396,10 +396,16 @@ public class DefaultProgramInstanceService
             {
                 for ( PatientIdentifier identifier : identifiers )
                 {
-                    if ( identifier.getIdentifierType().equals( identifierType ) )
+                    if (  identifier.getIdentifierType() != null && identifier.getIdentifierType().equals( identifierType ) )
                     {
                         grid.addRow();
                         grid.addValue( identifierType.getDisplayName() );
+                        grid.addValue( identifier.getIdentifier() );
+                    }
+                    else if (  identifier.getIdentifierType() == null )
+                    {
+                        grid.addRow();
+                        grid.addValue( i18n.getString( "system_identifier" ));
                         grid.addValue( identifier.getIdentifier() );
                     }
                 }
