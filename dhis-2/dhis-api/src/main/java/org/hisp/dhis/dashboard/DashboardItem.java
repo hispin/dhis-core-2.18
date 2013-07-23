@@ -33,6 +33,7 @@ import java.util.List;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
@@ -194,5 +195,27 @@ public class DashboardItem
     public void setResources( List<Document> resources )
     {
         this.resources = resources;
+    }
+
+    // -------------------------------------------------------------------------
+    // Merge with
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DashboardItem item = (DashboardItem) other;
+            
+            chart = item.getChart() == null ? chart : item.getChart();
+            map = item.getMap() == null ? map : item.getMap();
+            users = item.getUsers() == null ? users : item.getUsers();
+            reportTables = item.getReportTables() == null ? reportTables : item.getReportTables();
+            reports = item.getReports() == null ? reports : item.getReports();
+            resources = item.getResources() == null ? resources : item.getResources();
+        }
     }
 }
