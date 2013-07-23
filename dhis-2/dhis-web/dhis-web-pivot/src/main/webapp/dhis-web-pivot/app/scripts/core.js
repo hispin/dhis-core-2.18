@@ -1218,7 +1218,7 @@ PT.core.getUtils = function(pt) {
 				
 				// add uuids array to leaves
 				if (aAllObjects.length) {
-					for (var i = 0, leaf, parentUuids, span = aAllObjects.length > 1 ? aSpan[aAllObjects.length - 2] : 1, leafUuids = []; i < aAllObjects[aAllObjects.length - 1].length; i++) {
+					for (var i = 0, leaf, parentUuids, obj, span = aAllObjects.length > 1 ? aSpan[aAllObjects.length - 2] : 1, leafUuids = []; i < aAllObjects[aAllObjects.length - 1].length; i++) {
 						leaf = aAllObjects[aAllObjects.length - 1][i];
 						leafUuids.push(leaf.uuid);
 						parentUuids = [];
@@ -1544,8 +1544,9 @@ PT.core.getUtils = function(pt) {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
-						for (var j = 0, id, value, htmlValue, empty, uuid, uuids = []; j < colSize; j++) {
+						for (var j = 0, id, value, htmlValue, empty, uuid, uuids; j < colSize; j++) {
 							empty = false;
+							uuids = [];
 							
 							// meta data uid
 							id = (xColAxis ? pt.util.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? pt.util.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
@@ -1553,7 +1554,7 @@ PT.core.getUtils = function(pt) {
 							// value html element id
 							uuid = Ext.data.IdGenerator.get('uuid').generate();
 							
-							// col and row dim element ids
+							// col and row dim element ids							
 							if (xColAxis) {
 								uuids = uuids.concat(xColAxis.objects.all[xColAxis.dims - 1][j].uuids);
 							}

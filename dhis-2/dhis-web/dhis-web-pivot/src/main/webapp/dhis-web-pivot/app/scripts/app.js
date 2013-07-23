@@ -4567,8 +4567,6 @@ Ext.onReady( function() {
 		pt.cmp = PT.app.getCmp();
 
 		pt.viewport = createViewport();
-		
-		pt.uuidUuidsMap = {};
 	};
 
 	Ext.Ajax.request({
