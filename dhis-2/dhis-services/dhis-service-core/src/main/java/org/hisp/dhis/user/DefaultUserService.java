@@ -228,7 +228,12 @@ public class DefaultUserService
                 }
             } );
     }
-
+    
+    public List<User> getUsersByUid( List<String> uids )
+    {
+        return userStore.getByUid( uids );
+    }
+    
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
     {
         return userCredentialsStore.getUsersByOrganisationUnitBetween( unit, first, max );

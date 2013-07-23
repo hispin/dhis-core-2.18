@@ -41,6 +41,8 @@ public interface DashboardService
 
     DashboardSearchResult search( String query );
     
+    void mergeDashboard( Dashboard dashboard );
+    
     int saveDashboard( Dashboard dashboard );
     
     void updateDashboard( Dashboard dashboard );

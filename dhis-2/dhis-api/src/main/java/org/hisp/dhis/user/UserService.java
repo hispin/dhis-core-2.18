@@ -98,7 +98,7 @@ public interface UserService
     
     List<User> getAllUsersBetweenByName( String name, int first, int max );
 
-    Collection<User> getUsersByLastUpdated(Date lastUpdated);
+    Collection<User> getUsersByLastUpdated( Date lastUpdated );
 
     /**
      * Returns a Collection of the Users which are not associated with any
@@ -143,6 +143,8 @@ public interface UserService
     int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit );
 
     int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name );
+    
+    List<User> getUsersByUid( List<String> uids );
 
     // -------------------------------------------------------------------------
     // UserCredentials

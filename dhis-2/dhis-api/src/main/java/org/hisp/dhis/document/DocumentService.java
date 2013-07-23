@@ -91,5 +91,6 @@ public interface DocumentService
     int getDocumentCount();
 
     int getDocumentCountByName( String name );
-
+    
+    List<Document> getDocumentsByUid( List<String> uids );
 }
