@@ -49,7 +49,7 @@ import java.util.Set;
 /**
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElementGroup
     extends BaseNameableObject
 {
