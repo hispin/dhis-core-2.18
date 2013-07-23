@@ -215,7 +215,6 @@ public class SetProgramInstanceStatusAction
                 if ( rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM )
                 {
                     sendProgramMessage( rm, programInstance, patient );
-                    break;
                 }
             }
         }
