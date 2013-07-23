@@ -1162,8 +1162,10 @@
 		id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction"
 		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />

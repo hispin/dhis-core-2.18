@@ -523,10 +523,10 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate,
+    public Grid getCompletenessProgramStageInstance( Collection<Integer> orgunitIds, Program program, String startDate,
         String endDate, I18n i18n )
     {
-        return programStageInstanceStore.getCompleteness( orgunit, program, startDate, endDate, i18n );
+        return programStageInstanceStore.getCompleteness( orgunitIds, program, startDate, endDate, i18n );
     }
 
 }

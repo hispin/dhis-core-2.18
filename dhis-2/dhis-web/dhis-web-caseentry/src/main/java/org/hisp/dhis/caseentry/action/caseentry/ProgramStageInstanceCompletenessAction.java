@@ -27,10 +27,14 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -49,11 +53,18 @@ public class ProgramStageInstanceCompletenessAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.selectionManager = selectionManager;
+        this.selectionTreeManager = selectionTreeManager;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private ProgramService programService;
@@ -109,6 +120,13 @@ public class ProgramStageInstanceCompletenessAction
         this.type = type;
     }
 
+    private String facilityLB;
+
+    public void setFacilityLB( String facilityLB )
+    {
+        this.facilityLB = facilityLB;
+    }
+
     private Grid grid;
 
     public Grid getGrid()
@@ -126,10 +144,40 @@ public class ProgramStageInstanceCompletenessAction
     {
         Program program = programService.getProgram( programId );
 
-        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
+        Collection<OrganisationUnit> orgunits = selectionTreeManager.getRootOrganisationUnits();
 
-        grid = programStageInstanceService.getCompletenessProgramStageInstance( orgunit, program, startDate, endDate,
-            i18n );
+        program = programService.getProgram( programId );
+
+        // ---------------------------------------------------------------------
+        // Get orgunitIds
+        // ---------------------------------------------------------------------
+
+        Collection<Integer> orgunitIds = new HashSet<Integer>();
+
+        for ( OrganisationUnit orgunit : orgunits )
+        {
+            if ( facilityLB.equals( "selected" ) )
+            {
+                orgunitIds.add( orgunit.getId() );
+            }
+            else if ( facilityLB.equals( "childrenOnly" ) )
+            {
+                orgunitIds
+                    .addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
+                orgunitIds.remove( orgunit.getId() );
+            }
+            else
+            {
+                orgunitIds
+                    .addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
+            }
+        }
+
+        if ( orgunitIds.size() > 0 )
+        {
+            grid = programStageInstanceService.getCompletenessProgramStageInstance( orgunitIds, program, startDate,
+                endDate, i18n );
+        }
 
         return (type == null) ? SUCCESS : type;
     }

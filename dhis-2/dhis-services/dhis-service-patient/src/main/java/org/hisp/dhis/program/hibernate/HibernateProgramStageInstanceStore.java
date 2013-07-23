@@ -732,7 +732,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    public Grid getCompleteness( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n )
+    public Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate, I18n i18n )
     {
         String sql = "SELECT ou.name as orgunit, ps.name as events, psi.completeduser as user_name, count(psi.programstageinstanceid) as number_of_events "
             + "         FROM programstageinstance psi INNER JOIN programstage ps "
@@ -741,9 +741,9 @@ public class HibernateProgramStageInstanceStore
             + "                         ON ou.organisationunitid=psi.organisationunitid"
             + "                 INNER JOIN program pg "
             + "                         ON pg.programid = ps.programid "
-            + "         WHERE ou.parentid = "
-            + orgunit.getId()
-            + "                 AND pg.programid = "
+            + "         WHERE ou.organisationunitid in ( "
+            + TextUtils.getCommaDelimitedString( orgunitIds )
+            + " )                AND pg.programid = "
             + program.getId()
             + "         GROUP BY ou.name, ps.name, psi.completeduser, psi.completeddate, psi.completed "
             + "         HAVING psi.completeddate >= '"

@@ -16,7 +16,7 @@
 <h3 id='mainLinkLbl'>$i18n.getString( "program_stage_completeness_form" ) #openHelp('program_stage_completeness')</h3>
 <form id='activityPlanForm' name='activityPlanForm'>
 	<input type='hidden' id='export' value='export'>
-	<div id='selectDiv' class='advanced-search' style='width:550px;'>
+	<div id='selectDiv' style='width:550px;'>
 		<table style="margin-bottom:8px;width:550px;">    
 			<tr>
 				<td>
@@ -54,16 +54,31 @@
 				</td>
 			</tr>
 			<tr>
-				<td></td>
+				<td>$i18n.getString('use_orgunits_from_level')</td>
 				<td>
-					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'generate' )" onclick="setFieldValue('export', false);">
-					<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);">
+					<input type="radio" id='facilityLB1' name="facilityLB" value="selected" checked> $i18n.getString('selected')
+					<input type="radio" id='facilityLB2' name="facilityLB" value="childrenOnly"> $i18n.getString('children_only')
+					<input type="radio" id='facilityLB3' name="facilityLB" value="all"> $i18n.getString('all')
 				</td>
 			</tr>
 		</table>
+	
+		<table id="selectionTable">
+			<tr>
+			  <td>
+				#organisationUnitSelectionTree( true, true, false )
+			  </td>
+			</tr>
+		</table>
+		<p>
+			<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'generate' )" onclick="setFieldValue('export', false);">
+			<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);">
+		</p>
+	
 	</div>
 </form>
 
+<input type='button' id='showDataBtn' class='hidden' value='$i18n.getString("show_data")' onclick="hideById('completenessDiv');hideById('showDataBtn');showById('selectDiv');">
 <div id='completenessDiv' name='completenessDiv'></div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
