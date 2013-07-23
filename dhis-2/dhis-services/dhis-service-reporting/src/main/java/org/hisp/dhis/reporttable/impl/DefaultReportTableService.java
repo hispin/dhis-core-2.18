@@ -186,6 +186,11 @@ public class DefaultReportTableService
             }
         } );
     }
+    
+    public List<ReportTable> getReportTablesByUid( List<String> uids )
+    {
+        return reportTableStore.getByUid( uids );
+    }
 
     public List<ReportTable> getAllReportTables()
     {

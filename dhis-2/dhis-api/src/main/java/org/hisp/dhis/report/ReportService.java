@@ -27,13 +27,14 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import net.sf.jasperreports.engine.JasperPrint;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.period.Period;
-
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
+
+import net.sf.jasperreports.engine.JasperPrint;
+
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -164,4 +165,12 @@ public interface ReportService
      * @return a Collection of Reports.
      */
     Collection<Report> getReports( final Collection<Integer> identifiers );
+
+    /**
+     * Retrieves Reports with the given uids.
+     * 
+     * @param uids the list of uids.
+     * @return a list of ReportTables.
+     */
+    List<Report> getReportsByUid( List<String> uids );
 }

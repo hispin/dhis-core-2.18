@@ -284,4 +284,9 @@ public class DefaultReportService
             }
         } );
     }
+    
+    public List<Report> getReportsByUid( List<String> uids )
+    {
+        return reportStore.getByUid( uids );
+    }
 }

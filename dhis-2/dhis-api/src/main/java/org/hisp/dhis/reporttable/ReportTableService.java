@@ -105,6 +105,14 @@ public interface ReportTableService
      * @return a Collection of ReportTables.
      */
     Collection<ReportTable> getReportTables( Collection<Integer> reportTables );
+    
+    /**
+     * Retrieves ReportTables with the given uids.
+     * 
+     * @param uids the list of uids.
+     * @return a list of ReportTables.
+     */
+    List<ReportTable> getReportTablesByUid( List<String> uids );
 
     /**
      * Retrieves the ReportTable with the given name.

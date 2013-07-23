@@ -1,10 +1,15 @@
 package org.hisp.dhis.api.controller;
 
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,5 +37,18 @@ public class DashboardController
         model.addAttribute( "model", result );
         
         return "dashboardSearchResult";
+    }
+    
+    @Override
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        Dashboard dashboard = JacksonUtils.fromJson( input, Dashboard.class );
+        
+        dashboardService.mergeDashboard( dashboard );
+        
+        dashboardService.saveDashboard( dashboard );
+        
+        ContextUtils.createdResponse( response, "Dashboard created", RESOURCE_PATH + "/" + dashboard.getUid() );
     }
 }

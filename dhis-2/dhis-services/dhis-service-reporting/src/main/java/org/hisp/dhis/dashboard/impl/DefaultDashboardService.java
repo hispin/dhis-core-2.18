@@ -27,11 +27,14 @@ package org.hisp.dhis.dashboard.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+
 import java.util.List;
 
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.DocumentService;
@@ -123,6 +126,45 @@ public class DefaultDashboardService
         result.setResources( documentService.getDocumentsBetweenByName( query, 0, MAX_PER_OBJECT ) );
         
         return result;
+    }
+    
+    public void mergeDashboard( Dashboard dashboard )
+    {
+        if ( dashboard.getItems() != null )
+        {
+            for ( DashboardItem item : dashboard.getItems() )
+            {
+                if ( item.getChart() != null )
+                {
+                    item.setChart( chartService.getChart( item.getChart().getUid() ) );
+                }
+                
+                if ( item.getChart() != null )
+                {
+                    item.setMap( mappingService.getMap( item.getMap().getUid() ) );
+                }
+                
+                if ( item.getUsers() != null )
+                {
+                    item.setUsers( userService.getUsersByUid( getUids( item.getUsers() ) ) );
+                }
+                
+                if ( item.getReportTables() != null )
+                {
+                    item.setReportTables( reportTableService.getReportTablesByUid( getUids( item.getReportTables() ) ) );
+                }
+                
+                if ( item.getReports() != null )
+                {
+                    item.setReports( reportService.getReportsByUid( getUids( item.getReports() ) ) );
+                }
+                
+                if ( item.getResources() != null )
+                {
+                    item.setResources( documentService.getDocumentsByUid( getUids( item.getResources() ) ) );
+                }
+            }
+        }
     }
 
     @Override

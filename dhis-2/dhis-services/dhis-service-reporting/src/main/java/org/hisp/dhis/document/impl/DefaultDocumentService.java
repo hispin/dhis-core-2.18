@@ -106,4 +106,9 @@ public class DefaultDocumentService
     {
         return documentStore.getAllLikeNameOrderedName( name, first, max );
     }
+    
+    public List<Document> getDocumentsByUid( List<String> uids )
+    {
+        return documentStore.getByUid( uids );
+    }
 }
