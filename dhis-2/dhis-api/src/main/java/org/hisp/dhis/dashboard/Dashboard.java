@@ -38,6 +38,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+/**
+ * @author Lars Helge Overland
+ */
 @JacksonXmlRootElement( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0)
 public class Dashboard
     extends BaseIdentifiableObject
@@ -57,6 +60,45 @@ public class Dashboard
         this.name = name;
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Moves an item in the list. Returns true if the operation lead to a
+     * modification of the list order. Returns false if there are no items,
+     * the given position is out of bounds, the item is not present, if position
+     * is equal to current item index or if attempting to move an item one 
+     * position to the right (pointless operation).
+     * 
+     * @param uid the uid of the item to move.
+     * @param position the new index position of the item.
+     * @return true if the operation lead to a modification of order, false otherwise.
+     */
+    public boolean moveItem( String uid, int position )
+    {
+        if ( items == null || position < 0 || position > items.size() )
+        {
+            return false; // No items or position out of bounds
+        }
+        
+        int index = items.indexOf( new DashboardItem( uid ) );
+        
+        if ( index == -1 || index == position || ( index + 1 ) == position )
+        {
+            return false; // Not found, already at position or pointless move
+        }
+        
+        DashboardItem item = items.get( index );
+
+        index = position < index ? ( index + 1 ) : index; // New index after move
+
+        items.add( position, item ); // Add item at position        
+        items.remove( index ); // Remove item at previous index
+        
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

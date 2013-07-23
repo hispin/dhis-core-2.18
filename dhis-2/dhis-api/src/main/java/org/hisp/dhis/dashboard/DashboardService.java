@@ -43,6 +43,8 @@ public interface DashboardService
     
     void mergeDashboard( Dashboard dashboard );
     
+    void mergeDashboardItem( DashboardItem item );
+    
     int saveDashboard( Dashboard dashboard );
     
     void updateDashboard( Dashboard dashboard );

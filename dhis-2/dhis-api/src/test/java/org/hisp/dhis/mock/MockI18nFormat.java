@@ -34,7 +34,6 @@ import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class MockI18nFormat
     extends I18nFormat
