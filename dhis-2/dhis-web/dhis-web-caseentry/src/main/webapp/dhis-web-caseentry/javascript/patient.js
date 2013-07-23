@@ -225,12 +225,13 @@ function showAddPatientForm()
 
 function validateAddPatient( isContinue )
 {	
+	var params = "programId=" + getFieldValue('programIdAddPatient') + "&" + getParamsForDiv('patientForm');
 	$("#patientForm :input").attr("disabled", true);
 	$("#patientForm").find("select").attr("disabled", true);
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
-		data: getParamsForDiv('patientForm'),
+		data: params,
 		success: function(data){
 			addValidationCompleted(data,isContinue);
 		}
