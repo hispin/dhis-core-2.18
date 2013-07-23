@@ -123,6 +123,6 @@ public interface ProgramStageInstanceStore
 
     Collection<Integer> getOrgunitIds( Date startDate, Date endDate );
 
-    Grid getCompleteness( OrganisationUnit orgunit, Program program, String startDate, String endDate, I18n i18n );
+    Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate, I18n i18n );
 
 }

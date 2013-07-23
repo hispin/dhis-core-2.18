@@ -132,7 +132,7 @@ public interface ProgramStageInstanceService
 
     Collection<Integer> getOrganisationUnitIds( Date startDate, Date endDate );
 
-    Grid getCompletenessProgramStageInstance( OrganisationUnit orgunit, Program program, String startDate,
+    Grid getCompletenessProgramStageInstance( Collection<Integer> orgunits, Program program, String startDate,
         String endDate, I18n i18n );
 
 }
