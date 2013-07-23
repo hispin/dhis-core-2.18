@@ -39,12 +39,14 @@ import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Lars Helge Overland
@@ -83,9 +85,40 @@ public class DashboardController
         
         ContextUtils.createdResponse( response, "Dashboard created", RESOURCE_PATH + "/" + dashboard.getUid() );
     }
+
+    @Override
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        Dashboard dashboard = dashboardService.getDashboard( uid );
+        
+        if ( dashboard == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
+            return;
+        }
+        
+        Dashboard newDashboard = JacksonUtils.fromJson( input, Dashboard.class );
+
+        dashboard.setName( newDashboard.getName() ); // TODO Name only for now
+        
+        dashboardService.updateDashboard( dashboard );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        Dashboard dashboard = dashboardService.getDashboard( uid );
+        
+        dashboardService.deleteDashboard( dashboard );
+        
+        ContextUtils.okResponse( response, "Dashboard deleted" );
+    }
     
     @RequestMapping( value = "/{uid}/items", method = RequestMethod.POST, consumes = "application/json" )
-    public void addItem( HttpServletResponse response, HttpServletRequest request, 
+    public void postJsonItem( HttpServletResponse response, HttpServletRequest request, 
         InputStream input, @PathVariable String uid ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
