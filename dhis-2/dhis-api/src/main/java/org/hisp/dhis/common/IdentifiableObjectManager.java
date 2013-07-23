@@ -61,9 +61,9 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name );
 
-    <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max );
+    <T extends IdentifiableObject> List<T> getBetween( Class<T> clazz, int first, int max );
 
-    <T extends IdentifiableObject> Collection<T> getBetweenByName( Class<T> clazz, String name, int first, int max );
+    <T extends IdentifiableObject> List<T> getBetweenByName( Class<T> clazz, String name, int first, int max );
 
     <T extends IdentifiableObject> Collection<T> getByLastUpdated( Class<T> clazz, Date lastUpdated );
 

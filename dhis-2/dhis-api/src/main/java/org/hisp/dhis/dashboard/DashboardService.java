@@ -41,6 +41,8 @@ public interface DashboardService
 
     DashboardSearchResult search( String query );
     
+    void addItemContent( String dashboardUid, String type, String contentUid );
+    
     void mergeDashboard( Dashboard dashboard );
     
     void mergeDashboardItem( DashboardItem item );

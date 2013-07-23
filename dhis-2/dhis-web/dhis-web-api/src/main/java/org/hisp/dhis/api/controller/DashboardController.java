@@ -57,14 +57,12 @@ public class DashboardController
     extends AbstractCrudController<Dashboard>
 {
     public static final String RESOURCE_PATH = "/dashboards";
-        
+    
     @Autowired
     private DashboardService dashboardService;
     
     @RequestMapping( value = "/q/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, 
-        Model model,
-        HttpServletResponse response ) throws Exception
+    public String search( @PathVariable String query, Model model, HttpServletResponse response ) throws Exception
     {
         DashboardSearchResult result = dashboardService.search( query );
         
@@ -85,7 +83,7 @@ public class DashboardController
         
         ContextUtils.createdResponse( response, "Dashboard created", RESOURCE_PATH + "/" + dashboard.getUid() );
     }
-
+    
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
@@ -132,6 +130,15 @@ public class DashboardController
         dashboardService.updateDashboard( dashboard );
         
         ContextUtils.createdResponse( response, "Dashboard item created", item.getUid() );
+    }
+    
+    @RequestMapping( value = "/{uid}/items/content", method = RequestMethod.POST, consumes = "application/json" )
+    public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request, 
+        @PathVariable String uid, @RequestParam String type, @RequestParam( "uid" ) String contentUid ) throws Exception
+    {
+        dashboardService.addItemContent( uid, type, contentUid );
+        
+        ContextUtils.okResponse( response, "Dashboard item added" );
     }
     
     @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/move", method = RequestMethod.PUT, consumes = "application/json" )

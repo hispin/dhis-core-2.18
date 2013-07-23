@@ -240,7 +240,7 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max )
+    public <T extends IdentifiableObject> List<T> getBetween( Class<T> clazz, int first, int max )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
 
@@ -249,12 +249,12 @@ public class DefaultIdentifiableObjectManager
             return new ArrayList<T>();
         }
 
-        return (Collection<T>) store.getAllOrderedName( first, max );
+        return (List<T>) store.getAllOrderedName( first, max );
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends IdentifiableObject> Collection<T> getBetweenByName( Class<T> clazz, String name, int first, int max )
+    public <T extends IdentifiableObject> List<T> getBetweenByName( Class<T> clazz, String name, int first, int max )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
 
@@ -263,7 +263,7 @@ public class DefaultIdentifiableObjectManager
             return new ArrayList<T>();
         }
 
-        return (Collection<T>) store.getAllLikeNameOrderedName( name, first, max );
+        return (List<T>) store.getAllLikeNameOrderedName( name, first, max );
     }
 
     @Override

@@ -53,6 +53,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class DashboardItem
     extends BaseIdentifiableObject
 {
+    public static final int MAX_CONTENT = 9;
+    
+    public static final String TYPE_CHART = "chart";
+    public static final String TYPE_MAP = "map";
+    public static final String TYPE_USERS = "users";
+    public static final String TYPE_REPORT_TABLES = "reportTables";
+    public static final String TYPE_REPORTS = "reports";
+    public static final String TYPE_RESOURCES = "resources";
+    
     private Chart chart;
     
     private Map map;
@@ -87,30 +96,40 @@ public class DashboardItem
     {
         if ( chart != null )
         {
-            return "chart";
+            return TYPE_CHART;
         }
         else if ( map != null )
         {
-            return "map";
+            return TYPE_MAP;
         }
         else if ( !users.isEmpty() )
         {
-            return "users";
+            return TYPE_USERS;
         }
         else if ( !reportTables.isEmpty() )
         {
-            return "reportTables";
+            return TYPE_REPORT_TABLES;
         }
         else if ( !reports.isEmpty() )
         {
-            return "reports";
+            return TYPE_REPORTS;
         }
         else if ( !resources.isEmpty() )
         {
-            return "resources";
+            return TYPE_RESOURCES;
         }
         
         return null;
+    }
+    
+    public int getContentCount()
+    {
+        int count = 0;
+        count += users.size();
+        count += reportTables.size();
+        count += reports.size();
+        count += resources.size();
+        return count;
     }
     
     // -------------------------------------------------------------------------

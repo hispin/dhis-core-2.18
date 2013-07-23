@@ -28,21 +28,28 @@ package org.hisp.dhis.dashboard.impl;
  */
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_CHART;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MAP;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORTS;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLES;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_RESOURCES;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_USERS;
 
 import java.util.List;
 
-import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.document.DocumentService;
-import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -67,48 +74,9 @@ public class DefaultDashboardService
         this.dashboardStore = dashboardStore;
     }
 
-    private UserService userService;
+    @Autowired
+    private IdentifiableObjectManager objectManager;
     
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
-    private ChartService chartService;
-
-    public void setChartService( ChartService chartService )
-    {
-        this.chartService = chartService;
-    }
-
-    private MappingService mappingService;
-
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
-    }
-
-    private ReportService reportService;
-
-    public void setReportService( ReportService reportService )
-    {
-        this.reportService = reportService;
-    }
-    
-    private ReportTableService reportTableService;
-
-    public void setReportTableService( ReportTableService reportTableService )
-    {
-        this.reportTableService = reportTableService;
-    }
-    
-    private DocumentService documentService;
-
-    public void setDocumentService( DocumentService documentService )
-    {
-        this.documentService = documentService;
-    }
-
     // -------------------------------------------------------------------------
     // DashboardService implementation
     // -------------------------------------------------------------------------
@@ -118,14 +86,63 @@ public class DefaultDashboardService
     {
         DashboardSearchResult result = new DashboardSearchResult();
         
-        result.setUsers( userService.getAllUsersBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        result.setCharts( chartService.getChartsBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        result.setMaps( mappingService.getMapsBetweenLikeName( query, 0, MAX_PER_OBJECT ) );
-        result.setReportTables( reportTableService.getReportTablesBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        result.setReports( reportService.getReportsBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        result.setResources( documentService.getDocumentsBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        result.setUsers( objectManager.getBetweenByName( User.class, query, 0, MAX_PER_OBJECT ) );
+        result.setCharts( objectManager.getBetweenByName( Chart.class, query, 0, MAX_PER_OBJECT ) );
+        result.setMaps( objectManager.getBetweenByName( Map.class, query, 0, MAX_PER_OBJECT ) );
+        result.setReportTables( objectManager.getBetweenByName( ReportTable.class, query, 0, MAX_PER_OBJECT ) );
+        result.setReports( objectManager.getBetweenByName( Report.class, query, 0, MAX_PER_OBJECT ) );
+        result.setResources( objectManager.getBetweenByName( Document.class, query, 0, MAX_PER_OBJECT ) );
         
         return result;
+    }
+
+    @Override
+    public void addItemContent( String dashboardUid, String type, String contentUid )
+    {
+        Dashboard dashboard = getDashboard( dashboardUid );               
+        
+        if ( TYPE_CHART.equals( type ) )
+        {
+            DashboardItem item = new DashboardItem();
+            item.setChart( objectManager.get( Chart.class, contentUid ) );
+            dashboard.getItems().add( 0, item );
+        }
+        else if ( TYPE_MAP.equals( type ) )
+        {
+            DashboardItem item = new DashboardItem();
+            item.setMap( objectManager.get( Map.class, contentUid ) );
+            dashboard.getItems().add( 0, item );
+        }
+        else // Link item
+        {
+            DashboardItem availableItem = dashboard.getAvailableItemByType( type );
+            
+            DashboardItem item = availableItem == null ? new DashboardItem() : availableItem;
+            
+            if ( TYPE_USERS.equals( type ) )
+            {
+                item.getUsers().add( objectManager.get( User.class, contentUid ) );
+            }
+            else if ( TYPE_REPORT_TABLES.equals( type ) )
+            {
+                item.getReportTables().add( objectManager.get( ReportTable.class, contentUid ) );
+            }
+            else if ( TYPE_REPORTS.equals( type ) )
+            {
+                item.getReports().add( objectManager.get( Report.class, contentUid ) );
+            }
+            else if ( TYPE_RESOURCES.equals( type ) )
+            {
+                item.getResources().add( objectManager.get( Document.class, contentUid ) );
+            }
+            
+            if ( availableItem == null )
+            {
+                dashboard.getItems().add( 0, item );
+            }
+        }
+        
+        updateDashboard( dashboard );
     }
     
     public void mergeDashboard( Dashboard dashboard )
@@ -143,32 +160,32 @@ public class DefaultDashboardService
     {
         if ( item.getChart() != null )
         {
-            item.setChart( chartService.getChart( item.getChart().getUid() ) );
+            item.setChart( objectManager.get( Chart.class, item.getChart().getUid() ) );
         }
         
-        if ( item.getChart() != null )
+        if ( item.getMap() != null )
         {
-            item.setMap( mappingService.getMap( item.getMap().getUid() ) );
+            item.setMap( objectManager.get( Map.class, item.getMap().getUid() ) );
         }
         
         if ( item.getUsers() != null )
         {
-            item.setUsers( userService.getUsersByUid( getUids( item.getUsers() ) ) );
+            item.setUsers( objectManager.getByUid( User.class, getUids( item.getUsers() ) ) );
         }
         
         if ( item.getReportTables() != null )
         {
-            item.setReportTables( reportTableService.getReportTablesByUid( getUids( item.getReportTables() ) ) );
+            item.setReportTables( objectManager.getByUid( ReportTable.class, getUids( item.getReportTables() ) ) );
         }
         
         if ( item.getReports() != null )
         {
-            item.setReports( reportService.getReportsByUid( getUids( item.getReports() ) ) );
+            item.setReports( objectManager.getByUid( Report.class, getUids( item.getReports() ) ) );
         }
         
         if ( item.getResources() != null )
         {
-            item.setResources( documentService.getDocumentsByUid( getUids( item.getResources() ) ) );
+            item.setResources( objectManager.getByUid( Document.class, getUids( item.getResources() ) ) );
         }
     }
 
