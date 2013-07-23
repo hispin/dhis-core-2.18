@@ -30,7 +30,11 @@ package org.hisp.dhis.dashboard;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.report.Report;
 import org.junit.Test;
 
 /**
@@ -94,5 +98,34 @@ public class DashboardTest
         assertFalse( dashboard.moveItem( "C", 5 ) ); // Out of bounds
         assertFalse( dashboard.moveItem( "A", 1 ) ); // Already at position
         assertFalse( dashboard.moveItem( "A", 2 ) ); // Pointless move        
+    }
+
+    @Test
+    public void testGetAvailableItemByType()
+    {
+        Dashboard dashboard = new Dashboard();
+        
+        DashboardItem diA = new DashboardItem();
+        DashboardItem diB = new DashboardItem();
+        DashboardItem diC = new DashboardItem();
+        
+        diA.setUid( "A" );
+        diB.setUid( "B" );
+        diC.setUid( "C" );
+        
+        diA.setChart( new Chart( "A" ) );
+        diB.getReports().add( new Report( "A", null, null, null ) );
+        diB.getReports().add( new Report( "B", null, null, null ) );
+        diC.getResources().add( new Document( "A", null, false, null ) );
+        diC.getResources().add( new Document( "B", null, false, null ) );
+        diC.getResources().add( new Document( "C", null, false, null ) );
+        
+        dashboard.getItems().add( diA );
+        dashboard.getItems().add( diB );
+        dashboard.getItems().add( diC );
+        
+        assertEquals( diB, dashboard.getAvailableItemByType( DashboardItem.TYPE_REPORTS ) );
+        assertEquals( diC, dashboard.getAvailableItemByType( DashboardItem.TYPE_RESOURCES ) );
+        assertNull( dashboard.getAvailableItemByType( DashboardItem.TYPE_REPORT_TABLES ) );
     }
 }
