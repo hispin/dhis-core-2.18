@@ -222,7 +222,7 @@ public class CompleteDataEntryAction
             Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
             for ( PatientReminder rm : reminders )
             {
-                if ( rm != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
                 {
                     sendEventMessage( rm, programStageInstance, patient );
                 }

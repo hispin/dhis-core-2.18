@@ -320,8 +320,8 @@
 					<td><label>$i18n.getString( "date_to_compare")</label></td>
 					<td>
 						<select class="dateToCompare" id='dateToCompare$index' #if($!reminder.whenToSend==3) disabled #end />
-							<option value="dateofincident">$i18n.getString( "incident_date" )</option>
-							<option value="enrollmentdate">$i18n.getString( "enrollment_date" )</option>
+							<option value="dateofincident" #if($!reminder.dateToCompare=='dateofincident') selected #end>$i18n.getString( "incident_date" )</option>
+							<option value="enrollmentdate" #if($!reminder.dateToCompare=='enrollmentdate') selected #end>$i18n.getString( "enrollment_date" )</option>
 						</select>
 					</td>
 				</tr>
