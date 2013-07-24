@@ -91,12 +91,16 @@ public class GeoToolsMapGenerationService
         
         return generateMapImage( map );
     }
-    
+
     public BufferedImage generateMapImage( Map map )
     {
+        return generateMapImage( map, 512 );
+    }
+    
+    public BufferedImage generateMapImage( Map map, int width )
+    {
         Assert.isTrue( map != null );
-
-        int height = 512;
+        Assert.isTrue( width > LegendSet.LEGEND_TOTAL_WIDTH );
 
         InternalMap internalMap = new InternalMap();
         
@@ -116,11 +120,11 @@ public class GeoToolsMapGenerationService
         }
         
         // Build representation of a map using GeoTools, then render as image
-        BufferedImage mapImage = MapUtils.render( internalMap, height );
+        BufferedImage mapImage = MapUtils.render( internalMap, ( width - LegendSet.LEGEND_TOTAL_WIDTH ) );
 
         // Build the legend set, then render it to an image
         LegendSet legendSet = new LegendSet( internalMap.getLayers().get( 0 ) ); //TODO
-        BufferedImage legendImage = legendSet.render( height );
+        BufferedImage legendImage = legendSet.render( width );
 
         // Combine the legend image and the map image into one image
         BufferedImage finalImage = combineLegendAndMapImages( legendImage, mapImage );

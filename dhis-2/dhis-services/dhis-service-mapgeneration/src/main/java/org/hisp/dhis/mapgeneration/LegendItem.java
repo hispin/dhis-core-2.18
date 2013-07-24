@@ -44,7 +44,7 @@ public class LegendItem
 {
     private Interval interval;
 
-    private static final int WIDTH = 25;
+    private static final int WIDTH = 22;
 
     private static final int HEIGHT = 20;
 

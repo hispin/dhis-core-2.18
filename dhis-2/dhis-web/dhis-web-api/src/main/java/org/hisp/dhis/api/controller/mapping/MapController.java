@@ -60,6 +60,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -223,11 +224,14 @@ public class MapController
     }
 
     @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
-    public void getMapData( @PathVariable String uid, HttpServletResponse response ) throws Exception
+    public void getMapData( 
+        @PathVariable String uid, 
+        @RequestParam( required = false, defaultValue = "512" ) Integer width, 
+        HttpServletResponse response ) throws Exception
     {
         Map map = mappingService.getMap( uid );
 
-        renderMapViewPng( map, response );
+        renderMapViewPng( map, width, response );
     }
 
     //--------------------------------------------------------------------------
@@ -295,10 +299,10 @@ public class MapController
         }
     }
 
-    private void renderMapViewPng( Map map, HttpServletResponse response )
+    private void renderMapViewPng( Map map, int width, HttpServletResponse response )
         throws Exception
     {
-        BufferedImage image = mapGenerationService.generateMapImage( map );
+        BufferedImage image = mapGenerationService.generateMapImage( map, width );
 
         if ( image != null )
         {

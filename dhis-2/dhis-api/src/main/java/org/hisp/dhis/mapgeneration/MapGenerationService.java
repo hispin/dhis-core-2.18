@@ -51,16 +51,25 @@ public interface MapGenerationService
     /**
      * Generate an image that represents this map.
      * 
-     * @param mapView the map view that will be rendered
+     * @param mapView the map view that will be rendered,
      * @return the rendered map image or null if there is no data for the map view.
      */
-    public BufferedImage generateMapImage( MapView mapView );
+    BufferedImage generateMapImage( MapView mapView );
     
     /**
      * Generate an image that represents this map.
      * 
-     * @param mapView the map view that will be rendered
+     * @param map the map that will be rendered,
      * @return the rendered map image or null if there is no data for the map view.
      */
-    public BufferedImage generateMapImage( Map map );
+    BufferedImage generateMapImage( Map map );
+
+    /**
+     * Generate an image that represents this map.
+     * 
+     * @param map the map that will be rendered,
+     * @param width the width of the map image.
+     * @return the rendered map image or null if there is no data for the map view.
+     */
+    BufferedImage generateMapImage( Map map, int width );
 }
