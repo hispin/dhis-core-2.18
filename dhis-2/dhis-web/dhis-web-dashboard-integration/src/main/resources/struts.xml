@@ -19,44 +19,6 @@
       <param name="javascripts">javascript/dashboard.js</param>
     </action>
 
-    <action name="provideContent"
-      class="org.hisp.dhis.dashboard.action.ProvideContentAction">
-      <result name="success" type="velocity">/dhis-web-dashboard-integration/dashboard.vm
-      </result>
-    </action>
-
-    <action name="setAreaItem" class="org.hisp.dhis.dashboard.action.SetAreaItemAction">
-      <result name="success" type="velocity-xml">/dhis-web-dashboard-integration/responseSuccess.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="clearArea" class="org.hisp.dhis.dashboard.action.ClearAreaAction">
-      <result name="success" type="velocity-xml">/dhis-web-dashboard-integration/responseSuccess.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="removeReport"
-      class="org.hisp.dhis.dashboard.action.RemoveReportAction">
-      <result name="success" type="redirect">index.action</result>
-    </action>
-
-    <action name="removeDocument"
-      class="org.hisp.dhis.dashboard.action.RemoveDocumentAction">
-      <result name="success" type="redirect">index.action</result>
-    </action>
-
-    <action name="removeReportTable"
-      class="org.hisp.dhis.dashboard.action.RemoveReportTableAction">
-      <result name="success" type="redirect">index.action</result>
-    </action>
-
-    <action name="removeMap"
-      class="org.hisp.dhis.dashboard.action.RemoveMapViewAction">
-      <result name="success" type="redirect">index.action</result>
-    </action>
-
     <!-- Message -->
 
     <action name="message"

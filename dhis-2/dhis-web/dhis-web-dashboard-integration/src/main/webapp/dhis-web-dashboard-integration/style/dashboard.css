@@ -18,7 +18,12 @@
 #contentDiv
 {
   position: relative;
-  top: 46px;
+  top: 95px;
+}
+
+#contentList
+{
+  list-style-type: none;
 }
 
 .removeIcon
@@ -40,17 +45,6 @@
 .linkArea div
 {
   position: absolute;
-}
-
-.chartArea
-{
-  border: 1px solid #d0d0d0;
-  padding: 1px;
-  height: 310px;
-  width: 310px;
-  overflow: hidden;
-  margin-bottom: 15px;
-  border-radius: 3px;
 }
 
 .chartArea div
@@ -77,6 +71,43 @@
   margin-top: 6px;
 }
 
+#dashboardListContainer
+{
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  margin-top: 45px;
+}
+
+#dashboardListWrapper
+{
+  position: relative;
+  width: auto;
+  height: 29px;
+  background-color: #fafafa;
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  padding: 0;
+}
+
+#dashboardList li
+{
+  border-right: 1px solid #d0d0d0;
+  padding: 7px 14px 6px 14px;
+}
+
+.dasboardIntro
+{
+  padding: 30px 140px;
+  font-size: 28px;
+  color: #bbb;
+}
+
+.currentDashboard
+{
+  background-color: #eee;
+} 
+
 .horizontalMenu ul
 {
   list-style-type: none;
@@ -86,6 +117,51 @@
 .horizontalMenu li
 {
   float: left;
+}
+
+.item
+{
+  border: 1px solid #d0d0d0;
+  width: 405px;
+  height: 310px;
+  padding: 6px;
+  margin: 0 19px 19px 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.itemHeader
+{
+  margin: 0 0 2px 2px;
+}
+
+.itemHeader a
+{
+  margin-right: 6px;
+}
+
+.itemList
+{
+  display: inline;
+}
+
+.itemList li
+{
+  float: none;
+  padding: 8px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemTitle
+{
+  font-family: 'LiberationSansBold';
+  color: #336C8B;
+}
+
+.removeItemLink
+{
+  float: right;
+  display: inline-block;
 }
 
 #searchDiv
@@ -135,20 +211,28 @@
   box-shadow: #ccc 0px 1px 2px 0px;
 }
 
-#hitDiv ul
-{
+#hitDiv li
+{ 
   list-style-type: none;
-}
-
-#hitDiv a
-{
-  display: block;
-  padding: 7px 6px 7px 12px;
 }
 
 #hitDiv img
 {
   margin-right: 7px;
+}
+
+#hitDiv .viewLink
+{
+  display: inline-block;
+  padding: 7px 5px 7px 12px;
+  width: 412px;
+}
+
+#hitDiv .addLink
+{
+  float: right;
+  display: inline-block;
+  padding: 9px 15px 7px 15px;
 }
 
 .hitHeader
@@ -197,6 +281,16 @@
 {
   color: #3567cd;
   cursor: pointer;
+}
+
+#addDashboardForm
+{
+  display: none;
+}
+
+#manageDashboardForm
+{
+  display: none;
 }
 
 #chartView
