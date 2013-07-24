@@ -80,6 +80,7 @@ public class DashboardItem
 
     public DashboardItem()
     {
+        super.setAutoFields();
     }
 
     public DashboardItem( String uid )
