@@ -119,6 +119,13 @@ public class Dashboard
         return null;
     }    
     
+    @JsonProperty
+    @JacksonXmlProperty
+    public int getItemCount()
+    {
+        return items == null ? 0 : items.size();
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

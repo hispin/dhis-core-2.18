@@ -137,7 +137,7 @@ public class DashboardItem
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public Chart getChart()
     {
         return chart;
@@ -149,7 +149,7 @@ public class DashboardItem
     }
     
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public Map getMap()
     {
         return map;
