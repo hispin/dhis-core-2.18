@@ -108,7 +108,8 @@ DV.core.getConfig = function() {
             stackedbar: 'stackedbar',
             line: 'line',
             area: 'area',
-            pie: 'pie'
+            pie: 'pie',
+            radar: 'radar'
         },
         data: {
 			domain: 'domain_',
@@ -1378,7 +1379,7 @@ console.log("baseLineFields", store.baseLineFields);
 				};
 			};
 
-			getDefaultChart = function(store, axes, series, xResponse, xLayout) {
+			getDefaultChart = function(store, axes, series, xResponse, xLayout, theme) {
 				var chart,
 					config = {
 						store: store,
@@ -1389,7 +1390,7 @@ console.log("baseLineFields", store.baseLineFields);
 						insetPadding: 35,
 						width: dv.viewport.centerRegion.getWidth(),
 						height: dv.viewport.centerRegion.getHeight() - 25,
-						theme: 'dv1'
+						theme: theme || 'dv1'
 					};
 
 				// Legend
@@ -1717,6 +1718,61 @@ console.log("baseLineFields", store.baseLineFields);
 
 				return chart;
 			};
+
+			generator.radar = function(xResponse, xLayout) {
+				var store = getDefaultStore(xResponse, xLayout),
+					axes = [],
+					series = [],
+					seriesTitles = getDefaultSeriesTitle(store, xResponse),
+					chart;
+					
+				// Axes
+				axes.push({
+					type: 'Radial',
+					position: 'radial',
+					label: {
+						display: true
+					}
+				});
+
+				// Series
+				for (var i = 0, obj; i < store.rangeFields.length; i++) {
+					obj = {
+						showInLegend: true,
+						type: 'radar',
+						xField: store.domainFields,
+						yField: store.rangeFields[i],
+						style: {
+							opacity: 0.5
+						},
+						tips: getDefaultTips(),
+						title: seriesTitles[i]
+					};
+
+					if (xLayout.showValues) {
+						obj.label = {
+							display: 'over',
+							field: store.rangeFields[i]
+						};
+					}
+
+					series.push(obj);
+				}
+
+				chart = getDefaultChart(store, axes, series, xResponse, xLayout, 'Category2');
+				
+				chart.insetPadding = 40;
+				chart.height = dv.viewport.centerRegion.getHeight() - 80;
+				
+				chart.setChartSize = function() {
+					this.animate = false;
+					this.setWidth(dv.viewport.centerRegion.getWidth());
+					this.setHeight(dv.viewport.centerRegion.getHeight() - 80);
+					this.animate = true;
+				};
+				
+				return chart;
+			};				
 
 			initialize = function() {
 				var url,

@@ -2015,6 +2015,7 @@ Ext.onReady( function() {
 				line,
 				area,
 				pie,
+				radar,
 				buttons = [],
 				buttonAddedListener,
 				chartType,
@@ -2152,6 +2153,17 @@ Ext.onReady( function() {
 					added: buttonAddedListener
 				}
 			});
+			
+			radar = Ext.create('Ext.button.Button', {
+				xtype: 'button',
+				chartType: dv.conf.finals.chart.radar,
+				icon: 'images/radar.png',
+				name: dv.conf.finals.chart.radar,
+				tooltipText: DV.i18n.radar_chart,
+				listeners: {
+					added: buttonAddedListener
+				}
+			});
 
 			chartType = Ext.create('Ext.toolbar.Toolbar', {
 				height: 45,
@@ -2198,7 +2210,8 @@ Ext.onReady( function() {
 					stackedbar,
 					line,
 					area,
-					pie
+					pie,
+					radar
 				]
 			});
 
