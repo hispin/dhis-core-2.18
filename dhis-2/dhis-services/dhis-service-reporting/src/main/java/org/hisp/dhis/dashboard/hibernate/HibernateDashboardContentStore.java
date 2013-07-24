@@ -38,6 +38,9 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
+ * This class is outdated and kept only for backwards compatibility reasons. Will
+ * be removed for 2.14.
+ * 
  * @author Lars Helge Overland
  */
 public class HibernateDashboardContentStore

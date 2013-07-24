@@ -3,18 +3,6 @@
 /* Dashboard                                                                  */
 /*----------------------------------------------------------------------------*/
 
-.contentProviderTable
-{
-  width: 295px;
-}
-
-.contentProviderTable td
-{
-  padding-top: 3px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid #cad5e5;
-}
-
 #contentDiv
 {
   position: relative;
@@ -24,45 +12,6 @@
 #contentList
 {
   list-style-type: none;
-}
-
-.removeIcon
-{
-   padding: 2px 2px 1px 2px;
-}
-
-.linkArea
-{
-  border: 1px solid #d0d0d0;
-  padding: 1px;
-  height: 196px;
-  width: 295px;
-  overflow: hidden;
-  margin-bottom: 15px;
-  border-radius: 3px;
-}
-
-.linkArea div
-{
-  position: absolute;
-}
-
-.chartArea div
-{
-  position: absolute;
-}
-
-.buttonArea
-{
-  margin-bottom: 2px;
-}
-
-.labelText
-{
-  color: #999;
-  font-size: 16px;
-  padding: 40px 0 0 30px;
-  width: 230px;
 }
 
 #dashboardMenu
