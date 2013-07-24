@@ -402,7 +402,7 @@ public class DefaultParserManager
         {
             Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
-            UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "c" );
+            UserCredentials anonymousUser = userService.getUserCredentialsByUsername( ANONYMOUS_USER_NAME );
 
             MessageConversation conversation = new MessageConversation( command.getName(), anonymousUser.getUser() );
 
