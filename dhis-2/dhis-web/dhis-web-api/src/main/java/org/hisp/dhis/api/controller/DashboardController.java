@@ -104,11 +104,18 @@ public class DashboardController
         dashboardService.updateDashboard( dashboard );
     }
 
+    @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
+
+        if ( dashboard == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
+            return;
+        }
         
         dashboardService.deleteDashboard( dashboard );
         
@@ -120,6 +127,12 @@ public class DashboardController
         InputStream input, @PathVariable String uid ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
+
+        if ( dashboard == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
+            return;
+        }
         
         DashboardItem item = JacksonUtils.fromJson( input, DashboardItem.class );
         
@@ -146,6 +159,12 @@ public class DashboardController
         @PathVariable String dashboardUid, @PathVariable String itemUid, @RequestParam int position ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( dashboardUid );
+
+        if ( dashboard == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
+            return;
+        }
         
         if ( dashboard.moveItem( itemUid, position ) )
         {        
@@ -153,5 +172,25 @@ public class DashboardController
             
             ContextUtils.okResponse( response, "Dashboard item moved" );
         }
+    }
+    
+    @RequestMapping( value = "/{dashboardUid}/items/{itemUid}", method = RequestMethod.DELETE )
+    public void deleteItem( HttpServletResponse response, HttpServletRequest request,
+        @PathVariable String dashboardUid, @PathVariable String itemUid )
+    {
+        Dashboard dashboard = dashboardService.getDashboard( dashboardUid );
+
+        if ( dashboard == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
+            return;
+        }
+        
+        if ( dashboard.removeItem( itemUid ) )
+        {
+            dashboardService.updateDashboard( dashboard );
+            
+            ContextUtils.okResponse( response, "Dashboard item removed" );
+        }        
     }
 }

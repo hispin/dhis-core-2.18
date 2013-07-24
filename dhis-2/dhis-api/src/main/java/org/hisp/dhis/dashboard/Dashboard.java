@@ -28,6 +28,7 @@ package org.hisp.dhis.dashboard;
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -97,6 +98,27 @@ public class Dashboard
         items.remove( index ); // Remove item at previous index
         
         return true;
+    }
+    
+    /**
+     * Removes the item with the given identifier from this dashboard.
+     * 
+     * @param uid the item uid.
+     */
+    public boolean removeItem( String uid )
+    {
+        Iterator<DashboardItem> iter = items.iterator();
+        
+        while ( iter.hasNext() )
+        {
+            if ( uid.equals( iter.next().getUid() ) )
+            {
+                iter.remove();
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
