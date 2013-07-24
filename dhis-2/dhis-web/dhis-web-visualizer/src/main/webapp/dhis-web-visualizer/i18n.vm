@@ -197,5 +197,6 @@ DV.i18n = {
     sharing_settings: '$encoder.jsEscape($i18n.getString( 'sharing_settings' ) , "'")',
 	select_organisation_units: '$encoder.jsEscape($i18n.getString( 'select_organisation_units' ) , "'")',
 	select_boundaries_and_level: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_level' ) , "'")',
-	select_organisation_unit_level: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_level' ) , "'")'
+	select_organisation_unit_level: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_level' ) , "'")',
+	radar_chart: '$encoder.jsEscape($i18n.getString( 'radar_chart' ) , "'")'
 };
