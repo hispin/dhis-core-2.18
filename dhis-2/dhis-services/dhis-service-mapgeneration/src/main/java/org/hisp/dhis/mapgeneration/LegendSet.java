@@ -49,11 +49,11 @@ public class LegendSet
 
     private Color backgroundColor = null;
 
-    private static final int LEGEND_WIDTH = 250;
-
-    private static final int LEGEND_MARGIN_LEFT = 5;
-
+    private static final int LEGEND_WIDTH = 145;
+    private static final int LEGEND_MARGIN_LEFT = 4;
     private static final int LEGEND_MARGIN_BOTTOM = 20;
+    
+    public static final int LEGEND_TOTAL_WIDTH = LEGEND_WIDTH + LEGEND_MARGIN_LEFT;
 
     public LegendSet()
     {
@@ -91,18 +91,19 @@ public class LegendSet
         Graphics2D g = (Graphics2D) image.getGraphics();
 
         // Overwrite if one of the legends is bigger than imageMaxHeight
-        if ( imageDimensions.getHeight() > imageMaxHeight )
+        if ( imageHeight > imageMaxHeight )
         {
-            imageMaxHeight = (int) imageDimensions.getHeight();
+            imageMaxHeight = imageHeight;
         }
 
         // Draw a background if the background color is specified
         // NOTE It will be transparent otherwise, which is desired
+        /*
         if ( backgroundColor != null )
         {
             g.setColor( backgroundColor );
             g.fill( new Rectangle( 0, 0, imageWidth, imageHeight ) );
-        }
+        }*/
 
         // Turn anti-aliasing on
         g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
