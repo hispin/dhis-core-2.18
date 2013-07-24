@@ -193,4 +193,32 @@ public class DashboardController
             ContextUtils.okResponse( response, "Dashboard item removed" );
         }        
     }
+
+    @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/content/{contentUid}", method = RequestMethod.DELETE )
+    public void deleteItemContent( HttpServletResponse response, HttpServletRequest request,
+        @PathVariable String dashboardUid, @PathVariable String itemUid, @PathVariable String contentUid )
+    {
+        Dashboard dashboard = dashboardService.getDashboard( dashboardUid );
+
+        if ( dashboard == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
+            return;
+        }
+        
+        DashboardItem item = dashboard.getItemByUid( itemUid );
+
+        if ( item == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dashboard item does not exist: " + itemUid );
+            return;
+        }
+        
+        if ( item.removeItemContent( contentUid ) )
+        {
+            dashboardService.updateDashboard( dashboard );
+            
+            ContextUtils.okResponse( response, "Dashboard item content removed" );
+        }        
+    }
 }

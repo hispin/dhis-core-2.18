@@ -30,7 +30,6 @@ package org.hisp.dhis.mapgeneration;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -50,7 +49,7 @@ public class LegendSet
     private Color backgroundColor = null;
 
     private static final int LEGEND_WIDTH = 145;
-    private static final int LEGEND_MARGIN_LEFT = 4;
+    private static final int LEGEND_MARGIN_LEFT = 3;
     private static final int LEGEND_MARGIN_BOTTOM = 20;
     
     public static final int LEGEND_TOTAL_WIDTH = LEGEND_WIDTH + LEGEND_MARGIN_LEFT;

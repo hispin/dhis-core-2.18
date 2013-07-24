@@ -152,4 +152,25 @@ public class DashboardTest
         assertFalse( dashboard.removeItem( "X" ) );
         assertEquals( 2, dashboard.getItems().size() );
     }
+    
+    @Test
+    public void testGetItem()
+    {
+        Dashboard dashboard = new Dashboard();
+        
+        DashboardItem diA = new DashboardItem();
+        DashboardItem diB = new DashboardItem();
+        DashboardItem diC = new DashboardItem();
+        
+        diA.setUid( "A" );
+        diB.setUid( "B" );
+        diC.setUid( "C" );
+
+        dashboard.getItems().add( diA );
+        dashboard.getItems().add( diB );
+        dashboard.getItems().add( diC );
+        
+        assertEquals( diB, dashboard.getItemByUid( "B" ) );
+        assertNull( dashboard.getItemByUid( "X" ) );
+    }
 }

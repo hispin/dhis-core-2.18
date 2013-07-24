@@ -122,6 +122,20 @@ public class Dashboard
     }
     
     /**
+     * Returns the item with the given uid, or null if no item with the given
+     * uid is present for this dashboard.
+     * 
+     * @param uid the item identifier.
+     * @return an item.
+     */
+    public DashboardItem getItemByUid( String uid )
+    {
+        int index = items.indexOf( new DashboardItem( uid ) );
+        
+        return index != -1 ? items.get( index ) : null;
+    }
+    
+    /**
      * Returns an item from this dashboard of the given type which number of
      * content is less than max. Returns null if no item matches the criteria.
      * 
