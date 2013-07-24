@@ -57,8 +57,6 @@
                         <img src="../images/edit-denied.png">
                         #end
 
-						<a href="javascript:addDocumentToDashboard( '$document.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
-
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeDocument" ) && $security.canDelete( $document ) )
 						<a href="javascript:removeDocument( $document.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>
 						#else

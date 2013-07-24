@@ -22,7 +22,7 @@
 		<td style="vertical-align:top">
 			<table class="listTable" id="listTable">
 				<col>
-				<col width="120">
+				<col width="90">
                 <thead>		       
 				<tr>
 					<th>$i18n.getString( "name" )</th>
@@ -41,8 +41,6 @@
                         #else
                         <img src="../images/relationship-denied.png">
                         #end
-
-						<a href="javascript:addReportTableToDashboard( '$table.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
 
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeTable" ) && $security.canDelete( $table ))
 						<a href="javascript:removeTable( $table.id, '$encoder.jsEncode( $table.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
