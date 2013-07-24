@@ -28,6 +28,7 @@ package org.hisp.dhis.dashboard;
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
@@ -93,6 +94,7 @@ public class DashboardItem
     // -------------------------------------------------------------------------
 
     @JsonProperty
+    @JacksonXmlProperty
     public String getType()
     {
         if ( chart != null )
@@ -122,7 +124,9 @@ public class DashboardItem
         
         return null;
     }
-    
+
+    @JsonProperty
+    @JacksonXmlProperty
     public int getContentCount()
     {
         int count = 0;
@@ -131,6 +135,49 @@ public class DashboardItem
         count += reports.size();
         count += resources.size();
         return count;
+    }
+    
+    /**
+     * Removes the content with the given uid. Returns true if a content with
+     * the given uid existed and was removed.
+     * 
+     * @param uid the identifier of the content.
+     * @return true if a content was removed.
+     */
+    public boolean removeItemContent( String uid )
+    {
+        if ( !users.isEmpty() )
+        {
+            return removeContent( uid, users );
+        }
+        else if ( !reportTables.isEmpty() )
+        {
+            return removeContent( uid, reportTables );
+        }
+        else if ( !reports.isEmpty() )
+        {
+            return removeContent( uid, reports );
+        }
+        else
+        {
+            return removeContent( uid, resources );
+        }
+    }
+    
+    private boolean removeContent( String uid, List<? extends IdentifiableObject> content )
+    {
+        Iterator<? extends IdentifiableObject> iterator = content.iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            if ( uid.equals( iterator.next().getUid() ) )
+            {
+                iterator.remove();
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     // -------------------------------------------------------------------------
