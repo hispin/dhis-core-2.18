@@ -28,7 +28,7 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col>
-                <col width="180px">
+                <col width="150px">
                 <thead>               
                 <tr>
                     <th>$i18n.getString( "name" )</th>
@@ -54,8 +54,6 @@
                         #else
                         <img src="../images/edit-denied.png">
                         #end
-
-						<a href="javascript:addToDashboard( '$report.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
 
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeReport" ) && $security.canDelete( $report ))
 						<a href="javascript:removeReport( $report.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>

@@ -5,13 +5,12 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.dashboard.DashboardConfiguration;
-import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardManager;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -22,12 +21,8 @@ public class ProvideContentAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DashboardManager dashboardManager;
-
-    public void setDashboardManager( DashboardManager dashboardManager )
-    {
-        this.dashboardManager = dashboardManager;
-    }
+    @Autowired
+    private DashboardService dashboardService;
 
     private CurrentUserService currentUserService;
 
@@ -85,25 +80,9 @@ public class ProvideContentAction
     {
         chartsForAll = new ArrayList<Chart>( chartService.getAllCharts() );
         
-        DashboardConfiguration config = dashboardManager.getConfiguration();
-
-        for ( int i = 0; i < 8; i++ )
-        {
-            String id = config.getAreaItems().get( DashboardManager.CHART_AREA_PREFIX + (i + 1) );
-
-            if ( id != null )
-            {
-                charts.add( id );
-            }
-        }
-
         User user = currentUserService.getCurrentUser();
-
-        DashboardContent content = dashboardManager.getDashboardContent( user );
-
-        reportTables = content.getReportTables();
-
-        documents = content.getDocuments();
+        
+        //TODO implement new dashboard solution
 
         return SUCCESS;
     }

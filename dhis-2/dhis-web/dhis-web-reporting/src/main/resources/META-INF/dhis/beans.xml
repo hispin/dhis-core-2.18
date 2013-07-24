@@ -28,12 +28,6 @@
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction" class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
-  </bean>
-
   <!-- TableCreator -->
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
@@ -54,12 +48,6 @@
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction"
     scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction" class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
 
@@ -95,12 +83,6 @@
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction" class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction"
     scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
 

@@ -18,12 +18,6 @@
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
 
-    <!-- Dashboard -->
-    
-    <bean id="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
-        class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
-        scope="prototype"/>
-
 	<!-- OrganisationUnit -->
 
 	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitChildrenAction"
