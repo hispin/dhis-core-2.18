@@ -132,11 +132,11 @@ public class DashboardController
         ContextUtils.createdResponse( response, "Dashboard item created", item.getUid() );
     }
     
-    @RequestMapping( value = "/{uid}/items/content", method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping( value = "/{dashboardUid}/items/content", method = RequestMethod.POST )
     public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request, 
-        @PathVariable String uid, @RequestParam String type, @RequestParam( "uid" ) String contentUid ) throws Exception
+        @PathVariable String dashboardUid, @RequestParam String type, @RequestParam( "id" ) String contentUid ) throws Exception
     {
-        dashboardService.addItemContent( uid, type, contentUid );
+        dashboardService.addItemContent( dashboardUid, type, contentUid );
         
         ContextUtils.okResponse( response, "Dashboard item added" );
     }
