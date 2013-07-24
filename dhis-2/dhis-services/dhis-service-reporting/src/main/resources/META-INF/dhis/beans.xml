@@ -142,67 +142,6 @@
     <property name="dashboardStore" ref="org.hisp.dhis.dashboard.DashboardStore" />
   </bean>
 
-  <!-- Dashboard Content providers -->
-
-  <bean id="reportContentProvider" class="org.hisp.dhis.dashboard.provider.ReportContentProvider">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="key" value="reports" />
-  </bean>
-
-  <bean id="documentContentProvider" class="org.hisp.dhis.dashboard.provider.DocumentContentProvider">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="key" value="documents" />
-  </bean>
-
-  <bean id="reportTableContentProvider" class="org.hisp.dhis.dashboard.provider.ReportTableContentProvider">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="key" value="reportTables" />
-  </bean>
-
-  <bean id="mapViewContentProvider" class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="key" value="maps" />
-  </bean>
-
-  <bean id="rssHealthContentProvider" class="org.hisp.dhis.dashboard.provider.RssContentProvider">
-    <property name="url" value="http://news.yahoo.com/rss/health" />
-    <property name="key" value="healthItems" />
-  </bean>
-
-  <bean id="rssDiseasesContentProvider" class="org.hisp.dhis.dashboard.provider.RssContentProvider">
-    <property name="url" value="http://news.yahoo.com/rss/diseases-conditions" />
-    <property name="key" value="diseasesItems" />
-  </bean>
-
-  <!-- Dashboard Manager -->
-
-  <bean id="org.hisp.dhis.dashboard.DashboardManager" class="org.hisp.dhis.dashboard.manager.DefaultDashboardManager">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-    <property name="dashboardContentStore" ref="org.hisp.dhis.dashboard.DashboardContentStore" />
-    <property name="contentProviders">
-      <map>
-        <entry key="report">
-          <ref local="reportContentProvider" />
-        </entry>
-        <entry key="document">
-          <ref local="documentContentProvider" />
-        </entry>
-        <entry key="report_table">
-          <ref local="reportTableContentProvider" />
-        </entry>
-        <entry key="map_view">
-          <ref local="mapViewContentProvider" />
-        </entry>
-        <entry key="rss_health">
-          <ref local="rssHealthContentProvider" />
-        </entry>
-        <entry key="rss_diseases">
-          <ref local="rssDiseasesContentProvider" />
-        </entry>
-      </map>
-    </property>
-  </bean>
-
   <!-- Organisation Unit Distribution -->
 
   <bean id="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService" class="org.hisp.dhis.orgunitdistribution.impl.DefaultOrgUnitDistributionService">
@@ -272,8 +211,6 @@
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dashboard.DashboardContentDeletionHandler" class="org.hisp.dhis.dashboard.DashboardContentDeletionHandler" />
-
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -285,7 +222,6 @@
           <ref local="org.hisp.dhis.report.ReportDeletionHandler" />
           <ref local="org.hisp.dhis.reporttable.ReportTableDeletionHandler" />
           <ref local="org.hisp.dhis.chart.ChartDeletionHandler" />
-          <ref local="org.hisp.dhis.dashboard.DashboardContentDeletionHandler" />
         </list>
       </list>
     </property>
