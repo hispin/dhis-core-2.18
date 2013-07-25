@@ -27,11 +27,7 @@ package org.hisp.dhis.validationrule.action.dataanalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ServiceProvider;
@@ -45,13 +41,17 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.util.SessionUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Finds outliers in given data elements for given sources in a given period and
  * displays a list of them.
- * 
+ *
  * @author Jon Moen Drange, Peter Flem, Dag Haavi Finstad, Lars Helge Oeverland
  * @version $Id: GetOutliersAction.java 1005 2009-06-04 13:29:44Z jonmd $
  */
@@ -59,6 +59,8 @@ public class GetAnalysisAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( GetAnalysisAction.class );
+
+    public static final String KEY_ANALYSIS_DATA_VALUES = "analysisDataValues";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -185,13 +187,13 @@ public class GetAnalysisAction
         Collection<Period> periods = null;
         OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
         Collection<OrganisationUnit> orgUnits = null;
-                
+
         // TODO filter periods with data element period type
-        
+
         if ( fromDate != null && toDate != null && dataSets != null && unit != null )
         {
             orgUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
-            
+
             periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
 
             for ( String id : dataSets )
@@ -201,7 +203,7 @@ public class GetAnalysisAction
 
             log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit
                 + ", Std dev: " + standardDeviation + ", Key: " + key );
-            
+
             log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
         }
 
@@ -213,6 +215,8 @@ public class GetAnalysisAction
 
             maxExceeded = dataValues.size() > DataAnalysisService.MAX_OUTLIERS;
         }
+
+        SessionUtils.setSessionVar( KEY_ANALYSIS_DATA_VALUES, dataValues );
 
         return SUCCESS;
     }

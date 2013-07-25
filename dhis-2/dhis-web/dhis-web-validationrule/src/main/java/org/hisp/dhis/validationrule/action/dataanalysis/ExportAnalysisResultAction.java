@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.action;
+package org.hisp.dhis.validationrule.action.dataanalysis;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -31,6 +31,7 @@ import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -38,30 +39,23 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.SessionUtils;
-import org.hisp.dhis.validation.ValidationResult;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ExportValidationResultAction
-    implements Action
+public class ExportAnalysisResultAction implements Action
 {
     private static final String DEFAULT_TYPE = "pdf";
-
-    private static final String KEY_VALIDATIONRESULT = "validationResult";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
 
     private I18nFormat format;
 
@@ -106,12 +100,8 @@ public class ExportValidationResultAction
         return grid;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
+    @Override
+    public String execute() throws Exception
     {
         grid = generateGrid();
 
@@ -120,44 +110,32 @@ public class ExportValidationResultAction
         return type;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private Grid generateGrid()
     {
-        List<ValidationResult> results = (List<ValidationResult>) SessionUtils.
-            getSessionVar( KEY_VALIDATIONRESULT );
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        List<DeflatedDataValue> results = (List<DeflatedDataValue>) SessionUtils.getSessionVar( GetAnalysisAction.KEY_ANALYSIS_DATA_VALUES );
 
         Grid grid = new ListGrid();
+        grid.setTitle( i18n.getString( "data_analysis_report" ) );
 
-        grid.setTitle( i18n.getString( "data_quality_report" ) );
-
-        if ( organisationUnit != null )
-        {
-            grid.setSubtitle( organisationUnit.getName() );
-        }
-
+        grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "source" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "left_side_description" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "min" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "operator" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "right_side_description" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "max" ), false, false ) );
 
-        for ( ValidationResult validationResult : results )
+        for ( DeflatedDataValue dataValue : results )
         {
-            OrganisationUnit unit = validationResult.getSource();
-            Period period = validationResult.getPeriod();
+            Period period = dataValue.getPeriod();
 
             grid.addRow();
-            grid.addValue( unit.getName() );
+            grid.addValue( dataValue.getDataElementName() );
+            grid.addValue( dataValue.getSourceName() );
             grid.addValue( format.formatPeriod( period ) );
-            grid.addValue( validationResult.getValidationRule().getLeftSide().getDescription() ); //TODO lazy prone
-            grid.addValue( String.valueOf( validationResult.getLeftsideValue() ) );
-            grid.addValue( i18n.getString( validationResult.getValidationRule().getOperator().toString() ) );
-            grid.addValue( String.valueOf( validationResult.getRightsideValue() ) );
-            grid.addValue( validationResult.getValidationRule().getRightSide().getDescription() );
+            grid.addValue( dataValue.getMin() );
+            grid.addValue( dataValue.getValue() );
+            grid.addValue( dataValue.getMax() );
         }
 
         return grid;
