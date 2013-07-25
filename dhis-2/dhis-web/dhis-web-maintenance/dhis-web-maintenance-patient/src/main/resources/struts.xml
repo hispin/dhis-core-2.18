@@ -962,7 +962,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
-			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_UPDATE</param>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
 
 		<action name="getValidationCriteria"
@@ -976,7 +976,7 @@
 			class="org.hisp.dhis.patient.action.validation.UpdateValidationCriteriaAction">
 			<result name="success" type="redirect">validationCriteria.action
 			</result>
-			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_UPDATE</param>
+			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
 
 		<action name="removeValidationCriteria"

@@ -66,12 +66,12 @@
       <param name="javascripts">javascript/general.js,javascript/expression.js,
         javascript/expressionBuilder.js,javascript/updateValidationRuleForm.js
       </param>
-      <param name="requiredAuthorities">F_VALIDATIONRULE_UPDATE</param>
+      <param name="requiredAuthorities">F_VALIDATIONRULE_ADD</param>
     </action>
 
     <action name="updateValidationRule" class="org.hisp.dhis.validationrule.action.UpdateValidationRuleAction">
       <result name="success" type="redirect">validationRule.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_VALIDATIONRULE_UPDATE</param>
+      <param name="requiredAuthorities">F_VALIDATIONRULE_ADD</param>
     </action>
 
     <action name="getFilteredDataElements" class="org.hisp.dhis.validationrule.action.GetFilteredDataElementsAction">
@@ -118,13 +118,13 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-validationrule/updateValidationRuleGroupForm.vm</param>
       <param name="javascripts">javascript/validationRuleGroup.js, javascript/updateValidationRuleGroupForm.js</param>
-      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_UPDATE</param>
+      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_ADD</param>
     </action>
 
     <action name="updateValidationRuleGroup"
       class="org.hisp.dhis.validationrule.action.validationrulegroup.UpdateValidationRuleGroupAction">
       <result name="success" type="redirect">showValidationRuleGroupForm.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_UPDATE</param>
+      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_ADD</param>
     </action>
 
     <action name="validateValidationRuleGroup"
@@ -198,7 +198,7 @@
 
     <action name="editDataValue" class="org.hisp.dhis.validationrule.action.dataanalysis.EditDataValueAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_DELETE</param>
     </action>
 
     <action name="markForFollowup" class="org.hisp.dhis.validationrule.action.dataanalysis.MarkForFollowupAction">

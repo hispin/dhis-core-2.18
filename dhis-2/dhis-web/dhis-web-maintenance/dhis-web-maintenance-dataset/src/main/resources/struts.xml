@@ -63,12 +63,12 @@
       <param name="page">/dhis-web-maintenance-dataset/editSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/section.js</param>
-      <param name="requiredAuthorities">F_SECTION_UPDATE</param>
+      <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
     <action name="updateSection" class="org.hisp.dhis.dataset.action.section.UpdateSectionAction">
       <result name="success" type="redirect">section.action</result>
-      <param name="requiredAuthorities">F_SECTION_UPDATE</param>
+      <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
     <action name="removeSection" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
@@ -81,13 +81,13 @@
       <param name="page">/dhis-web-maintenance-dataset/greySection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/dataSet.js,javascript/section.js</param>
-      <param name="requiredAuthorities">F_SECTION_UPDATE</param>
+      <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
     <action name="saveSectionGreyStatus" class="org.hisp.dhis.dataset.action.section.SaveSectionGreyStatusAction">
       <result name="success" type="velocity">status.vm</result>
       <result name="onExceptionReturn">plainTextError</result>
-      <param name="requiredAuthorities">F_SECTION_UPDATE</param>
+      <param name="requiredAuthorities">F_SECTION_ADD</param>
     </action>
 
     <action name="showSortSectionForm" class="org.hisp.dhis.dataset.action.section.GetSectionListSortOrderAction">
@@ -127,7 +127,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editDataSet.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
     <!-- Validation, add, update, and delete -->
@@ -145,7 +145,7 @@
 
     <action name="updateDataSet" class="org.hisp.dhis.dataset.action.UpdateDataSetAction">
       <result name="success" type="redirect">dataSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
     <action name="delDataSet" class="org.hisp.dhis.dataset.action.DelDataSetAction">
@@ -160,12 +160,12 @@
     <action name="defineDataSetAssociationsForm" class="org.hisp.dhis.dataset.action.GetDataSetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/dataSetAssociations.vm</param>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
     <action name="defineDataSetAssociations" class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction">
       <result name="success" type="redirect">dataSet.action</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
     <!-- DataEntryForm -->

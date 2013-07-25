@@ -56,12 +56,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitForm.vm</param>
       <param name="javascripts">javascript/shortName.js</param>
-      <param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
     </action>
 
     <action name="updateOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.UpdateOrganisationUnitAction">
       <result name="success" type="redirect">organisationUnit.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
     </action>
 
     <action name="removeOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction">
@@ -119,12 +119,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroup.js</param>
-      <param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
     </action>
 
     <action name="updateOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction">
       <result name="success" type="redirect">organisationUnitGroup.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
     </action>
 
     <action name="removeOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.RemoveOrganisationUnitGroupAction">
@@ -174,7 +174,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
 
     <action name="removeOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.RemoveGroupSetAction">
@@ -186,7 +186,7 @@
 
     <action name="updateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction">
       <result name="success" type="redirect">organisationUnitGroupSet.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
 
     <!-- Hierarchy -->

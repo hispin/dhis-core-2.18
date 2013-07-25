@@ -73,7 +73,7 @@
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntrySection.vm</param>
-      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_DELETE</param>
     </action>
 
     <action name="markComplete"
