@@ -394,7 +394,7 @@ public class DefaultPatientRegistrationFormService
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_PHONE_NUMBER ) )
         {
             inputHtml += " class=\"{validate:{phone:true}}\" " + hidden + " " + TAG_CLOSE;
-            inputHtml += " <input type=\"button\" value=\"\" style=\"width:20px;\" class=\"phoneNumberTR\" onclick=\"addCustomPhoneNumberField(\"\");\" />";
+            inputHtml += " <input type=\"button\" value=\"+\" style=\"width:20px;\" class=\"phoneNumberTR\" onclick=\"addCustomPhoneNumberField(\'\');\" />";
         }
         
         // Age fields
