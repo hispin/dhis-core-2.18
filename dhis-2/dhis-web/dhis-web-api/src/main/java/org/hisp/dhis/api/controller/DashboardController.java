@@ -154,9 +154,9 @@ public class DashboardController
         ContextUtils.okResponse( response, "Dashboard item added" );
     }
     
-    @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/move", method = RequestMethod.PUT, consumes = "application/json" )
+    @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/position/{position}", method = RequestMethod.PUT, consumes = "application/json" )
     public void moveItem( HttpServletResponse response, HttpServletRequest request,
-        @PathVariable String dashboardUid, @PathVariable String itemUid, @RequestParam int position ) throws Exception
+        @PathVariable String dashboardUid, @PathVariable String itemUid, @PathVariable int position ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( dashboardUid );
 

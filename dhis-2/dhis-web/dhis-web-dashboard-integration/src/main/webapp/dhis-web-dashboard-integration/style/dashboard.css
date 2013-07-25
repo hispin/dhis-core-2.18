@@ -70,24 +70,44 @@
 
 .item
 {
-  border: 1px solid #d0d0d0;
+  border: 1px solid #ccc;
   width: 405px;
-  height: 310px;
+  height: 328px;
   padding: 6px;
   margin: 0 19px 19px 0;
   border-radius: 3px;
   cursor: pointer;  
-  box-shadow: #ccc 0px 1px 1px 0px;
+  box-shadow: #ddd 0px 1px 1px 0px;
+}
+
+.item:hover
+{
+  border: 1px solid #aaa;
+  box-shadow: #aaa 0px 1px 1px 0px;
+}
+
+.dropItem
+{
+  width: 20px;
+  margin-right: 19px;
+  height: 340px;
+  border: 1px solid #b0d2e8;
+  background-color: #e5f3f9;
+  border-radius: 3px;
+  display: none;
 }
 
 .itemHeader
 {
-  margin: 0 0 2px 2px;
+  margin: 0 0 10px 0;
+  padding: 0 0 3px 0;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: move;
 }
 
 .itemHeader a
 {
-  margin-right: 6px;
+  margin-left: 5px;
 }
 
 .itemList
