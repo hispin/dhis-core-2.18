@@ -90,3 +90,9 @@ function getFollowUpAnalysis()
         $( "div#analysisResult" ).html( data );
     } );
 }
+
+function exportAnalysisResult( type )
+{
+    var url = 'exportAnalysisResult.action?type=' + type;
+    window.location.href = url;
+}

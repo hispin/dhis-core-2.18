@@ -27,11 +27,7 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
@@ -44,7 +40,10 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.validation.comparator.ValidationResultComparator;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Margrethe Store
@@ -82,13 +81,13 @@ public class RunValidationAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
 
     private Integer organisationUnitId;
-    
+
     public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
@@ -124,14 +123,14 @@ public class RunValidationAction
     {
         this.validationRuleGroupId = validationRuleGroupId;
     }
-    
+
     private List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
 
     public List<ValidationResult> getValidationResults()
     {
         return validationResults;
     }
-    
+
     private Grid aggregateResults;
 
     public Grid getAggregateResults()
@@ -145,7 +144,7 @@ public class RunValidationAction
     {
         return maxExceeded;
     }
-    
+
     private OrganisationUnit organisationUnit;
 
     public OrganisationUnit getOrganisationUnit()
@@ -160,7 +159,7 @@ public class RunValidationAction
     public String execute()
     {
         organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        
+
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
 
         if ( validationRuleGroupId == -1 )
@@ -181,13 +180,13 @@ public class RunValidationAction
         }
 
         maxExceeded = validationResults.size() > ValidationRuleService.MAX_VIOLATIONS;
-        
+
         Collections.sort( validationResults, new ValidationResultComparator() );
 
         SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, validationResults );
 
         log.info( "Validation done" );
-        
+
         return SUCCESS;
     }
 }
