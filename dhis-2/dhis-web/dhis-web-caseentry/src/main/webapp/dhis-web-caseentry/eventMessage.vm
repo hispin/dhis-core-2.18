@@ -29,6 +29,16 @@
 				#set( $mark = !$mark )
 			#end
 		#end
+		#foreach( $sms in $programInstances.outboundSms )
+			<tr id="tr${sms.id}" #alternate( $mark )>
+				<td>$format.formatDateTime($!sms.date)</td>
+				<td>$programStageInstance.programStage.displayName</td>
+				<td>$sms.sender</td>
+				<td>$i18n.getString('message')</td>
+				<td>$sms.message</td>
+			</tr>
+			#set( $mark = !$mark )
+		#end
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $sms in $programStageInstance.outboundSms )
 				<tr id="tr${sms.id}" #alternate( $mark )>
