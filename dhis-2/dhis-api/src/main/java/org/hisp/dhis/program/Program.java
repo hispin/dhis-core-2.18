@@ -181,6 +181,58 @@ public class Program
     }
 
     // -------------------------------------------------------------------------
+    // Logic methods
+    // -------------------------------------------------------------------------
+
+    public ProgramStage getProgramStageByStage( int stage )
+    {
+        int count = 1;
+
+        for ( ProgramStage programStage : programStages )
+        {
+            if ( count == stage )
+            {
+                return programStage;
+            }
+
+            count++;
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public ValidationCriteria isValid( Patient patient )
+    {
+        try
+        {
+            for ( ValidationCriteria criteria : patientValidationCriteria )
+            {
+                Object propertyValue = getValueFromPatient( StringUtils.capitalize( criteria.getProperty() ), patient );
+
+                // Compare property value with compare value
+
+                int i = ((Comparable<Object>) propertyValue).compareTo( criteria.getValue() );
+
+                // Return validation criteria if criteria is not met
+
+                if ( i != criteria.getOperator() )
+                {
+                    return criteria;
+                }
+            }
+
+            // Return null if all criteria are met
+
+            return null;
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -377,6 +429,9 @@ public class Program
         this.displayIncidentDate = displayIncidentDate;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     private Object getValueFromPatient( String property, Patient patient )
         throws Exception
     {
@@ -422,58 +477,6 @@ public class Program
         this.blockEntryForm = blockEntryForm;
     }
 
-    // -------------------------------------------------------------------------
-    // Logic methods
-    // -------------------------------------------------------------------------
-
-    public ProgramStage getProgramStageByStage( int stage )
-    {
-        int count = 1;
-
-        for ( ProgramStage programStage : programStages )
-        {
-            if ( count == stage )
-            {
-                return programStage;
-            }
-
-            count++;
-        }
-
-        return null;
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public ValidationCriteria isValid( Patient patient )
-    {
-        try
-        {
-            for ( ValidationCriteria criteria : patientValidationCriteria )
-            {
-                Object propertyValue = getValueFromPatient( StringUtils.capitalize( criteria.getProperty() ), patient );
-
-                // Compare property value with compare value
-
-                int i = ((Comparable<Object>) propertyValue).compareTo( criteria.getValue() );
-
-                // Return validation criteria if criteria is not met
-
-                if ( i != criteria.getOperator() )
-                {
-                    return criteria;
-                }
-            }
-
-            // Return null if all criteria are met
-
-            return null;
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( ex );
-        }
-    }
-
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -517,6 +520,9 @@ public class Program
         this.onlyEnrollOnce = onlyEnrollOnce;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Set<PatientReminder> getPatientReminders()
     {
         return patientReminders;
@@ -577,6 +583,9 @@ public class Program
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getSelectEnrollmentDatesInFuture()
     {
         return selectEnrollmentDatesInFuture;
