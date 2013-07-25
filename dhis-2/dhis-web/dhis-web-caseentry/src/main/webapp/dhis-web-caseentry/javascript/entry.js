@@ -318,7 +318,8 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
                 }
 
                 obj.id = dataValueKey;
-                obj.values[key] = decodeURI( data );
+                data.value = decodeURI(data.value);
+                obj.values[key] = data;
 
                 this.set( 'dataValues', obj );
                 markValue( resultColor );
