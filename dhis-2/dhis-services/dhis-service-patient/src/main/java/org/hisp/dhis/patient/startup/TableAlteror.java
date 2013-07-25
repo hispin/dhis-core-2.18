@@ -221,6 +221,7 @@ public class TableAlteror
         executeSql( "update patientattribute set displayonvisitschedule = false where displayonvisitschedule is null");
         executeSql( "update program set useBirthDateAsIncidentDate = false where useBirthDateAsIncidentDate is null");
         executeSql( "update program set useBirthDateAsEnrollmentDate = false where useBirthDateAsEnrollmentDate is null");
+        executeSql( "update program set selectEnrollmentDatesInFuture = true where selectEnrollmentDatesInFuture is null");
     }
 
     // -------------------------------------------------------------------------

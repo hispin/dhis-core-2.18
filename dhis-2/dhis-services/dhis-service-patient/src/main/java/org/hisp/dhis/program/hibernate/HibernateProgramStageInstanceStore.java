@@ -2524,7 +2524,6 @@ public class HibernateProgramStageInstanceStore
             + "       and psi.executiondate is not null "
             + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "       and prm.whentosend is null "
-            //+ "       and prm.whentosend = " + PatientReminder.SEND_WHEN_TO_EMROLLEMENT
             + "       and prm.sendto = " +  PatientReminder.SEND_TO_USER_GROUP;
     }
 }

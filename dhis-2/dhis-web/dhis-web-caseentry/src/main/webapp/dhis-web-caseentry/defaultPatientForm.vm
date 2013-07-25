@@ -199,7 +199,13 @@
 			<td class='text-column'><label for="dateOfIncident">$encoder.htmlEncode($program.dateOfIncidentDescription) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td colspan='2' class='input-column'><input type="text" id="dateOfIncident" name="dateOfIncident"  class="{validate:{required:true}}"></td>
 		</tr>
-		<script>datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate', false, true );</script>
+		<script>
+			#if($program.selectEnrollmentDatesInFuture=='true')
+				datePickerInRange( 'dateOfIncident' , 'enrollmentDate', false, true );
+			#else
+				datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate', false, true );
+			#end
+		</script>
 	#else
 		<script>datePickerValid( 'enrollmentDate', true );</script>
 	#end

@@ -27,12 +27,10 @@
 
 package org.hisp.dhis.program;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -47,9 +45,12 @@ import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew
@@ -127,14 +128,16 @@ public class Program
     private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
 
     /**
-     * Allow enrolling person to all orgunit no matter what the program is assigned for the orgunit or not
+     * Allow enrolling person to all orgunit no matter what the program is
+     * assigned for the orgunit or not
      */
     private Boolean displayOnAllOrgunit = true;
-    
-    
+
     private Boolean useBirthDateAsIncidentDate;
-    
+
     private Boolean useBirthDateAsEnrollmentDate;
+
+    private Boolean selectEnrollmentDatesInFuture;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -523,7 +526,7 @@ public class Program
     {
         this.patientReminders = patientReminders;
     }
-    
+
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
@@ -572,6 +575,16 @@ public class Program
     public void setUseBirthDateAsEnrollmentDate( Boolean useBirthDateAsEnrollmentDate )
     {
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
+    }
+
+    public Boolean getSelectEnrollmentDatesInFuture()
+    {
+        return selectEnrollmentDatesInFuture;
+    }
+
+    public void setSelectEnrollmentDatesInFuture( Boolean selectEnrollmentDatesInFuture )
+    {
+        this.selectEnrollmentDatesInFuture = selectEnrollmentDatesInFuture;
     }
 
 }

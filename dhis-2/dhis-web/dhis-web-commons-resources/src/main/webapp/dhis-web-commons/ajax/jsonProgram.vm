@@ -18,6 +18,7 @@
 	"remindCompleted": "$!program.remindCompleted",
 	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit",
 	"useBirthDateAsIncidentDate": "$!program.useBirthDateAsIncidentDate",
-	"useBirthDateAsEnrollmentDate": "$!program.useBirthDateAsEnrollmentDate"
+	"useBirthDateAsEnrollmentDate": "$!program.useBirthDateAsEnrollmentDate",
+	"selecteEnrollmentDatesInFuture": "$!program.selecteEnrollmentDatesInFuture"
   }
 }
