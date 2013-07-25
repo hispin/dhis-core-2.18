@@ -5,26 +5,26 @@
 	#end
 	program_SMS_reminder_form +="</select>";	
 	jQuery( document ).ready( function()
-{
-	validation( 'updateProgramForm', function( form ){ 
-		if( duplicate==true) 
-			return false;
-		else{
-			enable('dateOfEnrollmentDescription');
-			enable('dateOfIncidentDescription');
-			form.submit();
-		}
-	}, function(){
-		duplicate = false;
-		var COLOR_RED = '#ff8a8a';
-		jQuery(".daysAllowedSendMessage").each( function( i, a ){ 
-			jQuery(".daysAllowedSendMessage").each( function(j, b){ 
-				if( i!=j && a.value==b.value){
-					jQuery( a ).css( 'background-color', COLOR_RED );
-					jQuery( b ).css( 'background-color', COLOR_RED );
-					duplicate = true;
-				}
-			});
+	{
+		validation( 'updateProgramForm', function( form ){ 
+			if( duplicate==true) 
+				return false;
+			else{
+				enable('dateOfEnrollmentDescription');
+				enable('dateOfIncidentDescription');
+				form.submit();
+			}
+			}, function(){
+				duplicate = false;
+				var COLOR_RED = '#ff8a8a';
+				jQuery(".daysAllowedSendMessage").each( function( i, a ){ 
+					jQuery(".daysAllowedSendMessage").each( function(j, b){ 
+						if( i!=j && a.value==b.value){
+							jQuery( a ).css( 'background-color', COLOR_RED );
+							jQuery( b ).css( 'background-color', COLOR_RED );
+							duplicate = true;
+						}
+					});
 		});
 		
 		var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
