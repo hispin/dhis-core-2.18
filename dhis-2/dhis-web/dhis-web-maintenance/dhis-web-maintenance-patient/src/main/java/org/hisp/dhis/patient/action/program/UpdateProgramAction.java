@@ -76,9 +76,9 @@ public class UpdateProgramAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private UserGroupService userGroupService;
-    
+
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
@@ -246,7 +246,7 @@ public class UpdateProgramAction
     {
         this.whenToSend = whenToSend;
     }
-    
+
     private Boolean useBirthDateAsIncidentDate;
 
     public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
@@ -260,12 +260,19 @@ public class UpdateProgramAction
     {
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
-    
+
     private List<Integer> userGroup = new ArrayList<Integer>();
-    
+
     public void setUserGroup( List<Integer> userGroup )
     {
         this.userGroup = userGroup;
+    }
+
+    private Boolean selectEnrollmentDatesInFuture;
+
+    public void setSelectEnrollmentDatesInFuture( Boolean selectEnrollmentDatesInFuture )
+    {
+        this.selectEnrollmentDatesInFuture = selectEnrollmentDatesInFuture;
     }
 
     // -------------------------------------------------------------------------
@@ -284,7 +291,8 @@ public class UpdateProgramAction
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
         useBirthDateAsIncidentDate = (useBirthDateAsIncidentDate == null) ? false : useBirthDateAsIncidentDate;
         useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
-
+        selectEnrollmentDatesInFuture = (selectEnrollmentDatesInFuture == null) ? false : selectEnrollmentDatesInFuture;
+        
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
@@ -300,7 +308,8 @@ public class UpdateProgramAction
         program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
         program.setUseBirthDateAsIncidentDate( useBirthDateAsIncidentDate );
         program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
-        
+        program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
+
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );

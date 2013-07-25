@@ -256,6 +256,13 @@ public class AddProgramAction
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
 
+    private Boolean selectEnrollmentDatesInFuture;
+
+    public void setSelectEnrollmentDatesInFuture( Boolean selectEnrollmentDatesInFuture )
+    {
+        this.selectEnrollmentDatesInFuture = selectEnrollmentDatesInFuture;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -273,6 +280,7 @@ public class AddProgramAction
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
         useBirthDateAsIncidentDate = (useBirthDateAsIncidentDate == null) ? false : useBirthDateAsIncidentDate;
         useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
+        selectEnrollmentDatesInFuture = (selectEnrollmentDatesInFuture == null) ? false : selectEnrollmentDatesInFuture;
 
         Program program = new Program();
 
@@ -290,6 +298,7 @@ public class AddProgramAction
         program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
         program.setUseBirthDateAsIncidentDate( useBirthDateAsIncidentDate );
         program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
+        program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
 
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {

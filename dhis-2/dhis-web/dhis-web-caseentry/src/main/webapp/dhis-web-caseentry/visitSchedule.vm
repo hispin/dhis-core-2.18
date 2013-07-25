@@ -242,7 +242,12 @@
 
 <script>
 	#if( $programInstance.status==0)
-		datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
+		#if(program.attr("selectEnrollmentDatesInFuture")=='true')
+			datePickerInRange( 'dateOfIncident' , 'enrollmentDate', false, true );
+		#else
+			datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate', false, true );
+		#end
+		
 		jQuery("#incompleteProgram").attr('disabled', true);
 	#else
 		jQuery(":input").attr('disabled', true);

@@ -10,8 +10,6 @@
 		validation( 'programEnrollmentSelectDiv', function(form){
 			validateProgramEnrollment();
 		});
-		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
-		
 		var unSave = false;
 	});	
 </script>
@@ -32,7 +30,8 @@
 					<option value="$program.id" programType='$program.type' 
 						displayIncidentDate='$!program.displayIncidentDate'
 						dateOfEnrollmentDescription='$!program.dateOfEnrollmentDescription'
-						dateOfIncidentDescription='$!program.dateOfIncidentDescription'>$encoder.htmlEncode( $program.displayName )</option>
+						dateOfIncidentDescription='$!program.dateOfIncidentDescription'
+						selectEnrollmentDatesInFuture='$!program.selectEnrollmentDatesInFuture'>$encoder.htmlEncode( $program.displayName )</option>
 					#end
 				</select>
 			</td>

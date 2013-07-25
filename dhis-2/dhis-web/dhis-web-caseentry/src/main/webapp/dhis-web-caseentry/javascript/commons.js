@@ -1267,10 +1267,11 @@ function programOnchange( programId )
 				disable('dateOfIncidentField');
 			}
 		}
-		var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
+		
+		var program = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected');
 		jQuery('#identifierAndAttributeDiv').load("getPatientIdentifierAndAttribute.action", 
 		{
-			id:programId
+			id:program.val()
 		}, function(){
 			if(getFieldValue('useBirthDateAsEnrollmentDate')=='true'){ 
 				setFieldValue("enrollmentDateField", birthDate)
@@ -1282,6 +1283,16 @@ function programOnchange( programId )
 			else{
 				setFieldValue("dateOfIncidentField", "");
 			}
+			
+			jQuery("#dateOfIncidentField").datepicker("destroy");
+			jQuery("#enrollmentDateField").datepicker("destroy");
+			if(program.attr("selectEnrollmentDatesInFuture")=='true'){
+				datePickerInRange( 'dateOfIncidentField' , 'enrollmentDateField', false, true );
+			}
+			else{
+				datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField', false, true );
+			}
+		
 			showById('identifierAndAttributeDiv');
 		});
 	}
