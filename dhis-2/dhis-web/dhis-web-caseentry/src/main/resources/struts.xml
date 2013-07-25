@@ -470,7 +470,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_DELETE,F_DATAVALUE_UPDATE</param>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_DELETE</param>
     </action>
 
     <action name="caseAggregationResultDetails"

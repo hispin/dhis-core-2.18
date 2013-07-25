@@ -66,12 +66,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataElement" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction">
       <result name="success" type="redirect">dataElement.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElement" class="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction">
@@ -87,27 +87,27 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElementGroupEditorView.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="getAssignedDataElementGroups" class="org.hisp.dhis.dd.action.dataelementgroup.GetAssignedGroupsByDataElementAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroups.vm</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="asignGroupsForDataElement" class="org.hisp.dhis.dd.action.dataelementgroup.AssignGroupsForDataElementAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="renameDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.RenameDEGroupNameEditorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="deleteDataElemenGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
@@ -123,7 +123,7 @@
 
     <action name="updateDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <!-- DataElementGroup -->
@@ -162,12 +162,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupForm.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
       <result name="success" type="redirect">dataElementGroup.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUP_PUBLIC_ADD, F_DATAELEMENTGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.ValidateDataElementGroupAction">
@@ -207,12 +207,12 @@
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElementGroupSet.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUPSET_PUBLIC_ADD, F_DATAELEMENTGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
       <result name="success" type="redirect">dataElementGroupSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENTGROUPSET_PUBLIC_ADD, F_DATAELEMENTGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.ValidateDataElementGroupSetAction">
@@ -281,12 +281,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
-      <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
     <action name="updateIndicator" class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
       <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATOR_PUBLIC_ADD, F_INDICATOR_PRIVATE_ADD</param>
     </action>
 
     <action name="validateIndicator" class="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction">
@@ -306,27 +306,27 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditorView.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicatorGroupEditorView.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="getAssignedIndicatorGroups" class="org.hisp.dhis.dd.action.indicatorgroup.GetAssignedIndicatorGroupsAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroups.vm</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="asignGroupsForIndicator" class="org.hisp.dhis.dd.action.indicatorgroup.AssignGroupsForIndicatorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="addIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="renameIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="deleteIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
@@ -342,7 +342,7 @@
 
     <action name="updateIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <!-- IndicatorGroup -->
@@ -381,12 +381,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
       <param name="javascripts">javascript/indicatorGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="updateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUP_PUBLIC_ADD, F_INDICATORGROUP_PRIVATE_ADD</param>
     </action>
 
     <!-- Indicator Group Set -->
@@ -420,7 +420,7 @@
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
       <result name="success" type="redirect">indicatorGroupSet.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_INDICATORGROUPSET_UPDATE</param>
+      <param name="anyAuthorities">F_INDICATORGROUPSET_PUBLIC_ADD, F_INDICATORGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="deleteIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.DeleteIndicatorGroupSetAction">
@@ -470,12 +470,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorTypeForm.vm</param>
       <param name="javascripts">javascript/indicatorType.js</param>
-      <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
+      <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 
     <action name="updateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.UpdateIndicatorTypeAction">
       <result name="success" type="redirect">indicatorType.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
+      <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 
     <action name="validateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.ValidateIndicatorTypeAction">
@@ -525,12 +525,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataDictionaryForm.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
-      <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
+      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
+      <param name="anyAuthorities">F_DATADICTIONARY_PUBLIC_ADD, F_DATADICTIONARY_PRIVATE_ADD</param>
     </action>
 
     <!-- Category -->
@@ -566,14 +566,14 @@
 
     <action name="updateDataElementCategory" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
       <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataElementCategoryForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDataElementCategory" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction">
@@ -608,12 +608,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction">
       <result name="success" type="redirect">categoryOption.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction">
@@ -660,14 +660,14 @@
 
     <action name="updateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataElementCategoryComboForm" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryComboForm.vm</param>
       <param name="javascripts">javascript/categoryCombo.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction">
@@ -723,7 +723,7 @@
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateConceptForm.vm</param>
       <param name="javascripts">javascript/concept.js</param>
-      <param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
+      <param name="requiredAuthorities">F_CONCEPT_ADD</param>
     </action>
 
     <action name="validateAddUpdateConcept" class="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction">
@@ -741,7 +741,7 @@
     <action name="updateConceptInstance" class="org.hisp.dhis.dd.action.concept.UpdateConceptAction">
       <result name="success" type="redirect">concept.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
+      <param name="requiredAuthorities">F_CONCEPT_ADD</param>
     </action>
 
     <action name="removeConcept" class="org.hisp.dhis.dd.action.concept.RemoveConceptAction">

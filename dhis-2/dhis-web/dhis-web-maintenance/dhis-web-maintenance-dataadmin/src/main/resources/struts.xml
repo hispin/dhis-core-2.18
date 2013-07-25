@@ -281,13 +281,13 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateSqlViewForm.vm</param>
       <param name="javascripts">javascript/sqlView.js, javascript/updateSqlViewForm.js</param>
-      <param name="requiredAuthorities">F_SQLVIEW_UPDATE</param>
+      <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
     </action>
 
     <action name="updateSqlViewInstance" class="org.hisp.dhis.dataadmin.action.sqlview.UpdateSqlViewAction">
       <result name="success" type="redirect">showSqlViewListForm.action</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_SQLVIEW_UPDATE</param>
+      <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
     </action>
 
     <action name="removeSqlViewObject" class="org.hisp.dhis.dataadmin.action.sqlview.RemoveSqlViewAction">
@@ -383,13 +383,13 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">
         /dhis-web-maintenance-dataadmin/updateConstantForm.vm</param>
-      <param name="requiredAuthorities">F_CONSTANT_UPDATE</param>
+      <param name="requiredAuthorities">F_CONSTANT_ADD</param>
     </action>
 
     <action name="updateConstant" class="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction">
       <result name="success" type="redirect">constant.action</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_CONSTANT_UPDATE</param>
+      <param name="requiredAuthorities">F_CONSTANT_ADD</param>
     </action>
 
     <action name="validateConstant" class="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction">
@@ -481,7 +481,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeForm.vm</param>
-      <param name="requiredAuthorities">F_ATTRIBUTE_UPDATE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_ADD</param>
     </action>
 
     <action name="showSortAttributeForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListSortOrderAction">
@@ -497,13 +497,13 @@
 
     <action name="saveAttributeSortOrder" class="org.hisp.dhis.dataadmin.action.attribute.SaveAttributeSortOrderAction">
       <result name="success" type="redirect">attribute.action</result>
-      <param name="requiredAuthorities">F_ATTRIBUTE_UPDATE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_ADD</param>
     </action>
 
     <action name="updateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeAction">
       <result name="success" type="redirect">attribute.action</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_ATTRIBUTE_UPDATE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_ADD</param>
     </action>
 
     <action name="removeAttribute" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction">
@@ -578,12 +578,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/updateOptionSetForm.vm</param>
       <param name="javascripts">javascript/optionSet.js</param>
-      <param name="requiredAuthorities">F_OPTIONSET_UPDATE</param>
+      <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
     </action>
    
     <action name="updateOptionSet" class="org.hisp.dhis.dataadmin.action.option.UpdateOptionSetAction">
       <result name="success" type="redirect">optionSet.action</result>
-      <param name="requiredAuthorities">F_OPTIONSET_UPDATE</param>
+      <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
     </action>
     
     <action name="removeOptionSet" class="org.hisp.dhis.dataadmin.action.option.RemoveOptionSetAction">
