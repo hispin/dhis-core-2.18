@@ -334,6 +334,18 @@ public class ExpressionServiceTest
         assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5, false ) );
         assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null, false ) );
     }
+
+    @Test
+    public void testGenerateExpressionMapNullIfNoValues()
+    {
+        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        
+        Map<String, Double> constantMap = new HashMap<String, Double>();
+
+        assertNull( expressionService.generateExpression( expressionA, valueMap, constantMap, null, true ) );
+        assertNull( expressionService.generateExpression( expressionD, valueMap, constantMap, 5, true ) );
+        assertNotNull( expressionService.generateExpression( expressionE, valueMap, constantMap, null, false ) );
+    }
     
     @Test
     public void testGetExpressionValue()

@@ -152,11 +152,25 @@ public class DefaultExpressionService
             return null;
         }
         
-        final double denominatorValue = calculateExpression( generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, days, false ) );
+        final String numeratorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, days, false );
+        
+        if ( numeratorExpression == null )
+        {
+            return null;
+        }
+        
+        final double denominatorValue = calculateExpression( numeratorExpression );
         
         if ( !isEqual( denominatorValue, 0d ) )
         {
-            final double numeratorValue = calculateExpression( generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, days, false ) );
+            final String denominatorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, days, false );
+            
+            if ( denominatorExpression == null )
+            {
+                return null;
+            }
+            
+            final double numeratorValue = calculateExpression( denominatorExpression );
             
             final double annualizationFactor = period != null ? DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() ) : 1d;
             final double factor = indicator.getIndicatorType().getFactor();
