@@ -193,7 +193,7 @@ public class DefaultPatientRegistrationFormService
                 }
                 else if( suggestedMarcher.find())
                 {
-                    value = suggestedMarcher.group( 1 );
+                    value = suggestedMarcher.group( 2 );
                 }
                 
                 if( classMarcher.find() )
