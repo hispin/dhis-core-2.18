@@ -2,6 +2,7 @@
 dhis2.util.namespace( 'dhis2.db' );
 
 dhis2.db.current;
+dhis2.db.currentItem;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
@@ -42,16 +43,20 @@ dhis2.db.tmpl = {
 	hitItem: "<li><a class='viewLink' href='${link}'><img src='../images/${img}.png'>${name}</a>" +
 	         "<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a></li>",
 		         
-	chartItem: "<li><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	chartItem: "<li><div class='dropItem' id='drop${itemId}'></div></li><li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>View full size</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>Share</a></div>" +
-	           "<div class='item'><img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore'></div></li>",
+	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore'></div></li>",
 	           
-	mapItem: "<li><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	mapItem: "<li><div class='dropItem' id='drop${itemId}'></div></li><li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=690\", \"${name}\" )'>View full size</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>Share</a></div>" +
-		     "<div class='item'><img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore'></div></li>"
+		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore'></div></li>"
 };
+
+dhis2.db.dashboardReady = function( id )
+{
+}
 
 dhis2.db.openAddDashboardForm = function()
 {
@@ -167,7 +172,7 @@ dhis2.db.renderDashboardListLoadFirst = function()
 				dhis2.db.current = first;
 			}
 			
-			dhis2.db.renderDashboard( dhis2.db.current );
+			dhis2.db.renderDashboard( dhis2.db.current );		
 		}
 		else
 		{
@@ -228,14 +233,16 @@ dhis2.db.renderDashboard = function( id )
 		{
 			$d.append( $.tmpl( dhis2.db.tmpl.dashboardIntro ) );
 		}
+		
+		dhis2.db.dashboardReady( id );
 	} );
 }
 
 dhis2.db.renderLinkItem = function( $d, itemId, contents, title )
 {
 	var html = 
-		"<li><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
-		"<div class='item'><ul class='itemList'><li class='itemTitle'>" + title + "</li>";
+		"<li><div class='dropItem' id='drop" + itemId + "'></div><div class='item' id='" + itemId + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
+		"<ul class='itemList'><li class='itemTitle'>" + title + "</li>";
 	
 	$.each( contents, function( index, content )
 	{
