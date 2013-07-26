@@ -204,6 +204,7 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.RemoveProgramAction"
@@ -291,6 +292,7 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean
