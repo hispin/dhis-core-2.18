@@ -94,6 +94,8 @@ dhis2.db.openManageDashboardForm = function()
 dhis2.db.addDashboard = function()
 {
 	var item = '{"name": "' + $( "#dashboardName" ).val() + '"}';
+
+	$( "#addDashboardForm" ).dialog( "destroy" );
 	
 	$.ajax( {
 		type: "post",
@@ -101,7 +103,6 @@ dhis2.db.addDashboard = function()
 		data: item,
 		contentType: "application/json",
 		success: function( data, text, xhr ) {
-			$( "#addDashboardForm" ).dialog( "destroy" );
 			$( "#dashboardName" ).val( "" );
 			dhis2.db.renderDashboardListLoadFirst();
 		}
@@ -111,6 +112,8 @@ dhis2.db.addDashboard = function()
 dhis2.db.renameDashboard = function()
 {
 	var name = $( "#dashboardRename" ).val();
+	
+	$( "#manageDashboardForm" ).dialog( "destroy" );
 	
 	if ( undefined !== dhis2.db.current && undefined !== name && name.trim().length > 0 )
 	{
@@ -122,7 +125,6 @@ dhis2.db.renameDashboard = function()
 	    	contentType: "application/json",
 	    	data: data,
 	    	success: function() {
-	    		$( "#manageDashboardForm" ).dialog( "destroy" );
 	    		$( "#dashboardRename" ).val( "" );
 	    		dhis2.db.renderDashboardListLoadFirst();
 	    	}
