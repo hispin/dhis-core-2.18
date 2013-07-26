@@ -126,6 +126,13 @@ public class AboutAction
     {
         return environmentVariable;
     }
+    
+    private String javaIoTmpDir;
+
+    public String getJavaIoTmpDir()
+    {
+        return javaIoTmpDir;
+    }
 
     private String externalDirectory;
 
@@ -256,6 +263,15 @@ public class AboutAction
         try
         {
             javaOpts = System.getenv( "JAVA_OPTS" );
+        }
+        catch ( SecurityException ex )
+        {
+            javaOpts = i18n.getString( "unknown" );
+        }
+        
+        try
+        {
+            javaIoTmpDir = System.getProperty( "java.io.tmpdir" );
         }
         catch ( SecurityException ex )
         {
