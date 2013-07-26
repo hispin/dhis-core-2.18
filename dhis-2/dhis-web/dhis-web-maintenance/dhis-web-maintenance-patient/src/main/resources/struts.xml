@@ -62,14 +62,14 @@
 			<param name="page">/dhis-web-maintenance-patient/updateRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updateRelationshipType"
 			class="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction">
 			<result name="success" type="redirect">relationshipType.action
 			</result>
-			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validateRelationshipType"
@@ -156,14 +156,14 @@
 				/dhis-web-maintenance-patient/updatePatientAttibuteForm.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updatePatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.UpdatePatientAttributeAction">
 			<result name="success" type="redirect">patientAttribute.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validatePatientAttribute"
@@ -199,13 +199,13 @@
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 		
 		<action name="savePatientAttributeVisitSchedule"
 			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction">
 			<result name="success" type="redirect">index.action</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<!-- Program -->
@@ -260,14 +260,14 @@
 			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="updateProgram"
 			class="org.hisp.dhis.patient.action.program.UpdateProgramAction">
 			<result name="success" type="redirect">program.action
 			</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="validateProgram"
@@ -304,14 +304,14 @@
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programAssociations.vm</param>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="defineProgramAssociations"
 			class="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction">
 			<result name="success" type="redirect">program.action
 			</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<!-- ProgramStage -->
@@ -367,7 +367,7 @@
 			<result name="success" type="redirect">
 				programStage.action?id=${programId}
 			</result>
-			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
 		<action name="showUpdateProgramStageForm"
@@ -377,7 +377,7 @@
 				/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
 		<action name="removeProgramStage"
@@ -442,14 +442,14 @@
 				/dhis-web-maintenance-patient/updateProgramStageSectionForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_UPDATE</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
 		</action>
 
 		<action name="updateProgramStageSection"
 			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageSectionAction">
 			<result name="success" type="redirect">programStageSectionList.action?id=${programStageId}
 			</result>
-			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_UPDATE</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
 		</action>
 
 		<action name="getProgramStageSection"
@@ -690,14 +690,14 @@
 			<param name="page">/dhis-web-maintenance-patient/updatePatientAttibuteGroupForm.vm</param>
 			<param name="javascripts">javascript/patientAttributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updatePatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction">
 			<result name="success" type="redirect">patientAttributeGroup.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validatePatientAttributeGroup"
@@ -762,7 +762,7 @@
 				/dhis-web-maintenance-patient/updatePatientIdentifierType.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
 		</action>
 
 		<action name="patientIdentifierType"
@@ -804,7 +804,7 @@
 			class="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction">
 			<result name="success" type="redirect">patientIdentifierType.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
 		</action>
 
 		<!-- Case Aggregation Condition -->
@@ -1002,7 +1002,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programsForValidationCriteriaAssociations.vm</param>
 			<param name="javascripts">javascript/program.js</param>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="defineProgramsForValidationCriteria"
@@ -1010,7 +1010,7 @@
 			<result name="success" type="redirect">
 				validationCriteria.action
 			</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<!-- Program Validation -->
@@ -1166,14 +1166,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramIndicator.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
-			<param name="requiredAuthorities">F_UPDATE_PROGRAM_INDICATOR</param>
+			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
 
 		<action name="updateProgramIndicator"
 			class="org.hisp.dhis.patient.action.programtindicator.UpdateProgramIndicatorAction">
 			<result name="success" type="redirect">programIndicator.action?programId=${programId}
 			</result>
-			<param name="requiredAuthorities">F_UPDATE_PROGRAM_INDICATOR</param>
+			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
 
 		<action name="removeProgramIndicator"

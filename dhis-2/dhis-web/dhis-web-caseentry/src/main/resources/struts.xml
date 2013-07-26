@@ -57,7 +57,7 @@
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
       <param name="stylesheets">style/style.css</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="loadProgramStageInstances"
@@ -76,14 +76,14 @@
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
       <param name="stylesheets">style/style.css</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="completeDataEntry"
       class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="programcompleted" type="velocity-json">/dhis-web-caseentry/jsonResponseProgramCompleted.vm</result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="uncompleteDataEntry"
@@ -91,7 +91,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="saveExecutionDate"
@@ -103,13 +103,13 @@
         /dhis-web-commons/ajax/jsonResponseInput.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="registerIrregularEncounter"
       class="org.hisp.dhis.caseentry.action.caseentry.RegisterIrregularEncounterAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="cacheManifest" class="org.hisp.dhis.commons.action.NoAction">
@@ -150,7 +150,7 @@
       <result name="input" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseInput.vm
       </result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="loadAnonymousPrograms"
@@ -238,7 +238,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 	
 	<action name="saveProgramInstanceComment"
@@ -246,7 +246,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <!-- save value -->
@@ -258,14 +258,14 @@
         /dhis-web-caseentry/responseInput.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
     
      <action name="saveCoordinatesEvent"
       class="org.hisp.dhis.caseentry.action.caseentry.SaveCoordinatesEventAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <!-- save providing-facility -->
@@ -275,7 +275,7 @@
       <result name="success" type="velocity">status.vm</result>
       <result name="input" type="velocity">status.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <!-- Multi DataEntry -->
@@ -328,7 +328,7 @@
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
       <param name="javascripts">../dhis-web-commons/javascripts/date.js</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="completeProgramStageDataEntry"
@@ -336,7 +336,7 @@
       <result name="success" type="redirect">
         getDataRecords.action?programId=${programId}
       </result>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <!-- Single-event DataEntry -->
@@ -369,13 +369,13 @@
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/addSingleEventRegistration.vm</param>
       <param name="stylesheets">style/style.css</param>
-      <param name="requiredAuthorities">F_PATIENT_ADD,F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_ADD,F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="saveValues"
       class="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction">
       <result name="success" type="velocity-xml">status.vm</result>
-      <param name="requiredAuthorities">F_PATIENT_ADD,F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_PATIENT_ADD,F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <!-- Report -->
@@ -541,7 +541,7 @@
       <param name="javascripts">
       	../dhis-web-commons/javascripts/jQuery/jquery-barcode.min.js
       </param>
-      <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+      <param name="requiredAuthorities">F_PATIENT_ADD</param>
     </action>
 
     <action name="updatePatient"
@@ -549,7 +549,7 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+      <param name="requiredAuthorities">F_PATIENT_ADD</param>
     </action>
 
     <action name="validatePatient"
@@ -685,7 +685,7 @@
     <action name="savePatientIdentifierAndAttribute"
       class="org.hisp.dhis.caseentry.action.patient.SaveIdentifierAndAttributeAction">
       <result name="success" type="velocity-xml">status.vm</result>
-      <param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
+      <param name="requiredAuthorities">F_PATIENT_ADD, F_PROGRAM_ENROLLMENT</param>
     </action>
 
     <action name="setProgramInstanceStatus"
@@ -698,7 +698,7 @@
       class="org.hisp.dhis.caseentry.action.patient.GetProgramAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/identifierAndAttributeForm.vm</param>
-      <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+      <param name="requiredAuthorities">F_PATIENT_ADD</param>
     </action>
 
     <action name="getVisitSchedule"
