@@ -35,7 +35,8 @@ function showAddRelationshipPatient( patientId, isShowPatientList )
 	jQuery('#loaderDiv').show();
 	jQuery('#addRelationshipDiv').load('showAddRelationshipPatient.action',
 		{
-			id:patientId
+			id:patientId,
+			programId: getFieldValue('programIdAddPatient')
 		}, function()
 		{
 			showById('addRelationshipDiv');
