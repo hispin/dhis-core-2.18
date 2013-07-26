@@ -7,6 +7,8 @@ dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
+// TODO drop at end of list
+
 //------------------------------------------------------------------------------
 // Document ready
 //------------------------------------------------------------------------------
@@ -52,13 +54,13 @@ dhis2.db.tmpl = {
 	           "<li><div class='item' id='${itemId}' data-position='${position}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>View full size</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>Share</a></div>" +
-	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore'></div></li>",
+	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore or drag to new position'></div></li>",
 	           
 	mapItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
 	         "<li><div class='item' id='${itemId}' data-position='${position}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=690\", \"${name}\" )'>View full size</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>Share</a></div>" +
-		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore'></div></li>"
+		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore or drag to new position'></div></li>"
 };
 
 dhis2.db.dashboardReady = function( id )
@@ -307,7 +309,7 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position )
 	var html = 
 		"<li><div class='dropItem' id='drop" + itemId + "' data-position='" + position + "'></div>" +
 		"<div class='item' id='" + itemId + "' data-position='" + position + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
-		"<ul class='itemList'><li class='itemTitle'>" + title + "</li>";
+		"<ul class='itemList'><li class='itemTitle' title='Drag to new position'>" + title + "</li>";
 	
 	$.each( contents, function( index, content )
 	{
