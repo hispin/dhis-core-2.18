@@ -45,6 +45,8 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -98,11 +100,11 @@ public class AddProgramAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private List<Integer> whenToSend = new ArrayList<Integer>();
-
-    public void setWhenToSend( List<Integer> whenToSend )
+    private UserGroupService userGroupService;
+    
+    public void setUserGroupService( UserGroupService userGroupService )
     {
-        this.whenToSend = whenToSend;
+        this.userGroupService = userGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -255,6 +257,20 @@ public class AddProgramAction
     {
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
+    
+    private List<Integer> userGroup = new ArrayList<Integer>();
+    
+    public void setUserGroup( List<Integer> userGroup )
+    {
+        this.userGroup = userGroup;
+    }
+
+    private List<Integer> whenToSend = new ArrayList<Integer>();
+
+    public void setWhenToSend( List<Integer> whenToSend )
+    {
+        this.whenToSend = whenToSend;
+    }
 
     private Boolean selectEnrollmentDatesInFuture;
 
@@ -262,7 +278,6 @@ public class AddProgramAction
     {
         this.selectEnrollmentDatesInFuture = selectEnrollmentDatesInFuture;
     }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -350,6 +365,8 @@ public class AddProgramAction
             reminder.setDateToCompare( datesToCompare.get( i ) );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
+            reminder.setUserGroup( selectedUserGroup );
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );

@@ -27,7 +27,9 @@
 
 package org.hisp.dhis.patient.action.program;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
@@ -35,6 +37,8 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -69,7 +73,13 @@ public class ShowAddProgramFormAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-
+    
+    private UserGroupService userGroupService;
+    
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -86,6 +96,13 @@ public class ShowAddProgramFormAction
     public Collection<PatientAttribute> getAvailableAttributes()
     {
         return availableAttributes;
+    }
+    
+    private List<UserGroup> userGroups;
+    
+    public List<UserGroup> getUserGroups()
+    {
+        return userGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -105,6 +122,8 @@ public class ShowAddProgramFormAction
             availableIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
             availableAttributes.removeAll( program.getPatientAttributes() );
         }
+        
+        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
         
         return SUCCESS;
     }
