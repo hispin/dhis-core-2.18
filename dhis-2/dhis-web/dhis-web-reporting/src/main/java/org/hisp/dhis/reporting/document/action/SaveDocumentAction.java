@@ -144,11 +144,13 @@ public class SaveDocumentAction
 
             File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
 
+            log.info( "Destination: '" + destination.getAbsolutePath() + "'" );
+            
             boolean fileMoved = file.renameTo( destination );
 
             if ( !fileMoved )
             {
-                throw new RuntimeException( "File was not uploaded" );
+                throw new RuntimeException( "File could not be moved to: '" + destination.getAbsolutePath() + "'" );
             }
 
             url = fileName;

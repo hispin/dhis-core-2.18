@@ -13,6 +13,7 @@
   <dt>$i18n.getString( "database_user" ):</dt><dd>$!info.user</dd>
   #if ( $currentUserIsSuper )
   <dt>$i18n.getString( "java_opts" ):</dt><dd>$!javaOpts</dd>
+  <dt>$i18n.getString( "java_tmp_dir" ):</dt><dd>$!javaIoTmpDir</dd>
   <dt>$i18n.getString( "java_version" ):</dt><dd>$systemProperties.get( "java.version" )</dd>
   <dt>$i18n.getString( "java_vendor" ):</dt><dd>$systemProperties.get( "java.vendor" )</dd>
   <dt>$i18n.getString( "os_name" ):</dt><dd>$systemProperties.get( "os.name" )</dd>
