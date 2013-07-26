@@ -219,6 +219,8 @@ public class HibernateProgramInstanceStore
         sql += " UNION ( " + sendMessageToOrgunitRegisteredSql( dateToCompare ) + " ) ";
         
         sql += " UNION ( " + sendMessageToUsersSql( dateToCompare ) + " ) ";
+        
+        sql += " UNION ( " + sendMessageToUserGroupsSql( dateToCompare ) + " ) ";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
@@ -267,6 +269,12 @@ public class HibernateProgramInstanceStore
             schedulingProgramObjects.add( schedulingProgramObject );
         }
 
+        System.out.println(schedulingProgramObjects.size());
+        for( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
+        {
+            System.out.println(schedulingProgramObject.getProgramInstanceId());
+        }
+        
         return schedulingProgramObjects;
     }
     
@@ -364,23 +372,20 @@ public class HibernateProgramInstanceStore
             + PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
     }
     
-    private String sendMessageToUserGroupsSql()
+    private String sendMessageToUserGroupsSql( String dateToCompare )
     {
+        System.out.println("String: "+dateToCompare);
         return "select pi.programinstanceid, uif.phonenumber,prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName ,"
-            + " pg.name as programName, ps.name as programStageName, psi.duedate, "
-            + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
+            + " pg.name as programName, pi.dateofincident, pi.enrollmentdate, (DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
+            + "(DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "  from patient p INNER JOIN programinstance pi "
             + "       ON p.patientid=pi.patientid "
-            + "   INNER JOIN programstageinstance psi "
-            + "       ON psi.programinstanceid=pi.programinstanceid "
             + "   INNER JOIN program pg "
             + "       ON pg.programid=pi.programid "
-            + "   INNER JOIN programstage ps "
-            + "       ON ps.programstageid=psi.programstageid "
-            + "   INNER JOIN patientreminder prm "
-            + "       ON prm.programstageid = ps.programstageid "
             + "   INNER JOIN organisationunit org "
             + "       ON org.organisationunitid = p.organisationunitid "
+            + "   INNER JOIN patientreminder prm "
+            + "       ON prm.programid = pg.programid "
             + "   INNER JOIN usergroupmembers ugm "
             + "       ON ugm.usergroupid = prm.usergroupid "
             + "   INNER JOIN userinfo uif "
@@ -390,10 +395,8 @@ public class HibernateProgramInstanceStore
             + "       and uif.phonenumber is not NULL and uif.phonenumber != '' "
             + "       and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "       and pg.type=1 and prm.daysallowedsendmessage is not null "
-            + "       and psi.executiondate is not null "
-            + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
+            + "       and (  DATE(now()) - DATE("+ dateToCompare +") ) = prm.daysallowedsendmessage "
             + "       and prm.whentosend is null "
-            //+ "       and prm.whentosend = " + PatientReminder.SEND_WHEN_TO_EMROLLEMENT
             + "       and prm.sendto = " +  PatientReminder.SEND_TO_USER_GROUP;
     }
 }
