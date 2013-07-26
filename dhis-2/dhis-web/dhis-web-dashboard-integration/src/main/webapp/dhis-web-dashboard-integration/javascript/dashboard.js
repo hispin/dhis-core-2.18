@@ -6,6 +6,10 @@ dhis2.db.currentItem;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
+//------------------------------------------------------------------------------
+// Document ready
+//------------------------------------------------------------------------------
+
 $( document ).ready( function()
 {
 	$( "#interpretationArea" ).autogrow();
@@ -43,12 +47,14 @@ dhis2.db.tmpl = {
 	hitItem: "<li><a class='viewLink' href='${link}'><img src='../images/${img}.png'>${name}</a>" +
 	         "<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a></li>",
 		         
-	chartItem: "<li><div class='dropItem' id='drop${itemId}'></div></li><li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	chartItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
+	           "<li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>View full size</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>Share</a></div>" +
 	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore'></div></li>",
 	           
-	mapItem: "<li><div class='dropItem' id='drop${itemId}'></div></li><li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	mapItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
+	         "<li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=690\", \"${name}\" )'>View full size</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>Share</a></div>" +
 		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore'></div></li>"
@@ -56,6 +62,59 @@ dhis2.db.tmpl = {
 
 dhis2.db.dashboardReady = function( id )
 {
+	$( ".item" ).draggable( {
+	    containment: "#contentDiv",
+	    stack: ".item",
+	    revert: true,
+	    start: dhis2.db.dragStart,
+	    stop: dhis2.db.dragStop
+	} );
+	
+	$( ".item" ).droppable( {
+		over: dhis2.db.dropOver,
+		out: dhis2.db.dropOut
+	} );
+	
+	$( ".dropItem" ).droppable( {
+		accept: ".item",
+		drop: dhis2.db.dropItem
+	} );
+}
+
+dhis2.db.dragStart = function( event, ui ) {	
+	$( this ).css( "opacity", "0.6" );
+	dhis2.db.currentItem = $( this ).attr( "id" );
+}
+
+dhis2.db.dragStop = function( event, ui ) {
+	$( this ).css( "opacity", "1.0" );
+	$( ".dropItem" ).hide();
+	dhis2.db.currentItem = undefined;
+}
+
+dhis2.db.dropOver = function( event, ui ) {
+	var itemId = $( this ).attr( "id" );
+	var dropItemId = "drop" + itemId;
+	$( "#" + dropItemId ).show();
+}
+
+dhis2.db.dropOut = function( event, ui ) {
+	var itemId = $( this ).attr( "id" );
+	var dropItemId = "drop" + itemId;
+	$( "#" + dropItemId ).hide();
+}
+
+dhis2.db.dropItem = function( event, ui ) {
+	var position = $( this ).data( "position" );
+	dhis2.db.moveItem( dhis2.db.currentItem, position );
+}
+
+dhis2.db.moveItem = function( id, position ) {
+	var url = "../api/dashboards/" + dhis2.db.current + "/items/" + id + "/position/" + position;
+	
+	$.post( url, function() {
+		dhis2.db.renderDashboard( dhis2.db.current );
+	} );
 }
 
 dhis2.db.openAddDashboardForm = function()
@@ -207,11 +266,11 @@ dhis2.db.renderDashboard = function( id )
 			{
 				if ( "chart" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name } ) )
+					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, "position": index } ) )
 				}
 				else if ( "map" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name } ) )
+					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, "position": index } ) )
 				}
 				else if ( "users" == item.type )
 				{

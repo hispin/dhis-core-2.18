@@ -154,7 +154,7 @@ public class DashboardController
         ContextUtils.okResponse( response, "Dashboard item added" );
     }
     
-    @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/position/{position}", method = RequestMethod.PUT, consumes = "application/json" )
+    @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/position/{position}", method = RequestMethod.POST )
     public void moveItem( HttpServletResponse response, HttpServletRequest request,
         @PathVariable String dashboardUid, @PathVariable String itemUid, @PathVariable int position ) throws Exception
     {
@@ -167,7 +167,7 @@ public class DashboardController
         }
         
         if ( dashboard.moveItem( itemUid, position ) )
-        {        
+        {
             dashboardService.updateDashboard( dashboard );
             
             ContextUtils.okResponse( response, "Dashboard item moved" );
