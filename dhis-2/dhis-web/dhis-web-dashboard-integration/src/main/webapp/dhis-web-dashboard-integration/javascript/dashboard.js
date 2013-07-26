@@ -3,6 +3,7 @@ dhis2.util.namespace( 'dhis2.db' );
 
 dhis2.db.current;
 dhis2.db.currentItem;
+dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
@@ -48,13 +49,13 @@ dhis2.db.tmpl = {
 	         "<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a></li>",
 		         
 	chartItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
-	           "<li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	           "<li><div class='item' id='${itemId}' data-position='${position}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>View full size</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>Share</a></div>" +
 	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore'></div></li>",
 	           
 	mapItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
-	         "<li><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	         "<li><div class='item' id='${itemId}' data-position='${position}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=690\", \"${name}\" )'>View full size</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>Share</a></div>" +
 		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore'></div></li>"
@@ -84,6 +85,7 @@ dhis2.db.dashboardReady = function( id )
 dhis2.db.dragStart = function( event, ui ) {	
 	$( this ).css( "opacity", "0.6" );
 	dhis2.db.currentItem = $( this ).attr( "id" );
+	dhis2.db.currentItemPos = $( this ).data( "position" );
 }
 
 dhis2.db.dragStop = function( event, ui ) {
@@ -95,7 +97,13 @@ dhis2.db.dragStop = function( event, ui ) {
 dhis2.db.dropOver = function( event, ui ) {
 	var itemId = $( this ).attr( "id" );
 	var dropItemId = "drop" + itemId;
-	$( "#" + dropItemId ).show();
+	var thisPos = parseInt( $( this ).data( "position" ) );
+	var currentPos = parseInt( dhis2.db.currentItemPos );
+	
+	if ( currentPos != thisPos && parseInt( currentPos + 1 ) != thisPos )
+	{
+		$( "#" + dropItemId ).show();
+	}
 }
 
 dhis2.db.dropOut = function( event, ui ) {
@@ -105,16 +113,9 @@ dhis2.db.dropOut = function( event, ui ) {
 }
 
 dhis2.db.dropItem = function( event, ui ) {
-	var position = $( this ).data( "position" );
+	var position = parseInt( $( this ).data( "position" ) );
+	position++;
 	dhis2.db.moveItem( dhis2.db.currentItem, position );
-}
-
-dhis2.db.moveItem = function( id, position ) {
-	var url = "../api/dashboards/" + dhis2.db.current + "/items/" + id + "/position/" + position;
-	
-	$.post( url, function() {
-		dhis2.db.renderDashboard( dhis2.db.current );
-	} );
 }
 
 dhis2.db.openAddDashboardForm = function()
@@ -264,29 +265,31 @@ dhis2.db.renderDashboard = function( id )
 		{
 			$.each( data.items, function( index, item )
 			{
+				var position = index - 1;
+				
 				if ( "chart" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, "position": index } ) )
+					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, "position": position } ) )
 				}
 				else if ( "map" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, "position": index } ) )
+					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, "position": position } ) )
 				}
 				else if ( "users" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users" );
+					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", position );
 				}
 				else if ( "reportTables" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables" );
+					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables", position );
 				}
 				else if ( "reports" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports" );
+					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports", position );
 				}
 				else if ( "resources" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources" );
+					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", position );
 				}
 			} );
 		}
@@ -299,10 +302,11 @@ dhis2.db.renderDashboard = function( id )
 	} );
 }
 
-dhis2.db.renderLinkItem = function( $d, itemId, contents, title )
+dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position )
 {
 	var html = 
-		"<li><div class='dropItem' id='drop" + itemId + "'></div><div class='item' id='" + itemId + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
+		"<li><div class='dropItem' id='drop" + itemId + "' data-position='" + position + "'></div>" +
+		"<div class='item' id='" + itemId + "' data-position='" + position + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
 		"<ul class='itemList'><li class='itemTitle'>" + title + "</li>";
 	
 	$.each( contents, function( index, content )
@@ -315,6 +319,14 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title )
 	html += "</ul></div></li>";
 	
 	$d.append( html );
+}
+
+dhis2.db.moveItem = function( id, position ) {
+	var url = "../api/dashboards/" + dhis2.db.current + "/items/" + id + "/position/" + position;
+	
+	$.post( url, function() {
+		dhis2.db.renderDashboard( dhis2.db.current );
+	} );
 }
 
 dhis2.db.addItemContent = function( type, id )
