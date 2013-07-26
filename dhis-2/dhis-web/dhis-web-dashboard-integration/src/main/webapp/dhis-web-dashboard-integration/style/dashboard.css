@@ -78,6 +78,7 @@
   border-radius: 3px;
   cursor: pointer;  
   box-shadow: #ddd 0px 1px 1px 0px;
+  background-color: #fff;
 }
 
 .item:hover
@@ -88,11 +89,12 @@
 
 .dropItem
 {
-  width: 405px;
-  margin-right: 19px;
-  height: 340px;
-  border: 1px solid #b0d2e8;
-  background-color: #e5f3f9;
+  width: 205px;
+  height: 328px;
+  padding: 6px;
+  margin: 0 19px 19px 0;
+  border: 1px dashed #9ec5df;
+  background-color: #e9f5fb;
   border-radius: 3px;
   display: none;
 }
