@@ -364,4 +364,36 @@ public class HibernateProgramInstanceStore
             + PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
     }
     
+    private String sendMessageToUserGroupsSql()
+    {
+        return "select pi.programinstanceid, uif.phonenumber,prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName ,"
+            + " pg.name as programName, ps.name as programStageName, psi.duedate, "
+            + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
+            + "  from patient p INNER JOIN programinstance pi "
+            + "       ON p.patientid=pi.patientid "
+            + "   INNER JOIN programstageinstance psi "
+            + "       ON psi.programinstanceid=pi.programinstanceid "
+            + "   INNER JOIN program pg "
+            + "       ON pg.programid=pi.programid "
+            + "   INNER JOIN programstage ps "
+            + "       ON ps.programstageid=psi.programstageid "
+            + "   INNER JOIN patientreminder prm "
+            + "       ON prm.programstageid = ps.programstageid "
+            + "   INNER JOIN organisationunit org "
+            + "       ON org.organisationunitid = p.organisationunitid "
+            + "   INNER JOIN usergroupmembers ugm "
+            + "       ON ugm.usergroupid = prm.usergroupid "
+            + "   INNER JOIN userinfo uif "
+            + "       ON uif.userinfoid = ugm.userid "
+            + "  WHERE pi.status= "
+            + ProgramInstance.STATUS_ACTIVE
+            + "       and uif.phonenumber is not NULL and uif.phonenumber != '' "
+            + "       and prm.templatemessage is not NULL and prm.templatemessage != '' "
+            + "       and pg.type=1 and prm.daysallowedsendmessage is not null "
+            + "       and psi.executiondate is not null "
+            + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
+            + "       and prm.whentosend is null "
+            //+ "       and prm.whentosend = " + PatientReminder.SEND_WHEN_TO_EMROLLEMENT
+            + "       and prm.sendto = " +  PatientReminder.SEND_TO_USER_GROUP;
+    }
 }

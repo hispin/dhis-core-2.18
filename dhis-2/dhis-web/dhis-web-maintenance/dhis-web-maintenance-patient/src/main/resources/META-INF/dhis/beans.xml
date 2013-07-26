@@ -179,6 +179,8 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="userGroupService" 
+			ref="org.hisp.dhis.user.UserGroupService" />	
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"
@@ -218,6 +220,7 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean
