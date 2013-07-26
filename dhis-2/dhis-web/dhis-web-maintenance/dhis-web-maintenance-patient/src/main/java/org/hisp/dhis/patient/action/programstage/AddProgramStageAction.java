@@ -41,6 +41,8 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -82,6 +84,13 @@ public class AddProgramStageAction
     public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
+    }
+    
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -232,7 +241,14 @@ public class AddProgramStageAction
     {
         this.allowDateInFutures = allowDateInFutures;
     }
+    
+    private List<Integer> userGroup = new ArrayList<Integer>();
 
+    public void setUserGroup( List<Integer> userGroup )
+    {
+        this.userGroup = userGroup;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -270,6 +286,8 @@ public class AddProgramStageAction
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
+            reminder.setUserGroup( selectedUserGroup );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );
