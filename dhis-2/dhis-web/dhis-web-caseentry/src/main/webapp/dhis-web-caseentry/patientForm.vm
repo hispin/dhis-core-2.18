@@ -1,3 +1,7 @@
+<script>
+	var phoneNumberAreaCode =  '$!encoder.jsEscape( $phoneNumberAreaCode , "'" )';
+</script>
+
 #if($!customRegistrationForm)
 	$customRegistrationForm
 #elseif($!patientRegistrationForm)
@@ -63,7 +67,7 @@
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 		<td class="input-column">
 			<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}"/>
-			<input type="button" value='+' style='width:20px;' onclick='addPhoneNumberField($!phoneNumberAreaCode);' />
+			<input type="button" value='+' style='width:20px;' onclick='addPhoneNumberField(phoneNumberAreaCode);' />
 		</td>
 	</tr>
 
@@ -264,7 +268,6 @@
 #end
 
 <script>
-	var phoneNumberAreaCode = "$!phoneNumberAreaCode";
 	#if($!patient.dobType && $!patient.dobType=='A') 
 		showById('age');
 		hideById('birthDate');
@@ -273,19 +276,21 @@
 		showById('birthDate');
 	#end
 	
-	var phoneNumbers = "$!patient.phoneNumber".split(';');
-	setFieldValue('phoneNumber',phoneNumbers[0]);
-	#if($!customRegistrationForm)
-		for( var i = 1;i<phoneNumbers.length;i++ )
-		{
-			addCustomPhoneNumberField(phoneNumbers[i]);
-		}
-	#elseif( $!patient.phoneNumber && $patient.phoneNumber!="")
-		for( var i = 1;i<phoneNumbers.length;i++ )
-		{
-			addPhoneNumberField(phoneNumbers[i]);
-		}
-	#else 
+	#if( $!patient.phoneNumber )
+		var phoneNumbers = '$!encoder.jsEscape( $patient.phoneNumber , "'" )';
+		setFieldValue('phoneNumber',phoneNumbers[0]);
+		#if($!customRegistrationForm)
+			for( var i = 1;i<phoneNumbers.length;i++ )
+			{
+				addCustomPhoneNumberField(phoneNumbers[i]);
+			}
+		#elseif( $!patient.phoneNumber && $patient.phoneNumber!="")
+			for( var i = 1;i<phoneNumbers.length;i++ )
+			{
+				addPhoneNumberField(phoneNumbers[i]);
+			}
+		#end
+	#else
 		setFieldValue('phoneNumber',phoneNumberAreaCode)
 	#end
 </script>

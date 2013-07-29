@@ -210,15 +210,18 @@ public class Program
             {
                 Object propertyValue = getValueFromPatient( StringUtils.capitalize( criteria.getProperty() ), patient );
 
-                // Compare property value with compare value
-
-                int i = ((Comparable<Object>) propertyValue).compareTo( criteria.getValue() );
-
-                // Return validation criteria if criteria is not met
-
-                if ( i != criteria.getOperator() )
+                if ( propertyValue != null )
                 {
-                    return criteria;
+                    // Compare property value with compare value
+
+                    int i = ((Comparable<Object>) propertyValue).compareTo( criteria.getValue() );
+
+                    // Return validation criteria if criteria is not met
+
+                    if ( i != criteria.getOperator() )
+                    {
+                        return criteria;
+                    }
                 }
             }
 
