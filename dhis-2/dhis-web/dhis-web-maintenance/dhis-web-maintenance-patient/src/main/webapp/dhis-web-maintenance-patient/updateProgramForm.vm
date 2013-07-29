@@ -6,7 +6,9 @@
 	program_SMS_reminder_form +="</select>";	
 	jQuery( document ).ready( function()
 	{
-		validation( 'updateProgramForm', function( form ){ 
+		showHideUserGroup();
+		
+		validation( 'updateProgramForm', function( form ){
 			if( duplicate==true) 
 				return false;
 			else{
@@ -84,8 +86,17 @@
 			});
 		};
 	});
-	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );	
+	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
 });
+	function onchangeUserGroup( id )
+	{
+		var value = document.getElementById( 'sendTo'+id ).value;
+		hideById( 'tr'+id );
+		if ( value == 5) {
+			showById( 'tr'+id );
+		}
+	};
+	
 </script>
 
 <h3>$i18n.getString( "edit_program" )</h3>
@@ -334,7 +345,7 @@
 				<tr name="tr$index">
 					<td><label>$i18n.getString( "send_to" )</label></td>
 					<td>
-						<select type="text" id="sendTo$index" name="sendTo$index" class="sendTo {validate:{required:true,number:true}}">
+						<select type="text" id="sendTo$index" name="sendTo$index" class="sendTo {validate:{required:true,number:true}}" onchange="onchangeUserGroup( $index )">
 							<option value="1" #if($!reminder.sendTo==1) selected #end >$i18n.getString("patient")</option>
 							<option value="2" #if($!reminder.sendTo==2) selected #end >$i18n.getString("health_worker")</option>
 							<option value="3" #if($!reminder.sendTo==3) selected #end >$i18n.getString("orgunit_registered")</option>
@@ -343,7 +354,7 @@
 						</select>
 					</td>
 				</tr>
-				<tr name="tr$index">
+				<tr name="tr$index" id="tr$index">
 					<td><label>$i18n.getString( "user_group" )</label></td>
 					<td>
 						<select type="text" id="userGroup$index" name="userGroup$index" class="userGroup">
