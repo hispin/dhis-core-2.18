@@ -268,12 +268,6 @@ public class HibernateProgramInstanceStore
 
             schedulingProgramObjects.add( schedulingProgramObject );
         }
-
-        System.out.println(schedulingProgramObjects.size());
-        for( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
-        {
-            System.out.println(schedulingProgramObject.getProgramInstanceId());
-        }
         
         return schedulingProgramObjects;
     }
@@ -374,7 +368,6 @@ public class HibernateProgramInstanceStore
     
     private String sendMessageToUserGroupsSql( String dateToCompare )
     {
-        System.out.println("String: "+dateToCompare);
         return "select pi.programinstanceid, uif.phonenumber,prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName ,"
             + " pg.name as programName, pi.dateofincident, pi.enrollmentdate, (DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "(DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
