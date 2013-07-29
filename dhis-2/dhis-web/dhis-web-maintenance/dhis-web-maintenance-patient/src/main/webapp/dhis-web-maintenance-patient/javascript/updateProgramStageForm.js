@@ -1,6 +1,7 @@
 var duplicate = false;
 jQuery( document ).ready( function()
 {
+	showHideUserGroup();
 	validation( 'updateProgramStageForm', function( form ){ 
 		if( duplicate==true) 
 			return false;
@@ -110,3 +111,14 @@ jQuery( document ).ready( function()
 		}
 	});
 });
+function showHideUserGroup()
+{
+	jQuery(".sendTo").each( function( i, item ){
+		var numb = i+1;
+		if( item.value == 5){
+			showById( 'tr'+numb );
+		}
+		else
+			hideById ( 'tr'+numb );
+	});
+}
