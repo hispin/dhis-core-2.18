@@ -2152,6 +2152,10 @@ function removePhoneNumberField(_this)
 
 function addCustomPhoneNumberField( phoneNumber )
 {
+	if(phoneNumber=='')
+	{
+		phoneNumber = phoneNumberAreaCode;
+	}
 	var idx = $('.phoneNumberTR').length + 1;
 	$('.phoneNumberTR').last().after(
 		'<br/><input type="text" id="phoneNumber" name="phoneNumber" class="idxPhoneNumber' + idx + ' {validate:{phone:true}}" value=\"' + phoneNumber + '\" />'
