@@ -293,7 +293,7 @@ function generateTemplateMessageForm()
 				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_send_to + '</label></td>'
 				+ 	'<td>'
-				+ 		'<select id="sendTo' + rowId + '" name="sendTo' + rowId + '" class="sendTo" >'
+				+ 		'<select id="sendTo' + rowId + '" name="sendTo' + rowId + '" class="sendTo" onchange="onchangeUserGroup('+ rowId +')">'
 				+ 			'<option value="1">' + i18n_patient + '</option>'
 				+ 			'<option value="2">' + i18n_health_worker + '</option>'
 				+ 			'<option value="3">' + i18n_orgunit_registered + '</option>'
@@ -302,7 +302,7 @@ function generateTemplateMessageForm()
 				+ 		'</select>'
 				+	'</td>'
 				+ '/<tr>'
-				+ '<tr name="tr' + rowId + '">'
+				+ '<tr name="tr' + rowId + '" id="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_user_group + '</label></td>'
 				+ 	'<td>'
 				+	program_stage_SMS_reminder_form
@@ -327,6 +327,7 @@ function generateTemplateMessageForm()
 				+ '</tr>';
 
 	jQuery('#programStageMessage').append( contend );
+	showHideUserGroup();
 }
 
 function removeTemplateMessageForm( rowId )
@@ -343,4 +344,15 @@ function whenToSendOnChange(index)
 	else{
 		enable('daysAllowedSendMessage' + index );
 	}
+}
+function showHideUserGroup()
+{
+	jQuery(".sendTo").each( function( i, item ){
+		var numb = i+1;
+		if( item.value == 5){
+			showById( 'tr'+numb );
+		}
+		else
+			hideById ( 'tr'+numb );
+	});
 }
