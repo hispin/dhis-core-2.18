@@ -4,6 +4,15 @@ var program_stage_SMS_reminder_form ="<select type='text' id='userGroup$index' n
 	program_stage_SMS_reminder_form += "<option value='$group.id'>$i18n.getString($group.name)</option>";
 #end
 program_stage_SMS_reminder_form +="</select>";
+
+function onchangeUserGroup( id )
+	{
+		var value = document.getElementById( 'sendTo'+id ).value;
+		hideById( 'tr'+id );
+		if ( value == 5) {
+			showById( 'tr'+id );
+		}
+	};
 </script>
 <script type="text/javascript" src="javascript/addProgramStageForm.js"></script>
 

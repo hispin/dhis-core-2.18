@@ -365,8 +365,15 @@ public class AddProgramAction
             reminder.setDateToCompare( datesToCompare.get( i ) );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
-            UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
-            reminder.setUserGroup( selectedUserGroup );
+            if ( sendTo.get( i ) == PatientReminder.SEND_TO_USER_GROUP )
+            {
+                UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
+                reminder.setUserGroup( selectedUserGroup );
+            }
+            else
+            {
+                reminder.setUserGroup( null );
+            }
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );

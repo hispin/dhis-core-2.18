@@ -6,7 +6,7 @@
 	program_SMS_reminder_form +="</select>";
 
 	jQuery( document ).ready( function()
-	{
+	{	
 		validation( 'addProgramForm', function( form ){ 
 		if( duplicate==true) 
 			return false;
@@ -89,6 +89,14 @@
 	
 	checkValueIsExist( "name", "validateProgram.action" );	
 });
+	function onchangeUserGroup( id )
+	{
+		var value = document.getElementById( 'sendTo'+id ).value;
+		hideById( 'tr'+id );
+		if ( value == 5) {
+			showById( 'tr'+id );
+		}
+	};
 </script>
 
 <h3>$i18n.getString( "create_new_program" )</h3>
