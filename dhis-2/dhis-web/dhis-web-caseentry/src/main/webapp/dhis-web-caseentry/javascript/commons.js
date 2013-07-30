@@ -592,7 +592,14 @@ function closeDueDateDiv( programInstanceId )
 
 function registerIrregularEncounter( programInstanceId, programStageId, programStageName, dueDate )
 {
-	jQuery.postJSON( "registerIrregularEncounter.action",
+	if(dueDate==''){
+		showById("spanDueDateNewEncounter_" + programInstanceId);
+	}
+	else
+	{
+		hideById("spanDueDateNewEncounter_" + programInstanceId);
+		
+		jQuery.postJSON( "registerIrregularEncounter.action",
 		{ 
 			programInstanceId:programInstanceId,
 			programStageId: programStageId, 
@@ -669,6 +676,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			loadDataEntry( programStageInstanceId );
 			showSuccessMessage(i18n_create_event_success);
 		});
+	}
 }
 
 function disableCompletedButton( disabled )

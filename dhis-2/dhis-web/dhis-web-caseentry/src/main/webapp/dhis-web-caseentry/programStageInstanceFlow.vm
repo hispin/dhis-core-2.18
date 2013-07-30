@@ -92,6 +92,10 @@
 		</tr>
 		<tr>
 			<td></td>
+			<td><span id='spanDueDateNewEncounter_$!programInstance.id' class='hidden' style='color:red' >$i18n.getString('this_field_is_required')</td>
+		</tr>
+		<tr>
+			<td></td>
 			<td>
 				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( "$!programInstance.id",getFieldValue("repeatableProgramStage_$!programInstance.id"), jQuery("#repeatableProgramStage_$!programInstance.id option:selected").text(),getFieldValue("dueDateNewEncounter_$programInstance.id" ) );' />
 				<input type='button' value='$i18n.getString("cancel")' onclick="closeDueDateDiv('$!programInstance.id');" />
@@ -100,7 +104,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td id='createEventMessage_$!programInstance.id' style='color:green'></td>
+			<td id='createEventMessage_$!programInstance.id' style='color:red'></td>
 		</tr>
 	</table>
 </div>
