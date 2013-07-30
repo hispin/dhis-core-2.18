@@ -52,7 +52,7 @@
 			
 			<td>
 			  <a href="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )" title='$i18n.getString( "patient_dashboard" )'><img src="../images/enroll.png"></a>
-			  <a href="javascript:validateAddRelationship($patient.id);" value="$i18n.getString( 'assign_relationship' )" ><img src="../images/relationship.png"></a>
+			  <a href="javascript:validateAddRelationship($patient.id);" title="$i18n.getString( 'assign_relationship' )" ><img src="../images/relationship.png" ></a>
 			  <a href="javascript:showPatientHistory('$patient.id')" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png"></a>
 			</td>
 			
