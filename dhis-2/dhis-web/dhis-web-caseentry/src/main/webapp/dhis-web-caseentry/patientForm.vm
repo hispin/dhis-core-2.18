@@ -276,8 +276,9 @@
 		showById('birthDate');
 	#end
 	
+	var phoneNumbers = "";
 	#if( $!patient.phoneNumber )
-		var phoneNumbers = '$!encoder.jsEscape( $patient.phoneNumber , "'" )';
+		phoneNumbers = '$!encoder.jsEscape( $patient.phoneNumber , "'" )';
 		setFieldValue('phoneNumber',phoneNumbers[0]);
 		#if($!customRegistrationForm)
 			for( var i = 1;i<phoneNumbers.length;i++ )

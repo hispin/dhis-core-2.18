@@ -70,6 +70,32 @@
 			<td colspan='3' class='bold'>$key: $programIndicatorsMap.get($key)</td>
 		</tr>
 		#end
+		#if($programStage.relatedPatient=='true')
+		#foreach($patient in $programStageInstance.patients)
+		<tr>
+			<td onclick='showPatientDashboardForm($patient.id)'>
+				#set($value=$!patient.getFullName())
+				#foreach( $identifier in $patient.identifiers)
+					#if($!identifier.identifierType)
+						#set($value=$identifier.identifier)
+					#else
+						#set($systemId=$identifier.identifier)
+					#end
+				#end
+				#if($value=="")
+					#set($value=$systemId)
+				#end
+				
+				<a href='#'>$value</a>
+			</td>
+		</tr>
+		#end
+		<tr>
+			<td>
+				<a href='javascript:showAddRelationshipPatient( $programStageInstance.programInstance.patient.id, false, $programStageInstance.id );' id="relatedPatient_$!programStageInstance.id" >$i18n.getString("add_patient")</a>
+			</td>
+		</tr>
+		#end
 	</table>
 	</table>
 	

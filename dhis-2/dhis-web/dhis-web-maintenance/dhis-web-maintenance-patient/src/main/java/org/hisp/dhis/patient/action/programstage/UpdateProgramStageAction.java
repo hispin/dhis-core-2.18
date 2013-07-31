@@ -76,14 +76,14 @@ public class UpdateProgramStageAction
     {
         this.programStageDataElementService = programStageDataElementService;
     }
-    
+
     private UserGroupService userGroupService;
-    
+
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -234,12 +234,19 @@ public class UpdateProgramStageAction
     {
         this.whenToSend = whenToSend;
     }
-    
+
     private List<Integer> userGroup = new ArrayList<Integer>();
-    
+
     public void setUserGroup( List<Integer> userGroup )
     {
         this.userGroup = userGroup;
+    }
+
+    private Boolean relatedPatient;
+
+    public void setRelatedPatient( Boolean relatedPatient )
+    {
+        this.relatedPatient = relatedPatient;
     }
 
     // -------------------------------------------------------------------------
@@ -254,6 +261,8 @@ public class UpdateProgramStageAction
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
         validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
         displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
+        captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
+        relatedPatient = (relatedPatient == null) ? false : relatedPatient;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -265,6 +274,8 @@ public class UpdateProgramStageAction
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
+        programStage.setRelatedPatient( relatedPatient );
+
         if ( !programStage.getProgram().isSingleEvent() )
         {
             programStage.setAutoGenerateEvent( autoGenerateEvent );

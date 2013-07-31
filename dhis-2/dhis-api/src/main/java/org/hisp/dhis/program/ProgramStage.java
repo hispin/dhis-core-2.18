@@ -87,6 +87,8 @@ public class ProgramStage
     private Boolean displayGenerateEventBox = true;
     
     private Boolean captureCoordinates = false;
+    
+    private Boolean relatedPatient = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -347,6 +349,16 @@ public class ProgramStage
     public void setCaptureCoordinates( Boolean captureCoordinates )
     {
         this.captureCoordinates = captureCoordinates;
+    }
+
+    public Boolean getRelatedPatient()
+    {
+        return relatedPatient;
+    }
+
+    public void setRelatedPatient( Boolean relatedPatient )
+    {
+        this.relatedPatient = relatedPatient;
     }
     
 }

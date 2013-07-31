@@ -51,7 +51,8 @@
 </h3>
 																		
 <form id="patientForm" action="addRelationshipPatient.action" method="get" >
-<input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
+<input type="hidden" id="relationshipId" name="relationshipId" value="$patient.id"/> 
+<input type="hidden" id="programStageInstanceId" name="programStageInstanceId" value="$!programStageInstanceId"/> 
 <table>	
 	<tr>
 		<td class='text-column'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>

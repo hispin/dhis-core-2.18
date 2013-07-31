@@ -1,11 +1,11 @@
 <script>
-var program_stage_SMS_reminder_form ="<select type='text' id='userGroup$index' name='userGroup$index' class='userGroup'>";
-#foreach( $group in $userGroups )
-	program_stage_SMS_reminder_form += "<option value='$group.id'>$i18n.getString($group.name)</option>";
-#end
-program_stage_SMS_reminder_form +="</select>";
+	var program_stage_SMS_reminder_form ="<select type='text' id='userGroup$index' name='userGroup$index' class='userGroup'>";
+	#foreach( $group in $userGroups )
+		program_stage_SMS_reminder_form += "<option value='$group.id'>$i18n.getString($group.name)</option>";
+	#end
+	program_stage_SMS_reminder_form +="</select>";
 
-function onchangeUserGroup( id )
+	function onchangeUserGroup( id )
 	{
 		var value = document.getElementById( 'sendTo'+id ).value;
 		hideById( 'tr'+id );
@@ -52,6 +52,11 @@ function onchangeUserGroup( id )
 			<tr>
 				<td><label>$i18n.getString( "auto_generate_event" )</label></td>
 				<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' #if( $programStage.autoGenerateEvent && $programStage.autoGenerateEvent=='true' ) checked #end /></td>
+			</tr>
+			
+			<tr>
+				<td><label>$i18n.getString( "related_patient" )</em></label></td>
+				<td><input type="checkbox" id="relatedPatient" name="relatedPatient" value='true' #if( $programStage.relatedPatient=='true') checked #end /></td>
 			</tr>
 			
 			<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>

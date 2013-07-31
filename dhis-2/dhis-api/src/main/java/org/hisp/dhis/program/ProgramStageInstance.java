@@ -26,15 +26,16 @@
  */
 package org.hisp.dhis.program;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientcomment.PatientComment;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patientcomment.PatientComment;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
  * @author Abyot Asalefew
@@ -80,6 +81,8 @@ public class ProgramStageInstance extends BaseIdentifiableObject
     private String completedUser;
 
     private Date completedDate;
+    
+    private Set<Patient> patients;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -289,6 +292,16 @@ public class ProgramStageInstance extends BaseIdentifiableObject
     public void setCoordinates( String coordinates )
     {
         this.coordinates = coordinates;
+    }
+
+    public Set<Patient> getPatients()
+    {
+        return patients;
+    }
+
+    public void setPatients( Set<Patient> patients )
+    {
+        this.patients = patients;
     }
 
     public Integer getEventStatus()
