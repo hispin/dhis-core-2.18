@@ -39,7 +39,6 @@ import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
 import org.hisp.dhis.message.MessageSender;
-import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
@@ -109,13 +108,6 @@ public class CompleteDataEntryAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-
-    private MessageService messageService;
-
-    public void setMessageService( MessageService messageService )
-    {
-        this.messageService = messageService;
     }
 
     private MessageConversationStore messageConversationStore;
