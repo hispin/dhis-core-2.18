@@ -35,7 +35,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.Message;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageConversationStore;
+import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
@@ -113,6 +118,20 @@ public class CompleteDataEntryAction
         this.messageService = messageService;
     }
 
+    private MessageConversationStore messageConversationStore;
+
+    public void setMessageConversationStore( MessageConversationStore messageConversationStore )
+    {
+        this.messageConversationStore = messageConversationStore;
+    }
+
+    private MessageSender emailMessageSender;
+
+    public void setEmailMessageSender( MessageSender emailMessageSender )
+    {
+        this.emailMessageSender = emailMessageSender;
+    }
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -166,7 +185,7 @@ public class CompleteDataEntryAction
         programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
 
         // Send message when to completed the event
-
+        
         sendSMSToCompletedEvent( programStageInstance );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
@@ -222,7 +241,8 @@ public class CompleteDataEntryAction
             Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
             for ( PatientReminder rm : reminders )
             {
-                if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
+                if ( rm != null && rm.getWhenToSend() != null
+                    && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
                 {
                     sendEventMessage( rm, programStageInstance, patient );
                 }
@@ -258,12 +278,37 @@ public class CompleteDataEntryAction
                 e.printStackTrace();
             }
         }
+        
         // send to user group
-        else
+        if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
         {
             String msg = getStringMsgFromTemplateMsg( reminder, programStageInstance, patient );
             String programStageName = programStageInstance.getProgramStage().getName();
-            messageService.sendMessage( programStageName, msg, null, reminder.getUserGroup().getMembers(), false, true );
+
+            // forward to user group by E-mail
+            emailMessageSender.sendMessage( programStageName, msg, currentUserService.getCurrentUser(), reminder
+                .getUserGroup().getMembers(), false );
+
+            // forward to user group by DHIS message
+            Set<User> receivers = new HashSet<User>( reminder.getUserGroup().getMembers() );
+
+            User sender = currentUserService.getCurrentUser();
+            if ( sender != null )
+            {
+                receivers.add( sender );
+            }
+
+            MessageConversation conversation = new MessageConversation( programStageName, sender );
+
+            conversation.addMessage( new Message( msg, null, sender ) );
+
+            for ( User receiver : receivers )
+            {
+                boolean read = receiver != null && receiver.equals( sender );
+
+                conversation.addUserMessage( new UserMessage( receiver, read ) );
+            }
+            messageConversationStore.save( conversation );
         }
     }
 
@@ -276,7 +321,8 @@ public class CompleteDataEntryAction
             Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
             for ( PatientReminder rm : reminders )
             {
-                if ( rm != null && rm.getWhenToSend() != null &&  rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM )
+                if ( rm != null && rm.getWhenToSend() != null
+                    && rm.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM )
                 {
                     sendProgramMessage( rm, programInstance, patient );
                 }
@@ -313,11 +359,36 @@ public class CompleteDataEntryAction
                 e.printStackTrace();
             }
         }
-        else
+
+        if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
         {
             String msg = getStringMsgFromTemplateMsg( reminder, programInstance, patient );
             String programName = programInstance.getProgram().getName();
-            messageService.sendMessage( programName, msg, null, reminder.getUserGroup().getMembers(), false, true );
+
+            // forward to user group by E-mail
+            emailMessageSender.sendMessage( programName, msg, currentUserService.getCurrentUser(), reminder
+                .getUserGroup().getMembers(), false );
+
+            // forward to user group by DHIS message
+            Set<User> receivers = new HashSet<User>( reminder.getUserGroup().getMembers() );
+
+            User sender = currentUserService.getCurrentUser();
+            if ( sender != null )
+            {
+                receivers.add( sender );
+            }
+
+            MessageConversation conversation = new MessageConversation( programName, sender );
+
+            conversation.addMessage( new Message( msg, null, sender ) );
+
+            for ( User receiver : receivers )
+            {
+                boolean read = receiver != null && receiver.equals( sender );
+
+                conversation.addUserMessage( new UserMessage( receiver, read ) );
+            }
+            messageConversationStore.save( conversation );
         }
     }
 
@@ -351,7 +422,13 @@ public class CompleteDataEntryAction
             }
             break;
         case PatientReminder.SEND_TO_USER_GROUP:
-            phoneNumbers.clear();
+            for ( User user : reminder.getUserGroup().getMembers() )
+            {
+                if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                {
+                    phoneNumbers.add( user.getPhoneNumber() );
+                }
+            }
             break;
         default:
             if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
