@@ -85,7 +85,7 @@ public class AddProgramStageAction
     {
         this.programStageDataElementService = programStageDataElementService;
     }
-    
+
     private UserGroupService userGroupService;
 
     public void setUserGroupService( UserGroupService userGroupService )
@@ -192,7 +192,7 @@ public class AddProgramStageAction
     {
         this.sendTo = sendTo;
     }
-    
+
     private List<Integer> whenToSend = new ArrayList<Integer>();
 
     public void setWhenToSend( List<Integer> whenToSend )
@@ -241,14 +241,21 @@ public class AddProgramStageAction
     {
         this.allowDateInFutures = allowDateInFutures;
     }
-    
+
     private List<Integer> userGroup = new ArrayList<Integer>();
 
     public void setUserGroup( List<Integer> userGroup )
     {
         this.userGroup = userGroup;
     }
-    
+
+    private Boolean relatedPatient;
+
+    public void setRelatedPatient( Boolean relatedPatient )
+    {
+        this.relatedPatient = relatedPatient;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -262,6 +269,7 @@ public class AddProgramStageAction
         validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
         displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
         captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
+        relatedPatient = ( relatedPatient == null ) ? false : relatedPatient;
 
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
@@ -277,6 +285,7 @@ public class AddProgramStageAction
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setAutoGenerateEvent( autoGenerateEvent );
         programStage.setCaptureCoordinates( captureCoordinates );
+        programStage.setRelatedPatient( relatedPatient );
 
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )

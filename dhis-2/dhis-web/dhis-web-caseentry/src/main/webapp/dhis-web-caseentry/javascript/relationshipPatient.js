@@ -22,7 +22,7 @@ function showAddRelationship( patientId )
 // Add Relationship Patient
 // -----------------------------------------------------------------------------
 
-function showAddRelationshipPatient( patientId, isShowPatientList )
+function showAddRelationshipPatient( patientId, isShowPatientList, programStageInstanceId )
 {
 	hideById( 'selectDiv' );
 	hideById( 'searchDiv' );
@@ -36,7 +36,8 @@ function showAddRelationshipPatient( patientId, isShowPatientList )
 	jQuery('#addRelationshipDiv').load('showAddRelationshipPatient.action',
 		{
 			id:patientId,
-			programId: getFieldValue('programIdAddPatient')
+			programId: getFieldValue('programIdAddPatient'),
+			programStageInstanceId: programStageInstanceId
 		}, function()
 		{
 			showById('addRelationshipDiv');

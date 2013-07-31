@@ -55,7 +55,10 @@ function showProgramStageDetails( programStageId )
 		setInnerHTML( 'nameField', json.programStage.name );	
 		setInnerHTML( 'descriptionField', json.programStage.description );
 		setInnerHTML( 'scheduledDaysFromStartField', json.programStage.minDaysFromStart ); 
-
+		
+		var relatedPatient = (json.programStage.relatedPatient=='true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'relatedPatientField', relatedPatient );  
+		
 		var irregular = (json.programStage.irregular=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'irregularField', irregular );  
 		

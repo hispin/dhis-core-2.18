@@ -27,6 +27,9 @@
 package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,10 +52,14 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -87,6 +94,16 @@ public class AddRelationshipPatientAction
 
     private RelationshipTypeService relationshipTypeService;
 
+    private ProgramStageInstanceService programStageInstanceService;
+
+    private SystemSettingManager systemSettingManager;
+    
+    private UserService userService;
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -95,19 +112,23 @@ public class AddRelationshipPatientAction
 
     private String birthDate;
 
-    private char ageType;
-
     private Integer age;
 
-    private Character dobType;
+    private Boolean verified;
 
     private String gender;
 
-    private String phoneNumber;
+    private String[] phoneNumber;
 
     private String registrationDate;
 
     private boolean underAge;
+
+    private Integer healthWorker;
+
+    private boolean isDead;
+
+    private String deathDate;
 
     private Integer relationshipId;
 
@@ -115,9 +136,21 @@ public class AddRelationshipPatientAction
 
     private boolean relationshipFromA;
 
+    private Integer programStageInstanceId;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
 
     private Patient patient;
 
@@ -140,57 +173,111 @@ public class AddRelationshipPatientAction
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
-        fullName = fullName.trim();
-
-        int startIndex = fullName.indexOf( ' ' );
-        int endIndex = fullName.lastIndexOf( ' ' );
-
-        String firstName = fullName.toString();
-        String middleName = "";
-        String lastName = "";
-
-        if ( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName != null )
         {
-            firstName = fullName.substring( 0, startIndex );
-            if ( startIndex == endIndex )
-            {
-                middleName = "";
-                lastName = fullName.substring( startIndex + 1, fullName.length() );
-            }
-            else
-            {
-                middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex + 1, fullName.length() );
-            }
-        }
+            fullName = fullName.trim();
 
-        patient.setFirstName( firstName );
-        patient.setMiddleName( middleName );
-        patient.setLastName( lastName );
+            int startIndex = fullName.indexOf( ' ' );
+            int endIndex = fullName.lastIndexOf( ' ' );
+
+            String firstName = fullName.toString();
+            String middleName = "";
+            String lastName = "";
+
+            if ( fullName.indexOf( ' ' ) != -1 )
+            {
+                firstName = fullName.substring( 0, startIndex );
+                if ( startIndex == endIndex )
+                {
+                    middleName = "";
+                    lastName = fullName.substring( startIndex + 1, fullName.length() );
+                }
+                else
+                {
+                    middleName = fullName.substring( startIndex + 1, endIndex );
+                    lastName = fullName.substring( endIndex + 1, fullName.length() );
+                }
+            }
+
+            patient.setFirstName( firstName );
+            patient.setMiddleName( middleName );
+            patient.setLastName( lastName );
+        }
 
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
 
+        String phone = "";
+
+        for ( String _phoneNumber : phoneNumber )
+        {
+            _phoneNumber = (_phoneNumber != null && _phoneNumber.isEmpty() && _phoneNumber.trim().equals(
+                systemSettingManager.getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE ) )) ? null
+                : _phoneNumber;
+            if ( _phoneNumber != null )
+            {
+                phone += _phoneNumber + ";";
+            }
+        }
+
+        phone = (phone.isEmpty()) ? null : phone.substring( 0, phone.length() - 1 );
+
+        patient.setPhoneNumber( phone );
         patient.setGender( gender );
         patient.setIsDead( false );
-        patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
-
-        if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
+        patient.setIsDead( isDead );
+        if ( deathDate != null )
         {
-            birthDate = birthDate.trim();
-            patient.setBirthDate( format.parseDate( birthDate ) );
+            deathDate = deathDate.trim();
+            patient.setDeathDate( format.parseDate( deathDate ) );
+        }
+
+        if ( healthWorker != null )
+        {
+            patient.setHealthWorker( userService.getUser( healthWorker ) );
+        }
+
+        Date _birthDate = new Date();
+        if ( birthDate != null || age != null )
+        {
+            verified = (verified == null) ? false : verified;
+
+            Character dobType = (verified) ? Patient.DOB_TYPE_VERIFIED : Patient.DOB_TYPE_DECLARED;
+
+            if ( !verified && age != null )
+            {
+                dobType = 'A';
+            }
+
+            if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
+            {
+                birthDate = birthDate.trim();
+                patient.setBirthDate( format.parseDate( birthDate ) );
+            }
+            else
+            {
+                patient.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
+            }
+
+            _birthDate = patient.getBirthDate();
+            patient.setDobType( dobType );
+        }
+
+        // -----------------------------------------------------------------------------
+        // Registration Date
+        // -----------------------------------------------------------------------------
+
+        if ( registrationDate == null )
+        {
+            patient.setRegistrationDate( new Date() );
         }
         else
         {
-            patient.setBirthDateFromAge( age.intValue(), ageType );
+            patient.setRegistrationDate( format.parseDate( registrationDate ) );
         }
-
-        patient.setDobType( dobType );
-
-        patient.setRegistrationDate( format.parseDate( registrationDate ) );
 
         // ---------------------------------------------------------------------
         // Generate system id with this format :
@@ -198,7 +285,7 @@ public class AddRelationshipPatientAction
         // PatientIdentifierType will be null
         // ---------------------------------------------------------------------
 
-        String identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+        String identifier = PatientIdentifierGenerator.getNewIdentifier( _birthDate, patient.getGender() );
 
         PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, identifier );
         while ( systemGenerateIdentifier != null )
@@ -248,6 +335,8 @@ public class AddRelationshipPatientAction
         }
 
         patientService.savePatient( patient );
+
+        // Create relationship
 
         if ( relationshipId != null && relationshipTypeId != null )
         {
@@ -327,12 +416,33 @@ public class AddRelationshipPatientAction
             }
         }
 
+        // Save relationship with event
+        
+        if ( programStageInstanceId != null )
+        {
+            ProgramStageInstance programStageInstance = programStageInstanceService
+                .getProgramStageInstance( programStageInstanceId );
+            Set<Patient> patients = programStageInstance.getPatients();
+            if ( patients == null )
+            {
+                patients = new HashSet<Patient>();
+            }
+            patients.add(patient);
+            programStageInstance.setPatients( patients );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        }
+
         return SUCCESS;
     }
 
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
@@ -424,14 +534,9 @@ public class AddRelationshipPatientAction
         this.relationshipId = relationshipId;
     }
 
-    public void setDobType( Character dobType )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.dobType = dobType;
-    }
-
-    public void setAgeType( char ageType )
-    {
-        this.ageType = ageType;
+        this.systemSettingManager = systemSettingManager;
     }
 
     public void setRegistrationDate( String registrationDate )
@@ -439,7 +544,7 @@ public class AddRelationshipPatientAction
         this.registrationDate = registrationDate;
     }
 
-    public void setPhoneNumber( String phoneNumber )
+    public void setPhoneNumber( String[] phoneNumber )
     {
         this.phoneNumber = phoneNumber;
     }

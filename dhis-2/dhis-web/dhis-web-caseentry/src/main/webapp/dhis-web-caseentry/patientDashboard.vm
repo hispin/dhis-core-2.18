@@ -210,7 +210,7 @@
 			#end
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showAddRelationshipPatient" ) )			
-				&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false );">$i18n.getString("add_new_patient")</a>
+				&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false, '' );">$i18n.getString("add_new_patient")</a>
 			#end
 		</p>
 		<div class="contentProviderTable">
@@ -219,12 +219,42 @@
 					#if($rel.patientA.id==$patient.id)
 						<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
 							<td><a href='#'>$rel.relationshipType.bIsToA</a></td>
-							<td><a href='#'>$rel.patientB.getFullName()</a></td>
+							<td>
+								#set($patient=$rel.patientB)
+								#set($value=$!patient.getFullName())
+								#foreach( $identifier in $patient.identifiers)
+									#if($!identifier.identifierType)
+										#set($value=$identifier.identifier)
+									#else
+										#set($systemId=$identifier.identifier)
+									#end
+								#end
+								#if($value=="")
+									#set($value=$systemId)
+								#end
+								
+								<a href='#'>$value</a>
+							</td>
 						</tr>
 					#else
 						<tr onclick="showPatientDashboardForm($rel.patientA.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
 							<td><a href='#'>$rel.relationshipType.aIsToB</a></td>
-							<td><a href='#'>$rel.patientA.getFullName()</a></td>
+							<td><a href='#'>
+								#set($patient=$rel.patientA)
+								#set($value=$!patient.getFullName())
+								#foreach( $identifier in $patient.identifiers)
+									#if($!identifier.identifierType)
+										#set($value=$identifier.identifier)
+									#else
+										#set($systemId=$identifier.identifier)
+									#end
+								#end
+								#if($value=="")
+									#set($value=$systemId)
+								#end
+								
+								<a href='#'>$value</a>
+							</td>
 						</tr>
 					#end
 				#end

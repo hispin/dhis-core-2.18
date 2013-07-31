@@ -145,6 +145,18 @@ public class GetPatientAction
         return customRegistrationForm;
     }
 
+    private Integer programStageInstanceId;
+
+    public Integer getProgramStageInstanceId()
+    {
+        return programStageInstanceId;
+    }
+
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -154,9 +166,9 @@ public class GetPatientAction
     {
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
         patient = patientService.getPatient( id );
-        
+
         // Get system identifier
-        
+
         for ( PatientIdentifier identifier : patient.getIdentifiers() )
         {
             if ( identifier.getIdentifierType() == null )
@@ -165,7 +177,7 @@ public class GetPatientAction
                 break;
             }
         }
-        
+
         healthWorkers = patient.getOrganisationUnit().getUsers();
         Program program = null;
 
