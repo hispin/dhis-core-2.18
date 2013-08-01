@@ -1,20 +1,12 @@
+<script type="text/javascript" src="javascript/updateProgramStageForm.js"></script>
 <script>
 	var program_stage_SMS_reminder_form ="<select type='text' id='userGroup$index' name='userGroup$index' class='userGroup'>";
 	#foreach( $group in $userGroups )
 		program_stage_SMS_reminder_form += "<option value='$group.id'>$i18n.getString($group.name)</option>";
 	#end
 	program_stage_SMS_reminder_form +="</select>";
-
-	function onchangeUserGroup( id )
-	{
-		var value = document.getElementById( 'sendTo'+id ).value;
-		hideById( 'tr'+id );
-		if ( value == 5) {
-			showById( 'tr'+id );
-		}
-	};
 </script>
-<script type="text/javascript" src="javascript/updateProgramStageForm.js"></script>
+
 <h3>$i18n.getString( "edit_program_stage" )</h3>
 
 <h4>$programStage.program.displayName</h4>
