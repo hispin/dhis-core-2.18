@@ -1930,15 +1930,52 @@ function addComment( field, programStageInstanceId )
 
 function removeComment( programStageInstanceId, commentId )
 {
-	jQuery.postUTF8( 'removePatientComment.action',
+	var result = window.confirm( i18n_confirmation_delete_message );
+    
+    if ( result )
+    {
+		setHeaderWaitMessage( i18n_deleting );
+		jQuery.postUTF8( 'removePatientComment.action',
 		{
 			programStageInstanceId: programStageInstanceId,
 			id: commentId
 		}, function ( json )
 		{
-			showSuccessMessage( json.message );
 			hideById( 'comment_' + commentId );
+			
+			jQuery( "tr#comment_" + commentId ).remove();
+			jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+			jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+			jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+			jQuery( "table.listTable tbody" ).trigger("update");	
+			setHeaderDelayMessage( i18n_delete_success );
 		} );
+	}
+}
+
+function removeMessage(programInstanceId, programStageInstanceId, smsId )
+{
+	var result = window.confirm( i18n_confirmation_delete_message);
+    
+    if ( result )
+    {
+		setHeaderWaitMessage( i18n_deleting );
+		jQuery.postUTF8( 'removeSms.action',
+		{
+			programInstanceId: programInstanceId,
+			programStageInstanceId: programStageInstanceId,
+			id: smsId
+		}, 
+		function ( json )
+		{
+			jQuery( "tr#tr" + smsId ).remove();
+			jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+			jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+			jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+			jQuery( "table.listTable tbody" ).trigger("update");	
+			setHeaderDelayMessage( i18n_delete_success );
+		} );
+	}
 }
 
 function commentDivToggle(isHide)

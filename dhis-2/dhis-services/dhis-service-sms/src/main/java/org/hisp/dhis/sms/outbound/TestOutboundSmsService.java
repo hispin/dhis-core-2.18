@@ -156,7 +156,7 @@ public class TestOutboundSmsService
     public void deleteById( Integer outboundSmsId )
     {
     }
-
+    
     @Override
     public String getDefaultGateway()
     {
@@ -176,6 +176,12 @@ public class TestOutboundSmsService
         throws SmsServiceException
     {
         // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public OutboundSms getOutboundSms( int id )
+    {
         return null;
     }
 }

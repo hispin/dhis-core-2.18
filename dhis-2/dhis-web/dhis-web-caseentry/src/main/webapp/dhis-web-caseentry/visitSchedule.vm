@@ -133,7 +133,7 @@
 			<th>$i18n.getString( "status" )</th>
 			<th colspan='2'>$i18n.getString( "message" )</th>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
-			<th>$i18n.getString( "remove" )</th>
+			<th>$i18n.getString( "operation" )</th>
 			#end
 		</tr>
 		<tbody>

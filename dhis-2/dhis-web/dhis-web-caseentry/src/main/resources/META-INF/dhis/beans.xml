@@ -1133,7 +1133,7 @@
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
-	<!-- Comment -->
+	<!-- Comment && Message -->
 
 	<bean id="org.hisp.dhis.caseentry.action.reminder.AddPatientCommentAction"
 		class="org.hisp.dhis.caseentry.action.reminder.AddPatientCommentAction"
@@ -1162,6 +1162,18 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction"
+		class="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction"
+		scope="prototype">
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 
 	<!-- Program-stage-completeness -->
