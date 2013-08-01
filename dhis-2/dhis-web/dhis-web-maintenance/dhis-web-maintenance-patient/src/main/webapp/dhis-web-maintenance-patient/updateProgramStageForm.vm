@@ -193,7 +193,7 @@
 					<td><label>$i18n.getString( "send_when_to" )</label></td>
 					<td>
 						<select type="text" id="whenToSend$index" name="whenToSend$index" class="whenToSend" onchange='whenToSendOnChange($index)' >
-							<option value="" >$i18n.getString("from_the_day_set")</option>
+							<option value="" >$i18n.getString("scheduled")</option>
 							<option value="2" #if($!reminder.whenToSend==2) selected #end >$i18n.getString("complete_event")</option>
 						</select>
 					</td>
@@ -205,7 +205,7 @@
 						#if($!reminder.whenToSend==2) disabled #end /></td>
 				</tr>
 				<tr name="tr$index">
-					<td><label>$i18n.getString( "send_to" )</label></td>
+					<td><label>$i18n.getString( "recipients" )</label></td>
 					<td>
 						<select type="text" id="sendTo$index" name="sendTo$index" class="sendTo {validate:{required:true,number:true}}" onchange="onchangeUserGroup( $index )">
 							<option value="1" #if($!reminder.sendTo==1) selected #end >$i18n.getString("patient")</option>
@@ -278,13 +278,13 @@
 	var i18n_days_since_due_date = '$encoder.jsEscape( $i18n.getString( "days_since_due_date" ) , "'")';   
 	var i18n_message = '$encoder.jsEscape( $i18n.getString( "message" ) , "'")';   
 	var i18n_days_before_after_due_date = '$encoder.jsEscape( $i18n.getString( "days_before_after_due_date" ) , "'")';   
-	var i18n_send_to = '$encoder.jsEscape( $i18n.getString( "send_to" ) , "'")'; 
+	var i18n_recipients = '$encoder.jsEscape( $i18n.getString( "recipients" ) , "'")'; 
 	var i18n_patient = '$encoder.jsEscape( $i18n.getString( "patient" ) , "'")'; 
 	var i18n_health_worker = '$encoder.jsEscape( $i18n.getString( "health_worker" ) , "'")'; 
 	var i18n_orgunit_registered = '$encoder.jsEscape( $i18n.getString( "orgunit_registered" ) , "'")'; 
 	var i18n_all_users_in_orgunit_registered = '$encoder.jsEscape( $i18n.getString( "all_users_in_orgunit_registered" ) , "'")'; 
 	var i18n_send_when_to = '$encoder.jsEscape( $i18n.getString( "send_when_to" ) , "'")';
-	var i18n_from_the_day_set = '$encoder.jsEscape( $i18n.getString( "from_the_day_set" ) , "'")';
+	var i18n_scheduled = '$encoder.jsEscape( $i18n.getString( "scheduled" ) , "'")';
 	var i18n_complete_event = '$encoder.jsEscape( $i18n.getString( "complete_event" ) , "'")';
 	var i18n_program_stage_name = '$encoder.jsEscape( $i18n.getString( "program_stage_name" ) , "'" )';
 	var i18n_user_group = '$encoder.jsEscape( $i18n.getString( "user_group" ) , "'")';
