@@ -371,7 +371,10 @@ public class DefaultParserManager
 
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
                 
-                // forward to user group by SMS
+                // forward to user group by SMS, E-mail, DHIS conversation
+                messageService.sendMessage( command.getName(), message, null, receivers, sender, false, false );
+                
+                /*// forward to user group by SMS
                 smsMessageSender.sendMessage( command.getName(), message, sender, receivers, true );
                 
                 // forward to user group by E-mail
@@ -393,7 +396,8 @@ public class DefaultParserManager
 
                     conversation.addUserMessage( new UserMessage( receiver, read ) );
                 }
-                messageConversationStore.save( conversation );
+                messageConversationStore.save( conversation );*/
+                
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
                 feedbackList.add( sender );
