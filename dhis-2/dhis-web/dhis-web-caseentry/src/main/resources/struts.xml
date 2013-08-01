@@ -1104,7 +1104,7 @@
       <param name="requiredAuthorities">F_PROGRAM_INSTANCE_DELETE</param>
     </action>
     
-    <!-- Comment -->
+    <!-- Comment && Message -->
 
     <action name="addPatientComment"
       class="org.hisp.dhis.caseentry.action.reminder.AddPatientCommentAction">
@@ -1114,7 +1114,14 @@
     </action>
 
     <action name="removePatientComment"
-      class="org.hisp.dhis.caseentry.action.reminder.RemovePatientCommentAction">
+      class="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="requiredAuthorities">F_PATIENT_COMMENT_DELETE</param>
+    </action>
+    
+     <action name="removeSms"
+      class="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
       <param name="requiredAuthorities">F_PATIENT_COMMENT_DELETE</param>

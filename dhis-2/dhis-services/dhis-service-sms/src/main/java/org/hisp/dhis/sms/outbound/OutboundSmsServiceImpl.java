@@ -177,6 +177,12 @@ public class OutboundSmsServiceImpl
         outboundSmsStore.delete( sms );
     }
 
+    @Override
+    public OutboundSms getOutboundSms( int id )
+    {
+        return outboundSmsStore.get( id );
+    }
+
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------

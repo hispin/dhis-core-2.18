@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,25 +27,34 @@
 
 package org.hisp.dhis.caseentry.action.reminder;
 
-import org.hisp.dhis.patientcomment.PatientComment;
-import org.hisp.dhis.patientcomment.PatientCommentService;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version RemovePatientCommentAction.java 10:02:15 AM Aug 17, 2012 $
+ * @version $ RemoveSmsAction.java Jul 31, 2013 2:20:01 PM $
  */
-public class RemovePatientCommentAction
+public class RemoveSmsAction
     implements Action
 {
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
 
     private ProgramStageInstanceService programStageInstanceService;
 
@@ -54,22 +63,29 @@ public class RemovePatientCommentAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private PatientCommentService commentService;
+    private OutboundSmsService outboundSmsService;
 
-    public void setCommentService( PatientCommentService commentService )
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
-        this.commentService = commentService;
+        this.outboundSmsService = outboundSmsService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private int id;
 
-    public void setId( Integer id )
+    public void setId( int id )
     {
         this.id = id;
+    }
+
+    private Integer programInstanceId;
+
+    public void setProgramInstanceId( Integer programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
     }
 
     private Integer programStageInstanceId;
@@ -85,17 +101,26 @@ public class RemovePatientCommentAction
 
     public String execute()
     {
-        PatientComment patientComment = commentService.getPatientComment( id );
+        OutboundSms outboundSms = outboundSmsService.getOutboundSms( id );
 
-        ProgramStageInstance programStageInstance = programStageInstanceService
-            .getProgramStageInstance( programStageInstanceId );
+        if ( programInstanceId != null )
+        {
+            ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        programStageInstance.getPatientComments().remove( patientComment );
-        
-        commentService.deletePatientComment( patientComment );
-        
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        
+            programInstance.getOutboundSms().remove( outboundSms );
+
+            programInstanceService.updateProgramInstance( programInstance );
+        }
+        else if ( programStageInstanceId != null )
+        {
+            ProgramStageInstance programStageInstance = programStageInstanceService
+                .getProgramStageInstance( programStageInstanceId );
+
+            programStageInstance.getOutboundSms().remove( outboundSms );
+
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        }
+
         return SUCCESS;
     }
 

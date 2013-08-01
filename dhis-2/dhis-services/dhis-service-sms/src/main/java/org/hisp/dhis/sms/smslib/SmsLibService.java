@@ -99,7 +99,12 @@ public class SmsLibService
     {
         this.smsConsumer = smsConsumer;
     }
-
+    
+    public OutboundSms getOutboundSms( int id )
+    {
+        return outboundSmsStore.get( id );
+    }
+    
     @Override
     public boolean isEnabled()
     {

@@ -66,4 +66,6 @@ public interface OutboundSmsService
     void deleteById( Integer outboundSmsId );
 
     List<OutboundSms> getOutboundSms( OutboundSmsStatus status );
+    
+    OutboundSms getOutboundSms( int id );
 }
