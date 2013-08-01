@@ -70,32 +70,7 @@
 			<td colspan='3' class='bold'>$key: $programIndicatorsMap.get($key)</td>
 		</tr>
 		#end
-		#if($programStage.relatedPatient=='true')
-		#foreach($patient in $programStageInstance.patients)
-		<tr>
-			<td onclick='showPatientDashboardForm($patient.id)'>
-				#set($value=$!patient.getFullName())
-				#foreach( $identifier in $patient.identifiers)
-					#if($!identifier.identifierType)
-						#set($value=$identifier.identifier)
-					#else
-						#set($systemId=$identifier.identifier)
-					#end
-				#end
-				#if($value=="")
-					#set($value=$systemId)
-				#end
-				
-				<a href='#'>$value</a>
-			</td>
-		</tr>
-		#end
-		<tr>
-			<td>
-				<a href='javascript:showAddRelationshipPatient( $programStageInstance.programInstance.patient.id, false, $programStageInstance.id );' id="relatedPatient_$!programStageInstance.id" >$i18n.getString("add_patient")</a>
-			</td>
-		</tr>
-		#end
+		
 	</table>
 	</table>
 	
@@ -134,8 +109,15 @@
 	var i18n_enter_values_for_longitude_and_latitude_fields = '$encoder.jsEscape( $i18n.getString( "enter_values_for_longitude_and_latitude_fields" ) , "'" )';
 	var i18n_enter_a_valid_number = '$encoder.jsEscape( $i18n.getString( "enter_a_valid_number" ) , "'" )';
 	var i18n_incomplete_confirm_message = '$encoder.jsEscape( $i18n.getString( "incomplete_confirm_message" ) , "'" )';
+	var i18n_add_patient_related_the_selected_event = '$encoder.jsEscape( $i18n.getString( " add_patient_related_the_selected_event" ) , "'" )';
 	
 	if(getFieldValue('completed')=='true' && getFieldValue('blockEntryForm')=='true'){
 		blockEntryForm();
 	}
+					
+	#if($programStage.relatedPatient=='true')
+		setInnerHTML('patientRelatedStageSpan',"&#8226; <a href='javascript:showAddRelationshipPatient( $programStageInstance.programInstance.patient.id, false, $programStageInstance.id );' id='relatedPatient_$!programStageInstance.id' >" + i18n_add_patient_related_the_selected_event + "</a>");
+	#else
+		setInnerHTML('patientRelatedStageSpan','<br>&nbsp;');
+	#end
 </script>
