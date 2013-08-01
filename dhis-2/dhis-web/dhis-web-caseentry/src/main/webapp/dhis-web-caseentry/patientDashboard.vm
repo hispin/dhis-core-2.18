@@ -15,7 +15,7 @@
 			&#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true );">$i18n.getString("edit_profile")</a>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "getPatientLocation" ) )
 				&#8226; <a href="javascript:getPatientLocation( '$patient.id', true );">$i18n.getString("change_location")</a>
-			#end
+			#end<br>&nbsp;
 		</p>
 		<div class="contentProviderTable">
 			<table>
@@ -122,6 +122,7 @@
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showProgramEnrollmentForm" ) )
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$patient.id" )'>$i18n.getString("enroll")</a>
 			#end
+			<br>&nbsp;
 		</p>
 		<div class="contentProviderTable">
 			<table id='activeTB' name='activeTB' style='cursor:pointer;'>
@@ -178,6 +179,7 @@
 			<a href='javascript:viewPersonProgram( "activeDiv","completedDiv" )'>$i18n.getString("active_programs")</a>
 			&#8226; $i18n.getString("completed_programs")
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$patient.id" )'>$i18n.getString("enroll")</a>
+			<br>&nbsp;
 		</p>
 		<div class="contentProviderTable">
 			<table id='completedTB' name='completedTB' style='cursor:pointer;'>
@@ -211,7 +213,9 @@
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showAddRelationshipPatient" ) )			
 				&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false, '' );">$i18n.getString("add_new_patient")</a>
+				<span id="patientRelatedStageSpan"><br>&nbsp;<span>
 			#end
+			
 		</p>
 		<div class="contentProviderTable">
 			<table>
