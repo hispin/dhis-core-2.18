@@ -97,11 +97,11 @@ public class DefaultMessageService
 
     public int sendMessage( String subject, String text, String metaData, Set<User> users )
     {
-        return sendMessage( subject, text, metaData, users, false, false );
+        return sendMessage( subject, text, metaData, users, null, false, false );
     }
 
     public int sendMessage( String subject, String text, String metaData, Set<User> users_,
-        boolean includeFeedbackRecipients, boolean forceNotifications )
+        User sender, boolean includeFeedbackRecipients, boolean forceNotifications )
     {
         Set<User> users = new HashSet<User>( users_ );
 
@@ -119,18 +119,17 @@ public class DefaultMessageService
             }
         }
 
-        User sender = currentUserService.getCurrentUser();
-
-        if ( sender != null )
+        if ( sender == null )
+        {
+            sender = currentUserService.getCurrentUser();
+            if ( sender != null )
+            {
+                users.add( sender );
+            }
+        }
+        else
         {
             users.add( sender );
-        }
-
-        User recipient = currentUserService.getCurrentUser();
-
-        if ( recipient != null )
-        {
-            users.add( recipient );
         }
 
         // ---------------------------------------------------------------------
@@ -150,6 +149,8 @@ public class DefaultMessageService
 
         int id = saveMessageConversation( conversation );
 
+        users.remove( sender );
+        
         invokeMessageSenders( subject, text, sender, users, forceNotifications );
 
         return id;
@@ -157,7 +158,7 @@ public class DefaultMessageService
 
     public int sendFeedback( String subject, String text, String metaData )
     {
-        return sendMessage( subject, text, metaData, new HashSet<User>(), true, false );
+        return sendMessage( subject, text, metaData, new HashSet<User>(), null, true, false );
     }
 
     public void sendReply( MessageConversation conversation, String text, String metaData )

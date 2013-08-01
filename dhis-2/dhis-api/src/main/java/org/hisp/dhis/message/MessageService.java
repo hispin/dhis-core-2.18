@@ -68,7 +68,7 @@ public interface MessageService
      *        
      * @return the identifier of the created message conversation.
      */
-    int sendMessage( String subject, String text, String metaData, Set<User> users, boolean includeFeedbackRecipients, boolean forceNotifications );
+    int sendMessage( String subject, String text, String metaData, Set<User> users, User sender, boolean includeFeedbackRecipients, boolean forceNotifications );
 
     int sendFeedback( String subject, String text, String metaData );
 
