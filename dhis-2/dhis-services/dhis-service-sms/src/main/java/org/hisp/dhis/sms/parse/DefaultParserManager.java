@@ -129,13 +129,6 @@ public class DefaultParserManager
     {
         this.smsMessageSender = smsMessageSender;
     }
-
-    private MessageSender emailMessageSender;
-    
-    public void setEmailMessageSender( MessageSender emailMessageSender )
-    {
-        this.emailMessageSender = emailMessageSender;
-    }
     
     private MessageService messageService;
 
@@ -373,30 +366,6 @@ public class DefaultParserManager
                 
                 // forward to user group by SMS, E-mail, DHIS conversation
                 messageService.sendMessage( command.getName(), message, null, receivers, sender, false, false );
-                
-                /*// forward to user group by SMS
-                smsMessageSender.sendMessage( command.getName(), message, sender, receivers, true );
-                
-                // forward to user group by E-mail
-                emailMessageSender.sendMessage( command.getName(), message, sender, receivers, false );
-
-                // forward to user group by dhis message
-                if ( sender != null )
-                {
-                    receivers.add( sender );
-                }
-
-                MessageConversation conversation = new MessageConversation( command.getName(), sender );
-
-                conversation.addMessage( new Message( message, null, sender ) );
-
-                for ( User receiver : receivers )
-                {
-                    boolean read = receiver != null && receiver.equals( sender );
-
-                    conversation.addUserMessage( new UserMessage( receiver, read ) );
-                }
-                messageConversationStore.save( conversation );*/
                 
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
