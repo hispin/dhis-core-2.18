@@ -1,6 +1,7 @@
 <script>
 	jQuery('#patientForm').ready(	function(){
 
+		addRelationship = true;
 		checkedDuplicate = false;
 		
 		jQuery("#patientForm").validate({

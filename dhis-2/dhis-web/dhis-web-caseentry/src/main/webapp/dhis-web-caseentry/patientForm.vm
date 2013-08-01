@@ -276,21 +276,22 @@
 		showById('birthDate');
 	#end
 	
-	var phoneNumbers = "";
 	#if( $!patient.phoneNumber )
-		phoneNumbers = '$!encoder.jsEscape( $patient.phoneNumber , "'" )';
-		setFieldValue('phoneNumber',phoneNumbers[0]);
-		#if($!customRegistrationForm)
-			for( var i = 1;i<phoneNumbers.length;i++ )
-			{
-				addCustomPhoneNumberField(phoneNumbers[i]);
-			}
-		#elseif( $!patient.phoneNumber && $patient.phoneNumber!="")
-			for( var i = 1;i<phoneNumbers.length;i++ )
-			{
-				addPhoneNumberField(phoneNumbers[i]);
-			}
-		#end
+		if(!addRelationship){
+			var phoneNumbers = '$!encoder.jsEscape( $patient.phoneNumber , "'" )'.split(";");
+			setFieldValue('phoneNumber',phoneNumbers[0]);
+			#if($!customRegistrationForm)
+				for( var i = 1;i<phoneNumbers.length;i++ )
+				{
+					addCustomPhoneNumberField(phoneNumbers[i]);
+				}
+			#elseif( $!patient.phoneNumber && $patient.phoneNumber!="")
+				for( var i = 1;i<phoneNumbers.length;i++ )
+				{
+					addPhoneNumberField(phoneNumbers[i]);
+				}
+			#end
+		}
 	#else
 		setFieldValue('phoneNumber',phoneNumberAreaCode)
 	#end

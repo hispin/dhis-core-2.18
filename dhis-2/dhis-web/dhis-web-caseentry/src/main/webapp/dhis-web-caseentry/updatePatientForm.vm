@@ -54,6 +54,8 @@
 			jQuery('#patientForm [id=age]').css("display","none");
 		}
 	});
+	
+	addRelationship = false;
 	hideById('registrationDateTR');
 	hideById('mainLinkLbl');
 	jQuery('[name=mainPagelink]').html(i18n_main_form_link);

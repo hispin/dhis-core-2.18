@@ -37,6 +37,8 @@
 		#end
 		addEventForPatientForm( 'patientForm' );
 	});	
+	
+	addRelationship = false;
 	hideById('patientForm [id=age]');
 	hideById('mainLinkLbl');
 </script>
@@ -49,6 +51,7 @@
 <form id="patientForm" name="patientForm" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+<input type="hidden" id="addRelationship" name="addRelationship" value="true">
 <table>
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	<tr>
