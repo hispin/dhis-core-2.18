@@ -109,6 +109,7 @@
 	isAjax = true;
 	contentDiv = '';
 	registration = true;
+	var addRelationship = false;
 	
 	// ----------------------------------------------------------------
 	// Search field
