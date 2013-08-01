@@ -57,6 +57,7 @@ import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
 import org.hisp.dhis.message.MessageSender;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -134,6 +135,13 @@ public class DefaultParserManager
     public void setEmailMessageSender( MessageSender emailMessageSender )
     {
         this.emailMessageSender = emailMessageSender;
+    }
+    
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
     }
 
     @Autowired
