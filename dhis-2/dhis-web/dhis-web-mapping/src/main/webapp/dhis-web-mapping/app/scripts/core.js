@@ -127,14 +127,11 @@ GIS.core.getUtils = function(gis) {
 	util.map = {};
 
 	util.map.getVisibleVectorLayers = function() {
-		var layers = [],
-			layer;
+		var layers = [];
 
-		for (var i = 0; i < gis.olmap.layers.length; i++) {
+		for (var i = 0, layer; i < gis.olmap.layers.length; i++) {
 			layer = gis.olmap.layers[i];
-			if (layer.layerType === conf.finals.layer.type_vector &&
-				layer.visibility &&
-				layer.features.length) {
+			if (layer.layerType === conf.finals.layer.type_vector && layer.visibility && layer.features.length) {
 				layers.push(layer);
 			}
 		}
@@ -1795,7 +1792,8 @@ GIS.core.getInstance = function(config) {
 		layers.push(gis.layer.googleStreets, gis.layer.googleHybrid);
 	}
 
-	layers.push(gis.layer.openStreetMap,
+	layers.push(
+		gis.layer.openStreetMap,
 		gis.layer.thematic4,
 		gis.layer.thematic3,
 		gis.layer.thematic2,

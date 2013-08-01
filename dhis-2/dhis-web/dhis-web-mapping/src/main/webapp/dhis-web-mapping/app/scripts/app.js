@@ -593,6 +593,11 @@ Ext.onReady( function() {
 				this.numberField.disable();
 				this.layer.setVisibility(false);
 			},
+			enableItem: function() {
+				this.checkbox.setValue(true);
+				this.numberField.enable();
+				this.layer.setVisibility(true);
+			},
 			updateItem: function(value) {
 				this.numberField.setDisabled(!value);
 				this.layer.setVisibility(value);
@@ -935,6 +940,7 @@ Ext.onReady( function() {
 			renderTo: 'layerItems',
 			layout: 'fit',
 			cls: 'gis-container-inner',
+			layerItems: items,
 			items: {
 				cls: 'gis-container-inner',
 				items: items
@@ -4936,6 +4942,7 @@ Ext.onReady( function() {
 				eastRegion,
 				downloadButton,
 				interpretationButton,
+				layersPanel,
 				resizeButton,
 				viewport,
 				onRender,
@@ -5120,15 +5127,20 @@ Ext.onReady( function() {
 				preventHeader: true,
 				collapsible: true,
 				collapseMode: 'mini',
-				items: [
-					{
+				items: function() {
+					var a = [];
+
+					layersPanel = GIS.app.LayersPanel();					
+					
+					a.push({
 						title: GIS.i18n.layer_stack_transparency,
 						bodyStyle: 'padding: 4px 6px 3px',
-						items: GIS.app.LayersPanel(),
+						items: layersPanel,
 						collapsible: true,
 						animCollapse: false
-					},
-					{
+					});
+					
+					a.push({
 						title: GIS.i18n.thematic_layer_1_legend,
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
@@ -5139,8 +5151,9 @@ Ext.onReady( function() {
 								gis.layer.thematic1.legendPanel = this;
 							}
 						}
-					},
-					{
+					});
+					
+					a.push({
 						title: GIS.i18n.thematic_layer_2_legend,
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
@@ -5151,8 +5164,9 @@ Ext.onReady( function() {
 								gis.layer.thematic2.legendPanel = this;
 							}
 						}
-					},
-					{
+					});
+					
+					a.push({
 						title: GIS.i18n.thematic_layer_3_legend,
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
@@ -5163,8 +5177,9 @@ Ext.onReady( function() {
 								gis.layer.thematic3.legendPanel = this;
 							}
 						}
-					},
-					{
+					});
+					
+					a.push({
 						title: GIS.i18n.thematic_layer_4_legend,
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
@@ -5175,8 +5190,9 @@ Ext.onReady( function() {
 								gis.layer.thematic4.legendPanel = this;
 							}
 						}
-					},
-					{
+					});
+					
+					a.push({
 						title: GIS.i18n.facility_layer_legend,
 						bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
 						collapsible: true,
@@ -5187,8 +5203,10 @@ Ext.onReady( function() {
 								gis.layer.facility.legendPanel = this;
 							}
 						}
-					}
-				],
+					});
+					
+					return a;
+				}(),
 				listeners: {
 					collapse: function() {
 						resizeButton.setText('<<<');
@@ -5237,7 +5255,8 @@ Ext.onReady( function() {
 				});
 
 				// Favorite
-				var id = gis.util.url.getUrlParam('id');
+				var id = gis.util.url.getUrlParam('id'),
+					base = gis.util.url.getUrlParam('base');
 
 				if (id) {
 					gis.map = {
@@ -5245,6 +5264,41 @@ Ext.onReady( function() {
 					};
 					GIS.core.MapLoader(gis).load();
 				}
+				
+				if (base.length) {
+				
+					// hide base layer
+					if (base === 'false') {
+						for (var i = 0, item; i < layersPanel.layerItems.length; i++) {
+							item = layersPanel.layerItems[i];
+							
+							if (item.layer.layerType === gis.conf.finals.layer.type_base && item.layer.visibility) {
+								item.disableItem();
+							}
+						}
+					}
+					else {
+						var isEnabled = false;
+						
+						for (var i = 0, item; i < layersPanel.layerItems.length; i++) {
+							item = layersPanel.layerItems[i];
+							
+							if (item.layer.layerType === gis.conf.finals.layer.type_base) {
+								if (base === item.layer.id) {
+									item.enableItem();
+									isEnabled = true;
+								}
+								else {
+									item.disableItem();
+								}
+							}
+						}
+						
+						if (!isEnabled) {
+							layersPanel.layerItems[layersPanel.layerItems.length - 1].enableItem();
+						}
+					}
+				}				
 			};
 
 			viewport = Ext.create('Ext.container.Viewport', {
@@ -5254,6 +5308,7 @@ Ext.onReady( function() {
 				centerRegion: centerRegion,
 				downloadButton: downloadButton,
 				interpretationButton: interpretationButton,
+				layersPanel: layersPanel,
 				items: [
 					centerRegion,
 					eastRegion
