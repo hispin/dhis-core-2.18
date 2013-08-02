@@ -275,6 +275,7 @@ function generateTemplateMessageForm()
 				+ 		'<select id="whenToSend' + rowId + '" name="whenToSend' + rowId + '" class="whenToSend" onchange="whenToSendOnChange(' + rowId + ')" >'
 				+ 			'<option value="">' + i18n_scheduled + '</option>'
 				+ 			'<option value="3">' + i18n_complete_program + '</option>'
+				+ 			'<option value="1">' + i18n_program_enrollment + '</option>'
 				+ 		'</select>'
 				+	'</td>'
 				+ '</tr>'
@@ -358,12 +359,12 @@ function insertParams( paramValue, rowId )
 function whenToSendOnChange(index)
 {
 	var whenToSend = getFieldValue('whenToSend' + index );
-	if(whenToSend==3){
-		disable('dateToCompare' + index );
-		disable('daysAllowedSendMessage' + index );
-	}
-	else{
+	if(whenToSend==""){
 		enable('dateToCompare' + index );
 		enable('daysAllowedSendMessage' + index );
+	}
+	else{
+		disable('dateToCompare' + index );
+		disable('daysAllowedSendMessage' + index );
 	}
 }
