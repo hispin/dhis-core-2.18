@@ -82,10 +82,12 @@ public interface PatientStore
     Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
-
     Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
+        Integer max );
+
+    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
+        Integer max );
 
 }

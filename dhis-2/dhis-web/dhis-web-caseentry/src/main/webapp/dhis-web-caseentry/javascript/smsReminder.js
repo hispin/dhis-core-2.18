@@ -1,4 +1,6 @@
 isAjax = true;
+var generateResultParams = "";
+
 function orgunitSelected( orgUnits, orgUnitNames )
 {
 	var width = jQuery('#programIdAddPatient').width();
@@ -79,10 +81,13 @@ function listAllPatient()
 				+ getFieldValue('statusEvent');
 	var followup = "";
 	if( byId('followup').checked ){
-		followup = "?followup=true";
+		followup = "followup=true";
 	}
+	
+	generateResultParams = followup + "&programId=" + programId + "&searchTexts=" + searchTexts;
+	
 	showLoader();
-	jQuery('#listEventDiv').load('getSMSPatientRecords.action' + followup,
+	jQuery('#listEventDiv').load('getSMSPatientRecords.action?' + followup,
 		{
 			programId:programId,
 			listAll:false,
@@ -110,6 +115,8 @@ function advancedSearch( params )
 	hideById('listEventDiv');
 	showLoader();
 	params += "&programId=" + getFieldValue('programIdAddPatient');
+	generateResultParams = params;
+	
 	$.ajax({
 		url: 'getSMSPatientRecords.action',
 		type:"POST",
@@ -123,6 +130,12 @@ function advancedSearch( params )
 			hideLoader();
 		}
 	});
+}
+
+function exportXlsFile()
+{
+	var url = "getActivityPlanRecords.action?type=xls&trackingReport=true&" + generateResultParams;
+	window.location.href = url;
 }
 
 // --------------------------------------------------------------------
