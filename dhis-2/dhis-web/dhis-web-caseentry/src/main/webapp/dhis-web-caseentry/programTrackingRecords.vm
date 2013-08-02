@@ -3,6 +3,9 @@
 	<tr>
 		<td>$i18n.getString('total_result'): </td>
 		<td id='totalTd'></td>
+		<td>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:exportXlsFile();' title='$i18n.getString( "export_xls" )' ><img src='../images/excel.png' id='generateXSLBtn' ></a>
+		</td>
 	</tr>
 </table>
 

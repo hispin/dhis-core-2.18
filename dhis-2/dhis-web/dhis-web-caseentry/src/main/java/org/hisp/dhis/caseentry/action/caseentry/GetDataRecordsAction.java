@@ -203,6 +203,13 @@ public class GetDataRecordsAction
         this.followup = followup;
     }
 
+    private Boolean trackingReport;
+
+    public void setTrackingReport( Boolean trackingReport )
+    {
+        this.trackingReport = trackingReport;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -226,13 +233,13 @@ public class GetDataRecordsAction
                 patientAttributes = new ArrayList<PatientAttribute>(
                     patientAttributeService.getPatientAttributesByDisplayOnVisitSchedule( true ) );
 
-                Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE);
+                Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
                 total = patientService.countSearchPatients( searchTexts, orgunit, followup );
                 this.paging = createPaging( total );
 
-                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit, followup,
-                    paging.getStartPos(), paging.getPageSize() );
+                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit,
+                    followup, paging.getStartPos(), paging.getPageSize() );
 
                 for ( Integer stageInstanceId : stageInstanceIds )
                 {
@@ -258,6 +265,10 @@ public class GetDataRecordsAction
                         patientAttributeValueMap.put( patient.getId(), values );
                     }
                 }
+            }
+            else if(trackingReport != null && trackingReport )
+            {
+                grid = patientService.getTrackingEventsReport( program, searchTexts, orgunit, followup, i18n );
             }
             else
             {
