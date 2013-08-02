@@ -324,6 +324,7 @@
 						<select type="text" id="whenToSend$index" name="whenToSend$index" class="whenToSend" onchange='whenToSendOnChange($index)'>
 							<option value="" >$i18n.getString("scheduled")</option>
 							<option value="3" #if($!reminder.whenToSend==3) selected #end >$i18n.getString("complete_program")</option>
+							<option value="1" #if($!reminder.whenToSend==1) selected #end >$i18n.getString("program_enrollment")</option>
 						</select>
 					</td>
 				</tr>
@@ -340,7 +341,7 @@
 					<td><label>$i18n.getString( "days_before_after_comparison_date" )</label></td>
 					<td><input type="text" id="daysAllowedSendMessage$index" name="daysAllowedSendMessage$index" 
 						class="daysAllowedSendMessage {validate:{required:true,number:true}}" value="$!reminder.daysAllowedSendMessage"
-						#if($!reminder.whenToSend==3) disabled #end	/></td>
+						#if($!reminder.whenToSend==1 || $!reminder.whenToSend==3 ) disabled #end /></td>
 				</tr>
 				<tr name="tr$index">
 					<td><label>$i18n.getString( "recipients" )</label></td>
