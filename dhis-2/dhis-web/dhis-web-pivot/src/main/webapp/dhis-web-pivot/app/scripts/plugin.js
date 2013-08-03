@@ -1,154 +1,116 @@
-//format
+PT.plugin = {};
 
-settings = {
-	col: [
-		{name: 'dx', items: ['Uvn6LCg7dVU', 'OdiHJayrsKo', 'sB79w2hiLp8']},
-		{name: 'co'}
-	],
-	row: [
-		{name: 'pe', items: ['201201', '201202', '201203']},
-		{name: 'Bpx0589u8y0', items: ['MAs88nJc9nL', 'PVLOW4bCshG']}
-	],
-	filter: [
-		{name: 'ou', items: ['ImspTQPwCqd']}
-	],
-	options: {
-		showTotals: true,
-		showSubTotals: true,
-		hideEmptyRows: false,
-		displayDensity: 'normal',
-		fontSize: 'normal',
-		digitGroupSeparator: 'space',
-		reportingPeriod: false,
-		organisationUnit: false,
-		parentOrganisationUnit: false,
-		userOrganisationUnit: true,
-		userOrganisationUnitChildren: false
-	}
-};
+Ext.onReady(function() {
+	Ext.Ajax.method = 'GET';
 
-xLayout = {
-	col: [
-		{name: 'dx', items: ['Uvn6LCg7dVU', 'OdiHJayrsKo', 'sB79w2hiLp8']},
-		{name: 'co'}
-	],
-	row: [
-		{name: 'pe', items: ['201201', '201202', '201203']},
-		{name: 'Bpx0589u8y0', items: ['MAs88nJc9nL', 'PVLOW4bCshG']}
-	],
-	filter: [
-		{name: 'ou', items: ['ImspTQPwCqd']}
-	],
-	dimensions: [
-		{name: 'dx', items: ['Uvn6LCg7dVU', 'OdiHJayrsKo', 'sB79w2hiLp8']},
-		{name: 'co'},
-		{name: 'pe', items: ['201201', '201202', '201203']},
-		{name: 'Bpx0589u8y0', items: ['MAs88nJc9nL', 'PVLOW4bCshG']},
-		{name: 'ou', items: ['ImspTQPwCqd']}
-	],
-	dimensionNames: ['dx', 'co', 'pe', 'Bpx0589u8y0', 'ou'],
-	sortedDimensions: [
-		{name: 'Bpx0589u8y0', items: ['MAs88nJc9nL', 'PVLOW4bCshG']},
-		{name: 'co'},
-		{name: 'dx', items: ['OdiHJayrsKo', 'Uvn6LCg7dVU', 'sB79w2hiLp8']},
-		{name: 'ou', items: ['ImspTQPwCqd']},
-		{name: 'pe', items: ['201201', '201202', '201203']}
-	],
-	sortedFilterDimensions: [
-		{name: 'ou', items: ['ImspTQPwCqd']}
-	],
-	nameItemsMap: {
-		'dx': ['Uvn6LCg7dVU', 'OdiHJayrsKo', 'sB79w2hiLp8'],
-		'co': [],
-		'pe': ['201201', '201202', '201203'],
-		'Bpx0589u8y0': ['MAs88nJc9nL', 'PVLOW4bCshG'],
-		'ou': ['ImspTQPwCqd']
-	},
-	options: {
-		showTotals: true,
-		showSubTotals: true,
-		hideEmptyRows: false,
-		displayDensity: 'normal',
-		fontSize: 'normal',
-		digitGroupSeparator: 'space',
-		reportingPeriod: false,
-		organisationUnit: false,
-		parentOrganisationUnit: false,
-		userOrganisationUnit: true,
-		userOrganisationUnitChildren: false
-	}
-};
+	document.body.oncontextmenu = function() {
+		return false;
+	};
+	
+	// Table css
+	css = 'table.pivot { \n font-family: arial,sans-serif,ubuntu,consolas; \n } \n';
+	css += '.td-nobreak { \n white-space: nowrap; \n } \n';
+	css += '.td-hidden { \n display: none; \n } \n';
+	css += '.td-collapsed { \n display: none; \n } \n';
+	css += 'table.pivot { \n border-collapse: collapse; \n border-spacing: 0px; \n border: 0 none; \n } \n';
+	css += '.pivot td { \n padding: 5px; \n border: \n 1px solid #b2b2b2; \n } \n';
+	css += '.pivot-dim { \n background-color: #dae6f8; \n text-align: center; \n } \n';
+	css += '.pivot-dim.highlighted { \n	background-color: #c5d8f6; \n } \n';
+	css += '.pivot-dim-subtotal { \n background-color: #cad6e8; \n text-align: center; \n } \n';
+	css += '.pivot-dim-total { \n background-color: #bac6d8; \n text-align: center; \n } \n';
+	css += '.pivot-dim-empty { \n background-color: #dae6f8; \n text-align: center; \n } \n';
+	css += '.pivot-value { \n background-color: #fff; \n white-space: nowrap; \n text-align: right; \n } \n';
+	css += '.pivot-value-subtotal { \n background-color: #f4f4f4; \n white-space: nowrap; \n text-align: right; \n } \n';
+	css += '.pivot-value-subtotal-total { \n background-color: #e7e7e7; \n white-space: nowrap; \n text-align: right; \n } \n';
+	css += '.pivot-value-total { \n background-color: #e4e4e4; \n white-space: nowrap; \n text-align: right; \n } \n';
+	css += '.pivot-value-total-subgrandtotal { \n background-color: #d8d8d8; \n white-space: nowrap; \n text-align: right; \n } \n';
+	css += '.pivot-value-grandtotal { \n background-color: #c8c8c8; \n white-space: nowrap; \n text-align: right; \n } \n';
+	
+	// Load mask css
+	
+	css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
+	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
+	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';	
+	
+	Ext.util.CSS.createStyleSheet(css);
+	
+	PT.plugin.getTable = function(config) {
+		var validateConfig,
+			afterRender,
+			createViewport,
+			pt,
+			initialize;
+			
+		validateConfig = function(config) {
+			if (!Ext.isObject(config)) {
+				console.log('Report table configuration is not an object');
+				return;
+			}
+			
+			if (!Ext.isString(config.el)) {
+				console.log('No element id provided');
+				return;
+			}
+			
+			if (!Ext.isString(config.uid)) {
+				console.log('No report table uid provided');
+				return;
+			}
+			
+			return true;
+		};
+			
+		afterRender = function() {};
+			
+		createViewport = function() {
+			var el = Ext.get(pt.el),
+				setFavorite,
+				centerRegion;
+				
+			setFavorite = function(layout) {
+				pt.util.pivot.createTable(layout, pt);
+			};
+			
+			centerRegion = Ext.create('Ext.panel.Panel', {
+				renderTo: el,
+				bodyStyle: 'border: 0 none',
+				layout: 'fit',
+				listeners: {
+					afterrender: function() {
+						afterRender();
+					}
+				}
+			});
+			
+			return {
+				setFavorite: setFavorite,
+				centerRegion: centerRegion
+			};
+		};
+		
+		initialize = function() {
+			if (!validateConfig(config)) {
+				return;
+			}
+			
+			pt = PT.core.getInstance({
+				baseUrl: config.url,
+				el: config.el
+			});
+			
+			PT.core.instances.push(pt);
+			
+			pt.viewport = createViewport();
+			pt.isPlugin = true;
 
-xResponse = {
-	headers: [
-		{
-			name: "dx",
-			column: "dx",
-			type: "java.lang.String",
-			hidden: false,
-			meta: true,
-			index: 0,
-			size: 3,
-			items: [
-
-		}
-	],
-	metaData: {
-		201201: "January 2012",
-		201202: "February 2012"
-	},
-	height: 96,
-	width: 4,
-	rows: [
-		[
-			"PVLOW4bCshG",
-			"Jtf34kNZhzP",
-			"201201",
-			"12.0"
-		]
-	],
-	//metaDataHeaderMap: {
-		//'Jtf34kNZhzP': 'dx'
-	//}
-	nameHeaderMap: {
-		'dx': {
-			name: "dx",
-			column: "dx",
-			type: "java.lang.String",
-			hidden: false,
-			meta: true,
-			index: 0,
-			size: 3,
-			items: [
-
-		}
-	}
-};
-
-xAxis = {
-	dims: 2,
-	size: 15,
-	ids: ["O3qECFGrzeFeT1vvFVhLHc", "O3qECFGrzeFio8xTtlZV18", x15],
-	span: [5, 1],
-	items: [
-		{
-			name: 'dx',
-			items: ["O3qECFGrzeF", "t3QKFZbCf2B", "OLlWZUfLtsR"]
-		},
-		etc
-	],
-	xItems: {
-		all: [
-			[x15, "O3qECFGrzeF"],
-			[x15, "eT1vvFVhLHc"]
-		],
-		gui: [
-			[x3],
-			[x15]
-		],
-		unique: [
-			[x3],
-			[x5]
-		]
-	}
-};
+			Ext.data.JsonP.request({
+				url: pt.baseUrl + '/dhis-web-pivot/initialize.action',
+				success: function(r) {
+					pt.init = r;
+					
+					pt.util.pivot.loadTable(config.uid);	
+				}
+			});
+		}();
+	};
+});

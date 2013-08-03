@@ -1,4 +1,8 @@
-#set($oucSize = $currentUser.getOrganisationUnit().getSortedChildren().size()){
+#set($oucSize = $currentUser.getOrganisationUnit().getSortedChildren().size())
+#if($callback)$!{callback}
+(
+#end
+{
 "contextPath":"$!{contextPath}",
 "user":{"id":"$!currentUser.uid","name":"$currentUser.name","isAdmin":true,
 "ou":{"id":"$currentUser.getOrganisationUnit().uid","name":"$currentUser.getOrganisationUnit().name"},
@@ -8,3 +12,6 @@
 "legendSets":[#foreach($set in $legendSets){"id":"$!{set.uid}","name":"$!encoder.jsonEncode($!{set.name})", "legends":[#foreach($legend in $set.mapLegends){"id":"$!{legend.uid}","name":"$!{legend.name}","sv":"$!{legend.startValue}", "ev":"$!{legend.endValue}", "color":"$!{legend.color}"}#if($velocityCount<$set.mapLegends.size()),#end#end]}#if($velocityCount<$legendSets.size()),#end#end],
 "organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end]
 }
+#if($callback)
+)
+#end

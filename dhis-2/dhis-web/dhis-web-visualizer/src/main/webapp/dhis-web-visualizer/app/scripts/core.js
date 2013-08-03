@@ -375,16 +375,19 @@ DV.core.getUtil = function(dv) {
 	};
 
 	util.mask = {
-		showMask: function(cmp, str) {
-			if (dv.mask) {
-				dv.mask.destroy();
+		showMask: function(cmp, msg) {
+			cmp = cmp || pt.viewport.centerRegion;
+			msg = msg || 'Loading..';
+			
+			if (dv.viewport.mask) {
+				dv.viewport.mask.destroy();
 			}
-			dv.mask = new Ext.LoadMask(cmp, {msg: str});
-			dv.mask.show();
+			dv.viewport.mask = new Ext.LoadMask(cmp, {msg: msg});
+			dv.viewport.mask.show();
 		},
 		hideMask: function() {
-			if (dv.mask) {
-				dv.mask.hide();
+			if (dv.viewport.mask) {
+				dv.viewport.mask.hide();
 			}
 		}
 	};
@@ -1873,7 +1876,7 @@ DV.core.getUtil = function(dv) {
 			}();
 		},
 
-		loadChart: function(id, isJsonP) {
+		loadChart: function(id) {
 			var url = dv.baseUrl + '/api/charts/' + id,
 				params = '?viewClass=dimensional&links=false',
 				method = 'GET',
@@ -1902,7 +1905,7 @@ DV.core.getUtil = function(dv) {
 				alert(responseText);
 			};
 				
-			if (isJsonP) {
+			if (dv.isPlugin) {
 				Ext.data.JsonP.request({
 					url: url + '.jsonp' + params,
 					method: method,

@@ -1,4 +1,16 @@
-PT.core = {};
+if (!('PT' in window)) {
+	PT = {};
+}
+
+if(!('i18n' in PT)) {
+	PT.i18n = {};
+}
+
+PT.debug = false;
+
+PT.core = {
+	instances: []
+};
 
 Ext.onReady( function() {
 
@@ -376,14 +388,13 @@ PT.core.getUtils = function(pt) {
 
 	util.mask = {
 		showMask: function(cmp, msg) {
-			cmp = cmp || pt.viewport;
+			cmp = cmp || pt.viewport.centerRegion;
 			msg = msg || 'Loading..';
 
 			if (pt.viewport.mask) {
 				pt.viewport.mask.destroy();
 			}
 			pt.viewport.mask = new Ext.create('Ext.LoadMask', cmp, {
-				id: 'pt-loadmask',
 				shadow: false,
 				msg: msg,
 				style: 'box-shadow:0',
@@ -506,6 +517,12 @@ PT.core.getUtils = function(pt) {
 		}
 	};
 
+	util.str = {
+		replaceAll: function(str, find, replace) {
+			return str.replace(new RegExp(find, 'g'), replace);
+		}
+	};
+		
 	util.color = {
 		hexToRgb: function(hex) {
 			var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -806,6 +823,7 @@ PT.core.getUtils = function(pt) {
 				setMouseHandlers,
 				getTableHtml,
 				initialize,
+				tableUuid = pt.el + '_' + Ext.data.IdGenerator.get('uuid').generate(),
 				uuidDimUuidsMap = {},
 				uuidObjectMap = {};
 
@@ -1943,7 +1961,7 @@ PT.core.getUtils = function(pt) {
 				};
 
 				getHtml = function() {
-					var s = '<table id="' + pt.el + '" class="pivot">';
+					var s = '<table id="' + tableUuid + '" class="pivot">';
 
 					for (var i = 0; i < htmlArray.length; i++) {
 						s += '<tr>' + htmlArray[i].join('') + '</tr>';
@@ -1978,7 +1996,7 @@ PT.core.getUtils = function(pt) {
 				}
 
 				// Show load mask
-				pt.util.mask.showMask(pt.viewport);
+				pt.util.mask.showMask(pt.viewport.centerRegion);
 
 				Ext.Ajax.request({
 					method: 'GET',
@@ -2027,6 +2045,22 @@ PT.core.getUtils = function(pt) {
 
 						// After table success
 						
+						// Resize render elements if plugin
+						if (pt.isPlugin) {
+							var baseEl = Ext.get(pt.el),
+								baseElBorderW = parseInt(baseEl.getStyle('border-left-width')) + parseInt(baseEl.getStyle('border-right-width')),
+								baseElBorderH = parseInt(baseEl.getStyle('border-top-width')) + parseInt(baseEl.getStyle('border-bottom-width')),
+								baseElPaddingW = parseInt(baseEl.getStyle('padding-left')) + parseInt(baseEl.getStyle('padding-right')),
+								baseElPaddingH = parseInt(baseEl.getStyle('padding-top')) + parseInt(baseEl.getStyle('padding-bottom')),
+								el = Ext.get(tableUuid);
+								
+							pt.viewport.centerRegion.setWidth(el.getWidth());
+							pt.viewport.centerRegion.setHeight(el.getHeight());
+							baseEl.setWidth(el.getWidth() + baseElBorderW + baseElPaddingW);
+							baseEl.setHeight(el.getHeight() + baseElBorderH + baseElPaddingH);
+							//Ext.get(pt.el).dom.innerHTML = html;
+						}
+						
 						// Hide mask
 						pt.util.mask.hideMask();
 
@@ -2050,8 +2084,10 @@ PT.core.getUtils = function(pt) {
 						pt.xLayout = xLayout;
 						pt.xResponse = xResponse;
 						
-console.log("xResponse", xResponse);
-console.log("xLayout", xLayout);
+						if (PT.debug) {
+							console.log("xResponse", xResponse);
+							console.log("xLayout", xLayout);
+						}
 					}
 				});
 
@@ -2059,31 +2095,58 @@ console.log("xLayout", xLayout);
 		},
 
 		loadTable: function(id) {
+			var url = pt.baseUrl + '/api/reportTables/' + id,
+				params = '?viewClass=dimensional&links=false',
+				method = 'GET',
+				success,
+				failure;
+				
 			if (!Ext.isString(id)) {
 				alert('Invalid id');
 				return;
 			}
+			
+			success = function(layoutConfig) {
+				var layout = pt.api.layout.Layout(layoutConfig);
 
-			Ext.Ajax.request({
-				url: pt.baseUrl + '/api/reportTables/' + id + '.json?viewClass=dimensional&links=false',
-				method: 'GET',
-				failure: function(r) {
-					pt.util.mask.hideMask();
-					alert(r.responseText);
-				},
-				success: function(r) {
-					var layoutConfig = Ext.decode(r.responseText),
-						layout = pt.api.layout.Layout(layoutConfig);
+				if (layout) {
+					pt.favorite = Ext.clone(layout);
+					pt.favorite.id = layoutConfig.id;
+					pt.favorite.name = layoutConfig.name;
 
-					if (layout) {
-						pt.favorite = Ext.clone(layout);
-						pt.favorite.id = layoutConfig.id;
-						pt.favorite.name = layoutConfig.name;
-
-						pt.viewport.setFavorite(layout);
-					}
+					pt.viewport.setFavorite(layout);
 				}
-			});
+			};
+			
+			failure = function(responseText) {
+				pt.util.mask.hideMask();
+				alert(responseText);
+			};
+				
+			if (pt.isPlugin) {
+				Ext.data.JsonP.request({
+					url: url + '.jsonp' + params,
+					method: method,
+					failure: function(r) {
+						failure(r);
+					},
+					success: function(r) {
+						success(r);
+					}
+				});
+			}
+			else {
+				Ext.Ajax.request({
+					url: url + '.json' + params,
+					method: method,
+					failure: function(r) {
+						failure(r.responseText);
+					},
+					success: function(r) {
+						success(Ext.decode(r.responseText));
+					}
+				});
+			}
 		},
 	
 		onMouseHover: function(uuid, event, param) {
