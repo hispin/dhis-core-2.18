@@ -20,8 +20,7 @@ Ext.onReady( function() {
 	// Init
 
 	pt = PT.core.getInstance();
-
-	PT.core.instances = [pt];
+	PT.core.instances.push(pt);
 
 	PT.app.getInits = function(r) {
 		var init = Ext.decode(r.responseText);
@@ -262,12 +261,6 @@ Ext.onReady( function() {
 					}
 				}
 				return unescape(output);
-			}
-		};
-
-		util.str = {
-			replaceAll: function(str, find, replace) {
-				return str.replace(new RegExp(find, 'g'), replace);
 			}
 		};
 		

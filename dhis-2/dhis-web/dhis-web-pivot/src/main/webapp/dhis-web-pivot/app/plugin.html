@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../dhis-web-commons/javascripts/ext/resources/css/ext-plugin-gray.css" />
+    
+    <script src="../../../dhis-web-commons/javascripts/ext/ext-all.js"></script>
+	<script src="scripts/core.js"></script>
+	<script src="scripts/plugin.js"></script>
+	
+    <style type="text/css">
+		body {font-family:sans-serif; margin:0 0 0 60px;}
+		
+		h1 {font-size:20px; margin:20px 0;}
+		
+		#table1, #table2 {margin-bottom:40px;}
+		
+		#table1 {border:4px solid #ddd; padding:5px}
+    </style>
+    
+	<script>
+		Ext.onReady(function() {
+			var url = 'http://localhost:8080';
+			
+			PT.plugin.getTable({
+				url: url,
+				el: 'table1',
+				uid: 'C0rhAq1oklh'
+			});
+			
+			PT.plugin.getTable({
+				url: url,
+				el: 'table2',
+				uid: 'NBt7kGTOQTb'
+			});
+		});
+	</script>
+</head>
+
+<body>
+    <h1>TABLE 1</h1>
+	<div id="table1"></div>
+	
+    <h1>TABLE 2</h1>
+	<div id="table2"></div>
+</body>
+</html>
