@@ -1,3 +1,13 @@
+if (!('DV' in window)) {
+	DV = {};
+}
+
+if(!('i18n' in DV)) {
+	DV.i18n = {};
+}
+
+DV.debug = false;
+
 DV.core = {
 	instances: []
 };
@@ -366,15 +376,15 @@ DV.core.getUtil = function(dv) {
 
 	util.mask = {
 		showMask: function(cmp, str) {
-			if (DV.mask) {
-				DV.mask.destroy();
+			if (dv.mask) {
+				dv.mask.destroy();
 			}
-			DV.mask = new Ext.LoadMask(cmp, {msg: str});
-			DV.mask.show();
+			dv.mask = new Ext.LoadMask(cmp, {msg: str});
+			dv.mask.show();
 		},
 		hideMask: function() {
-			if (DV.mask) {
-				DV.mask.hide();
+			if (dv.mask) {
+				dv.mask.hide();
 			}
 		}
 	};
@@ -401,6 +411,12 @@ DV.core.getUtil = function(dv) {
 		}
 	};
 
+	util.str = {
+		replaceAll: function(str, find, replace) {
+			return str.replace(new RegExp(find, 'g'), replace);
+		}
+	};
+	
 	util.value = {
 		jsonfy: function(values) {
 			var a = [];
@@ -1044,14 +1060,15 @@ DV.core.getUtil = function(dv) {
 
 					return Ext.Array.max(sums);
 				};
-
-
-console.log("data", data);
-console.log("rangeFields", store.rangeFields);
-console.log("domainFields", store.domainFields);
-console.log("trendLineFields", store.trendLineFields);
-console.log("targetLineFields", store.targetLineFields);
-console.log("baseLineFields", store.baseLineFields);
+				
+				if (DV.debug) {
+					console.log("data", data);
+					console.log("rangeFields", store.rangeFields);
+					console.log("domainFields", store.domainFields);
+					console.log("trendLineFields", store.trendLineFields);
+					console.log("targetLineFields", store.targetLineFields);
+					console.log("baseLineFields", store.baseLineFields);
+				}
 
 				return store;
 			};
@@ -1789,7 +1806,7 @@ console.log("baseLineFields", store.baseLineFields);
 					return;
 				}
 
-				dv.util.mask.showMask(dv.viewport);
+				dv.util.mask.showMask(dv.viewport.centerRegion);
 
 				Ext.Ajax.request({
 					method: 'GET',
@@ -1844,42 +1861,71 @@ console.log("baseLineFields", store.baseLineFields);
 						dv.layout = layout;
 						dv.xLayout = xLayout;
 						dv.xResponse = xResponse;
-
-console.log("xResponse", xResponse);
-console.log("xLayout", xLayout);
-console.log("layout", layout);
+						
+						if (DV.debug) {
+							console.log("xResponse", xResponse);
+							console.log("xLayout", xLayout);
+							console.log("layout", layout);
+						}
 					}
 				});
 
 			}();
 		},
 
-		loadChart: function(id) {
+		loadChart: function(id, isJsonP) {
+			var url = dv.baseUrl + '/api/charts/' + id,
+				params = '?viewClass=dimensional&links=false',
+				method = 'GET',
+				success,
+				failure;
+			
 			if (!Ext.isString(id)) {
 				alert('Invalid id');
 				return;
 			}
+			
+			success = function(layoutConfig) {
+				var layout = dv.api.layout.Layout(layoutConfig);
 
-			Ext.Ajax.request({
-				url: dv.baseUrl + '/api/charts/' + id + '.json?viewClass=dimensional&links=false',
-				method: 'GET',
-				failure: function(r) {
-					dv.util.mask.hideMask();
-					alert(r.responseText);
-				},
-				success: function(r) {
-					var layoutConfig = Ext.decode(r.responseText),
-						layout = dv.api.layout.Layout(layoutConfig);
+				if (layout) {
+					dv.favorite = Ext.clone(layout);
+					dv.favorite.id = layoutConfig.id;
+					dv.favorite.name = layoutConfig.name;
 
-					if (layout) {
-						dv.favorite = Ext.clone(layout);
-						dv.favorite.id = layoutConfig.id;
-						dv.favorite.name = layoutConfig.name;
-
-						dv.viewport.setFavorite(layout);
-					}
+					dv.viewport.setFavorite(layout);
 				}
-			});
+			};
+			
+			failure = function(responseText) {
+				dv.util.mask.hideMask();
+				alert(responseText);
+			};
+				
+			if (isJsonP) {
+				Ext.data.JsonP.request({
+					url: url + '.jsonp' + params,
+					method: method,
+					failure: function(r) {
+						failure(r);
+					},
+					success: function(r) {
+						success(r);
+					}
+				});
+			}
+			else {
+				Ext.Ajax.request({
+					url: url + '.json' + params,
+					method: method,
+					failure: function(r) {
+						failure(r.responseText);
+					},
+					success: function(r) {
+						success(Ext.decode(r.responseText));
+					}
+				});
+			}
 		},
 
         analytical2layout: function(analytical) {

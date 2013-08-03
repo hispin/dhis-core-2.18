@@ -1,4 +1,8 @@
-#set($oucSize = $currentUser.getOrganisationUnit().getSortedChildren().size()){
+#set($oucSize = $currentUser.getOrganisationUnit().getSortedChildren().size())
+#if($callback)$!{callback}
+(
+#end
+{
 "contextPath":"$!{contextPath}",
 "user":{"id":"$!currentUser.uid","name":"$currentUser.name","isAdmin":true,
 "ou":{"id":"$currentUser.getOrganisationUnit().uid","name":"$currentUser.getOrganisationUnit().name"},
@@ -7,3 +11,6 @@
 "dimensions":[#foreach($dim in $dimensions){"id":"$!{dim.uid}","name":"$!encoder.jsonEncode($!{dim.name})"}#if($velocityCount<$dimensions.size()),#end#end],
 "organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end]
 }
+#if($callback)
+)
+#end
