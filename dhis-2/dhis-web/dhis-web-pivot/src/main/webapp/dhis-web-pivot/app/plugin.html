@@ -13,8 +13,6 @@
 		h1 {font-size:20px; margin:20px 0;}
 		
 		#table1, #table2 {margin-bottom:40px;}
-		
-		#table1 {border:4px solid #ddd; padding:5px}
     </style>
     
 	<script>
@@ -29,18 +27,26 @@
 			
 			PT.plugin.getTable({
 				url: url,
-				el: 'table2',
-				uid: 'NBt7kGTOQTb'
+				el: 'table2',				
+				columns: [
+					{dimension: 'de', items: [{id: 'Uvn6LCg7dVU'}, {id: 'OdiHJayrsKo'}, {id: 'sB79w2hiLp8'}]},
+					{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}
+				],
+				rows: [
+					{dimension: 'J5jldMd8OHv', items: [{id: 'CXw2yu5fodb'}, {id: 'tDZVQ1WtwpA'}]},
+					{dimension: 'ou', items: [{id: 'LEVEL-4-C9uduqDZr9d'}]}
+				],
+				hideEmptyRows: true
 			});
 		});
 	</script>
 </head>
 
 <body>
-    <h1>TABLE 1</h1>
+    <h1>TABLE BY UID</h1>
 	<div id="table1"></div>
 	
-    <h1>TABLE 2</h1>
+    <h1>TABLE BY CONFIG</h1>
 	<div id="table2"></div>
 </body>
 </html>
