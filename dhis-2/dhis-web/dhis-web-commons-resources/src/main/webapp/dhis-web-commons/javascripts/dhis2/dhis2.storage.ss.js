@@ -201,8 +201,9 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var deferred = $.Deferred();
                 var idx = this.indexer[store].all();
                 var objects = [];
+                var filtered = typeof predicate === 'function';
 
-                if ( typeof predicate !== 'undefined' ) {
+                if ( filtered ) {
                     // just log and continue
                     console.log( 'predicate filtering is currently not supported in dom storage getAll, returning all' );
                 }
