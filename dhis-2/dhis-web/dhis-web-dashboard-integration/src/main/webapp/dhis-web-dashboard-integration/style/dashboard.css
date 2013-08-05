@@ -6,7 +6,7 @@
 #contentDiv
 {
   position: relative;
-  top: 95px;
+  top: 98px;
 }
 
 #contentList
@@ -25,7 +25,7 @@
   position: absolute;
   left: 20px;
   right: 20px;
-  margin-top: 45px;
+  margin-top: 48px;
 }
 
 #dashboardListWrapper
@@ -33,7 +33,7 @@
   position: relative;
   width: auto;
   height: 29px;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
   border: 1px solid #d0d0d0;
   border-radius: 3px;
   padding: 0;
@@ -70,14 +70,14 @@
 
 .item
 {
-  border: 1px solid #ccc;
+  border: 1px solid #bbb;
   width: 405px;
   height: 328px;
   padding: 6px;
   margin: 0 19px 19px 0;
   border-radius: 3px;
   cursor: pointer;  
-  box-shadow: #ddd 0px 1px 1px 0px;
+  box-shadow: #d0d0d0 0px 1px 1px 0px;
   background-color: #fff;
 }
 
