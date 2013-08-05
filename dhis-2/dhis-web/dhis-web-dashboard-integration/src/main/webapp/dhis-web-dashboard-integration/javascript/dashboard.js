@@ -52,14 +52,14 @@ dhis2.db.tmpl = {
 	hitItem: "<li><a class='viewLink' href='${link}'><img src='../images/${img}.png'>${name}</a>" +
 	         "<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a></li>",
 		         
-	chartItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
-	           "<li><div class='item' id='${itemId}' data-position='${position}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	chartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
+	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>View full size</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>Share</a></div>" +
 	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='Click to explore or drag to new position'></div></li>",
 	           
-	mapItem: "<li><div class='dropItem' id='drop${itemId}' data-position='${position}'></div></li>" +
-	         "<li><div class='item' id='${itemId}' data-position='${position}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
+	mapItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
+	         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>Remove</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=690\", \"${name}\" )'>View full size</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>Share</a></div>" +
 		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='Click to explore or drag to new position'></div></li>"
@@ -71,7 +71,7 @@ dhis2.db.dashboardReady = function( id )
 	    containment: "#contentDiv",
 	    helper: "clone",
 	    stack: ".item",
-	    revert: true,
+	    revert: "invalid",
 	    start: dhis2.db.dragStart,
 	    stop: dhis2.db.dragStop
 	} );
@@ -95,45 +95,42 @@ dhis2.db.dashboardReady = function( id )
 dhis2.db.dragStart = function( event, ui ) {
 	$( this ).hide();
 	dhis2.db.currentItem = $( this ).attr( "id" );
-	dhis2.db.currentItemPos = $( this ).data( "position" );
+	dhis2.db.currentItemPos = dhis2.db.getIndex( dhis2.db.currentItem );
 }
 
 dhis2.db.dragStop = function( event, ui ) {
 	$( this ).show();
-	$( ".dropItem" ).hide();
+	$( ".dropItem" ).not( ".lastDropItem" ).hide();
+	$( ".lastDropItem" ).removeClass( "blankDropItem" ).addClass( "blankDropItem" );
 	dhis2.db.currentItem = undefined;
+	dhis2.db.currentItemPos = undefined;
 }
 
 dhis2.db.dropOver = function( event, ui ) {
 	var itemId = $( this ).attr( "id" );
-	var dropItemId = "drop" + itemId;
-	var thisPos = parseInt( $( this ).data( "position" ) );
-	var currentPos = parseInt( dhis2.db.currentItemPos );
-	
-	if ( currentPos != thisPos && parseInt( currentPos + 1 ) != thisPos )
-	{
-		$( "#" + dropItemId ).show();
-	}
+	var dropItemId = "drop-" + itemId;
+	$( "#" + dropItemId ).show();
 }
 
 dhis2.db.dropOut = function( event, ui ) {
 	var itemId = $( this ).attr( "id" );
-	var dropItemId = "drop" + itemId;
+	var dropItemId = "drop-" + itemId;
 	$( "#" + dropItemId ).hide();
 }
 
 dhis2.db.lastDropOver = function( event, ui ) {
-	$( this ).removeClass( "lastDropItem" ).show();
+	$( this ).removeClass( "blankDropItem" ).css( "display", "block" );
 }
 
 dhis2.db.lastDropOut = function( event, ui ) {
-	$( this ).addClass( "lastDropItem" );
+	$( this ).addClass( "blankDropItem" );
 }
 
 dhis2.db.dropItem = function( event, ui ) {
-	var position = parseInt( $( this ).data( "position" ) );
-	position++;
-	dhis2.db.moveItem( dhis2.db.currentItem, position );
+	var destItemId = $( this ).data( "item" );
+	var position = dhis2.db.getIndex( destItemId );
+	
+	dhis2.db.moveItem( dhis2.db.currentItem, destItemId, position );
 }
 
 dhis2.db.openAddDashboardForm = function()
@@ -325,8 +322,8 @@ dhis2.db.renderDashboard = function( id )
 dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseUrl, urlSuffix )
 {
 	var html = 
-		"<li><div class='dropItem' id='drop" + itemId + "' data-position='" + position + "'></div></li>" +
-		"<li><div class='item' id='" + itemId + "' data-position='" + position + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
+		"<li id='liDrop-" + itemId + "' class='liDropItem'><div class='dropItem' id='drop-" + itemId + "' data-item='" + itemId + "'></div></li>" +
+		"<li id='li-" + itemId + "' class='liItem'><div class='item' id='" + itemId + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
 		"<ul class='itemList'><li class='itemTitle' title='Drag to new position'>" + title + "</li>";
 	
 	$.each( contents, function( index, content )
@@ -343,16 +340,23 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseU
 
 dhis2.db.renderLastDropItem = function( $d, position )
 {
-	var html = "<li><div class='dropItem lastDropItem' id='dropLast' data-position='" + position + "'></div></li>";
+	var html = "<li id='liDrop-dropLast' class='liDropItem'><div class='dropItem lastDropItem blankDropItem' id='dropLast' data-item='dropLast'></div></li>";
 	
 	$d.append( html );
 }
 
-dhis2.db.moveItem = function( id, position ) {
+dhis2.db.moveItem = function( id, destItemId, position ) 
+{
+	var $targetDropLi = $( "#liDrop-" + dhis2.db.currentItem );
+	var $targetLi = $( "#li-" + dhis2.db.currentItem );
+	
+	var $destLi = $( "#liDrop-" + destItemId );
+	$targetDropLi.insertBefore( $destLi );
+	$targetLi.insertBefore( $destLi );
+		
 	var url = "../api/dashboards/" + dhis2.db.current + "/items/" + id + "/position/" + position;
 	
 	$.post( url, function() {
-		dhis2.db.renderDashboard( dhis2.db.current );
 	} );
 }
 
@@ -394,6 +398,11 @@ dhis2.db.removeItemContent = function( itemId, contentId )
     		dhis2.db.renderDashboard( dhis2.db.current );
     	}
     } );
+}
+
+dhis2.db.getIndex = function( itemId )
+{
+	return parseInt( $( ".liDropItem" ).index( $( "#liDrop-" + itemId ) ) );
 }
 
 //------------------------------------------------------------------------------
