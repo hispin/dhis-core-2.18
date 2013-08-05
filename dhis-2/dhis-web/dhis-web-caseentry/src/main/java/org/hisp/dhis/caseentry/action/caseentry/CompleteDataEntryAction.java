@@ -35,11 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.Message;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.message.MessageConversationStore;
-import org.hisp.dhis.message.MessageSender;
-import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
@@ -108,20 +103,6 @@ public class CompleteDataEntryAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-
-    private MessageConversationStore messageConversationStore;
-
-    public void setMessageConversationStore( MessageConversationStore messageConversationStore )
-    {
-        this.messageConversationStore = messageConversationStore;
-    }
-
-    private MessageSender emailMessageSender;
-
-    public void setEmailMessageSender( MessageSender emailMessageSender )
-    {
-        this.emailMessageSender = emailMessageSender;
     }
 
     // -------------------------------------------------------------------------
@@ -271,37 +252,6 @@ public class CompleteDataEntryAction
             }
         }
         
-        // send to user group
-        if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
-        {
-            String msg = getStringMsgFromTemplateMsg( reminder, programStageInstance, patient );
-            String programStageName = programStageInstance.getProgramStage().getName();
-
-            // forward to user group by E-mail
-            emailMessageSender.sendMessage( programStageName, msg, currentUserService.getCurrentUser(), reminder
-                .getUserGroup().getMembers(), false );
-
-            // forward to user group by DHIS message
-            Set<User> receivers = new HashSet<User>( reminder.getUserGroup().getMembers() );
-
-            User sender = currentUserService.getCurrentUser();
-            if ( sender != null )
-            {
-                receivers.add( sender );
-            }
-
-            MessageConversation conversation = new MessageConversation( programStageName, sender );
-
-            conversation.addMessage( new Message( msg, null, sender ) );
-
-            for ( User receiver : receivers )
-            {
-                boolean read = receiver != null && receiver.equals( sender );
-
-                conversation.addUserMessage( new UserMessage( receiver, read ) );
-            }
-            messageConversationStore.save( conversation );
-        }
     }
 
     private void sendSMSToCompletedProgram( ProgramInstance programInstance )
@@ -351,37 +301,7 @@ public class CompleteDataEntryAction
                 e.printStackTrace();
             }
         }
-
-        if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
-        {
-            String msg = getStringMsgFromTemplateMsg( reminder, programInstance, patient );
-            String programName = programInstance.getProgram().getName();
-
-            // forward to user group by E-mail
-            emailMessageSender.sendMessage( programName, msg, currentUserService.getCurrentUser(), reminder
-                .getUserGroup().getMembers(), false );
-
-            // forward to user group by DHIS message
-            Set<User> receivers = new HashSet<User>( reminder.getUserGroup().getMembers() );
-
-            User sender = currentUserService.getCurrentUser();
-            if ( sender != null )
-            {
-                receivers.add( sender );
-            }
-
-            MessageConversation conversation = new MessageConversation( programName, sender );
-
-            conversation.addMessage( new Message( msg, null, sender ) );
-
-            for ( User receiver : receivers )
-            {
-                boolean read = receiver != null && receiver.equals( sender );
-
-                conversation.addUserMessage( new UserMessage( receiver, read ) );
-            }
-            messageConversationStore.save( conversation );
-        }
+        
     }
 
     private Set<String> getPhonenumbers( PatientReminder reminder, Patient patient )

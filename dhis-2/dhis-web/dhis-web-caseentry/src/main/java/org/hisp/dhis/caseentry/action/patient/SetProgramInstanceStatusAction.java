@@ -153,7 +153,7 @@ public class SetProgramInstanceStatusAction
         if ( status == ProgramInstance.STATUS_COMPLETED )
         {
             sendSMSToCompletedProgram( programInstance );
-            
+
             programInstance.setEndDate( new Date() );
             if ( !program.getOnlyEnrollOnce() )
             {
@@ -161,7 +161,7 @@ public class SetProgramInstanceStatusAction
                 patientService.updatePatient( patient );
             }
         }
-        
+
         else if ( status == ProgramInstance.STATUS_CANCELLED )
         {
             Calendar today = Calendar.getInstance();
@@ -249,13 +249,22 @@ public class SetProgramInstanceStatusAction
                 phoneNumbers.add( patient.getOrganisationUnit().getPhoneNumber() );
             }
             break;
+        case PatientReminder.SEND_TO_USER_GROUP:
+            for ( User user : reminder.getUserGroup().getMembers() )
+            {
+                if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                {
+                    phoneNumbers.add( user.getPhoneNumber() );
+                }
+            }
+            break;
         default:
             if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
             {
                 String[] _phoneNumbers = patient.getPhoneNumber().split( ";" );
                 for ( String phoneNumber : _phoneNumbers )
                 {
-                    phoneNumbers.add(phoneNumber);
+                    phoneNumbers.add( phoneNumber );
                 }
             }
             break;
