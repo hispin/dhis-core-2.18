@@ -27,15 +27,13 @@
 
 package org.hisp.dhis.dataadmin.action.option;
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.option.OptionService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Chau Thu Tran
- * 
  * @version $RemoveOptionSetAction.java Feb 3, 2012 9:28:11 PM$
  */
 public class RemoveOptionSetAction
@@ -52,11 +50,11 @@ public class RemoveOptionSetAction
     // -------------------------------------------------------------------------------------------------
 
     private Integer id;
-    
+
     private String message;
-   
+
     private I18n i18n;
-    
+
     // -------------------------------------------------------------------------------------------------
     // Setters/Getters
     // -------------------------------------------------------------------------------------------------
@@ -80,7 +78,7 @@ public class RemoveOptionSetAction
     {
         this.i18n = i18n;
     }
-    
+
     // -------------------------------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------------------------------

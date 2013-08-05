@@ -27,15 +27,13 @@ package org.hisp.dhis.dataadmin.action.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Chau Thu Tran
- * 
  * @version $ValidateOptionSetAction.java Feb 3, 2012 9:28:11 PM$
  */
 public class ValidateOptionSetAction
@@ -45,9 +43,8 @@ public class ValidateOptionSetAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-     private OptionService optionService;
+    private OptionService optionService;
 
-   
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;

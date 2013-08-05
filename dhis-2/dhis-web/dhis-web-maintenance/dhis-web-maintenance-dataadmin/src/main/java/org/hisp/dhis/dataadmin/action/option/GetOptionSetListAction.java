@@ -27,21 +27,20 @@
 
 package org.hisp.dhis.dataadmin.action.option;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version $GetOptionSetListAction.java Feb 3, 2012 9:28:11 PM$
  */
 public class GetOptionSetListAction
@@ -103,8 +102,8 @@ public class GetOptionSetListAction
             optionSets = new ArrayList<OptionSet>( optionService.getOptionSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        Collections.sort( optionSets, IdentifiableObjectNameComparator.INSTANCE  );
-        
+        Collections.sort( optionSets, IdentifiableObjectNameComparator.INSTANCE );
+
         return SUCCESS;
     }
 

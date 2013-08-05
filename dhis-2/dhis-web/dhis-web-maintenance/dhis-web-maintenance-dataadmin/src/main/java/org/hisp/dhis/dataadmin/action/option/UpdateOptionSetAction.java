@@ -27,16 +27,14 @@
 
 package org.hisp.dhis.dataadmin.action.option;
 
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
-import com.opensymphony.xwork2.Action;
+import java.util.List;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version $UpdateOptionSetAction.java Feb 3, 2012 9:28:11 PM$
  */
 public class UpdateOptionSetAction
@@ -53,7 +51,7 @@ public class UpdateOptionSetAction
     // -------------------------------------------------------------------------------------------------
 
     private Integer id;
-    
+
     private String name;
 
     private List<String> options;
@@ -61,12 +59,12 @@ public class UpdateOptionSetAction
     // -------------------------------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------------------------------
-    
+
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;
     }
-    
+
     public void setId( Integer id )
     {
         this.id = id;
@@ -92,10 +90,16 @@ public class UpdateOptionSetAction
     {
         OptionSet optionSet = optionService.getOptionSet( id );
         optionSet.setName( name );
+
+        if ( !optionSet.getOptions().equals( options ) )
+        {
+            optionSet.setVersion( optionSet.getVersion() + 1 );
+        }
+
         optionSet.setOptions( options );
-        
+
         optionService.updateOptionSet( optionSet );
-        
+
         return SUCCESS;
     }
 

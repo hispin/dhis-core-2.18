@@ -27,14 +27,12 @@
 
 package org.hisp.dhis.dataadmin.action.option;
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Chau Thu Tran
- * 
  * @version $GetOptionSetAction.java Feb 3, 2012 9:28:11 PM$
  */
 public class GetOptionSetAction
@@ -53,16 +51,16 @@ public class GetOptionSetAction
     private Integer id;
 
     private OptionSet optionSet;
-    
+
     // -------------------------------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------------------------------
-    
+
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;
     }
-    
+
     public OptionSet getOptionSet()
     {
         return optionSet;
@@ -82,7 +80,7 @@ public class GetOptionSetAction
         throws Exception
     {
         optionSet = optionService.getOptionSet( id );
-        
+
         return SUCCESS;
     }
 
