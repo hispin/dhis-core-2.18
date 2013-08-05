@@ -27,15 +27,15 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.hisp.dhis.i18n.I18nService;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Lars Helge Overland
@@ -78,17 +78,17 @@ public class DefaultOptionService
 
     public OptionSet getOptionSet( int id )
     {
-        return i18n( i18nService, optionStore.get( id ));
+        return i18n( i18nService, optionStore.get( id ) );
     }
 
     public OptionSet getOptionSet( String uid )
     {
-        return i18n( i18nService, optionStore.getByUid( uid ));
+        return i18n( i18nService, optionStore.getByUid( uid ) );
     }
 
     public OptionSet getOptionSetByName( String name )
     {
-        return i18n( i18nService, optionStore.getByName( name ));
+        return i18n( i18nService, optionStore.getByName( name ) );
     }
 
     public void deleteOptionSet( OptionSet optionSet )
@@ -98,7 +98,7 @@ public class DefaultOptionService
 
     public Collection<OptionSet> getAllOptionSets()
     {
-        return i18n( i18nService, optionStore.getAll());
+        return i18n( i18nService, optionStore.getAll() );
     }
 
     public List<String> getOptions( int optionSetId, String key, Integer max )
@@ -122,7 +122,7 @@ public class DefaultOptionService
 
         return options;
     }
-    
+
     public Integer getOptionSetsCountByName( String name )
     {
         return optionStore.getCountLikeName( name );
@@ -130,14 +130,14 @@ public class DefaultOptionService
 
     public Collection<OptionSet> getOptionSetsBetweenByName( String name, int first, int max )
     {
-        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllLikeNameOrderedName( name, first, max ) ));
+        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllLikeNameOrderedName( name, first, max ) ) );
     }
 
     public Collection<OptionSet> getOptionSetsBetween( int first, int max )
     {
-        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllOrderedName( first, max ) ));
+        return new HashSet<OptionSet>( i18n( i18nService, optionStore.getAllOrderedName( first, max ) ) );
     }
-    
+
     public Integer getOptionSetCount()
     {
         return optionStore.getCount();

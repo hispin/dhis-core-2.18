@@ -54,6 +54,11 @@ public class OptionSet
 
     private List<String> options = new ArrayList<String>();
 
+    /**
+     * Indicating version number.
+     */
+    private Integer version = 1;
+
     public OptionSet()
     {
     }
@@ -103,6 +108,18 @@ public class OptionSet
     public void setOptions( List<String> options )
     {
         this.options = options;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( localName = "version", namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( Integer version )
+    {
+        this.version = version;
     }
 
     public static String optionEncode( String option )
