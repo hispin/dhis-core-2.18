@@ -384,7 +384,12 @@ public class DefaultParserManager
             Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
             UserCredentials anonymousUser = userService.getUserCredentialsByUsername( ANONYMOUS_USER_NAME );
-
+            
+            if( anonymousUser == null)
+            {
+                anonymousUser = userService.getUserCredentialsByUsername( "admin" );
+            }
+            
             MessageConversation conversation = new MessageConversation( command.getName(), anonymousUser.getUser() );
 
             conversation.addMessage( new Message( message, null, anonymousUser.getUser() ) );
@@ -395,8 +400,10 @@ public class DefaultParserManager
 
                 conversation.addUserMessage( new UserMessage( receiver, read ) );
             }
+            // forward to user group by SMS, E-mail, DHIS conversation
+            messageService.sendMessage( command.getName(), message, null, receivers, anonymousUser.getUser(), false, false );
             
-            messageConversationStore.save( conversation );
+            //messageConversationStore.save( conversation );
         }
     }
 
