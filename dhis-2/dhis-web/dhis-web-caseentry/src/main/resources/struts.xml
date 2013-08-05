@@ -1114,7 +1114,7 @@
     </action>
 
     <action name="removePatientComment"
-      class="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction">
+      class="org.hisp.dhis.caseentry.action.reminder.RemovePatientCommentAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
       <param name="requiredAuthorities">F_PATIENT_COMMENT_DELETE</param>

@@ -178,10 +178,10 @@
 				</script>
 			</td>
 			<td>
-				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%">
+				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%" onchange="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" >
 			</td>
 			<td>
-				<img src='images/post_comment.png' class='img-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
+				<img src='images/post_comment.png' class='img-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" >
 			</td>
 			<td>
 				#if(($auth.hasAccess( "dhis-web-caseentry", "sendSMS" ) ) 
