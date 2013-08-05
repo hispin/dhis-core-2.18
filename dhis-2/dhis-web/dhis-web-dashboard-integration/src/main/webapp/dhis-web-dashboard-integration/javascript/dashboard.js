@@ -7,7 +7,7 @@ dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
-// TODO drop at end of list
+// TODO proper link hrefs
 
 //------------------------------------------------------------------------------
 // Document ready
@@ -78,22 +78,25 @@ dhis2.db.dashboardReady = function( id )
 		over: dhis2.db.dropOver,
 		out: dhis2.db.dropOut
 	} );
-	
+
 	$( ".dropItem" ).droppable( {
 		accept: ".item",
 		drop: dhis2.db.dropItem
 	} );
+	
+	$( ".lastDropItem" ).droppable( {
+		over: dhis2.db.lastDropOver,
+		out: dhis2.db.lastDropOut
+	} );	
 }
 
-dhis2.db.dragStart = function( event, ui ) {	
-	$( this ).css( "opacity", "0.6" );
+dhis2.db.dragStart = function( event, ui ) {
 	$( this ).hide();
 	dhis2.db.currentItem = $( this ).attr( "id" );
 	dhis2.db.currentItemPos = $( this ).data( "position" );
 }
 
 dhis2.db.dragStop = function( event, ui ) {
-	$( this ).css( "opacity", "1.0" );
 	$( this ).show();
 	$( ".dropItem" ).hide();
 	dhis2.db.currentItem = undefined;
@@ -115,6 +118,14 @@ dhis2.db.dropOut = function( event, ui ) {
 	var itemId = $( this ).attr( "id" );
 	var dropItemId = "drop" + itemId;
 	$( "#" + dropItemId ).hide();
+}
+
+dhis2.db.lastDropOver = function( event, ui ) {
+	$( this ).removeClass( "lastDropItem" ).show();
+}
+
+dhis2.db.lastDropOut = function( event, ui ) {
+	$( this ).addClass( "lastDropItem" );
 }
 
 dhis2.db.dropItem = function( event, ui ) {
@@ -297,6 +308,8 @@ dhis2.db.renderDashboard = function( id )
 					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", position );
 				}
 			} );
+			
+			dhis2.db.renderLastDropItem( $d, parseInt( data.items.length - 1 ) );
 		}
 		else
 		{
@@ -310,8 +323,8 @@ dhis2.db.renderDashboard = function( id )
 dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position )
 {
 	var html = 
-		"<li><div class='dropItem' id='drop" + itemId + "' data-position='" + position + "'></div>" +
-		"<div class='item' id='" + itemId + "' data-position='" + position + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
+		"<li><div class='dropItem' id='drop" + itemId + "' data-position='" + position + "'></div></li>" +
+		"<li><div class='item' id='" + itemId + "' data-position='" + position + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>Remove</a></div>" +
 		"<ul class='itemList'><li class='itemTitle' title='Drag to new position'>" + title + "</li>";
 	
 	$.each( contents, function( index, content )
@@ -322,6 +335,13 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position )
 	} );
 	
 	html += "</ul></div></li>";
+	
+	$d.append( html );
+}
+
+dhis2.db.renderLastDropItem = function( $d, position )
+{
+	var html = "<li><div class='dropItem lastDropItem' id='dropLast' data-position='" + position + "'></div></li>";
 	
 	$d.append( html );
 }

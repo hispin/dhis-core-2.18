@@ -99,6 +99,18 @@
   display: none;
 }
 
+.lastDropItem
+{
+  width: 405px;
+  height: 328px;
+  padding: 6px;
+  margin: 0 19px 19px 0;
+  border: 1px solid #fff;
+  background-color: #fff;
+  border-radius: 3px;
+  display: block;
+}
+
 .itemHeader
 {
   margin: 0 0 10px 0;
