@@ -2,7 +2,6 @@
 	jQuery(document).ready( function() {
 		validation( "sendSMSForm", function( form ) { sendSMSMessage( form ); } );
 		selectionTreeSelection.setListenerFunction( selectedOrganisationUnitSendSMS );
-		
 		var target = '${sendTo}';
 		jQuery( "#sendTarget > option" ).each( function( i, item )
 		{
