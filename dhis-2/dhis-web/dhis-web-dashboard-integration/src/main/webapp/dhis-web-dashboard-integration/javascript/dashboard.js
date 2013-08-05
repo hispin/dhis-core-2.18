@@ -67,6 +67,7 @@ dhis2.db.dashboardReady = function( id )
 {
 	$( ".item" ).draggable( {
 	    containment: "#contentDiv",
+	    helper: "clone",
 	    stack: ".item",
 	    revert: true,
 	    start: dhis2.db.dragStart,
@@ -86,12 +87,14 @@ dhis2.db.dashboardReady = function( id )
 
 dhis2.db.dragStart = function( event, ui ) {	
 	$( this ).css( "opacity", "0.6" );
+	$( this ).hide();
 	dhis2.db.currentItem = $( this ).attr( "id" );
 	dhis2.db.currentItemPos = $( this ).data( "position" );
 }
 
 dhis2.db.dragStop = function( event, ui ) {
 	$( this ).css( "opacity", "1.0" );
+	$( this ).show();
 	$( ".dropItem" ).hide();
 	dhis2.db.currentItem = undefined;
 }
