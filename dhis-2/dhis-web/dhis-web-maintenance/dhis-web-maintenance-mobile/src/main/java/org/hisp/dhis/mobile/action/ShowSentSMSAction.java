@@ -29,6 +29,7 @@ package org.hisp.dhis.mobile.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -36,44 +37,58 @@ import org.hisp.dhis.program.SchedulingProgramObject;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
 public class ShowSentSMSAction
     implements Action
 {
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private OutboundSmsService outboundSmsService;
-    
+
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
         this.outboundSmsService = outboundSmsService;
     }
-    
+
     private ProgramStageInstanceService programStageInstanceService;
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
     }
-    
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
+    public UserService getUserService()
+    {
+        return userService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private List<OutboundSms> listOutboundSMS;
-    
+
     public List<OutboundSms> getListOutboundSMS()
     {
         return listOutboundSMS;
     }
-    
+
     private Integer filterStatusType;
-    
+
     public Integer getFilterStatusType()
     {
         return filterStatusType;
@@ -85,12 +100,19 @@ public class ShowSentSMSAction
     }
 
     private Collection<SchedulingProgramObject> schedulingProgramObjects;
-    
+
     public Collection<SchedulingProgramObject> getSchedulingProgramObjects()
     {
         return schedulingProgramObjects;
     }
-    
+
+    private List<String> recipientNames;
+
+    public List<String> getRecipientNames()
+    {
+        return recipientNames;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -102,12 +124,12 @@ public class ShowSentSMSAction
         List<OutboundSms> tempListOutboundSMS = outboundSmsService.getAllOutboundSms();
         
         listOutboundSMS = new ArrayList<OutboundSms>();
-        
-        if ( filterStatusType != null && filterStatusType == 0)
+
+        if ( filterStatusType != null && filterStatusType == 0 )
         {
-            for ( OutboundSms each: tempListOutboundSMS )
+            for ( OutboundSms each : tempListOutboundSMS )
             {
-                if (each.getStatus().equals( OutboundSmsStatus.OUTBOUND ))
+                if ( each.getStatus().equals( OutboundSmsStatus.OUTBOUND ) )
                 {
                     this.listOutboundSMS.add( each );
                 }
@@ -115,20 +137,47 @@ public class ShowSentSMSAction
         }
         if ( filterStatusType != null && filterStatusType == 1 )
         {
-            for ( OutboundSms each: tempListOutboundSMS )
+            for ( OutboundSms each : tempListOutboundSMS )
             {
-                if (each.getStatus().equals( OutboundSmsStatus.SENT ))
+                if ( each.getStatus().equals( OutboundSmsStatus.SENT ) )
                 {
                     this.listOutboundSMS.add( each );
                 }
             }
         }
-        if ( filterStatusType != null && filterStatusType == 2 || filterStatusType == null)
+        if ( filterStatusType != null && filterStatusType == 2 || filterStatusType == null )
         {
-            for ( OutboundSms each: tempListOutboundSMS )
+            for ( OutboundSms each : tempListOutboundSMS )
             {
                 this.listOutboundSMS.add( each );
             }
+        }
+
+        recipientNames = new ArrayList<String>();
+        recipientNames.add( "" );
+        for ( OutboundSms outboundSms : listOutboundSMS )
+        {
+            String tempString = "";
+            for ( String phoneNumber : outboundSms.getRecipients() )
+            {
+                if ( userService.getUsersByPhoneNumber( phoneNumber ) == null
+                    || userService.getUsersByPhoneNumber( phoneNumber ).size() == 0 )
+                {
+                    tempString += "[unknown]";
+                }
+                else if ( userService.getUsersByPhoneNumber( phoneNumber ) != null
+                    && userService.getUsersByPhoneNumber( phoneNumber ).size() > 0 )
+                {
+
+                    Iterator<User> users = userService.getUsersByPhoneNumber( phoneNumber ).iterator();
+                    while ( users.hasNext() )
+                    {
+                        User user = users.next();
+                        tempString += "[" + user.getUsername() + "]";
+                    }
+                }
+            }
+            recipientNames.add( tempString );
         }
         schedulingProgramObjects = programStageInstanceService.getSendMesssageEvents();
         return SUCCESS;

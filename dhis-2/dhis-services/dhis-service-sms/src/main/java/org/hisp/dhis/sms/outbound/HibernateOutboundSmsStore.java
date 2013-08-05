@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -91,7 +92,7 @@ public class HibernateOutboundSmsStore
     public List<OutboundSms> getAll()
     {
         Session session = sessionFactory.getCurrentSession();
-        return session.createCriteria( OutboundSms.class ).addOrder( Order.asc( "date" ) ).list();
+        return session.createCriteria( OutboundSms.class ).addOrder( Order.desc( "date" ) ).list();
     }
 
     @Override

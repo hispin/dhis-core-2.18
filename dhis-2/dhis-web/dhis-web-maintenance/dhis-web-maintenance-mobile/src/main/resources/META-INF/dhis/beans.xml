@@ -63,6 +63,8 @@
 			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="userService"
+			ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<!-- Patient Mobile Settings -->
