@@ -86,7 +86,7 @@ public class RemovePatientCommentAction
     public String execute()
     {
         PatientComment patientComment = commentService.getPatientComment( id );
-
+        
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
