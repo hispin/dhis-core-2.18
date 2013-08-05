@@ -70,21 +70,21 @@
 
 .item
 {
-  border: 1px solid #bbb;
+  border: 1px solid #ccc;
   width: 405px;
   height: 328px;
   padding: 6px;
   margin: 0 19px 19px 0;
   border-radius: 3px;
   cursor: pointer;  
-  box-shadow: #d0d0d0 0px 1px 1px 0px;
+  box-shadow: #ddd 0px 1px 2px 0px;
   background-color: #fff;
 }
 
 .item:hover
 {
-  border: 1px solid #aaa;
-  box-shadow: #aaa 0px 1px 1px 0px;
+  border: 1px solid #bbb;
+  box-shadow: #ccc 0px 1px 2px 0px;
 }
 
 .dropItem
@@ -99,15 +99,10 @@
   display: none;
 }
 
-.lastDropItem
+.blankDropItem
 {
-  width: 405px;
-  height: 328px;
-  padding: 6px;
-  margin: 0 19px 19px 0;
   border: 1px solid #fff;
   background-color: #fff;
-  border-radius: 3px;
   display: block;
 }
 
