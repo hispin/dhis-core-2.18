@@ -251,6 +251,15 @@ public class SetEventStatusAction
                 phoneNumbers.add( patient.getOrganisationUnit().getPhoneNumber() );
             }
             break;
+        case PatientReminder.SEND_TO_USER_GROUP:
+            for ( User user : reminder.getUserGroup().getMembers() )
+            {
+                if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                {
+                    phoneNumbers.add( user.getPhoneNumber() );
+                }
+            }
+            break;
         default:
             if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
             {
