@@ -183,6 +183,10 @@ public class ProcessingSendSMSAction
 
             for ( String each : recipients )
             {
+                if ( !each.startsWith( "+" ) )
+                {
+                    each = "+" + each;
+                }
                 User user = new User();
                 user.setPhoneNumber( each );
                 recipientsList.add( user );
