@@ -7,7 +7,9 @@ dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
-// TODO proper link hrefs
+// TODO dashboard list horizontal scroll
+// TODO remember last dashboard
+// TODO report type
 
 //------------------------------------------------------------------------------
 // Document ready
@@ -36,8 +38,8 @@ $( document ).ready( function()
 //------------------------------------------------------------------------------
 
 dhis2.db.tmpl = {
-	openAddLink: "<li><a href='javascript:dhis2.db.openAddDashboardForm()'>Add new</a></li><li>" +
-	             "<a href='javascript:dhis2.db.openManageDashboardForm()'>Manage</a></li>",
+	openAddLink: "<li><a class='bold' href='javascript:dhis2.db.openAddDashboardForm()'>Add new</a></li><li>" +
+	             "<a class='bold' href='javascript:dhis2.db.openManageDashboardForm()'>Manage</a></li>",
 	
 	dashboardLink: "<li id='dashboard-${id}'><a href='javascript:dhis2.db.renderDashboard( \"${id}\" )'>${name}</a></li>",
 	
@@ -293,19 +295,19 @@ dhis2.db.renderDashboard = function( id )
 				}
 				else if ( "users" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", position );
+					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", position, "../dhis-web-dashboard-integration/profile.action?id=", "" );
 				}
 				else if ( "reportTables" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables", position );
+					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables", position, "../dhis-web-pivot/app/index.html?id=", "" );
 				}
 				else if ( "reports" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports", position );
+					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports", position, "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
 				}
 				else if ( "resources" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", position );
+					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", position, "../api/documents/", "/data" );
 				}
 			} );
 			
@@ -320,7 +322,7 @@ dhis2.db.renderDashboard = function( id )
 	} );
 }
 
-dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position )
+dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseUrl, urlSuffix )
 {
 	var html = 
 		"<li><div class='dropItem' id='drop" + itemId + "' data-position='" + position + "'></div></li>" +
@@ -330,7 +332,7 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position )
 	$.each( contents, function( index, content )
 	{
 		html += 
-			"<li><a href=''>" + content.name + "</a><a class='removeItemLink' href='javascript:dhis2.db.removeItemContent( \"" + itemId + "\", \"" + content.id + "\" )' title='Remove'>" + 
+			"<li><a href='" + baseUrl + content.id + urlSuffix + "'>" + content.name + "</a><a class='removeItemLink' href='javascript:dhis2.db.removeItemContent( \"" + itemId + "\", \"" + content.id + "\" )' title='Remove'>" + 
 			"<img src='../images/hide.png'></a></li>";
 	} );
 	
