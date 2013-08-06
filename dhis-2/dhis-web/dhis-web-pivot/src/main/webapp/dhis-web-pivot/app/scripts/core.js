@@ -1337,7 +1337,8 @@ Ext.onReady( function() {
 						if (uuidDimUuidsMap.hasOwnProperty(key)) {
 							valueElement = Ext.get(key);
 													
-							valueElement.dom.setAttribute('onclick', 'pt.util.pivot.onMouseClick(this.id);');
+							valueElement.dom.pt = pt;
+							valueElement.dom.setAttribute('onclick', 'this.pt.util.pivot.onMouseClick(this.id);');
 						}
 					}
 				};						
@@ -2086,7 +2087,6 @@ Ext.onReady( function() {
 								pt.viewport.centerRegion.setHeight(el.getHeight());
 								baseEl.setWidth(el.getWidth() + baseElBorderW + baseElPaddingW);
 								baseEl.setHeight(el.getHeight() + baseElBorderH + baseElPaddingH);
-								//Ext.get(pt.el).dom.innerHTML = html;
 							}
 							
 							// Hide mask
@@ -2102,7 +2102,7 @@ Ext.onReady( function() {
 							pt.uuidObjectMap = uuidObjectMap;
 							
 							// Add value event handlers, set session storage
-							if (PT.isSessionStorage) {
+							if (!pt.isPlugin && PT.isSessionStorage) {
 								setMouseHandlers();
 								pt.util.pivot.setSessionStorage(layout, 'table');
 							}
