@@ -52,6 +52,13 @@
   color: #bbb;
 }
 
+.dasboardTip
+{
+  padding: 20px 140px;
+  font-size: 22px;
+  color: #bbb;
+}
+
 .currentDashboard
 {
   background-color: #eee;
