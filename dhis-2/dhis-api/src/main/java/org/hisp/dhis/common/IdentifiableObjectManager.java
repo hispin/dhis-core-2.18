@@ -53,6 +53,8 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> T search( Class<T> clazz, String query );
 
+    <T extends IdentifiableObject> Collection<T> filter( Class<T> clazz, String query );
+
     <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz );
 
     <T extends IdentifiableObject> Collection<T> getAllSorted( Class<T> clazz );
