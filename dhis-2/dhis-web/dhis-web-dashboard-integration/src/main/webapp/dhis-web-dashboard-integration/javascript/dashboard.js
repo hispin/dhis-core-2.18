@@ -45,7 +45,8 @@ dhis2.db.tmpl = {
 	
 	moduleIntro: "<li><div class='dasboardIntro'>Click Add new to get started</div></li>",
 	
-	dashboardIntro: "<li><div class='dasboardIntro'>Add stuff by searching from the search field above</div></li>",
+	dashboardIntro: "<li><div class='dasboardIntro'>Add stuff by searching from the search field above</div>" +
+			        "<div class='dasboardTip'>Tip: Arrange your dashboard by dragging and dropping items</div></li>",
 	
 	hitHeader: "<li class='hitHeader'>${title}</li>",
 	
@@ -177,8 +178,16 @@ dhis2.db.addDashboard = function()
 		url: "../api/dashboards",
 		data: item,
 		contentType: "application/json",
-		success: function( data, text, xhr ) {
-			$( "#dashboardName" ).val( "" );
+		success: function( data, text, xhr ) {			
+			$( "#dashboardName" ).val( "" );			
+			var location = xhr.getResponseHeader( "Location" );
+			
+			if ( location !== undefined && location.lastIndexOf( "/" ) != -1 )
+			{
+				var itemId = location.substring( ( location.lastIndexOf( "/" ) + 1 ) );
+				dhis2.db.current = itemId;				
+			}
+			
 			dhis2.db.renderDashboardListLoadFirst();
 		}
 	} );
