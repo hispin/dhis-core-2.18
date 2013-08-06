@@ -46,10 +46,10 @@ public interface GenericIdentifiableObjectStore<T>
      * @return the object with the given uid.
      */
     T getByUid( String uid );
-    
+
     /**
      * Retrieves the object with the given uid. Bypasses the ACL system.
-     * 
+     *
      * @param uid the uid.
      * @return the object with the given uid.
      */
@@ -129,6 +129,14 @@ public interface GenericIdentifiableObjectStore<T>
      * @return a List of objects.
      */
     List<T> getAllLikeName( String name );
+
+    /**
+     * Retrieves a List of objects where the shortName is like the given shortName.
+     *
+     * @param shortName the shortName.
+     * @return a List of objects.
+     */
+    List<T> getAllLikeShortName( String shortName );
 
     /**
      * Retrieves the objects determined by the given first result and max result.
