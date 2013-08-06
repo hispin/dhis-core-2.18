@@ -107,8 +107,9 @@ public class DefaultImportService
     public ImportSummary importMetaData( String userUid, MetaData metaData, ImportOptions importOptions, TaskId taskId )
     {
         User user = userService.getUser( userUid );
+        String username = user != null ? user.getUsername() : null;
 
-        log.info( "User '" + user.getUsername() + "' started import at " + new Date() );
+        log.info( "User '" + username + "' started import at " + new Date() );
 
         notifier.clear( taskId ).notify( taskId, "Importing meta-data" );
 
