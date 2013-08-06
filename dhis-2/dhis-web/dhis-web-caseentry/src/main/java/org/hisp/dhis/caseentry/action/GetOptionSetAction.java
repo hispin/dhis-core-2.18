@@ -30,6 +30,7 @@ package org.hisp.dhis.caseentry.action;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,6 +46,9 @@ public class GetOptionSetAction implements Action
     @Autowired
     private DataElementService dataElementService;
 
+    @Autowired
+    private OptionService optionService;
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -54,6 +58,13 @@ public class GetOptionSetAction implements Action
     public void setDataElementUid( String dataElementUid )
     {
         this.dataElementUid = dataElementUid;
+    }
+
+    private String id;
+
+    public void setId( String id )
+    {
+        this.id = id;
     }
 
     private OptionSet optionSet;
@@ -70,19 +81,31 @@ public class GetOptionSetAction implements Action
     @Override
     public String execute() throws Exception
     {
-        if ( dataElementUid == null )
+        if ( id == null && dataElementUid == null )
         {
             return INPUT;
         }
 
-        DataElement dataElement = dataElementService.getDataElement( dataElementUid );
-
-        if ( dataElement == null || dataElement.getOptionSet() == null )
+        if ( id != null )
         {
-            return ERROR;
-        }
+            optionSet = optionService.getOptionSet( id );
 
-        optionSet = dataElement.getOptionSet();
+            if ( optionSet == null )
+            {
+                return ERROR;
+            }
+        }
+        else
+        {
+            DataElement dataElement = dataElementService.getDataElement( dataElementUid );
+
+            if ( dataElement == null || dataElement.getOptionSet() == null )
+            {
+                return ERROR;
+            }
+
+            optionSet = dataElement.getOptionSet();
+        }
 
         return SUCCESS;
     }
