@@ -76,8 +76,7 @@ function loadOptionSets( metaData ) {
 
     _.each( metaData.optionSets, function ( item, idx ) {
         DAO.store.get('optionSets', item.uid).done(function(obj) {
-            if(typeof obj === 'undefined' || obj.optionSet.version !== item.v) {
-                console.log('loading ', item);
+            if(!obj || obj.optionSet.version !== item.v) {
                 promise = promise.then(function() {
                     return $.ajax({
                         url: 'getOptionSet.action',
@@ -93,8 +92,6 @@ function loadOptionSets( metaData ) {
                         DAO.store.set('optionSets', obj);
                     });
                 });
-            } else {
-                console.log('skipping ', item);
             }
         });
     } );

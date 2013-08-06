@@ -2181,27 +2181,35 @@ function getOptions( uid, query, success ) {
 }
 
 function loadOptionSets() {
-    var optionSetUids = _.values( optionSets );
-    optionSetUids = _.union(optionSetUids);
+    var options = _.values( optionSets );
+    var uids = [];
 
     var deferred = $.Deferred();
     var promise = deferred.promise();
 
-    _.each( optionSetUids, function ( item, idx ) {
-        promise = promise.then( function () {
-            return $.ajax( {
-                url: '../api/optionSets/' + item + '.json?links=false',
-                type: 'GET',
-                cache: false
-            } ).done( function ( data ) {
-                log( 'Successfully stored optionSet: ' + item );
+    _.each( options, function ( item, idx ) {
+        if(uids.indexOf(item.uid) == -1) {
+            DAO.store.get('optionSets', item.uid).done(function(obj) {
+                if(!obj || obj.optionSet.version !== item.v) {
+                    promise = promise.then( function () {
+                        return $.ajax( {
+                            url: '../api/optionSets/' + item.uid + '.json?links=false',
+                            type: 'GET',
+                            cache: false
+                        } ).done( function ( data ) {
+                            log( 'Successfully stored optionSet: ' + item.uid );
 
-                var obj = {};
-                obj.id = item;
-                obj.optionSet = data;
-                DAO.store.set( 'optionSets', obj );
-            } );
-        } );
+                            var obj = {};
+                            obj.id = item.uid;
+                            obj.optionSet = data;
+                            DAO.store.set( 'optionSets', obj );
+                        } );
+                    } );
+
+                    uids.push( item.uid );
+                }
+            });
+        }
     } );
 
     promise = promise.then( function () {
@@ -2223,7 +2231,7 @@ function insertOptionSets() {
         item = item + '-val';
         optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
 
-        autocompleteOptionSetField( item, optionSets[optionSetKey] );
+        autocompleteOptionSetField( item, optionSets[optionSetKey].uid );
     } );
 }
 
