@@ -76,9 +76,6 @@ function loadOptionSets( metaData ) {
 
     _.each( metaData.optionSets, function ( item, idx ) {
         DAO.store.get('optionSets', item.uid).done(function(obj) {
-            console.log('obj: ', obj);
-            console.log('item: ', item);
-
             if(typeof obj === 'undefined' || obj.optionSet.version !== item.v) {
                 console.log('loading ', item);
                 promise = promise.then(function() {
