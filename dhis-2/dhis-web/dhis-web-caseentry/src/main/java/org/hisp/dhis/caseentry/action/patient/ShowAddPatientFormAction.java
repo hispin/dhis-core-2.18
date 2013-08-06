@@ -218,11 +218,10 @@ public class ShowAddPatientFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
-        
+
         if ( programId == null )
         {
-            patientRegistrationForm = patientRegistrationFormService
-                .getCommonPatientRegistrationForm();
+            patientRegistrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
 
             if ( patientRegistrationForm != null && patientRegistrationForm.getDataEntryForm() != null )
             {
@@ -233,8 +232,7 @@ public class ShowAddPatientFormAction
         else
         {
             program = programService.getProgram( programId );
-            patientRegistrationForm = patientRegistrationFormService
-                .getPatientRegistrationForm( program );
+            patientRegistrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
 
             if ( patientRegistrationForm != null && patientRegistrationForm.getDataEntryForm() != null )
             {
@@ -283,6 +281,7 @@ public class ShowAddPatientFormAction
     private String generateOrgunitIdentifier( OrganisationUnit organisationUnit )
     {
         String value = organisationUnit.getCode();
+        value = (value == null) ? "" : value;
 
         int totalPatient = patientService.countGetPatientsByOrgUnit( organisationUnit );
         if ( totalPatient < 10 )
