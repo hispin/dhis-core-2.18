@@ -204,6 +204,7 @@ public class DefaultIdentifiableObjectManager
         }
 
         uniqueObjects.addAll( getLikeName( clazz, query ) );
+        uniqueObjects.addAll( getLikeShortName( clazz, query ) );
 
         List<T> objects = new ArrayList<T>( uniqueObjects );
 
@@ -266,6 +267,20 @@ public class DefaultIdentifiableObjectManager
         }
 
         return (Collection<T>) store.getAllLikeName( name );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getAllLikeShortName( shortName );
     }
 
     @Override

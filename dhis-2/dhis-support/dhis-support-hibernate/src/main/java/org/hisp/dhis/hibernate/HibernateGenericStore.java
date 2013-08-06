@@ -40,6 +40,7 @@ import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
@@ -561,6 +562,43 @@ public class HibernateGenericStore<T>
     {
         Query query = getQuery( "from " + clazz.getName() + " c where lower(name) like :name order by c.name" );
         query.setString( "name", "%" + name.toLowerCase() + "%" );
+
+        return query;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<T> getAllLikeShortName( String shortName )
+    {
+        if ( NameableObject.class.isAssignableFrom( clazz ) )
+        {
+            Query query = sharingEnabled() ? getQueryAllLikeShortNameAcl( shortName ) : getQueryAllLikeShortName( shortName );
+            return query.list();
+        }
+
+        // fallback to using name
+        return getAllLikeName( shortName );
+    }
+
+    private Query getQueryAllLikeShortNameAcl( String shortName )
+    {
+        String hql = "select distinct c from " + clazz.getName() + " c"
+            + " where lower(shortName) like :shortName and ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
+            + " or exists "
+            + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%')"
+            + " ) order by c.shortName";
+
+        Query query = getQuery( hql );
+        query.setEntity( "user", currentUserService.getCurrentUser() );
+        query.setString( "shortName", "%" + shortName.toLowerCase() + "%" );
+
+        return query;
+    }
+
+    private Query getQueryAllLikeShortName( String shortName )
+    {
+        Query query = getQuery( "from " + clazz.getName() + " c where lower(shortName) like :shortName order by c.shortName" );
+        query.setString( "shortName", "%" + shortName.toLowerCase() + "%" );
 
         return query;
     }

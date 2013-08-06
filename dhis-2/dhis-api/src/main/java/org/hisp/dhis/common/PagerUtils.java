@@ -47,7 +47,7 @@ public final class PagerUtils
 
         if ( offset >= objects.size() )
         {
-            offset = objects.size() - 1;
+            offset = objects.isEmpty() ? objects.size() : objects.size() - 1;
         }
 
         if ( (offset + limit) > objects.size() )
