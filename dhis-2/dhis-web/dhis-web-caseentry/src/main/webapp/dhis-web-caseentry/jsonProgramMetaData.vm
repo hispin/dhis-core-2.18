@@ -1,5 +1,5 @@
 { "metaData": {
-"optionSets": [#foreach( $os in $optionSets )"$encoder.jsonEncode( $os )"#if( $velocityCount < $optionSets.size() ),#end#end],
+"optionSets": [#foreach( $os in $optionSets ) {"uid":"$encoder.jsonEncode( $os.uid )", "v": $os.version}#if( $velocityCount < $optionSets.size() ),#end#end],
 "usernames": $usernames,
 "programs": {
 #set( $psize = $programs.size() )

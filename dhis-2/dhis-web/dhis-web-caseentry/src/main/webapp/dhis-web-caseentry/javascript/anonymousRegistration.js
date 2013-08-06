@@ -75,18 +75,31 @@ function loadOptionSets( metaData ) {
     var promise = deferred2.promise();
 
     _.each( metaData.optionSets, function ( item, idx ) {
-        promise = promise.then( function () {
-            return $.ajax( {
-                url: 'getOptionSet.action?dataElementUid=' + item,
-                dataType: 'json',
-                cache: false
-            } ).done( function ( data ) {
-                var obj = {};
-                obj.id = item;
-                obj.optionSet = data.optionSet;
-                DAO.store.set( 'optionSets', obj );
-            } );
-        } );
+        DAO.store.get('optionSets', item.uid).done(function(obj) {
+            console.log('obj: ', obj);
+            console.log('item: ', item);
+
+            if(typeof obj === 'undefined' || obj.optionSet.version !== item.v) {
+                console.log('loading ', item);
+                promise = promise.then(function() {
+                    return $.ajax({
+                        url: 'getOptionSet.action',
+                        data: {
+                            id: item.uid
+                        },
+                        dataType: 'json',
+                        cache: false
+                    }).done(function(data) {
+                        var obj = {};
+                        obj.id = item.uid;
+                        obj.optionSet = data.optionSet;
+                        DAO.store.set('optionSets', obj);
+                    });
+                });
+            } else {
+                console.log('skipping ', item);
+            }
+        });
     } );
 
     if ( metaData.usernames ) {
