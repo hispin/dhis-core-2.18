@@ -2174,7 +2174,7 @@ function saveComment( programInstanceId )
 		}, 
 		function( json ) 
 		{   
-			 $( '#comment' ).css( 'background-color', COLOR_GREEN );
+			 $( '#comment' ).css( 'background-color', SUCCESS_COLOR );
 		});
 }
 

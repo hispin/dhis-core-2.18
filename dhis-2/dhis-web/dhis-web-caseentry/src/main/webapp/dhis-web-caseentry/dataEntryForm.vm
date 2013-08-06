@@ -61,7 +61,7 @@
 		<tr>
 			<td colspan='3'>
 				<table>
-					<tbody id="commentTB"></tbody>
+					<tbody></tbody>
 				</table>
 			</td>
 		</tr>
