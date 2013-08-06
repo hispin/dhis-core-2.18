@@ -12,4 +12,5 @@ div#header, div#headerMessage, div#leftBar, div#headerMessage, div#rightBar, .hi
 div#mainPage 
 {
   margin-left: 20px;
+  margin-top: 10px;
 }

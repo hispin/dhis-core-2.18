@@ -572,3 +572,27 @@ div#selectionTree
   width: 610px;
   margin-left: 38px;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Print style                                                                */
+/*----------------------------------------------------------------------------*/
+
+@media print {
+
+.horizontalMenu li
+{
+  page-break-inside: avoid;
+}
+
+#dashboardHeader, #dashboardMenu, #searchDiv, #searchButton, #hitDiv, #dashboardListContainer
+{
+  display: none;
+}
+
+#contentDiv
+{
+  top: 0;
+  width: 960px;
+}
+
+}
