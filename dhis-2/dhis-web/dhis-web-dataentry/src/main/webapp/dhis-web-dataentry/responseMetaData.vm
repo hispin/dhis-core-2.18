@@ -16,7 +16,7 @@
 "optionSets": {
 #set( $size = $dataElementsWithOptionSet.size() )
 #foreach( $dataElement in $dataElementsWithOptionSet )
-"${dataElement.uid}-${dataElement.categoryCombo.getSortedOptionCombos().get(0).uid}":"$encoder.jsonEncode( ${dataElement.optionSet.uid} )"
+"${dataElement.uid}-${dataElement.categoryCombo.getSortedOptionCombos().get(0).uid}":{"uid": "$encoder.jsonEncode( ${dataElement.optionSet.uid} )", "v":${dataElement.optionSet.version}}
 #if( $velocityCount < $size ),#end
 #end },
 
