@@ -1842,7 +1842,7 @@ function sendSmsOnePatient( field, programStageInstanceId )
 				setInnerHTML('smsError', json.message);
 				var date = new Date();
 				var currentTime = date.getHours() + ":" + date.getMinutes();
-				jQuery('[name=messageTB]').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
+				jQuery('[name=commentTB]').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + i18n_message + "</td>"
