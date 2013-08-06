@@ -34,6 +34,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -298,16 +299,17 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( options.hasPaging() )
         {
-            int count = manager.getCount( getEntityClass() );
+            entityList = new ArrayList<T>( manager.filter( getEntityClass(), query ) );
 
-            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<T>( manager.getBetweenByName( getEntityClass(), query, pager.getOffset(), pager.getPageSize() ) );
+            entityList = PagerUtils.pageCollection( entityList, pager );
+
         }
         else
         {
-            entityList = new ArrayList<T>( manager.getLikeName( getEntityClass(), query ) );
+            entityList = new ArrayList<T>( manager.filter( getEntityClass(), query ) );
         }
 
         return entityList;
