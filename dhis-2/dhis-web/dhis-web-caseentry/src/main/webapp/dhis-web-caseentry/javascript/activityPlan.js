@@ -110,8 +110,6 @@ function loadDataEntryDialog( programStageInstanceId, programStageUid )
 		{
 			programStageInstanceId: programStageInstanceId
 		}, function(){
-			var html = $('#contentDataRecord' ).html();
-			$('#contentDataRecord' ).html( "<br>" + html );
 			jQuery('#programStageUid').val(programStageUid);
 			showById('reportDateDiv');
 			showById('patientInforTB');

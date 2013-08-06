@@ -132,7 +132,7 @@
 <div id='migrationPatientDiv'></div> <!-- Migration Patient -->
 
 <div id='contentDataRecord'></div>
-	
+
 #parse( "dhis-web-commons/loader/loader.vm" )
 	
 <div class='hidden'>
