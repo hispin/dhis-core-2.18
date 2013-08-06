@@ -12,13 +12,32 @@
 <div class='dashboard-area'>
 	#set($status = $programStageInstance.getEventStatus())
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-	<div class="link-area" style="height:200px">
+	<div class="link-area" style="height:220px">
 		<p class='header'>$i18n.getString("demographics")</p>
-		<div class="contentProviderTable" style="height:200px">
+		<div class="contentProviderTable" style="height:220px">
 			<table>
-				<tr>            
-					<td class="bold">$i18n.getString( "full_name" ):</td>
-					<td>$encoder.htmlEncode($programStageInstance.programInstance.patient.getFullName()) ( $programStageInstance.programInstance.patient.gender )</td>
+				<tr> 
+					#set($patient=$programStageInstance.programInstance.patient)
+					#set($title="")
+					#set($value="")
+					#foreach( $identifier in $patient.identifiers)
+						#if($!identifier.identifierType)
+							#set($value=$identifier.identifier)
+							#set($title=$identifier.identifierType.displayName)
+						#else
+							#set($systemId=$identifier.identifier)
+						#end
+					#end
+					#if($value=="")
+						#set($value=$!patient.getFullName())
+						#set($title= $encoder.htmlEncode($i18n.getString( "full_name" )))
+					#end
+					#if($value=="")
+						#set($value=$systemId)
+						#set($title=$encoder.htmlEncode($i18n.getString( "system_identifier" )))
+					#end
+					<td class="bold">$title</td>
+					<td>$value</td>
 				</tr>
 				<tr>
 					<td class="bold">$i18n.getString("gender")</td>
@@ -58,14 +77,14 @@
 	</div>
 	#end
 		
-	<div class="link-area-tracking">
+	<div class="link-area-tracking" style="height:220px">
 		<p class='header'>
 			$i18n.getString("reschedule_and_set_status")
 			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) || ( $status==1 ) )
 				&#8226; <a href="javascript:removeEvent($programStageInstance.id, true)" title='$i18n.getString( "remove_this_event" )'> $i18n.getString('remove_this_event') </a>
 			#end
 			</p>
-		<div class="contentProviderTable" style="height:200px">
+		<div class="contentProviderTable" style="height:220px">
 			<table id='progarmStageListDiv' name='progarmStageListDiv' >
 				<tr>
 					<td>$i18n.getString( "due_date" )</td>        
@@ -115,7 +134,40 @@
 					</td>
 				</tr>
 				<tr>
-					<td>$i18n.getString( "send_message" )</td>
+					<td colspan='2' class='bold'>$i18n.getString( "send_message" )</td>
+				</tr>	
+				<tr>
+					<td>$i18n.getString( "recipients" )</td>
+					<td>
+						#set($patient=$!programInstance.patient)
+						
+						<select id='sendTo' name='sendTo' style='width:260px;'>
+						#if($!patient.phoneNumber)
+						<option value='1'>$i18n.getString('patient')</option>
+						#end
+						
+						#if($!patient.healthWorker.phoneNumber)
+						<option value='2'>$i18n.getString('health_worker')</option>
+						#end
+						
+						#if($!patient.healthWorker.organisationUnit.phoneNumber)
+						<option value='3'>$i18n.getString('orgunit_registered')</option>
+						#end
+						
+						#set($hasUsers = false)
+						#foreach($user in $!patient.healthWorker.organisationUnit.users)
+							#if($!user.phoneNumber!='') 
+								#set($hasUsers = true)
+							#end
+						#end
+						#if($hasUsers)
+						<option value='4'>$i18n.getString('users_in_orgunit_registered')</option>
+						#end
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>$i18n.getString( "message" )</td>
 					<td>
 						<input type="text" id="smsMessage" name="smsMessage" class="{validate:{required:true,maxlength:160}}" onkeypress="keypressOnMessage(event, this,'$programStageInstance.id');"></input>
 						<input type="button" value="&raquo;" class='tiny-button' onclick="sendSmsOnePatient( byId('smsMessage'),'$programStageInstance.id' );"/>

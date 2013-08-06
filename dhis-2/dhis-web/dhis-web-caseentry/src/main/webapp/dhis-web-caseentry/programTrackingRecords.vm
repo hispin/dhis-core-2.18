@@ -38,7 +38,7 @@
 			<td name="infor_$patient.id" class='$class'>
 				#set( $comment = $!programStageInstance.programInstance.patientComment.commentText )
 				#if( $$!programStageInstance.programInstance.followup == 'true') 
-				<img src='images/risk_large.png' alt='$comment'>
+				<img src='images/risk_large.png' title='$!comment'>
 				#else
 				<img src='images/unrisk_large.png'>			
 				#end
