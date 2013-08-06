@@ -38,6 +38,7 @@ import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -100,7 +101,9 @@ public class MetaDataImportAction
     {
         strategy = strategy != null ? strategy : ImportStrategy.NEW_AND_UPDATES;
 
-        TaskId taskId = new TaskId( TaskCategory.METADATA_IMPORT, currentUserService.getCurrentUser() );
+        User user = currentUserService.getCurrentUser();
+        
+        TaskId taskId = new TaskId( TaskCategory.METADATA_IMPORT, user );
 
         notifier.clear( taskId );
 
@@ -111,7 +114,7 @@ public class MetaDataImportAction
         importOptions.setStrategy( strategy.toString() );
         importOptions.setDryRun( dryRun );
 
-        scheduler.executeTask( new ImportMetaDataTask( currentUserService.getCurrentUser().getUid(), importService, importOptions, in, taskId ) );
+        scheduler.executeTask( new ImportMetaDataTask( ( user != null ? user.getUid() : null ), importService, importOptions, in, taskId ) );
 
         return SUCCESS;
     }
