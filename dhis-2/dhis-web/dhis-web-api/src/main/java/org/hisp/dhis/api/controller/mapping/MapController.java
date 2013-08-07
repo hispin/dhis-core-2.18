@@ -226,12 +226,13 @@ public class MapController
     @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
     public void getMapData( 
         @PathVariable String uid, 
-        @RequestParam( required = false, defaultValue = "512" ) Integer width, 
+        @RequestParam( required = false ) Integer width, 
+        @RequestParam( required = false ) Integer height, 
         HttpServletResponse response ) throws Exception
     {
         Map map = mappingService.getMap( uid );
 
-        renderMapViewPng( map, width, response );
+        renderMapViewPng( map, width, height, response );
     }
 
     //--------------------------------------------------------------------------
@@ -299,10 +300,10 @@ public class MapController
         }
     }
 
-    private void renderMapViewPng( Map map, int width, HttpServletResponse response )
+    private void renderMapViewPng( Map map, Integer width, Integer height, HttpServletResponse response )
         throws Exception
     {
-        BufferedImage image = mapGenerationService.generateMapImage( map, width );
+        BufferedImage image = mapGenerationService.generateMapImage( map, width, height );
 
         if ( image != null )
         {

@@ -28,10 +28,8 @@ package org.hisp.dhis.mapgeneration;
  */
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,53 +79,23 @@ public class LegendSet
      * @param imageMaxHeight
      * @return
      */
-    public BufferedImage render( int imageMaxHeight )
+    public BufferedImage render()
     {
-        Dimension imageDimensions = calculateImageWidthAndHeight( imageMaxHeight );
-        int imageWidth = (int) imageDimensions.getWidth();
-        int imageHeight = (int) imageDimensions.getHeight();
+        int imageWidth = LEGEND_TOTAL_WIDTH;
+        int imageHeight = calculateImageHeight();
         BufferedImage image = new BufferedImage( imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        // Overwrite if one of the legends is bigger than imageMaxHeight
-        if ( imageHeight > imageMaxHeight )
-        {
-            imageMaxHeight = imageHeight;
-        }
-
-        // Draw a background if the background color is specified
-        // NOTE It will be transparent otherwise, which is desired
-        /*
-        if ( backgroundColor != null )
-        {
-            g.setColor( backgroundColor );
-            g.fill( new Rectangle( 0, 0, imageWidth, imageHeight ) );
-        }*/
-
         // Turn anti-aliasing on
         g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-
-        int y = 0;
-        int col = 0;
-        AffineTransform orginalTransform = g.getTransform();
 
         g.translate( LEGEND_MARGIN_LEFT, 0 );
 
         // Draw legends
         for ( Legend legend : legends )
         {
-            if ( y + legend.getHeight() >= imageMaxHeight )
-            {
-                col++;
-                y = 0;
-                g.setTransform( orginalTransform );
-                g.translate( col * LEGEND_WIDTH, 0 );
-            }
-
             legend.draw( g );
             g.translate( 0, LEGEND_MARGIN_BOTTOM );
-
-            y += legend.getHeight() + LEGEND_MARGIN_BOTTOM;
         }
 
         return image;
@@ -174,34 +142,15 @@ public class LegendSet
         backgroundColor = c;
     }
 
-    private Dimension calculateImageWidthAndHeight( int maxImageHeight )
+    private int calculateImageHeight()
     {
-        int imageWidth = LEGEND_WIDTH;
-        int imageHeight = maxImageHeight;
+        int imageHeight = 0;
 
-        // Ensure that every legend fits the maxImageHeight
         for ( Legend legend : legends )
         {
-            if ( legend.getHeight() + LEGEND_MARGIN_BOTTOM > imageHeight )
-            {
-                imageHeight = legend.getHeight() + LEGEND_MARGIN_BOTTOM;
-            }
+            imageHeight += legend.getHeight() + LEGEND_MARGIN_BOTTOM;
         }
-
-        int y = 0;
-
-        // Calculate image width
-        for ( Legend legend : legends )
-        {
-            if ( legend.getHeight() + LEGEND_MARGIN_BOTTOM + y >= imageHeight )
-            {
-                imageWidth += LEGEND_WIDTH;
-                y = 0;
-            }
-
-            y += legend.getHeight() + LEGEND_MARGIN_BOTTOM;
-        }
-
-        return new Dimension( imageWidth, imageHeight );
+        
+        return imageHeight;
     }
 }

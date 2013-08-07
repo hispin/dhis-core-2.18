@@ -57,7 +57,7 @@ public class MapUtils
     private static final String COLOR_PREFIX = "#";
     private static final int COLOR_RADIX = 16;
 
-    private static final int DEFAULT_MAP_WIDTH = 500;
+    public static final int DEFAULT_MAP_WIDTH = 500;
 
     /**
      * Linear interpolation of int.
@@ -154,12 +154,7 @@ public class MapUtils
     // Map
     // -------------------------------------------------------------------------
 
-    public static BufferedImage render( InternalMap map )
-    {
-        return render( map, DEFAULT_MAP_WIDTH );
-    }
-
-    public static BufferedImage render( InternalMap map, int imageWidth )
+    public static BufferedImage render( InternalMap map, Integer maxWidth, Integer maxHeight )
     {
         MapContent mapContent = new MapContent();
 
@@ -174,22 +169,27 @@ public class MapUtils
         }
 
         // Create a renderer for this map
+        
         GTRenderer renderer = new StreamingRenderer();
         renderer.setMapContent( mapContent );
 
         // Calculate image height
-        // TODO Might want to add a margin of say 25 pixels surrounding the map
+        
         ReferencedEnvelope mapBounds = mapContent.getMaxBounds();
-        double imageHeightFactor = mapBounds.getSpan( 1 ) / mapBounds.getSpan( 0 );
-        Rectangle imageBounds = new Rectangle( 0, 0, imageWidth, (int) Math.ceil( imageWidth * imageHeightFactor ) );
+        double widthToHeightFactor = mapBounds.getSpan( 0 ) / mapBounds.getSpan( 1 );
+        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, widthToHeightFactor );
+        
+        //LegendSet.LEGEND_TOTAL_WIDTH;
+        
+        Rectangle imageBounds = new Rectangle( 0, 0, widthHeight[0], widthHeight[1] );
 
         // Create an image and get the graphics context from it
+        
         BufferedImage image = new BufferedImage( imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = (Graphics2D) image.getGraphics();
 
         g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
         
-        // Render the map
         renderer.paint( g, imageBounds, mapBounds );
 
         mapContent.dispose();
@@ -230,7 +230,7 @@ public class MapUtils
         {
             maxHeight = (int) Math.ceil( maxWidth / widthToHeightFactor );
         }
-                
+                        
         int[] result = { maxWidth, maxHeight };
         
         return result;
