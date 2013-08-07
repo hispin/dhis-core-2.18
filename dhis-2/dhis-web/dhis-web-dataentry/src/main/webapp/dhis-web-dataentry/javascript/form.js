@@ -341,7 +341,7 @@ function addEventListeners()
     var dataSetId = $( '#selectedDataSetId' ).val();
 	var formType = dataSets[dataSetId].type;
 
-    $( '[name="entryfield"]' ).each( function( i )
+    $( '.entryfield' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
 
@@ -390,7 +390,7 @@ function addEventListeners()
         }
     } );
 
-    $( '[name="entryselect"]' ).each( function( i )
+    $( '.entryselect' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var split = splitFieldId( id );
@@ -414,7 +414,7 @@ function addEventListeners()
         $( this ).css( 'margin-right', '2px' );
     } );
 
-    $( '[name="entrytrueonly"]' ).each( function( i )
+    $( 'entrytrueonly' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var split = splitFieldId( id );
@@ -436,7 +436,7 @@ function addEventListeners()
         $( this ).css( 'width', '90%' );
     } );
 
-    $( '[name="entryoptionset"]' ).each( function( i )
+    $( '.entryoptionset' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var split = splitFieldId( id );
@@ -1033,20 +1033,20 @@ function insertDataValues()
 
     // Clear existing values and colors, grey disabled fields
 
-    $( '[name="entryfield"]' ).val( '' );
-    $( '[name="entryselect"]' ).val( '' );
-    $( '[name="entrytrueonly"]' ).removeAttr('checked');
-    $( '[name="entryoptionset"]' ).val( '' );
+    $( '.entryfield' ).val( '' );
+    $( '.entryselect' ).val( '' );
+    $( '.entrytrueonly' ).removeAttr('checked');
+    $( '.entryoptionset' ).val( '' );
 
-    $( '[name="entryfield"]' ).css( 'background-color', COLOR_WHITE );
-    $( '[name="entryselect"]' ).css( 'background-color', COLOR_WHITE );
-    $( '[name="entrytrueonly"]' ).css( 'background-color', COLOR_WHITE );
-    $( '[name="entryoptionset"]' ).css( 'background-color', COLOR_WHITE );
+    $( '.entryfield' ).css( 'background-color', COLOR_WHITE );
+    $( '.entryselect' ).css( 'background-color', COLOR_WHITE );
+    $( '.entrytrueonly' ).css( 'background-color', COLOR_WHITE );
+    $( '.entryoptionset' ).css( 'background-color', COLOR_WHITE );
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
 
-    $( '[name="entryfield"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
+    $( '.entryfield' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
     
     // Disable and grey dynamic fields to start with and enable later
 
@@ -1070,14 +1070,17 @@ function insertDataValues()
 	    {
 	    	if ( json.locked )
 	    	{
-	    		$( '#contentDiv' ).hide();
-	    		$( '#completenessDiv' ).hide();
+	            $('#contentDiv input').attr('disabled', 'disabled');
+	            $('.entryoptionset').autocomplete('disable');
+                $('.sectionFilter').removeAttr('disabled');
+                $( '#completenessDiv' ).hide();
 	    		setHeaderDelayMessage( i18n_dataset_is_locked );
-	    		return;
 	    	}
 	    	else
-	    	{	    		
-	    		$( '#contentDiv' ).show();
+	    	{
+                $('.entryoptionset').autocomplete('enable');
+                $('#contentDiv input').removeAttr('disabled');
+                $('#contentDiv input').css('backgroundColor', '#fff');
 	    		$( '#completenessDiv' ).show();
 	    	}
 	    	
@@ -1101,24 +1104,26 @@ function insertDataValues()
 
 	        // Set min-max values and colorize violation fields
 
-	        $.safeEach( json.minMaxDataElements, function( i, value )
-	        {
-	            var minId = value.id + '-min';
-	            var maxId = value.id + '-max';
+            if(!json.locked) {
+                $.safeEach( json.minMaxDataElements, function( i, value )
+                {
+                    var minId = value.id + '-min';
+                    var maxId = value.id + '-max';
 
-	            var valFieldId = '#' + value.id + '-val';
+                    var valFieldId = '#' + value.id + '-val';
 
-	            var dataValue = dataValueMap[value.id];
+                    var dataValue = dataValueMap[value.id];
 
-	            if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number(
-	            	value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
-	            {
-	                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
-	            }
+                    if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number(
+                        value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
+                    {
+                        $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+                    }
 
-	            currentMinMaxValueMap[minId] = value.min;
-	            currentMinMaxValueMap[maxId] = value.max;
-	        } );
+                    currentMinMaxValueMap[minId] = value.min;
+                    currentMinMaxValueMap[maxId] = value.max;
+                } );
+            }
 
 	        // Update indicator values in form
 
@@ -1127,7 +1132,7 @@ function insertDataValues()
 
 	        // Set completeness button
 
-	        if ( json.complete )
+	        if ( json.complete && !json.locked)
 	        {
 	            $( '#completeButton' ).attr( 'disabled', 'disabled' );
 	            $( '#undoButton' ).removeAttr( 'disabled' );
@@ -1147,7 +1152,12 @@ function insertDataValues()
 	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
 	            $( '#infoDiv' ).hide();
 	        }
-	    }
+
+            if(json.locked) {
+                $('#contentDiv input').css('backgroundColor', '#eee');
+                $('.sectionFilter').css('backgroundColor', '#fff');
+            }
+        }
 	} );
 }
 
@@ -1465,7 +1475,7 @@ function validateCompulsoryCombinations()
     {
         var violations = false;
 
-        $( '[name="entryfield"]' ).add( '[name="entryselect"]' ).each( function( i )
+        $( '.entryfield' ).add( '[name="entryselect"]' ).each( function( i )
         {
             var id = $( this ).attr( 'id' );
 
@@ -2219,7 +2229,7 @@ function loadOptionSets() {
 }
 
 function insertOptionSets() {
-    $( '[name="entryoptionset"]' ).each( function ( idx, item ) {
+    $( '.entryoptionset' ).each( function ( idx, item ) {
         var optionSetKey = splitFieldId( item.id );
 
         if ( multiOrganisationUnit ) {

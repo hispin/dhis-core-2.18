@@ -314,7 +314,7 @@ public class DefaultDataEntryFormService
                     inputHtml = inputHtml.replace( "input", "select" );
                     inputHtml = inputHtml.replaceAll( "value=\".*?\"", "" );
 
-                    appendCode += " name=\"entryselect\" tabindex=\"" + i++ + "\">";
+                    appendCode += " name=\"entryselect\" class=\"entryselect\" tabindex=\"" + i++ + "\">";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
                     appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
@@ -323,15 +323,15 @@ public class DefaultDataEntryFormService
                 }
                 else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
                 {
-                    appendCode += " name=\"entrytrueonly\" type=\"checkbox\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                    appendCode += " name=\"entrytrueonly\" class=\"entrytrueonly\" type=\"checkbox\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
                 else if ( dataElement.getOptionSet() != null )
                 {
-                    appendCode += " name=\"entryoptionset\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                    appendCode += " name=\"entryoptionset\" class=\"entryoptionset\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
                 else
                 {
-                    appendCode += " name=\"entryfield\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                    appendCode += " name=\"entryfield\" class=\"entryfield\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
@@ -348,11 +348,11 @@ public class DefaultDataEntryFormService
                     return i18n.getString( "category_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
                 }
 
-                inputHtml = inputHtml.replace( TAG_CLOSE, " name=\"dyninput\" tabindex=\"" + i++ + "\"" + TAG_CLOSE );
+                inputHtml = inputHtml.replace( TAG_CLOSE, " name=\"dyninput\" class=\"dyninput\" tabindex=\"" + i++ + "\"" + TAG_CLOSE );
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
             {
-                inputHtml = inputHtml.replace( "<input", "<select name=\"dynselect\"" );
+                inputHtml = inputHtml.replace( "<input", "<select name=\"dynselect\" class=\"dynselect\"" );
                 inputHtml = inputHtml.replace( TAG_CLOSE, "</select>" );
             }
 
