@@ -41,6 +41,8 @@ public class MapUtilsTest
         assertEquals( 300, getWidthHeight( 200, 300, 0.5 )[1] );
         assertEquals( 200, getWidthHeight( 200, 300, 2 )[0] );
         assertEquals( 100, getWidthHeight( 200, 300, 2 )[1] );
+        assertEquals( 300, getWidthHeight( 600, 300, 1d )[0] );
+        assertEquals( 300, getWidthHeight( 600, 300, 1d )[1] );
 
         assertEquals( 200, getWidthHeight( 200, null, 0.5 )[0] );
         assertEquals( 400, getWidthHeight( 200, null, 0.5 )[1] );

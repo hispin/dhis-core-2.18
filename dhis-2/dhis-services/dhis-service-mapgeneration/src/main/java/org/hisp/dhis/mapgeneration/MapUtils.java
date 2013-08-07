@@ -201,36 +201,44 @@ public class MapUtils
      * Calcuates the width and height of an two-dimensional area. If width is set,
      * the width will be used and the height will be calculated. If the height is
      * set, the height will be used and the width will be calculated. If both width
-     * and height are set: If area is higher than wider, the height will be used
-     * and the width calculated; if the area is wider than higher, the width will
-     * be used and the height calculated.
+     * and height are set, the width or height will be adjusted to the greatest
+     * value possible without exceeding any of max width and max height.
      * 
      * @param maxWidth the maximum width.
      * @param maxHeight the maxium height.
-     * @param widthToHeightFactor the width to height factor.
+     * @param widthFactor the width to height factor.
      * @return array where first position holds the width and second the height.
      * @throws IllegalArgumentException if none of width and height are specified.
      */
-    public static int[] getWidthHeight( Integer maxWidth, Integer maxHeight, double widthToHeightFactor )
+    public static int[] getWidthHeight( Integer maxWidth, Integer maxHeight, double widthFactor )
     {
         if ( maxWidth == null && maxHeight == null )
         {
             throw new IllegalArgumentException( "At least one of width and height must be specified" );
         }
         
-        boolean high = widthToHeightFactor < 1d;
-        boolean bothSpanSet = maxWidth != null && maxHeight != null;
+        if ( maxWidth == null )
+        {
+            maxWidth = (int) Math.ceil( maxHeight * widthFactor );
+        }   
+        else if ( maxHeight == null )
+        {
+            maxHeight = (int) Math.ceil( maxWidth / widthFactor );
+        }
+        else // Both set
+        {
+            double maxWidthFactor = (double) maxWidth / maxHeight;
+            
+            if ( maxWidthFactor > widthFactor ) // Canvas wider than area
+            {
+                maxWidth = (int) Math.ceil( maxHeight * widthFactor );
+            }
+            else // Area wider than canvas
+            {
+                maxHeight = (int) Math.ceil( maxWidth / widthFactor );
+            }
+        }
         
-        if ( maxWidth == null || ( bothSpanSet && high ) )
-        {
-            maxWidth = (int) Math.ceil( maxHeight * widthToHeightFactor );
-        }
-                
-        if ( maxHeight == null || ( bothSpanSet && !high ) )
-        {
-            maxHeight = (int) Math.ceil( maxWidth / widthToHeightFactor );
-        }
-                        
         int[] result = { maxWidth, maxHeight };
         
         return result;
