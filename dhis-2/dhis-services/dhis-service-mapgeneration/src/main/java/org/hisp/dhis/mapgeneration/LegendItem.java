@@ -45,8 +45,8 @@ public class LegendItem
     private Interval interval;
 
     private static final int WIDTH = 22;
-
     private static final int HEIGHT = 20;
+    private static final int LABEL_MARGIN = 6;
 
     public LegendItem( Interval interval )
     {
@@ -68,7 +68,7 @@ public class LegendItem
 
         g.setColor( Color.BLACK );
         g.setFont( Legend.PLAIN_FONT );
-        g.drawString( label, WIDTH + 15, HEIGHT - 5 );
+        g.drawString( label, WIDTH + LABEL_MARGIN, HEIGHT - 5 );
     }
 
     public int getHeight()
