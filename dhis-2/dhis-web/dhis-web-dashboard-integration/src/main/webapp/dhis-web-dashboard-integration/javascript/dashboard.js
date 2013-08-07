@@ -7,6 +7,7 @@ dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
+// TODO double horizontal size
 // TODO dashboard list horizontal scroll
 // TODO report type in link
 
