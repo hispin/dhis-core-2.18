@@ -63,7 +63,7 @@ dhis2.db.tmpl = {
 	         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=690\", \"${name}\" )'>${i18n_view}</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>${i18n_share}</a></div>" +
-		     "<img src='../api/maps/${id}/data?width=405' onclick='dhis2.db.exploreMap( \"${id}\" )' title='${i18n_click}'></div></li>"
+		     "<img src='../api/maps/${id}/data?width=405&height=295' onclick='dhis2.db.exploreMap( \"${id}\" )' title='${i18n_click}'></div></li>"
 };
 
 dhis2.db.dashboardReady = function( id )

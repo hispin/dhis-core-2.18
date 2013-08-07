@@ -194,8 +194,7 @@ public class GeoToolsMapGenerationService
         int radiusLow = !isIndicator ? mapView.getRadiusLow() : DEFAULT_RADIUS_LOW;
         int radiusHigh = !isIndicator ? mapView.getRadiusHigh() : DEFAULT_RADIUS_HIGH;
 
-        // Get the low and high colors, typically in hexadecimal form, e.g.
-        // '#ff3200' is an orange color
+        // Get the low and high colors, typically in hexadecimal form, e.g. #ff3200
         Color colorLow = MapUtils.createColorFromString( StringUtils.trimToNull( mapView.getColorLow() ) != null ? mapView.getColorLow()
             : DEFAULT_COLOR_LOW );
         Color colorHigh = MapUtils.createColorFromString( StringUtils.trimToNull( mapView.getColorHigh() ) != null ? mapView.getColorHigh()
