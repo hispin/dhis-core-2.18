@@ -394,7 +394,7 @@ dhis2.db.removeItem = function( id )
     	type: "delete",
     	url: "../api/dashboards/" + dhis2.db.current + "/items/" + id,
     	success: function() {
-    		dhis2.db.current = undefined;
+    		dhis2.db.currentItem = undefined;
     		dhis2.db.renderDashboard( dhis2.db.current );
     	}
     } );
