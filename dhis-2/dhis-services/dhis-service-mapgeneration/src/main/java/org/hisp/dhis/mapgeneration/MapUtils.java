@@ -177,7 +177,7 @@ public class MapUtils
         
         ReferencedEnvelope mapBounds = mapContent.getMaxBounds();
         double widthToHeightFactor = mapBounds.getSpan( 0 ) / mapBounds.getSpan( 1 );
-        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, widthToHeightFactor );
+        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, LegendSet.LEGEND_TOTAL_WIDTH, 0, widthToHeightFactor );
         
         //LegendSet.LEGEND_TOTAL_WIDTH;
         
@@ -198,19 +198,22 @@ public class MapUtils
     }
     
     /**
-     * Calcuates the width and height of an two-dimensional area. If width is set,
-     * the width will be used and the height will be calculated. If the height is
-     * set, the height will be used and the width will be calculated. If both width
-     * and height are set, the width or height will be adjusted to the greatest
-     * value possible without exceeding any of max width and max height.
+     * Calcuates the width and height of an two-dimensional area. If width is not
+     * null, the width will be used and the height will be calculated. If the height 
+     * is not null, the height will be used and the width will be calculated. If 
+     * both width and height are not null, the width or height will be adjusted 
+     * to the greatest value possible without exceeding any of max width and max 
+     * height.
      * 
      * @param maxWidth the maximum width.
      * @param maxHeight the maxium height.
+     * @param subtractWidth the value to subtract from final width
+     * @param subtractHeight the value to subtract from final height 
      * @param widthFactor the width to height factor.
      * @return array where first position holds the width and second the height.
      * @throws IllegalArgumentException if none of width and height are specified.
      */
-    public static int[] getWidthHeight( Integer maxWidth, Integer maxHeight, double widthFactor )
+    public static int[] getWidthHeight( Integer maxWidth, Integer maxHeight, int subtractWidth, int subtractHeight, double widthFactor )
     {
         if ( maxWidth == null && maxHeight == null )
         {
@@ -219,14 +222,19 @@ public class MapUtils
         
         if ( maxWidth == null )
         {
+            maxHeight -= subtractHeight;
             maxWidth = (int) Math.ceil( maxHeight * widthFactor );
         }   
         else if ( maxHeight == null )
         {
+            maxWidth -= subtractWidth;
             maxHeight = (int) Math.ceil( maxWidth / widthFactor );
         }
         else // Both set
         {
+            maxWidth -= subtractWidth;
+            maxHeight -= subtractHeight;
+            
             double maxWidthFactor = (double) maxWidth / maxHeight;
             
             if ( maxWidthFactor > widthFactor ) // Canvas wider than area
