@@ -1,18 +1,6 @@
-<style type="text/css">
-.gridTable th, .gridTable td
-{
-  text-align: center;
-  width: 150px;
-  line-height: 170%;
-}
-</style>
-
 <h3>$!encoder.htmlEncode( $grid.title )</h3>
-
 <h4>$!encoder.htmlEncode( $grid.subtitle )</h4>
-
 <table class="listTable gridTable">
-
 <thead>
 <tr>
 #foreach( $header in $grid.getVisibleHeaders() )
@@ -20,7 +8,6 @@
 #end
 </tr>
 </thead>
-
 <tbody>
 #foreach( $row in $grid.getVisibleRows() )
 <tr>
@@ -35,5 +22,4 @@
 </tr>
 #end
 </tbody>
-
 </table>
