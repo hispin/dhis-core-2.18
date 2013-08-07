@@ -46,7 +46,7 @@ public class LegendSet
 
     private Color backgroundColor = null;
 
-    private static final int LEGEND_WIDTH = 145;
+    private static final int LEGEND_WIDTH = 132;
     private static final int LEGEND_MARGIN_LEFT = 3;
     private static final int LEGEND_MARGIN_BOTTOM = 20;
     
