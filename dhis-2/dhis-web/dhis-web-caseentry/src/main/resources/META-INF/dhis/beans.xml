@@ -1168,6 +1168,12 @@
 			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 
+    <bean id="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction" scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
 	<!-- Program-stage-completeness -->
 
 	<bean

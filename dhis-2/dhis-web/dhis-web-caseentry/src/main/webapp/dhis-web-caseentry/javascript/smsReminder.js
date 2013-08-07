@@ -316,3 +316,10 @@ function programTrackingReport( programInstanceId )
 		});
 }
 
+function getProgramStageInstanceById(programStageInstanceId)
+{
+	$('#tab-2').load("getProgramStageInstanceById.action", 
+	{
+		programStageInstanceId:programStageInstanceId
+	});
+}

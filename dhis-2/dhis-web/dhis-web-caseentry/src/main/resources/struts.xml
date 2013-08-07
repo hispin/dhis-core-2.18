@@ -1082,6 +1082,13 @@
       <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
     </action>
+    
+    <action name="getProgramStageInstanceById"
+      class="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/trackingEventMessage.vm</param>
+      <param name="stylesheets">style/style.css</param>
+    </action>
 
     <!-- Dashboard -->
 
