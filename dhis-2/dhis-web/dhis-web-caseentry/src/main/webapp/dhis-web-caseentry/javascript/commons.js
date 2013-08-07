@@ -1822,7 +1822,6 @@ function sendSmsOnePatientForm()
 
 function sendSmsOnePatient( field, programStageInstanceId )
 {
-	setInnerHTML('smsError', '');
 	if(field.value==""){
 		field.style.backgroundColor = ERROR_COLOR;
 		jQuery('#' + field.id).attr("placeholder", i18n_this_field_is_required);
@@ -1838,8 +1837,6 @@ function sendSmsOnePatient( field, programStageInstanceId )
 		}, function ( json )
 		{
 			if ( json.response == "success" ) {
-				jQuery('#smsError').css("color", "green");
-				setInnerHTML('smsError', json.message);
 				var date = new Date();
 				var currentTime = date.getHours() + ":" + date.getMinutes();
 				jQuery('[name=commentTB]').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
@@ -1847,7 +1844,6 @@ function sendSmsOnePatient( field, programStageInstanceId )
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + i18n_message + "</td>"
 					+ "<td>" + field.value + "</td></tr>");
-				field.value="";
 				field.style.backgroundColor = SUCCESS_COLOR;
 				
 				jQuery('#enrollmentDate').width('325');
@@ -1856,8 +1852,6 @@ function sendSmsOnePatient( field, programStageInstanceId )
 			}
 			else {
 				showSuccessMessage( json.message );
-				jQuery('#smsError').css("color", "red");
-				setInnerHTML('smsError', json.message);
 				field.style.backgroundColor = ERROR_COLOR;
 			}
 			
