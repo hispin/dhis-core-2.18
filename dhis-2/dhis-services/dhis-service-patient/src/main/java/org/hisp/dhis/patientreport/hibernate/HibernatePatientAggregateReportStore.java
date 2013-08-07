@@ -32,13 +32,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportStore;
-import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.user.User;
 
 /**

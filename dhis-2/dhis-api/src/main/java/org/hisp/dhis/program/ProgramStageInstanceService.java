@@ -134,5 +134,7 @@ public interface ProgramStageInstanceService
 
     Grid getCompletenessProgramStageInstance( Collection<Integer> orgunits, Program program, String startDate,
         String endDate, I18n i18n );
+    
+    Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status, I18nFormat format );
 
 }

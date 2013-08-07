@@ -26,6 +26,15 @@
  */
 package org.hisp.dhis.program;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
@@ -35,20 +44,18 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientReminder;
+import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Abyot Asalefew
@@ -88,6 +95,27 @@ public class DefaultProgramStageInstanceService
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private OutboundSmsService outboundSmsService;
+
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    {
+        this.outboundSmsService = outboundSmsService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private PatientReminderService patientReminderService;
+
+    public void setPatientReminderService( PatientReminderService patientReminderService )
+    {
+        this.patientReminderService = patientReminderService;
     }
 
     // -------------------------------------------------------------------------
@@ -499,7 +527,8 @@ public class DefaultProgramStageInstanceService
         Boolean useFormNameDataElement, I18nFormat format, I18n i18n )
     {
         return programStageInstanceStore.getAggregateReport( position, programStage, orgunitIds, facilityLB, deGroupBy,
-            deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, displayTotals, useFormNameDataElement, format, i18n );
+            deSum, deFilters, periods, aggregateType, limit, useCompletedEvents, displayTotals, useFormNameDataElement,
+            format, i18n );
     }
 
     @Override
@@ -529,4 +558,56 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.getCompleteness( orgunitIds, program, startDate, endDate, i18n );
     }
 
+    @Override
+    public Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status,
+        I18nFormat format )
+    {
+        Patient patient = programStageInstance.getProgramInstance().getPatient();
+        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
+
+        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
+        for ( PatientReminder rm : reminders )
+        {
+            if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == status )
+            {
+                OutboundSms outboundSms = sendEventMessage( rm, programStageInstance, patient, format );
+                if ( outboundSms != null )
+                {
+                    outboundSmsList.add( outboundSms );
+                }
+            }
+        }
+        
+        return outboundSmsList;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private OutboundSms sendEventMessage( PatientReminder patientReminder, ProgramStageInstance programStageInstance,
+        Patient patient, I18nFormat format )
+    {
+        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, patient );
+        OutboundSms outboundSms = null;
+
+        if ( phoneNumbers.size() > 0 )
+        {
+            String msg = patientReminderService.getMessageFromTemplate( patientReminder, programStageInstance, format );
+            try
+            {
+                outboundSms = new OutboundSms();
+                outboundSms.setMessage( msg );
+                outboundSms.setRecipients( phoneNumbers );
+                outboundSms.setSender( currentUserService.getCurrentUsername() );
+                outboundSmsService.sendMessage( outboundSms, null );
+            }
+            catch ( SmsServiceException e )
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return outboundSms;
+    }
 }

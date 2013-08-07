@@ -35,6 +35,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
  * @author Abyot Asalefew
@@ -82,7 +83,7 @@ public interface ProgramInstanceService
 
     Collection<ProgramInstance> getProgramInstances( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, int min, int max );
-    
+
     int countProgramInstances( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     List<Grid> getProgramInstanceReport( Patient patient, I18n i18n, I18nFormat format );
@@ -96,7 +97,9 @@ public interface ProgramInstanceService
         Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     void removeProgramEnrollment( ProgramInstance programInstance );
-    
-    Collection<SchedulingProgramObject> getSendMesssageEvents();
+
+    Collection<SchedulingProgramObject> getScheduleMesssages();
+
+    Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status, I18nFormat format );
 
 }

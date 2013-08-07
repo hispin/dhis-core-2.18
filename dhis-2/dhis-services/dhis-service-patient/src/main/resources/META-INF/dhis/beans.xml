@@ -210,6 +210,12 @@
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="patientReminderService"
+			ref="org.hisp.dhis.patient.PatientReminderService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceService" class="org.hisp.dhis.program.DefaultProgramInstanceService">
@@ -220,6 +226,12 @@
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="programService"
 			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="patientReminderService"
+			ref="org.hisp.dhis.patient.PatientReminderService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
@@ -521,6 +533,11 @@
 	<bean id="org.hisp.dhis.patient.PatientRegistrationFormStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientRegistrationFormStore">
 		<property name="clazz" value="org.hisp.dhis.patient.PatientRegistrationForm" />
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- Patient Reminder -->
+	
+	<bean id="org.hisp.dhis.patient.PatientReminderService" class="org.hisp.dhis.patient.DefaultPatientReminderService">
 	</bean>
 	
 	<!-- Startup -->

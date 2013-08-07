@@ -121,8 +121,6 @@
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 
 	<bean
@@ -651,9 +649,6 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.SaveDueDateAction"
@@ -1104,9 +1099,6 @@
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 
 

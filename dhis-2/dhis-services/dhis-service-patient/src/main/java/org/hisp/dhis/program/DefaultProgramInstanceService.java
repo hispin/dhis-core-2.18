@@ -29,8 +29,10 @@ package org.hisp.dhis.program;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -43,13 +45,17 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
+import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -90,6 +96,27 @@ public class DefaultProgramInstanceService
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    private OutboundSmsService outboundSmsService;
+
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    {
+        this.outboundSmsService = outboundSmsService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private PatientReminderService patientReminderService;
+
+    public void setPatientReminderService( PatientReminderService patientReminderService )
+    {
+        this.patientReminderService = patientReminderService;
     }
 
     // -------------------------------------------------------------------------
@@ -396,16 +423,17 @@ public class DefaultProgramInstanceService
             {
                 for ( PatientIdentifier identifier : identifiers )
                 {
-                    if (  identifier.getIdentifierType() != null && identifier.getIdentifierType().equals( identifierType ) )
+                    if ( identifier.getIdentifierType() != null
+                        && identifier.getIdentifierType().equals( identifierType ) )
                     {
                         grid.addRow();
                         grid.addValue( identifierType.getDisplayName() );
                         grid.addValue( identifier.getIdentifier() );
                     }
-                    else if (  identifier.getIdentifierType() == null )
+                    else if ( identifier.getIdentifierType() == null )
                     {
                         grid.addRow();
-                        grid.addValue( i18n.getString( "system_identifier" ));
+                        grid.addValue( i18n.getString( "system_identifier" ) );
                         grid.addValue( identifier.getIdentifier() );
                     }
                 }
@@ -480,7 +508,7 @@ public class DefaultProgramInstanceService
         programInstanceStore.removeProgramEnrollment( programInstance );
     }
 
-    public Collection<SchedulingProgramObject> getSendMesssageEvents()
+    public Collection<SchedulingProgramObject> getScheduleMesssages()
     {
         Collection<SchedulingProgramObject> result = programInstanceStore
             .getSendMesssageEvents( PatientReminder.ENROLLEMENT_DATE_TO_COMPARE );
@@ -490,8 +518,29 @@ public class DefaultProgramInstanceService
         return result;
     }
 
+    public Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status, I18nFormat format )
+    {
+        Patient patient = programInstance.getPatient();
+        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
+
+        Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
+        for ( PatientReminder rm : reminders )
+        {
+            if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == status )
+            {
+                OutboundSms outboundSms = sendProgramMessage( rm, programInstance, patient, format );
+                if ( outboundSms != null )
+                {
+                    outboundSmsList.add( outboundSms );
+                }
+            }
+        }
+        
+        return outboundSmsList;
+    }
+
     // -------------------------------------------------------------------------
-    // due-date && report-date
+    // Supportive methods
     // -------------------------------------------------------------------------
 
     private void getProgramStageInstancesReport( Grid grid, ProgramInstance programInstance, I18nFormat format,
@@ -572,6 +621,33 @@ public class DefaultProgramInstanceService
                 }
             }
         }
+    }
+
+    private OutboundSms sendProgramMessage( PatientReminder patientReminder, ProgramInstance programInstance,
+        Patient patient, I18nFormat format )
+    {
+        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, patient );
+        OutboundSms outboundSms = null;
+
+        if ( phoneNumbers.size() > 0 )
+        {
+            String msg = patientReminderService.getMessageFromTemplate( patientReminder, programInstance, format );
+
+            try
+            {
+                outboundSms = new OutboundSms();
+                outboundSms.setMessage( msg );
+                outboundSms.setRecipients( phoneNumbers );
+                outboundSms.setSender( currentUserService.getCurrentUsername() );
+                outboundSmsService.sendMessage( outboundSms, null );
+            }
+            catch ( SmsServiceException e )
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return outboundSms;
     }
 
 }
