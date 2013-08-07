@@ -1843,6 +1843,7 @@ function sendSmsOnePatient( field, programStageInstanceId )
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + i18n_message + "</td>"
+					+ "<td>" + field.value + "</td>"+
 					+ "<td>" + field.value + "</td></tr>");
 				field.style.backgroundColor = SUCCESS_COLOR;
 				
@@ -1906,7 +1907,6 @@ function addComment( field, programStageInstanceId )
 			content += "<td>" + i18n_comment + "</td>";
 			content += "<td>" + commentText + "</td></tr>";
 			jQuery('#commentTB').prepend(content);
-			field.value="";
 			showSuccessMessage( i18n_comment_added );
 			field.style.backgroundColor = SUCCESS_COLOR;
 			
