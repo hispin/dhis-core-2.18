@@ -166,7 +166,7 @@ public class EventController
         updatedEvent.setEvent( uid );
 
         eventService.updateEvent( updatedEvent );
-        ContextUtils.okResponse( response, "" );
+        ContextUtils.okResponse( response, "Event updated: " + uid );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
@@ -185,7 +185,7 @@ public class EventController
         updatedEvent.setEvent( uid );
 
         eventService.updateEvent( updatedEvent );
-        ContextUtils.okResponse( response, "" );
+        ContextUtils.okResponse( response, "Event updated: " + uid );
     }
 
     /*
