@@ -58,6 +58,7 @@ public class DashboardItem
     
     public static final String TYPE_CHART = "chart";
     public static final String TYPE_MAP = "map";
+    public static final String TYPE_REPORT_TABLE = "reportTable";
     public static final String TYPE_USERS = "users";
     public static final String TYPE_REPORT_TABLES = "reportTables";
     public static final String TYPE_REPORTS = "reports";
@@ -66,6 +67,8 @@ public class DashboardItem
     private Chart chart;
     
     private Map map;
+    
+    private ReportTable reportTable;
     
     private List<User> users = new ArrayList<User>();
     
@@ -104,6 +107,10 @@ public class DashboardItem
         else if ( map != null )
         {
             return TYPE_MAP;
+        }
+        else if ( reportTable != null )
+        {
+            return TYPE_REPORT_TABLE;
         }
         else if ( !users.isEmpty() )
         {
@@ -208,6 +215,18 @@ public class DashboardItem
         this.map = map;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    public ReportTable getReportTable()
+    {
+        return reportTable;
+    }
+
+    public void setReportTable( ReportTable reportTable )
+    {
+        this.reportTable = reportTable;
+    }
+
     @JsonProperty( value = "users" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0)
@@ -279,6 +298,7 @@ public class DashboardItem
             
             chart = item.getChart() == null ? chart : item.getChart();
             map = item.getMap() == null ? map : item.getMap();
+            reportTable = item.getReportTable() == null ? reportTable : item.getReportTable();
             users = item.getUsers() == null ? users : item.getUsers();
             reportTables = item.getReportTables() == null ? reportTables : item.getReportTables();
             reports = item.getReports() == null ? reports : item.getReports();

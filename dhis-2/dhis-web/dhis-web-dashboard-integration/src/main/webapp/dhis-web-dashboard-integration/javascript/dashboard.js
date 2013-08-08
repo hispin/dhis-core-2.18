@@ -7,6 +7,8 @@ dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 
+// TODO remove position from template
+// TODO support table as link and embedded
 // TODO double horizontal size
 // TODO dashboard list horizontal scroll
 // TODO report type in link
@@ -57,13 +59,20 @@ dhis2.db.tmpl = {
 	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
 	           "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"chart\", \"${name}\" )'>${i18n_share}</a></div>" +
-	           "<img src='../api/charts/${id}/data?width=405&height=295' onclick='dhis2.db.exploreChart( \"${id}\" )' title='${i18n_click}'></div></li>",
+	           "<img src='../api/charts/${id}/data?width=405&height=294' onclick='dhis2.db.exploreChart( \"${id}\" )' title='${i18n_click}'></div></li>",
 	           
 	mapItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
 	         "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	         "<a href='javascript:dhis2.db.viewImage( \"../api/maps/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
 	         "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"map\", \"${name}\" )'>${i18n_share}</a></div>" +
-		     "<img src='../api/maps/${id}/data?width=405&height=295' onclick='dhis2.db.exploreMap( \"${id}\" )' title='${i18n_click}'></div></li>"
+		     "<img src='../api/maps/${id}/data?width=405&height=294' onclick='dhis2.db.exploreMap( \"${id}\" )' title='${i18n_click}'></div></li>",
+		     
+	reportTableItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
+               "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
+               "<a href='javascript:dhis2.db.viewImage( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
+               "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"table\", \"${name}\" )'>${i18n_share}</a></div>" +
+               "<div id='pivot-${itemId}' onclick='dhis2.db.exploreReportTable( \"${id}\" )' title='${i18n_click}'></div>" +
+               "<script type='text/javascript'>dhis2.db.renderReportTable( '${id}', '${itemId}' );</script></div></li>"
 };
 
 dhis2.db.dashboardReady = function( id )
@@ -303,6 +312,11 @@ dhis2.db.renderDashboard = function( id )
 					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, "position": position,
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
+				else if ( "reportTable" == item.type )
+				{
+					$d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": item.id, "id": item.reportTable.id, "name": item.reportTable.name, "position": position,
+						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
+				}
 				else if ( "users" == item.type )
 				{
 					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", position, "../dhis-web-dashboard-integration/profile.action?id=", "" );
@@ -419,6 +433,28 @@ dhis2.db.getIndex = function( itemId )
 	return parseInt( $( ".liDropItem" ).index( $( "#liDrop-" + itemId ) ) );
 }
 
+dhis2.db.exploreChart = function( uid )
+{
+	window.location.href = "../dhis-web-visualizer/app/index.html?id=" + uid;
+}
+
+dhis2.db.exploreMap = function( uid )
+{
+	window.location.href = "../dhis-web-mapping/app/index.html?id=" + uid;
+}
+
+dhis2.db.exploreReportTable = function( uid )
+{
+	window.location.href = "../dhis-web-pivot/app/index.html?id=" + uid;
+}
+
+dhis2.db.renderReportTable = function( tableId, itemId )
+{
+	$.get( "../api/reportTables/" + tableId + "/data.html", function( data ) {
+		$( "#pivot-" + itemId ).html( data );
+	} );	
+}
+
 //------------------------------------------------------------------------------
 // Search
 //------------------------------------------------------------------------------
@@ -486,7 +522,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.reportTables )
 			{
 				var o = data.reportTables[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-pivot/app/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTables", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-pivot/app/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id } ) );
 			}
 		}
 		
@@ -598,14 +634,3 @@ dhis2.db.viewImage = function( url, name )
       title : title
   } );
 }
-
-dhis2.db.exploreChart = function( uid )
-{
-	window.location.href = "../dhis-web-visualizer/app/index.html?id=" + uid;
-}
-
-dhis2.db.exploreMap = function( uid )
-{
-	window.location.href = "../dhis-web-mapping/app/index.html?id=" + uid;
-}
-
