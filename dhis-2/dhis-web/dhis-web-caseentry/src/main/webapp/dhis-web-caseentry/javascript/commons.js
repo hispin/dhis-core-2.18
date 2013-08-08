@@ -1796,11 +1796,10 @@ function dashboardHistoryToggle(evt)
 	jQuery('#dashboardHistoryDiv').toggle();
 }
 
-function viewPersonProgram ( displayedDiv, hidedDiv1, hideDiv2 )
+function viewPersonProgram ( displayedDiv, hidedDiv )
 {
 	showById(displayedDiv);
-	hideById(hidedDiv1);
-	hideById(hidedDiv2);
+	hideById(hidedDiv);
 }
 
 // --------------------------------------------------------------------
