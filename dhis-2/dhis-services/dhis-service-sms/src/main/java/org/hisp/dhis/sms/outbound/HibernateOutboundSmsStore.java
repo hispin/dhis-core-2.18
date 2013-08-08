@@ -60,7 +60,6 @@ public class HibernateOutboundSmsStore
     public int saveOutboundSms( OutboundSms sms )
     {
         checkDate( sms );
-        //return (Integer) sessionFactory.getCurrentSession().save( sms );
         return save( sms );
     }
 
@@ -75,8 +74,6 @@ public class HibernateOutboundSmsStore
     @Override
     public OutboundSms getOutboundSmsbyId( int id )
     {
-        /*Session session = sessionFactory.getCurrentSession();
-        return (OutboundSms) session.get( OutboundSms.class, id );*/
         return get( id );
     }
 
@@ -84,8 +81,6 @@ public class HibernateOutboundSmsStore
     @SuppressWarnings( "unchecked" )
     public List<OutboundSms> getAllOutboundSms()
     {
-        /*Session session = sessionFactory.getCurrentSession();
-        return session.createCriteria( OutboundSms.class ).addOrder( Order.desc( "date" ) ).list();*/
         return getCriteria().addOrder( Order.desc( "date" ) ).list();
     }
 
@@ -138,13 +133,11 @@ public class HibernateOutboundSmsStore
     public void updateOutboundSms( OutboundSms sms )
     {
         update( sms );
-        //sessionFactory.getCurrentSession().update( sms );
     }
 
     @Override
     public void deleteOutboundSms( OutboundSms sms )
     {
         delete( sms );
-        //sessionFactory.getCurrentSession().delete( sms );
     }
 }
