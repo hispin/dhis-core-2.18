@@ -192,9 +192,10 @@
 			ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
 	</bean>
 	
+	<!-- 
 	<bean id="org.hisp.dhis.mobile.action.MobilePhonesPatternAction"
 		class="org.hisp.dhis.mobile.action.MobilePhonesPatternAction"
 		scope="prototype">
 	</bean>
-
+ 	-->
 </beans>

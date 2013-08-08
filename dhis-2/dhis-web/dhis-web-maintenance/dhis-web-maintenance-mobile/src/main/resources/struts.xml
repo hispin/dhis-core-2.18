@@ -205,12 +205,12 @@
       <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>  
     </action>
     
-    <!-- Mobile Phones Pattern -->
+    <!-- Mobile Phones Pattern 
     <action name="mobilePhonesPattern" class="org.hisp.dhis.mobile.action.MobilePhonesPatternAction">
   	  <result name="success" type="velocity">/main.vm</result>
   	  <param name="page">/dhis-web-maintenance-mobile/phonePatternPage.vm</param>
   	  <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-    </action>
+    </action>-->
 	
   </package>
 </struts>
