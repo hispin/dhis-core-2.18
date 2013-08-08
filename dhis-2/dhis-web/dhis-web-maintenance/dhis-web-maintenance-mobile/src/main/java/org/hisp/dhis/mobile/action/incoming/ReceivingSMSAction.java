@@ -166,9 +166,7 @@ public class ReceivingSMSAction
                     break;
                 }
             }
-
         }
-
         return SUCCESS;
     }
 }

@@ -69,7 +69,7 @@ public class OutboundSmsServiceTest
 
         outboundSmsService.sendMessage( outboundSms, gatewayId );
 
-        List<OutboundSms> smses = outboundSmsStore.getAll();
+        List<OutboundSms> smses = outboundSmsStore.getAllOutboundSms();
         assertNotNullSize( smses, 1 );
 
         verifySms( outboundSms, smses.iterator().next() );
@@ -144,7 +144,7 @@ public class OutboundSmsServiceTest
 
         verify( transportService ).sendMessage( any( OutboundSms.class ), anyString() );
         ArgumentCaptor<OutboundSms> argument = ArgumentCaptor.forClass( OutboundSms.class );
-        verify( tmpStore, times( 1 ) ).save( argument.capture() );
+        verify( tmpStore, times( 1 ) ).saveOutboundSms( argument.capture() );
 
         // Is the SMS Marked with error status in store?
         // Can't test this without using hibernate or adding update on store...

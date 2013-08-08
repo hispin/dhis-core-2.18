@@ -8,7 +8,7 @@
 	
 	<bean id="org.hisp.dhis.program.ProgramIndicatorStore"
 		class="org.hisp.dhis.program.hibernate.HibernateProgramIndicatorStore">
-	<property name="clazz" value="org.hisp.dhis.program.ProgramIndicator" />
+		<property name="clazz" value="org.hisp.dhis.program.ProgramIndicator" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

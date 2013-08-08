@@ -13,12 +13,12 @@ public class OutboundSmsStoreTest extends AbstractSmsTest
     public void testSimpleSaveGet() {
         OutboundSms sms = getOutboundSms();
 
-        int id = outboundSmsStore.save( sms );
+        int id = outboundSmsStore.saveOutboundSms( sms );
 
         flush();
         evict( sms );
         
-        OutboundSms outboundSms = outboundSmsStore.get( id );
+        OutboundSms outboundSms = outboundSmsStore.getOutboundSmsbyId( id );
 
         verifySms( sms, outboundSms );
     }    
