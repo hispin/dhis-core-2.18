@@ -149,7 +149,7 @@ public class OutboundSmsServiceImpl
     @Override
     public List<OutboundSms> getAllOutboundSms()
     {
-        return outboundSmsStore.getAll();
+        return outboundSmsStore.getAllOutboundSms();
     }
 
     @Override
@@ -161,26 +161,26 @@ public class OutboundSmsServiceImpl
     @Override
     public void updateOutboundSms( OutboundSms sms )
     {
-        outboundSmsStore.update( sms );
+        outboundSmsStore.updateOutboundSms( sms );
     }
 
     @Override
     public int saveOutboundSms( OutboundSms sms )
     {
-        return outboundSmsStore.save( sms );
+        return outboundSmsStore.saveOutboundSms( sms );
     }
 
     @Override
-    public void deleteById( Integer outboundSmsId )
+    public void deleteById( Integer id )
     {
-        OutboundSms sms = outboundSmsStore.get( outboundSmsId );
-        outboundSmsStore.delete( sms );
+        OutboundSms sms = outboundSmsStore.getOutboundSmsbyId( id );
+        outboundSmsStore.deleteOutboundSms( sms );
     }
 
     @Override
     public OutboundSms getOutboundSms( int id )
     {
-        return outboundSmsStore.get( id );
+        return outboundSmsStore.getOutboundSmsbyId( id );
     }
 
     // -------------------------------------------------------------------------

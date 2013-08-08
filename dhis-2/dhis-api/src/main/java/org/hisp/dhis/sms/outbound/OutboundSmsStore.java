@@ -31,15 +31,15 @@ import java.util.List;
 
 public interface OutboundSmsStore
 {
-    int save( OutboundSms sms );
+    int saveOutboundSms( OutboundSms sms );
     
-    void update( OutboundSms sms );
+    List<OutboundSms> getAllOutboundSms();
 
-    List<OutboundSms> getAll();
-
-    OutboundSms get( int id );
+    OutboundSms getOutboundSmsbyId( int id );
     
     List<OutboundSms> get( OutboundSmsStatus status );
     
-    void delete( OutboundSms sms );
+    void updateOutboundSms( OutboundSms sms );
+    
+    void deleteOutboundSms( OutboundSms sms );
 }

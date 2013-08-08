@@ -102,7 +102,7 @@ public class SmsLibService
     
     public OutboundSms getOutboundSms( int id )
     {
-        return outboundSmsStore.get( id );
+        return outboundSmsStore.getOutboundSmsbyId( id );
     }
     
     @Override
@@ -231,11 +231,11 @@ public class SmsLibService
 
         if ( sms.getId() == 0 )
         {
-            outboundSmsStore.save( sms );
+            outboundSmsStore.saveOutboundSms( sms );
         }
         else
         {
-            outboundSmsStore.update( sms );
+            outboundSmsStore.updateOutboundSms( sms );
         }
         
         return message;
@@ -510,13 +510,13 @@ public class SmsLibService
     @Override
     public int saveOutboundSms( OutboundSms sms )
     {
-        return outboundSmsStore.save( sms );
+        return outboundSmsStore.saveOutboundSms( sms );
     }
 
     @Override
     public void updateOutboundSms( OutboundSms sms )
     {
-        outboundSmsStore.update( sms );
+        outboundSmsStore.updateOutboundSms( sms );
     }
 
     @Override
@@ -526,11 +526,11 @@ public class SmsLibService
     }
 
     @Override
-    public void deleteById( Integer outboundSmsId )
+    public void deleteById( Integer id )
     {
-        OutboundSms sms = outboundSmsStore.get( outboundSmsId );
+        OutboundSms sms = outboundSmsStore.getOutboundSmsbyId( id );
 
-        outboundSmsStore.delete( sms );
+        outboundSmsStore.deleteOutboundSms( sms );
     }
 
     public String getDefaultGateway()

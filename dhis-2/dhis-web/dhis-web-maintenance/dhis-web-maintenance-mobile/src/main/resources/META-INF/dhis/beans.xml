@@ -169,8 +169,7 @@
 
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm"
+	<bean id="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm"
 		class="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm"
 		scope="prototype">
 		<property name="smsCommandService" ref="smsCommandService" />
@@ -180,8 +179,7 @@
 			ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"
+	<bean id="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"
 		class="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"
 		scope="prototype">
 		<property name="smsCommandService" ref="smsCommandService" />
@@ -192,6 +190,11 @@
 		scope="prototype">
 		<property name="patientMobileSettingService"
 			ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.mobile.action.MobilePhonesPatternAction"
+		class="org.hisp.dhis.mobile.action.MobilePhonesPatternAction"
+		scope="prototype">
 	</bean>
 
 </beans>

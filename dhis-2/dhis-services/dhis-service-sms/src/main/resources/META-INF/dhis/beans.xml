@@ -14,6 +14,7 @@
   </bean>
 
   <bean id="outboundSmsStore" class="org.hisp.dhis.sms.outbound.HibernateOutboundSmsStore">
+  	<property name="clazz" value="org.hisp.dhis.sms.outbound.OutboundSms" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
@@ -64,5 +65,7 @@
     <property name="smsMessageSender" ref="org.hisp.dhis.sms.outbound.SmsSender" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
+  
+  <!-- Phone Number Pattern -->
   
 </beans>
