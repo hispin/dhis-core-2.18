@@ -293,8 +293,7 @@ public class SaveSectionFormAction
             storedBy = "[unknown]";
         }
 
-        HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
-            StrutsStatics.HTTP_REQUEST );
+        HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get( StrutsStatics.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
 
         for ( String key : parameterMap.keySet() )
@@ -331,7 +330,8 @@ public class SaveSectionFormAction
                         if ( !valueIsEmpty && !FormUtils.isBoolean( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_boolean" ) );
+                            typeViolations
+                                .put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_boolean" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
@@ -357,7 +357,8 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_integer" ) );
+                            typeViolations
+                                .put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_integer" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -366,7 +367,8 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isPositiveInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_positive_integer" ) );
+                            typeViolations.put( key,
+                                "\"" + value + "\"" + " " + i18n.getString( "is_invalid_positive_integer" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -375,7 +377,8 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isNegativeInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_negative_integer" ) );
+                            typeViolations.put( key,
+                                "\"" + value + "\"" + " " + i18n.getString( "is_invalid_negative_integer" ) );
                         }
                     }
                 }
@@ -413,6 +416,7 @@ public class SaveSectionFormAction
                         }
                     }
                 }
+
             }
         }
 
@@ -464,8 +468,7 @@ public class SaveSectionFormAction
 
         validationViolations = formUtils.getValidationViolations( organisationUnit, dataElements, period );
 
-        if ( needsValidation
-            && (!validationViolations.isEmpty() || !typeViolations.isEmpty()) )
+        if ( needsValidation && (!validationViolations.isEmpty() || !typeViolations.isEmpty()) )
         {
             return ERROR;
         }
