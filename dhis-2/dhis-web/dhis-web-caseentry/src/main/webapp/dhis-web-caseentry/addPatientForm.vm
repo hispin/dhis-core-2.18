@@ -43,7 +43,7 @@
 	hideById('mainLinkLbl');
 </script>
 
-<h3>
+<h3 id='patientMamagementLink'>
 	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
 	&#8226; $i18n.getString( "add_new_patient" )
 </h3>
@@ -56,7 +56,7 @@
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	<tr>
 		<td></td>
-		<td colspan='2'>
+		<td colspan='2' id='actionButtons'>
 			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:70px;" />
 			<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:140px;" onclick="isContinue=true;"/>
 			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" style="width:70px;" />

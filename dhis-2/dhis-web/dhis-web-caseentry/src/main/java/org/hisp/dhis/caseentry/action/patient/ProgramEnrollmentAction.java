@@ -47,6 +47,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -68,6 +69,8 @@ public class ProgramEnrollmentAction
     private PatientAttributeValueService patientAttributeValueService;
 
     private SelectedStateManager selectedStateManager;
+
+    private ProgramStageInstanceService programStageInstanceService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -93,6 +96,8 @@ public class ProgramEnrollmentAction
 
     private ProgramInstance programInstance;
 
+    private Collection<ProgramStageInstance> linkProgramStageInstances = new HashSet<ProgramStageInstance>();
+
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
@@ -100,6 +105,16 @@ public class ProgramEnrollmentAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    public Collection<ProgramStageInstance> getLinkProgramStageInstances()
+    {
+        return linkProgramStageInstances;
+    }
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
     }
 
     public Collection<PatientAttribute> getNoGroupAttributes()
@@ -185,6 +200,8 @@ public class ProgramEnrollmentAction
         programStageInstances = new ArrayList<ProgramStageInstance>( programInstance.getProgramStageInstances() );
 
         Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
+        
+        linkProgramStageInstances = programStageInstanceService.getProgramStageInstance( programInstance.getPatient() );
 
         loadIdentifierTypes( programInstance );
 
