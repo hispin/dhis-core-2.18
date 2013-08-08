@@ -30,6 +30,7 @@ package org.hisp.dhis.dashboard.impl;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_CHART;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MAP;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLE;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORTS;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLES;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_RESOURCES;
@@ -113,6 +114,12 @@ public class DefaultDashboardService
             item.setMap( objectManager.get( Map.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
+        else if ( TYPE_REPORT_TABLE.equals( type ) )
+        {
+            DashboardItem item = new DashboardItem();
+            item.setReportTable( objectManager.get( ReportTable.class, contentUid ) );
+            dashboard.getItems().add( 0, item );
+        }
         else // Link item
         {
             DashboardItem availableItem = dashboard.getAvailableItemByType( type );
@@ -166,6 +173,11 @@ public class DefaultDashboardService
         if ( item.getMap() != null )
         {
             item.setMap( objectManager.get( Map.class, item.getMap().getUid() ) );
+        }
+        
+        if ( item.getReportTable() != null )
+        {
+            item.setReportTable( objectManager.get( ReportTable.class, item.getReportTable().getUid() ) );
         }
         
         if ( item.getUsers() != null )

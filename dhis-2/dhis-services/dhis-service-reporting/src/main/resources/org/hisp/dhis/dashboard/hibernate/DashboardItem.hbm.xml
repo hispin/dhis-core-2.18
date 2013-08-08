@@ -19,6 +19,8 @@
     
     <many-to-one name="map" class="org.hisp.dhis.mapping.Map" column="mapid" foreign-key="fk_dashboarditem_mapid" />
     
+    <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable" foreign-key="fk_dashboarditem_reporttableid" />
+    
     <list name="users" table="dashboarditem_users">
       <key column="dashboarditemid" foreign-key="fk_dashboarditem_users_dashboardid" />
       <list-index column="sort_order" base="0" />
