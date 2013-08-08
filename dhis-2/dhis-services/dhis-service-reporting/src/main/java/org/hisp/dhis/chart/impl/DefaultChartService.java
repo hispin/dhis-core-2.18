@@ -619,18 +619,8 @@ public class DefaultChartService
     
     private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet, boolean horizontal )
     {
-        JFreeChart stackedBarChart = null;
-
-        if ( chart.isType( TYPE_STACKED_BAR ) )
-        {
-            stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
-                chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
-        }
-        else
-        {
-            stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
-                chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
-        }
+        JFreeChart stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
+            chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
 
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( Color.WHITE );
@@ -650,18 +640,8 @@ public class DefaultChartService
 
     private JFreeChart getMultiplePieChart( Chart chart, CategoryDataset[] dataSets )
     {
-        JFreeChart multiplePieChart = null;
-
-        if ( chart.isType( TYPE_PIE ) )
-        {
-            multiplePieChart = ChartFactory.createMultiplePieChart( chart.getName(), dataSets[0], TableOrder.BY_ROW,
-                !chart.isHideLegend(), false, false );
-        }
-        else
-        {
-            multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getName(), dataSets[0], TableOrder.BY_ROW,
-                !chart.isHideLegend(), false, false );
-        }
+        JFreeChart multiplePieChart = ChartFactory.createMultiplePieChart( chart.getName(), dataSets[0], TableOrder.BY_ROW,
+            !chart.isHideLegend(), false, false );
 
         multiplePieChart.getTitle().setFont( titleFont );
         multiplePieChart.addSubtitle( getSubTitle( chart ) );

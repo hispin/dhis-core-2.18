@@ -49,7 +49,6 @@ public class WebUtils
 {
     private static final Log log = LogFactory.getLog( WebUtils.class );
 
-    @SuppressWarnings("unchecked")
     public static void generateLinks( WebMetaData metaData )
     {
         Class<?> baseType = null;

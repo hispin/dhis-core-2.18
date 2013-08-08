@@ -57,12 +57,6 @@ import java.util.Set;
 
 public class PdfDataEntryFormImportUtil
 {
-    private static final String DATAVALUE_IMPORT_STOREBY = "admin";
-
-    private static final String DATAVALUE_IMPORT_COMMENT = "Imported by PDF Data Entry Form";
-
-    private static final String DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT = "yyyy-MM-dd";
-
     // -------------------------------------------------------------------------
     // DEPENDENCIES
     // -------------------------------------------------------------------------
@@ -207,7 +201,7 @@ public class PdfDataEntryFormImportUtil
 
     private void insertValue_ProgramStageDataElement( ProgramStageInstance programStageInstance, int dataElementId,
         String value )
-        throws IOException, Exception
+        throws Exception
     {
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
