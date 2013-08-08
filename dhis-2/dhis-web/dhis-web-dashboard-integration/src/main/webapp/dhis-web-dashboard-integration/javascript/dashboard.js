@@ -78,6 +78,7 @@ dhis2.db.dashboardReady = function( id )
 	} );
 	
 	$( ".item" ).droppable( {
+		accept: ".item",
 		over: dhis2.db.dropOver,
 		out: dhis2.db.dropOut
 	} );
@@ -88,6 +89,7 @@ dhis2.db.dashboardReady = function( id )
 	} );
 	
 	$( ".lastDropItem" ).droppable( {
+		accept: ".item",
 		over: dhis2.db.lastDropOver,
 		out: dhis2.db.lastDropOut
 	} );	
