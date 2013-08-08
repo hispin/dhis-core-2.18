@@ -581,6 +581,11 @@ public class DefaultProgramStageInstanceService
         return outboundSmsList;
     }
 
+    public Collection<ProgramStageInstance> getProgramStageInstance( Patient patient )
+    {
+        return programStageInstanceStore.get( patient );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

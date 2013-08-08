@@ -53,6 +53,10 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
@@ -93,6 +97,10 @@ public class AddPatientAction
 
     private SystemSettingManager systemSettingManager;
 
+    private RelationshipTypeService relationshipTypeService;
+
+    private RelationshipService relationshipService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -122,6 +130,10 @@ public class AddPatientAction
     private boolean isDead;
 
     private String deathDate;
+
+    private Integer relationshipId;
+
+    private boolean relationshipFromA;
 
     private String message;
 
@@ -364,6 +376,43 @@ public class AddPatientAction
         Integer id = patientService.createPatient( patient, representativeId, relationshipTypeId,
             patientAttributeValues );
 
+        // -------------------------------------------------------------------------
+        // Create relationship
+        // -------------------------------------------------------------------------
+
+        if ( relationshipId != null && relationshipTypeId != null )
+        {
+            Patient relationship = patientService.getPatient( relationshipId );
+            if ( relationship != null )
+            {
+                if ( underAge )
+                {
+                    patient.setRepresentative( relationship );
+                }
+
+                Relationship rel = new Relationship();
+                if ( relationshipFromA )
+                {
+                    rel.setPatientA( relationship );
+                    rel.setPatientB( patient );
+                }
+                else
+                {
+                    rel.setPatientA( patient );
+                    rel.setPatientB( relationship );
+                }
+                if ( relationshipTypeId != null )
+                {
+                    RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                    if ( relType != null )
+                    {
+                        rel.setRelationshipType( relType );
+                        relationshipService.saveRelationship( rel );
+                    }
+                }
+            }
+        }
+
         message = id + "_" + systemGenerateIdentifier.getIdentifier();
 
         return SUCCESS;
@@ -376,6 +425,26 @@ public class AddPatientAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
+    }
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
+
+    public void setRelationshipId( Integer relationshipId )
+    {
+        this.relationshipId = relationshipId;
+    }
+
+    public void setRelationshipFromA( boolean relationshipFromA )
+    {
+        this.relationshipFromA = relationshipFromA;
+    }
+
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
     }
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )

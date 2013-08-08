@@ -124,5 +124,7 @@ public interface ProgramStageInstanceStore
     Collection<Integer> getOrgunitIds( Date startDate, Date endDate );
 
     Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate, I18n i18n );
+    
+    Collection<ProgramStageInstance> get( Patient patient );
 
 }

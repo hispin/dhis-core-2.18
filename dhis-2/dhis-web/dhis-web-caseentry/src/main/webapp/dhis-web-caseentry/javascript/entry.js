@@ -580,8 +580,7 @@ function runCompleteEvent( isCreateEvent )
                 }
 
                 var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
-
-                if( blocked=='true' ) {
+				if( blocked=='true' ) {
                     blockEntryForm();
                 }
 

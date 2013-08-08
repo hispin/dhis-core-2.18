@@ -220,9 +220,10 @@ public class PatientDashboardAction
         // Get patient-attribute-values
         // ---------------------------------------------------------------------
 
-        Collection<PatientAttributeValue> _attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Collection<PatientAttributeValue> _attributeValues = patientAttributeValueService
+            .getPatientAttributeValues( patient );
         attributeValues = new HashSet<PatientAttributeValue>();
-        
+
         for ( Program program : programs )
         {
             Collection<PatientAttribute> atttributes = program.getPatientAttributes();
@@ -234,14 +235,14 @@ public class PatientDashboardAction
                 }
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // Get patient-identifiers
         // ---------------------------------------------------------------------
 
         Collection<PatientIdentifier> _identifiers = patient.getIdentifiers();
         identifiers = new HashSet<PatientIdentifier>();
-        
+
         for ( Program program : programs )
         {
             Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
@@ -249,11 +250,11 @@ public class PatientDashboardAction
             {
                 if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
                 {
-                    identifiers.add(identifier);
+                    identifiers.add( identifier );
                 }
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // Get relationship
         // ---------------------------------------------------------------------

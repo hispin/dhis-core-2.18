@@ -27,9 +27,11 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -100,17 +102,25 @@ public class ShowAddRelationshipPatientAction
 
     private Collection<User> healthWorkers;
 
+    private List<Program> programs;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        patient = patientService.getPatient( id.intValue() );
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        patient = patientService.getPatient( id );
 
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
-        Collection<Program> programs = programService.getAllPrograms();
+
+        programs = new ArrayList<Program>( programService.getProgramsByDisplayOnAllOrgunit( true, null ) );
+        programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
+        programs.retainAll( programService.getProgramsByCurrentUser() );
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+
         for ( Program program : programs )
         {
             identifierTypes.removeAll( program.getPatientIdentifierTypes() );
@@ -172,7 +182,6 @@ public class ShowAddRelationshipPatientAction
             }
         }
 
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
 
         return SUCCESS;
@@ -181,10 +190,15 @@ public class ShowAddRelationshipPatientAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
-    
+
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    public List<Program> getPrograms()
+    {
+        return programs;
     }
 
     public void setProgramService( ProgramService programService )

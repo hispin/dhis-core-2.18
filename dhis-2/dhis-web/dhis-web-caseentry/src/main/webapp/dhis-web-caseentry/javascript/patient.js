@@ -370,6 +370,15 @@ function loadDataEntry( programStageInstanceId )
 					disableCompletedButton(true);
 				}
 			}
+			
+			var linkedEvent = jQuery(".stage-object-selected").attr("linkedEvent");
+			if( linkedEvent=='true' ) {
+				blockEntryForm();
+				disable('executionDate');
+			}
+			else{
+				enable('executionDate');
+			}
 			resize();
 			hideLoader();
 			hideById('contentDiv');
