@@ -108,6 +108,12 @@
   box-shadow: #ccc 0px 1px 3px 0px;
 }
 
+.item::-webkit-scrollbar
+{
+  width: 8px;
+  height: 8px;
+}
+
 .dropItem
 {
   width: 405px;
