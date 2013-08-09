@@ -793,6 +793,8 @@ public class DataQueryParams
         return new ArrayList<String>();
     }
     
+    // TODO move these to DimensionalObjectUtils or API, duplication of code
+    
     /**
      * Retrieves the level from a level parameter string, which is on the format
      * LEVEL-<level>-<item> .
@@ -830,6 +832,27 @@ public class DataQueryParams
         if ( split.length > 2 && split[2] != null )
         {
             return split[2];
+        }
+        
+        return null;
+    }
+
+    /**
+     * Retrieves the uid from an org unit group parameter string, which is on
+     * the format OU_GROUP-<uid> .
+     */
+    public static String getUidFromOrgUnitGroupParam( String param )
+    {
+        if ( param == null )
+        {
+            return null;
+        }
+        
+        String[] split = param.split( ITEM_SEP );
+        
+        if ( split.length > 1 && split[1] != null )
+        {
+            return String.valueOf( split[1] );
         }
         
         return null;

@@ -50,6 +50,7 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
@@ -105,6 +106,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -821,6 +823,17 @@ public class DefaultAnalyticsService
                     if ( level > 0 && boundaryId != null && ( boundary = organisationUnitService.getOrganisationUnit( boundaryId ) ) != null )
                     {                        
                         ous.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level, boundary ) );
+                    }
+                }
+                else if ( ou != null && ou.startsWith( KEY_ORGUNIT_GROUP ) )
+                {
+                    String uid = DataQueryParams.getUidFromOrgUnitGroupParam( ou );
+                    
+                    OrganisationUnitGroup group = null;
+                    
+                    if ( uid != null && ( group = organisationUnitGroupService.getOrganisationUnitGroup( uid ) ) != null )
+                    {
+                        ous.addAll( group.getMembers() );
                     }
                 }
                 else
