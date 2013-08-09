@@ -39,6 +39,7 @@ import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,8 +47,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
@@ -131,7 +134,15 @@ public abstract class BaseAnalyticalObject
 
     protected boolean userOrganisationUnitChildren;
 
+    /**
+     * Level of dimension item organisation units.
+     */
     protected Integer organisationUnitLevel;
+    
+    /**
+     * Groups containing dimension item organisation units.
+     */
+    protected List<OrganisationUnitGroup> itemOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
     
     protected boolean rewindRelativePeriods;
 
@@ -191,6 +202,18 @@ public abstract class BaseAnalyticalObject
         {
             this.transientOrganisationUnits.add( organisationUnit );
         }
+    }
+    
+    protected Set<OrganisationUnit> getOrganisationUnitsInItemGroups()
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        
+        for ( OrganisationUnitGroup group : itemOrganisationUnitGroups )
+        {
+            units.addAll( group.getMembers() );
+        }
+        
+        return units;
     }
     
     /**
@@ -262,6 +285,11 @@ public abstract class BaseAnalyticalObject
             if ( organisationUnitLevel != null && organisationUnitsAtLevel != null )
             {
                 items.addAll( organisationUnitsAtLevel );
+            }
+            
+            if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )
+            {
+                items.addAll( getOrganisationUnitsInItemGroups() );
             }
             
             type = DimensionType.ORGANISATIONUNIT;
@@ -402,6 +430,16 @@ public abstract class BaseAnalyticalObject
                 for ( OrganisationUnit unit : organisationUnits )
                 {
                     String id = KEY_LEVEL + organisationUnitLevel + DimensionalObject.DIMENSION_SEP + unit.getUid();
+                    
+                    ouList.add( new BaseNameableObject( id, id, id ) );
+                }
+            }
+            
+            if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )
+            {
+                for ( OrganisationUnitGroup group : itemOrganisationUnitGroups )
+                {
+                    String id = KEY_ORGUNIT_GROUP + group.getUid();
                     
                     ouList.add( new BaseNameableObject( id, id, id ) );
                 }
@@ -758,6 +796,20 @@ public abstract class BaseAnalyticalObject
     public void setOrganisationUnitLevel( Integer organisationUnitLevel )
     {
         this.organisationUnitLevel = organisationUnitLevel;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "itemOrganisationUnitGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "itemOrganisationUnitGroup", namespace = DxfNamespaces.DXF_2_0)
+    public List<OrganisationUnitGroup> getItemOrganisationUnitGroups()
+    {
+        return itemOrganisationUnitGroups;
+    }
+
+    public void setItemOrganisationUnitGroups( List<OrganisationUnitGroup> itemOrganisationUnitGroups )
+    {
+        this.itemOrganisationUnitGroups = itemOrganisationUnitGroups;
     }
 
     @JsonProperty

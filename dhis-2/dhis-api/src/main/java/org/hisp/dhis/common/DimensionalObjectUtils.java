@@ -166,4 +166,25 @@ public class DimensionalObjectUtils
         
         return null;
     }
+
+    /**
+     * Retrieves the uid from an org unit group parameter string, which is on
+     * the format OU_GROUP-<uid> .
+     */
+    public static String getUidFromOrgUnitGroupParam( String param )
+    {
+        if ( param == null )
+        {
+            return null;
+        }
+        
+        String[] split = param.split( "-" );
+        
+        if ( split.length > 1 && split[1] != null )
+        {
+            return String.valueOf( split[1] );
+        }
+        
+        return null;
+    }
 }
