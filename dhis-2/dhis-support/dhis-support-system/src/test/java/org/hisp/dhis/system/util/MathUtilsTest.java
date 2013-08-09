@@ -253,4 +253,14 @@ public class MathUtilsTest
         assertEquals( -0.43, MathUtils.getRounded( -0.43123 ), 0.01 );
         assertEquals( -10, MathUtils.getRounded( -10.00 ), 0.01 );        
     }
+    
+    @Test
+    public void testCalculateExpression()
+    {
+        assertEquals( 3d, MathUtils.calculateExpression( "1+2" ), 0.01 );
+        assertEquals( 3d, MathUtils.calculateExpression( "abs(3)" ), 0.01 );
+        assertEquals( 3d, MathUtils.calculateExpression( "abs(-3)" ), 0.01 );
+        assertEquals( 3d, MathUtils.calculateExpression( "abs(3-6)" ), 0.01 );
+        assertEquals( 5d, MathUtils.calculateExpression( "sqrt(25)" ), 0.01 );
+    }
 }
