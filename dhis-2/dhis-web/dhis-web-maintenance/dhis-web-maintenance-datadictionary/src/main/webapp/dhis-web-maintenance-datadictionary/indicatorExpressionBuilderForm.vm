@@ -158,6 +158,7 @@
 	<tr>
 		<td>
 			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
+			<div class="tipText" style="margin-top: 4px">$i18n.getString( "tip" ): $i18n.getString( "use" ) abs(x) sin(x) cos(x) tan(x) ln(x) log(x) sqrt(x) mod(x,y)</div>
 		</td>
 		<td></td>
 		<td>

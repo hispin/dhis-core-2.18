@@ -262,5 +262,6 @@ public class MathUtilsTest
         assertEquals( 3d, MathUtils.calculateExpression( "abs(-3)" ), 0.01 );
         assertEquals( 3d, MathUtils.calculateExpression( "abs(3-6)" ), 0.01 );
         assertEquals( 5d, MathUtils.calculateExpression( "sqrt(25)" ), 0.01 );
+        assertEquals( 1d, MathUtils.calculateExpression( "mod(7,2)" ), 0.01 );
     }
 }

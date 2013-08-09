@@ -68,9 +68,7 @@ public class MathUtils
     {
         final String expression = leftSide + operator.getMathematicalOperator() + rightSide;
         
-        final JEP parser = new JEP();
-
-        parser.addStandardFunctions();
+        final JEP parser = getJep();
         parser.parseExpression( expression );
         
         return ( parser.getValue() == 1.0 );
@@ -84,9 +82,7 @@ public class MathUtils
      */
     public static double calculateExpression( String expression )   
     {
-        final JEP parser = new JEP();
-
-        parser.addStandardFunctions();
+        final JEP parser = getJep();
         parser.parseExpression( expression );
         
         double result = parser.getValue();
@@ -102,9 +98,7 @@ public class MathUtils
      */
     public static boolean expressionHasErrors( String expression )
     {
-        final JEP parser = new JEP();
-
-        parser.addStandardFunctions();
+        final JEP parser = getJep();
         parser.parseExpression( expression );
         
         return parser.hasError();
@@ -119,12 +113,21 @@ public class MathUtils
      */
     public static String getExpressionErrorInfo( String expression )
     {
-        final JEP parser = new JEP();
-
-        parser.addStandardFunctions();
+        final JEP parser = getJep();
         parser.parseExpression( expression );
         
         return parser.getErrorInfo();
+    }
+    
+    /**
+     * Returns an JEP parser instance.
+     */
+    private static JEP getJep()
+    {
+        final JEP parser = new JEP();
+        parser.addStandardFunctions();
+        parser.addStandardConstants();
+        return parser;
     }
     
     /**
