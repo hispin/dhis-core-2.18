@@ -148,7 +148,6 @@ public class SmsPublisher
     public void setListeners( List<IncomingSmsListener> listeners )
     {
         this.listeners = listeners;
-        System.out.println( "Listener: " + listeners );
     }
 
     public SmsSender getSmsSender()

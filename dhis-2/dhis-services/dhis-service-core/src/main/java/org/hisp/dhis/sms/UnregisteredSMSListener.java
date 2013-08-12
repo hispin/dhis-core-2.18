@@ -162,6 +162,5 @@ public class UnregisteredSMSListener
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
-    }
-    
+    }    
 }

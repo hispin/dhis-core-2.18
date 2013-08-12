@@ -160,7 +160,6 @@ public class J2MEDataValueSMSListener
 
     private Map<String, String> parse( String sms, SMSCommand smsCommand )
     {
-
         String[] keyValuePairs = null;
 
         if ( sms.indexOf( "#" ) > -1 )
@@ -280,6 +279,7 @@ public class J2MEDataValueSMSListener
             }
             throw new SMSParserException( messageListingOrgUnits );
         }
+        
         return orgUnit;
     }
 
@@ -394,7 +394,6 @@ public class J2MEDataValueSMSListener
     public Period getPeriod( String periodName, PeriodType periodType )
         throws IllegalArgumentException
     {
-
         if ( periodType instanceof DailyPeriodType )
         {
             String pattern = "yyyy-MM-dd";
