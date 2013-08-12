@@ -28,13 +28,14 @@ package org.hisp.dhis;
  */
 
 import java.io.File;
+import java.io.StringReader;
 import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
@@ -101,6 +102,7 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
+import org.xml.sax.InputSource;
 
 /**
  * @author Lars Helge Overland
@@ -1036,6 +1038,61 @@ public abstract class DhisConvenienceTest
         }
 
         return dir.delete();
+    }
+
+    // -------------------------------------------------------------------------
+    // Allow xpath testing of dxf2
+    // -------------------------------------------------------------------------
+
+    protected String xpathTest( String xpathString, String xml )
+        throws XPathExpressionException
+    {
+        InputSource source = new InputSource( new StringReader( xml ) );
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+        xpath.setNamespaceContext( new Dxf2NamespaceResolver() );
+
+        return (String) xpath.evaluate( xpathString, source );
+    }
+
+    // we need this to resolve dxf2 namespace in xpath
+    protected class Dxf2NamespaceResolver
+        implements NamespaceContext
+    {
+
+        @Override
+        public String getNamespaceURI( String prefix )
+        {
+            if ( prefix == null )
+            {
+                throw new IllegalArgumentException( "No prefix provided!" );
+            }
+            else
+            {
+                if ( prefix.equals( "d" ) )
+                {
+                    return "http://dhis2.org/schema/dxf/2.0";
+                }
+                else
+                {
+                    return XMLConstants.NULL_NS_URI;
+                }
+            }
+        }
+
+        @Override
+        public String getPrefix( String namespaceURI )
+        {
+            // Not needed in this context.
+            return null;
+        }
+
+        @Override
+        public Iterator getPrefixes( String namespaceURI )
+        {
+            // Not needed in this context.
+            return null;
+        }
     }
 
     // -------------------------------------------------------------------------
