@@ -31,7 +31,9 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.OutputStream;
+import java.io.Writer;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,23 +48,28 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRProperties;
 
+import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.util.Encoder;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.JRExportUtils;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.system.velocity.VelocityManager;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +83,8 @@ public class DefaultReportService
 {
     public static final String ORGUNIT_LEVEL_COLUMN_PREFIX = "idlevel";
     public static final String ORGUNIT_UID_LEVEL_COLUMN_PREFIX = "uidlevel";
+
+    private static final Encoder ENCODER = new Encoder();
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -216,6 +225,58 @@ public class DefaultReportService
         }
         
         return print;
+    }
+    
+    public void renderHtmlReport( Writer writer, String uid, String pe, String ou, I18nFormat format )
+    {
+        Report report = getReport( uid );        
+        OrganisationUnit organisationUnit = null;
+        List<OrganisationUnit> organisationUnitHierarchy = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
+        List<Period> periods = new ArrayList<Period>();
+        
+        if ( ou != null )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+            
+            if ( organisationUnit != null )
+            {
+                organisationUnitHierarchy.add( organisationUnit );
+                
+                OrganisationUnit parent = organisationUnit;
+                
+                while ( parent.getParent() != null )
+                {
+                    parent = parent.getParent();
+                    organisationUnitHierarchy.add( parent );
+                }
+                
+                organisationUnitChildren.addAll( organisationUnit.getChildren() );
+            }
+        }
+        
+        Date date = new Date();
+        
+        if ( pe != null )
+        {
+            date = PeriodType.getPeriodFromIsoString( pe ).getStartDate();
+        }
+        
+        if ( report != null && report.hasRelativePeriods() )
+        {
+            periods = report.getRelatives().getRelativePeriods( date, format, true );
+        }
+        
+        final VelocityContext context = new VelocityContext();
+        context.put( "report", report );
+        context.put( "organisationUnit", organisationUnit );
+        context.put( "organisationUnitHierarchy", organisationUnitHierarchy );
+        context.put( "organisationUnitChildren", organisationUnitChildren );
+        context.put( "periods", periods );
+        context.put( "format", format );
+        context.put( "encoder", ENCODER );
+        
+        new VelocityManager().getEngine().getTemplate( "html-report.vm" ).merge( context, writer );
     }
 
     public int saveReport( Report report )

@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,6 +38,7 @@ import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -52,8 +55,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -102,9 +103,7 @@ public class ReportController
         @RequestParam( value = "pe", required = false ) String period,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        JasperPrint print = getReport( request, response, uid, organisationUnitUid, period, "html", ContextUtils.CONTENT_TYPE_HTML, false );
-        
-        request.getSession().setAttribute( BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print );
+        getReport( request, response, uid, organisationUnitUid, period, "html", ContextUtils.CONTENT_TYPE_HTML, false );
     }
     
     @RequestMapping( value = "/{uid}/design", method = RequestMethod.PUT )
@@ -170,15 +169,17 @@ public class ReportController
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private JasperPrint getReport( HttpServletRequest request, HttpServletResponse response, String uid, String organisationUnitUid, String isoPeriod,
+    private void getReport( HttpServletRequest request, HttpServletResponse response, String uid, String organisationUnitUid, String isoPeriod,
         String type, String contentType, boolean attachment ) throws Exception
     {
         Report report = reportService.getReport( uid );
+        
+        I18nFormat format = i18nManager.getI18nFormat();
 
         if ( report == null )
         {
             ContextUtils.notFoundResponse( response, "Report does not exist: " + uid );
-            return null;
+            return;
         }
         
         if ( organisationUnitUid == null && report.hasReportTable() && report.getReportTable().hasReportParams()
@@ -189,12 +190,24 @@ public class ReportController
 
         Period period = isoPeriod != null ? PeriodType.getPeriodFromIsoString( isoPeriod ) : new MonthlyPeriodType().createPeriod();
         
-        String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
-        contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
-
-        JasperPrint print = reportService.renderReport( response.getOutputStream(), uid, period, organisationUnitUid, type,
-            i18nManager.getI18nFormat() );
-        
-        return print;
+        if ( report.isTypeHtml() )
+        {
+            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
+            
+            reportService.renderHtmlReport( response.getWriter(), uid, isoPeriod, organisationUnitUid, format );
+        }
+        else
+        {
+            String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
+            
+            contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
+            
+            JasperPrint print = reportService.renderReport( response.getOutputStream(), uid, period, organisationUnitUid, type, format );
+            
+            if ( "html".equals( type ) )
+            {            
+                request.getSession().setAttribute( BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print );
+            }
+        }
     }
 }
