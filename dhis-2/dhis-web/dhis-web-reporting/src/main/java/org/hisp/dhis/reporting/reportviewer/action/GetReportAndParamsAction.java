@@ -27,16 +27,11 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -90,39 +85,11 @@ public class GetReportAndParamsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Report report;
-    
-    public Report getReport()
-    {
-        return report;
-    }
-    
-    private OrganisationUnit organisationUnit;
+    private String content;
 
-    public OrganisationUnit getOrganisationUnit()
+    public String getContent()
     {
-        return organisationUnit;
-    }
-
-    private List<OrganisationUnit> organisationUnitHierarchy = new ArrayList<OrganisationUnit>();
-    
-    public List<OrganisationUnit> getOrganisationUnitHierarchy()
-    {
-        return organisationUnitHierarchy;
-    }
-    
-    private List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
-    
-    public List<OrganisationUnit> getOrganisationUnitChildren()
-    {
-        return organisationUnitChildren;
-    }
-
-    private List<Period> periods;
-    
-    public List<Period> getPeriods()
-    {
-        return periods;
+        return content;
     }
 
     // -------------------------------------------------------------------------
@@ -130,40 +97,13 @@ public class GetReportAndParamsAction
     // -------------------------------------------------------------------------
 
     public String execute()
+        throws Exception
     {
-        report = reportService.getReport( uid );
+        Writer writer = new StringWriter();
         
-        if ( ou != null )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( ou );
-            
-            if ( organisationUnit != null )
-            {
-                organisationUnitHierarchy.add( organisationUnit );
-                
-                OrganisationUnit parent = organisationUnit;
-                
-                while ( parent.getParent() != null )
-                {
-                    parent = parent.getParent();
-                    organisationUnitHierarchy.add( parent );
-                }
-                
-                organisationUnitChildren.addAll( organisationUnit.getChildren() );
-            }
-        }
+        reportService.renderHtmlReport( writer, uid, pe, ou, format );
         
-        Date date = new Date();
-        
-        if ( pe != null )
-        {
-            date = PeriodType.getPeriodFromIsoString( pe ).getStartDate();
-        }
-        
-        if ( report != null && report.hasRelativePeriods() )
-        {
-            periods = report.getRelatives().getRelativePeriods( date, format, true );
-        }
+        content = writer.toString();
         
         return SUCCESS;
     }
