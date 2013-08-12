@@ -48,8 +48,6 @@ public interface DataEntryFormService
     final Pattern IDENTIFIER_PATTERN = Pattern.compile( "id=\"(\\w+)-(\\w+)-val\"" );
     final Pattern DATAELEMENT_TOTAL_PATTERN = Pattern.compile( "dataelementid=\"(\\w+?)\"" );
     final Pattern INDICATOR_PATTERN = Pattern.compile( "indicatorid=\"(\\w+)\"" );
-    final Pattern DYNAMIC_INPUT_PATTERN = Pattern.compile( "(\\w+)-(\\w+)-dyninput" ); // Random code - category option combo id
-    final Pattern DYNAMIC_SELECT_PATTERN = Pattern.compile( "dynselect=\"(\\w+)\"" ); // Category combo id
     final Pattern VALUE_TAG_PATTERN = Pattern.compile( "value=\"(.*?)\"", Pattern.DOTALL );
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
     
