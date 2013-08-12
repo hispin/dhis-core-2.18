@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -135,7 +136,8 @@ public class SearchPatientAction
         throws Exception
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
+        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+        
         // List all patients
         if ( listAll )
         {
@@ -150,10 +152,14 @@ public class SearchPatientAction
         else if ( searchTexts.size() > 0 )
         {
             organisationUnit = (searchBySelectedOrgunit) ? organisationUnit : null;
+            if( organisationUnit != null )
+            {
+                orgunits.add( organisationUnit );
+            }
 
-            total = patientService.countSearchPatients( searchTexts, organisationUnit, null );
+            total = patientService.countSearchPatients( searchTexts, orgunits, null );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, organisationUnit, null, null, paging.getStartPos(), paging
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, paging.getStartPos(), paging
                 .getPageSize() );
 
             if ( !searchBySelectedOrgunit )

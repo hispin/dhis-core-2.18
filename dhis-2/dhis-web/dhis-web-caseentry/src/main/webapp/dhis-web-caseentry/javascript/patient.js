@@ -352,36 +352,47 @@ function loadDataEntry( programStageInstanceId )
 			programStageInstanceId: programStageInstanceId
 		},function( )
 		{
-			var executionDate = jQuery('#executionDate').val();
-			var completed = jQuery('#entryFormContainer input[id=completed]').val();
-			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
-			var reportDateDes = jQuery("#ps_" + programStageInstanceId).attr("reportDateDes");
-			setInnerHTML('reportDateDescriptionField',reportDateDes);
-			enable('validationBtn');
-			if( executionDate == '' )
+			var editDataEntryForm = getFieldValue('editDataEntryForm');
+			if(editDataEntryForm=='true')
 			{
-				disable('validationBtn');
-			}
-			else if( executionDate != ''){
-				if ( completed == 'false' ){
-					disableCompletedButton(false);
+				var executionDate = jQuery('#executionDate').val();
+				var completed = jQuery('#entryFormContainer input[id=completed]').val();
+				var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+				var reportDateDes = jQuery("#ps_" + programStageInstanceId).attr("reportDateDes");
+				setInnerHTML('reportDateDescriptionField',reportDateDes);
+				enable('validationBtn');
+				if( executionDate == '' )
+				{
+					disable('validationBtn');
 				}
-				else if( completed == 'true' ){
-					disableCompletedButton(true);
+				else if( executionDate != ''){
+					if ( completed == 'false' ){
+						disableCompletedButton(false);
+					}
+					else if( completed == 'true' ){
+						disableCompletedButton(true);
+					}
 				}
+				
+				var linkedEvent = jQuery(".stage-object-selected").attr("linkedEvent");
+				if( linkedEvent=='true' ) {
+					blockEntryForm();
+					disable('executionDate');
+				}
+				else{
+					enable('executionDate');
+				}
+				$(window).scrollTop(200);
 			}
-			
-			var linkedEvent = jQuery(".stage-object-selected").attr("linkedEvent");
-			if( linkedEvent=='true' ) {
+			else
+			{
 				blockEntryForm();
 				disable('executionDate');
+				hideById('inputCriteriaDiv');
 			}
-			else{
-				enable('executionDate');
-			}
+			
 			resize();
 			hideLoader();
 			hideById('contentDiv');
-			$(window).scrollTop(200);
 		} );
 }

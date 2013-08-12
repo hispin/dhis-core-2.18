@@ -36,6 +36,12 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_SEARCH_PATIENT_IN_ALL_FACILITIES</param>
     </action>
+    
+     <action name="searchByUserFacilities"
+      class="org.hisp.dhis.caseentry.action.NoAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_SEARCH_PATIENT_IN_USER_FACILITIES</param>
+    </action>
 
     <action name="searchPatient"
       class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
@@ -71,14 +77,19 @@
       <result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageInstance.vm</result>
     </action>
     
-    <action name="dataentryform"
+    <action name="editDataEntryForm"
+      class="org.hisp.dhis.caseentry.action.NoAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
+    </action>
+	
+	<action name="dataentryform"
       class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
       <param name="stylesheets">style/style.css</param>
-      <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
-
+    
     <action name="completeDataEntry"
       class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>

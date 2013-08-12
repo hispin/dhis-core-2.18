@@ -30,6 +30,7 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -59,6 +61,8 @@ public class SearchPatientAction
 
     private ProgramService programService;
 
+    private CurrentUserService currentUserService;
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -66,6 +70,8 @@ public class SearchPatientAction
     private List<String> searchTexts = new ArrayList<String>();
 
     private Boolean searchBySelectedOrgunit;
+
+    private Boolean searchByUserOrgunits;
 
     private boolean listAll;
 
@@ -75,9 +81,19 @@ public class SearchPatientAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    public void setSearchByUserOrgunits( Boolean searchByUserOrgunits )
+    {
+        this.searchByUserOrgunits = searchByUserOrgunits;
     }
 
     public void setProgramService( ProgramService programService )
@@ -150,6 +166,8 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
+        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // List all patients
@@ -164,14 +182,26 @@ public class SearchPatientAction
         // search patients
         else if ( searchTexts.size() > 0 )
         {
-            organisationUnit = (searchBySelectedOrgunit) ? organisationUnit : null;
+            if ( searchByUserOrgunits )
+            {
+                Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
+                orgunits.addAll( userOrgunits );
+            }
+            else if ( searchBySelectedOrgunit )
+            {
+                orgunits.add( organisationUnit );
+            }
+            else
+            {
+                organisationUnit = null;
+            }
 
-            total = patientService.countSearchPatients( searchTexts, organisationUnit, null );
+            total = patientService.countSearchPatients( searchTexts, orgunits, null );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, organisationUnit, null, null, paging.getStartPos(),
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, paging.getStartPos(),
                 paging.getPageSize() );
 
-            if ( !searchBySelectedOrgunit )
+            if ( !searchBySelectedOrgunit || searchByUserOrgunits )
             {
                 for ( Patient patient : patients )
                 {

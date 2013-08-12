@@ -71,16 +71,27 @@
 
 <div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
 	<table>	
-		#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
 			<tr id='searchBySelectedUnitTD'>
-				<td>
-					$i18n.getString('search_in_all_facilities') 
-					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />&nbsp;&nbsp;&nbsp;
-				</td>
+				#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+					<td>
+						$i18n.getString('search_in_all_facilities') 
+						<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />&nbsp;&nbsp;&nbsp;
+					</td>
+				#else
+					<input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' />
+				#end
+				
+				#if( $auth.hasAccess( "dhis-web-caseentry", "searchByUserFacilities" ) )
+					<td>
+						$i18n.getString('search_by_user_orgunits') 
+						<input type='checkbox' id='searchByUserOrgunits' name='searchByUserOrgunits' />&nbsp;&nbsp;&nbsp;
+					</td>
+				#else
+					<input type='checkbox' class='hidden' id='searchByUserOrgunits' name='searchByUserOrgunits' />
+				#end
 			</tr>
-		#else
-			<input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' />
-		#end
+		
+		
 		<tr id='dueDateTR' class='hidden'>
 			<td>$i18n.getString('due_date_from_to')</td>
 			<td>

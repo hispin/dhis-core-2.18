@@ -68,7 +68,7 @@ public interface PatientStore
 
     void removeErollmentPrograms( Program program );
 
-    int countSearch( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup );
+    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup );
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
 
@@ -76,18 +76,19 @@ public interface PatientStore
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
-    Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
+    Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
+    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
+    Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
         Integer max );
 
-    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
+    List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
         Integer max );
+
 
 }

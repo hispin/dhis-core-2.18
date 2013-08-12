@@ -208,19 +208,19 @@ public interface PatientService
 
     void removeErollmentPrograms( Program program );
 
-    Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
+    Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 
-    int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup );
+    int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup );
 
-    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
-        Integer min, Integer max );
+    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
+        Boolean followup, Integer min, Integer max );
 
-    List<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
-        Integer min, Integer max );
+    List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
+        Boolean followup, Integer min, Integer max );
 
-    Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, Boolean followup, Integer min,
-        Integer max, I18n i18n );
+    Grid getScheduledEventsReport( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
+        Integer min, Integer max, I18n i18n );
 
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
 
@@ -228,7 +228,7 @@ public interface PatientService
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
-    Grid getTrackingEventsReport( Program program, List<String> searchKeys, OrganisationUnit orgunit, Boolean followup,
-        I18n i18n );
+    Grid getTrackingEventsReport( Program program, List<String> searchKeys, Collection<OrganisationUnit> orgunit,
+        Boolean followup, I18n i18n );
 
 }

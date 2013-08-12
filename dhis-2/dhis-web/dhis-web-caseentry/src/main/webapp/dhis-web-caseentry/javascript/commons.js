@@ -281,6 +281,10 @@ function getSearchParams()
 	});
 		
 	params += '&listAll=false';
+	
+	var searchByUserOrgunits = byId('searchByUserOrgunits').checked ? true : false;
+	params += '&searchByUserOrgunits=' + searchByUserOrgunits;
+	
 	if( getFieldValue('searchByProgramStage') == "false"){
 		var searchInAllFacility = byId('searchInAllFacility').checked;
 		params += '&searchBySelectedOrgunit=' + !searchInAllFacility;
