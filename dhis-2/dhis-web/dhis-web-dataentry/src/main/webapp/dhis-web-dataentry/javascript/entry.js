@@ -232,7 +232,7 @@ function saveTrueOnly( dataElementId, optionComboId, fieldId )
 
     var value = $( fieldId ).is( ':checked' );
     
-    value = ( value ==  true) ? value : undefined; // Send nothing if un-ticked
+    value = ( value == true) ? value : undefined; // Send nothing if un-ticked
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
