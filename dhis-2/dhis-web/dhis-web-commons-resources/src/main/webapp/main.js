@@ -148,24 +148,24 @@ function LeftBar()
     {
         setMenuVisible();
         $( '#mainPage' ).removeAttr( 'style' );
-        $( '#leftBar' ).show( 'fast' );
-        $( '#showLeftBar' ).hide( 'fast' );
+        $( '#leftBar' ).show( 'slide', { direction: 'left', duration: 200 } );
+        $( '#showLeftBar' ).hide();
     };
     
     this.hideAnimated = function()
     {
         setMenuHidden();
         $( '#mainPage' ).attr( 'style', 'margin-left:20px' );
-        $( '#leftBar' ).hide( 'fast' );
-        $( '#showLeftBar' ).show( 'fast' );
+        $( '#leftBar' ).hide( 'slide', { direction: 'left', duration: 200 } );
+        $( '#showLeftBar' ).delay( 200 ).fadeIn( 'fast' );
     };
     
     this.hide = function()
     {
         setMenuHidden();
         $( '#mainPage' ).attr( 'style', 'margin-left:20px' );
-        document.getElementById( 'leftBar' ).style.display = 'none';
-        document.getElementById( 'showLeftBar' ).style.display = 'block';
+        $( '#leftBar' ).hide();
+        $( '#showLeftBar' ).show();
     };
 
     function setMenuVisible()
