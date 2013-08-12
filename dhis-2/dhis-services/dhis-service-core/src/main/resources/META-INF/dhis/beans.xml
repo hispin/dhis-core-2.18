@@ -771,8 +771,8 @@
   
   <bean id="org.hisp.dhis.sms.DHISMessageAlertListener" class="org.hisp.dhis.sms.DHISMessageAlertListener">
     <property name="smsCommandService" ref="smsCommandService" />
-    <property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
-    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
   
