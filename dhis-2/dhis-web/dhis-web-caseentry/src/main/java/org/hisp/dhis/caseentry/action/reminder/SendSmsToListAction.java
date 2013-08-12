@@ -62,7 +62,7 @@ public class SendSmsToListAction
     private PatientService patientService;
 
     private SmsSender smsSender;
-    
+
     private ProgramStageInstanceService programStageInstanceService;
 
     private CurrentUserService currentUserService;
@@ -76,6 +76,8 @@ public class SendSmsToListAction
     private List<String> searchTexts = new ArrayList<String>();
 
     private Boolean searchBySelectedOrgunit;
+
+    private Boolean searchByUserOrgunits;
 
     private Boolean followup;
 
@@ -118,6 +120,11 @@ public class SendSmsToListAction
         this.searchBySelectedOrgunit = searchBySelectedOrgunit;
     }
 
+    public void setSearchByUserOrgunits( Boolean searchByUserOrgunits )
+    {
+        this.searchByUserOrgunits = searchByUserOrgunits;
+    }
+
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
@@ -127,10 +134,6 @@ public class SendSmsToListAction
     {
         this.searchTexts = searchTexts;
     }
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
 
     private String msg;
 
@@ -154,14 +157,29 @@ public class SendSmsToListAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = (searchBySelectedOrgunit) ? selectionManager.getSelectedOrganisationUnit()
-            : null;
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
 
-        Collection<Integer> programStageInstanceIds = patientService.getProgramStageInstances( searchTexts,
-            organisationUnit, followup, null, null );
+        if ( searchByUserOrgunits )
+        {
+            Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
+            orgunits.addAll( userOrgunits );
+        }
+        else if ( searchBySelectedOrgunit )
+        {
+            orgunits.add( organisationUnit );
+        }
+
+        else
+        {
+            organisationUnit = null;
+        }
+
+        Collection<Integer> programStageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunits,
+            followup, null, null );
 
         Set<String> phoneNumberList = new HashSet<String>( patientService.getPatientPhoneNumbers( searchTexts,
-            organisationUnit, followup, null, null ) );
+            orgunits, followup, null, null ) );
         try
         {
             OutboundSms outboundSms = new OutboundSms();
@@ -182,5 +200,4 @@ public class SendSmsToListAction
 
         return SUCCESS;
     }
-
 }

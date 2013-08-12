@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -219,6 +221,9 @@ public class GetDataRecordsAction
     {
         OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
 
+        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+        orgunits.add( orgunit );
+        
         if ( programId != null )
         {
             program = programService.getProgram( programId );
@@ -235,10 +240,10 @@ public class GetDataRecordsAction
 
                 Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
-                total = patientService.countSearchPatients( searchTexts, orgunit, followup );
+                total = patientService.countSearchPatients( searchTexts, orgunits, followup );
                 this.paging = createPaging( total );
 
-                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit,
+                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunits,
                     followup, paging.getStartPos(), paging.getPageSize() );
 
                 for ( Integer stageInstanceId : stageInstanceIds )
@@ -268,11 +273,11 @@ public class GetDataRecordsAction
             }
             else if(trackingReport != null && trackingReport )
             {
-                grid = patientService.getTrackingEventsReport( program, searchTexts, orgunit, followup, i18n );
+                grid = patientService.getTrackingEventsReport( program, searchTexts, orgunits, followup, i18n );
             }
             else
             {
-                grid = patientService.getScheduledEventsReport( searchTexts, orgunit, followup, null, null, i18n );
+                grid = patientService.getScheduledEventsReport( searchTexts, orgunits, followup, null, null, i18n );
             }
         }
 
