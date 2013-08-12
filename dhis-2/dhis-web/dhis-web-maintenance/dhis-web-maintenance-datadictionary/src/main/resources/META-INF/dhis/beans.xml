@@ -33,16 +33,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dd.action.dataelement.ShowAddDataElementForm" class="org.hisp.dhis.dd.action.dataelement.ShowAddDataElementForm"
-    scope="prototype">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
-    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction"
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
