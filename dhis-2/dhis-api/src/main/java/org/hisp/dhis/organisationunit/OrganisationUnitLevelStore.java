@@ -47,13 +47,6 @@ public interface OrganisationUnitLevelStore
     void deleteAll();
 
     /**
-     * Gets all OrganisationUnitLevels.
-     *
-     * @return a Collection of all OrganisationUnitLevels.
-     */
-    Collection<OrganisationUnitLevel> getOrganisationUnitLevels();
-
-    /**
      * Gets the OrganisationUnitLevel at the given level.
      *
      * @param level the level.

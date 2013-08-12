@@ -27,13 +27,12 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.Criteria;
+import java.util.Collection;
+
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevelStore;
-
-import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -46,20 +45,12 @@ public class HibernateOrganisationUnitLevelStore
     {
         String hql = "delete from OrganisationUnitLevel";
 
-        sessionFactory.getCurrentSession().createQuery( hql ).executeUpdate();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnitLevel> getOrganisationUnitLevels()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class ).list();
+        getQuery( hql ).executeUpdate();
     }
 
     public OrganisationUnitLevel getByLevel( int level )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
-
-        return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "level", level ) ).uniqueResult();
+        return (OrganisationUnitLevel) getCriteria().add( Restrictions.eq( "level", level ) ).uniqueResult();
     }
 
     @Override
