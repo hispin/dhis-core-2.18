@@ -189,7 +189,11 @@ public class DefaultOutboundSmsTransportService
 
         message = "success";
 
-        if ( config.getGateways() == null || config.getGateways().isEmpty() )
+        if ( config == null )
+        {
+            message = "unable_to_load_configure";
+        }
+        else if ( config.getGateways() == null || config.getGateways().isEmpty() )
         {
             message = "unable_load_configuration_cause_of_there_is_no_gateway";
         }
@@ -546,7 +550,5 @@ public class DefaultOutboundSmsTransportService
     {
         this.smsPublisher = smsPublisher;
     }
-    
-    
 
 }
