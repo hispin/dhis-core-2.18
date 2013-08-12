@@ -550,5 +550,4 @@ public class DefaultOutboundSmsTransportService
     {
         this.smsPublisher = smsPublisher;
     }
-
 }

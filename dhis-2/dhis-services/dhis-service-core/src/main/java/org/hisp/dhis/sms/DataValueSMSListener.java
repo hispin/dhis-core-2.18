@@ -134,7 +134,6 @@ public class DataValueSMSListener
         OrganisationUnit orgUnit = this.selectOrganisationUnit( orgUnits, parsedMessage );
         Period period = getPeriod( smsCommand, date );
 
-        // Check if Data Set is locked
         if ( dataSetService.isLocked( smsCommand.getDataset(), period, orgUnit, null ) )
         {
             throw new SMSParserException( "Dataset is locked for the period " + period.getStartDate() + " - "
@@ -142,6 +141,7 @@ public class DataValueSMSListener
         }
 
         boolean valueStored = false;
+        
         for ( SMSCode code : smsCommand.getCodes() )
         {
             if ( parsedMessage.containsKey( code.getCode().toUpperCase() ) )
@@ -232,6 +232,7 @@ public class DataValueSMSListener
         {
             // no date found
         }
+        
         return date;
     }
 
@@ -282,15 +283,16 @@ public class DataValueSMSListener
             }
             throw new SMSParserException( messageListingOrgUnits );
         }
+        
         return orgUnit;
     }
 
     private Period getPeriod( SMSCommand command, Date date )
     {
-
         Period period;
         period = command.getDataset().getPeriodType().createPeriod();
         CalendarPeriodType cpt = (CalendarPeriodType) period.getPeriodType();
+        
         if ( command.isCurrentPeriodUsedForReporting() )
         {
             period = cpt.createPeriod( new Date() );
@@ -363,7 +365,6 @@ public class DataValueSMSListener
                 {
                     return false;
                 }
-
             }
 
             dv.setValue( value );
@@ -391,15 +392,14 @@ public class DataValueSMSListener
         {
             OrganisationUnit ou = u.getOrganisationUnit();
 
-            // Might be undefined if the user has more than one org.units
-            // "attached"
+            // Might be undefined if the user has more than one org units
             if ( orgunit == null )
             {
                 orgunit = ou;
             }
             else if ( orgunit.getId() == ou.getId() )
             {
-                // same orgunit, no problem...
+                // Same org unit
             }
             else
             {
@@ -408,14 +408,13 @@ public class DataValueSMSListener
             }
             user = u;
         }
+        
         return user;
     }
 
-    /* Checks if all defined data codes have values in the database */
     private void markCompleteDataSet( String sender, OrganisationUnit orgunit, Map<String, String> parsedMessage,
         SMSCommand command, Date date )
     {
-
         Period period = null;
 
         for ( SMSCode code : command.getCodes() )
@@ -441,10 +440,9 @@ public class DataValueSMSListener
             storedBy = "[unknown] from [" + sender + "]";
         }
 
-        // if new values are submitted re-register as complete
+        // If new values are submitted re-register as complete
         deregisterCompleteDataSet( command.getDataset(), period, orgunit );
         registerCompleteDataSet( command.getDataset(), period, orgunit, storedBy );
-
     }
 
     protected void sendSuccessFeedback( String sender, SMSCommand command, Map<String, String> parsedMessage,
@@ -621,7 +619,4 @@ public class DataValueSMSListener
     {
         this.incomingSmsService = incomingSmsService;
     }
-    
-    
-
 }

@@ -31,13 +31,13 @@ import org.hisp.dhis.dataelement.DataElement;
 
 public class SMSCode
 {
-    int id;
+    private int id;
 
-    String code;
+    private String code;
 
-    DataElement dataElement;
+    private DataElement dataElement;
 
-    int optionId;
+    private int optionId;
 
     public SMSCode( String code, DataElement dataElement, int optionId )
     {

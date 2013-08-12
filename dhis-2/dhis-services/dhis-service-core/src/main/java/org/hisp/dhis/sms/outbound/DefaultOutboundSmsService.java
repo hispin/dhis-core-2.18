@@ -37,7 +37,6 @@ import java.util.List;
 public class DefaultOutboundSmsService
     implements OutboundSmsService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
