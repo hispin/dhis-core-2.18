@@ -45,9 +45,9 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -93,11 +93,11 @@ public class SetProgramInstanceStatusAction
         this.currentUserService = currentUserService;
     }
 
-    private OutboundSmsService outboundSmsService;
-
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    private SmsSender smsSender;
+    
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.outboundSmsService = outboundSmsService;
+        this.smsSender = smsSender;
     }
 
     private I18nFormat format;
@@ -298,7 +298,7 @@ public class SetProgramInstanceStatusAction
                 outboundSms.setMessage( msg );
                 outboundSms.setRecipients( phoneNumbers );
                 outboundSms.setSender( currentUserService.getCurrentUsername() );
-                outboundSmsService.sendMessage( outboundSms, null );
+                smsSender.sendMessage( outboundSms, null );
                 List<OutboundSms> outboundSmsList = programInstance.getOutboundSms();
                 if ( outboundSmsList == null )
                 {

@@ -29,33 +29,12 @@ package org.hisp.dhis.sms.outbound;
 
 import java.util.List;
 
-import org.hisp.dhis.sms.SmsServiceException;
-import org.hisp.dhis.sms.config.SmsConfigurable;
-
 /**
  * OutboundSmsService provides support for sending SMSes.
  */
 public interface OutboundSmsService
-    extends SmsConfigurable
 {
     String ID = OutboundSmsService.class.getName();
-
-    boolean isEnabled();
-
-    /**
-     * Send an SMS message.
-     * 
-     * @param sms the message to be sent
-     * @throws SmsServiceException if unable to sent Message
-     */
-    String sendMessage( OutboundSms sms, String gatewayId )
-        throws SmsServiceException;
-
-    String sendMessage( OutboundSms sms )
-        throws SmsServiceException;
-
-    String sendMessage( String message, String phoneNumber )
-        throws SmsServiceException;
 
     List<OutboundSms> getAllOutboundSms();
 

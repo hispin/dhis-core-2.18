@@ -36,9 +36,9 @@ import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -55,11 +55,11 @@ public class SendSmsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OutboundSmsService outboundSmsService;
-
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    private SmsSender smsSender;
+    
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.outboundSmsService = outboundSmsService;
+        this.smsSender = smsSender;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -146,7 +146,7 @@ public class SendSmsAction
             outboundSms.setMessage( msg );
             outboundSms.setRecipients( phoneNumbers );
             outboundSms.setSender( currentUserService.getCurrentUsername() );
-            outboundSmsService.sendMessage( outboundSms, null );
+            smsSender.sendMessage( outboundSms, null );
 
             List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
             if ( outboundSmsList == null )

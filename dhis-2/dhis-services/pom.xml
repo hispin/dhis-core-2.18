@@ -23,7 +23,6 @@
     <module>dhis-service-mapgeneration</module>
     <module>dhis-service-aggregationengine-default</module>
     <module>dhis-service-analytics</module>
-    <module>dhis-service-sms</module>
     <module>dhis-service-patient</module>
     <module>dhis-service-mobile</module>
     <module>dhis-service-reporting</module>

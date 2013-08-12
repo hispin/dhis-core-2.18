@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
@@ -280,5 +279,4 @@ public class SaveProgramEnrollmentAction
 
         return SUCCESS;
     }
-
 }

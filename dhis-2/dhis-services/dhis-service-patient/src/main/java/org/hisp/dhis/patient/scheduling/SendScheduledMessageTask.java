@@ -29,14 +29,13 @@ package org.hisp.dhis.patient.scheduling;
 
 import static org.hisp.dhis.sms.outbound.OutboundSms.DHIS_SYSTEM_SENDER;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
@@ -73,6 +72,13 @@ public class SendScheduledMessageTask
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
         this.outboundSmsService = outboundSmsService;
+    }
+    
+    private SmsSender smsSender;
+    
+    public void setSmsSender( SmsSender smsSender )
+    {
+        this.smsSender = smsSender;
     }
 
     private JdbcTemplate jdbcTemplate;
@@ -247,7 +253,7 @@ public class SendScheduledMessageTask
         for ( OutboundSms outboundSms : outboundSmsList )
         {
             outboundSms.setStatus( OutboundSmsStatus.SENT );
-            outboundSmsService.sendMessage( outboundSms, null );
+            smsSender.sendMessage( outboundSms, null );
         }
     }
 }

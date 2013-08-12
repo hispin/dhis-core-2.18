@@ -98,7 +98,7 @@ public class SetEventStatusAction
         case ProgramStageInstance.COMPLETED_STATUS:
             programStageInstance.setCompleted( true );
             programStageInstance.setStatus( null );
-            
+
             // Send message when to completed the event
             List<OutboundSms> psiOutboundSms = programStageInstance.getOutboundSms();
             if ( psiOutboundSms == null )
@@ -131,5 +131,4 @@ public class SetEventStatusAction
 
         return SUCCESS;
     }
-
 }

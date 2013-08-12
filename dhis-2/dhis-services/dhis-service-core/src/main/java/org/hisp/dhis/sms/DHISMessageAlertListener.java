@@ -47,11 +47,12 @@ import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DHISMessageAlertListener
     implements IncomingSmsListener
 {
-    private MessageSender smsMessageSender;
+    private SmsSender smsSender;
 
     private MessageSender emailMessageSender;
 
@@ -70,7 +71,8 @@ public class DHISMessageAlertListener
     {
         this.smsCommandService = smsCommandService;
     }
-
+    
+    @Transactional
     @Override
     public boolean accept( IncomingSms sms )
     {
@@ -88,7 +90,8 @@ public class DHISMessageAlertListener
 
         return smsCommandService.getSMSCommand( commandString, ParserType.ALERT_PARSER ) != null;
     }
-
+    
+    @Transactional
     @Override
     public void receive( IncomingSms sms )
     {
@@ -133,7 +136,7 @@ public class DHISMessageAlertListener
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
                 // forward to user group by SMS
-                smsMessageSender.sendMessage( smsCommand.getName(), message, sender, receivers, true );
+                smsSender.sendMessage( smsCommand.getName(), message, sender, receivers, true );
 
                 // forward to user group by E-mail
                 emailMessageSender.sendMessage( smsCommand.getName(), message, sender, receivers, false );
@@ -158,7 +161,7 @@ public class DHISMessageAlertListener
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
                 feedbackList.add( sender );
-                smsMessageSender.sendMessage( smsCommand.getName(), smsCommand.getReceivedMessage(), null,
+                smsSender.sendMessage( smsCommand.getName(), smsCommand.getReceivedMessage(), null,
                     feedbackList, true );
             }
             else if ( users == null || users.size() == 0 )
@@ -170,14 +173,14 @@ public class DHISMessageAlertListener
         }
     }
 
-    public MessageSender getSmsMessageSender()
+    public SmsSender getSmsSender()
     {
-        return smsMessageSender;
+        return smsSender;
     }
 
-    public void setSmsMessageSender( MessageSender smsMessageSender )
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.smsMessageSender = smsMessageSender;
+        this.smsSender = smsSender;
     }
 
     public MessageSender getEmailMessageSender()

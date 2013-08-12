@@ -86,4 +86,13 @@ public class DeleteSentSMSAction implements Action
 
     }
 
+    public Integer[] getIds()
+    {
+        return ids;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
 }

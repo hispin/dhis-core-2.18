@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
