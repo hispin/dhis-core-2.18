@@ -433,7 +433,7 @@ function addEventListeners()
             saveTrueOnly( dataElementId, optionComboId, id );
         } );
 
-        $( this ).css( 'width', '90%' );
+        $( this ).css( 'width', '60%' );
     } );
 
     $( '.entryoptionset' ).each( function( i )
@@ -1090,7 +1090,7 @@ function insertDataValues()
 
 	            if ( $( fieldId ).length > 0 )
 	            {
-                    if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' ) 
+                    if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' && 'true' == value.val ) 
                     {
                         $( fieldId ).attr( 'checked', true);
                     } 
