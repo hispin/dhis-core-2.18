@@ -230,7 +230,7 @@ function saveTrueOnly( dataElementId, optionComboId, fieldId )
 {
     fieldId = '#' + fieldId;
 
-    var value = $( fieldId ).attr('checked');
+    var value = $( fieldId ).attr( 'checked' );
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
