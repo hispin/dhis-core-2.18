@@ -60,8 +60,11 @@ var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';
 var COLOR_ORANGE = '#ff6600';
-var COLOR_WHITE = '#ffffff';
-var COLOR_GREY = '#cccccc';
+var COLOR_WHITE = '#fff';
+var COLOR_GREY = '#ccc';
+
+var COLOR_BORDER_ACTIVE = '#73ad72';
+var COLOR_BORDER = '#aaa';
 
 var DEFAULT_TYPE = 'int';
 var DEFAULT_NAME = '[unknown]';
@@ -1035,11 +1038,11 @@ function insertDataValues()
 
     $( '.entryfield' ).val( '' );
     $( '.entryselect' ).val( '' );
-    $( '.entrytrueonly' ).removeAttr('checked');
+    $( '.entrytrueonly' ).removeAttr( 'checked' );
     $( '.entryoptionset' ).val( '' );
 
-    $( '.entryfield' ).css( 'background-color', COLOR_WHITE );
-    $( '.entryselect' ).css( 'background-color', COLOR_WHITE );
+    $( '.entryfield' ).css( 'background-color', COLOR_WHITE ).css( 'border-color', COLOR_BORDER );
+    $( '.entryselect' ).css( 'background-color', COLOR_WHITE ).css( 'border-color', COLOR_BORDER );
     $( '.entrytrueonly' ).css( 'background-color', COLOR_WHITE );
     $( '.entryoptionset' ).css( 'background-color', COLOR_WHITE );
 
@@ -1087,18 +1090,31 @@ function insertDataValues()
 	        $.safeEach( json.dataValues, function( i, value )
 	        {
 	            var fieldId = '#' + value.id + '-val';
+	            var commentId = '#' + value.id + '-comment';
 
-	            if ( $( fieldId ).length > 0 )
+	            if ( $( fieldId ).length > 0 ) // Set values
 	            {
                     if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' && 'true' == value.val ) 
                     {
-                        $( fieldId ).attr( 'checked', true);
+                        $( fieldId ).attr( 'checked', true );
                     } 
                     else 
                     {
                         $( fieldId ).val( value.val );
                     }
                 }
+	            
+	            if ( 'true' == value.com ) // Set active comments
+	            {
+	                if ( $( commentId ).length > 0 )
+	                {
+	                    $( commentId ).attr( 'src', '../images/comment_active.png' );
+	                }
+	                else if ( $( fieldId ).length > 0 )
+	                {
+	                    $( fieldId ).css( 'border-color', COLOR_BORDER_ACTIVE )
+	                }	            		
+	            }
 	            
 	            dataValueMap[value.id] = value.val;
 	        } );

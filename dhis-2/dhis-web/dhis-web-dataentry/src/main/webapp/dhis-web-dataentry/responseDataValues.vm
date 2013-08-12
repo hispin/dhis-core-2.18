@@ -8,7 +8,8 @@
     #else
     "id":"${value.dataElement.uid}-${value.optionCombo.uid}",
     #end
-    "val":"$!{value.value}"
+    "val":"$!{value.value}",
+    "com":"${value.hasComment()}"
   }#if( $velocityCount < $size1 ),#end
   #end ],
   "minMaxDataElements": [

@@ -183,6 +183,11 @@ public class DataValue
         return followup != null && followup;
     }
 
+    public boolean hasComment()
+    {
+        return comment != null && !comment.isEmpty();
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
