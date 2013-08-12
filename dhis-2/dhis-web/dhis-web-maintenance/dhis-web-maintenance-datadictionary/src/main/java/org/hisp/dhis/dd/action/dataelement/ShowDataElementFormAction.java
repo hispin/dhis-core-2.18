@@ -220,23 +220,22 @@ public class ShowDataElementFormAction
 
         dataElementGroups = dataElementService.getAllDataElementGroups();
 
+        Map<Integer, OrganisationUnitLevel> levelMap = organisationUnitService.getOrganisationUnitLevelMap();
+
         if ( id != null )
         {
             dataElement = dataElementService.getDataElement( id );
 
-            Map<Integer, OrganisationUnitLevel> levelMap = organisationUnitService.getOrganisationUnitLevelMap();
-
             for ( Integer level : dataElement.getAggregationLevels() )
             {
                 aggregationLevels.add( levelMap.get( level ) );
+                levelMap.remove( level );
             }
 
             attributeValues = AttributeUtils.getAttributeValueMap( dataElement.getAttributeValues() );
         }
 
-        organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-
-        organisationUnitLevels.removeAll( aggregationLevels );
+        organisationUnitLevels = new ArrayList<OrganisationUnitLevel>( levelMap.values() );
 
         groupSets = new ArrayList<DataElementGroupSet>( dataElementService
             .getCompulsoryDataElementGroupSetsWithMembers() );
