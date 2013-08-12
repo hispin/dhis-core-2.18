@@ -27,9 +27,9 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;

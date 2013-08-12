@@ -29,13 +29,13 @@ package org.hisp.dhis.mobile.action;
 
 import java.util.Iterator;
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
 import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SMPPGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.springframework.beans.factory.annotation.Autowired;

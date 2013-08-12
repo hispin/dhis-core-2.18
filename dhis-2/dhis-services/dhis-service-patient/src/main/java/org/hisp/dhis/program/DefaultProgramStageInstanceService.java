@@ -50,6 +50,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
@@ -97,11 +98,11 @@ public class DefaultProgramStageInstanceService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private OutboundSmsService outboundSmsService;
+    private SmsSender smsSender;
 
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.outboundSmsService = outboundSmsService;
+        this.smsSender = smsSender;
     }
 
     private CurrentUserService currentUserService;
@@ -605,7 +606,7 @@ public class DefaultProgramStageInstanceService
                 outboundSms.setMessage( msg );
                 outboundSms.setRecipients( phoneNumbers );
                 outboundSms.setSender( currentUserService.getCurrentUsername() );
-                outboundSmsService.sendMessage( outboundSms, null );
+                smsSender.sendMessage( outboundSms, null );
             }
             catch ( SmsServiceException e )
             {

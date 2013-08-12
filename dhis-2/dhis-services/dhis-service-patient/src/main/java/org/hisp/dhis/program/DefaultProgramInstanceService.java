@@ -51,6 +51,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
@@ -98,11 +99,11 @@ public class DefaultProgramInstanceService
         this.programService = programService;
     }
 
-    private OutboundSmsService outboundSmsService;
+    private SmsSender smsSender;
 
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.outboundSmsService = outboundSmsService;
+        this.smsSender = smsSender;
     }
 
     private CurrentUserService currentUserService;
@@ -639,7 +640,7 @@ public class DefaultProgramInstanceService
                 outboundSms.setMessage( msg );
                 outboundSms.setRecipients( phoneNumbers );
                 outboundSms.setSender( currentUserService.getCurrentUsername() );
-                outboundSmsService.sendMessage( outboundSms, null );
+                smsSender.sendMessage( outboundSms, null );
             }
             catch ( SmsServiceException e )
             {

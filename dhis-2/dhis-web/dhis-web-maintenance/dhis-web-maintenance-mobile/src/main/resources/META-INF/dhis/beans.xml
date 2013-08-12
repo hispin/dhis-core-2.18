@@ -5,8 +5,6 @@
 
 	<bean id="org.hisp.dhis.mobile.action.incoming.ReimportSMSAction"
 		class="org.hisp.dhis.mobile.action.incoming.ReimportSMSAction">
-		<property name="parserManager"
-			ref="org.hisp.dhis.sms.parse.DefaultParserManager" />
 		<property name="incomingSmsService"
 			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
 	</bean>

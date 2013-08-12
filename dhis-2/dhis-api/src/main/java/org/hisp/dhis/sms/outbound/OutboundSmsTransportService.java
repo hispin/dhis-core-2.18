@@ -3,6 +3,8 @@ package org.hisp.dhis.sms.outbound;
 import java.util.Map;
 
 import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.config.SmsConfigurable;
+import org.hisp.dhis.sms.config.SmsConfiguration;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -35,9 +37,9 @@ import org.hisp.dhis.sms.SmsServiceException;
  * Marker interface for {@code OutboundSmsService outbound sms services}
  * providing actual sms sending.
  */
-public interface OutboundSmsTransportService
-    extends OutboundSmsService
-{
+public interface OutboundSmsTransportService extends SmsConfigurable
+
+{   
     Map<String, String> getGatewayMap();
 
     void stopService();
@@ -50,6 +52,14 @@ public interface OutboundSmsTransportService
     String getServiceStatus();
 
     String getMessageStatus();
-    
+
     String getDefaultGateway();
+
+    boolean isEnabled();
+
+    String initialize( SmsConfiguration smsConfiguration )
+        throws SmsServiceException;
+
+    String sendMessage( OutboundSms sms, String gatewayId )
+        throws SmsServiceException;
 }

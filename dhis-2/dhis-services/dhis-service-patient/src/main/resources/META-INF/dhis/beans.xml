@@ -210,8 +210,7 @@
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService"
 			ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientReminderService"
@@ -226,8 +225,7 @@
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="programService"
 			ref="org.hisp.dhis.program.ProgramService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService"
 			ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientReminderService"
@@ -472,7 +470,7 @@
 	<bean id="abstractScheduledMessageTask"
 		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask">
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-        <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+        <property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
         <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
         <property name="notifier" ref="notifier" />
         <property name="jdbcTemplate" ref="jdbcTemplate" />

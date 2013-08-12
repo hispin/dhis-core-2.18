@@ -38,9 +38,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -61,8 +61,8 @@ public class SendSmsToListAction
 
     private PatientService patientService;
 
-    private OutboundSmsService outboundSmsService;
-
+    private SmsSender smsSender;
+    
     private ProgramStageInstanceService programStageInstanceService;
 
     private CurrentUserService currentUserService;
@@ -88,9 +88,9 @@ public class SendSmsToListAction
         this.currentUserService = currentUserService;
     }
 
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.outboundSmsService = outboundSmsService;
+        this.smsSender = smsSender;
     }
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
@@ -169,7 +169,7 @@ public class SendSmsToListAction
             outboundSms.setRecipients( phoneNumberList );
             outboundSms.setSender( currentUserService.getCurrentUsername() );
 
-            outboundSmsService.sendMessage( outboundSms, null );
+            smsSender.sendMessage( outboundSms, null );
 
             programStageInstanceService.updateProgramStageInstances( programStageInstanceIds, outboundSms );
 

@@ -703,8 +703,7 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetProgramAction"
@@ -1080,8 +1079,7 @@
 
 	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
 		class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction" scope="prototype">
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
@@ -1094,8 +1092,7 @@
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />

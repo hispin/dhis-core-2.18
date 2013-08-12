@@ -1,5 +1,7 @@
 package org.hisp.dhis.sms.incoming;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -29,7 +31,9 @@ package org.hisp.dhis.sms.incoming;
 
 public interface IncomingSmsListener
 {
+    @Transactional
     boolean accept( IncomingSms sms );
     
+    @Transactional
     void receive( IncomingSms sms );
 }

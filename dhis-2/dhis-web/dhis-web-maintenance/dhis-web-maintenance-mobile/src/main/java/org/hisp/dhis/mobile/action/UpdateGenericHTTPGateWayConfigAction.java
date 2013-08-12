@@ -30,9 +30,9 @@ package org.hisp.dhis.mobile.action;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;

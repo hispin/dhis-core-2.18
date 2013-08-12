@@ -32,6 +32,7 @@ import java.util.Set;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
@@ -42,15 +43,20 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
+import org.springframework.transaction.annotation.Transactional;
 
-public class UnregisteredSMSListener implements IncomingSmsListener
+public class UnregisteredSMSListener
+    implements IncomingSmsListener
 {
     private SMSCommandService smsCommandService;
-    
+
     private MessageConversationStore messageConversationStore;
 
     private UserService userService;
     
+    private MessageService messageService;
+
+    @Transactional
     @Override
     public boolean accept( IncomingSms sms )
     {
@@ -69,6 +75,7 @@ public class UnregisteredSMSListener implements IncomingSmsListener
         return smsCommandService.getSMSCommand( commandString, ParserType.UNREGISTERED_PARSER ) != null;
     }
 
+    @Transactional
     @Override
     public void receive( IncomingSms sms )
     {
@@ -85,7 +92,7 @@ public class UnregisteredSMSListener implements IncomingSmsListener
         }
 
         SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.UNREGISTERED_PARSER );
-        
+
         UserGroup userGroup = smsCommand.getUserGroup();
 
         if ( userGroup != null )
@@ -93,6 +100,11 @@ public class UnregisteredSMSListener implements IncomingSmsListener
             Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
             UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "system" );
+
+            if ( anonymousUser == null )
+            {
+                anonymousUser = userService.getUserCredentialsByUsername( "admin" );
+            }
 
             MessageConversation conversation = new MessageConversation( smsCommand.getName(), anonymousUser.getUser() );
 
@@ -104,8 +116,11 @@ public class UnregisteredSMSListener implements IncomingSmsListener
 
                 conversation.addUserMessage( new UserMessage( receiver, read ) );
             }
-            
-            messageConversationStore.save( conversation );
+            // forward to user group by SMS, E-mail, DHIS conversation
+
+            messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(), false, false );
+
+            // messageConversationStore.save( conversation );
         }
     }
 
@@ -138,4 +153,15 @@ public class UnregisteredSMSListener implements IncomingSmsListener
     {
         this.userService = userService;
     }
+
+    public MessageService getMessageService()
+    {
+        return messageService;
+    }
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
+    }
+    
 }

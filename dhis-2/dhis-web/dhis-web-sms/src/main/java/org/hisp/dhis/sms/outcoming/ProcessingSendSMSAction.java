@@ -30,20 +30,18 @@ package org.hisp.dhis.sms.outcoming;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -76,11 +74,16 @@ public class ProcessingSendSMSAction
     @Autowired
     private OutboundSmsTransportService transportService;
 
-    private MessageSender messageSender;
+    private SmsSender smsSender;
 
-    public void setMessageSender( MessageSender messageSender )
+    public SmsSender getSmsSender()
     {
-        this.messageSender = messageSender;
+        return smsSender;
+    }
+
+    public void setSmsSender( SmsSender smsSender )
+    {
+        this.smsSender = smsSender;
     }
 
     // -------------------------------------------------------------------------
@@ -192,9 +195,9 @@ public class ProcessingSendSMSAction
                 user.setPhoneNumber( each );
                 recipientsList.add( user );
             }
-
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
-
+            
+            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
@@ -214,7 +217,8 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, group.getMembers(), false );
+            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, group.getMembers(), gatewayId );
+            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, group.getMembers(), false );
         }
         else if ( sendTarget.equals( "user" ) )
         {
@@ -233,7 +237,9 @@ public class ProcessingSendSMSAction
 
                     return ERROR;
                 }
-                message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+                
+                //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, users, gatewayId );
+                message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
             }
         }
         else if ( sendTarget.equals( "unit" ) )
@@ -255,7 +261,8 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+
         }
         else
         {
@@ -286,7 +293,8 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+
         }
 
         if ( message != null && !message.equals( "success" ) )

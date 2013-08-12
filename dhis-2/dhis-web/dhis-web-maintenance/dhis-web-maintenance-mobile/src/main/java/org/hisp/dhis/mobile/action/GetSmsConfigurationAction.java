@@ -30,12 +30,12 @@ package org.hisp.dhis.mobile.action;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SMPPGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class GetSmsConfigurationAction
     private SmsConfigurationManager smsConfigurationManager;
 
     @Autowired
-    private OutboundSmsTransportService smsLibService;
+    private OutboundSmsTransportService outboundSmsTransportService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -140,7 +140,7 @@ public class GetSmsConfigurationAction
         throws Exception
     {
 
-        smsServiceStatus = smsLibService.getServiceStatus();
+        smsServiceStatus = outboundSmsTransportService.getServiceStatus();
 
         smsConfig = smsConfigurationManager.getSmsConfiguration();
 

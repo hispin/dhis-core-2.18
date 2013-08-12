@@ -27,12 +27,14 @@ package org.hisp.dhis.mobile.action.incoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import com.opensymphony.xwork2.Action;
 
 /**
-* @author Nguyen Kim Lai
-*/
+ * @author Nguyen Kim Lai
+ */
 public class DeleteReceiveSMSAction
     implements Action
 {
@@ -57,7 +59,7 @@ public class DeleteReceiveSMSAction
     {
         this.ids = ids;
     }
-    
+
     private Integer id;
 
     public void setId( Integer id )

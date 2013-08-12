@@ -12,8 +12,6 @@ public class ReimportSMSAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ParserManager parserManager;
-
     private IncomingSmsService incomingSmsService;
 
     // -------------------------------------------------------------------------
@@ -23,16 +21,6 @@ public class ReimportSMSAction
     private String incomingSMSId;
 
     private IncomingSms incomingSMS;
-
-    public ParserManager getParserManager()
-    {
-        return parserManager;
-    }
-
-    public void setParserManager( ParserManager parserManager )
-    {
-        this.parserManager = parserManager;
-    }
 
     public IncomingSmsService getIncomingSmsService()
     {
@@ -93,7 +81,7 @@ public class ReimportSMSAction
         
         try
         {
-            parserManager.parse( incomingSMS );
+//            parserManager.parse( incomingSMS );
             message = "SMS imported";
         }
         catch ( Exception e )
