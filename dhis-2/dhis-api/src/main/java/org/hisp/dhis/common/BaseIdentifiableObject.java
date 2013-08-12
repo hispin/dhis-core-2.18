@@ -333,9 +333,12 @@ public class BaseIdentifiableObject
             return true;
         }
 
-        if ( o == null || getClass() != o.getClass() ) return false;
+        if ( o == null || getClass() != o.getClass() )
+        {
+            return false;
+        }
 
-        BaseIdentifiableObject that = (BaseIdentifiableObject) o;
+        final BaseIdentifiableObject that = (BaseIdentifiableObject) o;
 
         if ( uid != null ? !uid.equals( that.uid ) : that.uid != null )
         {
