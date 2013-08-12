@@ -124,6 +124,7 @@ public class SmsPublisher
                 }
 
                 messageQueue.remove( message );
+                message = messageQueue.get();
                 log.info( "Queue Size: " + messageQueue.get() );
             }
         }
