@@ -1,6 +1,8 @@
 package org.hisp.dhis.startup;
 
-import static org.hisp.dhis.dataentryform.DataEntryFormService.*;
+import static org.hisp.dhis.dataentryform.DataEntryFormService.DATAELEMENT_TOTAL_PATTERN;
+import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
+import static org.hisp.dhis.dataentryform.DataEntryFormService.INDICATOR_PATTERN;
 
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -11,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -228,40 +229,6 @@ public class ExpressionUpgrader
                     {
                         Indicator in = indicatorService.getIndicator( Integer.parseInt( matcher.group( 1 ) ) );
                         String replacement = "indicatorid=\"" + in.getUid() + "\"";
-                        matcher.appendReplacement( sb, replacement );
-                    }
-
-                    matcher.appendTail( sb );                    
-                    form.setHtmlCode( sb.toString() );
-
-                    // ---------------------------------------------------------
-                    // Dynamic input
-                    // ---------------------------------------------------------
-
-                    matcher = DYNAMIC_INPUT_PATTERN.matcher( form.getHtmlCode() );
-                    sb = new StringBuffer();
-                    
-                    while ( matcher.find() )
-                    {
-                        DataElementCategoryOptionCombo coc = categoryService.getDataElementCategoryOptionCombo( Integer.parseInt( matcher.group( 2 ) ) );
-                        String replacement = matcher.group( 1 ) + "-" + coc.getUid() + "-dyninput";
-                        matcher.appendReplacement( sb, replacement );
-                    }
-
-                    matcher.appendTail( sb );                    
-                    form.setHtmlCode( sb.toString() );
-
-                    // ---------------------------------------------------------
-                    // Dynamic select
-                    // ---------------------------------------------------------
-
-                    matcher = DYNAMIC_SELECT_PATTERN.matcher( form.getHtmlCode() );
-                    sb = new StringBuffer();
-                    
-                    while ( matcher.find() )
-                    {
-                        DataElementCategoryCombo cc = categoryService.getDataElementCategoryCombo( Integer.parseInt( matcher.group( 1 ) ) );
-                        String replacement = "dynselect=\"" + cc.getUid() + "\"";
                         matcher.appendReplacement( sb, replacement );
                     }
 
