@@ -95,21 +95,25 @@ public class ExternalAccessVoter implements AccessDecisionVoter<FilterInvocation
         {
             String requestUrl = filterInvocation.getRequestUrl();
             String[] urlSplit = requestUrl.split( "/" );
-            String type = urlSplit[2];
 
-            if ( urlSplit[1].equals( "api" ) && externalClasses.get( type ) != null )
+            if ( urlSplit.length > 3 )
             {
-                String uid = urlSplit[3];
+                String type = urlSplit[2];
 
-                if ( CodeGenerator.isValidCode( uid ) )
+                if ( urlSplit[1].equals( "api" ) && externalClasses.get( type ) != null )
                 {
-                    IdentifiableObject identifiableObject = manager.get( externalClasses.get( type ), uid );
+                    String uid = urlSplit[3];
 
-                    if ( identifiableObject != null && identifiableObject.getExternalAccess() )
+                    if ( CodeGenerator.isValidCode( uid ) )
                     {
-                        LOG.debug( "ACCESS_GRANTED [" + filterInvocation.toString() + "]" );
+                        IdentifiableObject identifiableObject = manager.get( externalClasses.get( type ), uid );
 
-                        return ACCESS_GRANTED;
+                        if ( identifiableObject != null && identifiableObject.getExternalAccess() )
+                        {
+                            LOG.debug( "ACCESS_GRANTED [" + filterInvocation.toString() + "]" );
+
+                            return ACCESS_GRANTED;
+                        }
                     }
                 }
             }
