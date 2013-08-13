@@ -39,6 +39,7 @@ import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.sms.phonepattern.PhoneNumberPattern;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
@@ -107,6 +108,7 @@ public final class SharingUtils
         addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL_ADD", "F_MAP_PUBLIC_ADD", null );
         addType( Chart.class, "chart", "F_CHART_PUBLIC_ADD", "F_CHART_PUBLIC_ADD", null );
         addType( ReportTable.class, "reportTable", "F_REPORTTABLE_OPEN_ADD", "F_REPORTTABLE_PUBLIC_ADD", null );
+        addType( PhoneNumberPattern.class, "phoneNumberPattern", null, null, null );
     }
 
     public static boolean isSupported( String type )

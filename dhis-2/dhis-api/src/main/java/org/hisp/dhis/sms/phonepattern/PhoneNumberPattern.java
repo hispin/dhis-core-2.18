@@ -1,9 +1,3 @@
-package org.hisp.dhis.sms.outbound;
-
-import java.util.List;
-
-import org.hisp.dhis.common.GenericStore;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -30,18 +24,66 @@ import org.hisp.dhis.common.GenericStore;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.sms.phonepattern;
 
-public interface OutboundSmsStore extends GenericStore<OutboundSms>
-{
-    int saveOutboundSms( OutboundSms sms );
-    
-    List<OutboundSms> getAllOutboundSms();
+import java.util.List;
 
-    OutboundSms getOutboundSmsbyId( int id );
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
+ /**
+ * @author Nguyen Kim Lai
+ *
+ * @version PhoneNumberPattern.java 1:11:57 PM Aug 7, 2013 $
+ */
+public class PhoneNumberPattern extends BaseIdentifiableObject
+{   
+    private static final long serialVersionUID = -9068432098081093265L;
+
+    private List<String> startWiths;
     
-    List<OutboundSms> get( OutboundSmsStatus status );
+    private List<String> followBys;
     
-    void updateOutboundSms( OutboundSms sms );
+    private Integer digitLeft;
     
-    void deleteOutboundSms( OutboundSms sms );
+    private String regex;
+
+    public List<String> getStartWiths()
+    {
+        return startWiths;
+    }
+
+    public void setStartWiths( List<String> startWiths )
+    {
+        this.startWiths = startWiths;
+    }
+
+    public List<String> getFollowBys()
+    {
+        return followBys;
+    }
+
+    public void setFollowBys( List<String> followBys )
+    {
+        this.followBys = followBys;
+    }
+
+    public Integer getDigitLeft()
+    {
+        return digitLeft;
+    }
+
+    public void setDigitLeft( Integer digitLeft )
+    {
+        this.digitLeft = digitLeft;
+    }
+
+    public String getRegex()
+    {
+        return regex;
+    }
+
+    public void setRegex( String regex )
+    {
+        this.regex = regex;
+    }
 }
