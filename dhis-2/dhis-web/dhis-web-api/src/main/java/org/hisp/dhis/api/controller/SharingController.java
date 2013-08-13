@@ -61,7 +61,7 @@ import java.util.Iterator;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = SharingController.RESOURCE_PATH, method = RequestMethod.GET)
+@RequestMapping( value = SharingController.RESOURCE_PATH, method = RequestMethod.GET )
 public class SharingController
 {
     private static final Log log = LogFactory.getLog( SharingController.class );
@@ -83,7 +83,7 @@ public class SharingController
     @Autowired
     private UserGroupAccessService userGroupAccessService;
 
-    @RequestMapping(value = "", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "", produces = { "application/json", "text/*" } )
     public void getSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response ) throws IOException
     {
         if ( !SharingUtils.isSupported( type ) )
@@ -108,9 +108,11 @@ public class SharingController
         Sharing sharing = new Sharing();
 
         sharing.getMeta().setAllowPublicAccess( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), object ) );
+        sharing.getMeta().setAllowExternalAccess( SharingUtils.canExternalize( currentUserService.getCurrentUser(), object ) );
 
         sharing.getObject().setId( object.getUid() );
         sharing.getObject().setName( object.getDisplayName() );
+        sharing.getObject().setExternalAccess( object.getExternalAccess() );
 
         if ( object.getPublicAccess() == null )
         {
@@ -151,7 +153,7 @@ public class SharingController
         JacksonUtils.toJson( response.getOutputStream(), sharing );
     }
 
-    @RequestMapping(value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json")
+    @RequestMapping( value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
     public void setSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( SharingUtils.classForType( type ), id );
@@ -169,8 +171,13 @@ public class SharingController
 
         Sharing sharing = JacksonUtils.fromJson( request.getInputStream(), Sharing.class );
 
-        // Ignore publicAccess if user is not allowed to make objects public
+        // Ignore externalAccess if user is not allowed to make objects external
+        if ( SharingUtils.canExternalize( currentUserService.getCurrentUser(), object ) )
+        {
+            object.setExternalAccess( sharing.getObject().hasExternalAccess() );
+        }
 
+        // Ignore publicAccess if user is not allowed to make objects public
         if ( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), object ) )
         {
             object.setPublicAccess( sharing.getObject().getPublicAccess() );
@@ -215,6 +222,7 @@ public class SharingController
         builder.append( " update sharing on " ).append( object.getClass().getName() );
         builder.append( ", uid: " ).append( object.getUid() ).append( ", name: " ).append( object.getName() );
         builder.append( ", publicAccess: " ).append( object.getPublicAccess() );
+        builder.append( ", externalAccess: " ).append( object.getExternalAccess() );
 
         if ( !object.getUserGroupAccesses().isEmpty() )
         {
@@ -234,7 +242,7 @@ public class SharingController
         ContextUtils.okResponse( response, "Access control set" );
     }
 
-    @RequestMapping(value = "/search", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/search", produces = { "application/json", "text/*" } )
     public void searchUserGroups( @RequestParam String key, HttpServletResponse response ) throws IOException
     {
         SharingUserGroups sharingUserGroups = new SharingUserGroups();

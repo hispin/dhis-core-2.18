@@ -79,7 +79,7 @@
       <many-to-many column="categorydimensionid" class="org.hisp.dhis.dataelement.DataElementCategoryDimension"
         foreign-key="fk_reporttable_categorydimensions_categorydimensionid" />
     </list>
-    
+
     <list name="dataElementGroups" table="reporttable_dataelementgroups">
       <cache usage="read-write" />
       <key column="reporttableid" foreign-key="fk_reporttable_dataelementgroups_reporttableid" />
@@ -135,29 +135,31 @@
     <property name="sortOrder" />
 
     <property name="topLimit" />
-    
+
     <property name="totals" />
-    
+
     <property name="subtotals" />
-    
+
     <property name="hideEmptyRows" />
-    
+
     <property name="digitGroupSeparator" />
-    
+
     <property name="displayDensity" />
-    
+
     <property name="fontSize" />
-    
+
     <property name="userOrganisationUnit" />
-    
+
     <property name="userOrganisationUnitChildren" />
-    
+
     <property name="organisationUnitLevel" />
 
     <many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
-		foreign-key="fk_reporttable_legendsetid" />
+      foreign-key="fk_reporttable_legendsetid" />
 
     <!-- Access properties -->
+    <property name="externalAccess" />
+
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_reporttable_userid" />
 
     <property name="publicAccess" length="8" />

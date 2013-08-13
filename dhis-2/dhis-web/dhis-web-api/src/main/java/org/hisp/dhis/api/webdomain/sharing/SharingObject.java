@@ -47,6 +47,9 @@ public class SharingObject
     private String publicAccess;
 
     @JsonProperty
+    private boolean externalAccess;
+
+    @JsonProperty
     private SharingUser user = new SharingUser();
 
     @JsonProperty
@@ -84,6 +87,16 @@ public class SharingObject
     public void setPublicAccess( String publicAccess )
     {
         this.publicAccess = publicAccess;
+    }
+
+    public boolean hasExternalAccess()
+    {
+        return externalAccess;
+    }
+
+    public void setExternalAccess( boolean externalAccess )
+    {
+        this.externalAccess = externalAccess;
     }
 
     public SharingUser getUser()

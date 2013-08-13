@@ -324,6 +324,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         Access access = new Access();
         access.setManage( SharingUtils.canManage( currentUserService.getCurrentUser(), object ) );
+        access.setExternalize( SharingUtils.canExternalize( currentUserService.getCurrentUser(), object ) );
         access.setWrite( SharingUtils.canWrite( currentUserService.getCurrentUser(), object ) );
         access.setRead( SharingUtils.canRead( currentUserService.getCurrentUser(), object ) );
         access.setUpdate( SharingUtils.canUpdate( currentUserService.getCurrentUser(), object ) );

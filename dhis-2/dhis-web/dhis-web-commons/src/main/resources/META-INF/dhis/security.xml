@@ -68,6 +68,16 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
+  <!-- Security : Authentication providers -->
+
+  <sec:authentication-manager alias="authenticationManager">
+    <sec:authentication-provider user-service-ref="userDetailsService">
+      <sec:password-encoder hash="md5">
+        <sec:salt-source ref="usernameSaltSource" />
+      </sec:password-encoder>
+    </sec:authentication-provider>
+  </sec:authentication-manager>
+
   <!-- Security : AccessProvider -->
 
   <bean id="databaseAutomaticAccessProvider" class="org.hisp.dhis.security.DatabaseAutomaticAccessProvider">
@@ -83,12 +93,17 @@
 
   <!-- Security : AccessDecision/Voter -->
 
+  <bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter" />
+  <bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+  <bean id="externalAccessVoter" class="org.hisp.dhis.security.vote.ExternalAccessVoter" />
+
   <bean id="accessDecisionManager" class="org.hisp.dhis.security.vote.LogicalOrAccessDecisionManager">
     <property name="accessDecisionManagers">
       <list>
         <ref local="adminAccessDecisionVoting" />
         <ref local="regularAccessDecisionVoting" />
         <ref local="webAccessDecisionVoting" />
+        <ref local="externalAccessDecisionVoting" />
       </list>
     </property>
   </bean>
@@ -113,6 +128,14 @@
     </constructor-arg>
   </bean>
 
+  <bean id="externalAccessDecisionVoting" class="org.springframework.security.access.vote.UnanimousBased">
+    <constructor-arg name="decisionVoters">
+      <list>
+        <ref local="externalAccessVoter" />
+      </list>
+    </constructor-arg>
+  </bean>
+
   <bean id="regularAccessDecisionVoting" class="org.springframework.security.access.vote.UnanimousBased">
     <constructor-arg name="decisionVoters">
       <list>
@@ -122,9 +145,6 @@
       </list>
     </constructor-arg>
   </bean>
-
-  <bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter" />
-  <bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter" />
 
   <bean id="actionAccessVoter" class="org.hisp.dhis.security.vote.ActionAccessVoter">
     <property name="attributePrefix" value="F_" />

@@ -30,13 +30,14 @@ package org.hisp.dhis.security;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * This access provider will put an Authentication object with all GrantedAuthorities
  * in the SecurityContext in any case. This means that any user will be authenticated
- * and the login effectively bypassed. 
- * 
+ * and the login effectively bypassed.
+ *
  * @author Torgeir Lorange Ostby
  * @version $Id: GhostAutomaticAccessProvider.java 3160 2007-03-24 20:15:06Z torgeilo $
  */
@@ -54,7 +55,7 @@ public class GhostAutomaticAccessProvider
         String username = "ghost_admin";
         String password = "";
 
-        UserDetails user = new org.springframework.security.core.userdetails.User( username, password, true, true, true, true,
+        UserDetails user = new User( username, password, true, true, true, true,
             getGrantedAuthorities() );
 
         authentication = new UsernamePasswordAuthenticationToken( user, user.getPassword(), user.getAuthorities() );

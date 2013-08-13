@@ -125,7 +125,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T get( Class<T> clazz, String uid )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -139,7 +139,13 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> boolean exists( Class<T> clazz, String uid )
+    {
+        return get( clazz, uid ) != null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T getByCode( Class<T> clazz, String code )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -153,7 +159,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T getByName( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -214,7 +220,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -228,7 +234,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getAllSorted( Class<T> clazz )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -242,7 +248,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getByUid( Class<T> clazz, Collection<String> uids )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -256,7 +262,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -270,7 +276,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -284,7 +290,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getBetween( Class<T> clazz, int first, int max )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -298,7 +304,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> List<T> getBetweenByName( Class<T> clazz, String name, int first, int max )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -312,7 +318,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getByLastUpdated( Class<T> clazz, Date lastUpdated )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -326,7 +332,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getByLastUpdatedSorted( Class<T> clazz, Date lastUpdated )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -360,7 +366,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property )
     {
         Map<String, T> map = new HashMap<String, T>();
@@ -410,7 +416,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property )
     {
         Map<String, T> map = new HashMap<String, T>();
@@ -434,7 +440,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id )
     {
         GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) getIdentifiableObjectStore( clazz );
@@ -507,7 +513,7 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T getNoAcl( Class<T> clazz, String uid )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );

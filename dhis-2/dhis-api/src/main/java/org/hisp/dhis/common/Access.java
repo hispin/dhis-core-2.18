@@ -39,6 +39,8 @@ public class Access
 {
     private boolean manage;
 
+    private boolean externalize;
+
     private boolean write;
 
     private boolean read;
@@ -61,6 +63,18 @@ public class Access
     public void setManage( boolean manage )
     {
         this.manage = manage;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( localName = "manage", namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isExternalize()
+    {
+        return externalize;
+    }
+
+    public void setExternalize( boolean externalize )
+    {
+        this.externalize = externalize;
     }
 
     @JsonProperty

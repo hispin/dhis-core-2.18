@@ -87,7 +87,7 @@ public class CodeGenerator
      * @param code the code to validate.
      * @return true if the code is valid.
      */
-    public boolean isValidCode( String code )
+    public static boolean isValidCode( String code )
     {
         return code != null && CODE_PATTERN.matcher( code ).matches();
     }

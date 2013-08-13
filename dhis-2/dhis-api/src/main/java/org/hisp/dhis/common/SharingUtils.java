@@ -57,6 +57,8 @@ import java.util.Set;
  */
 public final class SharingUtils
 {
+    public static Map<Class<? extends IdentifiableObject>, String> EXTERNAL_AUTHORITIES = new HashMap<Class<? extends IdentifiableObject>, String>();
+
     public static Map<Class<? extends IdentifiableObject>, String> PUBLIC_AUTHORITIES = new HashMap<Class<? extends IdentifiableObject>, String>();
 
     public static Map<Class<? extends IdentifiableObject>, String> PRIVATE_AUTHORITIES = new HashMap<Class<? extends IdentifiableObject>, String>();
@@ -65,12 +67,17 @@ public final class SharingUtils
 
     public static final List<String> SHARING_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL", "F_METADATA_IMPORT" );
 
-    private static void addType( Class<? extends IdentifiableObject> clazz, String name, String publicAuth, String privateAuth )
+    private static void addType( Class<? extends IdentifiableObject> clazz, String name, String externalAuth, String publicAuth, String privateAuth )
     {
         Assert.notNull( clazz );
         Assert.hasLength( name );
 
         SUPPORTED_TYPES.put( name, clazz );
+
+        if ( externalAuth != null )
+        {
+            EXTERNAL_AUTHORITIES.put( clazz, externalAuth );
+        }
 
         if ( publicAuth != null )
         {
@@ -85,20 +92,21 @@ public final class SharingUtils
 
     static
     {
-        addType( Document.class, "document", "F_DOCUMENT_PUBLIC_ADD", "F_DOCUMENT_PRIVATE_ADD" );
-        addType( Report.class, "report", "F_REPORT_PUBLIC_ADD", "F_REPORT_PRIVATE_ADD" );
-        addType( DataSet.class, "dataSet", "F_DATASET_PUBLIC_ADD", "F_DATASET_PRIVATE_ADD" );
-        addType( DataDictionary.class, "dataDictionary", "F_DATADICTIONARY_PUBLIC_ADD", "F_DATADICTIONARY_PRIVATE_ADD" );
-        addType( Indicator.class, "indicator", "F_INDICATOR_PUBLIC_ADD", "F_INDICATOR_PRIVATE_ADD" );
-        addType( IndicatorGroup.class, "indicatorGroup", "F_INDICATORGROUP_PUBLIC_ADD", "F_INDICATORGROUP_PRIVATE_ADD" );
-        addType( IndicatorGroupSet.class, "indicatorGroupSet", "F_INDICATORGROUPSET_PUBLIC_ADD", "F_INDICATORGROUPSET_PRIVATE_ADD" );
-        addType( Program.class, "program", "F_PROGRAM_PUBLIC_ADD", "F_PROGRAM_PRIVATE_ADD" );
-        addType( UserGroup.class, "userGroup", "F_USERGROUP_PUBLIC_ADD", null );
-        addType( ReportTable.class, "reportTable", "F_REPORTTABLE_PUBLIC_ADD", null );
-        addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_PUBLIC_ADD", null );
-        addType( Chart.class, "chart", "F_CHART_PUBLIC_ADD", null );
-        addType( PatientTabularReport.class, "patientTabularReport", "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
-        addType( PatientAggregateReport.class, "patientAggregateReport", "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
+        addType( Document.class, "document", null, "F_DOCUMENT_PUBLIC_ADD", "F_DOCUMENT_PRIVATE_ADD" );
+        addType( Report.class, "report", null, "F_REPORT_PUBLIC_ADD", "F_REPORT_PRIVATE_ADD" );
+        addType( DataSet.class, "dataSet", null, "F_DATASET_PUBLIC_ADD", "F_DATASET_PRIVATE_ADD" );
+        addType( DataDictionary.class, "dataDictionary", null, "F_DATADICTIONARY_PUBLIC_ADD", "F_DATADICTIONARY_PRIVATE_ADD" );
+        addType( Indicator.class, "indicator", null, "F_INDICATOR_PUBLIC_ADD", "F_INDICATOR_PRIVATE_ADD" );
+        addType( IndicatorGroup.class, "indicatorGroup", null, "F_INDICATORGROUP_PUBLIC_ADD", "F_INDICATORGROUP_PRIVATE_ADD" );
+        addType( IndicatorGroupSet.class, "indicatorGroupSet", null, "F_INDICATORGROUPSET_PUBLIC_ADD", "F_INDICATORGROUPSET_PRIVATE_ADD" );
+        addType( Program.class, "program", null, "F_PROGRAM_PUBLIC_ADD", "F_PROGRAM_PRIVATE_ADD" );
+        addType( UserGroup.class, "userGroup", null, "F_USERGROUP_PUBLIC_ADD", null );
+        addType( PatientTabularReport.class, "patientTabularReport", null, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
+        addType( PatientAggregateReport.class, "patientAggregateReport", null, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
+
+        addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL_ADD", "F_MAP_PUBLIC_ADD", null );
+        addType( Chart.class, "chart", "F_CHART_PUBLIC_ADD", "F_CHART_PUBLIC_ADD", null );
+        addType( ReportTable.class, "reportTable", "F_REPORTTABLE_OPEN_ADD", "F_REPORTTABLE_PUBLIC_ADD", null );
     }
 
     public static boolean isSupported( String type )
@@ -277,7 +285,7 @@ public final class SharingUtils
     }
 
     /**
-     * Can user read this object
+     * Can user manage (make public) this object
      * <p/>
      * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
      * 2. Can user write to this object?
@@ -306,6 +314,20 @@ public final class SharingUtils
         }
 
         return false;
+    }
+
+    /**
+     * Can user make this object external? (read with no login)
+     *
+     * @param user   User to check against
+     * @param object Object to check
+     * @return Result of test
+     */
+    public static <T extends IdentifiableObject> boolean canExternalize( User user, T object )
+    {
+        return (object.getClass().isAssignableFrom( org.hisp.dhis.mapping.Map.class ) ||
+            object.getClass().isAssignableFrom( ReportTable.class ) ||
+            object.getClass().isAssignableFrom( Chart.class )) && sharingOverrideAuthority( user );
     }
 
     private static boolean sharingOverrideAuthority( User user )

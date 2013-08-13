@@ -335,17 +335,24 @@ jQuery.each(attributes, function(i, item) {
 
     <table id="sharingAccessTable" style="width: 100%;">
         <tbody>
-            <tr>
-                <td style="width: 300px;">$i18n.getString( "public_access" )</td>
-                <td>
-                    <select id="sharingPublicAccess" style="width: 150px;">
-                        <option selected="selected" value="--------">$i18n.getString( "none" )</option>
-                        <option value="r-------">$i18n.getString( "can_view" )</option>
-                        <option value="rw------">$i18n.getString( "can_edit_and_view" )</option>
-                    </select>
-                </td>
-                <td style="width: 25px; text-align: center;"></td>
-            </tr>
+        <tr>
+            <td style="width: 300px;">$i18n.getString( "external_access" )</td>
+            <td style="text-align: right;">
+                <input id="sharingExternalAccess" type="checkbox" value="true" />
+            </td>
+            <td style="width: 25px; text-align: center;"></td>
+        </tr>
+        <tr>
+            <td style="width: 300px;">$i18n.getString( "public_access" )</td>
+            <td>
+                <select id="sharingPublicAccess" style="width: 150px;">
+                    <option selected="selected" value="--------">$i18n.getString( "none" )</option>
+                    <option value="r-------">$i18n.getString( "can_view" )</option>
+                    <option value="rw------">$i18n.getString( "can_edit_and_view" )</option>
+                </select>
+            </td>
+            <td style="width: 25px; text-align: center;"></td>
+        </tr>
         </tbody>
     </table>
 </div>
