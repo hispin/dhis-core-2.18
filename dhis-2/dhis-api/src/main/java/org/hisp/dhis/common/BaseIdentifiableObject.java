@@ -90,6 +90,11 @@ public class BaseIdentifiableObject
     protected Date lastUpdated;
 
     /**
+     * This object is available as external read-only
+     */
+    protected boolean externalAccess;
+
+    /**
      * Access string for public access.
      */
     protected String publicAccess;
@@ -121,14 +126,14 @@ public class BaseIdentifiableObject
     public BaseIdentifiableObject()
     {
     }
-    
+
     public BaseIdentifiableObject( int id, String uid, String name )
     {
         this.id = id;
         this.uid = uid;
         this.name = name;
     }
-    
+
     public BaseIdentifiableObject( String uid, String code, String name )
     {
         this.uid = uid;
@@ -254,6 +259,20 @@ public class BaseIdentifiableObject
     public void setPublicAccess( String publicAccess )
     {
         this.publicAccess = publicAccess;
+    }
+
+    @Override
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public boolean getExternalAccess()
+    {
+        return externalAccess;
+    }
+
+    public void setExternalAccess( Boolean externalAccess )
+    {
+        this.externalAccess = externalAccess == null ? false : externalAccess;
     }
 
     /*
@@ -446,12 +465,12 @@ public class BaseIdentifiableObject
     {
         return "[IdentifiableObject: " +
             "id='" + id +
-            "', uid='" + uid + 
-            "', code='" + code + 
-            "', name='" + name + 
-            "', created='" + created + 
-            "', lastUpdated='" + lastUpdated + 
-            "', class='" + getClass().getSimpleName() + 
+            "', uid='" + uid +
+            "', code='" + code +
+            "', name='" + name +
+            "', created='" + created +
+            "', lastUpdated='" + lastUpdated +
+            "', class='" + getClass().getSimpleName() +
             "']";
     }
 
