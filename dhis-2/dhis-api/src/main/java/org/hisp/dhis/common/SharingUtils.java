@@ -105,9 +105,9 @@ public final class SharingUtils
         addType( PatientTabularReport.class, "patientTabularReport", null, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
         addType( PatientAggregateReport.class, "patientAggregateReport", null, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
 
-        addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL_ADD", "F_MAP_PUBLIC_ADD", null );
-        addType( Chart.class, "chart", "F_CHART_PUBLIC_ADD", "F_CHART_PUBLIC_ADD", null );
-        addType( ReportTable.class, "reportTable", "F_REPORTTABLE_OPEN_ADD", "F_REPORTTABLE_PUBLIC_ADD", null );
+        addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL", "F_MAP_PUBLIC_ADD", null );
+        addType( Chart.class, "chart", "F_CHART_EXTERNAL", "F_CHART_PUBLIC_ADD", null );
+        addType( ReportTable.class, "reportTable", "F_REPORTTABLE_EXTERNAL", "F_REPORTTABLE_PUBLIC_ADD", null );
         addType( PhoneNumberPattern.class, "phoneNumberPattern", null, null, null );
     }
 
@@ -327,9 +327,10 @@ public final class SharingUtils
      */
     public static <T extends IdentifiableObject> boolean canExternalize( User user, T object )
     {
-        return (object.getClass().isAssignableFrom( org.hisp.dhis.mapping.Map.class ) ||
-            object.getClass().isAssignableFrom( ReportTable.class ) ||
-            object.getClass().isAssignableFrom( Chart.class )) && sharingOverrideAuthority( user );
+        Set<String> authorities = user.getUserCredentials().getAllAuthorities();
+
+        return EXTERNAL_AUTHORITIES.get( object.getClass() ) != null &&
+            (sharingOverrideAuthority( user ) || authorities.contains( EXTERNAL_AUTHORITIES.get( object.getClass() ) ));
     }
 
     private static boolean sharingOverrideAuthority( User user )
