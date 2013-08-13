@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroup" table="catalogtypeattributegroup">
+    
+	<id name="id" column="catalogtypeattributegroupid">
+      <generator class="native"/>
+    </id>
+
+    <property name="name" not-null="true" unique="true" length="160"/>
+    
+    <property name="description" not-null="true" length="250"/>
+	
+	<many-to-one name="catalogType" class="org.hisp.dhis.coldchain.catalog.CatalogType" 
+        column="catalogtypeid" not-null="true" foreign-key="fk_catalogtypeattributegroup_catalogtypeid"/>
+	  
+	<property name="sortOrder" />
+
+    <list name="catalogTypeAttributes" table="catalogtypeattributegroupmembers">
+	  <key column="catalogtypeattributegroupid" foreign-key="fk_catalogtypeattributegroupmembers_catalogtypeattributegroupid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute" column="catalogtypeattributeid"
+			foreign-key="fk_catalogtypeattributegroup_catalogtypeattributeid" />
+    </list>	  
+	 	   
+  </class>
+</hibernate-mapping>
