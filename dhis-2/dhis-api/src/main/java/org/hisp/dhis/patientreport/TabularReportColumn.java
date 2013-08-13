@@ -1,5 +1,6 @@
 package org.hisp.dhis.patientreport;
 
+
 public class TabularReportColumn
 {
     public static String PREFIX_META_DATA = "meta";
