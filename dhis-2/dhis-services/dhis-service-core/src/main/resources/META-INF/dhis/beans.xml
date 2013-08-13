@@ -347,9 +347,12 @@
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
   
+  <bean id="phoneNumberPatternStore" class="org.hisp.dhis.sms.hibernate.HibernatePhoneNumberPatternStore">
+  	<property name="clazz" value="org.hisp.dhis.sms.phonepattern.PhoneNumberPattern" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
+  </bean>
   
-  
-
   <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandService" class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
@@ -781,6 +784,9 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
+  <bean id="org.hisp.dhis.sms.phonepattern.PhoneNumberPatternService" class="org.hisp.dhis.sms.phonepattern.DefaultPhoneNumberPatternService">
+    <property name="phoneNumberPatternStore" ref="phoneNumberPatternStore" />
+  </bean>
 
   <!-- I18nService -->
 

@@ -1,9 +1,3 @@
-package org.hisp.dhis.sms.outbound;
-
-import java.util.List;
-
-import org.hisp.dhis.common.GenericStore;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -30,18 +24,26 @@ import org.hisp.dhis.common.GenericStore;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.sms.phonepattern;
 
-public interface OutboundSmsStore extends GenericStore<OutboundSms>
+import java.util.List;
+
+ /**
+ * @author Nguyen Kim Lai
+ *
+ * @version PhonePatternService.java 2:13:18 PM Aug 7, 2013 $
+ */
+public interface PhoneNumberPatternService
 {
-    int saveOutboundSms( OutboundSms sms );
+    String ID = PhoneNumberPatternService.class.getName();
     
-    List<OutboundSms> getAllOutboundSms();
+    int savePhonePattern( PhoneNumberPattern sms );
 
-    OutboundSms getOutboundSmsbyId( int id );
+    void updatePhonePattern( PhoneNumberPattern sms );
+
+    void deleteById( Integer outboundSmsId );
     
-    List<OutboundSms> get( OutboundSmsStatus status );
-    
-    void updateOutboundSms( OutboundSms sms );
-    
-    void deleteOutboundSms( OutboundSms sms );
+    List<PhoneNumberPattern> getAllPhonePattern();
+
+    PhoneNumberPattern getPhonePatternById( int id );
 }

@@ -1,9 +1,3 @@
-package org.hisp.dhis.sms.outbound;
-
-import java.util.List;
-
-import org.hisp.dhis.common.GenericStore;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -30,18 +24,43 @@ import org.hisp.dhis.common.GenericStore;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.sms.hibernate;
 
-public interface OutboundSmsStore extends GenericStore<OutboundSms>
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.sms.phonepattern.PhoneNumberPattern;
+import org.hisp.dhis.sms.phonepattern.PhoneNumberPatternStore;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * @author Nguyen Kim Lai
+ * 
+ * @version HibernatePhoneNumberPatternStore.java 3:21:45 PM Aug 8, 2013 $
+ */
+
+@Transactional
+public class HibernatePhoneNumberPatternStore
+    extends HibernateGenericStore<PhoneNumberPattern>
+    implements PhoneNumberPatternStore
 {
-    int saveOutboundSms( OutboundSms sms );
-    
-    List<OutboundSms> getAllOutboundSms();
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    OutboundSms getOutboundSmsbyId( int id );
-    
-    List<OutboundSms> get( OutboundSmsStatus status );
-    
-    void updateOutboundSms( OutboundSms sms );
-    
-    void deleteOutboundSms( OutboundSms sms );
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void deleteById( Integer id )
+    {
+        delete( get( id ) );
+    }
 }
