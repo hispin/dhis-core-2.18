@@ -458,7 +458,8 @@ function addEventListeners()
             saveVal( dataElementId, optionComboId, id );
         } );
 
-        if ( formType != FORMTYPE_CUSTOM ) {
+        if ( formType != FORMTYPE_CUSTOM ) 
+        {
             $( this ).css( 'width', '80%' );
             $( this ).css( 'text-align', 'center' );
         }
@@ -1041,8 +1042,8 @@ function insertDataValues()
     $( '.entrytrueonly' ).removeAttr( 'checked' );
     $( '.entryoptionset' ).val( '' );
 
-    $( '.entryfield' ).css( 'background-color', COLOR_WHITE ).css( 'border-color', COLOR_BORDER );
-    $( '.entryselect' ).css( 'background-color', COLOR_WHITE ).css( 'border-color', COLOR_BORDER );
+    $( '.entryfield' ).css( 'background-color', COLOR_WHITE ).css( 'border', '1px solid ' + COLOR_BORDER );
+    $( '.entryselect' ).css( 'background-color', COLOR_WHITE ).css( 'border', '1px solid ' + COLOR_BORDER );
     $( '.entrytrueonly' ).css( 'background-color', COLOR_WHITE );
     $( '.entryoptionset' ).css( 'background-color', COLOR_WHITE );
 
