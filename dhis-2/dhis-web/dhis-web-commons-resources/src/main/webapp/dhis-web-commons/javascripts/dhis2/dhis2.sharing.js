@@ -64,9 +64,9 @@ function addUserGroupAccessSelectedItem(e) {
         access: "r-------"
     });
 
-    $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]') );
+    $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]').last() );
 
-    $('#sharingFindUserGroup').val('')
+    $('#sharingFindUserGroup').val('');
     sharingSelectedItem = undefined;
 
     $( '#addUserGroupAccess' ).attr( 'disabled', true );
@@ -92,7 +92,7 @@ function setUserGroupAccesses(userGroupAccesses) {
                 access: item.access
             });
 
-            $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]') );
+            $(tmpl_html).insertAfter( $('#sharingAccessTable tbody tr').not('[id]').last() );
         });
     }
 }
@@ -155,7 +155,6 @@ function showSharingDialog( type, uid ) {
         if ( !data.meta.allowPublicAccess ) {
             $( '#sharingPublicAccess' ).attr( 'disabled', true );
         }
-
 
         $( '.removeUserGroupAccess' ).unbind( 'click' );
         $( document ).on( 'click', '.removeUserGroupAccess', removeUserGroupAccess );
