@@ -36,7 +36,7 @@
     </tr>
             
     <tr>
-        <td><label for="catalogType">$i18n.getString( "catalogType" ) </label></td>
+        <td><label for="catalogType">$i18n.getString( "catalog" ) </label></td>
         <td>
             <select id="catalogType" name="catalogType">
             	<option value="">[$i18n.getString( "please_select_catalog_type" )]</option>
@@ -100,7 +100,7 @@
 				<table>
 					<thead>
 						<tr>
-							<th>$i18n.getString( "dataelement" )</th>
+							<th>$i18n.getString( "attributes" )</th>
 							<th width="20px">$i18n.getString( "display" )</th>
 					</thead>
 					<tbody id="selectedInventoryTypeAttributeList">

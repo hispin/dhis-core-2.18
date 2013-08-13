@@ -41,7 +41,16 @@
 		</td>		
 		<td></td>				
 	</tr>
-	
+	<tr>
+		<td><label for="display">$i18n.getString( "display" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+	    <td>
+	        <select id="display" name="display">
+	            <option value="true" #if( $catalogTypeAttribute.display ) selected="selected" #end>$i18n.getString( "yes" )</option>
+	            <option value="false" #if( !$catalogTypeAttribute.display ) selected="selected" #end>$i18n.getString( "no" )</option>
+	        </select>
+	    </td>       
+	    <td></td>               
+	</tr>	
     <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>

@@ -1,4 +1,3 @@
-<script type="text/javascript" src="javascript/equipment.js"></script>
 ## Macro for generating the jQuery validation rules 
 #macro( validate $type $require )
   #if( $type == "NUMBER" )
@@ -7,12 +6,8 @@
     {validate:{required:true}}
   #end
 #end
-
 <script>
-    
     jQuery(document).ready( function(){
-		
-		
         currentDiv = 'equipmentForm';
         isSubmit = true;
         
@@ -31,44 +26,48 @@
     
 </script>
 
-<h3>$i18n.getString( "update_equipment" )</h3>   
-
 <form id="equipmentForm" name="equipmentForm" method="post" >
 	<input type="hidden" id="equipmentInstanceID" name="equipmentInstanceID" value="$equipmentInstance.id" />
-	<table>
+	<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$equipmentInstance.getOrganisationUnit().getName()" />
+	<input type="hidden" id="equipmentCatalogName" name="equipmentCatalogName" value="$equipmentCatalogName" />
+	<table width="100%">
 		<tr>
-			<td>$i18n.getString( "registering_unit" ) : </td>
-			<td>$equipmentInstance.organisationUnit.name</td>
-		</tr>	
-		<tr>
-			<td>$i18n.getString( "inventorytype" ) : </th>
-			<td>$equipmentInstance.inventoryType.name</th>
-		</tr>
-		<tr>
-			<td>$i18n.getString( "catalog" ) : </td>
-			<td>
-				<select id="catalog" name="catalog" onChange="catalogDetails( this.value );"  >
-					<option value="">[$i18n.getString( "please_select" )]</option>
-					#foreach ($catalog in $catalogs )
-						<option value="$catalog.id" #if($equipmentInstance.catalog.id == $catalog.id) selected="selected" #end>$catalog.name</option>
-					#end
-				</select>
+			<td colspan="2" align="right">
+				<a href="javascript:removeEquipment( '$equipmentInstance.id','$equipmentInstance.getOrganisationUnit().getName()','$!equipmentInstance.catalog.name' ); " title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 			</td>
 		</tr>
+		
+		<tr bgcolor="#285C91">
+			<td colspan="2"><font color="#FFFFFF"><strong>$equipmentInstance.getInventoryType().name Details</strong></font></td>
+		</tr>
+		#if( $!equipmentInstance.getInventoryType().getCatalogType() )
+			<tr>
+				<td width="75%">Catalog Name/Model <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+				<td width="25%">
+					<select id="catalog" name="catalog" class="{validate:{required:true}}">
+						<option value="">[$i18n.getString( "please_select" )]</option>
+						#foreach ($catalog in $catalogs )
+							<option value="$catalog.id" #if($equipmentInstance.catalog.id == $catalog.id) selected="selected" #end>$catalog.name</option>
+						#end
+					</select>
+				</td>
+			</tr>
+		#end
 		<!-- InventoryType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-		<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>
+		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>-->
+		#set( $mark = false )
 		#foreach( $attribute in $inventoryTypeAttributes )
 			#set( $attributeValue = "" )
 			#set( $attributeValue = $!equipmentValueMap.get( $attribute.id ) )
-			<tr>
-				<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
-				<td class="input-column">
+			<tr #alternate($mark)>
+				<td class='text-column'width="75%"><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
+				<td class="input-column" width="25%">
 					#if( $attribute.valueType == "YES/NO" )
 						<select id="attr$attribute.id"  name="attr$attribute.id" >
 							<option value="" >[$i18n.getString( "please_select" )]</option>
-							<option value="true" #if( $attributeValue ) selected="selected" #end>$i18n.getString( "yes" )</option>
-							<option value="false" #if( !$attributeValue ) selected="selected" #end>$i18n.getString( "no" )</option>
+							<option value="Yes" #if( $attributeValue == "Yes" ) selected="selected" #end>$i18n.getString( "yes" )</option>
+							<option value="No" #if( $attributeValue == "No" ) selected="selected" #end>$i18n.getString( "no" )</option>
 						</select>
 					#elseif( $attribute.valueType == "DATE" )
                         <input type="text" id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" class='#validate( "default"  $attribute.mandatory )' />
@@ -94,26 +93,18 @@
 					#end
 				</td>
 			</tr>
+		#set( $mark = !$mark)
 		#end
 	</table>
 
-	<p>
-		<input type="submit" class="button" value="$i18n.getString( 'update' )"/>
-		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>
+	<p align="right">
+		
+		<!--<a href="javascript:removeEquipment( '$equipmentInstance.id','$equipmentInstance.getOrganisationUnit().getName()','$!equipmentInstance.catalog.name' ); " title='$i18n.getString( "delete" )'>delete</a>-->
+		<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="closeUpdateWindow();"/>&nbsp;&nbsp;
+        &nbsp;&nbsp;<input type="submit"  value="$i18n.getString( 'Save' )" style="width:100px"/>
+		
+		<!--<input type="submit" class="button" value="$i18n.getString( 'update' )"/>
+		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>-->
 	</p>
 
 </form>
-<div id="detailsCatalogInfo"></div>
-<script>
-    
-    
-    var catalogDetailId = $equipmentInstanceCatalogId;
-    if ( catalogDetailId != 0 )
-    {
-    	catalogDetails( catalogDetailId );
-    }
-    
-    
-    var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
-    var i18n_add_equipment_successfully = '$encoder.jsEscape( $i18n.getString( "updated_equipment_successfully" ) , "'" )';
-</script>

@@ -19,6 +19,8 @@
 
     <property name="noChars" />
 	
+	<property name="display" column="display" not-null="true" />  
+	  
 	<set name="attributeOptions">
       <key column="catalogtypeattributeid" />
       <one-to-many class="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption" />

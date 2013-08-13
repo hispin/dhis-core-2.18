@@ -5,6 +5,9 @@ function organisationUnitSelected( orgUnits )
 {   
 	document.getElementById('selectedOrgunitID').value = orgUnits;
     
+	inventoryTypeChange();
+	loadAllEquipments();
+	
 	showById('selectDiv');
     disable('listAllEquipmentBtn');
     
@@ -41,6 +44,7 @@ selection.setListenerFunction( organisationUnitSelected );
 //function inventoryTypeChange( inventoryTypeId )
 function inventoryTypeChange()
 {
+	loadAllEquipments();
 	var inventoryTypeId = $( '#inventoryType' ).val();
 	if( inventoryTypeId == "0" )
 		return;
@@ -97,6 +101,8 @@ function loadAllEquipments()
 	var orgUnitId = document.getElementById('selectedOrgunitID').value;
 	var inventoryType = document.getElementById('inventoryType');
 	var inventoryTypeId = inventoryType.options[ inventoryType.selectedIndex ].value;
+	
+	document.getElementById("searchText").value = "";
 	
 	if( inventoryTypeId == 0 )
 	{	
@@ -344,8 +350,8 @@ function showEquipmentDataEntryForm( equipmentInstanceId )
 	hideById('searchEquipmentDiv');
 	hideById('editEquipmentStatusDiv');
 	hideById('editEquipmentDiv');
-	hideById('equipmentDataEntryDiv');
-	
+	//hideById('equipmentDataEntryDiv');
+	//alert("pppp");
 	setInnerHTML('equipmentDataEntryDiv', '');
 	
 	//jQuery('#loaderDiv').show();

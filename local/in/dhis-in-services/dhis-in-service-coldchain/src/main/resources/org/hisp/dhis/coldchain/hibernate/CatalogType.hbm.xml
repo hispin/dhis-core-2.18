@@ -29,6 +29,13 @@
 			foreign-key="fk_catalogtype_attributes_catalogtypeattribtueid" />
 	</list>
 
+	  
+    <set name="catalogTypeAttributeGroups" order-by="sortorder" inverse="true">
+      <key column="catalogtypeid" />
+      <one-to-many class="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroup" />
+    </set>	  
+	  
+	  
     <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm"
       foreign-key="fk_catalogtype_dataentryform" />
 

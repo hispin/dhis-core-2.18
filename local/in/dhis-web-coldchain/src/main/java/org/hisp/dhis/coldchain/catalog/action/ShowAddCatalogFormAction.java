@@ -11,8 +11,10 @@ import org.hisp.dhis.coldchain.catalog.CatalogDataEntryService;
 import org.hisp.dhis.coldchain.catalog.CatalogDataValue;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
+import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroup;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeGroupOrderComparator;
 import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeOptionComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
@@ -117,6 +119,13 @@ implements Action
         return catalogTypeAttributesOptionsMap;
     }
     
+    private List<CatalogTypeAttributeGroup> catalogTypeAttributeGroups;
+    
+    public List<CatalogTypeAttributeGroup> getCatalogTypeAttributeGroups()
+    {
+        return catalogTypeAttributeGroups;
+    }
+    
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -124,16 +133,21 @@ implements Action
 
     public String execute()
     {
-        System.out.println("entering into  ShowAddCatalogFormAction action");
+        //System.out.println("entering into  ShowAddCatalogFormAction action");
+        
         catalogType = catalogTypeService.getCatalogType( catalogTypeId );
+        
         isCustom = false;
         String disabled = ""; 
+        
         if ( catalogType != null )
         {
             // ---------------------------------------------------------------------
             // Get data-entry-form
             // ---------------------------------------------------------------------
 
+            // this code is for custom data entry Screen if it design
+            /* 
             DataEntryForm dataEntryForm = catalogType.getDataEntryForm();
 
             System.out.println("dataentryform object retrieved");
@@ -147,6 +161,7 @@ implements Action
                 customDataEntryFormCode = catalogDataEntryService.prepareDataEntryFormForCatalog( dataEntryForm.getHtmlCode(), catalogDataValues, disabled, i18n, catalogType );
                 //customDataEntryFormCode = "custom dataentry form";
             }
+            */
             
             catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes() );
             
@@ -155,7 +170,7 @@ implements Action
                 List<CatalogTypeAttributeOption> catalogTypeAttributesOptions = new ArrayList<CatalogTypeAttributeOption>();
                 if( CatalogTypeAttribute.TYPE_COMBO.equalsIgnoreCase( catalogTypeAttribute.getValueType() ) )
                 {
-                    System.out.println(" inside CatalogTypeAttribute.TYPE_COMBO ");
+                    //System.out.println(" inside CatalogTypeAttribute.TYPE_COMBO ");
                     catalogTypeAttributesOptions = new ArrayList<CatalogTypeAttributeOption>( catalogTypeAttribute.getAttributeOptions() );
                     Collections.sort( catalogTypeAttributesOptions, new CatalogTypeAttributeOptionComparator() );
                     catalogTypeAttributesOptionsMap.put( catalogTypeAttribute.getId(), catalogTypeAttributesOptions );
@@ -167,8 +182,6 @@ implements Action
                 System.out.println( "Is mandatory :" + catalogTypeAttribute.isMandatory() );
                 */
             }
-            
-            
             //Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
             
             /*
@@ -183,7 +196,12 @@ implements Action
             */
         }
         
-        System.out.println("going out from  ShowAddCatalogFormAction action");
+        catalogTypeAttributeGroups = new ArrayList<CatalogTypeAttributeGroup>( catalogType.getCatalogTypeAttributeGroups() );
+        
+        Collections.sort( catalogTypeAttributeGroups, new CatalogTypeAttributeGroupOrderComparator() );
+        
+        //System.out.println("going out from  ShowAddCatalogFormAction action");
+        
         return SUCCESS;
     }
 

@@ -128,9 +128,37 @@ public class HibernateCatalogTypeStore  extends HibernateIdentifiableObjectStore
 
     }
     */
+    
+   /*
+    public CatalogTypeAttribute getCatalogTypeAttributeForDisplay( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, boolean display )
+    {
         
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( CatalogTypeAttribute.class );
+        criteria.add( Restrictions.eq( "catalogType", catalogType ) );
+        criteria.add( Restrictions.eq( "catalogTypeAttribute", catalogTypeAttribute ) );
+        criteria.add( Restrictions.eq( "display", display ) );
+        
+        return (CatalogTypeAttribute) criteria.uniqueResult();
+        
+        //return (InventoryType_Attribute) getCriteria( Restrictions.eq( "inventoryType", inventoryType ), Restrictions.eq( "inventoryTypeAttribute", inventoryTypeAttribute ), Restrictions.eq( "display", display ) ).uniqueResult();
+    }
     
-    
+    @SuppressWarnings( "unchecked" )
+    public Collection<CatalogTypeAttribute> getAllCatalogTypeAttributeForDisplay( CatalogType catalogType, boolean display )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( CatalogType.class );
+        //criteria.setProjection( Projections.property( "catalogType" ) );
+        criteria.add( Restrictions.eq( "catalogType", catalogType ) );
+        criteria.add( Restrictions.eq( "display", display ) );
+        return criteria.list();
+        
+        //return getCriteria( Restrictions.eq( "inventoryType", inventoryType ), Restrictions.eq( "display", display ) ).list();
+    }
+    */
     
     
 }

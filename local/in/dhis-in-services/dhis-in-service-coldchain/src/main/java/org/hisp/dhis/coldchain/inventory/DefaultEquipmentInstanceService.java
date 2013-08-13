@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,10 +37,18 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         this.equipmentStatusService = equipmentStatusService;
     }
     
+    private EquipmentDataValueService equipmentDataValueService;
+    
+    public void setEquipmentDataValueService( EquipmentDataValueService equipmentDataValueService )
+    {
+        this.equipmentDataValueService = equipmentDataValueService;
+    }
+    
     // -------------------------------------------------------------------------
     // EquipmentInstance
     // -------------------------------------------------------------------------
     
+
     @Override
     public int addEquipmentInstance( EquipmentInstance equipmentInstance )
     {
@@ -56,9 +65,17 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
     public void deleteCompleteEquipmentInstance( EquipmentInstance equipmentInstance )
     {
         List<Equipment> equipmentDetailsList = new ArrayList<Equipment>( equipmentService.getEquipments( equipmentInstance ) );
+        
+        Collection<EquipmentDataValue> equipmentDataValueForDelete = equipmentDataValueService.getAllEquipmentDataValuesByEquipmentInstance( equipmentInstance );
+
         for( Equipment equipmentDetails : equipmentDetailsList )
         {
             equipmentService.deleteEquipment( equipmentDetails );
+        }
+        
+        for ( EquipmentDataValue equipmentDataValueDelete : equipmentDataValueForDelete )
+        {
+            equipmentDataValueService.deleteEquipmentDataValue( equipmentDataValueDelete );
         }
         
         List<EquipmentStatus> equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );
@@ -110,24 +127,46 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         return equipmentInstanceStore.getEquipmentInstances( orgUnit, inventoryType );
     }
 
-    public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, int min, int max )
+    //public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, int min, int max )
+    public Collection<EquipmentInstance> getEquipmentInstances( List<OrganisationUnit> orgUnitList, InventoryType inventoryType, int min, int max )
     {
-        return equipmentInstanceStore.getEquipmentInstances( orgUnit, inventoryType, min, max );
+        return equipmentInstanceStore.getEquipmentInstances( orgUnitList, inventoryType, min, max );
     }
 
-    @Override
-    public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType )
+   
+   //public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType )
+    public int getCountEquipmentInstance( List<OrganisationUnit> orgUnitList, InventoryType inventoryType )
     {
-        return equipmentInstanceStore.getCountEquipmentInstance( orgUnit, inventoryType );
+        return equipmentInstanceStore.getCountEquipmentInstance( orgUnitList, inventoryType );
     }
 
-    public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText )
+    //public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText )
+    public int getCountEquipmentInstance( String orgUnitIdsByComma, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, String searchBy )
     {
-        return equipmentInstanceStore.getCountEquipmentInstance(  orgUnit,  inventoryType, inventoryTypeAttribute ,  searchText );
+        return equipmentInstanceStore.getCountEquipmentInstance( orgUnitIdsByComma,  inventoryType, inventoryTypeAttribute ,  searchText, searchBy );
     }
 
-    public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, int min, int max )
+    //public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, int min, int max )
+    public Collection<EquipmentInstance> getEquipmentInstances( String orgUnitIdsByComma, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, String searchBy, int min, int max )
     {
-        return equipmentInstanceStore.getEquipmentInstances( orgUnit, inventoryType, inventoryTypeAttribute, searchText, min, max );
+        return equipmentInstanceStore.getEquipmentInstances( orgUnitIdsByComma, inventoryType, inventoryTypeAttribute, searchText, searchBy, min, max );
     }
+    
+    public Collection<OrganisationUnit> searchOrgUnitListByName( String searchText )
+    {
+        return equipmentInstanceStore.searchOrgUnitListByName( searchText );
+    }
+    
+    // for orgUnit list according to orGUnit Attribute values for paging purpose
+    public int countOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText )
+    {
+        return equipmentInstanceStore.countOrgUnitByAttributeValue( orgunitIds, attribute, searchText );
+    }
+    
+    // for orgUnit list according to orGUnit Attribute values for paging purpose
+    public Collection<OrganisationUnit> searchOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText, Integer min, Integer max )
+    {
+        return equipmentInstanceStore.searchOrgUnitByAttributeValue( orgunitIds, attribute, searchText, min, max );
+    }
+    
 }

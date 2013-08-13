@@ -3,6 +3,7 @@ package org.hisp.dhis.coldchain.equipment.action;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -30,7 +31,7 @@ public class LoadPeriodsAction implements Action
         this.dataSetService = dataSetService;
     }
     
-   private PeriodService periodService;
+    private PeriodService periodService;
     
     public void setPeriodService( PeriodService periodService )
     {
@@ -88,7 +89,7 @@ public class LoadPeriodsAction implements Action
         
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
 
-        //Collections.reverse( periods );
+        Collections.reverse( periods );
         //Collections.sort( periods );
         for ( Period period : periods )
         {

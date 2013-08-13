@@ -46,5 +46,10 @@ public class DefaultEquipmentStatusService implements EquipmentStatusService
     {
         return equipmentStatusStore.getEquipmentStatusHistory( equipmentInstance );
     }
+    
+    public Collection<EquipmentStatus> getEquipmentStatusHistoryDescOrder( EquipmentInstance equipmentInstance )
+    {
+        return equipmentStatusStore.getEquipmentStatusHistoryDescOrder( equipmentInstance );
+    }
 
 }

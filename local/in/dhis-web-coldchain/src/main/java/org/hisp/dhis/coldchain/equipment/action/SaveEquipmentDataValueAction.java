@@ -162,20 +162,24 @@ public class SaveEquipmentDataValueAction implements Action
                     value = value.trim();
                 }
                 
-                if ( equipmentDataValue == null && value != null )
+                if ( equipmentDataValue == null )
                 {
-                    equipmentDataValue = new EquipmentDataValue();
-                    
-                    equipmentDataValue.setValue( value );
-                    equipmentDataValue.setDataElement( dataElement );
-                    equipmentDataValue.setEquipmentInstance( equipmentInstance );
-                    equipmentDataValue.setPeriod( period );
-                    equipmentDataValue.setStoredBy( storedBy );
-                    equipmentDataValue.setTimestamp( timestamp );
-                    equipmentDataValueService.addEquipmentDataValue( equipmentDataValue );
-                }                
+                    if ( value != null )
+                    {
+                        equipmentDataValue = new EquipmentDataValue();
+                        
+                        equipmentDataValue.setValue( value );
+                        equipmentDataValue.setDataElement( dataElement );
+                        equipmentDataValue.setEquipmentInstance( equipmentInstance );
+                        equipmentDataValue.setPeriod( period );
+                        equipmentDataValue.setStoredBy( storedBy );
+                        equipmentDataValue.setTimestamp( timestamp );
+                        equipmentDataValueService.addEquipmentDataValue( equipmentDataValue );
+                    }
+                }     
                 else
                 {
+                    //System.out.println( " dataElement :" + dataElement + "-- value : " + value );
                     equipmentDataValue.setDataElement( dataElement );
                     equipmentDataValue.setValue( value );
                     equipmentDataValue.setEquipmentInstance( equipmentInstance );

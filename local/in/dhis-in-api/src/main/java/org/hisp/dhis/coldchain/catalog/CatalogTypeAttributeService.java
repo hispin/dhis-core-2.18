@@ -29,5 +29,5 @@ public interface CatalogTypeAttributeService
     Collection<CatalogTypeAttribute> getCatalogTypeAttributesBetween( int first, int max );
     
     Collection<CatalogTypeAttribute> getCatalogTypeAttributesBetweenByName( String name, int first, int max );
-
+    
 }

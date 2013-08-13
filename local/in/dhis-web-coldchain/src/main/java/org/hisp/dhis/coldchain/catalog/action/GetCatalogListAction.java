@@ -1,9 +1,13 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.coldchain.catalog.Catalog;
+import org.hisp.dhis.coldchain.catalog.CatalogDataValue;
+import org.hisp.dhis.coldchain.catalog.CatalogDataValueService;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
@@ -41,6 +45,13 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
     public void setCatalogTypeAttributeService( CatalogTypeAttributeService catalogTypeAttributeService )
     {
         this.catalogTypeAttributeService = catalogTypeAttributeService;
+    }
+    
+    private CatalogDataValueService catalogDataValueService;
+    
+    public void setCatalogDataValueService( CatalogDataValueService catalogDataValueService )
+    {
+        this.catalogDataValueService = catalogDataValueService;
     }
     // -------------------------------------------------------------------------
     // Input & Output
@@ -115,7 +126,22 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
     {
         this.searchText = searchText;
     }
-
+    
+    public List<CatalogTypeAttribute> catalogTypeAttributeList;
+    
+    public List<CatalogTypeAttribute> getCatalogTypeAttributeList()
+    {
+        return catalogTypeAttributeList;
+    }
+    
+    public Map<String, String> catalogDataValueMap;
+    
+    public Map<String, String> getCatalogDataValueMap()
+    {
+        return catalogDataValueMap;
+    }
+    
+    String searchBy = "";
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -125,18 +151,37 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
         catalogType = catalogTypeService.getCatalogType( Integer.parseInt( catalogTypeId ) );
         //catalogType = catalogTypeService.getCatalogType(  catalogTypeId );
         
+        catalogDataValueMap = new HashMap<String, String>();
+        
         if ( listAll != null && listAll )
         {
             listAllCatalog( catalogType );
+            
+            getCatalogTypeAttributeData();
 
             return SUCCESS;
         }
         
+        if( catalogTypeAttributeId.equalsIgnoreCase(  Catalog.PREFIX_CATALOG_NAME ))
+        {
+            //System.out.println( inventoryTypeAttributeId + " -- inside search by -- " + Equipment.PREFIX_CATALOG_NAME );
+            
+            searchBy = catalogTypeAttributeId;
+            
+            listCatalogByFilter( catalogType, null, searchText, searchBy );
+            
+            getCatalogTypeAttributeData();
+            
+            return SUCCESS;
+        }
+
         CatalogTypeAttribute catalogTypeAttribute = catalogTypeAttributeService.getCatalogTypeAttribute( Integer.parseInt( catalogTypeAttributeId ) );
         //CatalogTypeAttribute catalogTypeAttribute = catalogTypeAttributeService.getCatalogTypeAttribute(  catalogTypeAttributeId  );
         //System.out.println("catalogTypeAttribute " + catalogTypeAttribute.getName() + "--- catalogType Name " + catalogType.getName() +"--- searchText is  " + searchText  );
         
-        listCatalogByFilter( catalogType, catalogTypeAttribute, searchText);
+        listCatalogByFilter( catalogType, catalogTypeAttribute, searchText, "" );
+        
+        getCatalogTypeAttributeData();
         
         return SUCCESS;
     }
@@ -153,13 +198,63 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
         catalogList = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType, paging.getStartPos(), paging.getPageSize() ));
     }
     
-    private void listCatalogByFilter( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchKey )
+    //private void listCatalogByFilter( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchKey )
+    private void listCatalogByFilter( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchKey, String searchBy )
     {
+        /*
         total = catalogService.getCountCatalog( catalogType, catalogTypeAttribute, searchText );
         
         this.paging = createPaging( total );
         
         catalogList = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType, catalogTypeAttribute, searchText, paging.getStartPos(), paging.getPageSize() ));
+        */
+        
+        total = catalogService.getCountCatalog( catalogType, catalogTypeAttribute, searchText, searchBy );
+        
+        this.paging = createPaging( total );
+        
+        catalogList = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType, catalogTypeAttribute, searchText, searchBy, paging.getStartPos(), paging.getPageSize() ));
     }   
     
+    
+    
+    private void getCatalogTypeAttributeData()
+    {
+        //catalogTypeAttributeList = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
+        
+        catalogTypeAttributeList = new ArrayList<CatalogTypeAttribute>( catalogTypeService.getAllCatalogTypeAttributeForDisplay( catalogType ) );
+        
+        //System.out.println("--- catalogTypeAttributeList for Display --- " + catalogTypeAttributeList.size() );
+        
+        for( Catalog catalog : catalogList )
+        {
+            for( CatalogTypeAttribute catalogTypeAttribute : catalogTypeAttributeList )
+            {
+                CatalogDataValue catalogDataValue = catalogDataValueService.catalogDataValue( catalog, catalogTypeAttribute );
+                if( catalogDataValue != null && catalogDataValue.getValue() != null )
+                {
+                    catalogDataValueMap.put( catalog.getId() + ":" + catalogTypeAttribute.getId(), catalogDataValue.getValue() );
+                }
+            }
+            
+            /*
+            List<CatalogDataValue> catalogDataValues = new ArrayList<CatalogDataValue>( catalogDataValueService.getAllCatalogDataValuesByCatalog( catalogService.getCatalog( catalog.getId() )) );
+            
+            for( CatalogDataValue catalogDataValue : catalogDataValues )
+            {
+                if ( CatalogTypeAttribute.TYPE_COMBO.equalsIgnoreCase( catalogDataValue.getCatalogTypeAttribute().getValueType() ) )
+                {
+                    catalogDataValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getCatalogTypeAttributeOption().getName() );
+                }
+                
+                else
+                {
+                    catalogDataValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getValue() );
+                }
+            }
+            */
+        }
+    }
 }
+
+

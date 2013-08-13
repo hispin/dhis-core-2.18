@@ -1,12 +1,14 @@
 package org.hisp.dhis.coldchain.equipment.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.EquipmentStatus;
 import org.hisp.dhis.coldchain.inventory.EquipmentStatusService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,13 +42,22 @@ public class ShowEquipmentStatusHistoryFormAction implements Action
     {
         this.equipmentInstanceId = equipmentInstanceId;
     }
-
+    
     private List<EquipmentStatus> equipmentStatusHistory;
     
     public List<EquipmentStatus> getEquipmentStatusHistory()
     {
         return equipmentStatusHistory;
     }
+    
+    private EquipmentInstance equipmentInstance;
+    
+    public EquipmentInstance getEquipmentInstance()
+    {
+        return equipmentInstance;
+    }
+
+
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -54,9 +65,12 @@ public class ShowEquipmentStatusHistoryFormAction implements Action
     public String execute() throws Exception
     {
         //System.out.println("inside ShowEquipmentStatusHistoryFormAction ");
-        EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
+        equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
+         
+        //equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );
         
-        equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );
+        equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistoryDescOrder( equipmentInstance ) );
+        
         
         return SUCCESS;
     }

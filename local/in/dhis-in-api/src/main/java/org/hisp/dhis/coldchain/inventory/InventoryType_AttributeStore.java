@@ -2,8 +2,6 @@ package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
-
 /**
  * @author Mithilesh Kumar Thakur
  *

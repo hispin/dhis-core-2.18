@@ -22,4 +22,6 @@ public interface EquipmentDataValueStore
     Collection<EquipmentDataValue> getEquipmentDataValues( EquipmentInstance equipmentInstance, Period period, Collection<DataElement> dataElements );
     
     EquipmentDataValue getEquipmentDataValue( EquipmentInstance equipmentInstance, Period period, DataElement dataElement );
+    
+    Collection<EquipmentDataValue> getAllEquipmentDataValuesByEquipmentInstance( EquipmentInstance equipmentInstance );
 }

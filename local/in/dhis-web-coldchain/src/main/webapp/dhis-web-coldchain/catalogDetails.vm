@@ -1,55 +1,83 @@
 
-<table>
-	<tr>
+<table width="100%">
+	<tr bgcolor="#285C91">
 		<td>
-			<table>
-				<tr>
-					<td><label class="bold">$i18n.getString('name') : </label></td>
-					<td>$catalog.name</td>
-				</tr>
-				<tr>
-					<td><label class="bold">$i18n.getString('description') : </label></td>
-					<td>$catalog.description</td>
-				</tr>
-				<tr>
-					<td><label class="bold">$i18n.getString('catalogType') : </label></td>
-					<td>$catalogType.name</td>
-				</tr>
-                <tr>
-                    <td><label class="bold">$i18n.getString('image') : </label></td>
-                    <td>$!catalog.catalogImage</td>
-                </tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-	
-				<tr>
-					<td colspan='2'><label class="bold">$i18n.getString( "attributes" )</label></td>
-				</tr>
-				
-				#foreach( $catalogTypeAttribute in $catalogTypeAttributes )
-					#if( $catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id ) != " " )
-					<tr>
-						<td><label class="bold">$catalogTypeAttribute.name : </label></td>
-						<td>
-							#if($catalogTypeAttribute.valueType=="YES/NO")
-								$!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id )
-							#else
-								$!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id )
-							#end
-						</td>
-					</tr>
-					#end
-				#end
-	
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
+			<table width="100%">
+				<tr bgcolor="#285C91">
+					<td><font color="#FFFFFF"><strong>Catalog Details</strong></font></td>
 				</tr>
 			</table>
-		</td>
-		<td>&nbsp;</td>
-		<td valign="top"><img src="showImage.action?id=$catalog.id" style="width:200px;height:200px;" /></td>
+		</td>			
+		<td align="right"><a href="javascript:showUpdateCatalogForm( '$catalog.id','$catalog.getName()', '$catalog.getCatalogType().getName()' ); " title='$i18n.getString( "Update Catalog" )'><font color="#FFFFFF"><u>edit</u></font></a></td>
 	</tr>
 </table>
+<!--
+<table width="100%">
+	<tr>
+		<td class='text-column' width="50%"><label>$i18n.getString('name')</label></td>
+		<td class="text-column" width="50%">$catalog.name</td>
+	</tr>
+	<tr>
+		<td class='text-column' width="50%"><label>$i18n.getString('description')</label></td>
+		<td class="text-column" width="50%">$catalog.description</td>
+	</tr>
+</table>
+-->
+<!-- Catalog Details with Group Wise-->	
+#if( $catalogTypeAttributeGroups.size() > 0 )
+<table width="100%">
+	<tr>
+		<td class='text-column' width="50%"><label>$i18n.getString('name')</label></td>
+		<td class="text-column" width="50%">$catalog.name</td>
+	</tr>
+	<tr>
+		<td class='text-column' width="50%"><label>$i18n.getString('description')</label></td>
+		<td class="text-column" width="50%">$catalog.description</td>
+	</tr>	
+	#foreach( $catalogTypeAttributeGroup in $catalogTypeAttributeGroups )
+		<tr bgcolor="#285C91">
+			<td colspan="2"><font color="#FFFFFF"><strong>$encoder.htmlEncode( $catalogTypeAttributeGroup.name )</strong></font></td>
+				<!--<td><font color="#FFFFFF"><strong>Value</strong></font></td>-->
+		</tr>
+        <!-- CatalogType Attributes  -->
+        #set( $mark = false )
+       	#foreach( $catalogAttribute in $catalogTypeAttributeGroup.getCatalogTypeAttributes() )
+        #set( $catalogAttributeValue = "" )
+        #set( $catalogAttributeValue = $!catalogTypeAttributeValueMap.get( $catalogAttribute.id ) )
+        	<tr #alternate($mark)>
+            	<td class='text-column'><label>$catalogAttribute.name</label></td>
+                <td class="text-column">$!catalogAttributeValue</td>
+            </tr>
+       	#set( $mark = !$mark)
+        #end
+	#end
+</table>
+
+<!-- Catalog Details without Group Details-->
+#else
+    <table width="100%">
+		<tr>
+			<td class='text-column' width="50%"><label>$i18n.getString('name')</label></td>
+			<td class="text-column" width="50%">$catalog.name</td>
+		</tr>
+		<tr>
+			<td class='text-column' width="50%"><label>$i18n.getString('description')</label></td>
+			<td class="text-column" width="50%">$catalog.description</td>
+		</tr>    	
+        <!-- CatalogType Attributes  -->
+        #set( $mark = false )
+        #foreach( $catalogAttribute in $catalogTypeAttributes )
+            #set( $catalogAttributeValue = "" )
+            #set( $catalogAttributeValue = $!catalogTypeAttributeValueMap.get( $catalogAttribute.id ) )
+            <tr #alternate($mark)>
+                <td class='text-column'><label>$catalogAttribute.name</label></td>
+                <td class="text-column">$!catalogAttributeValue</td>
+            </tr>
+        #set( $mark = !$mark)
+        #end
+    </table>
+#end
+
+<p align="right">
+	<input type="button"  value="$i18n.getString( 'Done' )" style="width:100px" onclick="closeCatalogDetailsWindow();"/>
+</p>

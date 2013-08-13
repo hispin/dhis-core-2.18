@@ -61,12 +61,38 @@ public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implem
         return getCriteria( Restrictions.eq( "catalogType", catalogType ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
     
-    public int getCountCatalog( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText )
+    //public int getCountCatalog( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText )
+    public int getCountCatalog( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, String searchBy )
     {
+        /*
         String hql = "SELECT COUNT( DISTINCT cat ) FROM Catalog AS cat  " +
                         " WHERE cat IN ( SELECT catdata.catalog FROM CatalogDataValue catdata  WHERE catdata.catalogTypeAttribute.id = "+ catalogTypeAttribute.getId()+" AND catdata.value LIKE '%" + searchText + "%' ) " +
                         " AND cat.catalogType.id = " + catalogType.getId();
 
+       */
+        
+        String hql = "";
+        
+        if( searchBy.equalsIgnoreCase( Catalog.PREFIX_CATALOG_NAME ) )
+        {
+            hql = "SELECT COUNT( DISTINCT cat ) FROM Catalog AS cat  " +
+                   " WHERE cat.catalogType.id = " + catalogType.getId() +
+                   " AND cat.name LIKE '%" + searchText + "%' ";
+        }
+        
+        else
+        {
+            hql = "SELECT COUNT( DISTINCT cat ) FROM Catalog AS cat  " +
+                   " WHERE cat IN ( SELECT catdata.catalog FROM CatalogDataValue catdata  WHERE catdata.catalogTypeAttribute.id = "+ catalogTypeAttribute.getId()+" AND catdata.value LIKE '%" + searchText + "%' ) " +
+                   " AND cat.catalogType.id = " + catalogType.getId();
+        }
+        
+        /*
+        String hql = "SELECT COUNT( DISTINCT cat) FROM Catalog AS cat  " +
+        " WHERE cat.name LIKE '%" + searchText + "%'  " +
+        " AND cat.catalogType.id = " + catalogType.getId();
+       */ 
+        
         Query query = getQuery( hql );
 
         Number rs = (Number) query.uniqueResult();
@@ -75,12 +101,39 @@ public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implem
     }
     
     @SuppressWarnings( "unchecked" )
-    public Collection<Catalog> getCatalogs( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, int min, int max )
+    //public Collection<Catalog> getCatalogs( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, int min, int max )
+    public Collection<Catalog> getCatalogs( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, String searchBy, int min, int max )
     {
+        /*
         String hql = "SELECT DISTINCT cat FROM Catalog AS cat  " +
                         " WHERE cat IN ( SELECT catdata.catalog FROM CatalogDataValue catdata WHERE catdata.catalogTypeAttribute.id = "+ catalogTypeAttribute.getId()+" AND catdata.value LIKE '%" + searchText + "%' ) " +
                         " AND cat.catalogType.id = " + catalogType.getId();
 
+        */
+        
+        String hql = "";
+        
+        if( searchBy.equalsIgnoreCase( Catalog.PREFIX_CATALOG_NAME ) )
+        {
+            hql = "SELECT DISTINCT cat FROM Catalog AS cat  " +
+                   " WHERE cat.catalogType.id = " + catalogType.getId() +
+                   " AND cat.name LIKE '%" + searchText + "%' ";
+        }
+        
+        else
+        {
+            hql = "SELECT DISTINCT cat FROM Catalog AS cat  " +
+                   " WHERE cat IN ( SELECT catdata.catalog FROM CatalogDataValue catdata WHERE catdata.catalogTypeAttribute.id = "+ catalogTypeAttribute.getId()+" AND catdata.value LIKE '%" + searchText + "%' ) " +
+                   " AND cat.catalogType.id = " + catalogType.getId();
+        }
+        
+        /*
+        String hql = "SELECT DISTINCT cat FROM Catalog AS cat  " +
+                     " WHERE cat.name LIKE '%" + searchText + "%' ) " +
+                     " AND cat.catalogType.id = " + catalogType.getId();
+        
+        */
+        
         Query query = getQuery( hql ).setFirstResult( min ).setMaxResults( max );
 
         return query.list();

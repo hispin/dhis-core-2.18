@@ -50,7 +50,7 @@ public class ShowUploadCatalogTypeImageFormAction implements Action
     {
         //System.out.println( id );
         catalogType = catalogTypeService.getCatalogType( id );
-        
+        //catalogType.getCatalogTypeImage();
         return SUCCESS;
     }
 }

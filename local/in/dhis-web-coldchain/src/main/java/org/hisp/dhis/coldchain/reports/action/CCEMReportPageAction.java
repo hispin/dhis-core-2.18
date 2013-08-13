@@ -1,19 +1,18 @@
 package org.hisp.dhis.coldchain.reports.action;
 
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hisp.dhis.coldchain.reports.CCEMReport;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.report.Report;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,64 +22,113 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
-public class CCEMReportPageAction implements Action
+public class CCEMReportPageAction
+    implements Action
 {
+    public static final String OWNERSHIP_GROUP_SET = "Ownership";// 2.0
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    
+    private ConstantService constantService;
 
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-    
+
     private List<OrganisationUnitGroup> orgUnitGroupList;
-    
+
     public List<OrganisationUnitGroup> getOrgUnitGroupList()
     {
         return orgUnitGroupList;
     }
-    
+
     private List<CCEMReport> reportList;
-    
+
     public List<CCEMReport> getReportList()
     {
         return reportList;
+    }
+
+    public String facilityType = "";
+
+    public void setFacilityType( String facilityType )
+    {
+        this.facilityType = facilityType;
+    }
+    
+    public String getFacilityType()
+    {
+        return facilityType;
+    }
+    
+    private List<OrganisationUnitGroup> orgUnitGroups;
+    
+    public List<OrganisationUnitGroup> getOrgUnitGroups()
+    {
+        return orgUnitGroups;
     }
     
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+
+    public String execute() throws Exception
     {
+        // System.out.println("fff  "+facilityType);
+        orgUnitGroupList = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
+            .getAllOrganisationUnitGroups() );
+        //CCEMReport ccem = new CCEMReport();
+        // if(ccem.getCategoryType() == facilityType)
+        {
+            reportList = new ArrayList<CCEMReport>();
+
+            getCCEMReportList();
+        }
         
-        orgUnitGroupList = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
+        Constant ownerShipGroupConstant = constantService.getConstantByName( OWNERSHIP_GROUP_SET );
         
-        reportList = new ArrayList<CCEMReport>();
+        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) ownerShipGroupConstant.getValue() );
         
-        getCCEMReportList();
+        if( organisationUnitGroupSet != null )
+        {
+            orgUnitGroups = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSet.getOrganisationUnitGroups());            
+        }
+        
+        /*
+        for( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+        {
+            System.out.println(" organisationUnitGroup   " + organisationUnitGroup.getName() );
+        }
+        */
         
         return SUCCESS;
     }
-    
-    
+
     public void getCCEMReportList()
     {
         String fileName = "ccemReportList.xml";
-        String path = System.getenv( "DHIS2_HOME" )+ File.separator + "ccemreports" + File.separator + fileName;
-        
-        //JAXBContext context = JAXBContext.newInstance( CCEMReport.class );
-        //Unmarshaller um = context.createUnmarshaller();
-        //CCEMReport ccemReport = (CCEMReport) um.unmarshal( new FileReader( path ) );
-        
+        String path = System.getenv( "DHIS2_HOME" ) + File.separator + "ccemreports" + File.separator + fileName;
+
+        // JAXBContext context = JAXBContext.newInstance( CCEMReport.class );
+        // Unmarshaller um = context.createUnmarshaller();
+        // CCEMReport ccemReport = (CCEMReport) um.unmarshal( new FileReader(
+        // path ) );
+
         try
         {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -126,15 +174,24 @@ public class CCEMReportPageAction implements Action
                     NodeList textNodeList5 = element5.getChildNodes();
                     String periodRequire = ((Node) textNodeList5.item( 0 )).getNodeValue().trim();
 
-                    CCEMReport reportObj = new CCEMReport( );
-                    
+                    NodeList nodeList6 = reportElement.getElementsByTagName( "categoryType" );
+                    Element element6 = (Element) nodeList6.item( 0 );
+                    NodeList textNodeList6 = element6.getChildNodes();
+                    String categoryType = ((Node) textNodeList6.item( 0 )).getNodeValue().trim();
+
+                    CCEMReport reportObj = new CCEMReport();
+
                     reportObj.setOutputType( outputType );
                     reportObj.setReportId( reportId );
                     reportObj.setReportName( reportName );
                     reportObj.setXmlTemplateName( xmlTemplateName );
                     reportObj.setPeriodRequire( periodRequire );
-                    
-                    reportList.add( reportObj );
+                    reportObj.setCategoryType( categoryType );
+                    if ( reportObj.getCategoryType().equals( facilityType ) )
+                    {
+                        reportList.add( reportObj );
+                    }
+
                 }
             }// end of for loop with s var
         }// try block end
@@ -153,6 +210,7 @@ public class CCEMReportPageAction implements Action
             t.printStackTrace();
         }
 
-    }// getReportList end
+    }
+    // getReportList end
 
 }

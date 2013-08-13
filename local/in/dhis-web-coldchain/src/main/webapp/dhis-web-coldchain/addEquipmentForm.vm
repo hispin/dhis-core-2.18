@@ -1,4 +1,4 @@
-<script type="text/javascript" src="javascript/equipment.js"></script>
+
 ## Macro for generating the jQuery validation rules
 #macro( validate $type $require )
   #if( $type == "NUMBER" )
@@ -8,14 +8,12 @@
   #end
 #end
 
-
 <script>
     
     jQuery(document).ready( function(){
 
         currentDiv = 'equipmentForm';
         isSubmit = true;
-        
         jQuery("#equipmentForm").validate({
                  meta:"validate"
                 ,errorElement:"span"
@@ -31,49 +29,53 @@
     
 </script>
 
-<h3>$i18n.getString( "add_new_equipment" )</h3>   
-
 <form id="equipmentForm" name="equipmentForm" method="post" >
 	<input type="hidden" id="ouId" name="ouId" value="$organisationUnit.id" />
 	<input type="hidden" id="itypeId" name="itypeId" value="$inventoryType.id" />	
-	<table>
-		<tr>
-			<td>$i18n.getString( "registering_unit" ) : </td>
-			<td>$organisationUnit.name</td>
-		</tr>	
-		<tr>
-			<td>$i18n.getString( "inventorytype" ) : </th>
-			<td>$inventoryType.name</th>
-		</tr>
+	<table width="100%">
 		
+		
+		<tr bgcolor="#285C91">
+			<td colspan="2"><font color="#FFFFFF"><strong>$inventoryType.name Details</strong></font></td>
+		</tr>
 		<tr>
-			<td>$i18n.getString( "working_status" ) : </td>
-			<td><input type="checkbox"  id="workingStatus" name="workingStatus" checked="true" ></th>
-		</tr>	
-        <tr>
-            <td>$i18n.getString( "catalog" ) : </td>
-			<td>
-				<select  id="catalog" name="catalog" onChange="catalogDetails( this.value );">
+			<td width="75%">Clinic<em title="$i18n.getString( 'required' )" class="required">*</em></td>
+			<td width="25%">
+				<select  id="organisationUnit" name="organisationUnit" class="{validate:{required:true}}">
 					<option value="">[$i18n.getString( "please_select" )]</option>
-					#foreach ($catalog in $catalogs )
-						<option value="$catalog.id" >$catalog.name</option>
+					#foreach ( $orgUnit in $orgUnitList )
+						<option value="$orgUnit.id" >$orgUnit.name</option>
 					#end
 				</select>
-			</td>			
+			</td>
 		</tr>
-
+		#if( $!inventoryType.getCatalogType() )
+			<tr>
+				<td width="75%">Catalog Name/Model <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+				<td width="25%">
+					<select  id="catalog" name="catalog" class="{validate:{required:true}}">
+						<option value="">[$i18n.getString( "please_select" )]</option>
+						#foreach ($catalog in $catalogs )
+							<option value="$catalog.id" >$catalog.name</option>
+						#end
+					</select>
+				</td>			
+			</tr>
+	 		#end
+       
 		<!-- InventoryType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-		<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>
+		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>-->
+		#set( $mark = false )
 		#foreach( $attribute in $inventoryTypeAttributes )
-			<tr>
-				<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
-				<td class="input-column">
+			<tr #alternate($mark)>
+				<td class='text-column' width="75%"><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
+				<td class="input-column" width="25%">
 					#if( $attribute.valueType == "YES/NO" )
 						<select id="attr$attribute.id"  name="attr$attribute.id" >
 							<option value="" >[$i18n.getString( "please_select" )]</option>
-							<option value="true">$i18n.getString( "yes" )</option>
-							<option value="false" >$i18n.getString( "no" )</option>
+							<option value="Yes">$i18n.getString( "yes" )</option>
+							<option value="No" >$i18n.getString( "no" )</option>
 						</select>
 					#elseif( $attribute.valueType == "DATE" )
                         <input type="text" id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )' />
@@ -99,12 +101,16 @@
 					#end
 				</td>
 			</tr>
+		#set( $mark = !$mark)
 		#end
 	</table>
-
-	<p>
-		<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
-		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>
+	
+	<p align="right">
+		<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="closewindow4();"/>&nbsp;&nbsp;
+		&nbsp;&nbsp;<input type="submit"  id="saveButton" name="saveButton" value="$i18n.getString( 'save' )"  style="width:100px"/>
+		
+		<!--<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
+		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>-->
 	</p>
 
 </form>

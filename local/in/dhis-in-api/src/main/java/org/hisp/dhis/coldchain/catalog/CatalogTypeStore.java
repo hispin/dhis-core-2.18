@@ -23,5 +23,12 @@ public interface CatalogTypeStore extends GenericNameableObjectStore<CatalogType
     //CatalogType getCatalogTypeByAttribute( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute);
 
     Collection<CatalogType> getAllCatalogTypes();
+    
+    /*
+    //Methods For Display
+    CatalogTypeAttribute getCatalogTypeAttributeForDisplay( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, boolean display );
+    
+    Collection<CatalogTypeAttribute> getAllCatalogTypeAttributeForDisplay( CatalogType catalogType, boolean display );
+    */
 
 }

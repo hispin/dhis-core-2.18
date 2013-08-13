@@ -53,5 +53,8 @@ public class DefaultEquipmentDataValueService implements EquipmentDataValueServi
         return equipmentDataValueStore.getEquipmentDataValue( equipmentInstance, period, dataElement );
     }
     
-    
+    public Collection<EquipmentDataValue> getAllEquipmentDataValuesByEquipmentInstance( EquipmentInstance equipmentInstance )
+    {
+        return equipmentDataValueStore.getAllEquipmentDataValuesByEquipmentInstance( equipmentInstance );
+    }
 }

@@ -58,7 +58,7 @@
 					<table>
 						<thead>
 							<tr>
-								<th>$i18n.getString( "catalogType_attributes" )</th>
+								<th>$i18n.getString( "attributes" )</th>
 							</tr>
 						</thead>
 						<tbody id="selectedList">

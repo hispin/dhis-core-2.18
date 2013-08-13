@@ -2,6 +2,8 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentStatus;
@@ -69,5 +71,22 @@ public class HibernateEquipmentStatusStore
     public Collection<EquipmentStatus> getEquipmentStatusHistory( EquipmentInstance equipmentInstance )
     {
         return getCriteria( Restrictions.eq( "equipmentInstance", equipmentInstance ) ).list();
+        
+        //return getCriteria( Restrictions.eq( "equipmentInstance", equipmentInstance ), Restrictions. ).list();
+        
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<EquipmentStatus> getEquipmentStatusHistoryDescOrder( EquipmentInstance equipmentInstance )
+    {
+        //return getCriteria( Restrictions.eq( "equipmentInstance", equipmentInstance ), ).list();
+        
+        Criteria criteria = getCriteria();
+        
+        criteria.add( Restrictions.eq( "equipmentInstance", equipmentInstance ) );
+        criteria.addOrder(Order.desc( "reportingDate" ));
+        criteria.addOrder(Order.desc( "updationDate" ));
+        return criteria.list();
+        
     }
 }

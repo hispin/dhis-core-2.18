@@ -8,7 +8,7 @@
     <table>     
         <tr>
             <td><label>$i18n.getString( "registering_unit" )</label></td>
-            <td style="padding-right:5px"><input type="text" id='selectedOrgunitText' value="$!organisationUnit.name" readonly style="min-width:16em"></td>
+            <td style="padding-right:5px"><input type="text" id='selectedOrgunitText' value="$!organisationUnit.name" readonly style="min-width:21em"></td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>	
 		</tr>
@@ -16,14 +16,14 @@
 			<td><label>$i18n.getString( "inventorytype" )</label></td>
 			<td style="padding-right:5px">
 				<!--<select id="inventoryType" style="min-width:16em" onchange="inventoryTypeChange( this.value )">-->
-				<select id="inventoryType" style="min-width:16em" onchange="inventoryTypeChange()">
+				<select id="inventoryType" style="min-width:21.5em" onchange="inventoryTypeChange()">
 					<!--<option value="0">$i18n.getString( "select_inventorytype" )</option>-->
 					#foreach( $inventoryType in $inventoryTypes )
 						<option value="$inventoryType.id">$inventoryType.name</option>
 					#end
 				</select>
 			</td>
-            <td style="padding-right:5px"><input type="button" id='listAllEquipmentBtn' value="$i18n.getString( 'list_all_equipments' )" onclick='loadAllEquipments();'></td>
+            <!--<td style="padding-right:5px"><input type="button" id='listAllEquipmentBtn' value="$i18n.getString( 'list_all_equipments' )" style="width:13em" onclick='loadAllEquipments();'></td>-->
             <td><span id='warnmessage' style='color:red'></span></td>
         </tr>
     </table>
@@ -35,18 +35,19 @@
         <tbody>
             <tr id='advSearchBox0'>        
                 <td id='searchingAttributeIdTD'>
-                  <select id="searchingAttributeId" name="searchingAttributeId" style="width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange( this.value )">
+                  <select id="searchingAttributeId" name="searchingAttributeId" style="width:15em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange( this.value )">
                   </select> 
                   <em title="$i18n.getString( "required" )" class="required">*</em></label>
                 </td>       
                 <td>
-                    <input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="searchText" name="searchText" maxlength="30" style="width:12.5em" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
+                    
                 </td>   
                 <td></td>
-                <td><input type="button" value='$i18n.getString( "search" )' onclick='loadEquipmentsByFilter();'></td>
+                <td><input type="button" value='$i18n.getString( "search" )' style="width:13em" onclick='loadEquipmentsByFilter();'></td>
                 <td>&nbsp;</td>
-                <td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddEquipmentForm();"></td>
+                <td><input type="button" value='$i18n.getString( "clear" )' style="width:13em" onclick='loadAllEquipments();'></td>
+                <!--<td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddEquipmentForm();"></td>-->
             </tr>
         </tbody>
     </table>
@@ -58,7 +59,7 @@
 <div id='editEquipmentDataDiv'></div> <!-- Add / Edit Equipment Data -->
 <div id='equipmentStatusHistoryDiv'></div> <!-- List Equipment Status History -->
 <div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching Equipment -->
-<div id='equipmentDataEntryDiv'></div> <!-- List All/Filtered Equipments -->
+<div id='equipmentDataEntryDiv'></div> <!-- DataEntry screen of Equipment -->
 
 #parse( "/dhis-web-commons/loader/loader.vm" )
 
