@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.webdomain.SystemInfo;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -44,6 +45,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ public class SystemController
     // UID Generator
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/uid", method = RequestMethod.GET)
+    @RequestMapping( value = "/uid", method = RequestMethod.GET )
     public void getUid( @RequestParam(required = false) Integer n, HttpServletResponse response ) throws IOException
     {
         response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
@@ -98,7 +100,7 @@ public class SystemController
         JacksonUtils.toJson( response.getOutputStream(), codes );
     }
 
-    @RequestMapping(value = "/tasks/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" })
+    @RequestMapping( value = "/tasks/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
     public void getTaskJson( HttpServletResponse response, @PathVariable("category") String category ) throws IOException
     {
         List<Notification> notifications = new ArrayList<Notification>();
@@ -115,7 +117,7 @@ public class SystemController
         JacksonUtils.toJson( response.getOutputStream(), notifications );
     }
 
-    @RequestMapping(value = "/taskSummaries/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" })
+    @RequestMapping( value = "/taskSummaries/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
     public void getTaskSummaryJson( HttpServletResponse response, @PathVariable("category") String category ) throws IOException
     {
         ImportSummary importSummary = new ImportSummary();
@@ -132,5 +134,13 @@ public class SystemController
         }
 
         JacksonUtils.toJson( response.getOutputStream(), importSummary );
+    }
+    
+    @RequestMapping( value = "/info", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
+    public void getSystemInfo( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        SystemInfo info = new SystemInfo();
+        info.setContextPath( ContextUtils.getContextPath( request ) );
+        JacksonUtils.toJson( response.getOutputStream(), info );
     }
 }
