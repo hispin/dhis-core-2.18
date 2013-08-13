@@ -1,6 +1,6 @@
 Ext.onReady(function() {
 	
-	// Inject CSS
+	// css
 	css = 'table.pivot { \n font-family: arial,sans-serif,ubuntu,consolas; \n } \n';
 	css += '.td-nobreak { \n white-space: nowrap; \n } \n';
 	css += '.td-hidden { \n display: none; \n } \n';
@@ -32,7 +32,7 @@ Ext.onReady(function() {
 	
 	Ext.util.CSS.createStyleSheet(css);
 	
-	// Plugin	
+	// plugin	
 	PT.plugin = {};
 	
 	PT.plugin.getTable = function(config) {
@@ -65,11 +65,11 @@ Ext.onReady(function() {
 				centerRegion;
 				
 			setFavorite = function(layout) {
-				pt.util.pivot.createTable(layout, pt);
+				pt.engine.createTable(layout, pt);
 			};
 			
 			centerRegion = Ext.create('Ext.panel.Panel', {
-				renderTo: Ext.get(pt.el),
+				renderTo: Ext.get(pt.init.el),
 				bodyStyle: 'border: 0 none',
 				layout: 'fit'
 			});
@@ -82,26 +82,21 @@ Ext.onReady(function() {
 			
 		initialize = function() {
 			
-			// Validate config
 			if (!validateConfig(config)) {
 				return;
-			}
+			}			
 			
-			// Instance
-			pt = PT.core.getInstance();
-			
-			pt.baseUrl = config.url;
-			pt.el = config.el;
-
 			Ext.data.JsonP.request({
-				url: pt.baseUrl + pt.conf.finals.ajax.path_pivot + 'initialize.action',
+				url: config.url + '/dhis-web-pivot/initialize.action',
 				success: function(r) {
-					pt.init = PT.core.getInits(r, pt);
-					pt.viewport = createViewport();
-					pt.isPlugin = true;
+					pt = PT.core.getInstance(r);
+					
+					pt.init.el = config.el;
+					pt.isPlugin = true;					
+					pt.viewport = createViewport();					
 					
 					if (config.uid) {
-						pt.util.pivot.loadTable(config.uid);
+						pt.engine.loadTable(config.uid, pt);
 					}
 					else {
 						layout = pt.api.layout.Layout(config);
@@ -110,7 +105,7 @@ Ext.onReady(function() {
 							return;
 						}
 						
-						pt.util.pivot.createTable(layout, pt);
+						pt.engine.createTable(layout, pt);
 					}
 				}
 			});
