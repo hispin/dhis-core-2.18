@@ -40,9 +40,6 @@ $( document ).ready( function()
 //------------------------------------------------------------------------------
 
 dhis2.db.tmpl = {
-	openAddLink: "<li><a class='bold' href='javascript:dhis2.db.openAddDashboardForm()'>${i18n_add}</a></li><li>" +
-	             "<a class='bold' href='javascript:dhis2.db.openManageDashboardForm()'>${i18n_manage}</a></li>",
-	
 	dashboardLink: "<li id='dashboard-${id}'><a href='javascript:dhis2.db.renderDashboard( \"${id}\" )'>${name}</a></li>",
 	
 	moduleIntro: "<li><div class='dasboardIntro'>${i18n_click}</div></li>",
@@ -143,6 +140,20 @@ dhis2.db.dropItem = function( event, ui ) {
 	var position = dhis2.db.getIndex( destItemId );
 	
 	dhis2.db.moveItem( dhis2.db.currentItem, destItemId, position );
+}
+
+dhis2.db.scrollLeft = function()
+{
+	$( "#dashboardListWrapper" ).animate( {
+		scrollTop: "-=29"
+	}, 180 );
+}
+
+dhis2.db.scrollRight = function()
+{
+	$( "#dashboardListWrapper" ).animate( {
+		scrollTop: "+=29"
+	}, 180 );
 }
 
 dhis2.db.openAddDashboardForm = function()
@@ -246,7 +257,7 @@ dhis2.db.renderDashboardListLoadFirst = function()
 {
 	var $l = $( "#dashboardList" );
 	
-	$l.empty().append( $.tmpl( dhis2.db.tmpl.openAddLink, { "i18n_add": i18n_add_new, "i18n_manage": i18n_manage } ) );
+	$l.empty();
 	
 	$.getJSON( "../api/dashboards.json?paging=false&links=false", function( data )
 	{

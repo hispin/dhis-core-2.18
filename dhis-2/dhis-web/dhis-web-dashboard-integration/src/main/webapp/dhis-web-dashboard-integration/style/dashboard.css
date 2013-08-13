@@ -20,10 +20,18 @@
   margin-top: 6px;
 }
 
-#dashboardListContainer
+#dashboardControl
 {
   position: absolute;
   left: 20px;
+  margin-top: 48px;
+  border-right: 0;
+}
+
+#dashboardListContainer
+{
+  position: absolute;
+  left: 225px;
   right: 20px;
   margin-top: 48px;
 }
@@ -34,15 +42,23 @@
   width: auto;
   height: 29px;
   background-color: #f7f7f7;
-  border: 1px solid #d0d0d0;
-  border-radius: 3px;
   padding: 0;
+  overflow: hidden;
 }
 
-#dashboardList li
+.dashboardList
+{
+  background-color: #f7f7f7;
+  border-radius: 3px;
+  padding: 0;
+  border: 1px solid #d0d0d0;
+}
+
+.dashboardList li a
 {
   border-right: 1px solid #d0d0d0;
   padding: 7px 14px 6px 14px;
+  display: inline-block;
 }
 
 .dasboardIntro
