@@ -220,6 +220,13 @@ public class GenerateTabularReportAction
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
+    private Integer pageSize;
+
+    public void setPageSize( Integer pageSize )
+    {
+        this.pageSize = pageSize;
+    }
+
     private Grid grid;
 
     public Grid getGrid()
@@ -234,12 +241,12 @@ public class GenerateTabularReportAction
         return totalRecords;
     }
 
+    private Integer total;
+
     public void setTotal( Integer total )
     {
         this.total = total;
     }
-
-    private Integer total;
 
     public Integer getTotal()
     {
@@ -432,7 +439,7 @@ public class GenerateTabularReportAction
 
                 grid = programStageInstanceService.getTabularReport( anonynousEntryForm, programStage, columns,
                     organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, useCompletedEvents,
-                    accessPrivateInfo, displayOrgunitCode, getStartPos(), paging.getPageSize(), i18n );
+                    accessPrivateInfo, displayOrgunitCode, paging.getStartPos(), paging.getPageSize(), i18n );
             }
             // Download as Excel
             else
@@ -456,19 +463,8 @@ public class GenerateTabularReportAction
 
     private int getNumberOfPages( int totalRecord )
     {
-        int pageSize = this.getDefaultPageSize();
-        return (totalRecord % pageSize == 0) ? (totalRecord / pageSize) : (totalRecord / pageSize + 1);
-    }
-
-    public int getStartPos()
-    {
-        if ( currentPage == null )
-        {
-            return paging.getStartPos();
-        }
-        int startPos = currentPage <= 0 ? 0 : (currentPage - 1) * paging.getPageSize();
-        startPos = (startPos > total) ? total : startPos;
-        return startPos;
+        int size = ( pageSize != null ) ? pageSize : this.getDefaultPageSize();
+        return (totalRecord % size == 0) ? (totalRecord / size) : (totalRecord / size + 1);
     }
 
     private List<TabularReportColumn> getTableColumns()
@@ -490,9 +486,8 @@ public class GenerateTabularReportAction
                 column.setIdentifier( values[1] );
                 column.setHidden( Boolean.parseBoolean( values[2] ) );
 
-                column.setOperator( values.length == 5 ? TextUtils.lower( values[3] ) : null );
-                column.setQuery( values.length == 5 ? TextUtils.lower( values[4] ) : null );
-
+                column.setOperator( values.length > 3 ? TextUtils.lower( values[3] ) : TextUtils.EMPTY);
+                column.setQuery( values.length > 4 ? TextUtils.lower( values[4] ) : TextUtils.EMPTY );
                 if ( PREFIX_FIXED_ATTRIBUTE.equals( prefix ) )
                 {
                     column.setName( values[1] );
@@ -543,20 +538,20 @@ public class GenerateTabularReportAction
                     {
                         column.setDateType( true );
                     }
-                    
+
                     if ( useFormNameDataElement != null && useFormNameDataElement )
                     {
                         column.setName( dataElement.getFormNameFallback() );
                     }
                     else
                     {
-                        column.setName( dataElement.getDisplayName() );  
+                        column.setName( dataElement.getDisplayName() );
                     }
+                    
+                    columns.add( column );
                 }
 
-                columns.add( column );
-
-                index++;
+               index++;
             }
         }
 
