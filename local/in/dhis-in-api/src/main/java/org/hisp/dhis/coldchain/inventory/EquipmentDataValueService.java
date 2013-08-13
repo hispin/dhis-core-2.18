@@ -23,4 +23,6 @@ public interface EquipmentDataValueService
     
     EquipmentDataValue getEquipmentDataValue( EquipmentInstance equipmentInstance, Period period, DataElement dataElement );
     
+    Collection<EquipmentDataValue> getAllEquipmentDataValuesByEquipmentInstance( EquipmentInstance equipmentInstance );
+    
 }

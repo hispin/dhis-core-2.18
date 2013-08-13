@@ -1,10 +1,13 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
+import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,6 +50,19 @@ public class CatalogSelectAction implements Action
     {
         
         catalogTypes = new ArrayList<CatalogType>( catalogTypeService.getAllCatalogTypes() );
+        
+        Iterator<CatalogType> catalogTypesIterator = catalogTypes.iterator();
+        while( catalogTypesIterator.hasNext() )
+        {
+            CatalogType catalogType = catalogTypesIterator.next();
+            
+            if ( catalogType.getDescription().equalsIgnoreCase( "Vaccines" ) )
+            {
+                catalogTypesIterator.remove( );
+            }
+            
+        }
+        
         
         return SUCCESS;
     }

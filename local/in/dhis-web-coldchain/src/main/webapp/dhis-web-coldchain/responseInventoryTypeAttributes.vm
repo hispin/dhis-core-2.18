@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <inventory-type-attributes>
-	#foreach( $inventoryTypeAttribute in $inventoryTypeAttributes )	
+	#foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )	
 		<inventory-type-attribute>
-			<id>$inventoryTypeAttribute.id</id>
-			<name>$inventoryTypeAttribute.name</name>
+			<id>$inventoryTypeAttribute.inventoryTypeAttribute.id</id>
+			<name>$inventoryTypeAttribute.inventoryTypeAttribute.name</name>
 		</inventory-type-attribute>
 	#end
 </inventory-type-attributes>

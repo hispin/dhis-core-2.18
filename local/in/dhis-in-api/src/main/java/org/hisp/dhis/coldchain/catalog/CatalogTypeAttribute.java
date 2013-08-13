@@ -1,6 +1,5 @@
 package org.hisp.dhis.coldchain.catalog;
 
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseNameableObject;
@@ -33,11 +32,16 @@ public class CatalogTypeAttribute extends BaseNameableObject
     private boolean mandatory;
 
     private Integer noChars;
-
+    
+    /*
+     * True if this CatalogTypeAttribute is for display in list
+     */
+    private boolean display = false;
+ 
     private Set<CatalogTypeAttributeOption> attributeOptions;
     
     // -------------------------------------------------------------------------
-    // Constructors
+    // Default Constructors
     // -------------------------------------------------------------------------
 
     public CatalogTypeAttribute()
@@ -156,5 +160,14 @@ public class CatalogTypeAttribute extends BaseNameableObject
     {
         this.attributeOptions = attributeOptions;
     }
+    
+    public boolean isDisplay()
+    {
+        return display;
+    }
 
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
+    }
 }

@@ -96,5 +96,5 @@ public class HibernateCatalogTypeAttributeStore extends HibernateIdentifiableObj
 
         return session.createCriteria( CatalogTypeAttribute.class ).list();
         */
-    }
+    }    
 }

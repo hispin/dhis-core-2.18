@@ -9,7 +9,7 @@ import java.util.Map;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
-import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
+import org.hisp.dhis.coldchain.inventory.Equipment;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
@@ -17,12 +17,15 @@ import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
 import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 import org.hisp.dhis.coldchain.inventory.comparator.InventoryTypeAttributeOptionComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
 public class ShowAddEquipmentFormAction implements Action
 {
+    //private final String CLINIC = "Medical Clinic  Private";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -46,7 +49,15 @@ public class ShowAddEquipmentFormAction implements Action
     {
         this.catalogService = catalogService;
     }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -99,6 +110,14 @@ public class ShowAddEquipmentFormAction implements Action
     {
         return inventoryTypeAttributeOptionsMap;
     }
+    
+    private List<OrganisationUnit> orgUnitList;
+    
+    public List<OrganisationUnit> getOrgUnitList()
+    {
+        return orgUnitList;
+    }
+    
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -109,9 +128,24 @@ public class ShowAddEquipmentFormAction implements Action
         
         organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
         
+        orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() ) );
+        
+        OrganisationUnitGroup ouGroup = new OrganisationUnitGroup();
+        
+        if ( Equipment.HEALTHFACILITY != null )
+        {
+			List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY ) );
+            ouGroup = ouGroups.get( 0 );
+        }
+        
+        if ( ouGroup != null )
+        {
+            orgUnitList.retainAll( ouGroup.getMembers() );
+        }
+        
         inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( inventoryTypeId ) );
         
-        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( );
+        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
         for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
         {
             inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
@@ -122,7 +156,7 @@ public class ShowAddEquipmentFormAction implements Action
             List<InventoryTypeAttributeOption> inventoryTypeAttributeOptions = new ArrayList<InventoryTypeAttributeOption>();
             if( InventoryTypeAttribute.TYPE_COMBO.equalsIgnoreCase( inventoryTypeAttribute.getValueType() ) )
             {
-                System.out.println(" inside inventoryTypeAttribute.TYPE_COMBO ");
+                //System.out.println(" inside inventoryTypeAttribute.TYPE_COMBO ");
                 inventoryTypeAttributeOptions = new ArrayList<InventoryTypeAttributeOption>( inventoryTypeAttribute.getAttributeOptions() );
                 Collections.sort( inventoryTypeAttributeOptions, new InventoryTypeAttributeOptionComparator() );
                 inventoryTypeAttributeOptionsMap.put( inventoryTypeAttribute.getId(), inventoryTypeAttributeOptions );

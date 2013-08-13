@@ -17,4 +17,6 @@ public interface EquipmentStatusStore extends GenericStore<EquipmentStatus>
     //Collection<EquipmentStatus> getAllEquipmentStatus();
     
     Collection<EquipmentStatus> getEquipmentStatusHistory( EquipmentInstance equipmentInstance );
+    
+    Collection<EquipmentStatus> getEquipmentStatusHistoryDescOrder( EquipmentInstance equipmentInstance );
 }

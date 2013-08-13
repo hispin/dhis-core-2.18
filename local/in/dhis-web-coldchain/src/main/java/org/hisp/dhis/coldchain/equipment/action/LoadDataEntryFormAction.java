@@ -14,6 +14,8 @@ import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
@@ -96,11 +98,24 @@ public class LoadDataEntryFormAction implements Action
         return equipmentDataValueMap;
     }
     
+    private List<Section> sections;
+
+    public List<Section> getSections()
+    {
+        return sections;
+    }
+    
+    private DataSet dataSet;
+    
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
     
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
 
     public String execute()
     {
@@ -113,8 +128,12 @@ public class LoadDataEntryFormAction implements Action
         
         Period period = PeriodType.createPeriodExternalId( selectedPeriodId );
         
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        dataSet = dataSetService.getDataSet( dataSetId );
         
+       // System.out.println( " ======  :" + period.getId() + " -- " + dataSet.getId());
+        
+        
+        //dataSet.getShortName();
         //DataSet dataSet = dataSetService.getDataSet( dataSetId, true, false, false );
 
         dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
@@ -137,6 +156,14 @@ public class LoadDataEntryFormAction implements Action
                 equipmentDataValueMap.put( equipmentDataValue.getDataElement().getId(), equipmentDataValue.getValue() );
             }
         }
+        
+        sections = new ArrayList<Section>( dataSet.getSections() );
+        
+        //sections.size();
+        
+        Collections.sort( sections, new SectionOrderComparator() );
+        
+        
         
         //System.out.println( " Size of equipmentDataValues Map is  List is ======  :" + equipmentDataValueMap.size() );
         /*

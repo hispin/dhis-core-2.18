@@ -91,7 +91,7 @@ public class HibernateInventoryType_AttributeStore  implements InventoryType_Att
     }
     
     @Override
-    public InventoryType_Attribute getInventoryTypeAttributeForDisplay( InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, boolean display)
+    public InventoryType_Attribute getInventoryTypeAttributeForDisplay( InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, boolean display )
     {
         
         Session session = sessionFactory.getCurrentSession();
@@ -124,6 +124,7 @@ public class HibernateInventoryType_AttributeStore  implements InventoryType_Att
     {
         Session session = sessionFactory.getCurrentSession();
         
+        
         Criteria criteria = session.createCriteria( InventoryType_Attribute.class );
         criteria.add( Restrictions.eq( "inventoryType", inventoryType ) );
         criteria.add( Restrictions.eq( "display", display ) );
@@ -143,6 +144,8 @@ public class HibernateInventoryType_AttributeStore  implements InventoryType_Att
         criteria.setProjection( Projections.property( "inventoryTypeAttribute" ) );
         return criteria.list();
         
+        
+        
         /*
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz() );
         criteria.add( Restrictions.eq( "inventoryType", inventoryType ) );
@@ -150,6 +153,13 @@ public class HibernateInventoryType_AttributeStore  implements InventoryType_Att
         return criteria.list();
         */
     }
+    
+    
+ 
+    
+    
+    
+    
 }
 
 

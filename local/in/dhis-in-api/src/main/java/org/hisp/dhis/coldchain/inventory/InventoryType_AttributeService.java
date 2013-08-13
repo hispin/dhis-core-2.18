@@ -1,6 +1,10 @@
 package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
+import java.util.Map;
+
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Mithilesh Kumar Thakur
@@ -29,5 +33,9 @@ public interface InventoryType_AttributeService
     
     Collection<InventoryType_Attribute> getAllInventoryTypeAttributeForDisplay( InventoryType inventoryType, boolean display );
     
+    Map<String, String> getOrgUnitAttributeDataValue( String orgUnitIdsByComma, String orgUnitAttribIdsByComma );
     
+    Collection<OrganisationUnit> searchOrgUnitByAttributeValue( String orgUnitIdsByComma, Attribute attribute, String searchText );
+    
+    Map<Integer, String> getEquipmentCountByOrgUnitList( String orgUnitIdsByComma );
 }

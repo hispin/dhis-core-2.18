@@ -7,9 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.program.ProgramDataEntryService;
 
 /**
  * @author Mithilesh Kumar Thakur

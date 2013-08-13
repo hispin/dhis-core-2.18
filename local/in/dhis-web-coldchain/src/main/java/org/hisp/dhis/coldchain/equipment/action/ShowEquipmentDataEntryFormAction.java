@@ -158,7 +158,7 @@ public class ShowEquipmentDataEntryFormAction implements Action
         if( equipmentInstance.getCatalog()!= null )
         {
             catalogName = equipmentInstance.getCatalog().getName();
-            System.out.println( "Catalog Name is : -- " + equipmentInstance.getCatalog().getName() );
+            //System.out.println( "Catalog Name is : -- " + equipmentInstance.getCatalog().getName() );
         }
         
         else
@@ -168,6 +168,7 @@ public class ShowEquipmentDataEntryFormAction implements Action
         
         //equipmentInstance.getCatalog().getName();
         //equipmentInstance.getInventoryType().getDataSets();
+        
         organisationUnit = equipmentInstance.getOrganisationUnit();
         inventoryType =  equipmentInstance.getInventoryType();
         dataSetList = new ArrayList<DataSet>(  equipmentInstance.getInventoryType().getDataSets() );
@@ -213,12 +214,14 @@ public class ShowEquipmentDataEntryFormAction implements Action
         
         //inventryTypeAttributeAndValueMap.putAll( equipmentService.inventryTypeAttributeAndValue( equipmentInstance, inventoryTypeAttributeList ));
         
+        /*
         inventoryTypeAttributeNameValue = equipmentService.inventryTypeAttributeAndValue( equipmentInstance, inventoryTypeAttributeList );
         String[] tempNameValue = inventoryTypeAttributeNameValue.split( "#@#" ); 
        
         inventoryTypeAttributeName = tempNameValue[0];
         
         inventoryTypeAttributeValue = tempNameValue[1];
+        */
         
         //System.out.println( inventoryTypeAttributeName + "---" + inventoryTypeAttributeValue );
         
@@ -240,11 +243,6 @@ public class ShowEquipmentDataEntryFormAction implements Action
             
         }
        */
-        
-        
-        
-        
-        
         /*
         
         for( Equipment equipmentDetails : equipmentDetailsList )
@@ -261,31 +259,6 @@ public class ShowEquipmentDataEntryFormAction implements Action
         */
         
         // data entry parts
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         return SUCCESS;
     }

@@ -12,7 +12,9 @@ import org.hisp.dhis.coldchain.catalog.CatalogDataValueService;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
+import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroup;
 import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeGroupOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -90,6 +92,13 @@ implements Action
         return catalogTypeAttributeValueMap;
     }
     
+    private List<CatalogTypeAttributeGroup> catalogTypeAttributeGroups;
+    
+    public List<CatalogTypeAttributeGroup> getCatalogTypeAttributeGroups()
+    {
+        return catalogTypeAttributeGroups;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -123,6 +132,10 @@ implements Action
                     catalogTypeAttributeValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getValue() );
                 }
             }
+            
+            catalogTypeAttributeGroups = new ArrayList<CatalogTypeAttributeGroup>( catalogType.getCatalogTypeAttributeGroups() );
+            
+            Collections.sort( catalogTypeAttributeGroups, new CatalogTypeAttributeGroupOrderComparator() );
         }
 
         return SUCCESS;

@@ -4,17 +4,17 @@
     
     <table>     
 		<tr>
-			<td><label>$i18n.getString( "catalogType" )</label></td>
+			<td><label>$i18n.getString( "catalog" )</label></td>
 			<td style="padding-right:5px">
 				<!--<select id="catalogType" style="min-width:16em" onchange="getCatalogTypeChange( this.value )">-->
-				<select id="catalogType" style="min-width:16em" onchange="getCatalogTypeChange()">	
+				<select id="catalogType" style="min-width:20.5em" onchange="getCatalogTypeChange()">	
 					<!--<option value="0">$i18n.getString( "please_select_catalog_type" )</option>-->
 					#foreach( $catalogType in $catalogTypes )
 						<option value="$catalogType.id">$catalogType.name</option>
 					#end
 				</select>
 			</td>
-            <td style="padding-right:5px"><input type="button" id='listAllCatalogBtn'  value="$i18n.getString( 'list_all_catalogs' )" onclick='loadAllCatalogs();'></td>
+            <!--<td style="padding-right:5px"><input type="button" id='listAllCatalogBtn'  value="$i18n.getString( 'list_all_catalogs' )" style="width:8.2em" onclick='loadAllCatalogs();'></td>-->
             <td><span id='warnmessage' style='color:red'></span></td>
         </tr>
     </table>
@@ -25,18 +25,23 @@
         <tbody>
             <tr id='advSearchBox0'>        
                 <td id='searchingAttributeIdTD'>
-                  <select id="searchingAttributeId" name="searchingAttributeId" style="width:20.2em"  #if( $catalogTypeAttributes.size() == 0 ) disabled="disabled" #end >
+                  <select id="searchingAttributeId" name="searchingAttributeId" style="width:13em" onchange="getCatalogTypeAttributeOptions()" #if( $catalogTypeAttributes.size() == 0 ) disabled="disabled" #end >
                   </select> 
                   <em title="$i18n.getString( "required" )" class="required">*</em></label>
-                </td>       
+                </td>
+				<td id='searchingAttributeOptionIdTD'>
+                  <select id="searchingAttributeOptionId" name="searchingAttributeOptionId" style="width:13em" disabled="disabled" >
+                  </select> 
+                  <em title="$i18n.getString( "required" )" class="required">*</em></label>
+                </td>                      
                 <td>
-                    <input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="searchText" name="searchText" maxlength="30" style="width:10em" value="$!searchText">
                 </td>   
                 <td></td>
                 <td><input type="button" value='$i18n.getString( "search" )' style="width:8.2em" onclick='loadCatalogsByFilter();'></td>
                 <td>&nbsp;</td>
-                <td><input type="button" value='$i18n.getString( "add_new" )' style="width:8.2em" onclick="showAddCatalogForm();"></td>
+                <td><input type="button" value='$i18n.getString( "clear" )' style="width:8.2em" onclick='loadAllCatalogs();'></td>
+                <!--<td><input type="button" value='$i18n.getString( "add_new" )' style="width:8.2em" onclick="showAddCatalogForm();"></td>-->
             </tr>
         </tbody>
     </table>
@@ -58,6 +63,7 @@
 jQuery( document ).ready( function()
 {
 	getCatalogTypeChange();
+	//getCatalogTypeAttributeOptions();
 	loadAllCatalogs();
 });
 </script>

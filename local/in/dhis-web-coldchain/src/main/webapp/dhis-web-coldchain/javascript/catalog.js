@@ -231,14 +231,11 @@ function autocompletedField( idField )
 }
 
 
-
-
-
 //----------------------------------------------------------------
 //	Update Catalog
 //----------------------------------------------------------------
 /*
-unction showUpdateCatalogForm( catalogId )
+function showUpdateCatalogForm( catalogId )
 {
 	setInnerHTML('addCatalogFormDiv', '');
 				
@@ -281,7 +278,7 @@ unction showUpdateCatalogForm( catalogId )
 //function getCatalogTypeChange( catalogTypeId )
 function getCatalogTypeChange()
 {
-	
+	loadAllCatalogs();
 	var catalogTypeId = $( '#catalogType' ).val();
 	
 	if( catalogTypeId == "0" )
@@ -331,6 +328,67 @@ function populateCatalogTypeAttributes( data )
 }
 
 
+function getCatalogTypeAttributeOptions()
+{
+	loadAllCatalogs();
+	var catalogTypeAttributeId = $( '#searchingAttributeId' ).val();
+	
+	if( catalogTypeAttributeId == "0" )
+		return;
+	
+	showById('selectDiv');
+    disable('listAllCatalogBtn');
+    
+    hideById('searchCatalogDiv');
+    hideById('listCatalogDiv');
+    hideById('addEditCatalogFormDiv');
+	hideById('resultSearchDiv');
+	hideById('editEquipmentStatusDiv');
+	
+	jQuery('#loaderDiv').show();
+	
+	$.post("getCatalogTypeAttributeOption.action",
+			{
+				id:catalogTypeAttributeId
+			},
+			function(data)
+			{
+				showById('searchCatalogDiv');
+				enable('listAllCatalogBtn');
+				jQuery('#loaderDiv').hide();
+				populateCatalogTypeAttributeOption( data );
+			},'xml');
+}
+
+function populateCatalogTypeAttributeOption( data )
+{
+	var searchingAttributeOptionId = document.getElementById("searchingAttributeOptionId");
+	clearList( searchingAttributeOptionId );
+	
+	var catalogTypeAttribOption = data.getElementsByTagName("catalog-type-attribute-option");
+	
+	if( catalogTypeAttribOption.length == 0 )
+	{
+		document.getElementById("searchingAttributeOptionId").disabled=true;
+	}
+	else
+	{
+		document.getElementById("searchingAttributeOptionId").disabled=false;
+	}
+	//alert( catalogTypeAttribOption.length);
+    for ( var i = 0; i < catalogTypeAttribOption.length; i++ )
+    {
+        var id = catalogTypeAttribOption[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
+        var name = catalogTypeAttribOption[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+		
+        var option = document.createElement("option");
+        option.value = id;
+        option.text = name;
+        option.title = name;
+        searchingAttributeOptionId.add(option, null);
+    }    	
+}
+
 //----------------------------------------------------------------
 //On LoadAllCatalogs
 //----------------------------------------------------------------
@@ -339,6 +397,11 @@ function loadAllCatalogs()
 {
 	var catalogType = document.getElementById('catalogType');
 	var catalogTypeId = catalogType.options[ catalogType.selectedIndex ].value;
+	
+	//document.getElementById('searchText').value == "";
+	
+	document.getElementById("searchText").value = "";
+
 	
 	if( catalogTypeId == 0 )
 	{	
@@ -368,6 +431,7 @@ function loadAllCatalogs()
 	});
 	hideLoader();
 }
+
 
 //----------------------------------------------------------------
 //Load Equipments On Filter by catalogType Attribute

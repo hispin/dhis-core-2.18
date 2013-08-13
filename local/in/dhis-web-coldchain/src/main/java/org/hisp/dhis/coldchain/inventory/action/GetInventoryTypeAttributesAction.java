@@ -50,6 +50,7 @@ public class GetInventoryTypeAttributesAction implements Action
             System.out.println( "ValueType---" + inventoryTypeAttribute.getValueType() );
         }
         */
+        
         return SUCCESS;
     }
 

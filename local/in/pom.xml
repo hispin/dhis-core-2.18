@@ -5,7 +5,7 @@
   
   <groupId>org.hisp.dhis</groupId>
   <artifactId>dhis-local</artifactId>
-  <version>2.12-SNAPSHOT</version>
+  <version>2.13-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Local India Modules</name>
   
@@ -14,17 +14,19 @@
 	<module>dhis-in-api</module>
     <module>dhis-in-services</module>
 
-    <module>dhis-web-dashboard</module>
+	<module>dhis-web-coldchain</module>
+    <module>dhis-web-maintenance-ccem</module>
+
+    <!--<module>dhis-web-dashboard</module>
     <module>dhis-web-dataentry-linelisting</module>
-    <module>dhis-web-excelimport</module>
+    <module>dhis-web-excelimport</module>-->
    <!--<module>dhis-web-linelisting-in</module> -->
-    <module>dhis-web-maintenance-in</module>
+    <!--<module>dhis-web-maintenance-in</module>-->
 <!--  <module>dhis-web-mobile</module>
 	<module>dhis-web-reports-in</module>-->
-    <module>dhis-web-reports-national</module>
+    <!--<module>dhis-web-reports-national</module>
 	<module>dhis-web-survey</module> 
-	<module>dhis-web-alert</module>
-	<module>dhis-web-coldchain</module>
+	<module>dhis-web-alert</module>-->
 <!--<module>dhis-web-validationrule-in</module>-->
   </modules>
   

@@ -157,13 +157,16 @@ public class UploadCatalogImageAction implements Action
         
         Catalog catalog = catalogService.getCatalog( catalogID );
         
+        
         //File directory = null;
         
         String fileType = fileName.substring(fileName.indexOf( '.' )+1, fileName.length());
         
+        
         System.out.println( "File Name is : " + fileName +" File Type is : " +  fileType );
         
         System.out.println( "UPLOAD is  : " + upload );
+        
         
         
         if ( ! ( fileType.equalsIgnoreCase( "jpg" ) || fileType.equalsIgnoreCase( "png" ) || fileType.equalsIgnoreCase( "gif" ) ||  fileType.equalsIgnoreCase( "jpeg" ) ||  fileType.equalsIgnoreCase( "tiff" ) || fileType.equalsIgnoreCase( "bmp" ) ) )
@@ -180,8 +183,6 @@ public class UploadCatalogImageAction implements Action
         //catalog.setCatalogImage( fileName );
         catalogService.updateCatalog( catalog );
         
-        
-       
         
         String outputFilePath = System.getenv( "DHIS2_HOME" ) + File.separator +  Catalog.DEFAULT_CCEMFOLDER;
         

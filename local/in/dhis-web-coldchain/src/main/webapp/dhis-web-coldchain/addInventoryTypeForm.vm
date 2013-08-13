@@ -35,7 +35,7 @@
     </tr>
             
     <tr>
-        <td><label for="catalogType">$i18n.getString( "catalogType" )</label></td>
+        <td><label for="catalogType">$i18n.getString( "catalog" )</label></td>
         <td>
             <select id="catalogType" name="catalogType">
             	<option value="">[$i18n.getString( "please_select_catalog_type" )]</option>

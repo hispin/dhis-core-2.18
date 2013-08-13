@@ -1,4 +1,14 @@
 
+
+
+<h2>$i18n.getString( "equipment_manager" )</h2>
+<ul>
+	<li><a href="clinicInventories.action">$i18n.getString( "facility_inventories" )</a></li>
+	<li><a href="equipmentCatalogs.action">$i18n.getString( "equipment_catalogs" )</a></li>
+	<li><a href="vaccinesCatalogs.action">$i18n.getString( "vaccines" )</a></li>	
+</ul>
+
+<!--
 <h2>$i18n.getString( "ccem_setup" )</h2>
 <ul>
 	<li><a href="coldChainCatalogTypeAttribute.action">$i18n.getString( "catalogType_attribute" )</a></li>
@@ -15,10 +25,15 @@
 	<li><a href="catalog.action">$i18n.getString( "catalog" )</a></li>
 	<li><a href="enquipmentSelect.action">$i18n.getString( "equipment" )</a></li>	
 </ul>
-
+-->
 
 <h2>$i18n.getString( "ccem_reports" )</h2>
 <ul>
-	<li><a href="ccemReportsPage.action">$i18n.getString( "ccem_reports_page" )</a></li> 
-	<li><a href="jrxmlReportsPage.action">$i18n.getString( "jrxml_reports" )</a></li>   
+	<li><a href="jrxmlReportsPage.action">$i18n.getString( "ccem_reports_page" )</a></li>
+	<!--<li><a href="jrxmlReportsPage.action">$i18n.getString( "jrxml_reports" )</a></li>  -->  
+</ul>
+
+<h2>$i18n.getString( "ccem_setup" )</h2>
+<ul>
+	<li><a href="../dhis-web-maintenance-ccem/index.action">$i18n.getString( "ccem_setup" )</a></li>
 </ul>

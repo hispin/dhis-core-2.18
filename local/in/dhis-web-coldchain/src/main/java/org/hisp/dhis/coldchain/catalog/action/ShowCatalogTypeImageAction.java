@@ -27,8 +27,6 @@ public class ShowCatalogTypeImageAction implements Action
         this.catalogTypeService = catalogTypeService;
     }
     
-    
-    
     // -------------------------------------------------------------------------
     // Input/Output and Getter / Setter
     // -------------------------------------------------------------------------

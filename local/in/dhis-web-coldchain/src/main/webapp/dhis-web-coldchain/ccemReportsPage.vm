@@ -38,10 +38,10 @@
                     <tr style="background-color: #C0C0C0;"><td><strong>$i18n.getString( "ccem_reports_period_list" ):</strong></td></tr>
 					<tr>			
                         <td>
-							<strong><input type="radio" id="periodRadio" name="periodRadio" value="LAST_3_MONTHS" disabled /></strong>$i18n.getString( "last_3months" )
-							<strong><input type="radio" id="periodRadio" name="periodRadio" value="CURRENT_YEAR" disabled /></strong>$i18n.getString( "current_year" )<br/>
-							<strong><input type="radio" id="periodRadio" name="periodRadio" value="LAST_6_MONTHS" disabled /></strong>$i18n.getString( "last_6months" )							
-                            <strong><input type="radio" id="periodRadio" name="periodRadio" value="LAST_YEAR" disabled /></strong>$i18n.getString( "last_year" )
+							<strong><input type="radio" id="periodRadio" name="periodRadio" value="LAST_3_MONTHS" disabled /></strong><span id="last3months">$i18n.getString( "last_3months" )</span>
+							<strong><input type="radio" id="periodRadio" name="periodRadio" value="CURRENT_YEAR" disabled /></strong><span id="currentYear">$i18n.getString( "current_year" )</span><br/>
+							<strong><input type="radio" id="periodRadio" name="periodRadio" value="LAST_6_MONTHS" disabled /></strong><span id="last6months">$i18n.getString( "last_6months" )</span>						
+                            <strong><input type="radio" id="periodRadio" name="periodRadio" value="LAST_YEAR" disabled /></strong><span id="lastYear">$i18n.getString( "last_year" )</span>
                         </td>
                     </tr>
                     <tr>

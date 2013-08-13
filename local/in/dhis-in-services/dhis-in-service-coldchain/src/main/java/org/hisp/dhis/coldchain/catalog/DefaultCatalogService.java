@@ -7,11 +7,7 @@ import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
-import org.hisp.dhis.coldchain.inventory.InventoryType;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -184,6 +180,7 @@ public class DefaultCatalogService
         return catalogStore.getCatalogs( catalogType, min, max );
     }
 
+    /*
     public int getCountCatalog( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText )
     {
         return catalogStore.getCountCatalog( catalogType, catalogTypeAttribute, searchText );
@@ -193,6 +190,17 @@ public class DefaultCatalogService
         String searchText, int min, int max )
     {
         return catalogStore.getCatalogs( catalogType, catalogTypeAttribute, searchText, min, max );
+    }
+    */
+    
+    public int getCountCatalog( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, String searchBy )
+    {
+        return catalogStore.getCountCatalog( catalogType, catalogTypeAttribute, searchText, searchBy );
+    }
+
+    public Collection<Catalog> getCatalogs( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, String searchBy, int min, int max )
+    {
+        return catalogStore.getCatalogs( catalogType, catalogTypeAttribute, searchText, searchBy, min, max );
     }
 
 }

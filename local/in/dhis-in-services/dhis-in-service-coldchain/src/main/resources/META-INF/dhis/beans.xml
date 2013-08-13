@@ -151,6 +151,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="equipmentInstanceStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceStore"/>
 		<property name="equipmentService" ref="org.hisp.dhis.coldchain.inventory.EquipmentService"/>
 		<property name="equipmentStatusService" ref="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"/>
+		<property name="equipmentDataValueService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDataValueService"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"
         class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentStatusService">
@@ -195,6 +196,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.coldchain.inventory.DefaultInventoryType_AttributeService">
 			<property name="inventoryType_AttributeStore"
 	  		ref="org.hisp.dhis.coldchain.inventory.InventoryType_AttributeStore" />
+			<property name="jdbcTemplate" ref="jdbcTemplate"/>
+			<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   	</bean>	
 	<!--
 	<bean id="org.hisp.dhis.coldchain.inventory.InventoryType_AttributeStore"
@@ -216,8 +219,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.reports.DefaultCCEMReportManager">
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="databaseInfoProvider" ref="databaseInfoProvider" />
     </bean>	
 	
-	<!-- DeletionHandlers -->
 	
+	
+	<!-- CatalogTypeAttributeGroup -->
+    <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroupStore"
+        class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeAttributeGroupStore">
+        <property name="clazz" value="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroup" />
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
+    </bean>	
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroupService"
+        class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeAttributeGroupService">
+		<property name="catalogTypeAttributeGroupStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroupStore"/>
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+    </bean>		
+	
+	<!-- DeletionHandlers -->
 </beans>

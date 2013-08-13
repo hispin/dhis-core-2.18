@@ -34,12 +34,16 @@ public class GetOrganisationUnitAction implements Action
     {
         this.orgunitId = orgunitId;
     }
-
+    
+    public Integer getOrgunitId() {
+		return orgunitId;
+	}
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+	public String execute() throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 

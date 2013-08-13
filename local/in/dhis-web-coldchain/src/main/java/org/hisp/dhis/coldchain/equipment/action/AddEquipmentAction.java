@@ -13,6 +13,7 @@ import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.inventory.Equipment;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
+import org.hisp.dhis.coldchain.inventory.EquipmentStatus;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
@@ -45,25 +46,38 @@ public class AddEquipmentAction implements Action
     // -------------------------------------------------------------------------
     // Input/ Output
     // -------------------------------------------------------------------------
-    
+    /*
     private Integer ouId;
     
+    public void setOuId( Integer ouId )
+    {
+        this.ouId = ouId;
+    }
+    */
     private Integer itypeId;
     
     private String message;
     
+    /*
     private Boolean workingStatus = false;
     
     public void setWorkingStatus( Boolean workingStatus )
     {
         this.workingStatus = workingStatus;
     }
-
+    */
     private Integer catalog;
     
     public void setCatalog( Integer catalog )
     {
         this.catalog = catalog;
+    }
+    
+    private Integer organisationUnit;
+    
+    public void setOrganisationUnit( Integer organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
     }
 
     // -------------------------------------------------------------------------
@@ -72,7 +86,9 @@ public class AddEquipmentAction implements Action
     public String execute()
     {
 
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
+        //OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
+        
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnit );
         
         InventoryType inventoryType = inventoryTypeService.getInventoryType( itypeId );
         
@@ -90,7 +106,9 @@ public class AddEquipmentAction implements Action
         
         equipmentInstance.setInventoryType( inventoryType );
         equipmentInstance.setOrganisationUnit( orgUnit );
-        equipmentInstance.setWorking( workingStatus );
+        
+        //equipmentInstance.setWorking( workingStatus );
+        
         if( selCatalog != null )
         {
             equipmentInstance.setCatalog( selCatalog );
@@ -113,6 +131,7 @@ public class AddEquipmentAction implements Action
         Equipment equipmentDetails = null;
         for ( InventoryTypeAttribute attribute : inventoryTypeAttributes )
         {
+            
             value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
             if ( StringUtils.isNotBlank( value ) )
             {
@@ -122,11 +141,27 @@ public class AddEquipmentAction implements Action
 
                 if ( InventoryTypeAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                 {
+                    
                     InventoryTypeAttributeOption option = inventoryTypeAttributeOptionService.getInventoryTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
                     if ( option != null )
                     {
                         equipmentDetails.setInventoryTypeAttributeOption( option );
                         equipmentDetails.setValue( option.getName() );
+                        
+                        if ( EquipmentStatus.WORKING_STATUS.equalsIgnoreCase( attribute.getDescription() ) )
+                        {
+                            System.out.println( "Option ID is  : " + option.getId() + "Option Name is : "+option.getName() );
+                            
+                            if ( EquipmentStatus.STATUS_NOT_WORKING.equalsIgnoreCase( option.getName() ) )
+                            {
+                                equipmentInstance.setWorking( false );
+                            }
+                            else
+                            {
+                                equipmentInstance.setWorking( true );
+                            }
+                        }
+                        
                     }
                     else
                     {
@@ -197,11 +232,6 @@ public class AddEquipmentAction implements Action
     public void setCatalogService( CatalogService catalogService )
     {
         this.catalogService = catalogService;
-    }
-
-    public void setOuId( Integer ouId )
-    {
-        this.ouId = ouId;
     }
 
     public void setItypeId( Integer itypeId )

@@ -102,7 +102,14 @@ public class HibernateEquipmentDataValueStore implements EquipmentDataValueStore
         return (EquipmentDataValue) criteria.uniqueResult();
     }
     
-    
-    
+    @SuppressWarnings( "unchecked" )
+    public Collection<EquipmentDataValue> getAllEquipmentDataValuesByEquipmentInstance( EquipmentInstance equipmentInstance )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( EquipmentDataValue.class );
+        criteria.add( Restrictions.eq( "equipmentInstance", equipmentInstance ) );
+        return criteria.list();
+    }
     
 }

@@ -75,6 +75,13 @@ public class AddCatalogTypeAttributeAction implements Action
         this.attrOptions = attrOptions;
     }
     
+    private boolean display = false;
+    
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -88,6 +95,7 @@ public class AddCatalogTypeAttributeAction implements Action
         catalogTypeAttribute.setValueType( valueType );
         catalogTypeAttribute.setMandatory( mandatory );
         catalogTypeAttribute.setNoChars( noChars );
+        catalogTypeAttribute.setDisplay( display );
         
         catalogTypeAttributeService.addCatalogTypeAttribute( catalogTypeAttribute );
         
@@ -106,6 +114,5 @@ public class AddCatalogTypeAttributeAction implements Action
         
         return SUCCESS;
     }
-    
     
 }

@@ -4,7 +4,9 @@ import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,5 +137,34 @@ public class DefaultCatalogTypeService implements CatalogTypeService
     public Collection<CatalogType> getCatalogTypesBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, catalogTypeStore, name, first, max );
-    }    
+    }
+    /*
+    public CatalogTypeAttribute getCatalogTypeAttributeForDisplay( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, boolean display )
+    {
+        return catalogTypeStore.getCatalogTypeAttributeForDisplay( catalogType, catalogTypeAttribute, display );
+    }
+    
+    public Collection<CatalogTypeAttribute> getAllCatalogTypeAttributeForDisplay( CatalogType catalogType, boolean display )
+    {
+        return catalogTypeStore.getAllCatalogTypeAttributeForDisplay( catalogType, display );
+    }
+    */
+    
+    public Collection<CatalogTypeAttribute> getAllCatalogTypeAttributeForDisplay( CatalogType catalogType )
+    {
+        List<CatalogTypeAttribute> catalogTypeAttributeList = new ArrayList<CatalogTypeAttribute>();
+       
+        List<CatalogTypeAttribute> tempCatalogypeAttributeList = new ArrayList<CatalogTypeAttribute>( catalogType.getCatalogTypeAttributes() );
+        
+        for ( CatalogTypeAttribute cataogTypeAttribute : tempCatalogypeAttributeList )
+        {
+            if ( cataogTypeAttribute.isDisplay() )
+            {
+                catalogTypeAttributeList.add( cataogTypeAttribute );
+            }
+        }
+
+        return catalogTypeAttributeList;
+    }
+    
 }

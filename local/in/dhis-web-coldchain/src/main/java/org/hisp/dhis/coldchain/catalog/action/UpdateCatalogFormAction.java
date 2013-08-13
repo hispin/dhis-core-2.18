@@ -16,8 +16,10 @@ import org.hisp.dhis.coldchain.catalog.CatalogDataValueService;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
+import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeGroup;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeGroupOrderComparator;
 import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeOptionComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -44,7 +46,6 @@ implements Action
     }
     
     private CatalogDataValueService catalogDataValueService;
-    
     
     public void setCatalogDataValueService( CatalogDataValueService catalogDataValueService )
     {
@@ -145,6 +146,13 @@ implements Action
         return catalogTypeAttributesOptionsMap;
     }
     
+    private List<CatalogTypeAttributeGroup> catalogTypeAttributeGroups;
+    
+    public List<CatalogTypeAttributeGroup> getCatalogTypeAttributeGroups()
+    {
+        return catalogTypeAttributeGroups;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -154,6 +162,8 @@ implements Action
         
         catalog = catalogService.getCatalog( id );
         
+        //catalog.getCatalogType().getName();
+        
         catalogTypes = new ArrayList<CatalogType>( catalogTypeService.getAllCatalogTypes());
         
         
@@ -161,11 +171,11 @@ implements Action
         
         //String outputFilePath = System.getenv( "DHIS2_HOME" ) + File.separator +  Catalog.DEFAULT_CCEMFOLDER + File.separator + cataLogImage;
         
-        System.out.println( "Catalog Image Name is   :" + cataLogImage );
+       // System.out.println( "Catalog Image Name is   :" + cataLogImage );
         
         cataLogImage = System.getenv( "DHIS2_HOME" ) + File.separator +  Catalog.DEFAULT_CCEMFOLDER + File.separator + cataLogImage;
         
-        System.out.println( "Complete Path of Image  is   :" + cataLogImage );
+        //System.out.println( "Complete Path of Image  is   :" + cataLogImage );
         
         
         /*
@@ -293,6 +303,12 @@ implements Action
                 catalogTypeAttributesOptionsMap.put( catalogTypeAttribute.getId(), catalogTypeAttributesOptions );
             }
         }
+        
+        catalogTypeAttributeGroups = new ArrayList<CatalogTypeAttributeGroup>( catalogType.getCatalogTypeAttributeGroups() );
+        
+        Collections.sort( catalogTypeAttributeGroups, new CatalogTypeAttributeGroupOrderComparator() );
+        
+        
         
         return SUCCESS;
 

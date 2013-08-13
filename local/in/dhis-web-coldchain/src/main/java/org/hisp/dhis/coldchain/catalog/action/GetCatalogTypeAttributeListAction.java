@@ -55,7 +55,11 @@ public class GetCatalogTypeAttributeListAction implements Action
     {
         CatalogType catalogType = catalogTypeService.getCatalogType( id );
         
-        catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
+        //catalogTypeAttributeList = new ArrayList<CatalogTypeAttribute>( catalogTypeService.getAllCatalogTypeAttributeForDisplay( catalogType ) );
+        
+        catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>( catalogTypeService.getAllCatalogTypeAttributeForDisplay( catalogType ) );
+        
+        //catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
         
         return SUCCESS;
     }

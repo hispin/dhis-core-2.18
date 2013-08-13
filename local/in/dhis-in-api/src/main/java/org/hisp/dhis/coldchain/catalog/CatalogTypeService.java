@@ -27,4 +27,13 @@ public interface CatalogTypeService
     Collection<CatalogType> getCatalogTypesBetween( int first, int max );
     
     Collection<CatalogType> getCatalogTypesBetweenByName( String name, int first, int max );
+    
+    /*
+    //Methods For Display
+    CatalogTypeAttribute getCatalogTypeAttributeForDisplay( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, boolean display );
+    
+    Collection<CatalogTypeAttribute> getAllCatalogTypeAttributeForDisplay( CatalogType catalogType, boolean display );
+    */
+    Collection<CatalogTypeAttribute> getAllCatalogTypeAttributeForDisplay( CatalogType catalogType );
+    
 }

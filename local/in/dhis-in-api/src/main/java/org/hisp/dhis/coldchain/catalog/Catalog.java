@@ -1,8 +1,5 @@
 package org.hisp.dhis.coldchain.catalog;
 
-import java.io.File;
-import java.sql.Blob;
-
 import org.hisp.dhis.common.BaseNameableObject;
 //public class Catalog implements Serializable
 public class Catalog extends BaseNameableObject
@@ -13,6 +10,10 @@ public class Catalog extends BaseNameableObject
     private static final long serialVersionUID = -6551567526188061690L;
     
     public static final String DEFAULT_CCEMFOLDER = "CCEMIMAGES";
+    public static String PREFIX_CATALOG_NAME = "catalogname";
+    
+    public static final String NAME_FACILITY_TYPE = "Facility Type";
+    
     
     private int id;
     

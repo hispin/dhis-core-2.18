@@ -20,13 +20,27 @@
     
 </script>
 
-<h3>$i18n.getString( "equipmentstatus" )</h3>
+<!--<h3>$i18n.getString( "equipmentstatus" )</h3>-->
 
 <form id="equipmentStatusForm" name="equipmentStatusForm" method="post" >
 	<input type="hidden" id="equipmentInstanceId" name="equipmentInstanceId" value="$equipmentInstanceId" />
+	<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$equipmentInstance.getOrganisationUnit().getName()" />
+	<input type="hidden" id="equipmentCatalogName" name="equipmentCatalogName" value="$equipmentInstance.getCatalog().getName()" />
     <table>
-        <tr>
-            <td>$i18n.getString( "reporting_date" ) : </td>
+    	<tr bgcolor="#285C91">
+			<td colspan="2"><font color="#FFFFFF"><strong>Status Details</strong></font></td>
+		</tr>	
+    	<tr>
+            <td>Date of Status Change</td>
+            <td>
+				<input type="text" id="dateOfUpdation" name="dateOfUpdation" class="{validate:{required:true}}" />
+				<script type="text/javascript">
+                    datePickerValid( 'dateOfUpdation' );
+                </script>
+			</td>
+        </tr>	
+        <tr bgcolor="#CCCCCC">
+            <td>Date of Record Change</td>
             <td>
 				<input type="text" id="reportingDate" name="reportingDate" class="{validate:{required:true}}" />
 				<script type="text/javascript">
@@ -34,36 +48,42 @@
                 </script>
 			</td>
         </tr>   
-        <tr>
-            <td>$i18n.getString( "date_of_updation" ) : </td>
-            <td>
-				<input type="text" id="dateOfUpdation" name="dateOfUpdation" class="{validate:{required:true}}" />
-				<script type="text/javascript">
-                    datePickerValid( 'dateOfUpdation' );
-                </script>
-			</td>
-        </tr>
-        <tr>
+        <tr>Not working
             <td>$i18n.getString( "status" ) : </td>
             <td>
 				<select id="status" name="status" class="{validate:{required:true}}">
 					<option value="" >[$i18n.getString( "please_select" )]</option>
-					<option value="NOTWORKING" >$i18n.getString( "notworking" )</option>
-					<option value="UNDERREPAIR" >$i18n.getString( "under_repair" )</option>
-                    <option value="WORKING">$i18n.getString( "working" )</option>
+					<option value="Not working" >$i18n.getString( "notworking" )</option>
+					<option value="Working but needs maintenance" >$i18n.getString( "under_repair" )</option>
+                    <option value="Working well">$i18n.getString( "working" )</option>
 				</select>
 			</td>
         </tr>
-        <tr>
-            <td>$i18n.getString( "description" ) : </td>
+        <tr bgcolor="#CCCCCC">
+            <td>Notes</td>
             <td><textarea id="description" name="description" class="{validate:{required:true}}"></textarea></td>
         </tr>
+        <tr>
+        	<td>&nbsp;</td>
+        	<td>&nbsp;</td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+        	<td>
+        		<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="closewindow2();"/>&nbsp;&nbsp;
+        		&nbsp;&nbsp;<input type="submit"  value="$i18n.getString( 'Save' )" style="width:100px"/>
+	        </td>
+        </tr>
+        
 	</table>
-
-    <p>
-        <input type="submit" class="button" value="$i18n.getString( 'add' )"/>
-        <input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>
-		<!--<input type="button" class="button" value="$i18n.getString( 'show_history' )" onclick="showEquipmentStatusHistory( "$equipmentInstanceId" );" />-->
-    </p>
-
+	<!--
+	<div align="center">
+    	<p>
+       		<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="closewindow2();"/>
+        	<input type="submit"  value="$i18n.getString( 'Save' )" style="width:100px"/>
+        	<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>
+			<input type="button" class="button" value="$i18n.getString( 'show_history' )" onclick="showEquipmentStatusHistory( "$equipmentInstanceId" );" />
+    	</p>
+	</div>
+	-->
 </form>	

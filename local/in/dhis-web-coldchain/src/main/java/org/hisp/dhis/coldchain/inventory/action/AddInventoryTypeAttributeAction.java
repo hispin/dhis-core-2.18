@@ -83,8 +83,6 @@ public class AddInventoryTypeAttributeAction implements Action
     }
 
 
-
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

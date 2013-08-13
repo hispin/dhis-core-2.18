@@ -1,7 +1,9 @@
 package org.hisp.dhis.coldchain.catalog;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -14,6 +16,8 @@ public class CatalogType extends BaseNameableObject
      */
     private static final long serialVersionUID = -6551567526188061690L;
     
+    public static String PREFIX_CATALOG_TYPE = "Vaccines";
+    
     private int id;
     
     private String name;
@@ -25,7 +29,14 @@ public class CatalogType extends BaseNameableObject
     private DataEntryForm dataEntryForm;
     
     private String catalogTypeImage;
- 
+    
+    
+    /**
+     * The CatalogTypeAttributeGroup associated with the CatalogType.
+     */
+    private Set<CatalogTypeAttributeGroup> catalogTypeAttributeGroups = new HashSet<CatalogTypeAttributeGroup>();
+    
+
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -131,4 +142,15 @@ public class CatalogType extends BaseNameableObject
     {
         this.catalogTypeImage = catalogTypeImage;
     }
+    
+    public Set<CatalogTypeAttributeGroup> getCatalogTypeAttributeGroups()
+    {
+        return catalogTypeAttributeGroups;
+    }
+    public void setCatalogTypeAttributeGroups( Set<CatalogTypeAttributeGroup> catalogTypeAttributeGroups )
+    {
+        this.catalogTypeAttributeGroups = catalogTypeAttributeGroups;
+    }
+    
+    
 }

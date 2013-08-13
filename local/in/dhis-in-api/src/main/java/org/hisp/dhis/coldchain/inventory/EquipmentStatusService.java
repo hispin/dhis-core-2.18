@@ -16,4 +16,6 @@ public interface EquipmentStatusService
     
     Collection<EquipmentStatus> getEquipmentStatusHistory( EquipmentInstance equipmentInstance );
     
+    Collection<EquipmentStatus> getEquipmentStatusHistoryDescOrder( EquipmentInstance equipmentInstance );
+    
 }

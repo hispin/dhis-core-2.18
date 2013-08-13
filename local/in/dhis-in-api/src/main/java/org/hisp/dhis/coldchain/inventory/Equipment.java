@@ -9,6 +9,12 @@ public class Equipment implements Serializable
      */
     private static final long serialVersionUID = -6551567526188061690L;
     
+    public static String PREFIX_CATALOG_NAME = "catalogname";
+    
+    public static String PREFIX_ORGANISATIONUNIT_NAME = "orgunitname";
+    
+    public static final String HEALTHFACILITY = "Health Facility";
+    
     private EquipmentInstance equipmentInstance;
     
     private InventoryTypeAttribute inventoryTypeAttribute;

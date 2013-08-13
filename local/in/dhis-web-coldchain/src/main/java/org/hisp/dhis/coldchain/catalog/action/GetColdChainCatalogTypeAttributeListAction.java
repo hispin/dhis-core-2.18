@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService;
-import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 

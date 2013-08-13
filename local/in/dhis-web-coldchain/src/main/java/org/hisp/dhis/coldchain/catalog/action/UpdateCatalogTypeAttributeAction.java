@@ -90,7 +90,13 @@ public class UpdateCatalogTypeAttributeAction implements Action
     {
         this.noChars = noChars;
     }
-
+    
+    private boolean display = false;
+    
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -108,6 +114,8 @@ public class UpdateCatalogTypeAttributeAction implements Action
         catalogTypeAttribute.setMandatory( mandatory );
        
         catalogTypeAttribute.setNoChars( noChars );
+        catalogTypeAttribute.setDisplay( display );
+        
        
         HttpServletRequest request = ServletActionContext.getRequest();
         
