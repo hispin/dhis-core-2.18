@@ -1,0 +1,33 @@
+<script type="text/javascript">
+    function submitForm()
+    {
+        selectAllById( "catalogTypeAttributeGroups" );
+        document.getElementById( "sortCatalogTypeAttributeGroupsOrderForm" ).submit();
+    }
+</script>
+
+<h3>$i18n.getString( "CatalogType Attribute Groups Sort Order" )</h3>
+
+<form id="sortCatalogTypeAttributeGroupsOrderForm" action="saveCatalogTypeAttributeGroupsSortOrder.action" method="post">
+<input type="hidden" id="catalogTypeId" name="catalogTypeId" value="$catalogTypeId" />    
+<p>
+	<input type="button" value="$i18n.getString( 'move_up' )" style="width:100px" onclick="moveUpSelectedOption( 'catalogTypeAttributeGroups' )">
+	<input type="button" value="$i18n.getString( 'move_down' )" style="width:100px" onclick="moveDownSelectedOption( 'catalogTypeAttributeGroups' )">
+	<input type="button" value="$i18n.getString( 'move_to_top' )" style="width:100px" onclick="moveSelectedOptionToTop( 'catalogTypeAttributeGroups' )">
+	<input type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:93px" onclick="moveSelectedOptionToBottom( 'catalogTypeAttributeGroups' )">
+</p>
+
+<p>
+	<select multiple id="catalogTypeAttributeGroups" name="catalogTypeAttributeGroups" size="20" style="width:400px">
+		#foreach ( $catalogTypeAttributeGroup in $catalogTypeAttributeGroups )
+    		<option value="$catalogTypeAttributeGroup.id">$catalogTypeAttributeGroup.name</option>
+		#end
+	</select>
+</p>
+
+<p>
+	<input type="button" value="$i18n.getString( 'save' )" style="width:100px" onclick="submitForm()">&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location.href='showCalatogTypeAttributeGroupList.action?id=$catalogTypeId'" />
+</p>
+
+</form>

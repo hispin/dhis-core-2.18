@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<catalog-type-attribute-options>
+	#foreach( $option in $catalogTypeAttributeOption )	
+		<catalog-type-attribute-option>
+			<id>$option.id</id>
+			<name>$option.name</name>
+		</catalog-type-attribute-option>
+	#end
+</catalog-type-attribute-options>
