@@ -3,13 +3,6 @@
 #else
 	<table>
 		<tr>
-			<td class='text-column'>$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td id='searchInforTD'></td>
-		</tr>	
-		
-		<tr>
 			<td class='text-column'>$i18n.getString( "total_result" )</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>

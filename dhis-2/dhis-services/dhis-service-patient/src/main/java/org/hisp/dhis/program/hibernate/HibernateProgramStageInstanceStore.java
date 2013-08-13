@@ -1063,7 +1063,7 @@ public class HibernateProgramStageInstanceStore
         sql += where; // filters
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
         sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
-
+        
         return sql;
     }
 
