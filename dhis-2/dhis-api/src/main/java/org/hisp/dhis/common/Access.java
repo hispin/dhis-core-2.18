@@ -66,7 +66,7 @@ public class Access
     }
 
     @JsonProperty
-    @JacksonXmlProperty( localName = "manage", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "externalize", namespace = DxfNamespaces.DXF_2_0 )
     public boolean isExternalize()
     {
         return externalize;
