@@ -2,8 +2,6 @@ package org.hisp.dhis.sms.outbound;
 
 import java.util.List;
 
-import org.hisp.dhis.common.GenericStore;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -31,7 +29,7 @@ import org.hisp.dhis.common.GenericStore;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public interface OutboundSmsStore extends GenericStore<OutboundSms>
+public interface OutboundSmsStore
 {
     int saveOutboundSms( OutboundSms sms );
     
