@@ -152,6 +152,7 @@ Patient.listAll = function()
 	{
 		jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
 				listAll:false,
+				searchByUserOrgunits: false,
 				searchBySelectedOrgunit: true,
 				programIds: getFieldValue('programIdAddPatient'),
 				searchTexts: 'prg_' + getFieldValue('programIdAddPatient')

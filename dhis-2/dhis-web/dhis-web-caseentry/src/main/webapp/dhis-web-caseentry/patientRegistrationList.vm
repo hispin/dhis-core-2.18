@@ -31,7 +31,9 @@
 			#end
 			
 			#foreach( $identifierType in $identifierTypes)
+				#if($identifierType.personDisplayName=='true')
 				<col/>
+				#end
 			#end
 			#if( $identifierTypes.size()==0 )
 				<col/>       
@@ -58,10 +60,14 @@
 						#end
 					#end
 					
+					#set($personDisplayName='false')
 					#foreach( $identifierType in $identifierTypes)
-						<th>$encoder.htmlEncode($identifierType.displayName)</th>
+						#if($identifierType.personDisplayName=='true')
+							<th>$encoder.htmlEncode($identifierType.displayName)</th>
+							#set($personDisplayName='true')
+						#end
 					#end
-					#if( $identifierTypes.size()==0 )
+					#if( $personDisplayName=='false' )
 						<th>$i18n.getString( "full_name" )</th>          
 					#end
 					<th>$i18n.getString( "gender" )</th>
@@ -104,22 +110,33 @@
 					#end
 						
 					#set($value="")
-					#foreach( $identifier in $patient.identifiers)
-						#if($!identifier.identifierType)
-							#set($value=$identifier.identifier)
-						#else
-							#set($systemId=$identifier.identifier)
+					#foreach( $identifierType in $identifierTypes)
+						#set($value="")
+						#if($identifierType.personDisplayName=='true')
+							<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
+								#foreach( $identifier in $patient.identifiers)
+									#if($!identifier.identifierType.id==$identifierType.id)
+										#set($value=$identifier.identifier)
+									#else
+										#set($systemId=$identifier.identifier)
+									#end
+							#end
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
 						#end
 					#end
+					
 					#if($value=="")
 						#set($value=$!patient.getFullName())
 					#end
 					#if($value=="")
 						#set($value=$systemId)
 					#end
-					<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
-						<a>$encoder.htmlEncode($value)</a>
-					</td>
+					#if($personDisplayName=='false')
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
+					#end
 					
 					<td>#if($!patient.gender) $i18n.getString($!patient.gender) #end</td>
 					

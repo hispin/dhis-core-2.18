@@ -81,6 +81,7 @@ function listAllPatient()
 			listAll:false,
 			programIds:	getFieldValue("programIdAddPatient"),
 			searchTexts: "prg_" + getFieldValue("programIdAddPatient"),
+			searchByUserOrgunits: false,
 			searchBySelectedOrgunit:true
 		},
 		function()
