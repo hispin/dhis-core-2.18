@@ -128,4 +128,6 @@ PT.i18n = {
 	select_organisation_unit_level: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_level' ) , "'")',
 	totals: '$encoder.jsEscape($i18n.getString( 'totals' ) , "'")',
 	details: '$encoder.jsEscape($i18n.getString( 'details' ) , "'")',
+	select_boundaries_and_groups: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_groups' ) , "'")',
+	select_organisation_unit_groups: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_groups' ) , "'")'
 };

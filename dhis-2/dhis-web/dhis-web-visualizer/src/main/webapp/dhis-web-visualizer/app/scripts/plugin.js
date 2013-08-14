@@ -2,8 +2,8 @@ Ext.onReady(function() {
 
     // load trend line lib
     Ext.Loader.setConfig({enabled: true});
-    Ext.Loader.setPath('trendline', '../../dhis-web-commons/javascripts');
-    Ext.require('trendline.simpleRegression');
+    Ext.Loader.setPath('regression', '../../dhis-web-commons/javascripts');
+    Ext.require('regression.simpleRegression');
 
 	// chart tips css
 	var css = '.dv-chart-tips { \n border-radius: 2px; \n padding: 0px 3px 1px; \n border: 2px solid #777; \n background-color: #f1f1f1; \n } \n';
