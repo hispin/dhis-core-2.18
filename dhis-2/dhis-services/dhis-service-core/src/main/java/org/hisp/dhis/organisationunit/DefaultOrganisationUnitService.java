@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -351,67 +352,61 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level )
     {
-        if ( level < 1 )
-        {
-            throw new IllegalArgumentException( "Level must be greater than zero" );
-        }
-
+        Collection<OrganisationUnit> roots = getRootOrganisationUnits();
+        
         if ( level == 1 )
         {
-            return getRootOrganisationUnits();
+            return roots;
         }
 
-        Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
-
-        for ( OrganisationUnit root : organisationUnitStore.getRootOrganisationUnits() )
-        {
-            addOrganisationUnitChildrenAtLevel( root, 2, level, result );
-        }
-
-        return result;
+        return getOrganisationUnitsAtLevel( level, roots );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, OrganisationUnit parent )
     {
-        if ( level < 1 )
-        {
-            throw new IllegalArgumentException( "Level must be greater than zero" );
-        }
-
-        int parentLevel = parent.getOrganisationUnitLevel();
-
-        if ( level < parentLevel )
-        {
-            throw new IllegalArgumentException(
-                "Level must be greater than or equal to level of parent OrganisationUnit" );
-        }
-
-        Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
-
-        if ( level == parentLevel )
-        {
-            result.add( parent );
-        }
-        else
-        {
-            addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
-        }
-
-        for ( OrganisationUnit unit : result )
-        {
-            unit.setLevel( level );
-        }
+        Set<OrganisationUnit> set = new HashSet<OrganisationUnit>();
+        set.add( parent );
         
-        return result;
+        return getOrganisationUnitsAtLevel( level, parent != null ? set : null );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, Collection<OrganisationUnit> parents )
     {
+        if ( level < 1 )
+        {
+            throw new IllegalArgumentException( "Level must be greater than zero" );
+        }
+        
+        if ( parents == null )
+        {
+            parents = new HashSet<OrganisationUnit>( getRootOrganisationUnits() );
+        }
+        
         Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
         
         for ( OrganisationUnit parent : parents )
         {
-            result.addAll( getOrganisationUnitsAtLevel( level, parent ) );
+            int parentLevel = parent.getOrganisationUnitLevel();
+
+            if ( level < parentLevel )
+            {
+                throw new IllegalArgumentException(
+                    "Level must be greater than or equal to level of parent OrganisationUnit" );
+            }
+
+            if ( level == parentLevel )
+            {
+                result.add( parent );
+            }
+            else
+            {
+                addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
+            }
+
+            for ( OrganisationUnit unit : result )
+            {
+                unit.setLevel( level );
+            }
         }
         
         return result;
