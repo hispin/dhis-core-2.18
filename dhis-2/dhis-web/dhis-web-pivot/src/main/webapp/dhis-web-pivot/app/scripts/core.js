@@ -11,7 +11,7 @@ Ext.onReady( function() {
 	}
 
 	// mode
-	PT.isDebug = false;
+	PT.isDebug = true;
 	
 	// html5
 	PT.isSessionStorage = 'sessionStorage' in window && window['sessionStorage'] !== null;
@@ -470,8 +470,7 @@ Ext.onReady( function() {
 		}());
 
 		// init
-		(function() {
-			
+		(function() {			
 			// sort and extend dynamic dimensions
 			init.dimensions = util.array.sortObjectsByString(init.dimensions);
 
@@ -493,7 +492,6 @@ Ext.onReady( function() {
 
 		// api
 		(function() {
-
 			api.layout = {};
 			api.response = {};
 
@@ -1225,6 +1223,17 @@ Ext.onReady( function() {
 								
 								return false;
 							}(),
+							isGroup = function() {
+								if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
+									for (var i = 0; i < xOuDimension.ids.length; i++) {
+										if (xOuDimension.ids[i].substr(0,8) === 'OU_GROUP') {
+											return true;
+										}
+									}
+								}
+								
+								return false;
+							}(),
 							co = dimConf.category.objectName,
 							ou = dimConf.organisationUnit.objectName,
 							layout;
@@ -1245,7 +1254,7 @@ Ext.onReady( function() {
 										dim.items = dim.items.concat(pt.init.user.ouc);
 									}
 								}
-								else if (isLevel) {
+								else if (isLevel || isGroup) {
 									
 									// Items: get ids from metadata -> items
 									for (var j = 0, ids = Ext.clone(response.metaData[dim.dimensionName]); j < ids.length; j++) {
@@ -1644,15 +1653,18 @@ Ext.onReady( function() {
 					for (var key in uuidDimUuidsMap) {
 						if (uuidDimUuidsMap.hasOwnProperty(key)) {
 							valueElement = Ext.get(key);
-													
-							valueElement.dom.pt = pt;
-							valueElement.dom.setAttribute('onclick', 'this.pt.util.pivot.onMouseClick(this.id);');
+							
+							if (parseFloat(valueElement.dom.textContent)) {
+								valueElement.dom.pt = pt;
+								valueElement.dom.setAttribute('onclick', 'this.pt.engine.onMouseClick(this.id, this.pt);');
+							}
 						}
 					}
 				};						
 
 				getTableHtml = function(xColAxis, xRowAxis, xResponse) {
-					var getTdHtml,
+					var getRoundedHtmlValue,
+						getTdHtml,
 						doSubTotals,
 						doTotals,
 						getColAxisHtmlArray,
@@ -1662,7 +1674,6 @@ Ext.onReady( function() {
 						getGrandTotalHtmlArray,
 						getTotalHtmlArray,
 						getHtml,
-
 						getUniqueFactor = function(xAxis) {
 							if (!xAxis) {
 								return null;
@@ -1681,14 +1692,17 @@ Ext.onReady( function() {
 
 							return null;
 						},
-
 						colUniqueFactor = getUniqueFactor(xColAxis),
 						rowUniqueFactor = getUniqueFactor(xRowAxis),
-
 						valueItems = [],
 						valueObjects = [],
 						totalColObjects = [],
 						htmlArray;
+						
+					getRoundedHtmlValue = function(value, dec) {
+						dec = dec || 2;
+						return parseFloat(pt.util.number.roundIf(value, 2)).toString();
+					};
 
 					getTdHtml = function(config) {
 						var bgColor,
@@ -1723,7 +1737,7 @@ Ext.onReady( function() {
 						
 						colSpan = config.colSpan ? 'colspan="' + config.colSpan + '" ' : '';
 						rowSpan = config.rowSpan ? 'rowspan="' + config.rowSpan + '" ' : '';
-						htmlValue = config.collapsed ? '&nbsp;' : config.htmlValue || config.value || '&nbsp;';
+						htmlValue = config.collapsed ? '' : config.htmlValue || config.value || '';
 						htmlValue = config.type !== 'dimension' ? pt.util.number.pp(htmlValue, layout.digitGroupSeparator) : htmlValue;
 						displayDensity = conf.pivot.displayDensity[config.displayDensity] || conf.pivot.displayDensity[layout.displayDensity];
 						fontSize = conf.pivot.fontSize[config.fontSize] || conf.pivot.fontSize[layout.fontSize];
@@ -1923,7 +1937,7 @@ Ext.onReady( function() {
 								}
 								else {
 									value = 0;
-									htmlValue = '&nbsp;';
+									htmlValue = '';
 									empty = true;
 								}
 
@@ -1960,7 +1974,7 @@ Ext.onReady( function() {
 									type: 'valueTotal',
 									cls: 'pivot-value-total',
 									value: total,
-									htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(total, 2)).toString() : '&nbsp;',
+									htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(total) : '',
 									empty: !Ext.Array.contains(empty, false)
 								});
 
@@ -2025,7 +2039,7 @@ Ext.onReady( function() {
 											type: 'valueSubtotal',
 											cls: 'pivot-value-subtotal',
 											value: rowSubTotal,
-											htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(rowSubTotal, 2)).toString() : '&nbsp',
+											htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(rowSubTotal) : '',
 											empty: !Ext.Array.contains(empty, false),
 											collapsed: !Ext.Array.contains(collapsed, false)
 										});
@@ -2060,7 +2074,7 @@ Ext.onReady( function() {
 									obj.collapsed = Ext.Array.contains(collapsed, true);
 
 									if (i === 0) {
-										obj.htmlValue = '&nbsp;';
+										obj.htmlValue = '';
 										obj.colSpan = xRowAxis.dims;
 									}
 									else {
@@ -2107,7 +2121,7 @@ Ext.onReady( function() {
 										tmpValueObjects[tmpCount++].push({
 											type: item.type === 'value' ? 'valueSubtotal' : 'valueSubtotalTotal',
 											value: subTotal,
-											htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(subTotal, 2)).toString() : '&nbsp;',
+											htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(subTotal) : '',
 											collapsed: collapsed,
 											cls: item.type === 'value' ? 'pivot-value-subtotal' : 'pivot-value-subtotal-total'
 										});
@@ -2133,7 +2147,7 @@ Ext.onReady( function() {
 										type: 'valueTotalSubgrandtotal',
 										cls: 'pivot-value-total-subgrandtotal',
 										value: subTotal,
-										htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(subTotal, 2)).toString() : '&nbsp;',
+										htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(subTotal) : '',
 										empty: !Ext.Array.contains(empty, false),
 										collapsed: !Ext.Array.contains(collapsed, false)
 									});
@@ -2199,7 +2213,7 @@ Ext.onReady( function() {
 								totalColObjects.push({
 									type: 'valueTotal',
 									value: total,
-									htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(total, 2)).toString() : '&nbsp;',
+									htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(total) : '',
 									empty: !Ext.Array.contains(empty, false),
 									cls: 'pivot-value-total'
 								});
@@ -2224,7 +2238,7 @@ Ext.onReady( function() {
 										tmp.push({
 											type: 'valueTotalSubgrandtotal',
 											value: subTotal,
-											htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(subTotal, 2)).toString() : '&nbsp;',
+											htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(subTotal) : '',
 											empty: !Ext.Array.contains(empty, false),
 											cls: 'pivot-value-total-subgrandtotal'
 										});
@@ -2263,7 +2277,7 @@ Ext.onReady( function() {
 								a.push(getTdHtml({
 									type: 'valueGrandTotal',
 									cls: 'pivot-value-grandtotal',
-									htmlValue: Ext.Array.contains(empty, false) ? parseFloat(pt.util.number.roundIf(total, 2)).toString() : '&nbsp;',
+									htmlValue: Ext.Array.contains(empty, false) ? getRoundedHtmlValue(total) : '',
 									empty: !Ext.Array.contains(empty, false)
 								}));
 							}
@@ -2485,7 +2499,7 @@ Ext.onReady( function() {
 				}
 			};
 		
-			engine.onMouseHover = function(uuid, event, param) {
+			engine.onMouseHover = function(uuid, event, param, pt) {
 				var dimUuids;
 
 				if (param === 'chart') {			
@@ -2508,7 +2522,7 @@ Ext.onReady( function() {
 				}
 			};
 			
-			engine.onMouseClick = function(uuid) {
+			engine.onMouseClick = function(uuid, pt) {
 				var that = this,
 					uuids = pt.uuidDimUuidsMap[uuid],
 					layoutConfig = Ext.clone(pt.layout),
@@ -2557,11 +2571,11 @@ Ext.onReady( function() {
 							listeners: {
 								render: function() {
 									this.getEl().on('mouseover', function() {
-										that.onMouseHover(uuid, 'mouseover', 'chart');
+										that.onMouseHover(uuid, 'mouseover', 'chart', pt);
 									});
 
 									this.getEl().on('mouseout', function() {
-										that.onMouseHover(uuid, 'mouseout', 'chart');
+										that.onMouseHover(uuid, 'mouseout', 'chart', pt);
 									});
 								}
 							}

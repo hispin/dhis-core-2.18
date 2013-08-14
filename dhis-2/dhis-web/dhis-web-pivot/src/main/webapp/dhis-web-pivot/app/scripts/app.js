@@ -472,6 +472,18 @@ Ext.onReady( function() {
 					{property: 'name', direction: 'ASC'}
 				]
 			});
+			
+			store.organisationUnitGroup = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				proxy: {
+					type: 'ajax',
+					url: init.contextPath + conf.finals.ajax.path_api + conf.finals.ajax.organisationunitgroup_getall,
+					reader: {
+						type: 'json',
+						root: 'organisationUnitGroups'
+					}
+				}
+			});
 
 			pt.store = store;
 		}());
@@ -3498,10 +3510,23 @@ Ext.onReady( function() {
 			}
 		});
 		
+		organisationUnitGroup = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'pt-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 38,
+			valueField: 'id',
+			displayField: 'name',
+			emptyText: PT.i18n.select_organisation_unit_groups,
+			editable: false,
+			hidden: true,
+			store: pt.store.organisationUnitGroup
+		});
+		
 		toolMenu = Ext.create('Ext.menu.Menu', {
 			shadow: false,
 			showSeparator: false,
-			menuValue: 'explicit',
+			menuValue: 'orgunit',
 			clickHandler: function(param) {
 				var items = this.items.items;
 				this.menuValue = param;
@@ -3517,31 +3542,44 @@ Ext.onReady( function() {
 				}
 					
 				// Gui
-				if (param === 'explicit') {
+				if (param === 'orgunit') {
 					userOrganisationUnit.show();
 					userOrganisationUnitChildren.show();
 					organisationUnitLevel.hide();
+					organisationUnitGroup.hide();
 					
 					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
 						treePanel.disable();
 					}
 				}
-				else if (param === 'boundary') {
+				else if (param === 'level') {
 					userOrganisationUnit.hide();
 					userOrganisationUnitChildren.hide();
 					organisationUnitLevel.show();
+					organisationUnitGroup.hide();
+					treePanel.enable();
+				}
+				else if (param === 'group') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.show();
 					treePanel.enable();
 				}
 			},
 			items: [
 				{
 					text: PT.i18n.select_organisation_units + '&nbsp;&nbsp;',
-					param: 'explicit',
+					param: 'orgunit',
 					iconCls: 'pt-menu-item-selected'
 				},
 				{
 					text: PT.i18n.select_boundaries_and_level + '&nbsp;&nbsp;',
-					param: 'boundary'
+					param: 'level'
+				},
+				{
+					text: PT.i18n.select_boundaries_and_groups + '&nbsp;&nbsp;',
+					param: 'group'
 				}
 			],
 			listeners: {
@@ -3582,7 +3620,7 @@ Ext.onReady( function() {
 						items: []
 					};
 					
-				if (toolMenu.menuValue === 'explicit') {
+				if (toolMenu.menuValue === 'orgunit') {
 					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
 						if (userOrganisationUnit.getValue()) {
 							config.items.push({
@@ -3603,13 +3641,25 @@ Ext.onReady( function() {
 						}
 					}
 				}
-				else if (toolMenu.menuValue === 'boundary') {
+				else if (toolMenu.menuValue === 'level') {
 					for (var i = 0; i < r.length; i++) {
 						config.items.push({
 							id: 'LEVEL-' + organisationUnitLevel.getValue() + '-' + r[i].data.id,
 							name: ''
 						});
 					}
+				}
+				else if (toolMenu.menuValue === 'group') {
+					var groupIds = organisationUnitGroup.getValue();
+					
+					//for (var i = 0; i < r.length; i++) {
+						for (var j = 0; j < groupIds.length; j++) {
+							config.items.push({
+								id: 'OU_GROUP-' + groupIds[j],// + '-' + r[i].data.id,
+								name: ''
+							});
+						}
+					//}
 				}
 				
 				return config.items.length ? config : null;
@@ -3634,7 +3684,8 @@ Ext.onReady( function() {
 							items: [
 								userOrganisationUnit,
 								userOrganisationUnitChildren,
-								organisationUnitLevel
+								organisationUnitLevel,
+								organisationUnitGroup
 							]
 						}							
 					]
@@ -4447,11 +4498,11 @@ Ext.onReady( function() {
 			}
 			
 			if (level) {					
-				toolMenu.clickHandler('boundary');
+				toolMenu.clickHandler('level');
 				organisationUnitLevel.setValue(level);
 			}
 			else {
-				toolMenu.clickHandler('explicit');
+				toolMenu.clickHandler('orgunit');
 				userOrganisationUnit.setValue(isOu);
 				userOrganisationUnitChildren.setValue(isOuc);
 			}
