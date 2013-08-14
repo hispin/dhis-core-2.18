@@ -184,6 +184,13 @@ public class AddDataSetAction
         this.skipOffline = skipOffline;
     }
 
+    private boolean dataElementDecoration;
+
+    public void setDataElementDecoration( boolean dataElementDecoration )
+    {
+        this.dataElementDecoration = dataElementDecoration;
+    }
+
     private boolean renderAsTabs;
 
     public void setRenderAsTabs( boolean renderAsTabs )
@@ -256,6 +263,7 @@ public class AddDataSetAction
         dataSet.setValidCompleteOnly( validCompleteOnly );
         dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setSkipOffline( skipOffline );
+        dataSet.setDataElementDecoration( dataElementDecoration );		
         dataSet.setRenderAsTabs( renderAsTabs );
         dataSet.setRenderHorizontally( renderHorizontally );
 

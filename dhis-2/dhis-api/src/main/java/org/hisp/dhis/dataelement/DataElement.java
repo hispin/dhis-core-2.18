@@ -450,6 +450,16 @@ public class DataElement
 
         return expiryDays == Integer.MAX_VALUE ? NO_EXPIRY : expiryDays;
     }
+    
+    public boolean hasDescription()
+    {
+        return description != null && !description.trim().isEmpty();
+    }
+    
+    public boolean hasUrl()
+    {
+        return url != null && !url.trim().isEmpty();
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters

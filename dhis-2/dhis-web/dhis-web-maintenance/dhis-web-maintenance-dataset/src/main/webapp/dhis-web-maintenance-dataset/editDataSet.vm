@@ -164,6 +164,15 @@
         </td>
       </tr>
       <tr>
+        <td><label for="dataElementDecoration">$i18n.getString( "dataelementdecoration" )</label></td>
+        <td>
+          <select id="dataElementDecoration" name="dataElementDecoration">
+            <option value="false">$i18n.getString( "no" )</option>
+            <option value="true"#if( $dataSet.dataElementDecoration == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
+          </select>
+        </td>
+      </tr>      
+      <tr>
         <td><label for="renderAsTabs">$i18n.getString( "render_as_tabs" )</label></td>
         <td>
           <select id="renderAsTabs" name="renderAsTabs">

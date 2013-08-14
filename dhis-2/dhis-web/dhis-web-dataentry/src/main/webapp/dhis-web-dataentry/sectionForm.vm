@@ -1,6 +1,7 @@
 
 #set( $tabIndex = 1 )
 #set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
+#set( $decoration = $dataSet.dataElementDecoration )
 
 #if( $dataSet.renderAsTabs )
     <div id="tabs">
@@ -78,7 +79,10 @@
     #end
     #set( $count = $count + 1 )
     <tr>
-    <td id="${dataElement.uid}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end><span id="${dataElement.uid}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
+    <td id="${dataElement.uid}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end>
+    <span id="${dataElement.uid}-dataelement" #if( $decoration && $dataElement.hasDescription() ) title="$!{dataElement.description}"#end >
+    #if( $decoration && $!dataElement.hasUrl() )<a href="${dataElement.url}" target="_blank">#end${encoder.htmlEncode( $dataElement.getFormNameFallback() )}#if( $decoration && $dataElement.hasUrl() )</a>#end
+    </span></td>    
     #foreach( $optionCombo in $optionCombos )
     #set( $dataEntryId = "${dataElement.uid}-${optionCombo.uid}-val" )
     #set( $commentId = "${dataElement.uid}-${optionCombo.uid}-comment" )
