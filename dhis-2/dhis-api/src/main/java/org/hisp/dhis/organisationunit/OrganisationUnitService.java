@@ -272,6 +272,7 @@ public interface OrganisationUnitService
     /**
      * Returns all OrganisationUnits which are children of the given unit and are
      * at the given hierarchical level. The root OrganisationUnits are at level 1.
+     * If parent is null, then all OrganisationUnits at the given level are returned.
      *
      * @param level  the hierarchical level.
      * @param parent the parent unit.
@@ -284,6 +285,7 @@ public interface OrganisationUnitService
     /**
      * Returns all OrganisationUnits which are children of the given units and are
      * at the given hierarchical level. The root OrganisationUnits are at level 1.
+     * If parents is null, then all OrganisationUnits at the given level are returned.
      *
      * @param level  the hierarchical level.
      * @param parent the parent units.

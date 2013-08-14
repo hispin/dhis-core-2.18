@@ -37,6 +37,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.chart.Chart;
@@ -110,6 +112,8 @@ import org.xml.sax.InputSource;
  */
 public abstract class DhisConvenienceTest
 {
+    protected static final Log log = LogFactory.getLog( DhisConvenienceTest.class );
+    
     protected static final String BASE_UID = "123456789a";
     protected static final String BASE_IN_UID = "inabcdefgh";
     protected static final String BASE_DE_UID = "deabcdefgh";
@@ -252,6 +256,7 @@ public abstract class DhisConvenienceTest
 
         if ( actual.size() != collection.size() )
         {
+            log.warn( "Actual collection has different size compared to reference collection: " + actual.size() + " / " + collection.size() );
             return false;
         }
 
@@ -259,6 +264,7 @@ public abstract class DhisConvenienceTest
         {
             if ( !collection.contains( object ) )
             {
+                log.warn( "Object in actual collection not part of reference collection: " + object );
                 return false;
             }
         }
@@ -267,6 +273,7 @@ public abstract class DhisConvenienceTest
         {
             if ( !actual.contains( object ) )
             {
+                log.warn( "Object in reference collection not part of actual collection: " + object );
                 return false;
             }
         }
@@ -995,6 +1002,7 @@ public abstract class DhisConvenienceTest
         
         return constant;
     }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -1041,7 +1049,7 @@ public abstract class DhisConvenienceTest
     }
 
     // -------------------------------------------------------------------------
-    // Allow xpath testing of dxf2
+    // Allow xpath testing of DXF2
     // -------------------------------------------------------------------------
 
     protected String xpathTest( String xpathString, String xml )
@@ -1052,10 +1060,9 @@ public abstract class DhisConvenienceTest
         XPath xpath = factory.newXPath();
         xpath.setNamespaceContext( new Dxf2NamespaceResolver() );
 
-        return (String) xpath.evaluate( xpathString, source );
+        return xpath.evaluate( xpathString, source );
     }
 
-    // we need this to resolve dxf2 namespace in xpath
     protected class Dxf2NamespaceResolver
         implements NamespaceContext
     {
@@ -1083,20 +1090,13 @@ public abstract class DhisConvenienceTest
         @Override
         public String getPrefix( String namespaceURI )
         {
-            // Not needed in this context.
             return null;
         }
 
         @Override
-        public Iterator getPrefixes( String namespaceURI )
+        public Iterator<?> getPrefixes( String namespaceURI )
         {
-            // Not needed in this context.
             return null;
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Validation Criteria
-    // -------------------------------------------------------------------------
-
 }
