@@ -105,6 +105,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "fieldcombinationrequired" );
         statementBuilder.setColumn( "validcompleteonly" );
         statementBuilder.setColumn( "skipoffline" );
+        statementBuilder.setColumn( "dataelementdecoration" );
         statementBuilder.setColumn( "renderastabs" );
         statementBuilder.setColumn( "renderhorizontally" );
     }
@@ -126,6 +127,7 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
         statementBuilder.setValue( dataSet.isValidCompleteOnly() );
         statementBuilder.setValue( dataSet.isSkipOffline() );
+        statementBuilder.setValue( dataSet.isDataElementDecoration() );
         statementBuilder.setValue( dataSet.isRenderAsTabs() );
         statementBuilder.setValue( dataSet.isRenderHorizontally() );
     }

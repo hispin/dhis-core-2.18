@@ -233,6 +233,7 @@ public class LoadFormAction
     public String execute()
         throws Exception
     {
+                
         dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( dataSet, null,
@@ -378,7 +379,7 @@ public class LoadFormAction
         {
             getOtherDataEntryForm( dataElements, dataSet );
         }
-
+        
         return displayMode;
     }
 

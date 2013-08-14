@@ -187,6 +187,11 @@ public class DataSet
      */
     private boolean skipOffline;
 
+   /**
+     * Property indicating whether it should enable data elements decoration in forms.
+     */
+    private boolean dataElementDecoration;
+
     /**
      * Render default and section forms with tabs instead of multiple sections in one page
      */
@@ -712,6 +717,19 @@ public class DataSet
         this.renderHorizontally = renderHorizontally;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isDataElementDecoration()
+    {
+        return dataElementDecoration;
+    }
+
+    public void setDataElementDecoration( boolean dataElementDecoration )
+    {
+        this.dataElementDecoration = dataElementDecoration;
+    }    
+	
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -735,6 +753,8 @@ public class DataSet
             renderAsTabs = dataSet.isRenderAsTabs();
             renderHorizontally = dataSet.isRenderHorizontally();
 
+            dataElementDecoration = dataSet.isDataElementDecoration();
+ 
             removeAllDataElements();
 
             for ( DataElement dataElement : dataSet.getDataElements() )
