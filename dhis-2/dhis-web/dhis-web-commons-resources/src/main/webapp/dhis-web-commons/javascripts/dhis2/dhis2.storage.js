@@ -29,50 +29,52 @@
 
 dhis2.util.namespace( 'dhis2.storage' );
 
-dhis2.storage.Store = function ( options ) {
+dhis2.storage.Store = function( options ) {
     var self = this;
 
-    if ( !(this instanceof dhis2.storage.Store) ) {
+    if( !(this instanceof dhis2.storage.Store) ) {
         return new dhis2.storage.Store( options );
     }
 
-    if ( typeof options.name === 'undefined' ) {
+    if( typeof options.name === 'undefined' ) {
         throw Error( 'Constructor needs a valid database name as a argument' );
     }
 
-    if ( typeof options.objectStores === 'undefined' || !$.isArray( options.objectStores ) || options.objectStores.length == 0 ) {
+    if( typeof options.objectStores === 'undefined' || !$.isArray( options.objectStores ) || options.objectStores.length == 0 ) {
         throw Error( 'Constructor needs a valid objectStores array as a argument' );
     }
 
     options.keyPath = options.keyPath || 'id';
     options.version = options.version || 1;
 
-    if ( !JSON ) throw 'JSON unavailable! Include http://www.json.org/json2.js to fix.';
+    if( !JSON ) throw 'JSON unavailable! Include http://www.json.org/json2.js to fix.';
 
     var objectStores = {};
     var ObjectStoreAdapters = {};
     var defaultAdapterName;
 
-    for ( var i = 0, len = options.adapters.length; i < len; i++ ) {
-        if ( dhis2.storage.Store.verifyAdapter( options.adapters[i] ) && options.adapters[i].isSupported() ) {
-            ObjectStoreAdapters[options.adapters[i].adapterName] = options.adapters[i];
-            defaultAdapterName = options.adapters[i].adapterName;
-            objectStores[defaultAdapterName] = [];
-            break;
+    if( typeof options.adapters !== 'undefined' ) {
+        for( var i = 0, len = options.adapters.length; i < len; i++ ) {
+            if( dhis2.storage.Store.verifyAdapter( options.adapters[i] ) && options.adapters[i].isSupported() ) {
+                ObjectStoreAdapters[options.adapters[i].adapterName] = options.adapters[i];
+                defaultAdapterName = options.adapters[i].adapterName;
+                objectStores[defaultAdapterName] = [];
+                break;
+            }
         }
     }
 
-    $.each( options.objectStores, function ( idx, item ) {
-        if ( typeof item === 'object' ) {
-            if ( typeof item.adapters !== 'undefined' && typeof item.name !== 'undefined' ) {
-                for ( var i = 0, len = item.adapters.length; i < len; i++ ) {
-                    if ( dhis2.storage.Store.verifyAdapter( item.adapters[i] ) && item.adapters[i].isSupported() ) {
+    $.each( options.objectStores, function( idx, item ) {
+        if( typeof item === 'object' ) {
+            if( typeof item.adapters !== 'undefined' && typeof item.name !== 'undefined' ) {
+                for( var i = 0, len = item.adapters.length; i < len; i++ ) {
+                    if( dhis2.storage.Store.verifyAdapter( item.adapters[i] ) && item.adapters[i].isSupported() ) {
                         ObjectStoreAdapters[item.adapters[i].adapterName] = item.adapters[i];
 
-                        if ( defaultAdapterName === item.adapters[i].adapterName ) {
+                        if( defaultAdapterName === item.adapters[i].adapterName ) {
                             objectStores[defaultAdapterName].push( item.name );
                         } else {
-                            if ( typeof objectStores[item.adapters[i].adapterName] === 'undefined' ) {
+                            if( typeof objectStores[item.adapters[i].adapterName] === 'undefined' ) {
                                 objectStores[item.adapters[i].adapterName] = [];
                             }
 
@@ -87,19 +89,19 @@ dhis2.storage.Store = function ( options ) {
         }
     } );
 
-    if ( Object.keys( ObjectStoreAdapters ).length == 0 ) throw 'Could not find a valid adapter.';
+    if( Object.keys( ObjectStoreAdapters ).length == 0 ) throw 'Could not find a valid adapter.';
 
     var objectStoreAdapters = {};
 
     // simple map from objectStoreName => adapter
     var objectStoreCache = {};
 
-    $.each( Object.keys( ObjectStoreAdapters ), function ( idx, item ) {
+    $.each( Object.keys( ObjectStoreAdapters ), function( idx, item ) {
         options.objectStores = objectStores[item];
 
         objectStoreAdapters[item] = new ObjectStoreAdapters[item]( options );
 
-        $.each( options.objectStores, function ( idx, objectStore ) {
+        $.each( options.objectStores, function( idx, objectStore ) {
             objectStoreCache[objectStore] = objectStoreAdapters[item];
         } );
     } );
@@ -111,31 +113,31 @@ dhis2.storage.Store = function ( options ) {
 
     var adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
 
-    $.each( adapterMethods, function ( idx, item ) {
+    $.each( adapterMethods, function( idx, item ) {
         Object.defineProperty( self, item, {
-            value: function () {
+            value: function() {
                 // if arguments is empty, apply to all objectStore adapters also
-                if ( arguments.length == 0 ) {
+                if( arguments.length == 0 ) {
                     // TODO add deferred chain
 
                     var deferred1 = $.Deferred();
                     var deferred2 = $.Deferred();
                     var promise = deferred2.promise();
 
-                    $.each( self.objectStoreAdapters, function ( idx, adapter ) {
-                        promise = promise.then( function () {
+                    $.each( self.objectStoreAdapters, function( idx, adapter ) {
+                        promise = promise.then( function() {
                             return adapter[item].apply( adapter, arguments );
                         } );
                     } );
 
-                    promise = promise.then( function () {
+                    promise = promise.then( function() {
                         deferred1.resolveWith( self );
                     } );
 
                     deferred2.resolve();
 
                     return deferred1.promise();
-                } else if ( typeof arguments[0] === 'string' && typeof objectStoreCache[arguments[0]] !== 'undefined' ) {
+                } else if( typeof arguments[0] === 'string' && typeof objectStoreCache[arguments[0]] !== 'undefined' ) {
                     var adapter = objectStoreCache[arguments[0]];
                     return adapter[item].apply( adapter, arguments );
                 }
@@ -149,18 +151,18 @@ dhis2.storage.Store = function ( options ) {
 
 dhis2.storage.Store.adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
 
-dhis2.storage.Store.verifyAdapter = function ( Adapter ) {
+dhis2.storage.Store.verifyAdapter = function( Adapter ) {
     var failed = [];
 
-    if ( typeof Adapter === 'undefined' ) {
+    if( typeof Adapter === 'undefined' ) {
         return false;
     }
 
-    $.each( dhis2.storage.Store.adapterMethods, function ( idx, item ) {
+    $.each( dhis2.storage.Store.adapterMethods, function( idx, item ) {
         // should probably go up the prototype chain here
         var descriptor = Object.getOwnPropertyDescriptor( Adapter, item ) || Object.getOwnPropertyDescriptor( Adapter.prototype, item );
 
-        if ( typeof descriptor.value !== 'function' ) {
+        if( typeof descriptor.value !== 'function' ) {
             failed.push( item );
         }
     } );
