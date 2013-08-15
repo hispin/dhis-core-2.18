@@ -227,6 +227,18 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getLeafOrganisationUnits( int id );
 
     /**
+     * Returns the intersection of the members of the given OrganisationUnitGroup
+     * and the OrganisationUnits which are children of the given collection of
+     * parents in the hierarchy. If the given parents are null or empty, the
+     * members of the group are returned.
+     * 
+     * @param group the OrganisationUnitGroup.
+     * @param parents the collection of OrganisationUnit parents in the hierarchy.
+     * @return collection of OrganisationUnits.
+     */
+    Collection<OrganisationUnit> getOrganisationUnits( OrganisationUnitGroup group, Collection<OrganisationUnit> parents );
+    
+    /**
      * Returns an OrganisationUnit and all its children.
      *
      * @param uid the uid of the parent OrganisationUnit in the subtree.
@@ -235,6 +247,16 @@ public interface OrganisationUnitService
      *         OrganisationUnits match.
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid );
+
+    /**
+     * Returns the OrganisationUnits and all their children.
+     *
+     * @param uids the uids of the parent OrganisationUnits.
+     * @return a collection containing the OrganisationUnit with the given id
+     *         and all its children, or an empty collection if no
+     *         OrganisationUnits match.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> uids );
     
     /**
      * Returns an OrganisationUnit and all its children.

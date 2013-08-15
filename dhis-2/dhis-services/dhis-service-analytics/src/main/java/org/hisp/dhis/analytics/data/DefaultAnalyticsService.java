@@ -82,6 +82,7 @@ import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
@@ -90,6 +91,7 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -123,6 +125,7 @@ import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.Timer;
+import org.hisp.dhis.system.util.UniqueArrayList;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -800,7 +803,9 @@ public class DefaultAnalyticsService
         {
             User user = currentUserService.getCurrentUser();
             
-            List<NameableObject> ous = new ArrayList<NameableObject>();
+            List<NameableObject> ous = new UniqueArrayList<NameableObject>();
+            List<Integer> levels = new UniqueArrayList<Integer>();
+            List<OrganisationUnitGroup> groups = new UniqueArrayList<OrganisationUnitGroup>();
             
             for ( String ou : items )
             {
@@ -816,43 +821,63 @@ public class DefaultAnalyticsService
                 {
                     int level = DataQueryParams.getLevelFromLevelParam( ou );
                     
-                    String boundaryId = DataQueryParams.getBoundaryFromLevelParam( ou );
-                    
-                    OrganisationUnit boundary = null;
-                    
-                    if ( level > 0 && boundaryId != null && ( boundary = organisationUnitService.getOrganisationUnit( boundaryId ) ) != null )
-                    {                        
-                        ous.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level, boundary ) );
+                    if ( level > 0 )
+                    {
+                        levels.add( level );
                     }
                 }
                 else if ( ou != null && ou.startsWith( KEY_ORGUNIT_GROUP ) )
                 {
                     String uid = DataQueryParams.getUidFromOrgUnitGroupParam( ou );
                     
-                    OrganisationUnitGroup group = null;
+                    OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
                     
-                    if ( uid != null && ( group = organisationUnitGroupService.getOrganisationUnitGroup( uid ) ) != null )
+                    if ( uid != null )
                     {
-                        ous.addAll( group.getMembers() );
+                        groups.add( group );
                     }
                 }
-                else
+                else if ( CodeGenerator.isValidCode( ou ) )
                 {
                     OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
                     
-                    if ( unit != null && !ous.contains( unit ) )
+                    if ( unit != null )
                     {
                         ous.add( unit );
                     }
                 }
             }
             
-            if ( ous.isEmpty() )
+            List<NameableObject> orgUnits = new UniqueArrayList<NameableObject>();
+            List<OrganisationUnit> ousList = NameableObjectUtils.asTypedList( ous );
+            
+            if ( !levels.isEmpty() )
+            {
+                for ( Integer level : levels )
+                {
+                    orgUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level, ousList ) );
+                }
+            }
+            
+            if ( !groups.isEmpty() )
+            {
+                for ( OrganisationUnitGroup group : groups )
+                {                    
+                    orgUnits.addAll( organisationUnitService.getOrganisationUnits( group, ousList ) );
+                }
+            }
+            
+            if ( levels.isEmpty() && groups.isEmpty() )
+            {
+                orgUnits.addAll( ous );
+            }            
+            
+            if ( orgUnits.isEmpty() )
             {
                 throw new IllegalQueryException( "Dimension ou is present in query without any valid dimension options" );
             }
             
-            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, ous );
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, orgUnits );
             
             return Arrays.asList( object );
         }

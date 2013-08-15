@@ -427,12 +427,9 @@ public abstract class BaseAnalyticalObject
             
             if ( organisationUnitLevel != null )
             {
-                for ( OrganisationUnit unit : organisationUnits )
-                {
-                    String id = KEY_LEVEL + organisationUnitLevel + DimensionalObject.DIMENSION_SEP + unit.getUid();
-                    
-                    ouList.add( new BaseNameableObject( id, id, id ) );
-                }
+                String id = KEY_LEVEL + organisationUnitLevel;
+                
+                ouList.add( new BaseNameableObject( id, id, id ) );
             }
             
             if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )

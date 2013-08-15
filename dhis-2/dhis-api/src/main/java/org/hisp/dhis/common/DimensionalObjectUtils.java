@@ -147,27 +147,6 @@ public class DimensionalObjectUtils
     }
     
     /**
-     * Retrieves the boundary dimension item from a level parameter string, which
-     * is on the format LEVEL-<level>-<item> .
-     */
-    public static String getBoundaryFromLevelParam( String param )
-    {
-        if ( param == null )   
-        {
-            return null;
-        }
-        
-        String[] split = param.split( "-" );
-        
-        if ( split.length > 2 && split[2] != null )
-        {
-            return split[2];
-        }
-        
-        return null;
-    }
-
-    /**
      * Retrieves the uid from an org unit group parameter string, which is on
      * the format OU_GROUP-<uid> .
      */
