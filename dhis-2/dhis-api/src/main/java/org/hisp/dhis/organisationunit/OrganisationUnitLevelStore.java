@@ -29,8 +29,6 @@ package org.hisp.dhis.organisationunit;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
-import java.util.Collection;
-
 /**
  * Defines methods for persisting OrganisationUnitLevels.
  *

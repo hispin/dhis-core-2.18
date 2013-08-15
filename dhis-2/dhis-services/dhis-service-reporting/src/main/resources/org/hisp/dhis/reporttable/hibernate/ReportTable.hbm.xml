@@ -96,6 +96,13 @@
         foreign-key="fk_reporttable_orgunitgroups_orgunitgroupid" />
     </list>
 
+    <list name="organisationUnitLevels" table="reporttable_orgunitlevels">
+      <cache usage="read-write" />
+      <key column="reporttableid" foreign-key="fk_reporttable_orgunitlevels_reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <element column="orgunitlevel" type="integer" />
+    </list>
+
     <list name="itemOrganisationUnitGroups" table="reporttable_itemorgunitgroups">
       <cache usage="read-write" />
       <key column="reporttableid" foreign-key="fk_reporttable_itemorgunitunitgroups_reporttableid" />
@@ -151,8 +158,6 @@
     <property name="userOrganisationUnit" />
 
     <property name="userOrganisationUnitChildren" />
-
-    <property name="organisationUnitLevel" />
 
     <many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
       foreign-key="fk_reporttable_legendsetid" />

@@ -111,14 +111,20 @@ public class DefaultReportTableService
                 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
-        List<OrganisationUnit> atLevel = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
         
-        if ( reportTable.getOrganisationUnitLevel() != null && reportTable.getOrganisationUnits() != null )
+        if ( reportTable.hasOrganisationUnitLevels() )
         {
-            atLevel.addAll( organisationUnitService.getOrganisationUnitsAtLevel( reportTable.getOrganisationUnitLevel(), reportTable.getOrganisationUnits() ) );
+            atLevels.addAll( organisationUnitService.getOrganisationUnitsAtLevels( reportTable.getOrganisationUnitLevels(), reportTable.getOrganisationUnits() ) );
         }
         
-        reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, organisationUnit, atLevel, format );
+        if ( reportTable.hasItemOrganisationUnitGroups() )
+        {
+            inGroups.addAll( organisationUnitService.getOrganisationUnits( reportTable.getItemOrganisationUnitGroups(), reportTable.getOrganisationUnits() ) );
+        }
+        
+        reportTable.init( currentUserService.getCurrentUser(), reportingPeriod, organisationUnit, atLevels, inGroups, format );
 
         Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( reportTable, format );
 

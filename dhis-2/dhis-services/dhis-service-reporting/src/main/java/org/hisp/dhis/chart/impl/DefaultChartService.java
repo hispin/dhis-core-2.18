@@ -205,14 +205,20 @@ public class DefaultChartService
             organisationUnit = user.getOrganisationUnit();
         }
 
-        List<OrganisationUnit> atLevel = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
         
-        if ( chart.getOrganisationUnitLevel() != null && chart.getOrganisationUnits() != null )
+        if ( chart.hasOrganisationUnitLevels() )
         {
-            atLevel.addAll( organisationUnitService.getOrganisationUnitsAtLevel( chart.getOrganisationUnitLevel(), chart.getOrganisationUnits() ) );
+            atLevels.addAll( organisationUnitService.getOrganisationUnitsAtLevels( chart.getOrganisationUnitLevels(), chart.getOrganisationUnits() ) );
         }
         
-        chart.init( user, date, organisationUnit, atLevel, format );
+        if ( chart.hasItemOrganisationUnitGroups() )
+        {
+            inGroups.addAll( organisationUnitService.getOrganisationUnits( chart.getItemOrganisationUnitGroups(), chart.getOrganisationUnits() ) );
+        }
+        
+        chart.init( user, date, organisationUnit, atLevels, inGroups, format );
 
         return getJFreeChart( chart );
     }

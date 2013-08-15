@@ -127,6 +127,13 @@
         foreign-key="fk_chart_orgunitgroups_orgunitgroupid" />
     </list>
     
+    <list name="organisationUnitLevels" table="chart_orgunitlevels">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_orgunitlevels_chartid" />
+      <list-index column="sort_order" base="0" />
+      <element column="orgunitlevel" type="integer" />
+    </list>
+    
     <list name="itemOrganisationUnitGroups" table="chart_itemorgunitgroups">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_itemorgunitunitgroups_chartid" />
@@ -138,8 +145,6 @@
     <property name="userOrganisationUnit" />
 
     <property name="userOrganisationUnitChildren" />
-
-    <property name="organisationUnitLevel" />
 
     <property name="showData" />
 
