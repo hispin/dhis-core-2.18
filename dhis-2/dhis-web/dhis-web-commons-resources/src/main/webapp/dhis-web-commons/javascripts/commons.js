@@ -1683,7 +1683,7 @@ function isNegativeInt( value )
  */
 function isNumber( value )
 {
-	var regex = /^(0|-?[1-9]\d*)(\.\d+)?$/;
+	var regex = /^(-?0|-?[1-9]\d*)(\.\d+)?(E\d+)?$/;
 	return regex.test( value );
 }
 
