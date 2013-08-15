@@ -27,19 +27,19 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_OPERAND_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +47,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
@@ -134,14 +132,10 @@ public abstract class BaseAnalyticalObject
 
     protected boolean userOrganisationUnitChildren;
 
-    /**
-     * Level of dimension item organisation units.
-     */
-    protected Integer organisationUnitLevel;
-    
-    /**
-     * Groups containing dimension item organisation units.
-     */
+    @Scanned
+    protected List<Integer> organisationUnitLevels = new ArrayList<Integer>();
+
+    @Scanned
     protected List<OrganisationUnitGroup> itemOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
     
     protected boolean rewindRelativePeriods;
@@ -174,7 +168,8 @@ public abstract class BaseAnalyticalObject
     // Logic
     // -------------------------------------------------------------------------
 
-    public abstract void init( User user, Date date, OrganisationUnit organisationUnit, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format );
+    public abstract void init( User user, Date date, OrganisationUnit organisationUnit, 
+        List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format );
     
     public abstract void populateAnalyticalProperties();
     
@@ -186,6 +181,16 @@ public abstract class BaseAnalyticalObject
     public boolean hasRelativePeriods()
     {
         return relatives != null && !relatives.isEmpty();
+    }
+    
+    public boolean hasOrganisationUnitLevels()
+    {
+        return organisationUnitLevels != null && !organisationUnitLevels.isEmpty();
+    }
+    
+    public boolean hasItemOrganisationUnitGroups()
+    {
+        return itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty();
     }
     
     protected void addTransientOrganisationUnits( Collection<OrganisationUnit> organisationUnits )
@@ -203,19 +208,7 @@ public abstract class BaseAnalyticalObject
             this.transientOrganisationUnits.add( organisationUnit );
         }
     }
-    
-    protected Set<OrganisationUnit> getOrganisationUnitsInItemGroups()
-    {
-        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnitGroup group : itemOrganisationUnitGroups )
-        {
-            units.addAll( group.getMembers() );
-        }
-        
-        return units;
-    }
-    
     /**
      * Assembles a DimensionalObject. Collapses indicators, data elements, data
      * element operands and data sets into the dx dimension.
@@ -230,7 +223,8 @@ public abstract class BaseAnalyticalObject
      * @param format the I18nFormat.
      * @return a DimensionalObject.
      */
-    protected DimensionalObject getDimensionalObject( String dimension, Date date, User user, boolean dynamicNames, List<OrganisationUnit> organisationUnitsAtLevel, I18nFormat format )
+    protected DimensionalObject getDimensionalObject( String dimension, Date date, User user, boolean dynamicNames, 
+        List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
     {       
         List<NameableObject> items = new ArrayList<NameableObject>();
         
@@ -282,14 +276,14 @@ public abstract class BaseAnalyticalObject
                 items.addAll( user.getOrganisationUnit().getSortedChildren() );
             }
             
-            if ( organisationUnitLevel != null && organisationUnitsAtLevel != null )
+            if ( organisationUnitLevels != null && !organisationUnitLevels.isEmpty() && organisationUnitsAtLevel != null )
             {
-                items.addAll( organisationUnitsAtLevel );
+                items.addAll( organisationUnitsAtLevel ); // Must be set externally
             }
             
             if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )
             {
-                items.addAll( getOrganisationUnitsInItemGroups() );
+                items.addAll( organisationUnitGroups ); // Must be set externally
             }
             
             type = DimensionType.ORGANISATIONUNIT;
@@ -425,11 +419,14 @@ public abstract class BaseAnalyticalObject
                 ouList.add( new BaseNameableObject( KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN ) );
             }
             
-            if ( organisationUnitLevel != null )
+            if ( organisationUnitLevels != null && !organisationUnitLevels.isEmpty() )
             {
-                String id = KEY_LEVEL + organisationUnitLevel;
+                for ( Integer level : organisationUnitLevels )
+                {
+                    String id = KEY_LEVEL + level;
                 
-                ouList.add( new BaseNameableObject( id, id, id ) );
+                    ouList.add( new BaseNameableObject( id, id, id ) );
+                }
             }
             
             if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )
@@ -606,7 +603,6 @@ public abstract class BaseAnalyticalObject
             
             userOrganisationUnit = object.isUserOrganisationUnit();
             userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();
-            organisationUnitLevel = object.getOrganisationUnitLevel();
         }
     }
 
@@ -784,15 +780,16 @@ public abstract class BaseAnalyticalObject
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public Integer getOrganisationUnitLevel()
+    @JacksonXmlElementWrapper( localName = "organisationUnitLevels", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "organisationUnitLevel", namespace = DxfNamespaces.DXF_2_0)
+    public List<Integer> getOrganisationUnitLevels()
     {
-        return organisationUnitLevel;
+        return organisationUnitLevels;
     }
 
-    public void setOrganisationUnitLevel( Integer organisationUnitLevel )
+    public void setOrganisationUnitLevels( List<Integer> organisationUnitLevels )
     {
-        this.organisationUnitLevel = organisationUnitLevel;
+        this.organisationUnitLevels = organisationUnitLevels;
     }
 
     @JsonProperty

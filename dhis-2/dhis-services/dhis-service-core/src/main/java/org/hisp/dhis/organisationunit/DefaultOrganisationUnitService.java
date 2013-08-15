@@ -271,9 +271,14 @@ public class DefaultOrganisationUnitService
         } );
     }
 
-    public Collection<OrganisationUnit> getOrganisationUnits( OrganisationUnitGroup group, Collection<OrganisationUnit> parents )
+    public Collection<OrganisationUnit> getOrganisationUnits( Collection<OrganisationUnitGroup> groups, Collection<OrganisationUnit> parents )
     {
-        Set<OrganisationUnit> members = new HashSet<OrganisationUnit>( group.getMembers() );
+        Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
+        
+        for ( OrganisationUnitGroup group : groups )
+        {
+            members.addAll( group.getMembers() );
+        }
         
         if ( parents != null && !parents.isEmpty() )
         {
@@ -390,48 +395,59 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, OrganisationUnit parent )
     {
-        Set<OrganisationUnit> set = new HashSet<OrganisationUnit>();
-        set.add( parent );
+        Set<OrganisationUnit> parents = new HashSet<OrganisationUnit>();
+        parents.add( parent );
         
-        return getOrganisationUnitsAtLevel( level, parent != null ? set : null );
+        return getOrganisationUnitsAtLevel( level, parent != null ? parents : null );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, Collection<OrganisationUnit> parents )
     {
-        if ( level < 1 )
-        {
-            throw new IllegalArgumentException( "Level must be greater than zero" );
-        }
+        Set<Integer> levels = new HashSet<Integer>();
+        levels.add( level );
         
+        return getOrganisationUnitsAtLevels( levels, parents );
+    }
+    
+    public Collection<OrganisationUnit> getOrganisationUnitsAtLevels( Collection<Integer> levels, Collection<OrganisationUnit> parents )
+    {
         if ( parents == null || parents.isEmpty() )
         {
             parents = new HashSet<OrganisationUnit>( getRootOrganisationUnits() );
         }
-        
+
         Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnit parent : parents )
+        for ( Integer level : levels )
         {
-            int parentLevel = parent.getOrganisationUnitLevel();
-
-            if ( level < parentLevel )
+            if ( level < 1 )
             {
-                throw new IllegalArgumentException(
-                    "Level must be greater than or equal to level of parent OrganisationUnit" );
+                throw new IllegalArgumentException( "Level must be greater than zero" );
             }
-
-            if ( level == parentLevel )
+            
+            for ( OrganisationUnit parent : parents )
             {
-                result.add( parent );
-            }
-            else
-            {
-                addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
-            }
-
-            for ( OrganisationUnit unit : result )
-            {
-                unit.setLevel( level );
+                int parentLevel = parent.getOrganisationUnitLevel();
+    
+                if ( level < parentLevel )
+                {
+                    throw new IllegalArgumentException(
+                        "Level must be greater than or equal to level of parent OrganisationUnit" );
+                }
+    
+                if ( level == parentLevel )
+                {
+                    result.add( parent );
+                }
+                else
+                {
+                    addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
+                }
+    
+                for ( OrganisationUnit unit : result )
+                {
+                    unit.setLevel( level );
+                }
             }
         }
         

@@ -853,18 +853,12 @@ public class DefaultAnalyticsService
             
             if ( !levels.isEmpty() )
             {
-                for ( Integer level : levels )
-                {
-                    orgUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level, ousList ) );
-                }
+                orgUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevels( levels, ousList ) );
             }
             
             if ( !groups.isEmpty() )
             {
-                for ( OrganisationUnitGroup group : groups )
-                {                    
-                    orgUnits.addAll( organisationUnitService.getOrganisationUnits( group, ousList ) );
-                }
+                orgUnits.addAll( organisationUnitService.getOrganisationUnits( groups, ousList ) );
             }
             
             if ( levels.isEmpty() && groups.isEmpty() )
