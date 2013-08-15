@@ -36,7 +36,7 @@ dhis2.ou.store = new dhis2.storage.Store( {
         },
         {
             name: 'ouPartial',
-            adapters: [ dhis2.storage.DomLocalStorageAdapter ]
+            adapters: [ dhis2.storage.DomSessionStorageAdapter ]
         }
     ]
 } );
