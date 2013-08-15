@@ -204,6 +204,12 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
+			<td><label>$i18n.getString( "show_incident_date" )</label></td>
+			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' checked ></td>
+			<td></td>
+		</tr>
+		
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}"></td>
 			<td></td>
