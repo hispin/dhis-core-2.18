@@ -345,6 +345,14 @@ public class OrganisationUnitServiceTest
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 3, unitB ), unitD, unitE ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitB ), unitH, unitI, unitJ, unitK ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 2, nill ), unitB, unitC ) );
+        
+        assertEquals( 2, unitB.getLevel() );
+        assertEquals( 3, unitD.getLevel() );
+        assertEquals( 3, unitE.getLevel() );
+        assertEquals( 4, unitH.getLevel() );
+        assertEquals( 4, unitI.getLevel() );
+        assertEquals( 4, unitJ.getLevel() );
+        assertEquals( 4, unitK.getLevel() );
     }
 
     @Test
@@ -407,6 +415,14 @@ public class OrganisationUnitServiceTest
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitsA ), unitH, unitI, unitJ, unitK, unitL, unitM, unitN, unitO ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitsB ), unitH, unitI, unitJ, unitK ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 2, nill ), unitB, unitC ) );
+
+        assertEquals( 2, unitB.getLevel() );
+        assertEquals( 3, unitD.getLevel() );
+        assertEquals( 3, unitE.getLevel() );
+        assertEquals( 4, unitH.getLevel() );
+        assertEquals( 4, unitI.getLevel() );
+        assertEquals( 4, unitJ.getLevel() );
+        assertEquals( 4, unitK.getLevel() );
     }
 
     @Test
