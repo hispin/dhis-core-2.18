@@ -23,23 +23,29 @@ var subtree = new Subtree();
 var dhis2 = dhis2 || {};
 dhis2.ou = dhis2.ou || {};
 
+var OU_ROOTS_KEY = "ouRoots";
+var OU_VERSION_KEY = "ouVersion";
+var OU_SELECTED_KEY = "ouSelected";
+
 dhis2.ou.store = new dhis2.storage.Store( {
     name: 'dhis2',
-    objectStores: [ {
-        name: 'ou',
-        adapters: [ /* dhis2.storage.IndexedDBAdapter, */ dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ]
-    }, {
-        name: 'ouPartial',
-        adapters: [ /* dhis2.storage.IndexedDBAdapter, */ dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ]
-    }, {
-        name: 'ouConfig',
-        adapters: [ /* dhis2.storage.IndexedDBAdapter, */ dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ]
-    } ]
+    objectStores: [
+        {
+            name: 'ou',
+            adapters: [ dhis2.storage.DomLocalStorageAdapter ]
+        },
+        {
+            name: 'ouPartial',
+            adapters: [ dhis2.storage.DomLocalStorageAdapter ]
+        }
+    ]
 } );
 
 $( document ).ready( function ()
 {
-    selection.load();
+    dhis2.ou.store.open().done( function() {
+        selection.load();
+    } );
 } );
 
 // -----------------------------------------------------------------------------
@@ -87,7 +93,7 @@ function Selection()
     };
 
     this.getSelected = function() {
-        var selected = sessionStorage[getTagId( "Selected" )];
+        var selected = sessionStorage[ OU_SELECTED_KEY ];
         selected = selected ? JSON.parse( selected ) : [];
         selected = $.isArray( selected ) ? selected : [ selected ];
 
@@ -95,73 +101,70 @@ function Selection()
     };
 
     this.clearSelected = function() {
-        sessionStorage.removeItem( getTagId( "Selected" ) );
+        sessionStorage.removeItem( OU_SELECTED_KEY );
     };
 
     this.setSelected = function( selected ) {
-        sessionStorage[getTagId( "Selected" )] = JSON.stringify( selected );
+        sessionStorage[ OU_SELECTED_KEY ] = JSON.stringify( selected );
     };
 
     this.selectedExists = function() {
-        return sessionStorage[getTagId( "Selected" )] != null;
+        return sessionStorage[ OU_SELECTED_KEY ] != null;
     };
 
     this.getRoots = function() {
-        var roots = localStorage[getTagId( "Roots" )];
+        var roots = localStorage[ OU_ROOTS_KEY ];
         return roots ? JSON.parse( roots ) : [];
     };
 
-    this.rootsExists = function() {
-        return localStorage[getTagId( "Roots" )] != null;
-    };
-
     this.setRoots = function(roots) {
-        localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
+        localStorage[ OU_ROOTS_KEY ] = JSON.stringify( roots );
     };
 
     this.getVersion = function() {
-        return localStorage[getTagId( "Version" )] ? localStorage[getTagId( "Version" )] : 0;
+        return localStorage[ OU_VERSION_KEY ] ? localStorage[ OU_VERSION_KEY ] : 0;
     };
 
     this.setVersion = function( version ) {
-        localStorage[getTagId( "Version" )] = version;
+        localStorage[ OU_VERSION_KEY ] = version;
     };
 
     this.clearVersion = function() {
-        localStorage.removeItem( getTagId( "Version" ) );
-    };
-
-    this.versionExists = function() {
-        return localStorage[getTagId( "Version" )] != null;
+        localStorage.removeItem( OU_VERSION_KEY );
     };
 
     this.getOrganisationUnits = function() {
-        var organisationUnits = localStorage["organisationUnits"];
-        return organisationUnits ? JSON.parse( organisationUnits ) : {};
+        var organisationUnits = {};
+
+        dhis2.ou.store.getAll( 'ou' ).done( function( all ) {
+            $.each( all, function( i, item ) {
+                organisationUnits[item.id] = item;
+            } );
+        } );
+
+        return organisationUnits;
     };
 
     this.setOrganisationUnits = function( organisationUnits ) {
-        if( organisationUnits ) {
-            localStorage["organisationUnits"] = JSON.stringify( organisationUnits );
-        } else {
-            localStorage["organisationUnits"] = JSON.stringify( {} );
-        }
+        organisationUnits = organisationUnits ? _.values( organisationUnits ) : [];
+        return dhis2.ou.store.setAll( 'ou', organisationUnits );
     };
 
     this.getPartialOrganisationUnits = function() {
-        return sessionStorage['organisationUnits'] ? JSON.parse( sessionStorage['organisationUnits'] ) : {};
+        var organisationUnits = {};
+
+        dhis2.ou.store.getAll( 'ouPartial' ).done( function( all ) {
+            $.each( all, function( i, item ) {
+                organisationUnits[item.id] = item;
+            } );
+        } );
+
+        return organisationUnits;
     };
 
     this.setPartialOrganisationUnits = function( organisationUnits ) {
-        if( organisationUnits ) {
-            sessionStorage["organisationUnits"] = JSON.stringify( organisationUnits );
-        } else {
-            sessionStorage["organisationUnits"] = JSON.stringify( {} );
-        }
-    };
-
-    this.organisationUnitsExists = function() {
-        return localStorage["organisationUnits"] != null;
+        organisationUnits = organisationUnits ? _.values( organisationUnits ) : [];
+        return dhis2.ou.store.setAll( 'ouPartial', organisationUnits );
     };
 
     this.ajaxOrganisationUnits = function( versionOnly, format ) {
@@ -401,7 +404,7 @@ function Selection()
     };
 
     this.responseReceived = function() {
-        if( !listenerFunction ) {
+        if( typeof listenerFunction !== 'function') {
             return;
         }
 
