@@ -247,37 +247,30 @@ public class OrganisationUnitServiceTest
     public void testGetOrganisationUnitsAtLevel()
         throws Exception
     {
-        OrganisationUnit unit1 = new OrganisationUnit( "orgUnitName1", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit1 = createOrganisationUnit( '1' );
         organisationUnitService.addOrganisationUnit( unit1 );
 
-        OrganisationUnit unit2 = new OrganisationUnit( "orgUnitName2", unit1, "shortName2", "organisationUnitCode2",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit2 = createOrganisationUnit( '2', unit1 );
         unit1.getChildren().add( unit2 );
         organisationUnitService.addOrganisationUnit( unit2 );
 
-        OrganisationUnit unit3 = new OrganisationUnit( "orgUnitName3", unit2, "shortName3", "organisationUnitCode3",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit3 = createOrganisationUnit( '3', unit2 );
         unit2.getChildren().add( unit3 );
         organisationUnitService.addOrganisationUnit( unit3 );
 
-        OrganisationUnit unit4 = new OrganisationUnit( "orgUnitName4", unit2, "shortName4", "organisationUnitCode4",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit4 = createOrganisationUnit( '4', unit2 );
         unit2.getChildren().add( unit4 );
         organisationUnitService.addOrganisationUnit( unit4 );
 
-        OrganisationUnit unit5 = new OrganisationUnit( "orgUnitName5", unit2, "shortName5", "organisationUnitCode5",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit5 = createOrganisationUnit( '5', unit2 );
         unit2.getChildren().add( unit5 );
         organisationUnitService.addOrganisationUnit( unit5 );
 
-        OrganisationUnit unit6 = new OrganisationUnit( "orgUnitName6", unit3, "shortName6", "organisationUnitCode6",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit6 = createOrganisationUnit( '6', unit3 );
         unit3.getChildren().add( unit6 );
         organisationUnitService.addOrganisationUnit( unit6 );
 
-        OrganisationUnit unit7 = new OrganisationUnit( "orgUnitName7", "shortName7", "organisationUnitCode7",
-            new Date(), new Date(), true, "comment" );
+        OrganisationUnit unit7 = createOrganisationUnit( '7' );
         organisationUnitService.addOrganisationUnit( unit7 );
 
         assertTrue( organisationUnitService.getOrganisationUnitsAtLevel( 1 ).size() == 2 );

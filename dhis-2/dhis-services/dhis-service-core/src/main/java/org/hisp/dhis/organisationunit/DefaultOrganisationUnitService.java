@@ -320,8 +320,6 @@ public class DefaultOrganisationUnitService
 
         int rootLevel = 1;
 
-        organisationUnit.setLevel( rootLevel );
-
         result.add( organisationUnit );
 
         addOrganisationUnitChildren( organisationUnit, result, rootLevel );
@@ -344,8 +342,6 @@ public class DefaultOrganisationUnitService
 
         for ( OrganisationUnit child : childList )
         {
-            child.setLevel( level );
-
             result.add( child );
 
             addOrganisationUnitChildren( child, result, level );
