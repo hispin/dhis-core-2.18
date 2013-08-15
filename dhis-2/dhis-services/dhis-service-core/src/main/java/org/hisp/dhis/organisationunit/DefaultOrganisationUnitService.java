@@ -437,16 +437,12 @@ public class DefaultOrganisationUnitService
     
                 if ( level == parentLevel )
                 {
+                    parent.setLevel( level );
                     result.add( parent );
                 }
                 else
                 {
                     addOrganisationUnitChildrenAtLevel( parent, parentLevel + 1, level, result );
-                }
-    
-                for ( OrganisationUnit unit : result )
-                {
-                    unit.setLevel( level );
                 }
             }
         }
@@ -464,7 +460,11 @@ public class DefaultOrganisationUnitService
     {
         if ( currentLevel == targetLevel )
         {
-            result.addAll( parent.getChildren() );
+            for ( OrganisationUnit child : parent.getChildren() )
+            {
+                child.setLevel( currentLevel );
+                result.add( child );
+            }
         }
         else
         {
