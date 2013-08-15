@@ -30,7 +30,6 @@ package org.hisp.dhis.organisationunit;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -42,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
@@ -271,6 +271,32 @@ public class DefaultOrganisationUnitService
         } );
     }
 
+    public Collection<OrganisationUnit> getOrganisationUnits( OrganisationUnitGroup group, Collection<OrganisationUnit> parents )
+    {
+        Set<OrganisationUnit> members = new HashSet<OrganisationUnit>( group.getMembers() );
+        
+        if ( parents != null && !parents.isEmpty() )
+        {
+            Collection<OrganisationUnit> children = getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( parents ) );
+            
+            members.retainAll( children );
+        }
+        
+        return members;
+    }
+    
+    public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> parentUids )
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        
+        for ( String uid : parentUids )
+        {
+            units.addAll( getOrganisationUnitsWithChildren( uid ) );
+        }
+        
+        return units;
+    }
+    
     public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid )
     {
         return getOrganisationUnitWithChildren( getOrganisationUnit( uid ).getId() );
@@ -377,7 +403,7 @@ public class DefaultOrganisationUnitService
             throw new IllegalArgumentException( "Level must be greater than zero" );
         }
         
-        if ( parents == null )
+        if ( parents == null || parents.isEmpty() )
         {
             parents = new HashSet<OrganisationUnit>( getRootOrganisationUnits() );
         }

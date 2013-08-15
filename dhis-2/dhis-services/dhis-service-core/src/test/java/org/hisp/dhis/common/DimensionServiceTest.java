@@ -189,7 +189,7 @@ public class DimensionServiceTest
         ReportTable reportTable = new ReportTable();
 
         reportTable.getColumns().add( new BaseDimensionalObject( DimensionalObject.DATAELEMENT_DIM_ID, Arrays.asList( deA, deB ) ) );
-        reportTable.getRows().add( new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID, Arrays.asList( ouLevel2 ) ) );
+        reportTable.getRows().add( new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID, Arrays.asList( ouLevel2, ouA ) ) );
         reportTable.getFilters().add( new BaseDimensionalObject( DimensionalObject.PERIOD_DIM_ID, Arrays.asList( peA ) ) );
         
         dimensionService.mergeAnalyticalObject( reportTable );

@@ -291,14 +291,9 @@ public class DefaultDimensionService
                         {
                             int level = DimensionalObjectUtils.getLevelFromLevelParam( ou );
                             
-                            String boundary = DimensionalObjectUtils.getBoundaryFromLevelParam( ou );
-
-                            OrganisationUnit unit = null;
-                            
-                            if ( level > 0 && boundary != null && ( unit = identifiableObjectManager.get( OrganisationUnit.class, boundary ) ) != null )
+                            if ( level > 0 )
                             {
                                 object.setOrganisationUnitLevel( level );
-                                ous.add( unit );
                             }
                         }
                         else if ( ou != null && ou.startsWith( KEY_ORGUNIT_GROUP ) )

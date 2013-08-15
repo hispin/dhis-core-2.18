@@ -71,15 +71,7 @@ public class DataQueryParamsTest
         assertEquals( 0, DataQueryParams.getLevelFromLevelParam( "LEVEL" ) );
         assertEquals( 0, DataQueryParams.getLevelFromLevelParam( "LEVEL-gFd" ) );        
     }
-    
-    @Test
-    public void testGetBoundaryFromLevelParam()
-    {
-        assertEquals( "dFsdfejdf2", DataQueryParams.getBoundaryFromLevelParam( "LEVEL-4-dFsdfejdf2" ) );
-        assertEquals( null, DataQueryParams.getBoundaryFromLevelParam( "LEVEL-4-" ) );
-        assertEquals( null, DataQueryParams.getBoundaryFromLevelParam( "LEVEL-4" ) );
-    }
-    
+        
     @Test
     public void testGetMeasureCriteriaFromParam()
     {
