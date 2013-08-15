@@ -115,7 +115,7 @@ $( document ).ready( function()
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
         log( 'Ouwt loaded' );
-        organisationUnits = JSON.parse( localStorage['organisationUnits'] );
+        organisationUnits = selection.getOrganisationUnits();
         loadMetaData();
     } );
 
@@ -1058,7 +1058,7 @@ function insertDataValues()
 	    {
 	        periodId : periodId,
 	        dataSetId : dataSetId,
-	        organisationUnitId : currentOrganisationUnitId,
+	        organisationUnitId : currentOrganisationUnitId[0],
             multiOrganisationUnit: multiOrganisationUnit
 	    },
 	    dataType: 'json',
