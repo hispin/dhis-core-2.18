@@ -177,6 +177,7 @@
         ../dhis-web-commons/ckeditor/adapters/jquery.js,
         javascript/dataEntryForm.js
       </param>
+      <param name="hideMenu">true</param>
       <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 

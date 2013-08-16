@@ -74,17 +74,7 @@
 
   <bean id="org.hisp.dhis.webportal.menu.MenuStateManager" class="org.hisp.dhis.webportal.menu.SessionMenuStateManager" />
 
-  <bean id="org.hisp.dhis.webportal.menu.action.SetMenuHiddenAction" class="org.hisp.dhis.webportal.menu.action.SetMenuHiddenAction">
-    <property name="menuStateManager">
-      <ref local="org.hisp.dhis.webportal.menu.MenuStateManager" />
-    </property>
-  </bean>
-
-  <bean id="org.hisp.dhis.webportal.menu.action.SetMenuVisibleAction" class="org.hisp.dhis.webportal.menu.action.SetMenuVisibleAction">
-    <property name="menuStateManager">
-      <ref local="org.hisp.dhis.webportal.menu.MenuStateManager" />
-    </property>
-  </bean>
+  <bean id="org.hisp.dhis.webportal.menu.action.SetMenuStateAction" class="org.hisp.dhis.webportal.menu.action.SetMenuStateAction"/>
 
   <bean id="org.hisp.dhis.webportal.interceptor.XWorkPortalMenuInterceptor"
     class="org.hisp.dhis.webportal.interceptor.XWorkPortalMenuInterceptor">

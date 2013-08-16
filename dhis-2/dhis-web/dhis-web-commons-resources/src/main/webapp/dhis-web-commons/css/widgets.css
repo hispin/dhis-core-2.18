@@ -210,7 +210,7 @@ div#orgUnitTree
   padding-top: 4px;
 }
 
-#leftBarContents div#orgUnitTree 
+div#orgUnitTree 
 {
   font-size: 9pt;
   background-color: white;
@@ -269,7 +269,7 @@ div#orgUnitTree a:hover
 
 div#orgUnitTree a.selected 
 {
-  color: #000000;
+  color: #000;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
 }

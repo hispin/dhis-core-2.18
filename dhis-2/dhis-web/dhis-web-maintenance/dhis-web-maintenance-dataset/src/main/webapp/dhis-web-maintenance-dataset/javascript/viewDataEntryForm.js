@@ -3,8 +3,6 @@ var timeOut;
 
 $( document ).ready( function() {
 	
-	leftBar.hideAnimated();
-
 	$("#selectionDialog").dialog({
 		minWidth: 595,
 		minHeight: 263,
