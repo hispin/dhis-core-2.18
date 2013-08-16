@@ -182,7 +182,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
 
                 if ( valueNo < min )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId,
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, getCurrentOrganisationUnit(), periodId,
                             value, fieldId, COLOR_ORANGE );
                     valueSaver.save();
 
@@ -192,7 +192,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
 
                 if ( valueNo > max )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId,
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, getCurrentOrganisationUnit(), periodId,
                             value, fieldId, COLOR_ORANGE );
                     valueSaver.save();
 
@@ -204,7 +204,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
     }
 
     var valueSaver = new ValueSaver( dataElementId, optionComboId, 
-    	currentOrganisationUnitId, periodId, value, fieldId, COLOR_GREEN );
+    	getCurrentOrganisationUnit(), periodId, value, fieldId, COLOR_GREEN );
     valueSaver.save();
 
     updateIndicators(); // Update indicators for custom form
@@ -222,7 +222,7 @@ function saveBoolean( dataElementId, optionComboId, fieldId )
     var periodId = $( '#selectedPeriodId' ).val();
 
     var valueSaver = new ValueSaver( dataElementId, optionComboId, 
-    	currentOrganisationUnitId, periodId, value, fieldId, COLOR_GREEN );
+    	getCurrentOrganisationUnit(), periodId, value, fieldId, COLOR_GREEN );
     valueSaver.save();
 }
 
@@ -239,7 +239,7 @@ function saveTrueOnly( dataElementId, optionComboId, fieldId )
     var periodId = $( '#selectedPeriodId' ).val();
 
     var valueSaver = new ValueSaver( dataElementId, optionComboId,
-    	currentOrganisationUnitId, periodId, value, fieldId, COLOR_GREEN );
+        getCurrentOrganisationUnit(), periodId, value, fieldId, COLOR_GREEN );
     valueSaver.save();
 }
 

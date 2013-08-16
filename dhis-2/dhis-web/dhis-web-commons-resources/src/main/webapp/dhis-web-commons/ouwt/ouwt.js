@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
 // Author:   Torgeir Lorange Ostby
+// Author:   Morten Olav Hansen
 // -----------------------------------------------------------------------------
 
 /*
@@ -134,37 +135,45 @@ function Selection()
     };
 
     this.getOrganisationUnits = function() {
-        var organisationUnits = {};
+        var def = $.Deferred();
 
         dhis2.ou.store.getAll( 'ou' ).done( function( all ) {
+            var ous = {};
+
             $.each( all, function( i, item ) {
-                organisationUnits[item.id] = item;
+                ous[item.id] = item;
             } );
+
+            def.resolveWith( window, [ ous ]);
         } );
 
-        return organisationUnits;
+        return def.promise();
     };
 
-    this.setOrganisationUnits = function( organisationUnits ) {
-        organisationUnits = organisationUnits ? _.values( organisationUnits ) : [];
-        return dhis2.ou.store.setAll( 'ou', organisationUnits );
+    this.setOrganisationUnits = function( ous ) {
+        ous = ous ? _.values( ous ) : [];
+        return dhis2.ou.store.setAll( 'ou', ous );
     };
 
     this.getPartialOrganisationUnits = function() {
-        var organisationUnits = {};
+        var def = $.Deferred();
 
         dhis2.ou.store.getAll( 'ouPartial' ).done( function( all ) {
+            var ous = {};
+
             $.each( all, function( i, item ) {
-                organisationUnits[item.id] = item;
+                ous[item.id] = item;
             } );
+
+            def.resolveWith( window, [ ous ]);
         } );
 
-        return organisationUnits;
+        return def.promise();
     };
 
-    this.setPartialOrganisationUnits = function( organisationUnits ) {
-        organisationUnits = organisationUnits ? _.values( organisationUnits ) : [];
-        return dhis2.ou.store.setAll( 'ouPartial', organisationUnits );
+    this.setPartialOrganisationUnits = function( ous ) {
+        ous = ous ? _.values( ous ) : [];
+        return dhis2.ou.store.setAll( 'ouPartial', ous );
     };
 
     this.ajaxOrganisationUnits = function( versionOnly, format ) {
@@ -200,13 +209,18 @@ function Selection()
                 }
             }
 
-            organisationUnits = selection.getOrganisationUnits();
-            $.extend( organisationUnits, selection.getPartialOrganisationUnits() );
+            selection.getOrganisationUnits().done( function( all ) {
+                $.extend( organisationUnits, all );
 
-            selection.sync();
-            subtree.reloadTree();
+                selection.getPartialOrganisationUnits().done( function( all ) {
+                    $.extend( organisationUnits, all );
 
-            $( "#ouwt_loader" ).hide();
+                    selection.sync();
+                    subtree.reloadTree();
+
+                    $( "#ouwt_loader" ).hide();
+                } );
+            } );
         }
 
         function update_required( remoteVersion, remoteRoots ) {
@@ -419,25 +433,27 @@ function Selection()
                 ids.push( item );
                 names.push( name );
             } );
+
+            listenerFunction( ids, names, children );
         } else {
+            selected = selected[0];
+
             // we only support includeChildren for single selects
             if( includeChildren ) {
                 children = organisationUnits[selected].c;
             }
 
-            $.extend( organisationUnits, selection.getPartialOrganisationUnits() );
+            selection.getPartialOrganisationUnits().done( function( all ) {
+                $.extend( organisationUnits, all );
 
-            var name = organisationUnits[selected].n;
-            ids.push( +selected );
-            names.push( name );
-        }
+                var name = organisationUnits[selected].n;
+                ids.push( +selected );
+                names.push( name );
 
-        if( !multipleSelectionAllowed ) {
-            subtree.getChildren( selected ).done( function() {
-                listenerFunction( ids, names, children );
+                subtree.getChildren( selected ).done( function() {
+                    listenerFunction( ids, names, children );
+                } );
             } );
-        } else {
-            listenerFunction( ids, names, children );
         }
     };
 
@@ -473,15 +489,16 @@ function Selection()
                 data: { byName: name }
             } ).done(function( data ) {
                 if( data.realRoot === undefined ) {
-                    var partialOrganisationUnits = selection.getPartialOrganisationUnits();
-                    $.extend( partialOrganisationUnits, data.organisationUnits );
-                    selection.setPartialOrganisationUnits( partialOrganisationUnits );
+                    selection.getPartialOrganisationUnits().done(function(all) {
+                        $.extend( all, data.organisationUnits );
 
-                    $.extend( organisationUnits, data.organisationUnits );
-                    selection.findByName();
+                        selection.setPartialOrganisationUnits( all ).done(function() {
+                            $.extend( organisationUnits, data.organisationUnits );
+                            selection.findByName();
+                            $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+                        });
+                    });
                 }
-
-                $( '#searchField' ).css( 'background-color', '#ffc5c5' );
             } ).fail( function() {
                 $( '#searchField' ).css( 'background-color', '#ffc5c5' );
             } );
@@ -635,11 +652,13 @@ function Subtree() {
 
     this.getChildren = function( parentId ) {
         return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId, function( data ) {
-                var partialOrganisationUnits = selection.getPartialOrganisationUnits();
-                $.extend( partialOrganisationUnits, data.organisationUnits );
-                selection.setPartialOrganisationUnits( partialOrganisationUnits );
+                selection.getPartialOrganisationUnits().done(function(all) {
+                    $.extend( all, data.organisationUnits );
 
-                $.extend( organisationUnits, data.organisationUnits );
+                    selection.setPartialOrganisationUnits( all ).done(function() {
+                        $.extend( organisationUnits, data.organisationUnits );
+                    });
+                });
             }
         );
     };

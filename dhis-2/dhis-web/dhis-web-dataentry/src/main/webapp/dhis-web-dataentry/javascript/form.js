@@ -80,6 +80,14 @@ var MAX_DROPDOWN_DISPLAYED = 30;
 
 var DAO = DAO || {};
 
+function getCurrentOrganisationUnit() {
+    if( $.isArray( currentOrganisationUnitId ) ) {
+        return currentOrganisationUnitId[0];
+    }
+
+    return currentOrganisationUnitId;
+}
+
 DAO.store = new dhis2.storage.Store( {
     name: 'dhis2',
     adapters: [ dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ],
@@ -115,8 +123,11 @@ $( document ).ready( function()
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
         log( 'Ouwt loaded' );
-        organisationUnits = selection.getOrganisationUnits();
-        loadMetaData();
+
+        selection.getOrganisationUnits().done(function(all) {
+            organisationUnits = all;
+            loadMetaData();
+        });
     } );
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn )
@@ -521,7 +532,7 @@ function clearEntryForm()
 
 function loadForm( dataSetId, multiOrg )
 {
-    currentOrganisationUnitId = selection.getSelected();
+    currentOrganisationUnitId = selection.getSelected()[0];
 
     if ( !multiOrg && storageManager.formExists( dataSetId ) )
     {
@@ -552,7 +563,7 @@ function loadForm( dataSetId, multiOrg )
         $( '#contentDiv' ).load( 'loadForm.action', 
         {
             dataSetId : dataSetId,
-            multiOrganisationUnit: multiOrg ? currentOrganisationUnitId : 0
+            multiOrganisationUnit: multiOrg ? getCurrentOrganisationUnit() : 0
         }, 
         function() 
         {
@@ -672,7 +683,7 @@ function splitFieldId( id )
     }
     else
     {
-        split.organisationUnitId = currentOrganisationUnitId;
+        split.organisationUnitId = getCurrentOrganisationUnit();
         split.dataElementId = id.split( '-' )[0];
         split.optionComboId = id.split( '-' )[1];
     }
@@ -733,7 +744,7 @@ function getOptionComboName( optionComboId )
  */
 function getSortedDataSetList( orgUnit )
 {
-    var associationSet = orgUnit !== undefined ? organisationUnitAssociationSetMap[orgUnit] : organisationUnitAssociationSetMap[currentOrganisationUnitId];
+    var associationSet = orgUnit !== undefined ? organisationUnitAssociationSetMap[orgUnit] : organisationUnitAssociationSetMap[getCurrentOrganisationUnit()];
     var orgUnitDataSets = dataSetAssociationSets[associationSet];
 
     var dataSetList = [];
@@ -1022,7 +1033,8 @@ function loadDataValues()
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
     $( '#infoDiv' ).css( 'display', 'none' );
 
-    currentOrganisationUnitId = selection.getSelected();
+    currentOrganisationUnitId = selection.getSelected()[0];
+
     insertDataValues();
     displayEntryFormCompleted();
 }
@@ -1058,7 +1070,7 @@ function insertDataValues()
 	    {
 	        periodId : periodId,
 	        dataSetId : dataSetId,
-	        organisationUnitId : currentOrganisationUnitId[0],
+	        organisationUnitId : getCurrentOrganisationUnit(),
             multiOrganisationUnit: multiOrganisationUnit
 	    },
 	    dataType: 'json',
@@ -1205,7 +1217,7 @@ function valueFocus( e )
 
     var dataElementName = getDataElementName( dataElementId );
     var optionComboName = getOptionComboName( optionComboId );
-    var organisationUnitName = organisationUnits[currentOrganisationUnitId].n;
+    var organisationUnitName = organisationUnits[getCurrentOrganisationUnit()].n;
 
     $( '#currentOrganisationUnit' ).html( organisationUnitName );
     $( '#currentDataElement' ).html( dataElementName + ' ' + optionComboName );
@@ -1545,7 +1557,7 @@ function viewHist( dataElementId, optionComboId )
 	        dataElementId : dataElementId,
 	        optionComboId : optionComboId,
 	        periodId : periodId,
-	        organisationUnitId : currentOrganisationUnitId
+	        organisationUnitId : getCurrentOrganisationUnit()
 	    }, 
 	    function( response, status, xhr )
 	    {
@@ -2026,7 +2038,7 @@ function StorageManager()
         var params = {
             'periodId' : $( '#selectedPeriodId' ).val(),
             'dataSetId' : $( '#selectedDataSetId' ).val(),
-            'organisationUnitId' : currentOrganisationUnitId
+            'organisationUnitId' : getCurrentOrganisationUnit()
         };
 
         return params;
