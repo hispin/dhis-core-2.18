@@ -3607,17 +3607,16 @@ Ext.onReady( function() {
 			items: tool
 		});
 		
-
 		organisationUnit = {
             xtype: 'panel',
-            title: '<div class="dv-panel-title-organisationunit">' + DV.i18n.organisation_units + '</div>',
+            title: '<div class="dv-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
             bodyStyle: 'padding:2px',
             hideCollapseTool: true,
             collapsed: false,
             getDimension: function() {
                 var r = treePanel.getSelectionModel().getSelection(),
                     config = {
-                        dimension: dv.conf.finals.dimension.organisationUnit.objectName,
+                        dimension: pt.conf.finals.dimension.organisationUnit.objectName,
                         items: []
                     };
 
@@ -3686,10 +3685,10 @@ Ext.onReady( function() {
                 return config.items.length ? config : null;
             },
             onExpand: function() {
-                var h = dv.viewport.westRegion.hasScrollbar ?
-                    dv.conf.layout.west_scrollbarheight_accordion_organisationunit : dv.conf.layout.west_maxheight_accordion_organisationunit;
-                dv.util.dimension.panel.setHeight(h);
-                treePanel.setHeight(this.getHeight() - dv.conf.layout.west_fill_accordion_organisationunit);
+                var h = pt.viewport.westRegion.hasScrollbar ?
+                    pt.conf.layout.west_scrollbarheight_accordion_organisationunit : pt.conf.layout.west_maxheight_accordion_organisationunit;
+                pt.util.dimension.panel.setHeight(h);
+                treePanel.setHeight(this.getHeight() - pt.conf.layout.west_fill_accordion_organisationunit);
             },
             items: [
                 {
@@ -3699,7 +3698,7 @@ Ext.onReady( function() {
                     items: [
                         toolPanel,
                         {
-                            width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding - 38,
+                            width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 38,
                             layout: 'column',
                             bodyStyle: 'border:0 none',
                             items: [
@@ -3714,7 +3713,7 @@ Ext.onReady( function() {
             ],
             listeners: {
                 added: function() {
-                    dv.cmp.dimension.panels.push(this);
+                    pt.cmp.dimension.panels.push(this);
                 },
                 expand: function(p) {
                     p.onExpand();
