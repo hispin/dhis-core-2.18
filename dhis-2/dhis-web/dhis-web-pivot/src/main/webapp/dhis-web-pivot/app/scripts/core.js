@@ -716,7 +716,8 @@ Ext.onReady( function() {
 						dimConf = conf.finals.dimension,
 						dims,
 						isOu = false,
-						isOuc = false;
+						isOuc = false,
+						isOugc = false;
 
 					config.columns = getValidatedDimensionArray(config.columns);
 					config.rows = getValidatedDimensionArray(config.rows);
@@ -753,6 +754,9 @@ Ext.onReady( function() {
 									}
 									else if (dim.items[j].id === 'USER_ORGUNIT_CHILDREN') {
 										isOuc = true;
+									}
+									else if (dim.items[j].id === 'USER_ORGUNIT_GRANDCHILDREN') {
+										isOugc = true;
 									}
 								}
 							}
@@ -1212,6 +1216,7 @@ Ext.onReady( function() {
 							xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
 							isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT'),
 							isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
+							isUserOrgunitGrandChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_GRANDCHILDREN'),
 							isLevel = function() {
 								if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
 									for (var i = 0; i < xOuDimension.ids.length; i++) {
@@ -1246,25 +1251,58 @@ Ext.onReady( function() {
 
 							// If ou and children
 							if (dim.dimensionName === ou) {
-								if (isUserOrgunit || isUserOrgunitChildren) {
+								if (isUserOrgunit || isUserOrgunitChildren || isUserOrgunitGrandChildren) {
+									var userOu,
+										userOuc,
+										userOugc;
+										
 									if (isUserOrgunit) {
-										dim.items = dim.items.concat(pt.init.user.ou);
+										userOu = [{
+											id: pt.init.user.ou,
+											name: response.metaData.names[pt.init.user.ou]
+										}];
 									}
 									if (isUserOrgunitChildren) {
-										dim.items = dim.items.concat(pt.init.user.ouc);
+										userOuc = [];
+										
+										for (var i = 0; i < pt.init.user.ouc.length; i++) {
+											userOuc.push({
+												id: pt.init.user.ouc[i],
+												name: response.metaData.names[pt.init.user.ouc[i]]
+											});
+										}
+
+										userOuc = pt.util.array.sortObjectsByString(userOuc);
 									}
+									if (isUserOrgunitGrandChildren) {
+										var userOuOuc = [].concat(pt.init.user.ou, pt.init.user.ouc),
+											responseOu = response.metaData.ou;
+
+										for (var i = 0; i < responseOu.length; i++) {
+											if (!Ext.Array.contains(userOuOuc, responseOu[i])) {
+												userOugc.push({
+													id: responseOu[i],
+													name: response.metaData.names[responseOu[i]]
+												});
+											}
+										}
+
+										userOugc = pt.util.array.sortObjectsByString(userOugc);
+									}
+
+									dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
 								}
 								else if (isLevel || isGroup) {
-									
-									// Items: get ids from metadata -> items
-									for (var j = 0, ids = Ext.clone(response.metaData[dim.dimensionName]); j < ids.length; j++) {
+									var responseOu = response.metaData.ou;
+
+									for (var i = 0; i < responseOu.length; i++) {
 										dim.items.push({
-											id: ids[j],
-											name: response.metaData.names[ids[j]]
+											id: responseOu[i],
+											name: response.metaData.names[responseOu[i]]
 										});
-										
-										dim.items = pt.util.array.sortObjectsByString(dim.items);
 									}
+
+									dim.items = pt.util.array.sortObjectsByString(dim.items);
 								}
 								else {
 									dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
@@ -2360,7 +2398,7 @@ Ext.onReady( function() {
 						},
 						disableCaching: false,
 						failure: function(r) {
-							pt.util.mask.hideMask();
+							pt.util.mask.hideMask(pt.viewport.centerRegion);
 							alert(r.responseText);
 						},
 						success: function(r) {
@@ -2368,7 +2406,7 @@ Ext.onReady( function() {
 								response = pt.api.response.Response(Ext.decode(r.responseText));
 
 							if (!response) {
-								pt.util.mask.hideMask();
+								pt.util.mask.hideMask(pt.viewport.centerRegion);
 								return;
 							}
 
@@ -2376,7 +2414,7 @@ Ext.onReady( function() {
 							xLayout = getSyncronizedXLayout(xLayout, response);
 
 							if (!xLayout) {
-								pt.util.mask.hideMask();
+								pt.util.mask.hideMask(pt.viewport.centerRegion);
 								return;
 							}
 
@@ -2469,7 +2507,7 @@ Ext.onReady( function() {
 				};
 				
 				failure = function(responseText) {
-					util.mask.hideMask();
+					util.mask.hideMask(pt.viewport.centerRegion);
 					alert(responseText);
 				};
 					

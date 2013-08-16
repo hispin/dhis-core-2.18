@@ -124,10 +124,11 @@ PT.i18n = {
 	write_your_interpretation: '$encoder.jsEscape($i18n.getString( 'write_your_interpretation' ) , "'")',
 	legend_set: '$encoder.jsEscape($i18n.getString( 'legend_set' ) , "'")',
 	select_organisation_units: '$encoder.jsEscape($i18n.getString( 'select_organisation_units' ) , "'")',
-	select_boundaries_and_level: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_level' ) , "'")',
-	select_organisation_unit_level: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_level' ) , "'")',
+	select_boundaries_and_levels: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_levels' ) , "'")',
+	select_organisation_unit_levels: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_levels' ) , "'")',
 	totals: '$encoder.jsEscape($i18n.getString( 'totals' ) , "'")',
 	details: '$encoder.jsEscape($i18n.getString( 'details' ) , "'")',
 	select_boundaries_and_groups: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_groups' ) , "'")',
-	select_organisation_unit_groups: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_groups' ) , "'")'
+	select_organisation_unit_groups: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_groups' ) , "'")',
+    user_organisation_unit_grandchildren: '$encoder.jsEscape($i18n.getString( 'user_organisation_unit_grandchildren' ) , "'")'
 };
