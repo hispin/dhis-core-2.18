@@ -29,25 +29,25 @@ package org.hisp.dhis.webportal.menu.action;
 
 import org.hisp.dhis.webportal.menu.MenuState;
 import org.hisp.dhis.webportal.menu.MenuStateManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Torgeir Lorange Ostby
- * @version $Id: SetMenuHiddenAction.java 2869 2007-02-20 14:26:09Z andegje $
- */
-public class SetMenuHiddenAction
+public class SetMenuStateAction
     implements Action
 {
+    @Autowired
+    private MenuStateManager manager;
+
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Input
     // -------------------------------------------------------------------------
 
-    private MenuStateManager menuStateManager;
+    private String state;
 
-    public void setMenuStateManager( MenuStateManager menuStateManager )
+    public void setState( String state )
     {
-        this.menuStateManager = menuStateManager;
+        this.state = state;
     }
 
     // -------------------------------------------------------------------------
@@ -56,8 +56,13 @@ public class SetMenuHiddenAction
 
     public String execute() throws Exception
     {
-        menuStateManager.setMenuState( MenuState.HIDDEN );
-
+        if ( state != null )
+        {
+            MenuState menuState = MenuState.valueOf( state.toUpperCase() );
+            
+            manager.setMenuState( menuState );
+        }
+        
         return SUCCESS;
     }
 }

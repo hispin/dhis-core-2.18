@@ -121,7 +121,7 @@
       </span>
       
       <span id="showLeftBar">
-        <a href="javascript:leftBar.showAnimated()" title="$i18n.getString( 'show_menu' )">
+        <a href="javascript:dhis2.leftBar.showAnimated()" title="$i18n.getString( 'show_menu' )">
           <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( 'show_menu' )"/></a>
       </span>
     </div>
@@ -134,9 +134,11 @@
     <div id="leftBar">
       <div id="hideLeftBar">
         <a href="index.action" title="$i18n.getString( 'show_main_menu' )" id="showMainMenuLink">
-          <img src="../images/home_small.png" width="16" height="16" title="$i18n.getString( 'show_main_menu' )"/></a>
-        <a href="javascript:leftBar.hideAnimated()" title="$i18n.getString( 'hide_menu' )" id="hideMainMenuLink">
-          <img src="../images/hide_menu.png" width="16" height="16" title="$i18n.getString( 'hide_menu' )"/></a>
+          <img src="../images/home_small.png" width="16" height="16" /></a>
+        <a href="javascript:dhis2.leftBar.hideAnimated()" title="$i18n.getString( 'hide_menu' )" id="hideMainMenuLink">
+          <img src="../images/hide_menu.png" width="16" height="16" /></a>
+        <a href="javascript:dhis2.leftBar.extend()" title="$i18n.getString( 'extend_menu' )" id="extendMainMenuLink">
+          <img src="../images/extend_menu.png" width="16" height="16" /></a>
       </div>
 
       <div id="leftBarContents">
@@ -154,12 +156,14 @@
         #parse( $page )
       #end
     </div>
-    #if( !$menuState.visible )
-      <script type="text/javascript">
-        leftBar.hide();
-      </script>
+    <script type="text/javascript">
+    #if( $!menuState == "HIDDEN" )
+      dhis2.leftBar.hide();
+    #elseif ( $!menuState == "EXTENDED" )
+      dhis2.leftBar.extend();
     #end
-
+    </script>
+    
     <div id="rightBar">
       <span id="hideRightBar"><a href="javascript:hideHelpContent()" title="$i18n.getString( 'close' )">
         <img id="hideRightBarImg" src="../images/hide.png" alt="$i18n.getString( 'close' )"/></a>

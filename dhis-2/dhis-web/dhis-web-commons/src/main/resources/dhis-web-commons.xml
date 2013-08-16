@@ -270,14 +270,7 @@
 
   <package name="dhis-web-commons-menu" extends="dhis-web-commons" namespace="/dhis-web-commons/menu">
 
-    <action name="setMenuVisible" class="org.hisp.dhis.webportal.menu.action.SetMenuVisibleAction">
-      <result name="success" type="httpheader">
-        <param name="status">204</param>
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="setMenuHidden" class="org.hisp.dhis.webportal.menu.action.SetMenuHiddenAction">
+    <action name="setMenuState" class="org.hisp.dhis.webportal.menu.action.SetMenuStateAction">
       <result name="success" type="httpheader">
         <param name="status">204</param>
       </result>
