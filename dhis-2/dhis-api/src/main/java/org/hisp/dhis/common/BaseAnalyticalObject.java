@@ -40,6 +40,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -131,6 +132,8 @@ public abstract class BaseAnalyticalObject
     protected boolean userOrganisationUnit;
 
     protected boolean userOrganisationUnitChildren;
+    
+    protected boolean userOrganisationUnitGrandChildren;
 
     @Scanned
     protected List<Integer> organisationUnitLevels = new ArrayList<Integer>();
@@ -175,7 +178,7 @@ public abstract class BaseAnalyticalObject
     
     public boolean hasUserOrgUnit()
     {
-        return userOrganisationUnit || userOrganisationUnitChildren;
+        return userOrganisationUnit || userOrganisationUnitChildren || userOrganisationUnitGrandChildren;
     }
     
     public boolean hasRelativePeriods()
@@ -274,6 +277,11 @@ public abstract class BaseAnalyticalObject
             if ( userOrganisationUnitChildren && user != null && user.hasOrganisationUnit() )
             {
                 items.addAll( user.getOrganisationUnit().getSortedChildren() );
+            }
+            
+            if ( userOrganisationUnitGrandChildren && user != null && user.hasOrganisationUnit() )
+            {
+                items.addAll( user.getOrganisationUnit().getSortedGrandChildren() );
             }
             
             if ( organisationUnitLevels != null && !organisationUnitLevels.isEmpty() && organisationUnitsAtLevel != null )
@@ -417,6 +425,11 @@ public abstract class BaseAnalyticalObject
             if ( userOrganisationUnitChildren )
             {
                 ouList.add( new BaseNameableObject( KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN, KEY_USER_ORGUNIT_CHILDREN ) );
+            }
+            
+            if ( userOrganisationUnitGrandChildren )
+            {
+                ouList.add( new BaseNameableObject( KEY_USER_ORGUNIT_GRANDCHILDREN, KEY_USER_ORGUNIT_GRANDCHILDREN, KEY_USER_ORGUNIT_GRANDCHILDREN ) );
             }
             
             if ( organisationUnitLevels != null && !organisationUnitLevels.isEmpty() )
@@ -776,6 +789,19 @@ public abstract class BaseAnalyticalObject
     public void setUserOrganisationUnitChildren( boolean userOrganisationUnitChildren )
     {
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isUserOrganisationUnitGrandChildren()
+    {
+        return userOrganisationUnitGrandChildren;
+    }
+
+    public void setUserOrganisationUnitGrandChildren( boolean userOrganisationUnitGrandChildren )
+    {
+        this.userOrganisationUnitGrandChildren = userOrganisationUnitGrandChildren;
     }
 
     @JsonProperty

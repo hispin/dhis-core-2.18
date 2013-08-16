@@ -41,6 +41,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -284,6 +285,10 @@ public class DefaultDimensionService
                         else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) )
                         {
                             object.setUserOrganisationUnitChildren( true );
+                        }
+                        else if ( KEY_USER_ORGUNIT_GRANDCHILDREN.equals( ou ) )
+                        {
+                            object.setUserOrganisationUnitGrandChildren( true );
                         }
                         else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
                         {
