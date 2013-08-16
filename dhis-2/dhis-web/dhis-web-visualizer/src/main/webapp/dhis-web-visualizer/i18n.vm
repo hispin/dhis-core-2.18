@@ -41,7 +41,6 @@ DV.i18n = {
 	trend_line:'$encoder.jsEscape($i18n.getString( 'trend_line' ) , "'")',
 	hide_subtitle:'$encoder.jsEscape($i18n.getString( 'hide_subtitle' ) , "'")',
 	hide_legend:'$encoder.jsEscape($i18n.getString( 'hide_legend' ) , "'")',
-	user_orgunit:'$encoder.jsEscape($i18n.getString( 'user_orgunit' ) , "'")',
 	domain_axis_label:'$encoder.jsEscape($i18n.getString( 'domain_axis_label' ) , "'")',
 	range_axis_label:'$encoder.jsEscape($i18n.getString( 'range_axis_label' ) , "'")',
 	target:'$encoder.jsEscape($i18n.getString( 'target' ) , "'")',
@@ -122,7 +121,6 @@ DV.i18n = {
 	wm_multiple_filter_orgunit:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_orgunit' ) , "'")',
 	wm_multiple_filter_groups:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_groups' ) , "'")',
 	wm_first_filter_used:'$encoder.jsEscape($i18n.getString( 'wm_first_filter_used' ) , "'")',
-	user_orgunit_children:'$encoder.jsEscape($i18n.getString( 'user_orgunit_children' ) , "'")',
 	show_data:'$encoder.jsEscape($i18n.getString( 'show_data' ) , "'")',
 	share:'$encoder.jsEscape($i18n.getString( 'share' ) , "'")',
 	interpretation:'$encoder.jsEscape($i18n.getString( 'interpretation' ) , "'")',
@@ -164,6 +162,7 @@ DV.i18n = {
 	next_year: '$encoder.jsEscape($i18n.getString( 'next_year' ) , "'")',
 	user_organisation_unit: '$encoder.jsEscape($i18n.getString( 'user_organisation_unit' ) , "'")',
 	user_organisation_unit_children: '$encoder.jsEscape($i18n.getString( 'user_organisation_unit_children' ) , "'")',
+	user_organisation_unit_grandchildren: '$encoder.jsEscape($i18n.getString( 'user_organisation_unit_grandchildren' ) , "'")',
 	filters: '$encoder.jsEscape($i18n.getString( 'filters' ) , "'")',
 	at_least_one_dimension_must_be_specified_as_row_or_column: '$encoder.jsEscape($i18n.getString( 'at_least_one_dimension_must_be_specified_as_row_or_column' ) , "'")',
 	at_least_one_period_must_be_specified_as_column_row_or_filter: '$encoder.jsEscape($i18n.getString( 'at_least_one_period_must_be_specified_as_column_row_or_filter' ) , "'")',
@@ -196,7 +195,10 @@ DV.i18n = {
 	graphics: '$encoder.jsEscape($i18n.getString( 'graphics' ) , "'")',
     sharing_settings: '$encoder.jsEscape($i18n.getString( 'sharing_settings' ) , "'")',
 	select_organisation_units: '$encoder.jsEscape($i18n.getString( 'select_organisation_units' ) , "'")',
-	select_boundaries_and_level: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_level' ) , "'")',
-	select_organisation_unit_level: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_level' ) , "'")',
-	radar_chart: '$encoder.jsEscape($i18n.getString( 'radar_chart' ) , "'")'
+	select_boundaries_and_levels: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_levels' ) , "'")',
+	select_organisation_unit_levels: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_levels' ) , "'")',
+	radar_chart: '$encoder.jsEscape($i18n.getString( 'radar_chart' ) , "'")',
+	select_boundaries_and_groups: '$encoder.jsEscape($i18n.getString( 'select_boundaries_and_groups' ) , "'")',
+	select_organisation_unit_groups: '$encoder.jsEscape($i18n.getString( 'select_organisation_unit_groups' ) , "'")',
+    user_organisation_unit_grandchildren: '$encoder.jsEscape($i18n.getString( 'user_organisation_unit_grandchildren' ) , "'")'
 };

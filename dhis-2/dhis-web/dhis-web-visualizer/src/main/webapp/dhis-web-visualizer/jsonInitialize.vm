@@ -5,8 +5,8 @@
 {
 "contextPath":"$!{contextPath}",
 "user":{"id":"$!currentUser.uid","name":"$currentUser.name","isAdmin":true,
-"ou":{"id":"$currentUser.getOrganisationUnit().uid","name":"$currentUser.getOrganisationUnit().name"},
-"ouc":[#foreach($ou in $currentUser.getOrganisationUnit().getSortedChildren()){"id":"$ou.uid","name":"$ou.name"}#if($velocityCount < $oucSize),#end#end]},
+"ou":"$currentUser.getOrganisationUnit().uid",
+"ouc":[#foreach($ou in $currentUser.getOrganisationUnit().getSortedChildren())"$ou.uid"#if($velocityCount < $oucSize),#end#end]},
 "rootNodes":[#foreach($node in $rootNodes){"id": "$!{node.uid}","text": "$!encoder.jsonEncode( ${node.name} )","level": 1,"hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()},"expanded": true}#if($velocityCount<$rootNodes.size()),#end#end],
 "dimensions":[#foreach($dim in $dimensions){"id":"$!{dim.uid}","name":"$!encoder.jsonEncode($!{dim.name})"}#if($velocityCount<$dimensions.size()),#end#end],
 "organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end]

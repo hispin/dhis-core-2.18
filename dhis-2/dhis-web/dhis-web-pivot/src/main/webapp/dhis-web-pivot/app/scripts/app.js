@@ -460,6 +460,18 @@ Ext.onReady( function() {
 				}
 			});
 
+			store.organisationUnitGroup = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				proxy: {
+					type: 'ajax',
+					url: init.contextPath + conf.finals.ajax.path_api + conf.finals.ajax.organisationunitgroup_getall,
+					reader: {
+						type: 'json',
+						root: 'organisationUnitGroups'
+					}
+				}
+			});
+
 			store.legendSet = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name', 'index'],
 				data: function() {
@@ -473,18 +485,6 @@ Ext.onReady( function() {
 				]
 			});
 			
-			store.organisationUnitGroup = Ext.create('Ext.data.Store', {
-				fields: ['id', 'name'],
-				proxy: {
-					type: 'ajax',
-					url: init.contextPath + conf.finals.ajax.path_api + conf.finals.ajax.organisationunitgroup_getall,
-					reader: {
-						type: 'json',
-						root: 'organisationUnitGroups'
-					}
-				}
-			});
-
 			pt.store = store;
 		}());
 
@@ -3406,13 +3406,6 @@ Ext.onReady( function() {
 					id: pt.conf.finals.root.id,
 					expanded: true,
 					children: pt.init.rootNodes
-				},
-				listeners: {
-					load: function(s, node, r) {
-						//for (var i = 0; i < r.length; i++) {
-							//r[i].data.text = pt.conf.util.jsonEncodeString(r[i].data.text);
-						//}
-					}
 				}
 			}),
 			xable: function(values) {
@@ -3614,19 +3607,20 @@ Ext.onReady( function() {
 			items: tool
 		});
 		
+
 		organisationUnit = {
-			xtype: 'panel',
-			title: '<div class="pt-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
-			bodyStyle: 'padding:2px',
-			hideCollapseTool: true,
-			collapsed: false,
-			getDimension: function() {
-				var r = treePanel.getSelectionModel().getSelection(),
-					config = {
-						dimension: pt.conf.finals.dimension.organisationUnit.objectName,
-						items: []
-					};
-					
+            xtype: 'panel',
+            title: '<div class="dv-panel-title-organisationunit">' + DV.i18n.organisation_units + '</div>',
+            bodyStyle: 'padding:2px',
+            hideCollapseTool: true,
+            collapsed: false,
+            getDimension: function() {
+                var r = treePanel.getSelectionModel().getSelection(),
+                    config = {
+                        dimension: dv.conf.finals.dimension.organisationUnit.objectName,
+                        items: []
+                    };
+
 				if (toolMenu.menuValue === 'orgunit') {
 					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue() || userOrganisationUnitGrandChildren.getValue()) {
 						if (userOrganisationUnit.getValue()) {
@@ -3656,14 +3650,14 @@ Ext.onReady( function() {
 				}
 				else if (toolMenu.menuValue === 'level') {
 					var levels = organisationUnitLevel.getValue();
-					
+
 					for (var i = 0; i < levels.length; i++) {
 						config.items.push({
 							id: 'LEVEL-' + levels[i],
 							name: ''
 						});
 					}
-						
+
 					for (var i = 0; i < r.length; i++) {
 						config.items.push({
 							id: r[i].data.id,
@@ -3673,14 +3667,14 @@ Ext.onReady( function() {
 				}
 				else if (toolMenu.menuValue === 'group') {
 					var groupIds = organisationUnitGroup.getValue();
-					
+
 					for (var i = 0; i < groupIds.length; i++) {
 						config.items.push({
 							id: 'OU_GROUP-' + groupIds[i],
 							name: ''
 						});
 					}
-						
+
 					for (var i = 0; i < r.length; i++) {
 						config.items.push({
 							id: r[i].data.id,
@@ -3688,48 +3682,45 @@ Ext.onReady( function() {
 						});
 					}
 				}
-				
-				return config.items.length ? config : null;
-			},
-			onExpand: function() {
-				var h = pt.viewport.westRegion.hasScrollbar ?
-					pt.conf.layout.west_scrollbarheight_accordion_organisationunit : pt.conf.layout.west_maxheight_accordion_organisationunit;
-				pt.util.dimension.panel.setHeight(h);
-				treePanel.setHeight(this.getHeight() - pt.conf.layout.west_fill_accordion_organisationunit);
-			},
-			items: [
-				{
-					layout: 'column',
-					bodyStyle: 'border:0 none',
-					style: 'padding-bottom:2px',
-					items: [
-						toolPanel,
-						{
-							width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 38,
-							layout: 'column',
-							bodyStyle: 'border:0 none',
-							items: [
-								userOrganisationUnit,
-								userOrganisationUnitChildren,
-								userOrganisationUnitGrandChildren,
-								organisationUnitLevel,
-								organisationUnitGroup
-							]
-						}							
-					]
-				},
-				treePanel
-			],
-			suppressExpand: false,
-			listeners: {
-				added: function() {
-					pt.cmp.dimension.panels.push(this);
-				},
-				expand: function(p) {
-					p.onExpand();
-				}
-			}
-		};
+
+                return config.items.length ? config : null;
+            },
+            onExpand: function() {
+                var h = dv.viewport.westRegion.hasScrollbar ?
+                    dv.conf.layout.west_scrollbarheight_accordion_organisationunit : dv.conf.layout.west_maxheight_accordion_organisationunit;
+                dv.util.dimension.panel.setHeight(h);
+                treePanel.setHeight(this.getHeight() - dv.conf.layout.west_fill_accordion_organisationunit);
+            },
+            items: [
+                {
+                    layout: 'column',
+                    bodyStyle: 'border:0 none',
+                    style: 'padding-bottom:2px',
+                    items: [
+                        toolPanel,
+                        {
+                            width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding - 38,
+                            layout: 'column',
+                            bodyStyle: 'border:0 none',
+                            items: [
+                                userOrganisationUnit,
+                                userOrganisationUnitChildren,
+                                organisationUnitLevel
+                            ]
+                        }
+                    ]
+                },
+                treePanel
+            ],
+            listeners: {
+                added: function() {
+                    dv.cmp.dimension.panels.push(this);
+                },
+                expand: function(p) {
+                    p.onExpand();
+                }
+            }
+        };
 
 		getDimensionPanels = function(dimensions, iconCls) {
 			var	getAvailableStore,
