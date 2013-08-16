@@ -1277,6 +1277,8 @@ Ext.onReady( function() {
 									if (isUserOrgunitGrandChildren) {
 										var userOuOuc = [].concat(pt.init.user.ou, pt.init.user.ouc),
 											responseOu = response.metaData.ou;
+											
+										userOugc = [];
 
 										for (var i = 0; i < responseOu.length; i++) {
 											if (!Ext.Array.contains(userOuOuc, responseOu[i])) {
