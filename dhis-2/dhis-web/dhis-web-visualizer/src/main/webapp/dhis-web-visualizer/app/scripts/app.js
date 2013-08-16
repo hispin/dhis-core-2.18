@@ -3516,7 +3516,7 @@ Ext.onReady( function() {
             store: Ext.create('Ext.data.TreeStore', {
                 proxy: {
                     type: 'ajax',
-                    url: dv.conf.finals.ajax.path_module + dv.conf.finals.ajax.organisationunitchildren_get
+                    url: dv.init.contextPath + dv.conf.finals.ajax.path_module + dv.conf.finals.ajax.organisationunitchildren_get
                 },
                 root: {
                     id: dv.conf.finals.root.id,
