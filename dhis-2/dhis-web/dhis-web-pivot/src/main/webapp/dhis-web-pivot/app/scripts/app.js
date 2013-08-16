@@ -2186,6 +2186,7 @@ Ext.onReady( function() {
 			treePanel,
 			userOrganisationUnit,
 			userOrganisationUnitChildren,
+			userOrganisationUnitGrandChildren,
 			userOrganisationUnitPanel,
 			organisationUnitLevel,
 			tool,
@@ -3414,13 +3415,15 @@ Ext.onReady( function() {
 					}
 				}
 			}),
-			xable: function(checked, value) {
-				if (checked || value) {
-					this.disable();
+			xable: function(values) {
+				for (var i = 0; i < values.length; i++) {
+					if (!!values[i]) {
+						this.disable();
+						return;
+					}
 				}
-				else {
-					this.enable();
-				}
+				
+				this.enable();
 			},
 			listeners: {
 				added: function() {
@@ -3466,42 +3469,43 @@ Ext.onReady( function() {
 		});
 
 		userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
-			columnWidth: 0.5,
+			columnWidth: 0.28,
 			style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
 			boxLabel: PT.i18n.user_organisation_unit,
 			labelWidth: pt.conf.layout.form_label_width,
 			handler: function(chb, checked) {
-				treePanel.xable(checked, userOrganisationUnitChildren.getValue());
+				treePanel.xable([checked, userOrganisationUnitChildren.getValue(), userOrganisationUnitGrandChildren.getValue()]);
 			}
 		});
 
 		userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
-			columnWidth: 0.5,
+			columnWidth: 0.31,
 			style: 'padding-top:2px; margin-bottom:0',
 			boxLabel: PT.i18n.user_organisation_unit_children,
 			labelWidth: pt.conf.layout.form_label_width,
 			handler: function(chb, checked) {
-				treePanel.xable(checked, userOrganisationUnit.getValue());
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitGrandChildren.getValue()]);
 			}
 		});
-		
-		userOrganisationUnitPanel = Ext.create('Ext.panel.Panel', {
-			columnWidth: 0.9,
-			layout: 'column',
-			bodyStyle: 'border:0 none; padding-bottom:3px; padding-left:7px',
-			items: [
-				userOrganisationUnit,
-				userOrganisationUnitChildren
-			]
+
+		userOrganisationUnitGrandChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.41,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabel: PT.i18n.user_organisation_unit_grandchildren,
+			labelWidth: pt.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitChildren.getValue()]);
+			}
 		});
 		
 		organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'pt-combo',
+			multiSelect: true,
 			style: 'margin-bottom:0',
 			width: pt.conf.layout.west_fieldset_width - pt.conf.layout.west_width_padding - 38,
 			valueField: 'level',
 			displayField: 'name',
-			emptyText: PT.i18n.select_organisation_unit_level,
+			emptyText: PT.i18n.select_organisation_unit_levels,
 			editable: false,
 			hidden: true,
 			store: {
@@ -3545,6 +3549,7 @@ Ext.onReady( function() {
 				if (param === 'orgunit') {
 					userOrganisationUnit.show();
 					userOrganisationUnitChildren.show();
+					userOrganisationUnitGrandChildren.show();
 					organisationUnitLevel.hide();
 					organisationUnitGroup.hide();
 					
@@ -3555,6 +3560,7 @@ Ext.onReady( function() {
 				else if (param === 'level') {
 					userOrganisationUnit.hide();
 					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
 					organisationUnitLevel.show();
 					organisationUnitGroup.hide();
 					treePanel.enable();
@@ -3562,6 +3568,7 @@ Ext.onReady( function() {
 				else if (param === 'group') {
 					userOrganisationUnit.hide();
 					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
 					organisationUnitLevel.hide();
 					organisationUnitGroup.show();
 					treePanel.enable();
@@ -3574,7 +3581,7 @@ Ext.onReady( function() {
 					iconCls: 'pt-menu-item-selected'
 				},
 				{
-					text: PT.i18n.select_boundaries_and_level + '&nbsp;&nbsp;',
+					text: PT.i18n.select_boundaries_and_levels + '&nbsp;&nbsp;',
 					param: 'level'
 				},
 				{
@@ -3621,7 +3628,7 @@ Ext.onReady( function() {
 					};
 					
 				if (toolMenu.menuValue === 'orgunit') {
-					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue() || userOrganisationUnitGrandChildren.getValue()) {
 						if (userOrganisationUnit.getValue()) {
 							config.items.push({
 								id: 'USER_ORGUNIT',
@@ -3634,6 +3641,12 @@ Ext.onReady( function() {
 								name: ''
 							});
 						}
+						if (userOrganisationUnitGrandChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_GRANDCHILDREN',
+								name: ''
+							});
+						}
 					}
 					else {
 						for (var i = 0; i < r.length; i++) {
@@ -3642,9 +3655,18 @@ Ext.onReady( function() {
 					}
 				}
 				else if (toolMenu.menuValue === 'level') {
+					var levels = organisationUnitLevel.getValue();
+					
+					for (var i = 0; i < levels.length; i++) {
+						config.items.push({
+							id: 'LEVEL-' + levels[i],
+							name: ''
+						});
+					}
+						
 					for (var i = 0; i < r.length; i++) {
 						config.items.push({
-							id: 'LEVEL-' + organisationUnitLevel.getValue() + '-' + r[i].data.id,
+							id: r[i].data.id,
 							name: ''
 						});
 					}
@@ -3652,14 +3674,19 @@ Ext.onReady( function() {
 				else if (toolMenu.menuValue === 'group') {
 					var groupIds = organisationUnitGroup.getValue();
 					
-					//for (var i = 0; i < r.length; i++) {
-						for (var j = 0; j < groupIds.length; j++) {
-							config.items.push({
-								id: 'OU_GROUP-' + groupIds[j],// + '-' + r[i].data.id,
-								name: ''
-							});
-						}
-					//}
+					for (var i = 0; i < groupIds.length; i++) {
+						config.items.push({
+							id: 'OU_GROUP-' + groupIds[i],
+							name: ''
+						});
+					}
+						
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
 				}
 				
 				return config.items.length ? config : null;
@@ -3684,6 +3711,7 @@ Ext.onReady( function() {
 							items: [
 								userOrganisationUnit,
 								userOrganisationUnitChildren,
+								userOrganisationUnitGrandChildren,
 								organisationUnitLevel,
 								organisationUnitGroup
 							]
@@ -4331,7 +4359,9 @@ Ext.onReady( function() {
 				dimNames = [],
 				isOu = false,
 				isOuc = false,
-				level;
+				isOugc = false,
+				levels = [],
+				groups = [];
 				
 			// State
 			pt.viewport.interpretationButton.enable();
@@ -4491,20 +4521,31 @@ Ext.onReady( function() {
 					if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
 						isOuc = true;
 					}
+					if (ouRecords[i].id === 'USER_ORGUNIT_GRANDCHILDREN') {
+						isOugc = true;
+					}
 					if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
-						level = parseInt(ouRecords[i].id.split('-')[1]);
+						levels.push(parseInt(ouRecords[i].id.split('-')[1]));
+					}
+					if (ouRecords[i].id.substr(0,8) === 'OU_GROUP') {
+						groups.push(parseInt(ouRecords[i].id.split('-')[1]));
 					}
 				}
 			}
 			
-			if (level) {					
+			if (levels.length) {					
 				toolMenu.clickHandler('level');
-				organisationUnitLevel.setValue(level);
+				organisationUnitLevel.setValue(levels);
+			}
+			else if (groups.length) {					
+				toolMenu.clickHandler('group');
+				organisationUnitGroup.setValue(groups);
 			}
 			else {
 				toolMenu.clickHandler('orgunit');
 				userOrganisationUnit.setValue(isOu);
 				userOrganisationUnitChildren.setValue(isOuc);
+				userOrganisationUnitGrandChildren.setValue(isOugc);
 			}
 
 			// If fav has organisation units, wait for tree callback before update
