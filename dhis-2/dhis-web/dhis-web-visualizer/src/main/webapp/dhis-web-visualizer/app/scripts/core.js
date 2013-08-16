@@ -1174,7 +1174,6 @@ Ext.onReady( function() {
                         }
                         else {
                             // Items: get ids from metadata -> items
-                            //if (Ext.isArray(metaDataDim) && dim.dimensionName !== dimConf.organisationUnit.dimensionName) {
                             if (Ext.isArray(metaDataDim)) {
                                 for (var j = 0, ids = Ext.clone(response.metaData[dim.dimensionName]); j < ids.length; j++) {
                                     dim.items.push({
