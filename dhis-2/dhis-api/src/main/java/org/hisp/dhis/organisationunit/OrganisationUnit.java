@@ -75,6 +75,7 @@ public class OrganisationUnit
 
     public static final String KEY_USER_ORGUNIT = "USER_ORGUNIT";
     public static final String KEY_USER_ORGUNIT_CHILDREN = "USER_ORGUNIT_CHILDREN";
+    public static final String KEY_USER_ORGUNIT_GRANDCHILDREN = "USER_ORGUNIT_GRANDCHILDREN";
     public static final String KEY_LEVEL = "LEVEL-";
     public static final String KEY_ORGUNIT_GROUP = "OU_GROUP-";
 
@@ -304,6 +305,18 @@ public class OrganisationUnit
             grandChildren.addAll( child.getChildren() );
         }
 
+        return grandChildren;
+    }
+    
+    public List<OrganisationUnit> getSortedGrandChildren()
+    {
+        List<OrganisationUnit> grandChildren = new ArrayList<OrganisationUnit>();
+        
+        for ( OrganisationUnit child : getSortedChildren() )
+        {
+            grandChildren.addAll( child.getSortedChildren() );
+        }
+        
         return grandChildren;
     }
 
