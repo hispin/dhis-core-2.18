@@ -127,7 +127,7 @@ public class DefaultQueryPlanner
             violation = "Category option combos cannot be specified as filter";
         }
         
-        if ( params.getNumberOfDimensionOptionPermutations() > MAX_DIM_OPT_PERM )
+        if ( !params.isIgnoreLimit() && params.getNumberOfDimensionOptionPermutations() > MAX_DIM_OPT_PERM )
         {
             violation = "Table exceeds max number of cells: " + MAX_DIM_OPT_PERM + " (" + params.getNumberOfDimensionOptionPermutations() + ")";
         }

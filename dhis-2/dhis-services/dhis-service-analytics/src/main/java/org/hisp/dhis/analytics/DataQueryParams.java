@@ -112,6 +112,8 @@ public class DataQueryParams
     
     private boolean skipMeta;
     
+    private boolean ignoreLimit;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -1039,6 +1041,16 @@ public class DataQueryParams
     public void setSkipMeta( boolean skipMeta )
     {
         this.skipMeta = skipMeta;
+    }
+
+    public boolean isIgnoreLimit()
+    {
+        return ignoreLimit;
+    }
+
+    public void setIgnoreLimit( boolean ignoreLimit )
+    {
+        this.ignoreLimit = ignoreLimit;
     }
 
     // -------------------------------------------------------------------------
