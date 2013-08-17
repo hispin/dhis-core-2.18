@@ -1259,24 +1259,24 @@ Ext.onReady( function() {
 
 									if (isUserOrgunit) {
 										userOu = [{
-											id: dv.init.user.ou,
-											name: response.metaData.names[dv.init.user.ou]
+											id: pt.init.user.ou,
+											name: response.metaData.names[pt.init.user.ou]
 										}];
 									}
 									if (isUserOrgunitChildren) {
 										userOuc = [];
 
-										for (var j = 0; j < dv.init.user.ouc.length; j++) {
+										for (var j = 0; j < pt.init.user.ouc.length; j++) {
 											userOuc.push({
-												id: dv.init.user.ouc[j],
-												name: response.metaData.names[dv.init.user.ouc[j]]
+												id: pt.init.user.ouc[j],
+												name: response.metaData.names[pt.init.user.ouc[j]]
 											});
 										}
 
-										userOuc = dv.util.array.sortObjectsByString(userOuc);
+										userOuc = pt.util.array.sortObjectsByString(userOuc);
 									}
 									if (isUserOrgunitGrandChildren) {
-										var userOuOuc = [].concat(dv.init.user.ou, dv.init.user.ouc),
+										var userOuOuc = [].concat(pt.init.user.ou, pt.init.user.ouc),
 											responseOu = response.metaData.ou;
 
 										userOugc = [];
@@ -1290,7 +1290,7 @@ Ext.onReady( function() {
 											}
 										}
 
-										userOugc = dv.util.array.sortObjectsByString(userOugc);
+										userOugc = pt.util.array.sortObjectsByString(userOugc);
 									}
 
 									dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
@@ -1305,7 +1305,7 @@ Ext.onReady( function() {
 										});
 									}
 
-									dim.items = dv.util.array.sortObjectsByString(dim.items);
+									dim.items = pt.util.array.sortObjectsByString(dim.items);
 								}
 								else {
 									dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
