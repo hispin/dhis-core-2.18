@@ -3609,7 +3609,7 @@ Ext.onReady( function() {
 		
 		organisationUnit = {
             xtype: 'panel',
-            title: '<div class="dv-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
+            title: '<div class="pt-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
             bodyStyle: 'padding:2px',
             hideCollapseTool: true,
             collapsed: false,
