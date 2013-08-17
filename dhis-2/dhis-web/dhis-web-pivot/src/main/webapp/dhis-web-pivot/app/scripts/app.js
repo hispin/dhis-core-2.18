@@ -3373,21 +3373,21 @@ Ext.onReady( function() {
 			},
 			selectByGroup: function(id) {
 				if (id) {
-					var url = pt.init.contextPath + pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbygroup,
+					var url = pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunit_getbygroup,
 						params = {id: id};
 					this.select(url, params);
 				}
 			},
 			selectByLevel: function(level) {
 				if (level) {
-					var url = pt.init.contextPath + pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbylevel,
+					var url = pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunit_getbylevel,
 						params = {level: level};
 					this.select(url, params);
 				}
 			},
 			selectByIds: function(ids) {
 				if (ids) {
-					var url = pt.init.contextPath + pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunit_getbyids;
+					var url = pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunit_getbyids;
 					Ext.Array.each(ids, function(item) {
 						url = Ext.String.urlAppend(url, 'ids=' + item);
 					});
@@ -3400,7 +3400,7 @@ Ext.onReady( function() {
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
-					url: pt.init.contextPath + pt.conf.finals.ajax.path_pivot + pt.conf.finals.ajax.organisationunitchildren_get
+					url: pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunitchildren_get
 				},
 				root: {
 					id: pt.conf.finals.root.id,
@@ -3490,7 +3490,7 @@ Ext.onReady( function() {
 				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitChildren.getValue()]);
 			}
 		});
-		
+
 		organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'pt-combo',
 			multiSelect: true,
@@ -3506,7 +3506,7 @@ Ext.onReady( function() {
 				data: pt.init.organisationUnitLevels
 			}
 		});
-		
+
 		organisationUnitGroup = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'pt-combo',
 			multiSelect: true,
@@ -3519,7 +3519,7 @@ Ext.onReady( function() {
 			hidden: true,
 			store: pt.store.organisationUnitGroup
 		});
-		
+
 		toolMenu = Ext.create('Ext.menu.Menu', {
 			shadow: false,
 			showSeparator: false,
@@ -3527,7 +3527,7 @@ Ext.onReady( function() {
 			clickHandler: function(param) {
 				var items = this.items.items;
 				this.menuValue = param;
-				
+
 				// Menu item icon cls
 				for (var i = 0; i < items.length; i++) {
 					if (items[i].param === param) {
@@ -3537,7 +3537,7 @@ Ext.onReady( function() {
 						items[i].setIconCls('');
 					}
 				}
-					
+
 				// Gui
 				if (param === 'orgunit') {
 					userOrganisationUnit.show();
@@ -3545,7 +3545,7 @@ Ext.onReady( function() {
 					userOrganisationUnitGrandChildren.show();
 					organisationUnitLevel.hide();
 					organisationUnitGroup.hide();
-					
+
 					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
 						treePanel.disable();
 					}
@@ -3591,7 +3591,7 @@ Ext.onReady( function() {
 				}
 			}
 		});
-		
+
 		tool = Ext.create('Ext.button.Button', {
 			cls: 'pt-button-organisationunitselection',
 			iconCls: 'pt-button-icon-gear',
@@ -3599,26 +3599,26 @@ Ext.onReady( function() {
 			height: 24,
 			menu: toolMenu
 		});
-		
+
 		toolPanel = Ext.create('Ext.panel.Panel', {
 			width: 36,
 			bodyStyle: 'border:0 none; text-align:right',
 			style: 'margin-right:2px',
 			items: tool
 		});
-		
+
 		organisationUnit = {
-            xtype: 'panel',
-            title: '<div class="pt-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
-            bodyStyle: 'padding:2px',
-            hideCollapseTool: true,
-            collapsed: false,
-            getDimension: function() {
-                var r = treePanel.getSelectionModel().getSelection(),
-                    config = {
-                        dimension: pt.conf.finals.dimension.organisationUnit.objectName,
-                        items: []
-                    };
+			xtype: 'panel',
+			title: '<div class="pt-panel-title-organisationunit">' + PT.i18n.organisation_units + '</div>',
+			bodyStyle: 'padding:2px',
+			hideCollapseTool: true,
+			collapsed: false,
+			getDimension: function() {
+				var r = treePanel.getSelectionModel().getSelection(),
+					config = {
+						dimension: pt.conf.finals.dimension.organisationUnit.objectName,
+						items: []
+					};
 
 				if (toolMenu.menuValue === 'orgunit') {
 					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue() || userOrganisationUnitGrandChildren.getValue()) {
@@ -3682,8 +3682,8 @@ Ext.onReady( function() {
 					}
 				}
 
-                return config.items.length ? config : null;
-            },
+				return config.items.length ? config : null;
+			},
             onExpand: function() {
                 var h = pt.viewport.westRegion.hasScrollbar ?
                     pt.conf.layout.west_scrollbarheight_accordion_organisationunit : pt.conf.layout.west_maxheight_accordion_organisationunit;
@@ -3704,7 +3704,9 @@ Ext.onReady( function() {
                             items: [
                                 userOrganisationUnit,
                                 userOrganisationUnitChildren,
-                                organisationUnitLevel
+                                userOrganisationUnitGrandChildren,
+                                organisationUnitLevel,
+                                organisationUnitGroup
                             ]
                         }
                     ]
