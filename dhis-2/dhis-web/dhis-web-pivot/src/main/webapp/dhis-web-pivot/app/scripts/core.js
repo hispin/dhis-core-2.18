@@ -11,7 +11,7 @@ Ext.onReady( function() {
 	}
 
 	// mode
-	PT.isDebug = true;
+	PT.isDebug = false;
 	
 	// html5
 	PT.isSessionStorage = 'sessionStorage' in window && window['sessionStorage'] !== null;
