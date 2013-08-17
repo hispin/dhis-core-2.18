@@ -580,11 +580,12 @@ public class DefaultAnalyticsService
     
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        AggregationType aggregationType, String measureCriteria, boolean skipMeta, I18nFormat format )
+        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean ignoreLimit, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
         params.setAggregationType( aggregationType );
+        params.setIgnoreLimit( ignoreLimit );
         
         if ( dimensionParams != null && !dimensionParams.isEmpty() )
         {
