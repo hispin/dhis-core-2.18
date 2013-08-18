@@ -13,7 +13,7 @@
 
     <action name="index" class="org.hisp.dhis.dashboard.action.InitAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dashboard-integration/mainForm.vm</param>
+      <param name="page">/dhis-web-dashboard-integration/dashboard.vm</param>
       <param name="hideMenu">true</param>
       <param name="stylesheets">style/dashboard.css</param>
       <param name="javascripts">javascript/dashboard.js</param>
