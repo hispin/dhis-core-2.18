@@ -34,6 +34,7 @@ import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.chart.Chart.TYPE_RADAR;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -90,6 +91,7 @@ import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.MultiplePiePlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.SpiderWebPlot;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.AreaRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -550,6 +552,10 @@ public class DefaultChartService
         {
             return getStackedBarChart( chart, dataSets[0], true );
         }
+        else if ( chart.isType( TYPE_RADAR ) )
+        {
+            return getRadarChart( chart, dataSets[0] );
+        }
         else
         {
             throw new IllegalArgumentException( "Illegal or no chart type: " + chart.getType() );
@@ -621,6 +627,20 @@ public class DefaultChartService
         areaChart.setAntiAlias( true );
         
         return areaChart;
+    }
+    
+    private JFreeChart getRadarChart( Chart chart, CategoryDataset dataSet )
+    {
+        SpiderWebPlot plot = new SpiderWebPlot( dataSet, TableOrder.BY_ROW );
+        plot.setBackgroundPaint( Color.WHITE );
+        plot.setOutlinePaint( Color.WHITE );
+        plot.setLabelFont( labelFont );
+        
+        JFreeChart jFreeChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
+        jFreeChart.setAntiAlias( true );
+        jFreeChart.setBackgroundPaint( Color.WHITE );
+        
+        return jFreeChart;
     }
     
     private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet, boolean horizontal )

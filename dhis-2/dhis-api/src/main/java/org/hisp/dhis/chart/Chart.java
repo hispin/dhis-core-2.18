@@ -72,6 +72,7 @@ public class Chart
     public static final String TYPE_LINE = "line";
     public static final String TYPE_AREA = "area";
     public static final String TYPE_PIE = "pie";
+    public static final String TYPE_RADAR = "radar"; // Spider web
 
     private String domainAxisLabel;
 
