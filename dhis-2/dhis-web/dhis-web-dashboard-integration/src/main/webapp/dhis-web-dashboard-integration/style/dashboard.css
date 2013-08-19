@@ -26,6 +26,7 @@
   left: 20px;
   margin-top: 48px;
   border-right: 0;
+  box-shadow: #f1f1f1 0 1px 1px 0;
 }
 
 #dashboardListContainer
@@ -41,22 +42,21 @@
   position: relative;
   width: auto;
   height: 29px;
-  background-color: #f7f7f7;
   padding: 0;
   overflow: hidden;
+  box-shadow: #f1f1f1 0 1px 1px 0;
 }
 
 .dashboardList
 {
-  background-color: #f7f7f7;
   border-radius: 3px;
   padding: 0;
-  border: 1px solid #d0d0d0;
+  border: 1px solid #ccc;
 }
 
 .dashboardList li a
 {
-  border-right: 1px solid #d0d0d0;
+  border-right: 1px solid #ccc;
   padding: 7px 14px 6px 14px;
   display: inline-block;
 }
@@ -77,7 +77,7 @@
 
 .currentDashboard
 {
-  background-color: #eee;
+  background-color: #f1f1f1;
 } 
 
 .horizontalMenu ul
@@ -101,7 +101,6 @@
   border-radius: 3px;
   cursor: pointer;  
   box-shadow: #ddd 0px 1px 3px 0px;
-  background-color: #fff;
   overflow: auto;
 }
 
