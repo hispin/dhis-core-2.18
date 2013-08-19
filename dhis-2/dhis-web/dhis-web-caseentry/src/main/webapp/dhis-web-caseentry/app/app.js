@@ -54,6 +54,7 @@ TR.conf = {
 			casebasedfavorite_getall: 'getTabularReports.action',
 			casebasedfavorite_get: 'getTabularReport.action',
 			casebasedfavorite_rename: 'updateTabularReportName.action',
+			casebasedfavorite_validate: 'validateTabularReport.action',
 			casebasedfavorite_save: 'saveTabularReport.action',
             casebasedfavorite_delete: 'deleteTabularReport.action',
 			suggested_dataelement_get: 'getOptions.action',
@@ -3295,15 +3296,30 @@ Ext.onReady( function() {
 						p.name = name;
 						
 						Ext.Ajax.request({
-							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_save,
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_validate,
 							method: 'POST',
-							params: p,
-							success: function() {
-								TR.store.caseBasedFavorite.loadStore();
-								window.destroy();
-								TR.util.mask.hideMask();
-							}
-						});
+							params: {name:name},
+							success: function(r) {
+									var json = Ext.JSON.decode(r.responseText);
+									if(json.response=='success'){
+										Ext.Ajax.request({
+											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_save,
+											method: 'POST',
+											params: p,
+											success: function() {
+												TR.store.caseBasedFavorite.loadStore();
+												window.destroy();
+												TR.util.mask.hideMask();
+											}
+										})
+									}
+									else{
+										TR.util.notification.error(TR.i18n.error, json.message);
+										window.destroy();
+										TR.util.mask.hideMask();
+									}
+								}
+							});
 					}
 				}
 			});
@@ -3314,26 +3330,39 @@ Ext.onReady( function() {
 					var name = nameTextfield.getValue();
 
 					if (id && name) {
-						if (TR.store.caseBasedFavorite.findExact('name', name) != -1) {
-							return;
-						}
 						TR.util.mask.showMask(TR.cmp.caseBasedFavorite.window, TR.i18n.renaming + '...');
+						
 						Ext.Ajax.request({
-							url:  TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_rename,
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_validate,
 							method: 'POST',
-							params: {id: id, name: name},
-							failure: function(r) {
-								TR.util.mask.hideMask();
-								alert(r.responseText);
-							},
-							success: function() {
-								TR.store.caseBasedFavorite.loadStore();
-								window.destroy();
-								TR.util.mask.hideMask();
-							}
-						});
+							params: {id:id, name:name},
+							success: function(r) {
+									var json = Ext.JSON.decode(r.responseText);
+									if(json.response=='success'){
+										Ext.Ajax.request({
+											url:  TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_rename,
+											method: 'POST',
+											params: {id: id, name: name},
+											failure: function(r) {
+												TR.util.mask.hideMask();
+												alert(r.responseText);
+											},
+											success: function() {
+												TR.store.caseBasedFavorite.loadStore();
+												window.destroy();
+												TR.util.mask.hideMask();
+											}
+										});
+									}
+									else{
+										TR.util.notification.error(TR.i18n.error, json.message);
+										window.destroy();
+										TR.util.mask.hideMask();
+									}
+								}
+							});
+						}
 					}
-				}
 			});
 			
 			cancelButton = Ext.create('Ext.button.Button', {

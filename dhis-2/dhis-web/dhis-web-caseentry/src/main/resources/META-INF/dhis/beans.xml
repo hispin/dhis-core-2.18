@@ -933,8 +933,8 @@
 		id="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
 		class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
 		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="tabularReportService"
+			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"

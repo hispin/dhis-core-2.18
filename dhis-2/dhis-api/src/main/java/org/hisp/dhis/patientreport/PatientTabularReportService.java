@@ -41,6 +41,8 @@ public interface PatientTabularReportService
     void saveOrUpdate( PatientTabularReport patientTabularReport );
 
     PatientTabularReport getPatientTabularReport( int id );
+    
+    PatientTabularReport getPatientTabularReport( String name );
 
     void deletePatientTabularReport( PatientTabularReport patientTabularReport );
 

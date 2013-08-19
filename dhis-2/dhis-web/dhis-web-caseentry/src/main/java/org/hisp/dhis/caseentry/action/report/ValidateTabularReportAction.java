@@ -27,9 +27,9 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patientreport.PatientTabularReport;
+import org.hisp.dhis.patientreport.PatientTabularReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,11 +45,11 @@ public class ValidateTabularReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private PatientTabularReportService tabularReportService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setTabularReportService( PatientTabularReportService tabularReportService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.tabularReportService = tabularReportService;
     }
 
     private I18n i18n;
@@ -62,12 +62,19 @@ public class ValidateTabularReportAction
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
+    
+    private Integer id;
 
-    private String facilityLB;
-
-    public void setFacilityLB( String facilityLB )
+    public void setId( Integer id )
     {
-        this.facilityLB = facilityLB;
+        this.id = id;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
     }
 
     private String message;
@@ -84,19 +91,18 @@ public class ValidateTabularReportAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit selectedOrgunit = selectedStateManager.getSelectedOrganisationUnit();
-        
-        if ( selectedOrgunit == null )
+        name = name.trim();
+
+        PatientTabularReport match = tabularReportService.getPatientTabularReport( name );
+
+        if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
-            message = i18n.getString( "please_specify_an_orgunit" );
+            message = i18n.getString( "name_in_use" );
+
             return INPUT;
         }
-        
-        if ( facilityLB.equals( "childrenOnly" ) && !selectedOrgunit.hasChild() )
-        {
-            message = i18n.getString( "selected_orgunit_no_have_any_child" );
-            return INPUT;
-        }
+
+        message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
     }
