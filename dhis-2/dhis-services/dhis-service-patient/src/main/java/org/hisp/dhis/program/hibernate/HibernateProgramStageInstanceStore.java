@@ -1181,18 +1181,18 @@ public class HibernateProgramStageInstanceStore
                         sql += "      dataelementid=" + deGroupBy + ") is not null AND ";
                     }
                     sql += "     psi_1.programstageid=" + programStage.getId() + " ";
-                    sql += filterSQL + "LIMIT 1 ) ";
+                    sql += filterSQL + "LIMIT 1  ";
                 }
 
-                sql += " as \"" + periodName + "\" ,";
+                sql += " ) as \"" + periodName + "\" ,";
             }
             // -- end period
 
             sql = sql.substring( 0, sql.length() - 1 ) + " ";
-            sql += " ) ) ";
+            sql += " ) ";
             sql += " UNION ";
         }
-        sql = sql.substring( 0, sql.length() - 10 );
+        sql = sql.substring( 0, sql.length() - 7 );
         sql += " ORDER BY orgunit asc ";
         if ( limit != null )
         {
@@ -1274,10 +1274,10 @@ public class HibernateProgramStageInstanceStore
                     }
                     sql += "     psi_1.executiondate >= '" + startDate + "' AND ";
                     sql += "     psi_1.executiondate <= '" + endDate + "' ";
-                    sql += filterSQL + " LIMIT 1 ) ";
+                    sql += filterSQL + " LIMIT 1 ";
                 }
 
-                sql += " as " + aggregateType;
+                sql += " ) as " + aggregateType;
                 sql += "  ) ";
                 sql += " UNION ";
             }
@@ -1527,7 +1527,7 @@ public class HibernateProgramStageInstanceStore
                 {
                     for ( String deValue : deValues )
                     {
-                        sql += "(SELECT 0 as \"" + deValue + "\",";
+                        sql += "(SELECT 0 ) as \"" + deValue + "\",";
                     }
                 }
                 else
