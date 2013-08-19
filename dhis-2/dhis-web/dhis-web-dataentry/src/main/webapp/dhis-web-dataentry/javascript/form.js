@@ -54,7 +54,7 @@ var storageManager = new StorageManager();
 var multiOrganisationUnit = false;
 
 // local cache of organisationUnits (used for name lookup)
-var organisationUnits = [];
+// var organisationUnits = [];
 
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
@@ -104,6 +104,8 @@ DAO.store = new dhis2.storage.Store( {
     };
 } )( jQuery );
 
+selection.setListenerFunction( organisationUnitSelected );
+
 /**
  * Page init. The order of events is:
  *
@@ -117,18 +119,13 @@ $( document ).ready( function()
         cache: false
     } );
 
-    selection.setListenerFunction( organisationUnitSelected );
     $( '#loaderSpan' ).show();
 
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
         log( 'Ouwt loaded' );
-
-        selection.getOrganisationUnits().done(function(all) {
-            organisationUnits = all;
-            loadMetaData();
-        });
-    } );
+        loadMetaData();
+   } );
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn )
 	{
