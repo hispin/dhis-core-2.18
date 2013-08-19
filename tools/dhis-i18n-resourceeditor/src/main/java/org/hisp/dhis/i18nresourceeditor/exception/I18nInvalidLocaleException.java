@@ -26,12 +26,11 @@ package org.hisp.dhis.i18nresourceeditor.exception;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 /**
  * @author Oyvind Brucker
  */
 public class I18nInvalidLocaleException extends Exception {
-
-    String message;
 
     public I18nInvalidLocaleException(String message) {
         super(message);

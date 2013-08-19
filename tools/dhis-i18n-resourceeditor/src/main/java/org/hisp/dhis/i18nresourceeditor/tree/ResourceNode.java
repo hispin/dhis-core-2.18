@@ -26,6 +26,7 @@ package org.hisp.dhis.i18nresourceeditor.tree;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.util.Locale;
 import java.util.Collection;
 
@@ -34,18 +35,18 @@ import java.util.Collection;
  */
 public interface ResourceNode extends Comparable<ResourceNode> {
 
-    public static int MODULE = 1;
-    public static int KEY = 2;
+    int MODULE = 1;
+    int KEY = 2;
 
-    public Collection<Locale> getAvailableLocales();
+    Collection<Locale> getAvailableLocales();
 
-    public int getType();
+    int getType();
 
-    public void translate(Locale locale, String translation);
+    void translate(Locale locale, String translation);
 
-    public String getCaption();
+    String getCaption();
 
-    public String getText(Locale locale);
+    String getText(Locale locale);
 
-    public ModuleNode getRoot();
+    ModuleNode getRoot();
 }

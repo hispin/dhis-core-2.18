@@ -26,12 +26,11 @@ package org.hisp.dhis.i18nresourceeditor.exception;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 /**
  * @author Oyvind Brucker
  */
 public class I18nResourceException extends Exception {
-
-    String message;
 
     public I18nResourceException(String message) {
         super(message);

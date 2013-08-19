@@ -26,6 +26,7 @@ package org.hisp.dhis.i18nresourceeditor.gui;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import org.hisp.dhis.i18nresourceeditor.tree.ModuleNode;
 import org.hisp.dhis.i18nresourceeditor.tree.KeyNode;
 import org.hisp.dhis.i18nresourceeditor.tree.ResourceNode;
@@ -39,7 +40,7 @@ import javax.swing.tree.TreePath;
  */
 public class ResourceTreeSelectionModel implements TreeModel {
 
-    ModuleNode rootModule;
+    private ModuleNode rootModule;
 
     public ResourceTreeSelectionModel(ModuleNode rootModule) {
         this.rootModule = rootModule;

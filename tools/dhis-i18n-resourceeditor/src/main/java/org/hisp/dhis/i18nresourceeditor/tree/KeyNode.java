@@ -26,17 +26,17 @@ package org.hisp.dhis.i18nresourceeditor.tree;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.util.Locale;
 import java.util.Collection;
 
 /**
- * @author Oyvind Brucker
- * 
+ * @author Oyvind Brucker 
  */
 public class KeyNode implements ResourceNode {
 
     private String key;
-    ModuleNode parent;
+    private ModuleNode parent;
 
     public KeyNode(String key, ModuleNode parent) {
         this.key = key;
@@ -50,6 +50,7 @@ public class KeyNode implements ResourceNode {
     // -------------------------------------------------------------------------
     // Resource node implementation
     // -------------------------------------------------------------------------
+    
     public int getType() {
         return KEY;
     }
@@ -77,6 +78,7 @@ public class KeyNode implements ResourceNode {
     // -------------------------------------------------------------------------
     // Comparable implementation
     // -------------------------------------------------------------------------
+    
     public int compareTo(ResourceNode o) {
         if (o instanceof ModuleNode) {
             return -1;
@@ -87,6 +89,10 @@ public class KeyNode implements ResourceNode {
 
     public boolean equals(Object object) {
         return this.toString().equals(object);
+    }
+    
+    public int hashCode() {
+        return this.toString().hashCode();
     }
 
     public String toString() {
