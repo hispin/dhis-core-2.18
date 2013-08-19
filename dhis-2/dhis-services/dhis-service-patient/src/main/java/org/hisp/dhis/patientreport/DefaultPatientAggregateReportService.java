@@ -91,4 +91,9 @@ public class DefaultPatientAggregateReportService
         return patientAggregateReportStore.countList( user, query );
     }
 
+    @Override
+    public PatientAggregateReport getPatientAggregateReport( String name )
+    {
+        return patientAggregateReportStore.getByName( name );
+    }
 }

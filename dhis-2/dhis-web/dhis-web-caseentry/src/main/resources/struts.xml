@@ -1031,6 +1031,17 @@
         /dhis-web-caseentry/jsonminOrganisationUnitPaths.vm
       </result>
     </action>
+    
+    <action name="validateAggregateReport"
+      class="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="input" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseInput.vm
+      </result>
+      <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+    </action>
 
     <!-- SMS Reminder -->
 

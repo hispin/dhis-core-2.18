@@ -1064,6 +1064,14 @@
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction"
+		class="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction"
+		scope="prototype">
+		<property name="aggregateReportService"
+			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+	</bean>
 
 	<!-- Reminder -->
 

@@ -63,6 +63,7 @@ TR.conf = {
 			aggregatefavorite_rename: 'updateAggregateReportName.action',
 			aggregatefavorite_save: 'saveAggregateReport.action',
             aggregatefavorite_delete: 'deleteAggregateReport.action',
+			aggregatefavorite_validate: 'validateAggregateReport.action',
 			generateaggregatereport_get: 'generateAggregateReport.action',
 			username_dataelement_get: 'getUsernameList.action',
 			organisationunit_getbyids: 'getOrganisationUnitPaths.action',
@@ -1210,37 +1211,65 @@ Ext.onReady( function() {
 						}
 						
 						Ext.Ajax.request({
-							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
 							method: 'POST',
-							params: p,
-							success: function() {
-								TR.store.aggregateFavorite.load({callback: function() {
-									TR.util.mask.hideMask();
-									if (fn) {
-										fn();
+							params: {name:name},
+							success: function(r) {
+									var json = Ext.JSON.decode(r.responseText);
+									if(json.response=='success'){
+										Ext.Ajax.request({
+											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
+											method: 'POST',
+											params: p,
+											success: function() {
+												TR.store.aggregateFavorite.load({callback: function() {
+													TR.util.mask.hideMask();
+													if (fn) {
+														fn();
+													}
+												}});
+											}
+										});  
 									}
-								}});
-							}
-						});  
+									else{
+										TR.util.notification.error(TR.i18n.error, json.message);
+										window.destroy();
+										TR.util.mask.hideMask();
+									}
+								}
+							});
 					},
 					updateName: function(id, name) {
-						if (TR.store.aggregateFavorite.findExact('name', name) != -1) {
-							return;
-						}
 						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.renaming + '...');
+						
 						Ext.Ajax.request({
-							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_rename,
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
 							method: 'POST',
-							params: {id: id, name: name},
-							success: function() {
-								TR.store.aggregateFavorite.load({callback: function() {
-									TR.cmp.aggregateFavorite.rename.window.close();
-									TR.util.mask.hideMask();
-									TR.cmp.aggregateFavorite.grid.getSelectionModel().select(TR.store.aggregateFavorite.getAt(TR.store.aggregateFavorite.findExact('name', name)));
-									TR.cmp.aggregateFavorite.name.setValue(name);
-								}});
-							}
-						});
+							params: {id:id, name:name},
+							success: function(r) {
+									var json = Ext.JSON.decode(r.responseText);
+									if(json.response=='success'){
+										Ext.Ajax.request({
+											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_rename,
+											method: 'POST',
+											params: {id: id, name: name},
+											success: function() {
+												TR.store.aggregateFavorite.load({callback: function() {
+													TR.cmp.aggregateFavorite.rename.window.close();
+													TR.util.mask.hideMask();
+													TR.cmp.aggregateFavorite.grid.getSelectionModel().select(TR.store.aggregateFavorite.getAt(TR.store.aggregateFavorite.findExact('name', name)));
+													TR.cmp.aggregateFavorite.name.setValue(name);
+												}});
+											}
+										});  
+									}
+									else{
+										TR.util.notification.error(TR.i18n.error, json.message);
+										window.destroy();
+										TR.util.mask.hideMask();
+									}
+								}
+							});
 					},
 					del: function(fn) {
 						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.deleting + '...');
@@ -3746,15 +3775,33 @@ Ext.onReady( function() {
 						p.name = name;
 						
 						Ext.Ajax.request({
-							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
+							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
 							method: 'POST',
-							params: p,
-							success: function() {
-								TR.store.aggregateFavorite.loadStore();
-								window.destroy();
-								TR.util.mask.hideMask();
-							}
-						});  
+							params: {name:name},
+							success: function(r) {
+									var json = Ext.JSON.decode(r.responseText);
+									if(json.response=='success'){
+										Ext.Ajax.request({
+											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
+											method: 'POST',
+											params: p,
+											success: function() {
+												TR.store.aggregateFavorite.load({callback: function() {
+													TR.util.mask.hideMask();
+													if (fn) {
+														fn();
+													}
+												}});
+											}
+										});  
+									}
+									else{
+										TR.util.notification.error(TR.i18n.error, json.message);
+										window.destroy();
+										TR.util.mask.hideMask();
+									}
+								}
+							});
 					}
 				}
 			});

@@ -44,6 +44,8 @@ public interface PatientAggregateReportService
 
     PatientAggregateReport getPatientAggregateReport( int id );
 
+    PatientAggregateReport getPatientAggregateReport( String name );
+    
     void deletePatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
     Collection<PatientAggregateReport> getAllPatientAggregateReports();
