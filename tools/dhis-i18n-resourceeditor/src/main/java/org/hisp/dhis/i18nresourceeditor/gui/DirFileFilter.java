@@ -26,6 +26,7 @@ package org.hisp.dhis.i18nresourceeditor.gui;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 

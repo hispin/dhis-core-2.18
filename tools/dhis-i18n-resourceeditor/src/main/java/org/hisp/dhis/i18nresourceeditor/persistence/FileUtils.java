@@ -26,6 +26,7 @@ package org.hisp.dhis.i18nresourceeditor.persistence;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,7 +44,6 @@ import org.hisp.dhis.i18nresourceeditor.exception.I18nResourceException;
  */
 public class FileUtils
 {
-
     public static Hashtable<String, String> loadResource( String path )
         throws I18nResourceException
     {

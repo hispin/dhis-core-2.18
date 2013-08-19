@@ -26,15 +26,16 @@ package org.hisp.dhis.i18nresourceeditor.service;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 public interface I18nLogging {
 
-    public void outWarning(String output);
+    void outWarning(String output);
 
-    public void outInfo(String output);
+    void outInfo(String output);
 
-    public void outError(String output);
+    void outError(String output);
 
-    public boolean getState();
+    boolean getState();
 
-    public void setState(boolean state);
+    void setState(boolean state);
 }

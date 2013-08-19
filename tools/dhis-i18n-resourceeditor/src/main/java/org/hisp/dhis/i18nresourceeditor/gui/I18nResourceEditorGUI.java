@@ -26,6 +26,7 @@ package org.hisp.dhis.i18nresourceeditor.gui;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -998,7 +999,7 @@ public class I18nResourceEditorGUI extends JFrame {
             if (currentLocale != null) {
                 // Then we should see what the list contains
                 String localestr = (String) cmbRefLocaleSelect.getModel().getSelectedItem();
-                currentRefLocale = (Locale) mapReflocales.get(localestr); // The string points to a locale in the map
+                currentRefLocale = mapReflocales.get(localestr); // The string points to a locale in the map
                 // Update the translation
                 try {
                     ResourceNode resource = getSelectedResource();
