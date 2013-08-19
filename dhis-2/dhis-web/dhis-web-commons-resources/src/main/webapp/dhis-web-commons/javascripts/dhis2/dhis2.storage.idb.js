@@ -29,21 +29,21 @@
 
 dhis2.util.namespace( 'dhis2.storage' );
 
-(function ( $, window, document, undefined ) {
-    if ( typeof window.indexedDB === 'undefined' ) {
+(function( $, window, document, undefined ) {
+    if( typeof window.indexedDB === 'undefined' ) {
         window.indexedDB = window.webkitIndexedDB || window.mozIndexedDB || window.oIndexedDB || window.msIndexedDB;
     }
 
-    if ( typeof window.IDBKeyRange === 'undefined' ) {
+    if( typeof window.IDBKeyRange === 'undefined' ) {
         window.IDBKeyRange = window.webkitIDBKeyRange || window.msIDBKeyRange;
     }
 
-    if ( typeof window.IDBTransaction === 'undefined' ) {
+    if( typeof window.IDBTransaction === 'undefined' ) {
         window.IDBTransaction = window.webkitIDBTransaction || window.msIDBTransaction
     }
 
-    dhis2.storage.IndexedDBAdapter = function ( options ) {
-        if ( !(this instanceof dhis2.storage.IndexedDBAdapter) ) {
+    dhis2.storage.IndexedDBAdapter = function( options ) {
+        if( !(this instanceof dhis2.storage.IndexedDBAdapter) ) {
             return new dhis2.storage.IndexedDBAdapter( options );
         }
 
@@ -71,37 +71,37 @@ dhis2.util.namespace( 'dhis2.storage' );
 
     Object.defineProperties( dhis2.storage.IndexedDBAdapter.prototype, {
         'open': {
-            value: function () {
+            value: function() {
                 var self = this;
                 var deferred = $.Deferred();
 
                 var request = window.indexedDB.open( self.name, self.version );
 
-                request.onupgradeneeded = function ( e ) {
+                request.onupgradeneeded = function( e ) {
                     self._db = e.target.result;
 
-                    $.each( self.objectStoreNames, function ( idx, item ) {
-                        if ( self._db.objectStoreNames.contains( item ) ) {
+                    $.each( self.objectStoreNames, function( idx, item ) {
+                        if( self._db.objectStoreNames.contains( item ) ) {
                             self._db.deleteObjectStore( item );
                         }
                     } );
 
-                    $.each( self.objectStoreNames, function ( idx, item ) {
+                    $.each( self.objectStoreNames, function( idx, item ) {
                         self._db.createObjectStore( item );
                     } );
                 };
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     self._db = e.target.result;
                     deferred.resolveWith( self );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -111,15 +111,15 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'set': {
-            value: function ( store, object ) {
+            value: function( store, object ) {
                 var self = this;
                 var deferred = $.Deferred();
 
-                if ( typeof self._db === 'undefined' ) {
+                if( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
                 }
 
-                if ( typeof object === 'undefined' || typeof object[self.keyPath] === 'undefined' ) {
+                if( typeof object === 'undefined' || typeof object[self.keyPath] === 'undefined' ) {
                     throw new Error( 'Invalid object' );
                 }
 
@@ -132,16 +132,16 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var objectStore = tx.objectStore( store );
                 var request = objectStore.put( object, key );
 
-                request.onsuccess = function () {
+                request.onsuccess = function() {
                     deferred.resolveWith( self, [ object ] );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -150,20 +150,21 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
+        /*
         'setAll': {
-            value: function ( store, arr ) {
+            value: function( store, arr ) {
                 var self = this;
                 var deferred1 = $.Deferred();
                 var deferred2 = $.Deferred();
                 var chained = deferred2.promise();
 
-                $.each( arr, function ( idx, item ) {
-                    chained = chained.then( function () {
+                $.each( arr, function( idx, item ) {
+                    chained = chained.then( function() {
                         return self.set( store, item );
                     } );
                 } );
 
-                chained = chained.then( function () {
+                chained = chained.then( function() {
                     deferred1.resolveWith( this );
                 } );
 
@@ -173,15 +174,57 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
-        'get': {
-            value: function ( store, key ) {
+        */
+        'setAll': {
+            value: function( store, arr ) {
                 var self = this;
+                var deferred = $.Deferred();
 
-                if ( typeof self._db === 'undefined' ) {
+                if( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
                 }
 
-                if ( typeof key === 'undefined' ) {
+                var storedCount = 0;
+
+                var tx = self._db.transaction( [ store ], "readwrite" );
+                var objectStore = tx.objectStore( store );
+
+                function insertItem() {
+                    if( storedCount < arr.length ) {
+                        var object = arr[storedCount];
+                        object = JSON.parse( JSON.stringify( object ) );
+
+                        if( typeof object === 'undefined' || typeof object[self.keyPath] === 'undefined' ) {
+                            throw new Error( 'Invalid object' );
+                        }
+
+                        var key = object[self.keyPath];
+                        delete object[self.keyPath];
+
+                        objectStore.put( object, key ).onsuccess = function() {
+                            storedCount++;
+                            insertItem();
+                        };
+                    } else {
+                        deferred.resolveWith( self );
+                    }
+                }
+
+                insertItem();
+
+                return deferred.promise();
+            },
+            enumerable: true
+        },
+        'get': {
+            value: function( store, key ) {
+                var self = this;
+
+                if( typeof self._db === 'undefined' ) {
+                    throw new Error( 'Database is not open.' );
+                }
+
+                if( typeof key === 'undefined' ) {
                     throw new Error( 'Invalid key: ', key );
                 }
 
@@ -191,22 +234,22 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                 var deferred = $.Deferred();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     var object = e.target.result;
 
-                    if ( typeof object !== 'undefined' ) {
+                    if( typeof object !== 'undefined' ) {
                         object[self.keyPath] = key;
                     }
 
                     deferred.resolveWith( self, [ object ] );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -216,7 +259,7 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'getAll': {
-            value: function ( store, predicate ) {
+            value: function( store, predicate ) {
                 var self = this;
                 var deferred = $.Deferred();
 
@@ -227,14 +270,14 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var objectStore = tx.objectStore( store );
                 var request = objectStore.openCursor();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     var cursor = e.target.result;
 
-                    if ( cursor ) {
+                    if( cursor ) {
                         cursor.value[self.keyPath] = cursor.key;
 
-                        if ( filtered ) {
-                            if ( predicate( cursor.value ) ) {
+                        if( filtered ) {
+                            if( predicate( cursor.value ) ) {
                                 records.push( cursor.value );
                             }
                         } else {
@@ -247,12 +290,12 @@ dhis2.util.namespace( 'dhis2.storage' );
                     }
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -262,7 +305,7 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'getKeys': {
-            value: function ( store ) {
+            value: function( store ) {
                 var self = this;
                 var deferred = $.Deferred();
                 var keys = [];
@@ -270,10 +313,10 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var objectStore = tx.objectStore( store );
                 var request = objectStore.openCursor();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     var cursor = e.target.result;
 
-                    if ( cursor ) {
+                    if( cursor ) {
                         keys.push( cursor.key );
                         cursor.continue();
                     } else {
@@ -281,12 +324,12 @@ dhis2.util.namespace( 'dhis2.storage' );
                     }
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -296,14 +339,14 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'delete': {
-            value: function ( store, key ) {
+            value: function( store, key ) {
                 var self = this;
 
-                if ( typeof self._db === 'undefined' ) {
+                if( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
                 }
 
-                if ( typeof key === 'undefined' ) {
+                if( typeof key === 'undefined' ) {
                     throw new Error( 'Invalid key: ', key );
                 }
 
@@ -313,16 +356,16 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                 var deferred = $.Deferred();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     deferred.resolveWith( self );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -332,10 +375,10 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'clear': {
-            value: function ( store ) {
+            value: function( store ) {
                 var self = this;
 
-                if ( typeof self._db === 'undefined' ) {
+                if( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
                 }
 
@@ -345,16 +388,16 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                 var deferred = $.Deferred();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     deferred.resolveWith( self );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -364,14 +407,14 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'contains': {
-            value: function ( store, key ) {
+            value: function( store, key ) {
                 var self = this;
 
-                if ( typeof self._db === 'undefined' ) {
+                if( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
                 }
 
-                if ( typeof key === 'undefined' ) {
+                if( typeof key === 'undefined' ) {
                     throw new Error( 'Invalid key: ', key );
                 }
 
@@ -381,16 +424,16 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                 var deferred = $.Deferred();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     deferred.resolveWith( self, [ e.target.result !== undefined ] );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -400,14 +443,14 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'count': {
-            value: function ( store, key ) {
+            value: function( store, key ) {
                 var self = this;
 
-                if ( typeof self._db === 'undefined' ) {
+                if( typeof self._db === 'undefined' ) {
                     throw new Error( 'Database is not open.' );
                 }
 
-                if ( typeof key === 'undefined' ) {
+                if( typeof key === 'undefined' ) {
                     key = null;
                 }
 
@@ -417,16 +460,16 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                 var deferred = $.Deferred();
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     deferred.resolveWith( self, [ e.target.result ] );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, e );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, e );
                 };
@@ -436,10 +479,10 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'close': {
-            value: function () {
+            value: function() {
                 var deferred = $.Deferred();
 
-                if ( typeof idb._db === 'undefined' ) {
+                if( typeof idb._db === 'undefined' ) {
                     deferred.resolve();
                 }
 
@@ -453,27 +496,27 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'destroy': {
-            value: function () {
+            value: function() {
                 var self = this;
                 var deferred = $.Deferred();
 
-                if ( typeof self._db !== 'undefined' ) {
+                if( typeof self._db !== 'undefined' ) {
                     self._db.close();
                 }
 
                 var request = window.indexedDB.deleteDatabase( self.name );
 
-                request.onsuccess = function ( e ) {
+                request.onsuccess = function( e ) {
                     self._db = undefined;
                     deferred.resolveWith( self, [ e ] );
                 };
 
-                request.onerror = function ( e ) {
+                request.onerror = function( e ) {
                     console.log( 'error' );
                     deferred.rejectWith( self, [ e ] );
                 };
 
-                request.onblocked = function ( e ) {
+                request.onblocked = function( e ) {
                     console.log( 'blocked' );
                     deferred.rejectWith( self, [ e ] );
                 };
@@ -490,7 +533,7 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         'isSupported': {
-            value: function () {
+            value: function() {
                 return !!(window.indexedDB && window.IDBTransaction && window.IDBKeyRange);
             },
             enumerable: true
