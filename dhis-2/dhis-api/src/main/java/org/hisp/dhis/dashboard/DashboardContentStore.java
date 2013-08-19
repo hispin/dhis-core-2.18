@@ -38,6 +38,7 @@ import org.hisp.dhis.reporttable.ReportTable;
 /**
  * @author Lars Helge Overland
  */
+@Deprecated
 public interface DashboardContentStore
     extends GenericStore<DashboardContent>
 {

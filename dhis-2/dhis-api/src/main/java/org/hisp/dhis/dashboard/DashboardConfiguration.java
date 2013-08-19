@@ -35,6 +35,7 @@ import java.util.Map;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Deprecated
 public class DashboardConfiguration
     implements Serializable
 {
