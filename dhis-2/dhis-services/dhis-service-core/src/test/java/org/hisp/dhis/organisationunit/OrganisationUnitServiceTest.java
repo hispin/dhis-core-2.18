@@ -137,10 +137,35 @@ public class OrganisationUnitServiceTest
         organisationUnitService.addOrganisationUnit( unit3 );
         organisationUnitService.addOrganisationUnit( unit4 );
 
-        Collection<OrganisationUnit> actual = organisationUnitService.getOrganisationUnitWithChildren( id1 );
+        List<OrganisationUnit> actual = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( id1 ) );
+
         assertEquals( 3, actual.size() );
         assertTrue( actual.contains( unit1 ) );
         assertTrue( actual.contains( unit2 ) );
+    }
+
+    @Test
+    public void testGetOrganisationUnitWithChildrenWithCorrectLevel()
+        throws Exception
+    {
+        OrganisationUnit unit1 = createOrganisationUnit( 'A' );
+        OrganisationUnit unit2 = createOrganisationUnit( 'B', unit1 );
+        OrganisationUnit unit3 = createOrganisationUnit( 'C', unit2 );
+
+        int id1 = organisationUnitService.addOrganisationUnit( unit1 );
+        unit1.getChildren().add( unit2 );
+        int id2 = organisationUnitService.addOrganisationUnit( unit2 );
+        organisationUnitService.addOrganisationUnit( unit3 );
+
+        List<OrganisationUnit> actual1 = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( id1 ) );
+        List<OrganisationUnit> actual2 = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( id2 ) );
+
+        assertEquals( 1, actual1.get( 0 ).getLevel() );
+        assertEquals( 2, actual1.get( 1 ).getLevel() );
+        assertEquals( 3, actual1.get( 2 ).getLevel() );
+
+        assertEquals( 2, actual2.get( 0 ).getLevel() );
+        assertEquals( 3, actual2.get( 1 ).getLevel() );
     }
 
     @Test
@@ -333,12 +358,12 @@ public class OrganisationUnitServiceTest
         organisationUnitService.addOrganisationUnit( unitO );
 
         Collection<OrganisationUnit> nill = null;
-        
+
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 2, unitB ), unitB ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 3, unitB ), unitD, unitE ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitB ), unitH, unitI, unitJ, unitK ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 2, nill ), unitB, unitC ) );
-        
+
         assertEquals( 2, unitB.getLevel() );
         assertEquals( 3, unitD.getLevel() );
         assertEquals( 3, unitE.getLevel() );
@@ -401,9 +426,9 @@ public class OrganisationUnitServiceTest
 
         List<OrganisationUnit> unitsA = new ArrayList<OrganisationUnit>( Arrays.asList( unitB, unitC ) );
         List<OrganisationUnit> unitsB = new ArrayList<OrganisationUnit>( Arrays.asList( unitD, unitE ) );
-        
+
         OrganisationUnit nill = null;
-        
+
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 3, unitsA ), unitD, unitE, unitF, unitG ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitsA ), unitH, unitI, unitJ, unitK, unitL, unitM, unitN, unitO ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitsB ), unitH, unitI, unitJ, unitK ) );
@@ -819,7 +844,7 @@ public class OrganisationUnitServiceTest
         assertNull( organisationUnitService.getOrganisationUnitLevel( idA ) );
         assertNull( organisationUnitService.getOrganisationUnitLevel( idB ) );
     }
-    
+
     @Test
     public void getMaxLevels()
     {

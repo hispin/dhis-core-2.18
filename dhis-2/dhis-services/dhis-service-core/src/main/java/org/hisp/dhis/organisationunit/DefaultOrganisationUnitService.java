@@ -318,8 +318,9 @@ public class DefaultOrganisationUnitService
 
         List<OrganisationUnit> result = new ArrayList<OrganisationUnit>();
 
-        int rootLevel = 1;
+        int rootLevel = organisationUnit.getOrganisationUnitLevel();
 
+        organisationUnit.setLevel( rootLevel );
         result.add( organisationUnit );
 
         addOrganisationUnitChildren( organisationUnit, result, rootLevel );
@@ -342,12 +343,11 @@ public class DefaultOrganisationUnitService
 
         for ( OrganisationUnit child : childList )
         {
+            child.setLevel( level );
             result.add( child );
 
             addOrganisationUnitChildren( child, result, level );
         }
-
-        level--;
     }
 
     public List<OrganisationUnit> getOrganisationUnitBranch( int id )
