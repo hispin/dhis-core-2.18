@@ -24,20 +24,21 @@ var subtree = new Subtree();
 var dhis2 = dhis2 || {};
 dhis2.ou = dhis2.ou || {};
 
+var OU_STORE_NAME = "dhis2ou";
+var OU_KEY = "ou";
+var OU_PARTIAL_KEY = "ouPartial";
 var OU_ROOTS_KEY = "ouRoots";
 var OU_VERSION_KEY = "ouVersion";
 var OU_SELECTED_KEY = "ouSelected";
 
 dhis2.ou.store = new dhis2.storage.Store( {
-    name: 'dhis2',
-    objectStores: [
-        {
-            name: 'ou',
-            adapters: [ dhis2.storage.DomLocalStorageAdapter ]
-        },
-        {
-            name: 'ouPartial',
-            adapters: [ dhis2.storage.DomSessionStorageAdapter ]
+    name: OU_STORE_NAME,
+    objectStores: [ {
+            name: OU_KEY,
+            adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ]
+        }, {
+            name: OU_PARTIAL_KEY,
+            adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ]
         }
     ]
 } );
@@ -134,16 +135,11 @@ function Selection()
         localStorage.removeItem( OU_VERSION_KEY );
     };
 
-    this.getOrganisationUnits = function() {
+    this.getAllOrganisationUnits = function() {
         var def = $.Deferred();
 
-        dhis2.ou.store.getAll( 'ou' ).done( function( all ) {
-            var ous = {};
-
-            $.each( all, function( i, item ) {
-                ous[item.id] = item;
-            } );
-
+        dhis2.ou.store.getAll( OU_KEY ).done( function( all ) {
+            var ous = selection.arrayToObjectIdMapper( all );
             def.resolveWith( window, [ ous ]);
         } );
 
@@ -151,20 +147,32 @@ function Selection()
     };
 
     this.setOrganisationUnits = function( ous ) {
+        $.extend( organisationUnits, ous );
         ous = ous ? _.values( ous ) : [];
-        return dhis2.ou.store.setAll( 'ou', ous );
+        return dhis2.ou.store.setAll( OU_KEY, ous );
     };
 
-    this.getPartialOrganisationUnits = function() {
+    this.getOrganisationUnit = function( id ) {
         var def = $.Deferred();
 
-        dhis2.ou.store.getAll( 'ouPartial' ).done( function( all ) {
-            var ous = {};
+        dhis2.ou.store.get( OU_KEY, id ).done( function( item ) {
+            if(item) {
+                var obj = {};
+                obj[item.id] = item;
+                def.resolveWith( window, [ obj ]);
+            } else {
+                def.resolveWith( window );
+            }
+        } );
 
-            $.each( all, function( i, item ) {
-                ous[item.id] = item;
-            } );
+        return def.promise();
+    };
 
+    this.getAllPartialOrganisationUnits = function() {
+        var def = $.Deferred();
+
+        dhis2.ou.store.getAll( OU_PARTIAL_KEY ).done( function( all ) {
+            var ous = selection.arrayToObjectIdMapper( all );
             def.resolveWith( window, [ ous ]);
         } );
 
@@ -172,8 +180,20 @@ function Selection()
     };
 
     this.setPartialOrganisationUnits = function( ous ) {
+        $.extend( organisationUnits, ous );
         ous = ous ? _.values( ous ) : [];
-        return dhis2.ou.store.setAll( 'ouPartial', ous );
+        return dhis2.ou.store.setAll( OU_PARTIAL_KEY, ous );
+    };
+
+    // maps [ { id: 1, ... } ] => { '1': { id: 1, ... } }
+    this.arrayToObjectIdMapper = function( all ) {
+        var ous = {};
+
+        $.each( all, function( i, item ) {
+            ous[item.id] = item;
+        } );
+
+        return ous;
     };
 
     this.ajaxOrganisationUnits = function( versionOnly, format ) {
@@ -197,22 +217,17 @@ function Selection()
 
             if( !selection.selectedExists() && roots.length > 0 ) {
                 if( autoSelectRoot ) {
-                    if( multipleSelectionAllowed ) {
-                        selection.setSelected( roots );
-                    }
-                    else {
-                        selection.setSelected( roots[0] );
-                    }
+                    multipleSelectionAllowed ? selection.setSelected( roots ) : selection.setSelected( roots[0] );
                 }
                 else {
                     selection.sync( true );
                 }
             }
 
-            selection.getOrganisationUnits().done( function( all ) {
+            selection.getAllOrganisationUnits().done( function( all ) {
                 $.extend( organisationUnits, all );
 
-                selection.getPartialOrganisationUnits().done( function( all ) {
+                selection.getAllPartialOrganisationUnits().done( function( all ) {
                     $.extend( organisationUnits, all );
 
                     selection.sync();
@@ -262,11 +277,14 @@ function Selection()
                 selection.ajaxOrganisationUnits( false ).done(function( data ) {
                     selection.setRoots( data.roots );
                     selection.setVersion( data.version );
-                    selection.setOrganisationUnits( data.organisationUnits );
-                } ).always( function() {
+                    selection.setOrganisationUnits( data.organisationUnits ).done(function() {
                         sync_and_reload();
                         $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
-                    } );
+                    });
+                } ).fail( function() {
+                    sync_and_reload();
+                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
+                } );
             }
             else {
                 sync_and_reload();
@@ -430,30 +448,26 @@ function Selection()
         if( multipleSelectionAllowed ) {
             $.each( selected, function( i, item ) {
                 var name = organisationUnits[item].n;
-                ids.push( item );
+                ids.push( +item );
                 names.push( name );
             } );
 
             listenerFunction( ids, names, children );
         } else {
-            selected = selected[0];
+            selected = +selected[0];
 
-            // we only support includeChildren for single selects
-            if( includeChildren ) {
-                children = organisationUnits[selected].c;
-            }
-
-            selection.getPartialOrganisationUnits().done( function( all ) {
-                $.extend( organisationUnits, all );
+            if( 'undefined' !== typeof organisationUnits[selected]) {
+                // we only support includeChildren for single selects
+                if( includeChildren ) {
+                    children = organisationUnits[selected].c;
+                }
 
                 var name = organisationUnits[selected].n;
-                ids.push( +selected );
+                ids.push( selected );
                 names.push( name );
 
-                subtree.getChildren( selected ).done( function() {
-                    listenerFunction( ids, names, children );
-                } );
-            } );
+                listenerFunction( ids, names, children );
+            }
         }
     };
 
@@ -489,7 +503,7 @@ function Selection()
                 data: { byName: name }
             } ).done(function( data ) {
                 if( data.realRoot === undefined ) {
-                    selection.getPartialOrganisationUnits().done(function(all) {
+                    selection.getAllPartialOrganisationUnits().done(function(all) {
                         $.extend( all, data.organisationUnits );
 
                         selection.setPartialOrganisationUnits( all ).done(function() {
@@ -642,7 +656,7 @@ function Subtree() {
         var $children = $parentTag.find( "ul" );
 
         if( $children.length < 1 ) {
-            getAndCreateChildren( $parentTag, parent );
+            subtree.getAndCreateChildren( $parentTag, parent );
         }
         else {
             setVisible( $children.eq( 0 ), true );
@@ -650,43 +664,83 @@ function Subtree() {
         }
     }
 
-    this.getChildren = function( parentId ) {
-        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId, function( data ) {
-                selection.getPartialOrganisationUnits().done(function(all) {
-                    $.extend( all, data.organisationUnits );
-
-                    selection.setPartialOrganisationUnits( all ).done(function() {
-                        $.extend( organisationUnits, data.organisationUnits );
-                    });
-                });
-            }
-        );
+    this.ajaxGetChildren = function( parentId ) {
+        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId );
     };
 
-    function getAndCreateChildren( parentTag, parent ) {
-        if( parent.c !== undefined ) {
-            if( organisationUnits[parent.c[0]] !== undefined ) {
-                createChildren( parentTag, parent );
-            }
-            else {
-                subtree.getChildren( parent.id ).done( function() {
+    this.getChildren = function( parentId ) {
+        var def = $.Deferred();
+        var p = def.promise();
+
+        p = p.then( function() {
+            var def = $.Deferred();
+
+            subtree.ajaxGetChildren( parentId ).done(function( data ) {
+                def.resolveWith( window, [ data ] );
+            });
+
+            return def.promise();
+        } );
+
+        p = p.then( function( data ) {
+            var def = $.Deferred();
+
+            selection.getAllPartialOrganisationUnits().done(function( all ) {
+                $.extend( all, data.organisationUnits );
+                def.resolveWith( window, [ all ] );
+            });
+
+            return def.promise();
+        });
+
+        p = p.then( function( data ) {
+            var def = $.Deferred();
+
+            selection.setPartialOrganisationUnits( data ).done(function() {
+                $.extend( organisationUnits, data.organisationUnits );
+                def.resolveWith( window, [ organisationUnits ] );
+            });
+
+            return def.promise();
+        });
+
+        def.resolve();
+
+        return p;
+    };
+
+    this.getAndCreateChildren = function( parentTag, parent ) {
+        var def = $.Deferred();
+
+        if( 'undefined' !== typeof organisationUnits[parent.c[0]] ) {
+            createChildren( parentTag, parent );
+            def.resolve();
+        }
+        else {
+            selection.getOrganisationUnit( parent.c[0] ).done(function(item) {
+                if(item) {
+                    $.extend( organisationUnits, item );
                     createChildren( parentTag, parent );
-                } );
-            }
+                    def.resolve();
+                } else {
+                    subtree.getChildren( parent.id ).done( function() {
+                        createChildren( parentTag, parent );
+                        def.resolve();
+                    } );
+                }
+            });
         }
 
-    }
+        return def.promise();
+    };
 
-    function createChildren( parentTag, parent )
-    {
+    function createChildren( parentTag, parent ) {
         var $childrenTag = $( "<ul/>" );
 
-        $.each( parent.c, function ( i, item )
-        {
+        $.each( parent.c, function( i, item ) {
             var ou = organisationUnits[item];
 
-            if ( ou !== undefined )
-            {
+            if( ou !== undefined ) {
                 $childrenTag.append( createTreeElementTag( ou ) );
             }
         } );
