@@ -681,8 +681,8 @@ Ext.onReady( function() {
 						params.displayField = 'o';
 						params.multiSelect = true;
 						params.delimiter = ';';
-						var index = TR.store.dataelement.available.findExact('id', 'de_' + deId);
-						var deUid = TR.store.dataelement.available.getAt(index).data.uid;
+						var index = TR.store.dataelement.selected.findExact('id', 'de_' + deId);
+						var deUid = TR.store.dataelement.selected.getAt(index).data.uid;
 						params.store = Ext.create('Ext.data.Store', {
 							fields: ['o'],
 							data:[],
