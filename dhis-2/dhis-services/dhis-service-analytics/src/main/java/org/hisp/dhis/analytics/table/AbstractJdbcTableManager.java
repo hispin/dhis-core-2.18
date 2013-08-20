@@ -154,20 +154,6 @@ public abstract class AbstractJdbcTableManager
         executeSilently( sqlAlter );
     }
 
-    public List<String> getDimensionColumnNames()
-    {
-        List<String[]> columns = getDimensionColumns();
-        
-        List<String> columnNames = new ArrayList<String>();
-        
-        for ( String[] column : columns )
-        {
-            columnNames.add( column[0] );
-        }
-        
-        return columnNames;
-    }
-
     public boolean pruneTable( AnalyticsTable table )
     {
         String tableName = table.getTempTableName();

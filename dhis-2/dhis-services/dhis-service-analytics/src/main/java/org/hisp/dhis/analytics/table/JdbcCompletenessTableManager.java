@@ -67,7 +67,7 @@ public class JdbcCompletenessTableManager
         
         String sqlCreate = "create table " + tableName + " (";
         
-        for ( String[] col : getDimensionColumns() )
+        for ( String[] col : getDimensionColumns( table ) )
         {
             sqlCreate += col[0] + " " + col[1] + ",";
         }
@@ -96,7 +96,7 @@ public class JdbcCompletenessTableManager
         
             String insert = "insert into " + table.getTempTableName() + " (";
             
-            for ( String[] col : getDimensionColumns() )
+            for ( String[] col : getDimensionColumns( table ) )
             {
                 insert += col[0] + ",";
             }
@@ -105,7 +105,7 @@ public class JdbcCompletenessTableManager
             
             String select = "select ";
             
-            for ( String[] col : getDimensionColumns() )
+            for ( String[] col : getDimensionColumns( table ) )
             {
                 select += col[2] + ",";
             }
@@ -134,7 +134,7 @@ public class JdbcCompletenessTableManager
         return null;
     }
     
-    public List<String[]> getDimensionColumns()
+    public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         List<String[]> columns = new ArrayList<String[]>();
 
