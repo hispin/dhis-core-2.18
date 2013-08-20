@@ -37,6 +37,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsIndex;
+import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
@@ -90,7 +91,7 @@ public class DefaultAnalyticsTableService
             return;
         }
         
-        final List<String> tables = tableManager.getTables( last3YearsOnly );
+        final List<AnalyticsTable> tables = tableManager.getTables( last3YearsOnly );
         
         clock.logTime( "Partition tables: " + tables + ", last 3 years: " + last3YearsOnly );
         
@@ -134,15 +135,12 @@ public class DefaultAnalyticsTableService
 
     public void dropTables()
     {
-        List<String> tempTables = PartitionUtils.getTempTableNames( 
-            new Cal().set( 1900, 1, 1 ).time(), new Cal().set( 2100, 1, 1 ).time(), tableManager.getTableName() );
+        List<AnalyticsTable> tables = tableManager.getTables( new Cal().set( 1900, 1, 1 ).time(), new Cal().set( 2100, 1, 1 ).time() );
         
-        for ( String tempTable : tempTables )   
+        for ( AnalyticsTable table : tables )   
         {
-            String realTable = tempTable.replaceFirst( AnalyticsTableManager.TABLE_TEMP_SUFFIX, "" );
-            
-            tableManager.dropTable( tempTable );
-            tableManager.dropTable( realTable );            
+            tableManager.dropTable( table.getTableName() );
+            tableManager.dropTable( table.getTempTableName() );            
         }
     }
     
@@ -150,17 +148,17 @@ public class DefaultAnalyticsTableService
     // Supportive methods
     // -------------------------------------------------------------------------
   
-    private void createTables( List<String> tables )
+    private void createTables( List<AnalyticsTable> tables )
     {
-        for ( String table : tables )
+        for ( AnalyticsTable table : tables )
         {
             tableManager.createTable( table );
         }
     }
     
-    private void populateTables( List<String> tables )
+    private void populateTables( List<AnalyticsTable> tables )
     {
-        ConcurrentLinkedQueue<String> tableQ = new ConcurrentLinkedQueue<String>( tables );
+        ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
         
         List<Future<?>> futures = new ArrayList<Future<?>>();
         
@@ -172,9 +170,9 @@ public class DefaultAnalyticsTableService
         ConcurrentUtils.waitForCompletion( futures );
     }
     
-    private void pruneTables( List<String> tables )
+    private void pruneTables( List<AnalyticsTable> tables )
     {
-        Iterator<String> iterator = tables.iterator();
+        Iterator<AnalyticsTable> iterator = tables.iterator();
         
         while ( iterator.hasNext() )
         {
@@ -185,7 +183,7 @@ public class DefaultAnalyticsTableService
         }
     }
     
-    private void applyAggregationLevels( List<String> tables )
+    private void applyAggregationLevels( List<AnalyticsTable> tables )
     {
         int maxLevels = organisationUnitService.getMaxOfOrganisationUnitLevels();
         
@@ -201,7 +199,7 @@ public class DefaultAnalyticsTableService
                 continue levelLoop;
             }
                         
-            ConcurrentLinkedQueue<String> tableQ = new ConcurrentLinkedQueue<String>( tables );
+            ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
 
             List<Future<?>> futures = new ArrayList<Future<?>>();
             
@@ -214,17 +212,17 @@ public class DefaultAnalyticsTableService
         }
     }
     
-    private void createIndexes( List<String> tables )
+    private void createIndexes( List<AnalyticsTable> tables )
     {
         ConcurrentLinkedQueue<AnalyticsIndex> indexes = new ConcurrentLinkedQueue<AnalyticsIndex>();
         
         List<String> columns = tableManager.getDimensionColumnNames();
         
-        for ( String table : tables )
+        for ( AnalyticsTable table : tables )
         {
             for ( String column : columns )
             {
-                indexes.add( new AnalyticsIndex( table, column ) );
+                indexes.add( new AnalyticsIndex( table.getTempTableName(), column ) );
             }
         }
         
@@ -240,9 +238,9 @@ public class DefaultAnalyticsTableService
         ConcurrentUtils.waitForCompletion( futures );
     }
 
-    private void vacuumTables( List<String> tables )
+    private void vacuumTables( List<AnalyticsTable> tables )
     {
-        ConcurrentLinkedQueue<String> tableQ = new ConcurrentLinkedQueue<String>( tables );
+        ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
         
         List<Future<?>> futures = new ArrayList<Future<?>>();
         
@@ -254,9 +252,9 @@ public class DefaultAnalyticsTableService
         ConcurrentUtils.waitForCompletion( futures );        
     }
     
-    private void swapTables( List<String> tables )
+    private void swapTables( List<AnalyticsTable> tables )
     {
-        for ( String table : tables )
+        for ( AnalyticsTable table : tables )
         {
             tableManager.swapTable( table );
         }

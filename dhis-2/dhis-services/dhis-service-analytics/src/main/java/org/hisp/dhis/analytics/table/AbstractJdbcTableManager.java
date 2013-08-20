@@ -37,6 +37,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsIndex;
+import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -45,6 +46,7 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -84,13 +86,27 @@ public abstract class AbstractJdbcTableManager
     // Implementation
     // -------------------------------------------------------------------------
   
-    public List<String> getTables( boolean last3YearsOnly )
+    public List<AnalyticsTable> getTables( boolean last3YearsOnly )
     {
         Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
         Date earliest = last3YearsOnly ? threeYrsAgo : getEarliestData();
         Date latest = getLatestData();
-        String tableName = getTableName();
-        List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );
+        
+        return getTables( earliest, latest );
+    }
+
+    public List<AnalyticsTable> getTables( Date earliest, Date latest )
+    {
+        String baseName = getTableName();
+        
+        List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
+
+        List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
+        
+        for ( Period period : periods )
+        {
+            tables.add( new AnalyticsTable( baseName, period ) );
+        }
         
         return tables;
     }
@@ -124,15 +140,16 @@ public abstract class AbstractJdbcTableManager
         return null;
     }
 
-    public void swapTable( String tableName )
+    public void swapTable( AnalyticsTable table )
     {
-        final String realTable = tableName.replaceFirst( TABLE_TEMP_SUFFIX, "" );
+        final String tempTable = table.getTempTableName();
+        final String realTable = table.getTableName();
         
         final String sqlDrop = "drop table " + realTable;
         
         executeSilently( sqlDrop );
         
-        final String sqlAlter = "alter table " + tableName + " rename to " + realTable;
+        final String sqlAlter = "alter table " + tempTable + " rename to " + realTable;
         
         executeSilently( sqlAlter );
     }
@@ -151,8 +168,10 @@ public abstract class AbstractJdbcTableManager
         return columnNames;
     }
 
-    public boolean pruneTable( String tableName )
+    public boolean pruneTable( AnalyticsTable table )
     {
+        String tableName = table.getTempTableName();
+        
         if ( !hasRows( tableName ) )
         {
             final String sqlDrop = "drop table " + tableName;
@@ -168,18 +187,18 @@ public abstract class AbstractJdbcTableManager
     }
 
     @Async
-    public Future<?> vacuumTablesAsync( ConcurrentLinkedQueue<String> tables )
+    public Future<?> vacuumTablesAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
     {
         taskLoop : while ( true )
         {
-            String table = tables.poll();
+            AnalyticsTable table = tables.poll();
             
             if ( table == null )
             {
                 break taskLoop;
             }
             
-            final String sql = statementBuilder.getVacuum( table );
+            final String sql = statementBuilder.getVacuum( table.getTempTableName() );
             
             log.info( "Vacuum SQL: " + sql );
             
