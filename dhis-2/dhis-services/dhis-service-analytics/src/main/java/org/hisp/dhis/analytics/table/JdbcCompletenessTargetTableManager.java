@@ -73,7 +73,7 @@ public class JdbcCompletenessTargetTableManager
 
         String sqlCreate = "create table " + tableName + " (";
 
-        for ( String[] col : getDimensionColumns() )
+        for ( String[] col : getDimensionColumns( table ) )
         {
             sqlCreate += col[0] + " " + col[1] + ",";
         }
@@ -99,14 +99,14 @@ public class JdbcCompletenessTargetTableManager
             
             String sql = "insert into " + table.getTempTableName() + " (";
     
-            for ( String[] col : getDimensionColumns() )
+            for ( String[] col : getDimensionColumns( table ) )
             {
                 sql += col[0] + ",";
             }
     
             sql += "value) select ";
     
-            for ( String[] col : getDimensionColumns() )
+            for ( String[] col : getDimensionColumns( table ) )
             {
                 sql += col[2] + ",";
             }
@@ -126,7 +126,7 @@ public class JdbcCompletenessTargetTableManager
         return null;
     }
 
-    public List<String[]> getDimensionColumns()
+    public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         List<String[]> columns = new ArrayList<String[]>();
 

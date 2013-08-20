@@ -216,13 +216,13 @@ public class DefaultAnalyticsTableService
     {
         ConcurrentLinkedQueue<AnalyticsIndex> indexes = new ConcurrentLinkedQueue<AnalyticsIndex>();
         
-        List<String> columns = tableManager.getDimensionColumnNames();
-        
         for ( AnalyticsTable table : tables )
         {
-            for ( String column : columns )
+            List<String[]> columns = tableManager.getDimensionColumns( table );
+            
+            for ( String[] column : columns )
             {
-                indexes.add( new AnalyticsIndex( table.getTempTableName(), column ) );
+                indexes.add( new AnalyticsIndex( table.getTempTableName(), column[0] ) );
             }
         }
         

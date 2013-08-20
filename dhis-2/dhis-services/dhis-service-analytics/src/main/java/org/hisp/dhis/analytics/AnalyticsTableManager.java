@@ -115,13 +115,8 @@ public interface AnalyticsTableManager
      * 1 = database column data type
      * 2 = column alias and name
      */
-    List<String[]> getDimensionColumns();
+    List<String[]> getDimensionColumns( AnalyticsTable table );
     
-    /**
-     * Returns a list of database column names.
-     */
-    List<String> getDimensionColumnNames();
-
     /**
      * Retrieves the start date of the period of the earliest data value row.
      */
