@@ -49,7 +49,6 @@ import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -69,9 +68,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -284,51 +283,47 @@ public class CurrentUserController
             throw new NotAuthenticatedException();
         }
 
-        Forms forms = new Forms();
-
-        List<Program> programsByCurrentUser = new ArrayList<Program>( programService.getProgramsByCurrentUser() );
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        Map<String, Set<Program>> mappedPrograms = new HashMap<String, Set<Program>>();
+        Set<Program> programs = new HashSet<Program>();
+        Map<String, Collection<Program>> programAssociations = new HashMap<String, Collection<Program>>();
 
-        for ( Program program : programsByCurrentUser )
+        if ( currentUser.getOrganisationUnits().isEmpty() && currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
-            for ( OrganisationUnit organisationUnit : program.getOrganisationUnits() )
+            userOrganisationUnits.addAll( organisationUnitService.getRootOrganisationUnits() );
+        }
+        else
+        {
+            userOrganisationUnits.addAll( currentUser.getOrganisationUnits() );
+        }
+
+        for ( OrganisationUnit organisationUnit : userOrganisationUnits )
+        {
+            Collection<Program> ouPrograms = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit );
+
+            if ( !ouPrograms.isEmpty() )
             {
                 organisationUnits.add( organisationUnit );
-
-                if ( mappedPrograms.get( organisationUnit.getUid() ) == null )
-                {
-                    Set<Program> programs = new HashSet<Program>();
-                    programs.add( program );
-                    mappedPrograms.put( organisationUnit.getUid(), programs );
-
-                }
-                else
-                {
-                    mappedPrograms.get( organisationUnit.getUid() ).add( program );
-                }
+                programs.addAll( ouPrograms );
+                programAssociations.put( organisationUnit.getUid(), ouPrograms );
             }
 
-            for ( OrganisationUnitGroup organisationUnitGroup : program.getOrganisationUnitGroups() )
+            for ( OrganisationUnit child : organisationUnit.getChildren() )
             {
-                for ( OrganisationUnit organisationUnit : organisationUnitGroup.getMembers() )
+                ouPrograms = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, child );
+
+                if ( !ouPrograms.isEmpty() )
                 {
-                    organisationUnits.add( organisationUnit );
-
-                    if ( mappedPrograms.get( organisationUnit.getUid() ) == null )
-                    {
-                        Set<Program> programs = new HashSet<Program>();
-                        programs.add( program );
-                        mappedPrograms.put( organisationUnit.getUid(), programs );
-
-                    }
-                    else
-                    {
-                        mappedPrograms.get( organisationUnit.getUid() ).add( program );
-                    }
+                    organisationUnits.add( child );
+                    programs.addAll( ouPrograms );
+                    programAssociations.put( organisationUnit.getUid(), ouPrograms );
                 }
             }
         }
+
+        i18nService.internationalise( programs );
+
+        Forms forms = new Forms();
 
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
@@ -337,18 +332,21 @@ public class CurrentUserController
             formOrganisationUnit.setLabel( organisationUnit.getDisplayName() );
             formOrganisationUnit.setLevel( organisationUnit.getOrganisationUnitLevel() );
 
-            Set<Program> programs = mappedPrograms.get( organisationUnit.getUid() );
-
-            for ( Program program : programs )
+            for ( Program program : programAssociations.get( organisationUnit.getUid() ) )
             {
                 FormProgram formProgram = new FormProgram();
-                formProgram.setLabel( program.getDisplayName() );
                 formProgram.setId( program.getUid() );
+                formProgram.setLabel( program.getDisplayName() );
 
                 formOrganisationUnit.getPrograms().add( formProgram );
             }
 
             forms.getOrganisationUnits().put( formOrganisationUnit.getId(), formOrganisationUnit );
+        }
+
+        for ( Program program : programs )
+        {
+            forms.getForms().put( program.getUid(), FormUtils.fromProgram( program ) );
         }
 
         JacksonUtils.toJson( response.getOutputStream(), forms );

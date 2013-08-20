@@ -31,21 +31,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "form" )
+@XmlRootElement(name = "form")
 public class Form
 {
     private String label;
 
+    @Deprecated
     private String periodType;
+
+    @Deprecated
+    private Boolean allowFuturePeriods;
 
     private List<Group> groups = new ArrayList<Group>();
 
-    private boolean allowFuturePeriods;
+    private Map<String, Object> options = new HashMap<String, Object>();
 
     public Form()
     {
@@ -85,14 +91,25 @@ public class Form
     }
 
     @JsonProperty
-    public boolean isAllowFuturePeriods()
+    public Boolean isAllowFuturePeriods()
     {
         return allowFuturePeriods;
     }
 
-    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    public void setAllowFuturePeriods( Boolean allowFuturePeriods )
     {
         this.allowFuturePeriods = allowFuturePeriods;
+    }
+
+    @JsonProperty
+    public Map<String, Object> getOptions()
+    {
+        return options;
+    }
+
+    public void setOptions( Map<String, Object> options )
+    {
+        this.options = options;
     }
 
     @Override
