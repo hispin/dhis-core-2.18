@@ -33,7 +33,6 @@ import org.amplecode.quick.Statement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.system.util.CodecUtils;
 
 /**
  * @author Lars Helge Overland
@@ -62,7 +61,6 @@ public class CreateDataElementGroupSetTableStatement
         
         for ( DataElementGroupSet groupSet : groupSets )
         {
-            statement += CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
             statement += groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         
