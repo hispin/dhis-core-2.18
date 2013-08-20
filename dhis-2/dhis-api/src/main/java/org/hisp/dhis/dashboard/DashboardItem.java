@@ -325,6 +325,7 @@ public class DashboardItem
             reportTables = item.getReportTables() == null ? reportTables : item.getReportTables();
             reports = item.getReports() == null ? reports : item.getReports();
             resources = item.getResources() == null ? resources : item.getResources();
+            patientTabularReports = item.getPatientTabularReports() == null ? patientTabularReports : item.getPatientTabularReports();
         }
     }
 }

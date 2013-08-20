@@ -43,6 +43,7 @@ import org.hisp.dhis.reporttable.ReportTable;
  * 
  * @author Lars Helge Overland
  */
+@Deprecated
 public class HibernateDashboardContentStore
     extends HibernateGenericStore<DashboardContent> implements DashboardContentStore
 {
