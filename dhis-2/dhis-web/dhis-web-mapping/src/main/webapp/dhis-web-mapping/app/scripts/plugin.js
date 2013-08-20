@@ -260,7 +260,7 @@ Ext.onReady( function() {
 			});
 
 			Ext.data.JsonP.request({
-				url: gis.baseUrl + gis.conf.url.path_gis + 'initialize.action',
+				url: gis.init.contextPath + gis.conf.url.path_gis + 'initialize.action',
 				success: function(r) {
 					gis.init = r;
 				}
