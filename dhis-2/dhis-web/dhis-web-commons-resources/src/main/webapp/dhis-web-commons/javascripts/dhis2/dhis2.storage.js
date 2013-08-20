@@ -29,6 +29,10 @@
 
 dhis2.util.namespace( 'dhis2.storage' );
 
+dhis2.storage.DATABASE_IS_NOT_OPEN = "Database is not open, please call .open() on your store before using it.";
+dhis2.storage.INVALID_KEY = "No valid key was provided.";
+dhis2.storage.INVALID_OBJECT = "No valid object was provided";
+
 dhis2.storage.Store = function( options ) {
     var self = this;
 

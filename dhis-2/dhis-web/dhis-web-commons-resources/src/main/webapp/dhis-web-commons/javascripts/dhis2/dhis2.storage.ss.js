@@ -132,7 +132,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if ( typeof object === 'undefined' || typeof object[self.keyPath] === 'undefined' ) {
-                    throw new Error( 'Invalid object' );
+                    throw new Error( dhis2.storage.INVALID_OBJECT );
                 }
 
                 object = JSON.parse( JSON.stringify( object ) );
@@ -179,7 +179,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if ( typeof key === 'undefined' ) {
-                    throw new Error( 'Invalid key: ', key );
+                    throw new Error( dhis2.storage.INVALID_KEY, key );
                 }
 
                 var deferred = $.Deferred();
@@ -242,7 +242,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if ( typeof key === 'undefined' ) {
-                    throw new Error( 'Invalid key: ', key );
+                    throw new Error( dhis2.storage.INVALID_KEY, key );
                 }
 
                 var deferred = $.Deferred();
@@ -278,7 +278,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if ( typeof key === 'undefined' ) {
-                    throw new Error( 'Invalid key: ', key );
+                    throw new Error( dhis2.storage.INVALID_KEY, key );
                 }
 
                 key = this.name + '.' + store + '.' + key;

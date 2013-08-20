@@ -116,11 +116,11 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var deferred = $.Deferred();
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( dhis2.storage.DATABASE_IS_NOT_OPEN );
                 }
 
                 if( typeof object === 'undefined' || typeof object[self.keyPath] === 'undefined' ) {
-                    throw new Error( 'Invalid object' );
+                    throw new Error( dhis2.storage.INVALID_OBJECT );
                 }
 
                 object = JSON.parse( JSON.stringify( object ) );
@@ -151,37 +151,37 @@ dhis2.util.namespace( 'dhis2.storage' );
             enumerable: true
         },
         /*
-        'setAll': {
-            value: function( store, arr ) {
-                var self = this;
-                var deferred1 = $.Deferred();
-                var deferred2 = $.Deferred();
-                var chained = deferred2.promise();
+         'setAll': {
+         value: function( store, arr ) {
+         var self = this;
+         var deferred1 = $.Deferred();
+         var deferred2 = $.Deferred();
+         var chained = deferred2.promise();
 
-                $.each( arr, function( idx, item ) {
-                    chained = chained.then( function() {
-                        return self.set( store, item );
-                    } );
-                } );
+         $.each( arr, function( idx, item ) {
+         chained = chained.then( function() {
+         return self.set( store, item );
+         } );
+         } );
 
-                chained = chained.then( function() {
-                    deferred1.resolveWith( this );
-                } );
+         chained = chained.then( function() {
+         deferred1.resolveWith( this );
+         } );
 
-                deferred2.resolve();
+         deferred2.resolve();
 
-                return deferred1.promise();
-            },
-            enumerable: true
-        },
-        */
+         return deferred1.promise();
+         },
+         enumerable: true
+         },
+         */
         'setAll': {
             value: function( store, arr ) {
                 var self = this;
                 var deferred = $.Deferred();
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( dhis2.storage.DATABASE_IS_NOT_OPEN );
                 }
 
                 var storedCount = 0;
@@ -195,7 +195,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                         object = JSON.parse( JSON.stringify( object ) );
 
                         if( typeof object === 'undefined' || typeof object[self.keyPath] === 'undefined' ) {
-                            throw new Error( 'Invalid object' );
+                            throw new Error( dhis2.storage.INVALID_OBJECT );
                         }
 
                         var key = object[self.keyPath];
@@ -221,11 +221,11 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( dhis2.storage.DATABASE_IS_NOT_OPEN );
                 }
 
                 if( typeof key === 'undefined' ) {
-                    throw new Error( 'Invalid key: ', key );
+                    throw new Error( dhis2.storage.INVALID_KEY );
                 }
 
                 var tx = self._db.transaction( [ store ], "readonly" );
@@ -343,11 +343,11 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( dhis2.storage.DATABASE_IS_NOT_OPEN );
                 }
 
                 if( typeof key === 'undefined' ) {
-                    throw new Error( 'Invalid key: ', key );
+                    throw new Error( dhis2.storage.INVALID_KEY );
                 }
 
                 var tx = self._db.transaction( [ store ], "readwrite" );
@@ -379,7 +379,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( DATABASE_IS_NOT_OPEN );
                 }
 
                 var tx = self._db.transaction( [ store ], "readwrite" );
@@ -411,11 +411,11 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( dhis2.storage.DATABASE_IS_NOT_OPEN );
                 }
 
                 if( typeof key === 'undefined' ) {
-                    throw new Error( 'Invalid key: ', key );
+                    throw new Error( dhis2.storage.INVALID_KEY );
                 }
 
                 var tx = self._db.transaction( [ store ], "readonly" );
@@ -447,7 +447,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var self = this;
 
                 if( typeof self._db === 'undefined' ) {
-                    throw new Error( 'Database is not open.' );
+                    throw new Error( dhis2.storage.DATABASE_IS_NOT_OPEN );
                 }
 
                 if( typeof key === 'undefined' ) {
