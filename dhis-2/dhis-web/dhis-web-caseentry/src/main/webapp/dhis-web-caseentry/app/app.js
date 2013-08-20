@@ -6683,7 +6683,7 @@ Ext.onReady( function() {
 														overflowX: 'hidden',
 														overflowY: 'auto',
 														height: TR.conf.layout.west_dataelements_filter_panel,
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) ,
+														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor),
 														items: []
 													}
 												]
