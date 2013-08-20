@@ -49,37 +49,25 @@ public class Patient
     private static final long serialVersionUID = 884114994005945275L;
 
     public static final String MALE = "M";
-
     public static final String FEMALE = "F";
-
     public static final String TRANSGENDER = "M";
 
     public static final char DOB_TYPE_VERIFIED = 'V';
-
     public static final char DOB_TYPE_DECLARED = 'D';
-
     public static final char DOB_TYPE_APPROXIATED = 'A';
 
     public static final char AGE_TYPE_YEAR = 'Y';
-
     public static final char AGE_TYPE_MONTH = 'M';
-
     public static final char AGE_TYPE_DAY = 'D';
 
     public static String PREFIX_IDENTIFIER_TYPE = "iden";
-
     public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
-
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
-
     public static String PREFIX_PROGRAM = "prg";
-
     public static String PREFIX_PROGRAM_EVENT_BY_STATUS = "stat";
-
     public static String PREFIX_PROGRAM_STAGE = "prgst";
 
     public static String FIXED_ATTR_BIRTH_DATE = "birthDate";
-
     public static String FIXED_ATTR_AGE = "age";
 
     private Integer id;
@@ -147,24 +135,24 @@ public class Patient
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( obj == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( getClass() != obj.getClass() )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final Patient other = (Patient) obj;
+        final Patient other = (Patient) object;
 
         if ( birthDate == null )
         {

@@ -80,24 +80,24 @@ public class PatientAttributeValue
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof PatientAttributeValue) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final PatientAttributeValue other = (PatientAttributeValue) o;
+        final PatientAttributeValue other = (PatientAttributeValue) object;
 
         return patientAttribute.equals( other.getPatientAttribute() ) && patient.equals( other.getPatient() );
 

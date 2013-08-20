@@ -4,15 +4,10 @@ package org.hisp.dhis.patientreport;
 public class TabularReportColumn
 {
     public static String PREFIX_META_DATA = "meta";
-
     public static String PREFIX_IDENTIFIER_TYPE = "iden";
-
     public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
-
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
-
     public static String PREFIX_DATA_ELEMENT = "de";
-
     public static String PREFIX_NUMBER_DATA_ELEMENT = "numberDe";
 
     private String prefix;
@@ -27,7 +22,7 @@ public class TabularReportColumn
 
     private String name;
 
-    private boolean dateType = false;
+    private boolean dateType;
 
     // -------------------------------------------------------------------------
     // Constructor

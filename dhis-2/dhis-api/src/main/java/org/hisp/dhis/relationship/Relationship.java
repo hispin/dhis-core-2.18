@@ -71,28 +71,27 @@ public class Relationship
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof Relationship) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final Relationship other = (Relationship) o;
+        final Relationship other = (Relationship) object;
 
         return patientA.equals( other.getPatientA() ) && relationshipType.equals( other.getRelationshipType() )
             && patientB.equals( other.getPatientB() );
-
     }
 
     @Override

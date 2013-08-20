@@ -67,6 +67,8 @@ public class PatientAudit
         this.accessedModule = accessedModule;
     }
 
+    //TODO implement hashcode and equals
+    
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -120,5 +122,4 @@ public class PatientAudit
     {
         this.accessedModule = accessedModule;
     }
-
 }

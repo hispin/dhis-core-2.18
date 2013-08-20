@@ -50,7 +50,6 @@ public class PatientComment
 
     public PatientComment()
     {
-
     }
 
     public PatientComment( String commentText, String creator, Date createdDate )
@@ -59,6 +58,8 @@ public class PatientComment
         this.creator = creator;
         this.createdDate = createdDate;
     }
+    
+    //TODO implement hashcode and equals
 
     // -------------------------------------------------------------------------
     // Getters/Setters
@@ -103,5 +104,4 @@ public class PatientComment
     {
         this.creator = creator;
     }
-
 }

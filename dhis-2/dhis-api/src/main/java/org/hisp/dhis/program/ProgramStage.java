@@ -50,9 +50,7 @@ public class ProgramStage
     extends BaseIdentifiableObject
 {
     public static final String TYPE_DEFAULT = "default";
-
     public static final String TYPE_SECTION = "section";
-
     public static final String TYPE_CUSTOM = "custom";
     
     /**

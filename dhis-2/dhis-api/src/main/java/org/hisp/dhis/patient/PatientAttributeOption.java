@@ -65,24 +65,24 @@ public class PatientAttributeOption implements Serializable
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof PatientAttributeOption) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final PatientAttributeOption other = (PatientAttributeOption) o;
+        final PatientAttributeOption other = (PatientAttributeOption) object;
 
         return name.equals( other.getName() );
     }

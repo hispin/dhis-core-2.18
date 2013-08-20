@@ -50,25 +50,15 @@ public class PatientAggregateReport
     private static final long serialVersionUID = 3261142704777097572L;
 
     public static final int POSITION_ROW_ORGUNIT_COLUMN_PERIOD = 1;
-
     public static final int POSITION_ROW_PERIOD_COLUMN_ORGUNIT = 2;
-
     public static final int POSITION_ROW_ORGUNIT_ROW_PERIOD = 3;
-
     public static final int POSITION_ROW_PERIOD = 4;
-
     public static final int POSITION_ROW_ORGUNIT = 5;
-
     public static final int POSITION_ROW_PERIOD_COLUMN_DATA = 6;
-
     public static final int POSITION_ROW_ORGUNIT_COLUMN_DATA = 7;
-
     public static final int POSITION_ROW_DATA = 8;
-
     public static final int POSITION_ROW_DATA_COLUMN_PERIOD = 9; // PIVOT FROM 6
-
-    public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM
-                                                                   // 7
+    public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM 7
     
     public static final String AGGREGATE_TYPE_COUNT = "count";
     public static final String AGGREGATE_TYPE_SUM = "sum";
@@ -78,29 +68,17 @@ public class PatientAggregateReport
 
     private ProgramStage programStage;
 
-    // Date period range
-
     private List<Date> startDates;
 
     private List<Date> endDates;
 
-    // Relative periods
-
     private Set<String> relativePeriods = new HashSet<String>();
-
-    // Fixed periods
 
     private List<String> fixedPeriods = new ArrayList<String>();
 
-    // Organisation units
-
     private Set<OrganisationUnit> organisationUnits;
 
-    // Data element filter values
-
     private Set<String> filterValues = new HashSet<String>();
-
-    // Option
 
     private String facilityLB;
 
@@ -122,8 +100,6 @@ public class PatientAggregateReport
 
     private Boolean useFormNameDataElement;
     
-    // User created
-
     private User user;
 
     // -------------------------------------------------------------------------
@@ -318,5 +294,4 @@ public class PatientAggregateReport
     {
         this.useFormNameDataElement = useFormNameDataElement;
     }
-
 }

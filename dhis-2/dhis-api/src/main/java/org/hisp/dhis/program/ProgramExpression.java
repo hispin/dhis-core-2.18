@@ -37,22 +37,15 @@ import java.io.Serializable;
 public class ProgramExpression
     implements Serializable
 {
-    private static final long serialVersionUID = -2807997671779497354L;
-    
+    private static final long serialVersionUID = -2807997671779497354L;    
 
     public static final String SEPARATOR_ID = "\\.";
-
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
 
     public static final String SEPARATOR_OBJECT = ":";
-    
-
-    public static final String DUE_DATE = "DUE_DATE";
-    
+    public static final String DUE_DATE = "DUE_DATE";    
     public static final String REPORT_DATE = "REPORT_DATE";
-
-    public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";
-    
+    public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";    
     public static final String NOT_NULL_VALUE_IN_EXPRESSION = "NOT-NULL-VALUE";
 
     
@@ -68,7 +61,6 @@ public class ProgramExpression
 
     public ProgramExpression()
     {
-
     }
 
     public ProgramExpression( String expression, String description )
@@ -86,35 +78,55 @@ public class ProgramExpression
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
+        result = prime * result + ( ( description == null ) ? 0 : description.hashCode() );
+        result = prime * result + ( ( expression == null ) ? 0 : expression.hashCode() );
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
+        {
             return true;
-        if ( obj == null )
+        }
+        
+        if ( object == null )
+        {
             return false;
-        if ( getClass() != obj.getClass() )
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
             return false;
-        ProgramExpression other = (ProgramExpression) obj;
+        }
+        
+        final ProgramExpression other = (ProgramExpression) object;
+        
         if ( description == null )
         {
             if ( other.description != null )
+            {
                 return false;
+            }
         }
         else if ( !description.equals( other.description ) )
+        {
             return false;
+        }
+        
         if ( expression == null )
         {
             if ( other.expression != null )
+            {
                 return false;
+            }
         }
         else if ( !expression.equals( other.expression ) )
+        {
             return false;
+        }
+        
         return true;
     }
 

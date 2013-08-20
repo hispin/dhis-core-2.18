@@ -35,7 +35,6 @@ import java.util.Date;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 public class PatientDataValue
     implements Serializable
@@ -102,29 +101,49 @@ public class PatientDataValue
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
+        {
             return true;
-        if ( obj == null )
+        }
+        
+        if ( object == null )
+        {
             return false;
-        if ( getClass() != obj.getClass() )
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
             return false;
-        PatientDataValue other = (PatientDataValue) obj;
+        }
+        
+        final PatientDataValue other = (PatientDataValue) object;
+        
         if ( dataElement == null )
         {
             if ( other.dataElement != null )
+            {
                 return false;
+            }
         }
         else if ( !dataElement.equals( other.dataElement ) )
+        {
             return false;
+        }
+        
         if ( programStageInstance == null )
         {
             if ( other.programStageInstance != null )
+            {
                 return false;
+            }
         }
         else if ( !programStageInstance.equals( other.programStageInstance ) )
+        {
             return false;
+        }
+        
         return true;
     }
 

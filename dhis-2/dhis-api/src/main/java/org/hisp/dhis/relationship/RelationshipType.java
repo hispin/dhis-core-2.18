@@ -70,27 +70,26 @@ public class RelationshipType
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof RelationshipType) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final RelationshipType other = (RelationshipType) o;
+        final RelationshipType other = (RelationshipType) object;
 
         return aIsToB.equals( other.getaIsToB() ) && bIsToA.equals( other.getbIsToA() );
-
     }
 
     @Override
