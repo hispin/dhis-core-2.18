@@ -1,4 +1,5 @@
 {
+	"id": "$!id",
 	"user":
 	{
 		"id":"$!currentUser.id",

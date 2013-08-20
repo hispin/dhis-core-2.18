@@ -37,6 +37,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
@@ -63,6 +64,7 @@ public class DashboardItem
     public static final String TYPE_REPORT_TABLES = "reportTables";
     public static final String TYPE_REPORTS = "reports";
     public static final String TYPE_RESOURCES = "resources";
+    public static final String TYPE_PATIENT_TABULAR_REPORT = "patientTabularReports";
     
     private Chart chart;
     
@@ -77,6 +79,8 @@ public class DashboardItem
     private List<Report> reports = new ArrayList<Report>();
 
     private List<Document> resources = new ArrayList<Document>();
+    
+    private List<PatientTabularReport> patientTabularReports = new ArrayList<PatientTabularReport>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -128,7 +132,10 @@ public class DashboardItem
         {
             return TYPE_RESOURCES;
         }
-        
+        else if ( !patientTabularReports.isEmpty() )
+        {
+            return TYPE_PATIENT_TABULAR_REPORT;
+        }
         return null;
     }
 
@@ -282,11 +289,26 @@ public class DashboardItem
     {
         this.resources = resources;
     }
+    
+    @JsonProperty( value = "patientTabularReports" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JacksonXmlElementWrapper( localName = "patientTabularReports", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "patientTabularReport", namespace = DxfNamespaces.DXF_2_0)
+    public List<PatientTabularReport> getPatientTabularReports()
+    {
+        return patientTabularReports;
+    }
+
+    public void setPatientTabularReports( List<PatientTabularReport> patientTabularReports )
+    {
+        this.patientTabularReports = patientTabularReports;
+    }
 
     // -------------------------------------------------------------------------
     // Merge with
     // -------------------------------------------------------------------------
 
+  
     @Override
     public void mergeWith( IdentifiableObject other )
     {

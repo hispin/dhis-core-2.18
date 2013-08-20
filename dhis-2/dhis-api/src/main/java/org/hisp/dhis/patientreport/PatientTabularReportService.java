@@ -43,6 +43,8 @@ public interface PatientTabularReportService
     PatientTabularReport getPatientTabularReport( int id );
     
     PatientTabularReport getPatientTabularReport( String name );
+    
+    PatientTabularReport getPatientTabularReportByUid( String uid );
 
     void deletePatientTabularReport( PatientTabularReport patientTabularReport );
 

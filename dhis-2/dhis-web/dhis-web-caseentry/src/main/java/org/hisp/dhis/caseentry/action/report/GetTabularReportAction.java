@@ -86,9 +86,9 @@ public class GetTabularReportAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String id;
 
-    public void setId( Integer id )
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -171,7 +171,7 @@ public class GetTabularReportAction
     public String execute()
         throws Exception
     {
-        tabularReport = tabularReportService.getPatientTabularReport( id );
+        tabularReport = tabularReportService.getPatientTabularReportByUid( id );
 
         programStage = tabularReport.getProgramStage();
 
