@@ -37,6 +37,10 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +57,10 @@ public class FormUtils
     {
         Form form = new Form();
         form.setLabel( dataSet.getDisplayName() );
+
+        form.getOptions().put( "periodType", dataSet.getPeriodType().getName() );
+        form.getOptions().put( "allowFuturePeriods", dataSet.isAllowFuturePeriods() );
+
         form.setPeriodType( dataSet.getPeriodType().getName() );
         form.setAllowFuturePeriods( dataSet.isAllowFuturePeriods() );
 
@@ -87,6 +95,39 @@ public class FormUtils
         return form;
     }
 
+
+    public static Form fromProgram( Program program )
+    {
+        Assert.notNull( program );
+        Assert.isTrue( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
+
+        Form form = new Form();
+        form.setLabel( program.getDisplayName() );
+
+        if ( !StringUtils.isEmpty( program.getDescription() ) )
+        {
+            form.getOptions().put( "description", program.getDescription() );
+        }
+
+        if ( !StringUtils.isEmpty( program.getDateOfEnrollmentDescription() ) )
+        {
+            form.getOptions().put( "dateOfEnrollmentDescription", program.getDateOfEnrollmentDescription() );
+        }
+
+        if ( !StringUtils.isEmpty( program.getDateOfIncidentDescription() ) )
+        {
+            form.getOptions().put( "dateOfIncidentDescription", program.getDateOfIncidentDescription() );
+        }
+
+        form.getOptions().put( "type", "SINGLE_EVENT_WITHOUT_REGISTRATION" );
+
+        ProgramStage programStage = program.getProgramStageByStage( 1 );
+        Assert.notNull( programStage );
+
+        form.getOptions().put( "captureCoordinates", programStage.getCaptureCoordinates() );
+
+        return form;
+    }
 
     private static List<Field> inputsFromDataElements( List<DataElement> dataElements )
     {
