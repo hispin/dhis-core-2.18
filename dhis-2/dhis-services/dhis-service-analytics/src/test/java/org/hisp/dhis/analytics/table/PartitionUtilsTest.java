@@ -34,9 +34,6 @@ import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
-import java.util.List;
-
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
@@ -51,23 +48,7 @@ public class PartitionUtilsTest
 {
     private static final String TABLE_NAME_TEMP = ANALYTICS_TABLE_NAME + TABLE_TEMP_SUFFIX;
     private static final String TABLE_NAME = ANALYTICS_TABLE_NAME;
-    
-    @Test
-    public void testGetTableNames()
-    {
-        Cal cal = new Cal();
-        Date earliest = cal.set( 2000, 5, 4 ).time();
-        Date latest = cal.set( 2003, 2, 10 ).time();
         
-        List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, TABLE_NAME );
-        
-        assertEquals( 4, tables.size() );
-        assertTrue( tables.contains( TABLE_NAME_TEMP + "_2000" ) );
-        assertTrue( tables.contains( TABLE_NAME_TEMP + "_2001" ) );
-        assertTrue( tables.contains( TABLE_NAME_TEMP + "_2002" ) );
-        assertTrue( tables.contains( TABLE_NAME_TEMP + "_2003" ) );
-    }
-    
     @Test
     public void testGetTable()
     {

@@ -37,12 +37,12 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
+import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -81,8 +81,10 @@ public class JdbcAnalyticsTableManager
         return "analytics";
     }
         
-    public void createTable( String tableName )
+    public void createTable( AnalyticsTable table )
     {
+        final String tableName = table.getTempTableName();
+        
         final String dbl = statementBuilder.getDoubleColumnType();
         
         final String sqlDrop = "drop table " + tableName;
@@ -104,44 +106,39 @@ public class JdbcAnalyticsTableManager
     }
     
     @Async
-    public Future<?> populateTableAsync( ConcurrentLinkedQueue<String> tables )
+    public Future<?> populateTableAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
     {
         final String dbl = statementBuilder.getDoubleColumnType();
         
         taskLoop : while ( true )
         {
-            String table = tables.poll();
+            AnalyticsTable table = tables.poll();
                 
             if ( table == null )
             {
                 break taskLoop;
             }
             
-            Period period = PartitionUtils.getPeriod( table );
-            
-            Date startDate = period.getStartDate();
-            Date endDate = period.getEndDate();
-            
             String intClause = 
                 "dv.value " + statementBuilder.getRegexpMatch() + " '" + MathUtils.NUMERIC_LENIENT_REGEXP + "' " +
                 "and ( dv.value != '0' or de.aggregationtype = 'average' or de.zeroissignificant = true ) ";
             
-            populateTable( table, startDate, endDate, "cast(dv.value as " + dbl + ")", "int", intClause );
+            populateTable( table, "cast(dv.value as " + dbl + ")", "int", intClause );
             
-            populateTable( table, startDate, endDate, "1" , "bool", "dv.value = 'true'" );
+            populateTable( table, "1" , "bool", "dv.value = 'true'" );
     
-            populateTable( table, startDate, endDate, "0" , "bool", "dv.value = 'false'" );
+            populateTable( table, "0" , "bool", "dv.value = 'false'" );
         }
     
         return null;
     }
     
-    private void populateTable( String tableName, Date startDate, Date endDate, String valueExpression, String valueType, String clause )
+    private void populateTable( AnalyticsTable table, String valueExpression, String valueType, String clause )
     {
-        final String start = DateUtils.getMediumDateString( startDate );
-        final String end = DateUtils.getMediumDateString( endDate );
+        final String start = DateUtils.getMediumDateString( table.getPeriod().getStartDate() );
+        final String end = DateUtils.getMediumDateString( table.getPeriod().getEndDate() );
         
-        String sql = "insert into " + tableName + " (";
+        String sql = "insert into " + table.getTempTableName() + " (";
         
         for ( String[] col : getDimensionColumns() )
         {
@@ -256,18 +253,18 @@ public class JdbcAnalyticsTableManager
     }
     
     @Async
-    public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<String> tables, Collection<String> dataElements, int aggregationLevel )
+    public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables, Collection<String> dataElements, int aggregationLevel )
     {
         taskLoop : while ( true )
         {
-            String table = tables.poll();
+            AnalyticsTable table = tables.poll();
                 
             if ( table == null )
             {
                 break taskLoop;
             }
             
-            StringBuilder sql = new StringBuilder( "update " + table + " set " );
+            StringBuilder sql = new StringBuilder( "update " + table.getTempTableName() + " set " );
             
             for ( int i = 0; i < aggregationLevel; i++ )
             {

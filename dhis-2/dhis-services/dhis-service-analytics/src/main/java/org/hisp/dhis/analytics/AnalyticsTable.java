@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics.table;
+package org.hisp.dhis.analytics;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,69 +27,109 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.program.Program;
 
 /**
  * @author Lars Helge Overland
  */
-public class PartitionUtils
+public class AnalyticsTable
 {
-    private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
+    private String baseName;
     
-    private static final String SEP = "_";
-
-    public static List<Period> getPeriods( Date earliest, Date latest )
-    {
-        List<Period> periods = new ArrayList<Period>();
-        
-        Period period = PERIODTYPE.createPeriod( earliest );
-        
-        while ( period != null && period.getStartDate().before( latest ) )
-        {
-            periods.add( period );            
-            period = PERIODTYPE.getNextPeriod( period );
-        }
-        
-        return periods;
-    }
+    private Period period;
     
-    public static String getTableName( Period period, String tableName )
+    private Program program;
+    
+    public AnalyticsTable()
     {
-        Period year = PERIODTYPE.createPeriod( period.getStartDate() );
-        
-        return tableName + SEP + year.getIsoDate();
     }
 
-    public static Period getPeriod( String tableName )
+    public AnalyticsTable( String baseName )
     {
-        if ( tableName == null || tableName.indexOf( SEP ) == -1 )
-        {
-            return null;
-        }
-        
-        String[] split = tableName.split( SEP );
-        String isoPeriod = split[split.length - 1];
-        
-        return PeriodType.getPeriodFromIsoString( isoPeriod );
+        this.baseName = baseName;
     }
     
-    public static ListMap<String, NameableObject> getTableNamePeriodMap( List<NameableObject> periods, String tableName )
+    public AnalyticsTable( String baseName, Period period )
     {
-        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
+        this.baseName = baseName;
+        this.period = period;
+    }
+    
+    public AnalyticsTable( String baseName, Period period, Program program )
+    {
+        this.baseName = baseName;
+        this.period = period;
+        this.program = program;
+    }
+    
+    public String getTableName()
+    {
+        String name = baseName;
         
-        for ( NameableObject period : periods )
+        if ( period != null )
         {
-            map.putValue( getTableName( (Period) period, tableName ), period );
+            name += "_" + period.getIsoDate();
         }
         
-        return map;
+        if ( program != null )
+        {
+            name += "_" + program.getUid();
+        }
+        
+        return name;
+    }
+    
+    public String getTempTableName()
+    {
+        String name = baseName + AnalyticsTableManager.TABLE_TEMP_SUFFIX;
+
+        if ( period != null )
+        {
+            name += "_" + period.getIsoDate();
+        }
+        
+        if ( program != null )
+        {
+            name += "_" + program.getUid();
+        }
+        
+        return name;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return getTableName();
+    }
+    
+    public String getBaseName()
+    {
+        return baseName;
+    }
+
+    public void setBaseName( String baseName )
+    {
+        this.baseName = baseName;
+    }
+
+    public Period getPeriod()
+    {
+        return period;
+    }
+
+    public void setPeriod( Period period )
+    {
+        this.period = period;
+    }
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Program program )
+    {
+        this.program = program;
     }
 }
