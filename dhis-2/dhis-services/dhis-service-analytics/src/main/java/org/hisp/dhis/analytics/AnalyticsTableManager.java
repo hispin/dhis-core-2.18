@@ -44,6 +44,11 @@ public interface AnalyticsTableManager
     public static final String COMPLETENESS_TARGET_TABLE_NAME = "completenesstarget";
     
     /**
+     * Returns table names.
+     */
+    List<String> getTables( boolean last3YearsOnly );
+    
+    /**
      * Checks if the database content is in valid state for analytics table generation.
      */
     boolean validState();

@@ -28,6 +28,8 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
@@ -42,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Cal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -81,6 +84,17 @@ public abstract class AbstractJdbcTableManager
     // Implementation
     // -------------------------------------------------------------------------
   
+    public List<String> getTables( boolean last3YearsOnly )
+    {
+        Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
+        Date earliest = last3YearsOnly ? threeYrsAgo : getEarliestData();
+        Date latest = getLatestData();
+        String tableName = getTableName();
+        List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );
+        
+        return tables;
+    }
+    
     public String getTempTableName()
     {
         return getTableName() + TABLE_TEMP_SUFFIX;
