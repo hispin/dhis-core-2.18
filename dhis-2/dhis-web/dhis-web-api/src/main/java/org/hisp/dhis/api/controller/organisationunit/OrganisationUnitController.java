@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller.organisationunit;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
@@ -128,8 +129,7 @@ public class OrganisationUnitController
 
         if ( entity == null )
         {
-            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
-            return null;
+            throw new NotFoundException( uid );
         }
 
         if ( options.getOptions().containsKey( "level" ) )
