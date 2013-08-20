@@ -91,6 +91,7 @@
 			{
 				"id": "de_${dataElement.id}",
 				"name": "${dataElement.name}",
+				"uid": "${dataElement.uid}",
 				"compulsory": "",
 				"valueType": #if( $dataElement.optionSet )
 								"list"

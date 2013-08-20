@@ -674,6 +674,7 @@ TR.utilbody {
 .tr-accordion .x-accordion-body { /* accordion item body */
 	padding: 8px 8px 2px 8px;
 	border-top: 1px solid #c5c5c5 !important;
+	border-bottom: 2px solid #C5C5C5 !important;
 }
 
 .tr-accordion .x-accordion-hd-sibling-expanded {

@@ -185,7 +185,7 @@ TR.conf = {
 		window_record_width: 450,
 		window_record_height: 300,
 		west_dataelements_multiselect: 120,
-		west_dataelements_filter_panel: 135,
+		west_dataelements_filter_panel: 130,
 		west_dataelements_expand_filter_panel: 280,
 		west_dataelements_collapse_filter_panel: 130,
 		west_dataelements_expand_aggregate_filter_panel: 230,
@@ -570,13 +570,10 @@ Ext.onReady( function() {
 				params.listeners={};
 				params.listeners.select = function(cb)  {
 					var opt = cb.getValue();
-					if(opt == 'in')
-					{
+					if(opt == 'in'){
 						Ext.getCmp('filter_' + id).multiSelect = true;
 					}
-					else
-					{
-						Ext.getCmp('filter_' + id).clearValue();
+					else{
 						Ext.getCmp('filter_' + id).multiSelect = false;
 					}
 				}
@@ -682,7 +679,16 @@ Ext.onReady( function() {
 						params.multiSelect = true;
 						params.delimiter = ';';
 						var index = TR.store.dataelement.selected.findExact('id', 'de_' + deId);
-						var deUid = TR.store.dataelement.selected.getAt(index).data.uid;
+						var deUid = "";
+						if( index == -1 )
+						{
+							index = TR.store.dataelement.available.findExact('id', 'de_' + deId);
+							deUid = TR.store.dataelement.available.getAt(index).data.uid;
+						}
+						else
+						{
+							deUid = TR.store.dataelement.selected.getAt(index).data.uid;
+						}
 						params.store = Ext.create('Ext.data.Store', {
 							fields: ['o'],
 							data:[],
@@ -1199,7 +1205,8 @@ Ext.onReady( function() {
 										var name = TR.util.string.getEncodedString(f.dataElements[i].name);
 										var compulsory = f.dataElements[i].compulsory;
 										var valueType = f.dataElements[i].valueType;
-										TR.store.dataelement.selected.add({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType});
+										var uid = f.dataElements[i].uid;
+										TR.store.dataelement.selected.add({id: f.dataElements[i].id, name: name, compulsory: compulsory, valueType: valueType, uid:uid});
 										TR.util.multiselect.addFilterField( 'filterPanel', f.dataElements[i].id, name, valueType, f.dataElements[i].filter );
 									}
 									
