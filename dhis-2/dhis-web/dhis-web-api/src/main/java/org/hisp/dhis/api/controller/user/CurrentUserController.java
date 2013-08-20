@@ -1,7 +1,7 @@
 package org.hisp.dhis.api.controller.user;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,16 +27,8 @@ package org.hisp.dhis.api.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.api.controller.exception.NotAuthenticatedException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.utils.FormUtils;
@@ -67,6 +59,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -108,15 +108,14 @@ public class CurrentUserController
     @Autowired
     private I18nService i18nService;
 
-    @RequestMapping( produces = { "application/json", "text/*" } )
+    @RequestMapping(produces = { "application/json", "text/*" })
     public void getCurrentUser( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         JacksonUtils.toJson( response.getOutputStream(), currentUser );
@@ -129,8 +128,7 @@ public class CurrentUserController
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         Inbox inbox = new Inbox();
@@ -147,8 +145,7 @@ public class CurrentUserController
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         Dashboard dashboard = new Dashboard();
@@ -165,8 +162,7 @@ public class CurrentUserController
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         UserAccount userAccount = new UserAccount();
@@ -204,8 +200,7 @@ public class CurrentUserController
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         // basic user account
@@ -235,7 +230,7 @@ public class CurrentUserController
 
     @RequestMapping(value = "/recipients", produces = { "application/json", "text/*" })
     public void recipientsJson( HttpServletResponse response,
-        @RequestParam(value = "filter") String filter ) throws IOException
+        @RequestParam(value = "filter") String filter ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -243,8 +238,7 @@ public class CurrentUserController
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         Recipients recipients = new Recipients();
@@ -257,14 +251,13 @@ public class CurrentUserController
     }
 
     @RequestMapping(value = "/assignedOrganisationUnits", produces = { "application/json", "text/*" })
-    public void getAssignedOrganisationUnits( HttpServletResponse response ) throws IOException
+    public void getAssignedOrganisationUnits( HttpServletResponse response ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         JacksonUtils.toJson( response.getOutputStream(), currentUser.getOrganisationUnits() );
@@ -272,14 +265,13 @@ public class CurrentUserController
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/forms", produces = { "application/json", "text/*" })
-    public void getForms( HttpServletResponse response ) throws IOException
+    public void getForms( HttpServletResponse response ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            throw new NotAuthenticatedException();
         }
 
         Forms forms = new Forms();
