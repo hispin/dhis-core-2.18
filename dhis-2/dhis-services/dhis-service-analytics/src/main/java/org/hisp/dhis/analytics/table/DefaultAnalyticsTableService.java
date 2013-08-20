@@ -28,9 +28,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -92,13 +90,9 @@ public class DefaultAnalyticsTableService
             return;
         }
         
-        final Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
-        final Date earliest = last3YearsOnly ? threeYrsAgo : tableManager.getEarliestData();
-        final Date latest = tableManager.getLatestData();
-        final String tableName = tableManager.getTableName();
-        final List<String> tables = PartitionUtils.getTempTableNames( earliest, latest, tableName );
+        final List<String> tables = tableManager.getTables( last3YearsOnly );
         
-        clock.logTime( "Partition tables: " + tables + ", earliest: " + earliest + ", latest: " + latest + ", last 3 years: " + last3YearsOnly );
+        clock.logTime( "Partition tables: " + tables + ", last 3 years: " + last3YearsOnly );
         
         notifier.notify( taskId, "Creating analytics tables" );
         
