@@ -194,13 +194,18 @@ public class ProgramStageDataElement
     @Override
     public int hashCode()
     {
-        return programStage.hashCode() + dataElement.hashCode();
+        final int prime = 31;
+        int result = 1;
+
+        result = result * prime + programStage.hashCode();
+        result = result * prime + dataElement.hashCode();
+        
+        return result;
     }
 
     @Override
     public boolean equals( Object object )
     {
-
         if ( object == null )
         {
             return false;
@@ -216,5 +221,4 @@ public class ProgramStageDataElement
         return dataElement.getId() == other.getDataElement().getId()
             && programStage.getId() == other.getProgramStage().getId();
     }
-
 }

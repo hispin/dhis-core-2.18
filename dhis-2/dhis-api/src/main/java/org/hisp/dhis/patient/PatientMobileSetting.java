@@ -34,7 +34,6 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 public class PatientMobileSetting
     extends BaseIdentifiableObject
 {
-
     private static final long serialVersionUID = -5947521380646718129L;
 
     private Boolean gender;

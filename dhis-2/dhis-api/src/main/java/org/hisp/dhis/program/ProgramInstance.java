@@ -54,9 +54,7 @@ public class ProgramInstance
     implements Serializable
 {
     public static int STATUS_ACTIVE = 0;
-
     public static int STATUS_COMPLETED = 1;
-
     public static int STATUS_CANCELLED = 2;
 
     /**
@@ -120,33 +118,33 @@ public class ProgramInstance
         final int prime = 31;
         int result = 1;
 
-        result = prime * result + ((dateOfIncident == null) ? 0 : dateOfIncident.hashCode());
-        result = prime * result + ((enrollmentDate == null) ? 0 : enrollmentDate.hashCode());
-        result = prime * result + ((patient == null) ? 0 : patient.hashCode());
-        result = prime * result + ((program == null) ? 0 : program.hashCode());
+        result = prime * result + ( ( dateOfIncident == null) ? 0 : dateOfIncident.hashCode() );
+        result = prime * result + ( ( enrollmentDate == null) ? 0 : enrollmentDate.hashCode() );
+        result = prime * result + ( ( patient == null) ? 0 : patient.hashCode() );
+        result = prime * result + ( ( program == null) ? 0 : program.hashCode() );
 
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( obj == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( getClass() != obj.getClass() )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final ProgramInstance other = (ProgramInstance) obj;
+        final ProgramInstance other = (ProgramInstance) object;
 
         if ( dateOfIncident == null )
         {

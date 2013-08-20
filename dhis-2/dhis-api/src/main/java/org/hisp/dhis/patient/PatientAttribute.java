@@ -52,15 +52,10 @@ public class PatientAttribute
     private static final long serialVersionUID = 3026922158464592390L;
 
     public static final String TYPE_DATE = "date";
-
     public static final String TYPE_STRING = "string";
-
     public static final String TYPE_INT = "number";
-
     public static final String TYPE_BOOL = "bool";
-
     public static final String TYPE_TRUE_ONLY = "trueOnly";
-
     public static final String TYPE_COMBO = "combo";
 
     private String description;
@@ -102,24 +97,24 @@ public class PatientAttribute
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof PatientAttribute) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final PatientAttribute other = (PatientAttribute) o;
+        final PatientAttribute other = (PatientAttribute) object;
 
         return name.equals( other.getName() );
     }

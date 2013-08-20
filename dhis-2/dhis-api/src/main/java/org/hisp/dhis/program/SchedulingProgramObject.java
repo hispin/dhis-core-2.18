@@ -93,5 +93,4 @@ public class SchedulingProgramObject
     {
         this.programInstanceId = programInstanceId;
     }
-
 }

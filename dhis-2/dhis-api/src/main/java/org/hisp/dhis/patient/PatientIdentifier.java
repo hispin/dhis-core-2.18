@@ -65,24 +65,24 @@ public class PatientIdentifier
         return result;
     }
 
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( obj == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(obj instanceof PatientIdentifier) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        PatientIdentifier other = (PatientIdentifier) obj;
+        PatientIdentifier other = (PatientIdentifier) object;
 
         return identifier.equals( other.getIdentifier() ) && identifierType.equals( other.getIdentifierType() );
     }

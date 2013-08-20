@@ -91,24 +91,24 @@ public class PatientIdentifierType
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof PatientIdentifierType) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final PatientIdentifierType other = (PatientIdentifierType) o;
+        final PatientIdentifierType other = (PatientIdentifierType) object;
 
         return name.equals( other.getName() );
     }

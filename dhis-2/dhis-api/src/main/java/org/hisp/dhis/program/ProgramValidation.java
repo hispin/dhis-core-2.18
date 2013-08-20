@@ -43,30 +43,21 @@ public class ProgramValidation
     private static final long serialVersionUID = 4785165717118297802L;
 
     public static final String SEPARATOR_ID = "\\.";
-
     public static final String SEPARATOR_OBJECT = ":";
 
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
 
-    public static final int BEFORE_CURRENT_DATE = 1;
-
-    public static final int BEFORE_OR_EQUALS_TO_CURRENT_DATE = 2;
-
-    public static final int AFTER_CURRENT_DATE = 3;
-
-    public static final int AFTER_OR_EQUALS_TO_CURRENT_DATE = 4;
-
-    public static final int BEFORE_DUE_DATE = -1;
-
-    public static final int BEFORE_OR_EQUALS_TO_DUE_DATE = -2;
-
-    public static final int AFTER_DUE_DATE = -3;
-
-    public static final int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
-
-    public static final int BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS = -5;
-
     public static final String NOT_NULL_VALUE_IN_EXPRESSION = "{NOT-NULL-VALUE}";
+
+    public static final int BEFORE_CURRENT_DATE = 1;
+    public static final int BEFORE_OR_EQUALS_TO_CURRENT_DATE = 2;
+    public static final int AFTER_CURRENT_DATE = 3;
+    public static final int AFTER_OR_EQUALS_TO_CURRENT_DATE = 4;
+    public static final int BEFORE_DUE_DATE = -1;
+    public static final int BEFORE_OR_EQUALS_TO_DUE_DATE = -2;
+    public static final int AFTER_DUE_DATE = -3;
+    public static final int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
+    public static final int BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS = -5;
 
     // -------------------------------------------------------------------------
     // Fields
@@ -107,31 +98,31 @@ public class ProgramValidation
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((leftSide == null) ? 0 : leftSide.hashCode());
-        result = prime * result + ((program == null) ? 0 : program.hashCode());
-        result = prime * result + ((rightSide == null) ? 0 : rightSide.hashCode());
+        result = prime * result + ( ( leftSide == null ) ? 0 : leftSide.hashCode() );
+        result = prime * result + ( ( program == null ) ? 0 : program.hashCode() );
+        result = prime * result + ( ( rightSide == null ) ? 0 : rightSide.hashCode() );
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( obj == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( getClass() != obj.getClass() )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        ProgramValidation other = (ProgramValidation) obj;
+        ProgramValidation other = (ProgramValidation) object;
 
         if ( leftSide == null )
         {

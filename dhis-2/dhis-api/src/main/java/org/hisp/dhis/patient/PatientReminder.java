@@ -41,45 +41,28 @@ public class PatientReminder
     private static final long serialVersionUID = 3101502417481903219L;
 
     public static final String DUE_DATE_TO_COMPARE = "duedate";
-
     public static final String ENROLLEMENT_DATE_TO_COMPARE = "enrollmentdate";
-
     public static final String INCIDENT_DATE_TO_COMPARE = "dateofincident";
 
     public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "{patient-name}";
-
     public static final String TEMPLATE_MESSSAGE_PROGRAM_NAME = "{program-name}";
-
     public static final String TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME = "{program-stage-name}";
-
     public static final String TEMPLATE_MESSSAGE_DUE_DATE = "{due-date}";
-
     public static final String TEMPLATE_MESSSAGE_ORGUNIT_NAME = "{orgunit-name}";
-
     public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE = "{days-since-due-date}";
-
     public static final String TEMPLATE_MESSSAGE_INCIDENT_DATE = "{incident-date}";
-
     public static final String TEMPLATE_MESSSAGE_ENROLLMENT_DATE = "{enrollement-date}";
-
     public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_ENROLLMENT_DATE = "{days-since-enrollment-date}";
-
     public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE = "{days-since-incident-date}";
 
     public static final int SEND_TO_PATIENT = 1;
-
     public static final int SEND_TO_HEALTH_WORKER = 2;
-
     public static final int SEND_TO_ORGUGNIT_REGISTERED = 3;
-
     public static final int SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED = 4;
-
     public static final int SEND_TO_USER_GROUP = 5;
 
     public static final int SEND_WHEN_TO_EMROLLEMENT = 1;
-
     public static final int SEND_WHEN_TO_C0MPLETED_EVENT = 2;
-
     public static final int SEND_WHEN_TO_C0MPLETED_PROGRAM = 3;
 
     private int id;
@@ -102,6 +85,10 @@ public class PatientReminder
     // Constructors
     // -------------------------------------------------------------------------
 
+    public PatientReminder()
+    {
+    }
+
     public PatientReminder( String name, Integer daysAllowedSendMessage, String templateMessage )
     {
         this.name = name;
@@ -109,6 +96,8 @@ public class PatientReminder
         this.templateMessage = templateMessage;
     }
 
+    //TODO implement hashcode and equals
+    
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
@@ -183,11 +172,6 @@ public class PatientReminder
         this.whenToSend = whenToSend;
     }
 
-    public PatientReminder()
-    {
-
-    }
-
     public UserGroup getUserGroup()
     {
         return userGroup;
@@ -197,5 +181,4 @@ public class PatientReminder
     {
         this.userGroup = userGroup;
     }
-
 }

@@ -49,13 +49,9 @@ public class ProgramStageInstance extends BaseIdentifiableObject
     private static final long serialVersionUID = 6239130884678145713L;
 
     public static final int COMPLETED_STATUS = 1;
-
     public static final int VISITED_STATUS = 2;
-
     public static final int FUTURE_VISIT_STATUS = 3;
-
     public static final int LATE_VISIT_STATUS = 4;
-
     public static final int SKIPPED_STATUS = 5;
 
     private ProgramInstance programInstance;
@@ -68,7 +64,7 @@ public class ProgramStageInstance extends BaseIdentifiableObject
 
     private OrganisationUnit organisationUnit;
 
-    private boolean completed = false;
+    private boolean completed;
 
     private List<OutboundSms> outboundSms;
 
@@ -103,24 +99,24 @@ public class ProgramStageInstance extends BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof ProgramStageInstance) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final ProgramStageInstance other = (ProgramStageInstance) o;
+        final ProgramStageInstance other = (ProgramStageInstance) object;
 
         return programInstance.equals( other.getProgramInstance() ) && programStage.equals( other.getProgramStage() );
 

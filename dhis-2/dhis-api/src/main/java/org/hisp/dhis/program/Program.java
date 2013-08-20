@@ -36,6 +36,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.patient.Patient;
@@ -65,9 +66,7 @@ public class Program
     private static final long serialVersionUID = -2581751965520009382L;
 
     public static final int MULTIPLE_EVENTS_WITH_REGISTRATION = 1;
-
     public static final int SINGLE_EVENT_WITH_REGISTRATION = 2;
-
     public static final int SINGLE_EVENT_WITHOUT_REGISTRATION = 3;
 
     private String description;
@@ -158,32 +157,56 @@ public class Program
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof Program) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final Program other = (Program) o;
+        final Program other = (Program) object;
 
         return name.equals( other.getName() );
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
     }
 
     // -------------------------------------------------------------------------
     // Logic methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns all data elements which are part of the stages of this program.
+     */
+    public Set<DataElement> getAllDataElements()
+    {
+        Set<DataElement> elements = new HashSet<DataElement>();
+        
+        for ( ProgramStage stage : programStages )
+        {
+            for ( ProgramStageDataElement element : stage.getProgramStageDataElements() )
+            {
+                elements.add( element.getDataElement() );
+            }
+        }
+        
+        return elements;
+    }
+    
     public ProgramStage getProgramStageByStage( int stage )
     {
         int count = 1;
@@ -485,7 +508,7 @@ public class Program
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isSingleEvent()
     {
-        return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || SINGLE_EVENT_WITHOUT_REGISTRATION == type);
+        return type != null && ( SINGLE_EVENT_WITH_REGISTRATION == type || SINGLE_EVENT_WITHOUT_REGISTRATION == type );
     }
 
     @JsonProperty
@@ -493,7 +516,7 @@ public class Program
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRegistration()
     {
-        return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type);
+        return type != null && ( SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type );
     }
 
     @JsonProperty

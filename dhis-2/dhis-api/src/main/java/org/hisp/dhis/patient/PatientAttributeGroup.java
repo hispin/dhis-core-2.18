@@ -78,24 +78,24 @@ public class PatientAttributeGroup
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object object )
     {
-        if ( this == o )
+        if ( this == object )
         {
             return true;
         }
 
-        if ( o == null )
+        if ( object == null )
         {
             return false;
         }
 
-        if ( !(o instanceof PatientAttributeGroup) )
+        if ( getClass() != object.getClass() )
         {
             return false;
         }
 
-        final PatientAttributeGroup other = (PatientAttributeGroup) o;
+        final PatientAttributeGroup other = (PatientAttributeGroup) object;
 
         return name.equals( other.getName() );
     }
