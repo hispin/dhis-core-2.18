@@ -6678,10 +6678,8 @@ Ext.onReady( function() {
 														xtype: 'panel',
 														layout: 'column',
 														id: 'filterPanel',
-														bodyStyle: 'background-color:transparent; padding:10px 10px 0px 3px',
-														autoScroll: true,
+														bodyStyle: 'background-color:transparent; padding:10px 10px 0px 3px;overflow-x: hidden; overflow-y: auto;',
 														overflowX: 'hidden',
-														overflowY: 'auto',
 														height: TR.conf.layout.west_dataelements_filter_panel,
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor),
 														items: []
