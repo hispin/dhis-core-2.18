@@ -33,14 +33,26 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.user.User;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Chau Thu Tran
  * @version $PatientTabularReport.java May 7, 2012 12:41:41 PM$
  */
+
+@JacksonXmlRootElement( localName = "patientTabularReport", namespace = DxfNamespaces.DXF_2_0 )
 public class PatientTabularReport
     extends BaseIdentifiableObject
 {
@@ -108,12 +120,23 @@ public class PatientTabularReport
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-
+   
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getStartDate()
     {
         return startDate;
     }
 
+    public void setStartDate( Date startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getUseFormNameDataElement()
     {
         return useFormNameDataElement;
@@ -124,11 +147,9 @@ public class PatientTabularReport
         this.useFormNameDataElement = useFormNameDataElement;
     }
 
-    public void setStartDate( Date startDate )
-    {
-        this.startDate = startDate;
-    }
-
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getEndDate()
     {
         return endDate;
@@ -139,6 +160,11 @@ public class PatientTabularReport
         this.endDate = endDate;
     }
 
+    @JsonProperty( value = "organisationUnits" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -149,6 +175,10 @@ public class PatientTabularReport
         this.organisationUnits = organisationUnits;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "filterValues", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "filterValue", namespace = DxfNamespaces.DXF_2_0)
     public List<String> getFilterValues()
     {
         return filterValues;
@@ -159,6 +189,9 @@ public class PatientTabularReport
         this.filterValues = filterValues;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getLevel()
     {
         return level;
@@ -169,6 +202,9 @@ public class PatientTabularReport
         this.level = level;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isSortedOrgunitAsc()
     {
         return sortedOrgunitAsc;
@@ -179,6 +215,9 @@ public class PatientTabularReport
         this.sortedOrgunitAsc = sortedOrgunitAsc;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getFacilityLB()
     {
         return facilityLB;
@@ -189,6 +228,9 @@ public class PatientTabularReport
         this.facilityLB = facilityLB;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getUserOrganisationUnit()
     {
         return userOrganisationUnit;
@@ -199,6 +241,9 @@ public class PatientTabularReport
         this.userOrganisationUnit = userOrganisationUnit;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getUserOrganisationUnitChildren()
     {
         return userOrganisationUnitChildren;
@@ -209,6 +254,9 @@ public class PatientTabularReport
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getUseCompletedEvents()
     {
         return useCompletedEvents;
@@ -219,6 +267,10 @@ public class PatientTabularReport
         this.useCompletedEvents = useCompletedEvents;
     }
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "users", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "user", namespace = DxfNamespaces.DXF_2_0)
     public User getUser()
     {
         return user;
@@ -229,6 +281,10 @@ public class PatientTabularReport
         this.user = user;
     }
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "programStages", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "programStage", namespace = DxfNamespaces.DXF_2_0)
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -239,6 +295,9 @@ public class PatientTabularReport
         this.programStage = programStage;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayOrgunitCode()
     {
         return displayOrgunitCode;

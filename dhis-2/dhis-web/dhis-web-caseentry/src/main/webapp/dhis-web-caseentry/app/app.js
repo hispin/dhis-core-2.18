@@ -32,6 +32,9 @@ TR.conf = {
 				
 				obj.system.accessPatientAttributes = r.user.accessPatientAttributes;
 				
+				obj.report={};
+				obj.report.id = r.id;
+				
 				return obj;
 			}
 		}
@@ -201,6 +204,36 @@ TR.conf = {
 				a[i] = TR.conf.util.jsonEncodeString(a[i]);
 			}
 			return a;
+		},
+		getURLParameters: function(paramName) {
+			var sURL = window.document.URL.toString();  
+			if (sURL.indexOf("?") > 0)
+			{
+			   var arrParams = sURL.split("?");         
+			   var arrURLParams = arrParams[1].split("&");      
+			   var arrParamNames = new Array(arrURLParams.length);
+			   var arrParamValues = new Array(arrURLParams.length);     
+			   var i = 0;
+			   for (i=0;i<arrURLParams.length;i++)
+			   {
+					var sParam =  arrURLParams[i].split("=");
+					arrParamNames[i] = sParam[0];
+					if (sParam[1] != ""){
+						arrParamValues[i] = unescape(sParam[1]);
+					}
+					else{
+						arrParamValues[i] = "";
+					}
+			    }
+
+				for (i=0;i<arrURLParams.length;i++)
+				{
+					if(arrParamNames[i] == paramName){
+						return arrParamValues[i];
+					}
+				}
+			}
+			return "";
 		}
 	}
 };
@@ -218,8 +251,9 @@ Ext.onReady( function() {
     Ext.QuickTips.init();
     document.body.oncontextmenu = function(){return false;}; 
     
+	var reportId = TR.conf.util.getURLParameters('id');
     Ext.Ajax.request({
-        url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.initialize,
+        url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.initialize + "?id=" + reportId,
         success: function(r) {
             
     TR.init = TR.conf.init.ajax.jsonfy(r);    
@@ -3504,7 +3538,7 @@ Ext.onReady( function() {
 								element.addClsOnOver('link');
 								element.load = function() {
 									favoriteWindow.hide();
-									TR.util.crud.favorite.run( record.data.id );
+									TR.util.crud.favorite.run( record.data.uid );
 								};
 								element.dom.setAttribute('onclick', 'Ext.get(this).load();');
 							}
@@ -6965,6 +6999,12 @@ Ext.onReady( function() {
 				for( var i in TR.init.system.rootnodes){
 					TR.state.orgunitIds.push( TR.init.system.rootnodes[i].localid );
 				}
+				
+				if( TR.init.report.id != "")
+				{
+					Ext.getCmp('reportTypeGroup').setValue(true);
+					TR.util.crud.favorite.run(TR.init.report.id);
+				}
             },
             resize: function(vp) {
                 TR.cmp.region.west.setWidth(TR.conf.layout.west_width);
@@ -6978,5 +7018,6 @@ Ext.onReady( function() {
         }
     });
     
+	
     }});
 }); 

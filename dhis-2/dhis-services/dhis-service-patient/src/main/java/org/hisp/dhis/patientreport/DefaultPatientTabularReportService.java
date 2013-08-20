@@ -81,6 +81,12 @@ public class DefaultPatientTabularReportService
     }
 
     @Override
+    public PatientTabularReport getPatientTabularReportByUid( String uid )
+    {
+        return tabularReportStore.getByUid( uid );
+    }
+
+    @Override
     public Collection<PatientTabularReport> getPatientTabularReports( User user, String query, Integer min, Integer max )
     {
         return tabularReportStore.get( user, query, min, max );

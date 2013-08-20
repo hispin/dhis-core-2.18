@@ -79,6 +79,18 @@ public class TabularInitializeAction
     // Output
     // -------------------------------------------------------------------------
 
+    private String id;
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
     private Collection<Program> programs;
 
     public Collection<Program> getPrograms()
@@ -110,12 +122,12 @@ public class TabularInitializeAction
         orgunitGroups = new ArrayList<OrganisationUnitGroup>(
             organisationUnitGroupService.getAllOrganisationUnitGroups() );
         Collections.sort( orgunitGroups, IdentifiableObjectNameComparator.INSTANCE );
-        
-        programs = programService.getAllPrograms();
-        programs.retainAll( programService.getProgramsByCurrentUser());
-        
-        levels = organisationUnitService.getOrganisationUnitLevels();
 
+        programs = programService.getAllPrograms();
+        programs.retainAll( programService.getProgramsByCurrentUser() );
+
+        levels = organisationUnitService.getOrganisationUnitLevels();
+        
         return SUCCESS;
     }
 }
