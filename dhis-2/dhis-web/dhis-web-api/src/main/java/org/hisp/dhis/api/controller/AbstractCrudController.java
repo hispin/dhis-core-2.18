@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.controller.exception.NotFoundException;
+import org.hisp.dhis.api.controller.exception.NotFoundForQueryException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.Access;
@@ -128,8 +130,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( entity == null )
         {
-            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
-            return null;
+            throw new NotFoundException( uid );
         }
 
         if ( options.hasLinks() )
@@ -160,8 +161,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( entity == null )
         {
-            ContextUtils.notFoundResponse( response, "Object not found for query: " + query );
-            return null;
+            throw new NotFoundForQueryException( query );
         }
 
         if ( options.hasLinks() )
