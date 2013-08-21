@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics.table;
+package org.hisp.dhis.analytics.event.data;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,55 +27,58 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.analytics.event.EventAnalyticsService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  */
-public class PartitionUtils
+public class EventAnalyticsServiceTest
+    extends DhisSpringTest
 {
-    private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
+    @Autowired
+    private EventAnalyticsService analyticsService;
     
-    private static final String SEP = "_";
+    @Autowired
+    private ProgramService programService;
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private PatientAttributeService attributeService;
 
-    public static List<Period> getPeriods( Date earliest, Date latest )
+    @Autowired
+    private PatientIdentifierTypeService identifierTypeService;
+    
+    private Program prA;
+    private DataElement deA;
+    private DataElement deB;
+    private PatientAttribute atA;
+    private PatientAttribute atB;
+    private PatientIdentifierType itA;
+    private PatientIdentifierType itB;
+
+    @Override
+    public void setUpTest()
     {
-        List<Period> periods = new ArrayList<Period>();
+        prA = createProgram( 'A', null, null );
         
-        Period period = PERIODTYPE.createPeriod( earliest );
-        
-        while ( period != null && period.getStartDate().before( latest ) )
-        {
-            periods.add( period );            
-            period = PERIODTYPE.getNextPeriod( period );
-        }
-        
-        return periods;
     }
     
-    public static String getTableName( Period period, String tableName )
+    @Test
+    public void testGetFromUrl()
     {
-        Period year = PERIODTYPE.createPeriod( period.getStartDate() );
         
-        return tableName + SEP + year.getIsoDate();
-    }
-    
-    public static ListMap<String, NameableObject> getTableNamePeriodMap( List<NameableObject> periods, String tableName )
-    {
-        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
-        
-        for ( NameableObject period : periods )
-        {
-            map.putValue( getTableName( (Period) period, tableName ), period );
-        }
-        
-        return map;
     }
 }

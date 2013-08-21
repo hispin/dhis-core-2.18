@@ -29,16 +29,12 @@ package org.hisp.dhis.analytics.table;
 
 import static org.hisp.dhis.DhisConvenienceTest.createPeriod;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
-import static org.hisp.dhis.analytics.AnalyticsTableManager.TABLE_TEMP_SUFFIX;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.period.Cal;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.YearlyPeriodType;
 import org.junit.Test;
 
 /**
@@ -46,7 +42,6 @@ import org.junit.Test;
  */
 public class PartitionUtilsTest
 {
-    private static final String TABLE_NAME_TEMP = ANALYTICS_TABLE_NAME + TABLE_TEMP_SUFFIX;
     private static final String TABLE_NAME = ANALYTICS_TABLE_NAME;
         
     @Test
@@ -57,19 +52,7 @@ public class PartitionUtilsTest
         assertEquals( TABLE_NAME + "_2002", PartitionUtils.getTableName( createPeriod( "2002Q2" ), TABLE_NAME ) );
         assertEquals( TABLE_NAME + "_2003", PartitionUtils.getTableName( createPeriod( "2003S2" ), TABLE_NAME ) );
     }
-    
-    @Test
-    public void testGetPeriod()
-    {
-        Cal cal = new Cal();
         
-        Period p1 = new YearlyPeriodType().createPeriod( cal.set( 2000, 4, 1 ).time() );
-        Period p2 = new YearlyPeriodType().createPeriod( cal.set( 2001, 10, 1 ).time() );
-        
-        assertEquals( p1, PartitionUtils.getPeriod( TABLE_NAME_TEMP + "_2000" ) );
-        assertEquals( p2, PartitionUtils.getPeriod( TABLE_NAME_TEMP + "_2001" ) );
-    }
-    
     @Test
     public void testGetTablePeriodMap()
     {        

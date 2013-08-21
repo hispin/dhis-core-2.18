@@ -2,6 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+  <!-- Table -->
+
   <bean id="org.hisp.dhis.analytics.AnalyticsTableManager" class="org.hisp.dhis.analytics.table.JdbcAnalyticsTableManager" />
   
   <bean id="org.hisp.dhis.analytics.CompletenessTableManager" class="org.hisp.dhis.analytics.table.JdbcCompletenessTableManager" />
@@ -26,11 +28,19 @@
     <property name="tableManager" ref="org.hisp.dhis.analytics.EventAnalyticsTableManager" />
   </bean>
   
+  <!-- Routine analytics -->
+  
   <bean id="org.hisp.dhis.analytics.AnalyticsManager" class="org.hisp.dhis.analytics.data.JdbcAnalyticsManager" />
   
   <bean id="org.hisp.dhis.analytics.AnalyticsService" class="org.hisp.dhis.analytics.data.DefaultAnalyticsService" />
   
   <bean id="org.hisp.dhis.analytics.QueryPlanner" class="org.hisp.dhis.analytics.data.DefaultQueryPlanner" />
+
+  <!-- Event analytics -->
+
+  <bean id="org.hisp.dhis.analytics.event.EventAnalyticsManager" class="org.hisp.dhis.analytics.event.data.JdbcEventAnalyticsManager"/>  
+
+  <bean id="org.hisp.dhis.analytics.event.EventAnalyticsService" class="org.hisp.dhis.analytics.event.data.DefaultEventAnalyticsService" />
 
   <!-- Scheduled tasks -->
   

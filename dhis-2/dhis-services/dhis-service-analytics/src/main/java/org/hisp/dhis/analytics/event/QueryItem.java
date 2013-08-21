@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics.table;
+package org.hisp.dhis.analytics.event;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,55 +27,75 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  */
-public class PartitionUtils
+public class QueryItem
 {
-    private static final YearlyPeriodType PERIODTYPE = new YearlyPeriodType();
-    
-    private static final String SEP = "_";
+    private IdentifiableObject item;
 
-    public static List<Period> getPeriods( Date earliest, Date latest )
+    private String operator;
+
+    private String filter;
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public QueryItem( IdentifiableObject item )
     {
-        List<Period> periods = new ArrayList<Period>();
-        
-        Period period = PERIODTYPE.createPeriod( earliest );
-        
-        while ( period != null && period.getStartDate().before( latest ) )
-        {
-            periods.add( period );            
-            period = PERIODTYPE.getNextPeriod( period );
-        }
-        
-        return periods;
+        this.item = item;
     }
     
-    public static String getTableName( Period period, String tableName )
+    public QueryItem( IdentifiableObject item, String operator, String filter )
     {
-        Period year = PERIODTYPE.createPeriod( period.getStartDate() );
-        
-        return tableName + SEP + year.getIsoDate();
+        this.item = item;
+        this.operator = operator;
+        this.filter = filter;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean hasFilter()
+    {
+        return operator != null && !operator.isEmpty() && filter != null && !filter.isEmpty();
     }
     
-    public static ListMap<String, NameableObject> getTableNamePeriodMap( List<NameableObject> periods, String tableName )
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public IdentifiableObject getItem()
     {
-        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
-        
-        for ( NameableObject period : periods )
-        {
-            map.putValue( getTableName( (Period) period, tableName ), period );
-        }
-        
-        return map;
+        return item;
+    }
+
+    public void setItem( IdentifiableObject item )
+    {
+        this.item = item;
+    }
+
+    public String getOperator()
+    {
+        return operator;
+    }
+
+    public void setOperator( String operator )
+    {
+        this.operator = operator;
+    }
+
+    public String getFilter()
+    {
+        return filter;
+    }
+
+    public void setFilter( String filter )
+    {
+        this.filter = filter;
     }
 }
