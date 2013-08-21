@@ -295,6 +295,11 @@
         <artifactId>dhis-service-patient</artifactId>
         <version>${project.version}</version>
       </dependency>
+	  <dependency>
+        <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-service-eventreporting</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-mobile</artifactId>

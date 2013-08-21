@@ -30,7 +30,7 @@ package org.hisp.dhis.patient.action.schedule;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY;
 
-import org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager;
+import org.hisp.dhis.scheduling.CaseAggregateConditionSchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 

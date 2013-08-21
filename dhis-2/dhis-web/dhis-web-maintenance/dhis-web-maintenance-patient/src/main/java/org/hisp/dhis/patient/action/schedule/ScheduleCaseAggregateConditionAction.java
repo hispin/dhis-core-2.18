@@ -32,8 +32,8 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULE_AGGREGATE_
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager;
-import org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask;
+import org.hisp.dhis.scheduling.CaseAggregateConditionSchedulingManager;
+import org.hisp.dhis.scheduling.CaseAggregateConditionTask;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;

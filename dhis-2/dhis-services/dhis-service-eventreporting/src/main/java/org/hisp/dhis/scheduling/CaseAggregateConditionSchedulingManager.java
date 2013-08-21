@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.scheduling;
+package org.hisp.dhis.scheduling;
 
 import java.util.Map;
 
