@@ -361,7 +361,7 @@ public class CurrentUserController
     }
 
     @SuppressWarnings( "unchecked" )
-    @RequestMapping( value = { "/forms", "/assignedDataSets" }, produces = { "application/json", "text/*" } )
+    @RequestMapping( value = "/assignedDataSets", produces = { "application/json", "text/*" } )
     public void getDataSets( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
