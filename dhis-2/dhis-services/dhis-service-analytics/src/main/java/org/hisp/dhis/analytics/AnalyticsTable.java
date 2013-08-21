@@ -27,6 +27,8 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 
@@ -36,6 +38,8 @@ import org.hisp.dhis.program.Program;
 public class AnalyticsTable
 {
     private String baseName;
+
+    private List<String[]> dimensionColumns;
     
     private Period period;
     
@@ -45,20 +49,23 @@ public class AnalyticsTable
     {
     }
 
-    public AnalyticsTable( String baseName )
+    public AnalyticsTable( String baseName, List<String[]> dimensionColumns )
     {
         this.baseName = baseName;
+        this.dimensionColumns = dimensionColumns;
     }
     
-    public AnalyticsTable( String baseName, Period period )
+    public AnalyticsTable( String baseName, List<String[]> dimensionColumns, Period period )
     {
         this.baseName = baseName;
+        this.dimensionColumns = dimensionColumns;
         this.period = period;
     }
     
-    public AnalyticsTable( String baseName, Period period, Program program )
+    public AnalyticsTable( String baseName, List<String[]> dimensionColumns, Period period, Program program )
     {
         this.baseName = baseName;
+        this.dimensionColumns = dimensionColumns;
         this.period = period;
         this.program = program;
     }
@@ -111,6 +118,16 @@ public class AnalyticsTable
     public void setBaseName( String baseName )
     {
         this.baseName = baseName;
+    }
+
+    public List<String[]> getDimensionColumns()
+    {
+        return dimensionColumns;
+    }
+
+    public void setDimensionColumns( List<String[]> dimensionColumns )
+    {
+        this.dimensionColumns = dimensionColumns;
     }
 
     public Period getPeriod()

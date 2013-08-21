@@ -107,17 +107,6 @@ public interface AnalyticsTableManager
     Future<?> populateTableAsync( ConcurrentLinkedQueue<AnalyticsTable> tables );    
 
     /**
-     * Returns a list of string arrays in where the first index holds the database
-     * column name, the second index holds the database column data type and the 
-     * third column holds a table alias and name, i.e.:
-     * 
-     * 0 = database column name
-     * 1 = database column data type
-     * 2 = column alias and name
-     */
-    List<String[]> getDimensionColumns( AnalyticsTable table );
-    
-    /**
      * Retrieves the start date of the period of the earliest data value row.
      */
     Date getEarliestData();

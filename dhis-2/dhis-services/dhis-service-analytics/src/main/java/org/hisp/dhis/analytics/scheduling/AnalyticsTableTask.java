@@ -52,6 +52,9 @@ public class AnalyticsTableTask
     @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
     private AnalyticsTableService completenessTargetTableService;
     
+    @Resource(name="org.hisp.dhis.analytics.EventAnalyticsTableService")
+    private AnalyticsTableService eventAnalyticsTableService;
+    
     @Autowired
     private ResourceTableService resourceTableService;
     
@@ -94,6 +97,10 @@ public class AnalyticsTableTask
         notifier.notify( taskId, "Updating compeleteness target table" );
         
         completenessTargetTableService.update( last3Years, taskId );
+        
+        notifier.notify( taskId, "Updating event analytics tables" );
+        
+        eventAnalyticsTableService.update( last3Years, taskId );
         
         notifier.notify( taskId, INFO, "Analytics tables updated", true );
     }

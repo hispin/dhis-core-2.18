@@ -51,6 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -83,9 +84,25 @@ public abstract class AbstractJdbcTableManager
     protected JdbcTemplate jdbcTemplate;
 
     // -------------------------------------------------------------------------
+    // Abstract methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns a list of string arrays in where the first index holds the database
+     * column name, the second index holds the database column data type and the 
+     * third column holds a table alias and name, i.e.:
+     * 
+     * 0 = database column name
+     * 1 = database column data type
+     * 2 = column alias and name
+     */
+    protected abstract List<String[]> getDimensionColumns( AnalyticsTable table );
+    
+    // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
-  
+
+    @Transactional
     public List<AnalyticsTable> getTables( boolean last3YearsOnly )
     {
         Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
@@ -95,6 +112,7 @@ public abstract class AbstractJdbcTableManager
         return getTables( earliest, latest );
     }
 
+    @Transactional
     public List<AnalyticsTable> getTables( Date earliest, Date latest )
     {
         String baseName = getTableName();
@@ -105,7 +123,7 @@ public abstract class AbstractJdbcTableManager
         
         for ( Period period : periods )
         {
-            tables.add( new AnalyticsTable( baseName, period ) );
+            tables.add( new AnalyticsTable( baseName, getDimensionColumns( null ), period ) );
         }
         
         return tables;
