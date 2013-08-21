@@ -78,7 +78,7 @@ import java.util.Set;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = CurrentUserController.RESOURCE_PATH, method = RequestMethod.GET)
+@RequestMapping( value = CurrentUserController.RESOURCE_PATH, method = RequestMethod.GET )
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
@@ -117,7 +117,7 @@ public class CurrentUserController
     @Autowired
     private I18nService i18nService;
 
-    @RequestMapping(produces = { "application/json", "text/*" })
+    @RequestMapping( produces = { "application/json", "text/*" } )
     public void getCurrentUser( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -130,7 +130,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), currentUser );
     }
 
-    @RequestMapping(value = "/inbox", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/inbox", produces = { "application/json", "text/*" } )
     public void getInbox( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -147,7 +147,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), inbox );
     }
 
-    @RequestMapping(value = "/dashboard", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/dashboard", produces = { "application/json", "text/*" } )
     public void getDashboard( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -274,7 +274,7 @@ public class CurrentUserController
 
     @SuppressWarnings( "unchecked" )
     @RequestMapping( value = { "/assignedPrograms" }, produces = { "application/json", "text/*" } )
-    public void getPrograms( HttpServletResponse response ) throws IOException, NotAuthenticatedException
+    public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -297,6 +297,21 @@ public class CurrentUserController
             userOrganisationUnits.addAll( currentUser.getOrganisationUnits() );
         }
 
+        if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
+        {
+            for ( OrganisationUnit organisationUnit : userOrganisationUnits )
+            {
+                userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+            }
+        }
+        else
+        {
+            for ( OrganisationUnit organisationUnit : userOrganisationUnits )
+            {
+                userOrganisationUnits.addAll( organisationUnit.getChildren() );
+            }
+        }
+
         for ( OrganisationUnit organisationUnit : userOrganisationUnits )
         {
             Collection<Program> ouPrograms = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit );
@@ -306,18 +321,6 @@ public class CurrentUserController
                 organisationUnits.add( organisationUnit );
                 programs.addAll( ouPrograms );
                 programAssociations.put( organisationUnit.getUid(), ouPrograms );
-            }
-
-            for ( OrganisationUnit child : organisationUnit.getChildren() )
-            {
-                ouPrograms = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, child );
-
-                if ( !ouPrograms.isEmpty() )
-                {
-                    organisationUnits.add( child );
-                    programs.addAll( ouPrograms );
-                    programAssociations.put( organisationUnit.getUid(), ouPrograms );
-                }
             }
         }
 
@@ -331,6 +334,11 @@ public class CurrentUserController
             formOrganisationUnit.setId( organisationUnit.getUid() );
             formOrganisationUnit.setLabel( organisationUnit.getDisplayName() );
             formOrganisationUnit.setLevel( organisationUnit.getOrganisationUnitLevel() );
+
+            if ( organisationUnit.getParent() != null )
+            {
+                formOrganisationUnit.setParent( organisationUnit.getParent().getUid() );
+            }
 
             for ( Program program : programAssociations.get( organisationUnit.getUid() ) )
             {
@@ -354,7 +362,7 @@ public class CurrentUserController
 
     @SuppressWarnings( "unchecked" )
     @RequestMapping( value = { "/forms", "/assignedDataSets" }, produces = { "application/json", "text/*" } )
-    public void getDataSets( HttpServletResponse response ) throws IOException, NotAuthenticatedException
+    public void getDataSets( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -383,6 +391,21 @@ public class CurrentUserController
             userDataSets = currentUser.getUserCredentials().getAllDataSets();
         }
 
+        if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
+        {
+            for ( OrganisationUnit organisationUnit : userOrganisationUnits )
+            {
+                userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+            }
+        }
+        else
+        {
+            for ( OrganisationUnit organisationUnit : userOrganisationUnits )
+            {
+                userOrganisationUnits.addAll( organisationUnit.getChildren() );
+            }
+        }
+
         for ( OrganisationUnit ou : userOrganisationUnits )
         {
             Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( ou.getDataSets(), userDataSets ) );
@@ -390,16 +413,6 @@ public class CurrentUserController
             if ( dataSets.size() > 0 )
             {
                 organisationUnits.add( ou );
-            }
-
-            for ( OrganisationUnit child : ou.getChildren() )
-            {
-                Set<DataSet> childDataSets = new HashSet<DataSet>( CollectionUtils.intersection( child.getDataSets(), userDataSets ) );
-
-                if ( childDataSets.size() > 0 )
-                {
-                    organisationUnits.add( child );
-                }
             }
         }
 
@@ -411,6 +424,11 @@ public class CurrentUserController
             formOrganisationUnit.setId( organisationUnit.getUid() );
             formOrganisationUnit.setLabel( organisationUnit.getDisplayName() );
             formOrganisationUnit.setLevel( organisationUnit.getOrganisationUnitLevel() );
+
+            if ( organisationUnit.getParent() != null )
+            {
+                formOrganisationUnit.setParent( organisationUnit.getParent().getUid() );
+            }
 
             Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( organisationUnit.getDataSets(), userDataSets ) );
             i18nService.internationalise( dataSets );

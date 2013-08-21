@@ -46,6 +46,8 @@ public class FormOrganisationUnit
 
     private Integer level;
 
+    private String parent;
+
     private Set<FormDataSet> dataSets = new HashSet<FormDataSet>();
 
     private Set<FormProgram> programs = new HashSet<FormProgram>();
@@ -85,6 +87,17 @@ public class FormOrganisationUnit
     public void setLevel( Integer level )
     {
         this.level = level;
+    }
+
+    @JsonProperty
+    public String getParent()
+    {
+        return parent;
+    }
+
+    public void setParent( String parent )
+    {
+        this.parent = parent;
     }
 
     @JsonProperty
