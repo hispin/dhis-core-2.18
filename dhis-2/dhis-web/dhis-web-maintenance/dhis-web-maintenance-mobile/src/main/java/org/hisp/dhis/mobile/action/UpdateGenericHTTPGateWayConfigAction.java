@@ -124,6 +124,7 @@ public class UpdateGenericHTTPGateWayConfigAction
                 gatewayConfig.setParameters( map );
                 gatewayConfig.setName( name );
                 gatewayConfig.setUrlTemplate( urlTemplate );
+                System.out.println("cuc cu: "+urlTemplate);
 
                 if ( config.getGateways() == null || config.getGateways().isEmpty() )
                 {
