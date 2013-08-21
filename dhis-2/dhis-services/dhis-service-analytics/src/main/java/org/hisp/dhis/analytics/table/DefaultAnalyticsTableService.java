@@ -147,7 +147,7 @@ public class DefaultAnalyticsTableService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-  
+
     private void createTables( List<AnalyticsTable> tables )
     {
         for ( AnalyticsTable table : tables )
@@ -218,7 +218,7 @@ public class DefaultAnalyticsTableService
         
         for ( AnalyticsTable table : tables )
         {
-            List<String[]> columns = tableManager.getDimensionColumns( table );
+            List<String[]> columns = table.getDimensionColumns();
             
             for ( String[] column : columns )
             {

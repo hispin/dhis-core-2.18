@@ -80,7 +80,7 @@ public class JdbcAnalyticsTableManager
     {
         return "analytics";
     }
-        
+    
     public void createTable( AnalyticsTable table )
     {
         final String tableName = table.getTempTableName();
