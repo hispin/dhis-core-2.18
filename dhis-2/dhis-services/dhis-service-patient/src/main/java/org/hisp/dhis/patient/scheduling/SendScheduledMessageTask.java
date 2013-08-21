@@ -73,9 +73,9 @@ public class SendScheduledMessageTask
     {
         this.outboundSmsService = outboundSmsService;
     }
-    
+
     private SmsSender smsSender;
-    
+
     public void setSmsSender( SmsSender smsSender )
     {
         this.smsSender = smsSender;
@@ -206,7 +206,7 @@ public class SendScheduledMessageTask
         notifier.notify( taskId, "Start to prepare reminder messages for enrollements" );
 
         Collection<SchedulingProgramObject> schedulingProgramObjects = programInstanceService.getScheduleMesssages();
-        
+
         for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
         {
             String message = schedulingProgramObject.getMessage();
@@ -250,10 +250,13 @@ public class SendScheduledMessageTask
     {
         List<OutboundSms> outboundSmsList = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND );
 
-        for ( OutboundSms outboundSms : outboundSmsList )
+        if ( outboundSmsList != null )
         {
-            outboundSms.setStatus( OutboundSmsStatus.SENT );
-            smsSender.sendMessage( outboundSms, null );
+            for ( OutboundSms outboundSms : outboundSmsList )
+            {
+                outboundSms.setStatus( OutboundSmsStatus.SENT );
+                smsSender.sendMessage( outboundSms, null );
+            }
         }
     }
 }

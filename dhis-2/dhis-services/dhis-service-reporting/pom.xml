@@ -39,7 +39,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-patient</artifactId>
+      <artifactId>dhis-service-eventreporting</artifactId>
     </dependency> 
 	
     <!-- JasperReports -->

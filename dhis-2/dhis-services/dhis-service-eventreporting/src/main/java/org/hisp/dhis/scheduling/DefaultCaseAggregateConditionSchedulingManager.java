@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.scheduling;
+package org.hisp.dhis.scheduling;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASKS;
 import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_NOT_STARTED;
