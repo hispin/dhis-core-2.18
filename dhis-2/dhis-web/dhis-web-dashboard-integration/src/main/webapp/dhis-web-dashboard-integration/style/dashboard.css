@@ -114,6 +114,14 @@
 
 .item h4
 {
+  font-size: 12px;
+  font-family: LiberationSansBold, sans-serif;
+  color: #4975b4;
+  margin: 1px 5px;
+}
+
+.item h4
+{
   margin: 0;
 }
 
