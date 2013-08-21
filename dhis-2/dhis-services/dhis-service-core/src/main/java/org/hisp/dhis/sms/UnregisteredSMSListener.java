@@ -27,8 +27,12 @@ package org.hisp.dhis.sms;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
@@ -37,6 +41,7 @@ import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
 import org.hisp.dhis.sms.parse.ParserType;
+import org.hisp.dhis.sms.parse.SMSParserException;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.user.User;
@@ -53,8 +58,10 @@ public class UnregisteredSMSListener
     private MessageConversationStore messageConversationStore;
 
     private UserService userService;
-    
+
     private MessageService messageService;
+
+    private SmsMessageSender smsMessageSender;
 
     @Transactional
     @Override
@@ -95,32 +102,61 @@ public class UnregisteredSMSListener
 
         UserGroup userGroup = smsCommand.getUserGroup();
 
+        String senderPhoneNumber = StringUtils.replace( sms.getOriginator(), "+", "" );
+
         if ( userGroup != null )
         {
-            Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
+            Collection<User> users = userService.getUsersByPhoneNumber( senderPhoneNumber );
 
-            UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "system" );
-
-            if ( anonymousUser == null )
+            if ( users != null && users.size() >= 1 )
             {
-                anonymousUser = userService.getUserCredentialsByUsername( "admin" );
+                String messageError = "This number is already registered for user: ";
+                for ( Iterator<User> iterator = users.iterator(); iterator.hasNext(); )
+                {
+                    User user = iterator.next();
+                    messageError += user.getName();
+                    if ( iterator.hasNext() )
+                    {
+                        messageError += ", ";
+                    }
+                }
+                throw new SMSParserException( messageError );
             }
-
-            MessageConversation conversation = new MessageConversation( smsCommand.getName(), anonymousUser.getUser() );
-
-            conversation.addMessage( new Message( message, null, anonymousUser.getUser() ) );
-
-            for ( User receiver : receivers )
+            else
             {
-                boolean read = false;
+                Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
-                conversation.addUserMessage( new UserMessage( receiver, read ) );
+                UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "system" );
+
+                if ( anonymousUser == null )
+                {
+                    anonymousUser = userService.getUserCredentialsByUsername( "admin" );
+                }
+
+                MessageConversation conversation = new MessageConversation( smsCommand.getName(),
+                    anonymousUser.getUser() );
+
+                conversation.addMessage( new Message( message, null, anonymousUser.getUser() ) );
+
+                for ( User receiver : receivers )
+                {
+                    boolean read = false;
+
+                    conversation.addUserMessage( new UserMessage( receiver, read ) );
+                }
+                // forward to user group by SMS, E-mail, DHIS conversation
+
+                messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(),
+                    false, false );
+
+                // confirm SMS was received and forwarded completely
+                Set<User> feedbackList = new HashSet<User>();
+                User sender = new User();
+                sender.setPhoneNumber( senderPhoneNumber );
+                feedbackList.add( sender );
+                smsMessageSender.sendMessage( smsCommand.getName(), smsCommand.getReceivedMessage(), null,
+                    feedbackList, true );
             }
-            // forward to user group by SMS, E-mail, DHIS conversation
-
-            messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(), false, false );
-
-            // messageConversationStore.save( conversation );
         }
     }
 
@@ -162,5 +198,5 @@ public class UnregisteredSMSListener
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
-    }    
+    }
 }
