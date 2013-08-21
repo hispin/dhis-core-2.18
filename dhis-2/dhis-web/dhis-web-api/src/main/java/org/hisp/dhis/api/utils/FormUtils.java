@@ -121,7 +121,7 @@ public class FormUtils
             form.getOptions().put( "dateOfIncidentDescription", program.getDateOfIncidentDescription() );
         }
 
-        form.getOptions().put( "type", "SINGLE_EVENT_WITHOUT_REGISTRATION" );
+        form.getOptions().put( "type", Program.TYPE_LOOKUP.get( program.getType() ) );
 
         ProgramStage programStage = program.getProgramStageByStage( 1 );
         Assert.notNull( programStage );
