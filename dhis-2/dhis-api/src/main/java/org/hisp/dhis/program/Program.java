@@ -66,7 +66,7 @@ public class Program
     private static final long serialVersionUID = -2581751965520009382L;
 
     public static final List<String> TYPE_LOOKUP = Arrays.asList("",
-        "MULTIPLE_EVENTS_WITH_REGISTRATION", "SINGLE_EVENT_WITH_REGISTRATION", "SINGLE_EVENT_WITHOUT_REGISTRATION " );
+        "MULTIPLE_EVENTS_WITH_REGISTRATION", "SINGLE_EVENT_WITH_REGISTRATION", "SINGLE_EVENT_WITHOUT_REGISTRATION" );
 
     public static final int MULTIPLE_EVENTS_WITH_REGISTRATION = 1;
     public static final int SINGLE_EVENT_WITH_REGISTRATION = 2;
