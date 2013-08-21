@@ -31,7 +31,6 @@ import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.MetaData;
@@ -120,8 +119,8 @@ public class OrganisationUnitController
     }
 
     @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -173,6 +172,27 @@ public class OrganisationUnitController
 
                 model.addAttribute( "model", metaData );
             }
+        }
+        if ( options.getOptions().containsKey( "includeDescendants" ) && Boolean.parseBoolean( options.getOptions().get( "includeDescendants" ) ) )
+        {
+            List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>(
+                organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
+
+            MetaData metaData = new MetaData();
+            metaData.setOrganisationUnits( entities );
+
+            model.addAttribute( "model", metaData );
+        }
+        if ( options.getOptions().containsKey( "includeChildren" ) && Boolean.parseBoolean( options.getOptions().get( "includeChildren" ) ) )
+        {
+            List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>();
+            entities.add( entity );
+            entities.addAll( entity.getChildren() );
+
+            MetaData metaData = new MetaData();
+            metaData.setOrganisationUnits( entities );
+
+            model.addAttribute( "model", metaData );
         }
         else
         {
