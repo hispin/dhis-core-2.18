@@ -124,7 +124,7 @@ public class HibernateSMSCommandStore
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
         criteria.add( Restrictions.eq( "parserType", parserType ) );
-        criteria.add( Restrictions.eq( "name", commandName ) );
+        criteria.add( Restrictions.ilike( "name", "%"+commandName+"%") );
         
         if ( criteria.list() != null && criteria.list().size() > 0 )
         {

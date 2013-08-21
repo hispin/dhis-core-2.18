@@ -33,11 +33,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.message.Message;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.message.MessageConversationStore;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
 import org.hisp.dhis.sms.parse.ParserType;
@@ -54,8 +50,6 @@ public class UnregisteredSMSListener
     implements IncomingSmsListener
 {
     private SMSCommandService smsCommandService;
-
-    private MessageConversationStore messageConversationStore;
 
     private UserService userService;
 
@@ -132,8 +126,7 @@ public class UnregisteredSMSListener
                 {
                     anonymousUser = userService.getUserCredentialsByUsername( "admin" );
                 }
-
-                MessageConversation conversation = new MessageConversation( smsCommand.getName(),
+                /*MessageConversation conversation = new MessageConversation( smsCommand.getName(),
                     anonymousUser.getUser() );
 
                 conversation.addMessage( new Message( message, null, anonymousUser.getUser() ) );
@@ -143,7 +136,7 @@ public class UnregisteredSMSListener
                     boolean read = false;
 
                     conversation.addUserMessage( new UserMessage( receiver, read ) );
-                }
+                }*/
                 // forward to user group by SMS, E-mail, DHIS conversation
 
                 messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(),
@@ -160,29 +153,9 @@ public class UnregisteredSMSListener
         }
     }
 
-    public SMSCommandService getSmsCommandService()
-    {
-        return smsCommandService;
-    }
-
     public void setSmsCommandService( SMSCommandService smsCommandService )
     {
         this.smsCommandService = smsCommandService;
-    }
-
-    public MessageConversationStore getMessageConversationStore()
-    {
-        return messageConversationStore;
-    }
-
-    public void setMessageConversationStore( MessageConversationStore messageConversationStore )
-    {
-        this.messageConversationStore = messageConversationStore;
-    }
-
-    public UserService getUserService()
-    {
-        return userService;
     }
 
     public void setUserService( UserService userService )
@@ -190,13 +163,14 @@ public class UnregisteredSMSListener
         this.userService = userService;
     }
 
-    public MessageService getMessageService()
-    {
-        return messageService;
-    }
-
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
     }
+
+    public void setSmsMessageSender( SmsMessageSender smsMessageSender )
+    {
+        this.smsMessageSender = smsMessageSender;
+    }
+    
 }

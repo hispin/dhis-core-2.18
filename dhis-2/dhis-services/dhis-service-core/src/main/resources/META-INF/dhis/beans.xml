@@ -763,10 +763,10 @@
   </bean>
   
   <bean id="org.hisp.dhis.sms.UnregisteredSMSListener" class="org.hisp.dhis.sms.UnregisteredSMSListener">
-    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
     <property name="smsCommandService" ref="smsCommandService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
   
   <bean id="org.hisp.dhis.sms.DHISMessageAlertListener" class="org.hisp.dhis.sms.DHISMessageAlertListener">
