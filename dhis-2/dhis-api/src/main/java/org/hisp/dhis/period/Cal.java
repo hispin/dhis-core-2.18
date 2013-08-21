@@ -55,6 +55,16 @@ public class Cal
         calendar.clear();
         set( year, month, day );
     }
+    
+    /**
+     * @param date the date.
+     */
+    public Cal( Date date )
+    {
+        calendar = new GregorianCalendar();
+        calendar.clear();
+        calendar.setTime( date );
+    }
 
     /**
      * Sets the time of the calendar to now.
