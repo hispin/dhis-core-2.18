@@ -38,6 +38,8 @@ import java.util.concurrent.Future;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -154,6 +156,7 @@ public class JdbcEventAnalyticsTableManager
                 "left join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
                 "left join programstage ps on psi.programstageid=ps.programstageid " +
                 "left join program pr on pi.programid=pr.programid " +
+                "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
                 "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid " +
                 "where psi.executiondate >= '" + start + "' " +
                 "and psi.executiondate <= '" + end + "' " +
@@ -186,15 +189,34 @@ public class JdbcEventAnalyticsTableManager
             String select = "(select value from patientdatavalue where programstageinstanceid=" +
                 "psi.programstageinstanceid and dataelementid=" + dataElement.getId() + ") as " + dataElement.getUid();
             
-            String[] col = { dataElement.getUid(), "character(255)", select };
+            String[] col = { dataElement.getUid(), "character varying(255)", select };
+            columns.add( col );
+        }
+        
+        for ( PatientAttribute attribute : table.getProgram().getPatientAttributes() )
+        {
+            String select = "(select value from patientattributevalue where patientid=pi.patientid and " +
+                "patientattributeid=" + attribute.getId() + ") as " + attribute.getUid();
+            
+            String[] col = { attribute.getUid(), "character varying(255)", select };
+            columns.add( col );
+        }
+        
+        for ( PatientIdentifierType identifierType : table.getProgram().getPatientIdentifierTypes() )
+        {
+            String select = "(select identifier from patientidentifier where patientid=pi.patientid and " +
+                "patientidentifiertypeid=" + identifierType.getId() + ") as " + identifierType.getUid();
+            
+            String[] col = { identifierType.getUid() + "character varying(31)", select };
             columns.add( col );
         }
         
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
+        String[] ou = { "ou", "character(11) not null", "ou.uid" };
         
-        columns.addAll( Arrays.asList( psi, ps, ed ) );
+        columns.addAll( Arrays.asList( psi, ps, ed, ou ) );
         
         return columns;
     }
