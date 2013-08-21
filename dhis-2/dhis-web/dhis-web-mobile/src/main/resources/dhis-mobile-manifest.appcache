@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.13-SNAPSHOT V1
+# 2.13-SNAPSHOT V2
 
 CACHE:
 ../mobile/index
@@ -19,7 +19,6 @@ CACHE:
 ../dhis-web-commons/css/light_blue/logo_banner.png
 ../dhis-web-mobile-resources/css/jquery.mobile.min.css
 ../dhis-web-mobile-resources/css/images/ajax-loader.gif
-../dhis-web-mobile-resources/css/images/ajax-loader.png
 ../dhis-web-mobile-resources/css/images/icons-18-white.png
 ../dhis-web-mobile-resources/css/images/icons-18-black.png
 ../dhis-web-mobile-resources/css/images/icons-36-white.png
