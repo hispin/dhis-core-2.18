@@ -44,6 +44,8 @@ public class Field
 
     private InputType type;
 
+    private String optionSet;
+
     public Field()
     {
     }
@@ -101,5 +103,16 @@ public class Field
     public void setType( InputType type )
     {
         this.type = type;
+    }
+
+    @JsonProperty
+    public String getOptionSet()
+    {
+        return optionSet;
+    }
+
+    public void setOptionSet( String optionSet )
+    {
+        this.optionSet = optionSet;
     }
 }

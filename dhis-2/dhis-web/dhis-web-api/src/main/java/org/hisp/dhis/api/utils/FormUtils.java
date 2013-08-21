@@ -202,6 +202,11 @@ public class FormUtils
                     field.setCategoryOptionCombo( categoryOptionCombo.getUid() );
                     field.setType( inputTypeFromDataElement( dataElement ) );
 
+                    if ( dataElement.getOptionSet() != null )
+                    {
+                        field.setOptionSet( dataElement.getOptionSet().getUid() );
+                    }
+
                     fields.add( field );
                 }
             }
