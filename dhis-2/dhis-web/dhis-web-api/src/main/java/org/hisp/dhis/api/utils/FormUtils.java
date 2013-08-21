@@ -63,9 +63,6 @@ public class FormUtils
         form.getOptions().put( "periodType", dataSet.getPeriodType().getName() );
         form.getOptions().put( "allowFuturePeriods", dataSet.isAllowFuturePeriods() );
 
-        form.setPeriodType( dataSet.getPeriodType().getName() );
-        form.setAllowFuturePeriods( dataSet.isAllowFuturePeriods() );
-
         if ( dataSet.getSections().size() > 0 )
         {
             for ( Section section : dataSet.getSections() )

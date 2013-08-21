@@ -125,8 +125,8 @@
         $.mobile.loading( 'show' );
 
         var form = fm.form( Selected.dataSet );
-        periodType = form.periodType;
-        allowFuturePeriods = form.allowFuturePeriods;
+        periodType = form.options.periodType;
+        allowFuturePeriods = form.options.allowFuturePeriods;
         refreshPeriods();
 
         $.mobile.loading( 'hide' );
