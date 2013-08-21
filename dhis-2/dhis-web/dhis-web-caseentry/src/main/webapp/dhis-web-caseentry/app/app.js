@@ -2779,7 +2779,7 @@ Ext.onReady( function() {
 								filterValue = Ext.getCmp('filter_' + id).getValue();
 							}
 							if( filterValue == null 
-								|| filterValue == '' || filterValue != 0
+								|| filterValue == ''
 								|| filterValue==TR.i18n.please_select ){
 								isValid = false;
 							}
@@ -2843,10 +2843,8 @@ Ext.onReady( function() {
 				
 					// Check filter by period
 					if( p == 3 )
-					if( p == 3 )
 					{
 						var noPeriod = TR.store.dateRange.data.length + TR.cmp.params.fixedperiod.selected.store.data.length;
-						
 						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 						Ext.Array.each(relativePeriodList, function(item) {
 							if(item.getValue() && !item.hidden 
