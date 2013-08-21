@@ -69,17 +69,6 @@ public class Form
     }
 
     @JsonProperty
-    public String getPeriodType()
-    {
-        return periodType;
-    }
-
-    public void setPeriodType( String periodType )
-    {
-        this.periodType = periodType;
-    }
-
-    @JsonProperty
     public List<Group> getGroups()
     {
         return groups;
@@ -88,17 +77,6 @@ public class Form
     public void setGroups( List<Group> groups )
     {
         this.groups = groups;
-    }
-
-    @JsonProperty
-    public Boolean isAllowFuturePeriods()
-    {
-        return allowFuturePeriods;
-    }
-
-    public void setAllowFuturePeriods( Boolean allowFuturePeriods )
-    {
-        this.allowFuturePeriods = allowFuturePeriods;
     }
 
     @JsonProperty
