@@ -191,7 +191,7 @@ public class TableAlteror
         executeSql( "UPDATE patientidentifiertype SET type='string' WHERE type='text'" );
 
         executeSql( "UPDATE program SET onlyEnrollOnce='false' WHERE onlyEnrollOnce is null" );
-        executeSql( "UPDATE programStage SET captureCoordinates='false' WHERE captureCoordinates is null and captureCoordinates != true" );
+        executeSql( "UPDATE programStage SET captureCoordinates='false' WHERE captureCoordinates is null or captureCoordinates != true" );
 
         executeSql( "update caseaggregationcondition set \"operator\"='times' where \"operator\"='SUM'" );
 
