@@ -15,15 +15,6 @@
   
   <dependencies>
       
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-    </dependency>
-    
     <!-- DHIS -->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -31,15 +22,21 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-dxf2</artifactId>
+      <artifactId>dhis-service-dxf2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
     </dependency>
+    
+    <!-- Jaxb -->
     <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-external</artifactId>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
     </dependency>
     
     <!-- Camel core -->
