@@ -50,6 +50,10 @@ public class EventQueryParams
     
     private List<QueryItem> items = new ArrayList<QueryItem>();
     
+    private List<String> asc = new ArrayList<String>();
+    
+    private List<String> desc = new ArrayList<String>();
+    
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
     
     private String tableName;
@@ -73,6 +77,8 @@ public class EventQueryParams
         this.startDate = params.getStartDate();
         this.endDate = params.getEndDate();
         this.items = new ArrayList<QueryItem>( params.getItems() );
+        this.asc = new ArrayList<String>( params.getAsc() );
+        this.desc = new ArrayList<String>( params.getDesc() );
         this.organisationUnits = new ArrayList<OrganisationUnit>( params.getOrganisationUnits() );
         this.tableName = params.getTableName();
         this.page = params.getPage();
@@ -88,14 +94,29 @@ public class EventQueryParams
         return organisationUnits != null && !organisationUnits.isEmpty();
     }
     
-    public int getPageSizeWithDefault()
+    public boolean isSorting()
     {
-        return pageSize != null && page > 0 ? pageSize : 50;
+        return ( asc != null && !asc.isEmpty() ) || ( desc != null && !desc.isEmpty() );
     }
     
+    public boolean isPaging()
+    {
+        return page != null || pageSize != null;
+    }
+
+    public int getPageWithDefault()
+    {
+        return page != null && page > 0 ? page : 1;
+    }
+    
+    public int getPageSizeWithDefault()
+    {
+        return pageSize != null && pageSize >= 0 ? pageSize : 50;
+    }
+
     public int getOffset()
     {
-        return page != null && page > 0 ? ( ( page - 1 ) * getPageSizeWithDefault() ) : 0;
+        return ( getPageWithDefault() - 1 ) * getPageSizeWithDefault();
     }
     
     // -------------------------------------------------------------------------
@@ -150,6 +171,26 @@ public class EventQueryParams
     public void setItems( List<QueryItem> items )
     {
         this.items = items;
+    }
+
+    public List<String> getAsc()
+    {
+        return asc;
+    }
+
+    public void setAsc( List<String> asc )
+    {
+        this.asc = asc;
+    }
+
+    public List<String> getDesc()
+    {
+        return desc;
+    }
+
+    public void setDesc( List<String> desc )
+    {
+        this.desc = desc;
     }
 
     public List<OrganisationUnit> getOrganisationUnits()

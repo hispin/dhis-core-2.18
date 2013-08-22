@@ -99,16 +99,33 @@ public class JdbcEventAnalyticsManager
         }
 
         // ---------------------------------------------------------------------
+        // Sorting
+        // ---------------------------------------------------------------------
+
+        if ( params.isSorting() )
+        {
+            sql += "order by ";
+        
+            for ( String item : params.getAsc() )
+            {
+                sql += item + " asc,";
+            }
+            
+            for  ( String item : params.getDesc() )
+            {
+                sql += item + " desc,";
+            }
+            
+            sql = removeLast( sql, 1 ) + " ";
+        }
+        
+        // ---------------------------------------------------------------------
         // Paging
         // ---------------------------------------------------------------------
 
-        if ( params.getPage() != null )
+        if ( params.isPaging() )
         {
             sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
-        }
-        else if ( params.getPageSize() != null )
-        {
-            sql += "limit " + params.getPageSizeWithDefault();
         }
 
         // ---------------------------------------------------------------------

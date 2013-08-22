@@ -62,7 +62,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DefaultEventAnalyticsService
     implements EventAnalyticsService
-{   
+{
+    private static final String ITEM_EVENT = "psi";
+    private static final String ITEM_PROGRAM_STAGE = "ps";
+    private static final String ITEM_EXECUTION_DATE = "executiondate";
+    private static final String ITEM_ORG_UNIT = "ou";
+    
     @Autowired
     private ProgramService programService;
     
@@ -96,10 +101,10 @@ public class DefaultEventAnalyticsService
     {
         Grid grid = new ListGrid();
                 
-        grid.addHeader( new GridHeader( "Event", "psi" ) );
-        grid.addHeader( new GridHeader( "Program stage", "ps" ) );
-        grid.addHeader( new GridHeader( "Execution date", "executiondate" ) );
-        grid.addHeader( new GridHeader( "Organisation unit", "ou" ) );
+        grid.addHeader( new GridHeader( "Event", ITEM_EVENT ) );
+        grid.addHeader( new GridHeader( "Program stage", ITEM_PROGRAM_STAGE ) );
+        grid.addHeader( new GridHeader( "Execution date", ITEM_EXECUTION_DATE ) );
+        grid.addHeader( new GridHeader( "Organisation unit", ITEM_ORG_UNIT ) );
         
         for ( QueryItem queryItem : params.getItems() )
         {
@@ -118,7 +123,8 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
-    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, Set<String> item, Integer page, Integer pageSize )
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, 
+        Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
         
@@ -181,6 +187,22 @@ public class DefaultEventAnalyticsService
             }
         }
         
+        if ( asc != null )
+        {
+            for ( String sort : asc )
+            {
+                params.getAsc().add( getSortItem( sort, pr ) );
+            }
+        }
+
+        if ( desc != null )
+        {
+            for ( String sort : desc )
+            {
+                params.getDesc().add( getSortItem( sort, pr ) );
+            }
+        }
+        
         if ( ou != null )
         {
             String[] split = ou.split( OPTION_SEP );
@@ -198,7 +220,7 @@ public class DefaultEventAnalyticsService
         
         if ( page != null && page <= 0 )
         {
-            throw new IllegalQueryException( "Page must be positive: " + page );
+            throw new IllegalQueryException( "Page number must be positive: " + page );
         }
         
         if ( pageSize != null && pageSize < 0 )
@@ -218,6 +240,16 @@ public class DefaultEventAnalyticsService
         }
         
         return params;
+    }
+    
+    private String getSortItem( String item, Program program )
+    {
+        if ( !ITEM_EXECUTION_DATE.equals( item ) && getItem( item, program ) == null )
+        {
+            throw new IllegalQueryException( "Descending sort item is invalid: " + item );
+        }
+        
+        return item;
     }
     
     private IdentifiableObject getItem( String item, Program program )
