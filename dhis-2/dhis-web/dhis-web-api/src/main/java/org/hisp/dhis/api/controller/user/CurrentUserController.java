@@ -281,7 +281,9 @@ public class CurrentUserController
 
     @SuppressWarnings( "unchecked" )
     @RequestMapping( value = { "/assignedPrograms" }, produces = { "application/json", "text/*" } )
-    public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
+    public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
+        @RequestParam( defaultValue = "1" ) Integer type )
+        throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -293,7 +295,7 @@ public class CurrentUserController
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
         Set<Program> programs = new HashSet<Program>();
-        Map<String, Collection<Program>> programAssociations = new HashMap<String, Collection<Program>>();
+        Map<String, List<Program>> programAssociations = new HashMap<String, List<Program>>();
 
         if ( currentUser.getOrganisationUnits().isEmpty() && currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
