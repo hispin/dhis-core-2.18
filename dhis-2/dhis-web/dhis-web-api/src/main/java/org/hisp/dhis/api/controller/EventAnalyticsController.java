@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EventAnalyticsController
 {
-    private static final String RESOURCE_PATH = "/analytics/events";
+    private static final String RESOURCE_PATH = "/analytics/events/query";
 
     @Autowired
     private EventAnalyticsService analyticsService;
@@ -65,12 +65,12 @@ public class EventAnalyticsController
         @RequestParam(required=false) String stage,
         @RequestParam String startDate,
         @RequestParam String endDate,
+        @RequestParam(required=false) String ou,
         @RequestParam Set<String> item,
-        @RequestParam(required=false) Set<String> orgUnits,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, item, orgUnits );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, item );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getEvents( params );
