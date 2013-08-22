@@ -38,5 +38,5 @@ public interface EventAnalyticsService
 {
     Grid getEvents( EventQueryParams params );
 
-    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> item, Set<String> orgUnits );
+    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, Set<String> item );
 }

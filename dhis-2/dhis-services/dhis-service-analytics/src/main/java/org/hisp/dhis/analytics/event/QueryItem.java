@@ -27,6 +27,9 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hisp.dhis.common.IdentifiableObject;
 
 /**
@@ -34,6 +37,17 @@ import org.hisp.dhis.common.IdentifiableObject;
  */
 public class QueryItem
 {
+    public static final Map<String, String> OPERATOR_MAP = new HashMap<String, String>() { {
+        put( "like", "like" );
+        put( "in", "in" );
+        put( "eq", "=" );
+        put( "gt", ">" );
+        put( "ge", ">=" );
+        put( "lt", "<" );
+        put( "le", "<=" );
+        put( "ne", "!=" );
+    } };
+    
     private IdentifiableObject item;
 
     private String operator;
@@ -63,6 +77,17 @@ public class QueryItem
     public boolean hasFilter()
     {
         return operator != null && !operator.isEmpty() && filter != null && !filter.isEmpty();
+    }
+    
+    public String getSqlOperator()
+    {
+        return OPERATOR_MAP.get( operator );
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[Item: " + item + ", operator: " + operator + ", filter: " + filter + "]";
     }
     
     // -------------------------------------------------------------------------

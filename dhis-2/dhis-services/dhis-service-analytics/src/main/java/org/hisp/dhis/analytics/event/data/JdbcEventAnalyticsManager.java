@@ -37,6 +37,7 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -85,14 +86,18 @@ public class JdbcEventAnalyticsManager
         {
             if ( filter.hasFilter() )
             {
-                sql += "and " + filter.getFilter() + " " + filter.getOperator() + " '" + filter.getFilter() + "' ";
+                sql += "and " + filter.getItem().getUid() + " " + filter.getSqlOperator() + " '" + filter.getFilter() + "' ";
             }
         }
 
         int rowLength = grid.getHeaders().size();
+
+        Timer t = new Timer().start();
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
+        t.getTime( "Analytics event SQL: " + sql );
+        
         while ( rowSet.next() )
         {
             grid.addRow();

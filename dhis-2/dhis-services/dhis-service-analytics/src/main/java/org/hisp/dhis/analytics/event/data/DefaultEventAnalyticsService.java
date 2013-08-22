@@ -62,7 +62,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DefaultEventAnalyticsService
     implements EventAnalyticsService
-{
+{   
     @Autowired
     private ProgramService programService;
     
@@ -88,7 +88,6 @@ public class DefaultEventAnalyticsService
     // EventAnalyticsService implementation
     // -------------------------------------------------------------------------
 
-    //TODO table name
     //TODO org unit children / descendants
     
     public Grid getEvents( EventQueryParams params )
@@ -97,7 +96,7 @@ public class DefaultEventAnalyticsService
                 
         grid.addHeader( new GridHeader( "Event", "psi" ) );
         grid.addHeader( new GridHeader( "Program stage", "ps" ) );
-        grid.addHeader( new GridHeader( "Executiondate", "executiondate" ) );
+        grid.addHeader( new GridHeader( "Execution date", "executiondate" ) );
         grid.addHeader( new GridHeader( "Organisation unit", "ou" ) );
         
         for ( QueryItem queryItem : params.getItems() )
@@ -117,7 +116,7 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
-    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> item, Set<String> orgUnits )
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, Set<String> item )
     {
         EventQueryParams params = new EventQueryParams();
         
@@ -145,7 +144,12 @@ public class DefaultEventAnalyticsService
         }
         catch ( RuntimeException ex )
         {
-            throw new IllegalQueryException( "Start date or end date is invalid: " + startDate  + " " + endDate );
+            throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
+        }
+        
+        if ( start == null || end == null )
+        {
+            throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
         }
         
         if ( start.after( end ) )
@@ -175,15 +179,17 @@ public class DefaultEventAnalyticsService
             }
         }
         
-        if ( orgUnits != null )
+        if ( ou != null )
         {
-            for ( String orgUnit : orgUnits )
+            String[] split = ou.split( OPTION_SEP );
+            
+            for ( String ouId : split )
             {
-                OrganisationUnit ou = organisationUnitService.getOrganisationUnit( orgUnit );
+                OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
                 
-                if ( ou != null )
+                if ( orgUnit != null )
                 {
-                    params.getOrganisationUnits().add( ou );
+                    params.getOrganisationUnits().add( orgUnit );
                 }
             }
         }
