@@ -25,7 +25,6 @@
   <modules>
     <module>dhis-api</module>
     <module>dhis-services</module>
-    <module>dhis-dxf2</module>
     <module>dhis-support</module>
   </modules>
 
@@ -247,7 +246,7 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-dxf2</artifactId>
+        <artifactId>dhis-service-dxf2</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
