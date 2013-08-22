@@ -30,18 +30,20 @@ package org.hisp.dhis.sms.outcoming;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.sms.SmsSender;
+import org.hisp.dhis.sms.SmsMessageSender;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -74,18 +76,12 @@ public class ProcessingSendSMSAction
     @Autowired
     private OutboundSmsTransportService transportService;
 
-    private SmsSender smsSender;
+    private SmsMessageSender smsMessageSender;
 
-    public SmsSender getSmsSender()
+    public void setSmsMessageSender( SmsMessageSender smsMessageSender )
     {
-        return smsSender;
+        this.smsMessageSender = smsMessageSender;
     }
-
-    public void setSmsSender( SmsSender smsSender )
-    {
-        this.smsSender = smsSender;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -104,11 +100,11 @@ public class ProcessingSendSMSAction
         this.smsSubject = smsSubject;
     }
 
-    private String smsMessage;
+    private String text;
 
-    public void setSmsMessage( String smsMessage )
+    public void setText( String text )
     {
-        this.smsMessage = smsMessage;
+        this.text = text;
     }
 
     private String sendTarget;
@@ -167,7 +163,7 @@ public class ProcessingSendSMSAction
             return ERROR;
         }
 
-        if ( smsMessage == null || smsMessage.trim().length() == 0 )
+        if ( text == null || text.trim().length() == 0 )
         {
             message = i18n.getString( "no_message" );
 
@@ -195,12 +191,12 @@ public class ProcessingSendSMSAction
                 user.setPhoneNumber( each );
                 recipientsList.add( user );
             }
-            
             //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
-            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
+            
             UserGroup group = userGroupService.getUserGroup( userGroup );
 
             if ( group == null )
@@ -216,9 +212,8 @@ public class ProcessingSendSMSAction
 
                 return ERROR;
             }
-
             //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, group.getMembers(), gatewayId );
-            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, group.getMembers(), false );
+            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, group.getMembers(), false );
         }
         else if ( sendTarget.equals( "user" ) )
         {
@@ -239,7 +234,7 @@ public class ProcessingSendSMSAction
                 }
                 
                 //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, users, gatewayId );
-                message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+                message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
             }
         }
         else if ( sendTarget.equals( "unit" ) )
@@ -261,7 +256,7 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
 
         }
         else
@@ -293,7 +288,7 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = smsSender.sendMessage( smsSubject, smsMessage, currentUser, recipientsList, false );
+            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
 
         }
 
