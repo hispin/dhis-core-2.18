@@ -86,7 +86,7 @@ public class JdbcEventAnalyticsManager
         {
             if ( filter.hasFilter() )
             {
-                sql += "and " + filter.getItem().getUid() + " " + filter.getSqlOperator() + " '" + filter.getFilter() + "' ";
+                sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + filter.getSqlFilter() + " ";
             }
         }
 

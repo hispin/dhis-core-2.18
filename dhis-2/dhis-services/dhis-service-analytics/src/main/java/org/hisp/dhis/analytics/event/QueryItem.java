@@ -27,10 +27,12 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.system.util.TextUtils;
 
 /**
  * @author Lars Helge Overland
@@ -38,14 +40,14 @@ import org.hisp.dhis.common.IdentifiableObject;
 public class QueryItem
 {
     public static final Map<String, String> OPERATOR_MAP = new HashMap<String, String>() { {
-        put( "like", "like" );
-        put( "in", "in" );
         put( "eq", "=" );
         put( "gt", ">" );
         put( "ge", ">=" );
         put( "lt", "<" );
         put( "le", "<=" );
         put( "ne", "!=" );
+        put( "like", "like" );
+        put( "in", "in" );
     } };
     
     private IdentifiableObject item;
@@ -81,7 +83,33 @@ public class QueryItem
     
     public String getSqlOperator()
     {
-        return OPERATOR_MAP.get( operator );
+        if ( operator == null )
+        {
+            return null;
+        }
+        
+        return OPERATOR_MAP.get( operator.toLowerCase() );
+    }
+    
+    public String getSqlFilter()
+    {
+        if ( operator == null || filter == null )
+        {
+            return null;
+        }        
+        
+        if ( operator.equals( "like" ) )
+        {
+            return "'%" + filter.toLowerCase() + "%'";
+        }
+        else if ( operator.equals( "in" ) )
+        {
+            String[] split = filter.toLowerCase().split( ":" );
+                        
+            return "(" + TextUtils.getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
+        }
+        
+        return "'" + filter.toLowerCase() + "'";
     }
     
     @Override
