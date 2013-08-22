@@ -33,8 +33,10 @@ import java.util.List;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -167,6 +169,7 @@ public class Dashboard
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "items" )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0)
     public List<DashboardItem> getItems()
