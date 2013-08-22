@@ -625,6 +625,8 @@ public class TableAlteror
         executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
         executeSql( "alter table sqlview rename column viewid to sqlviewid" );
 
+        executeSql( "UPDATE dashboard SET publicaccess='--------' WHERE publicaccess is null" );
+
         executeSql( "UPDATE optionset SET version=1 WHERE version IS NULL" );
 
         log.info( "Tables updated" );

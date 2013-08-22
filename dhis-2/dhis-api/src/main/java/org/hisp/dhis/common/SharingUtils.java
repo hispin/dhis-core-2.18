@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
@@ -107,6 +108,8 @@ public final class SharingUtils
         addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL", "F_MAP_PUBLIC_ADD", null );
         addType( Chart.class, "chart", "F_CHART_EXTERNAL", "F_CHART_PUBLIC_ADD", null );
         addType( ReportTable.class, "reportTable", "F_REPORTTABLE_EXTERNAL", "F_REPORTTABLE_PUBLIC_ADD", null );
+
+        addType( Dashboard.class, "dashboard", null, "F_DASHBOARD_PUBLIC_ADD", null );
     }
 
     public static boolean isSupported( String type )
