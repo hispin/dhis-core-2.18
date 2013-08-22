@@ -148,6 +148,11 @@ public final class SharingUtils
         return CollectionUtils.containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || authorities.contains( PUBLIC_AUTHORITIES.get( clazz ) );
     }
 
+    public static <T> boolean defaultPublic( Class<T> clazz )
+    {
+        return !Dashboard.class.isAssignableFrom( clazz );
+    }
+
     public static boolean canCreatePublic( User user, IdentifiableObject identifiableObject )
     {
         return canCreatePublic( user, identifiableObject.getClass() );
