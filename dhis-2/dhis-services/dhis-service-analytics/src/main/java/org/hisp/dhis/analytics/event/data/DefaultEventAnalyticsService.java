@@ -165,7 +165,7 @@ public class DefaultEventAnalyticsService
             {
                 if ( it != null && !it.contains( OPTION_SEP ) )
                 {
-                    params.getItems().add( new QueryItem( getItem( it ) ) );
+                    params.getItems().add( new QueryItem( getItem( it, pr ) ) );
                 }
                 else if ( it != null )
                 {
@@ -176,7 +176,7 @@ public class DefaultEventAnalyticsService
                         throw new IllegalQueryException( "Item filter has invalid format: " + it );
                     }
                     
-                    params.getItems().add( new QueryItem( getItem( split[0] ), split[1], split[2] ) );
+                    params.getItems().add( new QueryItem( getItem( split[0], pr ), split[1], split[2] ) );
                 }
             }
         }
@@ -204,29 +204,29 @@ public class DefaultEventAnalyticsService
         return params;
     }
     
-    private IdentifiableObject getItem( String item )
+    private IdentifiableObject getItem( String item, Program program )
     {
         DataElement de = dataElementService.getDataElement( item );
         
-        if ( de != null )
+        if ( de != null && program.getAllDataElements().contains( de ) )
         {
             return de;
         }
         
         PatientAttribute at = attributeService.getPatientAttribute( item );
         
-        if ( at != null )
+        if ( at != null && program.getPatientAttributes().contains( at ) )
         {
             return at;
         }
         
         PatientIdentifierType it = identifierTypeService.getPatientIdentifierType( item );
         
-        if ( it != null )
+        if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
         {
             return it;
         }
         
-        throw new IllegalQueryException( "Item identifier does not reference any item: " + item );           
+        throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );           
     }
 }
