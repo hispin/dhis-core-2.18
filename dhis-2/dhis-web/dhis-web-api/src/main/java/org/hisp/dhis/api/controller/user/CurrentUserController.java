@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller.user;
  */
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.api.controller.exception.FilterTooShortException;
 import org.hisp.dhis.api.controller.exception.NotAuthenticatedException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
@@ -239,7 +240,7 @@ public class CurrentUserController
 
     @RequestMapping( value = "/recipients", produces = { "application/json", "text/*" } )
     public void recipientsJson( HttpServletResponse response,
-        @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException
+        @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -248,6 +249,11 @@ public class CurrentUserController
         if ( currentUser == null )
         {
             throw new NotAuthenticatedException();
+        }
+
+        if ( 3 > filter.length() )
+        {
+            throw new FilterTooShortException();
         }
 
         Recipients recipients = new Recipients();
