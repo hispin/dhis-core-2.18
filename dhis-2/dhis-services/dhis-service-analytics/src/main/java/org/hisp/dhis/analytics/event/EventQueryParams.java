@@ -53,6 +53,10 @@ public class EventQueryParams
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
     
     private String tableName;
+    
+    private Integer page;
+    
+    private Integer pageSize;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -71,6 +75,8 @@ public class EventQueryParams
         this.items = new ArrayList<QueryItem>( params.getItems() );
         this.organisationUnits = new ArrayList<OrganisationUnit>( params.getOrganisationUnits() );
         this.tableName = params.getTableName();
+        this.page = params.getPage();
+        this.pageSize = params.getPageSize();
     }
 
     // -------------------------------------------------------------------------
@@ -80,6 +86,16 @@ public class EventQueryParams
     public boolean hasOrganisationUnits()
     {
         return organisationUnits != null && !organisationUnits.isEmpty();
+    }
+    
+    public int getPageSizeWithDefault()
+    {
+        return pageSize != null && page > 0 ? pageSize : 50;
+    }
+    
+    public int getOffset()
+    {
+        return page != null && page > 0 ? ( ( page - 1 ) * getPageSizeWithDefault() ) : 0;
     }
     
     // -------------------------------------------------------------------------
@@ -154,5 +170,25 @@ public class EventQueryParams
     public void setTableName( String tableName )
     {
         this.tableName = tableName;
+    }
+
+    public Integer getPage()
+    {
+        return page;
+    }
+
+    public void setPage( Integer page )
+    {
+        this.page = page;
+    }
+
+    public Integer getPageSize()
+    {
+        return pageSize;
+    }
+
+    public void setPageSize( Integer pageSize )
+    {
+        this.pageSize = pageSize;
     }
 }

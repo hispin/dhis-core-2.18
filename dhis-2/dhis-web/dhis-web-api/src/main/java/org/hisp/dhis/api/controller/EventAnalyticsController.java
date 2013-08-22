@@ -69,10 +69,12 @@ public class EventAnalyticsController
         @RequestParam String endDate,
         @RequestParam(required=false) String ou,
         @RequestParam Set<String> item,
+        @RequestParam(required=false) Integer page,
+        @RequestParam(required=false) Integer pageSize,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, item );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, item, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getEvents( params );

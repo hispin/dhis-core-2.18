@@ -118,7 +118,7 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
-    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, Set<String> item )
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, Set<String> item, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
         
@@ -196,10 +196,26 @@ public class DefaultEventAnalyticsService
             }
         }
         
+        if ( page != null && page <= 0 )
+        {
+            throw new IllegalQueryException( "Page must be positive: " + page );
+        }
+        
+        if ( pageSize != null && pageSize < 0 )
+        {
+            throw new IllegalQueryException( "Page size must be zero or positive: " + pageSize );
+        }
+        
         params.setProgram( pr );
         params.setProgramStage( ps );
         params.setStartDate( start );
         params.setEndDate( end );
+        params.setPage( page );
+        
+        if ( pageSize != null )
+        {
+            params.setPageSize( pageSize );
+        }
         
         return params;
     }

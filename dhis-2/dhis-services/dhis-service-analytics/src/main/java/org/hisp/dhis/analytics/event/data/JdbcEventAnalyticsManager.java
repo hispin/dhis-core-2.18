@@ -58,7 +58,11 @@ public class JdbcEventAnalyticsManager
     public Grid getEvents( EventQueryParams params, Grid grid )
     {
         String sql = "select psi,ps,executiondate,ou,";
-        
+
+        // ---------------------------------------------------------------------
+        // Items
+        // ---------------------------------------------------------------------
+
         for ( QueryItem queryItem : params.getItems() )
         {
             IdentifiableObject item = queryItem.getItem();
@@ -81,7 +85,11 @@ public class JdbcEventAnalyticsManager
         {
             sql += "and ps = '" + params.getProgramStage().getUid() + "' ";
         }
-        
+
+        // ---------------------------------------------------------------------
+        // Filters
+        // ---------------------------------------------------------------------
+
         for ( QueryItem filter : params.getItems() )
         {
             if ( filter.hasFilter() )
@@ -89,6 +97,23 @@ public class JdbcEventAnalyticsManager
                 sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + filter.getSqlFilter() + " ";
             }
         }
+
+        // ---------------------------------------------------------------------
+        // Paging
+        // ---------------------------------------------------------------------
+
+        if ( params.getPage() != null )
+        {
+            sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
+        }
+        else if ( params.getPageSize() != null )
+        {
+            sql += "limit " + params.getPageSizeWithDefault();
+        }
+
+        // ---------------------------------------------------------------------
+        // Grid
+        // ---------------------------------------------------------------------
 
         int rowLength = grid.getHeaders().size();
 
