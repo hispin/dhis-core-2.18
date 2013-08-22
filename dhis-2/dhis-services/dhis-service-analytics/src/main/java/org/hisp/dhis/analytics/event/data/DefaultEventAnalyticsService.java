@@ -89,6 +89,8 @@ public class DefaultEventAnalyticsService
     // -------------------------------------------------------------------------
 
     //TODO org unit children / descendants
+    //TODO paging
+    //TODO sorting
     
     public Grid getEvents( EventQueryParams params )
     {
