@@ -37,6 +37,7 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,6 +85,29 @@ public class EventAnalyticsController
         model.addAttribute( "viewClass", "detailed" );
         return "grid";
     }
+
+    @RequestMapping( value = RESOURCE_PATH + "/{program}.xls", method = RequestMethod.GET )
+    public void getXls(
+        @PathVariable String program,
+        @RequestParam(required=false) String stage,
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam(required=false) String ou,
+        @RequestParam Set<String> item,
+        @RequestParam(required=false) Set<String> asc,
+        @RequestParam(required=false) Set<String> desc,
+        @RequestParam(required=false) Integer page,
+        @RequestParam(required=false) Integer pageSize,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, item, asc, desc, page, pageSize );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
+        Grid grid = analyticsService.getEvents( params );
+        GridUtils.toXls( grid, response.getOutputStream() );
+    }
+    
     // -------------------------------------------------------------------------
     // Exception handling
     // -------------------------------------------------------------------------
