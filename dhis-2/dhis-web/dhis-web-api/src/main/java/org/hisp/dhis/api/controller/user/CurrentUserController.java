@@ -72,6 +72,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -320,7 +321,8 @@ public class CurrentUserController
 
         for ( OrganisationUnit organisationUnit : userOrganisationUnits )
         {
-            Collection<Program> ouPrograms = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit );
+            List<Program> ouPrograms = new ArrayList<Program>(
+                programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit ) );
 
             if ( !ouPrograms.isEmpty() )
             {
