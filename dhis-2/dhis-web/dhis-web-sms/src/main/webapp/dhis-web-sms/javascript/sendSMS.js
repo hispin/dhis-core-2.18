@@ -105,7 +105,7 @@ function sendSMSMessage( _form )
 	{
 		recipients: JSON.stringify( p.recipients ),
 		gatewayId: getFieldValue( 'gatewayId' ),
-		smsMessage: getFieldValue( 'smsMessage' ),
+		text: getFieldValue( 'text' ),
 		sendTarget: getFieldValue( 'sendTarget' ),
 		userGroup: getFieldValue( 'userGroup' )
 	}, function ( json )

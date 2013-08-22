@@ -123,6 +123,7 @@ public class SmsPublisher
                     smsSender.sendMessage( e.getMessage(), message.getOriginator() );
                 }
 
+                // remove for error case
                 messageQueue.remove( message );
                 message = messageQueue.get();
                 log.info( "Queue Size: " + messageQueue.get() );

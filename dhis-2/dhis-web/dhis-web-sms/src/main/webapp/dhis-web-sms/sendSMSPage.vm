@@ -72,7 +72,7 @@
 			</tr>
 			
 			<tr><th colspan="2">$i18n.getString( "message" ) ($i18n.getString( "do_not_send_patient_confidential_messages_using_sms" ))</th></tr>
-			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" rows="5" style="width:544px;" class="{validate:{required:true}}"></textarea></td></tr>
+			<tr><td colspan="2"><textarea id="text" name="text" rows="5" style="width:544px;" class="{validate:{required:true}}"></textarea></td></tr>
 			<tr>
 				<td><input type="submit" class='large-button' name="send" value="$i18n.getString( 'send' )"/>				
 			</tr>
