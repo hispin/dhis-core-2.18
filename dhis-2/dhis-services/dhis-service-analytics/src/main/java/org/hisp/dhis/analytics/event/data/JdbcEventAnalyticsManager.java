@@ -79,7 +79,7 @@ public class JdbcEventAnalyticsManager
         
         if ( params.getProgramStage() != null )
         {
-            sql += "and ps = '" + params.getProgramStage() + "' ";
+            sql += "and ps = '" + params.getProgramStage().getUid() + "' ";
         }
         
         for ( QueryItem filter : params.getItems() )
