@@ -272,7 +272,7 @@ function updateSharing( dashboard ) {
 
         var sharingLink = $( '<a/>' )
             .addClass( 'bold' )
-            .text( i18n_sharing )
+            .text( i18n_share )
             .attr( 'href', 'javascript:showSharingDialog("dashboard", "' + dashboard.id + '")' );
         $( '#manageSharing' ).html( sharingLink );
     } else {
@@ -293,7 +293,7 @@ function updateSharing( dashboard ) {
                 'text-decoration': 'none',
                 'color': 'black'
             })
-            .text( i18n_sharing );
+            .text( i18n_share );
         $( '#manageSharing' ).html( sharingLink );
     }
 }
