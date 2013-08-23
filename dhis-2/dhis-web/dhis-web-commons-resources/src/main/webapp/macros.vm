@@ -333,10 +333,10 @@ jQuery.each(attributes, function(i, item) {
         </tbody>
     </table>
 
-    <table id="sharingAccessTable" style="width: 100%;">
+    <table id="sharingAccessTable" style="width: 100%; margin-top: 6px;">
         <tbody>
         <tr>
-            <td style="width: 300px;">$i18n.getString( "external_access" )</td>
+            <td style="width: 300px; padding-top: 5px; padding-bottom: 5px;">$i18n.getString( "external_access" )</td>
             <td style="text-align: right;">
                 <input id="sharingExternalAccess" type="checkbox" value="true" />
             </td>
