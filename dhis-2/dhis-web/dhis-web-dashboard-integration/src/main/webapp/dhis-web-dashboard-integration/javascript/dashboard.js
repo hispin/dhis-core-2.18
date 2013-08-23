@@ -270,9 +270,11 @@ function updateManageDashboard( dashboard ) {
     } else {
         var manageLink = $( '<a/>' )
             .addClass( 'bold' )
-            .css( 'cursor', 'default' )
-            .css( 'text-decoration', 'none' )
-            .css( 'color', 'black' )
+            .css({
+                'cursor': 'default',
+                'text-decoration': 'none',
+                'color': 'black'
+            })
             .text( i18n_manage );
         $( '#manageDashboard' ).html( manageLink );
     }
