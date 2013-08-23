@@ -39,19 +39,14 @@ public class JacksonUtilsTest
     @Test
     public void serializableTest() throws Exception
     {
-        MetaData metaData = new MetaData();
-        JacksonUtils.toJsonAsString( metaData );
-        JacksonUtils.toXmlAsString( metaData );
+        JacksonUtils.toJsonAsString( new MetaData() );
+        JacksonUtils.toXmlAsString( new MetaData() );
     }
 
     @Test
     public void deserializableTest() throws Exception
     {
-        MetaData metaData = new MetaData();
-        String jsonString = JacksonUtils.toJsonAsString( metaData );
-        String xmlString = JacksonUtils.toXmlAsString( metaData );
-
-        JacksonUtils.fromJson( jsonString, MetaData.class );
-        JacksonUtils.fromXml( xmlString, MetaData.class );
+        JacksonUtils.fromJson( "{}", MetaData.class );
+        JacksonUtils.fromXml( "<?xml version='1.0' encoding='UTF-8'?><metaData xmlns=\"http://dhis2.org/schema/dxf/2.0\"/>", MetaData.class );
     }
 }
