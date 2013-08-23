@@ -50,8 +50,8 @@ dhis2.db.tmpl = {
 	hitHeader: "<li class='hitHeader'>${title}</li>",
 	
 	hitItem: "<li><a class='viewLink' href='${link}'><img src='../images/${img}.png'>${name}</a>" +
-	         "<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a></li>",
-		         
+	         "{{if canManage }}<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a>{{/if}}</li>",
+
 	chartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
 	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
 	           "<a href='javascript:dhis2.db.viewImage( \"../api/charts/${id}/data?width=820&height=550\", \"${name}\" )'>${i18n_view}</a>" +
@@ -260,7 +260,9 @@ dhis2.db.removeDashboard = function()
 	}
 }
 
-function updateManageDashboard( dashboard ) {
+function updateSharing( dashboard ) {
+    $( '#dashboardMenu' ).data( 'canManage', dashboard.access.manage );
+
     if( dashboard.access.manage ) {
         var manageLink = $( '<a/>' )
             .addClass( 'bold' )
@@ -336,7 +338,7 @@ dhis2.db.renderDashboard = function( id )
 	{
 		if ( undefined !== data.items )
 		{
-            updateManageDashboard( data );
+            updateSharing( data );
 
 			$.each( data.items, function( index, item )
 			{
@@ -523,7 +525,8 @@ dhis2.db.search = function()
 dhis2.db.renderSearch = function( data, $h )
 {
 	$h.empty().append( "<ul>" );
-	
+    var canManage = $( '#dashboardMenu' ).data( 'canManage' );
+
 	if ( data.searchCount > 0 )
 	{
 		if ( data.userCount > 0 )
@@ -533,7 +536,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.users )
 			{
 				var o = data.users[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "profile.action?id=" + o.id, "img": "user_small", "name": o.name, "type": "users", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "profile.action?id=" + o.id, "img": "user_small", "name": o.name, "type": "users", "id": o.id } ) );
 			}
 		}
 		
@@ -544,7 +547,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.charts )
 			{
 				var o = data.charts[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-visualizer/app/index.html?id=" + o.id, "img": "chart_small", "name": o.name, "type": "chart", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-visualizer/app/index.html?id=" + o.id, "img": "chart_small", "name": o.name, "type": "chart", "id": o.id } ) );
 			}
 		}
 		
@@ -555,7 +558,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.maps )
 			{
 				var o = data.maps[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-mapping/app/index.html?id=" + o.id, "img": "map_small", "name": o.name, "type": "map", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-mapping/app/index.html?id=" + o.id, "img": "map_small", "name": o.name, "type": "map", "id": o.id } ) );
 			}
 		}
 		
@@ -566,7 +569,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.reportTables )
 			{
 				var o = data.reportTables[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-pivot/app/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-pivot/app/index.html?id=" + o.id, "img": "table_small", "name": o.name, "type": "reportTable", "id": o.id } ) );
 			}
 		}
 		
@@ -577,7 +580,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.reports )
 			{
 				var o = data.reports[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-reporting/getReportParams.action?uid=" + o.id, "img": "standard_report_small", "name": o.name, "type": "reports", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-reporting/getReportParams.action?uid=" + o.id, "img": "standard_report_small", "name": o.name, "type": "reports", "id": o.id } ) );
 			}
 		}
 		
@@ -588,7 +591,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.resources )
 			{
 				var o = data.resources[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../api/documents/" + o.id, "img": "document_small", "name": o.name, "type": "resources", "id": o.id } ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../api/documents/" + o.id, "img": "document_small", "name": o.name, "type": "resources", "id": o.id } ) );
 			}
 		}
 		
@@ -599,7 +602,7 @@ dhis2.db.renderSearch = function( data, $h )
 			for ( var i in data.patientTabularReports )
 			{
 				var o = data.patientTabularReports[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "link": "../dhis-web-caseentry/generateTabularReport.action?uid=" + o.id, "img": "document_small", "name": o.name, "type": "patientTabularReports", "id": o.id} ) );
+				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-caseentry/generateTabularReport.action?uid=" + o.id, "img": "document_small", "name": o.name, "type": "patientTabularReports", "id": o.id} ) );
 			}
 		}
 	}
