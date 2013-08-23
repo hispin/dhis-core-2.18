@@ -222,18 +222,6 @@ public class DashboardItem
         this.map = map;
     }
 
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    public ReportTable getReportTable()
-    {
-        return reportTable;
-    }
-
-    public void setReportTable( ReportTable reportTable )
-    {
-        this.reportTable = reportTable;
-    }
-
     @JsonProperty( value = "users" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0)
@@ -248,10 +236,22 @@ public class DashboardItem
         this.users = users;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    public ReportTable getReportTable()
+    {
+        return reportTable;
+    }
+
+    public void setReportTable( ReportTable reportTable )
+    {
+        this.reportTable = reportTable;
+    }
+
     @JsonProperty( value = "reportTables" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "reportTables", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "reportTable", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "reportTableItem", namespace = DxfNamespaces.DXF_2_0)
     public List<ReportTable> getReportTables()
     {
         return reportTables;
