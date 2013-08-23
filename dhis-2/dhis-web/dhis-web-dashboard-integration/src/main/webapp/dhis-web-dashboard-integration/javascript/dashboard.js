@@ -168,7 +168,7 @@ dhis2.db.openAddDashboardForm = function()
 	$( "#addDashboardForm" ).dialog( {
 		autoOpen: true,
 		modal: true,
-		width: 405,
+		width: 415,
 		height: 100,
 		resizable: false,
 		title: "Add new dashboard"
