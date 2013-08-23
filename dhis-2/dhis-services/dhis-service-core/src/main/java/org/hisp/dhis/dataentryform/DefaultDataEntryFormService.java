@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -285,7 +286,13 @@ public class DefaultDataEntryFormService
                 {
                     return i18n.getString( "category_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
                 }
-
+                
+                if ( dataSet.isDataElementDecoration() && dataElement.hasDescription() ) 
+                {
+                    String titleTag = " title=\"" +  StringEscapeUtils.escapeHtml( dataElement.getDisplayDescription() ) + "\" ";
+                    inputHtml = inputHtml.replaceAll( "title=\".*?\"", "" ).replace( TAG_CLOSE, titleTag + TAG_CLOSE );
+                }                
+                
                 String appendCode = "";
 
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
@@ -314,11 +321,12 @@ public class DefaultDataEntryFormService
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
+                
                 inputHtml += "<span id=\"" + dataElement.getUid() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
                 inputHtml += "<span id=\"" + categoryOptionCombo.getUid() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
             }
 
-            inputMatcher.appendReplacement( sb, inputHtml );
+            inputMatcher.appendReplacement( sb, inputHtml );            
         }
 
         inputMatcher.appendTail( sb );
