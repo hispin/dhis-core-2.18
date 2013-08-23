@@ -41,16 +41,16 @@ $( document ).ready( function()
 
 dhis2.db.tmpl = {
 	dashboardLink: "<li id='dashboard-${id}'><a href='javascript:dhis2.db.renderDashboard( \"${id}\" )'>${name}</a></li>",
-	
+
 	moduleIntro: "<li><div class='dasboardIntro'>${i18n_click}</div></li>",
-	
+
 	dashboardIntro: "<li><div class='dasboardIntro'>${i18n_add}</div>" +
 			        "<div class='dasboardTip'>${i18n_arrange}</div></li>",
 	
 	hitHeader: "<li class='hitHeader'>${title}</li>",
 	
 	hitItem: "<li><a class='viewLink' href='${link}'><img src='../images/${img}.png'>${name}</a>" +
-	         "{{if canManage }}<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a>{{/if}}</li>",
+	         "{{if canManage}}<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a>{{/if}}</li>",
 
 	chartItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
 	           "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
@@ -254,7 +254,6 @@ dhis2.db.removeDashboard = function()
 			url: "../api/dashboards/" + dhis2.db.current,
 	    	success: function() {
 	    		$( "#manageDashboardForm" ).dialog( "destroy" );
-	    		dhis2.db.current = undefined;
 	    		dhis2.db.renderDashboardListLoadFirst();
 	    	}
 		} );
@@ -270,6 +269,12 @@ function updateSharing( dashboard ) {
             .text( i18n_manage )
             .attr( 'href', 'javascript:dhis2.db.openManageDashboardForm()' );
         $( '#manageDashboard' ).html( manageLink );
+
+        var sharingLink = $( '<a/>' )
+            .addClass( 'bold' )
+            .text( i18n_sharing )
+            .attr( 'href', 'javascript:showSharingDialog("dashboard", "' + dashboard.id + '")' );
+        $( '#manageSharing' ).html( sharingLink );
     } else {
         var manageLink = $( '<a/>' )
             .addClass( 'bold' )
@@ -280,6 +285,16 @@ function updateSharing( dashboard ) {
             })
             .text( i18n_manage );
         $( '#manageDashboard' ).html( manageLink );
+
+        var sharingLink = $( '<a/>' )
+            .addClass( 'bold' )
+            .css({
+                'cursor': 'default',
+                'text-decoration': 'none',
+                'color': 'black'
+            })
+            .text( i18n_sharing );
+        $( '#manageSharing' ).html( sharingLink );
     }
 }
 
