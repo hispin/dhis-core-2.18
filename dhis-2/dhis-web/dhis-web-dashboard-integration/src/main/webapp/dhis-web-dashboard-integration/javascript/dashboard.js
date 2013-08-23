@@ -254,6 +254,7 @@ dhis2.db.removeDashboard = function()
 			url: "../api/dashboards/" + dhis2.db.current,
 	    	success: function() {
 	    		$( "#manageDashboardForm" ).dialog( "destroy" );
+	    		dhis2.db.current = undefined;
 	    		dhis2.db.renderDashboardListLoadFirst();
 	    	}
 		} );
