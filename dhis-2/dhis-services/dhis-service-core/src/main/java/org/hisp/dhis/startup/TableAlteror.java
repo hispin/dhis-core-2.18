@@ -160,8 +160,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendsetid TO legendsetid" );
         executeSql( "ALTER TABLE mapview ALTER COLUMN opacity TYPE double precision" );
 
-        //TODO executeSql( "ALTER TABLE datavalue ALTER COLUMN storedby TYPE character varying(100)" );
-
         executeSql( "ALTER TABLE maplegend DROP CONSTRAINT maplegend_name_key" );
 
         executeSql( "UPDATE mapview SET layer = 'thematic1' WHERE layer IS NULL" );
@@ -628,6 +626,8 @@ public class TableAlteror
         executeSql( "UPDATE dashboard SET publicaccess='--------' WHERE publicaccess is null" );
 
         executeSql( "UPDATE optionset SET version=1 WHERE version IS NULL" );
+        
+        executeSql( "ALTER TABLE datavalue ALTER COLUMN lastupdated TYPE timestamp" );
 
         log.info( "Tables updated" );
     }
