@@ -109,6 +109,8 @@ public final class SharingUtils
         addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL", "F_MAP_PUBLIC_ADD", null );
         addType( Chart.class, "chart", "F_CHART_EXTERNAL", "F_CHART_PUBLIC_ADD", null );
         addType( ReportTable.class, "reportTable", "F_REPORTTABLE_EXTERNAL", "F_REPORTTABLE_PUBLIC_ADD", null );
+        addType( Report.class, "report", "F_REPORT_EXTERNAL", "F_REPORT_PUBLIC_ADD", "F_REPORT_PRIVATE_ADD" );
+        addType( Document.class, "document", "F_DOCUMENT_EXTERNAL", "F_DOCUMENT_PUBLIC_ADD", "F_DOCUMENT_PRIVATE_ADD" );
 
         addType( Dashboard.class, "dashboard", null, "F_DASHBOARD_PUBLIC_ADD", null );
     }
