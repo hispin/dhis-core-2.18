@@ -89,7 +89,7 @@ public class EventQueryPlanner
         EventQueryParams query = new EventQueryParams( params );
         query.setStartDate( startDate );
         query.setEndDate( endDate );
-        query.setTableName( TABLE_BASE_NAME + "temp_" + year( startDate ) + "_" + program.getUid() );
+        query.setTableName( TABLE_BASE_NAME + year( startDate ) + "_" + program.getUid() );
         return query;
     }
     
