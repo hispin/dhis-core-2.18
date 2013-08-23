@@ -147,7 +147,7 @@ Ext.onReady( function() {
 					return unescape(output);
 				}
 			};
-			
+
 			util.window = util.window || {};
 
 			util.window.setAnchorPosition = function(w, target) {
@@ -343,7 +343,7 @@ Ext.onReady( function() {
 									r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
 									r.set('name', r.data.operandName);
 								});
-								
+
 								util.multiselect.filterAvailable({store: this}, {store: store.dataElementSelected});
 							}
 						});
@@ -484,7 +484,7 @@ Ext.onReady( function() {
 					{property: 'name', direction: 'ASC'}
 				]
 			});
-			
+
 			pt.store = store;
 		}());
 
@@ -539,7 +539,7 @@ Ext.onReady( function() {
 					nameDimArrayMap[dimConf.dataElement.objectName],
 					nameDimArrayMap[dimConf.operand.objectName],
 					nameDimArrayMap[dimConf.dataSet.objectName]
-				));			
+				));
 
 				// Columns, rows, filters
 				for (var i = 0, nameArrays = [columnDimNames, rowDimNames, filterDimNames], axes = [config.columns, config.rows, config.filters], dimNames; i < nameArrays.length; i++) {
@@ -897,7 +897,7 @@ Ext.onReady( function() {
 				}
 			],
 			listeners: {
-				show: function(w) {					
+				show: function(w) {
 					if (pt.viewport.layoutButton.rendered) {
 						pt.util.window.setAnchorPosition(w, pt.viewport.layoutButton);
 
@@ -1317,7 +1317,7 @@ Ext.onReady( function() {
 				delete favorite.parentOrganisationUnit;
 
 				delete favorite.parentGraphMap;
-				
+
 				// Replace operand id characters
 				for (var i = 0; i < dimensions.length; i++) {
 					if (dimensions[i].dimension === pt.conf.finals.dimension.operand.objectName) {
@@ -2087,7 +2087,7 @@ Ext.onReady( function() {
 					var reportTableUrl = pt.init.contextPath + '/dhis-web-pivot/app/index.html?id=' + pt.favorite.id,
 						apiUrl = pt.init.contextPath + '/api/reportTables/' + pt.favorite.id + '/data.html',
 						html = '';
-					
+
 					html += '<div><b>Pivot link: </b><span class="user-select"><a href="' + reportTableUrl + '" target="_blank">' + reportTableUrl + '</a></span></div>';
 					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
@@ -3415,7 +3415,7 @@ Ext.onReady( function() {
 						return;
 					}
 				}
-				
+
 				this.enable();
 			},
 			listeners: {
@@ -3951,7 +3951,7 @@ Ext.onReady( function() {
 		update = function() {
 			var config = pt.engine.getLayoutConfig(),
 				layout = pt.api.layout.Layout(config);
-			
+
 			if (!layout) {
 				return;
 			}
@@ -4054,7 +4054,7 @@ Ext.onReady( function() {
 
 		openTableLayoutTab = function(type, isNewTab) {
 			if (pt.init.contextPath && pt.paramString) {
-				var url = pt.init.contextPath + '/api/analytics.' + type + pt.util.pivot.getParamString(pt.xLayout);
+				var url = pt.init.contextPath + '/api/analytics.' + type + pt.engine.getParamString(pt.xLayout);
 				url += '&tableLayout=true&columns=' + pt.xLayout.columnDimensionNames.join(';') + '&rows=' + pt.xLayout.rowDimensionNames.join(';');
 
 				window.open(url, isNewTab ? '_blank' : '_top');
@@ -4354,7 +4354,7 @@ Ext.onReady( function() {
 				isOugc = false,
 				levels = [],
 				groups = [];
-				
+
 			// State
 			pt.viewport.interpretationButton.enable();
 
@@ -4524,12 +4524,12 @@ Ext.onReady( function() {
 					}
 				}
 			}
-			
-			if (levels.length) {					
+
+			if (levels.length) {
 				toolMenu.clickHandler('level');
 				organisationUnitLevel.setValue(levels);
 			}
-			else if (groups.length) {					
+			else if (groups.length) {
 				toolMenu.clickHandler('group');
 				organisationUnitGroup.setValue(groups);
 			}
@@ -4582,7 +4582,7 @@ Ext.onReady( function() {
 					pt.viewport.layoutWindow = PT.app.LayoutWindow();
 					pt.viewport.layoutWindow.hide();
 					pt.viewport.optionsWindow = PT.app.OptionsWindow();
-					pt.viewport.optionsWindow.hide();						
+					pt.viewport.optionsWindow.hide();
 				},
 				afterrender: function() {
 					pt.init.afterRender();
@@ -4609,7 +4609,7 @@ Ext.onReady( function() {
 	};
 
 	initialize = function() {
-	
+
 		// ext configuration
 		Ext.QuickTips.init();
 
@@ -4618,7 +4618,7 @@ Ext.onReady( function() {
 				this.callParent();
 			}
 		});
-		
+
 		// right click handler
 		document.body.oncontextmenu = function() {
 			return false;
@@ -4630,7 +4630,7 @@ Ext.onReady( function() {
 				pt = PT.core.getInstance(Ext.decode(r.responseText));
 
 				PT.app.extendInstance(pt);
-								
+
 				pt.viewport = createViewport();
 			}
 		});
