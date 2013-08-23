@@ -260,6 +260,24 @@ dhis2.db.removeDashboard = function()
 	}
 }
 
+function updateManageDashboard( dashboard ) {
+    if( dashboard.access.manage ) {
+        var manageLink = $( '<a/>' )
+            .addClass( 'bold' )
+            .text( i18n_manage )
+            .attr( 'href', 'javascript:dhis2.db.openManageDashboardForm()' );
+        $( '#manageDashboard' ).html( manageLink );
+    } else {
+        var manageLink = $( '<a/>' )
+            .addClass( 'bold' )
+            .css( 'cursor', 'default' )
+            .css( 'text-decoration', 'none' )
+            .css( 'color', 'black' )
+            .text( i18n_manage );
+        $( '#manageDashboard' ).html( manageLink );
+    }
+}
+
 dhis2.db.renderDashboardListLoadFirst = function()
 {
 	var $l = $( "#dashboardList" );
@@ -275,8 +293,8 @@ dhis2.db.renderDashboardListLoadFirst = function()
 			$.each( data.dashboards, function( index, dashboard )
 			{
 				$l.append( $.tmpl( dhis2.db.tmpl.dashboardLink, { "id": dashboard.id, "name": dashboard.name } ) );
-	
-				if ( index == 0 )
+
+                if ( index == 0 )
 				{
 					first = dashboard.id;
 				}
@@ -316,6 +334,8 @@ dhis2.db.renderDashboard = function( id )
 	{
 		if ( undefined !== data.items )
 		{
+            updateManageDashboard( data );
+
 			$.each( data.items, function( index, item )
 			{
 				var position = index - 1;
