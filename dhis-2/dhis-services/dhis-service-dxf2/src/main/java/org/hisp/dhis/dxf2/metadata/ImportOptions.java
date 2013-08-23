@@ -39,7 +39,9 @@ public class ImportOptions
 
     private IdentifiableProperty orgUnitIdScheme;
 
-    private boolean dryRun = false;
+    private boolean dryRun;
+
+    private boolean async = true;
 
     private ImportStrategy importStrategy;
 
@@ -118,6 +120,16 @@ public class ImportOptions
         this.dryRun = dryRun;
     }
 
+    public boolean isAsync()
+    {
+        return async;
+    }
+
+    public void setAsync( boolean async )
+    {
+        this.async = async;
+    }
+
     public void setStrategy( String strategy )
     {
         this.importStrategy = strategy != null ? ImportStrategy.valueOf( strategy.toUpperCase() ) : null;
@@ -137,6 +149,6 @@ public class ImportOptions
     public String toString()
     {
         return "[data element id scheme: " + dataElementIdScheme + ", org unit id scheme: " +
-            orgUnitIdScheme + ", dry run: " + dryRun + ", strategy: " + importStrategy + ", skip check: " + skipExistingCheck + "]";
+            orgUnitIdScheme + ", dry run: " + dryRun + ", async: " + async + ", strategy: " + importStrategy + ", skip check: " + skipExistingCheck + "]";
     }
 }
