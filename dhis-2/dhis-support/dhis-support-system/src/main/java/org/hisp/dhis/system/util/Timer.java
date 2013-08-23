@@ -1,5 +1,8 @@
 package org.hisp.dhis.system.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -29,6 +32,8 @@ package org.hisp.dhis.system.util;
 
 public class Timer
 {
+    private static final Log log = LogFactory.getLog( Timer.class );
+    
     private long startTime;
     
     private boolean printDisabled;
@@ -58,7 +63,7 @@ public class Timer
         
         if ( !printDisabled )
         {
-            System.out.println( "Time: " + time + " micros: " + msg );
+            log.info( "Time: " + time + " micros: " + msg );
         }
         
         return time;
