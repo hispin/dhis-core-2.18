@@ -34,6 +34,8 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -63,6 +65,8 @@ public class ExternalAccessVoter implements AccessDecisionVoter<FilterInvocation
         externalClasses.put( "charts", Chart.class );
         externalClasses.put( "maps", org.hisp.dhis.mapping.Map.class );
         externalClasses.put( "reportTables", ReportTable.class );
+        externalClasses.put( "reports", Report.class );
+        externalClasses.put( "documents", Document.class );
     }
 
     // -------------------------------------------------------------------------
