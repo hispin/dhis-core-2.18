@@ -336,6 +336,11 @@ public final class SharingUtils
      */
     public static <T extends IdentifiableObject> boolean canExternalize( User user, T object )
     {
+        if ( user == null )
+        {
+            return false;
+        }
+
         Set<String> authorities = user.getUserCredentials().getAllAuthorities();
 
         return EXTERNAL_AUTHORITIES.get( object.getClass() ) != null &&
