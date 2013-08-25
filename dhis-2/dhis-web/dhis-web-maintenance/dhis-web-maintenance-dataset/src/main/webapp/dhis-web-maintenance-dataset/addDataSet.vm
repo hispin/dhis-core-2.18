@@ -75,7 +75,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "description" )</label></td>
-        <td><input type="text" id="description" name="description"></td>
+        <td><textarea id="description" name="description"></textarea></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "expiry_days" )</label></td>
