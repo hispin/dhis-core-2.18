@@ -274,8 +274,11 @@ public class UpdateDataSetAction
         dataSet.setExpiryDays( expiryDays );
         dataSet.setSkipAggregation( skipAggregation );
 
-        if ( !(equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() )
-            && dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() )) )
+        if ( !( equalsNullSafe( name, dataSet.getName() ) && 
+            periodType.equals( dataSet.getPeriodType() ) && 
+            dataElements.equals( dataSet.getDataElements() ) && 
+            indicators.equals( dataSet.getIndicators() ) &&
+            renderAsTabs == dataSet.isRenderAsTabs() ) )
         {
             dataSet.increaseVersion(); // Check if version must be updated
         }
