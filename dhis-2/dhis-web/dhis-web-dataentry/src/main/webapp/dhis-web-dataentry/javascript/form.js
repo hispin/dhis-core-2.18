@@ -80,8 +80,9 @@ var MAX_DROPDOWN_DISPLAYED = 30;
 
 var DAO = DAO || {};
 
-function getCurrentOrganisationUnit() {
-    if( $.isArray( currentOrganisationUnitId ) ) {
+function getCurrentOrganisationUnit() 
+{
+    if ( $.isArray( currentOrganisationUnitId ) ) {
         return currentOrganisationUnitId[0];
     }
 
@@ -97,7 +98,7 @@ DAO.store = new dhis2.storage.Store( {
 ( function( $ ) {
     $.safeEach = function( arr, fn ) 
     {
-        if( arr )
+        if ( arr )
         {
             $.each( arr, fn );
         }
@@ -1306,7 +1307,7 @@ function registerCompleteDataSet()
 	
 	validate( true, function() {	
 	    var params = storageManager.getCurrentCompleteDataSetParams();
-        params['organisationUnitId'] = selection.getSelected();
+        params['organisationUnitId'] = getCurrentOrganisationUnit();
         params['multiOrganisationUnit'] = multiOrganisationUnit;
 
 		storageManager.saveCompleteDataSet( params );
@@ -1341,7 +1342,7 @@ function undoCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_undo );
     var params = storageManager.getCurrentCompleteDataSetParams();
-    params[ 'organisationUnitId' ] = selection.getSelected();
+    params[ 'organisationUnitId' ] = getCurrentOrganisationUnit();
     params[ 'multiOrganisationUnit' ] = multiOrganisationUnit;
 
     if ( confirmed )
@@ -1451,7 +1452,7 @@ function validate( ignoreSuccessfulValidation, successCallback )
 	var validCompleteOnly = dataSets[currentDataSetId].validCompleteOnly;
 
     var params = storageManager.getCurrentCompleteDataSetParams();
-	    params['organisationUnitId'] = selection.getSelected();
+	    params['organisationUnitId'] = getCurrentOrganisationUnit();
         params['multiOrganisationUnit'] = multiOrganisationUnit;
 
     $( '#validationDiv' ).load( 'validate.action', params, function( response, status, xhr ) {
