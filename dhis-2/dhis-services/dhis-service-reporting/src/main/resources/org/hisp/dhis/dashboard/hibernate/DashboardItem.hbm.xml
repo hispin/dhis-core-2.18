@@ -39,6 +39,12 @@
       <many-to-many column="reportid" class="org.hisp.dhis.report.Report" foreign-key="fk_dashboarditem_reports_reportid" />
     </list>
  	
+    <list name="resources" table="dashboarditem_resources">
+      <key column="dashboarditemid" foreign-key="fk_dashboarditem_resources_dashboardid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="resourceid" class="org.hisp.dhis.document.Document" foreign-key="fk_dashboarditem_resources_resourceid" />
+    </list>
+    
     <list name="patientTabularReports" table="dashboarditem_patienttabularreports">
       <key column="dashboarditemid" foreign-key="fk_dashboarditem_patienttabularreports_dashboardid" />
       <list-index column="sort_order" base="0" />
