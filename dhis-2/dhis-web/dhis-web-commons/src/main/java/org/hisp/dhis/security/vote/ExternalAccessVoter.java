@@ -107,7 +107,7 @@ public class ExternalAccessVoter implements AccessDecisionVoter<FilterInvocation
 
                 if ( urlSplit[1].equals( "api" ) && externalClasses.get( type ) != null )
                 {
-                    String uid = urlSplit[3];
+                    String uid = getUidPart( urlSplit[3] );
 
                     if ( CodeGenerator.isValidCode( uid ) )
                     {
@@ -127,5 +127,15 @@ public class ExternalAccessVoter implements AccessDecisionVoter<FilterInvocation
         LOG.debug( "ACCESS_ABSTAIN [" + filterInvocation.toString() + "]: No supported attributes." );
 
         return ACCESS_ABSTAIN;
+    }
+
+    private String getUidPart( String uidPath )
+    {
+        if ( uidPath.contains( "." ) )
+        {
+            return uidPath.substring( 0, uidPath.indexOf( "." ) );
+        }
+
+        return uidPath;
     }
 }
