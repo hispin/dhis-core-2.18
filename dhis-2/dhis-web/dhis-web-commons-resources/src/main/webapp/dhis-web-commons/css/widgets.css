@@ -707,7 +707,7 @@ ul.pageSizeSelection input
   margin-right: 4px;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
-  background-color: #3685D5;
+  background-color: #3581CE;
   color: #fff !important;
   text-decoration: none !important;
 }
@@ -715,7 +715,7 @@ ul.pageSizeSelection input
 .blueButtonLink:hover
 {
   text-decoration: none;
-  background-color: #2C7CCE;
+  background-color: #3176BD;
 }
 
 /*----------------------------------------------------------------------------*/
