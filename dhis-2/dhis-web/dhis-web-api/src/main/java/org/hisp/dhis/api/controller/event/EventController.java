@@ -29,12 +29,16 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.event.Event;
 import org.hisp.dhis.dxf2.event.EventService;
+import org.hisp.dhis.dxf2.event.Events;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +60,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = EventController.RESOURCE_PATH )
+@RequestMapping(value = EventController.RESOURCE_PATH)
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -65,11 +70,47 @@ public class EventController
     //--------------------------------------------------------------------------
 
     @Autowired
+    private IdentifiableObjectManager manager;
+
+    @Autowired
     private EventService eventService;
 
     // -------------------------------------------------------------------------
     // Controller
     // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "", method = RequestMethod.GET )
+    public String getEvents( @RequestParam( "program" ) String programUid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        Program program = manager.get( Program.class, programUid );
+
+        if ( program == null )
+        {
+            throw new NotFoundException( programUid );
+        }
+
+        if ( program.isRegistration() || !program.isSingleEvent() )
+        {
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Only single event with no registration is currently supported." );
+        }
+
+        Events events = eventService.getEvents( program );
+
+        if ( options.hasLinks() )
+        {
+            for ( Event event : events.getEvents() )
+            {
+                event.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + event.getEvent() );
+            }
+        }
+
+        model.addAttribute( "model", events );
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+        return "event";
+    }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public String getEvent( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,

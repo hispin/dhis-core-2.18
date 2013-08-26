@@ -37,6 +37,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.io.IOException;
 
@@ -55,12 +58,21 @@ public class CrudControllerAdvice
         return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.UNAUTHORIZED );
     }
 
-    @ExceptionHandler( { NotFoundException.class, NotFoundForQueryException.class } )
+    @ExceptionHandler({ NotFoundException.class, NotFoundForQueryException.class })
     public ResponseEntity<String> notFoundExceptionHandler( Exception ex ) throws IOException
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
 
         return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.NOT_FOUND );
+    }
+
+    @ExceptionHandler( { HttpClientErrorException.class, HttpServerErrorException.class } )
+    public ResponseEntity<String> httpClient( HttpStatusCodeException ex )
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
+
+        return new ResponseEntity<String>( ex.getStatusText(), headers, ex.getStatusCode() );
     }
 }

@@ -30,6 +30,8 @@ package org.hisp.dhis.dxf2.event;
 
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStageInstance;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +49,11 @@ public interface EventService
 
     ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException;
 
+    Events getEvents( Program program );
+
     Event getEvent( String uid );
+
+    Event getEvent( ProgramStageInstance programStageInstance );
 
     void updateEvent( Event event );
 
