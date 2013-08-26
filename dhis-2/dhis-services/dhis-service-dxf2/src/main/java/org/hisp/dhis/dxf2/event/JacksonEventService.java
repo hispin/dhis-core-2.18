@@ -53,7 +53,7 @@ public class JacksonEventService extends BaseEventService
     {
         ImportSummaries importSummaries = new ImportSummaries();
 
-        String input = StreamUtils.copyToString( inputStream, Charset.defaultCharset() );
+        String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
 
         try
         {
@@ -85,7 +85,7 @@ public class JacksonEventService extends BaseEventService
     {
         ImportSummaries importSummaries = new ImportSummaries();
 
-        String input = StreamUtils.copyToString( inputStream, Charset.defaultCharset() );
+        String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
 
         try
         {
