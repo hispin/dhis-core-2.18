@@ -53,9 +53,11 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -340,38 +342,33 @@ public abstract class BaseEventService implements EventService
     }
 
     @Override
+    public Events getEvents( Program program )
+    {
+        Events events = new Events();
+
+        ProgramStage programStage = program.getProgramStageByStage( 1 );
+
+        List<ProgramStageInstance> programStageInstances =
+            new ArrayList<ProgramStageInstance>( programStageInstanceService.getProgramStageInstances( programStage ) );
+
+        List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
+
+        events.setEvents( convertedEvents );
+
+        return events;
+    }
+
+    @Override
     public Event getEvent( String uid )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( uid );
+        return convertProgramStageInstance( programStageInstance );
+    }
 
-        if ( programStageInstance == null )
-        {
-            return null;
-        }
-
-        Event event = new Event();
-
-        event.setCompleted( programStageInstance.isCompleted() );
-        event.setEvent( uid );
-        event.setEventDate( programStageInstance.getExecutionDate().toString() );
-        event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
-        event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
-        event.setProgramStage( programStageInstance.getProgramStage().getUid() );
-        event.setStoredBy( programStageInstance.getCompletedUser() );
-
-        Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
-
-        for ( PatientDataValue patientDataValue : patientDataValues )
-        {
-            DataValue value = new DataValue();
-            value.setDataElement( patientDataValue.getDataElement().getUid() );
-            value.setValue( patientDataValue.getValue() );
-            value.setProvidedElsewhere( patientDataValue.getProvidedElsewhere() );
-
-            event.getDataValues().add( value );
-        }
-
-        return event;
+    @Override
+    public Event getEvent( ProgramStageInstance programStageInstance )
+    {
+        return convertProgramStageInstance( programStageInstance );
     }
 
     @Override
@@ -441,5 +438,49 @@ public abstract class BaseEventService implements EventService
         {
             programStageInstanceService.deleteProgramStageInstance( programStageInstance );
         }
+    }
+
+    private List<Event> convertProgramStageInstances( List<ProgramStageInstance> programStageInstances )
+    {
+        List<Event> events = new ArrayList<Event>();
+
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+            events.add( convertProgramStageInstance( programStageInstance ) );
+        }
+
+        return events;
+    }
+
+    private Event convertProgramStageInstance( ProgramStageInstance programStageInstance )
+    {
+        if ( programStageInstance == null )
+        {
+            return null;
+        }
+
+        Event event = new Event();
+
+        event.setCompleted( programStageInstance.isCompleted() );
+        event.setEvent( programStageInstance.getUid() );
+        event.setEventDate( programStageInstance.getExecutionDate().toString() );
+        event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
+        event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
+        event.setProgramStage( programStageInstance.getProgramStage().getUid() );
+        event.setStoredBy( programStageInstance.getCompletedUser() );
+
+        Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
+
+        for ( PatientDataValue patientDataValue : patientDataValues )
+        {
+            DataValue value = new DataValue();
+            value.setDataElement( patientDataValue.getDataElement().getUid() );
+            value.setValue( patientDataValue.getValue() );
+            value.setProvidedElsewhere( patientDataValue.getProvidedElsewhere() );
+
+            event.getDataValues().add( value );
+        }
+
+        return event;
     }
 }
