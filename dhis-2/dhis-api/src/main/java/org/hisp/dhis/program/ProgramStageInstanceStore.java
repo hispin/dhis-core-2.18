@@ -81,6 +81,8 @@ public interface ProgramStageInstanceStore
 
     List<ProgramStageInstance> get( Patient patient, Boolean completed );
 
+    List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit );
+
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate,
         int min, int max );
 
@@ -126,7 +128,7 @@ public interface ProgramStageInstanceStore
     Collection<Integer> getOrgunitIds( Date startDate, Date endDate );
 
     Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate, I18n i18n );
-    
+
     Collection<ProgramStageInstance> get( Patient patient );
 
 }

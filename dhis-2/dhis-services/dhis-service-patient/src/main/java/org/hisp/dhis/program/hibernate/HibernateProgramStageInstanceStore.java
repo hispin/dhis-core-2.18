@@ -28,20 +28,6 @@ package org.hisp.dhis.program.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -83,6 +69,20 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -248,6 +248,13 @@ public class HibernateProgramStageInstanceStore
         String hql = "from ProgramStageInstance where programInstance.patient = :patient and completed = :completed";
 
         return getQuery( hql ).setEntity( "patient", patient ).setBoolean( "completed", completed ).list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit organisationUnit )
+    {
+        return getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -423,10 +430,10 @@ public class HibernateProgramStageInstanceStore
                 String programStageName = rs.getString( "programStageName" );
                 String daysSinceDueDate = rs.getString( "days_since_due_date" );
                 String dueDate = rs.getString( "duedate" ).split( " " )[0];// just
-                                                                           // get
-                                                                           // date,
-                                                                           // remove
-                                                                           // timestamp
+                // get
+                // date,
+                // remove
+                // timestamp
 
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
@@ -846,9 +853,9 @@ public class HibernateProgramStageInstanceStore
                 Restrictions.and( Restrictions.eq( "completed", false ), Restrictions.isNull( "executionDate" ),
                     Restrictions.between( "dueDate", startDate, endDate ),
                     Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
-                    Restrictions.eq( "status", ProgramStageInstance.SKIPPED_STATUS ),
-                    Restrictions.between( "dueDate", startDate, endDate ),
-                    Restrictions.in( "regOrgunit.id", orgunitIds ) ) ) );
+                Restrictions.eq( "status", ProgramStageInstance.SKIPPED_STATUS ),
+                Restrictions.between( "dueDate", startDate, endDate ),
+                Restrictions.in( "regOrgunit.id", orgunitIds ) ) ) );
         }
         else
         {
@@ -1065,7 +1072,7 @@ public class HibernateProgramStageInstanceStore
         sql += where; // filters
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
         sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
-        
+
         return sql;
     }
 
@@ -1081,26 +1088,26 @@ public class HibernateProgramStageInstanceStore
 
         switch ( status )
         {
-        case ProgramStageInstance.COMPLETED_STATUS:
-            criteria.add( Restrictions.eq( "completed", true ) );
-            criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
-            break;
-        case ProgramStageInstance.VISITED_STATUS:
-            criteria.add( Restrictions.eq( "completed", false ) );
-            criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
-            break;
-        case ProgramStageInstance.FUTURE_VISIT_STATUS:
-            criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
-            criteria.add( Restrictions.isNull( "executionDate" ) );
-            criteria.add( Restrictions.ge( "dueDate", new Date() ) );
-            break;
-        case ProgramStageInstance.LATE_VISIT_STATUS:
-            criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
-            criteria.add( Restrictions.isNull( "executionDate" ) );
-            criteria.add( Restrictions.lt( "dueDate", new Date() ) );
-            break;
-        default:
-            break;
+            case ProgramStageInstance.COMPLETED_STATUS:
+                criteria.add( Restrictions.eq( "completed", true ) );
+                criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+                break;
+            case ProgramStageInstance.VISITED_STATUS:
+                criteria.add( Restrictions.eq( "completed", false ) );
+                criteria.add( Restrictions.between( "executionDate", startDate, endDate ) );
+                break;
+            case ProgramStageInstance.FUTURE_VISIT_STATUS:
+                criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+                criteria.add( Restrictions.isNull( "executionDate" ) );
+                criteria.add( Restrictions.ge( "dueDate", new Date() ) );
+                break;
+            case ProgramStageInstance.LATE_VISIT_STATUS:
+                criteria.add( Restrictions.between( "programInstance.enrollmentDate", startDate, endDate ) );
+                criteria.add( Restrictions.isNull( "executionDate" ) );
+                criteria.add( Restrictions.lt( "dueDate", new Date() ) );
+                break;
+            default:
+                break;
         }
 
         return criteria;
@@ -1110,8 +1117,7 @@ public class HibernateProgramStageInstanceStore
      * Aggregate report Position Orgunit Rows - Period Columns - Data Filter
      * Aggregate report Position Orgunit Columns - Period Rows - Data Filter
      * This result is not included orgunits without any data
-     * 
-     **/
+     */
     private String getAggregateReportSQL12( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods, String aggregateType,
         Integer limit, Boolean useCompletedEvents, I18nFormat format )
@@ -1206,8 +1212,7 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Aggregate report Position Orgunit Rows - Period Rows - Data Filter
-     * 
-     **/
+     */
     private String getAggregateReportSQL3( int position, ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format )
@@ -1298,8 +1303,7 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Aggregate report Orgunit Filter - Period Rows - Data Filter
-     * 
-     **/
+     */
     private String getAggregateReportSQL4( int position, ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods,
         String aggregateType, Integer limit, Boolean useCompletedEvents, I18nFormat format )
@@ -1390,8 +1394,7 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Aggregate report Position Orgunit Rows -Period Filter - Data Filter
-     * 
-     **/
+     */
     private String getAggregateReportSQL5( int position, ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deGroupBy, Integer deSum, Period period, String aggregateType,
         Integer limit, Boolean useCompletedEvents, I18nFormat format )
@@ -1466,7 +1469,7 @@ public class HibernateProgramStageInstanceStore
     /**
      * Aggregate report Position Orgunit Filter - Period Rows - Data Columns
      * with group-by
-     **/
+     */
     private String getAggregateReportSQL6( ProgramStage programStage, Integer root, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods, String aggregateType,
         Integer limit, Boolean useCompletedEvents, I18nFormat format )
@@ -1593,7 +1596,7 @@ public class HibernateProgramStageInstanceStore
     /**
      * Aggregate report Position Orgunit Filter - Period Rows - Data Columns
      * without group-by
-     **/
+     */
     private String getAggregateReportSQL6WithoutGroup( ProgramStage programStage, Integer root, String facilityLB,
         String filterSQL, Integer deSum, Collection<Period> periods, String aggregateType, Integer limit,
         Boolean useCompletedEvents, I18nFormat format )
@@ -1674,8 +1677,7 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Aggregate report Position Orgunit Rows - Period Filter - Data Columns
-     * 
-     **/
+     */
     private String getAggregateReportSQL7( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Period period, String aggregateType, Integer limit,
         Boolean useCompletedEvents, I18nFormat format )
@@ -1785,8 +1787,7 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Aggregate report Position Orgunit Rows - Period Filter - Data Columns
-     * 
-     **/
+     */
     private String getAggregateReportSQL7WithoutGroup( ProgramStage programStage, Collection<Integer> roots,
         String facilityLB, String filterSQL, Integer deSum, Period period, String aggregateType, Integer limit,
         Boolean useCompletedEvents, I18nFormat format )
@@ -1851,8 +1852,7 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Aggregate report Position Data Rows
-     * 
-     **/
+     */
     private String getAggregateReportSQL8( ProgramStage programStage, Collection<Integer> roots, String facilityLB,
         String filterSQL, Integer deGroupBy, Period period, String aggregateType, Integer limit,
         Boolean useCompletedEvents, I18nFormat format )
@@ -1904,7 +1904,7 @@ public class HibernateProgramStageInstanceStore
     /**
      * Aggregate report Position Orgunit Filter - Period Columns - Data Rows
      * with group-by
-     **/
+     */
     private String getAggregateReportSQL9( ProgramStage programStage, Integer root, String facilityLB,
         String filterSQL, Integer deGroupBy, Integer deSum, Collection<Period> periods, String aggregateType,
         Integer limit, Boolean useCompletedEvents, Boolean useFormNameDataElement, I18nFormat format )
@@ -2193,7 +2193,6 @@ public class HibernateProgramStageInstanceStore
 
     /**
      * Return the Ids of organisation units which events happened.
-     * 
      */
     private Collection<Integer> getServiceOrgunit( Collection<Integer> orgunitIds, Period period )
     {

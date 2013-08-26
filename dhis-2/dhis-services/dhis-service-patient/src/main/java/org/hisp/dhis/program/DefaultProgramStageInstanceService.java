@@ -28,15 +28,6 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
@@ -58,6 +49,15 @@ import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -158,6 +158,12 @@ public class DefaultProgramStageInstanceService
     public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage )
     {
         return programStageInstanceStore.get( programStage );
+    }
+
+    @Override
+    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit )
+    {
+        return programStageInstanceStore.get( programStage, organisationUnit );
     }
 
     public void updateProgramStageInstance( ProgramStageInstance programStageInstance )
@@ -579,7 +585,7 @@ public class DefaultProgramStageInstanceService
                 }
             }
         }
-        
+
         return outboundSmsList;
     }
 
@@ -587,7 +593,7 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.get( patient );
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

@@ -38,6 +38,7 @@ import org.hisp.dhis.dxf2.event.Events;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,15 +81,27 @@ public class EventController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    public String getEvents( @RequestParam( "program" ) String programUid, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    public String getEvents( @RequestParam( "program" ) String programUid, @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
+        HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );
+        OrganisationUnit organisationUnit = null;
 
         if ( program == null )
         {
-            throw new NotFoundException( programUid );
+            throw new NotFoundException( "Program", programUid );
+        }
+
+        if ( orgUnitUid != null )
+        {
+            organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
+
+            if ( organisationUnit == null )
+            {
+                throw new NotFoundException( "OrganisationUnit", programUid );
+            }
         }
 
         if ( program.isRegistration() || !program.isSingleEvent() )
@@ -96,7 +109,7 @@ public class EventController
             throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Only single event with no registration is currently supported." );
         }
 
-        Events events = eventService.getEvents( program );
+        Events events = eventService.getEvents( program, organisationUnit );
 
         if ( options.hasLinks() )
         {
