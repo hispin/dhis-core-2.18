@@ -396,7 +396,7 @@ Ext.onReady( function() {
                     engine.loadChart(id, dv);
                 }
                 else if (Ext.isString(session) && DV.isSessionStorage && Ext.isObject(JSON.parse(sessionStorage.getItem('dhis2'))) && session in JSON.parse(sessionStorage.getItem('dhis2'))) {
-                    layout = api.layout.Layout(util.chart.analytical2layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]));
+                    layout = api.layout.Layout(engine.analytical2layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]));
 
                     if (layout) {
                         dv.viewport.setFavorite(layout);

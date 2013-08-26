@@ -4265,7 +4265,7 @@ Ext.onReady( function() {
 										disabled: !PT.isSessionStorage || !pt.layout,
 										handler: function() {
 											if (PT.isSessionStorage) {
-												pt.util.pivot.setSessionStorage(pt.layout, 'analytical', pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
+												pt.engine.setSessionStorage(pt.layout, 'analytical', pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
 											}
 										}
 									},
