@@ -344,12 +344,28 @@ public abstract class BaseEventService implements EventService
     @Override
     public Events getEvents( Program program )
     {
+        return getEvents( program, null );
+    }
+
+    @Override
+    public Events getEvents( Program program, OrganisationUnit organisationUnit )
+    {
         Events events = new Events();
 
         ProgramStage programStage = program.getProgramStageByStage( 1 );
 
-        List<ProgramStageInstance> programStageInstances =
-            new ArrayList<ProgramStageInstance>( programStageInstanceService.getProgramStageInstances( programStage ) );
+        List<ProgramStageInstance> programStageInstances = null;
+
+        if ( organisationUnit != null )
+        {
+            programStageInstances = new ArrayList<ProgramStageInstance>(
+                programStageInstanceService.getProgramStageInstances( programStage, organisationUnit ) );
+        }
+        else
+        {
+            programStageInstances = new ArrayList<ProgramStageInstance>(
+                programStageInstanceService.getProgramStageInstances( programStage ) );
+        }
 
         List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
 

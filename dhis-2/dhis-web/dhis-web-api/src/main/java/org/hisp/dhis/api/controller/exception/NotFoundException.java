@@ -42,4 +42,9 @@ public class NotFoundException extends Exception
     {
         super( "Object not found for uid: " + uid );
     }
+
+    public NotFoundException( String type, String uid )
+    {
+        super( type + " not found for uid: " + uid );
+    }
 }
