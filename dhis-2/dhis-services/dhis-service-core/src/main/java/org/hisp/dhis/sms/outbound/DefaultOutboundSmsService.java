@@ -30,11 +30,15 @@ package org.hisp.dhis.sms.outbound;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Simple {@link OutboundSmsService sms service} storing the sms in a store and
  * forwards the request to a {@link OutboundSmsTransportService sms transport
  * service} for sending.
  */
+
+@Transactional
 public class DefaultOutboundSmsService
     implements OutboundSmsService
 {

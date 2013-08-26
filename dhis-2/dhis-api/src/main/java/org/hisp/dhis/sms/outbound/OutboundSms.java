@@ -33,11 +33,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OutboundSms
-{
-    public static final String DHIS_SYSTEM_SENDER = "DHIS-System";
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
-    private int id;
+public class OutboundSms extends BaseIdentifiableObject
+{
+    private static final long serialVersionUID = 1L;
+
+    public static final String DHIS_SYSTEM_SENDER = "DHIS-System";
 
     private String sender;
     
@@ -58,16 +60,6 @@ public class OutboundSms
         message = msg;
         this.recipients = new HashSet<String>();
         Collections.addAll( this.recipients, recipients );
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
     }
 
     public Set<String> getRecipients()
