@@ -60,9 +60,9 @@ function Patient()
 			});
 	};
 	
-	this.remove = function( confirm_delete )
+	this.remove = function( confirm_delete_patient )
 	{
-		removeItem( this.patientId, this.fullName, i18n_confirm_delete, 'removePatient.action' );
+		removeItem( this.patientId, this.fullName, confirm_delete_patient, 'removePatient.action' );
 	};
 	
 	this.add = function(params,isContinue)
@@ -187,12 +187,12 @@ function advancedSearch( params )
 // Remove patient
 // -----------------------------------------------------------------------------
 
-function removePatient( patientId, fullName, i18n_confirm_delete )
+function removePatient( patientId, fullName, i18n_confirm_delete_patient )
 {
 	var patient = new Patient();
 	patient.patientId = patientId;
 	patient.fullName = fullName;
-	patient.remove( confirm_delete );
+	patient.remove( i18n_confirm_delete_patient );
 }
 
 // -----------------------------------------------------------------------------
