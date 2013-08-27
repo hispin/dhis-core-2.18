@@ -359,3 +359,12 @@ function showHideUserGroup()
 			hideById ( 'tr'+numb );
 	});
 }
+
+function onchangeUserGroup( id )
+{
+	var value = document.getElementById( 'sendTo'+id ).value;
+	hideById( 'tr'+id );
+	if ( value == 5) {
+		showById( 'tr'+id );
+	}
+};

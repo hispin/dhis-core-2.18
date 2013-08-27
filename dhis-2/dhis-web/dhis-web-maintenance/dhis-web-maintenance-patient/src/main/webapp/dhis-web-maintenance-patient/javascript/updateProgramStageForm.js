@@ -111,23 +111,3 @@ jQuery( document ).ready( function()
 		}
 	});
 });
-function showHideUserGroup()
-{
-	jQuery(".sendTo").each( function( i, item ){
-		var numb = i+1;
-		if( item.value == 5){
-			showById( 'tr'+numb );
-		}
-		else
-			hideById ( 'tr'+numb );
-	});
-}
-
-function onchangeUserGroup( id )
-{
-	var value = document.getElementById( 'sendTo'+id ).value;
-	hideById( 'tr'+id );
-	if ( value == 5) {
-		showById( 'tr'+id );
-	}
-};
