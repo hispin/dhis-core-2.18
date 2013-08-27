@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.controller.exception.NotFoundForQueryException;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.Access;
 import org.hisp.dhis.common.BaseIdentifiableObject;

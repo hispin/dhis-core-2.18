@@ -216,7 +216,7 @@ public class JdbcEventAnalyticsTableManager
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
         String[] ou = { "ou", "character(11) not null", "ou.uid" };
-        String[] oun = { "ouname", "character(160) not null", "ou.name" };
+        String[] oun = { "ouname", "character varying(160) not null", "ou.name" };
         
         columns.addAll( Arrays.asList( psi, ps, ed, ou, oun ) );
         
