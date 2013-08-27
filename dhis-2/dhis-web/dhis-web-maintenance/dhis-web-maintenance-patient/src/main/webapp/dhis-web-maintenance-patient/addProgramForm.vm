@@ -89,14 +89,7 @@
 	
 	checkValueIsExist( "name", "validateProgram.action" );	
 });
-	function onchangeUserGroup( id )
-	{
-		var value = document.getElementById( 'sendTo'+id ).value;
-		hideById( 'tr'+id );
-		if ( value == 5) {
-			showById( 'tr'+id );
-		}
-	};
+	
 </script>
 
 <h3>$i18n.getString( "create_new_program" )</h3>
