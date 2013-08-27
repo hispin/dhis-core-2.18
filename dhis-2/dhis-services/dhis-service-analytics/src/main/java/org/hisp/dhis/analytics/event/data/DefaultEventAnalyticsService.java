@@ -31,9 +31,12 @@ package org.hisp.dhis.analytics.event.data;
 import static org.hisp.dhis.analytics.DataQueryParams.OPTION_SEP;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
@@ -104,20 +107,36 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( "Program stage", ITEM_PROGRAM_STAGE ) );
         grid.addHeader( new GridHeader( "Execution date", ITEM_EXECUTION_DATE ) );
         grid.addHeader( new GridHeader( "Organisation unit", ITEM_ORG_UNIT ) );
-        
+
+        // ---------------------------------------------------------------------
+        // Headers
+        // ---------------------------------------------------------------------
+
         for ( QueryItem queryItem : params.getItems() )
         {
             IdentifiableObject item = queryItem.getItem();
             
             grid.addHeader( new GridHeader( item.getName(), item.getUid() ) );
         }
-        
+
+        // ---------------------------------------------------------------------
+        // Data
+        // ---------------------------------------------------------------------
+
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
         
         for ( EventQueryParams query : queries )
         {
             analyticsManager.getEvents( query, grid );
         }
+
+        // ---------------------------------------------------------------------
+        // Meta-data
+        // ---------------------------------------------------------------------
+
+        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        metaData.put( AnalyticsService.NAMES_META_KEY, getUidNameMap( params ) );
+        grid.setMetaData( metaData );
         
         return grid;
     }
@@ -239,6 +258,20 @@ public class DefaultEventAnalyticsService
         }
         
         return params;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Map<String, String> getUidNameMap( EventQueryParams params )
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        
+        map.put( params.getProgram().getUid(), params.getProgram().getName() );
+        map.put( params.getProgramStage().getUid(), params.getProgramStage().getName() );
+        
+        return map;
     }
     
     private String getSortItem( String item, Program program )
