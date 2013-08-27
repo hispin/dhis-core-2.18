@@ -170,7 +170,6 @@ public class SendSmsToListAction
         {
             orgunits.add( organisationUnit );
         }
-
         else
         {
             organisationUnit = null;
