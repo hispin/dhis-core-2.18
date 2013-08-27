@@ -1172,7 +1172,7 @@ Ext.onReady( function() {
 							headers: {'Content-Type': 'application/json'},
 							params: Ext.encode(favorite),
 							failure: function(r) {
-								dv.util.mask.hideMask();
+								dv.util.mask.hideMask(dv.viewport.centerRegion);
 								alert(r.responseText);
 							},
 							success: function(r) {
@@ -1201,7 +1201,7 @@ Ext.onReady( function() {
 							url: dv.init.contextPath + '/api/charts/' + id + '.json?viewClass=dimensional&links=false',
 							method: 'GET',
 							failure: function(r) {
-								dv.util.mask.hideMask();
+								dv.util.mask.hideMask(dv.viewport.centerRegion);
 								alert(r.responseText);
 							},
 							success: function(r) {
@@ -1214,7 +1214,7 @@ Ext.onReady( function() {
 									headers: {'Content-Type': 'application/json'},
 									params: Ext.encode(favorite),
 									failure: function(r) {
-										dv.util.mask.hideMask();
+										dv.util.mask.hideMask(dv.viewport.centerRegion);
 										alert(r.responseText);
 									},
 									success: function(r) {
@@ -1431,7 +1431,7 @@ Ext.onReady( function() {
 										url: dv.init.contextPath + '/api/sharing?type=chart&id=' + record.data.id,
 										method: 'GET',
 										failure: function(r) {
-											dv.util.mask.hideMask();
+											dv.util.mask.hideMask(dv.viewport.centerRegion);
 											alert(r.responseText);
 										},
 										success: function(r) {
