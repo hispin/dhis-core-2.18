@@ -153,6 +153,7 @@
 	scope="prototype">
 	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	<property name="scheduler" ref="scheduler"/>
+	<property name="resourceTableTask" ref="resourceTableTask" />
 	<property name="analyticsTableTask" ref="analyticsAllTask" />
 	<property name="dataMartTask" ref="dataMartLast12MonthsTask"/>
   </bean>
