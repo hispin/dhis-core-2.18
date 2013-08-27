@@ -71,6 +71,7 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_PROGRAM_STAGE = "ps";
     private static final String ITEM_EXECUTION_DATE = "executiondate";
     private static final String ITEM_ORG_UNIT = "ou";
+    private static final String ITEM_ORG_UNIT_NAME = "ouname";
     
     @Autowired
     private ProgramService programService;
@@ -107,6 +108,7 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( "Program stage", ITEM_PROGRAM_STAGE ) );
         grid.addHeader( new GridHeader( "Execution date", ITEM_EXECUTION_DATE ) );
         grid.addHeader( new GridHeader( "Organisation unit", ITEM_ORG_UNIT ) );
+        grid.addHeader( new GridHeader( "Organisation unit name", ITEM_ORG_UNIT_NAME ) );
 
         // ---------------------------------------------------------------------
         // Headers
