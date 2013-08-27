@@ -270,8 +270,15 @@ public class DefaultEventAnalyticsService
     {
         Map<String, String> map = new HashMap<String, String>();
         
-        map.put( params.getProgram().getUid(), params.getProgram().getName() );
-        map.put( params.getProgramStage().getUid(), params.getProgramStage().getName() );
+        Program program = params.getProgram();
+        ProgramStage stage = params.getProgramStage();
+        
+        map.put( program.getUid(), program.getName() );
+        
+        if ( stage != null )
+        {
+            map.put( stage.getUid(), stage.getName() );
+        }
         
         return map;
     }
