@@ -17,7 +17,6 @@
 							<div class="orgunit-object" id="org_$!programStageInstance.id">&nbsp;$!programStageInstance.organisationUnit.name</div>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
-								name="ps_$!programStageInstance.id"
 								pi="$programInstance.id"
 								psid="$programStageInstance.programStage.id"
 								psuid="$programStageInstance.programStage.uid"
@@ -101,16 +100,15 @@
 					#foreach( $programStage in $programInstance.program.programStages )
 						#if( $programStage.irregular=='true')
 							<option value="$programStage.id" standardInterval='$programStage.standardInterval' repeatable="true">$!programStage.displayName</option>
-						#elseif( $programStage.autoGenerateEvent=='false')
+						#else
 							#set($hasEvent="false")
 							#foreach( $programStageInstance in $programInstance.programStageInstances )
 								#if( $programStage.id== $programStageInstance.programStage.id)
 									#set($hasEvent="true")
 								#end
 							#end
-							#if($hasEvent=="false")
-								<option value="$programStage.id" standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
-							#end
+							
+							<option #if($hasEvent=="true") style="display:none;" #end value="$programStage.id" standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
 						#end
 					#end
 				</select>

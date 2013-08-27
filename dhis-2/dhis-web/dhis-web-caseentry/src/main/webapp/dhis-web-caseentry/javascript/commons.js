@@ -647,16 +647,17 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				jQuery("#programStageIdTR_" + programInstanceId).append('<td id="arrow_' + programStageInstanceId + '"><img src="images/rightarrow.png"></td>'
 					+ '<td>'
 					+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '">&nbsp;</div>'
-					+ '<input name="programStageBtn" '
-					+ 'id="' + elementId + '" ' 
-					+ 'psid="' + programStageId + '" '
-					+ 'programType="' + programType + '" '
-					+ 'psname="' + programStageName + '" '
-					+ 'dueDate="' + dueDate + '" '
-					+ 'value="'+ programStageName + '&#13;&#10;' + dueDate + '" '
-					+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
-					+ 'type="button" class="stage-object" '
-					+ '></td>');
+						+ '<input name="programStageBtn" '
+						+ 'pi="' + programInstanceId + '" ' 
+						+ 'id="' + elementId + '" ' 
+						+ 'psid="' + programStageId + '" '
+						+ 'programType="' + programType + '" '
+						+ 'psname="' + programStageName + '" '
+						+ 'dueDate="' + dueDate + '" '
+						+ 'value="'+ programStageName + '&#13;&#10;' + dueDate + '" '
+						+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
+						+ 'type="button" class="stage-object" '
+						+ '></td>');
 			}
 			if( jQuery('#tb_' + programInstanceId + " :input" ).length > 4 ){
 				jQuery('#tb_' + programInstanceId + ' .arrow-left').removeClass("hidden");
@@ -673,7 +674,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			jQuery('#ps_' + programStageInstanceId ).focus();
 			var repeatable = jQuery('#repeatableProgramStage_' + programInstanceId + " [value=" + programStageId + "]" )
 			if( repeatable.attr("repeatable")=="false"){
-				repeatable.remove();
+				repeatable.css("display","none");
 			}
 			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
 			resetActiveEvent(programInstanceId);
@@ -904,9 +905,14 @@ function resetActiveEvent( programInstanceId )
 function removeEvent( programStageInstanceId, isEvent )
 {	
     var result = window.confirm( i18n_comfirm_delete_event );
+					
     if ( result )
     {
-    	$.postJSON(
+		var eventBox = jQuery('#ps_' + programStageInstanceId);
+		var programStageId = eventBox.attr('psid');
+    	var programInstanceId = eventBox.attr('pi');
+					
+		$.postJSON(
     	    "removeCurrentEncounter.action",
     	    {
     	        "id": programStageInstanceId   
@@ -915,6 +921,8 @@ function removeEvent( programStageInstanceId, isEvent )
     	    { 
     	    	if ( json.response == "success" )
     	    	{
+					jQuery("#repeatableProgramStage_" + programInstanceId + " [value='" + programStageId + "']").css("display","block");
+
 					jQuery( "tr#tr" + programStageInstanceId ).remove();
 	                
 					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
@@ -928,14 +936,14 @@ function removeEvent( programStageInstanceId, isEvent )
 						showById('searchDiv');
 						showById('listPatientDiv');
 					}
+					
+					var id = 'ps_' + programStageInstanceId;
 					if(jQuery(".stage-object-selected").attr('id')== id)
 					{
 						hideById('entryForm');
 						hideById('executionDateTB');
 						hideById('inputCriteriaDiv');
 					}
-					var id = 'ps_' + programStageInstanceId;
-					var programInstanceId = jQuery('#' + id).attr('pi');
 					jQuery('#ps_' + programStageInstanceId).remove();
 					jQuery('#arrow_' + programStageInstanceId).remove();
 					jQuery('#org_' + programStageInstanceId).remove();
