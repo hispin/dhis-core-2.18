@@ -4984,31 +4984,37 @@ Ext.onReady( function() {
 					a.push({
 						iconCls: 'gis-btn-icon-' + gis.layer.facility.id,
 						menu: gis.layer.facility.menu,
+						tooltip: GIS.i18n.symbol_layer,
 						width: 26
 					});
 					a.push({
 						iconCls: 'gis-btn-icon-' + gis.layer.boundary.id,
 						menu: gis.layer.boundary.menu,
+						tooltip: GIS.i18n.boundary_layer,
 						width: 26
 					});
 					a.push({
 						iconCls: 'gis-btn-icon-' + gis.layer.thematic1.id,
 						menu: gis.layer.thematic1.menu,
+						tooltip: GIS.i18n.thematic_layer + ' 1',
 						width: 26
 					});
 					a.push({
 						iconCls: 'gis-btn-icon-' + gis.layer.thematic2.id,
 						menu: gis.layer.thematic2.menu,
+						tooltip: GIS.i18n.thematic_layer + ' 2',
 						width: 26
 					});
 					a.push({
 						iconCls: 'gis-btn-icon-' + gis.layer.thematic3.id,
 						menu: gis.layer.thematic3.menu,
+						tooltip: GIS.i18n.thematic_layer + ' 3',
 						width: 26
 					});
 					a.push({
 						iconCls: 'gis-btn-icon-' + gis.layer.thematic4.id,
 						menu: gis.layer.thematic4.menu,
+						tooltip: GIS.i18n.thematic_layer + ' 4',
 						width: 26
 					});
 					a.push({
