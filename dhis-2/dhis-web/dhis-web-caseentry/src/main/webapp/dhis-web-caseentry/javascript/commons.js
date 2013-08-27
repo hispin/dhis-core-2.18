@@ -1817,6 +1817,7 @@ function sendSmsOnePatientForm()
 			title:i18n_send_message,
 			maximize:true, 
 			closable:true,
+			closable:true,
 			modal:true,
 			overlay:{background:'#000000', opacity:0.1},
 			width:400,
@@ -1850,14 +1851,17 @@ function sendSmsOnePatient( field, programStageInstanceId )
 					+ "<td>" + field.value + "</td>"+
 					+ "<td>" + field.value + "</td></tr>");
 				field.style.backgroundColor = SUCCESS_COLOR;
-				
+				hideById('smsError');
+				setInnerHTML('smsSuccess', json.message);
+			
 				jQuery('#enrollmentDate').width('325');
 				jQuery('#dateOfIncident').width('325');
 				jQuery('#removeProgram').remove();
 			}
 			else {
-				showSuccessMessage( json.message );
 				field.style.backgroundColor = ERROR_COLOR;
+				hideById('smsSuccess');
+				setInnerHTML('smsError', json.message);
 			}
 			
 			if( jQuery("#messageTB tr.hidden").length > 0 ){
