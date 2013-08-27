@@ -15,6 +15,7 @@
 	
 	"type": "${programStage.program.type}",
 	"programStageId": "${programStage.id}",
+	"programStageUid": "${programStage.uid}",
 	"programStageName": "$!encoder.jsonEncode( ${programStage.displayName} )",
 	"programStages": [
 		#set( $programStages = $programStage.program.programStages )

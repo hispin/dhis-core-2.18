@@ -127,7 +127,8 @@ public class GetAggregateReportListAction
 
         total = aggregateReportService.countPatientAggregateReportList( user, query );
 
-        int startPos = currentPage <= 0 ? 0 : (currentPage - 1) * pageSize;
+        pageSize = (pageSize == null) ? 10 : pageSize;
+        int startPos = (currentPage == null || currentPage <= 0) ? 0 : (currentPage - 1) * pageSize;
         startPos = (startPos > total) ? total : startPos;
 
         pageCount = (total % pageSize == 0) ? (total / pageSize) : (total / pageSize + 1);
