@@ -354,10 +354,10 @@ dhis2.db.renderDashboard = function( id )
 	
 	$.getJSON( "../api/dashboards/" + id, function( data )
 	{
-		if ( undefined !== data.items )
-		{
-            updateSharing( data );
+        updateSharing( data );
 
+        if( undefined !== data.items )
+        {
 			$.each( data.items, function( index, item )
 			{
 				var position = index - 1;
