@@ -28,10 +28,7 @@ package org.hisp.dhis.importexport.action.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
@@ -47,7 +44,9 @@ import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * @author Lars Helge Overland
@@ -56,13 +55,13 @@ public class ImportDataValueAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( ImportDataValueAction.class );
-    
+
     @Autowired
     private DataValueSetService dataValueSetService;
 
     @Autowired
     private CurrentUserService currentUserService;
-    
+
     @Autowired
     private Scheduler scheduler;
 
@@ -72,14 +71,14 @@ public class ImportDataValueAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private File upload;
 
     public void setUpload( File upload )
     {
         this.upload = upload;
     }
-    
+
     private boolean dryRun;
 
     public void setDryRun( boolean dryRun )
@@ -102,12 +101,12 @@ public class ImportDataValueAction
     }
 
     private IdentifiableProperty orgUnitIdScheme;
-    
+
     public void setOrgUnitIdScheme( IdentifiableProperty orgUnitIdScheme )
     {
         this.orgUnitIdScheme = orgUnitIdScheme;
     }
-    
+
     private boolean skipExistingCheck;
 
     public void setSkipExistingCheck( boolean skipExistingCheck )
@@ -130,28 +129,28 @@ public class ImportDataValueAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
         strategy = strategy != null ? strategy : ImportStrategy.NEW_AND_UPDATES;
-        dataElementIdScheme = dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID;        
+        dataElementIdScheme = dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID;
         orgUnitIdScheme = orgUnitIdScheme != null ? orgUnitIdScheme : IdentifiableProperty.UID;
 
         TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
 
         notifier.clear( taskId );
-        
+
         InputStream in = new FileInputStream( upload );
-        
+
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
-        
+
         ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy, skipExistingCheck );
-        
+
         log.info( options );
-        
+
         scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, options, taskId, importFormat ) );
-        
+
         return SUCCESS;
     }
 }
