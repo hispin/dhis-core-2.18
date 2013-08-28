@@ -2,7 +2,7 @@
 	"id": "${tabularReport.id}",
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
-	"programId": "${programStage.program.id}",
+	"programUid": "${programStage.program.uid}",
 	"singleEvent": 
 		#if($programStage.program.programStages.size() == 1 )
 			"true",

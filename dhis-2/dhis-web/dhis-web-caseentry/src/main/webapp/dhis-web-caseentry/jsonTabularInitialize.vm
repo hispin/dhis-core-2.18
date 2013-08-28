@@ -20,7 +20,8 @@
 	"programs": [
 		#foreach( $program in $programs )
 		  {
-			"id":  "${program.id}" ,
+			"id": "${program.uid}" ,
+			"localid": "${program.id}" ,
 			"name": "$!encoder.jsonEncode( ${program.displayName} )",
 			"type": "$program.type"
 		  }#if( $velocityCount < $programs.size() ),#end
