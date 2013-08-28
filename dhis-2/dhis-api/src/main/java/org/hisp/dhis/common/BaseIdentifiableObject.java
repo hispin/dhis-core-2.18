@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
+import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.user.User;
@@ -252,7 +253,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPublicAccess()
     {
@@ -266,7 +267,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean getExternalAccess()
     {
@@ -296,7 +297,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "userGroupAccesses", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "userGroupAccess", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserGroupAccess> getUserGroupAccesses()
@@ -310,6 +311,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( localName = "access", namespace = DxfNamespaces.DXF_2_0 )
     public Access getAccess()
     {

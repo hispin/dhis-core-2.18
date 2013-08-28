@@ -74,7 +74,7 @@ public class JacksonUtils
             objectMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
 
             objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-            objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false );
+            objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
             objectMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
 
             objectMapper.disable( MapperFeature.AUTO_DETECT_FIELDS );
