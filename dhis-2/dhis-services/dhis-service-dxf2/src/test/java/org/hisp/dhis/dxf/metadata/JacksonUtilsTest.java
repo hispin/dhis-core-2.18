@@ -28,6 +28,8 @@ package org.hisp.dhis.dxf.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.junit.Test;
@@ -42,6 +44,10 @@ public class JacksonUtilsTest
     {
         JacksonUtils.toJsonAsString( new MetaData() );
         JacksonUtils.toXmlAsString( new MetaData() );
+        JacksonUtils.toJsonWithViewAsString( new MetaData(), DetailedView.class );
+        JacksonUtils.toXmlWithViewAsString( new MetaData(), DetailedView.class );
+        JacksonUtils.toJsonWithViewAsString( new MetaData(), ExportView.class );
+        JacksonUtils.toXmlWithViewAsString( new MetaData(), ExportView.class );
     }
 
     @Test
