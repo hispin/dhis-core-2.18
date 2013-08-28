@@ -375,7 +375,7 @@ Ext.onReady( function() {
 				for( var i=0; i< elements.length; i++ )
 				{
 					if( elements[i].style.display != 'none' )
-					{
+					{		
 						var localid = a.store.getAt(i).data.localid;
 						var name = a.store.getAt(i).data.name;
 						var valueType = a.store.getAt(i).data.valueType;
@@ -383,7 +383,7 @@ Ext.onReady( function() {
 						array.push({id: a.store.getAt(i).data.id, localid:localid, name: name, valueType: valueType});
 						if(f!=undefined)
 						{
-							TR.util.multiselect.addFilterField( f, localid, name, valueType );
+							TR.util.multiselect.addFilterField( f, a.store.getAt(i).data.id, name, valueType );
 						}
 					}
 				}
@@ -1854,13 +1854,13 @@ Ext.onReady( function() {
 		total: 1,
 		totalRecords: 0,
 		isFilter:false,
-		orderByOrgunitAsc: true,
-		orderByExecutionDateByAsc: true,
+		asc: "",
+		desc: "",
 		orgunitIds: [],
-		generateReport: function( type, isSorted ) {
+		generateReport: function( type ) {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 			{
-				this.caseBasedReport.generate( type, isSorted );
+				this.caseBasedReport.generate( type );
 			}
 			else
 			{
@@ -1873,16 +1873,16 @@ Ext.onReady( function() {
 				this.caseBasedReport.generate();
 			}
 		},
-		getParams: function(isSorted){
+		getParams: function(){
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 			{
-				return this.caseBasedReport.getParams(isSorted);
+				return this.caseBasedReport.getParams();
 			}
 			return this.aggregateReport.getParams();
 		},
-		getURLParams: function( type, isSorted ){
+		getURLParams: function( type ){
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true'){
-				this.caseBasedReport.getURLParams( type, isSorted );
+				this.caseBasedReport.getURLParams( type );
 			}
 			else{
 				this.aggregateReport.getURLParams( type );
@@ -1890,7 +1890,7 @@ Ext.onReady( function() {
 		},
 		
 		caseBasedReport: {
-			generate: function( type, isSorted ) {
+			generate: function( type ) {
 				
 				// Validation
 				
@@ -1934,11 +1934,11 @@ Ext.onReady( function() {
 						url: url,
 						method: "GET",
 						scope: this,
-						params: this.getParams(isSorted),
+						params: this.getParams(),
 						success: function(r) {
 							var json = Ext.JSON.decode(r.responseText);
 							
-							if( isSorted ){
+							if( TR.state.asc != "" || TR.state.desc != "" ){
 								TR.store.datatable.loadData(TR.value.values,false);
 							}
 							else{
@@ -1946,21 +1946,18 @@ Ext.onReady( function() {
 								TR.value.values = json.rows;
 								
 								// Get fields
+								
 								var fields = [];
 								for( var index=0; index < TR.value.columns.length; index++ )
 								{
-									fields[index] = 'col' + TR.value.columns[index].column;
+									fields[index] = TR.value.columns[index].column;
 								}
 								TR.value.fields = fields;
 								
 								// Set data for grid
+								
 								TR.store.getDataTableStore();
 								TR.datatable.getDataTable();
-								
-								if( json.rows.length>1 )
-								{
-									Ext.getCmp('btnSortBy').enable();
-								}
 							}
 							TR.util.mask.hideMask();
 						}
@@ -1968,21 +1965,27 @@ Ext.onReady( function() {
 				}
 				TR.util.notification.ok();
 			},
-			getParams: function(isSorted) {
+			getParams: function() {
 				var p = {};
 				p.startDate = TR.cmp.settings.startDate.rawValue;
 				p.endDate = TR.cmp.settings.endDate.rawValue;
 				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 				p.level = Ext.getCmp('levelCombobox').getValue();
 				
-				// orders
-				p.asc = TR.state.asc;
-				p.desc= TR.state.desc;
+				// order-by
+				
+				if(TR.state.asc!=""){				
+					p.asc = TR.state.asc;
+				}
+				else{
+					p.desc= TR.state.desc;
+				}
 				
 				p.programStageId = TR.cmp.params.programStage.getValue();
 				p.currentPage = TR.state.currentPage;
 				
 				// organisation unit
+				
 				p.ou = "";
 				for( var i in TR.state.orgunitIds){
 					p.ou += TR.state.orgunitIds[i];
@@ -2107,7 +2110,7 @@ Ext.onReady( function() {
 					
 				return p;
 			},
-			getURLParams: function( isSorted ) {
+			getURLParams: function() {
 				
 				document.getElementById('startDate').value = TR.cmp.settings.startDate.rawValue;
 				document.getElementById('endDate').value = TR.cmp.settings.endDate.rawValue;
@@ -2116,7 +2119,9 @@ Ext.onReady( function() {
 				document.getElementById('programStageId').value = TR.cmp.params.programStage.getValue();				
 				document.getElementById('userOrganisationUnit').value = Ext.getCmp('userOrgunit').getValue();
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
-
+				document.getElementById('desc').value = TR.state.desc;
+				document.getElementById('asc').value = TR.state.asc;
+				
 				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true )
 				{
 					document.getElementById('useFormNameDataElement').value = Ext.getCmp('useFormNameDataElementOpt').getValue();
@@ -2358,7 +2363,7 @@ Ext.onReady( function() {
 								var fields = [];
 								for( var index=0; index < TR.value.columns.length; index++ )
 								{
-									fields[index] = 'col' + index;
+									fields[index] = index;
 								}
 								TR.value.fields = fields;
 								
@@ -2962,7 +2967,25 @@ Ext.onReady( function() {
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 58,
 				id: 'gridTable',
-				columns: cols,
+				columns: {
+					items: cols,
+					listeners: {
+						headerclick: function(container, column, e) {
+							if( column.sortable )
+							{
+								if(column.sortState=='ASC'){
+									TR.state.asc = column.dataIndex;
+									TR.state.desc = "";
+								}
+								else{
+									TR.state.asc = "";
+									TR.state.desc = column.dataIndex;
+								}
+								TR.exe.execute(false, true );
+							}
+						}
+					}
+				},
 				scroll: 'both',
 				title: title,
 				selType: 'cellmodel',
@@ -3065,29 +3088,52 @@ Ext.onReady( function() {
 		createColTable: function(){
 			var cols = [];
 			
-			cols[0] = {
-				header: TR.value.columns[0].name, 
-				dataIndex: 'col' + TR.value.columns[0].column,
-				height: TR.conf.layout.east_gridcolumn_height,
-				name: 'meta_' + TR.value.columns[0].column,
-				sortable: false,
-				draggable: false,
-				hidden: true,
-				hideable: true,
-				menuDisabled: true
-			}
-			
-			for( var i = 1; i <TR.value.columns.length; i++ )
+			for( var i =0; i <TR.value.columns.length; i++ )
 			{
-				cols[i] = {
-					header: TR.value.columns[i].name, 
-					dataIndex: 'col' + TR.value.columns[i].column,
-					height: TR.conf.layout.east_gridcolumn_height,
-					name: 'meta_' + TR.value.columns[i].column,
-					sortable: false,
-					draggable: false,
-					hideable: false,
-					menuDisabled: true
+				// Hiden event UID column and programstage UID column
+				
+				if( i==0 || i==1 || i ==3 ){
+					cols[i] = {
+						header: TR.value.columns[i].name, 
+						dataIndex: TR.value.columns[i].column,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: TR.value.columns[i].column,
+						sortable: false,
+						draggable: false,
+						hidden: true,
+						hideable: true,
+						menuDisabled: false
+					}
+				}
+				
+				// don't sort by orgunit name column
+				
+				else if( i ==4){
+					cols[i] = {
+						header: TR.value.columns[i].name, 
+						dataIndex: TR.value.columns[i].column,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: TR.value.columns[i].column,
+						sortable: false,
+						draggable: false,
+						hideable: false,
+						menuDisabled: true
+					}
+				}
+				
+				// Sortable columns
+				
+				else if( i==2 || i> 3 ){
+					cols[i] = {
+						header: TR.value.columns[i].name, 
+						dataIndex: TR.value.columns[i].column,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: TR.value.columns[i].column,
+						sortable: true,
+						draggable: false,
+						hideable: false,
+						menuDisabled: true
+					}
 				}
 			}
 				
@@ -3099,7 +3145,7 @@ Ext.onReady( function() {
 			
 			var params = {};
 			params.header = colname;
-			params.dataIndex = 'col' + index;
+			params.dataIndex = index;
 			params.name = id;
 			params.hidden = eval(TR.value.columns[index].hidden );
 			params.menuFilterText = TR.value.filter;
@@ -3135,12 +3181,10 @@ Ext.onReady( function() {
 				Ext.getCmp('lastPageBtn').disable();
 	
 				Ext.getCmp('btnClean').disable();
-				Ext.getCmp('btnSortBy').disable();
 			}
 			else
 			{
 				Ext.getCmp('btnClean').enable();
-				Ext.getCmp('btnSortBy').enable();
 				Ext.getCmp('currentPage').setValue(TR.state.currentPage);
 				
 				if( TR.state.currentPage == TR.state.total 
@@ -3209,8 +3253,8 @@ Ext.onReady( function() {
     };
         
 	TR.exe = {
-		execute: function( type, isSorted ) {
-			TR.state.generateReport( type, isSorted );
+		execute: function( type) {
+			TR.state.generateReport( type );
 		},
 		paging: function( currentPage )
 		{
@@ -5019,7 +5063,6 @@ Ext.onReady( function() {
 													{
 														Ext.getCmp('patientPropertiesDiv').setVisible(false);
 													}
-													Ext.getCmp('btnSortBy').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
 													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
 													Ext.getCmp('dateRangeDiv').expand();
@@ -5049,7 +5092,6 @@ Ext.onReady( function() {
 													Ext.getCmp('dateRangeDiv').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
-													Ext.getCmp('btnSortBy').setVisible(false);
 													Ext.getCmp('patientPropertiesDiv').setVisible(false);
 													Ext.getCmp('displayOrgunitCode').setVisible(false);
 													
@@ -6749,44 +6791,6 @@ Ext.onReady( function() {
 								Ext.getCmp('filterPanel').doLayout();
 							}
 							TR.exe.execute();
-						}
-					},
-					{
-						xtype: 'button',
-						text: TR.i18n.sort_by,
-						id: 'btnSortBy',
-						disabled: true,
-						menu: {},
-						listeners: {
-							afterrender: function(b) {
-								this.menu = Ext.create('Ext.menu.Menu', {
-									margin: '2 0 0 0',
-									shadow: false,
-									showSeparator: false,
-									items: [
-										{
-											text: TR.i18n.asc,
-											iconCls: 'tr-menu-item-asc',
-											minWidth: 105,
-											handler: function() {
-												TR.state.desc = "";
-												TR.state.asc = "executiondate";
-												TR.exe.execute(false, true );
-											}
-										},
-										{
-											text: TR.i18n.desc,
-											iconCls: 'tr-menu-item-desc',
-											minWidth: 105,
-											handler: function() {
-												TR.state.asc = "";
-												TR.state.desc = "executiondate";
-												TR.exe.execute(false, true );
-											}
-										}
-									]                                            
-								});
-							}
 						}
 					},
 					{
