@@ -997,13 +997,14 @@ function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField );
 	input.parent().width( input.width() + 50 );
-	var dataElementUid = input.attr('id').split('-')[1];
-	
+    var dataElementUid = input.attr('id').split('-')[1];
+    var optionSetUid = input.data('optionset-uid');
+
 	input.autocomplete({
 		delay: 0,
 		minLength: 0,
 		source: function( request, response ){
-            searchOptionSet( dataElementUid, input.val(), response );
+            searchOptionSet( optionSetUid, input.val(), response );
 		},
 		minLength: 0,
 		select: function( event, ui ) {
@@ -1015,12 +1016,15 @@ function autocompletedField( idField )
 			}
 
 			input.val( fieldValue );
+
 			if ( !unSave ) {
 				saveVal( dataElementUid );
 			}
 			input.autocomplete( "close" );
 		},
 		change: function( event, ui ) {
+            console.log(ui.item);
+
 			if ( !ui.item ) {
 				var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
 					valid = false;
