@@ -170,8 +170,12 @@ final public class ExchangeClasses
         // this is considered data, and is not available for meta-data export/import
         exportClasses.remove( MessageConversation.class );
         exportClasses.remove( Interpretation.class );
+        exportClasses.remove( Dashboard.class );
+        exportClasses.remove( BaseDimensionalObject.class );
         importClasses.remove( MessageConversation.class );
         importClasses.remove( Interpretation.class );
+        importClasses.remove( Dashboard.class );
+        importClasses.remove( BaseDimensionalObject.class );
 
         // tracker types are not enabled for meta-data import-export yet
         exportClasses.remove( Program.class );

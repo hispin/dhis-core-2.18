@@ -58,7 +58,7 @@ public class Dashboard
     public Dashboard()
     {
     }
-    
+
     public Dashboard( String name )
     {
         this.name = name;
@@ -72,9 +72,9 @@ public class Dashboard
      * Moves an item in the list. Returns true if the operation lead to a
      * modification of the list order. Returns false if there are no items,
      * the given position is out of bounds, the item is not present, if position
-     * is equal to current item index or if attempting to move an item one 
+     * is equal to current item index or if attempting to move an item one
      * position to the right (pointless operation).
-     * 
+     *
      * @param uid the uid of the item to move.
      * @param position the new index position of the item.
      * @return true if the operation lead to a modification of order, false otherwise.
@@ -85,33 +85,33 @@ public class Dashboard
         {
             return false; // No items or position out of bounds
         }
-        
+
         int index = items.indexOf( new DashboardItem( uid ) );
-        
+
         if ( index == -1 || index == position || ( index + 1 ) == position )
         {
             return false; // Not found, already at position or pointless move
         }
-        
+
         DashboardItem item = items.get( index );
 
         index = position < index ? ( index + 1 ) : index; // New index after move
 
         items.add( position, item ); // Add item at position        
         items.remove( index ); // Remove item at previous index
-        
+
         return true;
     }
-    
+
     /**
      * Removes the item with the given identifier from this dashboard.
-     * 
+     *
      * @param uid the item uid.
      */
     public boolean removeItem( String uid )
     {
         Iterator<DashboardItem> iter = items.iterator();
-        
+
         while ( iter.hasNext() )
         {
             if ( uid.equals( iter.next().getUid() ) )
@@ -120,28 +120,28 @@ public class Dashboard
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Returns the item with the given uid, or null if no item with the given
      * uid is present for this dashboard.
-     * 
+     *
      * @param uid the item identifier.
      * @return an item.
      */
     public DashboardItem getItemByUid( String uid )
     {
         int index = items.indexOf( new DashboardItem( uid ) );
-        
+
         return index != -1 ? items.get( index ) : null;
     }
-    
+
     /**
      * Returns an item from this dashboard of the given type which number of
      * content is less than max. Returns null if no item matches the criteria.
-     * 
+     *
      * @param type the type of content to return.
      * @return an item.
      */
@@ -154,17 +154,17 @@ public class Dashboard
                 return item;
             }
         }
-        
+
         return null;
-    }    
-    
+    }
+
     @JsonProperty
     @JacksonXmlProperty
     public int getItemCount()
     {
         return items == null ? 0 : items.size();
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
