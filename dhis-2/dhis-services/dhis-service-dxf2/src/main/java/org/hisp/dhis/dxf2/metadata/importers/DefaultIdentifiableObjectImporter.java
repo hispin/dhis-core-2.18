@@ -403,7 +403,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
-        object.setUser( user );
+        // object.setUser( user );
+        object.setUser( null );
 
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
         nonIdentifiableObjects.extract( object );
