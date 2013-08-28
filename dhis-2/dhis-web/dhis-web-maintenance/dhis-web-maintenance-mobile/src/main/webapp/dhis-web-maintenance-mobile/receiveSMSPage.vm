@@ -157,33 +157,46 @@
 <input id="pollingInterval" name="pollingInterval" type="hidden" value="$pollingInterval"/>
 <h3>$i18n.getString( "show_receive_sms_form" )</h3>
 <form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="get" >
-	<div style="text-align:right; width:840px">	
-		<div style="float: left">
-			<select style="width: 150px" name="smsStatus" onchange="javascript:document.forms['receiveSmsPage'].submit();">
-				<option value="">$i18n.getString( "all" )</option>
-				<option value="INCOMING" #if($smsStatus == 'INCOMING') selected='selected' #end>$i18n.getString( "incoming" )</option>
-				<option value="PROCESSED" #if($smsStatus == 'PROCESSED') selected='selected' #end>$i18n.getString( "processed" )</option>
-				<option value="FAILED" #if($smsStatus == 'FAILED') selected='selected' #end>$i18n.getString( "failed" )</option>
-				<option value="UNHANDLED" #if($smsStatus == 'UNHANDLED') selected='selected' #end>$i18n.getString( "unhandled" )</option>
-			</select>
-			<input type="text" name="keyword" #if($keyword) value="$keyword" #else value="" #end style="width: 150px"/>
-			<input type="submit" name="filter" value="Filter"/>
-			<input type="reset" name="clear" value="Clear"/>
-		</div>
-		<div style="float: right">
-			<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>
-		</div>	
-	</div>
+	<table border="0px" style="width:100%">
+		<!--<div style="text-align:right; width:840px">	
+			<div style="float: left">
+				<select style="width: 150px" name="smsStatus" onchange="javascript:document.forms['receiveSmsPage'].submit();">
+					<option value="">$i18n.getString( "all" )</option>
+					<option value="INCOMING" #if($smsStatus == 'INCOMING') selected='selected' #end>$i18n.getString( "incoming" )</option>
+					<option value="PROCESSED" #if($smsStatus == 'PROCESSED') selected='selected' #end>$i18n.getString( "processed" )</option>
+					<option value="FAILED" #if($smsStatus == 'FAILED') selected='selected' #end>$i18n.getString( "failed" )</option>
+					<option value="UNHANDLED" #if($smsStatus == 'UNHANDLED') selected='selected' #end>$i18n.getString( "unhandled" )</option>
+				</select>
+				<input type="text" name="keyword" #if($keyword) value="$keyword" #else value="" #end style="width: 150px"/>
+				<input type="submit" name="filter" value="Filter"/>
+				<input type="reset" name="clear" value="Clear"/>
+			</div>
+			<div style="float: right">
+				<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>
+			</div>	
+		</div>-->
+		<tr>
+			<td style="width:130px">$i18n.getString('filter_by_status'):</td>
+			<td style="width:150px" colspan="3">
+				<select style="width: 150px" name="smsStatus" onchange="javascript:document.forms['receiveSmsPage'].submit();">
+					<option value="">$i18n.getString( "all" )</option>
+					<option value="INCOMING" #if($smsStatus == 'INCOMING') selected='selected' #end>$i18n.getString( "incoming" )</option>
+					<option value="PROCESSED" #if($smsStatus == 'PROCESSED') selected='selected' #end>$i18n.getString( "processed" )</option>
+					<option value="FAILED" #if($smsStatus == 'FAILED') selected='selected' #end>$i18n.getString( "failed" )</option>
+					<option value="UNHANDLED" #if($smsStatus == 'UNHANDLED') selected='selected' #end>$i18n.getString( "unhandled" )</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:135px">$i18n.getString('filter_by_phone_number'):</td>
+			<td style="width:150px"><input type="text" name="keyword" #if($keyword) value="$keyword" #else value="" #end style="width: 150px; height: 10px"/></td>
+			<td style="width:50px"><input type="submit" name="filter" value="Filter"/></td>
+			<td style="text-align:right"><input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/></td>
+		</tr>
+	</table>
 	<br/>
-	<table id="detailsSmsList" class="listTable" style="width:100%">
-		<col width="40px"/>
-		<col width="40px"/>
-		<col width="200px"/>
-		<col width="100px"/>
-		<col width="60px"/>
-		<col width="120px"/>
-		<col width="70px"/>
-		<col width="40px"/>
+	<table id="detailsSmsList" class="listTable" style="width:100%" border="0px">
+		<!--<col width="40px"/>-->
 		<thead>
 			<th style="text-align:center"><a href="#" onclick="checkAll()" title="$i18n.getString( 'check_all' )"><img src="../images/check.png"/></a></th>
 			<th style="text-align:center">$i18n.getString( "no." )</th>
