@@ -123,7 +123,7 @@ public class ShowSentSMSAction
         throws Exception
     {
         List<OutboundSms> tempListOutboundSMS = outboundSmsService.getAllOutboundSms();
-        
+
         listOutboundSMS = new ArrayList<OutboundSms>();
 
         if ( filterStatusType != null && filterStatusType == 0 )
@@ -156,24 +156,24 @@ public class ShowSentSMSAction
 
         recipientNames = new ArrayList<String>();
         recipientNames.add( "" );
+        String tempString;
         for ( OutboundSms outboundSms : listOutboundSMS )
         {
-            String tempString = "";
+            tempString = "";
             for ( String phoneNumber : outboundSms.getRecipients() )
             {
-                if ( userService.getUsersByPhoneNumber( phoneNumber ) == null
-                    || userService.getUsersByPhoneNumber( phoneNumber ).size() == 0 )
+                Collection<User> users = userService.getUsersByPhoneNumber( phoneNumber );
+                if ( users == null || users.size() == 0 )
                 {
                     tempString += "[unknown]";
                 }
-                else if ( userService.getUsersByPhoneNumber( phoneNumber ) != null
-                    && userService.getUsersByPhoneNumber( phoneNumber ).size() > 0 )
+                else if ( users != null && users.size() > 0 )
                 {
 
-                    Iterator<User> users = userService.getUsersByPhoneNumber( phoneNumber ).iterator();
-                    while ( users.hasNext() )
+                    Iterator<User> usersIterator = users.iterator();
+                    while ( usersIterator.hasNext() )
                     {
-                        User user = users.next();
+                        User user = usersIterator.next();
                         tempString += "[" + user.getUsername() + "]";
                     }
                 }
