@@ -41,6 +41,7 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.ShortNameView;
+import org.hisp.dhis.common.view.UuidView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,6 +94,7 @@ public class JacksonUtils
         viewClasses.put( "basic", BasicView.class );
         viewClasses.put( "shortName", ShortNameView.class );
         viewClasses.put( "detailed", DetailedView.class );
+        viewClasses.put( "uuid", UuidView.class );
         viewClasses.put( "export", ExportView.class );
         viewClasses.put( "dimensional", DimensionalView.class );
     }
@@ -145,7 +147,7 @@ public class JacksonUtils
         return jsonMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T fromJson( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -181,7 +183,7 @@ public class JacksonUtils
         return xmlMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T fromXml( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
