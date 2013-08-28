@@ -62,7 +62,7 @@ public class LoadPatientPropertiesAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programId;
+    private String programId;
 
     private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
 
@@ -87,7 +87,7 @@ public class LoadPatientPropertiesAction
         this.attributeService = attributeService;
     }
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }

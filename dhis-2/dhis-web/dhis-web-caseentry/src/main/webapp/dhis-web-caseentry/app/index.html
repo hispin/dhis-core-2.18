@@ -6,7 +6,7 @@
 </head>
 
 <body>
-	<form id="exportForm" name='exportForm' method="post" target="_blank">
+	<form id="exportForm" name='exportForm' method="get" target="_blank">
         <input type="hidden" id="programStageId" name='programStageId' >
 		<input type="hidden" id="aggregateType" name='aggregateType' >
 		<select multiple id="deFilters" name="deFilters" class="hidden"></select>
@@ -29,6 +29,12 @@
 		<input type="hidden" id="orderByExecutionDateByAsc" name="orderByExecutionDateByAsc" >
 		<select multiple id="filterValues" name="filterValues" class="hidden"></select>
 		<input type="hidden" id="useFormNameDataElement" name="useFormNameDataElement" >
+		
+		<input id="ou" name="ou" class="hidden" >
+		<select multiple id="item" name="item" class="hidden" ></select>
+		<input id="desc" name="desc" class="hidden" >
+		<input id="asc" name="asc" class="hidden" >
+		
     </form>
 	
     <script type="text/javascript">TR = {};</script>

@@ -67,9 +67,9 @@ public class LoadDataElementsAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private String programStageId;
 
-    public void setProgramStageId( Integer programStageId )
+    public void setProgramStageId( String programStageId )
     {
         this.programStageId = programStageId;
     }
