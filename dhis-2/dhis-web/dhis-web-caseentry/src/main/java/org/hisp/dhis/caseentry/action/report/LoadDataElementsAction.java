@@ -29,7 +29,15 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
@@ -49,6 +57,13 @@ public class LoadDataElementsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -63,9 +78,30 @@ public class LoadDataElementsAction
         this.programStageSectionService = programStageSectionService;
     }
 
+    private PatientIdentifierTypeService identifierTypeService;
+
+    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
+    {
+        this.identifierTypeService = identifierTypeService;
+    }
+
+    private PatientAttributeService attributeService;
+
+    public void setAttributeService( PatientAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
+
+    private String programId;
+
+    public void setProgramId( String programId )
+    {
+        this.programId = programId;
+    }
 
     private String programStageId;
 
@@ -79,6 +115,20 @@ public class LoadDataElementsAction
     public void setSectionId( Integer sectionId )
     {
         this.sectionId = sectionId;
+    }
+
+    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
+
+    public Collection<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
     }
 
     private Collection<ProgramStageDataElement> psDataElements;
@@ -96,16 +146,36 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
+        if ( programId != null )
+        {
+            Program program = programService.getProgram( programId );
+            if ( program.isRegistration() )
+            {
+                Collection<PatientIdentifierType> identifierTypes = identifierTypeService
+                    .getAllPatientIdentifierTypes();
+                Collection<PatientAttribute> patientAttributes = attributeService.getAllPatientAttributes();
+
+                Collection<Program> programs = programService.getAllPrograms();
+                programs.remove( program );
+
+                for ( Program _program : programs )
+                {
+                    identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
+                    patientAttributes.removeAll( _program.getPatientAttributes() );
+                }
+            }
+        }
+
         if ( programStageId != null )
         {
             psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
         }
-        else if( sectionId != null )
+        else if ( sectionId != null )
         {
             ProgramStageSection section = programStageSectionService.getProgramStageSection( sectionId );
             psDataElements = section.getProgramStageDataElements();
         }
-        
+
         return SUCCESS;
     }
 }

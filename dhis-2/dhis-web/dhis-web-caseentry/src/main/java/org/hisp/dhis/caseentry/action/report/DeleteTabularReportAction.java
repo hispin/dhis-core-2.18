@@ -56,9 +56,9 @@ public class DeleteTabularReportAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String id;
 
-    public void setId( Integer id )
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -71,7 +71,7 @@ public class DeleteTabularReportAction
     public String execute()
         throws Exception
     {
-        PatientTabularReport tabularReport = tabularReportService.getPatientTabularReport( id );
+        PatientTabularReport tabularReport = tabularReportService.getPatientTabularReportByUid( id );
         
         tabularReportService.deletePatientTabularReport( tabularReport );
 

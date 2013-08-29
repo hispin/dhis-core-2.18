@@ -6,65 +6,62 @@
   >
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.patientreport.PatientTabularReport"
-    table="patienttabularreport">
+	<class name="org.hisp.dhis.patientreport.PatientTabularReport"
+		table="patienttabularreport">
 
-    <id name="id" column="patienttabularreportid">
-      <generator class="native" />
-    </id>
-    &identifiableProperties;
-
-    <property name="name" column="name" not-null="true" unique="true" length="230" />
-
-    <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
-      column="programstageid" foreign-key="fk_patientaggregatereport_programstage" />
-
-    <property name="startDate" />
-
-    <property name="endDate" />
-
-    <set name="organisationUnits" table="patienttabularreport_organisationUnits">
-      <cache usage="read-write" />
-      <key column="patienttabularreportid" foreign-key="fk_patienttabularreport_organisationUnitid" />
-      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
-        foreign-key="fk_patienttabularreportid_organisationunit" />
-    </set>
-
-    <property name="level" />
-
-    <property name="sortedOrgunitAsc" />
-
-    <property name="facilityLB" />
-
-    <property name="useCompletedEvents" />
-    
-    <property name="userOrganisationUnit" />
-
-    <property name="userOrganisationUnitChildren" />
-    
-     <list name="filterValues" table="patienttabularreport_filtervalues">
-      <key column="patientaggregatereportid"
-        foreign-key="fk_patienttabularreportid_filtervalues" />
-        <list-index column="sort_order" base="1" />
-      <element type="text" column="filtervalue" />
-    </list>
-    
-    <property name="displayOrgunitCode" />
-    
-    <property name="useFormNameDataElement" />
-    
-    <!-- Access properties -->
+		<id name="id" column="patienttabularreportid">
+			<generator class="native" />
+		</id>
    
-    <many-to-one name="user" class="org.hisp.dhis.user.User"
-      column="userid" foreign-key="fk_patienttabularreport_userid" />
-      
-    <property name="publicAccess" length="8" />
+   		&identifiableProperties;
 
-    <set name="userGroupAccesses" table="patienttabularreportusergroupaccesses">
-      <cache usage="read-write" />
-      <key column="patienttabularreportid" />
-      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
-    </set>
+		<property name="name" column="name" not-null="true" unique="true"
+			length="230" />
 
-  </class>
+		<many-to-one name="program" class="org.hisp.dhis.program.Program"
+			column="programid" foreign-key="fk_patienttabularreport_program" />
+
+		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+			column="programstageid" foreign-key="fk_patienttabularreport_programstage" />
+
+		<property name="startDate" />
+
+		<property name="endDate" />
+
+		<set name="organisationUnits" table="patienttabularreport_organisationUnits">
+			<cache usage="read-write" />
+			<key column="patienttabularreportid" foreign-key="fk_patienttabularreport_organisationUnitid" />
+			<many-to-many column="organisationunitid"
+				class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_patienttabularreportid_organisationunit" />
+		</set>
+
+		<list name="items" table="patienttabularreport_filtervalues">
+			<key column="patientaggregatereportid" foreign-key="fk_patienttabularreportid_items" />
+			<list-index column="sort_order" base="1" />
+			<element type="text" column="itemvalue" />
+		</list>
+
+		<property name="sortByAsc" />
+
+		<property name="sortByDesc" />
+		
+		<property name="level" />
+		
+		<property name="facilityLB" />
+
+		<!-- Access properties -->
+
+		<many-to-one name="user" class="org.hisp.dhis.user.User"
+			column="userid" foreign-key="fk_patienttabularreport_userid" />
+
+		<property name="publicAccess" length="8" />
+
+		<set name="userGroupAccesses" table="patienttabularreportusergroupaccesses">
+			<cache usage="read-write" />
+			<key column="patienttabularreportid" />
+			<many-to-many class="org.hisp.dhis.user.UserGroupAccess"
+				column="usergroupaccessid" unique="true" />
+		</set>
+
+	</class>
 </hibernate-mapping>

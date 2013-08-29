@@ -860,15 +860,7 @@
       </result>
       <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
     </action>
-
-    <action name="loadPatientProperties"
-      class="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-caseentry/jsonPatientProperties.vm
-      </result>
-      <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-    </action>
-
+	
     <action name="loadReportProgramStages"
       class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
       <result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStages.vm

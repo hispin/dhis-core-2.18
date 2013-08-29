@@ -64,7 +64,7 @@
 					#end
 				</script> 
 			#elseif($hasOptionSet=='true')
-				<input name="entryfield" data-optionset-uid="$programStageDataElement.dataElement.optionSet.uid" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
+				<input name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
 			#elseif($programStageDataElement.dataElement.type=='username')
 				<input name="entryfield" username='true' class="auto-field optionset" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
 			#else

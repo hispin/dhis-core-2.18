@@ -2,9 +2,9 @@
 	"id": "${tabularReport.id}",
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
-	"programUid": "${programStage.program.uid}",
+	"programId": "${programStage.program.uid}",
 	"singleEvent": 
-		#if($programStage.program.programStages.size() == 1 )
+		#if($tabularReport.program.programStages.size() == 1 )
 			"true",
 		#else
 			"false",
@@ -14,15 +14,13 @@
 	#end
 	
 	"type": "${programStage.program.type}",
-	"programStageId": "${programStage.id}",
-	"programStageUid": "${programStage.uid}",
-	"programStageName": "$!encoder.jsonEncode( ${programStage.displayName} )",
+	"programStageId": "$!{tabularReport.programStage.uid}",
 	"programStages": [
-		#set( $programStages = $programStage.program.programStages )
+		#set( $programStages = $tabularReport.program.programStages )
 		#set( $size = $programStages.size() )
 		#foreach( ${programStage} in $!{programStages} )
 			{
-				"id": "$programStage.id",
+				"id": "$programStage.uid",
 				"name": "$programStage.name"
 			}
 			#if( $velocityCount < $size ),#end
@@ -30,14 +28,10 @@
 	],
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",
 	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
+	"asc": "${tabularReport.sortByAsc}",
+	"desc": "${tabularReport.sortByDesc}",
 	"level": "${tabularReport.level}",
-	"sortedOrgunitAsc": "${tabularReport.sortedOrgunitAsc}",
 	"facilityLB": "${tabularReport.facilityLB}",
-	"displayOrgunitCode": "$!tabularReport.displayOrgunitCode",
-	"useFormNameDataElement": "$!tabularReport.useFormNameDataElement",
-	"useCompletedEvents": "$!tabularReport.useCompletedEvents",
-	"userOrganisationUnit": "$!tabularReport.userOrganisationUnit",
-	"userOrganisationUnitChildren": "$!tabularReport.userOrganisationUnitChildren",
 	"orgunitIds": [
 		#set( $size = $tabularReport.organisationUnits.size() )
 		#set( $organisationUnits = ${tabularReport.organisationUnits} )
@@ -50,59 +44,21 @@
 			#if( $velocityCount < $size ),#end
 		#end
 	],
-	"patientProperties": [
-		#set($idx=0)
-		#foreach( ${fixedAttribute} in $!{selectedFixedAttributes} )
-			{	
-				#set( $attr = $i18n.getString($fixedAttribute) )
-				"id": "fixedAttr_${fixedAttribute}",
-				"name": "$attr",
-				"filter": "$fixedAttributeFilters.get($idx)"
-			},
-			#set($idx=$idx+1)
-		#end
-		
-		#set($idx=0)
-		#set( $size = ${selectedIdentifierTypes.size()} )		
-		#foreach( ${identifier} in $!{selectedIdentifierTypes} )
+	"items": [
+		#set( $size = $tabularReport.items.size() )
+		#foreach( $item in $!{tabularReport.items} )
 			{
-				"id": "iden_${identifier.id}",
-				"name": "${identifier.displayName}",
-				"filter": "$identifierTypeFilters.get($idx)"
-			}#if( $velocityCount < $size ),#end
-			#set($idx=$idx+1)
-		#end
-		
-		#set($idx=0)
-		#set( $size = ${selectedAttributes.size()} )		
-		#foreach( ${attribute} in $!{selectedAttributes} )
-			{
-				"id": "attr_${attribute.id}",
-				"name": "${attribute.displayName}",
-				"filter": "$patientAttributeFilters.get($idx)"
-			}
-			#if( $velocityCount < $size ),#end
-			#set($idx=$idx+1)
-		#end
-	],
-	"dataElements": [
-		#set($idx=0)
-		#set( $size = ${selectedDataElements.size()} )
-		#foreach( ${dataElement} in $!{selectedDataElements} )
-			{
-				"id": "de_${dataElement.id}",
-				"name": "${dataElement.name}",
-				"uid": "${dataElement.uid}",
+				"id": "$item",
+				"name": "",
 				"compulsory": "",
-				"valueType": #if( $dataElement.optionSet )
+				"valueType": #if( $!dataElement.optionSet )
 								"list"
 							 #else
-								"${dataElement.type}"
-							 #end,
-				"filter": "$dataelementFilters.get($idx)"
+								"${!dataElement.type}"
+							 #end
 			}
 			#if( $velocityCount < $size ),#end
-			#set($idx=$idx+1)
 		#end
+		
 	]
 }

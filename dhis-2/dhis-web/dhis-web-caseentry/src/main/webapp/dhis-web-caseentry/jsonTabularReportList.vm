@@ -2,8 +2,8 @@
 { "tabularReports": [
   #foreach( ${tabularReport} in $!{reports} )
   {
-	"id": "${tabularReport.id}",
-	"uid": "${tabularReport.uid}",
+	"id": "${tabularReport.uid}",
+	"localid": "${tabularReport.id}",
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "${tabularReport.lastUpdated}",
 	"access":
