@@ -34,7 +34,6 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.sms.parse.ParserType;
@@ -42,6 +41,7 @@ import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandStore;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 public class HibernateSMSCommandStore
     implements SMSCommandStore
@@ -63,26 +63,23 @@ public class HibernateSMSCommandStore
         return criteria.list();
     }
 
+    @Transactional
     public int save( SMSCommand cmd )
     {
-        Session s = sessionFactory.getCurrentSession();
-        Transaction t = s.beginTransaction();
-        s.saveOrUpdate( cmd );
-        t.commit();
-        s.flush();
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate( cmd );
         return 0;
     }
 
+    @Transactional
     public void save( Set<SMSCode> codes )
     {
-        Session s = sessionFactory.getCurrentSession();
-        Transaction t = s.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        
         for ( SMSCode x : codes )
         {
-            s.saveOrUpdate( x );
+            session.saveOrUpdate( x );
         }
-        t.commit();
-        s.flush();
     }
 
     public SMSCommand getSMSCommand( int id )
@@ -98,17 +95,17 @@ public class HibernateSMSCommandStore
         return null;
     }
 
+    @Transactional
     public void delete( SMSCommand cmd )
     {
-        Session s = sessionFactory.getCurrentSession();
-        Transaction t = s.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        
         for ( SMSCode x : cmd.getCodes() )
         {
-            s.delete( x );
+            session.delete( x );
         }
-        s.delete( cmd );
-        t.commit();
-        s.flush();
+        
+        session.delete( cmd );
     }
 
     @SuppressWarnings( "unchecked" )

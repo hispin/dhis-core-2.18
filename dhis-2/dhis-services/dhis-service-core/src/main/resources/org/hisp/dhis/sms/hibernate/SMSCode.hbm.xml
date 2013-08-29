@@ -6,7 +6,7 @@
     >
 <hibernate-mapping package="org.hisp.dhis.smscommand">
   <class name="SMSCode" table="smscodes">
-    <cache usage="read-write" />
+
     <id name="id" column="smscodeid">
       <generator class="increment" />
     </id>
