@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.message.MessageSender;
-import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -45,7 +45,6 @@ import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Nguyen Kim Lai
