@@ -17,10 +17,13 @@
   <bean id="org.hisp.dhis.importexport.action.datavalue.ExportDataValueAction"
     class="org.hisp.dhis.importexport.action.datavalue.ExportDataValueAction" />
 
-  <!-- Event Import -->
+  <!-- Events -->
 
   <bean id="org.hisp.dhis.importexport.action.event.ImportEventAction"
     class="org.hisp.dhis.importexport.action.event.ImportEventAction" />
+
+  <bean id="org.hisp.dhis.importexport.action.event.ExportEventAction"
+    class="org.hisp.dhis.importexport.action.event.ExportEventAction" />
 
   <!-- Import -->
 

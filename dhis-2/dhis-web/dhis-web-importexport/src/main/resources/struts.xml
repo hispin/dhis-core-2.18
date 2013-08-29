@@ -57,7 +57,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/eventImportForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="javascripts">javascript/importEventData.js</param>
+      <param name="javascripts">javascript/eventData.js</param>
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
     </action>
 
@@ -65,6 +65,21 @@
       <result name="success" type="redirect">displayEventImportForm.action</result>
       <interceptor-ref name="fileUploadStack" />
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
+    </action>
+
+    <!-- Event Export -->
+
+    <action name="displayEventExportForm" class="org.hisp.dhis.importexport.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/eventExportForm.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts">javascript/eventData.js</param>
+      <param name="requiredAuthorities">F_EXPORT_DATA</param>
+    </action>
+
+    <action name="importDataValue" class="org.hisp.dhis.importexport.action.event.ExportEventAction">
+      <result name="success" type="redirect">displayEventExportForm.action</result>
+      <param name="requiredAuthorities">F_EXPORT_DATA</param>
     </action>
 
     <!-- Menu -->
