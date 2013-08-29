@@ -64,29 +64,6 @@ public class Document
     }
 
     @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final Document other = (Document) object;
-
-        return name.equals( other.name );
-    }
-
-    @Override
     public boolean haveUniqueNames()
     {
         return false;
