@@ -52,8 +52,7 @@ import java.util.Set;
  * @version $Id$
  */
 @JacksonXmlRootElement( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
-public class ProgramInstance
-    implements Serializable
+public class ProgramInstance extends BaseIdentifiableObject
 {
     public static int STATUS_ACTIVE = 0;
     public static int STATUS_COMPLETED = 1;
