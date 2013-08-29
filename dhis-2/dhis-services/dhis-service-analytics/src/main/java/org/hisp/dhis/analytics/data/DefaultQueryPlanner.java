@@ -323,7 +323,7 @@ public class DefaultQueryPlanner
 
         if ( subQueries.size() > queryGroups.getAllQueries().size() )
         {
-            log.info( "Split on " + dimension + ": " + ( subQueries.size() / queryGroups.getAllQueries().size() ) );
+            log.debug( "Split on " + dimension + ": " + ( subQueries.size() / queryGroups.getAllQueries().size() ) );
         }
         
         return new DataQueryGroups( subQueries );
@@ -376,7 +376,7 @@ public class DefaultQueryPlanner
         
         if ( queries.size() > 1 )
         {
-            log.info( "Split on partition: " + queries.size() );
+            log.debug( "Split on partition: " + queries.size() );
         }
         
         return queries;
@@ -431,7 +431,7 @@ public class DefaultQueryPlanner
 
         if ( queries.size() > 1 )
         {
-            log.info( "Split on period type: " + queries.size() );
+            log.debug( "Split on period type: " + queries.size() );
         }
         
         return queries;        
@@ -560,7 +560,7 @@ public class DefaultQueryPlanner
 
         if ( queries.size() > 1 )
         {
-            log.info( "Split on aggregation type: " + queries.size() );
+            log.debug( "Split on aggregation type: " + queries.size() );
         }
         
         return queries;
@@ -592,7 +592,7 @@ public class DefaultQueryPlanner
 
         if ( queries.size() > 1 )
         {
-            log.info( "Split on data period type: " + queries.size() );
+            log.debug( "Split on data period type: " + queries.size() );
         }
         
         return queries;
