@@ -40,9 +40,13 @@
 
   <cache name="org.hisp.dhis.datadictionary.DataDictionary" maxElementsInMemory="200" />
 
+  <cache name="org.hisp.dhis.datadictionary.DataDictionary.userGroupAccesses" maxElementsInMemory="200" />
+
   <cache name="org.hisp.dhis.period.Period" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.period.PeriodType" maxElementsInMemory="50" />
+  
+  <cache name="org.hisp.dhis.period.RelativePeriods" maxElementsInMemory="30" />
 
   <cache name="org.hisp.dhis.dataset.DataSet" maxElementsInMemory="100" />
 
@@ -70,6 +74,8 @@
 
   <cache name="org.hisp.dhis.user.UserAuthorityGroup" maxElementsInMemory="200" />
 
+  <cache name="org.hisp.dhis.user.UserGroup" maxElementsInMemory="200" />
+
   <cache name="org.hisp.dhis.setting.SystemSetting" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.translation.Translation" maxElementsInMemory="200000" />
@@ -92,7 +98,9 @@
 
   <cache name="org.hisp.dhis.document.Document" maxElementsInMemory="100" />
 
-  <cache name="org.hisp.dhis.dashboard.DashboardContent" maxElementsInMemory="1000" />
+  <cache name="org.hisp.dhis.dashboard.Dashboard" maxElementsInMemory="1000" />
+
+  <cache name="org.hisp.dhis.dashboard.DashboardItem" maxElementsInMemory="4000" />
 
   <cache name="org.hisp.dhis.constant.Constant" maxElementsInMemory="200" />
 
@@ -116,13 +124,21 @@
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categoryOptionCombos" maxElementsInMemory="500" />
 
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categories" maxElementsInMemory="300" />
+
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.categoryOptions" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryDimension.items" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.dataset.DataSet.dataElements" maxElementsInMemory="3000" />
 
   <cache name="org.hisp.dhis.dataset.DataSet.sources" maxElementsInMemory="120000" />
 
   <cache name="org.hisp.dhis.dataset.DataSet.sections" maxElementsInMemory="3000" />
+
+  <cache name="org.hisp.dhis.dataset.DataSet.userGroupAccesses" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.dashboard.Dashboard.userGroupAccesses" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.dataelement.DataElement.groups" maxElementsInMemory="3000" />
 
@@ -132,7 +148,15 @@
 
   <cache name="org.hisp.dhis.dataelement.DataElementGroup.members" maxElementsInMemory="3000" />
 
+  <cache name="org.hisp.dhis.dataelement.DataElementGroup.attributeValues" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.dataelement.DataElementGroup.userGroupAccesses" maxElementsInMemory="200" />
+
   <cache name="org.hisp.dhis.dataelement.DataElementGroupSet.members" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.dataelement.DataElementGroupSet.userGroupAccesses" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.document.Document.userGroupAccesses" maxElementsInMemory="100" />
 
   <cache name="org.hisp.dhis.indicator.Indicator.groups" maxElementsInMemory="500" />
 
@@ -140,9 +164,17 @@
 
   <cache name="org.hisp.dhis.indicator.Indicator.attributeValues" maxElementsInMemory="1000" />
 
+  <cache name="org.hisp.dhis.indicator.Indicator.userGroupAccesses" maxElementsInMemory="500" />
+
   <cache name="org.hisp.dhis.indicator.IndicatorGroup.members" maxElementsInMemory="500" />
 
-  <cache name="org.hisp.dhis.indicator.IndicatorGroupSet.members" maxElementsInMemory="500" />
+  <cache name="org.hisp.dhis.indicator.IndicatorGroup.attributeValues" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.indicator.IndicatorGroup.userGroupAccesses" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.indicator.IndicatorGroupSet.members" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.indicator.IndicatorGroupSet.userGroupAccesses" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.dataset.Section.dataElements" maxElementsInMemory="4000" />
 
@@ -160,9 +192,15 @@
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.attributeValues" maxElementsInMemory="20000" />
 
-  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup.members" maxElementsInMemory="20000" />
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup.members" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup.attributeValues" maxElementsInMemory="20000" />
+
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup.dataSets" maxElementsInMemory="100" />
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet.organisationUnitGroups" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.report.Report.userGroupAccesses" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.indicators" maxElementsInMemory="500" />
 
@@ -190,6 +228,10 @@
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.filterDimensions" maxElementsInMemory="500" />
 
+  <cache name="org.hisp.dhis.reporttable.ReportTable.organisationUnitLevels" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.reporttable.ReportTable.userGroupAccesses" maxElementsInMemory="500" />
+
   <cache name="org.hisp.dhis.chart.Chart.indicators" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.chart.Chart.dataElements" maxElementsInMemory="1500" />
@@ -212,7 +254,13 @@
   
   <cache name="org.hisp.dhis.chart.Chart.filterDimensions" maxElementsInMemory="500" />
   
+  <cache name="org.hisp.dhis.chart.Chart.organisationUnitLevels" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.chart.Chart.userGroupAccesses" maxElementsInMemory="500" />
+  
   <cache name="org.hisp.dhis.mapping.Map.mapViews" maxElementsInMemory="1000" />
+
+  <cache name="org.hisp.dhis.mapping.Map.userGroupAccesses" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.attribute.Attribute.attributeValues" maxElementsInMemory="5000" />
   
@@ -221,6 +269,12 @@
   <cache name="org.hisp.dhis.user.User.organisationUnits" maxElementsInMemory="20000" />
 
   <cache name="org.hisp.dhis.user.User.attributeValues" maxElementsInMemory="1000" />
+
+  <cache name="org.hisp.dhis.user.User.groups" maxElementsInMemory="1000" />
+
+  <cache name="org.hisp.dhis.user.UserGroup.attributeValues" maxElementsInMemory="200" />
+
+  <cache name="org.hisp.dhis.user.UserGroup.userGroupAccesses" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.user.UserCredentials.userAuthorityGroups" maxElementsInMemory="200" />
 
