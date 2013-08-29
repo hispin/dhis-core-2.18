@@ -6,8 +6,6 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.interpretation.Interpretation" table="interpretation">
 
-    <cache usage="read-write" />
-
     <id name="id" column="interpretationid">
       <generator class="native" />
     </id>

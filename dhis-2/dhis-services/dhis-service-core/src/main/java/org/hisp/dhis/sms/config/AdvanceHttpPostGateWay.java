@@ -38,16 +38,20 @@ import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smslib.AGateway;
 import org.smslib.GatewayException;
 import org.smslib.OutboundMessage;
 import org.smslib.TimeoutException;
-import org.smslib.helper.Logger;
 
 public class AdvanceHttpPostGateWay
     extends AGateway
 {
+    private static final Log log = LogFactory.getLog( AdvanceHttpPostGateWay.class );
+    
     private static final String SENDER = "sender";
 
     private static final String RECIPIENT = "recipient";
@@ -70,6 +74,7 @@ public class AdvanceHttpPostGateWay
         throws TimeoutException, GatewayException, IOException, InterruptedException
     {
         Map<String, String> requestParameters = new HashMap<String, String>( parameters );
+        
         for ( OutboundMessage outboundMessage : outboundMessages )
         {
             requestParameters.put( RECIPIENT, outboundMessage.getRecipient() );
@@ -78,12 +83,13 @@ public class AdvanceHttpPostGateWay
             String sender = outboundMessage.getFrom();
             if ( sender != null )
             {
-                Logger.getInstance().logDebug( "Adding sender " + sender, null, getGatewayId() );
+                log.debug( "Adding sender " + sender + " " + getGatewayId() );
                 requestParameters.put( SENDER, sender );
             }
             try
             {
                 String urlString = urlTemplate;
+                
                 for ( String key : requestParameters.keySet() )
                 {
                     if ( requestParameters.get( key ) != null )
@@ -92,7 +98,8 @@ public class AdvanceHttpPostGateWay
                             URLEncoder.encode( requestParameters.get( key ), "UTF-8" ) );
                     }
                 }
-                Logger.getInstance().logInfo( "RequestURL: " + urlString, null, getGatewayId() );
+                
+                log.info( "RequestURL: " + urlString + " " + getGatewayId() );
                 URL requestURL = new URL( urlString );
                 URLConnection conn = requestURL.openConnection();
                 BufferedReader reader = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
@@ -105,8 +112,7 @@ public class AdvanceHttpPostGateWay
                 HttpURLConnection httpConnection = (HttpURLConnection) conn;
                 if ( httpConnection.getResponseCode() != HttpURLConnection.HTTP_OK )
                 {
-                    Logger.getInstance().logWarn( "Couldn't send message, got response " + response, null,
-                        getGatewayId() );
+                    log.warn( "Couldn't send message, got response " + response + " " + getGatewayId() );
                     return 0;
                 }
 
@@ -115,7 +121,7 @@ public class AdvanceHttpPostGateWay
             }
             catch ( Exception e )
             {
-                Logger.getInstance().logWarn( "Couldn't send message " + outboundMessage, e, getGatewayId() );
+                log.warn( "Couldn't send message " + outboundMessage + " " + getGatewayId() );
                 return 0;
             }
 
