@@ -29,7 +29,6 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +38,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -62,6 +63,13 @@ public class SaveTabularReportAction
     public void setTabularReportService( PatientTabularReportService tabularReportService )
     {
         this.tabularReportService = tabularReportService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -98,31 +106,25 @@ public class SaveTabularReportAction
 
     private String name;
 
+    private String programId;
+
+    private String programStageId;
+
     private String startDate;
 
     private String endDate;
 
-    private Integer programStageId;
+    private List<String> orgunitIds;
 
-    private List<String> filterValues = new ArrayList<String>();
+    private List<String> item = new ArrayList<String>();
 
-    private Collection<Integer> orgunitIds;
+    private String asc;
 
-    private boolean orderByOrgunitAsc;
+    private String desc;
 
-    private Integer level;
+    private int level;
 
     private String facilityLB;
-
-    private Boolean useCompletedEvents;
-
-    private Boolean userOrganisationUnit;
-
-    private Boolean userOrganisationUnitChildren;
-
-    private Boolean displayOrgunitCode;
-
-    private Boolean useFormNameDataElement;
 
     // -------------------------------------------------------------------------
     // Setters
@@ -133,24 +135,24 @@ public class SaveTabularReportAction
         this.name = name;
     }
 
-    public void setLevel( Integer level )
+    public void setStartDate( String startDate )
     {
-        this.level = level;
+        this.startDate = startDate;
     }
 
-    public void setFilterValues( List<String> filterValues )
+    public void setOrgunitIds( List<String> orgunitIds )
     {
-        this.filterValues = filterValues;
+        this.orgunitIds = orgunitIds;
     }
 
-    public void setFacilityLB( String facilityLB )
+    public void setProgramId( String programId )
     {
-        this.facilityLB = facilityLB;
+        this.programId = programId;
     }
 
-    public void setOrderByOrgunitAsc( boolean orderByOrgunitAsc )
+    public void setProgramStageId( String programStageId )
     {
-        this.orderByOrgunitAsc = orderByOrgunitAsc;
+        this.programStageId = programStageId;
     }
 
     public void setEndDate( String endDate )
@@ -158,44 +160,29 @@ public class SaveTabularReportAction
         this.endDate = endDate;
     }
 
-    public void setDisplayOrgunitCode( Boolean displayOrgunitCode )
+    public void setItem( List<String> item )
     {
-        this.displayOrgunitCode = displayOrgunitCode;
+        this.item = item;
     }
 
-    public void setStartDate( String startDate )
+    public void setAsc( String asc )
     {
-        this.startDate = startDate;
+        this.asc = asc;
     }
 
-    public void setOrgunitIds( Collection<Integer> orgunitIds )
+    public void setDesc( String desc )
     {
-        this.orgunitIds = orgunitIds;
+        this.desc = desc;
+    }
+    
+    public void setLevel( int level )
+    {
+        this.level = level;
     }
 
-    public void setProgramStageId( Integer programStageId )
+    public void setFacilityLB( String facilityLB )
     {
-        this.programStageId = programStageId;
-    }
-
-    public void setUseCompletedEvents( Boolean useCompletedEvents )
-    {
-        this.useCompletedEvents = useCompletedEvents;
-    }
-
-    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
-    {
-        this.userOrganisationUnit = userOrganisationUnit;
-    }
-
-    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
-    {
-        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
-    }
-
-    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
-    {
-        this.useFormNameDataElement = useFormNameDataElement;
+        this.facilityLB = facilityLB;
     }
 
     // -------------------------------------------------------------------------
@@ -206,14 +193,10 @@ public class SaveTabularReportAction
     public String execute()
         throws Exception
     {
-        userOrganisationUnit = (userOrganisationUnit == null) ? false : userOrganisationUnit;
-        userOrganisationUnitChildren = (userOrganisationUnitChildren == null) ? false : userOrganisationUnitChildren;
-        displayOrgunitCode = (displayOrgunitCode == null) ? false : displayOrgunitCode;
-        ;
-
         Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
-            organisationUnitService.getOrganisationUnits( orgunitIds ) );
+            organisationUnitService.getOrganisationUnitsByUid( orgunitIds ) );
 
+        Program program = programService.getProgram( programId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
         // ---------------------------------------------------------------------
@@ -226,23 +209,16 @@ public class SaveTabularReportAction
         tabularReport.setOrganisationUnits( orgunits );
         tabularReport.setLevel( level );
         tabularReport.setFacilityLB( facilityLB );
-        tabularReport.setSortedOrgunitAsc( orderByOrgunitAsc );
         tabularReport.setUser( currentUserService.getCurrentUser() );
-        tabularReport.setDisplayOrgunitCode( displayOrgunitCode );
-        tabularReport.setUseFormNameDataElement( useFormNameDataElement );
-
-        if ( useCompletedEvents != null )
-        {
-            tabularReport.setUseCompletedEvents( useCompletedEvents );
-        }
-
-        tabularReport.setUserOrganisationUnit( userOrganisationUnit );
-        tabularReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
-        tabularReport.setFilterValues( filterValues );
+        tabularReport.setItems( item );
+        tabularReport.setSortByAsc( asc );
+        tabularReport.setSortByDesc( desc );
         tabularReport.setProgramStage( programStage );
+        tabularReport.setProgram( program );
 
         tabularReportService.saveOrUpdate( tabularReport );
 
         return SUCCESS;
     }
+
 }
