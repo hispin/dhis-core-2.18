@@ -29,7 +29,6 @@
 		<property name="endDate" />
 
 		<set name="organisationUnits" table="patienttabularreport_organisationUnits">
-			<cache usage="read-write" />
 			<key column="patienttabularreportid" foreign-key="fk_patienttabularreport_organisationUnitid" />
 			<many-to-many column="organisationunitid"
 				class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_patienttabularreportid_organisationunit" />
@@ -57,7 +56,6 @@
 		<property name="publicAccess" length="8" />
 
 		<set name="userGroupAccesses" table="patienttabularreportusergroupaccesses">
-			<cache usage="read-write" />
 			<key column="patienttabularreportid" />
 			<many-to-many class="org.hisp.dhis.user.UserGroupAccess"
 				column="usergroupaccessid" unique="true" />

@@ -6,8 +6,6 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.dashboard.DashboardContent" table="dashboardcontent">
 
-    <cache usage="read-write" />
-
     <id name="id" column="dashboardcontentid">
       <generator class="foreign">
         <param name="property">user</param>

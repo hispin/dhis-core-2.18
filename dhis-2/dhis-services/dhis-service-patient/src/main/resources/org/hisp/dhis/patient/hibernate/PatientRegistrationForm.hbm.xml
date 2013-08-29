@@ -23,7 +23,6 @@
       foreign-key="fk_patientregistrationform_dataentryformid" cascade="all" />
       
     <list name="fixedAttributes" table="patientregistrationform_fixedAttributes">
-      <cache usage="read-write" />
       <key column="patientregistrationformid" foreign-key="fk_patientregistrationform_fixedAttributes_patientregistrationformid" />
       <list-index column="sort_order" />
       <element type="text" column="fixedattribute" />
