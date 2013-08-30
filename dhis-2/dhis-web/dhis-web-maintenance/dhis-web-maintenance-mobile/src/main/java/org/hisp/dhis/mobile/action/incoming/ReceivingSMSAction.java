@@ -38,7 +38,6 @@ import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Nguyen Kim Lai
@@ -154,7 +153,7 @@ public class ReceivingSMSAction
         }
         
         this.paging = createPaging( incomingSmsService.getSmsByStatus( null, keyword.trim() ).size() );
-        
+
         if ( smsStatus == null || smsStatus.trim().equals( "" ) )
         {
             listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( null, keyword,
