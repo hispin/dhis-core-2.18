@@ -632,6 +632,11 @@ div#selectionTree
   display: none;
 }
 
+.item
+{
+  background-color: #fff;
+}
+
 #contentDiv
 {
   top: 0;
