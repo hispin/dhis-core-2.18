@@ -166,7 +166,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), dashboard );
     }
 
-    @RequestMapping( value = "/user-account", produces = { "application/json", "text/*" } )
+    @RequestMapping( value = { "/profile", "/user-account" }, produces = { "application/json", "text/*" } )
     public void getUserAccount( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -203,7 +203,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
     }
 
-    @RequestMapping( value = "/user-account", method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping( value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json" )
     public void postUserAccountJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         UserAccount userAccount = JacksonUtils.fromJson( request.getInputStream(), UserAccount.class );
