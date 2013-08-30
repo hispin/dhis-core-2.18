@@ -3,7 +3,7 @@
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
 
-<table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv" border="1px">    
+<table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv">    
 	<tr>
 		<td>
 			<label>$i18n.getString( "registering_unit" )</label>
