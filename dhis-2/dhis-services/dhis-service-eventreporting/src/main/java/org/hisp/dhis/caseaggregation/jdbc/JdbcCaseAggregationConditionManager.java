@@ -503,7 +503,7 @@ public class JdbcCaseAggregationConditionManager
                 // Aggregation
                 // ---------------------------------------------------------------------
 
-                if ( _orgunitIds.size() > 0 )
+                if ( !orgunitIds.isEmpty() )
                 {
                     insertAggregateValue( caseExpression, caseOperator, dataelementId, optionComboId, deSumId,
                         orgunitIds, period );
@@ -776,7 +776,7 @@ public class JdbcCaseAggregationConditionManager
             sql = sql
                 .replace( CaseAggregationCondition.MINUS_DATAELEMENT_OPERATOR + "_" + key, minus2SQLMap.get( key ) );
         }
-        
+
         return sql + " ) ";
     }
 
