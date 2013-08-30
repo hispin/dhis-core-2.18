@@ -47,6 +47,7 @@ public class DeleteAppAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     @Autowired
     private AppManagerService appManagerService;
 

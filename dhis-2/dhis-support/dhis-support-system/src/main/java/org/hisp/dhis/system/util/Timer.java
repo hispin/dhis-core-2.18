@@ -1,8 +1,5 @@
 package org.hisp.dhis.system.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -30,6 +27,9 @@ import org.apache.commons.logging.LogFactory;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Timer
 {

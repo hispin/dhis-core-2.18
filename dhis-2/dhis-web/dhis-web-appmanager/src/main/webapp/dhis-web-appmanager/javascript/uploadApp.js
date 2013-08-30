@@ -29,3 +29,5 @@ function autoUpload() {
         xhr.send(fd);
     }, false);
 }
+
+$( document ).ready( autoUpload );
