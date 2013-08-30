@@ -208,7 +208,6 @@
 			<th style="text-align:center">$i18n.getString( "delete" )</th>
 		</thead>
 		<tbody>
-		$listIncomingSms.size()
 			#foreach( $incomingSms in $listIncomingSms )
 			<tr id="tr${incomingSms.id}" height="40">
 				<td style="text-align:center"><input type="checkbox" name="mycheck" value="$incomingSms.id"/></td>			
