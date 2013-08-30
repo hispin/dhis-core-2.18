@@ -294,14 +294,22 @@ public class CurrentUserController
             }
         }
 
+        String viewName = parameters.get( "viewClass" );
 
-        JacksonUtils.toJson( response.getOutputStream(), userOrganisationUnits );
+        if ( viewName == null )
+        {
+            viewName = "detailed";
+        }
+
+        Class<?> viewClass = JacksonUtils.getViewClass( viewName );
+
+        JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @SuppressWarnings("unchecked")
-    @RequestMapping(value = { "/assignedPrograms" }, produces = { "application/json", "text/*" })
+    @SuppressWarnings( "unchecked" )
+    @RequestMapping( value = { "/assignedPrograms" }, produces = { "application/json", "text/*" } )
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
-        @RequestParam(defaultValue = "1") Integer type )
+        @RequestParam( defaultValue = "1" ) Integer type )
         throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -389,8 +397,8 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), forms );
     }
 
-    @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/assignedDataSets", produces = { "application/json", "text/*" })
+    @SuppressWarnings( "unchecked" )
+    @RequestMapping( value = "/assignedDataSets", produces = { "application/json", "text/*" } )
     public void getDataSets( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
