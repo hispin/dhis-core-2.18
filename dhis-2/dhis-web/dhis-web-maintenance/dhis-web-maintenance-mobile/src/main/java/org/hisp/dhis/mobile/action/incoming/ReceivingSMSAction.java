@@ -31,6 +31,7 @@ package org.hisp.dhis.mobile.action.incoming;
 import java.util.ArrayList;
 import java.util.List;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.incoming.IncomingSms;
@@ -43,7 +44,7 @@ import com.opensymphony.xwork2.Action;
  * @author Nguyen Kim Lai
  */
 public class ReceivingSMSAction
-    implements Action
+    extends ActionPagingSupport<IncomingSms>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -148,11 +149,16 @@ public class ReceivingSMSAction
         }
 
         if ( keyword == null )
+        {
             keyword = "";
-
+        }
+        
+        this.paging = createPaging( incomingSmsService.getSmsByStatus( null, keyword.trim() ).size() );
+        
         if ( smsStatus == null || smsStatus.trim().equals( "" ) )
         {
-            listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( null, keyword.trim() ) );
+            listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( null, keyword,
+                this.paging.getStartPos(), this.paging.getPageSize() ) );
         }
         else
         {
@@ -168,6 +174,7 @@ public class ReceivingSMSAction
                 }
             }
         }
+
         return SUCCESS;
     }
 }

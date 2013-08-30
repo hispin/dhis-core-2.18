@@ -201,4 +201,10 @@ public class DefaultIncomingSmsService
 
         return incomingSms;
     }
+
+    @Override
+    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword, Integer min, Integer max )
+    {
+        return incomingSmsStore.getSmsByStatus( status, keyword, min, max );
+    }
 }

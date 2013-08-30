@@ -44,6 +44,8 @@ public interface IncomingSmsStore
     IncomingSms get( int id );
 
     Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword );
+    
+    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword, Integer min, Integer max );
 
     Collection<IncomingSms> getSmsByOriginator( String originator );
 
