@@ -4,7 +4,7 @@
         $.mobile.loading( 'show' );
 
         $.ajax({
-            url: '$contextPath/api/currentUser/user-account',
+            url: '$contextPath/api/currentUser/profile',
             dataType: 'json'
         }).success(function(data) {
             // user account
@@ -44,7 +44,7 @@
             $.mobile.loading( 'show' );
 
             $.ajax({
-                url: '$contextPath/api/currentUser/user-account',
+                url: '$contextPath/api/currentUser/profile',
                 contentType: 'application/json',
                 data: JSON.stringify( settings ),
                 type: 'POST'
