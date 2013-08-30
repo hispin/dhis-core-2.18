@@ -277,6 +277,7 @@ public class CurrentUserController
         }
 
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+        userOrganisationUnits.add( currentUser.getOrganisationUnit() );
 
         if ( parameters.containsKey( "includeChildren" ) && Boolean.parseBoolean( parameters.get( "includeChildren" ) ) )
         {
