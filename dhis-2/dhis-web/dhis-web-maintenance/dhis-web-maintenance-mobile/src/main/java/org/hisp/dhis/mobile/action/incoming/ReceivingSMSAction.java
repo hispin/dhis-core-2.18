@@ -115,6 +115,13 @@ public class ReceivingSMSAction
         this.keyword = keyword;
     }
 
+    private Integer total;
+
+    public Integer getTotal()
+    {
+        return total;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -151,11 +158,13 @@ public class ReceivingSMSAction
         {
             keyword = "";
         }
-        
-        this.paging = createPaging( incomingSmsService.getSmsByStatus( null, keyword.trim() ).size() );
 
         if ( smsStatus == null || smsStatus.trim().equals( "" ) )
         {
+            total = incomingSmsService.getSmsByStatus( null, keyword.trim() ).size();
+
+            this.paging = createPaging( total );
+
             listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( null, keyword,
                 this.paging.getStartPos(), this.paging.getPageSize() ) );
         }
@@ -167,13 +176,17 @@ public class ReceivingSMSAction
             {
                 if ( statusArray[i].toString().equalsIgnoreCase( smsStatus ) )
                 {
+                    total = incomingSmsService.getSmsByStatus( statusArray[i], keyword ).size();
+
+                    this.paging = createPaging( total );
+
                     listIncomingSms = new ArrayList<IncomingSms>( incomingSmsService.getSmsByStatus( statusArray[i],
-                        keyword.trim() ) );
+                        keyword.trim(), this.paging.getStartPos(), this.paging.getPageSize() ) );
+
                     break;
                 }
             }
         }
-
         return SUCCESS;
     }
 }
