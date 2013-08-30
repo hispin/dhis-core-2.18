@@ -133,4 +133,23 @@ public class HibernateIncomingSmsStore
         criteria.add( Restrictions.eq( "parsed", false ) );
         return criteria.list();
     }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status, String keyword, Integer min, Integer max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria( IncomingSms.class ).addOrder( Order.desc( "sentDate" ) );
+        if ( status != null )
+        {
+            criteria.add( Restrictions.eq( "status", status ) );
+        }
+        criteria.add( Restrictions.ilike( "originator", "%" + keyword + "%" ) );
+        
+        if ( min != null && max != null )
+        {
+            criteria.setFirstResult( min ).setMaxResults( max );
+        }
+        return criteria.list();
+    }
 }

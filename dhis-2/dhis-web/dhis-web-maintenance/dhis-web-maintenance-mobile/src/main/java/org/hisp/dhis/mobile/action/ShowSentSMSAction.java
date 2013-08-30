@@ -125,7 +125,7 @@ public class ShowSentSMSAction
         List<OutboundSms> tempListOutboundSMS = outboundSmsService.getAllOutboundSms();
 
         listOutboundSMS = new ArrayList<OutboundSms>();
-
+        
         if ( filterStatusType != null && filterStatusType == 0 )
         {
             for ( OutboundSms each : tempListOutboundSMS )

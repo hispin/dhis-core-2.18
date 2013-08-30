@@ -3,7 +3,7 @@
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
 
-<table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv">    
+<table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv" border="1px">    
 	<tr>
 		<td>
 			<label>$i18n.getString( "registering_unit" )</label>
@@ -16,7 +16,7 @@
 			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" >
 			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" >
 		</td>
-	</tr> 
+	</tr>
 	<tr id='programAddPatientTR'>
 		<td>$i18n.getString('program')</td>
 		<td>
@@ -68,7 +68,6 @@
 		</td>
 	</tr>
 </table>
-
 <div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
 	<table>	
 		<tr id='searchBySelectedUnitTD'>
