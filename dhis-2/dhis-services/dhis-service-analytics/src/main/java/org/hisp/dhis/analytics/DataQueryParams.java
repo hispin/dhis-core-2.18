@@ -119,10 +119,8 @@ public class DataQueryParams
     // Transient properties
     // -------------------------------------------------------------------------
     
-    private transient String tableName;
+    private transient Partitions partitions;
 
-    private ListMap<String, NameableObject> tableNamePeriodMap;
-    
     private transient String periodType;
         
     private transient PeriodType dataPeriodType;
@@ -144,11 +142,10 @@ public class DataQueryParams
         this.aggregationType = params.getAggregationType();
         this.measureCriteria = params.getMeasureCriteria();
         
-        this.tableName = params.getTableName();
+        this.partitions = params.getPartitions();
         this.periodType = params.getPeriodType();
         this.dataPeriodType = params.getDataPeriodType();
         this.skipPartitioning = params.isSkipPartitioning();
-        this.tableNamePeriodMap = params.getTableNamePeriodMap();
     }
 
     // -------------------------------------------------------------------------
@@ -188,39 +185,11 @@ public class DataQueryParams
      * If true it means that a period filter exists and that the periods span
      * multiple years.
      */
-    public boolean filterSpansMultiplePartitions()
+    public boolean spansMultiplePartitions()
     {
-        return tableNamePeriodMap != null && tableNamePeriodMap.size() > 1;
+        return partitions != null && partitions.isMultiple();
     }
-    
-    /**
-     * If the filters of this query spans more than partition, this method will
-     * return a list of queries with a query for each partition, generated from 
-     * this query, where the table name and filter period items are set according 
-     * to the relevant partition.
-     */
-    public List<DataQueryParams> getPartitionFilterParams()
-    {
-        List<DataQueryParams> filters = new ArrayList<DataQueryParams>();
         
-        if ( !filterSpansMultiplePartitions() )
-        {
-            return filters;
-        }   
-        
-        for ( String tableName : tableNamePeriodMap.keySet() )
-        {
-            List<NameableObject> periods = tableNamePeriodMap.get( tableName );
-            
-            DataQueryParams params = new DataQueryParams( this );
-            params.setTableName( tableName );
-            params.updateFilterOptions( PERIOD_DIM_ID, periods );
-            filters.add( params );
-        }
-        
-        return filters;
-    }
-    
     /**
      * Creates a mapping between dimension identifiers and filter dimensions. Filters 
      * are guaranteed not to be null.
@@ -1058,24 +1027,14 @@ public class DataQueryParams
     // Get and set methods for transient properties
     // -------------------------------------------------------------------------
 
-    public String getTableName()
+    public Partitions getPartitions()
     {
-        return tableName;
+        return partitions;
     }
 
-    public void setTableName( String tableName )
+    public void setPartitions( Partitions partitions )
     {
-        this.tableName = tableName;
-    }
-
-    public ListMap<String, NameableObject> getTableNamePeriodMap()
-    {
-        return tableNamePeriodMap;
-    }
-
-    public void setTableNamePeriodMap( ListMap<String, NameableObject> tableNamePeriodMap )
-    {
-        this.tableNamePeriodMap = tableNamePeriodMap;
+        this.partitions = partitions;
     }
 
     public String getPeriodType()

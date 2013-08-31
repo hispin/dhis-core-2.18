@@ -103,13 +103,13 @@ public class JdbcAnalyticsManager
         
         String sql = getSelectClause( params );
         
-        if ( params.filterSpansMultiplePartitions() )
+        if ( params.spansMultiplePartitions() )
         {
             sql += getFromWhereClauseMultiplePartitionFilters( params );
         }
         else
         {
-            sql += getFromWhereClause( params );
+            sql += getFromWhereClause( params, params.getPartitions().getSinglePartition() );
         }
         
         sql += getGroupByClause( params );
@@ -214,9 +214,9 @@ public class JdbcAnalyticsManager
     {
         String sql = "from (";
         
-        for ( DataQueryParams filterParams : params.getPartitionFilterParams() )
+        for ( String partition : params.getPartitions().getPartitions() )
         {
-            sql += "select " + getCommaDelimitedString( filterParams.getQueryDimensions() ) + ", ";
+            sql += "select " + getCommaDelimitedString( params.getQueryDimensions() ) + ", ";
             
             if ( params.isAggregationType( AVERAGE_INT ) )
             {
@@ -231,7 +231,7 @@ public class JdbcAnalyticsManager
                 sql += "value";
             }
             
-            sql += " " + getFromWhereClause( filterParams );
+            sql += " " + getFromWhereClause( params, partition );
             
             sql += "union all ";
         }
@@ -244,11 +244,11 @@ public class JdbcAnalyticsManager
     /**
      * Generates the from clause of the query SQL.
      */
-    private String getFromWhereClause( DataQueryParams params )
+    private String getFromWhereClause( DataQueryParams params, String partition )
     {
         SqlHelper sqlHelper = new SqlHelper();
 
-        String sql = "from " + params.getTableName() + " ";
+        String sql = "from " + partition + " ";
         
         for ( DimensionalObject dim : params.getQueryDimensions() )
         {

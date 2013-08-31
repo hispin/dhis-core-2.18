@@ -30,8 +30,11 @@ package org.hisp.dhis.analytics.table;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
@@ -60,21 +63,46 @@ public class PartitionUtils
         
         return periods;
     }
+
+    //TODO allow periods spanning more than two years
+    //TODO optimize by including required filter periods only
     
-    public static String getTableName( Period period, String tableName )
+    public static Partitions getPartitions( Period period, String tableName )
     {
-        Period year = PERIODTYPE.createPeriod( period.getStartDate() );
+        Partitions partitions = new Partitions();
         
-        return tableName + SEP + year.getIsoDate();
+        Period startYear = PERIODTYPE.createPeriod( period.getStartDate() );
+        Period endYear = PERIODTYPE.createPeriod( period.getEndDate() );
+        
+        partitions.add( tableName + SEP + startYear.getIsoDate() );
+        
+        if ( !startYear.equals( endYear ) )
+        {
+            partitions.add( tableName + SEP + endYear.getIsoDate() );            
+        }
+
+        return partitions;
     }
     
-    public static ListMap<String, NameableObject> getTableNamePeriodMap( List<NameableObject> periods, String tableName )
+    public static Partitions getPartitions( List<NameableObject> periods, String tableName )
     {
-        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
+        Set<String> partitions = new HashSet<String>();
         
         for ( NameableObject period : periods )
         {
-            map.putValue( getTableName( (Period) period, tableName ), period );
+            partitions.addAll( getPartitions( (Period) period, tableName ).getPartitions() );
+        }
+        
+        return new Partitions( new ArrayList<String>( partitions ) );
+    }
+    
+    public static ListMap<Partitions, NameableObject> getPartitionPeriodMap( List<NameableObject> periods, String tableName )
+    {
+        ListMap<Partitions, NameableObject> map = new ListMap<Partitions, NameableObject>();
+        
+        for ( NameableObject period : periods )
+        {
+            map.putValue( getPartitions( (Period) period, tableName ), period );
         }
         
         return map;
