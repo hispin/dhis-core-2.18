@@ -583,9 +583,7 @@ public class QueryPlannerTest
         {
             assertDimensionNameNotNull( query );
 
-            assertTrue( query.filterSpansMultiplePartitions() );
-            assertEquals( 2, query.getTableNamePeriodMap().size() );
-            assertEquals( 2, query.getPartitionFilterParams().size() );
+            assertTrue( query.spansMultiplePartitions() );
         }
     }
 
