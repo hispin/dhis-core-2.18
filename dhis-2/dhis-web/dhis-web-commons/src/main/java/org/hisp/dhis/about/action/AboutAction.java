@@ -28,26 +28,14 @@ package org.hisp.dhis.about.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.system.database.DatabaseInfo;
-import org.hisp.dhis.system.database.DatabaseInfoProvider;
-import org.hisp.dhis.system.util.SystemUtils;
+import org.hisp.dhis.system.SystemInfo;
+import org.hisp.dhis.system.SystemService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.util.ContextUtils;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,108 +49,30 @@ public class AboutAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocationManager locationManager;
+    @Autowired
+    private SystemService systemService;
 
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
-
-    private DatabaseInfoProvider databaseInfoProvider;
-
-    public void setDatabaseInfoProvider( DatabaseInfoProvider databaseInfoProvider )
-    {
-        this.databaseInfoProvider = databaseInfoProvider;
-    }
-
+    @Autowired
     private CurrentUserService currentUserService;
-    
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private String version;
-
-    public String getVersion()
-    {
-        return version;
-    }
-
-    private String revision;
-
-    public String getRevision()
-    {
-        return revision;
-    }
-
-    private Date buildTime;
-
-    public Date getBuildTime()
-    {
-        return buildTime;
-    }
+    private SystemInfo info;
     
+    public SystemInfo getInfo()
+    {
+        return info;
+    }
+
     private String userAgent;
 
     public String getUserAgent()
     {
         return userAgent;
     }
-
-    private String environmentVariable;
-
-    public String getEnvironmentVariable()
-    {
-        return environmentVariable;
-    }
     
-    private String javaIoTmpDir;
-
-    public String getJavaIoTmpDir()
-    {
-        return javaIoTmpDir;
-    }
-
-    private String externalDirectory;
-
-    public String getExternalDirectory()
-    {
-        return externalDirectory;
-    }
-
-    private DatabaseInfo info;
-    
-    public DatabaseInfo getInfo()
-    {
-        return info;
-    }
-    
-    private String javaOpts;
-
-    public String getJavaOpts()
-    {
-        return javaOpts;
-    }
-        
-    private Properties systemProperties;
-    
-    public Properties getSystemProperties()
-    {
-        return systemProperties;
-    }
-
     private boolean currentUserIsSuper;
 
     public boolean getCurrentUserIsSuper()
@@ -170,27 +80,6 @@ public class AboutAction
         return currentUserIsSuper;
     }
     
-    private Date serverDate = new Date();
-
-    public Date getServerDate()
-    {
-        return serverDate;
-    }
-    
-    private String memoryInfo;
-
-    public String getMemoryInfo()
-    {
-        return memoryInfo;
-    }
-
-    private int cpuCores;
-
-    public int getCpuCores()
-    {
-        return cpuCores;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -198,94 +87,13 @@ public class AboutAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Version
-        // ---------------------------------------------------------------------
-
-        ClassPathResource resource = new ClassPathResource( "build.properties" );
-        
-        if ( resource.isReadable() )
-        {
-            InputStream in = resource.getInputStream();
-            
-            try
-            {
-                Properties properties = new Properties();
-        
-                properties.load( in );
-        
-                version = properties.getProperty( "build.version" );
-        
-                revision = properties.getProperty( "build.revision" );
-        
-                String buildTime = properties.getProperty( "build.time" );
-    
-                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-    
-                this.buildTime = dateFormat.parse( buildTime );
-            }
-            finally
-            {
-                IOUtils.closeQuietly( in );
-            }
-        }
-        
+        info = systemService.getSystemInfo();
+                
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        // ---------------------------------------------------------------------
-        // User agent
-        // ---------------------------------------------------------------------
-
         userAgent = request.getHeader( ContextUtils.HEADER_USER_AGENT );
-
-        // ---------------------------------------------------------------------
-        // External directory
-        // ---------------------------------------------------------------------
-
-        environmentVariable = locationManager.getEnvironmentVariable();
-        
-        try
-        {
-            File directory = locationManager.getExternalDirectory();
-        
-            externalDirectory = directory.getAbsolutePath();
-        }
-        catch ( LocationManagerException ex )
-        {
-            externalDirectory = i18n.getString( "not_set" );
-        }
-        
-        // ---------------------------------------------------------------------
-        // Database
-        // ---------------------------------------------------------------------
-
-        info = databaseInfoProvider.getDatabaseInfo();
-        
-        try
-        {
-            javaOpts = System.getenv( "JAVA_OPTS" );
-        }
-        catch ( SecurityException ex )
-        {
-            javaOpts = i18n.getString( "unknown" );
-        }
-        
-        try
-        {
-            javaIoTmpDir = System.getProperty( "java.io.tmpdir" );
-        }
-        catch ( SecurityException ex )
-        {
-            javaOpts = i18n.getString( "unknown" );
-        }
-        
-        systemProperties = System.getProperties();
         
         currentUserIsSuper = currentUserService.currentUserIsSuper();
-
-        memoryInfo = SystemUtils.getMemoryString();
-        
-        cpuCores = SystemUtils.getCpuCores();
         
         return SUCCESS;
     }
