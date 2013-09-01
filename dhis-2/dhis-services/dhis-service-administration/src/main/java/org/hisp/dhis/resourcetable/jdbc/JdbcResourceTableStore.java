@@ -36,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
@@ -63,6 +64,13 @@ public class JdbcResourceTableStore
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
     }
 
     // -------------------------------------------------------------------------
@@ -159,7 +167,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        Statement statement = new CreateDataElementGroupSetTableStatement( groupSets );
+        Statement statement = new CreateDataElementGroupSetTableStatement( groupSets, statementBuilder.getColumnQuote() );
         
         jdbcTemplate.execute( statement.getStatement() );
     }
@@ -179,7 +187,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        Statement statement = new CreateIndicatorGroupSetTableStatement( groupSets );
+        Statement statement = new CreateIndicatorGroupSetTableStatement( groupSets, statementBuilder.getColumnQuote() );
         
         jdbcTemplate.execute( statement.getStatement() );
     }
@@ -199,7 +207,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        Statement statement = new CreateOrganisationUnitGroupSetTableStatement( groupSets );
+        Statement statement = new CreateOrganisationUnitGroupSetTableStatement( groupSets, statementBuilder.getColumnQuote() );
         
         jdbcTemplate.execute( statement.getStatement() );
     }
@@ -219,7 +227,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        Statement statement = new CreateCategoryTableStatement( categories );
+        Statement statement = new CreateCategoryTableStatement( categories, statementBuilder.getColumnQuote() );
         
         jdbcTemplate.execute( statement.getStatement() );
     }

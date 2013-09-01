@@ -47,11 +47,15 @@ public class CreateIndicatorGroupSetTableStatement
     
     public static final String TABLE_NAME = "_indicatorgroupsetstructure";
     
-    private List<IndicatorGroupSet> groupSets;
+    private List<IndicatorGroupSet> groupSets;    
+
+    private String quote;
     
-    public CreateIndicatorGroupSetTableStatement( List<IndicatorGroupSet> groupSets )
+    
+    public CreateIndicatorGroupSetTableStatement( List<IndicatorGroupSet> groupSets, String quote )
     {
         this.groupSets = groupSets;
+        this.quote = quote;
     }
     
     public String getStatement()
@@ -62,6 +66,7 @@ public class CreateIndicatorGroupSetTableStatement
         
         for ( IndicatorGroupSet groupSet : groupSets )
         {
+            statement += quote + groupSet.getName() + quote + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
             statement += groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         

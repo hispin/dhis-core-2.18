@@ -293,13 +293,14 @@ public class DefaultResourceTableService
             {
                 DataElementGroup group = groupSet.getGroup( dataElement );
                 
+                values.add( group != null ? group.getName() : null );
                 values.add( group != null ? group.getUid() : null );
             }
             
             batchArgs.add( values.toArray() );
         }
         
-        resourceTableStore.batchUpdate( groupSets.size() + 2, CreateDataElementGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateDataElementGroupSetTableStatement.TABLE_NAME, batchArgs );
     }
 
     // -------------------------------------------------------------------------
@@ -339,13 +340,14 @@ public class DefaultResourceTableService
             {
                 IndicatorGroup group = groupSet.getGroup( indicator );
                 
+                values.add( group != null ? group.getName() : null );
                 values.add( group != null ? group.getUid() : null );
             }
             
             batchArgs.add( values.toArray() );
         }
         
-        resourceTableStore.batchUpdate( groupSets.size() + 2, CreateIndicatorGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateIndicatorGroupSetTableStatement.TABLE_NAME, batchArgs );
     }
     
     // -------------------------------------------------------------------------
@@ -387,13 +389,14 @@ public class DefaultResourceTableService
             {
                 OrganisationUnitGroup group = groupSet.getGroup( unit );
                 
+                values.add( group != null ? group.getName() : null );
                 values.add( group != null ? group.getUid() : null );
             }
 
             batchArgs.add( values.toArray() );
         }
 
-        resourceTableStore.batchUpdate( groupSets.size() + 2, CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME, batchArgs );
     }
     
     // -------------------------------------------------------------------------
