@@ -43,6 +43,12 @@ public class PostgreSQLStatementBuilder
     }
 
     @Override
+    public String getColumnQuote()
+    {
+        return "\"";
+    }
+
+    @Override
     public String getVacuum( String table )
     {
         return "vacuum analyze " + table + ";";

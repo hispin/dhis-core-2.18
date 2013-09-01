@@ -52,6 +52,13 @@ public interface StatementBuilder
     String encode( String value );
     
     /**
+     * Returns the character used to quote database table and column names.
+     * 
+     * @return a quote character.
+     */
+    String getColumnQuote();
+    
+    /**
      * Returns statement for vacuum and analyze operations for a table. Returns
      * null if such statement is not relevant.
      * 

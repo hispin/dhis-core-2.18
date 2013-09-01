@@ -34,7 +34,6 @@ import org.amplecode.quick.Statement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.system.util.CodecUtils;
 
 /**
  * @author Lars Helge Overland
@@ -49,10 +48,13 @@ public class CreateCategoryTableStatement
     public static final String TABLE_NAME = "_categorystructure";
     
     private List<DataElementCategory> categories;
+
+    private String quote;
     
-    public CreateCategoryTableStatement( List<DataElementCategory> categories )
+    public CreateCategoryTableStatement( List<DataElementCategory> categories, String quote )
     {
         this.categories = categories;
+        this.quote = quote;
     }    
 
     public String getStatement()
@@ -63,7 +65,7 @@ public class CreateCategoryTableStatement
         
         for ( DataElementCategory category : categories )
         {
-            statement += CodecUtils.databaseEncode( category.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
+            statement += quote + category.getName() + quote + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
             statement += category.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
 

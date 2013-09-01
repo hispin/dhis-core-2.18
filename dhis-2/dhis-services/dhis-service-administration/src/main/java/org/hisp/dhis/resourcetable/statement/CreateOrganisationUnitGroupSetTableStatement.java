@@ -48,10 +48,13 @@ public class CreateOrganisationUnitGroupSetTableStatement
     private static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (250)";
     
     private List<OrganisationUnitGroupSet> groupSets;
+
+    private String quote;
     
-    public CreateOrganisationUnitGroupSetTableStatement( List<OrganisationUnitGroupSet> groupSets )
+    public CreateOrganisationUnitGroupSetTableStatement( List<OrganisationUnitGroupSet> groupSets, String quote )
     {
         this.groupSets = groupSets;
+        this.quote = quote;
     }
     
     public String getStatement()
@@ -62,6 +65,7 @@ public class CreateOrganisationUnitGroupSetTableStatement
                 
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
+            statement += quote + groupSet.getName() + quote + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
             statement += groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         

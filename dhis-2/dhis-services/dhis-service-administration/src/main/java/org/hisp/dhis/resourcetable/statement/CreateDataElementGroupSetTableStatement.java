@@ -49,9 +49,12 @@ public class CreateDataElementGroupSetTableStatement
     
     private List<DataElementGroupSet> groupSets;
     
-    public CreateDataElementGroupSetTableStatement( List<DataElementGroupSet> groupSets )
+    private String quote;
+    
+    public CreateDataElementGroupSetTableStatement( List<DataElementGroupSet> groupSets, String quote )
     {
         this.groupSets = groupSets;
+        this.quote = quote;
     }
     
     public String getStatement()
@@ -62,6 +65,7 @@ public class CreateDataElementGroupSetTableStatement
         
         for ( DataElementGroupSet groupSet : groupSets )
         {
+            statement += quote + groupSet.getName() + quote + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
             statement += groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         
