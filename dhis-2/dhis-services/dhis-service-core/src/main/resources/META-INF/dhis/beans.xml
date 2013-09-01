@@ -348,9 +348,6 @@
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
   
-  
-  
-
   <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandService" class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
@@ -706,6 +703,8 @@
   
   <bean id="org.hisp.dhis.appmanager.AppManagerService" class="org.hisp.dhis.appmanager.DefaultAppManagerService" />
   
+  <bean id="org.hisp.dhis.system.SystemService" class="org.hisp.dhis.system.DefaultSystemService" />
+  
   <!-- SMS Services -->
     
   <bean id="org.hisp.dhis.sms.MessageQueue" class="org.hisp.dhis.sms.DatabaseSupportedInternalMemoryMessageQueue">
@@ -781,7 +780,6 @@
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
-
 
   <!-- I18nService -->
 
@@ -878,14 +876,6 @@
     <property name="skipInTests" value="true" />
   </bean>
   
-  <!--  <bean id="org.hisp.dhis.user.UserDefaultPopulator"
-    class="org.hisp.dhis.user.UserDefaultPopulator">
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="runlevel" value="5" />
-    <property name="skipInTests" value="true" />
-  </bean>
-  -->
-
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
     <property name="targetMethod" value="addStartupRoutines" />

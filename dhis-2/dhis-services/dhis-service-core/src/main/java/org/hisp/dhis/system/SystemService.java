@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.webdomain;
+package org.hisp.dhis.system;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,26 +28,10 @@ package org.hisp.dhis.api.webdomain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.DxfNamespaces;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-@JacksonXmlRootElement( localName = "systemInfo", namespace = DxfNamespaces.DXF_2_0 )
-public class SystemInfo
+/**
+ * @author Lars Helge Overland
+ */
+public interface SystemService
 {
-    private String contextPath;
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getContextPath()
-    {
-        return contextPath;
-    }
-
-    public void setContextPath( String contextPath )
-    {
-        this.contextPath = contextPath;
-    }
+    SystemInfo getSystemInfo();
 }
